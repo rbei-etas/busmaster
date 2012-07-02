@@ -32,19 +32,19 @@ class CTestCaseData
 public:
     CTestCaseData(void);
     void vRemoveAll(void);
-	CTestCaseData& operator=(const CTestCaseData& RefObj);
-	virtual ~CTestCaseData(void);
+    CTestCaseData& operator=(const CTestCaseData& RefObj);
+    virtual ~CTestCaseData(void);
 
-//Attributes
+    //Attributes
 public:
     //Exception Handle
-	eACTION_EXCP m_eExcpAction;
+    eACTION_EXCP m_eExcpAction;
     //TestCase List
-	CTAEntityList m_odTAEntityList;
+    CTAEntityList m_odTAEntityList;
     //Test Case ID
-	CString m_omID;
+    CString m_omID;
     //Test Case Title
-	CString m_omTitle;
+    CString m_omTitle;
 };
 
 //////////////////////////////////////////////////
@@ -57,27 +57,27 @@ public:
     CTestCaseEntity(void);
     CTestCaseEntity& operator=(const CTestCaseEntity& RefObj);
     CTestCaseEntity(const CTestCaseEntity& RefObj);
-	HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
-  	HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
+    HRESULT AddSubEntry(CBaseEntityTA* pouSubEntryObj);
+    HRESULT DeleteSubEntry(CBaseEntityTA* pouSubEntryObj);
     HRESULT DeleteSubEntry(INT /*index*/);
     HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode) ;
-	HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-	eTYPE_ENTITY GetEntityType(void);
-	const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
-	HRESULT GetSubEntryCount(UINT& unTotal);
-	HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
+    HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    eTYPE_ENTITY GetEntityType(void);
+    const HRESULT GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity);
+    HRESULT GetSubEntryCount(UINT& unTotal);
+    HRESULT RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity);
     HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-	HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT SetTestCaseDetails(CString& omTitle, CString& omID, eACTION_EXCP& eExcpAction);
     HRESULT GetTestCaseDetails(CString& omTitle, CString& omID, eACTION_EXCP& eExcpAction);
     HRESULT ValidateEntity(CString& omStrResult);
     void vDeleteAllEntities(void);
     virtual ~CTestCaseEntity(void);
-    
-    
-//Attributes
+
+
+    //Attributes
 private:
-	CTestCaseData m_ouData;
+    CTestCaseData m_ouData;
 };
 
 //////////////////////////////////////////////////
@@ -86,14 +86,14 @@ private:
 class CReplayEntity : public CBaseEntityTA
 {
 public:
-	CReplayEntity(void);
-	CReplayEntity(const CReplayEntity& RefObj);
+    CReplayEntity(void);
+    CReplayEntity(const CReplayEntity& RefObj);
     CReplayEntity& operator = (CReplayEntity& RefObj);
     virtual HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
-	virtual HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-	virtual eTYPE_ENTITY GetEntityType(void);
-	virtual HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-	virtual HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    virtual HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    virtual eTYPE_ENTITY GetEntityType(void);
+    virtual HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
+    virtual HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     virtual ~CReplayEntity(void);
 
 public:
@@ -107,15 +107,15 @@ public:
 class CWaitEntityData
 {
 public:
-	CWaitEntityData(void);
+    CWaitEntityData(void);
     CWaitEntityData& operator=(const CWaitEntityData& RefObj);
-	virtual ~CWaitEntityData(void);
+    virtual ~CWaitEntityData(void);
 
 public:
-	//Purpose of Waiting
+    //Purpose of Waiting
     CString m_omPurpose;
-	//Duration of the waiting period in millisecond
-	USHORT m_ushDuration;
+    //Duration of the waiting period in millisecond
+    USHORT m_ushDuration;
 };
 
 //////////////////////////////////////////////////
@@ -125,16 +125,16 @@ class CWaitEntity : public CBaseEntityTA
 {
 
 public:
-	CWaitEntity(void);
-	CWaitEntity(const CWaitEntity& RefObj);
+    CWaitEntity(void);
+    CWaitEntity(const CWaitEntity& RefObj);
     CWaitEntity& operator = (CWaitEntity& RefObj);
-  	virtual HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
-	virtual HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-	virtual eTYPE_ENTITY GetEntityType(void);
-	virtual HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
-	virtual HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    virtual HRESULT GetData(MSXML2::IXMLDOMNodePtr& pIDomNode);
+    virtual HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    virtual eTYPE_ENTITY GetEntityType(void);
+    virtual HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
+    virtual HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     virtual ~CWaitEntity(void);
-//Attributes
+    //Attributes
 private:
-	CWaitEntityData m_ouData;
+    CWaitEntityData m_ouData;
 };

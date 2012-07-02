@@ -15,15 +15,15 @@
 
 /**
  * \file      EditItem.h
- * \brief     This header file contains the defintion of class EditItem. 
+ * \brief     This header file contains the defintion of class EditItem.
  * \authors   Zafir Anjum
   *
- * This header file contains the defintion of class EditItem. 
+ * This header file contains the defintion of class EditItem.
  */
 
-/*	Code contained in this file is taken from codeguru article 
-	http://www.codeguru.com/Cpp/controls/listview/editingitemsandsubitem/article.php/c923 
-	Written by Zafir Anjum	*/
+/*  Code contained in this file is taken from codeguru article
+    http://www.codeguru.com/Cpp/controls/listview/editingitemsandsubitem/article.php/c923
+    Written by Zafir Anjum  */
 
 #pragma once
 
@@ -32,24 +32,24 @@
 
 class CEditItem : public CEdit
 {
-// Construction
+    // Construction
 public:
-    CEditItem(int nItem, int nSubItem, const CString &sContent);
+    CEditItem(int nItem, int nSubItem, const CString& sContent);
 
-// Attributes
-public:
-
-// Operations
+    // Attributes
 public:
 
-// Overrides
+    // Operations
+public:
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CEditItem)
-    public:
+public:
     virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CEditItem();
 

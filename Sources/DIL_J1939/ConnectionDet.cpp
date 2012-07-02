@@ -1,28 +1,28 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  ConnectionDet.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/ConnectionDet.cpv  $
-   
+
       Rev 1.4   15 Apr 2011 18:48:34   CANMNTTM
    Added RBEI Copyright information.
-   
+
       Rev 1.3   23 Mar 2011 14:58:04   CANMNTTM
    Support for PDU format 2 message
-   
+
       Rev 1.2   29 Dec 2010 19:32:38   CANMNTTM
    Connection mode for both transmission and reception added.
-   
+
       Rev 1.1   23 Dec 2010 16:52:20   CANMNTTM
    Macro MAX_MSG_LEN_J1939
     instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
+
       Rev 1.0   06 Dec 2010 18:47:20   rac2kor
-    
+
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -44,14 +44,14 @@ const int nTD              =50; //ms
 const int nTDE             =100; //ms
 
 
-CConnectionDet::CConnectionDet(BYTE bySrcAddress, 
+CConnectionDet::CConnectionDet(BYTE bySrcAddress,
                                BYTE byDestAddress)
 {
     vInitializeMemberVar();
 
-    m_bySrcAddress = bySrcAddress; 
+    m_bySrcAddress = bySrcAddress;
     m_byDestAddress = byDestAddress;
-    
+
     //Create Event
     m_hDataAckWait = CreateEvent(NULL, FALSE, FALSE, NULL);
     m_hBCDataRXWait = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -70,11 +70,11 @@ CConnectionDet::~CConnectionDet(void)
 }
 
 void CConnectionDet::vInitializeMemberVar()
-{   
-    m_byTxAckSeqNo      = 0; 
+{
+    m_byTxAckSeqNo      = 0;
     m_byRxSeqNo         = 0;
-    m_byDestAddress     = 0;  
-    m_bySrcAddress      = 0;   
+    m_byDestAddress     = 0;
+    m_bySrcAddress      = 0;
     m_eConStatus        = T_DISCONNECTED;
     m_eRxConMode        = CM_STANDARD;
     m_eTxConMode        = CM_STANDARD;
@@ -83,7 +83,7 @@ void CConnectionDet::vInitializeMemberVar()
     m_unRxTotalPackets  = 0;
     m_unRxLastFrameLen  = 0;
     m_unTimeStamp       = 0;
-    
+
     m_BCTimeStamp       = 0;
     m_BCRxSeqVar        = 0;
     m_BCTotalPackets    = 0;
@@ -91,8 +91,8 @@ void CConnectionDet::vInitializeMemberVar()
     m_BCRXLongDataLen   = 0;
     m_BCLastFrameLen    = 0;
 
-    m_bySrcAddress      = ADDRESS_NULL;    
-    m_byDestAddress     = ADDRESS_NULL;   
+    m_bySrcAddress      = ADDRESS_NULL;
+    m_byDestAddress     = ADDRESS_NULL;
 
     m_byResult          = DATA_FAILURE;
     m_unNextPacket      = 0;
@@ -108,7 +108,7 @@ BOOL CConnectionDet::bIsMsgRxForThisConnection(UINT32 unExtId)
     BYTE bySrcAdres = uExtId.m_s29BitId.m_bySrcAddress;
     BYTE byDestAdres = uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific;
     BYTE byPF = uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format;
-    return (((byDestAdres == m_bySrcAddress) ||(byDestAdres == ADDRESS_ALL) || (byPF > 239)) && 
+    return (((byDestAdres == m_bySrcAddress) ||(byDestAdres == ADDRESS_ALL) || (byPF > 239)) &&
             (m_byDestAddress == bySrcAdres));
 }
 void CConnectionDet::vSetConStatus(eCON_STATUS eConStatus)

@@ -7,7 +7,7 @@
 * $Revision: 4722 $
 */
 
-/** 
+/**
 * @file
 * @brief  Global preprocessor definitions.
 * @remark The header structure of the OLI may change
@@ -20,7 +20,7 @@
 
 // safety check
 #if defined(OLL_DLL) || defined(OLI_CALL)
-#	error "Do not define any of the macros OLL_DLL or OLI_CALL!"
+#   error "Do not define any of the macros OLL_DLL or OLI_CALL!"
 #endif
 
 // open ETAS::OLI namespace
@@ -28,10 +28,13 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief  API version constants.
 *
@@ -43,7 +46,7 @@ namespace ETAS {namespace OLI {
 * @see    ICANLink::Create,  ILINLink::Create, IFlexRayLink::Create
 */
 
-enum 
+enum
 {
     /** Identifies OLI 1.3.0.0 . */
     OLI_1_3 = 0x01030000,
@@ -58,21 +61,22 @@ enum
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
-* @brief   Calling convention for all OLI functions and methods 
+* @brief   Calling convention for all OLI functions and methods
 * @coding  This definition is intended for use within the OLI only.
 *          Do not use this in client application code.
 * @since   BOA 1.0
 */
 #define OLI_CALL __stdcall
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief   Automatic import from / export to DLL of C-style functions
 * @coding  This definition is intended for use within the OLI only.
@@ -80,12 +84,12 @@ enum
 * @since   BOA 1.0
 */
 #ifdef OLI_DLLEXPORT
-#	define OLL_API extern "C" __declspec(dllexport)
+#   define OLL_API extern "C" __declspec(dllexport)
 #else
-#	define OLL_API extern "C" __declspec(dllimport)
+#   define OLL_API extern "C" __declspec(dllimport)
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief   Optimized VTable generation, if available
 * @coding  This definition is intended for use within the OLI only.
@@ -93,26 +97,26 @@ enum
 * @since   BOA 1.3
 */
 #if defined(_MSC_VER)
-#	define OLI_NOVTABLE __declspec(novtable)
-#else 
-#	define OLI_NOVTABLE
+#   define OLI_NOVTABLE __declspec(novtable)
+#else
+#   define OLI_NOVTABLE
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
-* @brief   Indicate that a method or free function will never 
+* @brief   Indicate that a method or free function will never
 *          throw an exception
 * @coding  This definition is intended for use within the OLI only.
 *          Do not use this in client application code.
 * @since   BOA 1.3
 */
 #if defined(_MSC_VER)
-#	define OLI_NOTHROW throw()
-#else 
-#	define OLI_NOTHROW
+#   define OLI_NOTHROW throw()
+#else
+#   define OLI_NOTHROW
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief   Combined definition used with all OLI interface classes
 * @coding  This definition is intended for use within the OLI only.

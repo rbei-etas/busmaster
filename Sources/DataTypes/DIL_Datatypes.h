@@ -34,11 +34,11 @@ using namespace std;
 
 #define NO_SELECTION_HI 0xCDCD
 
-#define CAN_MONITOR_NODE _T("CAN_MONITOR")
+#define CAN_MONITOR_NODE "CAN_MONITOR"
 const int CAN_MONITOR_NODE_INDEX = 0;
 const int CAN_MONITOR_CLIENT_ID  = 1;
 
-#define J1939_MONITOR_NODE _T("J1939_MONITOR")
+#define J1939_MONITOR_NODE "J1939_MONITOR"
 const UINT64 J1939_ECU_NAME     = 0x8000000000000001;
 
 const BYTE MSGBUF_ADD = 0x1;
@@ -67,45 +67,16 @@ enum ECONTR_PARAM
 };
 
 //----------------------------------------------------------------------------
-// declaration of Board Info structure
-//----------------------------------------------------------------------------
-typedef struct tagBOARDINFO
-{
-  WORD      m_wHWVersion;         // Hardware version e.g.: 01.00 as 0x100
-  WORD      m_wFWVersion;         // Firmware version (0xFFFF if not available)
-  WORD      m_wDDVersion;         // device driver version 
-                                  // (0xFFFF if not available)
-  WORD      m_wUCIVersion;        // UCI software version
-  BYTE      m_bCanNum;            // Number of supported CAN controllers
-  BYTE      m_bBftNum;            // Number of supported byteflight controllers 
-  BYTE      m_bFlxNum;            // Number of supported FlexRay controllers  
-  char      m_acSerialNum[16];    // hw serial number as string, e.g "12345678"
-  char      m_acHardwareType[40]; // hw type as string e.g: "PCI04-ISA"
-} s_BOARDINFO;
-//----------------------------------------------------------------------------
 // declaration of FlexRay status message
 //----------------------------------------------------------------------------
 
 typedef struct struct_STATUSMSG
 {
-  WORD  wControllerStatus;                  // Current controller state 
-                                            // 0 := reset
-                                            // 1 := stopped / initialized
-                                            // 2 := started / waiting for startup completion
-                                            // 3 := started / normal active (running)
-                                            // 4 := started / normal passiv
-                                            // 5 := started / halt mode
-  DWORD dwStatusInfoFlags;                  // Flagfield of status information (UCI_FLXSTSINFO_???)
+    unsigned short wControllerStatus;    // Current controller state
+    unsigned long  dwStatusInfoFlags;    // Flagfield of status information (UCI_FLXSTSINFO_???)
 } s_STATUSMSG, *ps_STATUSMSG;
 
 enum
-{
-    DRIVER_MCNET_PEAK_USB = 0,
-    DIL_MCNET_TOTAL,
-    DAL_MCNET_NONE = ~0x0
-};
-
-enum 
 {
     DRIVER_CAN_STUB = 0,
     DRIVER_CAN_PEAK_USB,
@@ -114,7 +85,7 @@ enum
     DRIVER_CAN_ETAS_ES581,
     DRIVER_CAN_VECTOR_XL,
     DRIVER_CAN_KVASER_CAN,
-	DRIVER_CAN_MHS,
+    DRIVER_CAN_MHS,
     DRIVER_CAN_IXXAT,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
@@ -122,49 +93,98 @@ enum
 
 typedef enum FILTER_TYPE
 {
-    PASS_FILTER,
-    STOP_FILTER,  
-}FILTER_TYPE;
+    PASS_FILTER = 0,
+    STOP_FILTER,
+} FILTER_TYPE;
 
 typedef enum TXMODE
 {
     SINGLE_SHOT,
-    CONTINOUS,  
-}TXMODE;
+    CONTINOUS,
+} TXMODE;
 
 #define  MAX_CHAR_SHORT       128
 #define  MAX_CHAR_LONG        512
 #define  MAX_CHAR             1024
 
-typedef struct tagHwInterface
+class INTERFACE_HW
 {
-   DWORD    m_dwIdInterface;
-   DWORD    m_dwVendor;
-   BYTE     m_bytNetworkID;   
-   char    m_acNameInterface[MAX_CHAR_SHORT];
-   char    m_acDescription[MAX_CHAR_LONG];
-   char    m_acDeviceName[MAX_CHAR_SHORT];
-} INTERFACE_HW;
+    //Tobias - venkat
+public:
+    unsigned long  m_dwIdInterface;
+    unsigned long  m_dwVendor;
+    unsigned char  m_bytNetworkID;
+    string         m_acNameInterface;
+    string         m_acDescription;
+    string         m_acDeviceName;
+    INTERFACE_HW()
+    {
+        m_dwIdInterface = 0;
+        m_dwVendor = 0;
+        m_bytNetworkID = 0;
+        m_acNameInterface = "";
+        m_acDescription = "";
+        m_acDeviceName = "";
+    }
+    INTERFACE_HW(const INTERFACE_HW& objRef)
+    {
+        m_dwIdInterface = objRef.m_dwIdInterface;
+        m_dwVendor = objRef.m_dwVendor;
+        m_bytNetworkID = objRef.m_bytNetworkID;
+        m_acNameInterface = objRef.m_acNameInterface;
+        m_acDescription = objRef.m_acDescription;
+        m_acDeviceName = objRef.m_acDeviceName;
+    }
+    INTERFACE_HW& operator=(INTERFACE_HW& objRef)
+    {
+        m_dwIdInterface = objRef.m_dwIdInterface;
+        m_dwVendor = objRef.m_dwVendor;
+        m_bytNetworkID = objRef.m_bytNetworkID;
+        m_acNameInterface = objRef.m_acNameInterface;
+        m_acDescription = objRef.m_acDescription;
+        m_acDeviceName = objRef.m_acDeviceName;
+        return *this;
+    }
+} ;
 
+typedef INTERFACE_HW INTERFACE_HW_LIST[defNO_OF_CHANNELS];
+
+class VERSIONINFO
+{
+public:
+    string     m_acDIL;
+    string     m_acController;
+    string     m_acDriver;
+};
+
+class DILINFO
+{
+public:
+    string         m_acName;
+    unsigned long  m_dwDriverID;
+    unsigned int   m_ResourceID;
+    DILINFO()
+    {
+        m_acName = "";
+        m_dwDriverID = 0;
+        m_ResourceID = 0;
+    }
+    DILINFO(const DILINFO& objRef)
+    {
+        m_acName = objRef.m_acName;
+        m_dwDriverID = objRef.m_dwDriverID;
+        m_ResourceID = objRef.m_ResourceID;
+    }
+    DILINFO& operator=(DILINFO& objRef)
+    {
+        m_acName = objRef.m_acName;
+        m_dwDriverID = objRef.m_dwDriverID;
+        m_ResourceID = objRef.m_ResourceID;
+        return *this;
+    }
+};
+
+const int MAX_DILS = 16;
 const int MAX_HW = 32;
-typedef INTERFACE_HW INTERFACE_HW_LIST[MAX_HW];
-
-typedef struct tagVersionInfo
-{
-   char     m_acDIL[MAX_CHAR_LONG];
-   char     m_acController[MAX_CHAR_LONG];
-   char     m_acDriver[MAX_CHAR_LONG];
-} VERSIONINFO;
-
-
-#define     MAX_DILS                16
 #define     MAX_DILNAME             32
-
-typedef struct 
-{
-    char   m_acName[MAX_DILNAME];
-    DWORD   m_dwDriverID;
-    UINT    m_ResourceID;
-} DILINFO;
-
 typedef DILINFO DILLIST[MAX_DILS];

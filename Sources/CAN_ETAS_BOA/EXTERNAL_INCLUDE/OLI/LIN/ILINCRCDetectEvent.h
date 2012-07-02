@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINCRCDetectEvent definition
 * @remark The header structure of the OLI may change
@@ -28,10 +28,13 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_LIN_MESSAGES
 * @brief  LIN frame CRC detection event.
 *
@@ -42,31 +45,32 @@ namespace ETAS {namespace OLI {
 * The message occurs only once for the according LIN ID.
 *
 * Extends the base interface by adding a method to access the @ref
-* GetCRCType "CRC type being detected". 
+* GetCRCType "CRC type being detected".
 *
 * This interface's implementation of @ref IMessage::GetID returns the @ref IMessage::GetID "frame ID"
 * of the frame that triggered the CRC detection event.
 *
 * @remark All public methods are thread-safe.
-* @remark The lifetime of all objects implementing this interface 
+* @remark The lifetime of all objects implementing this interface
 *         is defined by the @ref IRxQueue "receive queue" instance
 *         that contains them.
 * @since  BOA 1.3
 * @see    IRxQueue, ILINLink, ILINCRCDetectEventFilter
 */
 
-OLI_INTERFACE ILINCRCDetectEvent : public IEvent
+OLI_INTERFACE ILINCRCDetectEvent :
+public IEvent
 {
 protected:
 
     /** @brief Destructor.
 
-        This destructor has been hidden since objects implementing 
+        This destructor has been hidden since objects implementing
         this class are controlled by the receiving queue.
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINCRCDetectEvent() OLI_NOTHROW {};
 
@@ -78,11 +82,11 @@ public:
     enum {TYPE = LIN_TYPE_EVENT_BASE + 7};
 
     /** @brief  Get the detected CRC type.
-        
-        @return Detected CRC type. 
+
+        @return Detected CRC type.
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual LINCRCType OLI_CALL GetCRCType() const OLI_NOTHROW = 0;
 };
@@ -90,7 +94,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

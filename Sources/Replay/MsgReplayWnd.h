@@ -42,10 +42,10 @@ public:
     CMsgReplayWnd(CReplayFile ouReplayFile, WINDOWPLACEMENT& sWndPlacement);
     virtual ~CMsgReplayWnd();
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     // Replay Operations
     VOID vCmdSkip();
@@ -69,15 +69,15 @@ public:
     friend class CReplayProcess;
     friend class CLogFileCSVExport;
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgReplayWnd)
-    public:
-    protected:
+public:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

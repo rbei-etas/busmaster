@@ -42,17 +42,17 @@ END_MESSAGE_MAP()
 
 CJ1939TranslatorApp::CJ1939TranslatorApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+    // TODO: add construction code here,
+    // Place all significant initialization in InitInstance
 }
 
 CJ1939TranslatorApp theApp;
 
 BOOL CJ1939TranslatorApp::InitInstance()
 {
-	CWinApp::InitInstance();
+    CWinApp::InitInstance();
 
-	return TRUE;
+    return TRUE;
 }
 
 /**
@@ -101,7 +101,7 @@ USAGEMODE HRESULT DILJ_Uninitialise(void)
  * and to receive messages. Only registered client's buffer will be updated
  * on receive of a msg in the bus.
  */
-USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, char* pacNodeName, 
+USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, char* pacNodeName,
                                       UINT64 un64ECUName, BYTE byPrefAdres,
                                       DWORD& dwClientId)
 {
@@ -129,13 +129,13 @@ USAGEMODE HRESULT DILJ_RegisterClient(BOOL bRegister, char* pacNodeName,
  *
  * Manages the target client buffer list. Call this function to open a data channel to receive messages.
  */
-USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID, 
-                                        CBaseMsgBufVSE* pBufObj)
+USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
+                                    CBaseMsgBufVSE* pBufObj)
 {
     HRESULT hResult = INVALID_PARAM;
     if (pBufObj != NULL)
     {
-        CNodeConManager* pConManager = 
+        CNodeConManager* pConManager =
             CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClientID);
         if (pConManager != NULL)
         {
@@ -157,15 +157,6 @@ USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
     return hResult;
 }
 
-/**
- * \brief Get version information.
- * \return S_OK if successful, else S_FALSE.
- *
- * To get the version information.
- */
-USAGEMODE void DILJ_GetVersionInfo (VERSIONINFO& /*sVerInfo*/)
-{
-}
 
 /**
  * \brief Sends a J1939 message.
@@ -195,7 +186,7 @@ USAGEMODE HRESULT DILJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MS
             pManager->vSetNodeAddress(bySrc);
         }
         pManager->vSendMessage(unChannel, eMsgType, unPGN, pbyData, unDLC, byPriority, byDestAdres);
-        
+
     }
     return hResult;
 }
@@ -242,9 +233,9 @@ USAGEMODE HRESULT DILJ_NM_GetByteAddres(BYTE& byAddress, DWORD dwClient)
  * A node requests address from an another node.
  */
 USAGEMODE HRESULT DILJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE byPriority,
-                                         BYTE bySrc, BYTE byDestAddress)
+        BYTE bySrc, BYTE byDestAddress)
 {
-    HRESULT hResult = S_FALSE; 
+    HRESULT hResult = S_FALSE;
     CNodeConManager* pManager = NULL;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
     if (NULL != pManager && pManager->bIsActive())
@@ -285,7 +276,7 @@ USAGEMODE BOOL DILJ_NM_bIsAddressClaimed(BYTE byAddress)
  */
 USAGEMODE HRESULT DILJ_NM_ClaimAddress (DWORD dwClientId, UINT unChannel, BYTE byAddress, BYTE byPriority)
 {
-    HRESULT hResult = S_FALSE; 
+    HRESULT hResult = S_FALSE;
     CNodeConManager* pManager = NULL;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClientId);
     if (NULL != pManager && pManager->bIsActive())
@@ -312,10 +303,10 @@ USAGEMODE HRESULT DILJ_NM_ClaimAddress (DWORD dwClientId, UINT unChannel, BYTE b
  *
  * A node commands another node to assume an address.
  */
-USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 unECU_NAME, 
-                                         BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
+USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 unECU_NAME,
+        BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
-    HRESULT hResult = S_FALSE; 
+    HRESULT hResult = S_FALSE;
     CNodeConManager* pManager = NULL;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
     if (NULL != pManager && pManager->bIsActive())
@@ -345,10 +336,10 @@ USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 
  *
  * Requests a PGN from the node.
  */
-USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN, 
+USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
                                   BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
-    HRESULT hResult = S_FALSE; 
+    HRESULT hResult = S_FALSE;
     CNodeConManager* pManager = NULL;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
     if (NULL != pManager && pManager->bIsActive())
@@ -378,7 +369,7 @@ USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
  */
 USAGEMODE HRESULT DILJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK eAckType, UINT32 unPGN, BYTE bySrc, BYTE byAddresAck)
 {
-    HRESULT hResult = S_FALSE; 
+    HRESULT hResult = S_FALSE;
     CNodeConManager* pManager = NULL;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
     if (NULL != pManager && pManager->bIsActive())
@@ -407,12 +398,12 @@ USAGEMODE HRESULT DILJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK eAck
         abyFrame[1] = 0xFF;
         abyFrame[2] = 0xFF;
         abyFrame[3] = 0xFF;
-        
+
         abyFrame[5] = (BYTE)unPGN;
         abyFrame[6] = (BYTE)(unPGN >> 8);
         abyFrame[7] = (BYTE)(unPGN >> 16);
-        pManager->vSendMessage(unChannel, MSG_TYPE_ACKNOWLEDGEMENT, 
-            unPGN, abyFrame, 0, DEFAULT_PRIORITY, byAddresAck);
+        pManager->vSendMessage(unChannel, MSG_TYPE_ACKNOWLEDGEMENT,
+                               unPGN, abyFrame, 0, DEFAULT_PRIORITY, byAddresAck);
     }
     return hResult;
 }
@@ -502,10 +493,10 @@ USAGEMODE BOOL DILJ_bIsOnline(void)
 /**
  * Set call back function pointer
  */
-USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFnType, 
-                                         void* pvClBckFn)
+USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFnType,
+        void* pvClBckFn)
 {
-    HRESULT hResult = S_FALSE; 
+    HRESULT hResult = S_FALSE;
     CNodeConManager* pManager = NULL;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
     if (NULL != pManager)

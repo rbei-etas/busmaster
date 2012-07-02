@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINDLCDetectEventFilter definition
 * @remark The header structure of the OLI may change
@@ -30,7 +30,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // forward declaration
@@ -39,59 +42,59 @@ class ILINDLCDetectEventFilter;
 
 /**
 * @ingroup GROUP_OLI_LIN_FILTERS
-* @brief  This function instantiates an object supporting 
-*         @ref ILINDLCDetectEventFilter. 
+* @brief  This function instantiates an object supporting
+*         @ref ILINDLCDetectEventFilter.
 *
-*         See @ref BinaryCompatibility "binary compatibility" 
+*         See @ref BinaryCompatibility "binary compatibility"
 *         for an explanation of why it is needed.
 *
-*         NOTE that clients are encouraged to access this function 
+*         NOTE that clients are encouraged to access this function
 *         via the wrapper @ref ILINDLCDetectEventFilter::Create().
 *
-* @param[in]  frameIDMask   
+* @param[in]  frameIDMask
 *         Any mask for the LIN frame ID.
 *         The filter will report it in @ref IFilter::GetIDMask.
-* @param[in]  frameIDValue  
+* @param[in]  frameIDValue
 *         Any value for the LIN frame ID.
 *         The filter will report it in @ref IFilter::GetIDValue.
 * @param[in]  dlcMask
 *         Any mask for the frame length (DLC) to be
 *         applied to @ref ILINDLCDetectEvent::GetDLC.
-*         The filter will report it in 
+*         The filter will report it in
 *         @ref ILINDLCDetectEventFilter::GetDLCMask.
 * @param[in]  dlcValue
 *         Any value for the frame length (DLC) to be
 *         applied to @ref ILINDLCDetectEvent::GetDLC.
-*         The filter will report it in 
+*         The filter will report it in
 *         @ref ILINDLCDetectEventFilter::GetDLCValue.
-* @param[out] ppLinDLCDetectEventFilter   
-*         A pointer to an object supporting @ref ILINDLCDetectEventFilter, 
-*         which has already been AddRef-ed. The object must be 
+* @param[out] ppLinDLCDetectEventFilter
+*         A pointer to an object supporting @ref ILINDLCDetectEventFilter,
+*         which has already been AddRef-ed. The object must be
 *         reference-counted by the caller, using the object's
-*         methods @ref IRefCountable::AddRef "AddRef()" and 
-*         @ref IRefCountable::Release "Release()". This is easily 
-*         done by wrapping the object pointer in an instance of the 
-*         @ref AutoPtr class, which will be done automatically if 
-*         the caller accesses @ref ILINDLCDetectEventFilter_Create() 
+*         methods @ref IRefCountable::AddRef "AddRef()" and
+*         @ref IRefCountable::Release "Release()". This is easily
+*         done by wrapping the object pointer in an instance of the
+*         @ref AutoPtr class, which will be done automatically if
+*         the caller accesses @ref ILINDLCDetectEventFilter_Create()
 *         via the wrapper @ref ILINDLCDetectEventFilter::Create().
 *
-* @return A pointer to an interface based on @ref IError, describing 
-*         the error which occurred during this function. @c NULL if 
+* @return A pointer to an interface based on @ref IError, describing
+*         the error which occurred during this function. @c NULL if
 *         no error occurred. See @ref ErrorReporting "error reporting"
 *         for more information on how errors are reported.
 *
 * @exception <none> This function must not throw exceptions.
 *
-* @since  BOA 1.3 
-* @see    @ref BinaryCompatibility "binary compatibility", 
+* @since  BOA 1.3
+* @see    @ref BinaryCompatibility "binary compatibility",
 *         @ref ErrorReporting "error reporting",
 *         ILINDLCDetectEventFilter
 */
-OLL_API IError* OLI_CALL ILINDLCDetectEventFilter_Create( 
-    uint8 frameIDMask, 
-    uint8 frameIDValue, 
-    uint8 dlcMask, 
-    uint8 dlcValue, 
+OLL_API IError* OLI_CALL ILINDLCDetectEventFilter_Create(
+    uint8 frameIDMask,
+    uint8 frameIDValue,
+    uint8 dlcMask,
+    uint8 dlcValue,
     ILINDLCDetectEventFilter** ppLinDlcDetectEventFilter);
 
 
@@ -105,7 +108,7 @@ OLL_API IError* OLI_CALL ILINDLCDetectEventFilter_Create(
 * This interface's implementation of IFilter::GetIDMask and IFilter::GetIDValue return the frame ID mask and
 * frame ID value supplied to ILINDLCDetectEventFilter::Create.
 *
-* The implementation is expected to match @ref ILINDLCDetectEvent 
+* The implementation is expected to match @ref ILINDLCDetectEvent
 * instances only.
 *
 * @remark All public methods are thread-safe.
@@ -114,8 +117,9 @@ OLL_API IError* OLI_CALL ILINDLCDetectEventFilter_Create(
 * @see    @ref filterConcepts "Filter concepts", ILINDLCDetectEvent
 */
 
-OLI_INTERFACE ILINDLCDetectEventFilter 
-    : public IEventFilter
+OLI_INTERFACE ILINDLCDetectEventFilter
+:
+public IEventFilter
 {
 protected:
 
@@ -126,7 +130,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINDLCDetectEventFilter() OLI_NOTHROW {};
 
@@ -135,12 +139,12 @@ public:
     /** @brief  Returns the mask for the condition on the event's
                 @ref ILINDLCDetectEvent::GetDLC "DLC value".
 
-        @return @ref filterConcepts "filter mask" for the event's 
+        @return @ref filterConcepts "filter mask" for the event's
                 @ref ILINDLCDetectEvent::GetDLC "DLC value".
         @exception <none> This function must not throw exceptions.
 
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINDLCDetectEvent
      */
     virtual uint8 OLI_CALL GetDLCMask() const OLI_NOTHROW = 0;
@@ -153,21 +157,21 @@ public:
         @exception <none> This function must not throw exceptions.
 
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINDLCDetectEvent
      */
-	virtual uint8 OLI_CALL GetDLCValue() const OLI_NOTHROW = 0;
+    virtual uint8 OLI_CALL GetDLCValue() const OLI_NOTHROW = 0;
 
     /** @brief  Create an @ref ILINDLCDetectEventFilter instance.
 
-                The instance returned here will only match 
+                The instance returned here will only match
                 @ref ILINDLCDetectEvent messages. All other
                 types will not pass the filter.
 
-        @param[in]  frameIDMask   
+        @param[in]  frameIDMask
                 Any mask for the LIN frame ID.
                 The filter will report it in @ref IFilter::GetIDMask.
-        @param[in]  frameIDValue  
+        @param[in]  frameIDValue
                 Any value for the LIN frame ID.
                 The filter will report it in @ref IFilter::GetIDValue.
         @param[in]  dlcMask
@@ -182,30 +186,30 @@ public:
         @exception CError This function may throw an exception
                 derived from @ref CError.
 
-        @remark This is a helper method which wraps 
-                @ref ILINDLCDetectEventFilter_Create(): 
-                see @ref BinaryCompatibility "binary compatibility" 
+        @remark This is a helper method which wraps
+                @ref ILINDLCDetectEventFilter_Create():
+                see @ref BinaryCompatibility "binary compatibility"
                 and @ref ErrorReporting "error reporting"
                 for an explanation of why it is needed.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINDLCDetectEvent
      */
-    static AutoPtr<ILINDLCDetectEventFilter> OLI_CALL 
+    static AutoPtr<ILINDLCDetectEventFilter> OLI_CALL
     Create ( uint8 frameIDMask
-           , uint8 frameIDValue
-           , uint8 dlcMask
-           , uint8 dlcValue )
+             , uint8 frameIDValue
+             , uint8 dlcMask
+             , uint8 dlcValue )
     {
         ILINDLCDetectEventFilter* pLinDlcDetectEventFilter = NULL;
-        CheckAndThrow( 
-            ILINDLCDetectEventFilter_Create( frameIDMask, 
-                                             frameIDValue, 
-                                             dlcMask, 
-                                             dlcValue, 
+        CheckAndThrow(
+            ILINDLCDetectEventFilter_Create( frameIDMask,
+                                             frameIDValue,
+                                             dlcMask,
+                                             dlcValue,
                                              &pLinDlcDetectEventFilter ) );
 
-        // The wrapped method has already AddRef-ed the pointer, 
-        // so we tell AutoPtr to take ownership of the pointer 
+        // The wrapped method has already AddRef-ed the pointer,
+        // so we tell AutoPtr to take ownership of the pointer
         // without a further AddRef.
         return AutoPtr<ILINDLCDetectEventFilter>( pLinDlcDetectEventFilter, false );
     }
@@ -214,7 +218,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

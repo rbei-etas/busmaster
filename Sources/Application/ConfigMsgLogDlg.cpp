@@ -34,15 +34,15 @@
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include ".\configmsglogdlg.h"
 
-#define STR_FILTER_DIALOG_FORMAT        _T("Configure Filter for Log File: %s")
-#define BUSMASTER_LOG_REMOVE			_T("Do you want to remove selected log file entry?")
-#define BUSMASTER_LOG_ALREADYEXISTS 	_T("Log file: %s is already added to the log configuration list!")
-#define BUSMASTER_CAN_LOGFILENAME		_T("BUSMASTERLogFile%d.log")
-#define BUSMASTER_J1939_LOGFILENAME	    _T("BUSMASTERLogFile_J1939_%d.log")
-#define BUSMASTER_LOG_SELECTION_TITLE	_T("Select a Log file")
-#define BUSMASTER_LOG_FILTER			_T("*.log|*.log||")
-#define BUSMASTER_LOG_FILE_EXTENSION	_T("log")
-#define BUSMASTER_LOG_COL_NAME			_T("Log File")
+#define STR_FILTER_DIALOG_FORMAT        "Configure Filter for Log File: %s"
+#define BUSMASTER_LOG_REMOVE            "Do you want to remove selected log file entry?"
+#define BUSMASTER_LOG_ALREADYEXISTS     "Log file: %s is already added to the log configuration list!"
+#define BUSMASTER_CAN_LOGFILENAME       "BUSMASTERLogFile%d.log"
+#define BUSMASTER_J1939_LOGFILENAME     "BUSMASTERLogFile_J1939_%d.log"
+#define BUSMASTER_LOG_SELECTION_TITLE   "Select a Log file"
+#define BUSMASTER_LOG_FILTER            "*.log|*.log||"
+#define BUSMASTER_LOG_FILE_EXTENSION    "log"
+#define BUSMASTER_LOG_COL_NAME          "Log File"
 
 
 
@@ -78,18 +78,18 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
         {
             m_pouFProcCAN = static_cast<CBaseFrameProcessor_CAN*> (pouBaseLogger);
             m_psFilterConfigured = (SFILTERAPPLIED_CAN*) (psFilter);
-            m_strCurrWndText =_T("Configure Logging for CAN");
-            m_omControlParam = _T("Start on Reception of ID 0x");
-            m_omControlParam2 = _T("Stop on Reception of ID 0x");
+            m_strCurrWndText ="Configure Logging for CAN";
+            m_omControlParam = "Start on Reception of ID 0x";
+            m_omControlParam2 = "Stop on Reception of ID 0x";
         }
         break;
         case J1939:
         {
-            m_pouLoggerJ1939 = (CBaseFrameProcessor_J1939 *) pouBaseLogger;
-            m_psJ1939Filter = (SFILTERAPPLIED_J1939 *) psFilter;
-            m_strCurrWndText =_T("Configure Logging for J1939");
-            m_omControlParam = _T("Start on Reception of PGN 0x");
-            m_omControlParam2 = _T("Stop on Reception of PGN 0x");
+            m_pouLoggerJ1939 = (CBaseFrameProcessor_J1939*) pouBaseLogger;
+            m_psJ1939Filter = (SFILTERAPPLIED_J1939*) psFilter;
+            m_strCurrWndText ="Configure Logging for J1939";
+            m_omControlParam = "Start on Reception of PGN 0x";
+            m_omControlParam2 = "Stop on Reception of PGN 0x";
         }
         break;
 
@@ -99,8 +99,8 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
     m_nLogIndexSel = -1;
     m_bUpdatingUI = FALSE;
     m_bEditingON = FALSE;
-	m_bLogON = FALSE;
-	m_unDispUpdateTimerId = 0;
+    m_bLogON = FALSE;
+    m_unDispUpdateTimerId = 0;
 }
 
 CConfigMsgLogDlg::~CConfigMsgLogDlg()
@@ -123,17 +123,17 @@ void CConfigMsgLogDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CConfigMsgLogDlg, CDialog)
-	ON_BN_CLICKED(IDC_CBTN_ADDLOG, OnBnClickedCbtnAddlog)
-	ON_BN_CLICKED(IDC_CBTN_LOGFILEPATH, OnBnClickedCbtnLogFilePath)
-	ON_BN_CLICKED(IDC_CBTN_DELETELOG, OnBnClickedCbtnRemovelog)
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGBLOCK_LST, OnLvnItemchangedLogBlockLst)
+    ON_BN_CLICKED(IDC_CBTN_ADDLOG, OnBnClickedCbtnAddlog)
+    ON_BN_CLICKED(IDC_CBTN_LOGFILEPATH, OnBnClickedCbtnLogFilePath)
+    ON_BN_CLICKED(IDC_CBTN_DELETELOG, OnBnClickedCbtnRemovelog)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOGBLOCK_LST, OnLvnItemchangedLogBlockLst)
     ON_CONTROL_RANGE(CBN_SELCHANGE, IDC_COMB_TIMEMODE, IDC_COMB_CHANNEL, OnSelChangeComb)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_RBTN_DECIMAL, IDC_RBTN_HEX, OnNumRButtonClick)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_RBTN_APPEND, IDC_CHECK_RESET_TIMESTAMP, OnFileRButtonClick)
     ON_CONTROL_RANGE(BN_CLICKED, IDC_CHKB_STARTTRIGGER, IDC_CHKB_STOPTRIGGER, OnChkbTriggerClick)
     ON_CONTROL_RANGE(EN_CHANGE, IDC_EDIT_STARTMSGID, IDC_EDIT_STOPMSGID, OnStartStopMsgIDEnChange)
-	ON_BN_CLICKED(IDC_LOG_FILTER, OnBnClickedLogFilter)
-	ON_WM_TIMER()	
+    ON_BN_CLICKED(IDC_LOG_FILTER, OnBnClickedLogFilter)
+    ON_WM_TIMER()
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
@@ -142,13 +142,13 @@ END_MESSAGE_MAP()
 void CConfigMsgLogDlg::vCreateFileList(void)
 {
     m_omListLogFiles.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_GRIDLINES);
-	m_omListLogFiles.InsertColumn(0, BUSMASTER_LOG_COL_NAME);
+    m_omListLogFiles.InsertColumn(0, BUSMASTER_LOG_COL_NAME);
     // Set the width to occupy the whole list
-	CRect omRect;
-	m_omListLogFiles.GetWindowRect(&omRect);
-	int nWidth = static_cast<int>(omRect.Width() * LOG_FILE_COL_WIDTH_PROPOTION);
-	// Set Col Width
-	m_omListLogFiles.SetColumnWidth(0, nWidth);
+    CRect omRect;
+    m_omListLogFiles.GetWindowRect(&omRect);
+    int nWidth = static_cast<int>(omRect.Width() * LOG_FILE_COL_WIDTH_PROPOTION);
+    // Set Col Width
+    m_omListLogFiles.SetColumnWidth(0, nWidth);
 }
 
 void CConfigMsgLogDlg::SetGUIFromTimeMode(ETIMERMODE eTimeMode)
@@ -202,14 +202,14 @@ SLOGTRIGGER CConfigMsgLogDlg::GetLogTriggerFromGUI(void)
     return sTrigger;
 }
 
-void CConfigMsgLogDlg::vEnableDisableControl(int nControlID, 
-                                           ECONTROLTYPE eCtrlType, BOOL Enable)
+void CConfigMsgLogDlg::vEnableDisableControl(int nControlID,
+        ECONTROLTYPE eCtrlType, BOOL Enable)
 {
     CWnd* pWnd = GetDlgItem(nControlID);
     if (pWnd != NULL)
     {
         pWnd->EnableWindow(Enable);
-		if (Enable == FALSE)
+        if (Enable == FALSE)
         {
             switch (eCtrlType)
             {
@@ -243,7 +243,7 @@ void CConfigMsgLogDlg::vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType,
     CWnd* pWnd = GetDlgItem(nControlID);
     if (NULL != pWnd)
     {
-        // Let's start with enable/disable flag 
+        // Let's start with enable/disable flag
         pWnd->EnableWindow(CActionFlag::bCtrlToBeEnabled(bAction));
 
         // Clear flag
@@ -303,7 +303,7 @@ void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
     // Overwrite file mode radio button
     vEnableDisableControl(IDC_CHECK_RESET_TIMESTAMP, CHECKBOX, bValue);
 
-	// Start trigger check box and edit control
+    // Start trigger check box and edit control
     vEnableDisableControl(IDC_CHKB_STARTTRIGGER, CHECKBOX, bValue);
     vEnableDisableControl(IDC_EDIT_STARTMSGID, EDITCTRL, bValue);
 
@@ -311,18 +311,18 @@ void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
     vEnableDisableControl(IDC_CHKB_STOPTRIGGER, CHECKBOX, bValue);
     vEnableDisableControl(IDC_EDIT_STOPMSGID, EDITCTRL, bValue);
 
-   // Log file path button
-   vEnableDisableControl(IDC_CBTN_LOGFILEPATH, BUTTON, bValue);
+    // Log file path button
+    vEnableDisableControl(IDC_CBTN_LOGFILEPATH, BUTTON, bValue);
 
-   // Log filter button
-   vEnableDisableControl(IDC_LOG_FILTER, BUTTON, bValue);
+    // Log filter button
+    vEnableDisableControl(IDC_LOG_FILTER, BUTTON, bValue);
 
-   // Delete logging block button
-   vEnableDisableControl(IDC_CBTN_DELETELOG, BUTTON, bValue);
+    // Delete logging block button
+    vEnableDisableControl(IDC_CBTN_DELETELOG, BUTTON, bValue);
 
-   // Indicator static text controls in trogger group box
-   vEnableDisableControl(IDC_STATIC_01, STATICTEXT, bValue);
-   vEnableDisableControl(IDC_STATIC_02, STATICTEXT, bValue);
+    // Indicator static text controls in trogger group box
+    vEnableDisableControl(IDC_STATIC_01, STATICTEXT, bValue);
+    vEnableDisableControl(IDC_STATIC_02, STATICTEXT, bValue);
 }
 
 BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
@@ -340,8 +340,8 @@ BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
 
         // Subject to its content type (whether bare log file name or the
         // full path), the comparison will be carried out.
-        CString omCompareStr = (omCurrLogFile.Find(_T("\\")) != -1) ?
-                                        omFullPath : omFileName;
+        CString omCompareStr = (omCurrLogFile.Find("\\") != -1) ?
+                               omFullPath : omFileName;
         Found = (omCurrLogFile.CompareNoCase(omCompareStr) == 0);
     }
 
@@ -369,12 +369,12 @@ CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
             omNewLogFileName.Format(BUSMASTER_J1939_LOGFILENAME, Count);
         }
         omStrFullPath = acPathBuffer; // Full Path
-        omStrFullPath = omStrFullPath + _T("\\") + omNewLogFileName;
+        omStrFullPath = omStrFullPath + "\\" + omNewLogFileName;
         // We have two different strings to compare. The first one is the bare
         // log file name and the second one is the full path.
 
         // Iterate through the list of existing logging blocks. If the same
-        // file name has a hit, then try for another name. 
+        // file name has a hit, then try for another name.
         bFound = FoundInLogList(omStrFullPath, omNewLogFileName);
     }
     // At the end of this routine a unique log file should've been found.
@@ -428,7 +428,8 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
     if (sTrigger.m_unTriggerType != NONE)
     {
         if (sTrigger.m_unTriggerType == BOTH) // Start and stop trigger edit
-        {                                     // control
+        {
+            // control
             CheckDlgButton(IDC_CHKB_STARTTRIGGER, BST_CHECKED);
             CheckDlgButton(IDC_CHKB_STOPTRIGGER, BST_CHECKED);
             m_odStartMsgID.vSetValue((__int64) sTrigger.m_unStartID);
@@ -546,7 +547,7 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
             }
         }
         break;
-        case IDC_EDIT_STARTMSGID: 
+        case IDC_EDIT_STARTMSGID:
         {
             sLogStruct.m_sLogTrigger.m_unStartID = (UINT) m_odStartMsgID.lGetValue();
         }
@@ -571,7 +572,7 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
         {
             int MaxCount = sizeof(sLogStruct.m_sLogFileName) / sizeof(char);
             (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(
-                                        sLogStruct.m_sLogFileName, MaxCount);
+                sLogStruct.m_sLogFileName, MaxCount);
         }
         break;
     }
@@ -635,7 +636,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnAddlog(void)
     SLOGINFO sLogStruct;
     //Select All CAN channels
     sLogStruct.m_ChannelSelected = CAN_CHANNEL_ALL;
-	//Tobias - venkat
+    //Tobias - venkat
     strcpy_s(sLogStruct.m_sLogFileName, _MAX_PATH, omFilePathNewLog.GetBuffer(_MAX_PATH));
     AddLoggingBlock(sLogStruct);
 
@@ -659,12 +660,12 @@ void CConfigMsgLogDlg::OnBnClickedCbtnRemovelog(void)
     if (GetLoggingBlockCount() > 0)
     {
         m_nLogIndexSel--;
-		if(m_nLogIndexSel < 0)
-		{
-			m_nLogIndexSel = 0;
-		}
-        m_omListLogFiles.SetItemState(m_nLogIndexSel, 
-                   LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+        if(m_nLogIndexSel < 0)
+        {
+            m_nLogIndexSel = 0;
+        }
+        m_omListLogFiles.SetItemState(m_nLogIndexSel,
+                                      LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
     }
     else
     {
@@ -678,14 +679,14 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
 {
     USES_CONVERSION;
 
-	CString omStrLogFile = "";
+    CString omStrLogFile = "";
     (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrLogFile);
 
     // Show File Selection Dialog to select Log File
     CFileDialog omFileDlg(FALSE, BUSMASTER_LOG_FILE_EXTENSION, omStrLogFile,
-                     OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | 
-                     OFN_EXTENSIONDIFFERENT | OFN_OVERWRITEPROMPT, 
-                     BUSMASTER_LOG_FILTER, NULL);
+                          OFN_HIDEREADONLY | OFN_PATHMUSTEXIST |
+                          OFN_EXTENSIONDIFFERENT | OFN_OVERWRITEPROMPT,
+                          BUSMASTER_LOG_FILTER, NULL);
     // Set the caption
     omFileDlg.m_ofn.lpstrTitle = BUSMASTER_LOG_SELECTION_TITLE;
 
@@ -699,9 +700,9 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
             GetLoggingBlock(i, sLogObject);
             if (_tcsicmp(sLogObject.m_sLogFileName, omStrLogFile.GetBuffer(MAX_PATH)) == 0)
             {
-		        CString omBuf;
-		        omBuf.Format(BUSMASTER_LOG_ALREADYEXISTS, omStrLogFile);
-		        AfxMessageBox(omBuf, MB_OK | MB_ICONINFORMATION);
+                CString omBuf;
+                omBuf.Format(BUSMASTER_LOG_ALREADYEXISTS, omStrLogFile);
+                AfxMessageBox(omBuf, MB_OK | MB_ICONINFORMATION);
                 return;
             }
         }
@@ -711,7 +712,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
     }
 }
 
-void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR *pNMHDR, LRESULT *pResult)
+void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*) pNMHDR;
 
@@ -746,18 +747,18 @@ void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR *pNMHDR, LRESULT *pResu
             m_bEditingON = FALSE;
             // Update Button Status
             vEnableDisableControls(FALSE);
-			GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
+            GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
         }
     }
-	*pResult = 0;
+    *pResult = 0;
 }
 
 // GUI event handler functions: end
 
 BOOL CConfigMsgLogDlg::OnInitDialog()
 {
-	CDialog::OnInitDialog();
-    m_ChkbEnableLogOnConnect.SetCheck(m_bLogOnConnect == TRUE? BST_CHECKED : BST_UNCHECKED); 
+    CDialog::OnInitDialog();
+    m_ChkbEnableLogOnConnect.SetCheck(m_bLogOnConnect == TRUE? BST_CHECKED : BST_UNCHECKED);
     m_odStartMsgID.vSetConfigData(IDC_EDIT_STARTMSGID);
     m_odStopMsgID.vSetConfigData(IDC_EDIT_STOPMSGID);
     m_odStartMsgID.vSetBase(BASE_HEXADECIMAL);
@@ -777,7 +778,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         }
     }
 
-    m_omComboChannel.InsertString(0, _T("ALL"));
+    m_omComboChannel.InsertString(0, "ALL");
     for (UINT i = 1; i <= m_unChannelCount; i++)
     {
         CString omChannel;
@@ -786,67 +787,67 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
     }
     m_omComboChannel.SetCurSel(0);
 
-	USHORT LogBlocks = GetLoggingBlockCount();
-	if (LogBlocks > 0)
-	{
-		for (USHORT i = 0; i < LogBlocks; i++)
-		{
-			SLOGINFO sLogObject;
-			HANDLE hFind; 
-			WIN32_FIND_DATA FindData; 
-		    CStdioFile omStdiofile;
+    USHORT LogBlocks = GetLoggingBlockCount();
+    if (LogBlocks > 0)
+    {
+        for (USHORT i = 0; i < LogBlocks; i++)
+        {
+            SLOGINFO sLogObject;
+            HANDLE hFind;
+            WIN32_FIND_DATA FindData;
+            CStdioFile omStdiofile;
 
-			GetLoggingBlock(i, sLogObject);
+            GetLoggingBlock(i, sLogObject);
 
-			// check for valid log file
-			CString strTempLog = sLogObject.m_sLogFileName;
-		
-		    hFind = FindFirstFile(strTempLog, &FindData); 
+            // check for valid log file
+            CString strTempLog = sLogObject.m_sLogFileName;
 
-			if(hFind == INVALID_HANDLE_VALUE )//file not found
-			{
-				DWORD dError = GetLastError();
-				if(dError == ERROR_FILE_NOT_FOUND)//file not found
-				{
-					BOOL bFileOpen = omStdiofile.Open(strTempLog,
-					  CFile::modeCreate | CFile::modeWrite | CFile::typeBinary);
+            hFind = FindFirstFile(strTempLog, &FindData);
 
-					if(bFileOpen == TRUE)///file created, add in the list
-					{
-						omStdiofile.Close(); 
-						AddNewItem_GUI(sLogObject, i);
-					}
-					else //not a valid file
-					{
-						RemoveLoggingBlock(i--); //remove the old log data
-						LogBlocks = GetLoggingBlockCount(); //refresh the log count
-					}
-				}
-				else //not a valid filepath / file folder is removed
-				{
-					RemoveLoggingBlock(i--); //remove the old log data
-					LogBlocks = GetLoggingBlockCount(); //refresh the log count
-				}
-			}
-			else ///file found add in the list
-			{
-				AddNewItem_GUI(sLogObject, i);
-			}
+            if(hFind == INVALID_HANDLE_VALUE )//file not found
+            {
+                DWORD dError = GetLastError();
+                if(dError == ERROR_FILE_NOT_FOUND)//file not found
+                {
+                    BOOL bFileOpen = omStdiofile.Open(strTempLog,
+                                                      CFile::modeCreate | CFile::modeWrite | CFile::typeBinary);
 
-		}
-		m_nLogIndexSel = 0;
-		if(m_omListLogFiles.GetItemCount() > 0 )//check for log files exists
-		{
-			m_omListLogFiles.SetItemState(m_nLogIndexSel, 
-				LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-		}
-		else
-		{
-			vEnableDisableControls(FALSE);//disable controls if no log files exists
-		}
-	}
-	else
-	{
+                    if(bFileOpen == TRUE)///file created, add in the list
+                    {
+                        omStdiofile.Close();
+                        AddNewItem_GUI(sLogObject, i);
+                    }
+                    else //not a valid file
+                    {
+                        RemoveLoggingBlock(i--); //remove the old log data
+                        LogBlocks = GetLoggingBlockCount(); //refresh the log count
+                    }
+                }
+                else //not a valid filepath / file folder is removed
+                {
+                    RemoveLoggingBlock(i--); //remove the old log data
+                    LogBlocks = GetLoggingBlockCount(); //refresh the log count
+                }
+            }
+            else ///file found add in the list
+            {
+                AddNewItem_GUI(sLogObject, i);
+            }
+
+        }
+        m_nLogIndexSel = 0;
+        if(m_omListLogFiles.GetItemCount() > 0 )//check for log files exists
+        {
+            m_omListLogFiles.SetItemState(m_nLogIndexSel,
+                                          LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+        }
+        else
+        {
+            vEnableDisableControls(FALSE);//disable controls if no log files exists
+        }
+    }
+    else
+    {
         vEnableDisableControls(FALSE);
     }
 
@@ -864,23 +865,31 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         GetDlgItem(IDC_CBTN_ADDLOG)->EnableWindow(FALSE);
         GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
         GetWindowText(m_strCurrWndText);
-        m_strCurrWndText+=_T(" - Read Only as Logging is ON");
+        m_strCurrWndText+=" - Read Only as Logging is ON";
         //SetWindowText(m_strCurrWndText);
+        // If Logging is on
+        GetDlgItem(IDOK)->EnableWindow(FALSE);
         SetWindowText("");
         m_unDispUpdateTimerId = SetTimer(600, 600, NULL);
     }
+    else
+    {
+        // If Logging is on
+        GetDlgItem(IDOK)->EnableWindow(TRUE);
 
-	// Hide or show the Filters button in the dialog based on the protocol
-	if (CAN == m_eCurrBus)
-	{
-		GetDlgItem(IDC_LOG_FILTER)->ShowWindow(1);
-	}
-	else if (J1939 == m_eCurrBus)
-	{
-		GetDlgItem(IDC_LOG_FILTER)->ShowWindow(0);
-	}
+    }
 
-	return TRUE;
+    // Hide or show the Filters button in the dialog based on the protocol
+    if (CAN == m_eCurrBus)
+    {
+        GetDlgItem(IDC_LOG_FILTER)->ShowWindow(1);
+    }
+    else if (J1939 == m_eCurrBus)
+    {
+        GetDlgItem(IDC_LOG_FILTER)->ShowWindow(0);
+    }
+
+    return TRUE;
 }
 
 // Unpunctual codes
@@ -909,13 +918,13 @@ void CConfigMsgLogDlg::OnTimer(UINT nIDEvent)
         }
     }
 
-	CDialog::OnTimer(nIDEvent);
+    CDialog::OnTimer(nIDEvent);
 }
 
 
 void CConfigMsgLogDlg::vSetLogFileONOFF(BOOL bLogON)
 {
-	m_bLogON = bLogON;
+    m_bLogON = bLogON;
 }
 
 static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
@@ -925,36 +934,36 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
-    sMainEntry.m_omMainEntryName = _T("CAN");
+    sMainEntry.m_omMainEntryName = "CAN";
     if (psFilterApplied == NULL)
     {
         SMAINENTRY sMainEntry;
-        sMainEntry.m_omMainEntryName = _T("FILTER_SELECTION_CAN");
+        sMainEntry.m_omMainEntryName = "FILTER_SELECTION_CAN";
         for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                 psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
-            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);            
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
         }
     }
     else
     {
-        
+
         for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                                    psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
-            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters, 
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
                                                   sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
             {
-                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);  
+                sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
             else
             {
-                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);  
+                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
             }
         }
     }
@@ -967,13 +976,13 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
     int nCount  = sMainEntry.m_odSelEntryList.GetCount();
     sFilterApplied.vClear();
     sFilterApplied.m_psFilters = new SFILTERSET[nCount];
-    
+
     POSITION pos = sMainEntry.m_odSelEntryList.GetHeadPosition();
     while (pos)
-    {        		
+    {
         SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
-        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters, 
-            psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
+                                   psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
         ASSERT (psTemp != NULL);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
@@ -1015,7 +1024,7 @@ BOOL CConfigMsgLogDlg::OnCommand(WPARAM wParam, LPARAM lParam)
     return CDialog::OnCommand(wParam, lParam);
 }
 
-/* START ABSRACT HELPER FUNCTIONS. IN ORDER TO ADD SUPPORT TO ANY NEW BUS, 
+/* START ABSRACT HELPER FUNCTIONS. IN ORDER TO ADD SUPPORT TO ANY NEW BUS,
 UPDATE THIS GROUP OF FUNCTIONS WITH BUS SPECIFIC CODES. */
 USHORT CConfigMsgLogDlg::GetLoggingBlockCount(void)
 {
@@ -1120,14 +1129,14 @@ HRESULT CConfigMsgLogDlg::ApplyFilteringScheme(USHORT ushLogBlkID, const void* p
     {
         case CAN:
         {
-            Result = m_pouFProcCAN->FPC_ApplyFilteringScheme(ushLogBlkID, 
-                                   *((const SFILTERAPPLIED_CAN*) psFilterObj));
+            Result = m_pouFProcCAN->FPC_ApplyFilteringScheme(ushLogBlkID,
+                     *((const SFILTERAPPLIED_CAN*) psFilterObj));
         }
         break;
         case J1939:
         {
-            Result = m_pouLoggerJ1939->FPJ1_ApplyFilteringScheme(ushLogBlkID, 
-                                 *((const SFILTERAPPLIED_J1939*) psFilterObj));
+            Result = m_pouLoggerJ1939->FPJ1_ApplyFilteringScheme(ushLogBlkID,
+                     *((const SFILTERAPPLIED_J1939*) psFilterObj));
         }
         break;
 
@@ -1146,14 +1155,14 @@ HRESULT CConfigMsgLogDlg::GetFilteringScheme(USHORT ushLogBlk, void* psFilterObj
     {
         case CAN:
         {
-            Result = m_pouFProcCAN->FPC_GetFilteringScheme(ushLogBlk, 
-                                        *((SFILTERAPPLIED_CAN *) psFilterObj));
+            Result = m_pouFProcCAN->FPC_GetFilteringScheme(ushLogBlk,
+                     *((SFILTERAPPLIED_CAN*) psFilterObj));
         }
         break;
         case J1939:
         {
-            Result = m_pouLoggerJ1939->FPJ1_GetFilteringScheme(ushLogBlk, 
-                                      *((SFILTERAPPLIED_J1939 *) psFilterObj));
+            Result = m_pouLoggerJ1939->FPJ1_GetFilteringScheme(ushLogBlk,
+                     *((SFILTERAPPLIED_J1939*) psFilterObj));
         }
         break;
 

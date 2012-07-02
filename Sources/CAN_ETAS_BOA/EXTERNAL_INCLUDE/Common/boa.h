@@ -73,7 +73,7 @@
 * Figure 7: BOA as a means of hardware abstraction
 * <HR>
 * @image html "figure_boa_proxy.gif"
-* Figure 8: Handle and call mapping structures within proxy libaries 
+* Figure 8: Handle and call mapping structures within proxy libaries
 *
 * @addtogroup GROUP_BOA_COMMON Common (BOA)
 * @{
@@ -88,10 +88,10 @@
 *
 *
 * @addtogroup GROUP_BOA_OCI Open Controller Interface (OCI)
-* @brief    The Open Controller Interface (OCI) offers an access to 
-*           the Automotive Bus Systems (CAN, LIN, FlexRay) via ETAS 
-*           systems.\ It is a low level, bus specific interface, that 
-*           allows an access to the bus systems on a frame based 
+* @brief    The Open Controller Interface (OCI) offers an access to
+*           the Automotive Bus Systems (CAN, LIN, FlexRay) via ETAS
+*           systems.\ It is a low level, bus specific interface, that
+*           allows an access to the bus systems on a frame based
 *           level.
 * @details  @htmlinclude "page_oci_overview.html"
 * @{
@@ -111,16 +111,16 @@
 * @}
 *
 *
-* 
+*
 *
 *
 * @addtogroup GROUP_BOA_CSI Connection Service Interface (CSI)
-* @brief    The Connection Service Interface (CSI) implements a framework for the different 
-            Basic OpenAPI components. 
+* @brief    The Connection Service Interface (CSI) implements a framework for the different
+            Basic OpenAPI components.
 
   @details
-  
-  It offers a way to detect all nodes and protocols of the Basic OpenAPI, implements support routines 
+
+  It offers a way to detect all nodes and protocols of the Basic OpenAPI, implements support routines
   to bind the APIs and enables different views to the BOA. The different views to the elements of the
   BOA are required for the different use cases that are supported by the CSI.
 
@@ -130,14 +130,14 @@
   - Map the user's view of the hardware and protocol driver to the internal deployment
   - Build and optimize a protocol stack for a specific BOA-API
   - support the proxy libraries of the BOA to bind a specific protocol stack
-            
+
   The first figure illustrates the different elements of a system that offers the APIs of the Basic
   OpenAPI. It represents the logical view of the different BOA layer. The different boxes represent
   an implementation of some API for a specific hardware. When a module offers several instances of the
   same API (possibly on different layer of the user view) only one API is illustrated. The specific
   instance must be selected by the binding process in this case.
   @image html "figure_Boa_api_view.gif"
-  
+
   @htmlinclude "page_csi_addressing_scheme.html"
   @image html "figure_boa_example_tree.gif"
 
@@ -168,9 +168,9 @@
 *
 *
 * @addtogroup GROUP_BOA_OLI Open Link Interface (OLI)
-* @brief    The Open Link Interface (OLI) offers a more abstract 
-*           access to the Automotive Bus Systems.\ Advanced feature 
-*           like filtering and dispatching on payload data is 
+* @brief    The Open Link Interface (OLI) offers a more abstract
+*           access to the Automotive Bus Systems.\ Advanced feature
+*           like filtering and dispatching on payload data is
 *           supported.
 * @details  @htmlinclude "page_oli_overview.html"
 * @{

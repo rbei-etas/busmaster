@@ -81,7 +81,7 @@ void CComment::Format_netComment(fstream& fileInput, list<CComment>& m_listComme
     string comment;
 
     //Reads all the net comments,parses the comments and stores them to a list.
-    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NET]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NET]")!=0)
     {
         pcLine=acLine;
         m_elementName="";
@@ -118,7 +118,7 @@ void CComment::Format_nodeComment(fstream& fileInput, list<CComment>& m_listComm
     string comment;
 
     //Reads all the node comments,parses the comments and stores them to a list.
-    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NODE]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_NODE]")!=0)
     {
         pcLine=acLine;
         //reads the node name.
@@ -159,7 +159,7 @@ void CComment::Format_msgComment(fstream& fileInput, list<CComment>& m_listComme
     string comment;
 
     //Reads all the mesg comments,parses the comments and stores them to a list.
-    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_MSG]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_MSG]")!=0)
     {
         pcLine=acLine;
         //get msgid
@@ -208,7 +208,7 @@ void CComment::Format_sigComment(fstream& fileInput, list<CComment>& m_listComme
     string comment;
 
     //Reads all the signal comments,parses the comments and stores them to a list.
-    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_SIG]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC_SIG]")!=0)
     {
         pcLine=acLine;
         //get the mesgid.

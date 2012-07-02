@@ -15,11 +15,11 @@
 
 /**
  * \file      Utility.h
- * \brief     This file contain the definition of all global utility function 
+ * \brief     This file contain the definition of all global utility function
  * \author    Amitesh Bharti
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain the definition of all global utility function 
+ * This file contain the definition of all global utility function
  */
 
 #pragma once
@@ -57,11 +57,11 @@ BOOL g_bMsgHandlerON;
 //CRITICAL_SECTION g_CritSectionForSW;
 CRITICAL_SECTION g_CritSectionForTimer;
 CRITICAL_SECTION g_CritSectNodeBufferRead;
- 
+
 SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
 
 
-// Takes send message structure and message data array,and index to get the msg data 
+// Takes send message structure and message data array,and index to get the msg data
 // functionality
 BOOL bGetMsgData(UINT unMsgIndex,
                  UCHAR aunData[],
@@ -70,11 +70,11 @@ BOOL bGetMsgData(UINT unMsgIndex,
 
 VOID vProcessTimerCallBack(UINT unIndex, APPTIMERPOINTER pFTimerCallback);
 // protoype of the Key Handler thread function
- UINT unKeyHandlerProc(LPVOID pParam);
+UINT unKeyHandlerProc(LPVOID pParam);
 
- UINT unDLLUnloadHandlerProc(LPVOID pParam);
- UINT unDLLloadHandlerProc(LPVOID pParam);
-	
+UINT unDLLUnloadHandlerProc(LPVOID pParam);
+UINT unDLLloadHandlerProc(LPVOID pParam);
+
 // protoype of the Error Handler thread function
 UINT unErrorHandlerProc(LPVOID pParam);
 // prototype of fuontion having common processing of timer call back func.

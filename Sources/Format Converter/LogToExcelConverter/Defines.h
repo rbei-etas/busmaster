@@ -135,15 +135,25 @@ enum
 #define RULE_FILE_EXTENSION      _T("xml")
 #define RULE_FILTER              _T("*.xml|*.xml||")
 #define RULE_SELECTION_TITLE     _T("Select Rule File")
+#define EXPORTTOEXCEL_SUCCESSMSG            _T("Successfully converted text file to Excel File!")
 
-#define EXPORTTOEXCEL_SYNTAXERROR _T("Could not convert!")
-#define EXPORTTOEXCEL_SUCCESSMSG _T("Successfully converted text file to Excel File!")
-#define EXPORTTOEXCEL_FIELDSELECTIONERROR _T("No fields selected!")
-#define EXPORTTOEXCEL_LOGFILEERROR _T("Enter Log file details!")
-#define EXPORTTOEXCEL_CSVFILEERROR _T("Enter CSV file details!")
-#define EXPORTTOEXCEL_FILEERROR _T("Enter Log and CSV file details!")
-#define EXPORTTOEXCEL_LOGFILEOPENERROR _T("Log File doesnot Exist!")
-#define EXPORTTOEXCEL_CSVFILEOPENERROR _T("CSV File doesnot Exist!")
+#define EXPORTTOEXCEL_SYNTAXERROR           _T("Could not convert!")
+#define EXPORTTOEXCEL_FILESNOTOPEN          _T("Error in Opening Input Files");
+#define EXPORTTOEXCEL_FIELDSELECTIONERROR   _T("No fields selected!")
+#define EXPORTTOEXCEL_LOGFILEERROR          _T("Enter Log file details!")
+#define EXPORTTOEXCEL_CSVFILEERROR          _T("Enter CSV file details!")
+#define EXPORTTOEXCEL_FILEERROR             _T("Enter Log and CSV file details!")
+#define EXPORTTOEXCEL_LOGFILEOPENERROR      _T("Log File doesnot Exist!")
+#define EXPORTTOEXCEL_CSVFILEOPENERROR      _T("CSV File doesnot Exist!")
+
+#define ERR_EXPORTTOEXCEL_SYNTAXERROR           0xF000
+#define ERR_EXPORTTOEXCEL_FILESNOTOPEN          ERR_EXPORTTOEXCEL_SYNTAXERROR + 1
+#define ERR_EXPORTTOEXCEL_FIELDSELECTIONERROR   ERR_EXPORTTOEXCEL_SYNTAXERROR + 2
+#define ERR_EXPORTTOEXCEL_LOGFILEERROR          ERR_EXPORTTOEXCEL_SYNTAXERROR + 3
+#define ERR_EXPORTTOEXCEL_CSVFILEERROR          ERR_EXPORTTOEXCEL_SYNTAXERROR + 4
+#define ERR_EXPORTTOEXCEL_FILEERROR             ERR_EXPORTTOEXCEL_SYNTAXERROR + 5
+#define ERR_EXPORTTOEXCEL_LOGFILEOPENERROR      ERR_EXPORTTOEXCEL_SYNTAXERROR + 6
+#define ERR_EXPORTTOEXCEL_CSVFILEOPENERROR      ERR_EXPORTTOEXCEL_SYNTAXERROR + 7
 
 #define MSG_MEMORY_CONSTRAINT              _T("Insufficient Memory available")
 #define ASK_SAVE_PROMPT         _T("Do you want to save changes to the database file?")

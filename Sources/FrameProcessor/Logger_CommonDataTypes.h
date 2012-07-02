@@ -4,9 +4,9 @@
   FileName      :  Logger_CommonDataTypes.h
   Description   :  Definition of CParamLoggerBUS class.
   $Log:   X:/Archive/Sources/FrameProcessor/Logger_CommonDataTypes.h_v  $
- * 
+ *
  *    Rev 1.0   02 Dec 2011 20:20:56   rac2kor
- *  
+ *
 
 /**
  * \file      Logger_CommonDataTypes.h

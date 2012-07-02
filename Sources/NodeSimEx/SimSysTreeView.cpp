@@ -15,19 +15,19 @@
 
 /**
  * \file      SimSysTreeView.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "NodeSimEx_stdafx.h" // Contains standard include header files.
-#include "SimSysTreeView.h"	// Class defintion included here
-        // Pointers of this and "CSimSysDetView" defined here
+#include "SimSysTreeView.h" // Class defintion included here
+// Pointers of this and "CSimSysDetView" defined here
 #include "HashDefines.h"    // All hash defines are here
 #include "SplFileDlg.h"     // customise CSplFileDlg brower
-#include "NodeDetailsDlg.h"	// Dialog class for new node
+#include "NodeDetailsDlg.h" // Dialog class for new node
 #include "SimSysManager.h"
 #include "FunctionEditorDoc.h"
 #include "ExecuteManager.h"
@@ -43,8 +43,8 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-#define defSIMSYSCONFIGFILTER	_T("BUSMASTER Simulated system Configuration files(*.sim)|*.sim||")
-#define defSIMSYSCONFEXT        _T("sim")
+#define defSIMSYSCONFIGFILTER   "BUSMASTER Simulated system Configuration files(*.sim)|*.sim||"
+#define defSIMSYSCONFEXT        "sim"
 #define defDLGFLAGS             OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST
 
 
@@ -53,19 +53,19 @@ IMPLEMENT_DYNCREATE(CSimSysTreeView, CTreeView)
 
 //static BOOL GetFileNameFromPath(CString omPathName, CString& omFileName)
 //{
-//	BOOL bRet = FALSE;
-//	int nIndex = -1;
-//	if ((nIndex = omPathName.ReverseFind('/')) != -1)
-//	{
-//		omFileName = omPathName.GetBuffer(MAX_PATH) + (nIndex + 1);
-//		bRet = TRUE;
-//	}
-//	else if ((nIndex = omPathName.ReverseFind('\\')) != -1)
-//	{
-//		omFileName = omPathName.GetBuffer(MAX_PATH) + (nIndex + 1);
-//		bRet = TRUE;
-//	}
-//	return bRet;
+//  BOOL bRet = FALSE;
+//  int nIndex = -1;
+//  if ((nIndex = omPathName.ReverseFind('/')) != -1)
+//  {
+//      omFileName = omPathName.GetBuffer(MAX_PATH) + (nIndex + 1);
+//      bRet = TRUE;
+//  }
+//  else if ((nIndex = omPathName.ReverseFind('\\')) != -1)
+//  {
+//      omFileName = omPathName.GetBuffer(MAX_PATH) + (nIndex + 1);
+//      bRet = TRUE;
+//  }
+//  return bRet;
 //}
 /******************************************************************************/
 /*  Function Name    :  CSimSysTreeView                                       */
@@ -76,9 +76,9 @@ IMPLEMENT_DYNCREATE(CSimSysTreeView, CTreeView)
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M		                                      */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  16.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CSimSysTreeView::CSimSysTreeView()
 {
@@ -86,34 +86,34 @@ CSimSysTreeView::CSimSysTreeView()
     bCallFrmSaveAs = FALSE;
     m_pomSubMenu = NULL;
     m_pomContextMenu = NULL;
-	m_omSimsysCount			= 0;
-	m_hRootItem = NULL;
-	m_bIsNewNode			= FALSE;
+    m_omSimsysCount         = 0;
+    m_hRootItem = NULL;
+    m_bIsNewNode            = FALSE;
     m_omSelectedItemText    = STR_EMPTY;
     m_hTreeItem             = NULL;
-	// Clean the list
-	m_omSimsysNames.RemoveAll();
+    // Clean the list
+    m_omSimsysNames.RemoveAll();
 
     CSimSysManager::ouGetSimSysManager(m_eBus).podSetSimSysTreeView(this);
-	
+
 }
 
 /******************************************************************************/
-/*  Function Name    :  ~CSimSysTreeView                                      
-/*                                                                            
-/*  Input(s)         :                                                        
-/*  Output           :                                                        
+/*  Function Name    :  ~CSimSysTreeView
+/*
+/*  Input(s)         :
+/*  Output           :
 /*  Functionality    :  Destructor
-/*  Member of        :  CSimSysTreeView                                       
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M                                              
-/*  Date Created     :  16.12.2005                                            
-/*  Modifications    :  
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  16.12.2005
+/*  Modifications    :
 /******************************************************************************/
 CSimSysTreeView::~CSimSysTreeView()
 {
-   if( m_pomContextMenu != NULL)
+    if( m_pomContextMenu != NULL)
     {
         delete m_pomContextMenu;
         m_pomContextMenu = NULL;
@@ -123,38 +123,38 @@ CSimSysTreeView::~CSimSysTreeView()
 
 
 BEGIN_MESSAGE_MAP(CSimSysTreeView, CTreeView)
-//{{AFX_MSG_MAP(CSimSysTreeView)
-ON_WM_LBUTTONDOWN()
-ON_WM_RBUTTONDOWN()
-ON_NOTIFY_REFLECT(NM_RCLICK, OnTreeViewRightclick)
-ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
-ON_COMMAND(IDM_ADD_SIMSYS, OnAddSimsys)
-ON_COMMAND(IDM_ALL_NODE_HANDLERS, OnAllNodeHandlers)
-ON_COMMAND(IDM_DELETE_ALL_SIMSYS, OnDeleteAllSimsys)
-ON_COMMAND(IDM_DELETE_NODE, OnDeleteNode)
-ON_COMMAND(IDM_EDIT_NODE, OnEditNode)
-ON_COMMAND(IDM_NEW_SIMSYS, OnNewSimsys)
-ON_COMMAND(IDM_NODE_ERRORHANDLERS, OnNodeErrorhandlers)
-ON_COMMAND(IDM_NODE_KEYHANDLERS, OnNodeKeyhandlers)
-ON_COMMAND(IDM_NODE_MESSAGEHANDLERS, OnNodeMessagehandlers)
-ON_COMMAND(IDM_NODE_TIMERHANDLERS, OnNodeTimerhandlers)
-ON_COMMAND(IDM_SIMSYS_ADDNODE, OnAddnode)
-ON_COMMAND(IDM_SIMSYS_ALLERRORHANDLERS, OnSimsysAllErrorhandlers)
-ON_COMMAND(IDM_SIMSYS_ALLHANDLERS, OnSimsysAllhandlers)
-ON_COMMAND(IDM_SIMSYS_ALLKEYHANDLERS, OnSimsysAllKeyhandlers)
-ON_COMMAND(IDM_SIMSYS_ALLMSGHANDLERS, OnSimsysAllMsghandlers)
-ON_COMMAND(IDM_SIMSYS_ALLTIMERHANDLERS, OnSimsysAllTimerhandlers)
-ON_COMMAND(IDM_SIMSYS_BUILDALL, OnSimsysBuildall)
-ON_COMMAND(IDM_SIMSYS_DELETEALLNODES, OnDeleteAllNodes)
-ON_COMMAND(IDM_SIMSYS_DELETESIMULATEDSYSTEM, OnDeleteSimulatedsystem)
-ON_COMMAND(IDM_SIMSYS_LOADALL, OnSimsysLoadall)
-ON_COMMAND(IDM_SIMSYS_SAVE, OnSimsysSave)
-ON_COMMAND(IDM_SIMSYS_SAVEAS, OnSimsysSaveAs)
-ON_COMMAND(IDM_SIMSYS_UNLOADALL, OnSimsysUnloadall)
-ON_COMMAND(IDM_SAVE_ALL_SIMSYS, OnSimsysSaveAll)
-	
-	//}}AFX_MSG_MAP
-//    ON_WM_SHOWWINDOW()
+    //{{AFX_MSG_MAP(CSimSysTreeView)
+    ON_WM_LBUTTONDOWN()
+    ON_WM_RBUTTONDOWN()
+    ON_NOTIFY_REFLECT(NM_RCLICK, OnTreeViewRightclick)
+    ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
+    ON_COMMAND(IDM_ADD_SIMSYS, OnAddSimsys)
+    ON_COMMAND(IDM_ALL_NODE_HANDLERS, OnAllNodeHandlers)
+    ON_COMMAND(IDM_DELETE_ALL_SIMSYS, OnDeleteAllSimsys)
+    ON_COMMAND(IDM_DELETE_NODE, OnDeleteNode)
+    ON_COMMAND(IDM_EDIT_NODE, OnEditNode)
+    ON_COMMAND(IDM_NEW_SIMSYS, OnNewSimsys)
+    ON_COMMAND(IDM_NODE_ERRORHANDLERS, OnNodeErrorhandlers)
+    ON_COMMAND(IDM_NODE_KEYHANDLERS, OnNodeKeyhandlers)
+    ON_COMMAND(IDM_NODE_MESSAGEHANDLERS, OnNodeMessagehandlers)
+    ON_COMMAND(IDM_NODE_TIMERHANDLERS, OnNodeTimerhandlers)
+    ON_COMMAND(IDM_SIMSYS_ADDNODE, OnAddnode)
+    ON_COMMAND(IDM_SIMSYS_ALLERRORHANDLERS, OnSimsysAllErrorhandlers)
+    ON_COMMAND(IDM_SIMSYS_ALLHANDLERS, OnSimsysAllhandlers)
+    ON_COMMAND(IDM_SIMSYS_ALLKEYHANDLERS, OnSimsysAllKeyhandlers)
+    ON_COMMAND(IDM_SIMSYS_ALLMSGHANDLERS, OnSimsysAllMsghandlers)
+    ON_COMMAND(IDM_SIMSYS_ALLTIMERHANDLERS, OnSimsysAllTimerhandlers)
+    ON_COMMAND(IDM_SIMSYS_BUILDALL, OnSimsysBuildall)
+    ON_COMMAND(IDM_SIMSYS_DELETEALLNODES, OnDeleteAllNodes)
+    ON_COMMAND(IDM_SIMSYS_DELETESIMULATEDSYSTEM, OnDeleteSimulatedsystem)
+    ON_COMMAND(IDM_SIMSYS_LOADALL, OnSimsysLoadall)
+    ON_COMMAND(IDM_SIMSYS_SAVE, OnSimsysSave)
+    ON_COMMAND(IDM_SIMSYS_SAVEAS, OnSimsysSaveAs)
+    ON_COMMAND(IDM_SIMSYS_UNLOADALL, OnSimsysUnloadall)
+    ON_COMMAND(IDM_SAVE_ALL_SIMSYS, OnSimsysSaveAll)
+
+    //}}AFX_MSG_MAP
+    //    ON_WM_SHOWWINDOW()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -162,8 +162,8 @@ END_MESSAGE_MAP()
 
 void CSimSysTreeView::OnDraw(CDC* )
 {
-	GetDocument();
-	// TODO: add draw code here
+    GetDocument();
+    // TODO: add draw code here
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -172,30 +172,30 @@ void CSimSysTreeView::OnDraw(CDC* )
 #ifdef _DEBUG
 void CSimSysTreeView::AssertValid() const
 {
-	CTreeView::AssertValid();
+    CTreeView::AssertValid();
 }
 
 void CSimSysTreeView::Dump(CDumpContext& dc) const
 {
-	CTreeView::Dump(dc);
+    CTreeView::Dump(dc);
 }
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CSimSysTreeView message handlers
 /******************************************************************************/
-/*  Function Name    :  bPopulateTree                                         
-/*                                                                            
-/*  Input(s)         :                                                        
-/*  Output           :                                                        
-/*  Functionality    :  This function will populate the tree with simulated	  
-/*						systems, nodes and the dlls under it.				  
-/*  Member of        :  CSimSysTreeView                                       
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Anish Kr.		                                      
-/*  Date Created     :                                            
-/*  Modification     :									                      
+/*  Function Name    :  bPopulateTree
+/*
+/*  Input(s)         :
+/*  Output           :
+/*  Functionality    :  This function will populate the tree with simulated
+/*                      systems, nodes and the dlls under it.
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Anish Kr.
+/*  Date Created     :
+/*  Modification     :
 /******************************************************************************/
 
 BOOL CSimSysTreeView::bPopulateTree()
@@ -203,12 +203,12 @@ BOOL CSimSysTreeView::bPopulateTree()
     BOOL bReturnValue = TRUE;
     // Get reference to the tree control
     CTreeCtrl& om_tree = GetTreeCtrl();
-	om_tree.DeleteAllItems();
-	// Insert root text
-	om_tree.SetTextColor( BLUE_COLOR );
+    om_tree.DeleteAllItems();
+    // Insert root text
+    om_tree.SetTextColor( BLUE_COLOR );
     m_hRootItem = om_tree.InsertItem( CGlobalObj::omGetBusName(m_eBus));
 
-  	CSimSysNodeInfo* pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (pSimSysNodeInfo != NULL)
     {
@@ -237,30 +237,30 @@ BOOL CSimSysTreeView::bPopulateTree()
 
         // Select the root item
         om_tree.SelectItem( m_hRootItem );
-        // Expand the root 
+        // Expand the root
         om_tree.Expand( m_hRootItem, TVE_EXPAND );
     }
     return (bReturnValue);
 }
 /*****************************************************************************
-/*  Function Name    :  vPopulateAddedSimSysInfo                              
-/*                                                                            
-/*  Input(s)         :  CString omStrSimSysPath                                                    
-/*  Output           :                                                        
-/*  Functionality    :  This function will populate the tree with addded	  
-/*						simulated systems, nodes and the dlls under it.		  
-/*  Member of        :  CSimSysTreeView                                       
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M		                                      
-/*  Date Created     :  19.12.2005                                            
-/*  Modification     :									                      
+/*  Function Name    :  vPopulateAddedSimSysInfo
+/*
+/*  Input(s)         :  CString omStrSimSysPath
+/*  Output           :
+/*  Functionality    :  This function will populate the tree with addded
+/*                      simulated systems, nodes and the dlls under it.
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  19.12.2005
+/*  Modification     :
 /******************************************************************************/
 void CSimSysTreeView::vPopulateAddedSimSysInfo(CString omStrSimSysPath)
 {
     // Get reference to the tree control
-    CTreeCtrl& om_tree = GetTreeCtrl();	
-	om_tree.SetTextColor( BLUE_COLOR );
+    CTreeCtrl& om_tree = GetTreeCtrl();
+    om_tree.SetTextColor( BLUE_COLOR );
     //Insert the simsys node
     m_hRootItem = om_tree.GetRootItem();
     CString srRoot = om_tree.GetItemText(m_hRootItem);
@@ -269,30 +269,30 @@ void CSimSysTreeView::vPopulateAddedSimSysInfo(CString omStrSimSysPath)
         om_tree.DeleteAllItems();
         m_hRootItem = om_tree.InsertItem(CGlobalObj::omGetBusName(m_eBus));
     }
-	HTREEITEM hSimsys = hInsertAndSelectItem( omStrSimSysPath, m_hRootItem );
-	CSimSysNodeInfo* pSimSysNodeInfo = 
+    HTREEITEM hSimsys = hInsertAndSelectItem( omStrSimSysPath, m_hRootItem );
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (pSimSysNodeInfo != NULL)
     {
         PSSIMSYSINFO pSimSysInfo = pSimSysNodeInfo->psGetSimSysPointer(omStrSimSysPath);
-	    if(pSimSysInfo != NULL)
-	    {	
-		    PSNODELIST pNodeInfo = pSimSysInfo->m_psNodesList;
-		    while(pNodeInfo != NULL)
-		    {
-			    CString omStrNodeName = pNodeInfo->m_sNodeInfo.m_omStrNodeName;
-			    HTREEITEM hNode = om_tree.InsertItem(omStrNodeName, hSimsys);
-			    if(pNodeInfo->m_sNodeInfo.m_omStrDllName != STR_EMPTY)
-			    {
-				    CString omStrDllPath = STR_EMPTY;
-				    omStrDllPath = pNodeInfo->m_sNodeInfo.m_omStrDllName;
-				    om_tree.InsertItem(omStrDllPath, hNode);
-			    }
+        if(pSimSysInfo != NULL)
+        {
+            PSNODELIST pNodeInfo = pSimSysInfo->m_psNodesList;
+            while(pNodeInfo != NULL)
+            {
+                CString omStrNodeName = pNodeInfo->m_sNodeInfo.m_omStrNodeName;
+                HTREEITEM hNode = om_tree.InsertItem(omStrNodeName, hSimsys);
+                if(pNodeInfo->m_sNodeInfo.m_omStrDllName != STR_EMPTY)
+                {
+                    CString omStrDllPath = STR_EMPTY;
+                    omStrDllPath = pNodeInfo->m_sNodeInfo.m_omStrDllName;
+                    om_tree.InsertItem(omStrDllPath, hNode);
+                }
                 pNodeInfo = pNodeInfo->m_psNextNode;
-		    }
-	    }
-	    // Expand the root 
-	    om_tree.Expand( hSimsys, TVE_EXPAND );
+            }
+        }
+        // Expand the root
+        om_tree.Expand( hSimsys, TVE_EXPAND );
     }
 }
 
@@ -302,29 +302,29 @@ void CSimSysTreeView::vPopulateAddedSimSysInfo(CString omStrSimSysPath)
 /*                                                                            */
 /*  Input(s)         :  CREATESTRUCT& cs                                      */
 /*  Output           :                                                        */
-/*  Functionality    :  Window style specified here							  */
+/*  Functionality    :  Window style specified here                           */
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M		                                      */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  19.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-BOOL CSimSysTreeView::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CSimSysTreeView::PreCreateWindow(CREATESTRUCT& cs)
 {
     cs.style |= WS_VISIBLE          |
-		WS_TABSTOP          |
-		WS_CHILD            |
-		WS_BORDER           |
-		TVS_HASBUTTONS      |
-		TVS_LINESATROOT     |
-		TVS_HASLINES        |
-		TVS_DISABLEDRAGDROP |
-		TVS_SHOWSELALWAYS   |
-		TVS_FULLROWSELECT   |
-		TVS_INFOTIP ;
-    
+                WS_TABSTOP          |
+                WS_CHILD            |
+                WS_BORDER           |
+                TVS_HASBUTTONS      |
+                TVS_LINESATROOT     |
+                TVS_HASLINES        |
+                TVS_DISABLEDRAGDROP |
+                TVS_SHOWSELALWAYS   |
+                TVS_FULLROWSELECT   |
+                TVS_INFOTIP ;
+
     return CTreeView::PreCreateWindow(cs);
 }
 
@@ -338,15 +338,15 @@ is clicked. Updates the click point
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M		                                      */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  19.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnLButtonDown(UINT nFlags, CPoint point) 
+void CSimSysTreeView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	m_omLeftCLickPoint = point;
+    m_omLeftCLickPoint = point;
 
-	CTreeView::OnLButtonDown(nFlags, point);
+    CTreeView::OnLButtonDown(nFlags, point);
 }
 /******************************************************************************/
 /*  Function Name    :  OnRButtonDown                                         */
@@ -358,30 +358,30 @@ void CSimSysTreeView::OnLButtonDown(UINT nFlags, CPoint point)
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M			                                  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  19.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnRButtonDown(UINT nFlags, CPoint point) 
+void CSimSysTreeView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	m_omRightClickPoint = point;
-	CTreeView::OnRButtonDown(nFlags, point);
+    m_omRightClickPoint = point;
+    CTreeView::OnRButtonDown(nFlags, point);
 }
 
 /******************************************************************************/
-/*  Function Name    :  vDisplayRootMenu                                     
-/*                                                                           
-/*  Input(s)         :  
-/*  Output           :                                                       
-/*  Functionality    :  Display menu of the FLEXRAY_BUS 
-/*  Member of        :  CSimSysTreeView                                      
-/*  Friend of        :      -                                                
-/*                                                                           
-/*  Author(s)        :  Harika M			                                 
-/*  Date Created     :  19.12.2005                                           
+/*  Function Name    :  vDisplayRootMenu
+/*
+/*  Input(s)         :
+/*  Output           :
+/*  Functionality    :  Display menu of the FLEXRAY_BUS
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  19.12.2005
 /*  Modifications    :  Anish Kr., 26.02.09, Restructured
 /******************************************************************************/
-void CSimSysTreeView::vDisplayRootMenu() 
+void CSimSysTreeView::vDisplayRootMenu()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CTreeCtrl& om_Tree = GetTreeCtrl();
@@ -393,41 +393,41 @@ void CSimSysTreeView::vDisplayRootMenu()
     m_pomSubMenu->EnableMenuItem(IDM_NEW_SIMSYS, MF_BYCOMMAND | MF_ENABLED );
     m_pomSubMenu->EnableMenuItem(IDM_ADD_SIMSYS, MF_BYCOMMAND | MF_ENABLED );
     m_pomSubMenu->EnableMenuItem(IDM_DELETE_ALL_SIMSYS, MF_BYCOMMAND |
-                                    MF_DISABLED | MF_GRAYED );
+                                 MF_DISABLED | MF_GRAYED );
     m_pomSubMenu->EnableMenuItem(IDM_SAVE_ALL_SIMSYS, MF_BYCOMMAND |
-                                    MF_DISABLED | MF_GRAYED );
+                                 MF_DISABLED | MF_GRAYED );
 
     //if simsys_count >= 1 then enable "Delete All systems"
-    //ie. no. of item > 1(first item is Flexray bus) 
+    //ie. no. of item > 1(first item is Flexray bus)
     if(om_Tree.GetCount() > 1)
     {
         m_pomSubMenu->EnableMenuItem(IDM_DELETE_ALL_SIMSYS, MF_BYCOMMAND |
-                                        MF_ENABLED );
+                                     MF_ENABLED );
         m_pomSubMenu->EnableMenuItem(IDM_SAVE_ALL_SIMSYS, MF_BYCOMMAND |
-                                        MF_ENABLED );
+                                     MF_ENABLED );
     }
     ClientToScreen(&m_omRightClickPoint);
     m_pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON,
-                                    m_omRightClickPoint.x,
-                                    m_omRightClickPoint.y,
-                                    this,
-                                    NULL);
+                                  m_omRightClickPoint.x,
+                                  m_omRightClickPoint.y,
+                                  this,
+                                  NULL);
 }
 
 /******************************************************************************/
-/*  Function Name    :  vDisplaySimSysMenu                                     
-/*                                                                           
-/*  Input(s)         :  
-/*  Output           :                                                       
+/*  Function Name    :  vDisplaySimSysMenu
+/*
+/*  Input(s)         :
+/*  Output           :
 /*  Functionality    :  Display menu of the Simulated system
-/*  Member of        :  CSimSysTreeView                                      
-/*  Friend of        :      -                                                
-/*                                                                           
-/*  Author(s)        :  Harika M			                                 
-/*  Date Created     :  19.12.2005                                           
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  19.12.2005
 /*  Modifications    :  Anish Kr., 26.02.09, Restructured
 /******************************************************************************/
-void CSimSysTreeView::vDisplaySimSysMenu() 
+void CSimSysTreeView::vDisplaySimSysMenu()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Get the reqd. data from tree control
@@ -446,8 +446,8 @@ void CSimSysTreeView::vDisplaySimSysMenu()
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_SAVEAS, unEnableFlag );
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_DELETESIMULATEDSYSTEM, unEnableFlag );
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ADDNODE, unEnableFlag );
-    
-    CSimSysNodeInfo* pSimSysNodeInfo = 
+
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     UINT uCurrMenuFlag;
     //For Delete all nodes
@@ -471,7 +471,7 @@ void CSimSysTreeView::vDisplaySimSysMenu()
         uCurrMenuFlag = unDiasableFlag;
     }
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_BUILDALL, uCurrMenuFlag);
-    
+
     //For load all
     if(pSimSysNodeInfo->bIsLoadAllValid(omStrSimSysName))
     {
@@ -481,7 +481,7 @@ void CSimSysTreeView::vDisplaySimSysMenu()
     {
         uCurrMenuFlag = unDiasableFlag;
     }
-    m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_LOADALL, uCurrMenuFlag); 
+    m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_LOADALL, uCurrMenuFlag);
 
     //For unload all
     if(pSimSysNodeInfo->bIsUnLoadAllValid(omStrSimSysName))
@@ -493,7 +493,7 @@ void CSimSysTreeView::vDisplaySimSysMenu()
         uCurrMenuFlag = unDiasableFlag;
     }
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_UNLOADALL, unDiasableFlag );
-    
+
 
     // to check if all the handlers are enabled/ disabled
     BOOL bEnabled = pSimSysNodeInfo->bReturnAllHandlersStatus(omStrSimSysName);
@@ -501,55 +501,63 @@ void CSimSysTreeView::vDisplaySimSysMenu()
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLHANDLERS, _T("Disable All Handlers"));
+                                  IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLHANDLERS, "Disable All Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLKEYHANDLERS, _T("Disable All Key Handlers"));
+                   IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLKEYHANDLERS, "Disable All Key Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLMSGHANDLERS, _T("Disable All Message Handlers"));
+                   IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLMSGHANDLERS, "Disable All Message Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLERRORHANDLERS, _T("Disable All Error Handlers"));
+                   IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLERRORHANDLERS, "Disable All Error Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLTIMERHANDLERS, _T("Disable All Timer Handlers"));
+                   IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLEVENTHANDLERS, "Disable All Event Handlers");
+
+        ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
+                   IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLTIMERHANDLERS, "Disable All Timer Handlers");
 
     }
     else
     {
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLHANDLERS, _T("Enable All Handlers"));
+                                  IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLHANDLERS, "Enable All Handlers");
         if (bRetVal == FALSE)
         {
             MessageBox(_T("Failed to change the text of the String"));
 
         }
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLKEYHANDLERS, _T("Enable All Key Handlers"));
+                   IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLKEYHANDLERS, "Enable All Key Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLMSGHANDLERS, _T("Enable All Message Handlers"));
+                   IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLMSGHANDLERS, "Enable All Message Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLERRORHANDLERS, _T("Enable All Error Handlers"));
+                   IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLERRORHANDLERS, "Enable All Error Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLTIMERHANDLERS, _T("Enable All Timer Handlers"));
+                   IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLEVENTHANDLERS, "Enable All Event Handlers");
+
+        ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
+                   IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLTIMERHANDLERS, "Enable All Timer Handlers");
 
 
     }
@@ -557,169 +565,194 @@ void CSimSysTreeView::vDisplaySimSysMenu()
     // to check if all the key handlers are enabled/ disabled
 
     BOOL bKeyEnabled = pSimSysNodeInfo->bReturnAllKeyHandlersStatus(
-        omStrSimSysName);
+                           omStrSimSysName);
     if(bKeyEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLKEYHANDLERS, _T("Disable All Key Handlers"));
+                                  IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLKEYHANDLERS, "Disable All Key Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLKEYHANDLERS, _T("Enable All Key Handlers"));
+                   IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLKEYHANDLERS, "Enable All Key Handlers");
     }
 
     // to check if all the Message handlers are enabled/ disabled
 
     BOOL bMsgEnabled = pSimSysNodeInfo->bReturnAllMsgHandlersStatus(
-        omStrSimSysName);
+                           omStrSimSysName);
     if(bMsgEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLMSGHANDLERS, _T("Disable All Message Handlers"));
+                                  IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLMSGHANDLERS, "Disable All Message Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLMSGHANDLERS, _T("Enable All Message Handlers"));
+                   IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLMSGHANDLERS, "Enable All Message Handlers");
     }
 
     // to check if all the Error handlers are enabled/ disabled
 
     BOOL bErrorEnabled = pSimSysNodeInfo->bReturnAllErrorHandlersStatus(
-        omStrSimSysName);
+                             omStrSimSysName);
     if(bErrorEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLERRORHANDLERS, _T("Disable All Error Handlers"));
+                                  IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLERRORHANDLERS, "Disable All Error Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLERRORHANDLERS, _T("Enable All Error Handlers"));
+                   IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLERRORHANDLERS, "Enable All Error Handlers");
+    }
+
+    // to check if all the event handlers are enabled/ disabled
+    BOOL bEventEnabled = pSimSysNodeInfo->bReturnAllEventHandlersStatus(
+                             omStrSimSysName);
+    if(bEventEnabled)
+    {
+        BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
+                                  IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLEVENTHANDLERS, "Disable All Event Handlers");
+        if (bRetVal == FALSE)
+        {
+            MessageBox("Failed to change the text of the String");
+
+        }
+    }
+    else
+    {
+        ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
+                   IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLEVENTHANDLERS, "Enable All Event Handlers");
     }
 
     // to check if all the Timer handlers are enabled/ disabled
 
     BOOL bTimerEnabled = pSimSysNodeInfo->bReturnAllTimerHandlersStatus(
-        omStrSimSysName);
+                             omStrSimSysName);
     if(bTimerEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLTIMERHANDLERS, _T("Disable All Timer Handlers"));
+                                  IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_SIMSYS_ALLTIMERHANDLERS, "Disable All Timer Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_SIMSYS_ALLTIMERHANDLERS, _T("Enable All Timer Handlers"));
+                   IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_SIMSYS_ALLTIMERHANDLERS, "Enable All Timer Handlers");
     }
 
     //Check if the tool is connected
-    BOOL bConnected = 
+    BOOL bConnected =
         CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().nGetFlagStatus(H_CONNECTED);
-    PSSIMSYSINFO pSimsys = 
+    PSSIMSYSINFO pSimsys =
         pSimSysNodeInfo->psGetSimSysPointer(omStrSimSysName);
     if( (pSimsys != NULL) && (pSimsys->m_psNodesList != NULL))
     {
         //     if( pSimsys->m_psNodesList->m_sNodeInfo.m_bIsDllLoaded )
         if(pSimSysNodeInfo->bIsUnLoadAllValid(omStrSimSysName))
         {
-            m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_UNLOADALL, MF_BYCOMMAND 
-                | MF_ENABLED );
+            m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_UNLOADALL, MF_BYCOMMAND
+                                         | MF_ENABLED );
             if(bConnected == TRUE )
             {
-                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND 
-                    | MF_ENABLED );
-                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND 
-                    | MF_ENABLED );
-                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND 
-                    | MF_ENABLED );
-                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND 
-                    | MF_ENABLED );
-                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND 
-                    | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND
+                                             | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND
+                                             | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND
+                                             | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND
+                                             | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND
+                                             | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND
+                                             | MF_ENABLED );
             }
             else
             {
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND |
-                    MF_DISABLED | MF_GRAYED );
+                                             MF_DISABLED | MF_GRAYED );
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND |
-                    MF_DISABLED | MF_GRAYED );
+                                             MF_DISABLED | MF_GRAYED );
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND |
-                    MF_DISABLED | MF_GRAYED );
+                                             MF_DISABLED | MF_GRAYED );
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND |
-                    MF_DISABLED | MF_GRAYED );
+                                             MF_DISABLED | MF_GRAYED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND |
+                                             MF_DISABLED | MF_GRAYED );
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND |
-                    MF_DISABLED | MF_GRAYED );
+                                             MF_DISABLED | MF_GRAYED );
             }
         }
         else
         {
 
             m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND |
-                MF_DISABLED | MF_GRAYED );
+                                         MF_DISABLED | MF_GRAYED );
             m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND |
-                MF_DISABLED | MF_GRAYED );
+                                         MF_DISABLED | MF_GRAYED );
             m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND |
-                MF_DISABLED | MF_GRAYED );
+                                         MF_DISABLED | MF_GRAYED );
             m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND |
-                MF_DISABLED | MF_GRAYED );
+                                         MF_DISABLED | MF_GRAYED );
             m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND |
-                MF_DISABLED | MF_GRAYED );
+                                         MF_DISABLED | MF_GRAYED );
         }
     }
     else
     {
 
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLKEYHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLMSGHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
     }
     ClientToScreen(&m_omRightClickPoint);
     m_pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON,
-                                    m_omRightClickPoint.x,
-                                    m_omRightClickPoint.y,
-                                    this,
-                                    NULL);
+                                  m_omRightClickPoint.x,
+                                  m_omRightClickPoint.y,
+                                  this,
+                                  NULL);
 
 }
 
@@ -729,16 +762,16 @@ void CSimSysTreeView::vDisplayNodeMenu()
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CString omStrSimSysName = STR_EMPTY;
     // Get reference to the tree control
-    CTreeCtrl& om_tree = GetTreeCtrl();	
+    CTreeCtrl& om_tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_tree.GetSelectedItem();
     omStrSimSysName = om_tree.GetItemText(om_tree.GetParentItem(hSelectedItem));
     CString omStrNodeName =  om_tree.GetItemText(hSelectedItem);
     // Get node pointer from the data structure
     // corresponding to the simsys under which node is selected
     //Check if the tool is connected
-    BOOL bConnected = 
+    BOOL bConnected =
         CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().nGetFlagStatus(H_CONNECTED);
-    CSimSysNodeInfo* pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     PSNODEINFO pNode = pSimSysNodeInfo->psGetSimSysNodePointer(omStrSimSysName, omStrNodeName );
     if ( pNode == NULL ) //if it is not node don't do anything
@@ -770,60 +803,60 @@ void CSimSysTreeView::vDisplayNodeMenu()
 
     // to check if all the handlers are enabled/ disabled
     BOOL bEnabled = pSimSysNodeInfo->bReturnNodeAllHandlersStatus(
-        omStrSimSysName , omStrNodeName);
+                        omStrSimSysName , omStrNodeName);
     if(bEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_ALL_NODE_HANDLERS, _T("Disable All Handlers"));
+                                  IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_ALL_NODE_HANDLERS, "Disable All Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_KEYHANDLERS, _T("Disable Key Handlers"));
+                   IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_KEYHANDLERS, "Disable Key Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_MESSAGEHANDLERS, _T("Disable Message Handlers"));
+                   IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_MESSAGEHANDLERS, "Disable Message Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_ERRORHANDLERS, _T("Disable Error Handlers"));
+                   IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_ERRORHANDLERS, "Disable Error Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_TIMERHANDLERS, _T("Disable Timer Handlers"));
+                   IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_TIMERHANDLERS, "Disable Timer Handlers");
 
     }
     else
     {
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_ALL_NODE_HANDLERS, _T("Enable All Handlers"));
+                                  IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_ALL_NODE_HANDLERS, "Enable All Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_KEYHANDLERS, _T("Enable Key Handlers"));
+                   IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_KEYHANDLERS, "Enable Key Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_MESSAGEHANDLERS, _T("Enable Message Handlers"));
+                   IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_MESSAGEHANDLERS, "Enable Message Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_ERRORHANDLERS, _T("Enable Error Handlers"));
+                   IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_ERRORHANDLERS, "Enable Error Handlers");
 
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_TIMERHANDLERS, _T("Enable Timer Handlers"));
+                   IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_TIMERHANDLERS, "Enable Timer Handlers");
 
 
     }
@@ -831,13 +864,13 @@ void CSimSysTreeView::vDisplayNodeMenu()
     // to check if all the key handlers are enabled/ disabled
 
     BOOL bKeyEnabled = pSimSysNodeInfo->bReturnNodeKeyHandlersStatus(
-        omStrSimSysName , omStrNodeName );
+                           omStrSimSysName , omStrNodeName );
     if(bKeyEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_KEYHANDLERS, _T("Disable Key Handlers"));
+                                  IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_NODE_KEYHANDLERS, "Disable Key Handlers");
         if (bRetVal == FALSE)
         {
             MessageBox(_T("Failed to change the text of the String"));
@@ -847,135 +880,135 @@ void CSimSysTreeView::vDisplayNodeMenu()
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_KEYHANDLERS, _T("Enable Key Handlers"));
+                   IDM_NODE_KEYHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_KEYHANDLERS, "Enable Key Handlers");
     }
 
     // to check if all the Message handlers are enabled/ disabled
 
     BOOL bMsgEnabled = pSimSysNodeInfo->bReturnNodeMsgHandlersStatus(
-        omStrSimSysName , omStrNodeName );
+                           omStrSimSysName , omStrNodeName );
     if(bMsgEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_MESSAGEHANDLERS, _T("Disable Message Handlers"));
+                                  IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_NODE_MESSAGEHANDLERS, "Disable Message Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_MESSAGEHANDLERS, _T("Enable Message Handlers"));
+                   IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_MESSAGEHANDLERS, "Enable Message Handlers");
     }
 
     // to check if all the Error handlers are enabled/ disabled
 
     BOOL bErrorEnabled = pSimSysNodeInfo->bReturnNodeErrorHandlersStatus(
-        omStrSimSysName , omStrNodeName );
+                             omStrSimSysName , omStrNodeName );
     if(bErrorEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_ERRORHANDLERS, _T("Disable Error Handlers"));
+                                  IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_NODE_ERRORHANDLERS, "Disable Error Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_ERRORHANDLERS, _T("Enable Error Handlers"));
+                   IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_ERRORHANDLERS, "Enable Error Handlers");
     }
 
     // to check if all the Timer handlers are enabled/ disabled
 
     BOOL bTimerEnabled = pSimSysNodeInfo->bReturnNodeTimerHandlersStatus(
-                         omStrSimSysName , omStrNodeName);
+                             omStrSimSysName , omStrNodeName);
     if(bTimerEnabled)
     {
 
         BOOL bRetVal = ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_TIMERHANDLERS, _T("Disable Timer Handlers"));
+                                  IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                                  IDM_NODE_TIMERHANDLERS, "Disable Timer Handlers");
         if (bRetVal == FALSE)
         {
-            MessageBox(_T("Failed to change the text of the String"));
+            MessageBox("Failed to change the text of the String");
 
         }
     }
     else
     {
         ModifyMenu(m_pomSubMenu->GetSafeHmenu(),
-            IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
-            IDM_NODE_TIMERHANDLERS, _T("Enable Timer Handlers"));
+                   IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND | MF_STRING,
+                   IDM_NODE_TIMERHANDLERS, "Enable Timer Handlers");
     }
 
 
 
     if((pNode != NULL) && ( pNode->m_bIsDllLoaded)
-        && (bConnected == TRUE ))
+            && (bConnected == TRUE ))
     {
 
-        m_pomSubMenu->EnableMenuItem(IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND 
-            | MF_ENABLED );
-        m_pomSubMenu->EnableMenuItem(IDM_NODE_KEYHANDLERS, MF_BYCOMMAND 
-            | MF_ENABLED );
-        m_pomSubMenu->EnableMenuItem(IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND 
-            | MF_ENABLED );
-        m_pomSubMenu->EnableMenuItem(IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND 
-            | MF_ENABLED );
-        m_pomSubMenu->EnableMenuItem(IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND 
-            | MF_ENABLED );
+        m_pomSubMenu->EnableMenuItem(IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND
+                                     | MF_ENABLED );
+        m_pomSubMenu->EnableMenuItem(IDM_NODE_KEYHANDLERS, MF_BYCOMMAND
+                                     | MF_ENABLED );
+        m_pomSubMenu->EnableMenuItem(IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND
+                                     | MF_ENABLED );
+        m_pomSubMenu->EnableMenuItem(IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND
+                                     | MF_ENABLED );
+        m_pomSubMenu->EnableMenuItem(IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND
+                                     | MF_ENABLED );
     }
     else
     {
 
         m_pomSubMenu->EnableMenuItem(IDM_ALL_NODE_HANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_NODE_KEYHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_NODE_MESSAGEHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_NODE_ERRORHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
+                                     MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_NODE_TIMERHANDLERS, MF_BYCOMMAND |
-            MF_DISABLED | MF_GRAYED );
-    }	
+                                     MF_DISABLED | MF_GRAYED );
+    }
     /**************************************************************************/
 
     ClientToScreen(&m_omRightClickPoint);
     m_pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON,
-        m_omRightClickPoint.x,
-        m_omRightClickPoint.y,
-        this,
-        NULL);
+                                  m_omRightClickPoint.x,
+                                  m_omRightClickPoint.y,
+                                  this,
+                                  NULL);
 
 }
 /******************************************************************************/
-/*  Function Name    :  OnTreeViewRightclick                                  
-/*                                                                            
-/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       
-/*  Output           :                                                        
+/*  Function Name    :  OnTreeViewRightclick
+/*
+/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult
+/*  Output           :
 /*  Functionality    :  Displays pop up menu depending on the selected item
 
-/*  Member of        :  CSimSysTreeView                                       
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :                                             
-/*  Date Created     :                                            
-/*  Modification     :					                                      
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnTreeViewRightclick(NMHDR* , LRESULT* pResult) 
+void CSimSysTreeView::OnTreeViewRightclick(NMHDR* , LRESULT* pResult)
 {
     UINT uFlags = 0;
     CTreeCtrl& om_Tree = GetTreeCtrl();
@@ -987,10 +1020,10 @@ void CSimSysTreeView::OnTreeViewRightclick(NMHDR* , LRESULT* pResult)
 
         if(m_pomContextMenu == NULL )
         {
-            m_pomContextMenu = new CMenu;   
+            m_pomContextMenu = new CMenu;
         }
         //Check if the tool is connected
-        BOOL bConnected = 
+        BOOL bConnected =
             CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().nGetFlagStatus(H_CONNECTED);
         // Get the parent item
         HTREEITEM hParentItem =   om_Tree.GetParentItem(hSelectedItem);
@@ -1002,12 +1035,12 @@ void CSimSysTreeView::OnTreeViewRightclick(NMHDR* , LRESULT* pResult)
         }
         else
         {
-            if( hGrandParentItem == NULL)   // for any simsys 
+            if( hGrandParentItem == NULL)   // for any simsys
             {
                 vDisplaySimSysMenu();
             }
             ///for any node
-            else 
+            else
             {
                 CString omStrGrandParent = om_Tree.GetItemText(hGrandParentItem);
                 if (omStrGrandParent.CompareNoCase(CGlobalObj::omGetBusName(m_eBus)) == 0)
@@ -1017,8 +1050,8 @@ void CSimSysTreeView::OnTreeViewRightclick(NMHDR* , LRESULT* pResult)
                 }
             }// else if , for a node
         } // else , for right click on sim sys or node.
-    } // else, for right click on any item 
-    
+    } // else, for right click on any item
+
     *pResult = 0;
 }
 /******************************************************************************/
@@ -1026,22 +1059,22 @@ void CSimSysTreeView::OnTreeViewRightclick(NMHDR* , LRESULT* pResult)
 /*                                                                            */
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work when an item selection is    */              
+/*  Functionality    :  Called by the frame work when an item selection is    */
 /*                      changed. Updates node information on the right pane
-                        depending on the selected item  
+                        depending on the selected item
 
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  19.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-    
-    // check if any data in the form view 
+
+    // check if any data in the form view
     // is missing. If yes,
     // don't let the user to select any item
     // from the tree view
@@ -1051,28 +1084,28 @@ void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
     CTreeCtrl& om_tree = GetTreeCtrl();
     // Get handle to selected item
     HTREEITEM hSelectedItem = pNMTreeView->itemNew.hItem;
-    pTempSimsysNodeInfo = 
+    pTempSimsysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    pSimSysDetView =  
-        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView(); 
-    if ( (hSelectedItem != NULL) && 
-         (pSimSysDetView != NULL) && 
-         (pTempSimsysNodeInfo != NULL))
+    pSimSysDetView =
+        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
+    if ( (hSelectedItem != NULL) &&
+            (pSimSysDetView != NULL) &&
+            (pTempSimsysNodeInfo != NULL))
     {
-        HTREEITEM hParentItem = om_tree.GetParentItem(hSelectedItem);   
+        HTREEITEM hParentItem = om_tree.GetParentItem(hSelectedItem);
         HTREEITEM hGrandParentItem = om_tree.GetParentItem(hParentItem);
         CString omStrGPText = om_tree.GetItemText(hGrandParentItem);
         if ( omStrGPText == CGlobalObj::omGetBusName(m_eBus) )// only for node names
         {
             CString omStrNodeName = om_tree.GetItemText( hSelectedItem );
-            CString omStrSimName = om_tree.GetItemText( hParentItem ); 
+            CString omStrSimName = om_tree.GetItemText( hParentItem );
             m_omSelectedItemText = omStrNodeName;
-            
+
             // Get node pointer from the data structure
             // corresponding to the simulated system
-            PSNODEINFO pNode = 
+            PSNODEINFO pNode =
                 pTempSimsysNodeInfo->psGetSimSysNodePointer(omStrSimName, omStrNodeName);
-            
+
             if ( pNode != NULL )
             {
                 // check if the controls in the form view are hidden
@@ -1081,7 +1114,7 @@ void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
                     // Controls are hidden, unhide
                     pSimSysDetView->vHideControls(SW_SHOW);
                 }
-                
+
                 // Fill the node details for this node
                 pSimSysDetView->vDisplayNodeInformation( pNode );
             }
@@ -1092,9 +1125,9 @@ void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
             // Hide all controls
             pSimSysDetView->vHideControls(SW_HIDE);
         }
-    }   
-    
-    
+    }
+
+
     *pResult = 0;
 }
 /******************************************************************************/
@@ -1102,19 +1135,19 @@ void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work to update the view. 
+/*  Functionality    :  Called by the frame work to update the view.
                         This again calls bPopulateTree function
                         and sets tree view ptr defined in the mainframe
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M			                                  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  19.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnInitialUpdate() 
+void CSimSysTreeView::OnInitialUpdate()
 {
-	CTreeView::OnInitialUpdate();	
+    CTreeView::OnInitialUpdate();
 }
 
 
@@ -1123,40 +1156,40 @@ void CSimSysTreeView::OnInitialUpdate()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  New Simulated system is created and added to the data 
-/*						structure
+/*  Functionality    :  New Simulated system is created and added to the data
+/*                      structure
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  19.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CSimSysTreeView::OnAddSimsys() 
+void CSimSysTreeView::OnAddSimsys()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	CString oCfgFilename = STR_EMPTY;
-    
-	CSplFileDlg oCfgFileDlg(TRUE,       // Open dialog as Open File dlg
-		                    defSIMSYSCONFEXT,  // default extension
-		                    NULL,       // default file name
-		                    OFN_HIDEREADONLY |OFN_EXTENSIONDIFFERENT |OFN_FILEMUSTEXIST, // mode
-		                    defSIMSYSCONFIGFILTER, // filter 
-		                    NULL,        // parent wnd
-		                    _T("Add"));
-    oCfgFileDlg.m_ofn.lpstrTitle = _T("Add Configuration Filename...");
-	
+    CString oCfgFilename = STR_EMPTY;
+
+    CSplFileDlg oCfgFileDlg(TRUE,       // Open dialog as Open File dlg
+                            defSIMSYSCONFEXT,  // default extension
+                            NULL,       // default file name
+                            OFN_HIDEREADONLY |OFN_EXTENSIONDIFFERENT |OFN_FILEMUSTEXIST, // mode
+                            defSIMSYSCONFIGFILTER, // filter
+                            NULL,        // parent wnd
+                            "Add");
+    oCfgFileDlg.m_ofn.lpstrTitle = "Add Configuration Filename...";
+
     if(oCfgFileDlg.DoModal() == IDOK)
-	{
-		oCfgFilename = oCfgFileDlg.GetPathName();
-		vAddSimDetFromFile(oCfgFilename);
-	}  
+    {
+        oCfgFilename = oCfgFileDlg.GetPathName();
+        vAddSimDetFromFile(oCfgFilename);
+    }
 }
 
 
 /******************************************************************************/
-/*  Function Name    :  void CSimSysTreeView::vAddSimDetFromFile()              
+/*  Function Name    :  void CSimSysTreeView::vAddSimDetFromFile()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
@@ -1164,9 +1197,9 @@ void CSimSysTreeView::OnAddSimsys()
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Pradeep Kadoor                                          
+/*  Author(s)        :  Pradeep Kadoor
 /*  Date Created     :  19.02.2009                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
 void CSimSysTreeView::vAddSimDetFromFile(CString oCfgFilename)
 {
@@ -1176,31 +1209,31 @@ void CSimSysTreeView::vAddSimDetFromFile(CString oCfgFilename)
     BOOL bDupNodeFound = FALSE;
     BOOL bDupCFileFound = FALSE;
 
-	sSIMSYSINFO* pSimsys = NULL;
-    CSimSysNodeInfo* pSimSysNodeInfo = 
+    sSIMSYSINFO* pSimsys = NULL;
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-	CSimSysConfigDetails *pSimsysConfig = 
+    CSimSysConfigDetails* pSimsysConfig =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
     if(pSimSysNodeInfo != NULL)
     {
-	    bIsSimsyspresent = pSimSysNodeInfo->bIsSimSysPresent(oCfgFilename);
+        bIsSimsyspresent = pSimSysNodeInfo->bIsSimSysPresent(oCfgFilename);
     }
-	if( (!bIsSimsyspresent) && ( pSimsysConfig != NULL ) )
-	{
-		int nReturn = pSimsysConfig->nLoadConfiguration(oCfgFilename, pSimsys);
-		if((nReturn == defCONFIG_FILE_SUCCESS) && (pSimsys != NULL))
-		{
+    if( (!bIsSimsyspresent) && ( pSimsysConfig != NULL ) )
+    {
+        int nReturn = pSimsysConfig->nLoadConfiguration(oCfgFilename, pSimsys);
+        if((nReturn == defCONFIG_FILE_SUCCESS) && (pSimsys != NULL))
+        {
             if (!pSimSysNodeInfo->bIsAnyInfoInSimsysPreExist(pSimsys))
             {
                 pSimSysNodeInfo->vAddSimSys(pSimsys);
-			    vPopulateAddedSimSysInfo(oCfgFilename);
+                vPopulateAddedSimSysInfo(oCfgFilename);
             }
-		} 
+        }
         else if( nReturn == defCONFIG_FILE_CORRUPT)
         {
-            AfxMessageBox(_T(" The config file is corrupted. cannot add!"));
+            AfxMessageBox(" The config file is corrupted. cannot add!");
         }
-	}
+    }
 }
 
 
@@ -1215,11 +1248,11 @@ void CSimSysTreeView::vAddSimDetFromFile(CString oCfgFilename)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.02.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnAllNodeHandlers() 
+void CSimSysTreeView::OnAllNodeHandlers()
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
@@ -1227,40 +1260,41 @@ void CSimSysTreeView::OnAllNodeHandlers()
     CString omStrSimSysName = STR_EMPTY;
     sSIMSYSINFO* pSimsys = NULL;
     sNODEINFO* pNode = NULL;
-    
+
     HTREEITEM hParent = om_Tree.GetParentItem(hSelectedItem);
     omStrSimSysName = om_Tree.GetItemText(hParent);
-    
+
     omStrNodeName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = STR_EMPTY;
 
-    CSimSysDetView *pSimsysDetView = NULL;  
-    pSimsysDetView =  
+    CSimSysDetView* pSimsysDetView = NULL;
+    pSimsysDetView =
         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
     CSimSysNodeInfo* pTempSimsys = NULL;
     pTempSimsys = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    
+
     m_pomSubMenu->GetMenuString(IDM_ALL_NODE_HANDLERS , omStrMenuText , MF_BYCOMMAND);
     if(omStrMenuText == "Enable All Handlers" )
-    {       // when user wants to enable all handlers
-        
-        pSimSysNodeInfo->vSetEnableNodeAllHandlers(omStrSimSysName , 
-            omStrNodeName , TRUE);
-        
+    {
+        // when user wants to enable all handlers
+
+        pSimSysNodeInfo->vSetEnableNodeAllHandlers(omStrSimSysName ,
+                omStrNodeName , TRUE);
+
     }
     else if(omStrMenuText == "Disable All Handlers" )
     {
-        pSimSysNodeInfo->vSetEnableNodeAllHandlers(omStrSimSysName , 
-            omStrNodeName , FALSE);
-        
+        pSimSysNodeInfo->vSetEnableNodeAllHandlers(omStrSimSysName ,
+                omStrNodeName , FALSE);
+
     }
-    
+
     if ( pSimsysDetView != NULL )
-	{
+    {
         pSimsys = pTempSimsys->psGetSimSysPointer(omStrSimSysName);
         pNode = pTempSimsys->psGetSimSysNodePointer(omStrSimSysName, omStrNodeName );
-        
-        
+
+
         if ( pNode != NULL ) //if it is node
         {
             // check if the controls in the form view are hidden
@@ -1269,43 +1303,43 @@ void CSimSysTreeView::OnAllNodeHandlers()
                 // Controls are hidden, unhide
                 pSimsysDetView->vHideControls(SW_SHOW);
             }
-            
+
             // Fill the node details for this node
             pSimsysDetView->vDisplayNodeInformation( pNode );
         }
     }
-                
+
 }
 /******************************************************************************/
-/*  Function Name    :  OnDeleteAllSimsys                                     
-/*                                                                            
-/*  Input(s)         :                                                        
-/*  Output           :                                                        
+/*  Function Name    :  OnDeleteAllSimsys
+/*
+/*  Input(s)         :
+/*  Output           :
 /*  Functionality    :  Deletes all the simulated systems from the tree view and
                         from the data structure.
-/*  Member of        :  CSimSysTreeView                                       
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M                                              
-/*  Date Created     :  28.02.2005                                            
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  28.02.2005
 /*  Modification     :  Anish kr., 27.02.09, Logic changed
 /******************************************************************************/
-void CSimSysTreeView::OnDeleteAllSimsys() 
+void CSimSysTreeView::OnDeleteAllSimsys()
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     BOOL bIsDllsLoaded = pSimSysNodeInfo->bIsUnLoadAllValid(STR_EMPTY);
     if ((!bIsDllsLoaded) && (pSimSysNodeInfo != NULL))
     {
         CTreeCtrl& om_tree = GetTreeCtrl();
-        if (om_tree.GetCount() > 1) // if Main node has children  
+        if (om_tree.GetCount() > 1) // if Main node has children
         {
             int nReturnVal = AfxMessageBox(ALL_SIMSYS_DELETE_CONFMN, MB_YESNO|MB_ICONQUESTION);
             if (nReturnVal == IDYES)
             {
                 if (pSimSysNodeInfo->bIsAnySimSysModified())
                 {
-                    int nReturn = AfxMessageBox(ASK_SIMSYS_SAVE_PROMPT, 
+                    int nReturn = AfxMessageBox(ASK_SIMSYS_SAVE_PROMPT,
                                                 MB_YESNO|MB_ICONQUESTION);
                     if (nReturn == IDYES)
                     {
@@ -1321,11 +1355,11 @@ void CSimSysTreeView::OnDeleteAllSimsys()
     }
     else
     {
-        AfxMessageBox(_T("Unload all the dlls and try again!!"));
+        AfxMessageBox("Unload all the dlls and try again!!");
     }
 }
 /******************************************************************************/
-/*  Function Name    :  OnDeleteNode									      */
+/*  Function Name    :  OnDeleteNode                                          */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
@@ -1336,12 +1370,12 @@ void CSimSysTreeView::OnDeleteAllSimsys()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.02.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnDeleteNode() 
+void CSimSysTreeView::OnDeleteNode()
 {
     PSNODEINFO pNode =    NULL;
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     BOOL bSuccess = FALSE;
     BOOL bDataSet = FALSE;
@@ -1358,7 +1392,9 @@ void CSimSysTreeView::OnDeleteNode()
     {
         BOOL bIsDllLoaded = pNode->m_bIsDllLoaded;
         if(bIsDllLoaded)
-            AfxMessageBox(_T("Unload the dll and try again!!"));
+        {
+            AfxMessageBox("Unload the dll and try again!!");
+        }
         else
         {
             bSuccess = pSimSysNodeInfo->bDeleteNodeFromSimSys(omStrSimSysName , omStrNodeName);
@@ -1409,79 +1445,79 @@ void CSimSysTreeView::OnDeleteNode()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*
 *****************************************************************************/
-void CSimSysTreeView::OnEditNode() 
+void CSimSysTreeView::OnEditNode()
 {
     PSNODEINFO pNode =    NULL;
-	CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-	CTreeCtrl& omTree = GetTreeCtrl();
-	
-	HTREEITEM hItem = omTree.GetSelectedItem();
-	HTREEITEM hParentItem = omTree.GetParentItem(hItem);
-    HTREEITEM hGrandParent = omTree.GetParentItem(hParentItem); 
-	CString omStrSim = omTree.GetItemText(hParentItem);
+    CTreeCtrl& omTree = GetTreeCtrl();
+
+    HTREEITEM hItem = omTree.GetSelectedItem();
+    HTREEITEM hParentItem = omTree.GetParentItem(hItem);
+    HTREEITEM hGrandParent = omTree.GetParentItem(hParentItem);
+    CString omStrSim = omTree.GetItemText(hParentItem);
     CString omStrBus = omTree.GetItemText(hGrandParent);
-	
-	if ((omStrBus == CGlobalObj::omGetBusName(m_eBus)) && (pSimSysNodeInfo != NULL))
-	{
-		CString omStrNode = omTree.GetItemText(hItem);
-		
-		pNode = pSimSysNodeInfo->psGetSimSysNodePointer( omStrSim , omStrNode );
+
+    if ((omStrBus == CGlobalObj::omGetBusName(m_eBus)) && (pSimSysNodeInfo != NULL))
+    {
+        CString omStrNode = omTree.GetItemText(hItem);
+
+        pNode = pSimSysNodeInfo->psGetSimSysNodePointer( omStrSim , omStrNode );
         if (pNode)
         {
             if(pNode->m_bIsDllLoaded)
             {
-                AfxMessageBox(_T("Unload the dll and try again!"));
+                AfxMessageBox("Unload the dll and try again!");
             }
             else
             {
-	            vAddEditNode(TRUE);
+                vAddEditNode(TRUE);
             }
         }
-	}
-		
+    }
+
 }
 
 /******************************************************************************
-  Function Name    :  vAddEditNode                                          
-                                                                            
-  Input(s)         :  BOOL bMode                                            
-  Output           :                                                        
+  Function Name    :  vAddEditNode
+
+  Input(s)         :  BOOL bMode
+  Output           :
   Functionality    :  Displays node detials dialog to add new node
                       or edit selecetd node based on the parameter passed.
-  Member of        :  CSimSysTreeView                                       
-  Friend of        :      -                                                 
-                                                                            
-  Author(s)        :  Harika M										      
-  Date Created     :  27.12.2005                                            
+  Member of        :  CSimSysTreeView
+  Friend of        :      -
+
+  Author(s)        :  Harika M
+  Date Created     :  27.12.2005
   Modification     :  Anish Kr
   Date             :  26.02.09, Changed logic
 /******************************************************************************/
 void CSimSysTreeView::vAddEditNode(BOOL bMode)
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	BOOL bIsFound = FALSE;
+    BOOL bIsFound = FALSE;
     CTreeCtrl& omTree = GetTreeCtrl();
     HTREEITEM hSelItem = omTree.GetSelectedItem();
-	CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-	if(pSimSysNodeInfo != NULL)
-	{   
+    if(pSimSysNodeInfo != NULL)
+    {
         //For Node Editing
         if (bMode == TRUE)
         {
             //Parent is Simsys
-	        HTREEITEM hParentSys  = omTree.GetParentItem(hSelItem);
+            HTREEITEM hParentSys  = omTree.GetParentItem(hSelItem);
             CString omNodeName    = omTree.GetItemText(hSelItem);
             CString omSimSysName = omTree.GetItemText(hParentSys);
             PSNODEINFO pNode =  pSimSysNodeInfo->
                                 psGetSimSysNodePointer( omSimSysName , omNodeName );
             if (pNode != NULL)
             {
-                CNodeDetailsDlg odNodeDlg(m_eBus, pNode , NULL);	
+                CNodeDetailsDlg odNodeDlg(m_eBus, pNode , NULL);
                 odNodeDlg.DoModal();
                 if (odNodeDlg.m_bIsNodeModified == TRUE)
                 {
@@ -1506,9 +1542,9 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
                         }
                     }
                     //Update det view
-                    
-                    CSimSysDetView *pSimSysDetView =  
-                        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView(); 
+
+                    CSimSysDetView* pSimSysDetView =
+                        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
                     pSimSysDetView->vDisplayNodeInformation(pNode);
                 }
             }
@@ -1525,7 +1561,7 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
                 if (pNodeList != NULL)
                 {
                     PSNODEINFO pNode = &pNodeList->m_sNodeInfo;
-                    CNodeDetailsDlg odNodeDlg(m_eBus, pNode, NULL);	
+                    CNodeDetailsDlg odNodeDlg(m_eBus, pNode, NULL);
                     if ( odNodeDlg.DoModal() == IDOK )
                     {
                         psSimSys->vAddNodeToList(pNodeList);
@@ -1559,7 +1595,7 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
                 }
                 else
                 {
-                    AfxMessageBox(_T("Memory Creation Error. Please try again"));
+                    AfxMessageBox("Memory Creation Error. Please try again");
                 }
             }
         }
@@ -1578,20 +1614,20 @@ void CSimSysTreeView::OnNewSimsys()
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     BOOL bReturn = FALSE;
     CSplFileDlg oCfgFileDlg(FALSE,      // Save  as dialog
-        defSIMSYSCONFEXT,               // default extension
-        NULL,                           // default file name
-        defDLGFLAGS,                    // mode
-        defSIMSYSCONFIGFILTER,          // filter 
-        NULL,                           // parent wnd
-        _T("Open"));
+                            defSIMSYSCONFEXT,               // default extension
+                            NULL,                           // default file name
+                            defDLGFLAGS,                    // mode
+                            defSIMSYSCONFIGFILTER,          // filter
+                            NULL,                           // parent wnd
+                            "Open");
 
-    oCfgFileDlg.m_ofn.lpstrTitle = _T("New Simulated system Configuration Filename...");
+    oCfgFileDlg.m_ofn.lpstrTitle = "New Simulated system Configuration Filename...";
 
     if(oCfgFileDlg.DoModal() == IDOK)
     {
         // get the name of the selected file
         CString oCfgFilename = oCfgFileDlg.GetPathName();
-        CSimSysNodeInfo *pSimSysNodeInfo = 
+        CSimSysNodeInfo* pSimSysNodeInfo =
             CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
         if (pSimSysNodeInfo != NULL)
         {
@@ -1618,14 +1654,14 @@ void CSimSysTreeView::OnNewSimsys()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  Anish Kr., 
+/*  Modification     :  Anish Kr.,
 /******************************************************************************/
-void CSimSysTreeView::OnNodeErrorhandlers() 
+void CSimSysTreeView::OnNodeErrorhandlers()
 {
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     HTREEITEM hParent = om_Tree.GetParentItem(hSelectedItem);
-    //Assuming a node as selected 
+    //Assuming a node as selected
     CString omStrSimSysName = om_Tree.GetItemText(hParent);
     CString omStrNodeName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = "";
@@ -1634,21 +1670,22 @@ void CSimSysTreeView::OnNodeErrorhandlers()
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (m_pomSubMenu != NULL)
     {
-	    m_pomSubMenu->GetMenuString(IDM_NODE_ERRORHANDLERS , omStrMenuText , MF_BYCOMMAND);
+        m_pomSubMenu->GetMenuString(IDM_NODE_ERRORHANDLERS , omStrMenuText , MF_BYCOMMAND);
     }
-	if(omStrMenuText == _T("Enable Error Handlers") )
-	{       // when user wants to enable all handlers
+    if(omStrMenuText == "Enable Error Handlers" )
+    {
+        // when user wants to enable all handlers
 
-        pSimSysNodeInfo->vSetEnableNodeErrorHandlers(omStrSimSysName , 
-                                                     omStrNodeName , TRUE);
-        
+        pSimSysNodeInfo->vSetEnableNodeErrorHandlers(omStrSimSysName ,
+                omStrNodeName , TRUE);
+
     }
     else if (omStrMenuText == "Disable Error Handlers" )
     {
-        pSimSysNodeInfo->vSetEnableNodeErrorHandlers(omStrSimSysName , 
-                                                     omStrNodeName , FALSE);
-        
-    }    
+        pSimSysNodeInfo->vSetEnableNodeErrorHandlers(omStrSimSysName ,
+                omStrNodeName , FALSE);
+
+    }
     else
     {
         ASSERT(FALSE);
@@ -1665,15 +1702,15 @@ void CSimSysTreeView::OnNodeErrorhandlers()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnNodeKeyhandlers() 
+void CSimSysTreeView::OnNodeKeyhandlers()
 {
-	
+
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     HTREEITEM hParent = om_Tree.GetParentItem(hSelectedItem);
-    //Assuming a node as selected 
+    //Assuming a node as selected
     CString omStrSimSysName = om_Tree.GetItemText(hParent);
     CString omStrNodeName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = "";
@@ -1682,20 +1719,21 @@ void CSimSysTreeView::OnNodeKeyhandlers()
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (m_pomSubMenu != NULL)
     {
-	    m_pomSubMenu->GetMenuString(IDM_NODE_ERRORHANDLERS , omStrMenuText , MF_BYCOMMAND);
+        m_pomSubMenu->GetMenuString(IDM_NODE_ERRORHANDLERS , omStrMenuText , MF_BYCOMMAND);
     }
-	if(omStrMenuText == _T("Enable Key Handlers") )
-	{       // when user wants to enable all handlers
-
-        pSimsysNodeInfo->vSetEnableNodeKeyHandlers(omStrSimSysName , 
-                                                    omStrNodeName , TRUE);
-        
-    }
-    else if(omStrMenuText == _T("Disable Key Handlers") )
+    if(omStrMenuText == "Enable Key Handlers" )
     {
-        pSimsysNodeInfo->vSetEnableNodeKeyHandlers(omStrSimSysName , 
-                                                    omStrNodeName , FALSE);
-      
+        // when user wants to enable all handlers
+
+        pSimsysNodeInfo->vSetEnableNodeKeyHandlers(omStrSimSysName ,
+                omStrNodeName , TRUE);
+
+    }
+    else if(omStrMenuText == "Disable Key Handlers" )
+    {
+        pSimsysNodeInfo->vSetEnableNodeKeyHandlers(omStrSimSysName ,
+                omStrNodeName , FALSE);
+
     }
     else
     {
@@ -1713,11 +1751,11 @@ void CSimSysTreeView::OnNodeKeyhandlers()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnNodeMessagehandlers() 
+void CSimSysTreeView::OnNodeMessagehandlers()
 {
-	CSimSysNodeInfo *pSimSysNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+    CSimSysNodeInfo* pSimSysNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrNodeName = STR_EMPTY;
@@ -1731,32 +1769,33 @@ void CSimSysTreeView::OnNodeMessagehandlers()
 
     sSIMSYSINFO* pSimsys = NULL;
     sNODEINFO* pNode = NULL;
-    CSimSysDetView *pSimsysDetView = NULL;  
-    pSimsysDetView =  
+    CSimSysDetView* pSimsysDetView = NULL;
+    pSimsysDetView =
         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
     CSimSysNodeInfo* pTempSimsys = NULL;
     pTempSimsys = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-      
-	m_pomSubMenu->GetMenuString(IDM_NODE_MESSAGEHANDLERS , omStrMenuText , MF_BYCOMMAND);
-	if(omStrMenuText == "Enable Message Handlers" )
-	{       // when user wants to enable all handlers
 
-        pSimSysNodeInfo->vSetEnableNodeMsgHandlers(omStrSimSysName , 
-                                                    omStrNodeName , TRUE);
-        
+    m_pomSubMenu->GetMenuString(IDM_NODE_MESSAGEHANDLERS , omStrMenuText , MF_BYCOMMAND);
+    if(omStrMenuText == "Enable Message Handlers" )
+    {
+        // when user wants to enable all handlers
+
+        pSimSysNodeInfo->vSetEnableNodeMsgHandlers(omStrSimSysName ,
+                omStrNodeName , TRUE);
+
     }
     else
     {
-        pSimSysNodeInfo->vSetEnableNodeMsgHandlers(omStrSimSysName , 
-                                                    omStrNodeName , FALSE);
-      
+        pSimSysNodeInfo->vSetEnableNodeMsgHandlers(omStrSimSysName ,
+                omStrNodeName , FALSE);
+
     }
     if ( pSimsysDetView != NULL )
-	{
+    {
         pSimsys = pTempSimsys->psGetSimSysPointer(omStrSimSysName);
         pNode = pTempSimsys->psGetSimSysNodePointer(omStrSimSysName, omStrNodeName );
-        
-        
+
+
         if ( pNode != NULL ) //if it is node
         {
             // check if the controls in the form view are hidden
@@ -1765,12 +1804,12 @@ void CSimSysTreeView::OnNodeMessagehandlers()
                 // Controls are hidden, unhide
                 pSimsysDetView->vHideControls(SW_SHOW);
             }
-            
+
             // Fill the node details for this node
             pSimsysDetView->vDisplayNodeInformation( pNode );
         }
     }
-	
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnNodeTimerhandlers                                   */
@@ -1783,11 +1822,11 @@ void CSimSysTreeView::OnNodeMessagehandlers()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnNodeTimerhandlers() 
+void CSimSysTreeView::OnNodeTimerhandlers()
 {
-	CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
@@ -1802,32 +1841,33 @@ void CSimSysTreeView::OnNodeTimerhandlers()
 
     sSIMSYSINFO* pSimsys = NULL;
     sNODEINFO* pNode = NULL;
-    CSimSysDetView *pSimsysDetView = NULL;  
-    pSimsysDetView =  
+    CSimSysDetView* pSimsysDetView = NULL;
+    pSimsysDetView =
         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
     CSimSysNodeInfo* pTempSimsys = NULL;
     pTempSimsys = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-      
-	m_pomSubMenu->GetMenuString(IDM_NODE_TIMERHANDLERS , omStrMenuText , MF_BYCOMMAND);
-	if(omStrMenuText == _T("Enable Timer Handlers") )
-	{       // when user wants to enable all handlers
 
-        pSimSysNodeInfo->vSetEnableNodeTimerHandlers(omStrSimSysName , 
-                                                    omStrNodeName , TRUE);
-        
+    m_pomSubMenu->GetMenuString(IDM_NODE_TIMERHANDLERS , omStrMenuText , MF_BYCOMMAND);
+    if(omStrMenuText == "Enable Timer Handlers" )
+    {
+        // when user wants to enable all handlers
+
+        pSimSysNodeInfo->vSetEnableNodeTimerHandlers(omStrSimSysName ,
+                omStrNodeName , TRUE);
+
     }
     else
     {
-        pSimSysNodeInfo->vSetEnableNodeTimerHandlers(omStrSimSysName , 
-                                                    omStrNodeName , FALSE);
-      
+        pSimSysNodeInfo->vSetEnableNodeTimerHandlers(omStrSimSysName ,
+                omStrNodeName , FALSE);
+
     }
     if ( pSimsysDetView != NULL )
-	{
+    {
         pSimsys = pTempSimsys->psGetSimSysPointer(omStrSimSysName);
         pNode = pTempSimsys->psGetSimSysNodePointer(omStrSimSysName, omStrNodeName );
-        
-        
+
+
         if ( pNode != NULL ) //if it is node
         {
             // check if the controls in the form view are hidden
@@ -1836,15 +1876,15 @@ void CSimSysTreeView::OnNodeTimerhandlers()
                 // Controls are hidden, unhide
                 pSimsysDetView->vHideControls(SW_SHOW);
             }
-            
+
             // Fill the node details for this node
             pSimsysDetView->vDisplayNodeInformation( pNode );
         }
     }
-	
+
 }
 /******************************************************************************/
-/*  Function Name    :  OnAddnode											  */
+/*  Function Name    :  OnAddnode                                             */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
@@ -1854,212 +1894,217 @@ void CSimSysTreeView::OnNodeTimerhandlers()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnAddnode() 
+void CSimSysTreeView::OnAddnode()
 {
-	vAddEditNode(FALSE);
+    vAddEditNode(FALSE);
 }
 /******************************************************************************/
 /*  Function Name    :  OnSimsysAllErrorhandlers                              */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enables all the error handlers of all the dlls under the 
+/*  Functionality    :  Enables all the error handlers of all the dlls under the
                         simulated system.
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysAllErrorhandlers() 
+void CSimSysTreeView::OnSimsysAllErrorhandlers()
 {
-    
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = STR_EMPTY;
-  
-    
-	m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLERRORHANDLERS , omStrMenuText
-                                                            , MF_BYCOMMAND);
-	if(omStrMenuText == _T("Enable All Error Handlers") )
-	{       // when user wants to enable all handlers
+
+
+    m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLERRORHANDLERS , omStrMenuText
+                                , MF_BYCOMMAND);
+    if(omStrMenuText == "Enable All Error Handlers" )
+    {
+        // when user wants to enable all handlers
 
         pSimSysNodeInfo->vSetEnableAllSimSysErrorHandlers(omStrSimSysName , TRUE);
-        
+
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysErrorHandlers(omStrSimSysName , FALSE);
-       
+
     }
 
-	
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnSimsysAllhandlers                                   */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enables all the handlers of all the dlls under the 
+/*  Functionality    :  Enables all the handlers of all the dlls under the
                         simulated system.
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysAllhandlers() 
+void CSimSysTreeView::OnSimsysAllhandlers()
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = STR_EMPTY;
-  
-    
-	m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLHANDLERS , omStrMenuText , MF_BYCOMMAND);
-	if(omStrMenuText == _T("Enable All Handlers") )
-	{       // when user wants to enable all handlers
+
+
+    m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLHANDLERS , omStrMenuText , MF_BYCOMMAND);
+    if(omStrMenuText == "Enable All Handlers" )
+    {
+        // when user wants to enable all handlers
 
         pSimSysNodeInfo->vSetEnableAllSimSysHandlers(omStrSimSysName , TRUE);
-       
+
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysHandlers(omStrSimSysName , FALSE);
-       
+
     }
 
-	
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnSimsysAllKeyhandlers                                */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enables all the key handlers of all the dlls under the 
+/*  Functionality    :  Enables all the key handlers of all the dlls under the
                         simulated system.
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysAllKeyhandlers() 
+void CSimSysTreeView::OnSimsysAllKeyhandlers()
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = STR_EMPTY;
-  
-    
-	m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLKEYHANDLERS , omStrMenuText
-                                                            , MF_BYCOMMAND);
-	if(omStrMenuText == "Enable All Key Handlers" )
-	{       // when user wants to enable all handlers
+
+
+    m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLKEYHANDLERS , omStrMenuText
+                                , MF_BYCOMMAND);
+    if(omStrMenuText == "Enable All Key Handlers" )
+    {
+        // when user wants to enable all handlers
 
         pSimSysNodeInfo->vSetEnableAllSimSysKeyHandlers(omStrSimSysName , TRUE);
-        
+
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysKeyHandlers(omStrSimSysName , FALSE);
-       
+
     }
 
-	
-	
+
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnSimsysAllMsghandlers                                */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enables all the msg handlers of all the dlls under the 
+/*  Functionality    :  Enables all the msg handlers of all the dlls under the
                         simulated system.
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysAllMsghandlers() 
+void CSimSysTreeView::OnSimsysAllMsghandlers()
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = STR_EMPTY;
-  
-    
-	m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLMSGHANDLERS , omStrMenuText 
-                                                            , MF_BYCOMMAND);
-	if(omStrMenuText == _T("Enable All Message Handlers") )
-	{       // when user wants to enable all handlers
+
+
+    m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLMSGHANDLERS , omStrMenuText
+                                , MF_BYCOMMAND);
+    if(omStrMenuText == "Enable All Message Handlers" )
+    {
+        // when user wants to enable all handlers
 
         pSimSysNodeInfo->vSetEnableAllSimSysMsgHandlers(omStrSimSysName , TRUE);
-       
+
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysMsgHandlers(omStrSimSysName , FALSE);
-       
+
     }
-	
-	
+
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnSimsysAllTimerhandlers                              */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enables all the timer handlers of the all the dlls  
+/*  Functionality    :  Enables all the timer handlers of the all the dlls
                         under the simulated system.
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysAllTimerhandlers() 
+void CSimSysTreeView::OnSimsysAllTimerhandlers()
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrMenuText = STR_EMPTY;
-  
-    
-	m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLTIMERHANDLERS , omStrMenuText 
-                                                                , MF_BYCOMMAND);
-   
-	if(omStrMenuText == _T("Enable All Timer Handlers") )
-	{       // when user wants to enable all handlers
+
+
+    m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLTIMERHANDLERS , omStrMenuText
+                                , MF_BYCOMMAND);
+
+    if(omStrMenuText == "Enable All Timer Handlers" )
+    {
+        // when user wants to enable all handlers
 
         pSimSysNodeInfo->vSetEnableAllSimSysTimerHandlers(omStrSimSysName );
-        
+
     }
     else
     {
         pSimSysNodeInfo->vSetDisableAllSimSysTimerHandlers(omStrSimSysName );
     }
-	
-	
+
+
 }
 
 /******************************************************************************/
@@ -2075,7 +2120,7 @@ void CSimSysTreeView::OnSimsysAllTimerhandlers()
 /*  Date Created     :  27.12.2005                                            */
 /*  Modification     :  Anish Kumar
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysBuildall() 
+void CSimSysTreeView::OnSimsysBuildall()
 {
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
@@ -2088,12 +2133,12 @@ void CSimSysTreeView::OnSimsysBuildall()
     CStringArray omStrBuildFiles;
     omStrBuildFiles.RemoveAll();
 
-    PSSIMSYSINFO pTempSimsys = 
-				CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
+    PSSIMSYSINFO pTempSimsys =
+        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     while(pTempSimsys != NULL)
     {
-         nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
+        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
         if(pTempSimsys->m_omStrSimSysName == omStrSimSysName)
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
@@ -2101,90 +2146,93 @@ void CSimSysTreeView::OnSimsysBuildall()
             {
                 if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
                 {
-					CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).podGetFunctionEditorDoc();
-					if ( pDoc != NULL)
-					{
-						//TO find which all files are opened through Framewnd
-						CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
-						if(pMainWnd != NULL)
-						{
-							//Get the active child wnd
-							CWnd *pWndTemp = pMainWnd->GetActiveFrame();
-							if(pWndTemp != NULL)
-							{
-								CWnd *pWnd = pWndTemp;
-								do
-								{
-									CString omStrWndName;
-									CString omStrFileName = pTempNode->m_sNodeInfo.m_omStrFileName;
-									int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
-									int nLength = omStrFileName.GetLength();
-									omStrFileName = omStrFileName.Right(nLength - nIndex -1);
-									pWnd->GetWindowText(omStrWndName);
-									//if the file is opened save it
-									if(!(omStrFileName.Compare(omStrWndName)))
-									{
+                    CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).podGetFunctionEditorDoc();
+                    if ( pDoc != NULL)
+                    {
+                        //TO find which all files are opened through Framewnd
+                        CMDIFrameWnd* pMainWnd = (CMDIFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
+                        if(pMainWnd != NULL)
+                        {
+                            //Get the active child wnd
+                            CWnd* pWndTemp = pMainWnd->GetActiveFrame();
+                            if(pWndTemp != NULL)
+                            {
+                                CWnd* pWnd = pWndTemp;
+                                do
+                                {
+                                    CString omStrWndName;
+                                    CString omStrFileName = pTempNode->m_sNodeInfo.m_omStrFileName;
+                                    int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
+                                    int nLength = omStrFileName.GetLength();
+                                    omStrFileName = omStrFileName.Right(nLength - nIndex -1);
+                                    pWnd->GetWindowText(omStrWndName);
+                                    //if the file is opened save it
+                                    if(!(omStrFileName.Compare(omStrWndName)))
+                                    {
                                         CDocument*(pDoc) = CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->OpenDocumentFile(pTempNode->m_sNodeInfo.m_omStrFileName);
-										if(pDoc!=NULL)
-										{
-											// If file name is not empty generate new def file
-											pDoc->OnSaveDocument(pTempNode->m_sNodeInfo.m_omStrFileName);
-										}
-										break;
-									}
-									pWnd = pWnd->GetNextWindow();
-								}
-								while((pWndTemp != pWnd) && pWnd != NULL);
-							}
-						}
-					}
+                                        if(pDoc!=NULL)
+                                        {
+                                            // If file name is not empty generate new def file
+                                            pDoc->OnSaveDocument(pTempNode->m_sNodeInfo.m_omStrFileName);
+                                        }
+                                        break;
+                                    }
+                                    pWnd = pWnd->GetNextWindow();
+                                }
+                                while((pWndTemp != pWnd) && pWnd != NULL);
+                            }
+                        }
+                    }
 
-					bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllBuild(&
-						pTempNode->m_sNodeInfo);
-					if(!bSuccess)
-					{
-						nFailure++;
-						omStrBuildFiles.Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-					}
-					else  // if the build is successfull
-					{
-						CString omStrPrevDllName = STR_EMPTY;
-						omStrPrevDllName = pTempNode->m_sNodeInfo.m_omStrDllName;
-						omStrFileName = pTempNode->m_sNodeInfo.m_omStrFileName;
-						omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
-						pTempNode->m_sNodeInfo.m_omStrDllName = omStrFileName;
-						bPopulateTree();
-					}
-				}
-				pTempNode = pTempNode->m_psNextNode;
-			}
-			pTempSimsys = pTempSimsys->m_psSimsysNext;
-		}
-		else
-			pTempSimsys = pTempSimsys->m_psSimsysNext;
-	}
+                    bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllBuild(&
+                               pTempNode->m_sNodeInfo);
+                    if(!bSuccess)
+                    {
+                        nFailure++;
+                        omStrBuildFiles.Add(pTempNode->m_sNodeInfo.m_omStrFileName);
+                    }
+                    else  // if the build is successfull
+                    {
+                        CString omStrPrevDllName = STR_EMPTY;
+                        omStrPrevDllName = pTempNode->m_sNodeInfo.m_omStrDllName;
+                        omStrFileName = pTempNode->m_sNodeInfo.m_omStrFileName;
+                        omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
+                        pTempNode->m_sNodeInfo.m_omStrDllName = omStrFileName;
+                        bPopulateTree();
+                    }
+                }
+                pTempNode = pTempNode->m_psNextNode;
+            }
+            pTempSimsys = pTempSimsys->m_psSimsysNext;
+        }
+        else
+        {
+            pTempSimsys = pTempSimsys->m_psSimsysNext;
+        }
+    }
 
-	if((nFailure == 0) || (nFailure != nNodeCount))  
-    { // if the build is successfull atleast for one.
-                
-       bPopulateTree();
+    if((nFailure == 0) || (nFailure != nNodeCount))
+    {
+        // if the build is successfull atleast for one.
+
+        bPopulateTree();
     }
     if(nFailure > 0)  // if the build is not successfull
-    {       
+    {
 
-        CString omStrErrorMsg =_T("Following file(s) are not properly build:");
+        CString omStrErrorMsg ="Following file(s) are not properly build:";
         CString omStrErrorMsgDummy="";
-        for(int i = 0 ;i < nFailure; i++)
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
-         
-      
+
+
         AfxMessageBox(omStrErrorMsg);
     }
-	
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnDeleteAllNodes                                      */
@@ -2198,15 +2246,15 @@ void CSimSysTreeView::OnSimsysBuildall()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.02.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnDeleteAllNodes() 
+void CSimSysTreeView::OnDeleteAllNodes()
 {
-	CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-	BOOL bSuccess = FALSE;
-	BOOL bDataSet = FALSE;
-	CTreeCtrl& om_tree = GetTreeCtrl();
+    BOOL bSuccess = FALSE;
+    BOOL bDataSet = FALSE;
+    CTreeCtrl& om_tree = GetTreeCtrl();
     HTREEITEM hSimSysItem = om_tree.GetSelectedItem();
     CString omStrSimSysName = STR_EMPTY;
     omStrSimSysName = om_tree. GetItemText(hSimSysItem);
@@ -2215,7 +2263,7 @@ void CSimSysTreeView::OnDeleteAllNodes()
     BOOL bIsDelValid = pSimSysNodeInfo->bIsUnLoadAllValid(omStrSimSysName);
     if(bIsDelValid)
     {
-        AfxMessageBox(_T("Unload all the dlls and try again!!"));
+        AfxMessageBox("Unload all the dlls and try again!!");
     }
     else
     {
@@ -2239,11 +2287,11 @@ void CSimSysTreeView::OnDeleteAllNodes()
             }
         }
     }
-    
-    
+
+
 }
 /******************************************************************************/
-/*  Function Name    :  OnDeleteSimulatedsystem							      */
+/*  Function Name    :  OnDeleteSimulatedsystem                               */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
@@ -2254,31 +2302,31 @@ void CSimSysTreeView::OnDeleteAllNodes()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.02.2005                                            */
-/*  Modification     :  
+/*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnDeleteSimulatedsystem() 
+void CSimSysTreeView::OnDeleteSimulatedsystem()
 {
     CTreeCtrl& om_tree = GetTreeCtrl();
     // for simsys array purpose
-    
-    CSimSysConfigDetails *pSimsysConfig = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
-	if(pSimsysConfig == NULL)
-	{
-		return;
-	}
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+
+    CSimSysConfigDetails* pSimsysConfig = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
+    if(pSimsysConfig == NULL)
+    {
+        return;
+    }
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    
+
     HTREEITEM hItem = om_tree.GetSelectedItem();
     CString omStrSelecetedText = om_tree.GetItemText(hItem);
     BOOL bIsDllsLoaded = pSimSysNodeInfo->bIsUnLoadAllValid(omStrSelecetedText);
     if(bIsDllsLoaded)
     {
-        AfxMessageBox(_T("Unload all the dlls and try again!!"));
+        AfxMessageBox("Unload all the dlls and try again!!");
     }
     else
-    {       
-        
+    {
+
         if ( hItem != NULL )
         {
             //If there is change in the system then save it
@@ -2286,11 +2334,11 @@ void CSimSysTreeView::OnDeleteSimulatedsystem()
             // Delete the simulated system from the data structure
             BOOL bSuccess = pSimSysNodeInfo->bDeleteSimsysFromInfo(omStrSelecetedText);
 
-            // delete 
+            // delete
             if (!bSuccess)
             {
-                AfxMessageBox(_T("Could not delete seleceted Simsys!"), 
-                    MB_OK|MB_ICONINFORMATION);
+                AfxMessageBox("Could not delete seleceted Simsys!",
+                              MB_OK|MB_ICONINFORMATION);
             }
             else
             {
@@ -2326,21 +2374,21 @@ void CSimSysTreeView::OnDeleteSimulatedsystem()
 }
 
 /******************************************************************************
- Function Name    :                                        
-                                                                          
- Input(s)         :                                                       
- Output           :                                                       
- Functionality    :  
- Member of        :  CSimSysTreeView                                      
- Friend of        :      -                                                
-                                                                          
- Author(s)        :  Anish Kr.                                          
- Date Created     :  02.03.2009                                           
- Modification By  :                                 
+ Function Name    :
+
+ Input(s)         :
+ Output           :
+ Functionality    :
+ Member of        :  CSimSysTreeView
+ Friend of        :      -
+
+ Author(s)        :  Anish Kr.
+ Date Created     :  02.03.2009
+ Modification By  :
 /******************************************************************************/
-void CSimSysTreeView::vSaveSimsSysIfModified(CString omSimSysName) 
+void CSimSysTreeView::vSaveSimsSysIfModified(CString omSimSysName)
 {
-    CSimSysNodeInfo *pSimSysNodeInfo = 
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (pSimSysNodeInfo != NULL)
     {
@@ -2349,11 +2397,11 @@ void CSimSysTreeView::vSaveSimsSysIfModified(CString omSimSysName)
         {
             if (psSimSys->m_bIsSimSysModified)
             {
-                int nReturn = AfxMessageBox(ASK_SIMSYS_SAVE_PROMPT, 
+                int nReturn = AfxMessageBox(ASK_SIMSYS_SAVE_PROMPT,
                                             MB_YESNO|MB_ICONQUESTION);
                 if (nReturn == IDYES)
                 {
-                    CSimSysConfigDetails *pSimsysConfig = 
+                    CSimSysConfigDetails* pSimsysConfig =
                         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
                     if (pSimsysConfig)
                     {
@@ -2375,27 +2423,27 @@ void CSimSysTreeView::vSaveSimsSysIfModified(CString omSimSysName)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification By  :  Anish kr                                     
-/*  Date		     :  31.10.2006,Remove code for changing Dll name(File's name.dll)
-/*                      in node's detail struct on simply loading 
+/*  Modification By  :  Anish kr
+/*  Date             :  31.10.2006,Remove code for changing Dll name(File's name.dll)
+/*                      in node's detail struct on simply loading
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysLoadall() 
+void CSimSysTreeView::OnSimsysLoadall()
 {
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrFileName = STR_EMPTY;
-    
+
     int nNodeCount = 0;
     CStringArray omStrLoadFiles;
     omStrLoadFiles.RemoveAll();
 
     BOOL bSuccess = FALSE;
     int nFailure = 0;
-    PSSIMSYSINFO pTempSimsys = 
-				CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
+    PSSIMSYSINFO pTempSimsys =
+        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
-    
+
     while(pTempSimsys != NULL)
     {
         nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
@@ -2407,7 +2455,7 @@ void CSimSysTreeView::OnSimsysLoadall()
                 if(pTempNode->m_sNodeInfo.m_omStrDllName != "")
                 {
                     bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllLoad(&
-                        pTempNode->m_sNodeInfo);
+                               pTempNode->m_sNodeInfo);
                     if(!bSuccess)
                     {
                         nFailure++;
@@ -2424,63 +2472,66 @@ void CSimSysTreeView::OnSimsysLoadall()
                         pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
 
                     }
-                    
+
                 }
                 pTempNode = pTempNode->m_psNextNode;
             }
             pTempSimsys = pTempSimsys->m_psSimsysNext;
         }
         else
+        {
             pTempSimsys = pTempSimsys->m_psSimsysNext;
+        }
     }
-  
-    if((nFailure == 0) || (nFailure != nNodeCount))  
-    {   // if the load is successfull atleast for one dll.
 
-       bPopulateTree();
+    if((nFailure == 0) || (nFailure != nNodeCount))
+    {
+        // if the load is successfull atleast for one dll.
+
+        bPopulateTree();
     }
     if(nFailure > 0)  // if the load is not successfull
-    {       
+    {
 
         CString omStrErrorMsg ="Following file(s) are not properly loaded:";
         CString omStrErrorMsgDummy="";
-        for(int i = 0 ;i < nFailure; i++)
+        for(int i = 0 ; i < nFailure; i++)
         {
-            
-           omStrErrorMsgDummy.Format(_T("\n%s"), omStrLoadFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+
+            omStrErrorMsgDummy.Format("\n%s", omStrLoadFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
-         
-      
+
+
         AfxMessageBox(omStrErrorMsg);
     }
-    
+
 }
 /******************************************************************************/
-/*  Function Name    :  OnSimsysSave	                                      */
+/*  Function Name    :  OnSimsysSave                                          */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user wants to save the configuration  */
 /*                      information into the file. The method calls the       */
-/*                      CSimSysConfigDetails nSaveConfiguration(..) method to save 
+/*                      CSimSysConfigDetails nSaveConfiguration(..) method to save
 /*                      information.                                          */
 /*                      If there is any error, then a message box is displayed*/
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.12.2005                                            */
-/*  Modifications    :   
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysSave() 
+void CSimSysTreeView::OnSimsysSave()
 {
-	CSimSysConfigDetails *pSimsysConfig = 
+    CSimSysConfigDetails* pSimsysConfig =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
-    CSimSysNodeInfo *pSimSysNodeInfo =
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-	if((pSimsysConfig != NULL) && (pSimSysNodeInfo))
-	{
-	    CTreeCtrl& omTree = GetTreeCtrl();
-	    HTREEITEM hItem = omTree.GetSelectedItem();
+    if((pSimsysConfig != NULL) && (pSimSysNodeInfo))
+    {
+        CTreeCtrl& omTree = GetTreeCtrl();
+        HTREEITEM hItem = omTree.GetSelectedItem();
         // get the name of the loaded config file only if no filename has
         // been specified until now..
         CString omStrPathName = omTree.GetItemText(hItem);
@@ -2492,49 +2543,49 @@ void CSimSysTreeView::OnSimsysSave()
     }
 }
 /******************************************************************************/
-/*  Function Name    :  OnSimsysSaveAs	                                      */
+/*  Function Name    :  OnSimsysSaveAs                                        */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user wants to save the configuration  */
-/*                      information into a new file. 
+/*                      information into a new file.
 /*                      If there is any error, then a message box is displayed*/
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.12.2005                                            */
-/*  Modifications    :   
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysSaveAs() 
+void CSimSysTreeView::OnSimsysSaveAs()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	CTreeCtrl& omTree = GetTreeCtrl();
-	
-	HTREEITEM hItem = omTree.GetSelectedItem();
-	CString oCfgFilename = STR_EMPTY;
-	
+    CTreeCtrl& omTree = GetTreeCtrl();
+
+    HTREEITEM hItem = omTree.GetSelectedItem();
+    CString oCfgFilename = STR_EMPTY;
+
     // get the name of the loaded config file only if no filename has
     // been specified until now..
     CString omStrPathName = omTree.GetItemText(hItem);
-	
-	CSimSysNodeInfo *pSimSysNodeInfo = 
+
+    CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-	if(pSimSysNodeInfo != NULL)
-	{    	
-	    CFileDialog oCfgFileDlg(FALSE,      // Open dialog as Save as File dlg
-		    defSIMSYSCONFEXT,               // default extension
-		    NULL,                           // default file name
-		    defDLGFLAGS ,                   // mode
-		    defSIMSYSCONFIGFILTER,          // filter 
-		    NULL                            // parent wnd
-		    );
-        oCfgFileDlg.m_ofn.lpstrTitle = _T("SaveAs Configuration Filename...");
-        
+    if(pSimSysNodeInfo != NULL)
+    {
+        CFileDialog oCfgFileDlg(FALSE,      // Open dialog as Save as File dlg
+                                defSIMSYSCONFEXT,               // default extension
+                                NULL,                           // default file name
+                                defDLGFLAGS ,                   // mode
+                                defSIMSYSCONFIGFILTER,          // filter
+                                NULL                            // parent wnd
+                               );
+        oCfgFileDlg.m_ofn.lpstrTitle = "SaveAs Configuration Filename...";
+
         if(oCfgFileDlg.DoModal() == IDOK)
         {
             // get the name of the selected file
             oCfgFilename = oCfgFileDlg.GetPathName();
             bCallFrmSaveAs = TRUE;
-		    BOOL bReturn = pSimSysNodeInfo->bIsSimSysPresent( oCfgFilename );
+            BOOL bReturn = pSimSysNodeInfo->bIsSimSysPresent( oCfgFilename );
             if(! bReturn )
             {
                 if(oCfgFilename.IsEmpty() == FALSE)
@@ -2544,11 +2595,11 @@ void CSimSysTreeView::OnSimsysSaveAs()
             }
             else
             {
-                AfxMessageBox(_T("The simulated system is already present.Cannot replace the file"));
+                AfxMessageBox("The simulated system is already present.Cannot replace the file");
             }
         }
     }
-	
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnSimsysUnloadall                                     */
@@ -2561,26 +2612,26 @@ void CSimSysTreeView::OnSimsysSaveAs()
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modification By  :  Anish kr                                     
-/*  Date		     :  31.10.2006,Remove code for changing Dll name(File's name.dll)
-/*                      in node's detail struct on simply unloading 
+/*  Modification By  :  Anish kr
+/*  Date             :  31.10.2006,Remove code for changing Dll name(File's name.dll)
+/*                      in node's detail struct on simply unloading
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysUnloadall() 
+void CSimSysTreeView::OnSimsysUnloadall()
 {
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
     CString omStrFileName = STR_EMPTY;
-    
+
     int nNodeCount = 0;
 
     CStringArray omStrUnLoadFiles;
     omStrUnLoadFiles.RemoveAll();
 
-	BOOL bSuccess = FALSE;
+    BOOL bSuccess = FALSE;
     int nFailure = 0;
-    PSSIMSYSINFO pTempSimsys = 
-				CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
+    PSSIMSYSINFO pTempSimsys =
+        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     while(pTempSimsys != NULL)
     {
@@ -2590,10 +2641,10 @@ void CSimSysTreeView::OnSimsysUnloadall()
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
             while(pTempNode != NULL)
             {
-                if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)  // if any dll is loaded 
+                if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)  // if any dll is loaded
                 {
                     bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllUnload(&
-                        pTempNode->m_sNodeInfo);
+                               pTempNode->m_sNodeInfo);
                     if(!bSuccess)
                     {
                         nFailure++;
@@ -2607,7 +2658,7 @@ void CSimSysTreeView::OnSimsysUnloadall()
                         pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
                         pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled   = FALSE;
                         pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled   = FALSE;
-                        pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;                        
+                        pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
                     }
                 }
                 pTempNode = pTempNode->m_psNextNode;
@@ -2615,25 +2666,28 @@ void CSimSysTreeView::OnSimsysUnloadall()
             pTempSimsys = pTempSimsys->m_psSimsysNext;
         }
         else
+        {
             pTempSimsys = pTempSimsys->m_psSimsysNext;
+        }
     }
-    if((nFailure == 0) || (nFailure != nNodeCount))  
-    {   // if the unload is successfull atleast for one dll.
+    if((nFailure == 0) || (nFailure != nNodeCount))
+    {
+        // if the unload is successfull atleast for one dll.
         bPopulateTree();
     }
     if(nFailure > 0)  // if the load is not successfull
     {
         CString omStrErrorMsg = "Following file(s) are not properly unloaded:";
         CString omStrErrorMsgDummy = "";
-        for(int i = 0 ;i < nFailure; i++)
-        {            
-           omStrErrorMsgDummy.Format("\n%s", omStrUnLoadFiles.GetAt(i));
-           omStrErrorMsg += omStrErrorMsgDummy;
+        for(int i = 0 ; i < nFailure; i++)
+        {
+            omStrErrorMsgDummy.Format("\n%s", omStrUnLoadFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
         }
-         
-      
+
+
         AfxMessageBox(omStrErrorMsg);
-    } 
+    }
 
 }
 /******************************************************************************/
@@ -2641,53 +2695,55 @@ void CSimSysTreeView::OnSimsysUnloadall()
 /*                                                                            */
 /*  Input(s)         :  CString omStrSimsysName                               */
 /*  Output           :                                                        */
-/*  Functionality    :  Sets the name of the new simsys which is created. 
+/*  Functionality    :  Sets the name of the new simsys which is created.
                         under root.
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.02.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 BOOL CSimSysTreeView::bSetSimsysName(CString& omStrSimsysName)
 {
-	CTreeCtrl& om_tree = GetTreeCtrl();
-	int bFlag = TRUE;
-	HTREEITEM hChildItem = NULL;
+    CTreeCtrl& om_tree = GetTreeCtrl();
+    int bFlag = TRUE;
+    HTREEITEM hChildItem = NULL;
     m_hRootItem = om_tree.GetRootItem();
     if (om_tree.ItemHasChildren(m_hRootItem))
     {
-		hChildItem = om_tree.GetChildItem(m_hRootItem);
+        hChildItem = om_tree.GetChildItem(m_hRootItem);
     }
-	
+
     HTREEITEM hItem = om_tree.GetSelectedItem();
-	
+
     if ( hItem != NULL || hChildItem != NULL)
     {
         // for new simsys, insert the new simsys name under root
         if ( hItem == om_tree.GetRootItem() )
         {
             HTREEITEM hNewItem = om_tree.InsertItem( omStrSimsysName, hItem );
-			m_omSimsysCount++;
-            // select new simsys 
+            m_omSimsysCount++;
+            // select new simsys
             om_tree.SelectItem(hNewItem);
-            
+
         }
-		
+
     }
     else
+    {
         bFlag = FALSE;
-	return bFlag;
+    }
+    return bFlag;
 }
 
 
 /******************************************************************************/
-/*  Function Name    :  OnSimsysSaveAll	                                      */
+/*  Function Name    :  OnSimsysSaveAll                                       */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user wants to save all the sim sys config
-/*                      information into the file. The method calls the       
+/*                      information into the file. The method calls the
 /*                      CSimSysConfigDetails nSaveConfiguration(..) method to save           */
 /*                      information.                                          */
 /*                      If there is any error, then a message box is displayed*/
@@ -2695,9 +2751,9 @@ BOOL CSimSysTreeView::bSetSimsysName(CString& omStrSimsysName)
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  28.12.2005                                            */
-/*  Modifications    :   
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::OnSimsysSaveAll() 
+void CSimSysTreeView::OnSimsysSaveAll()
 {
     CSimSysManager::ouGetSimSysManager(m_eBus).vSaveAllSimSys();
 }
@@ -2709,13 +2765,13 @@ void CSimSysTreeView::OnSimsysSaveAll()
 /*  Input(s)         :  CString omStrPrevDllName , CString omStrNewDllName    */
 /*  Output           :                                                        */
 /*  Functionality    :  Sets the name of the edited item on the tree view
-                        
+
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  12.1.2006                                             */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysTreeView::vSetDllName(CString& omStrPrevDllName , CString& omStrNewDllName )
 {
@@ -2723,7 +2779,7 @@ void CSimSysTreeView::vSetDllName(CString& omStrPrevDllName , CString& omStrNewD
 
     HTREEITEM hItem = om_tree.GetSelectedItem();
     HTREEITEM hChild = om_tree.GetChildItem( hItem );
-    
+
 
     if ( (hChild != NULL) && (!omStrNewDllName.IsEmpty()))
     {
@@ -2733,17 +2789,18 @@ void CSimSysTreeView::vSetDllName(CString& omStrPrevDllName , CString& omStrNewD
             om_tree.SetItemText( hChild, omStrNewDllName );
         }
     }
-    else if( (hChild == NULL) && (!omStrNewDllName.IsEmpty())) 
-    {       // when no dll was associated before
+    else if( (hChild == NULL) && (!omStrNewDllName.IsEmpty()))
+    {
+        // when no dll was associated before
         om_tree.InsertItem( omStrNewDllName , hItem );
-    } 
+    }
     else if ( (hChild != NULL) && (omStrNewDllName.IsEmpty()))
     {
         // when new dll name is empty
         om_tree.DeleteItem( hChild );
     }
     // to set the focus to the tree view so that the changes are visible.
-    CSimSysTreeView* pSimSysTreeView = 
+    CSimSysTreeView* pSimSysTreeView =
         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
     pSimSysTreeView->SetFocus();
 }
@@ -2752,23 +2809,23 @@ void CSimSysTreeView::vSetDllName(CString& omStrPrevDllName , CString& omStrNewD
 /*                                                                            */
 /*  Input(s)         :  CString omStrPrevDllName , CString omStrNewDllName    */
 /*  Output           :                                                        */
-/*  Functionality    :  Sets the name of the dll in Bold if dll is loaded else 
+/*  Functionality    :  Sets the name of the dll in Bold if dll is loaded else
                         normal font in the tree view
-                        
+
 /*  Member of        :  CSimSysTreeView                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  
-/*  Date Created     :  
-/*  Modifications    :  
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysTreeView::vSetSimSysDllName(CString &omStrNodeName , 
-                                        CString& omStrNewDllName , 
+void CSimSysTreeView::vSetSimSysDllName(CString& omStrNodeName ,
+                                        CString& omStrNewDllName ,
                                         BOOL bIsDllLoaded)
 {
     if (!omStrNewDllName.IsEmpty())
     {
-        CTreeCtrl& om_tree = GetTreeCtrl();   
+        CTreeCtrl& om_tree = GetTreeCtrl();
         HTREEITEM hItem = om_tree.GetSelectedItem();  // Node
         if (hItem)
         {
@@ -2803,21 +2860,21 @@ void CSimSysTreeView::vSetSimSysDllName(CString &omStrNodeName ,
 }
 
 /******************************************************************************/
-/*  Function Name    :  hInsertAndSelectItem                                  
-/*                                                                           
-/*  Input(s)         :  HTREEITEM hParent, CString omItemName                                                     
-/*  Output           :                                                       
+/*  Function Name    :  hInsertAndSelectItem
+/*
+/*  Input(s)         :  HTREEITEM hParent, CString omItemName
+/*  Output           :
 /*  Functionality    :  Insert an item and set it selected
-/*  Member of        :  CSimSysTreeView                                      
-/*  Friend of        :      -                                                
-/*                                                                           
-/*  Author(s)        :  Anish Kr.                                            
-/*  Date Created     :  26.02.09  
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Anish Kr.
+/*  Date Created     :  26.02.09
 /******************************************************************************/
 HTREEITEM CSimSysTreeView::hInsertAndSelectItem(CString omItemName, HTREEITEM hParent )
 {
     HTREEITEM hItem = NULL;
-    CTreeCtrl& om_tree = GetTreeCtrl();  
+    CTreeCtrl& om_tree = GetTreeCtrl();
     hItem = om_tree.InsertItem(omItemName, hParent);
     if (hItem)
     {
@@ -2827,23 +2884,23 @@ HTREEITEM CSimSysTreeView::hInsertAndSelectItem(CString omItemName, HTREEITEM hP
 }
 
 /******************************************************************************/
-/*  Function Name    :  psGetCurrentSimSysInfo                                  
-/*                                                                           
-/*  Input(s)         :                                                      
-/*  Output           :                                                       
+/*  Function Name    :  psGetCurrentSimSysInfo
+/*
+/*  Input(s)         :
+/*  Output           :
 /*  Functionality    :  It returns the pointer of simsys under which current
                         selected node is present
-/*  Member of        :  CSimSysTreeView                                      
-/*  Friend of        :      -                                                
-/*                                                                           
-/*  Author(s)        :  Anish Kr.                                            
-/*  Date Created     :  26.02.09  
+/*  Member of        :  CSimSysTreeView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Anish Kr.
+/*  Date Created     :  26.02.09
 /******************************************************************************/
 PSSIMSYSINFO CSimSysTreeView::psGetCurrentSimSysInfo()
 {
     HTREEITEM hSelItem = NULL;
     PSSIMSYSINFO psCurrentSimsys = NULL;
-    CTreeCtrl& om_tree = GetTreeCtrl();  
+    CTreeCtrl& om_tree = GetTreeCtrl();
     hSelItem = om_tree.GetSelectedItem();
     if (hSelItem != NULL)
     {
@@ -2851,7 +2908,7 @@ PSSIMSYSINFO CSimSysTreeView::psGetCurrentSimSysInfo()
         if (hParenSys != NULL)
         {
             CString omSimSys = om_tree.GetItemText(hParenSys);
-            CSimSysNodeInfo *psNodeInfo = 
+            CSimSysNodeInfo* psNodeInfo =
                 CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
             if (psNodeInfo != NULL)
             {

@@ -44,7 +44,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXEXT;WINVER=0x0502"
 				MinimalRebuild="true"
@@ -53,7 +53,7 @@
 				TreatWChar_tAsBuiltInType="true"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -190,6 +190,93 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
+		<Configuration
+			Name="busmaster_debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;WINVER=0x0502"
+				RuntimeLibrary="2"
+				TreatWChar_tAsBuiltInType="true"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;"
+				OutputFile="$(SolutionDir)/BIN/$(OutDir)/SigGrphWnd.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/SigGrphWnd.lib"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -220,6 +307,15 @@
 						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\GraphChildFrame.cpp"
@@ -235,6 +331,15 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -272,6 +377,15 @@
 						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\GraphLeftView.cpp"
@@ -287,6 +401,15 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -324,6 +447,15 @@
 						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\GraphSink.cpp"
@@ -351,6 +483,15 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+						PrecompiledHeaderThrough="SigGrphWnd_stdafx.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"

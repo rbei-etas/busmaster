@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  IEventFilter definition
 * @remark The header structure of the OLI may change
@@ -27,11 +27,14 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 /** @ingroup GROUP_OLI_COMMON_FILTERS
-* @brief  Base interface for all @ref IEvent "event" filters. 
+* @brief  Base interface for all @ref IEvent "event" filters.
 *
 * This interface has been introduced for symmetry and structural
 * reasons only. Just like the @ref IEvent, it does not add any
@@ -43,7 +46,8 @@ namespace ETAS {namespace OLI {
 * @see    IEvent
 */
 
-OLI_INTERFACE IEventFilter : public IFilter
+OLI_INTERFACE IEventFilter :
+public IFilter
 {
 protected:
 
@@ -54,7 +58,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~IEventFilter() OLI_NOTHROW {};
 };
@@ -62,7 +66,8 @@ protected:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

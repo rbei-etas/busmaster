@@ -90,12 +90,15 @@ int CMessage::Format(char* pcLine)
     // get the MSG ID
     pcToken = strtok_s(pcLine, " :", &pcTok);
     m_uiMsgID = strtoul(pcToken, NULL, 0);
+
+    //m_uiMsgID = m_uiMsgID & 0x00FFFF00;
+    //m_uiMsgID = m_uiMsgID >> 8;
     // get the message name
     pcToken = strtok_s(NULL, " :", &pcTok);
     m_acName = pcToken;
     // set the message length
     pcToken = strtok_s(NULL, " :", &pcTok);
-    m_ucLength = (unsigned char)atoi(pcToken);
+    m_ucLength = (unsigned char)strtoul(pcToken, NULL, 10);
     CConverter::ucMsg_DLC = m_ucLength;
     //get the Tx'ing Node Name
     pcToken = strtok_s(NULL, " :", &pcTok);
@@ -126,7 +129,7 @@ int CMessage::Format(char* pcLine)
  *
  * Writes the Messages in the given list to the output file.
  */
-bool CMessage::writeMessageToFile(fstream& fileOutput, list<CMessage> &m_listMessages, bool writeErr)
+bool CMessage::writeMessageToFile(fstream& fileOutput, list<CMessage>& m_listMessages, bool writeErr, int protocol)
 {
     bool bResult = true;
     //Write all the message
@@ -135,7 +138,33 @@ bool CMessage::writeMessageToFile(fstream& fileOutput, list<CMessage> &m_listMes
     for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
     {
         fileOutput << T_START_MSG << " " << msg->m_acName.c_str();
-        fileOutput << "," << dec << msg->m_uiMsgID;
+        //Currently Onlu PGN ID is used insttead of Extended ID.
+        //In Database version 1.4 Extended id will be used instead of PGNID.
+        unsigned int unMsgId = msg->m_uiMsgID;
+        if(protocol == PROTOCAL_J1939)
+        {
+            unsigned int unPGNId = msg->m_uiMsgID;
+            unPGNId = msg->m_uiMsgID & 0x00FFFF00;
+
+            //Get PGN ID
+            unPGNId = unPGNId >> 8;
+
+            //Get PDU ID
+            unsigned int unPDU = unPGNId & 0xFF00;
+            unPDU = unPDU >> 8;
+            //If it is PDU1 - Data message
+            if ( unPDU <=239 )
+            {
+                unMsgId = unPGNId & 0xFF00;
+            }
+            else
+            {
+                //Broadcast Msg
+                unMsgId = unPGNId;
+            }
+        }
+
+        fileOutput << "," << dec << unMsgId;
         fileOutput << "," << dec << msg->m_ucLength;
         fileOutput << "," << dec << msg->m_ucNumOfSignals;
         fileOutput << "," << msg->m_cDataFormat;

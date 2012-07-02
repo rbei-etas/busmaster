@@ -30,8 +30,8 @@
 
 /******************************************************************************
     Function Name    :  CFormatMsgCommon
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Default Constructor
     Member of        :  CFormatMsgCommon
     Friend of        :      -
@@ -40,15 +40,15 @@
 ******************************************************************************/
 CFormatMsgCommon::CFormatMsgCommon(void)
 {
-    
+
     m_qwAbsBaseTime = 0;
     m_qwRefSysTime  = 0;
 }
 
 /******************************************************************************
     Function Name    :  ~CFormatMsgCommon
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Destructor
     Member of        :  CFormatMsgCommon
     Friend of        :      -
@@ -62,9 +62,9 @@ CFormatMsgCommon::~CFormatMsgCommon(void)
 /******************************************************************************
     Function Name    :  vCalculateAndFormatTM
     Input(s)         :  bExprnFlag - Details of time mode
-                        TimeStamp - Msg time stamp, Rel time in case of Rel. mode 
+                        TimeStamp - Msg time stamp, Rel time in case of Rel. mode
                         acTime - Buffer to store formatted time
-    Output           :  
+    Output           :
     Functionality    :  Format time details
     Member of        :  CFormatMsgCommon
     Friend of        :      -
@@ -117,14 +117,14 @@ void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, char acTime[])
     nTemp = nTemp / 60;         // expressed in minutes
     nMinute = nTemp % 60;       // minutes left
     nHour = nTemp / 60;         // expressed in hours
-    sprintf(acTime, _T("%02d:%02d:%02d:%04d"), nHour, nMinute, nSec, nMicSec);
+    sprintf(acTime, "%02d:%02d:%02d:%04d", nHour, nMinute, nSec, nMicSec);
 }
 
 /******************************************************************************
     Function Name    :  vFormatTimeStamp
     Input(s)         :  dwTimeStamp - time stamp to be formatted
                         acTime - Buffer to store formatted time
-    Output           :  
+    Output           :
     Functionality    :  Format time details
     Member of        :  CFormatMsgCommon
     Friend of        :      -

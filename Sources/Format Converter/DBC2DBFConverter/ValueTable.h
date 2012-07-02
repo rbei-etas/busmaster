@@ -43,5 +43,5 @@ public:
     list <CValueDescriptor> m_values;
     CValueTable& operator=(CValueTable& Tab);
     string m_TableName;
-    void writeValueTabToFile(fstream& fileOutput, list<CValueTable> &vTab);
+    void writeValueTabToFile(fstream& fileOutput, list<CValueTable>& vTab);
 };

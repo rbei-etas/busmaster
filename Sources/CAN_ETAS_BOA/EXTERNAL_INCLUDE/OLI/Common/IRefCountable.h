@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  IRefCountable definition
 * @remark The header structure of the OLI may change
@@ -25,11 +25,14 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief Base interface for life-time control.
 *
@@ -37,7 +40,7 @@ namespace ETAS {namespace OLI {
 * require life-time control to be shared between OLL
 * and client application.
 *
-* A client application should not call the methods of 
+* A client application should not call the methods of
 * this interface directly. Instead it should use the
 * @ref AutoPtr wrapper template to manage them implicitly.
 *
@@ -58,41 +61,41 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since BOA 1.3 
+        @since BOA 1.3
      */
     virtual ~IRefCountable() OLI_NOTHROW {};
 
 public:
 
     /** @brief Increments the object's reference count.
-        
-        This method must be called when another reference has been 
+
+        This method must be called when another reference has been
         added to this instance.
 
         @return New reference count.
         @exception <none> This function must not throw exceptions.
 
-        @remark Avoid calling @a AddRef manually. 
-                Use the @ref AutoPtr wrapper template instead. 
+        @remark Avoid calling @a AddRef manually.
+                Use the @ref AutoPtr wrapper template instead.
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    Release
      */
     virtual int32 OLI_CALL AddRef() const OLI_NOTHROW = 0;
 
-    /** @brief Decrements the object's reference count. 
-    
+    /** @brief Decrements the object's reference count.
+
         If the reference count reaches 0, the object will be destroyed.
-        This method must be called when another reference has been 
+        This method must be called when another reference has been
         added to this instance.
 
         @return New reference count.
         @exception <none> This function must not throw exceptions.
 
-        @remark Avoid calling @a Release manually. 
-                Use the @ref AutoPtr wrapper template instead. 
+        @remark Avoid calling @a Release manually.
+                Use the @ref AutoPtr wrapper template instead.
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    AddRef
      */
     virtual int32 OLI_CALL Release() const OLI_NOTHROW = 0;
@@ -101,7 +104,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

@@ -33,10 +33,10 @@ protected:
     CUIThread();           // protected constructor used by dynamic creation
     CNotificWnd* m_podTraceWinObj;
 
-// Attributes
+    // Attributes
 private:
 
-// Operations
+    // Operations
 public:
     BOOL bCreateTraceWindow(CMDIFrameWnd*);
     void vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoTrace);
@@ -44,17 +44,17 @@ public:
     void vAddString(CString omStr);
     // To know if the trace window is visible
     BOOL bIsTraceWindowVisible(void);
-	HWND hGetHandleTraceWnd();
+    HWND hGetHandleTraceWnd();
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CUIThread)
-    public:
+public:
     virtual BOOL InitInstance();
     virtual int ExitInstance();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CUIThread();
 
@@ -63,11 +63,11 @@ protected:
     // To process thread messages
     afx_msg void vWriteTextToTrace(UINT, LONG);
     afx_msg void vProcessThreadMsg(UINT, LONG);
-    
+
 
     // Generated message map functions
     //{{AFX_MSG(CUIThread)
-        // NOTE - the ClassWizard will add and remove member functions here.
+    // NOTE - the ClassWizard will add and remove member functions here.
     //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()

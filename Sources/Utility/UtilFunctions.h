@@ -24,7 +24,7 @@
 
 #pragma once
 
-class CUtilFunctions  
+class CUtilFunctions
 {
 public:
     // Top mask unwanted bit of the data
@@ -34,7 +34,7 @@ public:
 
 protected:
 
-// Make constructor as private so that object can not be created for this class
+    // Make constructor as private so that object can not be created for this class
 private:
     CUtilFunctions();
     virtual ~CUtilFunctions();

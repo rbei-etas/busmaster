@@ -104,6 +104,7 @@ CDMGraphCtrl::CDMGraphCtrl()
 	m_ToolTipText[0] = _T('\0');
 
 	m_nCursorCount = 0;	
+	m_nZoomLevel = 1; // Initialize the zoom level as 1 ie., no zoom 
 }
 
 HRESULT CDMGraphCtrl::FinalConstruct()
@@ -544,11 +545,15 @@ STDMETHODIMP CDMGraphCtrl::put_TrackMode(TrackModeState newVal)
 	Corrdinate(0,0, &m_panPoint);
 
 	m_bUnzoom = TRUE;
-	
-	dOldRangeX[MIN]=dRangeX[MIN];
-	dOldRangeY[MIN]=dRangeY[MIN];
-	dOldRangeX[MAX]=dRangeX[MAX];
-	dOldRangeY[MAX]=dRangeY[MAX];
+
+	// Get the range before zooming
+	if (m_nZoomLevel == 1) 
+	{
+		dOldRangeX[MIN]=dRangeX[MIN];
+		dOldRangeY[MIN]=dRangeY[MIN];
+		dOldRangeX[MAX]=dRangeX[MAX];
+		dOldRangeY[MAX]=dRangeY[MAX];
+	}
     
 	Fire_TrackModeChanged(newVal);
 	m_bRequiresSave = TRUE;
@@ -802,7 +807,16 @@ STDMETHODIMP CDMGraphCtrl::AutoRange()
 		dAutoRangeX[MAX]=dRangeX[MAX];
 		dAutoRangeY[MAX]=dRangeY[MAX];
 	}
-	return SetRange(dAutoRangeX[MIN],dAutoRangeX[MAX],dAutoRangeY[MIN],dAutoRangeY[MAX]);
+	
+	// Set the zoom level to inital value as zoom values are invald now 	
+	HRESULT hResult = SetRange(dAutoRangeX[MIN],dAutoRangeX[MAX],dAutoRangeY[MIN],dAutoRangeY[MAX]);
+	m_nZoomLevel = 1; 
+	dOldRangeX[MIN]=dRangeX[MIN];
+	dOldRangeY[MIN]=dRangeY[MIN];
+	dOldRangeX[MAX]=dRangeX[MAX];
+	dOldRangeY[MAX]=dRangeY[MAX];
+
+	return hResult;	
 }
 
 STDMETHODIMP CDMGraphCtrl::ShowProperties()
@@ -2321,7 +2335,9 @@ void CDMGraphCtrl::DoZoom(UINT nFlags, const LPPOINT point)
 			}		
 		}
         
-		SetRange(xmin,xmax,ymin,ymax);			
+		SetRange(xmin,xmax,ymin,ymax);
+		// Increase the zoom level
+		m_nZoomLevel += 1; 
     }
 }
 
@@ -2402,7 +2418,18 @@ LRESULT CDMGraphCtrl::OnRButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 	POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };
 	if(m_eTrackMode == Zoom || m_eTrackMode == ZoomX || m_eTrackMode == ZoomY)
 	{
-		SetRange(dOldRangeX[MIN],dOldRangeX[MAX],dOldRangeY[MIN],dOldRangeY[MAX]);
+		// If zoomed already then reset the zoom
+		if (m_nZoomLevel > 1) 
+		{
+			SetRange(dOldRangeX[MIN],dOldRangeX[MAX],dOldRangeY[MIN],dOldRangeY[MAX]);
+
+			// Reset the zoom level and store the range
+			m_nZoomLevel = 1; 
+			dOldRangeX[MIN]=dRangeX[MIN];
+			dOldRangeY[MIN]=dRangeY[MIN];
+			dOldRangeX[MAX]=dRangeX[MAX];
+			dOldRangeY[MAX]=dRangeY[MAX];
+		}
 	}
 			
 	bHandled = FALSE;

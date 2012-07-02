@@ -43,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Member of        :  CDefineTimerHandler                                   */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.03.2002                                            */    
+/*  Date Created     :  08.03.2002                                            */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  28.03.2002, Review comments                           */
 /******************************************************************************/
@@ -55,20 +55,22 @@ CDefineTimerHandler::CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent
     //{{AFX_DATA_INIT(CDefineTimerHandler)
     m_omEditStrTimerFuncName = "";
     m_unEditTimerValue = 1;
+    m_bIsTimerEdited = FALSE;
+    m_omStrCurrentTimerName = "";
     //}}AFX_DATA_INIT
     m_pDoc = pDoc;
 }
 /******************************************************************************/
-/*  Function Name    :  DoDataExchange                                        */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  DoDataExchange                                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  Called by the framework to exchange and validate      */
 /*                         dialog data                                        */
 /*                                                                            */
-/*  Member of        :  CDefineTimerHandler                                   */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  08.03.2002                                            */    
+/*  Member of        :  CDefineTimerHandler                                   */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  08.03.2002                                            */
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
@@ -100,9 +102,9 @@ END_MESSAGE_MAP()
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  11.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-BOOL CDefineTimerHandler::OnHelpInfo(HELPINFO* pHelpInfo) 
+BOOL CDefineTimerHandler::OnHelpInfo(HELPINFO* pHelpInfo)
 {
     //theApp.vSetHelpID(pHelpInfo->dwContextId);
     return CDialog::OnHelpInfo(pHelpInfo);
@@ -122,42 +124,42 @@ BOOL CDefineTimerHandler::OnHelpInfo(HELPINFO* pHelpInfo)
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  11.03.2002                                            */
 /*  Modifications    :  21.03.2002, Amarnath Shastry                          */
-/*                      Added Validation for timer handler name and value     */ 
+/*                      Added Validation for timer handler name and value     */
 /*                      28.03.2002, Amitesh Bharti                            */
 /*                      Reveiw comments added                                 */
 /*                      28.10.2003, Amitesh Bharti                            */
 /*                      Bug due to make upper case and comparing the name of  */
 /*                      timers is corrected.                                  */
 /******************************************************************************/
-void CDefineTimerHandler::OnOK() 
+void CDefineTimerHandler::OnOK()
 {
     BOOL bNoMoreTimer               = FALSE;
     CString omStrTimerHandlerName(STR_EMPTY);
     CString omStrTimerValue(STR_EMPTY);
     m_omEditTimerFuncName.GetWindowText(omStrTimerHandlerName);
-    // No special characters allowed 
-    if  ( omStrTimerHandlerName.FindOneOf( _T("~!@#$%^&*-+={}[]/\"\\<>`,.? ()") )
-        == -1 )
+    // No special characters allowed
+    if  ( omStrTimerHandlerName.FindOneOf( "~!@#$%^&*-+={}[]/\"\\<>`,.? ()" )
+            == -1 )
     {
         m_omEditTimerValue.GetWindowText( omStrTimerValue );
 
         if (m_omEditTimerValue.lGetValue() < 1)
         {
             bNoMoreTimer = TRUE;
-            AfxMessageBox(_T("Please enter a value more than or equal\n\
-                          to 1 msec!"), MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox("Please enter a value more than or equal\n\
+                          to 1 msec!", MB_OK|MB_ICONINFORMATION);
             m_omEditTimerValue.SetFocus();
         }
 
         else if ( !omStrTimerHandlerName.IsEmpty() &&
-            !omStrTimerValue.IsEmpty()       &&
-            omStrTimerValue != "0"         &&
-            bNoMoreTimer == FALSE)
+                  !omStrTimerValue.IsEmpty()       &&
+                  omStrTimerValue != "0"         &&
+                  bNoMoreTimer == FALSE)
         {
             // Construct function name
             m_omStrTimerFunctionName = defTIMER_FN_NAME;
-            m_omStrTimerFunctionName.Replace( _T("TIMERNAME"),omStrTimerHandlerName);
-            m_omStrTimerFunctionName.Replace( _T("TIMERVALUE"), omStrTimerValue );
+            m_omStrTimerFunctionName.Replace( "TIMERNAME",omStrTimerHandlerName);
+            m_omStrTimerFunctionName.Replace( "TIMERVALUE", omStrTimerValue );
 
             // validate the timer name, document class
             // has array of timer functions defined
@@ -166,35 +168,34 @@ void CDefineTimerHandler::OnOK()
             if ( m_pDoc != NULL )
             {
                 // Get timer array pointer
-                CStringArray* pTimerArray = 
+                CStringArray* pTimerArray =
                     m_pDoc->omStrGetTimerHandlerPrototypes();
 
                 if ( pTimerArray != NULL )
-
                 {
-                    // Check if the handler name already 
+                    // Check if the handler name already
                     // exists!
                     for ( INT unCount = 0;
-                        ( unCount < pTimerArray->GetSize() ) && 
-                        ( bNoMoreTimer == FALSE );
-                    unCount++)
+                            ( unCount < pTimerArray->GetSize() ) &&
+                            ( bNoMoreTimer == FALSE );
+                            unCount++)
                     {
-                        CString omStrProto = 
+                        CString omStrProto =
                             pTimerArray->GetAt( unCount );
 
                         // Get the handler name from the prototype
-                        omStrProto = 
-                            m_pDoc->omStrExtractFunctionNameFromPrototype( 
-                            omStrProto);
+                        omStrProto =
+                            m_pDoc->omStrExtractFunctionNameFromPrototype(
+                                omStrProto);
 
                         // Remove the __stdcall keyword from the function
-                        int nSpaceIndex = 
+                        int nSpaceIndex =
                             omStrProto.Find( SPACE );
                         if ( nSpaceIndex != -1 )
                         {
-                            omStrProto = 
+                            omStrProto =
                                 omStrProto.Right( omStrProto.GetLength()-
-                                nSpaceIndex );
+                                                  nSpaceIndex );
                             omStrProto.TrimLeft();
                             omStrProto.TrimRight();
                             omStrProto.MakeUpper();
@@ -203,12 +204,21 @@ void CDefineTimerHandler::OnOK()
 
                         CString omTemp = m_omStrTimerFunctionName;
 
+                        //If an existing timer is edited then duplicate check is not required
+                        if (bIsTimerEdited())
+                        {
+                            if (omTemp.CompareNoCase(m_omStrCurrentTimerName) == 0)
+                            {
+                                continue;
+                            }
+                        }
+
                         if (  omTemp.CompareNoCase( omStrProto )==0)
                         {
                             // Yes, it is a duplication
                             bNoMoreTimer = TRUE;
                             AfxMessageBox(defMSG_DUP_TIMER_HANDLER,
-                                MB_OK|MB_ICONINFORMATION);
+                                          MB_OK|MB_ICONINFORMATION);
                         }
                     }
                 }
@@ -218,7 +228,7 @@ void CDefineTimerHandler::OnOK()
             {
                 m_omEditTimerFuncName.SetFocus();
                 m_omEditTimerFuncName.SetSel(0, -1,FALSE);
-            } 
+            }
         }
         else
         {
@@ -252,12 +262,12 @@ void CDefineTimerHandler::OnOK()
 /*  Date Created     :  22.03.2002                                            */
 /*  Modifications    :  10.02.2004 Raja N                                     */
 /*                      Changed the default value to 1                        */
-/*                                                                            */  
+/*                                                                            */
 /******************************************************************************/
-BOOL CDefineTimerHandler::OnInitDialog() 
+BOOL CDefineTimerHandler::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
+
     // Set timer value edit control
     // to accept only unsigned decimal integer
     m_omEditTimerValue.vSetBase( BASE_DECIMAL );
@@ -266,9 +276,44 @@ BOOL CDefineTimerHandler::OnInitDialog()
     // Set the initial value of the timer
     // as 50msec
     //m_omEditTimerValue.vSetValue( defONE );
-        
+
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
+/******************************************************************************/
+/*  Function Name    :  SetTimerEdited                                        */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Indicates the timer already created is edited or      */
+/*                      new timer is created                                  */
+/*  Member of        :  CDefineTimerHandler                                   */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Saravanan    K S                                      */
+/*  Date Created     :  25.06.2012                                            */
+/*                                                                            */
+/******************************************************************************/
+void CDefineTimerHandler::vSetTimerEdited(BOOL bEdited)
+{
+    m_bIsTimerEdited = bEdited;
+}
 
+/******************************************************************************/
+/*  Function Name    :  IsTimerEdited                                         */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Returns the status if a timer is edited               */
+/*  Member of        :  CDefineTimerHandler                                   */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Saravanan    K S                                      */
+/*  Date Created     :  25.06.2012                                            */
+/*                                                                            */
+/******************************************************************************/
+BOOL CDefineTimerHandler::bIsTimerEdited()
+{
+    return m_bIsTimerEdited;
+}

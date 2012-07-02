@@ -32,28 +32,28 @@
 #define WIN32_LEAN_AND_MEAN    // Exclude rarely-used stuff from Windows headers
 
 #ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#define VC_EXTRALEAN        // Exclude rarely-used stuff from Windows headers
 #endif
 
 // Modify the following defines if you have to target a platform prior to the ones specified below.
 // Refer to MSDN for the latest info on corresponding values for different platforms.
-#ifndef WINVER				// Allow use of features specific to Windows 95 and Windows NT 4 or later.
-#define WINVER 0x0400		// Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
+#ifndef WINVER              // Allow use of features specific to Windows 95 and Windows NT 4 or later.
+#define WINVER 0x0400       // Change this to the appropriate value to target Windows 98 and Windows 2000 or later.
 #endif
 
-#ifndef _WIN32_WINNT		// Allow use of features specific to Windows NT 4 or later.
-#define _WIN32_WINNT 0x0400	// Change this to the appropriate value to target Windows 2000 or later.
+#ifndef _WIN32_WINNT        // Allow use of features specific to Windows NT 4 or later.
+#define _WIN32_WINNT 0x0400 // Change this to the appropriate value to target Windows 2000 or later.
 #endif
 
-//#ifndef _WIN32_WINDOWS		// Allow use of features specific to Windows 98 or later.
+//#ifndef _WIN32_WINDOWS        // Allow use of features specific to Windows 98 or later.
 //#define _WIN32_WINDOWS 0x0410 // Change this to the appropriate value to target Windows Me or later.
 //#endif
 
-#ifndef _WIN32_IE			// Allow use of features specific to IE 4.0 or later.
-#define _WIN32_IE 0x0400	// Change this to the appropriate value to target IE 5.0 or later.
+#ifndef _WIN32_IE           // Allow use of features specific to IE 4.0 or later.
+#define _WIN32_IE 0x0400    // Change this to the appropriate value to target IE 5.0 or later.
 #endif
 
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
@@ -65,16 +65,16 @@
 #endif // _AFX_NO_OLE_SUPPORT
 
 #ifndef _AFX_NO_DB_SUPPORT
-#include <afxdb.h>			// MFC ODBC database classes
+#include <afxdb.h>          // MFC ODBC database classes
 #endif // _AFX_NO_DB_SUPPORT
 
 #ifndef _AFX_NO_DAO_SUPPORT
-#include <afxdao.h>			// MFC DAO database classes
+#include <afxdao.h>         // MFC DAO database classes
 #endif // _AFX_NO_DAO_SUPPORT
 
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#include <afxdtctl.h>       // MFC support for Internet Explorer 4 Common Controls
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxcmn.h>         // MFC support for Windows Common Controls
 #include "afxtempl.h"
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
@@ -91,7 +91,7 @@
 #include <list>
 #include <iterator>
 #include <algorithm>
-
+#include <include/struct_can.h>
 // TODO: reference additional headers your program requires here
 const int ERR_INVALID_PROCDIL       = -1;
 const int ERR_INVALID_PARENTHANDLE  = -2;
@@ -104,4 +104,4 @@ const int INFO_INIT_DATA_CONFIRMED  = 2;
 const int INFO_CONFIRMED_CONFIGURED = 3;
 
 // First define the callback function type
-typedef BOOL (*DILCALLBACK)(BYTE Argument, PBYTE pDatStream, int Length);
+typedef BOOL (*DILCALLBACK)(BYTE Argument, PSCONTROLLER_DETAILS pDatStream, int Length);

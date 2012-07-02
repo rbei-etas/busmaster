@@ -223,6 +223,8 @@ public:
 	// IPersistStreamInit
 	STDMETHOD(InitNew)();
 
+	int					m_nZoomLevel; // To maintain the zoom level 
+
 	CComBSTR			m_bstrCaption;
 	COLORREF			m_colAxis,
 						m_colGrid,

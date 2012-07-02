@@ -39,7 +39,7 @@ protected:
     CMsgSgDetView();           // protected constructor used by dynamic creation
     DECLARE_DYNCREATE(CMsgSgDetView)
 
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CMsgSgDetView)
     enum { IDD = IDD_DLG_MSGSGDETVIEW };
@@ -54,12 +54,12 @@ public:
     //int       m_nDataFormat;
     //}}AFX_DATA
 
-// Attributes
+    // Attributes
 private:
     SDBPARAMS m_sDbParams;
 public:
     static SDBPARAMS sm_sDbParams;
-// Operations
+    // Operations
 public:
     void vEnableButtons (BOOL bEnable );
     BOOL bUpdateEditedMesageDetails();
@@ -68,18 +68,18 @@ public:
     void vSetDefaultValues();
     void vDisplayMsgSgInformation(sMESSAGE* pMsg);
     void vEditSignalName();
-
-// Overrides
+    UINT nCheckTotalBitsUsed(sSIGNALS* pSg);
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgSgDetView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual void PostNcDestroy();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual ~CMsgSgDetView();
 #ifdef _DEBUG
@@ -114,16 +114,15 @@ protected:
     afx_msg void OnButtonEditDesc();
     afx_msg void OnClickSignalDescVal(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnItemchangedLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnLvnKeydownLstcSignalDetails(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnLvnKeydownLstcSgidval(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnKeydownLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLvnKeydownLstcSgidval(NMHDR* pNMHDR, LRESULT* pResult);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     void vEnableNewDescButton(CString );
     void vEnableControls(CString OmStr);
-    void vAddItemToSignalList( int nRow, 
-        sMESSAGE* pMsg,
-        sSIGNALS* pSg );
+    void vDeleteRedundentSignalDesc(int nRow, sSIGNALS* pSg);
+    void vAddItemToSignalList( int nRow, sMESSAGE* pMsg, sSIGNALS* pSg );
     CString m_omStrPrevMsgName;
     BOOL m_bAreControlsHidden;
     void vEnableSignalDetails( BOOL bIsEnabled );

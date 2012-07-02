@@ -70,7 +70,6 @@ BEGIN_MESSAGE_MAP(CExportLogFileDlg, CPropertyPage)
     ON_BN_CLICKED(IDC_BTN_CSV_BROWSE, OnBnClickedBtnCsvBrowse)
     ON_BN_CLICKED(IDC_BUTTON_SELECTALL, OnBnClickedButtonSelectall)
     ON_BN_CLICKED(ID_CONVERT, OnBnClickedConvert)
-    ON_BN_CLICKED(IDC_CBTN_CANCELEXPORT, OnBnClickedCbtnCancelexport)
     ON_LBN_SELCHANGE(IDC_LST_AVAILABLE, OnLbnSelchangeLstAvailable)
     ON_LBN_SELCHANGE(IDC_LST_SELECTED, OnLbnSelchangeLstSelected)
     ON_BN_CLICKED(IDC_BUTTON_SELECTONE, OnBnClickedButtonSelectone)
@@ -276,9 +275,12 @@ void CExportLogFileDlg::OnBnClickedConvert()
             oExport.fnSetSelectedFields( &(this->m_omSelectedList) );
 
             //convert log file to excel file
-            if( !oExport.bConvert() )
+            HRESULT hResult = oExport.bConvert();
+            if( S_OK != hResult )
             {
-                MessageBox(EXPORTTOEXCEL_SYNTAXERROR,APPLICATION_NAME,MB_OK);
+                string omStrError;
+                oExport.GetErrorString( hResult, omStrError);
+                MessageBox(omStrError.c_str(),APPLICATION_NAME,MB_OK);
             }
             else
             {
@@ -297,15 +299,6 @@ void CExportLogFileDlg::OnBnClickedConvert()
     }
 }
 
-/**
- * \brief On Button Clicked Button Cancel Export
- *
- * Message handler for cancel export button
- */
-void CExportLogFileDlg::OnBnClickedCbtnCancelexport()
-{
-    OnCancel();
-}
 
 /**
  * \brief On Listbutton Select Change List Available
@@ -514,4 +507,7 @@ void CExportLogFileDlg::OnCbnSelchangeComboBustype()
     SetWindowText(omTitle);
     vPopulateAvailableList();
     vEnableDisableControls();
+    m_omStrLogFileName = "";
+    m_omStrCSVFileName = "";
+    UpdateData(FALSE);
 }

@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  IFlexRayLink definition
 * @remark The header structure of the OLI may change
@@ -32,7 +32,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 /// \addtogroup GROUP_OLI_FLEXRAY_LINKS
@@ -56,12 +59,13 @@ class IFlexRayLink;
  * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL if no error
  * occurred. See \ref ErrorReporting for more information on how errors are reported.
  */
-OLL_API IError* OLI_CALL IFlexRayLink_Create( const char *URI, uint32 version, IFlexRayLink** ppFlexRayLink );
+OLL_API IError* OLI_CALL IFlexRayLink_Create( const char* URI, uint32 version, IFlexRayLink** ppFlexRayLink );
 
 /** FlexRay-specific extension of ILink.
 */
 
-OLI_INTERFACE IFlexRayLink : public ILink
+OLI_INTERFACE IFlexRayLink :
+public ILink
 {
 protected:
 
@@ -99,14 +103,14 @@ protected:
      *
      * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL
      * if no error occurred. A pointer to IInavlidArgumentError will be returned if the transmit buffer configuration is
-     * invalid or could not be found. See \ref ErrorReporting for more information on how errors are reported. 
+     * invalid or could not be found. See \ref ErrorReporting for more information on how errors are reported.
      */
     virtual IError* OLI_CALL GetTxBufferIndex( FlexRayChannel channel, uint32 slot, uint32 cyclePeriod, uint32 cycleOffset, uint32* pTxBufferIndex ) const OLI_NOTHROW = 0;
 
 public:
 
     /// \name FlexRay-specific interface
-	/// @{
+    /// @{
 
     /**
      * This is a helper method which wraps a corresponding protected method: see \ref BinaryCompatibility and \ref ErrorReporting
@@ -133,13 +137,13 @@ public:
         return txBufferIndex;
     }
 
-	/// @}
+    /// @}
 
     /**
      * This is a helper method which wraps IFlexRayLink_Create(): see \ref BinaryCompatibility and \ref ErrorReporting for an
      * explanation of why it is needed.
      */
-    static AutoPtr<IFlexRayLink> OLI_CALL 
+    static AutoPtr<IFlexRayLink> OLI_CALL
     Create( const char *URI, uint32 version = VERSION )
     {
         IFlexRayLink* pFlexRayLink = NULL;
@@ -154,7 +158,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

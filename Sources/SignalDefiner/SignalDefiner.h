@@ -34,11 +34,11 @@
 class CSignalDefinerApp : public CWinApp
 {
 public:
-	CSignalDefinerApp();
+    CSignalDefinerApp();
 
-// Overrides
+    // Overrides
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };

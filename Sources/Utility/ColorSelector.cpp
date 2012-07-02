@@ -41,21 +41,21 @@ void CColorSelector::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     // TODO: Add your message handler code here and/or call default
     CDC omDc;
     omDc.Attach(lpDrawItemStruct->hDC);
-	UINT unButtonState  = lpDrawItemStruct->itemState;
-	int nPushState = ((unButtonState & ODS_SELECTED) ? DFCS_PUSHED : 0) |
-					 ((unButtonState & ODS_DISABLED) ? DFCS_INACTIVE : 0);
+    UINT unButtonState  = lpDrawItemStruct->itemState;
+    int nPushState = ((unButtonState & ODS_SELECTED) ? DFCS_PUSHED : 0) |
+                     ((unButtonState & ODS_DISABLED) ? DFCS_INACTIVE : 0);
 
     CRect omItemRect    = lpDrawItemStruct->rcItem;
-    
-	
-    
-	CRect omArrowRect;
+
+
+
+    CRect omArrowRect;
     omArrowRect.left = max(0, omItemRect.Width()- GetSystemMetrics(SM_CXHTHUMB) - 3 );
     omArrowRect.right = max(0, omItemRect.Width()-3);
     omArrowRect.top = 3;
     omArrowRect.bottom = max(omItemRect.Height()-3, GetSystemMetrics(SM_CYVTHUMB)-3);
-    
-	
+
+
     omDc.DrawFrameControl(&omArrowRect, DFC_SCROLL, DFCS_SCROLLDOWN  | nPushState);
 
     // Create backgroung brush
@@ -63,22 +63,22 @@ void CColorSelector::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     omDc.SelectStockObject(BLACK_PEN);
     omDc.DrawEdge(&lpDrawItemStruct->rcItem, EDGE_RAISED, BF_RECT);
     CRect omButtonRect;
-    
+
     omButtonRect.left = lpDrawItemStruct->rcItem.left+5;
     omButtonRect.top = lpDrawItemStruct->rcItem.top+5;
     omButtonRect.right = lpDrawItemStruct->rcItem.right - omArrowRect.Width()-5;// - omArrowRect.Width() ;
     omButtonRect.bottom = lpDrawItemStruct->rcItem.bottom - 5;
-    
+
     //omButtonRect.DeflateRect(3, 3);
     omDc.FillRect(omButtonRect, &brush);
     // Select Old Brush
     omDc.SelectObject(brush);
-    
+
     omButtonRect.DeflateRect(-1, -1);
-    
+
     omDc.Rectangle(omButtonRect);
 
-    if (unButtonState & ODS_FOCUS) 
+    if (unButtonState & ODS_FOCUS)
     {
         omButtonRect.DeflateRect(1,1);
         omDc.DrawFocusRect(omButtonRect);

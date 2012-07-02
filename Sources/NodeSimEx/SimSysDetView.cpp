@@ -15,14 +15,14 @@
 
 /**
  * \file      SimSysDetView.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
-#include "NodeSimEx_stdafx.h"	// Contains standard include header files.
-#include "SimSysDetView.h"		// Class defintion included here
+#include "NodeSimEx_stdafx.h"   // Contains standard include header files.
+#include "SimSysDetView.h"      // Class defintion included here
 #include "SimSysManager.h"
 #include "ExecuteManager.h"
 #include "FunctionEditorDoc.h"
@@ -33,10 +33,12 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-char* pcHandlerNames[] =                   {"Message Handlers",
-                                             "Timer Handlers",
-                                             "Key Handlers",
-                                             "Error Handlers"};
+char* pcHandlerNames[] =                   { "Message Handlers",
+        "Timer Handlers",
+        "Key Handlers",
+        "Error Handlers",
+        "Event Handlers"
+                                           };
 
 #define defStrEnabled                    "Enabled"
 #define defStrDisabled                   "Disabled"
@@ -56,26 +58,26 @@ IMPLEMENT_DYNCREATE(CSimSysDetView, CFormView)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CSimSysDetView::CSimSysDetView(): CFormView(CSimSysDetView::IDD)
 {
     m_eBus = CSimSysDetView::sm_eBus;
-	m_psNodeInfo = NULL;
+    m_psNodeInfo = NULL;
     m_bIsDllLoadSuccess = FALSE;
-	bConnected = FALSE;
+    bConnected = FALSE;
     m_omSourceCodeTextList.RemoveAll();
 
-	m_bIsTimerHanEnabled = FALSE;
-	m_bIsKeyHanEnabled = FALSE;
-	m_bIsMsgHanEnabled = FALSE;
-	m_bIsErrorHanEnabled = FALSE;
-	
-    
-	//{{AFX_DATA_INIT(CSimSysDetView)
-	m_omStrNodeName = "";
-	m_omStrCFile = "";
-	//}}AFX_DATA_INIT
+    m_bIsTimerHanEnabled = FALSE;
+    m_bIsKeyHanEnabled = FALSE;
+    m_bIsMsgHanEnabled = FALSE;
+    m_bIsErrorHanEnabled = FALSE;
+
+
+    //{{AFX_DATA_INIT(CSimSysDetView)
+    m_omStrNodeName = "";
+    m_omStrCFile = "";
+    //}}AFX_DATA_INIT
 }
 /******************************************************************************/
 /*  Function Name    :  ~CSimSysDetView                                       */
@@ -88,7 +90,7 @@ CSimSysDetView::CSimSysDetView(): CFormView(CSimSysDetView::IDD)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CSimSysDetView::~CSimSysDetView()
 {
@@ -96,32 +98,32 @@ CSimSysDetView::~CSimSysDetView()
 
 void CSimSysDetView::DoDataExchange(CDataExchange* pDX)
 {
-	CFormView::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CSimSysDetView)
-	DDX_Control(pDX, IDC_LSTC_HANDLER_DETAILS, m_omListCtrlHanDet);
-	DDX_Control(pDX, IDC_LSTC_HANVAL, m_omListCtrlHanVal);
+    CFormView::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CSimSysDetView)
+    DDX_Control(pDX, IDC_LSTC_HANDLER_DETAILS, m_omListCtrlHanDet);
+    DDX_Control(pDX, IDC_LSTC_HANVAL, m_omListCtrlHanVal);
     DDX_Control(pDX, IDC_EDIT_PREF_ADRES, m_omPrefAdres);
     DDX_Control(pDX, IDC_EDIT_ECUNAME, m_omECU_NAME);
-	DDX_Text(pDX, IDC_EDIT_NODE_NAME, m_omStrNodeName);
-	DDV_MaxChars(pDX, m_omStrNodeName, 15);
-	DDX_Text(pDX, IDC_EDIT_FILE_NAME, m_omStrCFile);
-	//}}AFX_DATA_MAP
+    DDX_Text(pDX, IDC_EDIT_NODE_NAME, m_omStrNodeName);
+    DDV_MaxChars(pDX, m_omStrNodeName, 15);
+    DDX_Text(pDX, IDC_EDIT_FILE_NAME, m_omStrCFile);
+    //}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CSimSysDetView, CFormView)
-//{{AFX_MSG_MAP(CSimSysDetView)
-ON_BN_CLICKED(IDC_BUTTON_BUILD, OnButtonBuild)
-ON_BN_CLICKED(IDC_BUTTON_BUILDANDLOAD, OnButtonBuildandload)
-ON_BN_CLICKED(IDC_BUTTON_EDITFILE, OnButtonEditfile)
-ON_BN_CLICKED(IDC_BUTTON_ENABLEALLHANDLERS, OnButtonEnableDisableallhandlers)
-ON_BN_CLICKED(IDC_BUTTON_ENABLEHANDLER, OnButtonEnableDisablehandler)
-ON_BN_CLICKED(IDC_BUTTON_LOAD, OnButtonLoadUnload)
-ON_BN_CLICKED(IDC_BUTTON_OPENFILE, OnButtonOpenfile)
-ON_NOTIFY(NM_CLICK, IDC_LSTC_HANDLER_DETAILS, OnClickLstcHandlerDetails)
-ON_NOTIFY(HDN_ITEMCHANGED, IDC_LSTC_HANDLER_DETAILS, OnItemchangedLstcHandlerDetails)
+    //{{AFX_MSG_MAP(CSimSysDetView)
+    ON_BN_CLICKED(IDC_BUTTON_BUILD, OnButtonBuild)
+    ON_BN_CLICKED(IDC_BUTTON_BUILDANDLOAD, OnButtonBuildandload)
+    ON_BN_CLICKED(IDC_BUTTON_EDITFILE, OnButtonEditfile)
+    ON_BN_CLICKED(IDC_BUTTON_ENABLEALLHANDLERS, OnButtonEnableDisableallhandlers)
+    ON_BN_CLICKED(IDC_BUTTON_ENABLEHANDLER, OnButtonEnableDisablehandler)
+    ON_BN_CLICKED(IDC_BUTTON_LOAD, OnButtonLoadUnload)
+    ON_BN_CLICKED(IDC_BUTTON_OPENFILE, OnButtonOpenfile)
+    ON_NOTIFY(NM_CLICK, IDC_LSTC_HANDLER_DETAILS, OnClickLstcHandlerDetails)
+    ON_NOTIFY(HDN_ITEMCHANGED, IDC_LSTC_HANDLER_DETAILS, OnItemchangedLstcHandlerDetails)
 
-//}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -130,12 +132,12 @@ END_MESSAGE_MAP()
 #ifdef _DEBUG
 void CSimSysDetView::AssertValid() const
 {
-	CFormView::AssertValid();
+    CFormView::AssertValid();
 }
 
 void CSimSysDetView::Dump(CDumpContext& dc) const
 {
-	CFormView::Dump(dc);
+    CFormView::Dump(dc);
 }
 #endif //_DEBUG
 
@@ -145,29 +147,39 @@ void CSimSysDetView::Dump(CDumpContext& dc) const
 /*  Function Name    :  OnButtonBuild
 /*  Input(s)         :  -
 /*  Output           :  -
-/*  Functionality    :  Calls  function, Enables the user to 
+/*  Functionality    :  Calls  function, Enables the user to
                         build the C file on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Anish Kumar                                   
-/*  Date Created     :  
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Anish Kumar
+/*  Date Created     :
 /*****************************************************************************/
-void CSimSysDetView::OnButtonBuild() 
+void CSimSysDetView::OnButtonBuild()
 {
     BOOL bSuccess = FALSE;
+
+    if(m_psNodeInfo != NULL)
+    {
+        if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
+        {
+            AfxMessageBox("Unload the dll and try again!!");
+            return;
+        }
+    }
+
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     if( m_psNodeInfo != NULL )
     {
         //If file is opened get its doc pointer and save it before building
-        CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);  
+        CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);
         if (pDoc)
-		{
+        {
             pDoc->OnSaveDocument(m_psNodeInfo->m_omStrFileName);
-		}
+        }
         //Build the file
         bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllBuild(m_psNodeInfo);
-        
+
         if(bSuccess)
         {
             vUpdateNodeDetailsAndView();
@@ -179,10 +191,10 @@ void CSimSysDetView::OnButtonBuild()
         }
         else  // if the build is unsuccessfull
         {
-            AfxMessageBox(_T("The file is not properly built"));
+            AfxMessageBox("The file is not properly built");
         }
     }
-	
+
 }
 
 void CSimSysDetView::vUpdateNodeDetailsAndView()
@@ -192,10 +204,10 @@ void CSimSysDetView::vUpdateNodeDetailsAndView()
     m_psNodeInfo->m_omStrDllName = omStrFileName;
 
     // to indicate to the tree view about the new dlls built.
-    CSimSysTreeView* psSimSysTree = 
+    CSimSysTreeView* psSimSysTree =
         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
-    psSimSysTree->vSetSimSysDllName(m_psNodeInfo->m_omStrNodeName , 
-                                    omStrFileName , 
+    psSimSysTree->vSetSimSysDllName(m_psNodeInfo->m_omStrNodeName ,
+                                    omStrFileName ,
                                     m_psNodeInfo->m_bIsDllLoaded);
 }
 
@@ -203,138 +215,145 @@ void CSimSysDetView::vUpdateNodeDetailsAndView()
 /*  Function Name    :  OnButtonBuildandload
 /*  Input(s)         :  -
 /*  Output           :  -
-/*  Functionality    :  Calls  function, Enables the user to 
+/*  Functionality    :  Calls  function, Enables the user to
                         build and load the C file on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Anish                                   
-/*  Date Created     :  
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Anish
+/*  Date Created     :
 /*****************************************************************************/
-void CSimSysDetView::OnButtonBuildandload() 
+void CSimSysDetView::OnButtonBuildandload()
 {
-	BOOL bSuccess = FALSE;
+    BOOL bSuccess = FALSE;
+    if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
+    {
+        AfxMessageBox("Unload the dll and try again!!");
+        return;
+    }
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrFileName != STR_EMPTY ))
-                               
+
     {
         //If file is opened get its doc pointer and save it before building
-        CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);  
+        CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);
         if (pDoc)
-		{
+        {
             pDoc->OnSaveDocument(m_psNodeInfo->m_omStrFileName);
-		}
-		bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
-                                    bExecuteDllBuildLoad(m_psNodeInfo);
+        }
+        bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
+                   bExecuteDllBuildLoad(m_psNodeInfo);
 
-		if(bSuccess)// when build and load is successfull
-		{
-            vUpdateNodeDetailsAndView();           
+        if(bSuccess)// when build and load is successfull
+        {
+            vUpdateNodeDetailsAndView();
             m_psNodeInfo->m_bIsDllLoaded = TRUE;
-           	vChangeLUButtonText(TRUE);
+            vChangeLUButtonText(TRUE);
             GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
             vEnableHandlerDetails(TRUE);
             vDisplayNodeInformation(m_psNodeInfo);
-		}
-        else   
+        }
+        else
         {
-			AfxMessageBox(_T("The file is either not properly built or Loaded"));
+            AfxMessageBox("The file is either not properly built or Loaded");
         }
     }
-	
+
 }
 
 /******************************************************************************/
 /*  Function Name    :  OnButtonLoadUnload
 /*  Input(s)         :  -
 /*  Output           :  -
-/*  Functionality    :  Calls  function, Enables the user to 
-						load/unload the dll on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M                                      
+/*  Functionality    :  Calls  function, Enables the user to
+                        load/unload the dll on button press
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
 /*  Date Created     :  21.12.2005
-/*  Modification By  :  Anish kr                                     
-/*  Date		     :  18.10.2006,to solve bug when multiple files are opened 
-/*						and this Fn is called
-/*  Modification By  :  Anish kr                                     
-/*  Date		     :  31.10.2006,Remove code for changing Dll name(File's name.dll)
+/*  Modification By  :  Anish kr
+/*  Date             :  18.10.2006,to solve bug when multiple files are opened
+/*                      and this Fn is called
+/*  Modification By  :  Anish kr
+/*  Date             :  31.10.2006,Remove code for changing Dll name(File's name.dll)
 /*                      in node's detail struct on simply loading
-/*  Modification By  :  Anish kr                                     
-/*  Date		     :  21.12.2006,Added code to reset the handler's button status 
+/*  Modification By  :  Anish kr
+/*  Date             :  21.12.2006,Added code to reset the handler's button status
 /*                      on loading of any dll
 /*****************************************************************************/
-void CSimSysDetView::OnButtonLoadUnload() 
+void CSimSysDetView::OnButtonLoadUnload()
 {
-	int nReturnVal = IDNO;
-	CString omStrButtonText = STR_EMPTY;
+    int nReturnVal = IDNO;
+    CString omStrButtonText = STR_EMPTY;
     CString omStrFileName = STR_EMPTY;
     //Clear oytput window
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     //Get the button text to check whether to load or unload
-	GetDlgItem(IDC_BUTTON_LOAD)->GetWindowText(omStrButtonText);
+    GetDlgItem(IDC_BUTTON_LOAD)->GetWindowText(omStrButtonText);
 
     m_omListCtrlHanVal.DeleteAllItems();
-	if(omStrButtonText == "Load")  // when user wants to load
-	{
-        //If file is opened get its doc pointer 
+    if(omStrButtonText == "Load")  // when user wants to load
+    {
+        //If file is opened get its doc pointer
         CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);
-		if ( pDoc != NULL)
+        if ( pDoc != NULL)
         {
-		    if(pDoc->IsModified())
-		    {			
-			    nReturnVal =AfxMessageBox(_T("The file has been opened for editing.\n")
-				                          _T("Would you like to build them? "), 
-				                          MB_YESNOCANCEL|MB_ICONQUESTION);
-		    }
+            if(pDoc->IsModified())
+            {
+                nReturnVal =AfxMessageBox("The file has been opened for editing.\n"
+                                          "Would you like to build them? ",
+                                          MB_YESNOCANCEL|MB_ICONQUESTION);
+            }
         }
-		// Load without building if either the file is not modified or 
+        // Load without building if either the file is not modified or
         // thg user doesn't want to build
-        if( nReturnVal == IDNO ) 
+        if( nReturnVal == IDNO )
         {
             BOOL bSuccess = FALSE;
             if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
             {
                 bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
-                                            bExecuteDllLoad( m_psNodeInfo );
-                
+                           bExecuteDllLoad( m_psNodeInfo );
+
                 if(bSuccess)
                 {
                     // to indicate to the tree view about the new dlls built.
-                    CSimSysTreeView* psSimSysTree = 
+                    CSimSysTreeView* psSimSysTree =
                         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
-                    psSimSysTree->vSetSimSysDllName(m_psNodeInfo->m_omStrNodeName , 
+                    psSimSysTree->vSetSimSysDllName(m_psNodeInfo->m_omStrNodeName ,
                                                     m_psNodeInfo->m_omStrDllName , TRUE);
-                    
+
                     //Save the loading info
                     m_psNodeInfo->m_bIsDllLoaded = TRUE;
                     //Change the text of load button
                     vChangeLUButtonText(TRUE);
                     GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
-                    vEnableHandlerDetails(TRUE);                
-                    
+                    vEnableHandlerDetails(TRUE);
+
                     CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_ALL_HANDLER, FALSE);
                     CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_ERROR_HANDLER, FALSE);
+                    CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_EVENT_HANDLER, FALSE);
                     CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_KEY_HANDLER_ON, FALSE);
                     CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_MSGHANDLERBUTTON, FALSE);
                     // to make the status of the handlers disabled
                     m_psNodeInfo->m_bDllHandlersEnabled = FALSE;
                     m_psNodeInfo->m_bErrorHandlersEnabled = FALSE;
+                    m_psNodeInfo->m_bEventHandlersEnabled = FALSE;
                     m_psNodeInfo->m_bIsAllHandlersEnabled = FALSE;
                     m_psNodeInfo->m_bKeyHandlersEnabled = FALSE;
                     m_psNodeInfo->m_bMsgHandlersEnabled = FALSE;
                     m_psNodeInfo->m_bTimerHandlersEnabled = FALSE;
                     //Display the node details
-                    vDisplayNodeInformation(m_psNodeInfo);  
+                    vDisplayNodeInformation(m_psNodeInfo);
                 }
-                else  
-                { 
-                    AfxMessageBox(_T("The file is not properly Loaded"));
+                else
+                {
+                    AfxMessageBox("The file is not properly Loaded");
                 }
             }
         }
-        
+
         else if( nReturnVal == IDYES )  // Build and load
         {
             BOOL bSuccess = FALSE;
@@ -345,52 +364,52 @@ void CSimSysDetView::OnButtonLoadUnload()
                     //If file is opened then save it
                     pDoc->OnSaveDocument(m_psNodeInfo->m_omStrFileName);
                 }
-				bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllBuildLoad(
-					                                              m_psNodeInfo);
+                bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).bExecuteDllBuildLoad(
+                               m_psNodeInfo);
 
-				if(!bSuccess)
-				{
-					AfxMessageBox(_T("The file is either not properly built or Loaded"));
-				}
-				else  
-				{
-					vUpdateNodeDetailsAndView();
+                if(!bSuccess)
+                {
+                    AfxMessageBox("The file is either not properly built or Loaded");
+                }
+                else
+                {
+                    vUpdateNodeDetailsAndView();
 
-					m_psNodeInfo->m_bIsDllLoaded = TRUE;
-					vChangeLUButtonText(TRUE);
-					GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
-					vEnableHandlerDetails(TRUE);
-					vDisplayNodeInformation(m_psNodeInfo);                     
-				}
-			}
-		}
+                    m_psNodeInfo->m_bIsDllLoaded = TRUE;
+                    vChangeLUButtonText(TRUE);
+                    GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
+                    vEnableHandlerDetails(TRUE);
+                    vDisplayNodeInformation(m_psNodeInfo);
+                }
+            }
+        }
 
-	}
-	else if(omStrButtonText == "UnLoad")  // when user wants to unload
-	{
-		BOOL bSuccess = FALSE;
-		if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
-		{
-			bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
-                                        bExecuteDllUnload(m_psNodeInfo);
+    }
+    else if(omStrButtonText == "UnLoad")  // when user wants to unload
+    {
+        BOOL bSuccess = FALSE;
+        if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
+        {
+            bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
+                       bExecuteDllUnload(m_psNodeInfo);
 
-			if(!bSuccess)
-			{
-				AfxMessageBox(_T("The file is not properly unloaded"));
-			}
-			else  
-			{
-               
-                // to indicate to the tree view 
-                CSimSysTreeView* psSimSysTree = 
+            if(!bSuccess)
+            {
+                AfxMessageBox("The file is not properly unloaded");
+            }
+            else
+            {
+
+                // to indicate to the tree view
+                CSimSysTreeView* psSimSysTree =
                     CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
-                psSimSysTree->vSetSimSysDllName(m_psNodeInfo->m_omStrNodeName , 
+                psSimSysTree->vSetSimSysDllName(m_psNodeInfo->m_omStrNodeName ,
                                                 m_psNodeInfo->m_omStrDllName , FALSE);
-                
-                // update the member m_bIsDllLoaded of the struct sNodeInfo 
+
+                // update the member m_bIsDllLoaded of the struct sNodeInfo
                 m_psNodeInfo->m_bIsDllLoaded = FALSE;
                 vChangeLUButtonText(FALSE);
-                
+
                 GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->EnableWindow(TRUE);
                 GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
                 vEnableHandlerDetails(FALSE);
@@ -398,31 +417,32 @@ void CSimSysDetView::OnButtonLoadUnload()
                 // to make the status of the handlers disabled
                 m_psNodeInfo->m_bDllHandlersEnabled = FALSE;
                 m_psNodeInfo->m_bErrorHandlersEnabled = FALSE;
+                m_psNodeInfo->m_bEventHandlersEnabled = FALSE;
                 m_psNodeInfo->m_bIsAllHandlersEnabled = FALSE;
                 m_psNodeInfo->m_bKeyHandlersEnabled = FALSE;
                 m_psNodeInfo->m_bMsgHandlersEnabled = FALSE;
                 m_psNodeInfo->m_bTimerHandlersEnabled = FALSE;
-                 
-                vDisplayNodeInformation(m_psNodeInfo);            
-                
+
+                vDisplayNodeInformation(m_psNodeInfo);
+
             }
-        }        
+        }
     }
 }
 /******************************************************************************/
 /*  Function Name    :  OnButtonEditfile
 /*  Input(s)         :  -
 /*  Output           :  -
-/*  Functionality    :  Calls  function, Enables the user to 
+/*  Functionality    :  Calls  function, Enables the user to
                         edit the C file on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :                                      
-/*  Date Created     :  
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :
+/*  Date Created     :
 /*****************************************************************************/
-void CSimSysDetView::OnButtonEditfile() 
-{	
+void CSimSysDetView::OnButtonEditfile()
+{
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_omStrCFile);
     if (pDoc != NULL)
     {
@@ -440,8 +460,8 @@ void CSimSysDetView::OnButtonEditfile()
         //If file is not opened then open it
         if ( !CGlobalObj::ouGetObj(m_eBus).bOpenFunctioneditorfile(m_omStrCFile) )
         {
-            AfxMessageBox(_T("Specified filename not found!"), 
-                MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox("Specified filename not found!",
+                          MB_OK|MB_ICONINFORMATION);
         }
     }
 }
@@ -449,63 +469,63 @@ void CSimSysDetView::OnButtonEditfile()
 /*  Function Name    :  OnButtonEnableDisableallhandlers
 /*  Input(s)         :  -
 /*  Output           :  -
-/*  Functionality    :  Calls  function, Enables the user to 
-						enable/disable all the handlers on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :                                      
-/*  Date Created     :  
+/*  Functionality    :  Calls  function, Enables the user to
+                        enable/disable all the handlers on button press
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :
+/*  Date Created     :
 /*****************************************************************************/
-void CSimSysDetView::OnButtonEnableDisableallhandlers() 
+void CSimSysDetView::OnButtonEnableDisableallhandlers()
 {
-    CSimSysNodeInfo* pSimSysNodeInf = 
+    CSimSysNodeInfo* pSimSysNodeInf =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (pSimSysNodeInf)
     {
-	    CString omStrButtonText = STR_EMPTY;
-	    CButton* psButton = (CButton*)GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS);
-	    psButton->GetWindowText(omStrButtonText);
+        CString omStrButtonText = STR_EMPTY;
+        CButton* psButton = (CButton*)GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS);
+        psButton->GetWindowText(omStrButtonText);
 
-        BOOL bEnableAll = !omStrButtonText.CompareNoCase(_T("Enable All Handlers"));
-	    pSimSysNodeInf->vSetEnableNodeAllHandlers(STR_EMPTY , 
-                                                m_psNodeInfo->m_omStrNodeName , 
-                                                bEnableAll);
-	    vChangeEDAllHanButtonText(bEnableAll);
-	    vDisplayNodeInformation(m_psNodeInfo);
+        BOOL bEnableAll = !omStrButtonText.CompareNoCase("Enable All Handlers");
+        pSimSysNodeInf->vSetEnableNodeAllHandlers(STR_EMPTY ,
+                m_psNodeInfo->m_omStrNodeName ,
+                bEnableAll);
+        vChangeEDAllHanButtonText(bEnableAll);
+        vDisplayNodeInformation(m_psNodeInfo);
 
-		// Set the flag status about the enable / disable handler
-		vUpdateHandlerEnableDisableStatus(-1, bEnableAll);
+        // Set the flag status about the enable / disable handler
+        vUpdateHandlerEnableDisableStatus(-1, bEnableAll);
     }
 }
 /******************************************************************************/
 /*  Function Name    :  OnButtonEnableDisablehandler
 /*  Input(s)         :  -
 /*  Output           :  -
-/*  Functionality    :  Calls  function, Enables the user to 
-						enable/disable the selected handler on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :                                     
-/*  Date Created     :  
+/*  Functionality    :  Calls  function, Enables the user to
+                        enable/disable the selected handler on button press
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :
+/*  Date Created     :
 /*****************************************************************************/
-void CSimSysDetView::OnButtonEnableDisablehandler() 
+void CSimSysDetView::OnButtonEnableDisablehandler()
 {
-	POSITION pos = m_omListCtrlHanDet.GetFirstSelectedItemPosition();
+    POSITION pos = m_omListCtrlHanDet.GetFirstSelectedItemPosition();
     if (pos)
     {
-	    int nItem = m_omListCtrlHanDet.GetNextSelectedItem(pos);
-	    // pass it to the vChangeEDHanButtonText..   	
-	    CString omStrButtonText = STR_EMPTY;
-	    GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->GetWindowText(omStrButtonText);
-        BOOL bEnableHandler = !omStrButtonText.CompareNoCase(_T("Enable Handler"));
+        int nItem = m_omListCtrlHanDet.GetNextSelectedItem(pos);
+        // pass it to the vChangeEDHanButtonText..
+        CString omStrButtonText = STR_EMPTY;
+        GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->GetWindowText(omStrButtonText);
+        BOOL bEnableHandler = !omStrButtonText.CompareNoCase("Enable Handler");
         //If button is for enabling then enable the handler and vice versa
         vSetNodeInfoEDHanStatus(nItem , bEnableHandler );
         vDisplayNodeInformation(m_psNodeInfo);
 
-		// Set the flag status about the enable / disable handler
-		vUpdateHandlerEnableDisableStatus(nItem, bEnableHandler);
+        // Set the flag status about the enable / disable handler
+        vUpdateHandlerEnableDisableStatus(nItem, bEnableHandler);
     }
 }
 /******************************************************************************/
@@ -513,19 +533,19 @@ void CSimSysDetView::OnButtonEnableDisablehandler()
 /*  Input(s)         :  -
 /*  Output           :  -
 /*  Functionality    :  Calls  function, Enables the user to (associate)
-						open an existing C file or create a new file on button press
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M                                      
+                        open an existing C file or create a new file on button press
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
 /*  Date Created     :  21.12.2005
 /*****************************************************************************/
-void CSimSysDetView::OnButtonOpenfile() 
+void CSimSysDetView::OnButtonOpenfile()
 {
     int nReturnVal = IDYES;
     if( m_psNodeInfo->m_bIsDllLoaded)
     {
-        AfxMessageBox(_T("Unload the dll and try again!!"));
+        AfxMessageBox("Unload the dll and try again!!");
     }
     else
     {
@@ -539,15 +559,15 @@ void CSimSysDetView::OnButtonOpenfile()
             // Display open dialog box with *.c filter
             // and select the C file by default
             CFileDialog fileDlg( TRUE,      // Open File dialog
-                                _T("c"),        // Default Extension,
-                                omStrDefCFileName,                        
-                                OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                                _T("C File(s)(*.c)|*.c||"),
-                                NULL );
-            
+                                 "c",        // Default Extension,
+                                 omStrDefCFileName,
+                                 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                                 "C File(s)(*.c)|*.c||",
+                                 NULL );
+
             // Set Title
-            fileDlg.m_ofn.lpstrTitle  = _T("Select FRAME Source Filename...");
-            
+            fileDlg.m_ofn.lpstrTitle  = "Select BUSMASTER Source Filename...";
+
             if ( IDOK == fileDlg.DoModal() )
             {
                 CString strExtName  = fileDlg.GetFileExt();
@@ -555,201 +575,201 @@ void CSimSysDetView::OnButtonOpenfile()
                 CString omStrTitle = STR_EMPTY;
                 omStrTitle = fileDlg.GetFileTitle();
 
-				/*Getting the Protocol from the .c file*/
-				// For File I/O
-				CStdioFile o_File;				
+                /*Getting the Protocol from the .c file*/
+                // For File I/O
+                CStdioFile o_File;
 
-				// Open File
-				BOOL bIsFileOpen = FALSE;
-				
-				// Opening the file
-				bIsFileOpen = o_File.Open(
-					omStrNewCFileName, CFile::modeRead|CFile::typeText );
-				if(bIsFileOpen != FALSE )
-				{
-					// read subsequent info from the file
-					/* Read Database version number*/
-					int nIndex = -1;
-					CString strProtocolInfo;
+                // Open File
+                BOOL bIsFileOpen = FALSE;
 
-					CString omstrBusName;
+                // Opening the file
+                bIsFileOpen = o_File.Open(
+                                  omStrNewCFileName, CFile::modeRead|CFile::typeText );
+                if(bIsFileOpen != FALSE )
+                {
+                    // read subsequent info from the file
+                    /* Read Database version number*/
+                    int nIndex = -1;
+                    CString strProtocolInfo;
 
-					omstrBusName.Empty();
+                    CString omstrBusName;
 
-					if(m_eBus == CAN)
-					{
-						// If CAN
-						omstrBusName = "BUSMASTER";
-					}
-					else if(m_eBus == J1939)
-					{
-						// If J1939
-						omstrBusName = "J1939";
-					}
+                    omstrBusName.Empty();
 
-					// If Bus is selected
-					if(omstrBusName.IsEmpty() == FALSE)
-					{
-						nIndex = -1;
-						CString omstrProtocolValue;
-
-						// Check if the PROTOCOL tag exists in the .c file
-						while( nIndex == -1 && o_File.ReadString( omstrProtocolValue ))
-						{   
-							// Checking if the .c file is of which Protocol
-							nIndex = omstrProtocolValue.Find(PROTOCOL_TAB);
-						}
-
-						if(nIndex != -1)
-						{
-							int nPlaceLeftParanth = omstrProtocolValue.Find('[');
-							int nPlaceRightParanth = omstrProtocolValue.Find(']');
-							if(nPlaceLeftParanth != -1 && nPlaceRightParanth != -1)
-							{
-								omstrProtocolValue = omstrProtocolValue.Mid(nPlaceLeftParanth+1, (nPlaceRightParanth - nPlaceLeftParanth -1));
-
-								// If CAN protocol is selected
-								if(omstrProtocolValue == _T("CAN"))
-								{
-									if(m_eBus == J1939)
-									{
-										// If the .c file is not related to J1939
-										AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
-										return;
-									}
-								}
-
-								// If J1939 protocol is selected
-								if(omstrProtocolValue == _T("J1939"))
-								{
-									// If CAN protocol is selected
-									if(m_eBus == CAN)
-									{
-										// If the .c file is not related to CAN
-										AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
-										return;
-									}
-								}
-							}							
-
-							// Closing the file opened
-							o_File.Close();
-						}
-						else
-						{
-							o_File.SeekToBegin();
-
-							CString omTemp1 = BUS_INCLUDE_HDR;
-							// Preparing the header to be searched for in .c file
-							// to get the Protocol name
-							omTemp1.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), omstrBusName);
-
-							nIndex = -1;
-
-							while( nIndex == -1 && o_File.ReadString( strProtocolInfo ))
-							{   
-								// Checking if the .c file is of which Protocol
-								nIndex = strProtocolInfo.Find(omTemp1);
-							}
-
-							// Closing the file opened
-							o_File.Close();
-
-							if (nIndex == -1)
-							{
-								// If CAN protocol is selected
-								if(m_eBus == CAN)
-								{
-									// If the .c file is not related to CAN
-									AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
-									return;
-								}
-								// If J1939 protocol is selected
-								else if(m_eBus == J1939)
-								{
-									// If the .c file is not related to J1939
-									AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
-									return;
-								}
-							}
-						}
-					}
-				}
-/*
-                // file-attribute information
-                _findfirst fileinfo;
-                // Check if file exists
-                if (_findfirst( omStrNewCFileName, &fileinfo) != -1L)
-                {*/
-                    // update the struct info with new file name and check if the 
-                    // corresponding dll is present in the same directory
-                    // if present update the dll name else make it STR_EMPTY.
-                    BOOL bIsSuccess = bUpdateNodeInfoFile(omStrNewCFileName);
-                    if( bIsSuccess )
+                    if(m_eBus == CAN)
                     {
-                        CGlobalObj::ouGetObj(m_eBus).bOpenFunctioneditorfile(omStrNewCFileName);
-                        m_omStrCFile =  omStrNewCFileName;   
-                        UpdateData(FALSE);
-/*                        
-                        GetDlgItem(IDC_BUTTON_EDITFILE)->EnableWindow(TRUE);
-                        GetDlgItem(IDC_BUTTON_BUILD)->EnableWindow(TRUE);
-                        GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->EnableWindow(TRUE);
-                        if(m_psNodeInfo->m_omStrDllName != STR_EMPTY)
-                            GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
-                        else
-                            GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(FALSE);
+                        // If CAN
+                        omstrBusName = "CAN";
                     }
-                    
-                    
-                }
-                else  // new doc should be created if the file name is not found.
-                { 
-                    BOOL bIsSuccess = bUpdateNodeInfoFile(omStrNewCFileName);
-                    if( bIsSuccess )
+                    else if(m_eBus == J1939)
                     {
-                        BOOL bSuccess = bCreateNewFile(omStrNewCFileName );
-                        if (bSuccess)
+                        // If J1939
+                        omstrBusName = "J1939";
+                    }
+
+                    // If Bus is selected
+                    if(omstrBusName.IsEmpty() == FALSE)
+                    {
+                        nIndex = -1;
+                        CString omstrProtocolValue;
+
+                        // Check if the PROTOCOL tag exists in the .c file
+                        while( nIndex == -1 && o_File.ReadString( omstrProtocolValue ))
                         {
-                            CGlobalObj::bOpenFunctioneditorfile(omStrNewCFileName);
-                            CFunctionEditorDoc *pDoc = CGlobalObj::pGetDocPtrOfFile(omStrNewCFileName);
-                            if (pDoc)
+                            // Checking if the .c file is of which Protocol
+                            nIndex = omstrProtocolValue.Find(PROTOCOL_TAB);
+                        }
+
+                        if(nIndex != -1)
+                        {
+                            int nPlaceLeftParanth = omstrProtocolValue.Find('[');
+                            int nPlaceRightParanth = omstrProtocolValue.Find(']');
+                            if(nPlaceLeftParanth != -1 && nPlaceRightParanth != -1)
                             {
-                                pDoc->SetModifiedFlag();
+                                omstrProtocolValue = omstrProtocolValue.Mid(nPlaceLeftParanth+1, (nPlaceRightParanth - nPlaceLeftParanth -1));
+
+                                // If CAN protocol is selected
+                                if(omstrProtocolValue == "CAN")
+                                {
+                                    if(m_eBus == J1939)
+                                    {
+                                        // If the .c file is not related to J1939
+                                        AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
+                                        return;
+                                    }
+                                }
+
+                                // If J1939 protocol is selected
+                                if(omstrProtocolValue == "J1939")
+                                {
+                                    // If CAN protocol is selected
+                                    if(m_eBus == CAN)
+                                    {
+                                        // If the .c file is not related to CAN
+                                        AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
+                                        return;
+                                    }
+                                }
                             }
-                            m_omStrCFile =  omStrNewCFileName;   
-                            UpdateData(FALSE);*/
-                            GetDlgItem(IDC_BUTTON_EDITFILE)->EnableWindow(TRUE);
-                            GetDlgItem(IDC_BUTTON_BUILD)->EnableWindow(TRUE);
-                            GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->EnableWindow(TRUE);
-                            if(m_psNodeInfo->m_omStrDllName != STR_EMPTY)
+
+                            // Closing the file opened
+                            o_File.Close();
+                        }
+                        else
+                        {
+                            o_File.SeekToBegin();
+
+                            CString omTemp1 = BUS_INCLUDE_HDR;
+                            // Preparing the header to be searched for in .c file
+                            // to get the Protocol name
+                            omTemp1.Replace("PLACE_HODLER_FOR_BUSNAME", omstrBusName);
+
+                            nIndex = -1;
+
+                            while( nIndex == -1 && o_File.ReadString( strProtocolInfo ))
                             {
-                                GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
+                                // Checking if the .c file is of which Protocol
+                                nIndex = strProtocolInfo.Find(omTemp1);
                             }
-                            else
+
+                            // Closing the file opened
+                            o_File.Close();
+
+                            if (nIndex == -1)
                             {
-                                GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(FALSE);
+                                // If CAN protocol is selected
+                                if(m_eBus == CAN)
+                                {
+                                    // If the .c file is not related to CAN
+                                    AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
+                                    return;
+                                }
+                                // If J1939 protocol is selected
+                                else if(m_eBus == J1939)
+                                {
+                                    // If the .c file is not related to J1939
+                                    AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
+                                    return;
+                                }
                             }
                         }
-                    }  
+                    }
+                }
+                /*
+                                // file-attribute information
+                                _findfirst fileinfo;
+                                // Check if file exists
+                                if (_findfirst( omStrNewCFileName, &fileinfo) != -1L)
+                                {*/
+                // update the struct info with new file name and check if the
+                // corresponding dll is present in the same directory
+                // if present update the dll name else make it STR_EMPTY.
+                BOOL bIsSuccess = bUpdateNodeInfoFile(omStrNewCFileName);
+                if( bIsSuccess )
+                {
+                    CGlobalObj::ouGetObj(m_eBus).bOpenFunctioneditorfile(omStrNewCFileName);
+                    m_omStrCFile =  omStrNewCFileName;
+                    UpdateData(FALSE);
+                    /*
+                                            GetDlgItem(IDC_BUTTON_EDITFILE)->EnableWindow(TRUE);
+                                            GetDlgItem(IDC_BUTTON_BUILD)->EnableWindow(TRUE);
+                                            GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->EnableWindow(TRUE);
+                                            if(m_psNodeInfo->m_omStrDllName != STR_EMPTY)
+                                                GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
+                                            else
+                                                GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(FALSE);
+                                        }
+
+
+                                    }
+                                    else  // new doc should be created if the file name is not found.
+                                    {
+                                        BOOL bIsSuccess = bUpdateNodeInfoFile(omStrNewCFileName);
+                                        if( bIsSuccess )
+                                        {
+                                            BOOL bSuccess = bCreateNewFile(omStrNewCFileName );
+                                            if (bSuccess)
+                                            {
+                                                CGlobalObj::bOpenFunctioneditorfile(omStrNewCFileName);
+                                                CFunctionEditorDoc *pDoc = CGlobalObj::pGetDocPtrOfFile(omStrNewCFileName);
+                                                if (pDoc)
+                                                {
+                                                    pDoc->SetModifiedFlag();
+                                                }
+                                                m_omStrCFile =  omStrNewCFileName;
+                                                UpdateData(FALSE);*/
+                    GetDlgItem(IDC_BUTTON_EDITFILE)->EnableWindow(TRUE);
+                    GetDlgItem(IDC_BUTTON_BUILD)->EnableWindow(TRUE);
+                    GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->EnableWindow(TRUE);
+                    if(m_psNodeInfo->m_omStrDllName != STR_EMPTY)
+                    {
+                        GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(TRUE);
+                    }
+                    else
+                    {
+                        GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(FALSE);
+                    }
                 }
             }
         }
-    //}   
+    }
+}
+//}
 //}
 /******************************************************************************/
 /*  Function Name    :  bCreateNewFile                                        */
 /*                                                                            */
 /*  Input(s)         :   CString omStrFileName                                */
 /*  Output           :  BOOL                                                  */
-/*  Functionality    :  Constructs the new document and updates the source 
-                        list. 
+/*  Functionality    :  Constructs the new document and updates the source
+                        list.
 /*  Member of        :  CFunctionEditorDoc
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  21.02.2006                                            */
 /*  Modifications    :  Anish kumar,31.08.06
-						bug fixed,XXX_Unions.h was not included as header
+                        bug fixed,XXX_Unions.h was not included as header
 /******************************************************************************/
 //BOOL CSimSysDetView::bCreateNewFile( CString omStrFileName )
 //{
@@ -760,7 +780,7 @@ void CSimSysDetView::OnButtonOpenfile()
 //    if( pCFile != NULL )
 //    {
 //        bSuccess = TRUE;
-//       
+//
 //         TCHAR buffer[2500] = BUS_INCLUDE_HDR;
 //         wcscat(buffer ,_T("\n#include <Windows.h>"));
 //         if (CGlobalObj::m_omMsgStructFile.IsEmpty())
@@ -769,26 +789,26 @@ void CSimSysDetView::OnButtonOpenfile()
 //         }
 //         CString omStr;
 //         omStr.Format(STR_INCLUDE_FILE, CGlobalObj::m_omMsgStructFile);
-//		 wcscat(buffer ,omStr);
-//		 // Get file path of unions.h from app class
-//		 // and if valid insert into the header namespace
+//       wcscat(buffer ,omStr);
+//       // Get file path of unions.h from app class
+//       // and if valid insert into the header namespace
 //        //COMMENTED BY AK****************
-//		/*CStringArray aomstrDBFiles;
-//		theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrDBFiles);
-//		int nTotalCount = aomstrDBFiles.GetCount();
-//		for(int nCount = 0 ; nCount < nTotalCount ; nCount++)
-//		{
-//			CString omStrTemp = aomstrDBFiles.GetAt(nCount);
-//			omStr = CSimSysManager::ouGetSimSysManager().omStrGetUnionFilePath(omStrTemp);
-//			if ( !omStr.IsEmpty())
-//			{
-//				omStr.Insert( 0,"#include \"");
-//				omStr += "\"";
-//			}
-//			wcscat(buffer ,omStr);
-//			wcscat(buffer ,"\n");
-//		}*/
-//		 wcscat(buffer ,_T("\n/* End FRAME include header */"));
+//      /*CStringArray aomstrDBFiles;
+//      theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrDBFiles);
+//      int nTotalCount = aomstrDBFiles.GetCount();
+//      for(int nCount = 0 ; nCount < nTotalCount ; nCount++)
+//      {
+//          CString omStrTemp = aomstrDBFiles.GetAt(nCount);
+//          omStr = CSimSysManager::ouGetSimSysManager().omStrGetUnionFilePath(omStrTemp);
+//          if ( !omStr.IsEmpty())
+//          {
+//              omStr.Insert( 0,"#include \"");
+//              omStr += "\"";
+//          }
+//          wcscat(buffer ,omStr);
+//          wcscat(buffer ,"\n");
+//      }*/
+//       wcscat(buffer ,_T("\n/* End FRAME include header */"));
 //         wcscat(buffer ,_T("\n\n\n"));
 //         wcscat(buffer ,BUS_VAR_HDR);
 //         wcscat(buffer ,_T("\n\n"));
@@ -798,8 +818,8 @@ void CSimSysDetView::OnButtonOpenfile()
 //         wcscat(buffer ,_T("\n"));
 //         wcscat(buffer ,BUS_FN_PROTOTYPE_FOOTER);
 //         wcscat(buffer ,_T("\n\n"));
-//         int tcsLength = _tcslen(buffer); 
-//      
+//         int tcsLength = _tcslen(buffer);
+//
 //       int numwritten = fwrite( buffer, sizeof( TCHAR ), tcsLength, pCFile );
 //
 //       fclose(pCFile);
@@ -815,14 +835,14 @@ void CSimSysDetView::OnButtonOpenfile()
 /*  Function Name    :  bUpdateNodeInfoFile
 /*  Input(s)         :  CString omStrCFile
 /*  Output           :  -
-/*  Functionality    :  Updates the Node details with the new C file name selected 
-                        by "Open File" and calls a function to update the dll name 
-                        if present and also intimates the tree view to update its 
+/*  Functionality    :  Updates the Node details with the new C file name selected
+                        by "Open File" and calls a function to update the dll name
+                        if present and also intimates the tree view to update its
                         details.
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M                                      
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
 /*  Date Created     :  21.12.2005
 /*****************************************************************************/
 BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
@@ -831,12 +851,12 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
     BOOL bIsSuccess = FALSE;
     BOOL bDupDllFound = FALSE;
     BOOL bDupCfileFound = FALSE;
-    CSimSysTreeView* pSimSysTreeView = 
+    CSimSysTreeView* pSimSysTreeView =
         CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
-    CSimSysNodeInfo *pSimSysNodeInf = 
+    CSimSysNodeInfo* pSimSysNodeInf =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    
-    CSimSysConfigDetails* pSimSysConfig = 
+
+    CSimSysConfigDetails* pSimSysConfig =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
     if (pSimSysTreeView == NULL || pSimSysNodeInf == NULL || pSimSysConfig == NULL)
     {
@@ -846,7 +866,7 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
     bDupCfileFound = pSimSysNodeInf->bIsDuplicateCFile( omStrCFile );
     if (bDupCfileFound)
     {
-        AfxMessageBox(_T("Duplicate C file found!"));
+        AfxMessageBox("Duplicate C file found!");
     }
     else
     {
@@ -856,7 +876,7 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
         bDupDllFound = pSimSysNodeInf->bIsDuplicateDllName( omStrDllName );
         if(bDupDllFound)
         {
-            AfxMessageBox(_T("Duplicate dll found!"));
+            AfxMessageBox("Duplicate dll found!");
         }
     }
     //If there is no duplication then update the node info
@@ -866,7 +886,7 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
         //Get the corressponding dll name and check if it is already
         //present in the folder
         omStrCFile.Replace( defDOT_SMALL_C , defDOT_DLL );
-         // file-attribute information
+        // file-attribute information
         _tfinddata_t fileinfo;
         // Check if file exists
         if (_tfindfirst( omStrCFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
@@ -886,7 +906,7 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
             psSimSys->m_bIsSimSysModified = TRUE;
         }
         bIsSuccess = TRUE;
-    } 
+    }
     return bIsSuccess;
 }
 
@@ -897,18 +917,18 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
 /*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  displays handler description and value
-						for the selected handler from handler list control
+                        for the selected handler from handler list control
 
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*. Modifications    :  
+/*. Modifications    :
 /******************************************************************************/
-void CSimSysDetView::OnClickLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* /*pResult*/) 
+void CSimSysDetView::OnClickLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* /*pResult*/)
 {
-	UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
+    UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
     int nItemCount = m_omListCtrlHanDet.GetItemCount();
     int nSel = m_omListCtrlHanDet.GetNextItem(-1, LVNI_SELECTED  );
     if(nSel == -1)
@@ -918,7 +938,7 @@ void CSimSysDetView::OnClickLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* /*pResult
                                         unItemStateMask ) ;
     }
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-    vUpDownArrowKeySelection(pNMListView->iItem);    
+    vUpDownArrowKeySelection(pNMListView->iItem);
 }
 
 
@@ -927,82 +947,90 @@ void CSimSysDetView::OnClickLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* /*pResult
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Called by the frame work to update the view. 
-						Inserts columns to the list control
+/*  Functionality    :  Called by the frame work to update the view.
+                        Inserts columns to the list control
 
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M			                                  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CSimSysDetView::OnInitialUpdate() 
+void CSimSysDetView::OnInitialUpdate()
 {
-	CFormView::OnInitialUpdate();
+    CFormView::OnInitialUpdate();
 
     CSimSysManager::ouGetSimSysManager(m_eBus).podSetSimSysDetView( this );
-    
+
     // Create a font for the main header
     CFont om_tFont;
     LOGFONT LF;
     memset(&LF, 0, sizeof(LF));
-	
+
     // Setting the log font structure values to set the font
     LF.lfHeight = 10;
     LF.lfWeight = FW_HEAVY;
     LF.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-    _tcscpy(LF.lfFaceName, _T("Ms Sans Serif"));
+    _tcscpy(LF.lfFaceName, "Ms Sans Serif");
     if (!om_tFont.CreateFontIndirect(&LF))
     {
-        TRACE(_T("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n"));
+        TRACE("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n");
     }
-    
+
     // Insert column header in the signal details list control
     RECT rRect;
     GetDlgItem(IDC_LSTC_HANDLER_DETAILS)->GetWindowRect( &rRect );
-	
+
     ScreenToClient(&rRect);
-	
+
     CSize om_Coor(0,0);
-    
+
     om_Coor.cx = rRect.right/3;
-	
+
     // Insert column to handler details list control
     m_omListCtrlHanDet.InsertColumn( 0,
-		_T("Name"),
-		LVCFMT_CENTER, 
-		om_Coor.cx, 
-		0);
-    
+                                     "Name",
+                                     LVCFMT_CENTER,
+                                     om_Coor.cx,
+                                     0);
+
     m_omListCtrlHanDet.InsertColumn( 1,
-		_T("Handler Count"),
-		LVCFMT_CENTER, 
-		om_Coor.cx, 
-		1);
-	
-    
+                                     "Handler Count",
+                                     LVCFMT_CENTER,
+                                     om_Coor.cx,
+                                     1);
+
+
     m_omListCtrlHanDet.InsertColumn( 2,
-		_T("Status"),
-		LVCFMT_CENTER, 
-		om_Coor.cx, 
-		2);
+                                     "Status",
+                                     LVCFMT_CENTER,
+                                     om_Coor.cx,
+                                     2);
 
     // dll is unloaded then insert these values
     if(!m_bIsDllLoadSuccess)
     {
         UpdateData(TRUE);
-        for(int i=0; i<4; i++)
+        for(int i=0; i<5; i++)
         {
             m_omListCtrlHanDet.InsertItem(i,pcHandlerNames[i]);
-            m_omListCtrlHanDet.SetItemText(i,1,_T("-"));
-            m_omListCtrlHanDet.SetItemText(i,2,defStrDisabled);            
+            m_omListCtrlHanDet.SetItemText(i,1,"-");
+            m_omListCtrlHanDet.SetItemText(i,2,defStrDisabled);
+        }
+        if (m_eBus == CAN)
+        {
+            m_omListCtrlHanDet.DeleteItem(4);
+        }
+        if (m_eBus == J1939)
+        {
+            m_omListCtrlHanDet.DeleteItem(3);
         }
     }
-    
-    
-    // if dll is loaded then insert the values along with the no of 
+
+
+    // if dll is loaded then insert the values along with the no of
     // handlers present n the status
     if(m_bIsDllLoadSuccess)
     {
@@ -1016,47 +1044,49 @@ void CSimSysDetView::OnInitialUpdate()
         sItem.iSubItem  = 0;
         m_omListCtrlHanDet.SetItem(&sItem );
         if (m_psNodeInfo->m_bIsAllHandlersEnabled)
+        {
             vChangeEDAllHanButtonText(TRUE);
-        
+        }
+
     }
-    
-    
+
+
     // Insert columns to the handler value list control
     m_omListCtrlHanVal.GetWindowRect( &rRect );
-    
+
     ScreenToClient(&rRect);
-    
+
     m_omListCtrlHanVal.InsertColumn( 0,
-        _T("Handler Description"),
-        LVCFMT_CENTER, 
-        rRect.right/2, 
-        0);
-    
-    
+                                     "Handler Description",
+                                     LVCFMT_CENTER,
+                                     rRect.right/2,
+                                     0);
+
+
     // let list control select full row
     m_omListCtrlHanDet.SetExtendedStyle( LVS_EX_FULLROWSELECT );
     m_omListCtrlHanVal.SetExtendedStyle( LVS_EX_FULLROWSELECT );
-    
+
     //
     m_omECU_NAME.vSetSigned(FALSE);
     m_omPrefAdres.vSetSigned(FALSE);
     //
-    vHideControls(SW_HIDE);	
+    vHideControls(SW_HIDE);
 }
 
 /******************************************************************************/
-/*  Function Name    :  vDisplayNodeInformation                              
-/*                                                                            
-/*  Input(s)         :  CSimSysDetView::sMESSAGE* pMsg                            
-/*  Output           :                                                        
+/*  Function Name    :  vDisplayNodeInformation
+/*
+/*  Input(s)         :  CSimSysDetView::sMESSAGE* pMsg
+/*  Output           :
 /*  Functionality    :  Displays the message details on the form view
 
-  /*  Member of        :  CSimSysDetView                                         
-  /*  Friend of        :      -                                                 
-  /*                                                                            
-  /*  Author(s)        :  Harika M                                      
-  /*  Date Created     :  20.12.2005                                            
-  /*  Modifications    :  
+  /*  Member of        :  CSimSysDetView
+  /*  Friend of        :      -
+  /*
+  /*  Author(s)        :  Harika M
+  /*  Date Created     :  20.12.2005
+  /*  Modifications    :
 /******************************************************************************/
 
 void CSimSysDetView::vDisplayNodeInformation(PSNODEINFO pNodeInfo)
@@ -1073,22 +1103,22 @@ void CSimSysDetView::vDisplayNodeInformation(PSNODEINFO pNodeInfo)
         m_omStrCFile = pNodeInfo->m_omStrFileName;
         BOOL bEnableButton = !pNodeInfo->m_omStrFileName.IsEmpty();
         vEnableButtons(bEnableButton);
-        // Enable/disable the filegrp static frame depending upon presence of file 
-        GetDlgItem(IDC_STAT_FILEGRP)->EnableWindow(bEnableButton); 		
-	    UpdateData(FALSE);
+        // Enable/disable the filegrp static frame depending upon presence of file
+        GetDlgItem(IDC_STAT_FILEGRP)->EnableWindow(bEnableButton);
+        UpdateData(FALSE);
         //Enable load button if there is dll attached to the node
         BOOL bEnableDllButton = !pNodeInfo->m_omStrDllName.IsEmpty();
         GetDlgItem(IDC_BUTTON_LOAD)->EnableWindow(bEnableDllButton);
-    
+
         if (pNodeInfo->m_bIsDllLoaded)
         {
             m_bIsDllLoadSuccess = TRUE;
-            
-            // enable the handler details n show the handler details.  
-            vEnableHandlerDetails(TRUE);  
+
+            // enable the handler details n show the handler details.
+            vEnableHandlerDetails(TRUE);
             // Get The Connection Status and update the controls
             bConnected = CSimSysManager::ouGetSimSysManager(m_eBus).
-                            ouGetFlags().nGetFlagStatus(H_CONNECTED);
+                         ouGetFlags().nGetFlagStatus(H_CONNECTED);
             // only when the tool is connected enable the button.
             if(bConnected)
             {
@@ -1108,7 +1138,7 @@ void CSimSysDetView::vDisplayNodeInformation(PSNODEINFO pNodeInfo)
             {
                 vChangeEDAllHanButtonText(TRUE);
             }
-                       
+
         }
         else
         {
@@ -1117,9 +1147,9 @@ void CSimSysDetView::vDisplayNodeInformation(PSNODEINFO pNodeInfo)
             // call a func here only to populate all the handler function names.
             vAddItemToHanDetList( pNodeInfo );
 
-			// disable the whole handler details frame.
+            // disable the whole handler details frame.
             vEnableHandlerDetails(FALSE);
-            			
+
         }
         if(pNodeInfo->m_bIsAllHandlersEnabled)
         {
@@ -1141,9 +1171,9 @@ void CSimSysDetView::vDisplayNodeInformation(PSNODEINFO pNodeInfo)
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 void CSimSysDetView::vEnableHandlerDetails(BOOL bIsEnabled)
@@ -1152,7 +1182,7 @@ void CSimSysDetView::vEnableHandlerDetails(BOOL bIsEnabled)
     GetDlgItem(IDC_LSTC_HANVAL)->EnableWindow(bIsEnabled);
     GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->EnableWindow(bIsEnabled);
     GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->EnableWindow(bIsEnabled);
-    
+
 }
 /******************************************************************************/
 /*  Function Name    :  vEnableHandlerButtons                                 */
@@ -1163,23 +1193,23 @@ void CSimSysDetView::vEnableHandlerDetails(BOOL bIsEnabled)
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
 /*  Modifications    :  Anish,13.02.07
-						Added code to check if dll is loaded before enabling 
-						the handler buttons
+                        Added code to check if dll is loaded before enabling
+                        the handler buttons
 /******************************************************************************/
 void CSimSysDetView::vEnableHandlerButtons( BOOL bIsEnabled )
 {
-	if( bIsEnabled == TRUE && m_psNodeInfo != NULL )
-	{
-		if(m_psNodeInfo->m_bIsDllLoaded == FALSE)
-		{
-			bIsEnabled = FALSE;
-		}
-	}
-	GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->EnableWindow(bIsEnabled);
-	GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->EnableWindow(bIsEnabled);
+    if( bIsEnabled == TRUE && m_psNodeInfo != NULL )
+    {
+        if(m_psNodeInfo->m_bIsDllLoaded == FALSE)
+        {
+            bIsEnabled = FALSE;
+        }
+    }
+    GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->EnableWindow(bIsEnabled);
+    GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->EnableWindow(bIsEnabled);
 
 
 }
@@ -1192,19 +1222,19 @@ void CSimSysDetView::vEnableHandlerButtons( BOOL bIsEnabled )
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysDetView::vHideControls(UINT unEnableHide)
 {
     GetDlgItem(IDC_STAT_NODE_DETAILS)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_STAT_FILEGRP)->ShowWindow(unEnableHide);
 
-    
+
     GetDlgItem(IDC_STAT_NODE_NAME)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_EDIT_NODE_NAME)->ShowWindow(unEnableHide);
-	
+
     BOOL bShowHide =  (m_eBus == J1939) ? unEnableHide : FALSE;
     {
         GetDlgItem(IDC_STATIC_PREF_ADRES)->ShowWindow(bShowHide);
@@ -1215,24 +1245,24 @@ void CSimSysDetView::vHideControls(UINT unEnableHide)
     }
     GetDlgItem(IDC_STAT_FILE_NAME)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_EDIT_FILE_NAME)->ShowWindow(unEnableHide);
-    
+
     GetDlgItem(IDC_LSTC_HANDLER_DETAILS)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_LSTC_HANVAL)->ShowWindow(unEnableHide);
-	
+
     GetDlgItem(IDC_STAT_HANGROUP)->ShowWindow(unEnableHide);
-	
+
     GetDlgItem(IDC_STAT_HANDESC)->ShowWindow(unEnableHide);
-  
+
     GetDlgItem(IDC_BUTTON_OPENFILE)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_BUTTON_EDITFILE)->ShowWindow(unEnableHide);
     GetDlgItem(IDC_BUTTON_BUILD)->ShowWindow(unEnableHide);
-	GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->ShowWindow(unEnableHide);
-	GetDlgItem(IDC_BUTTON_LOAD)->ShowWindow(unEnableHide);
-	
-	GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->ShowWindow(unEnableHide);
-	GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->ShowWindow(unEnableHide);
+    GetDlgItem(IDC_BUTTON_BUILDANDLOAD)->ShowWindow(unEnableHide);
+    GetDlgItem(IDC_BUTTON_LOAD)->ShowWindow(unEnableHide);
 
-    
+    GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->ShowWindow(unEnableHide);
+    GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->ShowWindow(unEnableHide);
+
+
     if ( unEnableHide == SW_HIDE )
     {
         m_bAreControlsHidden = TRUE;
@@ -1251,19 +1281,19 @@ void CSimSysDetView::vHideControls(UINT unEnableHide)
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  
-/*  Date Created     :  
-/*  Modifications    :  
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysDetView::vChangeLUButtonText(BOOL bIsLoaded)
 {
-	LPCTSTR StrUnloadTxt = _T("Load");
+    LPCTSTR StrUnloadTxt = "Load";
     if(bIsLoaded)
     {
-        StrUnloadTxt = _T("UnLoad");
+        StrUnloadTxt = "UnLoad";
     }
     GetDlgItem(IDC_BUTTON_LOAD)->SetWindowText(StrUnloadTxt);
-	
+
 }
 void CSimSysDetView::vSetNodeAddress(BYTE byAddress)
 {
@@ -1283,26 +1313,26 @@ void CSimSysDetView::vSetNodeAddress(BYTE byAddress)
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  12.1.2006                                             */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 
 void CSimSysDetView::vSetNodeInfoEDHanStatus( int nSelItem , BOOL bIsEnabled )
 {
-    // here check the string name omStrSelText,to know which handler is E/D and 
+    // here check the string name omStrSelText,to know which handler is E/D and
     // set the corresponding flag to the bIsEnabled.
 
-    CSimSysNodeInfo *pSimSysNodeInf = 
+    CSimSysNodeInfo* pSimSysNodeInf =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     switch(nSelItem)
     {
-        case 0 : 
+        case 0 :
         {
             m_bIsMsgHanEnabled = bIsEnabled;
-            pSimSysNodeInf->vSetEnableNodeMsgHandlers(STR_EMPTY , 
-                m_psNodeInfo->m_omStrNodeName , bIsEnabled);
+            pSimSysNodeInf->vSetEnableNodeMsgHandlers(STR_EMPTY ,
+                    m_psNodeInfo->m_omStrNodeName , bIsEnabled);
             m_psNodeInfo->m_bMsgHandlersEnabled = bIsEnabled;
 
             vChangeEDHanButtonText( bIsEnabled );
@@ -1310,84 +1340,95 @@ void CSimSysDetView::vSetNodeInfoEDHanStatus( int nSelItem , BOOL bIsEnabled )
 
         }
         break;
-        case 1 : 
+        case 1 :
         {
             m_bIsTimerHanEnabled = bIsEnabled;
             m_psNodeInfo->m_bTimerHandlersEnabled = bIsEnabled;
-            pSimSysNodeInf->vSetEnableNodeTimerHandlers(STR_EMPTY , 
-                m_psNodeInfo->m_omStrNodeName , bIsEnabled);
+            pSimSysNodeInf->vSetEnableNodeTimerHandlers(STR_EMPTY ,
+                    m_psNodeInfo->m_omStrNodeName , bIsEnabled);
             vChangeEDHanButtonText( bIsEnabled );
 
         }
         break;
-        case 2 : 
+        case 2 :
         {
             m_bIsKeyHanEnabled = bIsEnabled;
             m_psNodeInfo->m_bKeyHandlersEnabled = bIsEnabled;
-            pSimSysNodeInf->vSetEnableNodeKeyHandlers(STR_EMPTY , 
-                m_psNodeInfo->m_omStrNodeName , bIsEnabled);
+            pSimSysNodeInf->vSetEnableNodeKeyHandlers(STR_EMPTY ,
+                    m_psNodeInfo->m_omStrNodeName , bIsEnabled);
             vChangeEDHanButtonText( bIsEnabled );
 
         }
         break;
-        case 3 : 
+        case 3 :
         {
-            m_bIsErrorHanEnabled = bIsEnabled;
-            m_psNodeInfo->m_bErrorHandlersEnabled = bIsEnabled;
-            pSimSysNodeInf->vSetEnableNodeErrorHandlers(STR_EMPTY , 
-                m_psNodeInfo->m_omStrNodeName , bIsEnabled);
-            vChangeEDHanButtonText( bIsEnabled );
-
+            if ( m_eBus == CAN )
+            {
+                m_bIsErrorHanEnabled = bIsEnabled;
+                m_psNodeInfo->m_bErrorHandlersEnabled = bIsEnabled;
+                pSimSysNodeInf->vSetEnableNodeErrorHandlers(STR_EMPTY ,
+                        m_psNodeInfo->m_omStrNodeName , bIsEnabled);
+                vChangeEDHanButtonText( bIsEnabled );
+            }
+            else if ( m_eBus == J1939 )
+            {
+                m_bIsEventHanEnabled = bIsEnabled;
+                m_psNodeInfo->m_bEventHandlersEnabled = bIsEnabled;
+                pSimSysNodeInf->vSetEnableNodeEventHandlers(STR_EMPTY ,
+                        m_psNodeInfo->m_omStrNodeName , bIsEnabled);
+                vChangeEDHanButtonText( bIsEnabled );
+            }
         }
         break;
-        default : AfxMessageBox(_T("Error in handler details of Node info"));
-    }	
+        default :
+            AfxMessageBox("Error in handler details of Node info");
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  vChangeEDHanButtonText                                */
 /*                                                                            */
 /*  Input(s)         :  BOOL bIsLoaded                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Changes the Text of the button to "Enable Handler"  
-                        or "Disable Handler" 
+/*  Functionality    :  Changes the Text of the button to "Enable Handler"
+                        or "Disable Handler"
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  12.1.2006                                             */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysDetView::vChangeEDHanButtonText(  BOOL bIsEnabled )
 {
-    LPCTSTR StrBtnHanTxt = _T("Enable Handler");
+    LPCTSTR StrBtnHanTxt = "Enable Handler";
     if(bIsEnabled)
     {
-        StrBtnHanTxt = _T("Disable Handler");      
+        StrBtnHanTxt = "Disable Handler";
     }
-    GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->SetWindowText(StrBtnHanTxt);  
+    GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->SetWindowText(StrBtnHanTxt);
 }
 /******************************************************************************/
 /*  Function Name    :  vChangeEDAllHanButtonText                             */
 /*                                                                            */
 /*  Input(s)         :  BOOL bIsLoaded                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Changes the Text of the button to "Enable Handler" 
+/*  Functionality    :  Changes the Text of the button to "Enable Handler"
                         or "Disable Handler"
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  
-/*  Date Created     :  
-/*  Modifications    :  
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysDetView::vChangeEDAllHanButtonText(BOOL bIsEnabled)
 {
-    LPCTSTR StrBtnHanTxt = _T("Enable All Handlers");
+    LPCTSTR StrBtnHanTxt = "Enable All Handlers";
     if(bIsEnabled)
     {
-        StrBtnHanTxt = _T("Disable All Handlers");      
+        StrBtnHanTxt = "Disable All Handlers";
     }
-    GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->SetWindowText(StrBtnHanTxt);  
+    GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->SetWindowText(StrBtnHanTxt);
 }
 
 /******************************************************************************/
@@ -1399,9 +1440,9 @@ void CSimSysDetView::vChangeEDAllHanButtonText(BOOL bIsEnabled)
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Harika M											  */
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 BOOL CSimSysDetView::bGetControlStatus()
 {
@@ -1414,12 +1455,12 @@ BOOL CSimSysDetView::bGetControlStatus()
 /*  Output           :  -
 /*  Functionality    :  Enables/Disables "New File", "Edit File", "Build"
                         "Build and Load" and "Load" buttons
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M											  */
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  20.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysDetView::vEnableButtons(BOOL bEnable)
 {
@@ -1433,43 +1474,43 @@ void CSimSysDetView::vEnableButtons(BOOL bEnable)
 /*  Function Name    :  OnItemchangedLstcSignalDetails
 /*  Input(s)         :  Item State & Result Pointer from Message Dispatch
 /*  Output           :  -
-/*  Functionality    :  Updates the Handler Descriptor List as per the selection 
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
+/*  Functionality    :  Updates the Handler Descriptor List as per the selection
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
 /*  Author(s)        :  Harika M
 /*  Date Created     :  20.01.2006
 /*****************************************************************************/
-void CSimSysDetView::OnItemchangedLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSimSysDetView::OnItemchangedLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+    NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     UINT unItemStateMask = LVIS_SELECTED|LVIS_FOCUSED;
-    
+
     if(pNMListView->uNewState == unItemStateMask)
     {
         vUpDownArrowKeySelection(pNMListView->iItem);
     }
-	*pResult = 0;
+    *pResult = 0;
 }
 
 /*****************************************************************************/
 /*  Function Name    :  vUpDownArrowKeySelection
 /*  Input(s)         :  Selected list item
 /*  Output           :  -
-/*  Functionality    :  Updates the handler value list control with selected  
-                        handler                                
-/*  Member of        :  CSimSysDetView                                         
-/*  Friend of        :      -                                                 
-/*                                                                            
-/*  Author(s)        :  Harika M											  
-/*  Date Created     :  20.12.2005                                            
-/*  Modifications    :  
+/*  Functionality    :  Updates the handler value list control with selected
+                        handler
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  20.12.2005
+/*  Modifications    :
 /******************************************************************************/
-void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index 
+void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
 {
     BOOL bConnected = CSimSysManager::ouGetSimSysManager(m_eBus).
-                        ouGetFlags().nGetFlagStatus(H_CONNECTED);
-	    
+                      ouGetFlags().nGetFlagStatus(H_CONNECTED);
+
     if (nSel != -1 )
     {
         // Enable "Enable/Disable All handlers button" and "Enable/Disable handler button'
@@ -1483,15 +1524,15 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
             GetDlgItem(IDC_BUTTON_ENABLEALLHANDLERS)->EnableWindow(FALSE);
             GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->EnableWindow(FALSE);
         }
-        
+
         m_omListCtrlHanVal.DeleteAllItems();
-        
-        // Toggle enable-disable handler button accordingly 
+
+        // Toggle enable-disable handler button accordingly
         // and update the handler details in the Handler value list
         CString omStrTemp = STR_EMPTY;
         switch(nSel)
         {
-        case 0 : 
+            case 0 :
             {
                 int i=0;
                 m_bIsMsgHanEnabled = m_psNodeInfo->m_bMsgHandlersEnabled ;
@@ -1503,10 +1544,10 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
                     omStrTemp = m_psNodeInfo->m_omStrArrayMsgHandlers.ElementAt(i);
                     m_omListCtrlHanVal.InsertItem( i , omStrTemp);
                 }
-              
+
             }
             break;
-        case 1 : 
+            case 1 :
             {
                 int i = 0;
                 m_bIsTimerHanEnabled = m_psNodeInfo->m_bTimerHandlersEnabled;
@@ -1518,10 +1559,10 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
                     m_omListCtrlHanVal.InsertItem( i , omStrTemp);
                 }
                 vChangeEDHanButtonText( m_bIsTimerHanEnabled );
-                
+
             }
             break;
-        case 2 : 
+            case 2 :
             {
                 int i = 0;
                 m_bIsKeyHanEnabled = m_psNodeInfo->m_bKeyHandlersEnabled;
@@ -1535,25 +1576,42 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
                 vChangeEDHanButtonText( m_bIsKeyHanEnabled );
             }
             break;
-        case 3 : 
+            case 3 :
             {
-                int i = 0;
-                m_bIsErrorHanEnabled = m_psNodeInfo->m_bErrorHandlersEnabled;
-                // fill the handler value list with the fun names and its value
-                int nErrorCount = (COMMANINT)m_psNodeInfo->m_omStrArrayErrorHandlers.GetSize();
-                for ( i=0 ; i < nErrorCount ; i++ )
+                if ( m_eBus == CAN )
                 {
-                    omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(i);
-                    m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    int i = 0;
+                    m_bIsErrorHanEnabled = m_psNodeInfo->m_bErrorHandlersEnabled;
+                    // fill the handler value list with the fun names and its value
+                    int nErrorCount = (COMMANINT)m_psNodeInfo->m_omStrArrayErrorHandlers.GetSize();
+                    for ( i=0 ; i < nErrorCount ; i++ )
+                    {
+                        omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(i);
+                        m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    }
+                    vChangeEDHanButtonText( m_bIsErrorHanEnabled );
                 }
-                vChangeEDHanButtonText( m_bIsErrorHanEnabled );
+                else if ( m_eBus == J1939 )
+                {
+                    int i = 0;
+                    m_bIsEventHanEnabled = m_psNodeInfo->m_bEventHandlersEnabled;
+                    // fill the handler value list with the fun names and its value
+                    int nEventCount = (COMMANINT)m_psNodeInfo->m_omStrArrayEventHandlers.GetSize();
+                    for ( i=0 ; i < nEventCount ; i++ )
+                    {
+                        omStrTemp = m_psNodeInfo->m_omStrArrayEventHandlers.ElementAt(i);
+                        m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    }
+                    vChangeEDHanButtonText( m_bIsEventHanEnabled );
+                }
             }
             break;
-        default : AfxMessageBox(_T("Error in handler details of Node info"));
-            break;
+            default :
+                AfxMessageBox("Error in handler details of Node info");
+                break;
         }
-        
-        
+
+
     }
     if( nSel == -1 )
     {
@@ -1562,7 +1620,7 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
         GetDlgItem(IDC_BUTTON_ENABLEHANDLER)->EnableWindow(FALSE);
         //empty the handler description list as well
         m_omListCtrlHanVal.DeleteAllItems();
-    } 
+    }
 }
 
 /*******************************************************************************
@@ -1572,17 +1630,17 @@ Output           :  -
 Functionality    :  This function will be called by framework after destroying
                     the window. This will initialise CmainFrame's view pointer
                     to null
-Member of        :  CSimSysDetView                                         
-Friend of        :      -                                                 
+Member of        :  CSimSysDetView
+Friend of        :      -
 
-Author(s)        :  Harika M											  
-Date Created     :  20.12.2005                                            
-Modifications    :  
+Author(s)        :  Harika M
+Date Created     :  20.12.2005
+Modifications    :
 /******************************************************************************/
-void CSimSysDetView::PostNcDestroy() 
+void CSimSysDetView::PostNcDestroy()
 {
-	  CSimSysManager::ouGetSimSysManager(m_eBus).podSetSimSysDetView( NULL );
-	  CFormView::PostNcDestroy();
+    CSimSysManager::ouGetSimSysManager(m_eBus).podSetSimSysDetView( NULL );
+    CFormView::PostNcDestroy();
 }
 
 
@@ -1592,54 +1650,61 @@ void CSimSysDetView::PostNcDestroy()
 /*                                                                            */
 /*  Input(s)         :  sNODEINFO* pNode                     */
 /*  Output           :                                                        */
-/*  Functionality    :  Adds the handler details into the list 
+/*  Functionality    :  Adds the handler details into the list
 /*  Member of        :  CSimSysDetView                                        */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  Anish Kr.                                     
-/*  Date Created     :                                         
-/*  Modifications    :  
+/*  Author(s)        :  Anish Kr.
+/*  Date Created     :
+/*  Modifications    :
 /******************************************************************************/
 void CSimSysDetView::vAddItemToHanDetList( sNODEINFO* pNode )
 {
-    
+
     CString omStrTemp = STR_EMPTY;
-    // get the CStringArray of all handlers and update the handler handler details 
+    // get the CStringArray of all handlers and update the handler handler details
     // with the no. of handlers present for each type n status.
     // by default the first handler " Message handlers" has to be selected.
-    
+
     if( pNode != NULL )
     {
         // for Msg handlers
         vSetHandlerDetailRowText(0,
                                  (COMMANINT)pNode->m_omStrArrayMsgHandlers.GetSize(),
                                  pNode->m_bMsgHandlersEnabled);
-        
-                
+
+
         // for Timer handlers
         vSetHandlerDetailRowText(1,
                                  (COMMANINT)pNode->m_omStrArrayTimerHandlers.GetSize(),
                                  pNode->m_bTimerHandlersEnabled);
-               
-               
+
+
         // for Key handlers
         vSetHandlerDetailRowText(2,
                                  (COMMANINT)pNode->m_omStrArrayKeyHandlers.GetSize(),
                                  pNode->m_bKeyHandlersEnabled);
-       
-        
-                
-        // for Error handlers
-        vSetHandlerDetailRowText(3,
-                                 (COMMANINT)pNode->m_omStrArrayErrorHandlers.GetSize(),
-                                 pNode->m_bErrorHandlersEnabled);
-                     
+
+        if ( m_eBus == CAN )
+        {
+            // for Error handlers
+            vSetHandlerDetailRowText(3,
+                                     (COMMANINT)pNode->m_omStrArrayErrorHandlers.GetSize(),
+                                     pNode->m_bErrorHandlersEnabled);
+        }
+        if ( m_eBus == J1939 )
+        {
+            // for Event handlers
+            vSetHandlerDetailRowText(3,
+                                     (COMMANINT)pNode->m_omStrArrayEventHandlers.GetSize(),
+                                     pNode->m_bEventHandlersEnabled);
+        }
     }
     m_omListCtrlHanDet.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
     vUpDownArrowKeySelection(0);
-    
+
     //UpdateData(FALSE);
-    
+
 }
 
 void CSimSysDetView::vSetHandlerDetailRowText(int nRow, int nNoOfHandler, BOOL bEnabled)
@@ -1650,7 +1715,7 @@ void CSimSysDetView::vSetHandlerDetailRowText(int nRow, int nNoOfHandler, BOOL b
         CString strEnabled = defStrDisabled;
         if (bEnabled)
         {
-            strEnabled = defStrEnabled; 
+            strEnabled = defStrEnabled;
         }
         strHandlerCount.Format("%d", nNoOfHandler);
         //Handler counts in 2nd row(0 based)
@@ -1675,28 +1740,37 @@ void CSimSysDetView::vUpdateHandlerList()
 }
 
 void CSimSysDetView::vUpdateHandlerEnableDisableStatus(int nItem, BOOL bEnableHandler)
-{	
-	CFlags &ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
-	switch (nItem)
-	{
-	case -1:
-		ouFlag.vSetFlagStatus(H_ALL_HANDLER, bEnableHandler);
-		ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bEnableHandler);
-		ouFlag.vSetFlagStatus(H_TIMERBUTTON, bEnableHandler);
-		ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bEnableHandler);
-		ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
-		break;
-	case 0:	// Message Handler			
-		ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bEnableHandler);
-		break;
-	case 1:	// Timer Handler			
-		ouFlag.vSetFlagStatus(H_TIMERBUTTON, bEnableHandler);
-		break;
-	case 2:	// Key Handler
-		ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bEnableHandler);
-		break;
-	case 3:	// Error Handler
-		ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
-		break;
-	}
+{
+    CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+    switch (nItem)
+    {
+        case -1:
+            ouFlag.vSetFlagStatus(H_ALL_HANDLER, bEnableHandler);
+            ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bEnableHandler);
+            ouFlag.vSetFlagStatus(H_TIMERBUTTON, bEnableHandler);
+            ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bEnableHandler);
+            ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
+            ouFlag.vSetFlagStatus(H_EVENT_HANDLER, bEnableHandler);
+            break;
+        case 0: // Message Handler
+            ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bEnableHandler);
+            break;
+        case 1: // Timer Handler
+            ouFlag.vSetFlagStatus(H_TIMERBUTTON, bEnableHandler);
+            break;
+        case 2: // Key Handler
+            ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bEnableHandler);
+            break;
+        case 3: // Error/Event Handler
+        {
+            if ( m_eBus == CAN )
+            {
+                ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
+            }
+            else if ( m_eBus == J1939 )
+            {
+                ouFlag.vSetFlagStatus(H_EVENT_HANDLER, bEnableHandler);
+            }
+        }
+    }
 }

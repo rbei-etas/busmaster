@@ -55,33 +55,33 @@ sBUSSTATTISTICSDATA CBusStatisticsDlg::sm_sBusSerializationData;
 /* constructor */
 sBUSSTATTISTICSDATA::sBUSSTATTISTICSDATA()
 {
-	m_bIsDirty = false;
-	//One for the first default parameters column
-	m_nColumnCount = CHANNEL_CAN_MAX + 1;
+    m_bIsDirty = false;
+    //One for the first default parameters column
+    m_nColumnCount = CHANNEL_CAN_MAX + 1;
 }
 
 void sBUSSTATTISTICSDATA::vLoadDefaults()
 {
-	//For first column 'Parameters'
-	m_arrbColumnVisible[0] = true;
-	m_arrnOrder[0] = 0;
-	m_arrnColWidth[0] = defPARAMETER_COL_WIDTH;
+    //For first column 'Parameters'
+    m_arrbColumnVisible[0] = true;
+    m_arrnOrder[0] = 0;
+    m_arrnColWidth[0] = defPARAMETER_COL_WIDTH;
 
 
-	for(short i = 1; i < CHANNEL_CAN_MAX+1; i++)
-	{
-		m_arrbColumnVisible[i] = true;
-		m_arrnOrder[i] = i;
-		m_arrnColWidth[i] = defVALUE_COL_WIDTH;
-	}	
-	m_sBusStatsDlgCoOrd = m_sDefaultBusStatsDlgCoOrd;
+    for(short i = 1; i < CHANNEL_CAN_MAX+1; i++)
+    {
+        m_arrbColumnVisible[i] = true;
+        m_arrnOrder[i] = i;
+        m_arrnColWidth[i] = defVALUE_COL_WIDTH;
+    }
+    m_sBusStatsDlgCoOrd = m_sDefaultBusStatsDlgCoOrd;
 }
 
 /******************************************************************************/
 /*  Function Name    :  CBusStatisticsDlg                                     */
 /*  Input(s)         :  pParent : Pointer to parent window                    */
 /*                      CBaseBusStatisticCAN* Pointer to the BusStatistics    */
-/*                      Base class                                            */  
+/*                      Base class                                            */
 /*  Output           :                                                        */
 /*  Functionality    :  This is the constructor of this class. All data member*/
 /*                      will be initialised in this class.                    */
@@ -98,15 +98,15 @@ void sBUSSTATTISTICSDATA::vLoadDefaults()
 /******************************************************************************/
 CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN, CWnd* pParent,int nChannelCount)
     : CDialog(CBusStatisticsDlg::IDD, pParent),
-     m_pouBSCAN(pouBSCAN),
-     m_omStrBusLoad(STR_EMPTY),
-     m_omStrPeakBusLoad(STR_EMPTY),
-     m_omStrAvgBusLoad( STR_EMPTY )
+      m_pouBSCAN(pouBSCAN),
+      m_omStrBusLoad(STR_EMPTY),
+      m_omStrPeakBusLoad(STR_EMPTY),
+      m_omStrAvgBusLoad( STR_EMPTY )
 
 {
     //{{AFX_DATA_INIT(CBusStatisticsDlg)
     //}}AFX_DATA_INIT
-	m_nChannelCount = nChannelCount;
+    m_nChannelCount = nChannelCount;
 }
 
 /******************************************************************************/
@@ -134,14 +134,14 @@ void CBusStatisticsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_LIST_STAT, m_omStatList);
     //}}AFX_DATA_MAP
 }
-    
+
 
 BEGIN_MESSAGE_MAP(CBusStatisticsDlg, CDialog)
     //{{AFX_MSG_MAP(CBusStatisticsDlg)
     ON_WM_ERASEBKGND()
     //}}AFX_MSG_MAP
     ON_MESSAGE(WM_DISPLAY_MESSAGE, vUpdateFields)
-	ON_WM_SIZE()
+    ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 /******************************************************************************/
@@ -173,8 +173,8 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
     // Update the list control only if the dialog is visible
     if( IsWindowVisible() == TRUE )
     {
-         for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
-         {
+        for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
+        {
             SBUSSTATISTICS sBusStatistics;
             m_pouBSCAN->BSC_GetBusStatistics(nChannel, sBusStatistics);
             // Update Window Text
@@ -182,22 +182,22 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
             int nIndex = 0;
             // Message Total
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTotalMsgCount );
+                               sBusStatistics.m_unTotalMsgCount );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Total Message Rate
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unMsgPerSecond );
+                               sBusStatistics.m_unMsgPerSecond );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Total Errors
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unErrorTotalCount );
+                               sBusStatistics.m_unErrorTotalCount );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Error Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dErrorRate );
+                               sBusStatistics.m_dErrorRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Bus Load
@@ -208,12 +208,12 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
             nIndex++;
             // Peak Load
             m_omStrPeakBusLoad.Format( defSTR_FORMAT_BUS_LOAD,
-                sBusStatistics.m_dPeakBusLoad );
+                                       sBusStatistics.m_dPeakBusLoad );
             m_omStatList.SetItemText(nIndex, nChannel + 1, m_omStrPeakBusLoad);
             nIndex++;
             // Avarage Load
             m_omStrAvgBusLoad.Format( defSTR_FORMAT_BUS_LOAD,
-                sBusStatistics.m_dAvarageBusLoad );
+                                      sBusStatistics.m_dAvarageBusLoad );
             m_omStatList.SetItemText(nIndex, nChannel + 1, m_omStrAvgBusLoad);
             nIndex++;
 
@@ -222,47 +222,47 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
             // Tx Total
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTotalTxMsgCount );
+                               sBusStatistics.m_unTotalTxMsgCount );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Tx Std Msg
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTxSTDMsgCount);
+                               sBusStatistics.m_unTxSTDMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Tx Std Msg Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dTxSTDMsgRate );
+                               sBusStatistics.m_dTxSTDMsgRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Tx Exd Msg
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTxEXTDMsgCount);
+                               sBusStatistics.m_unTxEXTDMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Tx Exd Msg Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dTxEXTMsgRate );
+                               sBusStatistics.m_dTxEXTMsgRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Std. RTR
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTxSTD_RTRMsgCount);
+                               sBusStatistics.m_unTxSTD_RTRMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Exd. RTR
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTxEXTD_RTRMsgCount);
+                               sBusStatistics.m_unTxEXTD_RTRMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Tx Error
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unErrorTxCount);
+                               sBusStatistics.m_unErrorTxCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Tx Error Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dErrorTxRate );
+                               sBusStatistics.m_dErrorTxRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
 
@@ -270,47 +270,47 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
             // Rx Total
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unTotalRxMsgCount);
+                               sBusStatistics.m_unTotalRxMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Rx Std Msg
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unRxSTDMsgCount);
+                               sBusStatistics.m_unRxSTDMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Rx Std Msg Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dRxSTDMsgRate );
+                               sBusStatistics.m_dRxSTDMsgRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Rx Exd Msg
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unRxEXTDMsgCount);
+                               sBusStatistics.m_unRxEXTDMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Rx Exd Msg Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dRxEXTMsgRate );
+                               sBusStatistics.m_dRxEXTMsgRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Std. RTR
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unRxSTD_RTRMsgCount);
+                               sBusStatistics.m_unRxSTD_RTRMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Exd. RTR
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unRxEXTD_RTRMsgCount);
+                               sBusStatistics.m_unRxEXTD_RTRMsgCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Rx Error
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_unErrorRxCount);
+                               sBusStatistics.m_unErrorRxCount);
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Rx Error Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-                sBusStatistics.m_dErrorRxRate );
+                               sBusStatistics.m_dErrorRxRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
             // Increment for the title Status
@@ -319,22 +319,22 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
             // Controller status
             switch( sBusStatistics.m_ucStatus )
             {
-            case defCONTROLLER_ACTIVE:
+                case defCONTROLLER_ACTIVE:
                 {
                     omDispText = defSTR_ACTIVE_STATE;
                 }
                 break;
-            case defCONTROLLER_PASSIVE:
+                case defCONTROLLER_PASSIVE:
                 {
                     omDispText = defSTR_PASSIVE_STATE;
                 }
                 break;
-            case defCONTROLLER_BUSOFF:
+                case defCONTROLLER_BUSOFF:
                 {
                     omDispText = defSTR_BUSOFF_STATE;
                 }
                 break;
-            default:
+                default:
                 {
                     omDispText = defSTR_UNKNOWN_STATE;
                 }
@@ -344,30 +344,30 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
             nIndex++;
             // Set Tx Error Counter value
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_ucTxErrorCounter );
+                               sBusStatistics.m_ucTxErrorCounter );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
 
             // Set Tx Peak Error Counter value
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_ucTxPeakErrorCount );
+                               sBusStatistics.m_ucTxPeakErrorCount );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
 
             // Set Rx Error Counter value
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_ucRxErrorCounter );
+                               sBusStatistics.m_ucRxErrorCounter );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
 
             // Set Rx Peak Error Counter value
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                sBusStatistics.m_ucRxPeakErrorCount );
+                               sBusStatistics.m_ucRxPeakErrorCount );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
         }
     }
-	return 0;
+    return 0;
 }
 
 /*******************************************************************************
@@ -382,7 +382,7 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
                    Modified init to support multi channel information and added
                    rows for new statistics parameters
 *******************************************************************************/
-BOOL CBusStatisticsDlg::OnInitDialog() 
+BOOL CBusStatisticsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // Init Item color and Heading color variables
@@ -391,12 +391,12 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     nItemColor = defITEM_COLOR;
 
     int nIndex = 0;
-    
+
     // Insert Columns
     m_omStatList.SetExtendedStyle( LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP );
     m_omStatList.InsertColumn( 0, defSTR_COL_PARAMETER );
-    m_omStatList.SetColumnWidth( 0, defPARAMETER_COL_WIDTH );    
-	
+    m_omStatList.SetColumnWidth( 0, defPARAMETER_COL_WIDTH );
+
     for( nIndex = 0; nIndex < m_nChannelCount; nIndex++)
     {
         CString cs;
@@ -404,8 +404,8 @@ BOOL CBusStatisticsDlg::OnInitDialog()
         m_omStatList.InsertColumn( nIndex + 1, cs, LVCFMT_CENTER );
         m_omStatList.SetColumnWidth( nIndex + 1, defVALUE_COL_WIDTH );
     }
-    
-    CRect cr; 
+
+    CRect cr;
     // Get Window Rectangle
     GetWindowRect(&cr);
     // Resize the window.
@@ -413,7 +413,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     //                Width of Value * Number of Channels +
     //                Dialog Border offset
     cr.right = cr.left + defPARAMETER_COL_WIDTH + defDIALOG_BORDER_OFFSET +
-                        ( defVALUE_COL_WIDTH * 2 );
+               ( defVALUE_COL_WIDTH * 2 );
     // Resize the dialog width
     MoveWindow(&cr);
     // Get list boundary
@@ -422,7 +422,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     //                Width of Value * Number of Channels +
     //                List Border offset
     cr.right = cr.left + defPARAMETER_COL_WIDTH + defLIST_BORDER_OFFSET +
-                        ( defVALUE_COL_WIDTH * 2 );
+               ( defVALUE_COL_WIDTH * 2 );
     // Convert to client offset
     ScreenToClient(&cr);
     // Set the boundary for list control
@@ -623,9 +623,9 @@ BOOL CBusStatisticsDlg::OnInitDialog()
   Member of      : CBusStatisticsDlg
   Author(s)      : Raja N
   Date Created   : 14.3.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CBusStatisticsDlg::OnEraseBkgnd(CDC* /*pDC*/) 
+BOOL CBusStatisticsDlg::OnEraseBkgnd(CDC* /*pDC*/)
 {
     return TRUE;
 }
@@ -635,23 +635,23 @@ BOOL CBusStatisticsDlg::OnEraseBkgnd(CDC* /*pDC*/)
   Function Name  : OnSize
   Input(s)       : UINT nType, int cx, int cy
   Output         : -
-  Functionality  : This function Makes the List control to the same size as 
-				   that of dialog whenever dialog window is resized.
+  Functionality  : This function Makes the List control to the same size as
+                   that of dialog whenever dialog window is resized.
   Member of      : CBusStatisticsDlg
   Author(s)      : ArunKumar K
   Date Created   : 24.3.2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CBusStatisticsDlg::OnSize(UINT nType, int cx, int cy)
 {
-	CDialog::OnSize(nType, cx, cy);
+    CDialog::OnSize(nType, cx, cy);
 
-	if(m_omStatList.m_hWnd)
-	{
-		CRect omClientRect;
-        	GetClientRect(&omClientRect);
-        	m_omStatList.MoveWindow(&omClientRect);
-	}
+    if(m_omStatList.m_hWnd)
+    {
+        CRect omClientRect;
+        GetClientRect(&omClientRect);
+        m_omStatList.MoveWindow(&omClientRect);
+    }
 }
 
 
@@ -663,51 +663,51 @@ void CBusStatisticsDlg::OnSize(UINT nType, int cx, int cy)
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 06-04-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-HRESULT CBusStatisticsDlg::GetConfigData(BYTE* pvDataStream) 
+HRESULT CBusStatisticsDlg::GetConfigData(BYTE* pvDataStream)
 {
-	BYTE* pByteTrgt = NULL;	
-	pByteTrgt = pvDataStream;	
-	
-	BYTE byVer = BUS_STATS_DLG_VERSION;
-	COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
+    BYTE* pByteTrgt = NULL;
+    pByteTrgt = pvDataStream;
 
-	UINT nSize= nGetBusStatsDlgConfigSize();
-	COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size. 
-	
-	CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-	if (pHeaderCtrl != NULL)	
-	{
-		int  nColumnCount = pHeaderCtrl->GetItemCount();
-		COPY_DATA(pByteTrgt, &nColumnCount, sizeof(UINT)); //Storing column count.
+    BYTE byVer = BUS_STATS_DLG_VERSION;
+    COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
 
-		LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-        
-		ASSERT(pnOrder != NULL);
-		m_omStatList.GetColumnOrderArray(pnOrder, nColumnCount);
-    
-		for (int i = 0 ; i < nColumnCount; i++)
+    UINT nSize= nGetBusStatsDlgConfigSize();
+    COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size.
+
+    CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
+    if (pHeaderCtrl != NULL)
+    {
+        int  nColumnCount = pHeaderCtrl->GetItemCount();
+        COPY_DATA(pByteTrgt, &nColumnCount, sizeof(UINT)); //Storing column count.
+
+        LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+
+        ASSERT(pnOrder != NULL);
+        m_omStatList.GetColumnOrderArray(pnOrder, nColumnCount);
+
+        for (int i = 0 ; i < nColumnCount; i++)
         {
-			//Storing Column Header Positions.
-			COPY_DATA(pByteTrgt, &pnOrder[i], sizeof(int)); 				
-		
+            //Storing Column Header Positions.
+            COPY_DATA(pByteTrgt, &pnOrder[i], sizeof(int));
+
             //Storing Column Header show/Hide.
-			bool bColumnVisible = m_omStatList.IsColumnShown(i);
-		    COPY_DATA(pByteTrgt, &bColumnVisible, sizeof(bool));
-            
-			//Storing Column width.
-			INT nColWidth = m_omStatList.GetColumnWidth(i);
+            bool bColumnVisible = m_omStatList.IsColumnShown(i);
+            COPY_DATA(pByteTrgt, &bColumnVisible, sizeof(bool));
+
+            //Storing Column width.
+            INT nColWidth = m_omStatList.GetColumnWidth(i);
             COPY_DATA(pByteTrgt, &nColWidth, sizeof(int));
 
-	    }
+        }
         free(pnOrder);
-        
-	}
-	GetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-	COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_sBusStatsDlgCoOrd, sizeof(WINDOWPLACEMENT));
 
-	return S_OK;
+    }
+    GetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
+    COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_sBusStatsDlgCoOrd, sizeof(WINDOWPLACEMENT));
+
+    return S_OK;
 }
 
 /*******************************************************************************
@@ -718,62 +718,62 @@ HRESULT CBusStatisticsDlg::GetConfigData(BYTE* pvDataStream)
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 25-08-2010
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 HRESULT CBusStatisticsDlg::SetConfigData(BYTE* pvDataStream)
 {
-	BYTE* pByteSrc = NULL;	
-	pByteSrc = pvDataStream;
+    BYTE* pByteSrc = NULL;
+    pByteSrc = pvDataStream;
 
-	if (pByteSrc != NULL)
-	{
-		//Reading Version.
-		BYTE byVer = 0;
-		COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+    if (pByteSrc != NULL)
+    {
+        //Reading Version.
+        BYTE byVer = 0;
+        COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
         UINT nSize= 0;
-        //Reading Buffer Size. 
-		COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
-		if ((byVer == BUS_STATS_DLG_VERSION) && (nSize > 0))
-		{
-			//Reading column Header Positions.
-			CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-			if (pHeaderCtrl != NULL)	
-			{	
-				int  nColumnCount=0;
-				//Reading column count.
-				COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+        //Reading Buffer Size.
+        COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
+        if ((byVer == BUS_STATS_DLG_VERSION) && (nSize > 0))
+        {
+            //Reading column Header Positions.
+            CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
+            if (pHeaderCtrl != NULL)
+            {
+                int  nColumnCount=0;
+                //Reading column count.
+                COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
 
-				//Saved channel count is same as current channel count.
-				if(nColumnCount==m_nChannelCount+1)
-				{
-					LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-					for (int i = 0 ; i < nColumnCount; i++)	
-					{
-						COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
-						bool bColumnVisible = false;
-						//Reading visibility
-						COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));			
-						m_omStatList.MakeColumnVisible(i, bColumnVisible);
+                //Saved channel count is same as current channel count.
+                if(nColumnCount==m_nChannelCount+1)
+                {
+                    LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+                    for (int i = 0 ; i < nColumnCount; i++)
+                    {
+                        COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
+                        bool bColumnVisible = false;
+                        //Reading visibility
+                        COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
+                        m_omStatList.MakeColumnVisible(i, bColumnVisible);
 
-						INT nColWidth = 0;
-						//Reading width
-						COPY_DATA_2(&nColWidth, pByteSrc, sizeof(int));
-						m_omStatList.SetColumnWidth(i, nColWidth);
-					}
-					m_omStatList.SetColumnOrderArray(nColumnCount, pnOrder);
-					free(pnOrder);
-				}
+                        INT nColWidth = 0;
+                        //Reading width
+                        COPY_DATA_2(&nColWidth, pByteSrc, sizeof(int));
+                        m_omStatList.SetColumnWidth(i, nColWidth);
+                    }
+                    m_omStatList.SetColumnOrderArray(nColumnCount, pnOrder);
+                    free(pnOrder);
+                }
                 else //Saved channel count differs from current channel count.
                 {
                     vLoadDefaultValues();
                 }
-			}
+            }
             WINDOWPLACEMENT sMsgWndPlacement;
             COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
-            SetWindowPlacement(&sMsgWndPlacement);			
-		}
-	}
-	return S_OK;
+            SetWindowPlacement(&sMsgWndPlacement);
+        }
+    }
+    return S_OK;
 }
 
 /*******************************************************************************
@@ -784,18 +784,18 @@ HRESULT CBusStatisticsDlg::SetConfigData(BYTE* pvDataStream)
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 07-04-2011
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 void CBusStatisticsDlg::vLoadDefaultValues()
 {
-	sm_sBusSerializationData.vLoadDefaults();
+    sm_sBusSerializationData.vLoadDefaults();
 
-	for (int i = 0 ; i < m_nChannelCount+1; i++)	
-	{
-		m_omStatList.MakeColumnVisible(i, sm_sBusSerializationData.m_arrbColumnVisible[i]);
-		m_omStatList.SetColumnWidth(i, sm_sBusSerializationData.m_arrnColWidth[i]);
-	}
-	m_omStatList.SetColumnOrderArray(m_nChannelCount+1, (LPINT)sm_sBusSerializationData.m_arrnOrder);		
+    for (int i = 0 ; i < m_nChannelCount+1; i++)
+    {
+        m_omStatList.MakeColumnVisible(i, sm_sBusSerializationData.m_arrbColumnVisible[i]);
+        m_omStatList.SetColumnWidth(i, sm_sBusSerializationData.m_arrnColWidth[i]);
+    }
+    m_omStatList.SetColumnOrderArray(m_nChannelCount+1, (LPINT)sm_sBusSerializationData.m_arrnOrder);
 }
 
 /*******************************************************************************
@@ -806,12 +806,12 @@ void CBusStatisticsDlg::vLoadDefaultValues()
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 07-04-2011
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 void CBusStatisticsDlg::vSetDefaultsToStore()
 {
-	sm_sBusSerializationData.vLoadDefaults();
-	sm_sBusSerializationData.m_bIsDirty = true;
+    sm_sBusSerializationData.vLoadDefaults();
+    sm_sBusSerializationData.m_bIsDirty = true;
 }
 
 /*******************************************************************************
@@ -823,68 +823,68 @@ void CBusStatisticsDlg::vSetDefaultsToStore()
   Author(s)      : Arunkumar K
   Date Created   : 07-04-2011
   Modifications  : ArunKumar K, 08-04-2011,
-				   Updated for loop MAX index to m_nChannelCount+1 instead of
-				   sm_sBusSerializationData.m_nColumnCount.
+                   Updated for loop MAX index to m_nChannelCount+1 instead of
+                   sm_sBusSerializationData.m_nColumnCount.
 *******************************************************************************/
 void CBusStatisticsDlg::vLoadDataFromStore()
 {
-	if(sm_sBusSerializationData.m_bIsDirty)
-	{
-		SetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-		//Reading column Header Positions.
-		CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-		if (pHeaderCtrl != NULL)	
-		{	
-			if(sm_sBusSerializationData.m_nColumnCount != (UINT)(m_nChannelCount + 1))
-			{
-				sm_sBusSerializationData.vLoadDefaults();
-			}			
-			for (int i = 0 ; i < m_nChannelCount+1 ; i++)	
-			{
-				m_omStatList.MakeColumnVisible(i, sm_sBusSerializationData.m_arrbColumnVisible[i]);
-				m_omStatList.SetColumnWidth(i, sm_sBusSerializationData.m_arrnColWidth[i]);
-			}
-			m_omStatList.SetColumnOrderArray(sm_sBusSerializationData.m_nColumnCount , (LPINT)sm_sBusSerializationData.m_arrnOrder);		
-		}		
-	}
+    if(sm_sBusSerializationData.m_bIsDirty)
+    {
+        SetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
+        //Reading column Header Positions.
+        CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
+        if (pHeaderCtrl != NULL)
+        {
+            if(sm_sBusSerializationData.m_nColumnCount != (UINT)(m_nChannelCount + 1))
+            {
+                sm_sBusSerializationData.vLoadDefaults();
+            }
+            for (int i = 0 ; i < m_nChannelCount+1 ; i++)
+            {
+                m_omStatList.MakeColumnVisible(i, sm_sBusSerializationData.m_arrbColumnVisible[i]);
+                m_omStatList.SetColumnWidth(i, sm_sBusSerializationData.m_arrnColWidth[i]);
+            }
+            m_omStatList.SetColumnOrderArray(sm_sBusSerializationData.m_nColumnCount , (LPINT)sm_sBusSerializationData.m_arrnOrder);
+        }
+    }
 }
 
 /*******************************************************************************
   Function Name  : vUpdateChannelCountInfo
   Input(s)       : nChannelCount
   Output         : -
-  Functionality  : Updates the channel count value when a hardware interface 
+  Functionality  : Updates the channel count value when a hardware interface
                    is updated.
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 07-04-2011
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 void CBusStatisticsDlg::vUpdateChannelCountInfo(int nChannelCount)
 {
-	if(m_nChannelCount != nChannelCount)
-	{
-		if(m_nChannelCount > nChannelCount)
-		{
-			INT nChannelIndex = nChannelCount+1;
-			for(int i = nChannelCount+1; i <= m_nChannelCount; i++)
-			{
-				m_omStatList.DeleteColumn(nChannelIndex);					
-			}
-		}
-		else
-		{
-			for(int i = m_nChannelCount+1; i <= nChannelCount; i++)
-			{
-				CString cs;
-				cs.Format( defSTR_CHANNEL_NAME_FORMAT, defSTR_CHANNEL_NAME, i);
-				m_omStatList.InsertColumn( i , cs, LVCFMT_CENTER );
-				m_omStatList.SetColumnWidth( i , defVALUE_COL_WIDTH );
-			}
-		}
+    if(m_nChannelCount != nChannelCount)
+    {
+        if(m_nChannelCount > nChannelCount)
+        {
+            INT nChannelIndex = nChannelCount+1;
+            for(int i = nChannelCount+1; i <= m_nChannelCount; i++)
+            {
+                m_omStatList.DeleteColumn(nChannelIndex);
+            }
+        }
+        else
+        {
+            for(int i = m_nChannelCount+1; i <= nChannelCount; i++)
+            {
+                CString cs;
+                cs.Format( defSTR_CHANNEL_NAME_FORMAT, defSTR_CHANNEL_NAME, i);
+                m_omStatList.InsertColumn( i , cs, LVCFMT_CENTER );
+                m_omStatList.SetColumnWidth( i , defVALUE_COL_WIDTH );
+            }
+        }
 
-		m_nChannelCount = nChannelCount;
-	}
+        m_nChannelCount = nChannelCount;
+    }
 }
 
 /*******************************************************************************
@@ -895,45 +895,45 @@ void CBusStatisticsDlg::vUpdateChannelCountInfo(int nChannelCount)
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 25-08-2010
-  Modifications  :  
+  Modifications  :
 *******************************************************************************/
 void CBusStatisticsDlg::vSaveDataToStore(BYTE* pvDataStream)
 {
-	BYTE* pByteSrc = NULL;	
-	pByteSrc = pvDataStream;
+    BYTE* pByteSrc = NULL;
+    pByteSrc = pvDataStream;
 
-	if (pByteSrc != NULL)
-	{
-		//Reading Version.
-		BYTE byVer = 0;
-		COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+    if (pByteSrc != NULL)
+    {
+        //Reading Version.
+        BYTE byVer = 0;
+        COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
         UINT nSize= 0;
-        //Reading Buffer Size. 
-		COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
-		if ((byVer == BUS_STATS_DLG_VERSION) && (nSize > 0))
-		{
-			int  nColumnCount=0;
-			//Reading column count.
-			COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
-			sm_sBusSerializationData.m_nColumnCount = nColumnCount;
+        //Reading Buffer Size.
+        COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
+        if ((byVer == BUS_STATS_DLG_VERSION) && (nSize > 0))
+        {
+            int  nColumnCount=0;
+            //Reading column count.
+            COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+            sm_sBusSerializationData.m_nColumnCount = nColumnCount;
 
-			LPINT pnOrder = (LPINT) sm_sBusSerializationData.m_arrnOrder;
-			for (int i = 0 ; i < nColumnCount; i++)	
+            LPINT pnOrder = (LPINT) sm_sBusSerializationData.m_arrnOrder;
+            for (int i = 0 ; i < nColumnCount; i++)
             {
-				COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
-				//Reading visibility
-				COPY_DATA_2(&sm_sBusSerializationData.m_arrbColumnVisible[i], pByteSrc, sizeof(bool));							
+                COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
+                //Reading visibility
+                COPY_DATA_2(&sm_sBusSerializationData.m_arrbColumnVisible[i], pByteSrc, sizeof(bool));
 
                 //int nColWidth = 0;
-				//Reading width
-				COPY_DATA_2(&sm_sBusSerializationData.m_arrnColWidth[i], pByteSrc, sizeof(int));                
-			}          
+                //Reading width
+                COPY_DATA_2(&sm_sBusSerializationData.m_arrnColWidth[i], pByteSrc, sizeof(int));
+            }
 
-			COPY_DATA_2(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd, pByteSrc, sizeof(WINDOWPLACEMENT));		
-		}
-		//Mark as Dirty
-		sm_sBusSerializationData.m_bIsDirty = true; 
-	}	
+            COPY_DATA_2(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd, pByteSrc, sizeof(WINDOWPLACEMENT));
+        }
+        //Mark as Dirty
+        sm_sBusSerializationData.m_bIsDirty = true;
+    }
 }
 
 /*******************************************************************************
@@ -944,47 +944,47 @@ void CBusStatisticsDlg::vSaveDataToStore(BYTE* pvDataStream)
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 06-04-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CBusStatisticsDlg::vGetDataFromStore(BYTE** pvDataStream, UINT& nSize)
 {
-	if(sm_sBusSerializationData.m_bIsDirty == true)
-	{		
-		nSize += sizeof(BYTE);  // 1 Byte for Version
-		nSize += sizeof(UINT);  // Bytes for Buffer Size
-		//Bytes for column Header Positions.
-		nSize += sizeof(UINT); //to store the column count	
-		UINT unColCount = sm_sBusSerializationData.m_nColumnCount;
-		nSize += (sizeof(int) * unColCount); //Column order
-		nSize += (sizeof(bool) * unColCount);//Column visibility
-		nSize += (sizeof(int) * unColCount); //Column width    
+    if(sm_sBusSerializationData.m_bIsDirty == true)
+    {
+        nSize += sizeof(BYTE);  // 1 Byte for Version
+        nSize += sizeof(UINT);  // Bytes for Buffer Size
+        //Bytes for column Header Positions.
+        nSize += sizeof(UINT); //to store the column count
+        UINT unColCount = sm_sBusSerializationData.m_nColumnCount;
+        nSize += (sizeof(int) * unColCount); //Column order
+        nSize += (sizeof(bool) * unColCount);//Column visibility
+        nSize += (sizeof(int) * unColCount); //Column width
 
-		nSize += sizeof(WINDOWPLACEMENT);//sizeof Bus Statistics dialog placement
+        nSize += sizeof(WINDOWPLACEMENT);//sizeof Bus Statistics dialog placement
 
-		*pvDataStream = new BYTE[nSize]; 
+        *pvDataStream = new BYTE[nSize];
 
-		BYTE* pByteTrgt = NULL;	
-		pByteTrgt = *pvDataStream;
+        BYTE* pByteTrgt = NULL;
+        pByteTrgt = *pvDataStream;
 
-		if (pByteTrgt != NULL)
-		{			
-			BYTE byVer = BUS_STATS_DLG_VERSION;
-			COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.		
-			COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size. 
-			COPY_DATA(pByteTrgt, &unColCount, sizeof(UINT)); //Storing column count.
-	    
-			for (UINT i = 0 ; i < unColCount; i++)
-			{
-				//Storing Column Header Positions.
-				COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrnOrder[i], sizeof(int)); 							
-				//Storing Column Header show/Hide.
-				COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrbColumnVisible[i], sizeof(bool));	            
-				//Storing Column width.
-				COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrnColWidth[i], sizeof(int));
-			}
-			COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_sBusStatsDlgCoOrd, sizeof(WINDOWPLACEMENT));
-		}	
-	}
+        if (pByteTrgt != NULL)
+        {
+            BYTE byVer = BUS_STATS_DLG_VERSION;
+            COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
+            COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size.
+            COPY_DATA(pByteTrgt, &unColCount, sizeof(UINT)); //Storing column count.
+
+            for (UINT i = 0 ; i < unColCount; i++)
+            {
+                //Storing Column Header Positions.
+                COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrnOrder[i], sizeof(int));
+                //Storing Column Header show/Hide.
+                COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrbColumnVisible[i], sizeof(bool));
+                //Storing Column width.
+                COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrnColWidth[i], sizeof(int));
+            }
+            COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_sBusStatsDlgCoOrd, sizeof(WINDOWPLACEMENT));
+        }
+    }
 }
 
 
@@ -996,36 +996,36 @@ void CBusStatisticsDlg::vGetDataFromStore(BYTE** pvDataStream, UINT& nSize)
   Member of      : CBusStatisticsDlg
   Author(s)      : Arunkumar K
   Date Created   : 06-04-2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 UINT CBusStatisticsDlg::nGetBusStatsDlgConfigSize()
 {
-	/*
-	1. 1 Byte for Version
-	2. Bytes for Buffer Size
-	3. Bytes to store the column count
-	4. Column Header Positions.   : ITEM COUNT
-	5. Column Header Show/Hide. : ITEM COUNT
-	6. Column Width: ITEM COUNT
-	*/
-	UINT nSize = 0;
-	nSize += sizeof(BYTE);  // 1 Byte for Version
-	nSize += sizeof(UINT);  // Bytes for Buffer Size
+    /*
+    1. 1 Byte for Version
+    2. Bytes for Buffer Size
+    3. Bytes to store the column count
+    4. Column Header Positions.   : ITEM COUNT
+    5. Column Header Show/Hide. : ITEM COUNT
+    6. Column Width: ITEM COUNT
+    */
+    UINT nSize = 0;
+    nSize += sizeof(BYTE);  // 1 Byte for Version
+    nSize += sizeof(UINT);  // Bytes for Buffer Size
 
-	//Bytes for column Header Positions.
+    //Bytes for column Header Positions.
     nSize += sizeof(UINT); //to store the column count
-	CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-	if (pHeaderCtrl != NULL)
+    CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
+    if (pHeaderCtrl != NULL)
     {
         UINT unColCount = pHeaderCtrl->GetItemCount();
-		nSize += (sizeof(int) * unColCount); //Column order
+        nSize += (sizeof(int) * unColCount); //Column order
         nSize += (sizeof(bool) * unColCount);//Column visibility
         nSize += (sizeof(int) * unColCount); //Column width
     }
 
     nSize += sizeof(WINDOWPLACEMENT);//sizeof Bus Statistics dialog placement
 
-	return nSize;
+    return nSize;
 }
 
 

@@ -27,18 +27,18 @@
 // See FrameProcessor.cpp for the implementation of this class
 //
 #ifndef __AFXWIN_H__
-    #error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 class CDILApp : public CWinApp
 {
-// Overrides
+    // Overrides
 public:
-	CDILApp();
+    CDILApp();
     ~CDILApp();
 
     // To be used by the read thread
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
     DECLARE_MESSAGE_MAP();
     virtual int ExitInstance();

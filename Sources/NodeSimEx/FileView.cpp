@@ -15,11 +15,11 @@
 
 /**
  * \file      FileView.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "NodeSimEx_stdafx.h"             // Std header include file
@@ -42,28 +42,28 @@ IMPLEMENT_DYNCREATE(CFileView, CScrollView)
 BEGIN_MESSAGE_MAP(CFileView, CScrollView)
     //{{AFX_MSG_MAP(CFileView)
     ON_WM_ERASEBKGND()
-	//}}AFX_MSG_MAP
+    //}}AFX_MSG_MAP
     // Standard printing commands
     ON_COMMAND(ID_FILE_PRINT, CScrollView::OnFilePrint)
     ON_COMMAND(ID_FILE_PRINT_DIRECT, CScrollView::OnFilePrint)
     ON_COMMAND(ID_FILE_PRINT_PREVIEW, CScrollView::OnFilePrintPreview)
-	ON_WM_MOUSEWHEEL()
+    ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CFileView construction/destruction
 /******************************************************************************
-  Function Name    :  CFileView                                       
-                                                                      
+  Function Name    :  CFileView
+
   Input(s)         :  -
-  Output           :  -                                           
+  Output           :  -
   Functionality    :  Constructor, Class members intialisation
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :  Amarnath Shastry                                
-  Date Created     :  05.03.2002                                      
-  Modifications    :  
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  05.03.2002
+  Modifications    :
 ******************************************************************************/
 CFileView::CFileView()
 {
@@ -72,38 +72,38 @@ CFileView::CFileView()
     m_nCharWidth = 0;
 }
 /******************************************************************************
-  Function Name    :  ~CFileView                                          
-                                                                      
+  Function Name    :  ~CFileView
+
   Input(s)         :  -
-  Output           :  -                                           
+  Output           :  -
   Functionality    :  Destructor
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :  Amarnath Shastry                                
-  Date Created     :  05.03.2002                                      
-  Modifications    :  
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  05.03.2002
+  Modifications    :
 ******************************************************************************/
 CFileView::~CFileView()
 {
 }
 /******************************************************************************
   Function Name    :  OnDraw
-                                                                      
+
   Input(s)         :  CDC* pomDC
-  Output           :  -                                           
+  Output           :  -
   Functionality    :  Called by the frame work to update the view.
                       This function gets source code from the document
                       and displays on the view.
-                      If warning is specified, it highlight that line 
+                      If warning is specified, it highlight that line
                       with different color.
                       If single line of comment is found, it displays the line
                       with differet color.
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :                                
-  Date Created     :  
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :
+  Date Created     :
 ******************************************************************************/
 void CFileView::OnDraw(CDC* pDC)
 {
@@ -126,12 +126,12 @@ void CFileView::OnDraw(CDC* pDC)
     // If backend buffer creation failed it will use Screen DC
     // Directly to avoid showing blank screen
     // The Flag m_bCreateSuccess gives an indication of which DC
-    // it is using. If it is TRUE then that is Buffer. If it is 
+    // it is using. If it is TRUE then that is Buffer. If it is
     // FALSE then it is directly drawing on the pDC (screen pr printer DC).
     // No extra check is required to handle create failure
     /************************************************************/
     COffScreenDC  omMemDC(pDC, &omRect);
-    CDC * pomDC = NULL;
+    CDC* pomDC = NULL;
     pomDC = &omMemDC;
     if(pomDoc != NULL)
     {
@@ -159,14 +159,14 @@ void CFileView::OnDraw(CDC* pDC)
                                              NO_UNDERLINE,
                                              NO_STRIKEOUT,
                                              DEFAULT_CHARSET,
-                                             OUT_CHARACTER_PRECIS, 
+                                             OUT_CHARACTER_PRECIS,
                                              CLIP_CHARACTER_PRECIS,
                                              DEFAULT_QUALITY,
                                              DEFAULT_PITCH | FF_MODERN,
                                              DEFAULT_FONT);
         if(bSuccess == TRUE)
         {
-			// Select the new font object
+            // Select the new font object
             pomOldFont = pomDC -> SelectObject(&omNewFont);
 
             // Get line count
@@ -183,61 +183,63 @@ void CFileView::OnDraw(CDC* pDC)
                 {
 
                     for(long lInt = defCOUNT_INIT; lInt < lLineCount ; lInt++)
-                    {  
+                    {
                         int nMargin = MARGIN_FOR_FILE_VIEW;
                         bCommentFound = FALSE;
-                        // Set the background mix mode to 
+                        // Set the background mix mode to
                         // tranparent
                         pomDC -> SetBkMode(TRANSPARENT);
-                        // Display line number												
-                        wsprintf(acSourceLineNo,_T("%lu:"),lInt+NEXT_POSITION);
+                        // Display line number
+                        wsprintf(acSourceLineNo,"%lu:",lInt+NEXT_POSITION);
 
                         CString omStr = (CString)
-                            pomDoc -> pcGetLine(Position);
+                                        pomDoc -> pcGetLine(Position);
 
-                        int nIndex = omStr.Find( _T("/*") );
+                        int nIndex = omStr.Find( "/*" );
                         // Starting of comment or already in comment block
                         if (nIndex != -1 || bWithInComment)
                         {
                             if( nIndex == -1 )
+                            {
                                 nIndex = 0;
+                            }
 
                             pomDC -> SetTextColor(DIALOG_COLOR);
 
                             // if comment is in betn the line,
                             // get uncommented chars
-                            CString omStrTemp = 
+                            CString omStrTemp =
                                 omStr.Left( nIndex );
-                            
+
                             // set uncommented char to blue
                             pomDC -> SetTextColor(BLUE_COLOR);
-                            
+
                             pomDC -> TextOut(DEFAULT_X_POS,
                                              (m_nCharHeight * (lInt+INCR_LEN)),
                                              acSourceLineNo);
-                            
+
                             pomDC -> TabbedTextOut(
-                                            ( nMargin) * m_nCharWidth,
-                                            (m_nCharHeight * (lInt+INCR_LEN)),
-                                            omStrTemp,
-                                            TAB_POSITION,
-                                            &nTabStopPositions,
-                                            TAB_ORIGIN);
+                                ( nMargin) * m_nCharWidth,
+                                (m_nCharHeight * (lInt+INCR_LEN)),
+                                omStrTemp,
+                                TAB_POSITION,
+                                &nTabStopPositions,
+                                TAB_ORIGIN);
 
                             nMargin += nIndex;
                             // Get commented text and set different color
                             pomDC -> SetTextColor(DIALOG_COLOR);
-                            omStrTemp = 
-                                    omStr.Right( omStr.GetLength() - (nIndex));
-                            nIndex = omStrTemp.Find( _T("*/") );
+                            omStrTemp =
+                                omStr.Right( omStr.GetLength() - (nIndex));
+                            nIndex = omStrTemp.Find( "*/" );
                             omStr = STR_EMPTY;
-                            
+
                             if ( nIndex != -1 )
                             {
                                 // Set the comment flag to true
                                 bWithInComment = FALSE;
                                 omStr = omStrTemp.Right(
-                                    omStrTemp.GetLength() - (nIndex+2));
+                                            omStrTemp.GetLength() - (nIndex+2));
                                 omStrTemp = omStrTemp.Left( nIndex+2 );
                             }
                             else
@@ -245,24 +247,24 @@ void CFileView::OnDraw(CDC* pDC)
                                 // Reset the comment flag
                                 bWithInComment = TRUE;
                             }
-                            
+
                             pomDC -> TextOut(DEFAULT_X_POS,
                                              (m_nCharHeight * (lInt+INCR_LEN)),
                                              acSourceLineNo);
                             pomDC -> TabbedTextOut(
-                                            ( nMargin) * m_nCharWidth,
-                                            (m_nCharHeight * (lInt+INCR_LEN)),
-                                            omStrTemp,
-                                            TAB_POSITION,
-                                            &nTabStopPositions,
-                                            TAB_ORIGIN);
-                            
+                                ( nMargin) * m_nCharWidth,
+                                (m_nCharHeight * (lInt+INCR_LEN)),
+                                omStrTemp,
+                                TAB_POSITION,
+                                &nTabStopPositions,
+                                TAB_ORIGIN);
+
                             nMargin += nIndex+2;
                             pomDC -> SetTextColor(BLUE_COLOR);
                         }
                         //else
                         {
-                            nIndex = omStr.Find( _T("//") );
+                            nIndex = omStr.Find( "//" );
                             if (nIndex != -1 )
                             {
                                 pomDC -> SetTextColor(DIALOG_COLOR);
@@ -272,33 +274,33 @@ void CFileView::OnDraw(CDC* pDC)
                                 // set uncommented char to blue
                                 pomDC -> SetTextColor(BLUE_COLOR);
                                 pomDC -> TextOut(DEFAULT_X_POS,
-                                             (m_nCharHeight * (lInt+INCR_LEN)),
-                                             acSourceLineNo);
+                                                 (m_nCharHeight * (lInt+INCR_LEN)),
+                                                 acSourceLineNo);
                                 pomDC -> TabbedTextOut(
-                                            ( nMargin) * m_nCharWidth,
-                                            (m_nCharHeight * (lInt+INCR_LEN)),
-                                            omStrTemp,
-                                            TAB_POSITION,
-                                            &nTabStopPositions,
-                                            TAB_ORIGIN);
-                                nMargin += nIndex;                
+                                    ( nMargin) * m_nCharWidth,
+                                    (m_nCharHeight * (lInt+INCR_LEN)),
+                                    omStrTemp,
+                                    TAB_POSITION,
+                                    &nTabStopPositions,
+                                    TAB_ORIGIN);
+                                nMargin += nIndex;
                                 // Get commented text and set different color
                                 pomDC -> SetTextColor(DIALOG_COLOR);
-                                omStrTemp = 
+                                omStrTemp =
                                     omStr.Right( omStr.GetLength() - (nIndex));
-                               
+
                                 omStr = STR_EMPTY;
                                 pomDC -> TextOut(DEFAULT_X_POS,
-                                             (m_nCharHeight * (lInt+INCR_LEN)),
-                                             acSourceLineNo);
+                                                 (m_nCharHeight * (lInt+INCR_LEN)),
+                                                 acSourceLineNo);
                                 pomDC -> TabbedTextOut(
-                                            ( nMargin) * m_nCharWidth,
-                                            (m_nCharHeight * (lInt+INCR_LEN)),
-                                            omStrTemp,
-                                            TAB_POSITION,
-                                            &nTabStopPositions,
-                                            TAB_ORIGIN);
-                            
+                                    ( nMargin) * m_nCharWidth,
+                                    (m_nCharHeight * (lInt+INCR_LEN)),
+                                    omStrTemp,
+                                    TAB_POSITION,
+                                    &nTabStopPositions,
+                                    TAB_ORIGIN);
+
                                 nMargin += nIndex + 2;
                                 pomDC -> SetTextColor(BLUE_COLOR);
                             }
@@ -307,7 +309,7 @@ void CFileView::OnDraw(CDC* pDC)
                                 pomDC -> SetTextColor(BLUE_COLOR);
                             }
                         }
-                        
+
                         if(lCurrentWarnLineNum == lInt+NEXT_POSITION)
                         {
                             bWarningLine = TRUE;
@@ -315,7 +317,7 @@ void CFileView::OnDraw(CDC* pDC)
                             // Get & save current color settings
                             CurrentTextColor = pomDC -> GetTextColor();
                             CurrentBkColor = pomDC -> GetBkColor();
-                            // Set the background mix mode to 
+                            // Set the background mix mode to
                             // opaque
                             pomDC -> SetBkMode(OPAQUE);
 
@@ -329,15 +331,15 @@ void CFileView::OnDraw(CDC* pDC)
                                          (m_nCharHeight * (lInt+INCR_LEN)),
                                          acSourceLineNo);
                         pomDC -> TabbedTextOut(
-                                        nMargin * m_nCharWidth,
-                                        (m_nCharHeight * (lInt+INCR_LEN)),
-                                        omStr,
-                                        TAB_POSITION,
-                                        &nTabStopPositions,
-                                        TAB_ORIGIN);
+                            nMargin * m_nCharWidth,
+                            (m_nCharHeight * (lInt+INCR_LEN)),
+                            omStr,
+                            TAB_POSITION,
+                            &nTabStopPositions,
+                            TAB_ORIGIN);
 
                         // Restore normal display colors and background
-                        // mix mode 
+                        // mix mode
                         if(bWarningLine == TRUE)
                         {
                             pomDC -> SetTextColor(CurrentTextColor);
@@ -357,18 +359,18 @@ void CFileView::OnDraw(CDC* pDC)
     } // end of if(pomDoc != NULL)
 }
 /******************************************************************************
-  Function Name    :  OnInitialUpdate 
-                                                                      
+  Function Name    :  OnInitialUpdate
+
   Input(s)         :  -
-  Output           :  -                                           
-  Functionality    :  Initialises the CFileView class pointer 
+  Output           :  -
+  Functionality    :  Initialises the CFileView class pointer
                       defined in CMainFrame class for future use.
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :                                
-  Date Created     :                                     
-  Modifications    :  
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :
+  Date Created     :
+  Modifications    :
 ******************************************************************************/
 void CFileView::OnInitialUpdate()
 {
@@ -389,34 +391,34 @@ void CFileView::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 /******************************************************************************
-  Function Name    :  omGetDocument 
-                                                                      
+  Function Name    :  omGetDocument
+
   Input(s)         :  -
-  Output           :  -                                           
+  Output           :  -
   Functionality    :  Returs document pointer
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :                                 
-  Date Created     :                                      
-  Modifications    :  
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :
+  Date Created     :
+  Modifications    :
 ******************************************************************************/
 CFunctionEditorDoc* CFileView::omGetDocument()
 {
     return ( (CFunctionEditorDoc*)GetDocument());
 }
 /******************************************************************************
-  Function Name    :  vDisplayWarningLineNumber 
-                                                                      
+  Function Name    :  vDisplayWarningLineNumber
+
   Input(s)         :  eMESSAGEFROM eMsgFrom, UINT unLineNo
-  Output           :  -                                           
-  Functionality    :  Scrolls to the line number spaecified and 
+  Output           :  -
+  Functionality    :  Scrolls to the line number spaecified and
                       highlights the same.
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :                                 
-  Date Created     :  
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :
+  Date Created     :
 ******************************************************************************/
 void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
 {
@@ -427,27 +429,27 @@ void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
     if(pomSrcFileDoc != NULL)
     {
 
-        // Main frame is valid and 
+        // Main frame is valid and
         // function called from COutWnd class
         if (eMsgFrom == OUTWND)
         {
-            // Get child window, active may be 
+            // Get child window, active may be
             // "COutWnd"
             CFrameWnd* pMainFrame = (CFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
-            CMDIChildWnd *pChild = ( CMDIChildWnd *) pMainFrame->GetActiveFrame();
+            CMDIChildWnd* pChild = ( CMDIChildWnd*) pMainFrame->GetActiveFrame();
 
             CString omStrText = STR_EMPTY;
             BOOL bInLoop = TRUE;
 
-            do 
+            do
             {
                 // Get next window
-                pChild = (CEditFrameWnd *) pChild->GetWindow(GW_HWNDNEXT);
+                pChild = (CEditFrameWnd*) pChild->GetWindow(GW_HWNDNEXT);
                 if(pChild != NULL )
                 {
                     // Get Window caption
                     pChild->GetWindowText(omStrText);
-                    
+
                     // check the title of child window,
                     // if matches, activate my window it
                     if (omStrText == omGetDocument()->GetTitle())
@@ -467,32 +469,32 @@ void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
                 pChild->MDIActivate();
             }
         }
-        
+
         // Update document with the line no
         pomSrcFileDoc->m_lCurrentWarningLineNum = unLineNo;
-            
+
         // Scroll to the line specified
         vGoToLine( unLineNo );
-        
+
         // refresh the view
         Invalidate(TRUE);
     } // end of if(pomSrcFileDoc)
 }
 /******************************************************************************
-  Function Name    :  OnUpdate 
-                                                                      
+  Function Name    :  OnUpdate
+
   Input(s)         :  CView* pSender, LPARAM lHint, CObject* pHint
-  Output           :  -                                           
+  Output           :  -
   Functionality    :  Called by the frame work to update the view.
-                      Scrolls to the position, for any changes in the 
+                      Scrolls to the position, for any changes in the
                       view.
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :  Amarnath Shastry                                
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :  Amarnath Shastry
   Date Created     :  05.03.2002
 ******************************************************************************/
-void CFileView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/) 
+void CFileView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/)
 {
     CSize omDocSize;
 
@@ -509,25 +511,27 @@ void CFileView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*
     if(pomDoc != NULL)
     {
         omDocSize.cx  =  ((pomDoc -> nGetMaxLineLength() + 1) * m_nCharWidth);
-        omDocSize.cy  =  m_nCharHeight * ((pomDoc -> dwGetLineCount() + 1) + 
-                                                SPACE_BET_LINE_IN_FILE_VIEW);
+        omDocSize.cy  =  m_nCharHeight * ((pomDoc -> dwGetLineCount() + 1) +
+                                          SPACE_BET_LINE_IN_FILE_VIEW);
         if( GetTotalSize() != omDocSize)
+        {
             SetScrollSizes(MM_TEXT, omDocSize);
+        }
     }
-    
+
     // refresh the view
     Invalidate(TRUE);
 }
 /******************************************************************************
-  Function Name    :  vGoToLine 
-                                                                      
+  Function Name    :  vGoToLine
+
   Input(s)         :  UINT unLineNo
-  Output           :  -                                           
-  Functionality    :  Scrolls to the line number specified 
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :  Amarnath Shastry                                
+  Output           :  -
+  Functionality    :  Scrolls to the line number specified
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :  Amarnath Shastry
   Date Created     :  05.03.2002
 ******************************************************************************/
 void CFileView::vGoToLine(UINT unLineNo)
@@ -549,19 +553,19 @@ void CFileView::vGoToLine(UINT unLineNo)
 }
 
 /******************************************************************************
-  Function Name    :  OnEraseBkgnd 
+  Function Name    :  OnEraseBkgnd
 
-                                                                      
+
   Input(s)         :  -
-  Output           :  -                                           
+  Output           :  -
   Functionality    :  Called by the Framework to Erase the Screen Background
-  Member of        :  CFileView                                       
-  Friend of        :      -                                           
-                                                                      
-  Author(s)        :  Raja N                                
+  Member of        :  CFileView
+  Friend of        :      -
+
+  Author(s)        :  Raja N
   Date Created     :  22.07.2004
 ******************************************************************************/
-BOOL CFileView::OnEraseBkgnd(CDC* pDC) 
+BOOL CFileView::OnEraseBkgnd(CDC* pDC)
 {
     // Return TRUE here as erasing is taken care in Draw Handler
     UNUSED_ALWAYS( pDC);
@@ -570,12 +574,12 @@ BOOL CFileView::OnEraseBkgnd(CDC* pDC)
 
 BOOL CFileView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	// Get the scroll position
-	int nScrollPos = GetScrollPos(SB_VERT);
-	// Increment the scroll position
-	SetScrollPos(SB_VERT, nScrollPos - zDelta);
-	// Refresh the window
-	RedrawWindow();
-	
-	return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
+    // Get the scroll position
+    int nScrollPos = GetScrollPos(SB_VERT);
+    // Increment the scroll position
+    SetScrollPos(SB_VERT, nScrollPos - zDelta);
+    // Refresh the window
+    RedrawWindow();
+
+    return CScrollView::OnMouseWheel(nFlags, zDelta, pt);
 }

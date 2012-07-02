@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ICANErrorFrameFilter definition
 * @remark The header structure of the OLI may change
@@ -30,7 +30,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // forward declaration
@@ -39,47 +42,47 @@ class ICANErrorFrameFilter;
 
 /**
 * @ingroup GROUP_OLI_CAN_FILTERS
-* @brief This function instantiates an object supporting 
-*        @ref ICANErrorFrameFilter. 
+* @brief This function instantiates an object supporting
+*        @ref ICANErrorFrameFilter.
 *
-*        See @ref BinaryCompatibility "binary compatibility" 
+*        See @ref BinaryCompatibility "binary compatibility"
 *        for an explanation of why it is needed.
 *
-*        NOTE that clients are encouraged to access this function 
+*        NOTE that clients are encouraged to access this function
 *        via the wrapper @ref ICANErrorFrameFilter::Create().
 *
-* @param[in]  eventCodeMask   
+* @param[in]  eventCodeMask
 *         Any combination of @ref CANErrorFrame flags.
 *         The filter will report it in @ref IFilter::GetIDMask.
-* @param[in]  eventCodeValue  
+* @param[in]  eventCodeValue
 *         Any combination of @ref CANErrorFrame flags.
 *         The filter will report it in @ref IFilter::GetIDValue.
-* @param[out] ppCanErrorFrameFilter   
-*         A pointer to an object supporting @ref ICANErrorFrameFilter, 
-*         which has already been AddRef-ed. The object must be 
+* @param[out] ppCanErrorFrameFilter
+*         A pointer to an object supporting @ref ICANErrorFrameFilter,
+*         which has already been AddRef-ed. The object must be
 *         reference-counted by the caller, using the object's
-*         methods @ref IRefCountable::AddRef "AddRef()" and 
-*         @ref IRefCountable::Release "Release()". This is easily 
-*         done by wrapping the object pointer in an instance of the 
-*         @ref AutoPtr class, which will be done automatically if 
-*         the caller accesses @ref ICANErrorFrameFilter_Create() 
+*         methods @ref IRefCountable::AddRef "AddRef()" and
+*         @ref IRefCountable::Release "Release()". This is easily
+*         done by wrapping the object pointer in an instance of the
+*         @ref AutoPtr class, which will be done automatically if
+*         the caller accesses @ref ICANErrorFrameFilter_Create()
 *         via the wrapper @ref ICANErrorFrameFilter::Create().
 *
-* @return A pointer to an interface based on @ref IError, describing 
-*         the error which occurred during this function. @c NULL if 
+* @return A pointer to an interface based on @ref IError, describing
+*         the error which occurred during this function. @c NULL if
 *         no error occurred. See @ref ErrorReporting "error reporting"
 *         for more information on how errors are reported.
 *
 * @exception <none> This function must not throw exceptions.
 *
-* @since  BOA 1.3 
-* @see    @ref BinaryCompatibility "binary compatibility", 
+* @since  BOA 1.3
+* @see    @ref BinaryCompatibility "binary compatibility",
 *         @ref ErrorReporting "error reporting",
 *         ICANErrorFrameFilter
 */
-OLL_API IError* OLI_CALL ICANErrorFrameFilter_Create( 
-    uint32 eventCodeMask, 
-    uint32 eventCodeValue, 
+OLL_API IError* OLI_CALL ICANErrorFrameFilter_Create(
+    uint32 eventCodeMask,
+    uint32 eventCodeValue,
     ICANErrorFrameFilter** ppCanErrorFrameFilter);
 
 
@@ -87,7 +90,7 @@ OLL_API IError* OLI_CALL ICANErrorFrameFilter_Create(
 * @brief  Extension to @ref IEventFilter that also filters for
 *         @ref ICANErrorFrame -specific members.
 *
-* The implementation is expected to match @ref ICANErrorFrame 
+* The implementation is expected to match @ref ICANErrorFrame
 * instances only.
 *
 * This interface's implementation of IFilter::GetIDMask and IFilter::GetIDValue return the event code mask
@@ -99,8 +102,9 @@ OLL_API IError* OLI_CALL ICANErrorFrameFilter_Create(
 * @see    @ref filterConcepts "Filter concepts", ICANErrorFrame
 */
 
-OLI_INTERFACE ICANErrorFrameFilter 
-    : public IEventFilter
+OLI_INTERFACE ICANErrorFrameFilter
+:
+public IEventFilter
 {
 protected:
 
@@ -111,7 +115,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ICANErrorFrameFilter() OLI_NOTHROW {};
 
@@ -119,39 +123,39 @@ public:
 
     /** @brief  Create an @ref ICANErrorFrameFilter instance.
 
-                The instance returned here will only match 
+                The instance returned here will only match
                 @ref ICANErrorFrame messages. All other
                 types will not pass the filter.
 
-        @param[in]  eventCodeMask   
+        @param[in]  eventCodeMask
                 Any combination of @ref CANErrorFrame flags.
                 The filter will report it in @ref IFilter::GetIDMask.
-        @param[in]  eventCodeValue  
+        @param[in]  eventCodeValue
                 Any combination of @ref CANErrorFrame flags.
                 The filter will report it in @ref IFilter::GetIDValue.
         @return New @ref ICANErrorFrameFilter instance.
         @exception CError This function may throw an exception
                 derived from @ref CError.
 
-        @remark This is a helper method which wraps 
-                @ref ICANErrorFrameFilter_Create(): 
-                see @ref BinaryCompatibility "binary compatibility" 
+        @remark This is a helper method which wraps
+                @ref ICANErrorFrameFilter_Create():
+                see @ref BinaryCompatibility "binary compatibility"
                 and @ref ErrorReporting "error reporting"
                 for an explanation of why it is needed.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ICANErrorFrame
      */
-    static AutoPtr<ICANErrorFrameFilter> OLI_CALL Create( 
-        uint32 eventCodeMask, 
+    static AutoPtr<ICANErrorFrameFilter> OLI_CALL Create(
+        uint32 eventCodeMask,
         uint32 eventCodeValue)
     {
         ICANErrorFrameFilter* pCanErrorFrameFilter = NULL;
-        CheckAndThrow( ICANErrorFrameFilter_Create( eventCodeMask, 
-                                                    eventCodeValue, 
-                                                    &pCanErrorFrameFilter ) );
+        CheckAndThrow( ICANErrorFrameFilter_Create( eventCodeMask,
+                       eventCodeValue,
+                       &pCanErrorFrameFilter ) );
 
-        // The wrapped method has already AddRef-ed the pointer, 
-        // so we tell AutoPtr to take ownership of the pointer 
+        // The wrapped method has already AddRef-ed the pointer,
+        // so we tell AutoPtr to take ownership of the pointer
         // without a further AddRef.
         return AutoPtr<ICANErrorFrameFilter>( pCanErrorFrameFilter, false );
     }
@@ -160,7 +164,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

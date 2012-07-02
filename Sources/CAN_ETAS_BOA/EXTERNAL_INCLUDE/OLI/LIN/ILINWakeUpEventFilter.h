@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINWakeUpEventFilter definition
 * @remark The header structure of the OLI may change
@@ -30,7 +30,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // forward declaration
@@ -39,39 +42,39 @@ class ILINWakeUpEventFilter;
 
 /**
 * @ingroup GROUP_OLI_LIN_FILTERS
-* @brief  This function instantiates an object supporting 
-*         @ref ILINWakeUpEventFilter. 
+* @brief  This function instantiates an object supporting
+*         @ref ILINWakeUpEventFilter.
 *
-*         See @ref BinaryCompatibility "binary compatibility" 
+*         See @ref BinaryCompatibility "binary compatibility"
 *         for an explanation of why it is needed.
 *
-*         NOTE that clients are encouraged to access this function 
+*         NOTE that clients are encouraged to access this function
 *         via the wrapper @ref ILINWakeUpEventFilter::Create().
 *
-* @param[out] ppLinWakeUpEventFilter   
-*         A pointer to an object supporting @ref ILINWakeUpEventFilter, 
-*         which has already been AddRef-ed. The object must be 
+* @param[out] ppLinWakeUpEventFilter
+*         A pointer to an object supporting @ref ILINWakeUpEventFilter,
+*         which has already been AddRef-ed. The object must be
 *         reference-counted by the caller, using the object's
-*         methods @ref IRefCountable::AddRef "AddRef()" and 
-*         @ref IRefCountable::Release "Release()". This is easily 
-*         done by wrapping the object pointer in an instance of the 
-*         @ref AutoPtr class, which will be done automatically if 
-*         the caller accesses @ref ILINWakeUpEventFilter_Create() 
+*         methods @ref IRefCountable::AddRef "AddRef()" and
+*         @ref IRefCountable::Release "Release()". This is easily
+*         done by wrapping the object pointer in an instance of the
+*         @ref AutoPtr class, which will be done automatically if
+*         the caller accesses @ref ILINWakeUpEventFilter_Create()
 *         via the wrapper @ref ILINWakeUpEventFilter::Create().
 *
-* @return A pointer to an interface based on @ref IError, describing 
-*         the error which occurred during this function. @c NULL if 
+* @return A pointer to an interface based on @ref IError, describing
+*         the error which occurred during this function. @c NULL if
 *         no error occurred. See @ref ErrorReporting "error reporting"
 *         for more information on how errors are reported.
 *
 * @exception <none> This function must not throw exceptions.
 *
-* @since  BOA 1.3 
-* @see    @ref BinaryCompatibility "binary compatibility", 
+* @since  BOA 1.3
+* @see    @ref BinaryCompatibility "binary compatibility",
 *         @ref ErrorReporting "error reporting",
 *         ILINWakeUpEventFilter
 */
-OLL_API IError* OLI_CALL ILINWakeUpEventFilter_Create( 
+OLL_API IError* OLI_CALL ILINWakeUpEventFilter_Create(
     ILINWakeUpEventFilter** ppLinWakeUpEventFilter);
 
 
@@ -81,7 +84,7 @@ OLL_API IError* OLI_CALL ILINWakeUpEventFilter_Create(
 *
 * This interface's implementation of IFilter::GetIDMask and IFilter::GetIDValue always return 0.
 *
-* The implementation is expected to match @ref ILINWakeUpEvent 
+* The implementation is expected to match @ref ILINWakeUpEvent
 * instances only.
 *
 * @remark All public methods are thread-safe.
@@ -90,8 +93,9 @@ OLL_API IError* OLI_CALL ILINWakeUpEventFilter_Create(
 * @see    @ref filterConcepts "Filter concepts", ILINWakeUpEvent
 */
 
-OLI_INTERFACE ILINWakeUpEventFilter 
-    : public IEventFilter
+OLI_INTERFACE ILINWakeUpEventFilter
+:
+public IEventFilter
 {
 protected:
 
@@ -102,7 +106,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINWakeUpEventFilter() OLI_NOTHROW {};
 
@@ -110,7 +114,7 @@ public:
 
     /** @brief  Create an @ref ILINWakeUpEventFilter instance.
 
-                The instance returned here will only match 
+                The instance returned here will only match
                 @ref ILINWakeUpEvent messages. All other
                 types will not pass the filter.
 
@@ -118,22 +122,22 @@ public:
         @exception CError This function may throw an exception
                 derived from @ref CError.
 
-        @remark This is a helper method which wraps 
-                @ref ILINWakeUpEventFilter_Create(): 
-                see @ref BinaryCompatibility "binary compatibility" 
+        @remark This is a helper method which wraps
+                @ref ILINWakeUpEventFilter_Create():
+                see @ref BinaryCompatibility "binary compatibility"
                 and @ref ErrorReporting "error reporting"
                 for an explanation of why it is needed.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINWakeUpEvent
      */
     static AutoPtr<ILINWakeUpEventFilter> OLI_CALL Create()
     {
         ILINWakeUpEventFilter* pLinWakeUpEventFilter = NULL;
-        CheckAndThrow( 
+        CheckAndThrow(
             ILINWakeUpEventFilter_Create( &pLinWakeUpEventFilter ) );
 
-        // The wrapped method has already AddRef-ed the pointer, 
-        // so we tell AutoPtr to take ownership of the pointer 
+        // The wrapped method has already AddRef-ed the pointer,
+        // so we tell AutoPtr to take ownership of the pointer
         // without a further AddRef.
         return AutoPtr<ILINWakeUpEventFilter>( pLinWakeUpEventFilter, false );
     }
@@ -142,7 +146,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

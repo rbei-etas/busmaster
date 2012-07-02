@@ -23,14 +23,14 @@
 
 /******************************************************************************
 Function Name  :  CTestSetupHeader
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupHeader
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestSetupHeader::CTestSetupHeader(void)
 {
@@ -41,12 +41,12 @@ CTestSetupHeader::CTestSetupHeader(void)
 Function Name  :  ~CTestSetupHeader
 Input(s)       :  -
 Output         :  -
-Functionality  :  Destructor 
+Functionality  :  Destructor
 Member of      :  CTestSetupHeader
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestSetupHeader::~CTestSetupHeader(void)
 {
@@ -55,7 +55,7 @@ CTestSetupHeader::~CTestSetupHeader(void)
 Function Name  :  InitHeaderToDefault
 Input(s)       :  -
 Output         :  HRESULT
-Functionality  :  Constructor 
+Functionality  :  Constructor
 Member of      :  CTestSetupHeader
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -66,24 +66,24 @@ HRESULT CTestSetupHeader::InitHeaderToDefault(void)
 {
     m_eBus = CAN;
     m_omDatabasePath = "";
-    m_sEngineerInfo1.vInitialise(_T("Engineer Name"));
-    m_sEngineerInfo2.vInitialise(_T("Engineer Role"));
-    m_sModuleName.vInitialise(_T("Module Name"), "");
+    m_sEngineerInfo1.vInitialise("Engineer Name");
+    m_sEngineerInfo2.vInitialise("Engineer Role");
+    m_sModuleName.vInitialise("Module Name", "");
     m_sReportFile.vInitialise();
-    m_sVersion.vInitialise(_T("version"), _T("1.0"));
+    m_sVersion.vInitialise("version", "1.0");
     return S_OK;
 }
 
 /******************************************************************************
 Function Name  :  ValidateEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupHeader
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS023
 ******************************************************************************/
 HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
@@ -93,13 +93,13 @@ HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
     if(m_omDatabasePath == "")
     {
         hResult = ERR_VALID_ERROR;
-        omStrResult.Format(_T("No Database File is Included\r\n"));
+        omStrResult.Format("No Database File is Included\r\n");
     }
     else
     {
         if(PathFileExists(m_omDatabasePath) == FALSE)
         {
-            omStrResult.Format(_T("Incorrect Database File path\r\n"));
+            omStrResult.Format("Incorrect Database File path\r\n");
             hResult = ERR_VALID_ERROR;
         }
     }

@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINDLCDetectEvent definition
 * @remark The header structure of the OLI may change
@@ -28,44 +28,48 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_LIN_MESSAGES
 * @brief  LIN frame DLC detection event.
 *
 * Specific structure for a message concerning frame length (DLC)
-* of an unconfigured receive LIN frame. If an unconfigured frame 
-* is received, the hardware detects the according DLC by itself. 
+* of an unconfigured receive LIN frame. If an unconfigured frame
+* is received, the hardware detects the according DLC by itself.
 * The message occurs only once for the according LIN ID.
 *
 * Extends the base interface by adding a method to access the @ref
-* GetDLC "DLC being detected". 
+* GetDLC "DLC being detected".
 *
 * This interface's implementation of @ref IMessage::GetID returns the @ref IMessage::GetID "frame ID"
 * of the frame that triggered the DLC detection event.
 *
 * @remark All public methods are thread-safe.
-* @remark The lifetime of all objects implementing this interface 
+* @remark The lifetime of all objects implementing this interface
 *         is defined by the @ref IRxQueue "receive queue" instance
 *         that contains them.
 * @since  BOA 1.3
 * @see    IRxQueue, ILINLink, ILINDLCDetectEventFilter
 */
 
-OLI_INTERFACE ILINDLCDetectEvent : public IEvent
+OLI_INTERFACE ILINDLCDetectEvent :
+public IEvent
 {
 protected:
 
     /** @brief Destructor.
 
-        This destructor has been hidden since objects implementing 
+        This destructor has been hidden since objects implementing
         this class are controlled by the receiving queue.
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINDLCDetectEvent() OLI_NOTHROW {};
 
@@ -77,11 +81,11 @@ public:
     enum {TYPE = LIN_TYPE_EVENT_BASE + 6};
 
     /** @brief  Get the detected DLC.
-        
-        @return Detected DLC. 
+
+        @return Detected DLC.
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual uint8 OLI_CALL GetDLC() const OLI_NOTHROW = 0;
 };
@@ -89,7 +93,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

@@ -1,14 +1,14 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  SignalWatch_J1939.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/SignalWatch/SignalWatch_J1939.h_v  $
- * 
+ *
  *    Rev 1.1   15 Apr 2011 19:18:46   CANMNTTM
  * Added RBEI Copyright information.
- * 
+ *
  *    Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
- *  
+ *
 
 /**
  * \file      SignalWatch_J1939.h
@@ -61,13 +61,13 @@ public:
     HRESULT SW_ShowSigWatchWnd(CWnd* pParent, INT nCmd);
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
-    HRESULT SW_GetConfigData(void* pbyConfigData);    
+    HRESULT SW_GetConfigData(void* pbyConfigData);
     HRESULT SW_SetConfigData(const void* pbyConfigData);
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
     void vDisplayInSigWatchWnd(STJ1939_MSG& sMsg);
-	void vDeleteRemovedListEntries();
+    void vDeleteRemovedListEntries();
 
 private:
     BOOL bStartSigWatchReadThread(void);

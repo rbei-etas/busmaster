@@ -15,11 +15,11 @@
 
 /**
  * \file      Flags.cpp
- * \brief     Contains implementaion of CFlags class 
+ * \brief     Contains implementaion of CFlags class
  * \authors   Amitesh Bharti, Amarnath Shastry, Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Contains implementaion of CFlags class 
+ * Contains implementaion of CFlags class
  */
 // For all standard header file include
 #include "stdafx.h"
@@ -75,10 +75,10 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     // in Enabled or in Disabled state
     // Hence    TRUE : Pressed
     //          FALSE : Unpressed
-    // This is applicable only to the first 6 
+    // This is applicable only to the first 6
     // toolbar buttons initialised below
 
-    /*m_bDisplayFilterOn      = FALSE;    
+    /*m_bDisplayFilterOn      = FALSE;
     m_bLogFilterOn          = FALSE;
     m_bLogEnable            = FALSE;
     m_bTranslationMode      = FALSE;
@@ -114,7 +114,7 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     m_wLogTimeMode          = eSYSTEM_MODE; // System mode
     m_nReplayMsgType        = eALL_MESSAGE; // default is all messages
     m_bLogOverWriteON       = TRUE;
-	m_bSendSignalMSg        = FALSE;*/
+    m_bSendSignalMSg        = FALSE;*/
     vInitializeFlags();
     // If Configuration file has this info
     // use the same
@@ -136,18 +136,18 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
 }
 
 /******************************************************************************/
-/*  Function Name    :  CFlags                                                */    
-/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */    
-/*  Output           :                                                        */    
+/*  Function Name    :  CFlags                                                */
+/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */
+/*  Output           :                                                        */
 /*  Functionality    :  Constructor is called when user create an object of   */
 /*                      this class. Initialisation of all data members        */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */    
-/*  Date Created     :  27.02.2002                                            */    
-/*  Modification By  :  Amitesh Bharti                                        */  
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
+/*  Date Created     :  27.02.2002                                            */
+/*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  06.03.2002                                            */
-/*  Modification By  :  Ratnadip Choudhury                                    */  
+/*  Modification By  :  Ratnadip Choudhury                                    */
 /*  Modifications on :  25.03.2002                                            */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  16.08.2002, Added Initialisation for flag for Replay  */
@@ -172,12 +172,12 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
 /******************************************************************************/
 CFlags::CFlags()
 {
-	vInitializeFlags();
+    vInitializeFlags();
 }
 
 void CFlags::vInitializeFlags()
 {
-	m_bDisplayFilterOn      = FALSE;    
+    m_bDisplayFilterOn      = FALSE;
     m_bLogFilterOn          = FALSE;
     m_bLogEnable            = FALSE;
     m_bTranslationMode      = FALSE;
@@ -213,38 +213,38 @@ void CFlags::vInitializeFlags()
     m_wLogTimeMode          = eSYSTEM_MODE; // absolute mode
     m_nReplayMsgType        = eALL_MESSAGE; // All messages
     m_bLogOverWriteON       = TRUE;         // over write by default
-	m_bSendSignalMSg	    = FALSE;
+    m_bSendSignalMSg        = FALSE;
     m_bActivatedJ1939       = FALSE; // CAN is default active bus for configuration.
 }
 /******************************************************************************/
-/*  Function Name    :  ~CFlags                                               */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  ~CFlags                                               */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  This destractor is called when object is getting      */
 /*                      destroyed                                             */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */    
-/*  Date Created     :  27.02.2002                                            */    
-/*  Modifications    :                                                        */    
-/*                                                                            */    
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
+/*  Date Created     :  27.02.2002                                            */
+/*  Modifications    :                                                        */
+/*                                                                            */
 /******************************************************************************/
 CFlags::~CFlags()
 {
 
 }
 /******************************************************************************/
-/*  Function Name    :  vSetFlagStatus                                        */    
-/*  Input(s)         :  Flag identifer and value to set that flag             */    
-/*  Output           :                                                        */    
+/*  Function Name    :  vSetFlagStatus                                        */
+/*  Input(s)         :  Flag identifer and value to set that flag             */
+/*  Output           :                                                        */
 /*  Functionality    :  This function set the correspoding flag whose         */
 /*                      with value passed as nValue parameter.The eWhichFlag  */
 /*                      identified the flag to be set.                        */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */    
-/*  Date Created     :  27.02.2002                                            */    
-/*  Modification By  :  Amitesh Bharti, Ratnadip Choudhury                    */  
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
+/*  Date Created     :  27.02.2002                                            */
+/*  Modification By  :  Amitesh Bharti, Ratnadip Choudhury                    */
 /*  Modifications on :  06.03.2002                                            */
 /*  Modification By  :  Amarnath Shastry                                      */
 /*  Modifications on :  23.03.2002                                            */
@@ -257,7 +257,7 @@ CFlags::~CFlags()
 /*                                  m_bKeyHandlerOn                           */
 /*  Modifications on :  02.12.2002, Amarnath S                                */
 /*                      Added theApp.vSetConfigurationModified() to reflect   */
-/*                      toolbar buttom status in Configuration                */ 
+/*                      toolbar buttom status in Configuration                */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  22.02.2003,Added flags: m_bErrorHandlerOn             */
 /*                      m_bDLLHandlerOn,m_bALLHandler and m_wControllerMode   */
@@ -430,7 +430,7 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             }
             m_bLogHexON = nValue;
             break;
-        case LOGTIMEMODE: 
+        case LOGTIMEMODE:
             if ( static_cast<WORD>(m_wLogTimeMode) != nValue )
             {
                 theApp.vSetConfigurationModified();
@@ -460,16 +460,16 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
     m_omCriticalSec.Unlock();
 }
 /******************************************************************************/
-/*  Function Name    :  nGetFlagStatus                                        */    
-/*  Input(s)         :  Flag identifer                                        */    
-/*  Output           :  State of flag                                         */    
+/*  Function Name    :  nGetFlagStatus                                        */
+/*  Input(s)         :  Flag identifer                                        */
+/*  Output           :  State of flag                                         */
 /*  Functionality    :  This function returns the state of flag The eWhichFlag*/
 /*                      identified the flag.                                  */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */    
-/*  Date Created     :  27.02.2002                                            */    
-/*  Modification By  :  Amitesh Bharti, Ratnadip Choudhury                    */  
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amarnath Shastry,Amitesh Bharti                       */
+/*  Date Created     :  27.02.2002                                            */
+/*  Modification By  :  Amitesh Bharti, Ratnadip Choudhury                    */
 /*  Modifications on :  06.03.2002                                            */
 /*  Modification By  :  Amarnath Shastry                                      */
 /*  Modifications on :  23.03.2002                                            */
@@ -486,7 +486,7 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
 /*  Modification By  :  Krishnaswamy B.N.                                     */
 /*  Modifications on :  24.05.2003,Added flags: m_bLogHexON                   */
 /*  Modification By  :  Krishnaswamy B.N.                                     */
-/*  Modifications on :  06.06.2003,Added case statement for flag              */ 
+/*  Modifications on :  06.06.2003,Added case statement for flag              */
 /*  Modification By  :  Krishnaswamy B.N.                                     */
 /*  Modifications on :  03.06.2003,Modified case statement for ABSOLUTE MODE  */
 /*                      and added case statement for LOGTIMEMODE              */
@@ -595,24 +595,24 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             nRetValue  = m_wControllerMode;
             break;
         case PARALLEL_PORT_EPP:
-           nRetValue  = m_bParallelPortEPP;
-             break;
+            nRetValue  = m_bParallelPortEPP;
+            break;
         case LOGHEXON:
             nRetValue = m_bLogHexON;
             break;
         case LOGTIMEMODE:
             nRetValue =  static_cast<INT>(m_wLogTimeMode);
             break;
-        case eLOGOVERWRITEMODEON : 
+        case eLOGOVERWRITEMODEON :
             nRetValue = m_bLogOverWriteON;
             break;
-        case eLOGREPLAYMSGTYPE : 
+        case eLOGREPLAYMSGTYPE :
             nRetValue = m_nReplayMsgType;
             break;
-		case SEND_SIGNAL_MSG:
-			nRetValue  = m_bSendSignalMSg;
-			break;
-        case ACTIVATED_J1939: 
+        case SEND_SIGNAL_MSG:
+            nRetValue  = m_bSendSignalMSg;
+            break;
+        case ACTIVATED_J1939:
             nRetValue = (int) m_bActivatedJ1939;
             break;
         default:
@@ -624,15 +624,15 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
     return nRetValue;
 }
 /******************************************************************************/
-/*  Function Name    :  vGetToolbarButtonStatus                               */    
-/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */    
-/*  Output           :                                                        */    
+/*  Function Name    :  vGetToolbarButtonStatus                               */
+/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */
+/*  Output           :                                                        */
 /*  Functionality    :  Fills the structure                                   */
-/*  Member of        :  CFlags                                                */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amarnath Shastry                                      */    
-/*  Date Created     :  15.11.2002                                            */    
-/*  Modification By  :  Krishnaswamy B.N                                      */  
+/*  Member of        :  CFlags                                                */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amarnath Shastry                                      */
+/*  Date Created     :  15.11.2002                                            */
+/*  Modification By  :  Krishnaswamy B.N                                      */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  17.06.2003, Modification to integrate the saving of   */
 /*                      status of Display and log format and time mode        */
@@ -647,18 +647,18 @@ void CFlags::vGetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
 {
     if ( psToolBarInfo != NULL )
     {
-    psToolBarInfo->m_byMsgFilter        = static_cast<BYTE>(m_bDisplayFilterOn);
-    psToolBarInfo->m_byLogFilter        = static_cast<BYTE>(m_bLogFilterOn);
-    psToolBarInfo->m_byLogging          = static_cast<BYTE>(m_bLogEnable);
-    psToolBarInfo->m_byMsgInterpret     = static_cast<BYTE>(m_bTranslationMode);
-    psToolBarInfo->m_byOverwrite        = static_cast<BYTE>(m_bOverwriteEnable);
-    psToolBarInfo->m_byLogTimeMode      = static_cast<BYTE>(m_wLogTimeMode);
-    psToolBarInfo->m_byLogHexON         = static_cast<BYTE>(m_bLogHexON);
-    psToolBarInfo->m_byDisplayTimeMode  = static_cast<BYTE>(m_wDisplayTimeMode);
-    psToolBarInfo->m_byDisplayHexON     = static_cast<BYTE>(m_bDisplayHexON);
-    psToolBarInfo->m_byLogOverWriteON   = static_cast<BYTE>(m_bLogOverWriteON);
-    psToolBarInfo->m_byReplayMsgType    = static_cast<BYTE>(m_nReplayMsgType);
-    psToolBarInfo->m_byEnsureVisible    = static_cast<BYTE>(m_bScrolling);
+        psToolBarInfo->m_byMsgFilter        = static_cast<BYTE>(m_bDisplayFilterOn);
+        psToolBarInfo->m_byLogFilter        = static_cast<BYTE>(m_bLogFilterOn);
+        psToolBarInfo->m_byLogging          = static_cast<BYTE>(m_bLogEnable);
+        psToolBarInfo->m_byMsgInterpret     = static_cast<BYTE>(m_bTranslationMode);
+        psToolBarInfo->m_byOverwrite        = static_cast<BYTE>(m_bOverwriteEnable);
+        psToolBarInfo->m_byLogTimeMode      = static_cast<BYTE>(m_wLogTimeMode);
+        psToolBarInfo->m_byLogHexON         = static_cast<BYTE>(m_bLogHexON);
+        psToolBarInfo->m_byDisplayTimeMode  = static_cast<BYTE>(m_wDisplayTimeMode);
+        psToolBarInfo->m_byDisplayHexON     = static_cast<BYTE>(m_bDisplayHexON);
+        psToolBarInfo->m_byLogOverWriteON   = static_cast<BYTE>(m_bLogOverWriteON);
+        psToolBarInfo->m_byReplayMsgType    = static_cast<BYTE>(m_nReplayMsgType);
+        psToolBarInfo->m_byEnsureVisible    = static_cast<BYTE>(m_bScrolling);
     }
 }
 /******************************************************************************/
@@ -710,7 +710,7 @@ Functionality   : static function return singleton object
 Member of       : CFlags
 Friend of       : -
 Author(s)       : Ratnadip Choudhury, 19.03.2011
-Modifications   : 
+Modifications   :
 ******************************************************************************/
 CFlags& CFlags::ouGetFlagObj(void)
 {

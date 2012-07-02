@@ -115,7 +115,7 @@ CParameter& CParameter::operator=( CParameter& param)
  * Writes the parameter definition and default value to the
  * specified output file.
  */
-bool WriteParametersToFile(fstream& fileOutput, list<CParameter> &m_listParameter)
+bool WriteParametersToFile(fstream& fileOutput, list<CParameter>& m_listParameter)
 {
     bool pResult=true;
     // if no parameter in the list then it simply returns true.
@@ -417,7 +417,7 @@ int CParameter::Format(char* pcLine)
         else if(m_ParamType == "HEX")
         {
             pcToken = strtok_s(pcToken, " ", &pcTok);
-            m_MinVal.uiValue = atoi(pcToken);
+            m_MinVal.uiValue = strtoul(pcToken, NULL, 10);
 
             if(m_MinVal.uiValue < 0) //min vlaue validation
             {
@@ -426,7 +426,7 @@ int CParameter::Format(char* pcLine)
             }
 
             pcToken = strtok_s(NULL, ";", &pcTok);
-            m_MaxVal.uiValue = atoi(pcToken);
+            m_MaxVal.uiValue = strtoul(pcToken, NULL, 10);
 
             //max value validation
             if((m_MaxVal.uiValue == 0) || (m_MaxVal.uiValue < m_MinVal.uiValue))
@@ -482,7 +482,7 @@ int CParameter::ReadDefaultVal(char* pcToken)
     {
         if(strcmp(pcToken, " ") != 0)
         {
-            m_InitVal.iValue = atoi(pcToken);
+            m_InitVal.iValue = strtoul(pcToken, NULL, 10);
         }
 
         //if default value is not with in the range then set default vlaue as min value.
@@ -497,7 +497,7 @@ int CParameter::ReadDefaultVal(char* pcToken)
     {
         if(strcmp(pcToken, " ") != 0)
         {
-            m_InitVal.uiValue = atoi(pcToken);
+            m_InitVal.uiValue = strtoul(pcToken, NULL, 10);
         }
 
         //if default value is not with in the range then set default vlaue as min value.

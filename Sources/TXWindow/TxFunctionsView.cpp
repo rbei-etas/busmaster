@@ -49,7 +49,7 @@ CTxFunctionsView::CTxFunctionsView()
     : CFormView(CTxFunctionsView::IDD)
 {
     //{{AFX_DATA_INIT(CTxFunctionsView)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
 }
 
@@ -75,15 +75,15 @@ CTxFunctionsView::~CTxFunctionsView()
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 26.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CTxFunctionsView::DoDataExchange(CDataExchange* pDX)
 {
-	CFormView::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CTxFunctionsView)
-	DDX_Control(pDX, IDC_BTN_UPDATE, m_omButtonApply);
-	//}}AFX_DATA_MAP
-	DDX_Control(pDX, IDC_CHECK_AUTO_UPDATE, m_CheckBoxAutoUpdate);
+    CFormView::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CTxFunctionsView)
+    DDX_Control(pDX, IDC_BTN_UPDATE, m_omButtonApply);
+    //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_CHECK_AUTO_UPDATE, m_CheckBoxAutoUpdate);
 }
 
 
@@ -93,7 +93,7 @@ BEGIN_MESSAGE_MAP(CTxFunctionsView, CFormView)
     ON_BN_CLICKED(IDC_BTN_UPDATE, OnButtonApply)
     ON_BN_CLICKED(IDC_BTN_CLOSE, OnBtnClose)
     //}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_CHECK_AUTO_UPDATE, /*&CTxFunctionsView::*/OnBnClickedCheckAutoUpdate)
+    ON_BN_CLICKED(IDC_CHECK_AUTO_UPDATE, /*&CTxFunctionsView::*/OnBnClickedCheckAutoUpdate)
 END_MESSAGE_MAP()
 
 
@@ -121,14 +121,14 @@ void CTxFunctionsView::Dump(CDumpContext& dc) const
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 26.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CTxFunctionsView::OnSize(UINT nType, int cx, int cy) 
+void CTxFunctionsView::OnSize(UINT nType, int cx, int cy)
 {
     CFormView::OnSize(nType, cx, cy);
     const double dOffset = 0.75;
     // Get Update Window pointer
-    CWnd *pWnd = GetDlgItem( IDC_BTN_UPDATE );
+    CWnd* pWnd = GetDlgItem( IDC_BTN_UPDATE );
     // If valid
     if( pWnd != NULL )
     {
@@ -178,37 +178,37 @@ void CTxFunctionsView::OnSize(UINT nType, int cx, int cy)
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 26.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CTxFunctionsView::OnInitialUpdate() 
+void CTxFunctionsView::OnInitialUpdate()
 {
     CFormView::OnInitialUpdate();
     // Update View pointer in to the child frame
     // Get Child Window Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get Parent window pointer
     pWnd = pomGetParentWindow();
     // Update view pointer
     if( pWnd != NULL )
     {
         // Register this view pointer
-        ((CTxMsgChildFrame *)pWnd)->vSetTxMsgViewPointers( eTxMsgFunctionsView,
-                                                           this );
+        ((CTxMsgChildFrame*)pWnd)->vSetTxMsgViewPointers( eTxMsgFunctionsView,
+                this );
     }
     // Disable Update Button
     m_omButtonApply.EnableWindow( FALSE );
 
-	if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled) 
-	{
-		m_CheckBoxAutoUpdate.SetCheck(BST_CHECKED);
-		GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
-		OnBnClickedCheckAutoUpdate();					//call this function exclusively 
-	}
-	else
-	{
-		m_CheckBoxAutoUpdate.SetCheck(BST_UNCHECKED);
-		GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(TRUE);
-	}
+    if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
+    {
+        m_CheckBoxAutoUpdate.SetCheck(BST_CHECKED);
+        GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
+        OnBnClickedCheckAutoUpdate();                   //call this function exclusively
+    }
+    else
+    {
+        m_CheckBoxAutoUpdate.SetCheck(BST_UNCHECKED);
+        GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(TRUE);
+    }
 }
 
 
@@ -231,22 +231,22 @@ void CTxFunctionsView::OnInitialUpdate()
 /*                      is ON. This will prevent apply and give an option to  */
 /*                      the user to reload the data from configuration        */
 /******************************************************************************/
-void CTxFunctionsView::OnButtonApply() 
+void CTxFunctionsView::OnButtonApply()
 {
     // Apply changed to global Tx Block
     // User is trying to apply late changes
     // Prevent this as some message/block could be deleted after
     // starting the transmission.
-    
+
     // Get Other view pointers
-    CTxMsgBlocksView * pomBlockView = NULL;
-    pomBlockView = (CTxMsgBlocksView *)pomGetBlocksViewPointer();
+    CTxMsgBlocksView* pomBlockView = NULL;
+    pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
     if( pomBlockView != NULL )
     {
         if( (pomBlockView->m_bModified == TRUE) && (TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG)) )
         {
             if(AfxMessageBox( defSTR_RELOAD_CONFIRMATION,
-                          MB_YESNO | MB_DEFBUTTON2) == IDYES )
+                              MB_YESNO | MB_DEFBUTTON2) == IDYES )
             {
                 // Reload the data from Configuration
                 vReloadData();
@@ -279,18 +279,18 @@ void CTxFunctionsView::OnButtonApply()
 void CTxFunctionsView::vApplyChanges()
 {
     // Get Other view pointers
-    CTxMsgBlocksView * pomBlockView = NULL;
-    CTxMsgListView * pomListView = NULL;
-    pomBlockView = (CTxMsgBlocksView *)pomGetBlocksViewPointer();
-    pomListView = (CTxMsgListView * )pomGetListViewPointer();
+    CTxMsgBlocksView* pomBlockView = NULL;
+    CTxMsgListView* pomListView = NULL;
+    pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+    pomListView = (CTxMsgListView* )pomGetListViewPointer();
 
     if( pomBlockView != NULL && pomListView != NULL )
     {
         PSMSGBLOCKLIST psMsgBlock = NULL;
         psMsgBlock = pomBlockView->psGetMsgBlockPointer(
-                                    pomBlockView->m_nSelectedMsgBlockIndex,
-                                    pomBlockView->m_psMsgBlockList );
-        // Update the last selected message block details in case user has 
+                         pomBlockView->m_nSelectedMsgBlockIndex,
+                         pomBlockView->m_psMsgBlockList );
+        // Update the last selected message block details in case user has
         // modified it.
         if(psMsgBlock != NULL )
         {
@@ -299,12 +299,12 @@ void CTxFunctionsView::vApplyChanges()
 
         // Set the value in configuration class.
         CTxWndDataStore::ouGetTxWndDataStoreObj().bSetTxData( TX_MSG_BLOCK_COUNT,
-                         (void*)&(pomBlockView->m_unMsgBlockCount) );
+                (void*)&(pomBlockView->m_unMsgBlockCount) );
         // Data is set only if messagae block count is more then zero.
         if( pomBlockView->m_unMsgBlockCount > 0 )
         {
             CTxWndDataStore::ouGetTxWndDataStoreObj().bSetTxData( TX_SEND_MULTI_MSGS,
-                            (void*)(pomBlockView->m_psMsgBlockList) );
+                    (void*)(pomBlockView->m_psMsgBlockList) );
             // Allocate memory for globle list
             BOOL bAllocateMemory =
                 CTxMsgManager::s_podGetTxMsgManager()->bAllocateMemoryForGlobalTxList();
@@ -321,7 +321,7 @@ void CTxFunctionsView::vApplyChanges()
         {
             // Register this view pointer
             pTxWnd->vUpdateWndCo_Ords();
-            
+
         }
     }
 }
@@ -336,11 +336,11 @@ void CTxFunctionsView::vApplyChanges()
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxFunctionsView::pomGetParentWindow() const
+CWnd* CTxFunctionsView::pomGetParentWindow() const
 {
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get Tx Msg Child Window pointer from Splitter window pointer
@@ -362,19 +362,19 @@ CWnd * CTxFunctionsView::pomGetParentWindow() const
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxFunctionsView::pomGetBlocksViewPointer() const
+CWnd* CTxFunctionsView::pomGetBlocksViewPointer() const
 {
-    CWnd * pView = NULL;
+    CWnd* pView = NULL;
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Get View Pointer
     if( pWnd != NULL )
     {
-        pView = ((CTxMsgChildFrame *)pWnd)->pomGetTxMsgViewPointers( 
-                                                        eTxMsgBlocksView );
+        pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
+                    eTxMsgBlocksView );
     }
     // Return view pointer
     return pView;
@@ -390,19 +390,19 @@ CWnd * CTxFunctionsView::pomGetBlocksViewPointer() const
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxFunctionsView::pomGetListViewPointer() const
+CWnd* CTxFunctionsView::pomGetListViewPointer() const
 {
-    CWnd * pView = NULL;
+    CWnd* pView = NULL;
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Get View Pointer
     if( pWnd != NULL )
     {
-        pView = ((CTxMsgChildFrame *)pWnd)->pomGetTxMsgViewPointers( 
-                                                        eTxMsgMessageListView );
+        pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
+                    eTxMsgMessageListView );
     }
     // Return view pointer
     return pView;
@@ -418,19 +418,19 @@ CWnd * CTxFunctionsView::pomGetListViewPointer() const
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxFunctionsView::pomGetDetailsViewPointer() const
+CWnd* CTxFunctionsView::pomGetDetailsViewPointer() const
 {
-    CWnd * pView = NULL;
+    CWnd* pView = NULL;
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Get View Pointer
     if( pWnd != NULL )
     {
-        pView = ((CTxMsgChildFrame *)pWnd)->pomGetTxMsgViewPointers(
-                                                    eTxMsgMessageDetailsView );
+        pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
+                    eTxMsgMessageDetailsView );
     }
     // Return view pointer
     return pView;
@@ -438,8 +438,8 @@ CWnd * CTxFunctionsView::pomGetDetailsViewPointer() const
 
 /*******************************************************************************
  Function Name    : vReloadData
- Input(s)         : 
- Output           : 
+ Input(s)         :
+ Output           :
  Functionality    : This function will get the Tx block data from configuration
                     and will update the UI. This function will be called if the
                     UI block information is not saved before transmission and
@@ -451,19 +451,19 @@ CWnd * CTxFunctionsView::pomGetDetailsViewPointer() const
  Author(s)        : Raja N
  Date Created     : 05.08.2004
  Modification     : Anish,02.02.07
-					Bug fixed in display of blocks value if there are only key 
-					triggred blocks after a time and key triggere block
+                    Bug fixed in display of blocks value if there are only key
+                    triggred blocks after a time and key triggere block
 /******************************************************************************/
 void CTxFunctionsView::vReloadData()
 {
     // Get Other View Ponters
-    CTxMsgBlocksView * pomBlockView = NULL;
-    CTxMsgListView * pomlistView = NULL;
-    CTxMsgDetailsView * pomDetailsView = NULL;
+    CTxMsgBlocksView* pomBlockView = NULL;
+    CTxMsgListView* pomlistView = NULL;
+    CTxMsgDetailsView* pomDetailsView = NULL;
     // Fetch pointers from Tx Child Frame
-    pomBlockView = ( CTxMsgBlocksView * )pomGetBlocksViewPointer();
-    pomlistView = ( CTxMsgListView * )pomGetListViewPointer();
-    pomDetailsView = ( CTxMsgDetailsView * )pomGetDetailsViewPointer();
+    pomBlockView = ( CTxMsgBlocksView* )pomGetBlocksViewPointer();
+    pomlistView = ( CTxMsgListView* )pomGetListViewPointer();
+    pomDetailsView = ( CTxMsgDetailsView* )pomGetDetailsViewPointer();
 
     if( pomBlockView != NULL && pomlistView != NULL && pomDetailsView != NULL )
     {
@@ -471,11 +471,11 @@ void CTxFunctionsView::vReloadData()
         pomBlockView->m_omLctrMsgBlockName.DeleteAllItems();
         pomlistView->m_omLctrMsgList.DeleteAllItems();
         pomDetailsView->m_omLctrSigList.DeleteAllItems();
-        
+
         // Set this flag to avoid processing item change messages during init
         pomBlockView->m_bInitDlg = TRUE;
         pomlistView->m_bInitDlg = TRUE;
-        
+
         //Clear the existing memory
         CTxWndDataStore::ouGetTxWndDataStoreObj().vReleaseMultiMsgInfo( pomBlockView->m_psMsgBlockList );
         pomBlockView->m_psMsgBlockList = NULL;
@@ -491,9 +491,9 @@ void CTxFunctionsView::vReloadData()
         if( pomBlockView->m_unMsgBlockCount > 0 )
         {
             CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData( TX_SEND_MULTI_MSGS,
-                             (void**)&(pomBlockView->m_psMsgBlockList) );
+                    (void**)&(pomBlockView->m_psMsgBlockList) );
         }
-        
+
         if( pomBlockView->m_unMsgBlockCount == 0 )
         {
             pomBlockView->vEnableControls(FALSE);
@@ -502,59 +502,59 @@ void CTxFunctionsView::vReloadData()
 
             pomlistView->m_omButtonDeleteAllMsg.EnableWindow(FALSE);
             pomlistView->m_omButtonDeleteSelMsg.EnableWindow(FALSE);
-            
+
         }
         else
         {
             pomlistView->m_omButtonDeleteAllMsg.
-                EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) );
+            EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) );
         }
-        
+
         PSMSGBLOCKLIST psCurrentMsgBlock = NULL;
         CString omStr = STR_EMPTY;
         psCurrentMsgBlock = pomBlockView->m_psMsgBlockList;
-        
+
         // Disable AllTxMessage check box
         // This will be updated in the function vDisplayMsgBlockDetails
         // Disabling it here will avoid enabling the control when no blocks or
         // messages are present
         pomBlockView->m_omComboAllMsgs.EnableWindow(FALSE);
         /*pomBlockView->m_omButtonTxAllFrame.EnableWindow( FALSE );*/
-        
-        for(UINT i = 0; i< pomBlockView->m_unMsgBlockCount;i++)
+
+        for(UINT i = 0; i< pomBlockView->m_unMsgBlockCount; i++)
         {
-			omStr = STR_EMPTY;
+            omStr = STR_EMPTY;
             if(psCurrentMsgBlock != NULL )
             {
                 pomBlockView->m_omLctrMsgBlockName.InsertItem( i,
-                                          psCurrentMsgBlock->m_acStrBlockName);
+                        psCurrentMsgBlock->m_acStrBlockName);
                 if(psCurrentMsgBlock->m_bType == TRUE)
                 {
                     pomBlockView->m_omLctrMsgBlockName.SetItemText( i,
-                                            defSUBITEM_MSGBLOCK_TYPE,
-                                            defMSG_CYCLIC );
+                            defSUBITEM_MSGBLOCK_TYPE,
+                            defMSG_CYCLIC );
                 }
                 else
                 {
                     pomBlockView->m_omLctrMsgBlockName.SetItemText( i,
-                                            defSUBITEM_MSGBLOCK_TYPE,
-                                            defMSG_MONOSHOT );
+                            defSUBITEM_MSGBLOCK_TYPE,
+                            defMSG_MONOSHOT );
                 }
-                
+
                 // Use Macros to find the type
                 // Timer?
                 if( IS_TIME_TRIGGERED(psCurrentMsgBlock->m_ucTrigger) )
                 {
                     omStr.Format( defSTR_TIMER_VAL_FMT_SPECIFIER,
-                              psCurrentMsgBlock->m_unTimeInterval );
+                                  psCurrentMsgBlock->m_unTimeInterval );
                     omStr += defMESSAGE_TRIG_MS;
-                    
+
                     if( IS_KEY_TRIGGERED(psCurrentMsgBlock->m_ucTrigger) )
                     {
                         omStr += defSTR_MSG_BLOCK_TRIGGER_SEPRATOR;
                     }
                 }
-                
+
                 // Key ?
                 if( IS_KEY_TRIGGERED(psCurrentMsgBlock->m_ucTrigger) )
                 {
@@ -564,10 +564,10 @@ void CTxFunctionsView::vReloadData()
                     omStr += omStrKeyVal;
                 }
                 pomBlockView->m_omLctrMsgBlockName.SetItemText( i,
-                                                defSUBITEM_MSGBLOCK_TRG_VAL,
-                                                omStr );
+                        defSUBITEM_MSGBLOCK_TRG_VAL,
+                        omStr );
                 pomBlockView->m_omLctrMsgBlockName.SetCheck( i,
-                                        psCurrentMsgBlock->m_bActive );
+                        psCurrentMsgBlock->m_bActive );
                 psCurrentMsgBlock = psCurrentMsgBlock->m_psNextMsgBlocksList;
             }
         }
@@ -576,16 +576,16 @@ void CTxFunctionsView::vReloadData()
         pomlistView->m_bInitDlg = FALSE;
 
         pomBlockView->m_omLctrMsgBlockName.SetItemState(
-                                       pomBlockView->m_nSelectedMsgBlockIndex,
-                                       LVIS_SELECTED|LVIS_FOCUSED,
-                                       LVIS_SELECTED|LVIS_FOCUSED );
-        
+            pomBlockView->m_nSelectedMsgBlockIndex,
+            LVIS_SELECTED|LVIS_FOCUSED,
+            LVIS_SELECTED|LVIS_FOCUSED );
+
         // Clear the Modified Flag
         pomBlockView->m_bModified = FALSE;
 
         // Disable Update Button
         m_omButtonApply.EnableWindow( FALSE );
-        
+
     }
 }
 
@@ -599,9 +599,9 @@ void CTxFunctionsView::vReloadData()
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CTxFunctionsView::OnBtnClose() 
+void CTxFunctionsView::OnBtnClose()
 {
     // Check for Modifications
     if( m_omButtonApply.IsWindowEnabled() == TRUE )
@@ -613,14 +613,14 @@ void CTxFunctionsView::OnBtnClose()
             OnButtonApply();
         }
     }
-    
+
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Post close message
     if( pWnd != NULL )
     {
-        ((CTxMsgChildFrame *)pWnd)->PostMessage( WM_CLOSE );
+        ((CTxMsgChildFrame*)pWnd)->PostMessage( WM_CLOSE );
     }
 }
 
@@ -628,45 +628,45 @@ void CTxFunctionsView::OnBtnClose()
   Function Name  : OnBnClickedCheckAutoUpdate
   Input(s)       : -
   Output         : -
-  Functionality  : This checkbox updates the content automaticallyan stores it in 
-				   global store
+  Functionality  : This checkbox updates the content automaticallyan stores it in
+                   global store
   Member of      : CTxFunctionsView
   Author(s)      : Ashwin. R. Uchil
   Date Created   : 28.5.2012
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
 {
-	CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-	if (NULL != pBlocksView)
-	{
-		if (NULL == pBlocksView->m_psMsgBlockList)
-		{
-			GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
-		}
-		else
-		{
-			GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(TRUE);
-		}
-	}
-	else
-	{
-		GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
-	}
+    CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+    if (NULL != pBlocksView)
+    {
+        if (NULL == pBlocksView->m_psMsgBlockList)
+        {
+            GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
+        }
+        else
+        {
+            GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(TRUE);
+        }
+    }
+    else
+    {
+        GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
+    }
 
-	if((m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED))
-	{			
-		vAccessButtonApply();
-		CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = true;
-	}
-	else
-	{		
-		CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = false;
-	}
+    if((m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED))
+    {
+        vAccessButtonApply();
+        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = true;
+    }
+    else
+    {
+        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = false;
+    }
 }
 
 void CTxFunctionsView::vAccessButtonApply()
 {
-	OnButtonApply();
+    OnButtonApply();
 }
 

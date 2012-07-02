@@ -27,7 +27,7 @@ typedef enum eTXWNDDETAILS
     TX_WND_SPLITTER_DATA,
     TX_SEND_MULTI_MSGS,
     TX_WINDOW_PLACEMENT,
-	TX_AUTO_UPDATE_ENABLE
+    TX_AUTO_UPDATE_ENABLE
 };
 
 class CTxWndDataStore
@@ -37,21 +37,21 @@ public:
     ~CTxWndDataStore(void);
     static CTxWndDataStore& ouGetTxWndDataStoreObj();
     static CTxWndDataStore m_sTxWndDataStoreObj;
-	bool				 m_bAutoSavedEnabled;
+    bool                 m_bAutoSavedEnabled;
     BOOL bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData);
     BOOL bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid);
     // sets the multiple message structure data member with the info
     BOOL    bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
     // releases the multiple message structure pointer that is passed..
     void    vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
-     // gets the multiple message info ..
+    // gets the multiple message info ..
     BOOL    bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList);
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
     BOOL bGetDefaultTXSplitterPostion(CRect omWndSize, LPVOID* psSplitterData);
     BYTE* pbySetConfigData(BYTE* pbyConfigData, INT nConfigSize);
     BYTE* pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize);
 private:
-    
+
     UINT               m_unNumberOfMsgBlockCount;
     BOOL               m_bIsConfigurationModified;
     // Tx Msg Splitter Position

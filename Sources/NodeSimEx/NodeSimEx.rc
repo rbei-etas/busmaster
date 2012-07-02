@@ -233,9 +233,9 @@ FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Node Details",IDC_STAT_NODE_DETAILS,7,7,468,340,
                     BS_CENTER
-    LTEXT           "&Node Name : ",IDC_STAT_NODE_NAME,19,25,44,14
+    LTEXT           "Node Name : ",IDC_STAT_NODE_NAME,19,25,44,14
     GROUPBOX        "File Details",IDC_STAT_FILEGRP,17,44,448,72
-    LTEXT           "&File : ",IDC_STAT_FILE_NAME,30,60,19,13
+    LTEXT           "File : ",IDC_STAT_FILE_NAME,30,60,19,13
     EDITTEXT        IDC_EDIT_NODE_NAME,66,26,109,12,ES_AUTOHSCROLL | 
                     ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,
                     HIDC_EDIT_NODE_NAME

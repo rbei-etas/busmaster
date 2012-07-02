@@ -58,7 +58,7 @@ public:
     bool WriteToOutputFile(fstream& fileOutput);
     void GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
-    void EncryptData(list<string> &m_notProcessed);
+    void EncryptData(list<string>& m_notProcessed);
     enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
           CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
          };

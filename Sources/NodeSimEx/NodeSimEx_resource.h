@@ -127,6 +127,7 @@
 #define IDM_SIMSYS_ALLKEYHANDLERS       32976
 #define IDM_SIMSYS_ALLMSGHANDLERS       32979
 #define IDM_SIMSYS_ALLERRORHANDLERS     32981
+#define IDM_SIMSYS_ALLEVENTHANDLERS     32982
 #define IDM_SIMSYS_ALLTIMERHANDLERS     32983
 #define IDM_EDIT_NODE                   32984
 #define IDM_DELETE_NODE                 32986
@@ -144,7 +145,7 @@
 #define IDM_CONTEXT_INSERTSIGNAL        61451
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        4002

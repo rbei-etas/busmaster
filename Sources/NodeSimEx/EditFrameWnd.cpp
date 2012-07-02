@@ -15,11 +15,11 @@
 
 /**
  * \file      EditFrameWnd.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 
@@ -42,8 +42,8 @@ IMPLEMENT_DYNCREATE(CEditFrameWnd, CMDIChildWnd)
 
 BEGIN_MESSAGE_MAP(CEditFrameWnd, CMDIChildWnd)
     //{{AFX_MSG_MAP(CEditFrameWnd)
-        // NOTE - the ClassWizard will add and remove mapping macros here.
-        //    DO NOT EDIT what you see in these blocks of generated code !
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
     //}}AFX_MSG_MAP
     ON_WM_CREATE()
 END_MESSAGE_MAP()
@@ -61,7 +61,7 @@ END_MESSAGE_MAP()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  05.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CEditFrameWnd::CEditFrameWnd()
 {
@@ -79,7 +79,7 @@ CEditFrameWnd::CEditFrameWnd()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CEditFrameWnd::~CEditFrameWnd()
 {
@@ -95,19 +95,21 @@ CEditFrameWnd::~CEditFrameWnd()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  05.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 BOOL CEditFrameWnd::PreCreateWindow(CREATESTRUCT& cs)
 {
     if( !CMDIChildWnd::PreCreateWindow(cs) )
+    {
         return FALSE;
+    }
 
     // Child window style
-    cs.style =  WS_CHILD            | 
-                WS_VISIBLE          | 
-                WS_OVERLAPPEDWINDOW | 
-                WS_CAPTION          | 
-                WS_SYSMENU          | 
+    cs.style =  WS_CHILD            |
+                WS_VISIBLE          |
+                WS_OVERLAPPEDWINDOW |
+                WS_CAPTION          |
+                WS_SYSMENU          |
                 FWS_ADDTOTITLE;
 
     return TRUE;
@@ -160,13 +162,13 @@ void CEditFrameWnd::Dump(CDumpContext& dc) const
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  05.03.2002                                            */
 /*  Modifications    :  22.03.2002 Amarnath Shastry
-                        Changed the positon of splitter window                        
+                        Changed the positon of splitter window
 /******************************************************************************/
-BOOL CEditFrameWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext) 
+BOOL CEditFrameWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
     // Create Static Splitter Window with 1 ROW and 2 COLUMNS
-    m_bIsSplitterCreated = 
-        m_omSplitterWndOne.CreateStatic(this,           // Parent Frame Window 
+    m_bIsSplitterCreated =
+        m_omSplitterWndOne.CreateStatic(this,           // Parent Frame Window
                                         SPLT_ONE_ROWS,  // #Rows
                                         SPLT_ONE_COLS); // #Columns
     if ( m_bIsSplitterCreated == TRUE )
@@ -177,9 +179,9 @@ BOOL CEditFrameWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pCon
         vCalculateSplitterPos( om_Size );
         CFnsTreeView::sm_eBus = m_eBus;
         // Create view for the Right top Pane for static splitter window
-        m_bIsSplitterCreated = 
+        m_bIsSplitterCreated =
             m_omSplitterWndOne.CreateView(0,    // #Row
-                                          0,    // #Column      
+                                          0,    // #Column
                                           RUNTIME_CLASS(CFnsTreeView),
                                           om_Size,      // Sizeof Pane
                                           pContext);
@@ -189,22 +191,22 @@ BOOL CEditFrameWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pCon
             // Get child window ID from 0th row and 1st column
             int nChildID = m_omSplitterWndOne.IdFromRowCol(0, 1);
 
-            m_bIsSplitterCreated = 
-                m_omSplitterWndTwo.CreateStatic( &m_omSplitterWndOne,                   // Parent Frame Window 
+            m_bIsSplitterCreated =
+                m_omSplitterWndTwo.CreateStatic( &m_omSplitterWndOne,                   // Parent Frame Window
                                                  SPLT_TWO_ROWS, // #Rows
                                                  SPLT_TWO_COLS, // #Columns,                        // #Columns
-                                                 WS_CHILD   | 
-                                                 WS_VISIBLE | 
+                                                 WS_CHILD   |
+                                                 WS_VISIBLE |
                                                  WS_BORDER,     // Window Style
-                                                 nChildID);     // Splitter  Nested 
-            
+                                                 nChildID);     // Splitter  Nested
+
             if ( TRUE == m_bIsSplitterCreated )
             {
                 CFileView::sm_eBus = m_eBus;
                 CSize om_Size2(0,0);
                 om_Size2.cy = ((om_Size.cy) / 2);
                 // Create view for the Left Pane for static splitter window 2
-                m_bIsSplitterCreated = 
+                m_bIsSplitterCreated =
                     m_omSplitterWndTwo.CreateView( 0,// #Row
                                                    0,// #Column
                                                    RUNTIME_CLASS(CFileView),
@@ -216,22 +218,22 @@ BOOL CEditFrameWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pCon
                     om_Size2.cy = 0;
                     CFunctionView::sm_eBus = m_eBus;
                     // Create view for the bottom Pane for static splitter window 2
-                    m_bIsSplitterCreated    =   
+                    m_bIsSplitterCreated    =
                         m_omSplitterWndTwo.CreateView( 1,// #Row
-                                                       0,// #Column     
+                                                       0,// #Column
                                                        RUNTIME_CLASS(CFunctionView),
                                                        om_Size2,// Sizeof Pane
                                                        pContext);
                     if ( m_bIsSplitterCreated != TRUE )
                     {
-                        // Failed to create view 2 for splitter 2, 
+                        // Failed to create view 2 for splitter 2,
                         //close child window
                         // return m_bIsSplitterCreated;
                     }
                 }
                 else
                 {
-                    // Failed to create view 1 for splitter two, 
+                    // Failed to create view 1 for splitter two,
                     // close child window
                     // return m_bIsSplitterCreated;
                 }
@@ -269,7 +271,7 @@ BOOL CEditFrameWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pCon
 /*  Modifications    :  22.03.2002, Amarnath Shastry
                         Changes in size.cy
 /******************************************************************************/
-void CEditFrameWnd::vCalculateSplitterPos(CSize &size)
+void CEditFrameWnd::vCalculateSplitterPos(CSize& size)
 {
     size.cx = 0;
     size.cy = 0;
@@ -283,7 +285,9 @@ void CEditFrameWnd::vCalculateSplitterPos(CSize &size)
 int CEditFrameWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     if (CMDIChildWnd::OnCreate(lpCreateStruct) == -1)
+    {
         return -1;
+    }
     SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_FN_EDITOR), TRUE);
 
     return 0;

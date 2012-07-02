@@ -16,7 +16,7 @@
 /**
  * \file      CAN_IXXAT_VCI_Extern.h
  * \brief     Exports API functions for IXXAT VCI based hardware interface
- * \author    Arunkumar Karri 
+ * \author    Arunkumar Karri
  *            Added to IXXAT project, renamed and changed the #define by Peter Wucherer
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
@@ -43,8 +43,8 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-/*  Exported function list */
-USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
+    /*  Exported function list */
+    USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 #ifdef __cplusplus
 }

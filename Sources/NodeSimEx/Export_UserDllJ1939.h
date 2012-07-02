@@ -1,21 +1,21 @@
 /*****************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  Export_UserDllJ1939.h
-  Description   :  This header file contains name and prototype of the 
-                   exported function from user-defined DLL which should be 
+  Description   :  This header file contains name and prototype of the
+                   exported function from user-defined DLL which should be
                    called by the application to initialise a function pointer
-                   in that DLL to enable it to call a function from the 
+                   in that DLL to enable it to call a function from the
                    application.
   $Log:   X:/Archive/Sources/NodeSimEx/Export_UserDllJ1939.h_v  $
- * 
+ *
  *    Rev 1.1   15 Apr 2011 18:59:12   CANMNTTM
  * Added RBEI Copyright information.
- * 
+ *
  *    Rev 1.0   01 Mar 2011 17:07:52   CANMNTTM
- *  
-  Author(s)     :  
+ *
+  Author(s)     :
   Date Created  :  28.11.2002
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 *****************************************************************************/
 #include "Export_UserDll.h"

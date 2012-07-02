@@ -33,32 +33,32 @@ using namespace std;
 #define defFILTER_IGNORE_ID_TYPE        2
 #define defFILTER_IGNORE_MSG_TYPE       2
 
-#define defSTR_FILTER_NAME          _T("Name")
-#define defSTR_FILTER_TYPE          _T("Type")
+#define defSTR_FILTER_NAME          "Name"
+#define defSTR_FILTER_TYPE          "Type"
 
-#define defSTR_FILTER_DETAILS_ID_FROM           _T("From")
-#define defSTR_FILTER_DETAILS_ID_TO             _T("To")
-#define defSTR_FILTER_DETAILS_ID_TYPE           _T("ID Type")
-#define defSTR_FILTER_DETAILS_MSG_TYPE          _T("Msg Type")
-#define defSTR_FILTER_DETAILS_MSG_DIRECTION     _T("Direction")
-#define defSTR_FILTER_DETAILS_MSG_CHANNEL       _T("Channel")
+#define defSTR_FILTER_DETAILS_ID_FROM           "From"
+#define defSTR_FILTER_DETAILS_ID_TO             "To"
+#define defSTR_FILTER_DETAILS_ID_TYPE           "ID Type"
+#define defSTR_FILTER_DETAILS_MSG_TYPE          "Msg Type"
+#define defSTR_FILTER_DETAILS_MSG_DIRECTION     "Direction"
+#define defSTR_FILTER_DETAILS_MSG_CHANNEL       "Channel"
 
-#define defSTR_SELECTION_ALL                    _T("All")
+#define defSTR_SELECTION_ALL                    "All"
 
-#define defSTR_MSG_ID_TYPE_STD                  _T("Std")
-#define defSTR_MSG_ID_TYPE_EXTD                 _T("Exd")
+#define defSTR_MSG_ID_TYPE_STD                  "Std"
+#define defSTR_MSG_ID_TYPE_EXTD                 "Exd"
 
-#define defSTR_MSG_TYPE_RTR                     _T("RTR")
-#define defSTR_MSG_TYPE_NON_RTR                 _T("Non RTR")
+#define defSTR_MSG_TYPE_RTR                     "RTR"
+#define defSTR_MSG_TYPE_NON_RTR                 "Non RTR"
 
-#define defSTR_MSG_DIR_TX                       _T("Tx")
-#define defSTR_MSG_DIR_RX                       _T("Rx")
+#define defSTR_MSG_DIR_TX                       "Tx"
+#define defSTR_MSG_DIR_RX                       "Rx"
 
-#define defSTR_FILTER_TYPE_PASS                 _T("Pass")
-#define defSTR_FILTER_TYPE_STOP                 _T("Stop")
+#define defSTR_FILTER_TYPE_PASS                 "Pass"
+#define defSTR_FILTER_TYPE_STOP                 "Stop"
 
-#define defSTR_MSG_ID_FORMAT_DB                 _T("%x [%s]")
-#define defSTR_MSG_ID_FORMAT_NDB                _T("%x")
+#define defSTR_MSG_ID_FORMAT_DB                 "%x [%s]"
+#define defSTR_MSG_ID_FORMAT_NDB                "%x"
 
 #define defFILTER_IMAGE_INDEX_DB                0
 #define defFILTER_IMAGE_INDEX_NDB               1
@@ -67,25 +67,25 @@ using namespace std;
 
 #define defNUMBER_OF_FILTERS_SUPPORTED          100
 
-#define defSTR_FILTER_NAME_COLUMN       _T("Filter Name")
+#define defSTR_FILTER_NAME_COLUMN       "Filter Name"
 
-#define defSTR_DEFAULT_FILTER_NAME              _T("Filter")
-#define defSTR_DEFAULT_FILTER_FORMAT            _T("%s_%d")
+#define defSTR_DEFAULT_FILTER_NAME              "Filter"
+#define defSTR_DEFAULT_FILTER_FORMAT            "%s_%d"
 
 #define defCOLOR_WHITE                          RGB(255,255,255)
 
-#define defFORMAT_MSGID_DECIMAL _T("%d")
+#define defFORMAT_MSGID_DECIMAL "%d"
 #define defMSGID_NAME_START_CHAR '['
 #define defSIGNAL_LIST_STRING_MAX_LENGTH     50
 //For adding MSgID to message name
-#define defSTR_MSG_ID_IN_HEX          _T("[0x%x]")
+#define defSTR_MSG_ID_IN_HEX          "[0x%x]"
 #define defMSGID_EXTENDED       'x'
 #define defMSGID_NAME_DELIMITER  "["
 #define defMSGID_NAME_START_CHAR '['
 #define defMSG_NAME_END_CHAR     ']'
 
-#define defSTR_MSG_ID_STANDARD              _T("Standard")
-#define defSTR_MSG_ID_EXTENDED              _T("Extended")
+#define defSTR_MSG_ID_STANDARD              "Standard"
+#define defSTR_MSG_ID_EXTENDED              "Extended"
 
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
@@ -111,11 +111,11 @@ typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
 // details of the message filters
 struct sMESSAGEFILTERDETAILS
 {
-    UINT    *m_punUndefinedMsgID;       // ID's of undefined messages. The 
-                                        // first element will have the count of
-                                        // message ID's.
-    CStringArray    m_omMsgNameArray;   // the database message names in the 
-                                        // filter list
+    UINT*    m_punUndefinedMsgID;       // ID's of undefined messages. The
+    // first element will have the count of
+    // message ID's.
+    CStringArray    m_omMsgNameArray;   // the database message names in the
+    // filter list
     INT     m_nRangeFrom;               // range start information
     INT     m_nRangeTo;                 // range end information
     UINT    m_unCount;                  // count information of message names

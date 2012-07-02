@@ -23,18 +23,18 @@
 
 /******************************************************************************
 Function Name  :  CTestSetupEntity
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestSetupEntity::CTestSetupEntity()
 {
-    ::CoInitialize(NULL); 
+    ::CoInitialize(NULL);
     m_eType = TEST_SETUP;
     m_omstrCurrentTSFile = def_EMPTYFILENAME;
 }
@@ -42,14 +42,14 @@ CTestSetupEntity::CTestSetupEntity()
 
 /******************************************************************************
 Function Name  :  ~CTestSetupEntity
-Input(s)       :  
+Input(s)       :
 Output         :  -
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestSetupEntity::~CTestSetupEntity()
 {
@@ -60,27 +60,27 @@ CTestSetupEntity::~CTestSetupEntity()
 Function Name  :  operator=
 Input(s)       :  CTestSetupEntity& RefObj
 Output         :  CTestSetupEntity&
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTestSetupEntity& CTestSetupEntity::operator=(const CTestSetupEntity& RefObj)
 {
-    
+
     m_odTestCaseEntityList.RemoveAll();
     INT Count = (INT)RefObj.m_odTestCaseEntityList.GetCount();
-    for(int i=0;i<Count; i++)
+    for(int i=0; i<Count; i++)
     {
         POSITION pos = RefObj.m_odTestCaseEntityList.FindIndex(i);
         //m_odTestCaseEntityList.AddTail(RefObj.m_odTestCaseEntityList.GetAt(pos));
-		CTestCaseEntity msg = RefObj.m_odTestCaseEntityList.GetAt(pos);
-		m_odTestCaseEntityList.AddTail(msg);
+        CTestCaseEntity msg = RefObj.m_odTestCaseEntityList.GetAt(pos);
+        m_odTestCaseEntityList.AddTail(msg);
     }
-	m_ouTestSetupHeader = RefObj.m_ouTestSetupHeader;
-	m_omstrCurrentTSFile =  RefObj.m_omstrCurrentTSFile;
+    m_ouTestSetupHeader = RefObj.m_ouTestSetupHeader;
+    m_omstrCurrentTSFile =  RefObj.m_omstrCurrentTSFile;
     m_omstrTestSetupTitle = RefObj.m_omstrTestSetupTitle;
     m_omstrDescription = RefObj.m_omstrDescription;
     return *this;
@@ -91,32 +91,32 @@ CTestSetupEntity& CTestSetupEntity::operator=(const CTestSetupEntity& RefObj)
 Function Name  :  AddSubEntry
 Input(s)       :  CBaseEntityTA* pouSubEntryObj
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS008
 ******************************************************************************/
 HRESULT CTestSetupEntity::AddSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
-    CTestCaseEntity &odTestCaseEntity = *((CTestCaseEntity*)(pouSubEntryObj));
+    CTestCaseEntity& odTestCaseEntity = *((CTestCaseEntity*)(pouSubEntryObj));
     m_odTestCaseEntityList.AddTail(odTestCaseEntity);
-	return  S_OK;
+    return  S_OK;
 }
 
 
 /******************************************************************************
 Function Name  :  DeleteSubEntry
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 CodeTag        :  CS011
 ******************************************************************************/
 HRESULT CTestSetupEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
@@ -128,7 +128,7 @@ HRESULT CTestSetupEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
         POSITION pos = m_odTestCaseEntityList.FindIndex(i);
         if(pos != NULL)
         {
-            CTestCaseEntity &pEntity = m_odTestCaseEntityList.GetAt(pos);
+            CTestCaseEntity& pEntity = m_odTestCaseEntityList.GetAt(pos);
             if(pEntity.GetID() == pouSubEntryObj->GetID())
             {
                 m_odTestCaseEntityList.RemoveAt(pos);
@@ -145,16 +145,16 @@ HRESULT CTestSetupEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
 Function Name  :  GetHeaderData
 Input(s)       :  CTestSetupHeader& ouHeaderTS
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 const HRESULT CTestSetupEntity::GetHeaderData(CTestSetupHeader& ouHeaderTS)
 {
-    ouHeaderTS = m_ouTestSetupHeader;        
+    ouHeaderTS = m_ouTestSetupHeader;
     return S_OK;
 }
 
@@ -164,21 +164,21 @@ Function Name  :  GetSubEntityObj
 Input(s)       :  UINT unIndex
                   CBaseEntityTA**  pouSubEntity
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 const HRESULT CTestSetupEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity)
 {
     POSITION pos =  m_odTestCaseEntityList.FindIndex(unIndex);
     if(pos != NULL)
     {
-        CTestCaseEntity &ob = m_odTestCaseEntityList.GetAt(pos);
-        *pouSubEntity = &ob; 
-	    return  S_OK;
+        CTestCaseEntity& ob = m_odTestCaseEntityList.GetAt(pos);
+        *pouSubEntity = &ob;
+        return  S_OK;
     }
     return ERR_WRONG_INDEX;
 }
@@ -188,12 +188,12 @@ const HRESULT CTestSetupEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  p
 Function Name  :  GetSubEntryCount
 Input(s)       :  UINT& unTotal
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestSetupEntity::GetSubEntryCount(UINT& unTotal)
 {
@@ -210,7 +210,7 @@ Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 UINT CTestSetupEntity::GetSubEntryCount(void)
 {
@@ -221,12 +221,12 @@ UINT CTestSetupEntity::GetSubEntryCount(void)
 Function Name  :  LoadFile
 Input(s)       :  CString omFilePath
 Output         :  HRESULT
-Functionality  :  Load the Test Setup File 
+Functionality  :  Load the Test Setup File
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS001
 ******************************************************************************/
 HRESULT CTestSetupEntity::LoadFile(CString omFilePath)
@@ -237,14 +237,14 @@ HRESULT CTestSetupEntity::LoadFile(CString omFilePath)
 
 /******************************************************************************
 Function Name  :  nCreateNewTestSetup
-Input(s)       :  
+Input(s)       :
 Output         :  INT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTestSetupEntity::nCreateNewTestSetup(void)
 {
@@ -255,14 +255,14 @@ INT CTestSetupEntity::nCreateNewTestSetup(void)
 
 /******************************************************************************
 Function Name  :  vDeleteAllEntities
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTestSetupEntity::vDeleteAllEntities(void)
 {
@@ -280,14 +280,14 @@ void CTestSetupEntity::vDeleteAllEntities(void)
 
 /******************************************************************************
 Function Name  :  RepositionSubEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS022
 ******************************************************************************/
 HRESULT CTestSetupEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEntityTA* pouCurrSubEntity)
@@ -309,7 +309,7 @@ HRESULT CTestSetupEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CB
     {
         posNew =  m_odTestCaseEntityList.AddHead(ouTCEntity);
     }
-    
+
     else
     {
         for(UINT i=0; i<unCount; i++)
@@ -323,21 +323,21 @@ HRESULT CTestSetupEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CB
             }
         }
     }
-    CTestCaseEntity &odTCData = m_odTestCaseEntityList.GetAt(posNew);
+    CTestCaseEntity& odTCData = m_odTestCaseEntityList.GetAt(posNew);
     return odTCData.GetID();
 }
 
 
 /******************************************************************************
 Function Name  :  SaveFile
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS005
 ******************************************************************************/
 HRESULT CTestSetupEntity::SaveFile(void)
@@ -350,19 +350,19 @@ HRESULT CTestSetupEntity::SaveFile(void)
     {
         return S_FALSE;
     }
-	return  S_FALSE;
+    return  S_FALSE;
 }
 
 /******************************************************************************
 Function Name  :  vInitialise
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS045
 ******************************************************************************/
 void CTestSetupEntity::vInitialise(void)
@@ -378,58 +378,63 @@ void CTestSetupEntity::vInitialise(void)
 Function Name  :  SaveFileAs
 Input(s)       :  CString omFilePath
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS006
 ******************************************************************************/
 HRESULT CTestSetupEntity::SaveFileAs(CString omFilePath)
 {
+	if(omFilePath.IsEmpty() == TRUE)
+	{
+		 return S_FALSE;
+	}
+
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
-    
+
     HRESULT hr = pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
-    
+
     if ( FAILED(hr) )
     {
         return S_FALSE;
     }
-       
-    
+
+
     MSXML2::IXMLDOMProcessingInstructionPtr pIDomPi;
     pIDomPi = pIDOMDoc->createProcessingInstruction(def_DOM_INSTRUCTION);
     VARIANT_BOOL b = TRUE;
     pIDOMDoc->put_preserveWhiteSpace(b);
 
-    if (pIDomPi != NULL) 
-	{
+    if (pIDomPi != NULL)
+    {
         pIDOMDoc->appendChild(pIDomPi);
-	}
-   
+    }
+
     //testSETUP Node <testsetup>
     MSXML2::IXMLDOMElementPtr pIDomTSNode = pIDOMDoc->createElement(_bstr_t(def_STR_TSNODE_NAME));
     pIDOMDoc->appendChild(pIDomTSNode);
-    
+
     //Title Attribute <testsetup title = "">
     MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TSATTRIB_TITLE);
     if(pIDomTSAtrrib!= NULL)
-	{
+    {
         pIDomTSAtrrib->value = _bstr_t(m_omstrTestSetupTitle);
-		pIDomTSNode->setAttributeNode(pIDomTSAtrrib);
-	}
-    
+        pIDomTSNode->setAttributeNode(pIDomTSAtrrib);
+    }
+
     //Descriprion Node <testsetup title = ""><description>
     MSXML2::IXMLDOMElementPtr pIDomDescriptionNode = pIDOMDoc->createElement(_bstr_t(def_STR_DESC_NODE));
     pIDomDescriptionNode->Puttext(_bstr_t(m_omstrDescription));
     pIDomTSNode->appendChild(pIDomDescriptionNode);
-    
+
     //Heade Node
     MSXML2::IXMLDOMElementPtr pIDomHeaderNode = pIDOMDoc->createElement(_bstr_t(def_STR_HEADER_NAME));
     nSaveHeader(pIDomHeaderNode, omFilePath);
     pIDomTSNode->appendChild(pIDomHeaderNode);
-    
+
     //TestCase List
     MSXML2::IXMLDOMElementPtr pIDomTestCaseNode = pIDOMDoc->createElement(_bstr_t(def_STR_TCLIST_NODE));
     SetData(pIDomTestCaseNode);
@@ -440,29 +445,29 @@ HRESULT CTestSetupEntity::SaveFileAs(CString omFilePath)
 
 /******************************************************************************
 Function Name  :  SetEntityData
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestSetupEntity::SetEntityData(const CBaseEntityTA** /*pouEntity*/)
 {
-	return  ERR_NOT_IMPLEMENTED;
+    return  ERR_NOT_IMPLEMENTED;
 }
 /******************************************************************************
 Function Name  :  UpdateTestSetup
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  28/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 HRESULT CTestSetupEntity::UpdateTestSetup()
@@ -473,14 +478,14 @@ HRESULT CTestSetupEntity::UpdateTestSetup()
 }
 /******************************************************************************
 Function Name  :  ValidateEntity
-Input(s)       :  
+Input(s)       :
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  13/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :  CS026
 ******************************************************************************/
 HRESULT CTestSetupEntity::ValidateEntity(CString& omStrResult)
@@ -498,7 +503,7 @@ HRESULT CTestSetupEntity::ValidateEntity(CString& omStrResult)
 
     if(unCount <=0 )
     {
-        omStrResult += _T("No TestCases Are Defined\r\n");
+        omStrResult += "No TestCases Are Defined\r\n";
         hResult = ERR_VALID_ERROR;
     }
     else
@@ -508,7 +513,7 @@ HRESULT CTestSetupEntity::ValidateEntity(CString& omStrResult)
             CString omStrTcResult;
             CBaseEntityTA* pTcEntity;
             GetSubEntityObj(i, &pTcEntity);
-            if(pTcEntity->ValidateEntity(omStrTcResult) == ERR_VALID_ERROR) 
+            if(pTcEntity->ValidateEntity(omStrTcResult) == ERR_VALID_ERROR)
             {
                 hResult = ERR_VALID_ERROR;
             }
@@ -523,12 +528,12 @@ HRESULT CTestSetupEntity::ValidateEntity(CString& omStrResult)
 Function Name  :  SetHeaderData
 Input(s)       :  CTestSetupHeader& ouHeaderTS
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTestSetupEntity::SetHeaderData(const CTestSetupHeader& ouHeaderTS)
 {
@@ -540,12 +545,12 @@ Function Name  :  GetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType
                   void* pvEntityData
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestSetupEntity::GetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/)
 {
@@ -557,12 +562,12 @@ Function Name  :  SetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType
                   void* pvEntityData
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestSetupEntity::SetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* /*pvEntityData*/)
 {
@@ -573,7 +578,7 @@ HRESULT CTestSetupEntity::SetEntityData(eTYPE_ENTITY /*eCurrEntityType*/, void* 
 Function Name  :  GetData
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pIDomNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -591,12 +596,12 @@ HRESULT CTestSetupEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 Function Name  :  SetData
 Input(s)       :  MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode
 Output         :  HRESULT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTestSetupEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
 {
@@ -609,12 +614,12 @@ Function Name  :  FormatDOMDocument
 Input(s)       :  MSXML2::IXMLDOMDocumentPtr pDoc
                   CString& omstrFilePath
 Output         :  bool
-Functionality  :  Formats the pDoc Pointer into File omStrFilePath 
+Functionality  :  Formats the pDoc Pointer into File omStrFilePath
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CString& omstrFilePath)
 {
@@ -622,8 +627,8 @@ BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CStrin
     MSXML2::ISAXXMLReaderPtr pSaxXmlReader = NULL;
 
     pSaxXmlReader.CreateInstance(L"Msxml2.SAXXMLReader");
-   
-      
+
+
     CComPtr<IStream> pStream;
     DWORD grfMode = STGM_WRITE | STGM_SHARE_EXCLUSIVE | STGM_CREATE;
 
@@ -641,11 +646,11 @@ BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CStrin
 
         pImxWriter->put_byteOrderMark(VARIANT_TRUE);
         pImxWriter->put_indent(VARIANT_TRUE);
-        
+
         //W4 Removal
         pSaxXmlReader->parse((_variant_t)(pDoc.GetInterfacePtr()));
 
-        pImxWriter->flush ();    
+        pImxWriter->flush ();
         return TRUE;
     }
     else
@@ -656,14 +661,14 @@ BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CStrin
 
 /******************************************************************************
 Function Name  :  GetEntityType
-Input(s)       :  
+Input(s)       :
 Output         :  eTYPE_ENTITY
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 eTYPE_ENTITY CTestSetupEntity::GetEntityType()
 {
@@ -675,12 +680,12 @@ eTYPE_ENTITY CTestSetupEntity::GetEntityType()
 Function Name  :  nParseTSFile
 Input(s)       :  CString omstrTSFile
 Output         :  INT
-Functionality  :  Load the omStrTSFille 
+Functionality  :  Load the omStrTSFille
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        : CS002
 ******************************************************************************/
 INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
@@ -688,7 +693,7 @@ INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
     HRESULT hr = pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
 
-    if ( FAILED(hr) ) 
+    if ( FAILED(hr) )
     {
         throw "Unable to create XML parser object";
     }
@@ -698,43 +703,43 @@ INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
     }
     //Create A TestSetup DOM document
     CComVariant varFileName((LPCSTR)omstrTSFile);
-    
+
     try
     {
         pIDOMDoc->load(varFileName);
         //GetTest Setup Title
         MSXML2::IXMLDOMNodePtr pIDOMTiltleNode;
         _bstr_t bstrNodeName = def_STR_TSNODE_NAME;
-        CComVariant NodeValue;				
+        CComVariant NodeValue;
 
         pIDOMTiltleNode = pIDOMDoc->selectSingleNode(bstrNodeName);
-        
+
         MSXML2::IXMLDOMNamedNodeMapPtr pDOMTCAtrributes;
         pDOMTCAtrributes = pIDOMTiltleNode->Getattributes();
         MSXML2::IXMLDOMNodePtr pIDOMChildNode;
 
-        //bstrNodeName = def_STR_TSATTRIB_TITLE;		
-		bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSATTRIB_TITLE)));
+        //bstrNodeName = def_STR_TSATTRIB_TITLE;
+        bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSATTRIB_TITLE)));
         pIDOMChildNode = pDOMTCAtrributes->getNamedItem(bstrNodeName);
-        pIDOMChildNode->get_nodeTypedValue(&NodeValue);			
-		m_omstrTestSetupTitle = strCopyBSTRToCString(NodeValue);
+        pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+        m_omstrTestSetupTitle = strCopyBSTRToCString(NodeValue);
         pIDOMChildNode.Release();
-        //Get Description		
+        //Get Description
         //bstrNodeName = def_STR_TSDESCRIPTION;
-		bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSDESCRIPTION)));
+        bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSDESCRIPTION)));
         MSXML2::IXMLDOMNodePtr pIDOMDescriptionNode = pIDOMDoc->selectSingleNode(bstrNodeName);
-        pIDOMDescriptionNode->get_nodeTypedValue(&NodeValue);			
-		m_omstrDescription = strCopyBSTRToCString(NodeValue);
+        pIDOMDescriptionNode->get_nodeTypedValue(&NodeValue);
+        m_omstrDescription = strCopyBSTRToCString(NodeValue);
         //Get Header Node
         //bstrNodeName = def_STR_TSHEADER;
-		bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSHEADER)));
+        bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSHEADER)));
         MSXML2::IXMLDOMNodePtr pIDOMHeaderNode = pIDOMDoc->selectSingleNode(bstrNodeName);
         nLoadHeader(pIDOMHeaderNode);
         pIDOMHeaderNode.Release();
 
         //Get TestCases List
         //bstrNodeName = def_STR_TSTCLIST;
-		bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSTCLIST)));
+        bstrNodeName.Assign(SysAllocString(CT2W(def_STR_TSTCLIST)));
         MSXML2::IXMLDOMNodePtr pIDOMTSNode = pIDOMDoc->selectSingleNode(bstrNodeName);
         GetData(pIDOMTSNode);
     }
@@ -749,23 +754,23 @@ INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
 Function Name  :  nLoadHeader
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pHeaderDOMNode
 Output         :  INT
-Functionality  :  Retrives the Header info 
+Functionality  :  Retrives the Header info
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
 INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
 {
-   // CComPtr<IXMLDOMNode> pHeaderDOMNode;
+    // CComPtr<IXMLDOMNode> pHeaderDOMNode;
     MSXML2::IXMLDOMNodeListPtr pXMLDOMInfoList;
     MSXML2::IXMLDOMNodePtr pInfoNode;
     MSXML2::IXMLDOMNodePtr pInfoCategoryNode;
     MSXML2::IXMLDOMNodePtr pInfoValueNode;
     _bstr_t bstrNodeName = "info";
-    CComVariant NodeValue;		
+    CComVariant NodeValue;
     pXMLDOMInfoList = pHeaderDOMNode->selectNodes(bstrNodeName);
 
     LONG lCount = 0;
@@ -776,21 +781,21 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
         pInfoNode = pXMLDOMInfoList->Getitem(i);
 
         //bstrNodeName = def_STR_CATEGORY_NODE;
-		bstrNodeName.Assign(SysAllocString(CT2W(def_STR_CATEGORY_NODE)));
+        bstrNodeName.Assign(SysAllocString(CT2W(def_STR_CATEGORY_NODE)));
         pInfoCategoryNode = pInfoNode->selectSingleNode(bstrNodeName);
-        pInfoCategoryNode->get_nodeTypedValue(&NodeValue);		
-				
-		ouTempSInfo.m_omCategory = strCopyBSTRToCString(NodeValue);
-		
+        pInfoCategoryNode->get_nodeTypedValue(&NodeValue);
+
+        ouTempSInfo.m_omCategory = strCopyBSTRToCString(NodeValue);
+
         pInfoCategoryNode.Release();
-        
+
         //bstrNodeName = def_STR_VALUE_NODE;
-		bstrNodeName.Assign(SysAllocString(CT2W(def_STR_VALUE_NODE)));
+        bstrNodeName.Assign(SysAllocString(CT2W(def_STR_VALUE_NODE)));
         pInfoCategoryNode = pInfoNode->selectSingleNode(bstrNodeName);
-        pInfoCategoryNode->get_nodeTypedValue(&NodeValue);			
-		ouTempSInfo.m_omValue = strCopyBSTRToCString(NodeValue);
+        pInfoCategoryNode->get_nodeTypedValue(&NodeValue);
+        ouTempSInfo.m_omValue = strCopyBSTRToCString(NodeValue);
         pInfoCategoryNode.Release();
-        
+
         pInfoNode.Release();
 
 
@@ -815,26 +820,26 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
             m_ouTestSetupHeader.m_sVersion.m_omValue = ouTempSInfo.m_omValue;
         }
     }
-//Taking Database
-    
+    //Taking Database
+
     //bstrNodeName = def_STR_LISTOFDB;
-	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_LISTOFDB)));
+    bstrNodeName.Assign(SysAllocString(CT2W(def_STR_LISTOFDB)));
     pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
-    pInfoNode->get_nodeTypedValue(&NodeValue);		
-	m_ouTestSetupHeader.m_omDatabasePath = strCopyBSTRToCString(NodeValue);
+    pInfoNode->get_nodeTypedValue(&NodeValue);
+    m_ouTestSetupHeader.m_omDatabasePath = strCopyBSTRToCString(NodeValue);
     //Set The Database Path
     SetDatabaseFile(m_ouTestSetupHeader.m_omDatabasePath);
     pInfoNode.Release();
 
     //bstrNodeName = def_STR_REPORT_FORMAT;
-	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_FORMAT)));
+    bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_FORMAT)));
     pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
     pInfoNode->get_nodeTypedValue(&NodeValue);
-	CString omStrExt;	
-	omStrExt = strCopyBSTRToCString(NodeValue);
+    CString omStrExt;
+    omStrExt = strCopyBSTRToCString(NodeValue);
     pInfoNode.Release();
 
-    
+
     if(omStrExt == "HTM")
     {
         m_ouTestSetupHeader.m_sReportFile.m_eType = HTM;
@@ -845,21 +850,21 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
     }
 
     //bstrNodeName = def_STR_REPORT_PATH;
-	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_PATH)));
+    bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_PATH)));
     pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
-    pInfoNode->get_nodeTypedValue(&NodeValue);		
-	m_ouTestSetupHeader.m_sReportFile.m_omPath = strCopyBSTRToCString(NodeValue);
+    pInfoNode->get_nodeTypedValue(&NodeValue);
+    m_ouTestSetupHeader.m_sReportFile.m_omPath = strCopyBSTRToCString(NodeValue);
     pInfoNode.Release();
-    
-    
+
+
 
 
     //bstrNodeName = def_STR_REPORT_TIMEMODE;
-	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_TIMEMODE)));
+    bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_TIMEMODE)));
     pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
     pInfoNode->get_nodeTypedValue(&NodeValue);
-	CString strTemp;	
-	strTemp = strCopyBSTRToCString(NodeValue);
+    CString strTemp;
+    strTemp = strCopyBSTRToCString(NodeValue);
     if(strTemp == "ABS")
     {
         m_ouTestSetupHeader.m_sReportFile.m_eTimeMode = ABS;
@@ -872,10 +877,10 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
 
 
     //bstrNodeName = def_STR_BUS_TYPE;
-	bstrNodeName.Assign(SysAllocString(CT2W(def_STR_BUS_TYPE)));
+    bstrNodeName.Assign(SysAllocString(CT2W(def_STR_BUS_TYPE)));
     pInfoNode= pHeaderDOMNode->selectSingleNode(bstrNodeName);
-    pInfoNode->get_nodeTypedValue(&NodeValue);		
-	strTemp = strCopyBSTRToCString(NodeValue);
+    pInfoNode->get_nodeTypedValue(&NodeValue);
+    strTemp = strCopyBSTRToCString(NodeValue);
 
     if(strTemp == "CAN")
     {
@@ -883,20 +888,20 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
     }
 
     pInfoNode.Release();
-    
+
     return 0;
 }
 
 /******************************************************************************
 Function Name  :  nSaveHeader
-Input(s)       :  
+Input(s)       :
 Output         :  INT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        :  CS025
 ******************************************************************************/
 INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CString& omStrFilePath)
@@ -914,7 +919,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sModuleName.m_omValue);
     }
     pIDomHeaderNode->appendChild(pInfoElement);
- 
+
     //Version
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
     if (pInfoElement != NULL)
@@ -923,16 +928,16 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sVersion.m_omValue);
     }
     pIDomHeaderNode->appendChild(pInfoElement);
-   
+
     //Engineer Name
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
     if (pInfoElement != NULL)
     {
-    bAddChildToNode(pInfoElement, def_STR_CATEGORY_NODE, m_ouTestSetupHeader.m_sEngineerInfo1.m_omCategory);
+        bAddChildToNode(pInfoElement, def_STR_CATEGORY_NODE, m_ouTestSetupHeader.m_sEngineerInfo1.m_omCategory);
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sEngineerInfo1.m_omValue);
     }
     pIDomHeaderNode->appendChild(pInfoElement);
-    
+
     //Engineer Role
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
     if (pInfoElement != NULL)
@@ -952,16 +957,16 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_BUS_TYPE));
     if(m_ouTestSetupHeader.m_eBus == CAN)
     {
-         omstrTemp = "CAN";
+        omstrTemp = "CAN";
     }
     pInfoElement->Puttext(_bstr_t(omstrTemp));
     pIDomHeaderNode->appendChild(pInfoElement);
-    
+
     //Report File
-    
+
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_REPORT_NODE));
 
-    
+
 
     if (pInfoElement != NULL)
     {
@@ -983,7 +988,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
             omReportPath.Delete(nIndex, 4);
 
             CFile omFile(omStrFilePath,  CFile::modeRead);
-            CString omReportName = omFile.GetFileTitle() + _T(".") + omstrTemp;
+            CString omReportName = omFile.GetFileTitle() + "." + omstrTemp;
             omReportPath += omReportName;
             m_ouTestSetupHeader.m_sReportFile.m_omPath = omReportPath;
         }
@@ -1006,25 +1011,25 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
         bAddChildToNode(pInfoElement, def_STR_TIMEMODE_NODE, omstrTemp);
     }
     pIDomHeaderNode->appendChild(pInfoElement);
-    
+
     return 0;
 }
 
 /******************************************************************************
 Function Name  :  bAddChildToNode
-Input(s)       :  MSXML2::IXMLDOMElementPtr& pNodeElement, 
-                  CString omNodeName 
+Input(s)       :  MSXML2::IXMLDOMElementPtr& pNodeElement,
+                  CString omNodeName
                   CString omNodeval
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-BOOL CTestSetupEntity::bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement, 
-                                          CString omNodeName, CString omNodeval)
+BOOL CTestSetupEntity::bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement,
+                                       CString omNodeName, CString omNodeval)
 {
     BOOL bReturn = FALSE;
     MSXML2::IXMLDOMElementPtr pChildElement;
@@ -1047,24 +1052,24 @@ BOOL CTestSetupEntity::bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement,
 Function Name  :  nLoadTestCases
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pTSDOM
 Output         :  INT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 Codetag        : CS004
 ******************************************************************************/
 INT CTestSetupEntity::nLoadTestCases(MSXML2::IXMLDOMNodePtr& pTSDOM)
 {
     LONG lCount;
     _bstr_t bstrNodeName(def_STR_TESTCASE_NODE);
-    
+
     MSXML2::IXMLDOMNodeListPtr pDOMTCNodeList;
     MSXML2::IXMLDOMNodePtr pIXMLDOMTestCase;
     pDOMTCNodeList = pTSDOM->selectNodes(bstrNodeName);
     pDOMTCNodeList->get_length(&lCount);
-    for(int i=0; i<lCount;i++)
+    for(int i=0; i<lCount; i++)
     {
         CTestCaseEntity odTestCaseEntity;
         pIXMLDOMTestCase = pDOMTCNodeList->Getitem(i);
@@ -1079,25 +1084,25 @@ INT CTestSetupEntity::nLoadTestCases(MSXML2::IXMLDOMNodePtr& pTSDOM)
 Function Name  :  nSaveTestCases
 Input(s)       :  MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode
 Output         :  INT
-Functionality  :   
+Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTestSetupEntity::nSaveTestCases(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
 {
-    
+
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
     pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
-    
+
     INT lCount = (INT)m_odTestCaseEntityList.GetCount();
-    for(int i=0; i<lCount;i++)
+    for(int i=0; i<lCount; i++)
     {
         MSXML2::IXMLDOMElementPtr pChildElement = pIDOMDoc->createElement(_bstr_t(def_STR_TESTCASE_NODE));
         POSITION pos = m_odTestCaseEntityList.FindIndex(i);
-        CTestCaseEntity &odTestCaseEntity = m_odTestCaseEntityList.GetAt(pos);
+        CTestCaseEntity& odTestCaseEntity = m_odTestCaseEntityList.GetAt(pos);
         odTestCaseEntity.SetData(pChildElement);
         pIDomTestCaseNode->appendChild(pChildElement);
     }

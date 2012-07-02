@@ -67,5 +67,5 @@ public:
     string          m_rxNode;
 
     list<CValueDescriptor>  m_listValueDescriptor;
-    bool WriteSignaltofile(fstream& fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
+    bool WriteSignaltofile(fstream& fileOutput, list<CSignal>& m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr);
 };

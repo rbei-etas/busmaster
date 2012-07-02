@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  IDictionaryEntry definition
 * @remark The header structure of the OLI may change
@@ -26,18 +26,21 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 /** @ingroup GROUP_OLI_COMMON_CONFIGURATION
-* @brief  Access to a single @ref IDictionary entry. 
+* @brief  Access to a single @ref IDictionary entry.
 *
-*         The @a name of the entry will be constructed from hierarchical 
+*         The @a name of the entry will be constructed from hierarchical
 *         information to form a flat namespace, e.g. 'buffer[123].offset'.
 *
 * @remark All public methods are thread-safe.
 * @remark Objects implementing this interface are gurateed to live as
-*         long as the @ref IDictionary instance that returned them. 
+*         long as the @ref IDictionary instance that returned them.
 *
 * @since  BOA 1.3
 * @see    IDictionary
@@ -54,7 +57,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~IDictionaryEntry() OLI_NOTHROW {};
 
@@ -97,10 +100,10 @@ public:
                 squared brackets.
 
         @return The fully qualified name of the entry.
-       
+
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual const char* OLI_CALL GetName() const OLI_NOTHROW = 0;
 
@@ -112,19 +115,19 @@ public:
                 squared brackets.
 
         @return The entry type.
-       
+
         @exception <none> This function must not throw exceptions.
 
         @remark Please note that the exact type will only be known in
                 combination with @ref GetSize "size" of the entry.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    GetSize
      */
     virtual Type OLI_CALL GetType() const OLI_NOTHROW = 0;
 
     /** @brief  Get the size of entry.
 
-                The actual meaning of the size depends on the @ref 
+                The actual meaning of the size depends on the @ref
                 GetType "type".
 
         @return The size of entry. For unsigned, signed and float entries,
@@ -133,10 +136,10 @@ public:
                 Strings of unbound length identify as -1. Records and
                 unions specify the number of members, arrays the number
                 of elements.
-       
+
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    GetType
         @todo   check def of unbound string
                 check union selector
@@ -146,16 +149,16 @@ public:
 
     /** @brief  Get the current value.
 
-                The interpretation of the string depends on the @ref 
+                The interpretation of the string depends on the @ref
                 GetType "type".
 
         @return The current value of the entry as either a 0-terminated
-                UTF8 string or a binary string of the @ref GetLength bytes. 
+                UTF8 string or a binary string of the @ref GetLength bytes.
                 The latter is only valid for @a BINARY entries.
-       
+
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    GetType, GetLength
      */
     virtual const char* OLI_CALL GetValue() const OLI_NOTHROW = 0;
@@ -164,7 +167,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

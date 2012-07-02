@@ -44,7 +44,7 @@ SGUIPARAMS::SGUIPARAMS()
 }
 // Ends SGUIPARAMS
 
-// Starts tagSubEntry 
+// Starts tagSubEntry
 tagSubEntry::tagSubEntry()
 {
 }
@@ -101,7 +101,7 @@ BOOL tagMainEntry::operator==(const tagMainEntry& RefObj) const
 {
     BOOL bResult = FALSE;
     if ((m_unMainEntryID == RefObj.m_unMainEntryID) ||
-        (m_omMainEntryName == RefObj.m_omMainEntryName))
+            (m_omMainEntryName == RefObj.m_omMainEntryName))
     {
         bResult = TRUE;
     }

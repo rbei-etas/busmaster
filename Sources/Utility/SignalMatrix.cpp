@@ -34,7 +34,7 @@
 #define defX_DIVISION       2
 #define defY_DIVISION       1.35
 
-#define defFORMAT_MSGID_DECIMAL _T("%d")
+#define defFORMAT_MSGID_DECIMAL "%d"
 /*******************************************************************************
   Function Name  : CSignalMatrix
   Description    : Standard default constructor

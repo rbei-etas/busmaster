@@ -67,7 +67,7 @@ int CDILI_J1939::ExitInstance(void)
  * Initialise
  */
 HRESULT CDILI_J1939::DILIJ_Initialise(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pIDIL_CAN)
-{    
+{
     if (pIDIL_CAN != NULL)
     {
         return DILJ_Initialise(pILog, pIDIL_CAN);
@@ -96,40 +96,33 @@ HRESULT CDILI_J1939::DILIJ_Uninitialise(void)
  * and to receive messages. Only registered client's buffer will be updated
  * on receive of a msg in the bus.
  */
-HRESULT CDILI_J1939::DILIJ_RegisterClient(BOOL bRegister, char* pacNodeName, 
-                                          UINT64 un64ECUName, BYTE byPrefAdres, 
-                                          DWORD& dwClientId)
+HRESULT CDILI_J1939::DILIJ_RegisterClient(BOOL bRegister, char* pacNodeName,
+        UINT64 un64ECUName, BYTE byPrefAdres,
+        DWORD& dwClientId)
 {
-    return DILJ_RegisterClient(bRegister, pacNodeName, un64ECUName, 
+    return DILJ_RegisterClient(bRegister, pacNodeName, un64ECUName,
                                byPrefAdres, dwClientId);
 }
 
 /**
- * Manages the target client buffer list. Call this function to open a 
+ * Manages the target client buffer list. Call this function to open a
  * data channel to receive messages.
  */
-HRESULT CDILI_J1939::DILIJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID, 
+HRESULT CDILI_J1939::DILIJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
                                         CBaseMsgBufVSE* pBufObj)
-{   
+{
     return DILJ_ManageMsgBuf(bAction, dwClientID, pBufObj);
 }
 
-/**
- * To get the version information.
- */
-void CDILI_J1939::DILIJ_GetVersionInfo (VERSIONINFO& sVerInfo)
-{
-    DILJ_GetVersionInfo(sVerInfo);
-}
 
 /**
  * Sends a J1939 message
  */
 HRESULT CDILI_J1939::DILIJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MSG_TYPE eMsgType, UINT32 unPGN,
-                                     BYTE* pbyData, UINT unDLC, BYTE byPriority, BYTE bySrc, BYTE byDestAdres)
+        BYTE* pbyData, UINT unDLC, BYTE byPriority, BYTE bySrc, BYTE byDestAdres)
 {
     return DILJ_SendJ1939Msg (dwClientId, unChannel, eMsgType, unPGN, pbyData,
-                               unDLC, byPriority, bySrc, byDestAdres);
+                              unDLC, byPriority, bySrc, byDestAdres);
 
 }
 
@@ -150,7 +143,7 @@ HRESULT CDILI_J1939::DILIJ_NM_GetByteAddres(BYTE& byAddress, DWORD dwClient)
  * Requests address from the node.
  */
 HRESULT CDILI_J1939::DILIJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE byPriority,
-                                         BYTE bySrc, BYTE byDestAddress)
+        BYTE bySrc, BYTE byDestAddress)
 {
     return DILJ_NM_RequestAddress(dwClient, unChannel, byPriority, bySrc, byDestAddress);
 }
@@ -174,20 +167,20 @@ HRESULT CDILI_J1939::DILIJ_NM_ClaimAddress(DWORD dwClientId, UINT unChannel, BYT
 /**
  * Commands a node with perticular NAME to assume a address.
  */
-HRESULT CDILI_J1939::DILIJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 unECU_NAME, 
-                                         BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
-{  
-    return DILJ_NM_CommandAddress(dwClient, unChannel, unECU_NAME, byNewAddress, 
-                                                byPriority, bySrc, byDestAddress);
+HRESULT CDILI_J1939::DILIJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 unECU_NAME,
+        BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
+{
+    return DILJ_NM_CommandAddress(dwClient, unChannel, unECU_NAME, byNewAddress,
+                                  byPriority, bySrc, byDestAddress);
 }
 
 /**
  * Requests a PGN from the node.
  */
-HRESULT CDILI_J1939::DILIJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN, 
+HRESULT CDILI_J1939::DILIJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
                                       BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
-   return DILJ_RequestPGN(dwClient, unChannel, unPGN, byPriority, bySrc, byDestAddress);
+    return DILJ_RequestPGN(dwClient, unChannel, unPGN, byPriority, bySrc, byDestAddress);
 }
 
 /**
@@ -202,7 +195,7 @@ HRESULT CDILI_J1939::DILIJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK 
  * Starts J1939 network. All nodes start sending according to the configuration.
  */
 HRESULT CDILI_J1939::DILIJ_GoOnline()
-{                            
+{
     return DILJ_GoOnline();
 }
 
@@ -233,8 +226,8 @@ HRESULT CDILI_J1939::DILIJ_ConfigureTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT unM
 /**
  * Get time mode mapping
  */
-HRESULT CDILI_J1939::DILIJ_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, 
-												UINT64& unAbsTime)
+HRESULT CDILI_J1939::DILIJ_GetTimeModeMapping(SYSTEMTIME& CurrSysTime,
+        UINT64& unAbsTime)
 {
     return DILJ_GetTimeModeMapping(CurrSysTime, unAbsTime);
 }
@@ -250,8 +243,8 @@ BOOL CDILI_J1939::DILIJ_bIsOnline(void)
 /**
  * Set call back function pointer.
  */
-HRESULT CDILI_J1939::DILIJ_SetCallBckFuncPtr(DWORD dwClientId, ETYPE_CLBCK_FN eClBckFnType, 
-                                            void* pvClBckFn)
+HRESULT CDILI_J1939::DILIJ_SetCallBckFuncPtr(DWORD dwClientId, ETYPE_CLBCK_FN eClBckFnType,
+        void* pvClBckFn)
 {
     return DILJ_SetCallBckFuncPtr(dwClientId, eClBckFnType, pvClBckFn);
 }

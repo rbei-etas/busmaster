@@ -32,13 +32,13 @@ class CGraphChildFrame : public CMDIChildBase
 {
     DECLARE_DYNCREATE(CGraphChildFrame)
 public:
-// Operations
+    // Operations
     // Default Constructor
     CGraphChildFrame();
     // Destructor
     virtual ~CGraphChildFrame();
 public:
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphChildFrame)
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -50,7 +50,7 @@ public:
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-// Generated message map functions
+    // Generated message map functions
 public:
     void vSetSplitterConfig(SGRAPHSPLITTERDATA& sSplitterPostion);
 
@@ -71,20 +71,20 @@ public:
     CView* pomGetRightBottomViewPointer();
     // Pointer to each split views
     // These pointers will be initialised by each view itself after creation
-    CView * m_pomBottomView, * m_pomRightView, * m_pomLeftView;
-	// Graph Control
+    CView* m_pomBottomView, * m_pomRightView, * m_pomLeftView;
+    // Graph Control
     IDMGraphCtrl* m_pDMGraphCtrl;
-	//Configuration data
-	CGraphList* m_pGraphList;
+    //Configuration data
+    CGraphList* m_pGraphList;
     // Create function of client. This will create splitted views
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-	void vSetSignalListDetails(CGraphList* pGraphList);
-	CGraphList* pGetSignalListDetails();
+    void vSetSignalListDetails(CGraphList* pGraphList);
+    CGraphList* pGetSignalListDetails();
     //{{AFX_MSG(CGraphChildFrame)
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
     afx_msg void OnClose();
-	afx_msg LRESULT vUserCommand(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT vUserCommand(WPARAM wParam, LPARAM lParam);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
@@ -99,9 +99,9 @@ private:
     // For storing splitter window postion
     SGRAPHSPLITTERDATA m_sSplitterPostion;
 
-    BOOL bGetDefaultSplitterPostion(CRect& omRect, 
-                                    SGRAPHSPLITTERDATA& sGraphSplitterData);		
+    BOOL bGetDefaultSplitterPostion(CRect& omRect,
+                                    SGRAPHSPLITTERDATA& sGraphSplitterData);
 
-	//To store connect state
-	BOOL m_bIsPrevConnected;
+    //To store connect state
+    BOOL m_bIsPrevConnected;
 };

@@ -35,7 +35,7 @@
 
 class CGraphBottomView : public CFormView
 {
-// Form Data
+    // Form Data
 public:
     //{{AFX_DATA(CGraphBottomView)
     enum { IDD = IDD_DLG_GRAPH_RIGHT_BOTTOM };
@@ -49,25 +49,25 @@ public:
     double  m_dRangeTo;
     //}}AFX_DATA
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     // To Initialise graph control with view style parameters
     void vInitGraphControl();
     // To Handle Connection change event
     void vHandleConnectionStatusChange(BOOL bConnectStatus);
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CGraphBottomView)
-    public:
+public:
     virtual void OnInitialUpdate();
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     // protected constructor used by dynamic creation
     CGraphBottomView();
@@ -103,7 +103,7 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
-    // To Update the changes in Configuration Module 
+    // To Update the changes in Configuration Module
     void vSaveChangedInToConfig();
     // To Enable/ Disable Axis controls
     void vEnableAxisControls(BOOL bEnable);
@@ -115,25 +115,25 @@ private:
     void vSetAction();
     // To set Show/Hide Grid button text
     void vSetShowButtonState(BOOL bShow);
-	//SGW Code commented by Arun 21-10-2010
+    //SGW Code commented by Arun 21-10-2010
     // To maintaing Main frame pointer
     //CMainFrame * m_pMainFrame;
-	//SGW Code commented by Arun 21-10-2010
+    //SGW Code commented by Arun 21-10-2010
     // To have reference of Graph Control interface
     IDMGraphCtrl* m_pDMGraphCtrl;
     // To store Update Timer ID
     int nTimerID;
-	// To get parent window pointer 
-    CWnd * pomGetParentWindow() const;
-	//Gets text extent for a string
-	int nGetListCtrlTextExtent(CString omColTitle);
-	void vCreateColumns();		
+    // To get parent window pointer
+    CWnd* pomGetParentWindow() const;
+    //Gets text extent for a string
+    int nGetListCtrlTextExtent(CString omColTitle);
+    void vCreateColumns();
 public:
-	void vUpdateCursordetails(double X, double Y, short shCursorID);
-	void vUpdateSignalData();
-	double dRound(double val, unsigned int decimals);	
-	void vInsertSignalData();
-	double m_dblarrTime[2];	 
-	double m_dblDeltaTime;
-	CMessageList m_lstSignalDetails;
+    void vUpdateCursordetails(double X, double Y, short shCursorID);
+    void vUpdateSignalData();
+    double dRound(double val, unsigned int decimals);
+    void vInsertSignalData();
+    double m_dblarrTime[2];
+    double m_dblDeltaTime;
+    CMessageList m_lstSignalDetails;
 };

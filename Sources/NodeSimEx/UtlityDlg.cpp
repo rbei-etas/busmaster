@@ -15,11 +15,11 @@
 
 /**
  * \file      UtlityDlg.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "NodeSimEx_stdafx.h"
@@ -61,8 +61,8 @@ CUtlityDlg::CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
     m_omStrFunctionName = "";
     m_omStrUtilsFunText = "";
     //}}AFX_DATA_INIT
-	m_bChangeUtilFunc = FALSE;
-	m_omStrTempReturnType = STR_EMPTY ;
+    m_bChangeUtilFunc = FALSE;
+    m_omStrTempReturnType = STR_EMPTY ;
     m_pDoc = pDoc;
 }
 
@@ -85,7 +85,7 @@ BEGIN_MESSAGE_MAP(CUtlityDlg, CDialog)
     ON_EN_CHANGE(IDC_EDIT_FN_PROTO, OnChangeEditFnPrototype)
     ON_BN_CLICKED(IDC_CBTN_CANCEL, OnCancel)
     //}}AFX_MSG_MAP
-	ON_CBN_SELCHANGE(IDC_COMB_FN_RETURN_TYPE, OnCbnSelchangeCombFnReturnType)
+    ON_CBN_SELCHANGE(IDC_COMB_FN_RETURN_TYPE, OnCbnSelchangeCombFnReturnType)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -99,15 +99,15 @@ END_MESSAGE_MAP()
 /*  Functionality    :  Called when the user clicks on Ok button. This        */
 /*                      function gets the selected data type for the variable */
 /*                      and packs the variable name with the data type.       */
-/*                                                                            */  
+/*                                                                            */
 /*  Member of        :  CUtlityDlg                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
 /*  Modifications    :  27.12.2002, Amarnath S                                */
-/*                      Appropriate message box added and validated for all   */ 
-/*                      invalid characters                                    */ 
+/*                      Appropriate message box added and validated for all   */
+/*                      invalid characters                                    */
 /*  Modifications    :  Amitesh Bharti, 23.02.2003                            */
 /*                      added m_omStrUtilsFunText to append the name of       */
 /*                      utility function with "Utils_"                        */
@@ -120,135 +120,137 @@ END_MESSAGE_MAP()
 /*                      function should be replaced if return type is changed */
 /*                      while the name is not changed                         */
 /******************************************************************************/
-void CUtlityDlg::OnOk() 
+void CUtlityDlg::OnOk()
 {
-	BOOL bRetVal = TRUE;
+    BOOL bRetVal = TRUE;
     CString omFuncName = "";
-	UpdateData(TRUE);
-	if ( m_omStrFunctionName.GetAt(0) == SPACE )    
-	{
-		AfxMessageBox("Invalid character found", MB_OK|MB_ICONINFORMATION);
-		GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
-	}
-	else
-	{
-		int nIndex =  m_omStrFunctionName.Find( '(');// != -1
-		if (  nIndex != -1 )
-		{
-			CString omStrTemp = m_omStrFunctionName;
-			omFuncName = omStrTemp = omStrTemp.Left(nIndex);
-			if  ( omStrTemp.FindOneOf( _T("~`!@#$%^&*-+[]{};:\\|'?/><,\" ()"))
-				== -1 )
-			{
-				if ( m_omStrFunctionName.Find( ')') != -1 )
-				{
-					CString omStrSelDataType = STR_EMPTY;
-					// get the data type selected
-					int nIndex = m_omComboRetType.GetCurSel();
-					// If there is no selection then get the text from editbox
-					if( nIndex != -1 )
-					{
-						m_omComboRetType.GetLBText( nIndex, omStrSelDataType );
-					}
-					else
-					{
-						m_omComboRetType.GetWindowText( omStrSelDataType );
-					}
-					// If the return type is valid
-					if (omStrSelDataType.IsEmpty() == FALSE )
-					{
-						// Insert a space in the end
-						omStrSelDataType.Insert( 
-							omStrSelDataType.GetLength(),(char)SPACE);
-						// Form prototype
-						omStrSelDataType += m_omStrUtilsFunText;
-						omStrSelDataType +=m_omStrFunctionName;
-						m_omStrFunPrototype = omStrSelDataType;
-						if(m_bChangeUtilFunc != TRUE)
-						{
-							// Check for duplicate selection 
-							// Get key handler array from the document
-							if (m_pDoc != NULL)
-							{
-								CStringArray* pArray = 
-									m_pDoc->omStrGetUtilityFunctionPrototypes();
+    UpdateData(TRUE);
+    if ( m_omStrFunctionName.GetAt(0) == SPACE )
+    {
+        AfxMessageBox("Invalid character found", MB_OK|MB_ICONINFORMATION);
+        GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
+    }
+    else
+    {
+        int nIndex =  m_omStrFunctionName.Find( '(');// != -1
+        if (  nIndex != -1 )
+        {
+            CString omStrTemp = m_omStrFunctionName;
+            omFuncName = omStrTemp = omStrTemp.Left(nIndex);
+            if  ( omStrTemp.FindOneOf( "~`!@#$%^&*-+[]{};:\\|'?/><,\" ()")
+                    == -1 )
+            {
+                if ( m_omStrFunctionName.Find( ')') != -1 )
+                {
+                    CString omStrSelDataType = STR_EMPTY;
+                    // get the data type selected
+                    int nIndex = m_omComboRetType.GetCurSel();
+                    // If there is no selection then get the text from editbox
+                    if( nIndex != -1 )
+                    {
+                        m_omComboRetType.GetLBText( nIndex, omStrSelDataType );
+                    }
+                    else
+                    {
+                        m_omComboRetType.GetWindowText( omStrSelDataType );
+                    }
+                    // If the return type is valid
+                    if (omStrSelDataType.IsEmpty() == FALSE )
+                    {
+                        // Insert a space in the end
+                        omStrSelDataType.Insert(
+                            omStrSelDataType.GetLength(),(char)SPACE);
+                        // Form prototype
+                        omStrSelDataType += m_omStrUtilsFunText;
+                        omStrSelDataType +=m_omStrFunctionName;
+                        m_omStrFunPrototype = omStrSelDataType;
+                        if(m_bChangeUtilFunc != TRUE)
+                        {
+                            // Check for duplicate selection
+                            // Get key handler array from the document
+                            if (m_pDoc != NULL)
+                            {
+                                CStringArray* pArray =
+                                    m_pDoc->omStrGetUtilityFunctionPrototypes();
 
-								if (pArray)
-								{
-									CString omStrMsgPro = STR_EMPTY;
-									for (int nCount = 0; 
-										nCount < pArray->GetSize(); nCount++)
-									{
-										omStrMsgPro = 
-											pArray->GetAt( nCount );
+                                if (pArray)
+                                {
+                                    CString omStrMsgPro = STR_EMPTY;
+                                    for (int nCount = 0;
+                                            nCount < pArray->GetSize(); nCount++)
+                                    {
+                                        omStrMsgPro =
+                                            pArray->GetAt( nCount );
 
-										if ( omStrMsgPro.
-											Find(m_omStrFunctionName) != 
-											-1 )
-										{
-											// Form the message to be dispalyed
-											omStrMsgPro = 
-												defMSG_DUPL_UTIL_FUNC;
-											omStrMsgPro.Replace( 
-												_T("FUNCTIONNAME"), 
-												m_omStrUtilsFunText+m_omStrFunctionName );
+                                        if ( omStrMsgPro.
+                                                Find(m_omStrFunctionName) !=
+                                                -1 )
+                                        {
+                                            // Form the message to be dispalyed
+                                            omStrMsgPro =
+                                                defMSG_DUPL_UTIL_FUNC;
+                                            omStrMsgPro.Replace(
+                                                "FUNCTIONNAME",
+                                                m_omStrUtilsFunText+m_omStrFunctionName );
 
-											// Duplicate message hanlder, shout
-											AfxMessageBox( 
-												omStrMsgPro, 
-												MB_OK|MB_ICONINFORMATION );
-											nCount = (COMMANINT)pArray->GetSize();
-											bRetVal = FALSE;
-										}
-									}
-								}
-							}
-						}
-					}
-					else
-					{
-						AfxMessageBox(MSG_RET_TYPE_EMPTY, 
-							MB_OK|MB_ICONINFORMATION);
-						GetDlgItem(IDC_COMB_FN_RETURN_TYPE)->SetFocus();
-						bRetVal = FALSE;
-					}
+                                            // Duplicate message hanlder, shout
+                                            AfxMessageBox(
+                                                omStrMsgPro,
+                                                MB_OK|MB_ICONINFORMATION );
+                                            nCount = (COMMANINT)pArray->GetSize();
+                                            bRetVal = FALSE;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        AfxMessageBox(MSG_RET_TYPE_EMPTY,
+                                      MB_OK|MB_ICONINFORMATION);
+                        GetDlgItem(IDC_COMB_FN_RETURN_TYPE)->SetFocus();
+                        bRetVal = FALSE;
+                    }
 
-					if ( bRetVal == TRUE )
-						CDialog::OnOK();
-				}
-				else
-				{
-					// No Closing braces
-					AfxMessageBox(_T("No closing paranthesis found!"));
-					GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
-					bRetVal = FALSE;
+                    if ( bRetVal == TRUE )
+                    {
+                        CDialog::OnOK();
+                    }
+                }
+                else
+                {
+                    // No Closing braces
+                    AfxMessageBox("No closing paranthesis found!");
+                    GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
+                    bRetVal = FALSE;
 
-				}
-			}
-			else
-			{
-				// Invalid character
-				AfxMessageBox(_T("Invalid character found!"));
-				GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
-				bRetVal = FALSE;
-			}
-		}
-		else
-		{
-			// No white spaces in function name
-			AfxMessageBox(_T("No opening paranthesis found!"));
-			GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
-			bRetVal = FALSE;
-		}
-	}   
+                }
+            }
+            else
+            {
+                // Invalid character
+                AfxMessageBox("Invalid character found!");
+                GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
+                bRetVal = FALSE;
+            }
+        }
+        else
+        {
+            // No white spaces in function name
+            AfxMessageBox("No opening paranthesis found!");
+            GetDlgItem(IDC_EDIT_FN_PROTO)->SetFocus();
+            bRetVal = FALSE;
+        }
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnInitDialog                                          */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Adds data type to the combo box control and 
-                        disables Ok button                      
+/*  Functionality    :  Adds data type to the combo box control and
+                        disables Ok button
                                                                               */
 /*  Member of        :  CUtlityDlg                                            */
 /*  Friend of        :      -                                                 */
@@ -263,12 +265,12 @@ void CUtlityDlg::OnOk()
 /*                      if it has been opened for editing                     */
 /******************************************************************************/
 
-BOOL CUtlityDlg::OnInitDialog() 
+BOOL CUtlityDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    
+
     // Add default data types to the combo box
-//  m_omComboRetType.AddString( BOOLEAN );  
+    //  m_omComboRetType.AddString( BOOLEAN );
     m_omComboRetType.AddString( defUNSIGNED_CHAR );
     m_omComboRetType.AddString( defUNSIGNED_LONG );
     m_omComboRetType.AddString( defFLOAT );
@@ -276,9 +278,9 @@ BOOL CUtlityDlg::OnInitDialog()
     m_omComboRetType.AddString( defUNSIGNED_INT );
     m_omComboRetType.AddString( TVOID );
 
-    
+
     // Get all the message names of active DB
-   // CMsgSignal &ouDatabase = CMsgSignal::ouGetMsgSignal();
+    // CMsgSignal &ouDatabase = CMsgSignal::ouGetMsgSignal();
     // If the database pointer is valid
     //if( ouDatabase != NULL )
     //{
@@ -286,31 +288,31 @@ BOOL CUtlityDlg::OnInitDialog()
     // If there are some messages then get the names and add
     //if ( unNoOfMessages > 0 )
     //{
-        // To strore database message names
-        //CStringList omMessageNames;
-        //// Get names
-        //ouDatabase.omStrListGetMessageNames( omMessageNames );
-        //// Get the starting position first
-        //POSITION pos = omMessageNames.GetHeadPosition();
-        //// Insert every message name into the message list box
-        //CString omStrMsgName = STR_EMPTY;
-        //// Iterate through the list
-        //while ( pos != NULL )
-        //{
-        //    omStrMsgName = omMessageNames.GetNext(pos);
-        //    // Addition check to ensure there will not be any empty string
-        //    if( omStrMsgName.IsEmpty() == FALSE )
-        //    {
-        //        m_omComboRetType.AddString( omStrMsgName );
-        //    }
-        //}
+    // To strore database message names
+    //CStringList omMessageNames;
+    //// Get names
+    //ouDatabase.omStrListGetMessageNames( omMessageNames );
+    //// Get the starting position first
+    //POSITION pos = omMessageNames.GetHeadPosition();
+    //// Insert every message name into the message list box
+    //CString omStrMsgName = STR_EMPTY;
+    //// Iterate through the list
+    //while ( pos != NULL )
+    //{
+    //    omStrMsgName = omMessageNames.GetNext(pos);
+    //    // Addition check to ensure there will not be any empty string
+    //    if( omStrMsgName.IsEmpty() == FALSE )
+    //    {
+    //        m_omComboRetType.AddString( omStrMsgName );
+    //    }
+    //}
     //}
     //}
     //if the Function prototype has to change display the return type
     m_omComboRetType.SelectString(-1,m_omStrTempReturnType);
     // Disable Ok button initially.
     GetDlgItem( IDC_CBTN_OK )->EnableWindow(FALSE);
-    // Set the utility function prefix 
+    // Set the utility function prefix
     m_omEditUtilsFunText.SetWindowText(defUTILS_FUNCTION_FN);
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -321,18 +323,18 @@ BOOL CUtlityDlg::OnInitDialog()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enables or disables the Ok button depending on the 
+/*  Functionality    :  Enables or disables the Ok button depending on the
                         number of characters on the edit control.
-                                                                              */  
+                                                                              */
 /*  Member of        :  CUtlityDlg                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CUtlityDlg::OnChangeEditFnPrototype() 
+void CUtlityDlg::OnChangeEditFnPrototype()
 {
     UpdateData(TRUE);
 
@@ -345,7 +347,7 @@ void CUtlityDlg::OnChangeEditFnPrototype()
     {
         GetDlgItem( IDC_CBTN_OK )->EnableWindow(FALSE);
     }
-    
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnCancel                                              */
@@ -353,15 +355,15 @@ void CUtlityDlg::OnChangeEditFnPrototype()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Calls the base class OnCanCel
-                                                                              */  
+                                                                              */
 /*  Member of        :  CUtlityDlg                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  11.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CUtlityDlg::OnCancel() 
+void CUtlityDlg::OnCancel()
 {
     CDialog::OnCancel();
 }
@@ -371,36 +373,36 @@ void CUtlityDlg::OnCancel()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Set m_bChangeUtilFunc if user wants to edit the       */ 
+/*  Functionality    :  Set m_bChangeUtilFunc if user wants to edit the       */
 /*                      function name                                         */
 /*  Member of        :  CUtlityDlg                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Anish kumar                                           */
 /*  Date Created     :  27.09.2006                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 void CUtlityDlg::vSetUtilFuncChange(CString omStrReturnType)
 {
-	m_bChangeUtilFunc = TRUE;
-	m_omStrTempReturnType = omStrReturnType;
+    m_bChangeUtilFunc = TRUE;
+    m_omStrTempReturnType = omStrReturnType;
 }
 /******************************************************************************/
 /*  Function Name    :  OnCbnSelchangeCombFnReturnType                        */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Enable OK BUtton even if return type is changed       */ 
+/*  Functionality    :  Enable OK BUtton even if return type is changed       */
 /*  Member of        :  CUtlityDlg                                            */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Anish kumar                                           */
 /*  Date Created     :  27.09.2006                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 void CUtlityDlg::OnCbnSelchangeCombFnReturnType()
 {
-	 UpdateData(TRUE);
+    UpdateData(TRUE);
 
     // Enable or disable Ok button
     if ( !m_omStrFunctionName.IsEmpty() )

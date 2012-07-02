@@ -92,7 +92,7 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
     m_TableName = pcToken;
 
     //parses value table.
-    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_TABLE]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_TABLE]")!=0)
     {
         pcLine=acLine;
 
@@ -125,7 +125,7 @@ void CValueTable::Format_ValueTable(char* pcLine, fstream& fileInput)
  *
  * writes the value tebles in the given list to the output file.
  */
-void CValueTable::writeValueTabToFile(fstream& fileOutput,list<CValueTable> &vTab)
+void CValueTable::writeValueTabToFile(fstream& fileOutput,list<CValueTable>& vTab)
 {
     list<CValueTable>::iterator tab;
 

@@ -102,9 +102,9 @@ END_MESSAGE_MAP()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus)
 {
     CMDIChildWnd::OnShowWindow(bShow, nStatus);
     // If it is show window set appropriate window postion
@@ -130,7 +130,7 @@ void CMDIChildBase::OnShowWindow(BOOL bShow, UINT nStatus)
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vGetWinStatus()
 {
@@ -146,7 +146,7 @@ void CMDIChildBase::vGetWinStatus()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vSaveWinStatus()
 {
@@ -176,13 +176,13 @@ void CMDIChildBase::vSaveWinStatus()
   Function Name  : OnCreate
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nCreate = -1;
     // Call base member for window creation
@@ -207,7 +207,7 @@ int CMDIChildBase::OnCreate(LPCREATESTRUCT lpCreateStruct)
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vUpdateWndCo_Ords()
 {
@@ -224,7 +224,7 @@ void CMDIChildBase::vUpdateWndCo_Ords()
   Member of      : CMDIChildBase
   Author(s)      : Raja N
   Date Created   : 18.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMDIChildBase::vUpdateWinStatus()
 {

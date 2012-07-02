@@ -102,7 +102,7 @@ enum
 #define WM_SHOW_MESSAGE_WINDOW      (WM_USER + 107)
 
 
-#define APPLICATION_NAME             _T("BUSMASTER")
+#define APPLICATION_NAME             "BUSMASTER"
 #define DEFAULT_PROJECT_NAME         "BUSMASTER"
 //#define defSTR_CONF_SAVE_CONFIRM     _T("Configuration File is modified \n Do you want to save this configuration?")
 
@@ -110,38 +110,38 @@ enum
 #define BUSMASTER_APPN_VERSION_6_1          6.1
 #define BUSMASTER_APPN_VERSION_LATEST       6.1
 #define BUSMASTER_UNIQUE_ID             133146
-#define defCONFIGFILENAME           _T("ConfigFile")
-#define defSTR_CONF_CLOSE_CONFIRM   _T("Do you want to close the application?")
-#define SECTION                     _T("Files")
+#define defCONFIGFILENAME           "ConfigFile"
+#define defSTR_CONF_CLOSE_CONFIRM   "Do you want to close the application?"
+#define SECTION                     "Files"
 
 
-#define defSECTION_MRU           _T("MRU List")
-#define defSECTION_MRU_FILE1     _T("MRU File1")
-#define defSECTION_MRU_FILE2     _T("MRU File2")
-#define defSECTION_MRU_FILE3     _T("MRU File3")
-#define defSECTION_MRU_FILE4     _T("MRU File4")
-#define defSECTION_MRU_FILE5     _T("MRU File5")
-#define defSTR_DEFAULT_MRU_ITEM  _T("Empty")
-#define defSTR_FILE_MENU_TEXT    _T("&File")
+#define defSECTION_MRU           "MRU List"
+#define defSECTION_MRU_FILE1     "MRU File1"
+#define defSECTION_MRU_FILE2     "MRU File2"
+#define defSECTION_MRU_FILE3     "MRU File3"
+#define defSECTION_MRU_FILE4     "MRU File4"
+#define defSECTION_MRU_FILE5     "MRU File5"
+#define defSTR_DEFAULT_MRU_ITEM  "Empty"
+#define defSTR_FILE_MENU_TEXT    "&File"
 //#define defSTR_RECENT_MENU_TEXT  _T("Recent File")
 #define STR_EMPTY                ""
 
-#define RULE_FILE_EXTENSION      _T("xml")
-#define RULE_FILTER              _T("*.xml|*.xml||")
-#define RULE_SELECTION_TITLE     _T("Select Rule File")
+#define RULE_FILE_EXTENSION      "xml"
+#define RULE_FILTER              "*.xml|*.xml||"
+#define RULE_SELECTION_TITLE     "Select Rule File"
 
-#define EXPORTTOEXCEL_SYNTAXERROR           _T("Could not convert!")
-#define EXPORTTOEXCEL_SUCCESSMSG            _T("Successfully converted text file to Excel File!")
-#define EXPORTTOEXCEL_FIELDSELECTIONERROR   _T("No fields selected!")
-#define EXPORTTOEXCEL_LOGFILEERROR          _T("Enter Log file details!")
-#define EXPORTTOEXCEL_CSVFILEERROR          _T("Enter CSV file details!")
-#define EXPORTTOEXCEL_FILEERROR             _T("Enter Log and CSV file details!")
-#define EXPORTTOEXCEL_LOGFILEOPENERROR      _T("Log File doesnot Exist!")
-#define EXPORTTOEXCEL_CSVFILEOPENERROR      _T("CSV File doesnot Exist!")
-#define EXPORTTOEXCEL_INVALIDFILE           _T("Invalid Log File!")
+#define EXPORTTOEXCEL_SYNTAXERROR           "Could not convert!"
+#define EXPORTTOEXCEL_SUCCESSMSG            "Successfully converted text file to Excel File!"
+#define EXPORTTOEXCEL_FIELDSELECTIONERROR   "No fields selected!"
+#define EXPORTTOEXCEL_LOGFILEERROR          "Enter Log file details!"
+#define EXPORTTOEXCEL_CSVFILEERROR          "Enter CSV file details!"
+#define EXPORTTOEXCEL_FILEERROR             "Enter Log and CSV file details!"
+#define EXPORTTOEXCEL_LOGFILEOPENERROR      "Log File doesnot Exist!"
+#define EXPORTTOEXCEL_CSVFILEOPENERROR      "CSV File doesnot Exist!"
+#define EXPORTTOEXCEL_INVALIDFILE           "Invalid Log File!"
 
-#define MSG_MEMORY_CONSTRAINT               _T("Insufficient Memory available")
-#define ASK_SAVE_PROMPT                     _T("Do you want to save changes to the database file?")
-#define defSTR_EMPTY_ACTIVE_DATABASE        _T("There is no active database. Please import database")
-#define defNEW_LINE                         _T("\n")
-#define DEFAULT_RULE_FILE                   _T("MCNet_Example.xml")
+#define MSG_MEMORY_CONSTRAINT               "Insufficient Memory available"
+#define ASK_SAVE_PROMPT                     "Do you want to save changes to the database file?"
+#define defSTR_EMPTY_ACTIVE_DATABASE        "There is no active database. Please import database"
+#define defNEW_LINE                         "\n"
+#define DEFAULT_RULE_FILE                   "MCNet_Example.xml"

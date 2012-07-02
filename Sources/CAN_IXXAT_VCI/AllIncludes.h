@@ -14,11 +14,11 @@
  */
 
 /**
- * @file  
- * 	AllIncludes.h
+ * @file
+ *  AllIncludes.h
  *
- * @brief 
- * 	Includes all needed includes files.
+ * @brief
+ *  Includes all needed includes files.
  */
 
 #pragma once

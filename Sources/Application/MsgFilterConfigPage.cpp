@@ -30,8 +30,8 @@
 
 #define defFILTER_IMAGE_INDEX           2
 
-#define defSTR_WINDOW_TITLE             _T("Filter")
-#define defSTR_FILTER_WINDOW_TITLE      _T("Configure Message Display filter")
+#define defSTR_WINDOW_TITLE             "Filter"
+#define defSTR_FILTER_WINDOW_TITLE      "Configure Message Display filter"
 // For application object
 extern CCANMonitorApp theApp;
 // Message Thread Handle
@@ -48,16 +48,16 @@ IMPLEMENT_DYNCREATE(CMsgFilterConfigPage, CPropertyPage)
   Date Created   : 8.7.2005
   Modifications  :
 *******************************************************************************/
-CMsgFilterConfigPage::CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterConfigured, 
-                                                    HWND hMsgWnd) :
-           CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER ),
-           m_psFilterConfigured(psFilterConfigured),
-           m_hMsgWnd(hMsgWnd)
+CMsgFilterConfigPage::CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterConfigured,
+        HWND hMsgWnd) :
+    CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER ),
+    m_psFilterConfigured(psFilterConfigured),
+    m_hMsgWnd(hMsgWnd)
 {
-	//{{AFX_DATA_INIT(CMsgFilterConfigPage)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-    
+    //{{AFX_DATA_INIT(CMsgFilterConfigPage)
+    // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
+
 }
 
 /*******************************************************************************
@@ -70,11 +70,11 @@ CMsgFilterConfigPage::CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterCon
   Modifications  :
 *******************************************************************************/
 CMsgFilterConfigPage::CMsgFilterConfigPage() :
-           CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER )
+    CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER )
 {
-	//{{AFX_DATA_INIT(CMsgFilterConfigPage)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+    //{{AFX_DATA_INIT(CMsgFilterConfigPage)
+    // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
 }
 /*******************************************************************************
   Function Name  : ~CMsgFilterConfigPage
@@ -98,21 +98,21 @@ CMsgFilterConfigPage::~CMsgFilterConfigPage()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CMsgFilterConfigPage::DoDataExchange(CDataExchange* pDX)
 {
-	CPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CMsgFilterConfigPage)
-	DDX_Control(pDX, IDC_LST_DISPLAY_FILTER_LIST, m_omLstcFilterList);
-	//}}AFX_DATA_MAP
+    CPropertyPage::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CMsgFilterConfigPage)
+    DDX_Control(pDX, IDC_LST_DISPLAY_FILTER_LIST, m_omLstcFilterList);
+    //}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CMsgFilterConfigPage, CPropertyPage)
-	//{{AFX_MSG_MAP(CMsgFilterConfigPage)
-	ON_BN_CLICKED(IDC_BTN_CONFIGURE, OnBtnConfigure)
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CMsgFilterConfigPage)
+    ON_BN_CLICKED(IDC_BTN_CONFIGURE, OnBtnConfigure)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /*******************************************************************************
@@ -123,11 +123,11 @@ END_MESSAGE_MAP()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CMsgFilterConfigPage::OnInitDialog() 
+BOOL CMsgFilterConfigPage::OnInitDialog()
 {
-	CPropertyPage::OnInitDialog();
+    CPropertyPage::OnInitDialog();
     // Create Image List
     bCreateImageList();
     // Create Filter List UI
@@ -141,9 +141,9 @@ BOOL CMsgFilterConfigPage::OnInitDialog()
     vInitFilterUIList();
     // Update Title
     SetWindowText( defSTR_WINDOW_TITLE );
-	
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /*******************************************************************************
@@ -154,7 +154,7 @@ BOOL CMsgFilterConfigPage::OnInitDialog()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CMsgFilterConfigPage::bCreateImageList()
 {
@@ -162,7 +162,7 @@ BOOL CMsgFilterConfigPage::bCreateImageList()
     BOOL bReturn = FALSE;
     // Create Image List
     if( m_omImageList.Create( IDB_BMP_FILTER, 16,
-                                 1, defCOLOR_WHITE ) == TRUE )
+                              1, defCOLOR_WHITE ) == TRUE )
     {
         // If successful set the result
         bReturn = TRUE;
@@ -179,7 +179,7 @@ BOOL CMsgFilterConfigPage::bCreateImageList()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 VOID CMsgFilterConfigPage::vCreateFilterUIList()
 {
@@ -190,11 +190,11 @@ VOID CMsgFilterConfigPage::vCreateFilterUIList()
     {
         m_omLstcFilterList.SetImageList( &m_omImageList, LVSIL_SMALL );
     }
-	// Set the width to occupy whole size
-	CRect omRect;
-	m_omLstcFilterList.GetWindowRect( omRect );
-	int nWidth = static_cast<int>( omRect.Width() * 0.95 );
-	m_omLstcFilterList.SetColumnWidth( 0, nWidth );
+    // Set the width to occupy whole size
+    CRect omRect;
+    m_omLstcFilterList.GetWindowRect( omRect );
+    int nWidth = static_cast<int>( omRect.Width() * 0.95 );
+    m_omLstcFilterList.SetColumnWidth( 0, nWidth );
     // Enable Checkbox
     m_omLstcFilterList.SetExtendedStyle(
         m_omLstcFilterList.GetExtendedStyle() | LVS_EX_CHECKBOXES );
@@ -208,15 +208,15 @@ VOID CMsgFilterConfigPage::vCreateFilterUIList()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 VOID CMsgFilterConfigPage::vInitFilterDataList()
 {
 #if 0
     // Get the data from config module and update local list
-    CModuleFilterArray * psData = &m_omFilterList;
+    CModuleFilterArray* psData = &m_omFilterList;
     // Update Filter List
-    theApp.bGetData( MSG_DISPLAY_FILTER_DETAILS, (void ** )&psData );    
+    theApp.bGetData( MSG_DISPLAY_FILTER_DETAILS, (void** )&psData );
 #endif
 }
 
@@ -228,21 +228,21 @@ VOID CMsgFilterConfigPage::vInitFilterDataList()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 VOID CMsgFilterConfigPage::vInitFilterUIList()
 {
     // Insert items in to the list
     UINT nSize = m_sFilterAppliedCan.m_ushTotal;
-    
+
     // Remove existing items if any
     m_omLstcFilterList.DeleteAllItems();
     // Iterate through Filter list
     for( UINT i = 0; i < nSize; i++ )
     {
         m_omLstcFilterList.InsertItem( i,
-                                    m_sFilterAppliedCan.m_psFilters[i].m_sFilterName.m_acFilterName,
-                                    defFILTER_IMAGE_INDEX );
+                                       m_sFilterAppliedCan.m_psFilters[i].m_sFilterName.m_acFilterName,
+                                       defFILTER_IMAGE_INDEX );
 
         // Update Check box status
         m_omLstcFilterList.SetCheck( i, m_sFilterAppliedCan.m_psFilters[i].m_bEnabled );
@@ -257,7 +257,7 @@ VOID CMsgFilterConfigPage::vInitFilterUIList()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 VOID CMsgFilterConfigPage::vUpdateDataFromUI()
 {
@@ -266,18 +266,18 @@ VOID CMsgFilterConfigPage::vUpdateDataFromUI()
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         // Filter Name from UI
-        
-            CString omFilterName = m_omLstcFilterList.GetItemText(nIndex, 0);
-            SFILTERSET* psSet = SFILTERSET::psGetFilterSetPointer(m_sFilterAppliedCan.m_psFilters, 
-                                            m_sFilterAppliedCan.m_ushTotal,
-                                            omFilterName.GetBuffer(MAX_PATH));
 
-            // Filter Enable UI
-            if (psSet != NULL)
-            {
-                psSet->m_bEnabled = m_omLstcFilterList.GetCheck( nIndex );
-            }
-        
+        CString omFilterName = m_omLstcFilterList.GetItemText(nIndex, 0);
+        SFILTERSET* psSet = SFILTERSET::psGetFilterSetPointer(m_sFilterAppliedCan.m_psFilters,
+                            m_sFilterAppliedCan.m_ushTotal,
+                            omFilterName.GetBuffer(MAX_PATH));
+
+        // Filter Enable UI
+        if (psSet != NULL)
+        {
+            psSet->m_bEnabled = m_omLstcFilterList.GetCheck( nIndex );
+        }
+
     }
 }
 
@@ -288,36 +288,36 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
-    sMainEntry.m_omMainEntryName = _T("CAN");
+    sMainEntry.m_omMainEntryName = "CAN";
     if (psFilterApplied == NULL)
     {
         SMAINENTRY sMainEntry;
-        sMainEntry.m_omMainEntryName = _T("FILTER_SELECTION_CAN");
+        sMainEntry.m_omMainEntryName = "FILTER_SELECTION_CAN";
         for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                 psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
-            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);            
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
         }
     }
     else
     {
-        
+
         for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                                    psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
-            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters, 
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
                                                   sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
             {
-                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);  
+                sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
             else
             {
-                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);  
+                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
             }
         }
     }
@@ -329,13 +329,13 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
     int nCount  = sMainEntry.m_odSelEntryList.GetCount();
     sFilterApplied.vClear();
     sFilterApplied.m_psFilters = new SFILTERSET[nCount];
-    
+
     POSITION pos = sMainEntry.m_odSelEntryList.GetHeadPosition();
     while (pos)
-    {        
+    {
         SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
-        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters, 
-            psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
+                                   psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
         ASSERT (psTemp != NULL);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
@@ -349,9 +349,9 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMsgFilterConfigPage::OnBtnConfigure() 
+void CMsgFilterConfigPage::OnBtnConfigure()
 {
     // Update User Modifications
     vUpdateDataFromUI();
@@ -375,9 +375,9 @@ void CMsgFilterConfigPage::OnBtnConfigure()
   Member of      : CMsgFilterConfigPage
   Author(s)      : Raja N
   Date Created   : 8.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMsgFilterConfigPage::OnOK() 
+void CMsgFilterConfigPage::OnOK()
 {
     // Update List from UI
     vUpdateDataFromUI();
@@ -386,6 +386,6 @@ void CMsgFilterConfigPage::OnOK()
     //theApp.bSetData( MSG_DISPLAY_FILTER_DETAILS, (void *)&m_omFilterList );
     // Update Message Window about the chaneges
     //PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, NULL, NULL );
-	CPropertyPage::OnOK();
+    CPropertyPage::OnOK();
 }
 

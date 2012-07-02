@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ICANEvent definition
 * @remark The header structure of the OLI may change
@@ -28,10 +28,13 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_CAN_MESSAGES
 * @brief Interface for all CAN bus events.
 *
@@ -40,31 +43,32 @@ namespace ETAS {namespace OLI {
 * This interface's implementation of @ref IMessage::GetID returns a @ref CANBusState event code.
 *
 * @remark All public methods are thread-safe.
-* @remark The lifetime of all objects implementing this interface 
+* @remark The lifetime of all objects implementing this interface
 *         is defined by the @ref IRxQueue "receive queue" instance
 *         that contains them.
 * @since  BOA 1.3
 * @see    IRxQueue, ICANLink, ICANEventFilter
 */
 
-OLI_INTERFACE ICANEvent : public IEvent
+OLI_INTERFACE ICANEvent :
+public IEvent
 {
 protected:
 
     /** @brief Destructor.
 
-        This destructor has been hidden since objects implementing 
+        This destructor has been hidden since objects implementing
         this class are controlled by the receiving queue.
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ICANEvent() OLI_NOTHROW {};
 
 public:
 
-    /** The unique identifier for the type of this interface. 
+    /** The unique identifier for the type of this interface.
         and will be returned by @ref IMessage::GetType.
      */
     enum {TYPE = CAN_TYPE_EVENT_BASE + 1};
@@ -73,7 +77,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

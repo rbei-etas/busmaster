@@ -22,7 +22,7 @@
  * Contains the description of the class CSimSysConfigDetails
  */
 
-#include "NodeSimEx_stdafx.h"	// standard includes present in this header
+#include "NodeSimEx_stdafx.h"   // standard includes present in this header
 #include "HashDefines.h"
 #include "GlobalObj.h"
 #include "SimSysConfigDetails.h"// definition of the class CSimSysConfigDetails
@@ -51,9 +51,9 @@ static char THIS_FILE[]=__FILE__;
 /*                                                                            */
 /*  Author(s)        : Harika M                                               */
 /*  Date Created     : 22.12.2005                                             */
-/*  Modifications    : 
+/*  Modifications    :
 /******************************************************************************/
-CSimSysConfigDetails::CSimSysConfigDetails(ETYPE_BUS eBus) 
+CSimSysConfigDetails::CSimSysConfigDetails(ETYPE_BUS eBus)
 
 {
     m_eBus = eBus;
@@ -71,7 +71,7 @@ CSimSysConfigDetails::CSimSysConfigDetails(ETYPE_BUS eBus)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  22.12.2005                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CSimSysConfigDetails::~CSimSysConfigDetails()
 {
@@ -118,22 +118,22 @@ CSimSysConfigDetails::~CSimSysConfigDetails()
 /*  Member of        :  CSimSysConfigDetails                                  */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  
-/*  Date Created     :  
-/*  Modifications on :									                      */
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications on :                                                        */
 /******************************************************************************/
 INT CSimSysConfigDetails::nIsCfgFileFound(CString omStrFilename)
 {
-    // bOpenExisiting is TRUE, if the callee of the function is 
-    // nSaveConfiguration(...), and FALSE if the callee is 
+    // bOpenExisiting is TRUE, if the callee of the function is
+    // nSaveConfiguration(...), and FALSE if the callee is
     // nLoadConfiguration.
     // Hence for loading, the file can be opened in GENERIC_READ
     // access and for saving, the file can be opened in GENERIC_WRITE
     // access.
-	
+
     INT nRetVal             = defCONFIG_FILE_SUCCESS;
     DWORD dwDesiredAccess   = 0;
-	
+
     // validate the extension
     INT nDotPosn = omStrFilename.ReverseFind(defDOT);
     // we found the '.'
@@ -152,7 +152,7 @@ INT CSimSysConfigDetails::nIsCfgFileFound(CString omStrFilename)
             nRetVal = defCONFIG_FILE_NOT_FOUND;
         }
     }
-	
+
     return nRetVal;
 }
 
@@ -183,10 +183,10 @@ INT CSimSysConfigDetails::nIsCfgFileFound(CString omStrFilename)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  22.12.2005                                            */
-/*  Modifications on :  
+/*  Modifications on :
 /******************************************************************************/
-INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename, 
-                                              PSSIMSYSINFO &psSimSys )
+INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename,
+        PSSIMSYSINFO& psSimSys )
 
 {
     UINT unErrorCode = defCONFIG_FILE_ERROR;
@@ -194,20 +194,20 @@ INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename,
     {
         unErrorCode = defCONFIG_FILE_SUCCESS;
         // first check if the file exists
-	    unErrorCode = nIsCfgFileFound(omStrCfgFilename); 
-	    CString strTempFile;
+        unErrorCode = nIsCfgFileFound(omStrCfgFilename);
+        CString strTempFile;
         if(unErrorCode == defCONFIG_FILE_SUCCESS)
         {
-            // if file exists then store data in different temporary file 
+            // if file exists then store data in different temporary file
             //so that if saving gives error then old file will not be corrupted
             //once the file is saved properly then copy this data to original file
-            INT nPos = omStrCfgFilename.ReverseFind(defDOT);	
-	        strTempFile = omStrCfgFilename.Left(nPos);
-	        strTempFile += defDOT;
-	        strTempFile += defTMPFILEEXTN;
+            INT nPos = omStrCfgFilename.ReverseFind(defDOT);
+            strTempFile = omStrCfgFilename.Left(nPos);
+            strTempFile += defDOT;
+            strTempFile += defTMPFILEEXTN;
             if(nLoadStoreData(CArchive::store , strTempFile, psSimSys) == defCONFIG_FILE_SUCCESS)
             {
-                //If the file was existng then copy the temp file data in the 
+                //If the file was existng then copy the temp file data in the
                 //original file and delete temp file
                 COPYFILE(strTempFile, omStrCfgFilename);
                 ::DeleteFile(strTempFile);
@@ -216,7 +216,7 @@ INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename,
             }
             else
             {
-                CString strError; 
+                CString strError;
                 strError.Format(defSAVECONFIGERRSTR, omStrCfgFilename);
                 AfxMessageBox(strError, MB_OK);
             }
@@ -226,14 +226,14 @@ INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename,
             //If file doesn't exists
             if(nLoadStoreData(CArchive::store , omStrCfgFilename, psSimSys) == defCONFIG_FILE_SUCCESS)
             {
-                //If the file was existng then copy the temp file data in the 
+                //If the file was existng then copy the temp file data in the
                 //original file and delete temp file
                 UCHAR ucCheckSum;
                 bSetCheckSum(omStrCfgFilename,&ucCheckSum);
             }
             else
             {
-                CString strError; 
+                CString strError;
                 strError.Format(defCONFIGSAVEERR, omStrCfgFilename);
                 AfxMessageBox(strError, MB_OK);
             }
@@ -247,30 +247,30 @@ INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename,
 /*  Function Name    :  nLoadStoreData                                        */
 /*                                                                            */
 /*  Input(s)         :  nMode : mode in which the CArchive object should      */
-/*                              function  
+/*                              function
                         CString& omStrSimSysPath                              */
 /*                                                                            */
 /*  Output           :  TRUE : if the method is successful                    */
 /*                      FALSE : if any method throws an exception             */
 /*                                                                            */
 /*  Functionality    :  This method loads/stores the information from/to the  */
-/*                      configuration file. 
+/*                      configuration file.
 /*                                                                            */
 /*  Member of        :  CSimSysConfigDetails                                  */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  
-/*  Date Created     :  
-/*  Modifications on :  
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications on :
 /******************************************************************************/
 
-int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode , 
-                                         CString omStrSimSysPath,
-                                         PSSIMSYSINFO &psCurrSimSys) 
+int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
+        CString omStrSimSysPath,
+        PSSIMSYSINFO& psCurrSimSys)
 
 {
-	int nRetVal = defCONFIG_FILE_SUCCESS;	
-	CFile oConfigFile;
+    int nRetVal = defCONFIG_FILE_SUCCESS;
+    CFile oConfigFile;
     UINT uFileFlag;
     if (unArchiveMode == CArchive::load)
     {
@@ -288,45 +288,45 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
         if (oConfigFile.Open(omStrSimSysPath, uFileFlag, &ex))
         {
             CArchive oSimCfgArchive(&oConfigFile, unArchiveMode);
-			if(oSimCfgArchive.IsLoading())
-			{
+            if(oSimCfgArchive.IsLoading())
+            {
                 CString omCopyRight;    //to support older version
-                
-				// extract the header information
-				oSimCfgArchive >> m_fSimSysVersion;
+
+                // extract the header information
+                oSimCfgArchive >> m_fSimSysVersion;
                 oSimCfgArchive >> omCopyRight;
-				// PTV
-				if ((m_fSimSysVersion == static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS)))
-				{
-					oSimCfgArchive >> m_omstrProtocolName;
-					oSimCfgArchive >> m_omBusmasterVersion;
-
-					CString omBusNameSel;
-
-					if(m_eBus == CAN)
-					{
-						omBusNameSel = "CAN";
-					}
-					else if(m_eBus == J1939)
-					{
-						omBusNameSel = "J1939";
-					}
-
-					if(m_omstrProtocolName != omBusNameSel)
-					{
-						if(m_eBus == CAN)
-						{
-							AfxMessageBox("File " + omStrSimSysPath + " selected is not created for CAN.\r\nPlease load .sim file created for CAN.");
-							return defCONFIG_FILE_OPEN_FAILED;
-						}
-						else if(m_eBus == J1939)
-						{
-							AfxMessageBox("File " + omStrSimSysPath + " selected is not created for J1939.\r\nPlease load .sim file created for J1939.");
-							return defCONFIG_FILE_OPEN_FAILED;
-						}
-					}
-				}
                 
+                if ((m_fSimSysVersion == static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS)))
+                {
+                    oSimCfgArchive >> m_omstrProtocolName;
+                    oSimCfgArchive >> m_omBusmasterVersion;
+
+                    CString omBusNameSel;
+
+                    if(m_eBus == CAN)
+                    {
+                        omBusNameSel = "CAN";
+                    }
+                    else if(m_eBus == J1939)
+                    {
+                        omBusNameSel = "J1939";
+                    }
+
+                    if(m_omstrProtocolName != omBusNameSel)
+                    {
+                        if(m_eBus == CAN)
+                        {
+                            AfxMessageBox("File " + omStrSimSysPath + " selected is not created for CAN.\r\nPlease load .sim file created for CAN.");
+                            return defCONFIG_FILE_OPEN_FAILED;
+                        }
+                        else if(m_eBus == J1939)
+                        {
+                            AfxMessageBox("File " + omStrSimSysPath + " selected is not created for J1939.\r\nPlease load .sim file created for J1939.");
+                            return defCONFIG_FILE_OPEN_FAILED;
+                        }
+                    }
+                }
+
                 //If loading create new simsysinfo and add it to the list later
                 psCurrSimSys = new sSIMSYSINFO;
                 if ( psCurrSimSys != NULL)
@@ -338,63 +338,63 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                     int nCount = 1; //Simsys count is stored in the old version
                     oSimCfgArchive >> nCount;
                 }
-			}
-    		
-			if(oSimCfgArchive.IsStoring())
-			{
-                CString omCopyRight = defSIMSYSCOPYRIGHT; 
-				// extract the header information
-				m_fSimSysVersion = static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS);
-				oSimCfgArchive << m_fSimSysVersion;
+            }
+
+            if(oSimCfgArchive.IsStoring())
+            {
+                CString omCopyRight = defSIMSYSCOPYRIGHT;
+                // extract the header information
+                m_fSimSysVersion = static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS);
+                oSimCfgArchive << m_fSimSysVersion;
                 oSimCfgArchive << omCopyRight;
-				// PTV
-				if(m_eBus == CAN)
-				{
-					CString omStrCanProtocol = "CAN";
+                
+                if(m_eBus == CAN)
+                {
+                    CString omStrCanProtocol = "CAN";
 
-					oSimCfgArchive << omStrCanProtocol;
-				}
-				else if(m_eBus == J1939)
-				{
-					CString omStrJ1939Protocol = "J1939";
+                    oSimCfgArchive << omStrCanProtocol;
+                }
+                else if(m_eBus == J1939)
+                {
+                    CString omStrJ1939Protocol = "J1939";
 
-					oSimCfgArchive << omStrJ1939Protocol;
-				}
+                    oSimCfgArchive << omStrJ1939Protocol;
+                }
 
-				CString strVersion;
+                CString strVersion;
 
-				// Application version
-				strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+                // Application version
+                strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 
-				oSimCfgArchive << strVersion;
-			}
-    		
-			if( psCurrSimSys != NULL )
-			{
-				// Load Sim Sys details
-				if( (bLoadStoreSimSysInfo(oSimCfgArchive,psCurrSimSys) != TRUE))
-				{
-					nRetVal = defCONFIG_FILE_CORRUPT;
-				}
-			}
-		    // close the archive
-		    oSimCfgArchive.Close();
-	        // close the file
-	        oConfigFile.Close();
+                oSimCfgArchive << strVersion;
+            }
+
+            if( psCurrSimSys != NULL )
+            {
+                // Load Sim Sys details
+                if( (bLoadStoreSimSysInfo(oSimCfgArchive,psCurrSimSys) != TRUE))
+                {
+                    nRetVal = defCONFIG_FILE_CORRUPT;
+                }
+            }
+            // close the archive
+            oSimCfgArchive.Close();
+            // close the file
+            oConfigFile.Close();
         }
         else
         {
             nRetVal = defCONFIG_FILE_OPEN_FAILED;
         }
-	}
+    }
     catch(...)
     {
-        AfxMessageBox(_T("An exception occurred while reading Config file"));
+        AfxMessageBox("An exception occurred while reading Config file");
     }
-	return nRetVal;
+    return nRetVal;
 }
 
-		
+
 /******************************************************************************/
 /*  Function Name    :  bLoadStoreSimSysInfo                                  */
 /*                                                                            */
@@ -402,17 +402,17 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
 /*                                                                            */
 /*  Output           :                                                        */
 /*                                                                            */
-/*  Functionality    :  This method loads/stores the sim sys info into		  */
+/*  Functionality    :  This method loads/stores the sim sys info into        */
 /*                      the archive.                                          */
 /*  Member of        :  CSimSysConfigDetails                                  */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
-/*  Author(s)        :  
-/*  Date Created     :  
-/*  Modifications By :  
+/*  Author(s)        :
+/*  Date Created     :
+/*  Modifications By :
 /******************************************************************************/
-BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive, 
-                                                  PSSIMSYSINFO &psSimsysInfo)
+BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
+        PSSIMSYSINFO& psSimsysInfo)
 {
     BOOL bRetVal = FALSE;
 #ifndef _DEBUG
@@ -422,11 +422,11 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
         // loading the data
         CString omTemp;
         if(roSimCfgArchive.IsLoading())
-        {	
+        {
             if (m_fSimSysVersion < static_cast<FLOAT> (defSIMSYSVERSION_CAN))
             {
                 roSimCfgArchive >> omTemp; //Simsys name is stored in the old version
-            }            
+            }
             roSimCfgArchive >> psSimsysInfo->m_unNumberOfNodesAdded;
             if(psSimsysInfo->m_unNumberOfNodesAdded > 0)
             {
@@ -536,10 +536,10 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  27.12.2005                                            */
-/*  Modifications on :  
+/*  Modifications on :
 /******************************************************************************/
-INT  CSimSysConfigDetails::nLoadConfiguration(CString& omStrFilename, 
-                                              PSSIMSYSINFO &psSimSys)
+INT  CSimSysConfigDetails::nLoadConfiguration(CString& omStrFilename,
+        PSSIMSYSINFO& psSimSys)
 {
     UCHAR ucCheckSum        = 0;
     UCHAR ucCheckSumInFile  = 0;
@@ -547,18 +547,18 @@ INT  CSimSysConfigDetails::nLoadConfiguration(CString& omStrFilename,
     // Compute the checksum value in file
     bRet = CComputeCheckSum::bGetCheckSum(omStrFilename, &ucCheckSum,&ucCheckSumInFile);
     // first check if the file exists
-    UINT unErrorCode = nIsCfgFileFound(omStrFilename); 
+    UINT unErrorCode = nIsCfgFileFound(omStrFilename);
     if(unErrorCode == defCONFIG_FILE_SUCCESS)
     {
         // Now that the configuration file has been found, validate the header
-        // and the checksum to ascertain that the file has not been 
+        // and the checksum to ascertain that the file has not been
         // corrupted after the last time it was saved.
         // extract the information from the file
         if( (ucCheckSum == ucCheckSumInFile ) && (bRet == TRUE))
         {
             // Load the config data
             unErrorCode = nLoadStoreData(CArchive::load , omStrFilename, psSimSys );
-            
+
         }
         else
         {
@@ -566,7 +566,7 @@ INT  CSimSysConfigDetails::nLoadConfiguration(CString& omStrFilename,
             // modification by the application.
             unErrorCode = defCONFIG_FILE_CORRUPT;
         }
-    }	
+    }
     return unErrorCode;
 }
 

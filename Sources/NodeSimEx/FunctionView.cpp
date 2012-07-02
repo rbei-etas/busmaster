@@ -132,7 +132,7 @@ END_MESSAGE_MAP()
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnInitialUpdate() 
+void CFunctionView::OnInitialUpdate()
 {
     CRichEditView::OnInitialUpdate();
 
@@ -144,13 +144,15 @@ void CFunctionView::OnInitialUpdate()
 
     //Try to create a Font
     BOOL bSuccess = m_omFont.CreateFont(10, 0, 0, 0, 400, FALSE, FALSE, 0,
-                                      ANSI_CHARSET, OUT_DEFAULT_PRECIS,
-                                      CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-                                      DEFAULT_PITCH | FF_MODERN, DEFAULT_FONT);
+                                        ANSI_CHARSET, OUT_DEFAULT_PRECIS,
+                                        CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+                                        DEFAULT_PITCH | FF_MODERN, DEFAULT_FONT);
 
     //If succeeded, Set the Font
     if ( bSuccess )
+    {
         SetFont(&m_omFont);
+    }
 
     //Set the Richedit control to be Read-only
     GetRichEditCtrl().SetReadOnly();
@@ -184,7 +186,7 @@ void CFunctionView::OnInitialUpdate()
 /*                    Added check for global varaible block and set the      */
 /*                    global function name accordingly                       */
 /*****************************************************************************/
-void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
+void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
 {
     m_omStrFnName = omStrFunction;
 
@@ -207,29 +209,29 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
         if( omStrFunction == GLOBAL_VARIABLES )
         {
             omStrFnHeader = BUS_VAR_HDR;
-            omStrFnHeader.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+            omStrFnHeader.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
 
             omStrFnFooter = BUS_VAR_FOOTER;
-            omStrFnFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-            
+            omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+
             bGlobalVar = TRUE;
         }
         else
         {
             //Construct the Function Header
             omStrFnHeader = BUS_FN_HDR;
-            omStrFnHeader.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-            omStrFnHeader.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                                    omStrFunction );
+            omStrFnHeader.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+            omStrFnHeader.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                   omStrFunction );
             //Construct the Function Footer
             omStrFnFooter = BUS_FN_FOOTER;
-            omStrFnFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-            omStrFnFooter.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                                    omStrFunction );
+            omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+            omStrFnFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                   omStrFunction );
         }
 
         POSITION sPos = pDoc->m_omSourceCodeTextList.GetHeadPosition();
-		int nLineNumber = 0;
+        int nLineNumber = 0;
 
         while ( sPos != NULL )
         {
@@ -254,7 +256,7 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
                     {
                         //Store the start for later use
                         m_sStartPos = sPos;
-                        
+
                         //Loop through the function body till we encounter
                         //the function footer
                         while ( (sPos != NULL) && ( omStrLine != omStrFnFooter) )
@@ -262,7 +264,9 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
                             omStrLine =
                                 pDoc->m_omSourceCodeTextList.GetNext(sPos);
                             if ( omStrLine == omStrFnFooter )
+                            {
                                 m_bIsValidFunction = TRUE;
+                            }
                             else
                             {
                                 omStrFnBody += omStrLine;
@@ -282,7 +286,9 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
                         omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
 
                         if ( omStrLine == omStrFnFooter )
+                        {
                             m_bIsValidFunction = TRUE;
+                        }
                         else
                         {
                             omStrFnBody += omStrLine;
@@ -329,18 +335,19 @@ void CFunctionView::vSetFunctionToEdit(const CString &omStrFunction)
 /*  Author(s)       : Soj Thomas                                             */
 /*  Date Created    : 26th February 2002                                     */
 /*****************************************************************************/
-void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point) 
+void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    if ( m_sStartPos != NULL ) // Display only if user has selected 
-    {// a function or variable to edit
+    if ( m_sStartPos != NULL ) // Display only if user has selected
+    {
+        // a function or variable to edit
         CMDIFrameWnd* pMainFrame = (CMDIFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
         CEditFrameWnd* podParentFrame   = NULL;
         CMDIChildWnd* podActiveChildWnd = NULL;
         if(pMainFrame != NULL )
         {
             // Get the current active window.
-            podActiveChildWnd = 
+            podActiveChildWnd =
                 (CMDIChildWnd*)pMainFrame->MDIGetActive();
             // Get the parent frame window of view
             podParentFrame = (CEditFrameWnd*)GetParentFrame();
@@ -351,7 +358,9 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
                 if ( point == CPoint(-1, -1) )
                 {
                     if ( pWnd != NULL )
+                    {
                         point = pWnd->GetCaretPos();
+                    }
                 }
 
                 ClientToScreen(&point);
@@ -365,16 +374,16 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
                     //database
                     if( CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetCount() == 0)
                     {
-                            pomCtxMenu->EnableMenuItem(
-                                IDM_CONTEXT_INSERTMESSAGE, nDisable );
-                            pomCtxMenu->EnableMenuItem(
-                                IDM_CONTEXT_INSERTSIGNAL, nDisable );
+                        pomCtxMenu->EnableMenuItem(
+                            IDM_CONTEXT_INSERTMESSAGE, nDisable );
+                        pomCtxMenu->EnableMenuItem(
+                            IDM_CONTEXT_INSERTSIGNAL, nDisable );
                     }
                     // Disable Insert Signal & Function in case of global
                     // variable section selected
                     if( m_omStrFnName == GLOBAL_VARIABLES )
                     {
-                        
+
                         pomCtxMenu->EnableMenuItem( IDM_CONTEXT_INSERTSIGNAL,
                                                     nDisable );
                         pomCtxMenu->EnableMenuItem( IDM_CONTEXT_INSERTFUNCTION,
@@ -385,11 +394,11 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
                     if (pomCtxMenu != NULL)
                     {
                         pomCtxMenu->TrackPopupMenu(
-                                            TPM_RIGHTBUTTON | TPM_LEFTALIGN,
-                                            point.x, point.y,
-                                            AfxGetMainWnd());
+                            TPM_RIGHTBUTTON | TPM_LEFTALIGN,
+                            point.x, point.y,
+                            AfxGetMainWnd());
                     }
-                }   
+                }
             }
         }
     }
@@ -414,10 +423,10 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnRButtonUp(UINT nFlags, CPoint point) 
+void CFunctionView::OnRButtonUp(UINT nFlags, CPoint point)
 {
     SendMessage(WM_CONTEXTMENU, (WPARAM)m_hWnd, MAKELPARAM(point.x, point.y));
-    
+
     CRichEditView::OnRButtonUp(nFlags, point);
 }
 
@@ -438,10 +447,10 @@ void CFunctionView::OnRButtonUp(UINT nFlags, CPoint point)
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnUpdatePaste(CCmdUI* pCmdUI) 
+void CFunctionView::OnUpdatePaste(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( (::IsClipboardFormatAvailable(CF_TEXT))
-                 && (m_bIsValidFunction) );
+                    && (m_bIsValidFunction) );
 }
 
 /*****************************************************************************/
@@ -463,7 +472,7 @@ void CFunctionView::OnUpdatePaste(CCmdUI* pCmdUI)
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnPaste() 
+void CFunctionView::OnPaste()
 {
     (GetRichEditCtrl()).PasteSpecial(CF_TEXT);
 
@@ -490,7 +499,7 @@ void CFunctionView::OnPaste()
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CFunctionView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     CRichEditView::OnChar(nChar, nRepCnt, nFlags);
 
@@ -515,7 +524,7 @@ void CFunctionView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnDropFiles(HDROP /*hDropInfo*/) 
+void CFunctionView::OnDropFiles(HDROP /*hDropInfo*/)
 {
     return;
 }
@@ -540,12 +549,16 @@ void CFunctionView::OnDropFiles(HDROP /*hDropInfo*/)
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CFunctionView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     if ( nChar == VK_DELETE )
+    {
         OnChar(nChar, 0, 0);
+    }
     else
-        CRichEditView::OnKeyDown(nChar, nRepCnt, nFlags);   
+    {
+        CRichEditView::OnKeyDown(nChar, nRepCnt, nFlags);
+    }
 }
 
 /*****************************************************************************/
@@ -590,16 +603,16 @@ BOOL CFunctionView::UpdateFunctionInDocument()
             if( m_omStrFnName == GLOBAL_VARIABLES )
             {
                 omStrFnFooter = BUS_VAR_FOOTER;
-                omStrFnFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+                omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
             }
             else
             {
                 // Select function common footer
                 omStrFnFooter = BUS_FN_FOOTER;
                 // Form function specific footer
-                omStrFnFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-                omStrFnFooter.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                                        m_omStrFnName );
+                omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+                omStrFnFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                       m_omStrFnName );
             }
 
             CString omStrLine("");
@@ -614,14 +627,14 @@ BOOL CFunctionView::UpdateFunctionInDocument()
             m_nCurrentLine = (int) romEditCtrl.LineFromChar(lStart);
 
             BOOL bDone = FALSE;
-    
+
             pDoc->m_omSourceCodeTextList.GetNext(sStart);
 
-		    POSITION sPos1  = NULL;
-			POSITION sPos2  = NULL;
+            POSITION sPos1  = NULL;
+            POSITION sPos2  = NULL;
             for( sPos1 = sStart; ( ((sPos2 = sPos1) != NULL) && (!bDone) ); )
             {
-                CString omStrDel = 
+                CString omStrDel =
                     pDoc->m_omSourceCodeTextList.GetNext( sPos1 );
                 if( omStrDel == omStrFnFooter )
                 {
@@ -638,22 +651,22 @@ BOOL CFunctionView::UpdateFunctionInDocument()
 
 
             for (int nLineIndex = 0; nLineIndex < nLineCount; nLineIndex++)
-            {				
+            {
                 CString omStrNewItem("");
 
                 int nCharIndex  = GetRichEditCtrl().LineIndex(nLineIndex);
                 int nLineLength = GetRichEditCtrl().LineLength(nCharIndex);
-            
+
                 nLineLength = ( nLineLength < 4 ) ? 4 : nLineLength;
-				
+
                 GetRichEditCtrl().GetLine(nLineIndex,
-                                         omStrNewItem.GetBuffer(nLineLength),
-                                         nLineLength);
+                                          omStrNewItem.GetBuffer(nLineLength),
+                                          nLineLength);
 
-				omStrNewItem.ReleaseBuffer(nLineLength);
-				omStrNewItem.TrimRight();
+                omStrNewItem.ReleaseBuffer(nLineLength);
+                omStrNewItem.TrimRight();
 
-               
+
 
                 if ( bFirst )
                 {
@@ -663,11 +676,11 @@ BOOL CFunctionView::UpdateFunctionInDocument()
                 else
                 {
                     pDoc->m_omSourceCodeTextList.InsertAfter(
-                                                        sPos, omStrNewItem);
+                        sPos, omStrNewItem);
                     pDoc->m_omSourceCodeTextList.GetNext(sPos);
                 }
 
-				
+
             }
             bRetVal = TRUE;
         }
@@ -693,7 +706,7 @@ BOOL CFunctionView::UpdateFunctionInDocument()
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnEditUndo() 
+void CFunctionView::OnEditUndo()
 {
     GetRichEditCtrl().Undo();
 
@@ -719,11 +732,11 @@ void CFunctionView::OnEditUndo()
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnInsertSignal() 
+void CFunctionView::OnInsertSignal()
 {
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList,
-                        TRUE, FNVIEW, SEL_SIGNAL );
+                         TRUE, FNVIEW, SEL_SIGNAL );
 
     if ( od_Dlg.DoModal() == IDOK )
     {
@@ -735,9 +748,9 @@ void CFunctionView::OnInsertSignal()
         {
             om_RichEdit.ReplaceSel( ( LPCTSTR )od_Dlg.m_omStrSelectedItemText,
                                     TRUE );
-            
+
             // Update all views and set modified flag to true
-            UpdateFileViewAndSetModified();     
+            UpdateFileViewAndSetModified();
         }
     }
 }
@@ -761,9 +774,9 @@ void CFunctionView::OnInsertSignal()
 /*  Modifications   : Raja N on 12.05.2004                                   */
 /*                    Remove data init code of global variable section       */
 /*****************************************************************************/
-void CFunctionView::OnInsertMessage() 
+void CFunctionView::OnInsertMessage()
 {
-    eSELTYPE eType = 
+    eSELTYPE eType =
         m_omStrFnName == GLOBAL_VARIABLES ? SEL_GLOBAL_MESSAGE : SEL_MESSAGE;
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList,
@@ -803,8 +816,8 @@ void CFunctionView::OnInsertMessage()
             {
                 // Set the text with data init
                 om_RichEdit.ReplaceSel(
-                                    ( LPCTSTR )od_Dlg.m_omStrSelectedItemText,
-                                    TRUE );
+                    ( LPCTSTR )od_Dlg.m_omStrSelectedItemText,
+                    TRUE );
             }
             // Update all views and set modified flag to true
             UpdateFileViewAndSetModified();
@@ -832,7 +845,7 @@ void CFunctionView::OnInsertMessage()
 /*  Modifications   :                                                        */
 /*                                                                           */
 /*****************************************************************************/
-void CFunctionView::OnInsertFunction() 
+void CFunctionView::OnInsertFunction()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CSelectFunctions od_Dlg(m_eBus);
@@ -846,9 +859,9 @@ void CFunctionView::OnInsertFunction()
         if ( !od_Dlg.m_omSelectedFunctionPrototype.IsEmpty())
         {
             om_RichEdit.ReplaceSel(
-                            ( LPCTSTR )od_Dlg.m_omSelectedFunctionPrototype,
-                            TRUE );
-            
+                ( LPCTSTR )od_Dlg.m_omSelectedFunctionPrototype,
+                TRUE );
+
             // Update all views and set modified flag to true
             UpdateFileViewAndSetModified();
         }
@@ -879,7 +892,7 @@ void CFunctionView::UpdateFileViewAndSetModified()
     // If document is updated successfully then,
     // update the view
     if ( UpdateFunctionInDocument())
-    {        
+    {
         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
         if ( pDoc != NULL )
         {
@@ -906,7 +919,7 @@ void CFunctionView::UpdateFileViewAndSetModified()
 /*  Date Created    : 27th December 2002                                     */
 /*  Modifications   :                                                        */
 /*****************************************************************************/
-void CFunctionView::OnCut() 
+void CFunctionView::OnCut()
 {
     GetRichEditCtrl().Cut();
     UpdateFileViewAndSetModified();

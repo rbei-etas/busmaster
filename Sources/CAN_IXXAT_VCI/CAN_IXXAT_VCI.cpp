@@ -16,10 +16,10 @@
 /**
  * @file  CAN_IXXAT_VCI.cpp
  *
- * @brief 
- * 	The main header file for the DLL. The corresponding
- * 	CPP file exports the DLL C-function.
- * 	
+ * @brief
+ *  The main header file for the DLL. The corresponding
+ *  CPP file exports the DLL C-function.
+ *
  */
 
 #include "CAN_IXXAT_VCI_stdafx.h"
@@ -36,7 +36,7 @@
 ///The one and only class object for VCI access.
 //  It will be created in the C-function GetIDIL_CAN_Controller
 //  and deleted in the ExitInstance function.
-static CDIL_CAN_IXXAT_VCI* g_pouDIL_CAN_IXXAT_VCI = NULL; 
+static CDIL_CAN_IXXAT_VCI* g_pouDIL_CAN_IXXAT_VCI = NULL;
 
 // The one and only CCAN_IXXAT_VCIApp object
 CCAN_IXXAT_VCIApp theApp;
@@ -58,7 +58,7 @@ CCAN_IXXAT_VCIApp theApp;
 //
 //    It is very important that this macro appear in each
 //    function, prior to any calls into MFC.  This means that
-//    it must appear as the first statement within the 
+//    it must appear as the first statement within the
 //    function, even before any object variable declarations
 //    as their constructors may generate calls into the MFC
 //    DLL.
@@ -76,35 +76,35 @@ END_MESSAGE_MAP()
 /**
  * @fn  CCAN_IXXAT_VCIApp::CCAN_IXXAT_VCIApp()
  *
- * @brief 
+ * @brief
  *  Default constructor.
  *
  */
 CCAN_IXXAT_VCIApp::CCAN_IXXAT_VCIApp()
 {
-  // Place all significant initialization in InitInstance
+    // Place all significant initialization in InitInstance
 }
 
 
 /**
  * @brief Initializes the instance.
  *
- * @return  
+ * @return
  *  true if it succeeds, false if it fails.
  *
  */
 BOOL CCAN_IXXAT_VCIApp::InitInstance()
 {
-  CWinApp::InitInstance();
+    CWinApp::InitInstance();
 
-  return TRUE;
+    return TRUE;
 }
 
 
 /**
- * @brief 
- * 	Called when the DLL should be closed.
- * 	The g_pouDIL_CAN_IXXAT_VCI will be deleted here.
+ * @brief
+ *  Called when the DLL should be closed.
+ *  The g_pouDIL_CAN_IXXAT_VCI will be deleted here.
  *
  * @return
  *  Always 0.
@@ -112,18 +112,18 @@ BOOL CCAN_IXXAT_VCIApp::InitInstance()
  */
 int CCAN_IXXAT_VCIApp::ExitInstance( )
 {
-  if (NULL != g_pouDIL_CAN_IXXAT_VCI)
-  {
+    if (NULL != g_pouDIL_CAN_IXXAT_VCI)
+    {
 
-    delete g_pouDIL_CAN_IXXAT_VCI;
-    g_pouDIL_CAN_IXXAT_VCI = NULL;
-  }
+        delete g_pouDIL_CAN_IXXAT_VCI;
+        g_pouDIL_CAN_IXXAT_VCI = NULL;
+    }
 
 #ifdef _IXXAT_DEBUG
-  // let it remarked: it shows false memory leaks
-  // _CrtDumpMemoryLeaks();
+    // let it remarked: it shows false memory leaks
+    // _CrtDumpMemoryLeaks();
 #endif
-  return 0;
+    return 0;
 }
 
 
@@ -136,19 +136,19 @@ int CCAN_IXXAT_VCIApp::ExitInstance( )
 */
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 //HRESULT __stdcall GetIDIL_CAN_Controller(void** ppvInterface)
-{	
-  CoInitialize(NULL);
+{
+    CoInitialize(NULL);
 
-  HRESULT hResult = S_OK;
-  if ( NULL == g_pouDIL_CAN_IXXAT_VCI )
-  {
-    if ((g_pouDIL_CAN_IXXAT_VCI = new CDIL_CAN_IXXAT_VCI) == NULL)
+    HRESULT hResult = S_OK;
+    if ( NULL == g_pouDIL_CAN_IXXAT_VCI )
     {
-      hResult = S_FALSE;
+        if ((g_pouDIL_CAN_IXXAT_VCI = new CDIL_CAN_IXXAT_VCI) == NULL)
+        {
+            hResult = S_FALSE;
+        }
     }
-  }
-  *ppvInterface = (void *) g_pouDIL_CAN_IXXAT_VCI; /* Doesn't matter even if g_pouDIL_CAN_IXXAT_VCI is null */
+    *ppvInterface = (void*) g_pouDIL_CAN_IXXAT_VCI;  /* Doesn't matter even if g_pouDIL_CAN_IXXAT_VCI is null */
 
-  return hResult;
+    return hResult;
 }
 

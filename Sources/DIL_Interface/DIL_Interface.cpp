@@ -23,7 +23,7 @@
  */
 
 
-// DIL_Interface.cpp : 
+// DIL_Interface.cpp :
 #include "DIL_Interface_stdafx.h"
 #include "Include/BaseDefs.h"
 
@@ -106,12 +106,12 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
                 }
             }
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouDIL_CAN; /* Doesn't matter even 
-                                                if sg_pouFP_CAN is null */
+            *ppvInterface = (void*) sg_pouDIL_CAN; /* Doesn't matter even
+                                        if sg_pouFP_CAN is null */
         }
         break;
         case MCNET:
-       break;
+            break;
         case J1939:
         {
             if (NULL == sg_pouDILI_J1939)
@@ -127,11 +127,11 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
                 }
             }
             // Else the object has been existing already
-            *ppvInterface = (void *) sg_pouDILI_J1939; /* Doesn't matter even 
-                                                if sg_pouFP_CAN is null */
+            *ppvInterface = (void*) sg_pouDILI_J1939; /* Doesn't matter even
+                                        if sg_pouFP_CAN is null */
         }
         break;
-        default: 
+        default:
         {
             hResult = S_FALSE;
         }

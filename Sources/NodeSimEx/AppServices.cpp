@@ -50,16 +50,16 @@ BOOL gbWriteToLog(char* pcString)
 /******************************************************************************
     Function Name    :  gbActivateDeactivateHandlers
     Input(s)         :  bActivate -> TRUE if Activate
-    Output           :  Returned value from bActivateDeactivateHandlers 
+    Output           :  Returned value from bActivateDeactivateHandlers
                         function will be returned
     Functionality    :  This function will call bActivateDeactivateHandlers which
-                        is a member function of MainFrame and pass bActivate 
+                        is a member function of MainFrame and pass bActivate
                         parameter to it
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 BOOL gbActivateDeactivateHandlers(BOOL bActivate, HMODULE hModule)
 {
@@ -77,7 +77,7 @@ BOOL gbActivateDeactivateHandlers(BOOL bActivate, HMODULE hModule)
             }
 
             if (CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).bActivateDeactivateHandlers(
-                            bActuiveTemp, hModule) == TRUE)
+                        bActuiveTemp, hModule) == TRUE)
             {
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
                 Result = TRUE;
@@ -91,28 +91,28 @@ BOOL gbActivateDeactivateHandlers(BOOL bActivate, HMODULE hModule)
 /******************************************************************************
     Function Name    :  gbSetResetTimer
     Input(s)         :  pcTimerFunctionName ->Name of the timer
-                        type ->Type of the timer (cyclic or 
+                        type ->Type of the timer (cyclic or
                         bStart ->Flag.  TRUE->Start Timer, FALSE->Stop Timer
     Output           :  Returned value from bSetResetTimer function will be returned
-    Functionality    :  This function will call bSetResetTimer which is a member 
+    Functionality    :  This function will call bSetResetTimer which is a member
                         function of MainFrame and pass the same parameters to it.
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 
-BOOL gbSetResetTimer(CHAR* pcTimerFunctionName, int type, BOOL bStart, 
+BOOL gbSetResetTimer(CHAR* pcTimerFunctionName, int type, BOOL bStart,
                      HMODULE hModule)
 {
     BOOL Result = FALSE;
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
-        {	        
+        {
             CExecuteFunc* pmCEexecuteFunc =
-	                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
+                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
             if (pmCEexecuteFunc != NULL)
@@ -131,36 +131,36 @@ BOOL gbSetResetTimer(CHAR* pcTimerFunctionName, int type, BOOL bStart,
     Input(s)         :  pcTimerFunctionName ->Name of the timer
                         unTimeVal ->Timer value
     Output           :  Returned value from bSetTimerVal function will be returned
-    Functionality    :  This function will call bSetTimerVal which is a member 
+    Functionality    :  This function will call bSetTimerVal which is a member
                         function of MainFrame and pass the same parameters to it.
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 BOOL gbSetTimerVal(CHAR* pcTimerFunctionName, UINT unTimeVal,HMODULE hModule)
 {
     BOOL Result = FALSE;
-	if (unTimeVal > 0)
-	{
+    if (unTimeVal > 0)
+    {
         for (UINT i = 0; i < BUS_TOTAL; i++)
         {
             if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
             {
-		        CExecuteFunc* pmCEexecuteFunc =
-			        CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
-        		
-		        //If handler is found
-		        if (pmCEexecuteFunc != NULL)
-		        {
-			        Result = pmCEexecuteFunc->bResetTimerVal(pcTimerFunctionName, unTimeVal);
-			        i = BUS_TOTAL; //break the loop
-		        }
+                CExecuteFunc* pmCEexecuteFunc =
+                    CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
+
+                //If handler is found
+                if (pmCEexecuteFunc != NULL)
+                {
+                    Result = pmCEexecuteFunc->bResetTimerVal(pcTimerFunctionName, unTimeVal);
+                    i = BUS_TOTAL; //break the loop
+                }
             }
         }
-	}
-	return Result;
+    }
+    return Result;
 }
 
 /******************************************************************************
@@ -168,12 +168,12 @@ BOOL gbSetTimerVal(CHAR* pcTimerFunctionName, UINT unTimeVal,HMODULE hModule)
     Input(s)         :  bEnable -> TRUE or FALSE
     Output           :  TRUE or FALSE
     Functionality    :  This function will call vEnableDisableHandlers which
-                        is a member function of MainFrame. 
+                        is a member function of MainFrame.
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 BOOL gbEnableDisableMsgHandlers(BOOL bEnable, HMODULE hModule)
 {
@@ -183,10 +183,10 @@ BOOL gbEnableDisableMsgHandlers(BOOL bEnable, HMODULE hModule)
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
         {
             CExecuteFunc* pmCEexecuteFunc=
-		        CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
+                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if(pmCEexecuteFunc!=NULL) 
+            if(pmCEexecuteFunc!=NULL)
             {
                 Result = pmCEexecuteFunc->bEnableDisableMsgHandlers(bEnable);
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
@@ -194,7 +194,7 @@ BOOL gbEnableDisableMsgHandlers(BOOL bEnable, HMODULE hModule)
             }
         }
     }
-   
+
     return Result;
 }
 
@@ -203,12 +203,12 @@ BOOL gbEnableDisableMsgHandlers(BOOL bEnable, HMODULE hModule)
     Input(s)         :  bEnable -> TRUE or FALSE
     Output           :  TRUE or FALSE
     Functionality    :  This function will call vEnableDisableHandlers which
-                        is a member function of MainFrame. 
+                        is a member function of MainFrame.
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 BOOL gbEnableDisableKeyHandlers(BOOL bEnable, HMODULE hModule)
 {
@@ -218,7 +218,7 @@ BOOL gbEnableDisableKeyHandlers(BOOL bEnable, HMODULE hModule)
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
         {
             CExecuteFunc* pmCEexecuteFunc =
-		        CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
+                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
             if (pmCEexecuteFunc != NULL)
@@ -237,12 +237,12 @@ BOOL gbEnableDisableKeyHandlers(BOOL bEnable, HMODULE hModule)
     Input(s)         :  bEnable -> TRUE or FALSE
     Output           :  TRUE or FALSE
     Functionality    :  This function will call vEnableDisableHandlers which
-                        is a member function of MainFrame. 
+                        is a member function of MainFrame.
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 BOOL gbEnableDisableErrorHandlers(BOOL bEnable, HMODULE hModule)
 {
@@ -252,7 +252,7 @@ BOOL gbEnableDisableErrorHandlers(BOOL bEnable, HMODULE hModule)
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
         {
             CExecuteFunc* pmCEexecuteFunc =
-		        CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
+                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
             if (pmCEexecuteFunc != NULL)
@@ -269,15 +269,15 @@ BOOL gbEnableDisableErrorHandlers(BOOL bEnable, HMODULE hModule)
 /******************************************************************************
     Function Name    :  gbMsgTransmissionOnOff
     Input(s)         :  bActivate -> TRUE if Activate
-    Output           :  
-    Functionality    :  This function will call call set MsgTxFlag of 
+    Output           :
+    Functionality    :  This function will call call set MsgTxFlag of
                         CExecuteFunc to start/stop message transmission
-						from the DLL
+                        from the DLL
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Anish kumar
     Date Created     :  05-01-2006
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL gbMsgTransmissionOnOff(BOOL bOnOff, HMODULE hModule)
 {
@@ -286,11 +286,11 @@ BOOL gbMsgTransmissionOnOff(BOOL bOnOff, HMODULE hModule)
     {
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
         {
-            CExecuteFunc* pmCEexecuteFunc = 
-                    CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
+            CExecuteFunc* pmCEexecuteFunc =
+                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if (pmCEexecuteFunc != NULL) 
+            if (pmCEexecuteFunc != NULL)
             {
                 pmCEexecuteFunc->vSetMsgTxFlag(bOnOff);
                 Result = TRUE;
@@ -306,24 +306,24 @@ BOOL gbMsgTransmissionOnOff(BOOL bOnOff, HMODULE hModule)
 /******************************************************************************
     Function Name    :  ghGetNodeDllHandler
     Input(s)         :  NodeName
-    Output           :  
-    Functionality    :  This function will get the node's dll handler from 
-						CExecuteManager
+    Output           :
+    Functionality    :  This function will get the node's dll handler from
+                        CExecuteManager
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Anish kumar
     Date Created     :  20-12-2006
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 HMODULE ghGetNodeDllHandler(char* pcNodeName)
-{    
+{
     HMODULE hModule = NULL;
     CString omNode(pcNodeName);
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
         {
-	        hModule = CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).hReturnDllHandle(omNode);
+            hModule = CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).hReturnDllHandle(omNode);
             if (hModule != NULL)
             {
                 i = BUS_TOTAL;
@@ -343,16 +343,16 @@ BOOL gbGetProgramVersion(int* /*pnMajorVersion*/, int* /*pnMinorVersion*/)
 /******************************************************************************
     Function Name    :  gbSendStrToTrace
     Input(s)         :  pcOutStrTrace, string to be sent to trace
-    Output           :  BOOL value (True always) 
+    Output           :  BOOL value (True always)
                         function will be returned
-    Functionality    :  This function will Send a message and pass the string 
+    Functionality    :  This function will Send a message and pass the string
                         to be printed
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
+    Author(s)        :
+    Date Created     :
 ******************************************************************************/
 BOOL gbSendStrToTrace(char* pcOutStrTrace)
-{       
+{
     return CGlobalObj::sm_pouITraceWndPtr->bWriteToTrace(pcOutStrTrace);
 }

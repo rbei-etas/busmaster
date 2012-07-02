@@ -1,5 +1,5 @@
 
-/*  A Bison parser, made from c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
+/*  A Bison parser, made from d:\1.6.5 release oss\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
   */
 
 #define YYBISON 1  /* Identify Bison output.  */
@@ -23,7 +23,6 @@
 #define	POW	274
 #define	NEGATIVE	275
 
-#line 1 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 
    #define YYSTYPE double
    #include <math.h>
@@ -187,7 +186,7 @@ static const short yycheck[] = {     3,
     13,    14,    15,    16,    17,    -1,    19
 };
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
-#line 3 "bison.simple"
+
 
 /* Skeleton output parser for bison,
    Copyright (C) 1984, 1989, 1990 Free Software Foundation, Inc.
@@ -380,7 +379,7 @@ __yy_memcpy (char *from, char *to, int count)
 #endif
 #endif
 
-#line 192 "bison.simple"
+
 
 /* The user can define YYPARSE_PARAM as the name of an argument to be passed
    into yyparse.  The argument should have type void *.
@@ -679,76 +678,59 @@ yyreduce:
   switch (yyn) {
 
 case 4:
-#line 23 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 {fprintf(yyout, "in Result %lf", yyvsp[-1]); return yyvsp[-1]; /*printf ("\t%.10g\n", $1);*/ ;
     break;}
 case 5:
-#line 26 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { fprintf(yyout, "\nin Number %lf", yyvsp[0]);yyval = yyvsp[0];         ;
     break;}
 case 6:
-#line 27 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = yyvsp[-2] + yyvsp[0];    ;
     break;}
 case 7:
-#line 28 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = yyvsp[-2] - yyvsp[0];    ;
     break;}
 case 8:
-#line 29 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = yyvsp[-2] * yyvsp[0];    ;
     break;}
 case 9:
-#line 30 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = yyvsp[-2] / yyvsp[0];    ;
     break;}
 case 10:
-#line 31 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = -yyvsp[0];        ;
     break;}
 case 11:
-#line 32 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = pow (yyvsp[-2], yyvsp[0]); ;
     break;}
 case 12:
-#line 33 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (yyvsp[-2] > yyvsp[0])?1:0;  ;
     break;}
 case 13:
-#line 34 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (yyvsp[-2] < yyvsp[0])?1:0;  ;
     break;}
 case 14:
-#line 35 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = yyvsp[-1];;
     break;}
 case 15:
-#line 36 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (yyvsp[-2] <= yyvsp[0])?1:0; ;
     break;}
 case 16:
-#line 37 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (yyvsp[-2] >= yyvsp[0])?1:0; ;
     break;}
 case 17:
-#line 38 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { fprintf(yyout, "\nin EE %lf %lf", yyvsp[-2], yyvsp[0]);yyval = (yyvsp[-2] == yyvsp[0])?1:0; ;
     break;}
 case 18:
-#line 39 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (yyvsp[-2] != yyvsp[0])?1:0; ;
     break;}
 case 19:
-#line 40 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (int)yyvsp[-2] || (int)yyvsp[0]; ;
     break;}
 case 20:
-#line 41 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 { yyval = (int)yyvsp[-2] && (int)yyvsp[0]; ;
     break;}
 }
    /* the action file gets copied in in place of this dollarsign */
-#line 487 "bison.simple"
+
 
   yyvsp -= yylen;
   yyssp -= yylen;
@@ -944,7 +926,6 @@ yyerrhandle:
   yystate = yyn;
   goto yynewstate;
 }
-#line 43 "c:\documents and settings\sia3kor\desktop\v1.6.4 code freeze-june1\sources\testsuiteexecutorgui\parser.y"
 
 int yyerror(char *s)        /* called by yyparse on error */
 {

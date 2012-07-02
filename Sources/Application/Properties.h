@@ -31,21 +31,21 @@ public:
     // standard constructor
     CProperties(const SPROPERTIESLIST& sProperties);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CProperties)
     enum { IDD = IDD_DLG_PROPERTIES };
     CTreeCtrl   m_omPropertyTree;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CProperties)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

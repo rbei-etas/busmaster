@@ -41,14 +41,14 @@ BOOL CFunctionEditorBase::bInitBusInfo(SBUS_SPECIFIC_INFO& sInfo, eTYPE_BUS eBus
         case CAN:
         {
             sInfo.m_eBus = CAN;
-            sInfo.m_omBusName = _T("BUSMASTER");
+            sInfo.m_omBusName = "BUSMASTER";
             sInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(sInfo.m_eBus).m_omMsgStructFile;
         }
         break;
         case J1939:
         {
             sInfo.m_eBus = J1939;
-            sInfo.m_omBusName = _T("J1939");
+            sInfo.m_omBusName = "J1939";
             sInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(sInfo.m_eBus).m_omMsgStructFile;
         }
         break;
@@ -60,14 +60,14 @@ BOOL CFunctionEditorBase::bInitBusInfo(SBUS_SPECIFIC_INFO& sInfo, eTYPE_BUS eBus
 CFunctionEditorDoc* CFunctionEditorBase::pCreateNewDocument(eTYPE_BUS eBus)
 {
     CMultiDocTemplate* pTemplate = CGlobalObj::ouGetObj(eBus).m_pEditorDocTemplate;
-	if (NULL == pTemplate)
-	{		
-		AfxMessageBox("No Editor found. Please open the editor using simulated systems window", MB_OK);
-		return NULL;
-	}
+    if (NULL == pTemplate)
+    {
+        AfxMessageBox("No Editor found. Please open the editor using simulated systems window", MB_OK);
+        return NULL;
+    }
 
     // Now open the selected file
-    CFunctionEditorDoc *pDoc = (CFunctionEditorDoc*)pTemplate->CreateNewDocument();
+    CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)pTemplate->CreateNewDocument();
     if (pDoc != NULL)
     {
         SBUS_SPECIFIC_INFO sInfo;

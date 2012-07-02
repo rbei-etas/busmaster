@@ -53,6 +53,6 @@ public:
     CParameter& operator=(CParameter& param);
     int FormatParamValue(char* pcLine);
     int ReadDefaultVal(char* pcToken);
-    friend bool WriteParametersToFile(fstream& fileOutput, list<CParameter> &m_listParameter);
+    friend bool WriteParametersToFile(fstream& fileOutput, list<CParameter>& m_listParameter);
     virtual ~CParameter();
 };

@@ -40,7 +40,7 @@ CProjConfig::CProjConfig()
  */
 CProjConfig::~CProjConfig()
 {
-	vClearMap();
+    vClearMap();
 }
 
 void CProjConfig::vClearMap(void)
@@ -61,7 +61,7 @@ int CProjConfig::GetSectionCount()
     return m_MapOfSection.size();
 }
 
-void CProjConfig::GetProjectDetail(PROJECTDATA &ProjDATA)
+void CProjConfig::GetProjectDetail(PROJECTDATA& ProjDATA)
 {
     ProjDATA = m_sProjectDetails;
 }
@@ -73,26 +73,26 @@ int CProjConfig::GetSectionList(list<string>& SectionList)
     for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
     {
         SectionList.push_front(i->first);
-	}
+    }
 
     return GetSectionCount();
 }
 
-bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA &SectionData)
+bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA& SectionData)
 {
     bool bResult = false;
 
     SECTIONMAP::const_iterator i;
-	i = m_MapOfSection.find(SectionName);
+    i = m_MapOfSection.find(SectionName);
     if (i != m_MapOfSection.end())
     {
         SectionData = *(i->second);
         bResult = true;
     }
-	else
-	{
-		//MessageBox(NULL, "not found", "", MB_OK);
-	}
+    else
+    {
+        //MessageBox(NULL, "not found", "", MB_OK);
+    }
     return bResult;
 }
 
@@ -103,18 +103,18 @@ bool CProjConfig::AddModifySectionDetail(const SECTIONDATA& SectionData)
 {
     bool bAdded = false;
 
-	SECTIONMAP::iterator i;
-	i = m_MapOfSection.find(SectionData.m_omSectionName);
+    SECTIONMAP::iterator i;
+    i = m_MapOfSection.find(SectionData.m_omSectionName);
     if (i != m_MapOfSection.end())
     {
         *(i->second) = SectionData;
     }
     else
     {
-		SECTIONDATA* pNewSection = new SECTIONDATA;
-		*pNewSection = SectionData;
-        m_MapOfSection.insert(SECTIONMAP::value_type(SectionData.m_omSectionName, 
-                                                     pNewSection));
+        SECTIONDATA* pNewSection = new SECTIONDATA;
+        *pNewSection = SectionData;
+        m_MapOfSection.insert(SECTIONMAP::value_type(SectionData.m_omSectionName,
+                              pNewSection));
         bAdded = true;
     }
 

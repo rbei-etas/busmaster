@@ -267,7 +267,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     --posMsg;
                 }
             }
-            else if(strcmp(pcToken,"[START_SIG_LIST]\n") == 0)
+            else if(strcmp(pcToken,"[START_SIG_LIST]") == 0)
             {
                 CMessage msg;
                 msg.m_sName = "VECTOR__INDEPENDENT_SIG_MSG";
@@ -280,7 +280,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 fileInput.getline(acLine,defCON_MAX_LINE_LEN);
                 pcToken = strtok_s(pcLine, " ", &pcNextToken);
 
-                while(strcmp(acLine,"[END_SIG_LIST]\n") != 0)
+                while(strcmp(acLine,"[END_SIG_LIST]") != 0)
                 {
                     pcToken = strtok_s(pcLine, " ", &pcNextToken);
 
@@ -315,7 +315,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 val.Format(pcLine + strlen(pcToken)+1);
                 posSig->m_listValueDescriptor.push_front(val);
             }
-            else if(strcmp(pcToken,"[START_NOT_SUPPORTED]\n") == 0)
+            else if(strcmp(pcToken,"[START_NOT_SUPPORTED]") == 0)
             {
             }
             //nodes
@@ -323,9 +323,9 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             {
                 create_Node_List(pcLine + strlen(pcToken)+1);
             }
-            else if(strcmp(pcToken,"[START_VALUE_TABLE]\n")==0)
+            else if(strcmp(pcToken,"[START_VALUE_TABLE]")==0)
             {
-                while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_VALUE_TABLE]\n")!=0)
+                while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_VALUE_TABLE]")!=0)
                 {
                     pcLine = acLine;
                     pcToken=strtok_s(pcLine, " ", &pcNextToken);
@@ -338,61 +338,61 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     }
                 }
             }
-            else if(strcmp(pcToken,"[START_PARAM]\n")==0)
+            else if(strcmp(pcToken,"[START_PARAM]")==0)
             {
-                while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM]\n")!=0)
+                while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM]")!=0)
                 {
                     pcLine = acLine;
                     CParameter rParam;
 
-                    if(strcmp(pcLine,"[START_PARAM_NET]\n")==0)
+                    if(strcmp(pcLine,"[START_PARAM_NET]")==0)
                     {
-                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET]\n")!=0)
+                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET]")!=0)
                         {
                             pcLine = acLine;
                             rParam.Format_ParamDef(pcLine,0);
                             m_listParameterArray[0].push_back(rParam);
                         }
                     }
-                    else if(strcmp(pcToken,"[START_PARAM_NODE]\n")==0)
+                    else if(strcmp(pcToken,"[START_PARAM_NODE]")==0)
                     {
-                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE]\n")!=0)
+                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE]")!=0)
                         {
                             pcLine = acLine;
                             rParam.Format_ParamDef(pcLine,1);
                             m_listParameterArray[1].push_back(rParam);
                         }
                     }
-                    else if(strcmp(pcToken,"[START_PARAM_MSG]\n")==0)
+                    else if(strcmp(pcToken,"[START_PARAM_MSG]")==0)
                     {
-                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_MSG]\n")!=0)
+                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_MSG]")!=0)
                         {
                             pcLine = acLine;
                             rParam.Format_ParamDef(pcLine,2);
                             m_listParameterArray[2].push_back(rParam);
                         }
                     }
-                    else if(strcmp(pcToken,"[START_PARAM_SIG]\n")==0)
+                    else if(strcmp(pcToken,"[START_PARAM_SIG]")==0)
                     {
-                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_SIG]\n")!=0)
+                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_SIG]")!=0)
                         {
                             pcLine = acLine;
                             rParam.Format_ParamDef(pcLine,3);
                             m_listParameterArray[3].push_back(rParam);
                         }
                     }
-                    else if(strcmp(pcToken,"[START_PARAM_NODE_RX_SIG]\n")==0)
+                    else if(strcmp(pcToken,"[START_PARAM_NODE_RX_SIG]")==0)
                     {
-                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_RX_SIG]\n")!=0)
+                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_RX_SIG]")!=0)
                         {
                             pcLine = acLine;
                             rParam.Format_ParamDef(pcLine,4);
                             m_listParameterArray[4].push_back(rParam);
                         }
                     }
-                    else if(strcmp(pcToken,"[START_PARAM_NODE_TX_MSG]\n")==0)
+                    else if(strcmp(pcToken,"[START_PARAM_NODE_TX_MSG]")==0)
                     {
-                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_TX_MSG]\n")!=0)
+                        while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_TX_MSG]")!=0)
                         {
                             pcLine = acLine;
                             rParam.Format_ParamDef(pcLine,5);
@@ -401,61 +401,61 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     }
                 }
             }
-            else if(strcmp(pcToken,"[START_PARAM_VAL]\n")==0)
+            else if(strcmp(pcToken,"[START_PARAM_VAL]")==0)
             {
-                while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_VAL]\n")!=0)
+                while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_VAL]")!=0)
                 {
                     pcLine = acLine;
                     CParameter tParam;
 
-                    if(strcmp(pcLine,"[START_PARAM_NET_VAL]\n")==0)
+                    if(strcmp(pcLine,"[START_PARAM_NET_VAL]")==0)
                     {
                         tParam.Format_NetParam_Value(fileInput,m_listParameterArray[0]);
                     }
-                    else if(strcmp(pcLine,"[START_PARAM_NODE_VAL]\n")==0)
+                    else if(strcmp(pcLine,"[START_PARAM_NODE_VAL]")==0)
                     {
                         tParam.Format_NodeParam_Value(fileInput,m_listParameterArray[1]);
                     }
-                    else if(strcmp(pcLine,"[START_PARAM_MSG_VAL]\n")==0)
+                    else if(strcmp(pcLine,"[START_PARAM_MSG_VAL]")==0)
                     {
                         tParam.Format_MesgParam_Value(fileInput,m_listParameterArray[2]);
                     }
-                    else if(strcmp(pcLine,"[START_PARAM_SIG_VAL]\n")==0)
+                    else if(strcmp(pcLine,"[START_PARAM_SIG_VAL]")==0)
                     {
                         tParam.Format_SigParam_Value(fileInput,m_listParameterArray[3]);
                     }
                 }
             }
-            else if(strcmp(pcToken,"[START_DESC]\n")==0)
+            else if(strcmp(pcToken,"[START_DESC]")==0)
             {
-                while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC]\n")!=0)
+                while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_DESC]")!=0)
                 {
                     pcLine = acLine;
                     CComment tCmt;
 
-                    if(strcmp(pcLine,"[START_DESC_NET]\n")==0)
+                    if(strcmp(pcLine,"[START_DESC_NET]")==0)
                     {
                         tCmt.Format_netComment(fileInput, m_listComments[0]);
                     }
-                    else if(strcmp(pcLine,"[START_DESC_NODE]\n")==0)
+                    else if(strcmp(pcLine,"[START_DESC_NODE]")==0)
                     {
                         tCmt.Format_nodeComment(fileInput, m_listComments[1]);
                     }
-                    else if(strcmp(pcLine,"[START_DESC_MSG]\n")==0)
+                    else if(strcmp(pcLine,"[START_DESC_MSG]")==0)
                     {
                         tCmt.Format_msgComment(fileInput, m_listComments[2]);
                     }
-                    else if(strcmp(pcLine,"[START_DESC_SIG]\n")==0)
+                    else if(strcmp(pcLine,"[START_DESC_SIG]")==0)
                     {
                         tCmt.Format_sigComment(fileInput, m_listComments[3]);
                     }
                 }
             }
-            else if(strcmp(pcToken,"[START_NOT_PROCESSED]\n") == 0)
+            else if(strcmp(pcToken,"[START_NOT_PROCESSED]") == 0)
             {
                 fileInput.getline(acLine,defCON_MAX_LINE_LEN);
 
-                while(strcmp(pcToken,"[END_NOT_PROCESSED]\n") != 0)
+                while(strcmp(pcToken,"[END_NOT_PROCESSED]") != 0)
                 {
                     string str = acLine;
                     m_notProcessed.push_back(str);
@@ -553,21 +553,21 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     for(cmt=m_listComments[0].begin(); cmt!=m_listComments[0].end(); ++cmt)
     {
         fileOutput << "CM_ " << cmt->m_elementName.c_str();
-        fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << " " << cmt->m_comment.c_str()<<endl;
     }
 
     //Comments ----- Node
     for (cmt=m_listComments[1].begin(); cmt!=m_listComments[1].end(); ++cmt)
     {
         fileOutput << "CM_ BU_ " << cmt->m_elementName.c_str();
-        fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << " " << cmt->m_comment.c_str()<<endl;
     }
 
     //Comments ----- Mesg
     for (cmt=m_listComments[2].begin(); cmt!=m_listComments[2].end(); ++cmt)
     {
         fileOutput << "CM_ BO_ " << dec << cmt->m_msgID;
-        fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << " " << cmt->m_comment.c_str()<<endl;
     }
 
     //Comments ----- Signal
@@ -575,7 +575,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     {
         fileOutput << "CM_ SG_ " << dec << cmt->m_msgID;
         fileOutput << " " << cmt->m_elementName.c_str();
-        fileOutput << " " << cmt->m_comment.c_str();
+        fileOutput << " " << cmt->m_comment.c_str()<<endl;
     }
 
     //Param definition
@@ -777,7 +777,7 @@ void CConverter::create_Node_List(char* pcLine)
  * Decrypts the not processed lines which are read from between
  * the tag START_NOT_PROCESSED and END_NOT_PROCESSED
  */
-void CConverter::DecryptData(list<string> &m_notProcessed)
+void CConverter::DecryptData(list<string>& m_notProcessed)
 {
     list<string>::iterator str;
 

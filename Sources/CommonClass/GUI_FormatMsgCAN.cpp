@@ -40,19 +40,19 @@ const int ERRORS_DEFINED = 13;
 
 static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 {
-    {ERROR_UNKNOWN,       _T("Unknown Error")},
-    {BIT_ERROR_RX,        _T("Bus Error - Bit Error(Rx)")},
-    {FORM_ERROR_RX,       _T("Bus Error - Form Error(Rx)")},
-    {STUFF_ERROR_RX,      _T("Error Frame - Stuff error(Rx)")},
-    {OTHER_ERROR_RX,      _T("Bus Error - Other Error(Rx)")},
-    {BIT_ERROR_TX,        _T("Bus Error - Bit Error(Tx)")},
-    {FORM_ERROR_TX,       _T("Bus Error - Form Error(Tx)")},
-    {STUFF_ERROR_TX,      _T("Bus Error - Stuff Error(Tx)")},
-    {OTHER_ERROR_TX,      _T("Bus Error - Other Error(Tx)")},
-    {ERROR_DEVICE_BUFF_OVERFLOW,        _T("Controller Buffer Overflow")},
-    {ERROR_DRIVER_BUFF_OVERFLOW,        _T("Driver Buffer Overflow")},
-    {ERROR_APPLICATION_BUFF_OVERFLOW,   _T("Application Buffer Overflow")},
-	{ERROR_DLLMSG_BUFF_OVERFLOW,        _T("DLL message buffer Overflow")}   
+    {ERROR_UNKNOWN,       "Unknown Error"},
+    {BIT_ERROR_RX,        "Bus Error - Bit Error(Rx)"},
+    {FORM_ERROR_RX,       "Bus Error - Form Error(Rx)"},
+    {STUFF_ERROR_RX,      "Error Frame - Stuff error(Rx)"},
+    {OTHER_ERROR_RX,      "Bus Error - Other Error(Rx)"},
+    {BIT_ERROR_TX,        "Bus Error - Bit Error(Tx)"},
+    {FORM_ERROR_TX,       "Bus Error - Form Error(Tx)"},
+    {STUFF_ERROR_TX,      "Bus Error - Stuff Error(Tx)"},
+    {OTHER_ERROR_TX,      "Bus Error - Other Error(Tx)"},
+    {ERROR_DEVICE_BUFF_OVERFLOW,        "Controller Buffer Overflow"},
+    {ERROR_DRIVER_BUFF_OVERFLOW,        "Driver Buffer Overflow"},
+    {ERROR_APPLICATION_BUFF_OVERFLOW,   "Application Buffer Overflow"},
+    {ERROR_DLLMSG_BUFF_OVERFLOW,        "DLL message buffer Overflow"}
 };
 
 /*******************************************************************************
@@ -63,7 +63,7 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
   Member of      : CFormatMsgCAN
   Author(s)      : Ratnadip
   Date Created   : 8.7.2009
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CFormatMsgCAN::CFormatMsgCAN(void)
 {
@@ -77,7 +77,7 @@ CFormatMsgCAN::CFormatMsgCAN(void)
   Member of      : CFormatMsgCAN
   Author(s)      : Ratnadip
   Date Created   : 8.7.2009
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CFormatMsgCAN::~CFormatMsgCAN(void)
 {
@@ -91,9 +91,9 @@ CFormatMsgCAN::~CFormatMsgCAN(void)
   Member of      : CFormatMsgCAN
   Author(s)      : Ratnadip
   Date Created   : 8.7.2009
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag, 
+void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
                                 SFORMATTEDDATA_CAN* CurrDataCAN)
 {
     BYTE bTmpExprnFlag = bExprnFlag;
@@ -101,7 +101,7 @@ void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_ABS(bTmpExprnFlag);
-        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp, 
+        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp,
                               CurrDataCAN->m_acTimeAbs);
     }
 
@@ -109,7 +109,7 @@ void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_REL(bTmpExprnFlag);
-        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp, 
+        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp,
                               CurrDataCAN->m_acTimeRel);
     }
 
@@ -117,7 +117,7 @@ void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_SYS(bTmpExprnFlag);
-        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp, 
+        vCalculateAndFormatTM(bTmpExprnFlag, CurrDataCAN->m_u64TimeStamp,
                               CurrDataCAN->m_acTimeSys);
     }
 }
@@ -131,9 +131,9 @@ void CFormatMsgCAN::vFormatTime(BYTE bExprnFlag,
   Member of      : CFormatMsgCAN
   Author(s)      : Ratnadip
   Date Created   : 8.7.2009
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag, 
+void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
                                      SFORMATTEDDATA_CAN* CurrDataCAN)
 {
     if (IS_NUM_HEX_SET(bExprnFlag))
@@ -186,7 +186,7 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
   Member of      : CFormatMsgCAN
   Author(s)      : Arunkumar K
   Date Created   : 08-09-2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 USHORT CFormatMsgCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
 {
@@ -219,11 +219,11 @@ USHORT CFormatMsgCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
   Input(s)       : usErrorID
   Output         : TCHAR* (Error Name)
   Functionality  : Gets the pointer to Message data Buffer from PSDI_CAN DLL
-				   and updates the same in List Control.
+                   and updates the same in List Control.
   Member of      : CFormatMsgCAN
   Author(s)      : Arunkumar K
   Date Created   : 08-09-2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 char* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
 {
@@ -254,12 +254,12 @@ char* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
   Date Created   : 8.7.2009
   Modifications  : ArunKumar K
                    08.09.2010,
-				   Added handler for error messages. ERR_FLAG
+                   Added handler for error messages. ERR_FLAG
 *******************************************************************************/
-void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN, 
+void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
                                       SFORMATTEDDATA_CAN* CurrDataCAN,
                                       BYTE bExprnFlag_Log)
-{	
+{
     if (RX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_RX;
@@ -270,19 +270,19 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_eDirection = DIR_TX;
         CurrDataCAN->m_acMsgDir[0] = _T('T');
     }
-	CurrDataCAN->m_acMsgDir[1] = _T('x');
+    CurrDataCAN->m_acMsgDir[1] = _T('x');
 
     TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
     if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
     {
-        sprintf_s(CurrDataCAN->m_acChannel, _T("%d"), CurrChannel);
+        sprintf_s(CurrDataCAN->m_acChannel, "%d", CurrChannel);
     }
 
-	memset(CurrDataCAN->m_acType,_T('\0'),sizeof(CurrDataCAN->m_acType));
+    memset(CurrDataCAN->m_acType,'\0',sizeof(CurrDataCAN->m_acType));
     if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucEXTENDED != 0)
     {
         CurrDataCAN->m_byIDType = TYPE_ID_CAN_EXTENDED;
-        CurrDataCAN->m_acType[0] = _T('x');
+        CurrDataCAN->m_acType[0] = 'x';
     }
     else
     {
@@ -297,20 +297,20 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     }
 
     _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
-    strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, _T("Description"));
-	CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
+    strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
+    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
     CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
     CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
 
-	memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucData,
-		   CurrDataCAN->m_byDataLength);
+    memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucData,
+           CurrDataCAN->m_byDataLength);
 
-	/*PROCESS ERROR MSGS: If Error Message type. Change the data and type fields. */
-	if(ERR_FLAG == pMsgCAN->m_ucDataType)
-	{		
-		USHORT usErrCode = usProcessCurrErrorEntry(pMsgCAN->m_uDataInfo.m_sErrInfo);
+    /*PROCESS ERROR MSGS: If Error Message type. Change the data and type fields. */
+    if(ERR_FLAG == pMsgCAN->m_ucDataType)
+    {
+        USHORT usErrCode = usProcessCurrErrorEntry(pMsgCAN->m_uDataInfo.m_sErrInfo);
 
-		if( usErrCode != ERROR_UNKNOWN )
+        if( usErrCode != ERROR_UNKNOWN )
         {
             // Format error message
             char* ptrStrErrName = NULL;
@@ -325,7 +325,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
 
         CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
         sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
-        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_TYPE_CAN, _T("ERR"));
+        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_TYPE_CAN, "ERR");
     }
 
     /* PROCESS ERROR MSGS ENDS */

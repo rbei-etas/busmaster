@@ -28,7 +28,7 @@
 
 class CDataBaseMsgList
 {
-//Member Functions
+    //Member Functions
 public:
     CDataBaseMsgList(void);
     virtual ~CDataBaseMsgList(void);
@@ -43,10 +43,10 @@ public:
     INT nGetMessageInfo(CString omstrMsgName, sMESSAGE& sMsg);
     UINT unGetMessageID(CString omstrMsgName);
     sMESSAGE* unGetMsg(UINT unMsgId);
-//Member Variables
+    //Member Variables
 private:
-    sMESSAGE *m_psMessages;
+    sMESSAGE* m_psMessages;
     UINT    m_unMessageCount;
 private:
-    
+
 };

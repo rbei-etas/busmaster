@@ -34,15 +34,15 @@
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
-static HINSTANCE m_hDllInstance;
-USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd);
-USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* ptrDILIntrf);
-USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam);
-USAGEMODE HRESULT TS_hTSEditorWindowShown();
-USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath);
-USAGEMODE HWND hGetHwnd();
-USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
-USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT nBuffSize);
+    static HINSTANCE m_hDllInstance;
+    USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd);
+    USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* ptrDILIntrf);
+    USAGEMODE HRESULT TS_vPostMessageToTSWnd(UINT msg, WPARAM wParam, LPARAM lParam);
+    USAGEMODE HRESULT TS_hTSEditorWindowShown();
+    USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath);
+    USAGEMODE HWND hGetHwnd();
+    USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
+    USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT nBuffSize);
 #ifdef __cplusplus
 }
 #endif

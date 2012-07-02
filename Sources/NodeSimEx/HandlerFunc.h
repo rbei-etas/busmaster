@@ -35,7 +35,7 @@ UINT unKeyHandlerProc(LPVOID pParam);
 
 UINT unDLLUnloadHandlerProc(LPVOID pParam);
 UINT unDLLloadHandlerProc(LPVOID pParam);
-	
+
 // protoype of the Error Handler thread function
 UINT unErrorHandlerProc(LPVOID pParam);
 // protoype of the Event Handler thread function

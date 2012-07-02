@@ -39,7 +39,7 @@ private:
 public:
     CFormatMsgCAN(void);
     ~CFormatMsgCAN(void);
-    void vFormatCANDataMsg(STCANDATA* pMsgCAN, 
+    void vFormatCANDataMsg(STCANDATA* pMsgCAN,
                            SFORMATTEDDATA_CAN* CurrDataCAN,
                            BYTE bExprnFlag_Log);
 };

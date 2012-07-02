@@ -30,24 +30,24 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include <htmlhelp.h>
 
-#define def_STR_SIGNAL_FORMAT   _T("%-50s %8d %8d %8d\r\n")
-#define def_STR_SIGNAL_HEADING  _T("%-50s %8s %8s %8s\r\n\r\n")
+#define def_STR_SIGNAL_FORMAT   "%-50s %8d %8d %8d\r\n"
+#define def_STR_SIGNAL_HEADING  "%-50s %8s %8s %8s\r\n\r\n"
 #define CHECKENTITY(pEntity) if( pEntity == NULL){return;}
 #define CHECKEQ(ID, CONDITION) if(ID == (CONDITION)){return;}
 #define CHECKEQRET(ID, CONDITION, RETVAL) if(ID == (CONDITION)){return (RETVAL);}
-        
+
 IMPLEMENT_DYNCREATE(CTSEditorChildFrame, CMDIChildWnd)
 extern CTSEditorChildFrame* g_pomTSEditorChildWindow;
 /******************************************************************************
 Function Name  :  CTSEditorChildFrame
 Input(s)       :  -
 Output         :  -
-Functionality  :  Constructor for CTSEditorChildFrame class 
+Functionality  :  Constructor for CTSEditorChildFrame class
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTSEditorChildFrame::CTSEditorChildFrame()
 {
@@ -76,7 +76,7 @@ Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 CTSEditorChildFrame::~CTSEditorChildFrame()
 {
@@ -99,7 +99,7 @@ Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vInitialise()
 {
@@ -146,39 +146,39 @@ Function Name  :  OnCreateClient
 Input(s)       :  LPCREATESTRUCT - Create Structure
                   CCreateContext* - Context Pointer
 Output         :  BOOL - returns TRUE if success otherwise FALSE
-Functionality  :  This Function will create the treeview and listview. 
+Functionality  :  This Function will create the treeview and listview.
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTSEditorChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
     BOOL bReturn = m_omSplitterWnd.CreateStatic( this, def_NUM_ROWS_TSEDITOR, def_NUM_COLS_TSEDITOR );
     CSize omSize(def_WIDTH_PANE, def_HEIGHT_PANE);
-    bReturn = bReturn && m_omSplitterWnd.CreateView(def_ROW_INDEX, def_INDEX_TREEVIEW, RUNTIME_CLASS(CTreeViewEx),omSize, pContext); 
-    bReturn = bReturn && m_omSplitterWnd.CreateView(def_ROW_INDEX, def_INDEX_PROPVIEW, RUNTIME_CLASS(CPropertyView),omSize, pContext); 
-   
+    bReturn = bReturn && m_omSplitterWnd.CreateView(def_ROW_INDEX, def_INDEX_TREEVIEW, RUNTIME_CLASS(CTreeViewEx),omSize, pContext);
+    bReturn = bReturn && m_omSplitterWnd.CreateView(def_ROW_INDEX, def_INDEX_PROPVIEW, RUNTIME_CLASS(CPropertyView),omSize, pContext);
+
     CHECKEQRET(bReturn, FALSE, FALSE);
-    
+
     m_odTreeView =  (CTreeViewEx*)m_omSplitterWnd.GetPane(def_ROW_INDEX, def_INDEX_TREEVIEW);
     m_odPropertyView = (CPropertyView*)m_omSplitterWnd.GetPane(def_ROW_INDEX, def_INDEX_PROPVIEW);
-    
+
     //Setting TreeView Item Images
     m_pomImageList = new CImageList();
     m_pomImageList->Create(def_HEIGHT_IMAGE, def_WIDTH_IMAGE, ILC_COLOR32|ILC_MASK, def_NUM_IMAGE, def_NUM_IMAGE);
     m_pomImageList->SetBkColor(def_COLOR_TREE_BKG);
     CBitmap omBitmap;
-   
+
     for (int nID = IDI_ICONTESTCASE; nID <= IDI_ICONREPLAY; nID++)  // load bitmaps for dog, bird and fish
-	{
+    {
         HICON hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(nID));
         m_pomImageList->Add(hIcon);
     }
-    
+
     m_odTreeView->GetTreeCtrl().SetImageList(m_pomImageList, TVSIL_NORMAL);
-    
+
     return TRUE;
 }
 
@@ -187,12 +187,12 @@ Function Name  :  vLoadTestSetupFile
 Input(s)       :  omFilePath - File Path
                   bEmptyFile - Specifies weather the input file is empty or not
 Output         :  void
-Functionality  :  Loads the TestSetup file and update the CTestSetup datastructure  
+Functionality  :  Loads the TestSetup file and update the CTestSetup datastructure
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vLoadTestSetupFile(CString omFilePath, BOOL bEmptyFile /*FALSE*/)
 {
@@ -202,18 +202,18 @@ void CTSEditorChildFrame::vLoadTestSetupFile(CString omFilePath, BOOL bEmptyFile
         m_odPropertyView->m_omPropertyList.DeleteAllItems();
     }
     m_bFileSaved = FALSE;
-    if(bEmptyFile == FALSE) 
+    if(bEmptyFile == FALSE)
     {
         if( m_ouTSEntity.LoadFile(omFilePath) != S_OK)  //if S_OK Then Upadate The Tree
         {
-            MessageBox(_T("Invalid Test Setup File"), _T("Error"), MB_OK|MB_ICONERROR);
+            MessageBox("Invalid Test Setup File", "Error", MB_OK|MB_ICONERROR);
             vInitialise();
             return;
         }
         m_bFileSaved = TRUE;
     }
-    
-    vSetCurrentFile(omFilePath);    
+
+    vSetCurrentFile(omFilePath);
     nUpdateTreeView();
 }
 
@@ -221,13 +221,13 @@ void CTSEditorChildFrame::vLoadTestSetupFile(CString omFilePath, BOOL bEmptyFile
 Function Name  :  nUpdateTreeView
 Input(s)       :  -
 Output         :  INT, Non zero on failure.
-Functionality  :  Deletes the current tree item and re initialises it with the 
+Functionality  :  Deletes the current tree item and re initialises it with the
                   current datastructure.
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nUpdateTreeView()
 {
@@ -235,13 +235,13 @@ INT CTSEditorChildFrame::nUpdateTreeView()
     UINT unCount;
     m_ouTSEntity.GetSubEntryCount(unCount);
     m_odTreeView->GetTreeCtrl().DeleteAllItems();
-    m_hParentTreeItem = m_odTreeView->InsertTreeItem(NULL, m_ouTSEntity.m_omstrTestSetupTitle, NULL, 0, 0, m_ouTSEntity.GetID());     
+    m_hParentTreeItem = m_odTreeView->InsertTreeItem(NULL, m_ouTSEntity.m_omstrTestSetupTitle, NULL, 0, 0, m_ouTSEntity.GetID());
     if(unCount != 0)
     {
-        for(UINT j=0;j<unCount;j++)
+        for(UINT j=0; j<unCount; j++)
         {
-            CBaseEntityTA *pTCEntity = NULL;
-            m_ouTSEntity.GetSubEntityObj(j, &pTCEntity); 
+            CBaseEntityTA* pTCEntity = NULL;
+            m_ouTSEntity.GetSubEntityObj(j, &pTCEntity);
             HTREEITEM hTCTreeitem = m_odTreeView->InsertTreeItem(m_hParentTreeItem, "", NULL, 0, 0, pTCEntity->GetID());
             parseTestCaseEntiy(pTCEntity, hTCTreeitem);
         }
@@ -251,14 +251,14 @@ INT CTSEditorChildFrame::nUpdateTreeView()
 
 /******************************************************************************
 Function Name  :  parseTestCaseEntiy
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::parseTestCaseEntiy(CBaseEntityTA* pTCEntity, HTREEITEM hTCTreeitem)
 {
@@ -266,13 +266,13 @@ void CTSEditorChildFrame::parseTestCaseEntiy(CBaseEntityTA* pTCEntity, HTREEITEM
 
     UINT unCount;
     CTestCaseData TestCaseData;
-    CBaseEntityTA *pEntity = NULL;
+    CBaseEntityTA* pEntity = NULL;
     CTreeCtrl& omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
 
     pTCEntity->GetEntityData(TEST_CASE, &TestCaseData);
     pTCEntity->GetSubEntryCount(unCount);
-    
-    
+
+
     omTempTreeCtrl.SetItemText(hTCTreeitem, TestCaseData.m_omTitle);
     m_odTreeView->vDeleteChildItems(hTCTreeitem);
     int TempConut = unCount;
@@ -281,7 +281,7 @@ void CTSEditorChildFrame::parseTestCaseEntiy(CBaseEntityTA* pTCEntity, HTREEITEM
         pTCEntity->GetSubEntityObj(i, &pEntity);
         pEntity->GetSubEntryCount(unCount);
         eTYPE_ENTITY eEntityType = pEntity->GetEntityType();
-        
+
         if(eEntityType == SEND)
         {
             HTREEITEM hSubParent = m_odTreeView->InsertTreeItem(hTCTreeitem, def_NAME_SEND, NULL, def_INDEX_SEND_IMAGE, def_INDEX_SEND_IMAGE, pEntity->GetID());
@@ -309,25 +309,25 @@ void CTSEditorChildFrame::parseTestCaseEntiy(CBaseEntityTA* pTCEntity, HTREEITEM
 }
 /******************************************************************************
 Function Name  :  parseSendEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::parseSendEntity(CBaseEntityTA* pEntity, HTREEITEM hSubParent)
 {
     CHECKENTITY(pEntity);
     UINT unCount;
-    CBaseEntityTA *pSubEntity;  //send_message entity
-    CSend_MessageData odData;   
-    
+    CBaseEntityTA* pSubEntity;  //send_message entity
+    CSend_MessageData odData;
+
     pEntity->GetSubEntryCount(unCount); //Send_Message Count
     m_odTreeView->vDeleteChildItems(hSubParent);
-    
+
     for(UINT i=0; i<unCount; i++)
     {
         pEntity->GetSubEntityObj(i, &pSubEntity);
@@ -339,26 +339,26 @@ void CTSEditorChildFrame::parseSendEntity(CBaseEntityTA* pEntity, HTREEITEM hSub
 
 /******************************************************************************
 Function Name  :  parseVerifyEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::parseVerifyEntity(CBaseEntityTA* pEntity, HTREEITEM hSubParent)
 {
     CHECKENTITY(pEntity);
 
     UINT unCount;
-    CBaseEntityTA *pSubEntity;  
+    CBaseEntityTA* pSubEntity;
     CVerify_MessageData odData;
-    
+
     pEntity->GetSubEntryCount(unCount);
     m_odTreeView->vDeleteChildItems(hSubParent);
-    
+
     for(UINT i=0; i<unCount; i++)
     {
         pEntity->GetSubEntityObj(i, &pSubEntity);
@@ -369,14 +369,14 @@ void CTSEditorChildFrame::parseVerifyEntity(CBaseEntityTA* pEntity, HTREEITEM hS
 }
 /******************************************************************************
 Function Name  :  parseWaitEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::parseWaitEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem)
 {
@@ -388,14 +388,14 @@ void CTSEditorChildFrame::parseWaitEntity(CBaseEntityTA* pEntity, HTREEITEM hTCT
 
 /******************************************************************************
 Function Name  :  parseReplayEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::parseReplayEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem)
 {
@@ -406,14 +406,14 @@ void CTSEditorChildFrame::parseReplayEntity(CBaseEntityTA* pEntity, HTREEITEM hT
 
 /******************************************************************************
 Function Name  :  OnDestroy
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnDestroy()
 {
@@ -424,21 +424,21 @@ void CTSEditorChildFrame::OnDestroy()
 
 /******************************************************************************
 Function Name  :  OnFileOpen
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileOpen()
 {
     INT nRetVal = nPromptForSaveFile();
     CHECKEQ(nRetVal, IDCANCEL);
-    CFileDialog omFileOpenDlg(TRUE, _T(".xml"), 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
-	omFileOpenDlg.m_ofn.lpstrTitle = "Select A TestSetup File";
+    CFileDialog omFileOpenDlg(TRUE, ".xml", 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
+    omFileOpenDlg.m_ofn.lpstrTitle = "Select A TestSetup File";
 
     if(IDOK == omFileOpenDlg.DoModal())
     {
@@ -448,33 +448,33 @@ void CTSEditorChildFrame::OnFileOpen()
 
 /******************************************************************************
 Function Name  :  OnHelpAbouttestsetupeditor
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnHelpAbouttestsetupeditor()
 {
     CString omStrVersion;
     omStrVersion.LoadString(IDS_TSEDITOR_ABOUT);
-    CString omStrLicence =  omStrVersion + "\n\nCopyright© 2011, Robert Bosch Engineering and\nBusiness Solutions Ltd.\nAll rights reserved.";	
+    CString omStrLicence =  omStrVersion + "\n\nCopyright© 2011, Robert Bosch Engineering and\nBusiness Solutions Ltd.\nAll rights reserved.";
     MessageBox(omStrLicence, NULL, MB_OK|MB_ICONINFORMATION);
 }
 
 /******************************************************************************
 Function Name  :  OnSelectionChanged
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 LRESULT CTSEditorChildFrame::OnSelectionChanged(WPARAM pTreeView, LPARAM /*pOldTreeView*/)
 {
@@ -487,14 +487,14 @@ LRESULT CTSEditorChildFrame::OnSelectionChanged(WPARAM pTreeView, LPARAM /*pOldT
 
 /******************************************************************************
 Function Name  :  OnSelectionChanging
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 LRESULT CTSEditorChildFrame::OnSelectionChanging(WPARAM /*pTreeView*/, LPARAM /*pOldTreeView*/)
 {
@@ -508,7 +508,7 @@ LRESULT CTSEditorChildFrame::OnSelectionChanging(WPARAM /*pTreeView*/, LPARAM /*
         }
         else
         {
-            INT nSelection = MessageBox(_T("Current List is Modified\nDo You Want to save the Changes?"), _T("Modified"), MB_YESNOCANCEL|MB_ICONQUESTION);
+            INT nSelection = MessageBox("Current List is Modified\nDo You Want to save the Changes?", "Modified", MB_YESNOCANCEL|MB_ICONQUESTION);
             switch(nSelection)
             {
                 case IDYES:
@@ -529,14 +529,14 @@ LRESULT CTSEditorChildFrame::OnSelectionChanging(WPARAM /*pTreeView*/, LPARAM /*
 
 /******************************************************************************
 Function Name  :  nDisplayEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nDisplayEntity(DWORD dwEntityID)
 {
@@ -550,21 +550,21 @@ INT CTSEditorChildFrame::nDisplayEntity(DWORD dwEntityID)
 
 /******************************************************************************
 Function Name  :  nDisplayEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nDisplayEntity(CBaseEntityTA* pEntity)
 {
-     //CBaseEntityTA *pEntity;
+    //CBaseEntityTA *pEntity;
     CHECKEQRET(pEntity, NULL, ERR_INVALID_ENTITY);
     eTYPE_ENTITY eType = m_pCurrentEntity->GetEntityType();
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
     switch(eType)
     {
@@ -604,22 +604,22 @@ INT CTSEditorChildFrame::nDisplayEntity(CBaseEntityTA* pEntity)
 
 /******************************************************************************
 Function Name  :  vDisplayHeaderInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
 void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
 {
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
     omTempListCtrl.DeleteAllItems();
-    
+
     //Get Header Info.
     CTestSetupHeader ouHeaderInfo;
     m_ouTSEntity.GetHeaderData(ouHeaderInfo);
@@ -627,12 +627,12 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     //Set List Controls Item Properties.
     SLISTINFO sListInfo;
     sListInfo.m_eType = eText;
-    
+
     //Title  - ROW0
     omTempListCtrl.InsertItem(def_TS_ROWNUM_TITLE, "Title");
     omTempListCtrl.SetItemText(def_TS_ROWNUM_TITLE, def_COLUMN_VALUE, m_ouTSEntity.m_omstrTestSetupTitle);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_TITLE, def_COLUMN_VALUE, sListInfo);
-    
+
     //Description - ROW1
     omTempListCtrl.InsertItem(def_TS_ROWNUM_DESCRIPTION, "Description");
     omTempListCtrl.SetItemText(def_TS_ROWNUM_DESCRIPTION, def_COLUMN_VALUE, m_ouTSEntity.m_omstrDescription);
@@ -677,30 +677,30 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     //DataBase - ROW7
     sListInfo.m_eType = eBrowser;
     sListInfo.m_omEntries.RemoveAll();
-    sListInfo.m_omEntries.Add(_T("*.dbf"));
-    sListInfo.m_omEntries.Add(_T("DataBase File (*.dbf)|*.dbf||"));
+    sListInfo.m_omEntries.Add("*.dbf");
+    sListInfo.m_omEntries.Add("DataBase File (*.dbf)|*.dbf||");
     omTempListCtrl.InsertItem(def_TS_ROWNUM_DATABASE, "DataBase Path");
     omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, ouHeaderInfo.m_omDatabasePath);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, sListInfo);
 
-    
-     
+
+
     //Report File Path - ROW8
     CString omStrDefExt;
     CString omStrFilter;
-    
-    omStrDefExt = _T("*.txt");
-    omStrFilter = _T("Text Files (*.txt)|*.txt|Html Files (*html)|*.html||");
-    
+
+    omStrDefExt = "*.txt";
+    omStrFilter = "Text Files (*.txt)|*.txt|Html Files (*html)|*.html||";
+
     sListInfo.m_eType = eBrowser;
     sListInfo.m_omEntries.RemoveAll();
     sListInfo.m_omEntries.Add(omStrDefExt);
     sListInfo.m_omEntries.Add(omStrFilter);
     omTempListCtrl.InsertItem(def_TS_ROWNUM_REPORT, "Report File Path");
 
-    
+
     omTempListCtrl.SetItemText(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, ouHeaderInfo.m_sReportFile.m_omPath);
-    omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, sListInfo); 
+    omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, sListInfo);
 
 
     //Time Mode - ROW9
@@ -709,7 +709,7 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     sListInfo.m_omEntries.Add("ABSOLUTE");
     sListInfo.m_omEntries.Add("RELATIVE");
     omTempListCtrl.InsertItem(def_TS_ROWNUM_TIMEMODE, "Time Mode");
-    switch(ouHeaderInfo.m_sReportFile.m_eTimeMode) 
+    switch(ouHeaderInfo.m_sReportFile.m_eTimeMode)
     {
         case REL:
             omStrTemp = "RELATIVE";
@@ -738,7 +738,7 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     sListInfo.m_omEntries.Add("TXT");
     sListInfo.m_omEntries.Add("HTML");
     omTempListCtrl.InsertItem(def_TS_ROWNUM_FILEFORMAT, "File Format");
-    
+
     omTempListCtrl.SetItemText(def_TS_ROWNUM_FILEFORMAT, def_COLUMN_VALUE, omStrTemp);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_FILEFORMAT, def_COLUMN_VALUE, sListInfo);*/
 
@@ -746,21 +746,21 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
 
 /******************************************************************************
 Function Name  :  vDisplayTestcaseInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA *pTCEntity)
+void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA* pTCEntity)
 {
     CHECKENTITY(pTCEntity);
 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
 
     CTestCaseData odData;
@@ -774,7 +774,7 @@ void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA *pTCEntity)
     omTempListCtrl.InsertItem(def_TC_ROWNUM_TCID, "Test Case ID");
     omTempListCtrl.SetItemText(def_TC_ROWNUM_TCID, def_COLUMN_VALUE, odData.m_omID);
     omTempListCtrl.vSetColumnInfo(def_TC_ROWNUM_TCID, def_COLUMN_VALUE, sListInfo);
-    
+
     //Display TestCase Name
     omTempListCtrl.InsertItem(def_TC_ROWNUM_TCNAME, "Test Case Name");
     omTempListCtrl.SetItemText(def_TC_ROWNUM_TCNAME, def_COLUMN_VALUE, odData.m_omTitle);
@@ -784,7 +784,7 @@ void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA *pTCEntity)
     sListInfo.m_eType = eComboItem;
     sListInfo.m_omEntries.Add("CONTINUE");
     sListInfo.m_omEntries.Add("EXIT");
-    
+
     omTempListCtrl.InsertItem(def_TC_ROWNUM_TCEXP, "Exception Handler");
     switch(odData.m_eExcpAction)
     {
@@ -801,38 +801,38 @@ void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA *pTCEntity)
 
 /******************************************************************************
 Function Name  :  vDisplaySendInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
     m_omSendEntity = *((CSendEntity*)pEntity);
 
     omTempListCtrl.DeleteAllItems();
     UINT unCount;
-    CBaseEntityTA *pSubEntity;  //send_message entity
+    CBaseEntityTA* pSubEntity;  //send_message entity
     CSend_MessageData odData;
     pEntity->GetSubEntryCount(unCount); //Send_Message Count
     CString omstrTemp;
     omstrTemp.Format("%d", unCount);
-    
+
     SLISTINFO sListInfo;
     sListInfo.m_eType = eNoControl;
     omTempListCtrl.InsertItem(def_SEND_ROWNUM_MSGCNT, "Message Count");
     omTempListCtrl.SetItemText(def_SEND_ROWNUM_MSGCNT, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetColumnInfo(def_SEND_ROWNUM_MSGCNT, def_COLUMN_VALUE, sListInfo);
-      
+
     sListInfo.m_eType = eComboItem;
     m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
     UINT i = 0;
@@ -852,31 +852,31 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vDisplayVerifyInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA *pEntity, int nVerifyRowIndex)
+void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerifyRowIndex)
 {
     CHECKENTITY(pEntity);
 
     CString omstrTemp;
     UINT unCount;
     m_ouVerifyEntity = *((CVerifyEntity*)pEntity);
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    CBaseEntityTA *pSubEntity;  //Verify_message entity
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CBaseEntityTA* pSubEntity;  //Verify_message entity
+
     pEntity->GetSubEntryCount(unCount); //Send_Message Count
     omstrTemp.Format("%d", unCount);
-    
+
     SLISTINFO sListInfo;
- 
+
     sListInfo.m_eType = eNoControl;
     omTempListCtrl.InsertItem(def_VERIFY_ROWNUM_MSGCNT, "Message Count");
     omTempListCtrl.SetItemText(def_VERIFY_ROWNUM_MSGCNT, def_COLUMN_VALUE, omstrTemp);
@@ -884,13 +884,13 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA *pEntity, int nVerify
 
     sListInfo.m_eType = eComboItem;
     CVerifyData odVerifyData;
-    pEntity->GetEntityData(VERIFY, &odVerifyData);
+    pEntity->GetEntityData(pEntity->GetEntityType(), &odVerifyData);
     switch(odVerifyData.m_eAttributeError)
     {
         case WARNING:
             omstrTemp = "WARNING";
             break;
-        case ERROR:
+        case ERRORS:
             omstrTemp = "ERROR";
             break;
         case FATAL:
@@ -908,7 +908,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA *pEntity, int nVerify
     sListInfo.m_eType = eComboItem;
     sListInfo.m_omEntries.RemoveAll();
     m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
-    
+
     if( nVerifyRowIndex == -1 )
     {
         nVerifyRowIndex = def_VERIFY_ROWNUM_MSGLIST;
@@ -923,7 +923,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA *pEntity, int nVerify
 
         omstrTemp.Format("%d", odData.m_dwMessageID);
         omTempListCtrl.InsertItem(i+nVerifyRowIndex, omstrTemp);
-        
+
         omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
     }
@@ -933,24 +933,24 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA *pEntity, int nVerify
 }
 /******************************************************************************
 Function Name  :  vDisplayVerifyResponseInfo
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  21/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplayVerifyResponseInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vDisplayVerifyResponseInfo(CBaseEntityTA* pEntity)
 {
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
     SLISTINFO sListInfo;
     sListInfo.m_eType = eText;
     omTempListCtrl.InsertItem(def_ROWNNUM_WAITFOR, "Wait Until");
-    
+
 
     //Wait Period
     CString omStrWait;
@@ -959,24 +959,24 @@ void CTSEditorChildFrame::vDisplayVerifyResponseInfo(CBaseEntityTA *pEntity)
     omStrWait.Format("%d", ouResponseData.m_ushDuration);
     vDisplayVerifyInfo(pEntity, 3);
     omTempListCtrl.SetItemText(def_ROWNNUM_WAITFOR, def_COLUMN_VALUE, omStrWait);
-    omTempListCtrl.vSetColumnInfo(def_ROWNNUM_WAITFOR, def_COLUMN_VALUE, sListInfo);  
+    omTempListCtrl.vSetColumnInfo(def_ROWNNUM_WAITFOR, def_COLUMN_VALUE, sListInfo);
 }
 /******************************************************************************
 Function Name  :  vDisplayWaitInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
 
     CString omstrTemp;
@@ -985,7 +985,7 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA *pEntity)
     pEntity->GetEntityData(WAIT, &odData);
     SLISTINFO sListInfo;
     sNumericInfo sNumInfo;
-    
+
     sListInfo.m_eType = eText;
     omTempListCtrl.InsertItem(def_WAIT_ROWNUM_PURPOSE, "Purpose");
     omTempListCtrl.SetItemText(def_WAIT_ROWNUM_PURPOSE, def_COLUMN_VALUE, odData.m_omPurpose);
@@ -1001,19 +1001,19 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vDisplayReplayInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplayReplayInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vDisplayReplayInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
 
     CString omstrTemp;
@@ -1023,49 +1023,49 @@ void CTSEditorChildFrame::vDisplayReplayInfo(CBaseEntityTA *pEntity)
     sListInfo.m_eType = eBrowser;
     omTempListCtrl.InsertItem(def_REPLAY_ROWNUM_FILEPATH, "File Path");
     omTempListCtrl.SetItemText(def_REPLAY_ROWNUM_FILEPATH, def_COLUMN_VALUE, omstrTemp);
-    omTempListCtrl.vSetColumnInfo(def_REPLAY_ROWNUM_FILEPATH, def_COLUMN_VALUE, sListInfo);   
+    omTempListCtrl.vSetColumnInfo(def_REPLAY_ROWNUM_FILEPATH, def_COLUMN_VALUE, sListInfo);
 }
 
 /******************************************************************************
 Function Name  :  vDisplaySendMessageInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA *pBaseEntity)
+void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA* pBaseEntity)
 {
-//Must Display Database Signals with the signals from the test setup file.
+    //Must Display Database Signals with the signals from the test setup file.
     CHECKENTITY(pBaseEntity);
 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
 
     CString omstrTemp;
     INT nSignalCount;
     CSend_MessageData pSubEntity;
-    CSend_MessageEntity *pEntity = (CSend_MessageEntity*)pBaseEntity;  //send_message entity
+    CSend_MessageEntity* pEntity = (CSend_MessageEntity*)pBaseEntity;  //send_message entity
     pEntity->GetEntityData(SEND_MESSAGE, &pSubEntity);
 
 
     SLISTINFO sListInfo;
     sNumericInfo sNumInfo;
 
-    
+
     if(pSubEntity.m_eSignalUnitType == RAW)
     {
-       omstrTemp = "RAW";
+        omstrTemp = "RAW";
     }
     else if(pSubEntity.m_eSignalUnitType == ENG)
     {
         omstrTemp = "ENG";
     }
-    
+
     //Failure ClassiFication Information
     omTempListCtrl.InsertItem(def_SMSG_ROWNUM_SUINT, "Signal Unit Type");
     omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE, omstrTemp);
@@ -1073,7 +1073,7 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA *pBaseEntity)
     sListInfo.m_omEntries.Add("RAW");
     sListInfo.m_omEntries.Add("ENG");
     omTempListCtrl.vSetColumnInfo(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE, sListInfo);
-   
+
     //Signal Default Value - Hidden Not Required
     /*switch(pSubEntity.m_eSignalUnitType)
     {
@@ -1087,17 +1087,17 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA *pBaseEntity)
     }
     omTempListCtrl.InsertItem(def_SMSG_ROWNUM_SDEFVALUE, "Signal Default Value");
     omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SDEFVALUE, def_COLUMN_VALUE, omstrTemp);
-    
+
     omTempListCtrl.vSetNumericInfo(def_SMSG_ROWNUM_SDEFVALUE, def_COLUMN_VALUE, sNumInfo);
     sListInfo.m_eType = eText;
     omTempListCtrl.vSetColumnInfo(def_SMSG_ROWNUM_SDEFVALUE, def_COLUMN_VALUE, sListInfo);*/
 
 
-//Signal Display
+    //Signal Display
     //W4 Removal
     nSignalCount = (INT)pSubEntity.m_odSignalDataList.GetCount();
     sListInfo.m_eType = eText;
-    
+
     for(INT i = 0; i < nSignalCount; i++)
     {
         POSITION  pos = pSubEntity.m_odSignalDataList.FindIndex(i);
@@ -1121,43 +1121,43 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA *pBaseEntity)
 
 /******************************************************************************
 Function Name  :  vDisplayVerifyMessageInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
-Codetag        :  
+Modifications  :
+Codetag        :
 ******************************************************************************/
-void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA *pBaseEntity)
+void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA* pBaseEntity)
 {
     CHECKENTITY(pBaseEntity);
 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
 
     CString omstrTemp;
     INT nSignalCount;
     CVerify_MessageData pSubEntity;
-    CVerify_MessageEntity *pEntity = (CVerify_MessageEntity*)pBaseEntity;  //send_message entity
+    CVerify_MessageEntity* pEntity = (CVerify_MessageEntity*)pBaseEntity;  //send_message entity
     pEntity->GetEntityData(VERIFY_MESSAGE, &pSubEntity);
 
 
     SLISTINFO sListInfo;
     sNumericInfo sNumInfo;
 
-    
+
     if(pSubEntity.m_eSignalUnitType == RAW)
     {
-       omstrTemp = "RAW";
+        omstrTemp = "RAW";
     }
     else if(pSubEntity.m_eSignalUnitType == ENG)
     {
         omstrTemp = "ENG";
     }
-    
+
     //Failure ClassiFication Information
     omTempListCtrl.InsertItem(def_VMSG_ROWNUM_SUINT, "Signal Unit Type");
     omTempListCtrl.SetItemText(def_VMSG_ROWNUM_SUINT, def_COLUMN_VALUE, omstrTemp);
@@ -1165,10 +1165,10 @@ void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA *pBaseEntity)
     sListInfo.m_omEntries.Add("RAW");
     sListInfo.m_omEntries.Add("ENG");
     omTempListCtrl.vSetColumnInfo(def_VMSG_ROWNUM_SUINT, def_COLUMN_VALUE, sListInfo);
-   
+
     nSignalCount = (INT)pSubEntity.m_odSignalConditionList.GetCount();
     sListInfo.m_eType = eText;
-    
+
     for(INT i = 0; i < nSignalCount; i++)
     {
         POSITION  pos = pSubEntity.m_odSignalConditionList.FindIndex(i);
@@ -1182,14 +1182,14 @@ void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA *pBaseEntity)
 
 /******************************************************************************
 Function Name  :  nCancelCurrentChanges
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nCancelCurrentChanges()
 {
@@ -1199,14 +1199,14 @@ INT CTSEditorChildFrame::nCancelCurrentChanges()
 
 /******************************************************************************
 Function Name  :  nConfirmCurrentChanges
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nConfirmCurrentChanges()
 {
@@ -1249,27 +1249,27 @@ INT CTSEditorChildFrame::nConfirmCurrentChanges()
 
 /******************************************************************************
 Function Name  :  vSaveHeaderInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
 {
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
     m_ouTSEntity.m_omstrTestSetupTitle = omTempListCtrl.GetItemText(def_TS_ROWNUM_TITLE, 1);
     m_odTreeView->GetTreeCtrl().SetItemText(m_hCurrentTreeItem, m_ouTSEntity.m_omstrTestSetupTitle);
 
     m_ouTSEntity.m_omstrDescription = omTempListCtrl.GetItemText(def_TS_ROWNUM_DESCRIPTION, 1);
-    
+
     //Get Header Info.
-/*
-#define def_TS_ROWNUM_FILEFORMAT        10*/
+    /*
+    #define def_TS_ROWNUM_FILEFORMAT        10*/
     CTestSetupHeader ouHeaderInfo;
     m_ouTSEntity.GetHeaderData(ouHeaderInfo);
 
@@ -1278,19 +1278,19 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     ouHeaderInfo.m_sEngineerInfo1.m_omValue = omTempListCtrl.GetItemText(def_TS_ROWNUM_ENGINEER1, 1);
     ouHeaderInfo.m_sEngineerInfo2.m_omValue = omTempListCtrl.GetItemText(def_TS_ROWNUM_ENGINEER2, 1);
     ouHeaderInfo.m_sReportFile.m_omPath = omTempListCtrl.GetItemText(def_TS_ROWNUM_REPORT, 1);
-    
-   /* struct _finddata_t fileinfo;
-    // If file doesn't exist, return
-    if (_findfirst( ouHeaderInfo.m_sReportFile.m_omPath, &fileinfo)== -1)
-    {
-        MessageBox(_T("Invalid Database path"), _T("Error"), MB_OK|MB_ICONERROR);   
-        m_odPropertyView->m_omPropertyList.SetItemText(def_TS_ROWNUM_REPORT, 1, _T(""));
-        ouHeaderInfo.m_sReportFile.m_omPath = _T("");
-    }*/
+
+    /* struct _finddata_t fileinfo;
+     // If file doesn't exist, return
+     if (_findfirst( ouHeaderInfo.m_sReportFile.m_omPath, &fileinfo)== -1)
+     {
+         MessageBox(_T("Invalid Database path"), _T("Error"), MB_OK|MB_ICONERROR);
+         m_odPropertyView->m_omPropertyList.SetItemText(def_TS_ROWNUM_REPORT, 1, _T(""));
+         ouHeaderInfo.m_sReportFile.m_omPath = _T("");
+     }*/
     ouHeaderInfo.m_omDatabasePath = omTempListCtrl.GetItemText(def_TS_ROWNUM_DATABASE, 1);
-    
+
     //Bus Type
-    CString omStrTemp;    
+    CString omStrTemp;
     omStrTemp = omTempListCtrl.GetItemText(def_TS_ROWNUM_BUSTYPE, 1);
     if(omStrTemp == "CAN")
     {
@@ -1300,7 +1300,7 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     {
         ouHeaderInfo.m_eBus = CAN;
     }
-    
+
     //Time Mode
     omStrTemp = omTempListCtrl.GetItemText(def_TS_ROWNUM_TIMEMODE, 1);
     if(omStrTemp == "RELATIVE")
@@ -1311,12 +1311,12 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     {
         ouHeaderInfo.m_sReportFile.m_eTimeMode = ABS;
     }
-    
+
     //File Format
     char* pchExten = PathFindExtension(ouHeaderInfo.m_sReportFile.m_omPath);
 
     //omStrTemp = omTempListCtrl.GetItemText(def_TS_ROWNUM_FILEFORMAT, 1);
-    if((strcmp(pchExten, _T(".HTML")) == 0)||(strcmp(pchExten, _T(".html")) == 0))
+    if((strcmp(pchExten, ".HTML") == 0)||(strcmp(pchExten, _T(".html")) == 0))
     {
         ouHeaderInfo.m_sReportFile.m_eType = HTM;
     }
@@ -1329,30 +1329,30 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
 
 /******************************************************************************
 Function Name  :  vSaveTestcaseInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveTestcaseInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveTestcaseInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
-    CTestCaseEntity *pTCEntity = (CTestCaseEntity*)pEntity;
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
+    CTestCaseEntity* pTCEntity = (CTestCaseEntity*)pEntity;
+
     CTestCaseData odData;
-    
+
     CString omstrTemp;
 
     //Title on first row
     odData.m_omID = omTempListCtrl.GetItemText(def_TC_ROWNUM_TCID, def_COLUMN_VALUE);
-    
+
     //TestCase Name in Second row
     odData.m_omTitle = omTempListCtrl.GetItemText(def_TC_ROWNUM_TCNAME, def_COLUMN_VALUE);
 
@@ -1371,28 +1371,28 @@ void CTSEditorChildFrame::vSaveTestcaseInfo(CBaseEntityTA *pEntity)
     //The Selection will be exactly on our Testcase item
     HTREEITEM hItem = m_hCurrentTreeItem;
     m_odTreeView->GetTreeCtrl().SetItemText(hItem, odData.m_omTitle);
-   
+
 }
 
 /******************************************************************************
 Function Name  :  vSaveSendInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveSendInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveSendInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
-        
+
     UINT unCount;
     CSend_MessageData odData;
-    pEntity->GetSubEntryCount(unCount); 
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
+    pEntity->GetSubEntryCount(unCount);
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     CString omstrTemp = omTempListCtrl.GetItemText(def_SEND_ROWNUM_MSGCNT, 1);
     unCount = atoi(omstrTemp);
     CSendData odSendData;
@@ -1403,40 +1403,52 @@ void CTSEditorChildFrame::vSaveSendInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vSaveVerifyInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
-    /*CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
-    UINT unCount;
-    CVerify_MessageData odData;// = new CSend_MessageData();
-    pEntity->GetSubEntryCount(unCount); //Send_Message Count
-  
-    CString omstrTemp;
-    
-    omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_MSGCNT, 1);
-    unCount = atoi(omstrTemp);*/
     CVerifyData odVerifyData;
+
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
+
+    CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, 1);
+
+
     m_ouVerifyEntity.GetEntityData(VERIFY, &odVerifyData);
+
+
+    if(omstrTemp == "WARNING")
+    {
+        odVerifyData.m_eAttributeError = WARNING;
+    }
+    else if(omstrTemp == "ERROR")
+    {
+        odVerifyData.m_eAttributeError = ERRORS;
+    }
+    else
+    {
+        odVerifyData.m_eAttributeError = FATAL;
+    }
+
     pEntity->SetEntityData(VERIFY, &odVerifyData);
 
     parseVerifyEntity(pEntity, m_hCurrentTreeItem);
 }
 
-void CTSEditorChildFrame::vSaveVerfiyReponseInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveVerfiyReponseInfo(CBaseEntityTA* pEntity)
 {
     CVerifyResponseData ouVerifyResponseData;
-    
+
     //Message List
     m_ouVerifyEntity.GetEntityData(VERIFY, &ouVerifyResponseData.m_VerifyData);
     CListCtrl& omTempListCtrl = m_odPropertyView->m_omPropertyList;
@@ -1445,22 +1457,38 @@ void CTSEditorChildFrame::vSaveVerfiyReponseInfo(CBaseEntityTA *pEntity)
     CString omStrWiatFor = omTempListCtrl.GetItemText(def_ROWNNUM_WAITFOR, def_COLUMN_VALUE);
     ouVerifyResponseData.m_ushDuration = (USHORT)atoi(omStrWiatFor);
 
+    CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, def_COLUMN_VALUE);
+
+
+    if(omstrTemp == "WARNING")
+    {
+        ouVerifyResponseData.m_VerifyData.m_eAttributeError = WARNING;
+    }
+    else if(omstrTemp == "ERROR")
+    {
+        ouVerifyResponseData.m_VerifyData.m_eAttributeError = ERRORS;
+    }
+    else
+    {
+        ouVerifyResponseData.m_VerifyData.m_eAttributeError = FATAL;
+    }
+
     //Saving
     pEntity->SetEntityData(VERIFYRESPONSE, &ouVerifyResponseData);
     parseVerifyEntity(pEntity, m_hCurrentTreeItem);
 }
 /******************************************************************************
 Function Name  :  vSaveSendMessageInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
@@ -1470,9 +1498,9 @@ void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA *pEntity)
     UINT unSignalCount;
     CSend_MessageData ouSendMsgEntity;
     ((CSend_MessageEntity*)pEntity)->GetEntityData(SEND_MESSAGE, &ouSendMsgEntity);
-    
+
     omstrTemp = omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE);
-    
+
     if(omstrTemp == "ENG")
     {
         ouSendMsgEntity.m_eSignalUnitType = ENG;
@@ -1518,16 +1546,16 @@ void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vSaveVerifyMessageInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveVerifyMessageInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveVerifyMessageInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
@@ -1539,7 +1567,7 @@ void CTSEditorChildFrame::vSaveVerifyMessageInfo(CBaseEntityTA *pEntity)
     ((CVerify_MessageEntity*)pEntity)->GetEntityData(VERIFY_MESSAGE, &odVerifyMsgEntity);
     //Failure Classification Information
     omstrTemp = omTempListCtrl.GetItemText(def_VMSG_ROWNUM_SUINT, def_COLUMN_VALUE);
-    
+
     if(omstrTemp == "ENG")
     {
         odVerifyMsgEntity.m_eSignalUnitType = ENG;
@@ -1548,7 +1576,7 @@ void CTSEditorChildFrame::vSaveVerifyMessageInfo(CBaseEntityTA *pEntity)
     {
         odVerifyMsgEntity.m_eSignalUnitType = RAW;
     }
-    
+
     CSignalCondition ouSignalCondition;
     unSignalCount = omTempListCtrl.GetItemCount() - 1;
     odVerifyMsgEntity.m_odSignalConditionList.RemoveAll();
@@ -1565,22 +1593,22 @@ void CTSEditorChildFrame::vSaveVerifyMessageInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vSaveWaitInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveWaitInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveWaitInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
     CString omstrTemp;
     CWaitEntityData odData;
-    CListCtrlEx &omTempListCtrl = m_odPropertyView->m_omPropertyList;
-    
+    CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+
     pEntity->GetEntityData(WAIT, &odData);
     odData.m_omPurpose = omTempListCtrl.GetItemText(def_WAIT_ROWNUM_PURPOSE, 1);
     omstrTemp = omTempListCtrl.GetItemText(def_WAIT_ROWNUM_DELAY, 1);
@@ -1590,16 +1618,16 @@ void CTSEditorChildFrame::vSaveWaitInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vSaveReplayInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vSaveReplayInfo(CBaseEntityTA *pEntity)
+void CTSEditorChildFrame::vSaveReplayInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
     CString omstrTemp = m_odPropertyView->m_omPropertyList.GetItemText(def_REPLAY_ROWNUM_FILEPATH, 1);
@@ -1608,14 +1636,14 @@ void CTSEditorChildFrame::vSaveReplayInfo(CBaseEntityTA *pEntity)
 
 /******************************************************************************
 Function Name  :  vSetModifiedFlag
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vSetModifiedFlag(BOOL isModified)
 {
@@ -1628,14 +1656,14 @@ void CTSEditorChildFrame::vSetModifiedFlag(BOOL isModified)
 
 /******************************************************************************
 Function Name  :  vSetFileSavedFlag
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vSetFileSavedFlag(BOOL isModified)
 {
@@ -1644,14 +1672,14 @@ void CTSEditorChildFrame::vSetFileSavedFlag(BOOL isModified)
 
 /******************************************************************************
 Function Name  :  vListCtrlItemChanged
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vListCtrlItemChanged(LPNMLISTVIEW pNMLV)
 {
@@ -1661,7 +1689,7 @@ void CTSEditorChildFrame::vListCtrlItemChanged(LPNMLISTVIEW pNMLV)
     }
     if(m_pCurrentEntity->GetEntityType() == SEND)
     {
-        vHandleSendEntity(pNMLV);  
+        vHandleSendEntity(pNMLV);
     }
     else if(m_pCurrentEntity->GetEntityType() == VERIFY)
     {
@@ -1675,18 +1703,18 @@ void CTSEditorChildFrame::vListCtrlItemChanged(LPNMLISTVIEW pNMLV)
 
 /******************************************************************************
 Function Name  :  vHandleTestSetup
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
 {
-    if(pNMLV->iItem == def_TS_ROWNUM_DATABASE)           
+    if(pNMLV->iItem == def_TS_ROWNUM_DATABASE)
     {
         CString omstrDatabaseName = m_odPropertyView->m_omPropertyList.GetItemText(def_TS_ROWNUM_DATABASE, 1);
         CTestSetupHeader ouHeaderInfo;
@@ -1701,7 +1729,7 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         {
             if(omstrDatabaseName != ouHeaderInfo.m_omDatabasePath)
             {
-                int nRetVal = MessageBox(_T("Database Path Is Changed\nDo You want to Delete all Existing messages"), _T("Database Path"),MB_YESNO);
+                int nRetVal = MessageBox("Database Path Is Changed\nDo You want to Delete all Existing messages", "Database Path",MB_YESNO);
                 if(nRetVal == IDYES)
                 {
                     ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
@@ -1722,14 +1750,14 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
 
 /******************************************************************************
 Function Name  :  vHandleSendEntity
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
@@ -1746,8 +1774,9 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
             omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
             if(omstrTemp == defDELETE_MSG_SYMBOL)
             {
-                if(item != omTempListCtrl.GetItemCount()-1) // Last Item Check.Still This 
-                {                                            // Message is not added in List;
+                if(item != omTempListCtrl.GetItemCount()-1) // Last Item Check.Still This
+                {
+                    // Message is not added in List;
                     m_omSendEntity.DeleteSubEntry(item - defLIST_SEND_ST_ROW);      //Message Index
                     omTempListCtrl.DeleteItem(item);
                 }
@@ -1769,7 +1798,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     odSendMsgData.m_dwMessageID = m_ouTSEntity.m_ouDataBaseManager.unGetMessageID(omstrTemp);
                     odNewSendEnity.SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     m_omSendEntity.AddSubEntry((CBaseEntityTA*)&odNewSendEnity);
-                                       
+
                     omTempListCtrl.InsertItem(item+1, "");
                     omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, "[Add Message]");
                     omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
@@ -1777,7 +1806,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                 else
                 {
                     CBaseEntityTA* pEntity;
-                    
+
                     CSend_MessageData odOrgMsgData;
                     m_omSendEntity.GetSubEntityObj(item-1, &pEntity);
                     pEntity->GetEntityData(SEND_MESSAGE, &odOrgMsgData);
@@ -1787,7 +1816,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     {
                         pEntity->SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     }
-                }   
+                }
                 omstrTemp.Format("%d", odSendMsgData.m_dwMessageID);
                 omTempListCtrl.DeleteItem(item);
                 omTempListCtrl.InsertItem(item, omstrTemp);
@@ -1804,14 +1833,14 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
 
 /******************************************************************************
 Function Name  :  vHandleVerifyEntity
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
 {
@@ -1825,8 +1854,9 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
         omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
         if(omstrTemp == defDELETE_MSG_SYMBOL)
         {
-            if(item != omTempListCtrl.GetItemCount()-1) // Lase Item Check.Still This 
-            {                                            // Message is not added in List;
+            if(item != omTempListCtrl.GetItemCount()-1) // Lase Item Check.Still This
+            {
+                // Message is not added in List;
                 m_ouVerifyEntity.DeleteSubEntry(item - def_VERIFY_ROWNUM_MSGLIST);      //Message Index
                 omTempListCtrl.DeleteItem(item);
             }
@@ -1845,11 +1875,11 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
             {
                 CVerify_MessageEntity odNewVerifyEnity;
                 odVerifyMsgData.m_omMessageName = omstrTemp;
-                
+
                 odVerifyMsgData.m_dwMessageID = m_ouTSEntity.m_ouDataBaseManager.unGetMessageID(omstrTemp);
                 odNewVerifyEnity.SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
-                                    
+
                 omTempListCtrl.InsertItem(item+1, "");
                 omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, "[Add Message]");
                 omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
@@ -1857,7 +1887,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
             else
             {
                 CBaseEntityTA* pEntity;
-                
+
                 CVerify_MessageData odOrgMsgData;
                 m_ouVerifyEntity.GetSubEntityObj(item-def_VERIFY_ROWNUM_MSGLIST, &pEntity);
                 pEntity->GetEntityData(VERIFY_MESSAGE, &odOrgMsgData);
@@ -1867,7 +1897,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 {
                     pEntity->SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 }
-            }   
+            }
             omstrTemp.Format("%d", odVerifyMsgData.m_dwMessageID);
             omTempListCtrl.DeleteItem(item);
             omTempListCtrl.InsertItem(item, omstrTemp);
@@ -1884,14 +1914,14 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
 
 /******************************************************************************
 Function Name  :  vHandleVerifyResponseEntity
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  21/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
@@ -1906,8 +1936,9 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
         omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
         if(omstrTemp == defDELETE_MSG_SYMBOL)
         {
-            if(item != omTempListCtrl.GetItemCount()-1) // Lase Item Check.Still This 
-            {                                            // Message is not added in List;
+            if(item != omTempListCtrl.GetItemCount()-1) // Lase Item Check.Still This
+            {
+                // Message is not added in List;
                 m_ouVerifyEntity.DeleteSubEntry(item - def_VERIFYRES_ROWNUM_MSGLIST);      //Message Index
                 omTempListCtrl.DeleteItem(item);
             }
@@ -1926,11 +1957,11 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
             {
                 CVerify_MessageEntity odNewVerifyEnity;
                 odVerifyMsgData.m_omMessageName = omstrTemp;
-                
+
                 odVerifyMsgData.m_dwMessageID = m_ouTSEntity.m_ouDataBaseManager.unGetMessageID(omstrTemp);
                 odNewVerifyEnity.SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
-                                    
+
                 omTempListCtrl.InsertItem(item+1, "");
                 omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, "[Add Message]");
                 omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
@@ -1938,7 +1969,7 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
             else
             {
                 CBaseEntityTA* pEntity;
-                
+
                 CVerify_MessageData odOrgMsgData;
                 m_ouVerifyEntity.GetSubEntityObj(item-def_VERIFYRES_ROWNUM_MSGLIST, &pEntity);
                 pEntity->GetEntityData(VERIFY_MESSAGE, &odOrgMsgData);
@@ -1948,7 +1979,7 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
                 {
                     pEntity->SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 }
-            }   
+            }
             omstrTemp.Format("%d", odVerifyMsgData.m_dwMessageID);
             omTempListCtrl.DeleteItem(item);
             omTempListCtrl.InsertItem(item, omstrTemp);
@@ -1964,14 +1995,14 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
 }
 /******************************************************************************
 Function Name  :  unRepisitonEntry
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 UINT CTSEditorChildFrame::unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwInsertAfterItemID, DWORD dwParentID)
 {
@@ -1988,14 +2019,14 @@ UINT CTSEditorChildFrame::unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwIns
 
 /******************************************************************************
 Function Name  :  eGetCurrentEntityType
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 eTYPE_ENTITY CTSEditorChildFrame::eGetCurrentEntityType()
 {
@@ -2006,8 +2037,8 @@ eTYPE_ENTITY CTSEditorChildFrame::eGetCurrentEntityType()
 Function Name  :  nAddNewEntity
 Input(s)       :  DWORD dwId - Parent ID
                   eTYPE_ENTITY eEntityType - Entity Type;
-Output         :  
-Functionality  :   
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -2016,7 +2047,7 @@ Modifications  :  CS007
 ******************************************************************************/
 INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
 {
-    CTreeViewEx &omTempTreeCtrl = (CTreeViewEx&)m_odTreeView->GetTreeCtrl();
+    CTreeViewEx& omTempTreeCtrl = (CTreeViewEx&)m_odTreeView->GetTreeCtrl();
     CBaseEntityTA* pParentEntity, *pNewEntity;
     m_ouTSEntity.SearchEntityObject(dwId, &pParentEntity);
     CString omStrNewItem;
@@ -2027,7 +2058,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         {
             CTestCaseEntity ouTestCaseEntity;
             m_ouTSEntity.AddSubEntry(&ouTestCaseEntity);
-            CBaseEntityTA *pouTestCaseEntity;
+            CBaseEntityTA* pouTestCaseEntity;
             m_ouTSEntity.GetSubEntityObj(m_ouTSEntity.GetSubEntryCount()-1, &pouTestCaseEntity);
             omTempTreeCtrl.InsertTreeItem(m_hParentTreeItem, "Untitled TestCase", NULL, 0, 0, pouTestCaseEntity->GetID());
             omTempTreeCtrl.RedrawWindow();
@@ -2080,14 +2111,14 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
 
 /******************************************************************************
 Function Name  :  nChangeEntityTitle
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nChangeEntityTitle(CBaseEntityTA* pEntity, CString& omstrName)
 {
@@ -2121,9 +2152,9 @@ INT CTSEditorChildFrame::nChangeEntityTitle(CBaseEntityTA* pEntity, CString& oms
 
 /******************************************************************************
 Function Name  :  nDeleteItem
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -2133,7 +2164,7 @@ Modifications  :  CS010
 INT CTSEditorChildFrame::nDeleteItem(DWORD dwId, DWORD dwParentId)
 {
     //CTreeCtrl &omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
-    CBaseEntityTA *pouDelEntity, *pouParentItem;
+    CBaseEntityTA* pouDelEntity, *pouParentItem;
     m_ouTSEntity.SearchEntityObject(dwId, &pouDelEntity);
     if(pouDelEntity->GetEntityType() != TEST_CASE)
     {
@@ -2149,14 +2180,14 @@ INT CTSEditorChildFrame::nDeleteItem(DWORD dwId, DWORD dwParentId)
 
 /******************************************************************************
 Function Name  :  OnFileSave
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileSave()
 {
@@ -2170,16 +2201,16 @@ void CTSEditorChildFrame::OnFileSave()
 
 /******************************************************************************
 Function Name  :  OnUpdateFileSave
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
+void CTSEditorChildFrame::OnUpdateFileSave(CCmdUI* pCmdUI)
 {
     if((m_bFileSaved == FALSE)||(m_bModified == TRUE))
     {
@@ -2194,14 +2225,14 @@ void CTSEditorChildFrame::OnUpdateFileSave(CCmdUI *pCmdUI)
 
 /******************************************************************************
 Function Name  :  OnFileNew
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  07/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       : CS001
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileNew()
@@ -2214,8 +2245,8 @@ void CTSEditorChildFrame::OnFileNew()
         m_odPropertyView->m_omPropertyList.DeleteAllItems();
     }
 
-    CFileDialog omFileOpenDlg(FALSE, _T(".xml"), 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
-	omFileOpenDlg.m_ofn.lpstrTitle = "New TestSetup File";
+    CFileDialog omFileOpenDlg(FALSE, ".xml", 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
+    omFileOpenDlg.m_ofn.lpstrTitle = "New TestSetup File";
     if(omFileOpenDlg.DoModal() == IDOK)
     {
         CString omstrFileName = omFileOpenDlg.GetPathName();
@@ -2233,14 +2264,14 @@ void CTSEditorChildFrame::OnFileNew()
 
 /******************************************************************************
 Function Name  :  nPromptForSaveFile
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 INT CTSEditorChildFrame::nPromptForSaveFile()
 {
@@ -2249,8 +2280,8 @@ INT CTSEditorChildFrame::nPromptForSaveFile()
     {
         CString omstrMsg;
         omstrMsg.Format("The file '%s' has been modified\nDo you Want to save?", m_omCurrentTSFile.GetBuffer(MAX_PATH));
-        nRetVal = MessageBox(omstrMsg, _T("BUSMASTER TestSetup Editor"), MB_YESNOCANCEL|MB_ICONQUESTION);
-        
+        nRetVal = MessageBox(omstrMsg, "BUSMASTER TestSetup Editor", MB_YESNOCANCEL|MB_ICONQUESTION);
+
         if(nRetVal == IDYES)
         {
             OnFileSave();
@@ -2261,18 +2292,18 @@ INT CTSEditorChildFrame::nPromptForSaveFile()
 
 /******************************************************************************
 Function Name  :  OnFileSaveas
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileSaveas()
 {
-    CFileDialog omSaveAsFileDlg(FALSE, _T(".xml"), 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
+    CFileDialog omSaveAsFileDlg(FALSE, ".xml", 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
     if(IDOK == omSaveAsFileDlg.DoModal())
     {
         CString omSelectedFile = omSaveAsFileDlg.GetPathName();
@@ -2283,14 +2314,14 @@ void CTSEditorChildFrame::OnFileSaveas()
 
 /******************************************************************************
 Function Name  :  OnFileClose
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileClose()
 {
@@ -2309,16 +2340,16 @@ void CTSEditorChildFrame::OnFileClose()
 
 /******************************************************************************
 Function Name  :  OnUpdateFileSaveas
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::OnUpdateFileSaveas(CCmdUI *pCmdUI)
+void CTSEditorChildFrame::OnUpdateFileSaveas(CCmdUI* pCmdUI)
 {
     if(m_omCurrentTSFile == def_EMPTYFILENAME || m_omCurrentTSFile == "")
     {
@@ -2332,14 +2363,14 @@ void CTSEditorChildFrame::OnUpdateFileSaveas(CCmdUI *pCmdUI)
 
 /******************************************************************************
 Function Name  :  vSetCurrentFile
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vSetCurrentFile(CString& omNewFilePath)
 {
@@ -2356,14 +2387,14 @@ void CTSEditorChildFrame::vSetCurrentFile(CString& omNewFilePath)
 
 /******************************************************************************
 Function Name  :  OnUpdateFrameTitle
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 {
@@ -2373,14 +2404,14 @@ void CTSEditorChildFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 
 /******************************************************************************
 Function Name  :  OnEditCopy
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnEditCopy()
 {
@@ -2398,16 +2429,16 @@ void CTSEditorChildFrame::OnEditCopy()
 
 /******************************************************************************
 Function Name  :  vCopyTreeItem
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::vCopyTreeItem(CBaseEntityTA **podCopyEntity, CBaseEntityTA *pCurrentEntity)
+void CTSEditorChildFrame::vCopyTreeItem(CBaseEntityTA** podCopyEntity, CBaseEntityTA* pCurrentEntity)
 {
     if(pCurrentEntity->GetEntityType() != TEST_SETUP)
     {
@@ -2451,29 +2482,29 @@ void CTSEditorChildFrame::vCopyTreeItem(CBaseEntityTA **podCopyEntity, CBaseEnti
 
 /******************************************************************************
 Function Name  :  OnUpdateEditCopy
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::OnUpdateEditCopy(CCmdUI *pCmdUI)
+void CTSEditorChildFrame::OnUpdateEditCopy(CCmdUI* pCmdUI)
 {
-    pCmdUI->Enable(bEnableCopy());  
+    pCmdUI->Enable(bEnableCopy());
 }
 /******************************************************************************
 Function Name  :  bEnableCopy
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  25/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 BOOL CTSEditorChildFrame::bEnableCopy()
@@ -2497,14 +2528,14 @@ BOOL CTSEditorChildFrame::bEnableCopy()
 }
 /******************************************************************************
 Function Name  :  OnEditPaste
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnEditPaste()
 {
@@ -2515,9 +2546,9 @@ void CTSEditorChildFrame::OnEditPaste()
         return;
     }
 
-    CBaseEntityTA *podCopyEntity = NULL;
+    CBaseEntityTA* podCopyEntity = NULL;
     vCopyTreeItem(&podCopyEntity, m_podCopyEntity);
-    
+
     switch(podCopyEntity->GetEntityType())
     {
         case TEST_CASE:
@@ -2550,29 +2581,29 @@ void CTSEditorChildFrame::OnEditPaste()
 
 /******************************************************************************
 Function Name  :  OnUpdateEditPaste
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::OnUpdateEditPaste(CCmdUI *pCmdUI)
+void CTSEditorChildFrame::OnUpdateEditPaste(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(bEnablePase());
 }
 /******************************************************************************
 Function Name  :  bEnablePase
-Input(s)       :  
+Input(s)       :
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  25/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 BOOL CTSEditorChildFrame::bEnablePase()
@@ -2583,7 +2614,7 @@ BOOL CTSEditorChildFrame::bEnablePase()
         bRetVal = FALSE;
         return bRetVal;
     }
-    
+
     if(isParentChild(m_pCurrentEntity->GetEntityType(), m_podCopyEntity->GetEntityType()) ==TRUE)
     {
         bRetVal = TRUE;
@@ -2596,14 +2627,14 @@ BOOL CTSEditorChildFrame::bEnablePase()
 }
 /******************************************************************************
 Function Name  :  isParentChild
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTSEditorChildFrame::isParentChild(eTYPE_ENTITY eParent, eTYPE_ENTITY eChild)
 {
@@ -2653,19 +2684,19 @@ BOOL CTSEditorChildFrame::isParentChild(eTYPE_ENTITY eParent, eTYPE_ENTITY eChil
 
 /******************************************************************************
 Function Name  :  OnEditCut
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnEditCut()
 {
     OnEditCopy();
-    CTreeCtrl &omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
+    CTreeCtrl& omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
     HTREEITEM hParentItem = omTempTreeCtrl.GetParentItem(m_hCurrentTreeItem);
     DWORD dwParentId = (DWORD)omTempTreeCtrl.GetItemData(hParentItem);
     nDeleteItem(m_pCurrentEntity->GetID(), dwParentId);
@@ -2676,30 +2707,30 @@ void CTSEditorChildFrame::OnEditCut()
 
 /******************************************************************************
 Function Name  :  OnUpdateEditCut
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-void CTSEditorChildFrame::OnUpdateEditCut(CCmdUI *pCmdUI)
+void CTSEditorChildFrame::OnUpdateEditCut(CCmdUI* pCmdUI)
 {
     OnUpdateEditCopy(pCmdUI);
 }
 
 /******************************************************************************
 Function Name  :  OnDisplayReset
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnDisplayReset()
 {
@@ -2708,14 +2739,14 @@ void CTSEditorChildFrame::OnDisplayReset()
 
 /******************************************************************************
 Function Name  :  vShowHelpInfo
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vShowHelpInfo(eTYPE_ENTITY eEntityType)
 {
@@ -2754,14 +2785,14 @@ void CTSEditorChildFrame::vShowHelpInfo(eTYPE_ENTITY eEntityType)
 
 /******************************************************************************
 Function Name  :  OnDisplaySettings
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnDisplaySettings()
 {
@@ -2777,10 +2808,10 @@ void CTSEditorChildFrame::OnDisplaySettings()
     ouSettingsDlg.m_bQueryConfirm = !m_bQueryConfirm;
     if(ouSettingsDlg.DoModal() == IDOK)
     {
-        m_odTreeView->vSetTreeCtrlColor(ouSettingsDlg.m_ouBkColorBtn.GetColour(), 
+        m_odTreeView->vSetTreeCtrlColor(ouSettingsDlg.m_ouBkColorBtn.GetColour(),
                                         ouSettingsDlg.m_ouTxtColorBtn.GetColour());
         m_odPropertyView->m_omPropertyList.vSetRowColors(ouSettingsDlg.m_Row1Color.GetColour(),
-                                        ouSettingsDlg.m_Row2Color.GetColour());
+                ouSettingsDlg.m_Row2Color.GetColour());
         m_bQueryConfirm = !ouSettingsDlg.m_bQueryConfirm;
     }
 
@@ -2788,14 +2819,14 @@ void CTSEditorChildFrame::OnDisplaySettings()
 
 /******************************************************************************
 Function Name  :  OnFileValidate
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  13/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileValidate()
@@ -2805,23 +2836,23 @@ void CTSEditorChildFrame::OnFileValidate()
     m_odPropertyView->vShowHelpInfo(omStrResult);
     if(hResult != ERR_VALID_SUCCESS)
     {
-        MessageBox(_T("Found Some Errors\\Warnings"), _T("Validation Failed"), MB_OK|MB_ICONERROR);
+        MessageBox("Found Some Errors\\Warnings", "Validation Failed", MB_OK|MB_ICONERROR);
     }
     else
     {
-        MessageBox(_T("No Errors\\Warnings are Found"), _T("Validation Success"), MB_OK|MB_ICONINFORMATION);
+        MessageBox("No Errors\\Warnings are Found", "Validation Success", MB_OK|MB_ICONINFORMATION);
     }
 }
 /******************************************************************************
 Function Name  :  PreTranslateMessage
-Input(s)       :  
-Output         :  
-Functionality  :   
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  04/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CTSEditorChildFrame::PreTranslateMessage(MSG* pMsg)
 {
@@ -2857,7 +2888,7 @@ BOOL CTSEditorChildFrame::PreTranslateMessage(MSG* pMsg)
                     return TRUE;
                 default:
                     break;
-            }   
+            }
         }
     }
     return CMDIChildWnd::PreTranslateMessage(pMsg);
@@ -2867,29 +2898,29 @@ Function Name  :  GetConfigurationData
 Input(s)       :  BYTE*& pDesBuffer - Confiduration data
                   UINT& nBuffSize - Buffer Size
 Output         :  HRESULT - S_OK if success
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTSEditorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
 {
     nBuffSize = (4*sizeof(COLORREF) + sizeof(BOOL) + sizeof(WINDOWPLACEMENT) + 2*sizeof(int));
     pDesBuffer = new BYTE[nBuffSize];
     COLORREF omCol1, omCol2;
-    
-    BYTE *pTemp = pDesBuffer;
-    
+
+    BYTE* pTemp = pDesBuffer;
+
     m_odTreeView->vGetTreeCtrlColor(omCol1, omCol2);
     COPY_DATA(pTemp, &omCol1, sizeof(COLORREF));
     COPY_DATA(pTemp, &omCol2, sizeof(COLORREF));
-    
+
     m_odPropertyView->m_omPropertyList.vGetRowColors(omCol1, omCol2);
     COPY_DATA(pTemp, &omCol1, sizeof(COLORREF));
     COPY_DATA(pTemp, &omCol2, sizeof(COLORREF));
-    
+
     //Window position
     WINDOWPLACEMENT wndPlacement;
     GetWindowPlacement(&wndPlacement);
@@ -2910,21 +2941,21 @@ Function Name  :  SetConfigurationData
 Input(s)       :  BYTE*& pDesBuffer - Confiduration data
                   UINT& nBuffSize - Buffer Size
 Output         :  HRESULT - S_OK if success
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 HRESULT CTSEditorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
     if(unBuffSize != 0)
     {
         COLORREF omCol1, omCol2;
-    
-        BYTE *pTemp = pSrcBuffer;
-        
+
+        BYTE* pTemp = pSrcBuffer;
+
         COPY_DATA_2(&omCol1, pTemp, sizeof(COLORREF));
         COPY_DATA_2(&omCol2, pTemp, sizeof(COLORREF));
         m_odTreeView->vSetTreeCtrlColor(omCol1, omCol2);
@@ -2939,7 +2970,7 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffS
         WINDOWPLACEMENT wndPlacement;
         COPY_DATA_2(&wndPlacement, pTemp,sizeof(WINDOWPLACEMENT));
         SetWindowPlacement(&wndPlacement);
-        
+
         INT nCxCur, nCxMin;
         COPY_DATA_2(&nCxCur, pTemp, sizeof(INT));
         COPY_DATA_2(&nCxMin, pTemp, sizeof(INT));
@@ -2961,29 +2992,29 @@ Function Name  :  vDisplaySignalInfo
 Input(s)       :  CBaseEntityTA* pBaseEntity - Send or Verify Message entity
                   CString& omStrMsg - Signal Info
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vDisplaySignalInfo(CString& omStrMsg)
 {
     sMESSAGE sMsg;
     if( S_OK == m_ouTSEntity.m_ouDataBaseManager.nGetMessageInfo(omStrMsg, sMsg))
     {
-        sSIGNALS *sSignalInfo = sMsg.m_psSignals;
+        sSIGNALS* sSignalInfo = sMsg.m_psSignals;
         CString omStrText;
         omStrText.Format(def_STR_SIGNAL_HEADING, "Signal", "Byte", "StartBit", "Length");
         while(sSignalInfo != NULL)
         {
             CString omStrSignal;
-            omStrSignal.Format(def_STR_SIGNAL_FORMAT, sSignalInfo->m_omStrSignalName, sSignalInfo->m_unStartByte, 
-                                sSignalInfo->m_byStartBit, sSignalInfo->m_unSignalLength);
+            omStrSignal.Format(def_STR_SIGNAL_FORMAT, sSignalInfo->m_omStrSignalName, sSignalInfo->m_unStartByte,
+                               sSignalInfo->m_byStartBit, sSignalInfo->m_unSignalLength);
             sSignalInfo = sSignalInfo->m_psNextSignalList;
             //omStrText.Append(omStrSignal);
-			omStrText+=omStrSignal;            
+            omStrText+=omStrSignal;
         }
         m_odPropertyView->vShowHelpInfo(omStrText);
     }
@@ -2991,14 +3022,14 @@ void CTSEditorChildFrame::vDisplaySignalInfo(CString& omStrMsg)
 
 /******************************************************************************
 Function Name  :  OnFileExit
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  14/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileExit(void)
@@ -3008,14 +3039,14 @@ void CTSEditorChildFrame::OnFileExit(void)
 }
 /******************************************************************************
 Function Name  :  OnMDIActivate
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  20/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd)
@@ -3024,7 +3055,7 @@ void CTSEditorChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd
     {
         m_hMenuShared = m_omMenu.GetSafeHmenu();
     }
-    
+
     if(bActivate == FALSE)
     {
         AfxGetMainWnd()->SetMenu(m_pMainMenu);
@@ -3034,14 +3065,14 @@ void CTSEditorChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd
 
 /******************************************************************************
 Function Name  :  vSetDefaultWndPlacement
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  20/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::vSetDefaultWndPlacement(void)
@@ -3053,8 +3084,8 @@ void CTSEditorChildFrame::vSetDefaultWndPlacement(void)
     MinPosition.y = 0;
 
     RECT NormalPosition;
-    NormalPosition.left	= 63;
-    NormalPosition.top	= 4;
+    NormalPosition.left = 63;
+    NormalPosition.top  = 4;
     NormalPosition.right = 913;
     NormalPosition.bottom = 596;
 
@@ -3067,14 +3098,14 @@ void CTSEditorChildFrame::vSetDefaultWndPlacement(void)
 }
 /******************************************************************************
 Function Name  :  OnHelpTesteditorhelp
-Input(s)       :  
+Input(s)       :
 Output         :  void
-Functionality  :   
+Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  28/04/2011
-Modifications  :  
+Modifications  :
 Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnHelpTesteditorhelp()
@@ -3088,7 +3119,7 @@ void CTSEditorChildFrame::OnHelpTesteditorhelp()
     // Add New Extension
     omStrPath = omStrPath + ".chm"+"::/html/TestAutomation.htm";
     // Make it as content display always
-	::HtmlHelp(NULL, omStrPath, HH_DISPLAY_TOPIC, 0);
+    ::HtmlHelp(NULL, omStrPath, HH_DISPLAY_TOPIC, 0);
 }
 
 void CTSEditorChildFrame::OnClose()

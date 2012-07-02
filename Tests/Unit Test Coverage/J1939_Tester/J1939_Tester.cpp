@@ -1,27 +1,30 @@
-//#include <boost/regex.hpp>
-//#include <boost/thread.hpp>
-//#include <iostream>
-//#include <string>
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      J1939_Tester.cpp
+ * \brief     Source file for J1939_Tester
+ * \author    Arunkumar Karri
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * Source file for CFrameProcessor_Common class realising the
+ */
+
+
+// J1939_Tester.cpp : Defines the initialization routines for the DLL.
 //
-//int main()
-//{
-//    std::string line;
-//    boost::regex pat( "^Subject: (Re: |Aw: )*(.*)" );
-//
-//    while (std::cin)
-//    {
-//        std::getline(std::cin, line);
-//
-//		boost::xtime timeWait;
-//		timeWait.sec = 6000;
-//		boost::this_thread::sleep(timeWait);
-//
-//        boost::smatch matches;
-//        if (boost::regex_match(line, matches, pat))
-//            std::cout << matches[2] << std::endl;
-//    }
-//}
-//---------------------------------------------------------------------------
 
 #include <J1939_Tester_StdAfx.h>
 #include <tchar.h>
@@ -48,6 +51,8 @@
 #include "DIL_J1939/NodeConManager.h"
 #include "DIL_J1939/MonitorNode.h"
 #include "DIL_J1939/TransferLayer.h"
+#include "FrameProcessor/BaseFrameProcessor_J1939.h"
+#include "FrameProcessor/FrameProcessor_J1939.h"
 
 /* Global variables to hold CAN DIL parameters */
 CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL; // CAN DIL interface
@@ -55,16 +60,22 @@ DWORD g_dwDriverId = DRIVER_CAN_VECTOR_XL;
 WrapperErrorLogger g_ouWrapperLogger;	
 INTERFACE_HW_LIST g_asINTERFACE_HW;
 DWORD g_dwClientID = 0;
-SCONTROLER_DETAILS g_asControllerDetails[defNO_OF_CHANNELS];
+SCONTROLLER_DETAILS g_asControllerDetails[defNO_OF_CHANNELS];
 INT g_nChannelCount = 0;
 
 /* J1939 Params */
+static CBaseDILI_J1939* sg_pouIJ1939DIL = NULL; // J1939 DIL interface
 DWORD g_dwJ1939ClientId[2] = {0};
 const UINT64 J1939_NODE_NAME     = 0x8000000000000015;
 BYTE g_arrNodeAddr[] = {0x05, 0x10};
 UINT32 g_arrRqstPGNs[] = {0x5500, 0x3300};
 UINT32 g_arrBroadcastPGNs[] = {0xF008, 0xFD58};
 CMsgBufVSE g_ouVSEBufJ1939;
+SLOGINFO g_sLogStruct;
+
+/* J1939 logger variables*/
+CBaseFrameProcessor_J1939* sg_pouIJ1939Logger = NULL;
+DWORD g_dwJ1939ClientIdLogger = 0;
 
 static void CallBackSample(UINT32 /*unPGN*/, BYTE /*bySrc*/, 
                                 BYTE /*byDest*/, BOOL /*bSuccess*/)
@@ -77,6 +88,7 @@ HRESULT InitializeDIL(void)
     if (g_pouDIL_CAN_Interface == NULL)
     {		
         hResult = DIL_GetInterface(CAN, (void**)&g_pouDIL_CAN_Interface);
+		hResult = DIL_GetInterface(J1939, (void**) &sg_pouIJ1939DIL);
     }
     else
     {
@@ -98,8 +110,8 @@ HRESULT InitializeDIL(void)
                     hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {				
-		                g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)g_asControllerDetails, 
-															sizeof(SCONTROLER_DETAILS) * nCount);
+		                g_pouDIL_CAN_Interface->DILC_SetConfigData(g_asControllerDetails, 
+															sizeof(SCONTROLLER_DETAILS) * nCount);
 
                     }
                     else
@@ -179,10 +191,6 @@ BOOST_AUTO_TEST_CASE( J1939_Register_Go_Online )
 	/********************************** J1939 Related activities - Start ***********************************/
 	/* J1939 initialization */
 
-	VERSIONINFO objVerJ1939;
-
-	DILJ_GetVersionInfo(objVerJ1939);
-
 	BOOST_REQUIRE ( S_OK == DILJ_Initialise(&g_ouWrapperLogger, g_pouDIL_CAN_Interface ) );	
 
 	/* Register client - Montior node */
@@ -197,6 +205,156 @@ BOOST_AUTO_TEST_CASE( J1939_Register_Go_Online )
 
 	/*                        Go online                  */
 	BOOST_CHECK ( S_OK == DILJ_GoOnline() );		
+}
+
+/* Get J1939 logger module */
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Interface_Getter )
+{
+	/* J1939 intializations for logger */
+	sg_pouIJ1939DIL->DILIJ_Initialise(&g_ouWrapperLogger, g_pouDIL_CAN_Interface);
+
+	BOOST_REQUIRE ( S_OK == sg_pouIJ1939DIL->DILIJ_RegisterClient(TRUE, 
+                   J1939_MONITOR_NODE, J1939_ECU_NAME, g_arrNodeAddr[0], g_dwJ1939ClientId[0]) );
+
+	BOOST_CHECK ( S_OK == sg_pouIJ1939DIL->DILIJ_GoOnline() );
+
+	/* J1939 Logging interface getter*/	
+	sg_pouIJ1939Logger = new CFrameProcessor_J1939;
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_InitInstance )
+{
+	/* Call init instance of J1939 logger to get the logger thread started */
+	BOOST_REQUIRE ( ((CFrameProcessor_J1939*)sg_pouIJ1939Logger)->InitInstance() == TRUE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Initialization )
+{
+	// initialise the interface
+	CParamLoggerJ1939 ouParam;
+	CString omVerStr("");       // First get the version information
+	omVerStr.Format("Ver 1.6.5");   // Set BUSMASTER version
+	strcpy_s(ouParam.m_acVersion, MAX_PATH, omVerStr.GetBuffer(MAX_CHAR));
+
+	ouParam.m_pILog = &g_ouWrapperLogger;
+	ouParam.dwClientID = g_dwJ1939ClientId[0];	//Log for monitor node
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_DoInitialisation(&ouParam) == S_OK );
+	/* negative test case */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_DoInitialisation(NULL) == S_FALSE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Start_Editing_Session )
+{
+	/* Start editing session */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_StartEditingSession() == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Add_Log_Blocks )
+{
+	// Get the working directory
+	CString strPath;
+	CString omCurrExe;
+    char* pstrExePath = strPath.GetBuffer (MAX_PATH);
+	::GetModuleFileName (0, pstrExePath, MAX_PATH);
+	strPath.ReleaseBuffer ();	
+	strPath = strPath.Left(strPath.ReverseFind(92));		
+
+    /* Add the new logging object in the datastore.  */
+    
+	/* Select All CAN channels */
+    g_sLogStruct.m_ChannelSelected = CAN_CHANNEL_ALL;
+	omCurrExe.Format("%s\\J1939LogTestSystem.log", strPath);
+	strcpy_s(g_sLogStruct.m_sLogFileName, _MAX_PATH, omCurrExe.GetBuffer(_MAX_PATH));
+
+	/* Block with system time */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_AddLoggingBlock(g_sLogStruct) == S_OK );
+
+	g_sLogStruct.m_eLogTimerMode = TIME_MODE_ABSOLUTE;
+	omCurrExe.Format("%s\\J1939LogTestAbs_Rst_OFF.log", strPath);
+	strcpy_s(g_sLogStruct.m_sLogFileName, _MAX_PATH, omCurrExe.GetBuffer(_MAX_PATH));
+	/* Block with Absolute time - Reset Timestamp OFF*/
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_AddLoggingBlock(g_sLogStruct) == S_OK );
+
+	g_sLogStruct.m_bResetAbsTimeStamp = TRUE;
+	omCurrExe.Format("%s\\J1939LogTestAbs_Rst_ON.log", strPath);
+	strcpy_s(g_sLogStruct.m_sLogFileName, _MAX_PATH, omCurrExe.GetBuffer(_MAX_PATH));
+	/* Block with Absolute time - Reset Timestamp ON*/
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_AddLoggingBlock(g_sLogStruct) == S_OK );
+
+	g_sLogStruct.m_eLogTimerMode = TIME_MODE_RELATIVE;
+	omCurrExe.Format("%s\\J1939LogTestRelative.log", strPath);
+	strcpy_s(g_sLogStruct.m_sLogFileName, _MAX_PATH, omCurrExe.GetBuffer(_MAX_PATH));
+	/* Block with Relative time */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_AddLoggingBlock(g_sLogStruct) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Set_Logging_Block )
+{
+	/* Set a logging block */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_SetLoggingBlock(3, g_sLogStruct) == S_OK );
+
+	/* Negative Test case - Try to update a block ID which is out of range*/
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_SetLoggingBlock(5, g_sLogStruct) == S_FALSE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Configuration_Data )
+{
+	/* Get logger configuration data */
+	BYTE* pbyConfigData = NULL;
+	UINT nLength = 0;
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_GetConfigData(&pbyConfigData, nLength) == S_OK );
+
+	/* set logger configuration data */
+	CString strVersion("Ver1.6.5");
+	sg_pouIJ1939Logger->FPJ1_SetConfigData(pbyConfigData, strVersion);
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Stop_Editing_Session )
+{
+	/* Stop editing session */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_StopEditingSession(TRUE) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Set_Database_Files )
+{
+	CStringArray aomDataBaseFiles;
+	aomDataBaseFiles.Add("J1939_SAE_71.dbf");
+	/* Set database information */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Set_BaudRate_Details )
+{
+	/* Set Channel baudrate information */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_SetChannelBaudRateDetails(g_asControllerDetails, g_nChannelCount) == S_OK );	
+}
+
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Check_Logging_off )
+{
+	/* Check to make sure logging is OFF*/
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_IsLoggingON() == FALSE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Enable_Block )
+{
+	/* Enable/Disable a particualar logging block */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_EnableLoggingBlock(0, FALSE) == S_OK );
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_EnableLoggingBlock(0, TRUE) == S_OK );
+	/* Negative test case */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_EnableLoggingBlock(5, TRUE) == S_FALSE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Enable_Logging )
+{
+	/* Enable J1939 logging */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_EnableLogging(TRUE) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Check_Logging_on )
+{
+	/* Check to make sure logging is ON*/
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE );
 }
 
 BOOST_AUTO_TEST_CASE( J1939_Configure_Timeouts )
@@ -403,6 +561,99 @@ BOOST_AUTO_TEST_CASE( J1939_CAN_Closure_Activities )
 	hr = g_pouDIL_CAN_Interface->DILC_StopHardware();
 	/********************************** CAN Closure activities  - End  ***********************************/
 }
+
+
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Log_String )
+{
+	CString strMsg("00:00:00:0000 2 18eeff79 0x00EE00 ACL 79  FF  006 Tx 8 79 00 00 00 00 00 00 80\n");
+	/* Log a string */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_LogString(strMsg) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Disable_Logging )
+{
+	/* Disable J1939 logging */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_EnableLogging(FALSE) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Reset )
+{
+	/* Reset */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_Reset() == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Confirm )
+{
+	/* negative case - try to confirm without enabling editing session */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_Confirm() == S_FALSE );
+
+	sg_pouIJ1939Logger->FPJ1_StartEditingSession();
+	/* confirm */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_Confirm() == S_OK );
+
+	sg_pouIJ1939Logger->FPJ1_StopEditingSession(TRUE);
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Get_Block_Count )
+{
+	/* Make sure the logginf block count is 4 */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_GetLoggingBlockCount() == 4 );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Get_Logging_Block )
+{
+	/* Make sure the logginf block count is 4 */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_GetLoggingBlock(3, g_sLogStruct) == S_OK );
+	/* negative test case - Try to get a block ID which is out of bounds */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_GetLoggingBlock(6, g_sLogStruct) == S_FALSE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Remove_Logging_Block )
+{
+	/* Remove logging block */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_RemoveLoggingBlock(3) == S_OK );
+	/* Negative Test case - Try to Remove logging block which doesn't exist */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_RemoveLoggingBlock(4) == S_FALSE );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Clear_Log_Blocks )
+{
+	/* Remove all the logging blocks */
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_ClearLoggingBlockList() == S_OK );
+
+	/* Try to clear while editing is ON */
+	sg_pouIJ1939Logger->FPJ1_AddLoggingBlock(g_sLogStruct);
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_StartEditingSession() == S_OK );
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_ClearLoggingBlockList() == S_OK );
+	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_StopEditingSession(TRUE) == S_OK );
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Check_Thread_Block_Status )
+{
+	BOOL bThreadBlocked = sg_pouIJ1939Logger->FPJ1_IsJ1939ThreadBlocked();
+	BOOL bDataLogged    = sg_pouIJ1939Logger->FPJ1_IsJ1939DataLogged();
+	sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_Filters_Yet_To_Implement )
+{
+	/* Test filter functions */
+	SFILTERAPPLIED_J1939 objFilterJ1939;	
+	sg_pouIJ1939Logger->FPJ1_ApplyFilteringScheme(0, objFilterJ1939);
+	sg_pouIJ1939Logger->FPJ1_EnableFilter(0, TRUE);
+	BOOL bFilterON = sg_pouIJ1939Logger->FPJ1_IsFilterON();
+	sg_pouIJ1939Logger->FPJ1_GetFilteringScheme(0, objFilterJ1939);
+	sg_pouIJ1939Logger->FPJ1_GetFilteringScheme(2, objFilterJ1939);
+}
+
+BOOST_AUTO_TEST_CASE( J1939_Logger_Module_ExitInstance )
+{
+	/* Exit instance of J1939 logging module */
+	BOOST_REQUIRE ( ((CFrameProcessor_J1939*)sg_pouIJ1939Logger)->ExitInstance() == S_OK );
+	delete sg_pouIJ1939Logger;
+}
+
 
 BOOST_AUTO_TEST_CASE( J1939_Classes_And_Utility_Functions )
 {

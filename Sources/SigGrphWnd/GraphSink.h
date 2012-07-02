@@ -1,10 +1,10 @@
 /*******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  GraphSink.h
-  Description   :  Implementation file for CGraphBottomView class     
+  Description   :  Implementation file for CGraphBottomView class
   Author(s)     :  Arunkumar Karri
   Date Created  :  10/12/2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
 *******************************************************************************/
 #pragma once
@@ -15,21 +15,21 @@
 
 class CGraphSink : public CCmdTarget
 {
-	DECLARE_DYNAMIC(CGraphSink)
+    DECLARE_DYNAMIC(CGraphSink)
 
 public:
-	CGraphSink();
-	virtual ~CGraphSink();
+    CGraphSink();
+    virtual ~CGraphSink();
 
-	virtual void OnFinalRelease();
-	void OnCursorPosition(double x, double y, short shCursorID);	
+    virtual void OnFinalRelease();
+    void OnCursorPosition(double x, double y, short shCursorID);
 
-	CGraphChildFrame* m_pParentWnd;
+    CGraphChildFrame* m_pParentWnd;
 
 protected:
-	DECLARE_MESSAGE_MAP()
-	DECLARE_DISPATCH_MAP()
-	DECLARE_INTERFACE_MAP()	
+    DECLARE_MESSAGE_MAP()
+    DECLARE_DISPATCH_MAP()
+    DECLARE_INTERFACE_MAP()
 };
 
 

@@ -54,7 +54,7 @@ CLogAscConverter::~CLogAscConverter(void)
  */
 HRESULT CLogAscConverter::GetHelpText(string& pchHelpText)
 {
-    pchHelpText = "Converts the BUSMASTER log file(.log) to CANoe log file(.asc)";
+    pchHelpText = "Converts the BUSMASTER CAN log file(.log) to CANoe CAN log file(.asc)";
     return S_OK;
 }
 
@@ -177,18 +177,31 @@ HRESULT CLogAscConverter::ConvertFile(string& chInputFile, string& chOutputFile)
         {
             //yydebug = 1;
             if (nConvertFile(fpInputFile, fpOutputFile) == -2)
-			{
-				m_omstrConversionStatus = "Conversion May not be work with CANoe since the input file is logged in system mode";
-			}
-			else
-			{
-				m_omstrConversionStatus = "Conversion Completed Successfully";
-			}
-            fclose(fpInputFile);
-            fclose(fpOutputFile);
+            {
+                m_omstrConversionStatus = "Conversion May not be work with CANoe since the input file is logged in system mode";
+            }
+            else
+            {
+                m_omstrConversionStatus = "Conversion Completed Successfully";
+            }
+            if(fpInputFile != NULL)
+            {
+                fclose(fpInputFile);
+                fpInputFile = NULL;
+            }
+            if(fpOutputFile != NULL)
+            {
+                fclose(fpOutputFile);
+                fpOutputFile = NULL;
+            }
         }
         else
         {
+            if(fpInputFile != NULL)
+            {
+                fclose(fpInputFile);
+                fpInputFile = NULL;
+            }
             m_omstrConversionStatus = "Output File path is not found";
             hResult = ERR_OUTPUT_FILE_NOTFOUND;
         }

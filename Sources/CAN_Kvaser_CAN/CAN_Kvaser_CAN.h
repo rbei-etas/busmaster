@@ -23,12 +23,6 @@
  */
 #pragma once
 
-#ifndef __AFXWIN_H__
-#error include 'stdafx.h' before including this file for PCH
-#endif
-
-
-
 /**
  * See CAN_Kvaser_CAN.cpp for the implementation of this class
  */
@@ -37,7 +31,7 @@ class CCAN_Kvaser_CAN : public CWinApp
 public:
     CCAN_Kvaser_CAN();
 
-// Overrides
+    // Overrides
 public:
     virtual BOOL InitInstance();
 

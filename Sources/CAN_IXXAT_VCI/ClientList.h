@@ -17,13 +17,13 @@
 /**
  * @file  ClientList.h
  *
- * @brief 
- * 		This is a class to handle the registered clients.
- * 		In the original code of the busmaster DIL classes there 
- * 		is array inside the CPP files. I add this extra class
- * 		to make it easy replaceable.
- * 		Here we use a MAP from the STL. Maybe this must be changed
- * 		when using other C++ compilers.
+ * @brief
+ *      This is a class to handle the registered clients.
+ *      In the original code of the busmaster DIL classes there
+ *      is array inside the CPP files. I add this extra class
+ *      to make it easy replaceable.
+ *      Here we use a MAP from the STL. Maybe this must be changed
+ *      when using other C++ compilers.
  */
 
 #pragma once
@@ -34,38 +34,38 @@
 /**
  * @class CClientList
  *
- * @brief 
- * 	List to managed the clients of the busmaster. E.g. CAN monitor.
+ * @brief
+ *  List to managed the clients of the busmaster. E.g. CAN monitor.
  *
  */
 class CClientList
 {
 public:
-  CClientList(void);
-  ~CClientList(void);
-  void DeleteAllEntries();
+    CClientList(void);
+    ~CClientList(void);
+    void DeleteAllEntries();
 
-  HRESULT RegisterClient(DWORD& pdwClientID, string pacClientName);
-  HRESULT RemoveClient(DWORD dwClientID);
-  CClientBuffer* GetClientByID(DWORD dwClientID);
-  CClientBuffer* GetClientByIndex(int iIndexInList);
+    HRESULT RegisterClient(DWORD& pdwClientID, string pacClientName);
+    HRESULT RemoveClient(DWORD dwClientID);
+    CClientBuffer* GetClientByID(DWORD dwClientID);
+    CClientBuffer* GetClientByIndex(int iIndexInList);
 
-  HRESULT RemoveAllMsgBufOnAllClients();
+    HRESULT RemoveAllMsgBufOnAllClients();
 
-  int Size()
-  {
-    return m_ClientBufferMap.size();
+    int Size()
+    {
+        return m_ClientBufferMap.size();
 
-  }
-
-protected:
-  CClientBuffer* GetClient(string pacClientName);
-
+    }
 
 protected:
-  typedef std::map<DWORD, CClientBuffer*> ClientBufferMap;
-  ClientBufferMap m_ClientBufferMap;
+    CClientBuffer* GetClient(string pacClientName);
 
-  DWORD m_dwUniqueClientID; ///< Key value for the clients, never decement this variable
+
+protected:
+    typedef std::map<DWORD, CClientBuffer*> ClientBufferMap;
+    ClientBufferMap m_ClientBufferMap;
+
+    DWORD m_dwUniqueClientID; ///< Key value for the clients, never decement this variable
 
 };

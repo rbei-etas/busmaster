@@ -70,34 +70,34 @@ public:
 // CConfigMsgLogDlg dialog
 class CConfigMsgLogDlg : public CDialog
 {
-	DECLARE_DYNAMIC(CConfigMsgLogDlg)
+    DECLARE_DYNAMIC(CConfigMsgLogDlg)
 
 public:
     CConfigMsgLogDlg(ETYPE_BUS eCurrBus, void* pouBaseLogger, BOOL& bLogOnConnect,
-                     CWnd* pParent = NULL, const void* psFilter = NULL);    
-	virtual ~CConfigMsgLogDlg();
-	enum { IDD = IDD_DLG_CONFIG_MSG_LOG };
+                     CWnd* pParent = NULL, const void* psFilter = NULL);
+    virtual ~CConfigMsgLogDlg();
+    enum { IDD = IDD_DLG_CONFIG_MSG_LOG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	DECLARE_MESSAGE_MAP()
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    DECLARE_MESSAGE_MAP()
 
 public:
-	// Init Log File Control
+    // Init Log File Control
     virtual BOOL OnInitDialog();
-	void vSetLogFileONOFF(BOOL bLogON);
-	
+    void vSetLogFileONOFF(BOOL bLogON);
+
 
 private:
-	// Dialog control variables
-	CComboBox m_omComboChannel;
-	CComboBox m_omComboTimeMode;
-	CButton m_ChkbResetTimeStamp;
-	CListCtrl m_omListLogFiles;
+    // Dialog control variables
+    CComboBox m_omComboChannel;
+    CComboBox m_omComboTimeMode;
+    CButton m_ChkbResetTimeStamp;
+    CListCtrl m_omListLogFiles;
     CRadixEdit m_odStartMsgID;
     CRadixEdit m_odStopMsgID;
-	CButton m_ChkbEnableLogOnConnect;
-	int m_nLogIndexSel;
+    CButton m_ChkbEnableLogOnConnect;
+    int m_nLogIndexSel;
     // To indicate programmed UI update
     BOOL m_bUpdatingUI;
     CBaseFrameProcessor_CAN* m_pouFProcCAN;
@@ -105,15 +105,15 @@ private:
     const SFILTERAPPLIED_CAN* m_psFilterConfigured;
     const SFILTERAPPLIED_J1939* m_psJ1939Filter;
     BOOL m_bEditingON;
-	BOOL m_bLogON;
-	UINT m_unDispUpdateTimerId;
-	CString m_strCurrWndText;
+    BOOL m_bLogON;
+    UINT m_unDispUpdateTimerId;
+    CString m_strCurrWndText;
     ETYPE_BUS m_eCurrBus;
     BOOL& m_bLogOnConnect;
     UINT m_unChannelCount;
 private:
-	void vEnableDisableControls(BOOL);
-	SLOGTRIGGER GetLogTriggerFromGUI(void);
+    void vEnableDisableControls(BOOL);
+    SLOGTRIGGER GetLogTriggerFromGUI(void);
     void vCreateFileList(void);
     void vEnableDisableControl(int nControlID, ECONTROLTYPE eCtrlType, BOOL Enable);
     void vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType, BYTE bAction);
@@ -137,17 +137,17 @@ private:
 protected:
     afx_msg void OnBnClickedCbtnAddlog(void);
     afx_msg void OnBnClickedCbtnLogFilePath(void);
-	afx_msg void OnBnClickedCbtnRemovelog(void);
-	afx_msg void OnLvnItemchangedLogBlockLst(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnBnClickedCbtnRemovelog(void);
+    afx_msg void OnLvnItemchangedLogBlockLst(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnNumRButtonClick(UINT);
     afx_msg void OnFileRButtonClick(UINT);
     afx_msg void OnChkbTriggerClick(UINT);
     afx_msg void OnSelChangeComb(UINT);
     afx_msg void OnStartStopMsgIDEnChange(UINT);
-	afx_msg void OnBnClickedLogFilter(void);
+    afx_msg void OnBnClickedLogFilter(void);
     virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 public:
-	afx_msg void OnTimer(UINT nIDEvent);	
+    afx_msg void OnTimer(UINT nIDEvent);
 protected:
     CString m_omControlParam;
     CString m_omControlParam2;

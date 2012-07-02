@@ -121,7 +121,7 @@ CParameter& CParameter::operator=( CParameter& param)
  *
  * Writes the parameter definition to the specified output file.
  */
-bool WriteParamToFile(fstream& fileOutput, list<CParameter> &m_listParameter)
+bool WriteParamToFile(fstream& fileOutput, list<CParameter>& m_listParameter)
 {
     bool pResult=true;
     //gets the frst param in the list.
@@ -187,7 +187,7 @@ void CParameter::Format_MesgParam_Value(fstream& fileInput, list<CParameter>& m_
     pcTemp = acTemp;
 
     //parses the mesg pram other values.
-    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_PARAM_MSG_VAL]\n")!=0)
+    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine,"[END_PARAM_MSG_VAL]")!=0)
     {
         char type[defCON_CHAR_LEN];
         pcLine = acLine;
@@ -251,7 +251,7 @@ void CParameter::Format_SigParam_Value(fstream& fileInput, list<CParameter>& m_l
     pcTemp = acTemp;
 
     //parses the signal pram other values.
-    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_SIG_VAL]\n")!=0)
+    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_SIG_VAL]")!=0)
     {
         char temp[defCON_CHAR_LEN],sname[defCON_CHAR_LEN];
         pcLine = acLine;
@@ -319,7 +319,7 @@ void CParameter::Format_NodeParam_Value(fstream& fileInput, list<CParameter>& m_
     pcTemp = acTemp;
 
     //parses the node pram other values.
-    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_VAL]\n")!=0)
+    while(fileInput.getline(acLine,defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NODE_VAL]")!=0)
     {
         char NodeName[defCON_CHAR_LEN];
         pcLine = acLine;
@@ -373,7 +373,7 @@ void CParameter::Format_NetParam_Value(fstream& fileInput, list<CParameter>& m_l
     pcTemp = acTemp;
 
     //parses the mesg pram other values.
-    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET_VAL]\n")!=0)
+    while(fileInput.getline(acLine, defCON_MAX_LINE_LEN) && strcmp(acLine, "[END_PARAM_NET_VAL]")!=0)
     {
         pcLine = acLine;
         //get other values.
@@ -606,7 +606,7 @@ void CParameter::ReadDefault_Value(char* pcToken)
  *
  * Writes the parameter default values to the output file.
  */
-bool Write_DefVal_ToFile(fstream& fileOutput,list<CParameter> &m_listParameter)
+bool Write_DefVal_ToFile(fstream& fileOutput,list<CParameter>& m_listParameter)
 {
     bool pResult=true;
     //gets the first param from the list.

@@ -52,6 +52,7 @@ private:
     INT GetConverterPos();
 public:
     virtual BOOL OnInitDialog();
+    HRESULT ValidateFileExtensions(CString& m_omStrInputFilePath, CString& m_omStrOutputFilePath, CBaseConverter*& m_pouConverter);
     CEdit m_omEditInputPath;
     CEdit m_omEditOutputPath;
     afx_msg void OnBnClickedBtnInput();

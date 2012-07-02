@@ -184,7 +184,7 @@ int CValueTable::Format(char* pcLine, fstream& fileInput)
         if(acDesc[0] != '\0')
         {
             CValueDescriptor valDesc;
-            valDesc.m_value.i64Value = atoi(acValue);
+            valDesc.m_value.i64Value = _atoi64(acValue);
             valDesc.m_acDescriptor = acDesc;
             m_values.push_back(valDesc);
         }
@@ -200,7 +200,7 @@ int CValueTable::Format(char* pcLine, fstream& fileInput)
  *
  * Writes the value tebles in the given list to the output file.
  */
-void CValueTable::writeValueTabToFile(fstream& fileOutput, list<CValueTable> &vTab)
+void CValueTable::writeValueTabToFile(fstream& fileOutput, list<CValueTable>& vTab)
 {
     list<CValueTable>::iterator tab;
 

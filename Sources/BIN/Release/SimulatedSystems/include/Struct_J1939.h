@@ -1,13 +1,13 @@
 /********************************************************************************
-  Project       :  Auto-SAT_Tools                                      
-  FileName      :  Struct_J1939.h                                         
-  Description   :  This file contain the definition of structure used in message 
+  Project       :  Auto-SAT_Tools
+  FileName      :  Struct_J1939.h
+  Description   :  This file contain the definition of structure used in message
                    handler
   $Log: $
 
-  Author(s)     :  Amitesh Bharti                                         
-  Date Created  :  25.03.2003                                             
-  Modified By   :  
+  Author(s)     :  Amitesh Bharti
+  Date Created  :  25.03.2003
+  Modified By   :
 ********************************************************************************/
 #ifndef _STRUCT_J1939_H_
 #define _STRUCT_J1939_H_
@@ -52,7 +52,7 @@ typedef struct tagSECU_NAME
 
 /* J1939 PGN structure */
 typedef struct tagSTRUCT_PGN
-{   
+{
     BYTE m_byPDU_Specific   : 8; /* PDU Specific (PS), Destination address if 0 <= PF <= 239.
                                                        Group Extension (GE)if 240 <= PF <= 255. */
     BYTE m_byPDU_Format     : 8; // PDU Format (PF), Indicates Peer_2_peer or Broadcast.
@@ -73,7 +73,7 @@ typedef union tagUPGN
 typedef struct tagSTRUCT_29_BIT_ID
 {
     BYTE        m_bySrcAddress     : 8; // Sender node address.
-    UNION_PGN   m_uPGN;                 // Parameter group number(PGN). SAE lists various PGNS and its SPNS.    
+    UNION_PGN   m_uPGN;                 // Parameter group number(PGN). SAE lists various PGNS and its SPNS.
 } STRUCT_29_BIT_ID;
 
 typedef union tag29BitID
@@ -97,7 +97,7 @@ typedef enum EJ1939_MSG_TYPE
     MSG_TYPE_NM_ACL,
     MSG_TYPE_NM_RQST_ACL,
     MSG_TYPE_NM_CMD_ADDRESS,
-    MSG_TYPE_NM_TPCM_BAM, 
+    MSG_TYPE_NM_TPCM_BAM,
     MSG_TYPE_NM_TPCM_RTS,
     MSG_TYPE_NM_TPCM_CTS,
     MSG_TYPE_NM_TPCM_EOM_ACK,
@@ -117,7 +117,7 @@ typedef struct tagSTJ1939_MSG_PROPERTIES
 {
     UINT64                  m_un64TimeStamp; // Timestamp.
     BYTE                    m_byChannel;     // Channel number.
-    enum EJ1939_MSG_TYPE    m_eType;         
+    enum EJ1939_MSG_TYPE    m_eType;
     enum EDIRECTION         m_eDirection;    // DIR_TX, DIR_RX
     UNION_29_BIT_ID         m_uExtendedID;   // 29 bit extended ID
 
@@ -125,7 +125,7 @@ typedef struct tagSTJ1939_MSG_PROPERTIES
 
 typedef struct tagSTJ1939_MSG
 {
-    STJ1939_MSG_PROPERTIES  m_sMsgProperties;   /* J1939 message properties. (29 bit Extended ID, Timestamp, 
+    STJ1939_MSG_PROPERTIES  m_sMsgProperties;   /* J1939 message properties. (29 bit Extended ID, Timestamp,
                                                    Channel, Type, Direction) */
     UINT                    m_unDLC;            // Data length. 0 <= m_unDLC <= 1785 bytes.
     BYTE*                   m_pbyData;          // J1939 message data.

@@ -42,8 +42,8 @@ CGraphElement::CGraphElement()
 {
     // Message ID
     m_nMsgID = -1;
-	// Message Name
-	m_strMsgName = STR_EMPTY;
+    // Message Name
+    m_strMsgName = STR_EMPTY;
     // Format - Standard or Extended
     m_nFrameFormat = -1;
     // Element Name
@@ -62,8 +62,8 @@ CGraphElement::CGraphElement()
     m_bVisible = TRUE;
     // Enabled
     m_bEnabled = TRUE;
-	//Display Type Normal
-	m_eDisplayType = eDISPLAY_NORMAL;
+    //Display Type Normal
+    m_eDisplayType = eDISPLAY_NORMAL;
 }
 
 /*******************************************************************************
@@ -90,7 +90,7 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         // Frame Format - Standard
         COPY_DATA(pbyTemp, &m_nFrameFormat, sizeof(short));
         // Element Name String
-		//Tobias - venkat
+        //Tobias - venkat
         char acName[MAX_PATH] = {'\0'};
         strcpy_s(acName, MAX_PATH, m_omStrElementName.GetBuffer(MAX_PATH));
         COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
@@ -114,7 +114,7 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
             // Message Name
             char MsgName[MAX_PATH] = {'\0'};
             //Tobias - venkat
-			strcpy_s(MsgName,MAX_PATH,  m_strMsgName.GetBuffer(MAX_PATH));
+            strcpy_s(MsgName,MAX_PATH,  m_strMsgName.GetBuffer(MAX_PATH));
             COPY_DATA(pbyTemp, MsgName, (sizeof(char) * MAX_PATH));
             //Line Display type
             COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
@@ -178,8 +178,8 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
  Author(s)      : Raja N
  Date Created   : 01.12.2004
  Modifications  : ArunKumar K
-				  28.10.2010
-				  Addition of m_eDisplayType variable for serialization.
+                  28.10.2010
+                  Addition of m_eDisplayType variable for serialization.
 *******************************************************************************/
 int CGraphElement::nSerialize(CArchive& omArch)
 {
@@ -254,13 +254,13 @@ int CGraphElement::nSerialize(CArchive& omArch)
  Member of      : CGraphElement
  Author(s)      : ArunKumar K
  Date Created   : 16.12.2010
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 UINT CGraphElement::unGetConfigSize(BYTE byVersion)
 {
-	UINT unSize = 0;  
+    UINT unSize = 0;
 
-	unSize += sizeof(int);//     m_nMsgID;
+    unSize += sizeof(int);//     m_nMsgID;
     // Frame Format - Standard or Extended
     unSize += sizeof(short);//   m_nFrameFormat;
     // Element Name String
@@ -291,6 +291,6 @@ UINT CGraphElement::unGetConfigSize(BYTE byVersion)
         unSize += (sizeof(char) * MAX_PATH);//m_strMsgName
     }
 
-	return unSize;
+    return unSize;
 }
 

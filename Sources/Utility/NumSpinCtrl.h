@@ -28,12 +28,12 @@
 #include "afxcmn.h"
 class CNumSpinCtrl : public CSpinButtonCtrl
 {
-// Construction
+    // Construction
 public:
     CNumSpinCtrl();
     virtual ~CNumSpinCtrl();
 
-// Operations
+    // Operations
 public:
     // To set the size of the data in terms of bits
     // This is required to get 2s complement value
@@ -47,6 +47,8 @@ public:
                             __int64& n64delta);
     // To set the int 64 Min, Max and Step values
     void vSetRangeAndDelta( __int64 n64Lower, __int64 n64Upper,
+                            __int64 n64Delta);
+    void vSetRangeAndDelta( UINT64 n64Lower, UINT64 n64Upper,
                             __int64 n64Delta);
     // Overridden function
     int GetPos();
@@ -64,19 +66,20 @@ public:
     void vSetSigned(BOOL bIsSigned);
     // To set the type Int or Float
     void vSetFloatNumber(BOOL bIsFloat);
-	 // To conver string to __int64. The string value could be in Hex or dec
-	BOOL bConvertStringToInt64( CString omStrHexNo,    // String
-                              __int64& n64Value,     // Value
-                              int nBase);         // Base value
-    
-// Overrides
+    // To conver string to __int64. The string value could be in Hex or dec
+    BOOL bConvertStringToInt64( CString omStrHexNo,    // String
+                                __int64& n64Value,     // Value
+                                int nBase);         // Base value
+    void vSetValueForBuddy (UINT64 n64Val);
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CNumSpinCtrl)
-    protected:
+protected:
     virtual void PreSubclassWindow();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     // To initialise default values
     void vInitSpinCtrl();
@@ -98,7 +101,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 
-/// Attributes
+    /// Attributes
 protected:
     double m_dMinVal;                 // Minimum Value
     double m_dMaxVal;                 // Maximun Value
@@ -109,6 +112,8 @@ protected:
     __int64 m_n64MaxVal;              // Maximun Value
     __int64 m_n64Delta;               // Step value
 
+    UINT64 m_un64MinVal;              // Minimum Value
+    UINT64 m_un64MaxVal;              // Maximun Value
     UINT m_unIntRange;                // Range in Int
     CString m_omStrFormat;            // Format String
     short int m_nDataLength;          // Data Length in Bits

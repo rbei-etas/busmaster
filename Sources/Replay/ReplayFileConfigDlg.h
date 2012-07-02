@@ -28,14 +28,14 @@
 
 class CReplayFileConfigDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     // Constructor
     CReplayFileConfigDlg( CReplayManager& rouManager,
                           const SFILTERAPPLIED_CAN* psFilterConfigured,
                           CWnd* pParent = NULL);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CReplayFileConfigDlg)
     enum { IDD = IDD_DLG_REPLAY };
     CButton m_omChkInteractive;
@@ -45,17 +45,18 @@ public:
     CEdit   m_omEditReplayFileName;
     CListCtrl   m_omLstcReplayFiles;
     int     m_nReplayMode;
+    CString m_omStrMsgType;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CReplayFileConfigDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -73,6 +74,7 @@ protected:
     afx_msg void OnBtnAddFile();
     afx_msg void OnBtnDeleteFile();
     afx_msg void OnBtnFilter();
+    afx_msg void OnComboMsgTypeChanged();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
@@ -95,6 +97,9 @@ private:
     VOID vUpdateReplayFileComps( const CReplayFile& rouFile );
     // Enable/Disable Replay File Components
     VOID vEnableReplayComps( BOOL bEnable );
+    //Update Replay Msg Type
+    VOID vUpdateReplayMsgType();
+
 
 private:
     // Members

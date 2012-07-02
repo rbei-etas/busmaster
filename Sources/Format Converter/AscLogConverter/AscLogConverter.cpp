@@ -54,7 +54,7 @@ CAscLogConverter::~CAscLogConverter(void)
  */
 HRESULT CAscLogConverter::GetHelpText(string& pchHelpText)
 {
-    pchHelpText = "Converts the CANoe log file(.asc) to BUSMASTER log file(.log)";
+    pchHelpText = "Converts the CANoe CAN log file(.asc) to BUSMASTER CAN log file(.log)";
     return S_OK;
 }
 
@@ -168,10 +168,13 @@ HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
         if(NULL != fpOutputFile)
         {
             //yydebug = 1;
-            fprintf(fpOutputFile, "***BUSMASTER Ver 1.6.4***\n");
-            fprintf(fpOutputFile, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
-            fprintf(fpOutputFile, "***[START LOGGING SESSION]***\n");
-            fprintf(fpOutputFile, "***START DATE AND TIME ");
+            
+            // Removed here and added at the start of every block
+            /* fprintf(fpOutputFile, "***BUSMASTER Ver 1.6.5***\n");
+             fprintf(fpOutputFile, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
+             fprintf(fpOutputFile, "***[START LOGGING SESSION]***\n");
+             fprintf(fpOutputFile, "***START DATE AND TIME ");*/
+            
             nConvertFile(fpInputFile, fpOutputFile);
             m_omstrConversionStatus = "Conversion Completed Successfully";
             fclose(fpInputFile);

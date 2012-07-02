@@ -32,22 +32,22 @@
 
 class CSignalWatchListBox : public CFFListCtrl
 {
-// Construction
+    // Construction
 private:
     HWND m_hParentWnd;
 public:
     CSignalWatchListBox();
     void vUpdateParentWnd(HWND hParentWnd);
-	
-	void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
-	void OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags);
-	
-// Overrides
+
+    void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
+    void OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags);
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSignalWatchListBox)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
     virtual ~CSignalWatchListBox();
 
     // Generated message map functions

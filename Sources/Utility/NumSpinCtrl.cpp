@@ -33,7 +33,7 @@
 // This has been taken from  ** Float.h **
 #define defEPS 2.2204460492503131e-016 /* smallest such that 1.0+DBL_EPSILON != 1.0 */
 
-#define defSTR_DEFAULT_FORMAT_STRING    _T("%g")
+#define defSTR_DEFAULT_FORMAT_STRING    "%g"
 
 /////////////////////////////////////////////////////////////////////////////
 // CNumSpinCtrl
@@ -192,6 +192,48 @@ void CNumSpinCtrl::vSetValueForBuddy (__int64 n64Val)
     }
 }
 
+void CNumSpinCtrl::vSetValueForBuddy (UINT64 n64Val)
+{
+    // Get the Text window
+    CWnd* pomEdit = GetBuddy();
+    // If it is valid
+    if ( pomEdit != NULL )
+    {
+        CString omStr;
+        // Check for user defined format string
+        if (m_omStrFormat.IsEmpty ())
+        {
+            // Use default format string
+            omStr.Format( defFORMAT_UINT64_DEC ,n64Val);
+        }
+        else
+        {
+            // Check the Base value
+            // For decima mode (Base 10) negative numbers are represented
+            // as - (val). Say -1. But in hex mode '-' is invalid and 2s
+            // complement form will be used to represent the negative value.
+            // In 2s complement the most significant bit is Sign bit. So data
+            // length should be considered to get and set the value if the mode
+            // is in Hex
+
+            // For decimal mode format the value directly
+            if( GetBase() == defBASE_DEC )
+            {
+                omStr.Format (m_omStrFormat, n64Val);
+            }
+            // For hex take the value and mask unwanted portion
+            else
+            {
+                // In Hex change the negative number as - Positive Num
+                // Format the min value
+                //vRemoveUnwantedBits( n64Val, m_nDataLength);
+                omStr.Format (m_omStrFormat, n64Val);
+            }
+        }
+        // Set the formatted text to buddy control
+        pomEdit->SetWindowText (omStr);
+    }
+}
 /*******************************************************************************
  Function Name  : SetPos
  Input(s)       : val - Double precession value of for the text box
@@ -268,7 +310,7 @@ double CNumSpinCtrl::dGetPos()
  Friend of      :
  Author(s)      : Raja N
  Date Created   : 30.07.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 __int64 CNumSpinCtrl::n64GetPos()
 {
@@ -284,8 +326,8 @@ __int64 CNumSpinCtrl::n64GetPos()
         // This can be used for both decimal and hex mode. So base check is not
         // required
         // Convert the text in to 64bit integer
-        BOOL bSuccess = 
-						bConvertStringToInt64( omStrText,n64Val, GetBase());
+        BOOL bSuccess =
+            bConvertStringToInt64( omStrText,n64Val, GetBase());
         // Set the default value here incase of failure
         if( bSuccess == FALSE )
         {
@@ -307,8 +349,8 @@ __int64 CNumSpinCtrl::n64GetPos()
 
 *******************************************************************************/
 BOOL CNumSpinCtrl::bConvertStringToInt64( CString omStrHexNo,
-                             __int64& n64RetVal,
-                             int nBase )
+        __int64& n64RetVal,
+        int nBase )
 {
     // Initialise local variables
     // Success Flag
@@ -429,7 +471,7 @@ BOOL CNumSpinCtrl::bConvertStringToInt64( CString omStrHexNo,
  Friend of      :
  Author(s)      : Raja N
  Date Created   : 30.07.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 int CNumSpinCtrl::GetPos()
 {
@@ -460,7 +502,7 @@ void CNumSpinCtrl::vSetRangeAndDelta(double dLower, double dUpper, double dDelta
     m_dMinVal = dLower;
     m_dMaxVal = dUpper;
     m_dDelta = dDelta;
-    
+
     // Avoid division by zero
     if (m_dDelta != 0.0)
     {
@@ -505,7 +547,7 @@ void CNumSpinCtrl::vSetRangeAndDelta( __int64 n64Lower, __int64 n64Upper,
     m_n64MinVal = n64Lower;
     m_n64MaxVal = n64Upper;
     m_n64Delta = n64Delta;
-    
+
     // Avoid division by zero
     if (m_n64Delta != 0)
     {
@@ -531,9 +573,42 @@ void CNumSpinCtrl::vSetRangeAndDelta( __int64 n64Lower, __int64 n64Upper,
     }
 }
 
+void CNumSpinCtrl::vSetRangeAndDelta( UINT64 n64Lower, UINT64 n64Upper,
+                                      __int64 n64Delta )
+{
+    // Assign the values to the members
+    m_un64MinVal = n64Lower;
+    m_un64MaxVal = n64Upper;
+    m_n64Delta = n64Delta;
+
+    // Avoid division by zero
+    if (m_n64Delta != 0)
+    {
+        // Figure out the integer range to use
+        // so that acceleration can work properly
+        // No need to change it to int 64 as finally it is going to be an int
+        double dRange = fabs ((double)(m_un64MaxVal - m_un64MinVal) / (double)m_n64Delta);
+        // Check for maximun range
+        if (dRange > static_cast<double>(UD_MAXVAL) )
+        {
+            // If so use the maximun supported value
+            m_unIntRange = UD_MAXVAL;
+        }
+        else
+        {
+            // Use the int value as step
+            m_unIntRange = static_cast<int>(dRange);
+        }
+        // Set the range to the spin control
+        CSpinButtonCtrl::SetRange32 (0, m_unIntRange);
+        // Set integer position
+        vSetIntPos (n64GetPos());
+    }
+}
+
 /*******************************************************************************
  Function Name  : vSetIntPos
- Input(s)       : pos - 
+ Input(s)       : pos -
  Output         :   -
  Functionality  : This method sets the pos of the spin button. It derives the
                   int value from the double pos and sets the scroll pos.
@@ -684,6 +759,7 @@ BOOL CNumSpinCtrl::OnDeltaPos(NMHDR* pNMHDR, LRESULT* pResult)
     // Current Val + Step Value * Steps
     double dVal = 0.0;
     __int64 n64Val = 0;
+    UINT64 un64Val = 0;
     BOOL bInvalid = FALSE;
     if( m_bFloatingNumber == TRUE )
     {
@@ -691,14 +767,21 @@ BOOL CNumSpinCtrl::OnDeltaPos(NMHDR* pNMHDR, LRESULT* pResult)
     }
     else
     {
-        n64Val = n64GetPos () + m_n64Delta * pUD->iDelta;
+        if(m_bSigned == TRUE)
+        {
+            n64Val = n64GetPos () + m_n64Delta * pUD->iDelta;
+        }
+        else if(m_bSigned == FALSE)
+        {
+            un64Val = ((UINT64)n64GetPos ()) + m_n64Delta * pUD->iDelta;
+        }
     }
 
     // Check the property to wrap to min value incase of maximun value exceed
     // and vice versa
     BOOL bCanWrap = UDS_WRAP & GetStyle();
 
-     // spin down
+    // spin down
     if (pUD->iDelta < 0)
     {
         if( m_bFloatingNumber == TRUE )
@@ -729,19 +812,39 @@ BOOL CNumSpinCtrl::OnDeltaPos(NMHDR* pNMHDR, LRESULT* pResult)
         }
         else
         {
-            // For unsigned number cast it to Unsigned mode
-            bInvalid = FALSE;
-            if( n64Val < m_n64MinVal )
+            if(m_bSigned == TRUE)
             {
-                if ( bCanWrap == TRUE)
+                // For unsigned number cast it to Unsigned mode
+                bInvalid = FALSE;
+                if( n64Val < m_n64MinVal )
                 {
-                    // Go to Max End - Wrap Up
-                    n64Val = m_n64MaxVal;
+                    if ( bCanWrap == TRUE)
+                    {
+                        // Go to Max End - Wrap Up
+                        n64Val = m_n64MaxVal;
+                    }
+                    else
+                    {
+                        // Set the allowed Min value
+                        n64Val = m_n64MinVal;
+                    }
                 }
-                else
+            }
+            else if(m_bSigned == FALSE)
+            {
+                bInvalid = FALSE;
+                if( un64Val < m_un64MinVal || un64Val > m_un64MaxVal)
                 {
-                    // Set the allowed Min value
-                    n64Val = m_n64MinVal;
+                    if ( bCanWrap == TRUE)
+                    {
+                        // Go to Max End - Wrap Up
+                        un64Val = m_un64MaxVal;
+                    }
+                    else
+                    {
+                        // Set the allowed Min value
+                        un64Val = m_un64MinVal;
+                    }
                 }
             }
         }
@@ -773,17 +876,36 @@ BOOL CNumSpinCtrl::OnDeltaPos(NMHDR* pNMHDR, LRESULT* pResult)
         else
         {
             // For unsigned number cast it to Unsigned mode
-            bInvalid = FALSE;
-            if( n64Val > m_n64MaxVal )
+            if(m_bSigned == TRUE)
             {
-                if( bCanWrap == TRUE )
+                bInvalid = FALSE;
+                if( n64Val > m_n64MaxVal )
                 {
-                    n64Val = m_n64MinVal;
+                    if( bCanWrap == TRUE )
+                    {
+                        n64Val = m_n64MinVal;
+                    }
+                    else
+                    {
+                        n64Val = m_n64MaxVal;
+                    }
                 }
-                else
+            }
+            else if(m_bSigned == FALSE)
+            {
+                bInvalid = FALSE;
+                if( un64Val > m_un64MaxVal )
                 {
-                    n64Val = m_n64MaxVal;
+                    if( bCanWrap == TRUE )
+                    {
+                        un64Val = m_un64MinVal;
+                    }
+                    else
+                    {
+                        un64Val = m_un64MaxVal;
+                    }
                 }
+
             }
         }
     }
@@ -794,11 +916,18 @@ BOOL CNumSpinCtrl::OnDeltaPos(NMHDR* pNMHDR, LRESULT* pResult)
     }
     else
     {
-        vSetValueForBuddy( n64Val );
+        if(m_bSigned == TRUE)
+        {
+            vSetValueForBuddy( n64Val );
+        }
+        else if(m_bSigned == FALSE)
+        {
+            vSetValueForBuddy( un64Val );
+        }
     }
     *pResult = 0;
     // let parent process this notification too.
-    return FALSE; 
+    return FALSE;
 }
 
 /******************************************************************************
@@ -812,7 +941,7 @@ BOOL CNumSpinCtrl::OnDeltaPos(NMHDR* pNMHDR, LRESULT* pResult)
  Author(s)        : Raja N
  Date Created     : 22.07.2004
 *******************************************************************************/
-int CNumSpinCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CNumSpinCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
     int nReturn;
     nReturn = CSpinButtonCtrl::OnCreate(lpCreateStruct);
@@ -835,7 +964,7 @@ int CNumSpinCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
  Author(s)        : Raja N
  Date Created     : 22.07.2004
 *******************************************************************************/
-void CNumSpinCtrl::PreSubclassWindow() 
+void CNumSpinCtrl::PreSubclassWindow()
 {
     CSpinButtonCtrl::PreSubclassWindow();
     // Update the spin control parameters

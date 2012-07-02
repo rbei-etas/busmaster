@@ -85,8 +85,8 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
                 omStrTemp.TrimLeft();
                 // Channel ID
                 omStrMsgID = omStrTemp.SpanExcluding("\t ");
-                UCHAR ucChannel    = 
-                        (UCHAR) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,10);
+                UCHAR ucChannel    =
+                    (UCHAR) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,10);
                 nIndex     = omStrMsgID.GetLength();
                 omStrTemp  = omStrTemp.Right(omStrTemp.GetLength() - nIndex -1);
 
@@ -100,15 +100,15 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
 
                 // Get message ID string after removing any message name.
                 omStrMsgID = omStrMsgID.SpanExcluding(defMSGID_NAME_DELIMITER);
-				UINT unMsgID = 0;
+                UINT unMsgID = 0;
                 if( bHexON == TRUE)
                 {
-                    unMsgID    = 
+                    unMsgID    =
                         (UINT) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,16);
                 }
                 else
                 {
-                    unMsgID    = 
+                    unMsgID    =
                         (UINT) strtol( (LPCTSTR )omStrMsgID,&pcStopString ,10);
                 }
 
@@ -159,10 +159,10 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
                     if(nTotalData<=8 )
                     {
 
-                        for(INT i = 0;i<nTotalData;i++)
+                        for(INT i = 0; i<nTotalData; i++)
                         {
-                            psCANData->m_uDataInfo.m_sCANMsg.m_ucData[i] = 
-                                            omByteArrayDataTx.GetAt(i);
+                            psCANData->m_uDataInfo.m_sCANMsg.m_ucData[i] =
+                                omByteArrayDataTx.GetAt(i);
                         }
                         psCANData->m_uDataInfo.m_sCANMsg.m_unMsgID = unMsgID;
                         psCANData->m_uDataInfo.m_sCANMsg.m_ucDataLen   = (UCHAR)unDLC;
@@ -192,8 +192,8 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
 /*  Modifications on :  24.04.2002, Added a new parameter bHExON              */
 /******************************************************************************/
 
-void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx, 
-                         CHAR* pctempBuf, 
+void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
+                         CHAR* pctempBuf,
                          BOOL bHexON)
 {
     char tCh = ' ';
@@ -205,10 +205,10 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
     //variable and remove all white spaces
     CString omStrTemp(pctempBuf);
     omStrTemp.Remove(tCh);
-    
-    
+
+
     INT nStrLength = omStrTemp.GetLength();
-   
+
     //start converting them into a byte.
     while (nStrLength)
     {
@@ -219,16 +219,16 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
         //subtracting the ASCII value of '0'
         if (('0' <= ucFirstCh) && (ucFirstCh <= '9'))
         {
-             ucFirstCh -='0';
+            ucFirstCh -='0';
         }
         else
         {
-           //The character is between 'a' to 'f'. First
-           //convert to lowercase and deduct 87 which
-           //will give the correct value for the char
-           //as the ASCII value of 'a' is 97.
-           ucFirstCh = (UCHAR)tolower (ucFirstCh);
-           ucFirstCh-= 87;
+            //The character is between 'a' to 'f'. First
+            //convert to lowercase and deduct 87 which
+            //will give the correct value for the char
+            //as the ASCII value of 'a' is 97.
+            ucFirstCh = (UCHAR)tolower (ucFirstCh);
+            ucFirstCh-= 87;
         }
         //if the value is greater than or equal to zero or
         //less than or equal to nine, get the value by
@@ -236,21 +236,21 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
         nStrLength --;
         if(nStrLength)
         {
-           ucSecondCh = omStrTemp.GetAt(unCount++);
- 
-           if (('0' <= ucSecondCh) && (ucSecondCh <= '9'))
-           {
-              ucSecondCh -='0';
-           }
-           else
-           {
-              //The character is between 'a' to 'f'. First
-              //convert to lowercase and deduct 87 which
-              //will give the correct value for the char
-              //as the ASCII value of 'a' is 97.
-              ucSecondCh = (UCHAR)tolower (ucSecondCh);
-              ucSecondCh-= 87;
-           }
+            ucSecondCh = omStrTemp.GetAt(unCount++);
+
+            if (('0' <= ucSecondCh) && (ucSecondCh <= '9'))
+            {
+                ucSecondCh -='0';
+            }
+            else
+            {
+                //The character is between 'a' to 'f'. First
+                //convert to lowercase and deduct 87 which
+                //will give the correct value for the char
+                //as the ASCII value of 'a' is 97.
+                ucSecondCh = (UCHAR)tolower (ucSecondCh);
+                ucSecondCh-= 87;
+            }
             //Now add the byte to the byte array
             if(bHexON == TRUE)
             {
@@ -271,7 +271,7 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
                 ucThirdCh = omStrTemp.GetAt(unCount++);
                 if (('0' <= ucThirdCh) && (ucThirdCh <= '9'))
                 {
-                      ucThirdCh -='0';
+                    ucThirdCh -='0';
                 }
                 ucFirstCh  = ucFirstCh * 100;
                 ucFirstCh += ucSecondCh * 10;
@@ -280,10 +280,10 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
                 pomByteArrayBufTx->Add(ucFirstCh);
             }
         }
-    
+
     }//while (nStrLength);
-    
-   return;
+
+    return;
 }
 
 
@@ -294,11 +294,11 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
 /*  Output           :  BOOL                                                  */
 /*  Functionality    :  This function finds the change in mode                */
 /*  Member of        :  CMsgReplayWnd                                         */
-/*  Friend of        :      -                                                 */    
+/*  Friend of        :      -                                                 */
 /*  Author(s)        :  Krishnaswamy B.N                                      */
 /*  Date Created     :  19.08.2003                                            */
 /******************************************************************************/
-BOOL bIsModeMismatch( ifstream &omInReplayFile,
+BOOL bIsModeMismatch( ifstream& omInReplayFile,
                       BOOL bReplayHexON,
                       WORD wLogReplayTimeMode)
 {
@@ -312,7 +312,7 @@ BOOL bIsModeMismatch( ifstream &omInReplayFile,
     {
         while( bLine &&  ! omInReplayFile.eof())
         {
-            
+
             omInReplayFile.getline( Line, sizeof(Line));
             omStrLine = Line;
 
@@ -334,40 +334,40 @@ BOOL bIsModeMismatch( ifstream &omInReplayFile,
                     bFlag = TRUE;
                 }
             }
-           if( omStrLine.Find(SYSTEM_MODE) == 0)
-           {
-               bReplayMsgTypeChecked = TRUE;
-               if( wLogReplayTimeMode != eSYSTEM_MODE)
-               {
-                   bFlag = TRUE;  
-                   bLine = FALSE;
-               }
-           }
-           else if( omStrLine.Find(ABSOLUTE_MODE) == 0)
-           {
-               bReplayMsgTypeChecked = TRUE;
-               if( wLogReplayTimeMode != eABSOLUTE_MODE)
-               {
-                   bFlag = TRUE;  
-                   bLine = FALSE;
-               }
-           }
-           else if( omStrLine.Find(RELATIVE_MODE) == 0)
-           {
-               bReplayMsgTypeChecked = TRUE;
-               if( wLogReplayTimeMode != eRELATIVE_MODE)
-               {
-                   bFlag = TRUE;  
-                   bLine = FALSE;
-               }
-           }
-           if(bLogModeChecked == TRUE && bReplayMsgTypeChecked == TRUE)
-           {
-               bLine = FALSE;
-           }
+            if( omStrLine.Find(SYSTEM_MODE) == 0)
+            {
+                bReplayMsgTypeChecked = TRUE;
+                if( wLogReplayTimeMode != eSYSTEM_MODE)
+                {
+                    bFlag = TRUE;
+                    bLine = FALSE;
+                }
+            }
+            else if( omStrLine.Find(ABSOLUTE_MODE) == 0)
+            {
+                bReplayMsgTypeChecked = TRUE;
+                if( wLogReplayTimeMode != eABSOLUTE_MODE)
+                {
+                    bFlag = TRUE;
+                    bLine = FALSE;
+                }
+            }
+            else if( omStrLine.Find(RELATIVE_MODE) == 0)
+            {
+                bReplayMsgTypeChecked = TRUE;
+                if( wLogReplayTimeMode != eRELATIVE_MODE)
+                {
+                    bFlag = TRUE;
+                    bLine = FALSE;
+                }
+            }
+            if(bLogModeChecked == TRUE && bReplayMsgTypeChecked == TRUE)
+            {
+                bLine = FALSE;
+            }
         }
     }
-    return bFlag;  
+    return bFlag;
 }
 
 
@@ -388,7 +388,7 @@ BOOL bIsModeMismatch( ifstream &omInReplayFile,
 /*  Modified On      :  03.06.2004, Relative time is computed                 */
 /******************************************************************************/
 UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
-                           CString &omStrCurMsg,
+                           CString& omStrCurMsg,
                            WORD wLogReplyTimeMode)
 {
     UINT unTimeDifference    = 0;
@@ -403,12 +403,12 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
 
     omStrMsgCurTime = omStrCurMsg.SpanExcluding("\t ");
     omStrMsgNextTime = omStrNextMsg.SpanExcluding("\t ");
-    
+
     if(omStrMsgNextTime.IsEmpty()==FALSE && omStrMsgCurTime.IsEmpty()==FALSE)
     {
-	    INT  nIndex     = 0;
-	    INT  nLoopCount = 0;
-	    UINT unTemp     = 0;
+        INT  nIndex     = 0;
+        INT  nLoopCount = 0;
+        UINT unTemp     = 0;
 
         // Get the Next time in milli second
         while(omStrMsgNextTime.IsEmpty()==FALSE)
@@ -417,11 +417,11 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
             omStrTemp       = omStrMsgNextTime.SpanExcluding(":");
             nIndex          = omStrTemp.GetLength();
             unTemp          = (UINT) strtol( (LPCTSTR )omStrTemp,&pcStopString,
-                                                10);
+                                             10);
             dNextTime       += unTemp * adMultiFac[nLoopCount];
             nLoopCount++;
             omStrMsgNextTime =
-               omStrMsgNextTime.Right(omStrMsgNextTime.GetLength() - nIndex -1);
+                omStrMsgNextTime.Right(omStrMsgNextTime.GetLength() - nIndex -1);
         }
         // Reset the loop counter
         nLoopCount = 0;
@@ -433,13 +433,13 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
 
                 omStrTemp       = omStrMsgCurTime.SpanExcluding(":");
                 nIndex          = omStrTemp.GetLength();
-                unTemp          = 
+                unTemp          =
                     (UINT) strtol( (LPCTSTR )omStrTemp,&pcStopString, 10);
                 dCurTime        += unTemp * adMultiFac[nLoopCount];
                 nLoopCount++;
                 omStrMsgCurTime =
                     omStrMsgCurTime.Right(omStrMsgCurTime.GetLength() -
-                                            nIndex -1);
+                                          nIndex -1);
             }
         }
     }
@@ -450,7 +450,7 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
             unTimeDifference = (UINT)(dNextTime - dCurTime + 0.5);
         }
     }
-    else 
+    else
     {
         if(dNextTime >0)
         {

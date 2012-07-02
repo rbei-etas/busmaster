@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINDataLostEvent definition
 * @remark The header structure of the OLI may change
@@ -28,10 +28,13 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_LIN_MESSAGES
 * @brief  Event to signal that LIN frames got lost.
 *
@@ -41,25 +44,26 @@ namespace ETAS {namespace OLI {
 * This interface's implementation of @ref IMessage::GetID always returns 0.
 *
 * @remark All public methods are thread-safe.
-* @remark The lifetime of all objects implementing this interface 
+* @remark The lifetime of all objects implementing this interface
 *         is defined by the @ref IRxQueue "receive queue" instance
 *         that contains them.
 * @since  BOA 1.3
 * @see    IRxQueue, ILINLink, ILINDataLostEventFilter
 */
 
-OLI_INTERFACE ILINDataLostEvent : public IEvent
+OLI_INTERFACE ILINDataLostEvent :
+public IEvent
 {
 protected:
 
     /** @brief Destructor.
 
-        This destructor has been hidden since objects implementing 
+        This destructor has been hidden since objects implementing
         this class are controlled by the receiving queue.
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINDataLostEvent() OLI_NOTHROW {};
 
@@ -71,11 +75,11 @@ public:
     enum {TYPE = LIN_TYPE_EVENT_BASE + 1};
 
     /** @brief  Get the number of lost frames.
-        
-        @return Number of lost frames. 
+
+        @return Number of lost frames.
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual uint32 OLI_CALL GetCount() const OLI_NOTHROW = 0;
 };
@@ -83,7 +87,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

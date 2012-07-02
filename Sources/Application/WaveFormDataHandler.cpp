@@ -31,11 +31,11 @@ const BYTE WAVEFORM_DATA_HANDLER_VERSION = 0x1;
 
 CWaveFormDataHandler::CWaveFormDataHandler(void)
 {
-	//Initialize the Waveform with default values.
-	m_sDefaultWaveInfo.m_eSignalWaveType = eWave_SINE;
-	m_sDefaultWaveInfo.m_fAmplitude	  = 10;
-	m_sDefaultWaveInfo.m_fFrequency	  = 1;
-	m_shSamplingTP = 125;
+    //Initialize the Waveform with default values.
+    m_sDefaultWaveInfo.m_eSignalWaveType = eWave_SINE;
+    m_sDefaultWaveInfo.m_fAmplitude   = 10;
+    m_sDefaultWaveInfo.m_fFrequency   = 1;
+    m_shSamplingTP = 125;
 }
 
 CWaveFormDataHandler::~CWaveFormDataHandler(void)
@@ -43,7 +43,7 @@ CWaveFormDataHandler::~CWaveFormDataHandler(void)
 }
 
 SSigGeneration* CWaveFormDataHandler::psGetMsgEntryFromList(UINT MsgID,
-                                            CSigGenerationInfoList& omCurrList)
+        CSigGenerationInfoList& omCurrList)
 {
     SSigGeneration* Result = NULL;
 
@@ -61,7 +61,7 @@ SSigGeneration* CWaveFormDataHandler::psGetMsgEntryFromList(UINT MsgID,
 }
 
 sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromMsgEntry(
-                              CString omSignalName, SSigGeneration& ouMsgEntry)
+    CString omSignalName, SSigGeneration& ouMsgEntry)
 {
     sWaveformInfo* Result = FALSE;
 
@@ -78,7 +78,7 @@ sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromMsgEntry(
 }
 
 sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromList(UINT MsgID,
-                      CString omSignalName, CSigGenerationInfoList& omCurrList)
+        CString omSignalName, CSigGenerationInfoList& omCurrList)
 {
     sWaveformInfo* Result = NULL;
 
@@ -105,20 +105,20 @@ sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromList(UINT MsgID,
 
 void CWaveFormDataHandler::vGetDefaultSignalWaveValues(sWaveformInfo& stDefaultWaveInfo) const
 {
-	stDefaultWaveInfo = m_sDefaultWaveInfo;
+    stDefaultWaveInfo = m_sDefaultWaveInfo;
 }
 
 void CWaveFormDataHandler::vSetDefaultSignalWaveValues(const sWaveformInfo& stDefaultWaveInfo)
 {
-	m_sDefaultWaveInfo = stDefaultWaveInfo;
+    m_sDefaultWaveInfo = stDefaultWaveInfo;
 }
 
 float CWaveFormDataHandler::fGetMsgIDDefaultValue(UINT unMsgID)
 {
     float Result = (float) 0.0;
 
-    SSigGeneration* psMsgEntry = psGetMsgEntryFromList(unMsgID, 
-                                                  m_lstTempSignalWaveformInfo);
+    SSigGeneration* psMsgEntry = psGetMsgEntryFromList(unMsgID,
+                                 m_lstTempSignalWaveformInfo);
     if (NULL != psMsgEntry)
     {
         Result = psMsgEntry->m_fDefaultAmplitude;
@@ -129,21 +129,21 @@ float CWaveFormDataHandler::fGetMsgIDDefaultValue(UINT unMsgID)
 
 void CWaveFormDataHandler::vSetMsgIDDefaultValue(UINT unMsgID, float fDefaultValue)
 {
-    SSigGeneration* psMsgEntry = psGetMsgEntryFromList(unMsgID, 
-                                                  m_lstTempSignalWaveformInfo);
+    SSigGeneration* psMsgEntry = psGetMsgEntryFromList(unMsgID,
+                                 m_lstTempSignalWaveformInfo);
     if (NULL != psMsgEntry)
     {
         psMsgEntry->m_fDefaultAmplitude = fDefaultValue;
     }
 }
 
-BOOL CWaveFormDataHandler::bGetSignalWavePatternDetails(UINT unMsgID, 
-                             CString omSignalName, sWaveformInfo& sSigWaveInfo)
+BOOL CWaveFormDataHandler::bGetSignalWavePatternDetails(UINT unMsgID,
+        CString omSignalName, sWaveformInfo& sSigWaveInfo)
 {
     BOOL Result = FALSE;
 
     sWaveformInfo* psWaveformEntry = psGetSignalEntryFromList(unMsgID,
-                                    omSignalName, m_lstTempSignalWaveformInfo);
+                                     omSignalName, m_lstTempSignalWaveformInfo);
     if (NULL != psWaveformEntry)
     {
         sSigWaveInfo = *psWaveformEntry;
@@ -152,11 +152,11 @@ BOOL CWaveFormDataHandler::bGetSignalWavePatternDetails(UINT unMsgID,
     return Result;
 }
 
-void CWaveFormDataHandler::vSetSignalWavePatternDetails(UINT unMsgID, 
-                       CString omSignalName, const sWaveformInfo& sSigWaveInfo)
+void CWaveFormDataHandler::vSetSignalWavePatternDetails(UINT unMsgID,
+        CString omSignalName, const sWaveformInfo& sSigWaveInfo)
 {
     sWaveformInfo* psWaveformEntry = psGetSignalEntryFromList(unMsgID,
-                                    omSignalName, m_lstTempSignalWaveformInfo);
+                                     omSignalName, m_lstTempSignalWaveformInfo);
     if (NULL != psWaveformEntry)
     {
         *psWaveformEntry = sSigWaveInfo;
@@ -165,15 +165,15 @@ void CWaveFormDataHandler::vSetSignalWavePatternDetails(UINT unMsgID,
 
 BOOL CWaveFormDataHandler::bIsSignalInMsgIDDefined(UINT unMsgID, CString omSignalName)
 {
-    return (psGetSignalEntryFromList(unMsgID, omSignalName, 
-                                 m_lstTempSignalWaveformInfo) != NULL);
+    return (psGetSignalEntryFromList(unMsgID, omSignalName,
+                                     m_lstTempSignalWaveformInfo) != NULL);
 }
 
-void CWaveFormDataHandler::vGetDefinedSignalsInMsgID(UINT unMsgID, 
-								CStringArray& omDefinedSignals)
+void CWaveFormDataHandler::vGetDefinedSignalsInMsgID(UINT unMsgID,
+        CStringArray& omDefinedSignals)
 {
     SSigGeneration* Result = psGetMsgEntryFromList(
-                                         unMsgID, m_lstTempSignalWaveformInfo);
+                                 unMsgID, m_lstTempSignalWaveformInfo);
 
     if (NULL != Result)
     {
@@ -188,7 +188,7 @@ void CWaveFormDataHandler::vGetDefinedSignalsInMsgID(UINT unMsgID,
 }
 
 sSigWaveMap* CWaveFormDataHandler::psGetSignalEntry(
-                          CString omSignalName, CSigWaveMapList& omSigWaveList)
+    CString omSignalName, CSigWaveMapList& omSigWaveList)
 {
     sSigWaveMap* Result = NULL;
 
@@ -206,8 +206,8 @@ sSigWaveMap* CWaveFormDataHandler::psGetSignalEntry(
 }
 
 // Set (add / modify) a signal wave entry, given the signal wave list
-BOOL CWaveFormDataHandler::bSetSignalWaveEntry(sSigWaveMap ouSignalEntry, 
-                                               CSigWaveMapList& omSigWaveList)
+BOOL CWaveFormDataHandler::bSetSignalWaveEntry(sSigWaveMap ouSignalEntry,
+        CSigWaveMapList& omSigWaveList)
 {
     sSigWaveMap* psCurrEntry = psGetSignalEntry(ouSignalEntry.m_omSigName, omSigWaveList);
 
@@ -222,17 +222,17 @@ BOOL CWaveFormDataHandler::bSetSignalWaveEntry(sSigWaveMap ouSignalEntry,
     return TRUE;
 }
 
-BOOL CWaveFormDataHandler::bAddSignalToDefinedWavesList(UINT unMsgID, 
-                           CString omSignalName, sWaveformInfo& sSigWaveInfo)
+BOOL CWaveFormDataHandler::bAddSignalToDefinedWavesList(UINT unMsgID,
+        CString omSignalName, sWaveformInfo& sSigWaveInfo)
 {
     SSigGeneration* psMsgEntry = psGetMsgEntryFromList(
-                                         unMsgID, m_lstTempSignalWaveformInfo);
+                                     unMsgID, m_lstTempSignalWaveformInfo);
 
     sSigWaveMap ouSignalWaveEntry;
     ouSignalWaveEntry.m_omSigName = omSignalName;
     ouSignalWaveEntry.sWaveInfo = sSigWaveInfo;
-    ouSignalWaveEntry.sWaveInfo.m_fGranularity = 
-                           fCalculateGranularity(sSigWaveInfo, m_shSamplingTP);
+    ouSignalWaveEntry.sWaveInfo.m_fGranularity =
+        fCalculateGranularity(sSigWaveInfo, m_shSamplingTP);
 
     if (NULL == psMsgEntry) // Msg entry doesn't exist. So add the same
     {
@@ -245,16 +245,16 @@ BOOL CWaveFormDataHandler::bAddSignalToDefinedWavesList(UINT unMsgID,
     {
         bSetSignalWaveEntry(ouSignalWaveEntry, psMsgEntry->m_omSigWaveMapList);
     }
-	return TRUE;
+    return TRUE;
 }
 
 BOOL CWaveFormDataHandler::bRemoveSignalFromDefinedWavesList(
-                                            UINT unMsgID, CString omSignalName)
+    UINT unMsgID, CString omSignalName)
 {
     BOOL Result = FALSE;
 
-	SSigGeneration ouCurrMsgEntry; // Use a message entry object
-	ouCurrMsgEntry.m_nMsgID = unMsgID;
+    SSigGeneration ouCurrMsgEntry; // Use a message entry object
+    ouCurrMsgEntry.m_nMsgID = unMsgID;
 
     sSigWaveMap ouCurrSigEntry; // Use a signal entry object
     ouCurrSigEntry.m_omSigName = omSignalName;
@@ -269,13 +269,14 @@ BOOL CWaveFormDataHandler::bRemoveSignalFromDefinedWavesList(
         {
             ouCurrMsgEntryAlias.m_omSigWaveMapList.RemoveAt(PosSig);
             if (ouCurrMsgEntryAlias.m_omSigWaveMapList.GetCount() == 0)// If the
-            {                  // signal list is empty, there is no point to keep
+            {
+                // signal list is empty, there is no point to keep
                 m_lstTempSignalWaveformInfo.RemoveAt(PosMsg);// the message entry
             }
             Result = TRUE;
         }
     }
-	return Result;
+    return Result;
 }
 
 void CWaveFormDataHandler::vCommit(void)
@@ -298,52 +299,52 @@ void CWaveFormDataHandler::GetSigGenerationInfoList(CSigGenerationInfoList& Targ
 
 UINT CWaveFormDataHandler::nGetNumberOfDefinedSignals(void)
 {
-	UINT Result = 0;
+    UINT Result = 0;
 
-	POSITION PosMsg = m_lstTempSignalWaveformInfo.GetHeadPosition();
+    POSITION PosMsg = m_lstTempSignalWaveformInfo.GetHeadPosition();
 
-	while (NULL != PosMsg)
-	{
-		SSigGeneration& CurrMsgEntry = m_lstTempSignalWaveformInfo.GetNext(PosMsg);
+    while (NULL != PosMsg)
+    {
+        SSigGeneration& CurrMsgEntry = m_lstTempSignalWaveformInfo.GetNext(PosMsg);
         Result += CurrMsgEntry.m_omSigWaveMapList.GetCount();
-	}
+    }
 
-	return Result;
+    return Result;
 }
 
 void CWaveFormDataHandler::vGetAllDefinedSignalsNames(CStringArray& omSignalNames)
 {
     omSignalNames.RemoveAll();  // First clear the destination buffer.
 
-	POSITION PosMsg = m_lstTempSignalWaveformInfo.GetHeadPosition();
-	while (NULL != PosMsg)
-	{
-		SSigGeneration& ouCurrMsg = m_lstTempSignalWaveformInfo.GetNext(PosMsg);
+    POSITION PosMsg = m_lstTempSignalWaveformInfo.GetHeadPosition();
+    while (NULL != PosMsg)
+    {
+        SSigGeneration& ouCurrMsg = m_lstTempSignalWaveformInfo.GetNext(PosMsg);
 
-		POSITION PosSig = ouCurrMsg.m_omSigWaveMapList.GetHeadPosition();
-		while (NULL != PosSig)
-		{
-			sSigWaveMap& ouCurrSig = ouCurrMsg.m_omSigWaveMapList.GetNext(PosSig);
+        POSITION PosSig = ouCurrMsg.m_omSigWaveMapList.GetHeadPosition();
+        while (NULL != PosSig)
+        {
+            sSigWaveMap& ouCurrSig = ouCurrMsg.m_omSigWaveMapList.GetNext(PosSig);
 
-			CString omWaveformDetails; // Other information accompanies the signal
-			
+            CString omWaveformDetails; // Other information accompanies the signal
+
             if(!bIsSignalInMsgFoundInDB(ouCurrMsg.m_nMsgID, ouCurrSig.m_omSigName))
             {
                 continue;
             }
 
-			omWaveformDetails.Format(_T("%X ->%s (%s)"), ouCurrMsg.m_nMsgID, 
-					ouCurrSig.m_omSigName, 
-		    sWaveformInfo::omGetWaveformName(ouCurrSig.sWaveInfo.m_eSignalWaveType));
+            omWaveformDetails.Format(_T("%X ->%s (%s)"), ouCurrMsg.m_nMsgID,
+                                     ouCurrSig.m_omSigName,
+                                     sWaveformInfo::omGetWaveformName(ouCurrSig.sWaveInfo.m_eSignalWaveType));
 
-			omSignalNames.Add(omWaveformDetails); // [out] parameter is updated			
-		}
-	}
+            omSignalNames.Add(omWaveformDetails); // [out] parameter is updated
+        }
+    }
 }
 
 bool CWaveFormDataHandler::bIsSignalInMsgFoundInDB(UINT& nMsgID, CString& strSignalName)
-{	
-	if (m_podMsgEntyList != NULL)
+{
+    if (m_podMsgEntyList != NULL)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = nMsgID;
@@ -355,7 +356,7 @@ bool CWaveFormDataHandler::bIsSignalInMsgFoundInDB(UINT& nMsgID, CString& strSig
             while (SubPos != NULL)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
-				
+
                 if( strSignalName.Compare(sSubEntry.m_omSubEntryName) == 0)
                 {
                     return true;
@@ -363,16 +364,16 @@ bool CWaveFormDataHandler::bIsSignalInMsgFoundInDB(UINT& nMsgID, CString& strSig
             }
         }
     }
-	return false;
+    return false;
 }
 
 short CWaveFormDataHandler::shGetSamplingTimePeriod()
 {
-	return m_shSamplingTP;
+    return m_shSamplingTP;
 }
 
 float CWaveFormDataHandler::fCalculateGranularity(sWaveformInfo& sCurrWaveInfo,
-                                                  short shSamplingTP)
+        short shSamplingTP)
 {
     /* Granularity means basic unit angle in radian for every iteration which
     is based on sampling time period. This can be formulated as:
@@ -384,7 +385,7 @@ float CWaveFormDataHandler::fCalculateGranularity(sWaveformInfo& sCurrWaveInfo,
 
 void CWaveFormDataHandler::vSetSamplingTimePeriod(short shSamplingTimePeriod)
 {
-	m_shSamplingTP = shSamplingTimePeriod;
+    m_shSamplingTP = shSamplingTimePeriod;
 
     // Recalculate granularity of each waveform entry
     POSITION Pos = m_lstTempSignalWaveformInfo.GetHeadPosition();
@@ -395,206 +396,206 @@ void CWaveFormDataHandler::vSetSamplingTimePeriod(short shSamplingTimePeriod)
         while (NULL != SigPos)
         {
             sSigWaveMap& WaveEntry = CurrMsgEntry.m_omSigWaveMapList.GetNext(SigPos);
-            WaveEntry.sWaveInfo.m_fGranularity = 
-                    fCalculateGranularity(WaveEntry.sWaveInfo, m_shSamplingTP);
+            WaveEntry.sWaveInfo.m_fGranularity =
+                fCalculateGranularity(WaveEntry.sWaveInfo, m_shSamplingTP);
         }
     }
 }
 
-HRESULT CWaveFormDataHandler::GetConfigData(BYTE** ppvDataStream, UINT& unLength) 
+HRESULT CWaveFormDataHandler::GetConfigData(BYTE** ppvDataStream, UINT& unLength)
 {
-	UINT nSize = 0;
-	nSize += sizeof(BYTE);  // 1 Byte for Version
-	nSize += sizeof(UINT);  // Bytes for Buffer Size
+    UINT nSize = 0;
+    nSize += sizeof(BYTE);  // 1 Byte for Version
+    nSize += sizeof(UINT);  // Bytes for Buffer Size
 
-	nSize += nGetWaveInfoListSize();
+    nSize += nGetWaveInfoListSize();
 
-	BYTE* pByteTrgt = new BYTE[nSize];	
-	*ppvDataStream = pByteTrgt;	
-	
-	BYTE byVer = WAVEFORM_DATA_HANDLER_VERSION;
-	COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
-	COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size. 		
+    BYTE* pByteTrgt = new BYTE[nSize];
+    *ppvDataStream = pByteTrgt;
 
-	pByteTrgt = pbyGetListConfigData(pByteTrgt, nSize);
-	unLength = nSize;	
+    BYTE byVer = WAVEFORM_DATA_HANDLER_VERSION;
+    COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
+    COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size.
 
-	return S_OK;
+    pByteTrgt = pbyGetListConfigData(pByteTrgt, nSize);
+    unLength = nSize;
+
+    return S_OK;
 }
 
 HRESULT CWaveFormDataHandler::SetConfigData(BYTE* pvDataStream)
 {
-	m_lstSignalWaveformInfo.RemoveAll();
-	m_lstTempSignalWaveformInfo.RemoveAll();
+    m_lstSignalWaveformInfo.RemoveAll();
+    m_lstTempSignalWaveformInfo.RemoveAll();
 
-	BYTE* pByteTrgt = pvDataStream;
+    BYTE* pByteTrgt = pvDataStream;
 
-	if (pByteTrgt != NULL)
-	{
-		BYTE byVer = 0;
-		COPY_DATA_2(&byVer, pByteTrgt, sizeof(BYTE));
-		if (byVer == WAVEFORM_DATA_HANDLER_VERSION)
-		{
-			UINT nSize = 0;
-			COPY_DATA_2(&nSize, pByteTrgt, sizeof(UINT));
+    if (pByteTrgt != NULL)
+    {
+        BYTE byVer = 0;
+        COPY_DATA_2(&byVer, pByteTrgt, sizeof(BYTE));
+        if (byVer == WAVEFORM_DATA_HANDLER_VERSION)
+        {
+            UINT nSize = 0;
+            COPY_DATA_2(&nSize, pByteTrgt, sizeof(UINT));
 
-			//Reading Messages Count.
-			UINT nMsgCount = 0;
-			COPY_DATA_2(&nMsgCount, pByteTrgt, sizeof(UINT));
+            //Reading Messages Count.
+            UINT nMsgCount = 0;
+            COPY_DATA_2(&nMsgCount, pByteTrgt, sizeof(UINT));
 
-			for(UINT i=0;i<nMsgCount;i++)
-			{
-				SSigGeneration objSigGeneration;
-				//Reading Message ID.
-				COPY_DATA_2(&objSigGeneration.m_nMsgID, pByteTrgt, sizeof(UINT));
-				//Reading Default Amplitude.
-				COPY_DATA_2(&objSigGeneration.m_fDefaultAmplitude, pByteTrgt, sizeof(float));
+            for(UINT i=0; i<nMsgCount; i++)
+            {
+                SSigGeneration objSigGeneration;
+                //Reading Message ID.
+                COPY_DATA_2(&objSigGeneration.m_nMsgID, pByteTrgt, sizeof(UINT));
+                //Reading Default Amplitude.
+                COPY_DATA_2(&objSigGeneration.m_fDefaultAmplitude, pByteTrgt, sizeof(float));
 
-				//Reading Signal Count.
-				UINT nSigCount = 0;
-				COPY_DATA_2(&nSigCount, pByteTrgt, sizeof(UINT));
+                //Reading Signal Count.
+                UINT nSigCount = 0;
+                COPY_DATA_2(&nSigCount, pByteTrgt, sizeof(UINT));
 
-				for(UINT j=0;j<nSigCount;j++)
-				{
-					sSigWaveMap objSigWaveMap;
+                for(UINT j=0; j<nSigCount; j++)
+                {
+                    sSigWaveMap objSigWaveMap;
                     objSigWaveMap.m_omSigName = "";
 
-					//Reading Signal Name Size.
-					BYTE bytSignalSize = 0;
-					COPY_DATA_2(&bytSignalSize, pByteTrgt, sizeof(BYTE));
-					
-					//Reading Signal Name
-					for(int k=0;k<bytSignalSize;k++)
-					{
-						BYTE bytTemp = 0;
-						CString strTemp;
-						COPY_DATA_2(&bytTemp, pByteTrgt, sizeof(BYTE));
-						strTemp.Format(_T("%c"),bytTemp);
-						objSigWaveMap.m_omSigName+=strTemp;
-					}					
-					//Reading sWaveformInfo structure.
-					COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_eSignalWaveType, pByteTrgt, 
-								sizeof(objSigWaveMap.sWaveInfo.m_eSignalWaveType));
+                    //Reading Signal Name Size.
+                    BYTE bytSignalSize = 0;
+                    COPY_DATA_2(&bytSignalSize, pByteTrgt, sizeof(BYTE));
 
-					COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_fAmplitude, pByteTrgt, 
-								sizeof(objSigWaveMap.sWaveInfo.m_fAmplitude));
+                    //Reading Signal Name
+                    for(int k=0; k<bytSignalSize; k++)
+                    {
+                        BYTE bytTemp = 0;
+                        CString strTemp;
+                        COPY_DATA_2(&bytTemp, pByteTrgt, sizeof(BYTE));
+                        strTemp.Format(_T("%c"),bytTemp);
+                        objSigWaveMap.m_omSigName+=strTemp;
+                    }
+                    //Reading sWaveformInfo structure.
+                    COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_eSignalWaveType, pByteTrgt,
+                                sizeof(objSigWaveMap.sWaveInfo.m_eSignalWaveType));
 
-					COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_fFrequency, pByteTrgt, 
-								sizeof(objSigWaveMap.sWaveInfo.m_fFrequency));
+                    COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_fAmplitude, pByteTrgt,
+                                sizeof(objSigWaveMap.sWaveInfo.m_fAmplitude));
 
-					COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_fGranularity, pByteTrgt, 
-								sizeof(objSigWaveMap.sWaveInfo.m_fGranularity));
+                    COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_fFrequency, pByteTrgt,
+                                sizeof(objSigWaveMap.sWaveInfo.m_fFrequency));
 
-					//Adding sSigWaveMap object to SSigGeneration
-					objSigGeneration.m_omSigWaveMapList.AddTail(objSigWaveMap);
-				}
-				m_lstSignalWaveformInfo.AddTail(objSigGeneration);
-				m_lstTempSignalWaveformInfo.AddTail(objSigGeneration);
-			}
-			//Storing Sampling Time period.
-			COPY_DATA_2(&m_shSamplingTP, pByteTrgt, sizeof(m_shSamplingTP));			
-		}
-	}
-	else	//Assign Default Values
-	{
-		m_sDefaultWaveInfo.m_eSignalWaveType = eWave_SINE;
-		m_sDefaultWaveInfo.m_fAmplitude	  = 10;
-		m_sDefaultWaveInfo.m_fFrequency	  = 1;
-		m_shSamplingTP = 125;
-	}
-	return S_OK;
+                    COPY_DATA_2(&objSigWaveMap.sWaveInfo.m_fGranularity, pByteTrgt,
+                                sizeof(objSigWaveMap.sWaveInfo.m_fGranularity));
+
+                    //Adding sSigWaveMap object to SSigGeneration
+                    objSigGeneration.m_omSigWaveMapList.AddTail(objSigWaveMap);
+                }
+                m_lstSignalWaveformInfo.AddTail(objSigGeneration);
+                m_lstTempSignalWaveformInfo.AddTail(objSigGeneration);
+            }
+            //Storing Sampling Time period.
+            COPY_DATA_2(&m_shSamplingTP, pByteTrgt, sizeof(m_shSamplingTP));
+        }
+    }
+    else    //Assign Default Values
+    {
+        m_sDefaultWaveInfo.m_eSignalWaveType = eWave_SINE;
+        m_sDefaultWaveInfo.m_fAmplitude   = 10;
+        m_sDefaultWaveInfo.m_fFrequency   = 1;
+        m_shSamplingTP = 125;
+    }
+    return S_OK;
 }
 
 BYTE* CWaveFormDataHandler::pbyGetListConfigData(BYTE* pbyTrgtStream, const UINT /*nSize*/)
 {
-	BYTE* pByteTrgt = pbyTrgtStream;
-	POSITION pos = m_lstSignalWaveformInfo.GetHeadPosition();	
+    BYTE* pByteTrgt = pbyTrgtStream;
+    POSITION pos = m_lstSignalWaveformInfo.GetHeadPosition();
 
-	//Storing Messages Count.
-	UINT nMsgCount = m_lstSignalWaveformInfo.GetCount();
-	COPY_DATA(pByteTrgt, &(nMsgCount), sizeof(UINT));
-	
-	while(pos)
-	{
-		SSigGeneration& objSigGen = m_lstSignalWaveformInfo.GetNext(pos);	
+    //Storing Messages Count.
+    UINT nMsgCount = m_lstSignalWaveformInfo.GetCount();
+    COPY_DATA(pByteTrgt, &(nMsgCount), sizeof(UINT));
 
-		//Storing Message ID.
-		COPY_DATA(pByteTrgt, &(objSigGen.m_nMsgID), sizeof(objSigGen.m_nMsgID));
-		//Storing Default Amplitude.
-		COPY_DATA(pByteTrgt, &(objSigGen.m_fDefaultAmplitude), sizeof(objSigGen.m_fDefaultAmplitude));		
-		
-		//Storing Signal Count.
-		UINT nSigCount = objSigGen.m_omSigWaveMapList.GetCount();
-		COPY_DATA(pByteTrgt, &(nSigCount), sizeof(UINT));
+    while(pos)
+    {
+        SSigGeneration& objSigGen = m_lstSignalWaveformInfo.GetNext(pos);
 
-		POSITION posSig = objSigGen.m_omSigWaveMapList.GetHeadPosition();
-		while(posSig)
-		{
-			sSigWaveMap& objSigMap = objSigGen.m_omSigWaveMapList.GetNext(posSig);	
+        //Storing Message ID.
+        COPY_DATA(pByteTrgt, &(objSigGen.m_nMsgID), sizeof(objSigGen.m_nMsgID));
+        //Storing Default Amplitude.
+        COPY_DATA(pByteTrgt, &(objSigGen.m_fDefaultAmplitude), sizeof(objSigGen.m_fDefaultAmplitude));
 
-			//Storing Signal Name Size.
-			BYTE bytSignalSize = (BYTE)objSigMap.m_omSigName.GetLength();
-			COPY_DATA(pByteTrgt, &(bytSignalSize), sizeof(bytSignalSize));
+        //Storing Signal Count.
+        UINT nSigCount = objSigGen.m_omSigWaveMapList.GetCount();
+        COPY_DATA(pByteTrgt, &(nSigCount), sizeof(UINT));
 
-			//Storing Signal Name String.
-			for(int i = 0 ;i<bytSignalSize; i++)
-			{				
-				BYTE bytTemp = objSigMap.m_omSigName.GetAt(i);
-				COPY_DATA(pByteTrgt, &(bytTemp), sizeof(BYTE));			
-			}			
+        POSITION posSig = objSigGen.m_omSigWaveMapList.GetHeadPosition();
+        while(posSig)
+        {
+            sSigWaveMap& objSigMap = objSigGen.m_omSigWaveMapList.GetNext(posSig);
 
-			//Storing sWaveformInfo structure.
-			COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_eSignalWaveType),
-				                 sizeof(objSigMap.sWaveInfo.m_eSignalWaveType));
+            //Storing Signal Name Size.
+            BYTE bytSignalSize = (BYTE)objSigMap.m_omSigName.GetLength();
+            COPY_DATA(pByteTrgt, &(bytSignalSize), sizeof(bytSignalSize));
 
-			COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_fAmplitude),
-						         sizeof(objSigMap.sWaveInfo.m_fAmplitude));
+            //Storing Signal Name String.
+            for(int i = 0 ; i<bytSignalSize; i++)
+            {
+                BYTE bytTemp = objSigMap.m_omSigName.GetAt(i);
+                COPY_DATA(pByteTrgt, &(bytTemp), sizeof(BYTE));
+            }
 
-			COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_fFrequency),
-								 sizeof(objSigMap.sWaveInfo.m_fFrequency));			
+            //Storing sWaveformInfo structure.
+            COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_eSignalWaveType),
+                      sizeof(objSigMap.sWaveInfo.m_eSignalWaveType));
 
-			COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_fGranularity),
-								 sizeof(objSigMap.sWaveInfo.m_fGranularity));			
-		}
-	}
-	//Storing Sampling Time period.
-	COPY_DATA(pByteTrgt, &m_shSamplingTP, sizeof(m_shSamplingTP));
-	return pByteTrgt;
+            COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_fAmplitude),
+                      sizeof(objSigMap.sWaveInfo.m_fAmplitude));
+
+            COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_fFrequency),
+                      sizeof(objSigMap.sWaveInfo.m_fFrequency));
+
+            COPY_DATA(pByteTrgt, &(objSigMap.sWaveInfo.m_fGranularity),
+                      sizeof(objSigMap.sWaveInfo.m_fGranularity));
+        }
+    }
+    //Storing Sampling Time period.
+    COPY_DATA(pByteTrgt, &m_shSamplingTP, sizeof(m_shSamplingTP));
+    return pByteTrgt;
 }
 
 UINT CWaveFormDataHandler::nGetWaveInfoListSize()
-{ 
-	UINT nSize = 0;
-	nSize += sizeof(UINT); //Bytes for storing Number of SSigGeneration list items.
-	
-	POSITION pos = m_lstSignalWaveformInfo.GetHeadPosition();	
-	while(pos)
-	{
-		SSigGeneration& objSigGen = m_lstSignalWaveformInfo.GetNext(pos);	
+{
+    UINT nSize = 0;
+    nSize += sizeof(UINT); //Bytes for storing Number of SSigGeneration list items.
 
-		nSize += sizeof(objSigGen.m_nMsgID); //Bytes for storing Message ID.
-		nSize += sizeof(objSigGen.m_fDefaultAmplitude); //Bytes for storing Default Amplitude.
-		
-		POSITION posSig = objSigGen.m_omSigWaveMapList.GetHeadPosition();
-		
-		nSize += sizeof(UINT); //Bytes for Storing Signal Count.
+    POSITION pos = m_lstSignalWaveformInfo.GetHeadPosition();
+    while(pos)
+    {
+        SSigGeneration& objSigGen = m_lstSignalWaveformInfo.GetNext(pos);
 
-		while(posSig)
-		{
-			sSigWaveMap& objSigMap = objSigGen.m_omSigWaveMapList.GetNext(posSig);	
+        nSize += sizeof(objSigGen.m_nMsgID); //Bytes for storing Message ID.
+        nSize += sizeof(objSigGen.m_fDefaultAmplitude); //Bytes for storing Default Amplitude.
 
-			nSize += sizeof(BYTE); //Byte for storing Signal Name String length.
-			nSize += objSigMap.m_omSigName.GetLength(); //Bytes for storing Signal Name String.			
+        POSITION posSig = objSigGen.m_omSigWaveMapList.GetHeadPosition();
 
-			//Bytes for storing sWaveformInfo strucurwe.
-			nSize += sizeof(objSigMap.sWaveInfo.m_eSignalWaveType); 			
-			nSize += sizeof(objSigMap.sWaveInfo.m_fAmplitude); 			
-			nSize += sizeof(objSigMap.sWaveInfo.m_fFrequency); 	
-			nSize += sizeof(objSigMap.sWaveInfo.m_fGranularity); 	
-		}				
-	}
-	nSize += sizeof(short); //Bytes for storing sampling Time Period.
-	return nSize;
+        nSize += sizeof(UINT); //Bytes for Storing Signal Count.
+
+        while(posSig)
+        {
+            sSigWaveMap& objSigMap = objSigGen.m_omSigWaveMapList.GetNext(posSig);
+
+            nSize += sizeof(BYTE); //Byte for storing Signal Name String length.
+            nSize += objSigMap.m_omSigName.GetLength(); //Bytes for storing Signal Name String.
+
+            //Bytes for storing sWaveformInfo strucurwe.
+            nSize += sizeof(objSigMap.sWaveInfo.m_eSignalWaveType);
+            nSize += sizeof(objSigMap.sWaveInfo.m_fAmplitude);
+            nSize += sizeof(objSigMap.sWaveInfo.m_fFrequency);
+            nSize += sizeof(objSigMap.sWaveInfo.m_fGranularity);
+        }
+    }
+    nSize += sizeof(short); //Bytes for storing sampling Time Period.
+    return nSize;
 }
 
 void CWaveFormDataHandler::vGetCompleteMsgList(CStringArray& arrMsgList) const
@@ -605,33 +606,33 @@ void CWaveFormDataHandler::vGetCompleteMsgList(CStringArray& arrMsgList) const
 
 void CWaveFormDataHandler::vSetCompleteMsgList(CMainEntryList* podMsgIDList)
 {
-	m_omMsgIDList.RemoveAll();	
-	if (podMsgIDList != NULL)
+    m_omMsgIDList.RemoveAll();
+    if (podMsgIDList != NULL)
     {
-		m_podMsgEntyList = podMsgIDList;
+        m_podMsgEntyList = podMsgIDList;
         UINT unNoOfMainEntries = podMsgIDList->GetCount();
-    
+
         if ( unNoOfMainEntries > 0 )
-        {		
-		    // Add every message name into the message list
+        {
+            // Add every message name into the message list
             POSITION pos = podMsgIDList->GetHeadPosition();
             while (pos != NULL)
             {
                 SMAINENTRY& sMainEntry = podMsgIDList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
-				CString omMainEntryId;
+                CString omMainEntryId;
                 omMainEntryId.Format(defSTR_MSG_ID_IN_HEX,sMainEntry.m_unMainEntryID);
-				omMainEntryName = omMainEntryId + omMainEntryName;				
-				m_omMsgIDList.Add(omMainEntryName);
-            }            
-         }
-    } 
+                omMainEntryName = omMainEntryId + omMainEntryName;
+                m_omMsgIDList.Add(omMainEntryName);
+            }
+        }
+    }
 }
 
-void CWaveFormDataHandler::vGetAvailableSignalsInMsgID(UINT& nMsgID, 
-				CStringArray& arrAvailableSignals,bool bExcludeDefinedSignals)
+void CWaveFormDataHandler::vGetAvailableSignalsInMsgID(UINT& nMsgID,
+        CStringArray& arrAvailableSignals,bool bExcludeDefinedSignals)
 {
-	if (m_podMsgEntyList != NULL)
+    if (m_podMsgEntyList != NULL)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = nMsgID;
@@ -643,8 +644,8 @@ void CWaveFormDataHandler::vGetAvailableSignalsInMsgID(UINT& nMsgID,
             while (SubPos != NULL)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
-				
-				//If the Signal Name for nMsgID is not defined, then only add it.
+
+                //If the Signal Name for nMsgID is not defined, then only add it.
                 if(bExcludeDefinedSignals )
                 {
                     if(! bIsSignalInMsgIDDefined(nMsgID, sSubEntry.m_omSubEntryName))
@@ -663,19 +664,19 @@ void CWaveFormDataHandler::vGetAvailableSignalsInMsgID(UINT& nMsgID,
 
 void CWaveFormDataHandler::vClearSignalInfoList(void)
 {
-	m_lstSignalWaveformInfo.RemoveAll();
-	m_lstTempSignalWaveformInfo.RemoveAll();
+    m_lstSignalWaveformInfo.RemoveAll();
+    m_lstTempSignalWaveformInfo.RemoveAll();
 }
 #if 0
 void CWaveFormDataHandler::CopyWaveInfoStructures(CSigGenerationInfoList* pSourceList,
-												  CSigGenerationInfoList* pDestinationList)
+        CSigGenerationInfoList* pDestinationList)
 {
-	POSITION pos = pSourceList->GetHeadPosition();
-	pDestinationList->RemoveAll();
-	while(pos)
-	{
-		SSigGeneration& objSigGen = pSourceList->GetNext(pos);
-		pDestinationList->AddTail(objSigGen);
-	}
+    POSITION pos = pSourceList->GetHeadPosition();
+    pDestinationList->RemoveAll();
+    while(pos)
+    {
+        SSigGeneration& objSigGen = pSourceList->GetNext(pos);
+        pDestinationList->AddTail(objSigGen);
+    }
 }
 #endif

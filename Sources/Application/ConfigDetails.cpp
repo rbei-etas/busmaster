@@ -58,24 +58,24 @@ extern PSTXMSG g_psTxMsgBlockList;
 /*                     before calling initdefault values                      */
 /******************************************************************************/
 CConfigDetails::CConfigDetails() :  m_bConfigInfoLoaded(FALSE),
-                                    m_bIsDirty(FALSE),
-                                    m_hConfigFile(NULL),
-                                    m_fAppVersion(static_cast<FLOAT>(defAPPVERSION)),
-                                    m_omStrMruCFile(defEMPTYSTR),
-                                    m_omstrConfigFilename(defEMPTYSTR),
-                                    m_omstrTempFilename(defEMPTYSTR),
-                                    m_omStrLogFilename(defEMPTYSTR),
-                                    m_omStrReplayFilename(defEMPTYSTR),
-                                    m_omStrMruDLLFilename(defEMPTYSTR),
-                                    m_omStrMsgName(defEMPTYSTR),
-                                    m_omStrMsgID(defEMPTYSTR),
-                                    m_omStrCopyright(defEMPTYSTR),
-                                    m_ucCheckSum(0),
-                                    m_bIsConfigurationModified(FALSE),
-                                    m_unNumberOfMsgBlockCount(0),
-                                    m_psMsgBlockList(NULL),
-                                    m_psSignalWatchList(NULL),
-                                    m_psSimSysArray(NULL)
+    m_bIsDirty(FALSE),
+    m_hConfigFile(NULL),
+    m_fAppVersion(static_cast<FLOAT>(defAPPVERSION)),
+    m_omStrMruCFile(defEMPTYSTR),
+    m_omstrConfigFilename(defEMPTYSTR),
+    m_omstrTempFilename(defEMPTYSTR),
+    m_omStrLogFilename(defEMPTYSTR),
+    m_omStrReplayFilename(defEMPTYSTR),
+    m_omStrMruDLLFilename(defEMPTYSTR),
+    m_omStrMsgName(defEMPTYSTR),
+    m_omStrMsgID(defEMPTYSTR),
+    m_omStrCopyright(defEMPTYSTR),
+    m_ucCheckSum(0),
+    m_bIsConfigurationModified(FALSE),
+    m_unNumberOfMsgBlockCount(0),
+    m_psMsgBlockList(NULL),
+    m_psSignalWatchList(NULL),
+    m_psSimSysArray(NULL)
 
 {
     //m_pSimSysNodeInfo = NULL;
@@ -87,7 +87,7 @@ CConfigDetails::CConfigDetails() :  m_bConfigInfoLoaded(FALSE),
     vInitDefaultValues();
     m_bConfigInfoLoaded = TRUE;
     m_sFilterConfigured.vClear();
-    
+
 }
 
 
@@ -111,7 +111,7 @@ CConfigDetails::CConfigDetails() :  m_bConfigInfoLoaded(FALSE),
 /*                   :  Included release of Signal Watch List memory          */
 /******************************************************************************/
 CConfigDetails::~CConfigDetails()
-{    
+{
     vReleaseMultiMsgInfo(m_psMsgBlockList);
     m_psMsgBlockList = NULL;
     vReleaseSignalWatchListMemory();
@@ -122,7 +122,7 @@ CConfigDetails::~CConfigDetails()
     if (m_pomaStrDatabaseFilename != NULL)
     {
         delete m_pomaStrDatabaseFilename;
-        m_pomaStrDatabaseFilename = NULL; 
+        m_pomaStrDatabaseFilename = NULL;
     }
 }
 
@@ -176,15 +176,15 @@ CConfigDetails::~CConfigDetails()
 /******************************************************************************/
 INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
 {
-    // bOpenExisiting is TRUE, if the callee of the function is 
-    // nSaveConfiguration(...), and FALSE if the callee is 
+    // bOpenExisiting is TRUE, if the callee of the function is
+    // nSaveConfiguration(...), and FALSE if the callee is
     // nLoadConfiguration.
     // Hence for loading, the file can be opened in GENERIC_READ
     // access and for saving, the file can be opened in GENERIC_WRITE
     // access.
-    
+
     INT nRetVal             = defCONFIG_FILE_SUCCESS;
-    
+
     // validate the extension
     INT nDotPosn = omStrFilename.ReverseFind(defDOT);
     // we found the '.'
@@ -196,19 +196,19 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
             nRetVal = defCONFIG_FILE_INVALID_FILE_EXTN;
         }
     }
-    
+
     // is everything OK until now ?
     if (nRetVal == defCONFIG_FILE_SUCCESS)
     {
-	    DWORD dwDesiredAccess = 0;
-		
-		// set the mode of creation..
+        DWORD dwDesiredAccess = 0;
+
+        // set the mode of creation..
         DWORD dwCreateMode;
-        
+
         // a copy of the file needs to be created, hence the file is opened
         // in SHARE_READ mode
         DWORD dwShareMode = FILE_SHARE_READ;
-        
+
         // depending on bOpenExisting, the file is either opened or created
         if (bOpenExisting == TRUE)
         {
@@ -220,21 +220,21 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
             dwCreateMode    = CREATE_ALWAYS;
             dwDesiredAccess = GENERIC_WRITE;
         }
-        
+
         // check if the file exists..
         m_hConfigFile = ::CreateFile(omStrFilename,
-            dwDesiredAccess,
-            //GENERIC_READ | GENERIC_WRITE,
-            dwShareMode,
-            NULL,
-            dwCreateMode,
-            FILE_ATTRIBUTE_NORMAL,
-            NULL);
-        
+                                     dwDesiredAccess,
+                                     //GENERIC_READ | GENERIC_WRITE,
+                                     dwShareMode,
+                                     NULL,
+                                     dwCreateMode,
+                                     FILE_ATTRIBUTE_NORMAL,
+                                     NULL);
+
         // is file not found?
         if (m_hConfigFile == INVALID_HANDLE_VALUE)
         {
-            // Most of the values returned by this function 
+            // Most of the values returned by this function
             // that are related to file operation
             // has been hash defined
             nRetVal = GetLastError();
@@ -244,29 +244,29 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
             if (bOpenExisting == TRUE)
             {
                 // make a backup only if an existing file is opened
-                // copy the existing file into another so that the same can be 
-                // restored incase there are any problems while archiving the 
+                // copy the existing file into another so that the same can be
+                // restored incase there are any problems while archiving the
                 // data during the 'store' operation..
                 CString oStrTmp(omStrFilename);
-                
+
                 INT nPos = oStrTmp.ReverseFind(defDOT);
-                
+
                 m_omstrTempFilename = oStrTmp.Left(nPos);
                 m_omstrTempFilename += defDOT;
                 m_omstrTempFilename += defTMPFILEEXTN;
-                
+
                 if (
                     ::CopyFile(omStrFilename, m_omstrTempFilename, FALSE) == TRUE
-                    )
+                )
                 {
                     ::SetFileAttributes(m_omstrTempFilename, defTMPFILEATTRIB);
                 }
             } // backup of file
-            
+
         } // open file failed
-        
+
     } // file extension was correct
-    
+
     return nRetVal;
 }
 
@@ -346,19 +346,19 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
 BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
 {
     BOOL bRetVal = TRUE;
-    
-    
+
+
     // is the configuration loaded?
     if ((m_bConfigInfoLoaded == TRUE) && (bRetVal == TRUE))
     {
         switch(eParam)
         {
-        case MRU_C_FILE_NAME:
+            case MRU_C_FILE_NAME:
             {
                 *lpData = NULL;
 
                 *lpData = static_cast<CString*>(new CString);
-                
+
                 if (*lpData != NULL)
                 {
                     *(static_cast<CString*>(*lpData)) = m_omStrMruCFile;
@@ -369,7 +369,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-        case LOG_FILE_NAME:
+            case LOG_FILE_NAME:
             {
                 *lpData = NULL;
                 // copy the log file name into the buffer
@@ -385,7 +385,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-        case REPLAY_FILE_NAME:
+            case REPLAY_FILE_NAME:
             {
                 *lpData = NULL;
                 // copy the replay file name into the buffer
@@ -401,7 +401,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-        case DATABASE_FILE_NAME:
+            case DATABASE_FILE_NAME:
             {
                 *lpData = NULL;
                 // copy the database file name into the buffer
@@ -410,7 +410,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 {
                     static_cast<CStringArray*>(*lpData)->RemoveAll();
                     static_cast<CStringArray*>(*lpData)->
-                                         Append(*m_pomaStrDatabaseFilename);
+                    Append(*m_pomaStrDatabaseFilename);
                 }
                 else
                 {
@@ -419,9 +419,9 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-        case MRU_DLL_FILE_NAME:
+            case MRU_DLL_FILE_NAME:
             {
-                
+
                 *lpData = NULL;
                 // copy the most recently used DLL file name into the buffer
                 *lpData = static_cast<CString*>(new CString);
@@ -436,69 +436,69 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-        //case MESSAGE_NAME:
-        //    {
-        //        *lpData = NULL;
-        //        // copy the message name into the buffer
-        //        *lpData = static_cast<CString*>(new CString);
-        //        if (*lpData != NULL)
-        //        {
-        //            *(static_cast<CString*>(*lpData)) = m_omStrMsgName;
-        //        }
-        //        else
-        //        {
-        //            // failed to allocate memory
-        //            bRetVal = FALSE;
-        //        }
-        //    }
-        //    break;
-        //case MESSAGE_ID:
-        //    {
-        //        *lpData = NULL;
-        //        // copy the message id into the buffer
-        //        *lpData = static_cast<CString*>(new CString);
-        //        if (*lpData != NULL)
-        //        {
-        //            *(static_cast<CString*>(*lpData)) = m_omStrMsgID;
-        //        }
-        //        else
-        //        {
-        //            // failed to allocate memory
-        //            bRetVal = FALSE;
-        //        }
-        //    }
-        //    break;
-        case TOOLBAR_DETAILS:
+            //case MESSAGE_NAME:
+            //    {
+            //        *lpData = NULL;
+            //        // copy the message name into the buffer
+            //        *lpData = static_cast<CString*>(new CString);
+            //        if (*lpData != NULL)
+            //        {
+            //            *(static_cast<CString*>(*lpData)) = m_omStrMsgName;
+            //        }
+            //        else
+            //        {
+            //            // failed to allocate memory
+            //            bRetVal = FALSE;
+            //        }
+            //    }
+            //    break;
+            //case MESSAGE_ID:
+            //    {
+            //        *lpData = NULL;
+            //        // copy the message id into the buffer
+            //        *lpData = static_cast<CString*>(new CString);
+            //        if (*lpData != NULL)
+            //        {
+            //            *(static_cast<CString*>(*lpData)) = m_omStrMsgID;
+            //        }
+            //        else
+            //        {
+            //            // failed to allocate memory
+            //            bRetVal = FALSE;
+            //        }
+            //    }
+            //    break;
+            case TOOLBAR_DETAILS:
             {
                 *lpData = NULL;
                 // get the tool bar button status information
                 PSTOOLBARINFO pTemp = new STOOLBARINFO;
-                
+
                 if (pTemp != NULL)
                 {
                     pTemp->m_byMsgFilter      =
                         m_sToolBarButtonStatus.m_byMsgFilter;
-                    pTemp->m_byLogFilter      = 
+                    pTemp->m_byLogFilter      =
                         m_sToolBarButtonStatus.m_byLogFilter;
-                    pTemp->m_byLogging        = 
+                    pTemp->m_byLogging        =
                         m_sToolBarButtonStatus.m_byLogging;
-                    pTemp->m_byMsgInterpret   = 
+                    pTemp->m_byMsgInterpret   =
                         m_sToolBarButtonStatus.m_byMsgInterpret;
-                    pTemp->m_byOverwrite      = 
+                    pTemp->m_byOverwrite      =
                         m_sToolBarButtonStatus.m_byOverwrite;
-                    
-                    pTemp->m_byDisplayHexON   = 
+
+                    pTemp->m_byDisplayHexON   =
                         m_sToolBarButtonStatus.m_byDisplayHexON;
-                    pTemp->m_byDisplayTimeMode= 
+                    pTemp->m_byDisplayTimeMode=
                         m_sToolBarButtonStatus.m_byDisplayTimeMode;
-                    
+
                     pTemp->m_byLogHexON       =
                         m_sToolBarButtonStatus.m_byLogHexON;
-                    pTemp->m_byLogTimeMode    = 
+                    pTemp->m_byLogTimeMode    =
                         m_sToolBarButtonStatus.m_byLogTimeMode;
-                    pTemp->m_byLogOverWriteON = 
+                    pTemp->m_byLogOverWriteON =
                         m_sToolBarButtonStatus.m_byLogOverWriteON;
-                    pTemp->m_byReplayMsgType  = 
+                    pTemp->m_byReplayMsgType  =
                         m_sToolBarButtonStatus.m_byReplayMsgType;
                     pTemp->m_byEnsureVisible  =
                         m_sToolBarButtonStatus.m_byEnsureVisible;
@@ -509,101 +509,46 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     // failed to allocate memory
                     bRetVal = FALSE;
                 }
-                
+
             }
             break;
-        case CONTROLLER_DETAILS:
-        {
-            *lpData = NULL;
-            PSCONTROLLER_DETAILS  psControllerDetails = 
-                new SCONTROLLER_DETAILS[ defNO_OF_CHANNELS ];
-            // baud rate information
-            if (psControllerDetails != NULL)
+
+            case CONTROLLER_DETAILS:
             {
-                // Fill all supported channel information
-                for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
+                *lpData = NULL;
+                PSCONTROLLER_DETAILS  psControllerDetails =
+                    new SCONTROLLER_DETAILS[ defNO_OF_CHANNELS ];
+
+                // baud rate information
+                if (psControllerDetails != NULL)
                 {
-                    // packed value of bit timing register 0 
-                    // and bit timing register 1
-                    psControllerDetails[ nIndex ].m_nBTR0BTR1 =
-                        m_sControllerDetails[ nIndex ].m_nBTR0BTR1;
-                    // item number under focus
-                    psControllerDetails[ nIndex ].m_nItemUnderFocus =
-                        m_sControllerDetails[ nIndex ].m_nItemUnderFocus;
-					// acceptance code information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0]);
-					// acceptance code information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0]);
-					// acceptance code information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0]);
-					// acceptance code information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0]);
-					// acceptance mask information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0]);
-					// acceptance mask information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0]);
-					// acceptance mask information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0]);
-					// acceptance mask information
-					_tcscpy(psControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
-						m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0]);
-                    // acceptance filter mode
-                    psControllerDetails[ nIndex ].m_bAccFilterMode =
-                        m_sControllerDetails[ nIndex ].m_bAccFilterMode;
-                    // controller mode
-                    psControllerDetails[ nIndex ].m_ucControllerMode =
-                        m_sControllerDetails[ nIndex ].m_ucControllerMode;
-                    // warning limit
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrWarningLimit,
-                        m_sControllerDetails[ nIndex ].m_omStrWarningLimit);
-                    // baudrate information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrBaudrate,
-                        m_sControllerDetails[ nIndex ].m_omStrBaudrate);
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrCNF1,
-                        m_sControllerDetails[ nIndex ].m_omStrCNF1);
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrCNF2,
-                        m_sControllerDetails[ nIndex ].m_omStrCNF2);
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrCNF3,
-                        m_sControllerDetails[ nIndex ].m_omStrCNF3);
-                    // clock information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrPropagationDelay,
-                        m_sControllerDetails[ nIndex ].m_omStrPropagationDelay);
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrSjw,
-                        m_sControllerDetails[ nIndex ].m_omStrSjw);
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrClock,
-                        m_sControllerDetails[ nIndex ].m_omStrClock);
-                    // sampling information
-                    _tcscpy(psControllerDetails[ nIndex ].m_omStrSampling,
-                        m_sControllerDetails[ nIndex ].m_omStrSampling);
+                    // Fill all supported channel information
+                    for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
+                    {
+                        psControllerDetails[nIndex] = m_sControllerDetails[nIndex];
+                    }
+
+                    // Now assign it to the result
+                    *lpData =
+                        static_cast<LPVOID>(psControllerDetails);
                 }
-                // Now assign it to the result
-                *lpData =
-                    static_cast<LPVOID>(psControllerDetails);
+                else
+                {
+                    // failed to allocate memory
+                    bRetVal = FALSE;
+                }
             }
-            else
-            {
-                // failed to allocate memory
-                bRetVal = FALSE;
-            }
-        }
             break;
-        case SEND_MULTI_MSGS:
+            case SEND_MULTI_MSGS:
             {
                 *lpData = NULL;
                 PSMSGBLOCKLIST psMsgBlockList  = new SMSGBLOCKLIST;
                 if (psMsgBlockList != NULL)
                 {
                     vInitialiseMsgBlock(psMsgBlockList);
-                    // multiple message 
+                    // multiple message
                     bRetVal = bGetMultiMsgInfo(psMsgBlockList);
-                    
+
                     // release memory if any error occurs
                     if (bRetVal == FALSE)
                     {
@@ -616,14 +561,14 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     // memory not enough
                     bRetVal = FALSE;
                 }
-                
+
                 if (bRetVal == TRUE)
                 {
                     *lpData = static_cast<LPVOID>(psMsgBlockList);
                 }
             }
             break;
-        case MSG_BLOCK_COUNT:
+            case MSG_BLOCK_COUNT:
             {
                 UINT* punCount = static_cast<UINT*>(*lpData);
                 if (punCount != NULL)
@@ -634,19 +579,19 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 {
                     bRetVal = FALSE;
                 }
-                
+
             }
             break;
-        case MSG_ATTRIBUTES:
+            case MSG_ATTRIBUTES:
             {
                 *lpData = NULL;
                 PSMESSAGE_ATTRIB pMsgAttrib = new SMESSAGE_ATTRIB;
-                
+
                 if (pMsgAttrib != NULL)
                 {
                     // attributes of all the messages
                     bRetVal = bGetMsgAttrib(pMsgAttrib);
-                    
+
                     // release memory if any error occurs
                     if (bRetVal == FALSE)
                     {
@@ -659,23 +604,23 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     // failed memory allocation
                     bRetVal = FALSE;
                 }
-                
+
                 if (bRetVal == TRUE)
                 {
                     *lpData = static_cast<LPVOID>(pMsgAttrib);
                 }
             }
             break;
-        case OLD_FILTER_DETAILS:
+            case OLD_FILTER_DETAILS:
             {
                 *lpData = NULL;
-                PSMESSAGE_FILTER_DETAILS pMsgFilterDetails = 
+                PSMESSAGE_FILTER_DETAILS pMsgFilterDetails =
                     new SMESSAGE_FILTER_DETAILS;
                 if (pMsgFilterDetails != NULL)
                 {
                     // filter details
                     bRetVal = bGetMsgFilterDetails(pMsgFilterDetails);
-                    
+
                     // release memory if any error occurs
                     if (bRetVal == FALSE)
                     {
@@ -688,31 +633,31 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     // failed memory allocation..
                     bRetVal = FALSE;
                 }
-                
+
                 if (bRetVal == TRUE)
                 {
-                    *lpData = 
+                    *lpData =
                         static_cast<LPVOID>(pMsgFilterDetails);
                 }
             }
             break;
-            
-        case SIGNAL_WATCH_LIST:
-            // Signal Watch List Pointer
+
+            case SIGNAL_WATCH_LIST:
+                // Signal Watch List Pointer
             {
-                *lpData = 
+                *lpData =
                     static_cast<LPVOID>(m_psSignalWatchList);
             }
             break;
-        case SIMSYS_LIST:
-            // Simsys array pointer
+            case SIMSYS_LIST:
+                // Simsys array pointer
             {
-                *lpData = 
+                *lpData =
                     static_cast<LPVOID>(m_psSimSysArray);
             }
             break;
-        case SIGNAL_GRAPH_LIST:
-            // Signal Graph List Pointer
+            case SIGNAL_GRAPH_LIST:
+                // Signal Graph List Pointer
             {
                 // Assign member object pointer
                 // This pointer will be used accross to update
@@ -720,9 +665,9 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 *lpData = &m_odGraphList;
             }
             break;
-            
-        case MSG_BUFFER_SIZE:
-            // Message Buffer Size
+
+            case MSG_BUFFER_SIZE:
+                // Message Buffer Size
             {
                 if (lpData!= NULL && *lpData != NULL)
                 {
@@ -738,102 +683,102 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-            
+
             // Window placement details
-        case REPLAY_WND_PLACEMENT: // Replay window
+            case REPLAY_WND_PLACEMENT: // Replay window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sReplayWndCoOrd;
             }
             break;
-        case OUT_WND_PLACEMENT: // Compile output window
+            case OUT_WND_PLACEMENT: // Compile output window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sOutputWndCoOrd;
             }
             break;
-        case NOTIFICATION_WND_PLACEMENT: // Trace Window
+            case NOTIFICATION_WND_PLACEMENT: // Trace Window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sNotificWndCoOrd;
             }
             break;
-        case MSG_WND_PLACEMENT:     // Message window
+            case MSG_WND_PLACEMENT:     // Message window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sMsgWndCoOrd;
             }
             break;
-        case SIGWATCH_WND_PLACEMENT:    // Signal watch window
+            case SIGWATCH_WND_PLACEMENT:    // Signal watch window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sSigWatchWindow;
             }
             break;
-        case MSGINTERP_WND_PLACEMENT: // Message Interpretation window
+            case MSGINTERP_WND_PLACEMENT: // Message Interpretation window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sMsgInterpWindow;
             }
             break;
-        case GRAPH_WND_PLACEMENT: // Graph window
+            case GRAPH_WND_PLACEMENT: // Graph window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sGraphWndCoOrd;
             }
             break;
-        case TX_WND_PLACEMENT:  // Tx configure window
+            case TX_WND_PLACEMENT:  // Tx configure window
             {
-                WINDOWPLACEMENT * psData = 
+                WINDOWPLACEMENT* psData =
                     static_cast<WINDOWPLACEMENT*>(*lpData);
                 *psData = m_sTxWndCoOrd;
             }
             break;
-        //case SIMSYS_WND_PLACEMENT: // Simulated system configure window
-        //    {
-        //        WINDOWPLACEMENT * psData = 
-        //            static_cast<WINDOWPLACEMENT*>(*lpData);
-        //        *psData = m_sSimSysCoOrd;
-        //    }
-        //    break;
+            //case SIMSYS_WND_PLACEMENT: // Simulated system configure window
+            //    {
+            //        WINDOWPLACEMENT * psData =
+            //            static_cast<WINDOWPLACEMENT*>(*lpData);
+            //        *psData = m_sSimSysCoOrd;
+            //    }
+            //    break;
             // Splitter details
-        case GRAPH_WND_SPLITTER_DATA: // Graph window splitter postion
+            case GRAPH_WND_SPLITTER_DATA: // Graph window splitter postion
             {
                 PSGRAPHSPLITTERDATA psData =
                     static_cast<PSGRAPHSPLITTERDATA>(*lpData);
                 *psData = m_sGraphWndSplitterPos;
             }
             break;
-        case TX_MSG_WND_SPLITTER_DATA: // Tx configure splitter position
+            case TX_MSG_WND_SPLITTER_DATA: // Tx configure splitter position
             {
                 PSTXMSGSPLITTERDATA psData =
                     static_cast<PSTXMSGSPLITTERDATA>(*lpData);
                 *psData = m_sTxMsgWndSplitterPos;
             }
             break;
-            
-        case CONFIG_FILE_VERSION:
+
+            case CONFIG_FILE_VERSION:
             {
                 // Assign the file version
                 if (lpData != NULL && *lpData != NULL)
                 {
-                    float * pData = static_cast<float *>(*lpData);
+                    float* pData = static_cast<float*>(*lpData);
                     *pData = m_fAppVersion;
                 }
             }
             break;
             // New vesion of Filter for Message Dispaly
-        case MSG_DISPLAY_FILTER_DETAILS:
+            case MSG_DISPLAY_FILTER_DETAILS:
             {
                 // get the pointer and copy the data
-                CModuleFilterArray * psData =
+                CModuleFilterArray* psData =
                     static_cast<CModuleFilterArray*>(*lpData);
                 // Remove elements in the list if any
                 if (psData != NULL)
@@ -852,25 +797,25 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 }
             }
             break;
-        case FILTER_CONFIG_DETS:
+            case FILTER_CONFIG_DETS:
             {
                 *lpData = (void*)&m_sFilterConfigured;
                 bRetVal = TRUE;
             }
             break;
-        case LOG_CONFIG_DETS:
-        {
-            *lpData = (void*)&m_sLogConfigDets;
-            bRetVal = TRUE;
-        }
-        break;
-        case REPLAY_CONFIG_DETS:
-        {
-            *lpData = (void*)&m_sReplayDetails;
-            bRetVal = TRUE;
-        }
-        break;
-        default:
+            case LOG_CONFIG_DETS:
+            {
+                *lpData = (void*)&m_sLogConfigDets;
+                bRetVal = TRUE;
+            }
+            break;
+            case REPLAY_CONFIG_DETS:
+            {
+                *lpData = (void*)&m_sReplayDetails;
+                bRetVal = TRUE;
+            }
+            break;
+            default:
             {
                 *lpData = NULL;
                 // not in scope
@@ -954,19 +899,19 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
 /*                      Modified code for 'case SIMSYS_LIST:'.                */
 /*                      Coded added to copy the whole SSIMSYSARRAY linked     */
 /*                      list into a new linked list instead of directly       */
-/*                      copying the SSIMSYSARRAY pointer.                     */                        
+/*                      copying the SSIMSYSARRAY pointer.                     */
 /******************************************************************************/
 BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
 {
     ASSERT(FALSE);
     BOOL bRetVal = TRUE;
-    
+
     // check input param
     if (lpVoid == NULL)
     {
         bRetVal = FALSE;
     }
-    
+
     // is the configuration loaded?
     // only then go into the process of setting the data to the new
     // values..
@@ -976,7 +921,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
         {
             switch(eParam)
             {
-            case MRU_C_FILE_NAME:
+                case MRU_C_FILE_NAME:
                 {
                     m_omStrMruCFile.Empty();
                     m_omStrMruCFile = *(static_cast<CString*>(lpVoid));
@@ -984,7 +929,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case LOG_FILE_NAME:
+                case LOG_FILE_NAME:
                 {
                     // copy the log file name into the data member
                     m_omStrLogFilename.Empty();
@@ -993,7 +938,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case REPLAY_FILE_NAME:
+                case REPLAY_FILE_NAME:
                 {
                     // copy the replay file name into the buffer
                     m_omStrReplayFilename.Empty();
@@ -1002,20 +947,20 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case DATABASE_FILE_NAME:
+                case DATABASE_FILE_NAME:
                 {
                     if (m_pomaStrDatabaseFilename != NULL)
                     {
                         // copy the database file name into the buffer
                         m_pomaStrDatabaseFilename->RemoveAll();
                         m_pomaStrDatabaseFilename->
-                            Append(*(static_cast<CStringArray*>(lpVoid)));
+                        Append(*(static_cast<CStringArray*>(lpVoid)));
                         m_dwModifiedVals |= defCHANGEDDATABASEFILE;
                         m_bIsConfigurationModified = TRUE;
                     }
                 }
                 break;
-            case MRU_DLL_FILE_NAME:
+                case MRU_DLL_FILE_NAME:
                 {
                     // copy the most recently used DLL file name into the buffer
                     m_omStrMruDLLFilename.Empty();
@@ -1024,148 +969,89 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            /*case MESSAGE_NAME:
-                {
-                    m_omStrMsgName.IsEmpty();
-                    m_omStrMsgName = *(static_cast<CString*>(lpVoid));
-                    m_dwModifiedVals |= defCHANGEDMSGNAME;
-                    m_bIsConfigurationModified = TRUE;
-                }
-                break;*/
-            /*case MESSAGE_ID:
-                {
-                    m_omStrMsgID.IsEmpty();
-                    m_omStrMsgID = *(static_cast<CString*>(lpVoid));
-                    m_dwModifiedVals |= defCHANGEDMSGID;
-                    m_bIsConfigurationModified = TRUE;
-                }
-                break;*/
-            case TOOLBAR_DETAILS:
+                /*case MESSAGE_NAME:
+                    {
+                        m_omStrMsgName.IsEmpty();
+                        m_omStrMsgName = *(static_cast<CString*>(lpVoid));
+                        m_dwModifiedVals |= defCHANGEDMSGNAME;
+                        m_bIsConfigurationModified = TRUE;
+                    }
+                    break;*/
+                /*case MESSAGE_ID:
+                    {
+                        m_omStrMsgID.IsEmpty();
+                        m_omStrMsgID = *(static_cast<CString*>(lpVoid));
+                        m_dwModifiedVals |= defCHANGEDMSGID;
+                        m_bIsConfigurationModified = TRUE;
+                    }
+                    break;*/
+                case TOOLBAR_DETAILS:
                 {
                     // get the tool bar button status information
                     PSTOOLBARINFO pSrc = static_cast<PSTOOLBARINFO>(lpVoid);
                     m_sToolBarButtonStatus.m_byMsgFilter = pSrc->m_byMsgFilter;
                     m_sToolBarButtonStatus.m_byLogFilter = pSrc->m_byLogFilter;
                     m_sToolBarButtonStatus.m_byLogging = pSrc->m_byLogging;
-                    m_sToolBarButtonStatus.m_byMsgInterpret = 
+                    m_sToolBarButtonStatus.m_byMsgInterpret =
                         pSrc->m_byMsgInterpret;
                     m_sToolBarButtonStatus.m_byOverwrite = pSrc->m_byOverwrite;
-                    m_sToolBarButtonStatus.m_byDisplayHexON   = 
+                    m_sToolBarButtonStatus.m_byDisplayHexON   =
                         pSrc->m_byDisplayHexON;
-                    m_sToolBarButtonStatus.m_byDisplayTimeMode = 
+                    m_sToolBarButtonStatus.m_byDisplayTimeMode =
                         pSrc->m_byDisplayTimeMode;
                     m_sToolBarButtonStatus.m_byLogHexON       =
                         pSrc->m_byLogHexON;
-                    m_sToolBarButtonStatus.m_byLogTimeMode    = 
+                    m_sToolBarButtonStatus.m_byLogTimeMode    =
                         pSrc->m_byLogTimeMode;
                     m_dwModifiedVals |= defCHAGNEDTOOLBARINF;
                     m_bIsConfigurationModified = TRUE;
-                    
-                    m_sToolBarButtonStatus.m_byLogOverWriteON = 
+
+                    m_sToolBarButtonStatus.m_byLogOverWriteON =
                         pSrc->m_byLogOverWriteON;
-                    m_sToolBarButtonStatus.m_byReplayMsgType = 
+                    m_sToolBarButtonStatus.m_byReplayMsgType =
                         pSrc->m_byReplayMsgType;
                     m_sToolBarButtonStatus.m_byEnsureVisible =
                         pSrc->m_byEnsureVisible;
-                    
+
                 }
                 break;
-            case CONTROLLER_DETAILS:
-            {
-                // baud rate information
-                PSCONTROLLER_DETAILS pSrc = 
-                    static_cast<PSCONTROLLER_DETAILS>(lpVoid);
-                // packed value of bit timing register 0 
-                // and bit timing register 1
-                for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
+
+                case CONTROLLER_DETAILS:
                 {
-                    m_sControllerDetails[ nIndex ].m_nBTR0BTR1 = 
-                        pSrc[ nIndex ].m_nBTR0BTR1;
-                    // item number under focus
-                    m_sControllerDetails[ nIndex ].m_nItemUnderFocus = 
-                        pSrc[ nIndex ].m_nItemUnderFocus;
-					// acceptance code information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte1[0],
-						pSrc[ nIndex ].m_omStrAccCodeByte1[0]);
-					// acceptance code information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte2[0],
-						pSrc[ nIndex ].m_omStrAccCodeByte2[0]);
-					// acceptance code information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte3[0],
-						pSrc[ nIndex ].m_omStrAccCodeByte3[0]);
-					// acceptance code information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccCodeByte4[0],
-						pSrc[ nIndex ].m_omStrAccCodeByte4[0]);
-					// acceptance mask information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte1[0],
-						pSrc[ nIndex ].m_omStrAccMaskByte1[0]);
-					// acceptance mask information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte2[0],
-						pSrc[ nIndex ].m_omStrAccMaskByte2[0]);
-					// acceptance mask information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte3[0],
-						pSrc[ nIndex ].m_omStrAccMaskByte3[0]);
-					// acceptance mask information
-					_tcscpy(m_sControllerDetails[ nIndex ].m_omStrAccMaskByte4[0],
-						pSrc[ nIndex ].m_omStrAccMaskByte4[0]);					
-                    m_sControllerDetails[ nIndex ].m_bAccFilterMode = 
-                        pSrc[ nIndex ].m_bAccFilterMode;
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrWarningLimit,
-                        pSrc[ nIndex ].m_omStrWarningLimit);
-                    m_sControllerDetails[ nIndex ].m_ucControllerMode = 
-                        pSrc[ nIndex ].m_ucControllerMode;
-                    // baudrate information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrBaudrate,
-                        pSrc[ nIndex ].m_omStrBaudrate);
-                    // bit timing register 0 information
-                    //m_sControllerDetails[ nIndex ].m_omStrBTR0 = 
-                    //  pSrc[ nIndex ].m_omStrBTR0 ;
-                    // bit timing register 1 information
-                    //m_sControllerDetails[ nIndex ].m_omStrBTR1 = 
-                    //  pSrc[ nIndex ].m_omStrBTR1;
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrCNF1,
-                        pSrc[ nIndex ].m_omStrCNF1);
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrCNF2,
-                        pSrc[ nIndex ].m_omStrCNF2);
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrCNF3,
-                        pSrc[ nIndex ].m_omStrCNF3);
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrCNF3, 
-                        pSrc[ nIndex ].m_omStrCNF3);
-                    //PropDelay  and SJW
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrPropagationDelay, 
-                        pSrc[ nIndex ].m_omStrPropagationDelay);
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrSjw,
-                        pSrc[ nIndex ].m_omStrSjw);
-                    // clock information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrClock, 
-                        pSrc[ nIndex ].m_omStrClock);
-                    // sampling information
-                    _tcscpy(m_sControllerDetails[ nIndex ].m_omStrSampling,
-                        pSrc[ nIndex ].m_omStrSampling );
+                    // baud rate information
+                    PSCONTROLLER_DETAILS pSrc =
+                        static_cast<PSCONTROLLER_DETAILS>(lpVoid);
+
+                    // packed value of bit timing register 0
+                    // and bit timing register 1
+                    for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
+                    {
+                        m_sControllerDetails[ nIndex ] = pSrc [nIndex];
+                    }
+
+                    m_dwModifiedVals |= defCHANGEDCONTROLLERDETAILS;
+                    m_bIsConfigurationModified = TRUE;
                 }
-                m_dwModifiedVals |= defCHANGEDCONTROLLERDETAILS;
-                m_bIsConfigurationModified = TRUE;
-            }
                 break;
-            case SEND_MULTI_MSGS:
+                case SEND_MULTI_MSGS:
                 {
-                    PSMSGBLOCKLIST psMsgBlockInfo = 
+                    PSMSGBLOCKLIST psMsgBlockInfo =
                         static_cast<PSMSGBLOCKLIST>(lpVoid);
-                    // multiple message 
+                    // multiple message
                     bRetVal = bSetMultiMsgInfo(psMsgBlockInfo);
-                    
+
                     if (bRetVal == FALSE)
                     {
                         // set the default values
                         vReleaseMultiMsgInfo(m_psMsgBlockList);
                         m_psMsgBlockList = NULL;
                     }
-                    
+
                     m_dwModifiedVals |= defCHANGEDMULTIMSG;
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case MSG_BLOCK_COUNT:
+                case MSG_BLOCK_COUNT:
                 {
                     UINT* punCount;
                     punCount = static_cast<UINT*>(lpVoid);
@@ -1181,19 +1067,19 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     {
                         m_unNumberOfMsgBlockCount = 0;
                     }
-                    
+
                     m_dwModifiedVals |= defCHANGEDMSGBLOCKCOUNT;
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case MSG_ATTRIBUTES:
+                case MSG_ATTRIBUTES:
                 {
-                    PSMESSAGE_ATTRIB pMsgAttrib = 
+                    PSMESSAGE_ATTRIB pMsgAttrib =
                         static_cast<PSMESSAGE_ATTRIB>(lpVoid);
-                    
+
                     // attributes of all the messages
                     bRetVal = bSetMsgAttrib(pMsgAttrib);
-                    
+
                     if (bRetVal == FALSE)
                     {
                         // set the default values
@@ -1204,9 +1090,9 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case SIGNAL_WATCH_LIST:
+                case SIGNAL_WATCH_LIST:
                 {
-                    PSSIGNALWATCHLIST psTemp = 
+                    PSSIGNALWATCHLIST psTemp =
                         static_cast<PSSIGNALWATCHLIST>(lpVoid);
                     // Work around to pass NULL value
                     if ((const int)psTemp == -1)
@@ -1217,14 +1103,14 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     else
                     {
                         // Modified List
-                       // m_psSignalWatchList = psTemp;
+                        // m_psSignalWatchList = psTemp;
                     }
                     m_bIsConfigurationModified = TRUE;
-                }                   
+                }
                 break;
-            case SIMSYS_LIST:
+                case SIMSYS_LIST:
                 {
-                    PSSIMSYSARRAY psSimsysTemp = 
+                    PSSIMSYSARRAY psSimsysTemp =
                         static_cast<PSSIMSYSARRAY>(lpVoid);
                     // Work around to pass NULL value
                     if ((const int)psSimsysTemp == -1)
@@ -1240,22 +1126,22 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                         {
                             m_psSimSysArray = new SSIMSYSARRAY; // Create Head node
                         }
-                        *(m_psSimSysArray) = *(psSimsysTemp); // 'operator=' is defined                        
+                        *(m_psSimSysArray) = *(psSimsysTemp); // 'operator=' is defined
                     }
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
                 // Graph List
-            case SIGNAL_GRAPH_LIST:
+                case SIGNAL_GRAPH_LIST:
                 {
                     // Graph List is accessed by the object pointer. So no need
                     // to copy object Unnecessarily. Just set the modified flag
                     // to popup save dialog while closing
                     m_bIsConfigurationModified = TRUE;
-                }                   
-                break;         
-                
-            case MSG_BUFFER_SIZE:
+                }
+                break;
+
+                case MSG_BUFFER_SIZE:
                 {
                     PUINT punSize = static_cast<PUINT>(lpVoid);
                     m_unAppendBufferSize = punSize[defAPPEND_DATA_INDEX];
@@ -1266,64 +1152,64 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                 }
                 break;
                 // Window placement details
-            case REPLAY_WND_PLACEMENT: // Replay window
+                case REPLAY_WND_PLACEMENT: // Replay window
                 {
-                    m_sReplayWndCoOrd = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sReplayWndCoOrd = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case OUT_WND_PLACEMENT: // Compile output window
+
+                case OUT_WND_PLACEMENT: // Compile output window
                 {
-                    m_sOutputWndCoOrd = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sOutputWndCoOrd = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case NOTIFICATION_WND_PLACEMENT: // Trace Window
+
+                case NOTIFICATION_WND_PLACEMENT: // Trace Window
                 {
-                    m_sNotificWndCoOrd = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sNotificWndCoOrd = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case MSG_WND_PLACEMENT:     // Message window
+
+                case MSG_WND_PLACEMENT:     // Message window
                 {
-                    m_sMsgWndCoOrd = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sMsgWndCoOrd = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case SIGWATCH_WND_PLACEMENT:    // Signal watch window
+
+                case SIGWATCH_WND_PLACEMENT:    // Signal watch window
                 {
-                    m_sSigWatchWindow = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sSigWatchWindow = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case MSGINTERP_WND_PLACEMENT: // Message Interpretation window
+
+                case MSGINTERP_WND_PLACEMENT: // Message Interpretation window
                 {
-                    m_sMsgInterpWindow = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sMsgInterpWindow = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case GRAPH_WND_PLACEMENT: // Graph window
+
+                case GRAPH_WND_PLACEMENT: // Graph window
                 {
-                    m_sGraphWndCoOrd = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sGraphWndCoOrd = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
-            case TX_WND_PLACEMENT:  // Tx configure window
+
+                case TX_WND_PLACEMENT:  // Tx configure window
                 {
-                    m_sTxWndCoOrd = *(static_cast<WINDOWPLACEMENT *>(lpVoid));
+                    m_sTxWndCoOrd = *(static_cast<WINDOWPLACEMENT*>(lpVoid));
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
+
                 // Splitter details
-            case GRAPH_WND_SPLITTER_DATA: // Graph window splitter postion
+                case GRAPH_WND_SPLITTER_DATA: // Graph window splitter postion
                 {
                     PSGRAPHSPLITTERDATA psData =
                         static_cast<PSGRAPHSPLITTERDATA>(lpVoid);
@@ -1331,7 +1217,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-            case TX_MSG_WND_SPLITTER_DATA: // Tx configure splitter position
+                case TX_MSG_WND_SPLITTER_DATA: // Tx configure splitter position
                 {
                     PSTXMSGSPLITTERDATA psData =
                         static_cast<PSTXMSGSPLITTERDATA>(lpVoid);
@@ -1339,12 +1225,12 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     m_bIsConfigurationModified = TRUE;
                 }
                 break;
-                
+
                 // New vesion of Filter for Message Dispaly
-            case MSG_DISPLAY_FILTER_DETAILS:
+                case MSG_DISPLAY_FILTER_DETAILS:
                 {
                     // get the pointer and copy the data
-                    CModuleFilterArray * psData =
+                    CModuleFilterArray* psData =
                         static_cast<CModuleFilterArray*>(lpVoid);
                     // Remove elements in the list if any
                     if (psData != NULL)
@@ -1365,7 +1251,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     }
                 }
                 break;
-            default:
+                default:
                 {
                     // not in scope
                     bRetVal = FALSE;
@@ -1378,18 +1264,18 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
             // invalid out-param..
             bRetVal = FALSE;
         }
-        
+
         if (bRetVal == TRUE)
         {
             m_bIsDirty = TRUE;
         }
     }
-    
+
     if (bRetVal == FALSE)
     {
         if (theApp.m_bFromAutomation == FALSE)
         {
-            AfxMessageBox(_T("Error while updating data"), MB_OK);
+            AfxMessageBox("Error while updating data", MB_OK);
         }
     }
     return bRetVal;
@@ -1455,7 +1341,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
 /*  Modifications on :  02.08.2004, Removed the version check as it has been  */
 /*                      moved inside nLoadStoreData.                          */
 /*  Modifications on :  Pradeep Kadoor on 12.06.2009.                         */
-/*                      Avoided messsage box by first checking whether        */  
+/*                      Avoided messsage box by first checking whether        */
 /*                      file exists or not.                                   */
 /******************************************************************************/
 INT  CConfigDetails::
@@ -1473,7 +1359,7 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
         ::DeleteFile(m_omstrTempFilename);
         m_omstrTempFilename = defEMPTYSTR;
     }
-    
+
     UCHAR ucCheckSum        = 0;
     UCHAR ucCheckSumInFile  = 0;
     BOOL bRet = FALSE;
@@ -1481,16 +1367,16 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
     //Check if Configuration file is present or not.
     struct _finddata_t fileinfo;
     if (_findfirst( omStrFilename, &fileinfo) != -1L)
-	{
+    {
         // file exists
         // Compute the checksum value in file
-		bRet = CComputeCheckSum::bGetCheckSum(omStrFilename, &ucCheckSum,&ucCheckSumInFile);
+        bRet = CComputeCheckSum::bGetCheckSum(omStrFilename, &ucCheckSum,&ucCheckSumInFile);
         // first check if the file exists
-        unErrorCode = nIsCfgFileFound(omStrFilename, TRUE); 
-	}
+        unErrorCode = nIsCfgFileFound(omStrFilename, TRUE);
+    }
     if (unErrorCode == defCONFIG_FILE_SUCCESS)
     {
-         m_bConfigInfoLoaded = FALSE;
+        m_bConfigInfoLoaded = FALSE;
         // release the existing members
         vReleaseMultiMsgInfo(m_psMsgBlockList);
         m_psMsgBlockList = NULL;
@@ -1506,9 +1392,9 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
         //}
         vReleaseMsgAttrib(&m_sMessageAttributes);
         vReleaseMsgFilterDetails(&m_sMsgFilterDetails);
-        
+
         // Now that the configuration file has been found, validate the header
-        // and the checksum to ascertain that the file has not been 
+        // and the checksum to ascertain that the file has not been
         // corrupted after the last time it was saved.
         // extract the information from the file
         if ((ucCheckSum == ucCheckSumInFile) && (bRet == TRUE))
@@ -1521,26 +1407,27 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
             {
                 m_bConfigInfoLoaded = TRUE;
                 m_omstrConfigFilename = omStrFilename;
-               /* if (m_pSimSysNodeInfo != NULL)
-                {
-                    m_pSimSysNodeInfo->bPopulateSimSysInfo();
-                }*/
-                
+                /* if (m_pSimSysNodeInfo != NULL)
+                 {
+                     m_pSimSysNodeInfo->bPopulateSimSysInfo();
+                 }*/
+
             }
             if (pMainFrm != NULL)
-            {/*
-                pSimSysWnd = pMainFrm->pomGetSimSysWnd();
-                pSimSysTree = pMainFrm->podGetSimSysTreeView();*/
+            {
+                /*
+                   pSimSysWnd = pMainFrm->pomGetSimSysWnd();
+                   pSimSysTree = pMainFrm->podGetSimSysTreeView();*/
             }
             // to indicate to the tree view about the new dlls built.
             /*if (pSimSysWnd != NULL)
             {
-                
+
                 if (pSimSysTree != NULL)
                     pSimSysTree->bPopulateTree();
             }
             CExecuteManager::ouGetExecuteManager().vClearOutputWnd();*/
-            
+
         }
         else
         {
@@ -1594,8 +1481,8 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
 INT  CConfigDetails::nSaveConfiguration(CString& omStrCfgFilename)
 {
     UINT unErrorCode = defCONFIG_FILE_SUCCESS;
-    
-    // save this file only if the file is saved as a new one, or there has been 
+
+    // save this file only if the file is saved as a new one, or there has been
     // an updation in the data
     if ((omStrCfgFilename != m_omstrConfigFilename) || (m_bIsDirty == TRUE))
     {
@@ -1606,11 +1493,11 @@ INT  CConfigDetails::nSaveConfiguration(CString& omStrCfgFilename)
             omStrCfgFilename = m_omstrConfigFilename;
         }
         // first check if the file exists
-        unErrorCode = nIsCfgFileFound(omStrCfgFilename, FALSE); 
-        
+        unErrorCode = nIsCfgFileFound(omStrCfgFilename, FALSE);
+
         if (unErrorCode == defCONFIG_FILE_SUCCESS)
         {
-            // Now that the configuration file has been found, validate the 
+            // Now that the configuration file has been found, validate the
             // header and the last modified time to ascertain that the file has
             // not been corrupted after the last time it was saved.
             // extract the information from the file
@@ -1642,13 +1529,13 @@ INT  CConfigDetails::nSaveConfiguration(CString& omStrCfgFilename)
             }
         }
     }
-    
+
     if (m_omstrTempFilename.IsEmpty() == FALSE)
     {
         // delete the temporary file
         ::DeleteFile(m_omstrTempFilename);
     }
-    
+
     return unErrorCode;
 }
 
@@ -1704,19 +1591,19 @@ INT  CConfigDetails::nNewConfiguration(CString& omStrFilename)
     //m_pSimSysNodeInfo->vReleaseSimSysInfo();
     vReleaseMsgAttrib(&m_sMessageAttributes);
     vReleaseMsgFilterDetails(&m_sMsgFilterDetails);
-    
+
     vInitDefaultValues();
-    
+
     // data has changed.
     m_bIsDirty = TRUE;
     // a new file is being created, hence no temp file can be created
     m_omstrTempFilename = defEMPTYSTR;
-    
+
     nError = nSaveConfiguration(omStrFilename);
-    
+
     if (nError == defCONFIG_FILE_SUCCESS)
     {
-        // this is the name of the configuration file whose information is 
+        // this is the name of the configuration file whose information is
         // currently loaded...
         m_omstrConfigFilename = omStrFilename;
         //if (m_pSimSysNodeInfo != NULL)
@@ -1731,13 +1618,13 @@ INT  CConfigDetails::nNewConfiguration(CString& omStrFilename)
         //// to indicate to the tree view about the new dlls built.
         //if (pSimSysWnd != NULL)
         //{
-        //    
+        //
         //    if (pSimSysTree != NULL)
         //        pSimSysTree->bPopulateTree();
         //}
         //CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
     }
-    
+
     return nError;
 }
 
@@ -1801,7 +1688,7 @@ INT  CConfigDetails::nNewConfiguration(CString& omStrFilename)
 /*  Modifications    :  Anish,for storing Multiple file names as CStringArray
                         Pointer
 /*  Modifications    :  Anish on 24.01.07
-                        deleted the database name array pointer after loading 
+                        deleted the database name array pointer after loading
                         to remove memory leak.
 /******************************************************************************/
 int CConfigDetails::nLoadStoreData(UINT nMode)
@@ -1810,23 +1697,23 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
     //m_pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
     int nRetVal = defCONFIG_FILE_SUCCESS;
     BOOL bIsLoading = FALSE;
-    
-    // associate the file handle with an archive object. 
+
+    // associate the file handle with an archive object.
     // Set the operation of the archive object to load
-    
+
     // create the archive for the CFile object...
     // The casting is in contradiction to the rules of coding because
     // 1. The CreateFile(...) method used to get the handle of the file
     //    returns a HANDLE to the file and not HFILE.
     // 2. CFile constructor takes a HFILE as its input parameter, while MSDN
-    //    documentation mentions that the value as returned by CreateFile(...) 
-    //    SDK method should be used. Usage of the return value by 
-    //    CreateFile(...) without casting results in a compiler error. 
-    // 3. The recommended usage of static_cast<T>(v) also results in a 
+    //    documentation mentions that the value as returned by CreateFile(...)
+    //    SDK method should be used. Usage of the return value by
+    //    CreateFile(...) without casting results in a compiler error.
+    // 3. The recommended usage of static_cast<T>(v) also results in a
     //    compilation error.
     // 4. MSDN documentation recommends the explicit conversion in these cases.
     //    Compiler error C2664
-    
+
     if (m_hConfigFile != NULL)
     {
 #if _MFC_VER <= 0x0600
@@ -1834,30 +1721,30 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
 #else
         CFile   oConfigFile(m_hConfigFile);
 #endif
-        
+
         try
         {
             // the buffer size is assumed to be 4096 bytes.If need be this value
             // should be increased.
             CArchive oCfgArchive(&oConfigFile, nMode);
-            
+
             if (oCfgArchive.IsLoading())
             {
                 bIsLoading = TRUE;
                 // extract the header information
                 oCfgArchive >> m_fAppVersion;
                 oCfgArchive >> m_omStrCopyright;
-                
+
                 // From this version onwards all successor
                 //config files are supported
                 FLOAT fSupportedVersion =
                     static_cast <FLOAT> ( defBASE_CONF_VERSION);
-                // verify the header 
+                // verify the header
                 // If the config version is not latest version and
                 // not previous version too or the header is not correct
                 // then declare it as unsupported or coppupted header file
                 if ((m_fAppVersion < fSupportedVersion)
-                    || m_omStrCopyright != defCOPYRIGHT)
+                        || m_omStrCopyright != defCOPYRIGHT)
                 {
                     // there is a corruption in th header information
                     nRetVal = defCONFIG_FILE_HDR_CORRUPT;
@@ -1873,18 +1760,18 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     oCfgArchive >> m_sToolBarButtonStatus.m_byDisplayHexON;
                     oCfgArchive >> m_sToolBarButtonStatus.m_byLogTimeMode;
                     oCfgArchive >> m_sToolBarButtonStatus.m_byLogHexON;
-                    
+
                     oCfgArchive >> m_sToolBarButtonStatus.m_byLogOverWriteON;
                     oCfgArchive >> m_sToolBarButtonStatus.m_byReplayMsgType;
                     // Get Ensure Visible flag status
                     oCfgArchive >> m_sToolBarButtonStatus.m_byEnsureVisible;
-                    
+
                     oCfgArchive >> m_omStrMruCFile;
                     oCfgArchive >> m_omStrLogFilename;
                     oCfgArchive >> m_omStrReplayFilename;
                     if (m_fAppVersion >= defMULTI_DATABASE_VERSION)
                     {
-                        CStringArray *pouTempArray ;
+                        CStringArray* pouTempArray ;
                         oCfgArchive >> pouTempArray;
                         m_pomaStrDatabaseFilename->RemoveAll();
                         m_pomaStrDatabaseFilename->Append(*pouTempArray);
@@ -1903,14 +1790,14 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     //  m_pSimSysNodeInfo->bPopulateSimSysInfo();
                 }
             }
-            
+
             if (oCfgArchive.IsStoring())
             {
                 // extract the header information
                 m_fAppVersion = static_cast<FLOAT> (defAPPVERSION);
                 oCfgArchive << m_fAppVersion;
                 oCfgArchive << m_omStrCopyright;
-                
+
                 oCfgArchive << m_sToolBarButtonStatus.m_byMsgFilter;
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogFilter;
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogging;
@@ -1920,7 +1807,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                 oCfgArchive << m_sToolBarButtonStatus.m_byDisplayHexON;
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogTimeMode;
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogHexON;
-                
+
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogOverWriteON;
                 oCfgArchive << m_sToolBarButtonStatus.m_byReplayMsgType;
                 // Update Ensure Visible Flag
@@ -1932,7 +1819,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                 oCfgArchive << m_omStrMruDLLFilename;
                 oCfgArchive << m_omStrMsgName;
                 oCfgArchive << m_omStrMsgID;
-                
+
             }
             if (nRetVal == defCONFIG_FILE_SUCCESS)
             {
@@ -1943,53 +1830,53 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                 // Load splitter info only if the app version is > 2.4
                 // That is from Multi channel version onwards
                 vLoadStoreSplitterPostion( oCfgArchive);
-                
+
                 // Load Message Attributes, Tx Message info and Filter
                 // Details
                 if ((bLoadStoreMsgAttributes(oCfgArchive) != TRUE) ||
-                    (bLoadStoreMultiMsgInfo(oCfgArchive) != TRUE)  ||
-                    (bLoadStoreMsgFilterDetails(oCfgArchive) != TRUE))
+                        (bLoadStoreMultiMsgInfo(oCfgArchive) != TRUE)  ||
+                        (bLoadStoreMsgFilterDetails(oCfgArchive) != TRUE))
                 {
                     nRetVal = defCONFIG_FILE_CORRUPT;
                 }
                 // Serialize Display Filter info
                 if ( nRetVal == defCONFIG_FILE_SUCCESS &&
-                    bLoadStoreDisplayFilterInfo( oCfgArchive) != TRUE)
+                        bLoadStoreDisplayFilterInfo( oCfgArchive) != TRUE)
                 {
-                    
+
                     nRetVal = defCONFIG_FILE_CORRUPT;
                 }
                 // Serialize Log File Info
                 if ( nRetVal == defCONFIG_FILE_SUCCESS &&
-                    bLoadStoreLogFileInfo( oCfgArchive) != TRUE)
+                        bLoadStoreLogFileInfo( oCfgArchive) != TRUE)
                 {
-                    
+
                     nRetVal = defCONFIG_FILE_CORRUPT;
                 }
-                
+
                 // Serialize Replay File Info
                 if ( nRetVal == defCONFIG_FILE_SUCCESS &&
-                    bLoadStoreReplayFileInfo( oCfgArchive) != TRUE)
+                        bLoadStoreReplayFileInfo( oCfgArchive) != TRUE)
                 {
-                    
+
                     nRetVal = defCONFIG_FILE_CORRUPT;
                 }
-                
+
                 // Get the Signal Watch Information
                 if (nRetVal == defCONFIG_FILE_SUCCESS &&
-                    bLoadStoreSignalWatchList(oCfgArchive) != TRUE)
+                        bLoadStoreSignalWatchList(oCfgArchive) != TRUE)
                 {
                     nRetVal = defCONFIG_FILE_CORRUPT;
                 }
-                
+
                 // Get the simulated system Information
-                
+
                 if (nRetVal == defCONFIG_FILE_SUCCESS &&
-                    bLoadStoreSimSysList(oCfgArchive) != TRUE)
+                        bLoadStoreSimSysList(oCfgArchive) != TRUE)
                 {
                     nRetVal = defCONFIG_FILE_CORRUPT;
                 }
-                               
+
                 // Get Message Buffer Parameters
                 if (oCfgArchive.IsLoading())
                 {
@@ -2003,21 +1890,21 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     oCfgArchive << m_unOverWriteBufferSize;
                     oCfgArchive << m_unDisplayUpdateRate;
                 }
-                
+
                 // Serialize Graph List Information
                 if ( oCfgArchive.IsLoading())
                 {
                     // Load graph details only if the conf file version > 2.3
-                    if (m_fAppVersion >= 
-                        static_cast<float>( defSIGNAL_GRAPH_VERSION))
+                    if (m_fAppVersion >=
+                            static_cast<float>( defSIGNAL_GRAPH_VERSION))
                     {
                         // Load it from the config file
                         m_odGraphList.nSerialize( oCfgArchive);
                         // Reset the channel number if it is older version
                         // configuration file (V2.4)
                         // Channel support comes from V2.5 onwards
-                        if (m_fAppVersion == 
-                            static_cast<float>( defSIGNAL_GRAPH_VERSION))
+                        if (m_fAppVersion ==
+                                static_cast<float>( defSIGNAL_GRAPH_VERSION))
                         {
                             int nSize =
                                 m_odGraphList.m_omElementList.GetSize();
@@ -2025,7 +1912,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                             {
                                 // Reset the channel to 1
                                 m_odGraphList.m_omElementList[ nIndex ].
-                                    m_nFrameFormat = 1;
+                                m_nFrameFormat = 1;
                             }
                         }
                     }
@@ -2040,14 +1927,14 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     // Save Graph details irrespective of conf file
                     // version
                     m_odGraphList.nSerialize( oCfgArchive);
-                }                
-                
+                }
+
                 // get the checksum information.
                 if (oCfgArchive.IsLoading())
                 {
                     oCfgArchive >> m_ucCheckSum;
                 }
-                
+
                 if (oCfgArchive.IsStoring())
                 {
                     // Store the chechsum as zero.
@@ -2074,7 +1961,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
         }
         // close the file
         oConfigFile.Close();
-        
+
         m_hConfigFile = NULL;
     }
     else
@@ -2123,7 +2010,7 @@ void CConfigDetails::vInitDefaultValues()
 {
     // always clean the members..
     vResetAll();
-    
+
     CString ostrTemp = defEMPTYSTR;
     // Default log file name
     m_omStrLogFilename = def_DEFAULT_LOGFILENAME;
@@ -2131,51 +2018,51 @@ void CConfigDetails::vInitDefaultValues()
     m_omStrMruCFile      = defEMPTYSTR;
     // replay file name
     m_omStrReplayFilename = defEMPTYSTR;
-    
+
     // database file name
     m_pomaStrDatabaseFilename->RemoveAll();
-    
+
     // mru dll name
     m_omStrMruDLLFilename = defEMPTYSTR;
-    
+
     // copy right info
     m_omStrCopyright = defCOPYRIGHT;
-    
+
     // version info
     m_fAppVersion = static_cast <float> (defAPPVERSION);
-    
-    
+
+
     m_bIsDirty  = FALSE;
-    
+
     m_hConfigFile = NULL ;
-    
+
     m_omstrConfigFilename = defEMPTYSTR ;
-    
+
     m_omstrTempFilename = defEMPTYSTR;
-    
+
     m_omStrMsgName = defEMPTYSTR ;
-    
+
     m_omStrMsgID = defEMPTYSTR;
-    
+
     m_ucCheckSum = 0;
-    
+
     // Initialise window postion members
     vInitWndCoords();
     // initialise Splitter position members
     vInitSplitterPostions();
     // baud rate defaults
     vInitBaudRateDetails();
-    
+
     // message attributes defaults
     vInitMsgAttributes();
-    
+
     // filter defauls
     vInitFilterDetails();
     // Init Log Manager
     //CLogManager::ouGetLogManager().vInitLogManager();
     // Init Replay Manager
     //CReplayManager::ouGetReplayManager().vInitReplayManager();
-    // tool bar defaults 
+    // tool bar defaults
     vInitToolbarInfo();
     // Initialise the count of message block
     m_unNumberOfMsgBlockCount = 0;
@@ -2230,7 +2117,7 @@ void CConfigDetails::vInitWndCoords()
     m_sMsgWndCoOrd.rcNormalPosition.left = -1;
     m_sMsgWndCoOrd.rcNormalPosition.top = -1;
     m_sMsgWndCoOrd.rcNormalPosition.right = -1;
-    
+
     // output window
     m_sOutputWndCoOrd.length = sizeof(WINDOWPLACEMENT);
     m_sOutputWndCoOrd.flags = defMSGWNDFLAGS;
@@ -2239,12 +2126,12 @@ void CConfigDetails::vInitWndCoords()
     m_sOutputWndCoOrd.ptMinPosition.y = -1;
     m_sOutputWndCoOrd.ptMaxPosition.x = -1;
     m_sOutputWndCoOrd.ptMaxPosition.y = -1;
-    
+
     m_sOutputWndCoOrd.rcNormalPosition.bottom = -1;
     m_sOutputWndCoOrd.rcNormalPosition.left = -1;
     m_sOutputWndCoOrd.rcNormalPosition.top = -1;
     m_sOutputWndCoOrd.rcNormalPosition.right = -1;
-    
+
     // replay window
     m_sReplayWndCoOrd.length = sizeof(WINDOWPLACEMENT);
     m_sReplayWndCoOrd.flags = defMSGWNDFLAGS;
@@ -2253,12 +2140,12 @@ void CConfigDetails::vInitWndCoords()
     m_sReplayWndCoOrd.ptMinPosition.y = -1;
     m_sReplayWndCoOrd.ptMaxPosition.x = -1;
     m_sReplayWndCoOrd.ptMaxPosition.y = -1;
-    
+
     m_sReplayWndCoOrd.rcNormalPosition.bottom = -1;
     m_sReplayWndCoOrd.rcNormalPosition.left = -1;
     m_sReplayWndCoOrd.rcNormalPosition.top = -1;
     m_sReplayWndCoOrd.rcNormalPosition.right = -1;
-    
+
     // trace window
     m_sNotificWndCoOrd.length = sizeof(WINDOWPLACEMENT);
     m_sNotificWndCoOrd.flags = defMSGWNDFLAGS;
@@ -2267,12 +2154,12 @@ void CConfigDetails::vInitWndCoords()
     m_sNotificWndCoOrd.ptMinPosition.y = -1;
     m_sNotificWndCoOrd.ptMaxPosition.x = -1;
     m_sNotificWndCoOrd.ptMaxPosition.y = -1;
-    
+
     m_sNotificWndCoOrd.rcNormalPosition.bottom = -1;
     m_sNotificWndCoOrd.rcNormalPosition.left = -1;
     m_sNotificWndCoOrd.rcNormalPosition.top = -1;
     m_sNotificWndCoOrd.rcNormalPosition.right = -1;
-    
+
     // Signal Watch Window
     m_sSigWatchWindow.length = sizeof(WINDOWPLACEMENT);
     m_sSigWatchWindow.flags = WPF_SETMINPOSITION;
@@ -2281,12 +2168,12 @@ void CConfigDetails::vInitWndCoords()
     m_sSigWatchWindow.ptMinPosition.y = -1;
     m_sSigWatchWindow.ptMaxPosition.x = -1;
     m_sSigWatchWindow.ptMaxPosition.y = -1;
-    
+
     m_sSigWatchWindow.rcNormalPosition.bottom = -1;
     m_sSigWatchWindow.rcNormalPosition.left = -1;
     m_sSigWatchWindow.rcNormalPosition.top = -1;
     m_sSigWatchWindow.rcNormalPosition.right = -1;
-    
+
     // Message Interpretation Window
     m_sMsgInterpWindow.length = sizeof(WINDOWPLACEMENT);
     m_sMsgInterpWindow.flags = WPF_SETMINPOSITION;
@@ -2295,12 +2182,12 @@ void CConfigDetails::vInitWndCoords()
     m_sMsgInterpWindow.ptMinPosition.y = -1;
     m_sMsgInterpWindow.ptMaxPosition.x = -1;
     m_sMsgInterpWindow.ptMaxPosition.y = -1;
-    
+
     m_sMsgInterpWindow.rcNormalPosition.bottom = -1;
     m_sMsgInterpWindow.rcNormalPosition.left = -1;
     m_sMsgInterpWindow.rcNormalPosition.right = -1;
     m_sMsgInterpWindow.rcNormalPosition.top = -1;
-    
+
     // Init Graph Window Coordinates
     m_sGraphWndCoOrd.length = sizeof(WINDOWPLACEMENT);
     m_sGraphWndCoOrd.flags = WPF_SETMINPOSITION;
@@ -2314,7 +2201,7 @@ void CConfigDetails::vInitWndCoords()
     m_sGraphWndCoOrd.rcNormalPosition.left = -1;
     m_sGraphWndCoOrd.rcNormalPosition.right = -1;
     m_sGraphWndCoOrd.rcNormalPosition.bottom = -1;
-    
+
     // Tx Window Postion
     m_sTxWndCoOrd.length = sizeof(WINDOWPLACEMENT);
     m_sTxWndCoOrd.flags = WPF_SETMINPOSITION;
@@ -2323,7 +2210,7 @@ void CConfigDetails::vInitWndCoords()
     m_sTxWndCoOrd.ptMinPosition.y = -1;
     m_sTxWndCoOrd.ptMaxPosition.x = -1;
     m_sTxWndCoOrd.ptMaxPosition.y = -1;
-    
+
     m_sTxWndCoOrd.rcNormalPosition.top = -1;
     m_sTxWndCoOrd.rcNormalPosition.left = -1;
     m_sTxWndCoOrd.rcNormalPosition.right = -1;
@@ -2514,42 +2401,40 @@ static void vReadControllerDetails(CArchive& roCfgArchive, int& nIndex,
     roCfgArchive >> psControllerDetails[ nIndex ].m_nBTR0BTR1;
     CString omTemp;
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrCNF1, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrCNF1 = omTemp.GetBuffer(MAX_PATH);
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrCNF2, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrCNF2 = omTemp.GetBuffer(MAX_PATH);
     // baudrate information
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrBaudrate, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrBaudrate = omTemp.GetBuffer(MAX_PATH);
     // clock information
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrClock, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrClock = omTemp.GetBuffer(MAX_PATH);
     // sampling information
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrSampling, omTemp.GetBuffer(MAX_PATH));
-    
-	// acceptance code information
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte1[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte2[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte3[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccCodeByte4[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte1[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte2[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte3[0], omTemp.GetBuffer(MAX_PATH));
-	roCfgArchive >> omTemp;
-	_tcscpy(psControllerDetails[nIndex].m_omStrAccMaskByte4[0], omTemp.GetBuffer(MAX_PATH));
-    
+    psControllerDetails[nIndex].m_omStrSampling = omTemp.GetBuffer(MAX_PATH);
+    // acceptance code information
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccCodeByte1[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccCodeByte2[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccCodeByte3[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccCodeByte4[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccMaskByte1[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccMaskByte2[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccMaskByte3[0] = omTemp.GetBuffer(MAX_PATH);
+    roCfgArchive >> omTemp;
+    psControllerDetails[nIndex].m_omStrAccMaskByte4[0] = omTemp.GetBuffer(MAX_PATH);
     // Acceptance Filter mode
     roCfgArchive >> psControllerDetails[ nIndex ].m_bAccFilterMode;
     // warning limit information
     roCfgArchive >> omTemp;
-    _tcscpy(psControllerDetails[nIndex].m_omStrWarningLimit, omTemp.GetBuffer(MAX_PATH));
+    psControllerDetails[nIndex].m_omStrWarningLimit = omTemp.GetBuffer(MAX_PATH);
     // controller mode information
     roCfgArchive >> psControllerDetails[ nIndex ].m_ucControllerMode;
 }
@@ -2565,7 +2450,7 @@ void CConfigDetails::vLoadStoreBaudRateDetails(CArchive& roCfgArchive)
         // For dummy reading
         BOOL bDummyRead = FALSE;
         int nTimes = 0;
-        
+
         // Check the Config file version
         if (m_fAppVersion >= defMULTI_CHANNEL_VERSION)
         {
@@ -2586,18 +2471,18 @@ void CConfigDetails::vLoadStoreBaudRateDetails(CArchive& roCfgArchive)
         {
             vReadControllerDetails(roCfgArchive, nIndex, m_sControllerDetails);
         }
-        
-        
+
+
         // Read the additional information so that the flow will not be
         // distrubed
         if (bDummyRead == TRUE)
         {
             sCONTROLLERDETAILS sDummy;
-            
+
             for (int nIndex = 0; nIndex < nTimes; nIndex++)
             {
                 vReadControllerDetails(roCfgArchive, nIndex, m_sControllerDetails);
-            }            
+            }
         }
     }
 }
@@ -2642,23 +2527,23 @@ void CConfigDetails::vLoadStoreBaudRateDetails(CArchive& roCfgArchive)
 BOOL CConfigDetails::bLoadStoreMsgAttributes(CArchive& roCfgArchive)
 {
     BOOL bRetVal = TRUE;
-    
+
     if (roCfgArchive.IsLoading())
     {
         // m_sMessageAttributes
         roCfgArchive >> m_sMessageAttributes.m_usMsgCount;
         USHORT usCount = m_sMessageAttributes.m_usMsgCount;
-        
+
         if (usCount != 0)
         {
             // allocate memory
             PSMESSAGEATTR   pMsgAttr = new SMESSAGEATTR[usCount];
-            
+
             // did allocation succeed
             if (pMsgAttr != NULL)
             {
                 PSMESSAGEATTR   pHead = pMsgAttr;
-                
+
                 for (int i = 0; i < usCount; i++, pMsgAttr++)
                 {
                     roCfgArchive >> pMsgAttr->omStrMsgname;
@@ -2674,22 +2559,22 @@ BOOL CConfigDetails::bLoadStoreMsgAttributes(CArchive& roCfgArchive)
             }
         }
     }
-    
+
     if (roCfgArchive.IsStoring())
     {
         roCfgArchive << m_sMessageAttributes.m_usMsgCount;
-        
+
         PSMESSAGEATTR pMsgAttr = m_sMessageAttributes.m_psMsgAttribDetails;
-        
-        for (int i = 0; i < m_sMessageAttributes.m_usMsgCount; 
-        i++, pMsgAttr++)
+
+        for (int i = 0; i < m_sMessageAttributes.m_usMsgCount;
+                i++, pMsgAttr++)
         {
             roCfgArchive << pMsgAttr->omStrMsgname;
             roCfgArchive << pMsgAttr->unMsgID;
             roCfgArchive << pMsgAttr->sColor;
         }
     }
-    
+
     return bRetVal;
 }
 
@@ -2736,7 +2621,7 @@ void CConfigDetails::vLoadStoreWndCoords(CArchive& roCfgArchive)
 {
     // Set All values to default
     if (roCfgArchive.IsLoading() &&
-        m_fAppVersion < defMULTI_CHANNEL_VERSION)
+            m_fAppVersion < defMULTI_CHANNEL_VERSION)
     {
         // Load Default values
         vInitWndCoords();
@@ -2753,11 +2638,11 @@ void CConfigDetails::vLoadStoreWndCoords(CArchive& roCfgArchive)
     vLoadStoreWindowInfo( roCfgArchive, m_sSigWatchWindow);
     // placement structure of the Interpretation Window
     vLoadStoreWindowInfo( roCfgArchive, m_sMsgInterpWindow);
-    // Load Graph window and Tx Window information only if the 
+    // Load Graph window and Tx Window information only if the
     // version is >=2.5 that is Multi channel version
     // Save irrespective of app version
     if (m_fAppVersion >= defMULTI_CHANNEL_VERSION ||
-        roCfgArchive.IsStoring())
+            roCfgArchive.IsStoring())
     {
         // Placement structure of Graph window
         vLoadStoreWindowInfo( roCfgArchive, m_sGraphWndCoOrd);
@@ -2775,7 +2660,7 @@ configuration file
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 26.4.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 void CConfigDetails::vLoadStoreSplitterPostion( CArchive& oCfgArchive)
 {
@@ -2786,30 +2671,30 @@ void CConfigDetails::vLoadStoreSplitterPostion( CArchive& oCfgArchive)
         {
             // Read Graph Window Splitter Postion
             // Root splitter information
-            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[0][0]; 
-            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[0][1]; 
-            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[1][0]; 
-            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[1][1]; 
-            
+            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[0][0];
+            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[0][1];
+            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[1][0];
+            oCfgArchive >> m_sGraphWndSplitterPos.m_nRootSplitterData[1][1];
+
             // Column splitter information
             oCfgArchive >> m_sGraphWndSplitterPos.m_nRightViewSplitterData[0][0];
             oCfgArchive >> m_sGraphWndSplitterPos.m_nRightViewSplitterData[0][1];
             oCfgArchive >> m_sGraphWndSplitterPos.m_nRightViewSplitterData[1][0];
             oCfgArchive >> m_sGraphWndSplitterPos.m_nRightViewSplitterData[1][1];
-            
+
             // Tx Window Splitter Postion
             // Main Splitter postion
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1];
-            
+
             // Second Level Splitter
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1];
-            
+
             // Third level splitter data
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0];
             oCfgArchive >> m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1];
@@ -2828,33 +2713,33 @@ void CConfigDetails::vLoadStoreSplitterPostion( CArchive& oCfgArchive)
         // Store Graph Window Splitter Postion
         // Root splitter information
         // Row 0
-        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[0][0]; 
-        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[0][1]; 
-        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[1][0]; 
-        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[1][1]; 
-        
+        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[0][0];
+        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[0][1];
+        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[1][0];
+        oCfgArchive << m_sGraphWndSplitterPos.m_nRootSplitterData[1][1];
+
         // Column splitter information
         oCfgArchive << m_sGraphWndSplitterPos.m_nRightViewSplitterData[0][0];
         oCfgArchive << m_sGraphWndSplitterPos.m_nRightViewSplitterData[0][1];
         oCfgArchive << m_sGraphWndSplitterPos.m_nRightViewSplitterData[1][0];
         oCfgArchive << m_sGraphWndSplitterPos.m_nRightViewSplitterData[1][1];
-        
-        
+
+
         // Tx Window Splitter Postion
-        
+
         // Main Splitter postion
         // Row 0
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1];
-        
+
         // Second Level Splitter
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1];
-        
+
         // Third level splitter data
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0];
         oCfgArchive << m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1];
@@ -2919,7 +2804,7 @@ BOOL CConfigDetails::bLoadStoreMultiMsgInfo(CArchive& roCfgArchive)
     {
         // get the number of the messages present in the array..
         roCfgArchive >> m_unNumberOfMsgBlockCount;
-        
+
         m_psMsgBlockList = NULL;
         PSMSGBLOCKLIST psMsgCurrentBlockList = NULL;
         // are there any elements ?
@@ -2936,8 +2821,8 @@ BOOL CConfigDetails::bLoadStoreMultiMsgInfo(CArchive& roCfgArchive)
             }
             psMsgCurrentBlockList = m_psMsgBlockList;
             for (UINT i = 0;
-            (i < m_unNumberOfMsgBlockCount) && (bRetVal == TRUE);
-            i++)
+                    (i < m_unNumberOfMsgBlockCount) && (bRetVal == TRUE);
+                    i++)
             {
                 bRetVal = bLoadStoreMsgInfo(roCfgArchive,psMsgCurrentBlockList);
                 if (i+1 <m_unNumberOfMsgBlockCount)
@@ -2951,32 +2836,32 @@ BOOL CConfigDetails::bLoadStoreMultiMsgInfo(CArchive& roCfgArchive)
                         bRetVal = FALSE;
                     }
                 }
-                psMsgCurrentBlockList = 
+                psMsgCurrentBlockList =
                     psMsgCurrentBlockList->m_psNextMsgBlocksList ;
             }
-        } 
+        }
     }
-    
+
     if (roCfgArchive.IsStoring())
     {
         // store the number of the messages present in the array..
         roCfgArchive << m_unNumberOfMsgBlockCount ;
-        
+
         PSMSGBLOCKLIST psMsgCurrentBlockList = NULL;
         // are there any elements ?
         if (m_unNumberOfMsgBlockCount  != 0)
         {
-            
+
             psMsgCurrentBlockList = m_psMsgBlockList;
             for (UINT i = 0;
-            (i < m_unNumberOfMsgBlockCount) && (bRetVal == TRUE);
-            i++)
+                    (i < m_unNumberOfMsgBlockCount) && (bRetVal == TRUE);
+                    i++)
             {
                 bRetVal = bLoadStoreMsgInfo(roCfgArchive,psMsgCurrentBlockList);
-                psMsgCurrentBlockList = 
+                psMsgCurrentBlockList =
                     psMsgCurrentBlockList->m_psNextMsgBlocksList ;
             }
-        } 
+        }
     }
     return bRetVal;
 }
@@ -2985,7 +2870,7 @@ struct tagFilterOld
 {
     UCHAR m_ucFilterType;   // 0 - Message ID and 1 - ID Range
     UINT  m_unMsgIDFrom;    // From Message ID incase of range.
-                            // Msg ID in case of Single ID
+    // Msg ID in case of Single ID
     UINT  m_unMsgIDTo  ;    // To Message ID incase of range.
     UCHAR m_ucDirection;    // 2 - Rx Msg, 1 - Tx Msg, 0 - For All
     UCHAR m_ucEXTENDED;     // 0 - Standard, 1 - Extended, 2 - For All
@@ -3085,7 +2970,7 @@ static void vPopulateFilterCan(SFILTER_CAN& Dest, const SFILTER_OLD& Src)
             ASSERT(FALSE);
         }
         break;
-    }    
+    }
 }
 
 /******************************************************************************/
@@ -3137,15 +3022,15 @@ static BOOL bLoadFilterDets(CArchive& romArchive, SFILTERAPPLIED_CAN& sFilterCon
         // Get Filter Name
         CString omStrFilterName = STR_EMPTY;
         romArchive >> omStrFilterName;
-		//Tobias - venkat
+        //Tobias - venkat
         strcpy_s(sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_acFilterName, LENGTH_FILTERNAME,
-			omStrFilterName.GetBuffer(LENGTH_FILTERNAME));
+                 omStrFilterName.GetBuffer(LENGTH_FILTERNAME));
         // Read Filter Type first
         romArchive >> sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_bFilterType;
         // Serialize filter array
         CArray<SFILTER_OLD, SFILTER_OLD&> omFilterList;
         omFilterList.Serialize( romArchive );
-		INT nFilterCount = omFilterList.GetSize();
+        INT nFilterCount = omFilterList.GetSize();
         sFilterConfigured.m_psFilters[nIndex].m_bEnabled = TRUE;
         sFilterConfigured.m_psFilters[nIndex].m_eCurrBus = CAN;
         sFilterConfigured.m_psFilters[nIndex].m_ushFilters = (USHORT)nFilterCount;
@@ -3154,9 +3039,9 @@ static BOOL bLoadFilterDets(CArchive& romArchive, SFILTERAPPLIED_CAN& sFilterCon
         for (INT i = 0; i < nFilterCount; i++)
         {
             SFILTER_OLD sFilterOld = omFilterList.GetAt(i);
-            vPopulateFilterCan(psTemp[i], sFilterOld);            
+            vPopulateFilterCan(psTemp[i], sFilterOld);
         }
-        bResult = TRUE;        
+        bResult = TRUE;
     }
     return bResult;
 }
@@ -3184,11 +3069,11 @@ BOOL CConfigDetails::bLoadStoreMsgFilterDetails(CArchive& roCfgArchive)
             {
                 // Read unknown message ID
                 m_sMsgFilterDetails.m_punUndefinedMsgID =
-                                        new UINT[unUnknownIDArraySize + 1];
+                    new UINT[unUnknownIDArraySize + 1];
                 if( m_sMsgFilterDetails.m_punUndefinedMsgID != NULL )
                 {
                     m_sMsgFilterDetails.m_punUndefinedMsgID[0] =
-                                                        unUnknownIDArraySize;
+                        unUnknownIDArraySize;
                     roCfgArchive >> m_sMsgFilterDetails.m_punUndefinedMsgID[1];
                 }
                 else
@@ -3217,7 +3102,7 @@ BOOL CConfigDetails::bLoadStoreMsgFilterDetails(CArchive& roCfgArchive)
     {
         ASSERT(FALSE);
     }
-    
+
     return bRetVal;
 }
 /******************************************************************************/
@@ -3263,7 +3148,7 @@ BOOL CConfigDetails::bLoadStoreMsgFilterDetails(CArchive& roCfgArchive)
 /*  Modifications    :  Raja N on 10.05.2005, Modified conditional statement as
 per code review comments                              */
 /******************************************************************************/
-BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive, 
+BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                                        PSMSGBLOCKLIST psMsgBlockList)
 {
     BOOL bRetVal = TRUE;
@@ -3294,14 +3179,14 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                 psCurrentMsgList = psMsgBlockList->m_psTxCANMsgList;
             }
             for (UINT i = 0; ( i < psMsgBlockList->m_unMsgCount) &&
-                ( bRetVal == TRUE);
-                i++)
+                    ( bRetVal == TRUE);
+                    i++)
             {
                 if (psCurrentMsgList != NULL)
                 {
                     // Load Dirty Flag
                     roCfgArchive >> sTxMsgDetails.m_bIsMsgDirty;
-                    
+
                     // Load Enable Option only for latest configuration file
                     // That is version > 2.4
                     if (m_fAppVersion >= defTX_MSG_ENABLE_OPTION_VERISION)
@@ -3313,13 +3198,13 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                         // Set Default Value
                         sTxMsgDetails.m_bEnabled = TRUE;
                     }
-                    
+
                     // Load CAN Attributes
                     roCfgArchive >> sTxMsgDetails.m_sTxMsg.m_unMsgID;
                     roCfgArchive >> sTxMsgDetails.m_sTxMsg.m_ucDataLen;
                     roCfgArchive >> sTxMsgDetails.m_sTxMsg.m_ucEXTENDED;
                     roCfgArchive >> sTxMsgDetails.m_sTxMsg.m_ucRTR;
-                    
+
                     // Read Channel Info only for Multi channel version
                     if (m_fAppVersion >= defMULTI_CHANNEL_VERSION)
                     {
@@ -3331,7 +3216,7 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                         sTxMsgDetails.m_sTxMsg.m_ucChannel = 1;
                     }
                     unDataLength = sTxMsgDetails.m_sTxMsg.m_ucDataLen;
-                    
+
                     for (UINT j  =0 ; j<defMAX_BYTE ; j++)
                     {
                         if (j<unDataLength)
@@ -3344,11 +3229,11 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                         }
                     }
                     memcpy(&(psCurrentMsgList->m_sTxMsgDetails),
-                        &sTxMsgDetails,
-                        sizeof(sTxMsgDetails));
+                           &sTxMsgDetails,
+                           sizeof(sTxMsgDetails));
                     if (i+1 <psMsgBlockList->m_unMsgCount)
                     {
-                        psCurrentMsgList->m_psNextMsgDetails = 
+                        psCurrentMsgList->m_psNextMsgDetails =
                             new STXCANMSGLIST;
                         vInitialiseMsgDetails(
                             psCurrentMsgList->m_psNextMsgDetails);
@@ -3388,19 +3273,19 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
             STXCANMSGDETAILS sTxMsgDetails;
             psCurrentMsgList = psMsgBlockList->m_psTxCANMsgList;
             sTxMsgDetails = psCurrentMsgList->m_sTxMsgDetails;
-            for (UINT i =0; i<psMsgBlockList->m_unMsgCount;i++)
+            for (UINT i =0; i<psMsgBlockList->m_unMsgCount; i++)
             {
                 roCfgArchive << sTxMsgDetails.m_bIsMsgDirty;
                 roCfgArchive << sTxMsgDetails.m_bEnabled;
-                
+
                 roCfgArchive << sTxMsgDetails.m_sTxMsg.m_unMsgID;
                 roCfgArchive << sTxMsgDetails.m_sTxMsg.m_ucDataLen;
                 roCfgArchive << sTxMsgDetails.m_sTxMsg.m_ucEXTENDED;
                 roCfgArchive << sTxMsgDetails.m_sTxMsg.m_ucRTR;
                 roCfgArchive << sTxMsgDetails.m_sTxMsg.m_ucChannel;
-                
+
                 unDataLength = sTxMsgDetails.m_sTxMsg.m_ucDataLen;
-                
+
                 for (UINT j  =0 ; j<unDataLength ; j++)
                 {
                     roCfgArchive << sTxMsgDetails.m_sTxMsg.m_ucData[j];
@@ -3408,7 +3293,7 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                 psCurrentMsgList = psCurrentMsgList->m_psNextMsgDetails;
                 if (psCurrentMsgList != NULL)
                 {
-                    sTxMsgDetails    = psCurrentMsgList->m_sTxMsgDetails; 
+                    sTxMsgDetails    = psCurrentMsgList->m_sTxMsgDetails;
                 }
             }
         }
@@ -3453,56 +3338,56 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
 BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
 {
     BOOL bRetVal = TRUE;
-    PSMSGBLOCKLIST psSrcMsgBlockList = m_psMsgBlockList; 
+    PSMSGBLOCKLIST psSrcMsgBlockList = m_psMsgBlockList;
     PSTXCANMSGLIST psSrcTxMsgList    = NULL;
     PSTXCANMSGLIST psDestTxMsgList   = NULL;
     if (psSrcMsgBlockList != NULL && psDestMsgBlockList != NULL)
     {
-        for (UINT i =0; (i<m_unNumberOfMsgBlockCount) && (bRetVal == TRUE);i++)
+        for (UINT i =0; (i<m_unNumberOfMsgBlockCount) && (bRetVal == TRUE); i++)
         {
-            psDestMsgBlockList->m_bActive        = 
+            psDestMsgBlockList->m_bActive        =
                 psSrcMsgBlockList->m_bActive;
             psDestMsgBlockList->m_bType          = psSrcMsgBlockList->m_bType;
-            psDestMsgBlockList->m_bTxAllFrame     = 
+            psDestMsgBlockList->m_bTxAllFrame     =
                 psSrcMsgBlockList->m_bTxAllFrame;
             psDestMsgBlockList->m_ucTrigger       =
                 psSrcMsgBlockList->m_ucTrigger;
-            psDestMsgBlockList->m_omStrBlockName = 
+            psDestMsgBlockList->m_omStrBlockName =
                 psSrcMsgBlockList->m_omStrBlockName;
-            psDestMsgBlockList->m_ucKeyValue     = 
+            psDestMsgBlockList->m_ucKeyValue     =
                 psSrcMsgBlockList->m_ucKeyValue;
-            psDestMsgBlockList->m_unMsgCount     = 
+            psDestMsgBlockList->m_unMsgCount     =
                 psSrcMsgBlockList->m_unMsgCount;
-            psDestMsgBlockList->m_unTimeInterval = 
+            psDestMsgBlockList->m_unTimeInterval =
                 psSrcMsgBlockList->m_unTimeInterval;
             if (psSrcMsgBlockList->m_unMsgCount > 0)
             {
-                
+
                 psSrcTxMsgList = psSrcMsgBlockList->m_psTxCANMsgList;
                 psDestMsgBlockList->m_psTxCANMsgList = new STXCANMSGLIST;
                 psDestTxMsgList = psDestMsgBlockList->m_psTxCANMsgList;
                 if (psDestTxMsgList != NULL)
                 {
                     for (UINT j =0;
-                    (j<psSrcMsgBlockList->m_unMsgCount)&&(bRetVal == TRUE);
-                    j++)
+                            (j<psSrcMsgBlockList->m_unMsgCount)&&(bRetVal == TRUE);
+                            j++)
                     {
-                        
+
                         memcpy(&(psDestTxMsgList->m_sTxMsgDetails),
-                            &(psSrcTxMsgList->m_sTxMsgDetails),
-                            sizeof(psSrcTxMsgList->m_sTxMsgDetails));
-                        if (psSrcTxMsgList->m_psNextMsgDetails != NULL && 
-                            j+1 <psSrcMsgBlockList->m_unMsgCount)
+                               &(psSrcTxMsgList->m_sTxMsgDetails),
+                               sizeof(psSrcTxMsgList->m_sTxMsgDetails));
+                        if (psSrcTxMsgList->m_psNextMsgDetails != NULL &&
+                                j+1 <psSrcMsgBlockList->m_unMsgCount)
                         {
-                            psDestTxMsgList->m_psNextMsgDetails = 
+                            psDestTxMsgList->m_psNextMsgDetails =
                                 new STXCANMSGLIST;
                             vInitialiseMsgDetails(
                                 psDestTxMsgList->m_psNextMsgDetails);
                             if (psDestTxMsgList->m_psNextMsgDetails != NULL)
                             {
-                                psDestTxMsgList = 
+                                psDestTxMsgList =
                                     psDestTxMsgList->m_psNextMsgDetails;
-                                psSrcTxMsgList  = 
+                                psSrcTxMsgList  =
                                     psSrcTxMsgList->m_psNextMsgDetails;
                             }
                             else
@@ -3522,22 +3407,22 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                 }
             }
             // Check the message count and don't allocate if the assignment for
-            // last node is done i + 1 Because i is not incremented here 
-            
+            // last node is done i + 1 Because i is not incremented here
+
             if (psSrcMsgBlockList->m_psNextMsgBlocksList != NULL &&
-                (i + 1) < m_unNumberOfMsgBlockCount)
+                    (i + 1) < m_unNumberOfMsgBlockCount)
             {
                 psDestMsgBlockList->m_psNextMsgBlocksList = new SMSGBLOCKLIST;
                 vInitialiseMsgBlock(psDestMsgBlockList->m_psNextMsgBlocksList);
                 if (psDestMsgBlockList->m_psNextMsgBlocksList != NULL)
                 {
-                    psDestMsgBlockList = 
+                    psDestMsgBlockList =
                         psDestMsgBlockList->m_psNextMsgBlocksList;
                     psDestMsgBlockList->m_psNextMsgBlocksList = NULL;
                     psDestMsgBlockList->m_psTxCANMsgList = NULL;
-                    psSrcMsgBlockList = 
+                    psSrcMsgBlockList =
                         psSrcMsgBlockList->m_psNextMsgBlocksList;
-                }       
+                }
                 else
                 {
                     bRetVal = FALSE;
@@ -3609,30 +3494,30 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             m_psMsgBlockList->m_psTxCANMsgList = NULL;
         }
     }
-    if (psSrcMsgBlockList != NULL && 
-        psDesMsgBlockList != NULL &&
-        bRetVal == TRUE)
+    if (psSrcMsgBlockList != NULL &&
+            psDesMsgBlockList != NULL &&
+            bRetVal == TRUE)
     {
         do
         {
             psDesMsgBlockList->m_bActive        = psSrcMsgBlockList->m_bActive;
             psDesMsgBlockList->m_bType          = psSrcMsgBlockList->m_bType;
-            psDesMsgBlockList->m_bTxAllFrame     = 
+            psDesMsgBlockList->m_bTxAllFrame     =
                 psSrcMsgBlockList->m_bTxAllFrame;
-            psDesMsgBlockList->m_ucTrigger       = 
+            psDesMsgBlockList->m_ucTrigger       =
                 psSrcMsgBlockList->m_ucTrigger;
             psDesMsgBlockList->m_omStrBlockName =
                 psSrcMsgBlockList->m_omStrBlockName;
-            
+
             psDesMsgBlockList->m_ucKeyValue  = psSrcMsgBlockList->m_ucKeyValue;
             psDesMsgBlockList->m_unMsgCount  = psSrcMsgBlockList->m_unMsgCount;
-            
-            psDesMsgBlockList->m_unTimeInterval = 
+
+            psDesMsgBlockList->m_unTimeInterval =
                 psSrcMsgBlockList->m_unTimeInterval;
-            
+
             if (psSrcMsgBlockList->m_unMsgCount>0)
             {
-                PSTXCANMSGLIST psSrcTxMsgList = 
+                PSTXCANMSGLIST psSrcTxMsgList =
                     psSrcMsgBlockList->m_psTxCANMsgList;
                 PSTXCANMSGLIST psDesTxMsgList = NULL;
                 if (psDesMsgBlockList->m_psTxCANMsgList == NULL)
@@ -3661,12 +3546,12 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                             //EnterCriticalSection(
                             //          &psTxMsg->m_sMsgBlocksCriticalSection);
                             //Wait for twice to block both Key and Timer threads
-                            WaitForSingleObject(psTxMsg->m_hSemaphore, 
-                                INFINITE);
-                            WaitForSingleObject(psTxMsg->m_hSemaphore, 
-                                INFINITE);
+                            WaitForSingleObject(psTxMsg->m_hSemaphore,
+                                                INFINITE);
+                            WaitForSingleObject(psTxMsg->m_hSemaphore,
+                                                INFINITE);
                         }
-                        psDesTxMsgList->m_sTxMsgDetails = 
+                        psDesTxMsgList->m_sTxMsgDetails =
                             psSrcTxMsgList->m_sTxMsgDetails;
                         if (psTxMsg != NULL && bTxON == TRUE)
                         {
@@ -3674,18 +3559,18 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                             //           &psTxMsg->m_sMsgBlocksCriticalSection);
                             //Release twice to block both Key and Timer threads
                             ReleaseSemaphore(psTxMsg->m_hSemaphore,
-                                1,
-                                lpPreviousCount);
+                                             1,
+                                             lpPreviousCount);
                             ReleaseSemaphore(psTxMsg->m_hSemaphore,
-                                1,
-                                lpPreviousCount);
+                                             1,
+                                             lpPreviousCount);
                         }
                         psSrcTxMsgList = psSrcTxMsgList->m_psNextMsgDetails;
                         if (psSrcTxMsgList != NULL)
                         {
                             if (psDesTxMsgList->m_psNextMsgDetails == NULL)
                             {
-                                psDesTxMsgList->m_psNextMsgDetails = 
+                                psDesTxMsgList->m_psNextMsgDetails =
                                     new STXCANMSGLIST;
                                 if (psDesTxMsgList->m_psNextMsgDetails == NULL)
                                 {
@@ -3693,14 +3578,14 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                                 }
                                 else
                                 {
-                                    psDesTxMsgList = 
+                                    psDesTxMsgList =
                                         psDesTxMsgList->m_psNextMsgDetails;
                                     psDesTxMsgList->m_psNextMsgDetails = NULL;
                                 }
                             }
                             else
                             {
-                                psDesTxMsgList = 
+                                psDesTxMsgList =
                                     psDesTxMsgList->m_psNextMsgDetails;
                             }
                         }
@@ -3710,7 +3595,7 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     // Delete the extra element if user has reduced the size.
                     if (psDesTxMsgList->m_psNextMsgDetails != NULL)
                     {
-                        PSTXCANMSGLIST psDelTxMsgList = 
+                        PSTXCANMSGLIST psDelTxMsgList =
                             psDesTxMsgList->m_psNextMsgDetails;
                         psDesTxMsgList->m_psNextMsgDetails = NULL;
                         while(psDesTxMsgList != NULL && psDelTxMsgList != NULL)
@@ -3720,7 +3605,7 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                             psDelTxMsgList  = NULL;
                             if (psDesTxMsgList != NULL)
                             {
-                                psDelTxMsgList = 
+                                psDelTxMsgList =
                                     psDesTxMsgList->m_psNextMsgDetails;
                             }
                         }
@@ -3735,7 +3620,7 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             {
                 if (psDesMsgBlockList->m_psNextMsgBlocksList == NULL)
                 {
-                    psDesMsgBlockList->m_psNextMsgBlocksList = 
+                    psDesMsgBlockList->m_psNextMsgBlocksList =
                         new SMSGBLOCKLIST;
                     vInitialiseMsgBlock(
                         psDesMsgBlockList->m_psNextMsgBlocksList);
@@ -3745,7 +3630,7 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     }
                     else
                     {
-                        psDesMsgBlockList = 
+                        psDesMsgBlockList =
                             psDesMsgBlockList->m_psNextMsgBlocksList;
                         psDesMsgBlockList->m_psTxCANMsgList = NULL;
                         psDesMsgBlockList->m_psNextMsgBlocksList = NULL;
@@ -3753,10 +3638,10 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                 }
                 else
                 {
-                    psDesMsgBlockList = 
+                    psDesMsgBlockList =
                         psDesMsgBlockList->m_psNextMsgBlocksList;
                 }
-                
+
             }
             psSrcMsgBlockList = psSrcMsgBlockList->m_psNextMsgBlocksList;
             if (psTxMsg != NULL)
@@ -3810,11 +3695,11 @@ void CConfigDetails::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
         {
             if (psCurrentMsgBlockList->m_unMsgCount > 0)
             {
-                psCurrentTxCANMsgList = 
+                psCurrentTxCANMsgList =
                     psCurrentMsgBlockList->m_psTxCANMsgList;
                 do
                 {
-                    psNextTxCANMsgList    = 
+                    psNextTxCANMsgList    =
                         psCurrentTxCANMsgList->m_psNextMsgDetails;
                     delete psCurrentTxCANMsgList;
                     psCurrentTxCANMsgList = NULL;
@@ -3846,44 +3731,44 @@ void CConfigDetails::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 /*                                                                            */
 /*  Author(s)        :  Harika M                                              */
 /*  Date Created     :  22.12.2005                                            */
-/*  Modifications By :  
+/*  Modifications By :
 /******************************************************************************/
 
 void CConfigDetails::vReleaseSimSysInfo()
 {
-   // CSimSysNodeInfo::PSSIMSYSINFO psNextSimSysInfo    = NULL;
-   // CSimSysNodeInfo::PSNODELIST psNextNodeList    = NULL;
-   // CSimSysNodeInfo::PSSIMSYSINFO psCurrentSimSysInfo = NULL;
-   // CSimSysNodeInfo::PSNODELIST psCurrentNodeList = NULL;
-   // CSimSysNodeInfo::PSSIMSYSINFO psTempSimSysInfo = theApp.psReturnSimsysInfoPtr();
-   // if (psTempSimSysInfo != NULL)
-   // {
-   //     psCurrentSimSysInfo = psTempSimSysInfo;
-   //     do
-   //     {
-   //         if (psCurrentSimSysInfo->m_unNumberOfNodesAdded > 0)
-   //         {
-   //             psCurrentNodeList = 
-   //                 psCurrentSimSysInfo->m_psNodesList;
-   //             do
-   //             {
-   //                 psNextNodeList    = 
-   //                     psCurrentNodeList->m_psNextNode;
-   //                 delete psCurrentNodeList;
-   //                 psCurrentNodeList = NULL;
-   //                 psCurrentNodeList = psNextNodeList;
-   //             }while(psNextNodeList != NULL);
-   //             
-   //         }
-   //         psNextSimSysInfo = psCurrentSimSysInfo->m_psSimsysNext;
-   //         delete psCurrentSimSysInfo;
-   //         psCurrentSimSysInfo = NULL;
-   //         psCurrentSimSysInfo = psNextSimSysInfo;
-   //     }while(psNextSimSysInfo != NULL);
-   // }
-   // psTempSimSysInfo = NULL;
-   //// m_psSimSysInfo = NULL;
-   //// m_unSimSysCount = 0;
+    // CSimSysNodeInfo::PSSIMSYSINFO psNextSimSysInfo    = NULL;
+    // CSimSysNodeInfo::PSNODELIST psNextNodeList    = NULL;
+    // CSimSysNodeInfo::PSSIMSYSINFO psCurrentSimSysInfo = NULL;
+    // CSimSysNodeInfo::PSNODELIST psCurrentNodeList = NULL;
+    // CSimSysNodeInfo::PSSIMSYSINFO psTempSimSysInfo = theApp.psReturnSimsysInfoPtr();
+    // if (psTempSimSysInfo != NULL)
+    // {
+    //     psCurrentSimSysInfo = psTempSimSysInfo;
+    //     do
+    //     {
+    //         if (psCurrentSimSysInfo->m_unNumberOfNodesAdded > 0)
+    //         {
+    //             psCurrentNodeList =
+    //                 psCurrentSimSysInfo->m_psNodesList;
+    //             do
+    //             {
+    //                 psNextNodeList    =
+    //                     psCurrentNodeList->m_psNextNode;
+    //                 delete psCurrentNodeList;
+    //                 psCurrentNodeList = NULL;
+    //                 psCurrentNodeList = psNextNodeList;
+    //             }while(psNextNodeList != NULL);
+    //
+    //         }
+    //         psNextSimSysInfo = psCurrentSimSysInfo->m_psSimsysNext;
+    //         delete psCurrentSimSysInfo;
+    //         psCurrentSimSysInfo = NULL;
+    //         psCurrentSimSysInfo = psNextSimSysInfo;
+    //     }while(psNextSimSysInfo != NULL);
+    // }
+    // psTempSimSysInfo = NULL;
+    //// m_psSimSysInfo = NULL;
+    //// m_unSimSysCount = 0;
 }
 
 /******************************************************************************/
@@ -3908,23 +3793,23 @@ BOOL CConfigDetails::bGetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
 {
     BOOL bRetVal = TRUE;
     PSMESSAGE_ATTRIB pDest = pMsgAttrib;
-    
-    
+
+
     // count of the messages in the structure..
     pDest->m_usMsgCount = m_sMessageAttributes.m_usMsgCount;
     pDest->m_psMsgAttribDetails = NULL;
-    
+
     if (m_sMessageAttributes.m_usMsgCount != 0)
     {
         pDest->m_psMsgAttribDetails = new SMESSAGEATTR[pDest->m_usMsgCount];
-        
+
         if (pDest->m_psMsgAttribDetails != NULL)
         {
             PSMESSAGEATTR pDestPos = pDest->m_psMsgAttribDetails;
             PSMESSAGEATTR pSrcPos = m_sMessageAttributes.m_psMsgAttribDetails;
-            
-            for (int i = 0; i < pDest->m_usMsgCount; i++, 
-                pDestPos++, pSrcPos++)
+
+            for (int i = 0; i < pDest->m_usMsgCount; i++,
+                    pDestPos++, pSrcPos++)
             {
                 pDestPos->omStrMsgname = pSrcPos->omStrMsgname;
                 pDestPos->sColor = pSrcPos->sColor;
@@ -3936,8 +3821,8 @@ BOOL CConfigDetails::bGetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
             // failed memory allocation
             bRetVal = FALSE;
         }
-    }// no elements 
-    
+    }// no elements
+
     return bRetVal;
 }
 
@@ -3966,31 +3851,31 @@ BOOL CConfigDetails::bGetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
 BOOL CConfigDetails::bSetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
 {
     BOOL bRetVal = TRUE;
-    
+
     // release the current allocation
     vReleaseMsgAttrib(&m_sMessageAttributes);
-    
+
     // count of the messages in the structure..
     m_sMessageAttributes.m_usMsgCount = pMsgAttrib->m_usMsgCount;
     m_sMessageAttributes.m_psMsgAttribDetails = NULL;
-    
+
     if (pMsgAttrib->m_usMsgCount != 0)
     {
-        m_sMessageAttributes.m_psMsgAttribDetails = 
+        m_sMessageAttributes.m_psMsgAttribDetails =
             new SMESSAGEATTR[m_sMessageAttributes.m_usMsgCount];
-        
+
         if (m_sMessageAttributes.m_psMsgAttribDetails != NULL)
         {
             PSMESSAGEATTR pSrcPos = pMsgAttrib->m_psMsgAttribDetails;
             PSMESSAGEATTR pDestPos = m_sMessageAttributes.m_psMsgAttribDetails;
-            
-            for (int i = 0; (i < pMsgAttrib->m_usMsgCount) 
-                && (pDestPos != NULL) && (pSrcPos != NULL); i++)
+
+            for (int i = 0; (i < pMsgAttrib->m_usMsgCount)
+                    && (pDestPos != NULL) && (pSrcPos != NULL); i++)
             {
                 pDestPos->omStrMsgname = pSrcPos->omStrMsgname;
                 pDestPos->sColor = pSrcPos->sColor;
                 pDestPos->unMsgID = pSrcPos->unMsgID;
-                
+
                 pDestPos++;
                 pSrcPos++;
             }
@@ -4056,40 +3941,40 @@ void CConfigDetails::vReleaseMsgAttrib(PSMESSAGE_ATTRIB pData)
 /*  Date Created     :  18.10.2002                                            */
 /*  Modifications on :                                                        */
 /******************************************************************************/
-BOOL CConfigDetails::bGetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS 
-                                          pMsgFilterDetails)
+BOOL CConfigDetails::bGetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
+        pMsgFilterDetails)
 {
     BOOL bRetVal = TRUE;
     PSMESSAGE_FILTER_DETAILS pDest = pMsgFilterDetails;
-    
+
     // get the information
     pDest->m_unCount = m_sMsgFilterDetails.m_unCount;
-    
+
     // get the string array elements..
     pDest->m_omMsgNameArray.Copy(m_sMsgFilterDetails.m_omMsgNameArray);
-    
+
     pDest->m_nRangeFrom = m_sMsgFilterDetails.m_nRangeFrom;
     pDest->m_nRangeTo = m_sMsgFilterDetails.m_nRangeTo;
     pDest->m_byFilterType = m_sMsgFilterDetails.m_byFilterType;
     pDest->m_bChekTxMsg = m_sMsgFilterDetails.m_bChekTxMsg;
-    
+
     // always initialize...
     pDest->m_punUndefinedMsgID = NULL;
-    
+
     if (m_sMsgFilterDetails.m_punUndefinedMsgID != NULL)
     {
         int nCount = m_sMsgFilterDetails.m_punUndefinedMsgID[0];
-        
+
         // the first element holds the info of the number of undefined msg ids
         pDest->m_punUndefinedMsgID = new UINT [nCount + 1];
-        
+
         pDest->m_punUndefinedMsgID[0] = nCount;
-        
+
         if (pDest->m_punUndefinedMsgID != NULL)
         {
             for (int j = 1; j <= nCount; j++)
             {
-                pDest->m_punUndefinedMsgID[j] = 
+                pDest->m_punUndefinedMsgID[j] =
                     m_sMsgFilterDetails.m_punUndefinedMsgID[j];
             }
         }
@@ -4124,41 +4009,41 @@ BOOL CConfigDetails::bGetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
 /*  Date Created     :  18.10.2002                                            */
 /*  Modifications on :                                                        */
 /******************************************************************************/
-BOOL CConfigDetails::bSetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS 
-                                          pMsgFilterDetails)
+BOOL CConfigDetails::bSetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
+        pMsgFilterDetails)
 {
     BOOL bRetVal = TRUE;
     PSMESSAGE_FILTER_DETAILS pSrc = pMsgFilterDetails;
-    
+
     // release the source..
     vReleaseMsgFilterDetails(&m_sMsgFilterDetails);
-    
+
     // get the information
     m_sMsgFilterDetails.m_unCount = pSrc->m_unCount;
-    
+
     // get the string array elements..
     m_sMsgFilterDetails.m_omMsgNameArray.Copy(pSrc->m_omMsgNameArray);
-    
+
     m_sMsgFilterDetails.m_nRangeFrom = pSrc->m_nRangeFrom;
     m_sMsgFilterDetails.m_nRangeTo = pSrc->m_nRangeTo;
     m_sMsgFilterDetails.m_byFilterType = pSrc->m_byFilterType;
     m_sMsgFilterDetails.m_bChekTxMsg = pSrc->m_bChekTxMsg;
     m_sMsgFilterDetails.m_punUndefinedMsgID = NULL;
-    
+
     if (pSrc->m_punUndefinedMsgID != NULL)
     {
         int nCount = pSrc->m_punUndefinedMsgID[0];
-        
+
         // the first element holds the info of the number of undefined msg ids
         m_sMsgFilterDetails.m_punUndefinedMsgID = new UINT [nCount + 1];
-        
+
         if (m_sMsgFilterDetails.m_punUndefinedMsgID != NULL)
         {
             m_sMsgFilterDetails.m_punUndefinedMsgID[0] = nCount;
-            
+
             for (int j = 1; j <= nCount; j++)
             {
-                m_sMsgFilterDetails.m_punUndefinedMsgID[j] = 
+                m_sMsgFilterDetails.m_punUndefinedMsgID[j] =
                     pSrc->m_punUndefinedMsgID[j];
             }
         }
@@ -4195,7 +4080,7 @@ BOOL CConfigDetails::bSetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
 void CConfigDetails::vReleaseMsgFilterDetails(PSMESSAGE_FILTER_DETAILS pData)
 {
     pData->m_omMsgNameArray.RemoveAll();
-    
+
     if (pData->m_punUndefinedMsgID != NULL)
     {
         delete [] pData->m_punUndefinedMsgID;
@@ -4238,9 +4123,9 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
 {
     switch(eParam)
     {
-    case LOG_FILE_NAME:
-    case REPLAY_FILE_NAME:
-    case    DATABASE_FILE_NAME:
+        case LOG_FILE_NAME:
+        case REPLAY_FILE_NAME:
+        case    DATABASE_FILE_NAME:
         {
             if (*lpDataPtr != NULL)
             {
@@ -4251,10 +4136,10 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
             }
         }
         break;
-    case MRU_DLL_FILE_NAME:
-    case TOOLBAR_DETAILS:
-        break;
-    case CONTROLLER_DETAILS:
+        case MRU_DLL_FILE_NAME:
+        case TOOLBAR_DETAILS:
+            break;
+        case CONTROLLER_DETAILS:
         {
             if (*lpDataPtr != NULL)
             {
@@ -4265,60 +4150,60 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
             }
         }
         break;
-    case SEND_MULTI_MSGS:
+        case SEND_MULTI_MSGS:
         {
             if (*lpDataPtr != NULL)
             {
-                PSMSGBLOCKLIST psMsgBlockList = 
+                PSMSGBLOCKLIST psMsgBlockList =
                     static_cast<PSMSGBLOCKLIST>(*lpDataPtr);
                 vReleaseMultiMsgInfo(psMsgBlockList);
                 *lpDataPtr = NULL;
             }
         }
         break;
-    case MSG_ATTRIBUTES:
+        case MSG_ATTRIBUTES:
         {
             if (*lpDataPtr != NULL)
             {
-                PSMESSAGE_ATTRIB pData = 
+                PSMESSAGE_ATTRIB pData =
                     static_cast<PSMESSAGE_ATTRIB>(*lpDataPtr);
                 vReleaseMsgAttrib(pData);
             }
         }
         break;
-    case OLD_FILTER_DETAILS:
+        case OLD_FILTER_DETAILS:
         {
             if (*lpDataPtr != NULL)
             {
-                PSMESSAGE_FILTER_DETAILS pData = 
+                PSMESSAGE_FILTER_DETAILS pData =
                     static_cast<PSMESSAGE_FILTER_DETAILS>(*lpDataPtr);
                 vReleaseMsgFilterDetails(pData);
             }
         }
         break;
-    case SIGNAL_WATCH_LIST:
+        case SIGNAL_WATCH_LIST:
         {
             vReleaseSignalWatchListMemory();
         }
         break;
-    case SIMSYS_LIST:
+        case SIMSYS_LIST:
         {
             vReleaseSimSysListMemory();
         }
         break;
-        
-    default:
+
+        default:
         {
         }
         break;
     }
-    
+
     if (lpDataPtr != NULL && *lpDataPtr != NULL)
     {
         delete *lpDataPtr;
         *lpDataPtr = NULL;
     }
-    
+
 }
 
 /******************************************************************************/
@@ -4399,7 +4284,7 @@ void CConfigDetails::vSetConfigurationModified(BOOL bModified /* = TRUE */)
 /*  Modifications on :  02.01.2003, Get the check sum stored in file in third */
 /*                                  parameter.                                */
 /******************************************************************************/
-/*BOOL CConfigDetails::bGetCheckSum(CString &omStrConfigFileName, 
+/*BOOL CConfigDetails::bGetCheckSum(CString &omStrConfigFileName,
 UCHAR* pucCheckSum, UCHAR* pucCheckSumInFile)
 {
 CStdioFile omStdiofile;
@@ -4420,7 +4305,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   {
   UCHAR *pucBuff   = NULL;
   // Get the size of file
-  dwSize = omStdiofile.GetLength(); 
+  dwSize = omStdiofile.GetLength();
   if (dwSize > 0)
   {
   pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
@@ -4443,11 +4328,11 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   {
   // Get the exception error message
   omException.GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
-  // configuration file  open error notification 
+  // configuration file  open error notification
   AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);
-  
+
     }
-    
+
       }
       CATCH_ALL(pomE)
       {
@@ -4459,10 +4344,10 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
       AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);
       pomE->Delete();
       }
-      bReturn = FALSE;          
+      bReturn = FALSE;
       }
       END_CATCH_ALL
-      
+
         return bReturn;
 }*/
 /******************************************************************************/
@@ -4506,7 +4391,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   UCHAR *pucBuff   = NULL;
   UCHAR  ucCheckSum = 0;
   // Get the size of file
-  dwSize = omStdiofile.GetLength();        
+  dwSize = omStdiofile.GetLength();
   pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
   if (pucBuff!=NULL)
   {
@@ -4539,11 +4424,11 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   {
   // Get the exception error message
   omException.GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
-  // configuration file open error notification 
+  // configuration file open error notification
   AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);
-  
+
     }
-    
+
       }
       CATCH_ALL(pomE)
       {
@@ -4557,7 +4442,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
       }
       }
       END_CATCH_ALL
-      
+
         return bReturn;
 }*/
 /******************************************************************************/
@@ -4579,7 +4464,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 /*  Modifications on :                                                        */
 /******************************************************************************/
 /*BOOL CConfigDetails::bComputeCheckSum(UCHAR* pucBuff,
-DWORD dwSize, 
+DWORD dwSize,
 UCHAR* pucCheckSum)
 {
 BOOL  bReturn     = FALSE;
@@ -4589,11 +4474,11 @@ if (pucBuff != NULL && dwSize >0)
 {
 for (UINT unIndex = 0; unIndex < dwSize; unIndex++)
 {
-// XOR the bytes with result and update the result. First time 
+// XOR the bytes with result and update the result. First time
 // the result will be zero and XOR will return the byte itself.
 ucTempByte =  static_cast<UCHAR>(ucTempByte^ pucBuff[unIndex]);
 }
-// check for the pointer to be NULL. If not NULL  assign the 
+// check for the pointer to be NULL. If not NULL  assign the
 // computed checksum
 if (pucCheckSum != NULL)
 {
@@ -4677,7 +4562,7 @@ VOID CConfigDetails::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
     {
         psMsgDetails->m_psNextMsgDetails    = NULL;
     }
-    
+
 }
 
 /******************************************************************************/
@@ -4703,7 +4588,7 @@ VOID CConfigDetails::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
 BOOL CConfigDetails::bLoadStoreSignalWatchList(CArchive& roCfgArchive)
 {
     BOOL bSuccess = TRUE;
-    
+
     if (roCfgArchive.IsStoring())
     {
         ASSERT(FALSE);
@@ -4743,7 +4628,7 @@ BOOL CConfigDetails::bLoadStoreSignalWatchList(CArchive& roCfgArchive)
                 if (theApp.m_bFromAutomation == FALSE)
                 {
                     AfxMessageBox("Error while loading Signal Watch List!!",
-                        MB_ICONSTOP);
+                                  MB_ICONSTOP);
                 }
                 bSuccess = FALSE;
             }
@@ -4786,7 +4671,7 @@ void CConfigDetails::vReleaseSignalWatchListMemory()
 //        if (theApp.m_bFromAutomation == FALSE)
 //        AfxMessageBox("Error while deleting Signal Watch List",MB_ICONSTOP);
 //    }
-//    
+//
 //}
 
 
@@ -4814,7 +4699,7 @@ void CConfigDetails::vReleaseSignalWatchListMemory()
 BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
 {
     BOOL bSuccess = TRUE;
-    
+
     if (roCfgArchive.IsStoring())
     {
         UINT unLength = 0;
@@ -4832,7 +4717,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
             // Save the length First
             // Even there is no member in the list like 0
             roCfgArchive << unLength;
-            // Processing is required only if there are some elements 
+            // Processing is required only if there are some elements
             // in the list
             if (unLength > 0)
             {
@@ -4840,18 +4725,18 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                 psSimsysTemp = m_psSimSysArray;
                 // Iterate through the list
                 for (register UINT index = 0;
-                psSimsysTemp != NULL && index < unLength;
-                index++)
+                        psSimsysTemp != NULL && index < unLength;
+                        index++)
                 {
                     // Store the simulated system path
                     roCfgArchive << psSimsysTemp->m_omStrSimSysPath;
                     // Store the simulated system name
-                    roCfgArchive << psSimsysTemp->m_omStrSimSysName;  
-                    
+                    roCfgArchive << psSimsysTemp->m_omStrSimSysName;
+
                     // Get the next element of the list
                     psSimsysTemp = psSimsysTemp->psNextSimsys;
                 }
-                
+
             }
         }
         catch(...)
@@ -4869,7 +4754,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
     {
         if (m_fAppVersion >= static_cast<FLOAT>(defMULTI_NODE_VERSION))
         {
-            
+
             UINT unLength = 0;
             //Get the length of Simulated system List
             roCfgArchive >> unLength;
@@ -4887,7 +4772,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                         // Get the simulated system path
                         roCfgArchive >> psSimsysTemp->m_omStrSimSysPath;
                         // Get the simulated system name
-                        roCfgArchive >> psSimsysTemp->m_omStrSimSysName;  
+                        roCfgArchive >> psSimsysTemp->m_omStrSimSysName;
                         psSimsysTemp->psNextSimsys = NULL;
                         // Create next node. Eliminate creation for the last node.
                         if (index != (unLength - 1))
@@ -4896,8 +4781,8 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                             psSimsysTemp = psSimsysTemp->psNextSimsys;
                         }
                     }
-                    
-                    
+
+
                 }
                 catch(...)
                 {
@@ -4910,7 +4795,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                     if (theApp.m_bFromAutomation == FALSE)
                     {
                         AfxMessageBox("Error while loading Simulated system List!!",
-                                       MB_ICONSTOP);
+                                      MB_ICONSTOP);
                     }
                     bSuccess = FALSE;
                 }
@@ -4954,7 +4839,7 @@ loading old configuration file
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 10/12/2004
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 void CConfigDetails::vInitGraphParamenters()
 {
@@ -4977,7 +4862,7 @@ loading old configuration file
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 19.04.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 void CConfigDetails::vInitSplitterPostions()
 {
@@ -4987,24 +4872,24 @@ void CConfigDetails::vInitSplitterPostions()
     m_sGraphWndSplitterPos.m_nRootSplitterData[0][1] = nDefValue;
     m_sGraphWndSplitterPos.m_nRootSplitterData[1][0] = nDefValue;
     m_sGraphWndSplitterPos.m_nRootSplitterData[1][1] = nDefValue;
-    
+
     m_sGraphWndSplitterPos.m_nRightViewSplitterData[0][0] = nDefValue;
     m_sGraphWndSplitterPos.m_nRightViewSplitterData[0][1] = nDefValue;
-    
+
     m_sGraphWndSplitterPos.m_nRightViewSplitterData[1][0] = nDefValue;
     m_sGraphWndSplitterPos.m_nRightViewSplitterData[1][1] = nDefValue;
-    
+
     // Init Tx Window postion
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1] = nDefValue;
-    
+
     m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1] = nDefValue;
-    
+
     m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1] = nDefValue;
     m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][0] = nDefValue;
@@ -5022,37 +4907,37 @@ size
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 19.04.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
-                                                CRect omWndSize,
-                                                LPVOID* psSplitterData)
+        CRect omWndSize,
+        LPVOID* psSplitterData)
 {
     // Result of the operation
     BOOL bWindowFound = TRUE;
     // Select approp window
     switch( eParam)
     {
-    case GRAPH_WND_SPLITTER_DATA:   // Graph Window
+        case GRAPH_WND_SPLITTER_DATA:   // Graph Window
         {
             // Cast the data to SGRAPHSPLITTERDATA type
             PSGRAPHSPLITTERDATA pData = static_cast<PSGRAPHSPLITTERDATA>
-                (*psSplitterData);
+                                        (*psSplitterData);
             // Init Graph window splitter postion
             if (pData != NULL)
             {
                 pData->m_nRootSplitterData[0][0] =
                     (int)(omWndSize.Width() * defLEFT_VIEW_PROPOTION);
                 pData->m_nRootSplitterData[0][1] = 0;
-                
+
                 pData->m_nRootSplitterData[1][0] =
                     (int)(omWndSize.Width() * defRIGHT_VIEW_PROPOTION);
                 pData->m_nRootSplitterData[1][1] = 0;
-                
+
                 pData->m_nRightViewSplitterData[0][0] =
                     (int)(omWndSize.Height() * defGRAPH_VIEW_PROPOSION);
                 pData->m_nRightViewSplitterData[0][1] = 0;
-                
+
                 pData->m_nRightViewSplitterData[1][0] =
                     (int)(omWndSize.Height() * defGRAPH_VIEW_PROPOSION);
                 pData->m_nRightViewSplitterData[1][1] = 0;
@@ -5064,12 +4949,12 @@ BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
             }
         }
         break;
-    case TX_MSG_WND_SPLITTER_DATA:      // Tx Msg Configuration Window
+        case TX_MSG_WND_SPLITTER_DATA:      // Tx Msg Configuration Window
         {
             // Init Tx Window postion
             // Cast the data to STXMSGSPLITTERDATA type
-            STXMSGSPLITTERDATA * pData = static_cast<STXMSGSPLITTERDATA*>
-                (*psSplitterData);
+            STXMSGSPLITTERDATA* pData = static_cast<STXMSGSPLITTERDATA*>
+                                        (*psSplitterData);
             // Init Graph window splitter postion
             if (pData != NULL)
             {
@@ -5077,27 +4962,27 @@ BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
                 pData->m_nRootSplitterData[0][0] =
                     (int)(omWndSize.Height() * defTX_WND_ROOT_SPLITTER_RATIO);
                 pData->m_nRootSplitterData[0][1] = 0;
-                
+
                 pData->m_nRootSplitterData[1][0] =
                     (int)(omWndSize.Height() * ( 1 - defTX_WND_ROOT_SPLITTER_RATIO));
                 pData->m_nRootSplitterData[1][1] = 0;
-                
+
                 // Left splitter information
                 pData->m_nLeftViewSplitterData[0][0] =
                     (int)(omWndSize.Width() * defTX_WND_LEFT_SPLITTER_RATIO);
                 pData->m_nLeftViewSplitterData[0][1] = 0;
-                
+
                 pData->m_nLeftViewSplitterData[1][0] =
                     (int)(omWndSize.Width() * (1 - defTX_WND_LEFT_SPLITTER_RATIO));
                 pData->m_nLeftViewSplitterData[1][1] = 0;
-                
+
                 // Take Right view height as size
                 pData->m_nRightViewSplitterData[0][0] =
                     (int)(pData->m_nRootSplitterData[0][0] *
-                                 defTX_WND_RIGHT_SPLITTER_RATIO);
+                          defTX_WND_RIGHT_SPLITTER_RATIO);
                 pData->m_nRightViewSplitterData[0][1] = 0;
-                
-                pData->m_nRightViewSplitterData[1][0] = 
+
+                pData->m_nRightViewSplitterData[1][0] =
                     (int)(pData->m_nRootSplitterData[0][0] *
                           ( 1- defTX_WND_RIGHT_SPLITTER_RATIO));
                 pData->m_nRightViewSplitterData[1][1] = 0;
@@ -5109,9 +4994,9 @@ BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
             }
         }
         break;
-    default:    // Invalid window type or functionality not implemented
-        ASSERT( FALSE);
-        bWindowFound = FALSE;
+        default:    // Invalid window type or functionality not implemented
+            ASSERT( FALSE);
+            bWindowFound = FALSE;
     }
     // Return the result
     return bWindowFound;
@@ -5127,10 +5012,10 @@ to CArchive
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 27.4.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 void CConfigDetails::vLoadStoreWindowInfo( CArchive& roCfgArchive,
-                                          WINDOWPLACEMENT& sPlacement)
+        WINDOWPLACEMENT& sPlacement)
 {
     // If it is loading
     if (roCfgArchive.IsLoading())
@@ -5175,21 +5060,21 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
     CRect omToolBarRect;
     // Get the width of frame border and multiply with a factor
     int nBorderWidth = defBORDER_WIDTH_FACTOR *
-        GetSystemMetrics( SM_CXBORDER);
+                       GetSystemMetrics( SM_CXBORDER);
     // Get Main Frame window size and toolbar size
     CMainFrame* pMainFrame = NULL;
     pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
 
     // If it is a valid window pointer
     if (pMainFrame != NULL &&
-        IsWindow(pMainFrame->m_hWnd))
+            IsWindow(pMainFrame->m_hWnd))
     {
         // Get Main Frame Size
         pMainFrame->GetClientRect( &omMainFrameSize);
         omMainFrameSize.NormalizeRect();
-        
+
         // Get Toolbar size
-        CToolBarCtrl& omToolBarCtrl = 
+        CToolBarCtrl& omToolBarCtrl =
             pMainFrame->vGetReferenceToToolBarCtrl();
         omToolBarCtrl.GetWindowRect(&omToolBarRect);
         bSizeFound = TRUE;
@@ -5197,66 +5082,66 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
     // If successfully calculated Mainframe and toolbar size
     if (bSizeFound == TRUE)
     {
-        
+
         switch( eParam)
         {
-        case REPLAY_WND_PLACEMENT:
+            case REPLAY_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
-                omRect.top   += static_cast<LONG> ( omRect.Height() * 
-                    defCHILD_FRAME_PROP_H);
-                omRect.right = static_cast<LONG> ( omRect.right * 
-                    defREPLAY_WND_PROP_X);
-                
+                omRect.top   += static_cast<LONG> ( omRect.Height() *
+                                                    defCHILD_FRAME_PROP_H);
+                omRect.right = static_cast<LONG> ( omRect.right *
+                                                   defREPLAY_WND_PROP_X);
+
                 sPosition.rcNormalPosition = omRect;
                 sPosition.rcNormalPosition.top -= 2 * omToolBarRect.Height();
                 sPosition.rcNormalPosition.bottom -= 2 * omToolBarRect.Height();
             }
             break;
-        case OUT_WND_PLACEMENT:
+            case OUT_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
-                omRect.top   += static_cast<LONG> ( omRect.Height() * 
-                    defCHILD_FRAME_PROP_H);
+                omRect.top   += static_cast<LONG> ( omRect.Height() *
+                                                    defCHILD_FRAME_PROP_H);
                 omRect.right -= static_cast<LONG> ( omRect.right *
-                    defOUTPUT_WND_PROP_X);
+                                                    defOUTPUT_WND_PROP_X);
                 sPosition.rcNormalPosition = omRect;
                 sPosition.rcNormalPosition.top -= 2 * omToolBarRect.Height();
                 sPosition.rcNormalPosition.bottom -= 2 * omToolBarRect.Height();
             }
             break;
-        case NOTIFICATION_WND_PLACEMENT:
+            case NOTIFICATION_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
-                omRect.top   += static_cast<LONG> ( omRect.Height() * 
-                    defCHILD_FRAME_PROP_H);
+                omRect.top   += static_cast<LONG> ( omRect.Height() *
+                                                    defCHILD_FRAME_PROP_H);
                 omRect.left += static_cast<LONG> ( omRect.right *
-                    defNOTIFIC_WND_PROP_X);
+                                                   defNOTIFIC_WND_PROP_X);
                 omRect.right -= nBorderWidth;
                 sPosition.rcNormalPosition = omRect;
                 sPosition.rcNormalPosition.top -= 2 * omToolBarRect.Height();
                 sPosition.rcNormalPosition.bottom -= 2 * omToolBarRect.Height();
             }
             break;
-        case MSG_WND_PLACEMENT:
+            case MSG_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
                 omRect.bottom = static_cast<LONG> ( omRect.left +
-                    omRect.Height() * defMSG_WND_HEIGHT_PROPOTION);
+                                                    omRect.Height() * defMSG_WND_HEIGHT_PROPOTION);
                 // Reduce the border size
                 omRect.right -= nBorderWidth;
                 sPosition.rcNormalPosition = omRect;
             }
             break;
-        case SIGWATCH_WND_PLACEMENT:   // Non - MDI Child
+            case SIGWATCH_WND_PLACEMENT:   // Non - MDI Child
             {
                 CRect omRect = omMainFrameSize;
                 // Make the height 35% pf main frame height
                 omRect.bottom = static_cast<LONG> ( omRect.top +
-                    omRect.Height() * defSIGNAL_WATCH_WND_HEIGHT_RATIO);
+                                                    omRect.Height() * defSIGNAL_WATCH_WND_HEIGHT_RATIO);
                 // Make the width 65% of main frame
                 omRect.left += (LONG)( omRect.Width() *
-                    defSIGNAL_WATCH_WND_WIDTH_RATIO);
+                                       defSIGNAL_WATCH_WND_WIDTH_RATIO);
                 // Shift the window down by tool bar size
                 omRect.top += omToolBarRect.Height();
                 omRect.bottom += omToolBarRect.Height();
@@ -5268,12 +5153,12 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
                 sPosition.rcNormalPosition = omRect;
             }
             break;
-        case MSGINTERP_WND_PLACEMENT:   // Non - MDI Child
+            case MSGINTERP_WND_PLACEMENT:   // Non - MDI Child
             {
                 CRect omRect = omMainFrameSize;
                 // Make the top starts from 35% of main frame height
                 omRect.top += static_cast<LONG> ( omRect.Height() *
-                    defMSG_IPET_WND_HEIGHT_RATIO);
+                                                  defMSG_IPET_WND_HEIGHT_RATIO);
                 // Make the width 65% of main frame
                 omRect.left += (LONG)( omRect.Width() * defMSG_IPET_WND_WIDTH_RATIO);
                 // Shift the top down to avoid overlap with toolbar
@@ -5286,7 +5171,7 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
                 sPosition.rcNormalPosition = omRect;
             }
             break;
-        case GRAPH_WND_PLACEMENT:
+            case GRAPH_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
                 // Reduce Tool bar Height
@@ -5300,7 +5185,7 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
                 sPosition.rcNormalPosition = omRect;
             }
             break;
-        case TX_WND_PLACEMENT:
+            case TX_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
                 // Reduce the size propotionally
@@ -5310,7 +5195,7 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
                 sPosition.rcNormalPosition = omRect;
             }
             break;
-        case SIMSYS_WND_PLACEMENT:
+            case SIMSYS_WND_PLACEMENT:
             {
                 CRect omRect = omMainFrameSize;
                 // Reduce the size propotionally
@@ -5320,10 +5205,10 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
                 sPosition.rcNormalPosition = omRect;
             }
             break;
-        default:
-            ASSERT( FALSE);
-            bSizeFound = FALSE;
-            break;
+            default:
+                ASSERT( FALSE);
+                bSizeFound = FALSE;
+                break;
         }
     }
     // Return the result
@@ -5338,7 +5223,7 @@ Functionality  : To serialise display filter information
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 20.7.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 BOOL CConfigDetails::bLoadStoreDisplayFilterInfo( CArchive& oCfgArchive)
 {
@@ -5356,7 +5241,7 @@ BOOL CConfigDetails::bLoadStoreDisplayFilterInfo( CArchive& oCfgArchive)
             // Iterate through the list
             for (int nIndex = 0; nIndex < nSize; nIndex++)
             {
-            	SMODULEFILTER sFilter = { "", FALSE };
+                SMODULEFILTER sFilter = { "", FALSE };
                 //oCfgArchive >> sFilter.m_omFilterName;
                 //oCfgArchive >> sFilter.m_bEnabled;
                 m_omMsgDisplayFilter.Add( sFilter);
@@ -5384,17 +5269,17 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
     if( omArchive.IsLoading())
     {
         // Assign File Name
-	    omArchive >> sLogFileDets.m_omStrFileName;
-	    // Time Mode
-	    omArchive >> sLogFileDets.m_nTimeMode;
-	    // Numeric Mode
-	    omArchive >> sLogFileDets.m_nNumMode;
-	    // File Mode
-	    omArchive >> sLogFileDets.m_nFileMode;
-	    // Enable Option
-	    omArchive >> sLogFileDets.m_bEnabled;
-	    // Copy Trigger List
-	    omArchive >> sLogFileDets.m_sLogTrigger.m_unStartID;
+        omArchive >> sLogFileDets.m_omStrFileName;
+        // Time Mode
+        omArchive >> sLogFileDets.m_nTimeMode;
+        // Numeric Mode
+        omArchive >> sLogFileDets.m_nNumMode;
+        // File Mode
+        omArchive >> sLogFileDets.m_nFileMode;
+        // Enable Option
+        omArchive >> sLogFileDets.m_bEnabled;
+        // Copy Trigger List
+        omArchive >> sLogFileDets.m_sLogTrigger.m_unStartID;
         omArchive >> sLogFileDets.m_sLogTrigger.m_unStopID;
         int unTrigType = 0;
         omArchive >> unTrigType;
@@ -5426,7 +5311,7 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
             }
             break;
         }
-	    // Copy Filter
+        // Copy Filter
         // Get the size
         sLogFileDets.m_omFilter.RemoveAll();
         int nSize;
@@ -5440,7 +5325,7 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
             {
                 CString omTemp;
                 omArchive >> omTemp;
-				//Tobias - venkat
+                //Tobias - venkat
                 strcpy_s(sFilter.m_omFilterName, LENGTH_FILTERNAME, omTemp.GetBuffer(LENGTH_FILTERNAME));
                 omArchive >> sFilter.m_bEnabled;
             }
@@ -5486,7 +5371,7 @@ Functionality  : To serialise log file info
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 20.7.2005
-Modifications  : 
+Modifications  :
 *******************************************************************************/
 BOOL CConfigDetails::bLoadStoreLogFileInfo(CArchive& omArchive)
 {
@@ -5517,7 +5402,7 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
     // Load time mode
     omArchive >> sRepalyFile.m_nTimeMode;
     // Load Message Time delay
-    omArchive >> sRepalyFile.m_unMsgTimeDelay;  
+    omArchive >> sRepalyFile.m_unMsgTimeDelay;
     // Load replay mode
     omArchive >> sRepalyFile.m_nReplayMode;
     // Load cycle delay
@@ -5535,7 +5420,7 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
         CString omFilterName;
         omArchive >> omFilterName;
         omArchive >> sFilter.m_bEnabled;
-		//Tobias - venkat
+        //Tobias - venkat
         strcpy_s(sFilter.m_omFilterName, omFilterName.GetBuffer(MAX_PATH));
         // Add the filter in to the list
         sRepalyFile.m_omFilter.Add( sFilter );
@@ -5559,7 +5444,7 @@ static BOOL bLoadReplayDetails(CArchive& omArchive, SREPLAYDETS& sRepalyDets)
         // Serialise each log files
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
         {
-           bResult = bLoadReplayFile(omArchive, sRepalyDets.m_asReplayFile[nIndex]);
+            bResult = bLoadReplayFile(omArchive, sRepalyDets.m_asReplayFile[nIndex]);
         }
         // Set the result to true
         bResult = TRUE;
@@ -5580,7 +5465,7 @@ Functionality  : To serialise replay file info
 Member of      : CConfigDetails
 Author(s)      : Raja N
 Date Created   : 20.7.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CConfigDetails::bLoadStoreReplayFileInfo(CArchive& omArchive)
 {
@@ -5608,8 +5493,8 @@ BOOL CConfigDetails::bLoadStoreReplayFileInfo(CArchive& omArchive)
 INT  CConfigDetails::COM_nSaveConfiguration(CString& omStrCfgFilename)
 {
     UINT unErrorCode = defCONFIG_FILE_SUCCESS;
-    
-    // save this file only if the file is saved as a new one, or there has been 
+
+    // save this file only if the file is saved as a new one, or there has been
     // an updation in the data
     if ((omStrCfgFilename != m_omstrConfigFilename) || (m_bIsDirty == TRUE))
     {
@@ -5620,11 +5505,11 @@ INT  CConfigDetails::COM_nSaveConfiguration(CString& omStrCfgFilename)
             omStrCfgFilename = m_omstrConfigFilename;
         }
         // first check if the file exists
-        unErrorCode = nIsCfgFileFound(omStrCfgFilename, FALSE); 
-        
+        unErrorCode = nIsCfgFileFound(omStrCfgFilename, FALSE);
+
         if (unErrorCode == defCONFIG_FILE_SUCCESS)
         {
-            // Now that the configuration file has been found, validate the 
+            // Now that the configuration file has been found, validate the
             // header and the last modified time to ascertain that the file has
             // not been corrupted after the last time it was saved.
             // extract the information from the file
@@ -5651,12 +5536,12 @@ INT  CConfigDetails::COM_nSaveConfiguration(CString& omStrCfgFilename)
             }
         }
     }
-    
+
     if (m_omstrTempFilename.IsEmpty() == FALSE)
     {
         // delete the temporary file
         ::DeleteFile(m_omstrTempFilename);
     }
-    
+
     return unErrorCode;
 }

@@ -196,14 +196,15 @@ void CParameterValues::WriteNetValuesToFile(fstream& fileOutput, string& paramTy
     //writes net values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(m_ParamVal.cValue.length() == 0)
+        /*if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
         else
         {
             fileOutput << " " << m_ParamVal.cValue;
-        }
+        }*/
+        fileOutput << " " << m_ParamVal.cValue;
     }
     //writes net values of type string to o/p file.
     else if(paramType == "STRING")
@@ -238,14 +239,15 @@ void CParameterValues::WriteNodeValuesToFile(fstream& fileOutput, string& paramT
     //writes node values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(m_ParamVal.cValue.length() == 0)
+        /*if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
         else
         {
             fileOutput << " \"" << m_ParamVal.cValue << "\"";
-        }
+        }*/
+        fileOutput << " " << m_ParamVal.cValue;
     }
     //writes node values of type float to o/p file.
     else if(paramType == "FLOAT")
@@ -288,14 +290,15 @@ void CParameterValues::WriteMesgValuesToFile(fstream& fileOutput, string& paramT
     //writes mesg values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(m_ParamVal.cValue.length() == 0)
+        /*if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
         else
         {
             fileOutput << " " << m_ParamVal.cValue;
-        }
+        }*/
+        fileOutput << " " << m_ParamVal.cValue;
     }
     //writes mesg values of type float to o/p file.
     else if(paramType == "FLOAT")
@@ -339,14 +342,15 @@ void CParameterValues::WriteSigValuesToFile(fstream& fileOutput, string& paramTy
     //writes sig values of type enum to o/p file.
     else if(paramType == "ENUM")
     {
-        if(m_ParamVal.cValue.length() == 0)
+        /*if(m_ParamVal.cValue.length() == 0)
         {
             fileOutput << " \"\"";
         }
         else
         {
             fileOutput << " " << m_ParamVal.cValue;
-        }
+        }*/
+        fileOutput << " " << m_ParamVal.cValue;
     }
     //writes sig values of type flaot to o/p file.
     else if(paramType == "FLOAT")

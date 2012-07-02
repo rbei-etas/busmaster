@@ -32,7 +32,7 @@ extern CCANMonitorApp theApp;
 
 IMPLEMENT_DYNAMIC(CDatabaseDissociateDlg, CDialog)
 CDatabaseDissociateDlg::CDatabaseDissociateDlg(const SDBPARAMS& sDbParams, CWnd* pParent /*=NULL*/)
-	: CDialog(CDatabaseDissociateDlg::IDD, pParent)
+    : CDialog(CDatabaseDissociateDlg::IDD, pParent)
 {
     m_sDbParams = sDbParams;
 }
@@ -43,46 +43,46 @@ CDatabaseDissociateDlg::~CDatabaseDissociateDlg()
 
 void CDatabaseDissociateDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LSTB_DISSOCIATE_DBNAMES, m_omDissociateDbLst);
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_LSTB_DISSOCIATE_DBNAMES, m_omDissociateDbLst);
 }
 
 
 BEGIN_MESSAGE_MAP(CDatabaseDissociateDlg, CDialog)
-	ON_BN_CLICKED(IDC_CBTN_DISSOCIATE, OnBnClickedCbtnDissociate)
+    ON_BN_CLICKED(IDC_CBTN_DISSOCIATE, OnBnClickedCbtnDissociate)
 END_MESSAGE_MAP()
 
 
 /******************************************************************************
   Function Name    :  OnInitDialog
-                                                                            
-  Input(s)         :  
-  Output           :                                                    
-  Functionality    :  Initialze the contents of List box 
-  Member of        :  CDatabaseDissociateDlg                                        
-  Friend of        :      -                                                 
-                                                                            
-  Author(s)        :  Anish Kumar                                      
-  Date Created     :  06.12.2006                                            
-  Modifications    :  
+
+  Input(s)         :
+  Output           :
+  Functionality    :  Initialze the contents of List box
+  Member of        :  CDatabaseDissociateDlg
+  Friend of        :      -
+
+  Author(s)        :  Anish Kumar
+  Date Created     :  06.12.2006
+  Modifications    :
 ******************************************************************************/
-BOOL CDatabaseDissociateDlg::OnInitDialog() 
+BOOL CDatabaseDissociateDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-	//do initialization below
-	m_omDissociateDbLst.ResetContent();
-	CStringArray aomstrTempDBFiles;
+    //do initialization below
+    m_omDissociateDbLst.ResetContent();
+    CStringArray aomstrTempDBFiles;
     (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vGetDataBaseNames(&aomstrTempDBFiles);
-	int nFileCount = aomstrTempDBFiles.GetSize();
-	CSize   sz;
-	CString omStrText;
-	CDC*  pDC = m_omDissociateDbLst.GetDC();
-	int nDx = 0;
-	for(int nCount = 0;nCount < nFileCount;nCount++)
-	{
-		omStrText = aomstrTempDBFiles.GetAt(nCount);
-		m_omDissociateDbLst.AddString(omStrText);
-		sz = pDC->GetTextExtent(omStrText);
+    int nFileCount = aomstrTempDBFiles.GetSize();
+    CSize   sz;
+    CString omStrText;
+    CDC*  pDC = m_omDissociateDbLst.GetDC();
+    int nDx = 0;
+    for(int nCount = 0; nCount < nFileCount; nCount++)
+    {
+        omStrText = aomstrTempDBFiles.GetAt(nCount);
+        m_omDissociateDbLst.AddString(omStrText);
+        sz = pDC->GetTextExtent(omStrText);
 
         if (sz.cx > nDx)
         {
@@ -99,16 +99,16 @@ BOOL CDatabaseDissociateDlg::OnInitDialog()
 
 /******************************************************************************
   Function Name    :  OnBnClickedCbtnDissociate
-                                                                            
-  Input(s)         :  
-  Output           :                                                    
-  Functionality    :  Call the functions to remove the selected Databases 
-  Member of        :  CDatabaseDissociateDlg                                        
-  Friend of        :      -                                                 
-                                                                            
-  Author(s)        :  Anish Kumar                                      
-  Date Created     :  06.12.2006                                            
-  Modifications    :  
+
+  Input(s)         :
+  Output           :
+  Functionality    :  Call the functions to remove the selected Databases
+  Member of        :  CDatabaseDissociateDlg
+  Friend of        :      -
+
+  Author(s)        :  Anish Kumar
+  Date Created     :  06.12.2006
+  Modifications    :
 ******************************************************************************/
 void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 {
@@ -180,68 +180,68 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 
         //Set the new file name array
         (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vSetDataBaseNames(&aomstrDBFiles);
-		// Send a message to Tx Window about database change
-		if( pMainFrame != NULL)
-		{
-			eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
-			pMainFrame->m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
-		}
-		////Delete Signal watch list and Graph window list
-		//// Check for Signal Watch & DLL load Condition
-		//
+        // Send a message to Tx Window about database change
+        if( pMainFrame != NULL)
+        {
+            eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
+            pMainFrame->m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+        }
+        ////Delete Signal watch list and Graph window list
+        //// Check for Signal Watch & DLL load Condition
+        //
         BOOL bUserOption = FALSE;
-		if(pMainFrame->m_psSignalWatchList != NULL)
-		{
-			if(theApp.m_bFromAutomation == FALSE)
-			bUserOption = AfxMessageBox(defIMPORT_WARNING,
-				MB_YESNO | MB_DEFBUTTON1 | MB_ICONQUESTION) ==
-				IDYES;			
-			// If user wants to clear
-			if(bUserOption == TRUE )
-			{
-				// Clear Signal Watch List
-				pMainFrame->vUpdateSWList();
-			}
-		}
-		//Added by Arun to update Data Handler Main entry list.		
-		pMainFrame->vUpdateMainEntryListInWaveDataHandler();
-		pMainFrame->vClearSignalInfoList();
+        if(pMainFrame->m_psSignalWatchList != NULL)
+        {
+            if(theApp.m_bFromAutomation == FALSE)
+                bUserOption = AfxMessageBox(defIMPORT_WARNING,
+                                            MB_YESNO | MB_DEFBUTTON1 | MB_ICONQUESTION) ==
+                              IDYES;
+            // If user wants to clear
+            if(bUserOption == TRUE )
+            {
+                // Clear Signal Watch List
+                pMainFrame->vUpdateSWList();
+            }
+        }
+        //Added by Arun to update Data Handler Main entry list.
+        pMainFrame->vUpdateMainEntryListInWaveDataHandler();
+        pMainFrame->vClearSignalInfoList();
         if(!pMainFrame->m_ouWaveTransmitter.bIsBlockEnabled())
         {
             theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
         }
 
-		//Update Message windows
-		pMainFrame->vUpdateAllMsgWndInterpretStatus(FALSE);
+        //Update Message windows
+        pMainFrame->vUpdateAllMsgWndInterpretStatus(FALSE);
 
-		// Check for Graph list
-		for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
-		{
-			if( pMainFrame->m_odGraphList[nBusID].m_omElementList.GetSize() > 0 )
-			{
-				// Get the delete confirmation from the user
-				if(theApp.m_bFromAutomation == FALSE)
-					bUserOption = AfxMessageBox(defIMPORT_WARNING_GRAPH,
-					MB_YESNO | MB_DEFBUTTON1 | MB_ICONQUESTION) ==
-					IDYES;
+        // Check for Graph list
+        for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
+        {
+            if( pMainFrame->m_odGraphList[nBusID].m_omElementList.GetSize() > 0 )
+            {
+                // Get the delete confirmation from the user
+                if(theApp.m_bFromAutomation == FALSE)
+                    bUserOption = AfxMessageBox(defIMPORT_WARNING_GRAPH,
+                                                MB_YESNO | MB_DEFBUTTON1 | MB_ICONQUESTION) ==
+                                  IDYES;
 
-				// If user wants to clear
-				if(bUserOption == TRUE )
-				{
-					// Clear Graph List for all buses.
+                // If user wants to clear
+                if(bUserOption == TRUE )
+                {
+                    // Clear Graph List for all buses.
                     for(register int nID = CAN; nID < AVAILABLE_PROTOCOLS; nID++)
                     {
                         pMainFrame->m_odGraphList[nID].m_omElementList.RemoveAll();
                     }
 
-					// Send the Message to the Left View to Update List for all buses
-					if( pMainFrame != NULL )
-					{
-						pMainFrame->vPostConfigChangeCmdToSigGrphWnds();
-					}
-				}
-				break;
-			}
-		}
-	}
+                    // Send the Message to the Left View to Update List for all buses
+                    if( pMainFrame != NULL )
+                    {
+                        pMainFrame->vPostConfigChangeCmdToSigGrphWnds();
+                    }
+                }
+                break;
+            }
+        }
+    }
 }

@@ -30,6 +30,7 @@
 #include "Signal.h"
 #include "Tag.h"
 #include "Utility.h"
+#include "Math.h"
 
 using namespace std;
 
@@ -194,7 +195,7 @@ int CSignal::Format(char* pcLine)
 
     *pcTemp='\0';
     pcToken++; // skip '@'
-    m_ucLength = atoi(acTemp); // store signal length
+    m_ucLength = strtoul(acTemp, NULL, 10); // store signal length
     // get DATA_FORMAT (intel or motorola)
     m_ucDataFormat = *pcToken;
 
@@ -479,14 +480,8 @@ int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
  */
 unsigned int CSignal::Validate(unsigned char ucFormat)
 {
-    // data format mismatch with previous signal
-    /*if(ucFormat != 0 && ucFormat != m_ucDataFormat)
-    {
-    return (m_uiError = SIG_EC_DATA_FORMAT_ERR);
-    }*/
-
     // if more than 64 bits should be discarded
-    if(m_ucLength > 64)
+    /*if(m_ucLength > 64)
     {
         return (m_uiError = SIG_EC_LENGTH_ERR);
     }
@@ -506,7 +501,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
     if((m_ucType == SIG_TYPE_DOUBLE) || (m_ucType == SIG_TYPE_FLOAT))
     {
         return (m_uiError = SIG_EC_TYPE_ERR);
-    }
+    }*/
 
     // errors eliminated now do necessary conversions
     if(m_ucLength == 1) // single bit - change type to bool
@@ -530,7 +525,7 @@ unsigned int CSignal::Validate(unsigned char ucFormat)
             m_MaxValue.uiValue = (unsigned int)unMaxVal;             //m_MaxValue.dValue;
             m_MinValue.uiValue = (unsigned int)unMinVal;             //m_MinValue.dValue;
             unsigned int uiDefault;
-            uiDefault = (unsigned int)((1 << m_ucLength) - 1);
+            uiDefault = (unsigned int)(pow((float) 2.0, (int) m_ucLength) - 1);
 
             //if both max and min value are equal set it to default
             if(m_MaxValue.uiValue == 0 && m_MinValue.uiValue == 0)
@@ -856,7 +851,7 @@ void CSignal::GetErrorAction(string& str)
  *
  * Writes the signals in the given list to the output file.
  */
-bool CSignal::WriteSignaltofile(fstream& fileOutput, list<CSignal> &m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr)
+bool CSignal::WriteSignaltofile(fstream& fileOutput, list<CSignal>& m_listSignals, int m_ucLength, int m_cDataFormat, bool writeErr)
 {
     bool bResult = true;
     list<CSignal>::iterator sig;

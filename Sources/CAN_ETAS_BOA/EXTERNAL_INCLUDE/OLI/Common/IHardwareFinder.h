@@ -7,7 +7,7 @@
 * $Revision: 4412 $
 */
 
-/** 
+/**
 * @file
 * @brief  IHardwareFinder definition
 * @remark The header structure of the OLI may change
@@ -31,7 +31,10 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // interface forward declaration
@@ -59,7 +62,8 @@ OLL_API IError* OLI_CALL IHardwareFinder_Create( IHardwareFinder** ppHwFinder );
 /**
 */
 
-OLI_INTERFACE IHardwareFinder : public IRefCountable
+OLI_INTERFACE IHardwareFinder :
+public IRefCountable
 {
 protected:
 
@@ -78,7 +82,7 @@ protected:
      * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL
      * if no error occurred. See \ref ErrorReporting for more information on how errors are reported.
      */
-	virtual IError* OLI_CALL GetURI( uint32 index, const char** ppUri ) const OLI_NOTHROW = 0;
+    virtual IError* OLI_CALL GetURI( uint32 index, const char** ppUri ) const OLI_NOTHROW = 0;
 
 public:
 
@@ -98,12 +102,12 @@ public:
 
     /// number of URIs found
 
-	virtual uint32 OLI_CALL GetCount() const OLI_NOTHROW = 0;
+    virtual uint32 OLI_CALL GetCount() const OLI_NOTHROW = 0;
 
     /**
      * This is a helper method which wraps a corresponding protected method: see \ref ErrorReporting for an explanation of why it is needed.
      */
-	const char* OLI_CALL GetURI (uint32 index) const
+    const char* OLI_CALL GetURI (uint32 index) const
     {
         const char* pUri = NULL;
         CheckAndThrow( GetURI( index, &pUri ) );
@@ -128,7 +132,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

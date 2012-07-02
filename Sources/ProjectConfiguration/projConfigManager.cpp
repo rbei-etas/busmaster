@@ -43,32 +43,32 @@ CProjConfigManager::CProjConfigManager()
 
 CProjConfigManager::~CProjConfigManager()
 {
-	// ENSURE DESTRUCTOR OF CProjConfig IS CALLED
+    // ENSURE DESTRUCTOR OF CProjConfig IS CALLED
     m_MapOfProject.clear();
 }
 
 
-bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig *& ProjConfig)
+bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig*& ProjConfig)
 {
     bool bResult = false;
-	PROJECTMAP::iterator i = m_MapOfProject.begin();
+    PROJECTMAP::iterator i = m_MapOfProject.begin();
     if (i != m_MapOfProject.end())
     {
         bResult = true;
         ProjConfig = &(i->second);
     }
-	//else
-	//{ 
-	//	if (m_MapOfProject.size() > 0)
-	//	{
-	//		PROJECTDATA xyz;
-	//		PROJECTMAP::iterator i1 = m_MapOfProject.begin();
-	//		CProjConfig *ProjConfig = &(i1->second);
-	//		ProjConfig->GetProjectDetail(xyz);
-	//		string ab;//= xyz.m_ProjectName;
-	//		ab = i1->first; 
-	//	}
-	//}
+    //else
+    //{
+    //  if (m_MapOfProject.size() > 0)
+    //  {
+    //      PROJECTDATA xyz;
+    //      PROJECTMAP::iterator i1 = m_MapOfProject.begin();
+    //      CProjConfig *ProjConfig = &(i1->second);
+    //      ProjConfig->GetProjectDetail(xyz);
+    //      string ab;//= xyz.m_ProjectName;
+    //      ab = i1->first;
+    //  }
+    //}
     return bResult;
 }
 
@@ -110,7 +110,7 @@ int CProjConfigManager::GetSectionCount(string ProjectName)
 {
     int nResult = 0;
 
-    CProjConfig *ProjConfig = NULL;
+    CProjConfig* ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         nResult = ProjConfig->GetSectionCount();
@@ -123,26 +123,26 @@ int CProjConfigManager::GetSectionList(string ProjectName, list<string>& Section
 {
     int nResult = 0;
 
-    CProjConfig *ProjConfig = NULL;
+    CProjConfig* ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         nResult = ProjConfig->GetSectionList(SectionList);
     }
 
-    return nResult; 
+    return nResult;
 }
 
-bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName, 
+bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName,
                                         SECTIONDATA& Sectiondata)
 {
     bool bResult = false;
 
-    CProjConfig *ProjConfig = NULL;
+    CProjConfig* ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         bResult = ProjConfig->GetSectionData(SectionName, Sectiondata);
     }
-    return bResult; 
+    return bResult;
 }
 
 
@@ -150,7 +150,7 @@ bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName,
 
 void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
 {
-    CProjConfig *pProjConfig = NULL;
+    CProjConfig* pProjConfig = NULL;
     if (GetProjectConfig(NewProjData.m_ProjectName, pProjConfig))
     {
         pProjConfig->ModifyProjValues(NewProjData);
@@ -160,16 +160,16 @@ void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
         CProjConfig NewProjConfig;
         NewProjConfig.ModifyProjValues(NewProjData);
         m_MapOfProject.insert(PROJECTMAP::value_type(NewProjData.m_ProjectName,
-                                                     NewProjConfig));
+                              NewProjConfig));
     }
 }
 
-bool CProjConfigManager::AddModifySection(string ProjectName, 
-                                          const SECTIONDATA& SectionData)
+bool CProjConfigManager::AddModifySection(string ProjectName,
+        const SECTIONDATA& SectionData)
 {
     bool bResult = false;
 
-    CProjConfig *ProjConfig = NULL;
+    CProjConfig* ProjConfig = NULL;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         bResult = ProjConfig->AddModifySectionDetail(SectionData);

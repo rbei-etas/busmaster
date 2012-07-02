@@ -30,12 +30,12 @@
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#include <afxdtctl.h>       // MFC support for Internet Explorer 4 Common Controls
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxcmn.h>         // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <afxtempl.h>	
+#include <afxtempl.h>
 #include <afxmt.h>
 #include <mmsystem.h>
 #include <math.h>
@@ -43,9 +43,9 @@
 #include <stdlib.h>         // standard library definitions
 
 //TxWnd module specific
-#include "TXWnd_Defines.h"	
+#include "TXWnd_Defines.h"
 #include "TxMsgManager.h"
-#include "TxFlags.h"  
+#include "TxFlags.h"
 #include "TxWndDataStore.h"
 #include "include/BaseDefs.h"
 #include "DataTypes/MsgSignal_DataTypes.h"

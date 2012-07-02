@@ -1,19 +1,19 @@
 
 /**********************************************************************************
-  Project		:	Auto-SAT_Tools
-  FileName		:	GUI_FormatMsgJ1939.cpp
-  Description	:	Implementation of CRefTimeKeeper class
+  Project       :   Auto-SAT_Tools
+  FileName      :   GUI_FormatMsgJ1939.cpp
+  Description   :   Implementation of CRefTimeKeeper class
   $Log:   X:/Archive/Sources/CommonClass/GUI_FormatMsgJ1939.cpv  $
-   
+
       Rev 1.3   10 Jun 2011 15:14:36   CANMNTTM
    All W4 warnings are removed
-   
+
       Rev 1.2   15 Apr 2011 19:07:08   rac2kor
    Inserted RBEI Copyright information text into the file header.
 
-  Author(s)     :	
-  Date Created	:	04/11/2009
-  Modified By   :  
+  Author(s)     :
+  Date Created  :   04/11/2009
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 **********************************************************************************/
 
@@ -34,19 +34,19 @@ const int ERRORS_DEFINED = 13;
 
 static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 {
-    {ERROR_UNKNOWN,       _T("Unknown Error")},
-    {BIT_ERROR_RX,        _T("Bus Error - Bit Error(Rx)")},
-    {FORM_ERROR_RX,       _T("Bus Error - Form Error(Rx)")},
-    {STUFF_ERROR_RX,      _T("Error Frame - Stuff error(Rx)")},
-    {OTHER_ERROR_RX,      _T("Bus Error - Other Error(Rx)")},
-    {BIT_ERROR_TX,        _T("Bus Error - Bit Error(Tx)")},
-    {FORM_ERROR_TX,       _T("Bus Error - Form Error(Tx)")},
-    {STUFF_ERROR_TX,      _T("Bus Error - Stuff Error(Tx)")},
-    {OTHER_ERROR_TX,      _T("Bus Error - Other Error(Tx)")},
-    {ERROR_DEVICE_BUFF_OVERFLOW,        _T("Controller Buffer Overflow")},
-    {ERROR_DRIVER_BUFF_OVERFLOW,        _T("Driver Buffer Overflow")},
-    {ERROR_APPLICATION_BUFF_OVERFLOW,   _T("Application Buffer Overflow")},
-	{ERROR_DLLMSG_BUFF_OVERFLOW,        _T("DLL message buffer Overflow")}   
+    {ERROR_UNKNOWN,       "Unknown Error"},
+    {BIT_ERROR_RX,        "Bus Error - Bit Error(Rx)"},
+    {FORM_ERROR_RX,       "Bus Error - Form Error(Rx)"},
+    {STUFF_ERROR_RX,      "Error Frame - Stuff error(Rx)"},
+    {OTHER_ERROR_RX,      "Bus Error - Other Error(Rx)"},
+    {BIT_ERROR_TX,        "Bus Error - Bit Error(Tx)"},
+    {FORM_ERROR_TX,       "Bus Error - Form Error(Tx)"},
+    {STUFF_ERROR_TX,      "Bus Error - Stuff Error(Tx)"},
+    {OTHER_ERROR_TX,      "Bus Error - Other Error(Tx)"},
+    {ERROR_DEVICE_BUFF_OVERFLOW,        "Controller Buffer Overflow"},
+    {ERROR_DRIVER_BUFF_OVERFLOW,        "Driver Buffer Overflow"},
+    {ERROR_APPLICATION_BUFF_OVERFLOW,   "Application Buffer Overflow"},
+    {ERROR_DLLMSG_BUFF_OVERFLOW,        "DLL message buffer Overflow"}
 };
 
 /*******************************************************************************
@@ -57,7 +57,7 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
   Member of      : CFormatMsgJ1939
   Author(s)      : Ratnadip
   Date Created   : 8.7.2009
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CFormatMsgJ1939::CFormatMsgJ1939(void)
 {
@@ -71,7 +71,7 @@ CFormatMsgJ1939::CFormatMsgJ1939(void)
   Member of      : CFormatMsgJ1939
   Author(s)      : Arun kumar K
   Date Created   : 24.01.2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CFormatMsgJ1939::~CFormatMsgJ1939(void)
 {
@@ -85,18 +85,18 @@ CFormatMsgJ1939::~CFormatMsgJ1939(void)
   Member of      : CFormatMsgJ1939
   Author(s)      : Arun kumar K
   Date Created   : 24.01.2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag, 
-								PSTJ1939_MSG psJ1939BData,
-                                PSFORMATTEDATA_J1939 psJ1939FData)
+void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
+                                  PSTJ1939_MSG psJ1939BData,
+                                  PSFORMATTEDATA_J1939 psJ1939FData)
 {
     BYTE bTmpExprnFlag = bExprnFlag;
     if (IS_TM_ABS_SET(bExprnFlag))
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_ABS(bTmpExprnFlag);
-		vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp, 
+        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp,
                               psJ1939FData->m_acTimeAbs);
     }
 
@@ -104,7 +104,7 @@ void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_REL(bTmpExprnFlag);
-        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp, 
+        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp,
                               psJ1939FData->m_acTimeRel);
     }
 
@@ -112,7 +112,7 @@ void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_SYS(bTmpExprnFlag);
-        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp, 
+        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp,
                               psJ1939FData->m_acTimeSys);
     }
 }
@@ -126,13 +126,13 @@ void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
   Member of      : CFormatMsgJ1939
   Author(s)      : Arun kumar K
   Date Created   : 27.01.2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag, 
-									 PSTJ1939_MSG psJ1939BData,
-                                     PSFORMATTEDATA_J1939 psJ1939FData)
+void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
+                                       PSTJ1939_MSG psJ1939BData,
+                                       PSFORMATTEDATA_J1939 psJ1939FData)
 {
-	if (IS_NUM_HEX_SET(bExprnFlag))
+    if (IS_NUM_HEX_SET(bExprnFlag))
     {
         sprintf_s(psJ1939FData->m_acPGNHex, FORMAT_PGN_ID_HEX,
                   psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
@@ -140,8 +140,8 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
         USHORT j  = 0;  //j is declared outside the for loop.
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
-            BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            sprintf_s(&(psJ1939FData->m_pcDataHex[j]), MAX_DATA_LEN_J1939-j, FORMAT_STR_DATA_HEX, CurrDat);
+            BYTE CurrDat = psJ1939BData->m_pbyData[i];
+            sprintf_s(&(psJ1939FData->m_pcDataHex[j]), (MAX_DATA_LEN_J1939 * 3 + 1)-j, FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
         psJ1939FData->m_pcDataHex[j] = L'\0';
@@ -155,8 +155,8 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
         USHORT j = 0;   // j is declared outside of the for loop
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
-            BYTE CurrDat = *(psJ1939BData->m_pbyData + i);
-            sprintf_s(&(psJ1939FData->m_pcDataDec[j]), MAX_DATA_LEN_J1939-j , FORMAT_STR_DATA_DEC, CurrDat);
+            BYTE CurrDat = psJ1939BData->m_pbyData[i];
+            sprintf_s(&(psJ1939FData->m_pcDataDec[j]), (MAX_DATA_LEN_J1939 * 4 + 1)-j , FORMAT_STR_DATA_DEC, CurrDat);
             psJ1939FData->m_pcDataDec[j + 3] = L' ';
             j += 4;
         }
@@ -172,7 +172,7 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
   Member of      : CFormatMsgJ1939
   Author(s)      : Arun kumar K
   Date Created   : 24.01.2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 USHORT CFormatMsgJ1939::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
 {
@@ -214,14 +214,14 @@ char* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
 
     while ((nCount < ERRORS_DEFINED) && (bErrProcessed == FALSE))
     {
-		if (usErrorID == sg_asErrorEntry[nCount].m_usErrorCode)
+        if (usErrorID == sg_asErrorEntry[nCount].m_usErrorCode)
         {
-			bErrProcessed = TRUE;
-            return sg_asErrorEntry[nCount].m_ptcErorMsg;            
+            bErrProcessed = TRUE;
+            return sg_asErrorEntry[nCount].m_ptcErorMsg;
         }
         nCount++;
     }
-	return NULL;        
+    return NULL;
 }
 
 /*******************************************************************************
@@ -232,12 +232,12 @@ char* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
   Member of      : CFormatMsgJ1939
   Author(s)      : Arun kumar K
   Date Created   : 27.01.2011
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
-                                          PSFORMATTEDATA_J1939 psJ1939FData,
-                                          BYTE bExprnFlag_Log)
-{	
+        PSFORMATTEDATA_J1939 psJ1939FData,
+        BYTE bExprnFlag_Log)
+{
     psJ1939FData->m_dwMsgID = psJ1939BData->m_sMsgProperties.m_uExtendedID.m_unExtID;
 
     GetMessageTypeStr(psJ1939BData->m_sMsgProperties.m_eType, psJ1939FData->m_acMsgType);
@@ -245,7 +245,7 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
     TYPE_CHANNEL CurrChannel = psJ1939BData->m_sMsgProperties.m_byChannel;
     if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
     {
-        _stprintf(psJ1939FData->m_acChannel, _T("%d"), CurrChannel);
+        _stprintf(psJ1939FData->m_acChannel, "%d", CurrChannel);
     }
 
     if (IS_NUM_HEX_SET(bExprnFlag_Log))

@@ -79,7 +79,7 @@ CMainFrame* GetIMainFrame(void)
 
 CFlags* GetIFlags(void)
 {
-	CFlags* Result = (theApp.pouGetFlagsPtr());
+    CFlags* Result = (theApp.pouGetFlagsPtr());
     ASSERT(NULL != Result);
     return Result;
 }

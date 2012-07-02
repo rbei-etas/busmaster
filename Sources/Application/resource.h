@@ -17,6 +17,7 @@
 #define IDD_DLG_MSGSGDETVIEW            101
 #define IDR_BMP_SPLASH                  102
 #define IDR_BMP_SPLASH_SCREEN           102
+#define IDI_ICON6                       102
 #define IDD_DLG_SEND_DUMMY_MSG          103
 #define IDD_PPAGE_MESSAGE               106
 #define IDB_LICENSEDLG                  110
@@ -169,6 +170,9 @@
 #define IDB_MSG_WND                     315
 #define IDB_MSG_WND_HOT                 316
 #define IDB_MSG_WND_DISABLED            317
+#define IDI_ICON_LOG_ONLIGHT            318
+#define IDI_ICON_LOG_ON                 319
+#define IDI_ICON_LOG_OFF                320
 #define IDC_EDIT_SIGNALNAME             1000
 #define IDC_EDIT_BAUD_RATE              1000
 #define IDC_EDIT_SGNAME                 1000
@@ -828,6 +832,7 @@
 #define IDC_RBTN_APPEND                 1350
 #define IDC_RBTN_OVERWRITE              1351
 #define IDC_CHECK_RESET_TIMESTAMP       1352
+#define IDC_STAT_RANGE                  1353
 #define IDB_J1939TXMSG                  10004
 #define DLG_TEMPLATE_LOCKING_KEY        13030
 #define IDR_TOOL_BUTTON_SIGNAL_WATCH    32784
@@ -1059,6 +1064,7 @@
 #define ID_CONFIGURE_CHANNELSELECTION   33121
 #define ID_UTILITIES_FILECONVERTERS     33122
 #define ID_DATABASE_SAVE                33123
+#define ID_EXECUTE_ALLEVENTHANDLERS     33124
 #define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
@@ -1086,3 +1092,6 @@
 #define IDS_ERR_BSTR2CHAR               62465
 #define IDS_ERR_ERRLOGGER_EVENT         62466
 #define IDS_ERR_ERRLOGGER_REGISTER      62467
+#define ID_LOG_RECORD_STATUS            62468
+#define ID_LOG_RECORD_CAN_ICON          62469
+#define ID_LOG_RECORD_J1939_ICON        62470

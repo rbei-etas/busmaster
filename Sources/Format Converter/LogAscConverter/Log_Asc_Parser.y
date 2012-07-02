@@ -30,7 +30,9 @@ void yyerror(const char *str)
 
 int yywrap()
 {
-	fprintf(yyout, "End TriggerBlock\n");
+	
+	// Removed from here and added at the end of every block
+	//fprintf(yyout, "End TriggerBlock\n");
 	return nRetval;	//1 Sepcifies conversion is over.
 				//0 specifies the parser start the conversion from different
 				//Input
@@ -87,6 +89,7 @@ int nGetAscTimeStamp(char* pchLogTime, char* pchAscTime)
 }
 int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile)
 {
+	nRetval = 1;
 	if( (NULL != fpInputFile) && (NULL != fpOutputFile) )
 	{ 
 		yyin = fpInputFile;
@@ -115,6 +118,8 @@ command:
 	Standard_R_Msg
 	|
 	Extended_R_Msg
+	|
+	End_Statement
 	|
 	stmnt
 	|
@@ -176,7 +181,9 @@ Number_Mode:
 			{
 				fprintf(yyout, "base dec  ");
 			}
-			nNumModeProcd = 1;
+			
+			// Commented to generate mode for every block
+			//nNumModeProcd = 1;
 		}
 	}
 TimeStamp_Mode:
@@ -198,7 +205,9 @@ TimeStamp_Mode:
 			}
 			fprintf(yyout, "no internal events logged\n");
 			fprintf(yyout, "// version 7.1.0\n");
-			nTimeModeProcd = 1;
+			
+			// Commented to generate mode for every block
+			//nTimeModeProcd = 1;
 		}
 	}
 Standard_Msg:
@@ -247,5 +256,13 @@ Extended_R_Msg:
 		/*0.001250 1  9               Tx   d 8 00 00 00 00 00 00 00 00*/
 		fprintf(yyout, "%s %s %s %s r\n", chAscTime, $3, $4, $2, $6);
 	}
+
+// Added new entry to add End Trigger Block at the end of the every block
+End_Statement:
+	ENDLOGTOKEN
+	{
+		fprintf(yyout, "End TriggerBlock\n\n");
+	}
+
 stmnt: 
 	error ';'

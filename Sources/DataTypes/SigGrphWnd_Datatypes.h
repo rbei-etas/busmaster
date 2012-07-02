@@ -24,16 +24,16 @@
 // Structure for Signal Graph Window interpreted data.
 struct sSigValue
 {
-	__int64 m_nRawValue;	
-	double m_dPhysical;
+    __int64 m_nRawValue;
+    double m_dPhysical;
 };
 struct tagInterpretData
 {
     unsigned int unMsgID;                   // Message ID
-    char m_acSigName[64];					// Signal Name
-    LONGLONG m_nTimeStamp;					// Time Stamp
-	short m_shType;							// Signal Value Type
-	sSigValue m_unValue;					//Signal value as union.
+    char m_acSigName[64];                   // Signal Name
+    LONGLONG m_nTimeStamp;                  // Time Stamp
+    short m_shType;                         // Signal Value Type
+    sSigValue m_unValue;                    //Signal value as union.
 };
 
 typedef tagInterpretData sInterpretDataList;

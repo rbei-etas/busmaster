@@ -7,7 +7,7 @@
 * $Revision: 4575 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILink definition
 * @remark The header structure of the OLI may change
@@ -31,7 +31,10 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // interface forward declarations
@@ -56,7 +59,8 @@ class ITxQueue;
 * synchronize access to the link itself and all dependent objects.
 */
 
-OLI_INTERFACE ILink : public IRefCountable
+OLI_INTERFACE ILink :
+public IRefCountable
 {
 protected:
 
@@ -131,7 +135,7 @@ protected:
 
 public:
 
-    /// access to the controller configuration object. Please note 
+    /// access to the controller configuration object. Please note
     /// that the container will initially be empty.
     /// The returned instance remains in the ownership of this link instance.
 
@@ -211,7 +215,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

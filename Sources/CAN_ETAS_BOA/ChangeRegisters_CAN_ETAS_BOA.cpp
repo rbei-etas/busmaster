@@ -15,36 +15,32 @@
 
 /**
  * \file      ChangeRegisters_CAN_ETAS_BOA.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Amitesh Bharti
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 // For all standard header file include
 #include "CAN_ETAS_BOA_stdafx.h"
+
+/* C++ includes */
+#include <sstream>
+#include <string>
+
+/* Project includes */
 #include "ContrConfigPeakUsbDefs.h"
 #include "CAN_ETAS_BOA_Resource.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-/******************************************************************************/
-/*  Function Name    :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Constructor is called when user create an object of   */
-/*                      this class. Initialisation of all data members        */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  Raja N on 13.09.2004, Added init of member variables  */
-/*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
-/*                      m_pControllerDetails                                  */
-/******************************************************************************/
+
+using namespace std;
+
+/**
+ * \brief Constructor
+ *
+ * Constructor is called when user create an object of
+ * this class. Initialisation of all data members
+ */
 CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ETAS_BOA::IDD, pParent)
     , m_omStrSamplePoint("70")
@@ -69,11 +65,13 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NU
     // Update controller data
     for (UINT i = 0; i < min(defNO_OF_CHANNELS, nHardwareCount); i++)
     {
-        m_pControllerDetails[i] = psControllerDetails[i]; 
+        m_pControllerDetails[i] = psControllerDetails[i];
     }
     psMainContrDets = psControllerDetails;
+    m_nLastSelection = 0;
     m_nPropDelay = 0;
     m_nSJWCurr = 0;
+    m_bOption = 0;
     m_nNoHardware = nHardwareCount;
     m_nDataConfirmStatus = WARNING_NOTCONFIRMED;
 }
@@ -125,7 +123,7 @@ BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ETAS_BOA, CDialog)
     ON_NOTIFY(NM_CLICK, IDC_LIST_CHANNELS, OnClickListChannels)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CHANNELS, OnItemchangedListChannels)
     ON_NOTIFY(NM_DBLCLK, IDC_LIST_CHANNELS, OnDblclkListChannels)
-    ON_CBN_SELCHANGE(IDC_COMB_SJW, OnCbnSelchangeCombSjw)    
+    ON_CBN_SELCHANGE(IDC_COMB_SJW, OnCbnSelchangeCombSjw)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -165,13 +163,13 @@ END_MESSAGE_MAP()
 /*                      Implemented code review comments                      */
 /*  Modifications    :  09.05.2008, Pradeep Kadoor                            */
 /*                      Modification done for getting values of PropDelay and */
-/*                      SJW from configuration file and display list          */ 
+/*                      SJW from configuration file and display list          */
 /*                      accordingly                                           */
 /*  Modifications    :  09.05.2008, Pradeep Kadoor                            */
 /*                      Modifications for setting two newly added combo box   */
 /******************************************************************************/
 
-BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog() 
+BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
 {
     CDialog::OnInitDialog();
     CString omStrClock          = defCLOCK;
@@ -201,14 +199,14 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     // Insert only for available channel information
     int nAvailableHardware = m_nNoHardware;//g_podHardwareInterface->nGetNoOfHardware();
     for (int nChannel = 0 ;
-         nChannel < nAvailableHardware;
-         nChannel++)
+            nChannel < nAvailableHardware;
+            nChannel++)
     {
         CString omStrChannel("");
         // Create Channel String
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                        defSTR_CHANNEL_NAME,
-                        nChannel + 1);
+                             defSTR_CHANNEL_NAME,
+                             nChannel + 1);
         // Insert channel item
         m_omChannelList.InsertItem( nChannel, omStrChannel);
     }
@@ -219,7 +217,8 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     m_omEditBaudRate.vSetBase( BASE_DECIMAL);
     m_omEditBaudRate.vSetSigned(FALSE);
     m_omEditBaudRate.vAcceptFloatingNum( TRUE);
-   
+    m_omEditBaudRate.SetLimitText(4);
+
     m_omEditWarningLimit.vSetBase( BASE_DECIMAL);
     m_omEditWarningLimit.vSetSigned(FALSE);
     m_omEditWarningLimit.vAcceptFloatingNum( FALSE);
@@ -236,10 +235,10 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
         pCheckSelfRec->SetCheck(BST_CHECKED);
     }
     // Add an entry in each of the two combo boxes FindStringExact
-    int nIndex = m_omCtrlSamplePoint.FindStringExact(-1, 
-                           m_pControllerDetails->m_omStrSamplePercentage);
-    m_omStrSamplePoint = m_pControllerDetails->m_omStrSamplePercentage;
-    m_omStrSJW = m_pControllerDetails->m_omStrSjw;
+    int nIndex = m_omCtrlSamplePoint.FindStringExact(-1,
+                 m_pControllerDetails->m_omStrSamplePercentage.c_str());
+    m_omStrSamplePoint = m_pControllerDetails->m_omStrSamplePercentage.c_str();
+    m_omStrSJW = m_pControllerDetails->m_omStrSjw.c_str();
     //UpdateData();
     if (CB_ERR != nIndex)
     {
@@ -247,11 +246,13 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     }
     else
     {
-		//Set the default selection as 70% and update the controller structure
-        m_omCtrlSamplePoint.SetCurSel (7);			
-		_tcscpy(m_pControllerDetails->m_omStrSamplePercentage , "70");
+        //Set the default selection as 70% and update the controller structure
+        m_omCtrlSamplePoint.SetCurSel (7);
+        m_pControllerDetails->m_omStrSamplePercentage = "70";
     }
-    nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw);
+
+    nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw.c_str());
+
     if (CB_ERR != nIndex)
     {
         m_omCtrlSJW.SetCurSel (nIndex);
@@ -272,35 +273,35 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     {
         m_nSJWCurr = nSJWCurr;
     }
-    
+
     m_omEditWarningLimit.SetReadOnly(TRUE);
     //Initialise the index for number of items in list box before passing it is
     //function to calculate the same.
-    
+
     // Set the Focus to the First Item
     m_omChannelList.SetItemState( 0,
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED);
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
-/*  Function Name    :  OnCancel                                              */    
-/*                                                                            */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
-/*  Functionality    :  message handlers on CANCEL request                    */    
-/*                                                                            */    
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */    
-/*  Friend of        :      -                                                 */    
-/*                                                                            */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  19.02.2002                                            */    
-/*  Modifications    :                                                        */    
-/*                                                                            */    
+/*  Function Name    :  OnCancel                                              */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  message handlers on CANCEL request                    */
+/*                                                                            */
+/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/*  Modifications    :                                                        */
+/*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnCancel() 
+void CChangeRegisters_CAN_ETAS_BOA::OnCancel()
 {
     // Flag to be checked while validating the edit control input on kill focus
     m_bDialogCancel = TRUE;
@@ -308,25 +309,25 @@ void CChangeRegisters_CAN_ETAS_BOA::OnCancel()
     CDialog::OnCancel();
 }
 /******************************************************************************/
-/*  Function Name    :  OnOK                                                  */    
-/*                                                                            */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
-/*  Functionality    :  Message handlers on Enter Button ( Default OK button) */    
-/*                      Every press of enter key, focus is to next control    */    
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */    
-/*  Friend of        :      -                                                 */    
-/*                                                                            */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  15.02.2002                                            */    
-/*  Modifications    :                                                        */    
-/*                                                                            */    
+/*  Function Name    :  OnOK                                                  */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Message handlers on Enter Button ( Default OK button) */
+/*                      Every press of enter key, focus is to next control    */
+/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/*  Modifications    :                                                        */
+/*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnOK() 
+void CChangeRegisters_CAN_ETAS_BOA::OnOK()
 {
 
- // Dummy virtual function to avoid closing the dialog when ENTER key is 
-//  pressed. Instead next conrol gets focus in tab order
+    // Dummy virtual function to avoid closing the dialog when ENTER key is
+    //  pressed. Instead next conrol gets focus in tab order
     NextDlgCtrl();
 }
 
@@ -376,17 +377,17 @@ CString CChangeRegisters_CAN_ETAS_BOA::omGetFormattedRegVal(UCHAR ucRegVal)
 /*  Modification on  :  14.03.2005, Added code to update list control for the */
 /*                      values updated in the baud rate edit control          */
 /******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate() 
+void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
 {
     CString omStrBaudRate   ="";
     CString omStrValid      ="";
     INT     nLength         = 0;
 
-    m_omEditBaudRate.GetWindowText(omStrBaudRate);    
+    m_omEditBaudRate.GetWindowText(omStrBaudRate);
     nLength             = omStrBaudRate.GetLength();
-    
+
     CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
-    // To get the state of CANCEL button. A non zero value if the button is 
+    // To get the state of CANCEL button. A non zero value if the button is
     // clicked.
     UINT unButtonState       = pomButtonCancel->GetState();
     // Validate only if next command is not ESC Button
@@ -398,7 +399,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
             // Validate for empty string and if zero value is entered.
             DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
             if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0)
-            {   
+            {
                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
                 AfxMessageBox(defVALIDATION_MSG_BAUD_RATE);
                 m_omEditBaudRate.SetFocus();
@@ -406,25 +407,25 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
             }
             else
             {
-                
+
                 m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
 
-                // Call if string is valid to validate the baud rate value and 
+                // Call if string is valid to validate the baud rate value and
                 // suggest  a next valid baud rate
                 //Validate only if previous value in edit control is not the
                 //  same as the one changed by user
-                if (m_dEditBaudRate != dBaudRate && dBaudRate>0 
-                    && m_dEditBaudRate > 0 )
+                if (m_dEditBaudRate != dBaudRate && dBaudRate>0
+                        && m_dEditBaudRate > 0 )
                 {
                     vValidateBaudRate();
                     // Update List items only it is from edit box
-                    //vChangeListBoxValues(-1); 
+                    //vChangeListBoxValues(-1);
                     CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
                     CButton* pomFocusWnd     = (CButton*)GetFocus();
 
                     if (pomButtonoK ==pomFocusWnd)
                     {
-                        // Close the dialog if the user 
+                        // Close the dialog if the user
                         // has pressed OK button
                         OnClickedOK();
                     }
@@ -434,7 +435,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
     }
     else
     {
-      m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
+        m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
     }
 }
 
@@ -453,7 +454,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
 /*  Modifications    :                                                        */
 /******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::OnSelchangeCombSampling()
-{ 
+{
     INT nGetValue               = 0;
     CString omStrComboEditItem  ="";
 
@@ -485,7 +486,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnSelchangeCombSampling()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusEditBaudRate() 
+void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusEditBaudRate()
 {
     // To update the data members before editing it and use it in kill focus
     UpdateData(TRUE);
@@ -493,19 +494,19 @@ void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusEditBaudRate()
 }
 
 /******************************************************************************/
-/*  Function Name    :  vValidateBaudRate                                     */    
-/*                                                                            */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
-/*  Functionality    :  This function will validate the user input value of   */    
-/*                      baud rate. A valid baud rate will be calculated       */    
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */    
-/*  Friend of        :      -                                                 */    
-/*                                                                            */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  18.02.2002                                            */    
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */    
-/*                      Incorporated review comments                          */    
+/*  Function Name    :  vValidateBaudRate                                     */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function will validate the user input value of   */
+/*                      baud rate. A valid baud rate will be calculated       */
+/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  18.02.2002                                            */
+/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
+/*                      Incorporated review comments                          */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  22.03.2002, If user changes clock freq. and select no */
 /*                      for changing valid baudrate, change the clock freq. to*/
@@ -524,9 +525,9 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
     //UINT    unClockFreq         = 0;
     //UINT    unClockPrevValue    = 0 ;
     UINT    unProductNbtNBrp    = 0;
-    DOUBLE  dProductNbtNBrp     = 0; 
+    DOUBLE  dProductNbtNBrp     = 0;
     CString omStrMessage        = "";
-   
+
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
     dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
     m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
@@ -534,13 +535,13 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
     //m_omCombClock.GetWindowText(omStrClockFreq);
     //unClockFreq          = _tstoi(omStrClockFreq);
 
-    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/dBaudRate)/2.0 * 
-                                (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/dBaudRate)/2.0 *
+                          (defFACT_FREQUENCY / defFACT_BAUD_RATE);
     unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
 
-    if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE) 
-          ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP)) 
-          || (unProductNbtNBrp < defMIN_NBT))
+    if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
+            ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
+            || (unProductNbtNBrp < defMIN_NBT))
     {
         unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
         int nFlag = defRESET;
@@ -550,11 +551,11 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
             INT i = 1;
             UINT unNbt = unProductNbtNBrp / i;
             FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
-            
+
             while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
             {
                 if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
-                                     && (unNbt <=defMAX_NBT))
+                        && (unNbt <=defMAX_NBT))
                 {
                     nFlag =defSET;
                 }
@@ -565,13 +566,13 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
                     fNbt     = (FLOAT)unProductNbtNBrp / i;
                 }
             } //end while( unNbt >=1 && i<=MAX_BRP)
-            
+
             if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
             {
                 unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
             }
-            else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP)) 
-                                            && (nFlag == defRESET))
+            else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
+                     && (nFlag == defRESET))
             {
                 unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
             }
@@ -580,40 +581,40 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
                 unProductNbtNBrp++;
             }
         }//end while(nFlag==RESET)
-        dBaudRate = (DOUBLE)((m_unCombClock/2.0)* 
-                    ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
+        dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
+                             ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
 
         FLOAT  fTempBaudRate;
         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
         fTempBaudRate = fTempBaudRate/100000;
-        omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);   
-        
+        omStrBaudRate.Format("%.4f",fTempBaudRate);
+
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
         omStrPrvBaudRate = m_omStrEditBaudRate;
         //unClockPrevValue = m_unCombClock;
-        
+
         // set the baudrate
         m_omEditBaudRate.SetWindowText(omStrBaudRate);
-        }// End if
+    }// End if
     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
     m_dEditBaudRate     = dBaudRate;
     m_omStrEditBaudRate = omStrBaudRate;
     //m_unCombClock       = unClockFreq;
 }
 /******************************************************************************/
-/*  Function Name    :  OnClickedOK                                           */    
-/*                                                                            */    
-/*  Input(s)         :  User Selects OK Button                                */    
+/*  Function Name    :  OnClickedOK                                           */
+/*                                                                            */
+/*  Input(s)         :  User Selects OK Button                                */
 /*  Output           :  All user input field entry is written into            */
-/*                      Registry/.ini file                                    */    
+/*                      Registry/.ini file                                    */
 /*  Functionality    :  Message handlers on OK Button.To Remove control       */
 /*                      to close when Enter Button is pressed                 */
-/*                                                                            */    
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */    
-/*  Friend of        :      -                                                 */    
-/*                                                                            */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  18.02.2002                                            */    
+/*                                                                            */
+/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  18.02.2002                                            */
 /*  Modifications    :  25.02.2002, Amitesh Bharti                            */
 /*                      Incorporated review comments                          */
 /*                      13.11.2002, Gopi                                      */
@@ -630,7 +631,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
 /*                   :  Added code to support multiple contoller information  */
 /*                      in the configuration module                           */
 /******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnClickedOK() 
+void CChangeRegisters_CAN_ETAS_BOA::OnClickedOK()
 {
     // Update modified data
     UpdateData( TRUE);
@@ -669,7 +670,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnClickedOK()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusCombSampling() 
+void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusCombSampling()
 {
     UpdateData(TRUE);
 }
@@ -739,7 +740,7 @@ CChangeRegisters_CAN_ETAS_BOA::~CChangeRegisters_CAN_ETAS_BOA()
   Member of      : CChangeRegisters_CAN_ETAS_BOA
   Author(s)      : Raja N
   Date Created   : 14.3.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
@@ -769,7 +770,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESU
   Date Created   : 14.03.2005
   Modifications  :
 *******************************************************************************/
-void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult) 
+void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult)
 {
     // Get the List item data from the notification
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
@@ -785,7 +786,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRE
 
     }
     // If it is lose of focus then save the user changes
-    else if (pNMListView->uChanged  == LVIF_STATE && 
+    else if (pNMListView->uChanged  == LVIF_STATE &&
              pNMListView->uOldState == LVIS_SELECTED)
     {
         // Update modified data
@@ -813,7 +814,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRE
   Member of      : CChangeRegisters_CAN_ETAS_BOA
   Author(s)      : Raja N
   Date Created   : 14.3.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
@@ -842,7 +843,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRES
   Member of      : CChangeRegisters_CAN_ETAS_BOA
   Author(s)      : Raja N
   Date Created   : 14.3.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
 {
@@ -851,19 +852,20 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     CWnd* pWnd = GetDlgItem(IDC_EDIT_CHANNEL_DESC);
     if (pWnd != NULL)
     {
-        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc);
+        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
-    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate;
-    m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1;
-    m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2;
-    m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3;
-    //m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock;
-    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling;
-    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit;
-    m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage;
-    m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw;
 
-    
+    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
+    m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1.c_str();
+    m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2.c_str();
+    m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3.c_str();
+    //m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
+    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
+    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
+    m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str();
+    m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw.c_str();
+
+
     //omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
     //Assign edit box string value to CString member variable of Edit control
     // for Baudrate Convert String into float or INT to be used to make a list
@@ -885,7 +887,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
   Member of      : CChangeRegisters_CAN_ETAS_BOA
   Author(s)      : Raja N
   Date Created   : 14.3.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 {
@@ -895,44 +897,45 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
     CString omStrEditBtr1           = "";
     CString omStrEditAcceptanceCode = "";
     CString omStrEditAcceptanceMask = "";
-    
+
     // Update the data members before writing into ini file or registry.
     UpdateData(TRUE);
 
     // Get the warning limit.
     UINT unWarningLimit = 0;
     unWarningLimit = static_cast <UINT>(_tcstol((LPCTSTR)
-                                               m_omStrEditWarningLimit,
-                                               &pcStopStr,defBASE_DEC));
+                                        m_omStrEditWarningLimit,
+                                        &pcStopStr,defBASE_DEC));
 
     UINT unWarningLimtMin = static_cast <UINT> (defWARNING_LIMIT_MIN);
     UINT unWarningLimtMax = static_cast <UINT> (defWARNING_LIMIT_MAX);
 
-    if (  ( unWarningLimit >= unWarningLimtMin) 
-       && ( unWarningLimit <= unWarningLimtMax))
+    if (  ( unWarningLimit >= unWarningLimtMin)
+            && ( unWarningLimit <= unWarningLimtMax))
     {
-	    INT nItemUnderFocus = 0;
+        INT nItemUnderFocus = 0;
         m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
-		UCHAR ucBtr0 = 0;
-		UCHAR ucBtr1 = 0;
-        // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction 
+        UCHAR ucBtr0 = 0;
+        UCHAR ucBtr1 = 0;
+        // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction
         // to initialise.
         m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8)| ucBtr1) & 0xffff);
-        
         // Update controller information
         m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
-                                                            nItemUnderFocus;
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate, m_omStrEditBaudRate.GetBuffer(MAX_PATH));
+            nItemUnderFocus;
+        m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
         //m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
         //                                                    m_omStrComboClock;
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF1, m_omStrEditCNF1.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF2, m_omStrEditCNF2.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[m_nLastSelection].m_omStrCNF3, m_omStrEditCNF3.GetBuffer(MAX_PATH));
-        _stprintf(m_pControllerDetails[m_nLastSelection].m_omStrClock, _T("%d"), m_unCombClock);
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrSampling, m_omStrComboSampling.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrWarningLimit, m_omStrEditWarningLimit.GetBuffer(MAX_PATH));
-        _tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrSamplePercentage, m_omStrSamplePoint.GetBuffer(MAX_PATH));
-		_tcscpy(m_pControllerDetails[ m_nLastSelection ].m_omStrSjw, m_omStrSJW.GetBuffer(MAX_PATH));
+        m_pControllerDetails[m_nLastSelection].m_omStrCNF1 = m_omStrEditCNF1.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrCNF2 = m_omStrEditCNF2.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrCNF3 = m_omStrEditCNF3.GetBuffer(MAX_PATH);
+        ostringstream oss;
+        oss << dec << m_unCombClock;
+        m_pControllerDetails[m_nLastSelection].m_omStrClock = oss.str();
+        m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = m_omStrSamplePoint.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
     }
     else
     {
@@ -955,88 +958,80 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
   Member of      : CChangeRegisters_CAN_ETAS_BOA
   Author(s)      : Anish
   Date Created   : 21.06.06
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-BOOL CChangeRegisters_CAN_ETAS_BOA::bGetBaudRateFromCom(int nChannel,BYTE &bBTR0,BYTE &bBTR1)
+BOOL CChangeRegisters_CAN_ETAS_BOA::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
 {
     BOOL bReturn =FALSE;
     if (m_pControllerDetails != NULL)
     {
-         int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
-         bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
-         bBTR0 = (BYTE)((nTempBTR0BTR1>>defBITS_IN_BYTE ) & 0XFF);
+        int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
+        bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
+        bBTR0 = (BYTE)((nTempBTR0BTR1>>defBITS_IN_BYTE ) & 0XFF);
 
-         bReturn=TRUE;
+        bReturn=TRUE;
     }
     return bReturn;
 }
 /*******************************************************************************
  Function Name  : bSetFilterFromCom
- Input(s)       : long  nExtended,\\for extended msg or not 
+ Input(s)       : long  nExtended,\\for extended msg or not
                   DWORD  dBeginMsgId, \\filter's msg id start
                   DWORD dEndMsgId \\filter's msg id stop
  Output         : int - Operation Result. 0 incase of no errors. Failure Error
                   codes otherwise.
- Functionality  : This function will set the filter information if called using 
+ Functionality  : This function will set the filter information if called using
                   com interface.
  Member of      : CChangeRegisters_CAN_ETAS_BOA
  Author(s)      : Anish kr
  Date Created   : 05.06.06
 
 *******************************************************************************/
-BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId, 
-                                   DWORD dEndMsgId)
+BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+        DWORD dEndMsgId)
 {
     BOOL bReturn = FALSE;
     // for getting separate byte
     DWORD dTemp=0XFF;
 
     for (UINT unIndex = 0;
-    unIndex < defNO_OF_CHANNELS;
-    unIndex++)
+            unIndex < defNO_OF_CHANNELS;
+            unIndex++)
     {
         // To set no. shifts
         int nShift = sizeof( UCHAR) * defBITS_IN_BYTE;
-        
+
         //to convert all acceptance and mask byets into string
         CString omStrTempByte;
         // Create Code
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended], 
-            omStrTempByte.GetBuffer(MAX_PATH));
-
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended], 
-            omStrTempByte.GetBuffer(MAX_PATH));
-
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 2)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended],
-            omStrTempByte.GetBuffer(MAX_PATH));
-
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 3)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended],
-            omStrTempByte.GetBuffer(MAX_PATH));
-
+        omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
+        omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId >> nShift)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
+        omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId >> nShift * 2)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
+        omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId >> nShift * 3)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
         // Create Mask
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended],
-            omStrTempByte.GetBuffer(MAX_PATH));
-
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended],
-            omStrTempByte.GetBuffer(MAX_PATH));
-
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 2)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended],
-            omStrTempByte.GetBuffer(MAX_PATH));
-
-        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 3)));
-        _tcscpy(m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended],
-            omStrTempByte.GetBuffer(MAX_PATH));
-
+        omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
+        omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId >> nShift)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
+        omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId >> nShift * 2)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
+        omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId >> nShift * 3)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended] =
+            omStrTempByte.GetBuffer(MAX_PATH);
         m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
     }
-     
+
 
     //kadoor // Update Configuration file
     //theApp.bSetData( CONTROLLER_DETAILS, m_pControllerDetails);
@@ -1049,57 +1044,57 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dB
     //        bReturn =TRUE;
     //    }
     //}
-    
+
     return bReturn;
-    
+
 }
 
 /*******************************************************************************
  Function Name  : bGetFilterFromCom
- Input(s)       : long  nExtended,\\for extended msg or not 
+ Input(s)       : long  nExtended,\\for extended msg or not
                   DWORD  dBeginMsgId, \\acceptance code
                   DWORD dEndMsgId \\mask code
  Output         : int - Operation Result. 0 incase of no errors. Failure Error
                   codes otherwise.
- Functionality  : This function will set the filter information if called using 
+ Functionality  : This function will set the filter information if called using
                   com interface.
  Member of      : CChangeRegisters_CAN_ETAS_BOA
  Author(s)      : Anish kr
  Date Created   : 05.06.06
 
 *******************************************************************************/
-BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL  &bExtended, double  &dBeginMsgId, 
-                                   double &dEndMsgId)
+BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
+        double& dEndMsgId)
 {
     BOOL bReturn = FALSE;
     if (m_pControllerDetails != NULL)
     {
-        
+
         char* pcStopStr ;
         //Change to separate integer value for each byte
         int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
-                        &pcStopStr,defHEXADECIMAL);
+                                    &pcStopStr,defHEXADECIMAL);
         int nAccCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte2,
-                        &pcStopStr,defHEXADECIMAL);
+                                    &pcStopStr,defHEXADECIMAL);
         int nAccCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte3,
-                        &pcStopStr,defHEXADECIMAL);
+                                    &pcStopStr,defHEXADECIMAL);
         int nAccCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte4,
-                        &pcStopStr,defHEXADECIMAL);
+                                    &pcStopStr,defHEXADECIMAL);
         int nMaskCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte1,
-                        &pcStopStr,defHEXADECIMAL);
+                                     &pcStopStr,defHEXADECIMAL);
         int nMaskCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte2,
-                        &pcStopStr,defHEXADECIMAL); 
+                                     &pcStopStr,defHEXADECIMAL);
         int nMaskCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte3,
-                        &pcStopStr,defHEXADECIMAL); 
+                                     &pcStopStr,defHEXADECIMAL);
         int nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
-                        &pcStopStr,defHEXADECIMAL);
+                                     &pcStopStr,defHEXADECIMAL);
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
-            nAccCodeByte3*0X100+nAccCodeByte4);
+                              nAccCodeByte3*0X100+nAccCodeByte4);
         dEndMsgId = (ULONG)(nMaskCodeByte1*0X1000000+nMaskCodeByte2*0X10000+
-            nMaskCodeByte3*0X100+nMaskCodeByte4);
-        
-        
+                            nMaskCodeByte3*0X100+nMaskCodeByte4);
+
+
         bExtended=  m_pControllerDetails[ 0 ].m_bAccFilterMode;
         bReturn=TRUE;
     }
@@ -1163,10 +1158,10 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bUpdateControllerDataMembers(void)
     BOOL Result = 1; // Calculate if required in future
     if (Result)
     {
-		BYTE bCNF1 = 0x0, bCNF2 = 0x0, bCNF3 = 0x0;
-        m_omStrEditCNF1.Format(_T("%x"), bCNF1);
-        m_omStrEditCNF2.Format(_T("%x"), bCNF2);
-        m_omStrEditCNF3.Format(_T("%x"), bCNF3);
+        BYTE bCNF1 = 0x0, bCNF2 = 0x0, bCNF3 = 0x0;
+        m_omStrEditCNF1.Format("%x", bCNF1);
+        m_omStrEditCNF2.Format("%x", bCNF2);
+        m_omStrEditCNF3.Format("%x", bCNF3);
     }
     return Result;
 }
@@ -1176,7 +1171,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bUpdateControllerDataMembers(void)
  Input(s)       : void
  Output         : TRUE if successful, else FALSE
  Functionality  : This function returns value of the selected entry in a combo
-                  box. Although helper in broader sense, this assumes the 
+                  box. Although helper in broader sense, this assumes the
                   entries to be 1 based integers and returns 0 when the entry
                   contains the string 'ALL'.
  Member of      : CChangeRegisters_CAN_ETAS_BOA
@@ -1192,7 +1187,7 @@ int CChangeRegisters_CAN_ETAS_BOA::nGetValueFromComboBox(CComboBox& omComboBox)
     {
         CString omCurText = "";
         omComboBox.GetLBText(nCurrSel, omCurText);
-        if (omCurText != _T("ALL"))
+        if (omCurText != "ALL")
         {
             nResult = _tstoi(omCurText);
         }

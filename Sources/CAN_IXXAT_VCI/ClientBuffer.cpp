@@ -16,11 +16,11 @@
 /**
  * @file  ClientBuffer.cpp
  *
- * @brief 
- * 		Implements the client buffer class. This class includes a STL::vector
- * 		which holds the pointers to the CBaseCANBufFSE* objects. 
- * 		Do not delete this CBaseCANBufFSE* objects because they were created
- * 		by another function and should deleted by the creator.
+ * @brief
+ *      Implements the client buffer class. This class includes a STL::vector
+ *      which holds the pointers to the CBaseCANBufFSE* objects.
+ *      Do not delete this CBaseCANBufFSE* objects because they were created
+ *      by another function and should deleted by the creator.
  */
 
 #include "CAN_IXXAT_VCI_stdafx.h"
@@ -28,23 +28,23 @@
 
 
 /**
- * @brief 
+ * @brief
  *  Default constructor.
  *
  */
 CClientBuffer::CClientBuffer()
 {
 #ifdef _DEBUG
-  g_dwIxxatBufObjectCounter++;
+    g_dwIxxatBufObjectCounter++;
 #endif
-  dwClientID = 0;
-  hClientHandle = NULL;
-  hPipeFileHandle = NULL;
-  m_pacClientName = _T("");
+    dwClientID = 0;
+    hClientHandle = NULL;
+    hPipeFileHandle = NULL;
+    m_pacClientName = _T("");
 }
 
 /**
- * @brief 
+ * @brief
  *  Constructor with parameters.
  *
  * @param dwClntID
@@ -59,33 +59,33 @@ CClientBuffer::CClientBuffer()
 CClientBuffer::CClientBuffer(DWORD dwClntID, HANDLE hClntHandle, HANDLE hPipeHandle, string szClientName)
 {
 #ifdef _DEBUG
-  g_dwIxxatBufObjectCounter++;
+    g_dwIxxatBufObjectCounter++;
 #endif
-  dwClientID = dwClntID;
-  hClientHandle = hClntHandle;
-  hPipeFileHandle = hPipeHandle;
-  m_pacClientName = szClientName;
+    dwClientID = dwClntID;
+    hClientHandle = hClntHandle;
+    hPipeFileHandle = hPipeHandle;
+    m_pacClientName = szClientName;
 }
 
 
 /**
  *
- * @brief 
+ * @brief
  *  Destructor. Clean the interal used sfl::vector.
  *
  */
 CClientBuffer::~CClientBuffer()
 {
-  m_BaseCANBufFSEVector.clear();
+    m_BaseCANBufFSEVector.clear();
 
 #ifdef _DEBUG
-  g_dwIxxatBufObjectCounter--;
+    g_dwIxxatBufObjectCounter--;
 #endif
 }
 
 
 /**
- * @brief 
+ * @brief
  *  Adds a new message buffer to the internal stl::vector.
  *
  * @param [in]  pBufObj
@@ -98,17 +98,17 @@ CClientBuffer::~CClientBuffer()
  */
 HRESULT CClientBuffer::AddMsgBuf(CBaseCANBufFSE* pBufObj)
 {
-  HRESULT hResult = ERR_BUFFER_EXISTS;
-  if (!MsgBufExist(pBufObj))
-  {
-    m_BaseCANBufFSEVector.push_back(pBufObj);
-    hResult = S_OK;
-  }
-  return hResult;
+    HRESULT hResult = ERR_BUFFER_EXISTS;
+    if (!MsgBufExist(pBufObj))
+    {
+        m_BaseCANBufFSEVector.push_back(pBufObj);
+        hResult = S_OK;
+    }
+    return hResult;
 }
 
 /**
- * @brief 
+ * @brief
  *  Removes a message buffer object from the internal std::vector.
  *
  * @param [in,out]  pBufObj
@@ -121,23 +121,23 @@ HRESULT CClientBuffer::AddMsgBuf(CBaseCANBufFSE* pBufObj)
  */
 HRESULT CClientBuffer::RemoveMsgBuf(CBaseCANBufFSE* pBufObj)
 {
-  HRESULT hResult = ERROR_NOT_FOUND;
-  BaseCANBufFSEVector::iterator iter;
-  for (iter = m_BaseCANBufFSEVector.begin(); iter != m_BaseCANBufFSEVector.end(); ++iter)
-  {
-    if (*iter == pBufObj)
+    HRESULT hResult = ERROR_NOT_FOUND;
+    BaseCANBufFSEVector::iterator iter;
+    for (iter = m_BaseCANBufFSEVector.begin(); iter != m_BaseCANBufFSEVector.end(); ++iter)
     {
-      m_BaseCANBufFSEVector.erase(iter);
-      hResult = S_OK;
-      break;
+        if (*iter == pBufObj)
+        {
+            m_BaseCANBufFSEVector.erase(iter);
+            hResult = S_OK;
+            break;
+        }
     }
-  }
-  return hResult;
+    return hResult;
 }
 
 
 /**
- * @brief 
+ * @brief
  *  Removes all message buffer. Clear the internal
  *  list complete.
  *
@@ -147,8 +147,8 @@ HRESULT CClientBuffer::RemoveMsgBuf(CBaseCANBufFSE* pBufObj)
  */
 HRESULT CClientBuffer::RemoveAllMsgBuf()
 {
-  m_BaseCANBufFSEVector.clear();
-  return S_OK;
+    m_BaseCANBufFSEVector.clear();
+    return S_OK;
 }
 
 /**
@@ -159,44 +159,44 @@ HRESULT CClientBuffer::RemoveAllMsgBuf()
  * @param iBufIndex
  *  Zero-based index of the buffer index.
  *
- * @return  
+ * @return
  *  null if it fails, else the buffer object at this index.
  *
  */
 CBaseCANBufFSE* CClientBuffer::GetSEBufferByIndex(int iBufIndex)
 {
-  CBaseCANBufFSE* pResultBufSE = NULL;
-  if (iBufIndex < m_BaseCANBufFSEVector.size())
-  {
-    pResultBufSE = m_BaseCANBufFSEVector[iBufIndex];
-  }
+    CBaseCANBufFSE* pResultBufSE = NULL;
+    if (iBufIndex < m_BaseCANBufFSEVector.size())
+    {
+        pResultBufSE = m_BaseCANBufFSEVector[iBufIndex];
+    }
 
-  return pResultBufSE;
+    return pResultBufSE;
 }
 
 
 /**
- * @brief 
+ * @brief
  *  Check if this message buffer exists.
  *
  * @param [in]  pBufObj
  *  If non-null, the buffer object.
  *
- * @return  
+ * @return
  *  true - this object already exits
  *  false - object not found in internal list
  *
  */
 BOOL CClientBuffer::MsgBufExist(CBaseCANBufFSE* pBufObj)
 {
-  BOOL bResult = FALSE;
-  for (int i=0; i < (int)m_BaseCANBufFSEVector.size(); i++)
-  {
-    if (m_BaseCANBufFSEVector[i] == pBufObj)
+    BOOL bResult = FALSE;
+    for (int i=0; i < (int)m_BaseCANBufFSEVector.size(); i++)
     {
-      bResult = TRUE;
-      break;
+        if (m_BaseCANBufFSEVector[i] == pBufObj)
+        {
+            bResult = TRUE;
+            break;
+        }
     }
-  }
-  return bResult;
+    return bResult;
 }

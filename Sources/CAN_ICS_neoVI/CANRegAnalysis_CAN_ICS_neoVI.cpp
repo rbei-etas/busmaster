@@ -15,11 +15,11 @@
 
 /**
  * \file      CANRegAnalysis_CAN_ICS_neoVI.cpp
- * \brief     This file contains the function which implements the    
- * \author    Pradeep Kadoor
+ * \brief     This file contains the function which implements the
+ * \author    Pradeep Kadoor, Tobias Lorenz
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contains the function which implements the    
+ * This file contains the function which implements the
  */
 
 // Include all standard header files
@@ -29,44 +29,33 @@
 // CChangeRegisters class defination file.
 #include "ChangeRegisters_CAN_ICS_neoVI.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-/******************************************************************************/
-/*  Function Name    :  nListBoxValues                                        */    
-/*                                                                            */    
-/*  Input(s)         :  Baudrate Number of Sample/bit and Clock Frequency     */    
-/*  Output           :  NBT and BRP values                                    */    
-/*  Functionality    :  Calculate set of the NBT and BRP value for given      */    
-/*                      baudrate and clock frequency                          */    
-/*  Member of        :  CChangeRegisters_CAN_ICS_neoVI                        */    
-/*  Friend of        :      -                                                 */    
-/*                                                                            */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  15.02.2002                                            */    
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  28.05.2002, Type casting changed from BYTE to WORD    */
-/******************************************************************************/
+/**
+ * \brief     List Box Values
+ * \param[in] dBuadRate Baudrate Number of Sample/bit
+ * \param[in] wClockFreq Clock Frequency
+ * \param[in] nSample Number of Sampling/bit
+ *
+ * Calculate set of the NBT and BRP value for given
+ * baudrate and clock frequency
+ */
 BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
-                                       DOUBLE dBuadRate, WORD wClockFreq,
-                                       UINT *puwIndex, INT nSample)
+        DOUBLE dBuadRate, WORD wClockFreq,
+        UINT* puwIndex, INT nSample)
 {
     UINT    unProductNbtNBrp    = 0;
-    DOUBLE  dProductNbtNBrp     = 0; 
+    DOUBLE  dProductNbtNBrp     = 0;
     INT     nReturn             = -1;
 
     // Calcualte the product NBT * BRP = clock/(2.0 * baudrate ). This product
     // should be an integer multiple.
     dProductNbtNBrp  = (wClockFreq / dBuadRate) / 2.0 *
-                                (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+                       (defFACT_FREQUENCY / defFACT_BAUD_RATE);
     unProductNbtNBrp = (UINT) (dProductNbtNBrp + 0.5);
 
     //Check if product is integer multiple. Ignore diffrence <= 0.004
     if (fabs((dProductNbtNBrp - unProductNbtNBrp)) <= defVALID_DECIMAL_VALUE)
     {
-		INT   i = 1;
+        INT   i = 1;
         WORD wNBT  = (WORD) (unProductNbtNBrp / i);
         FLOAT fNBT = (FLOAT) unProductNbtNBrp / i;
 
@@ -76,7 +65,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
             if ((wNBT == fNBT) && (wNBT >= defMIN_NBT) && (wNBT <=defMAX_NBT))
             {
                 WORD wBRP = (WORD)(unProductNbtNBrp / wNBT);
-                //Call this function to calculate BTR0, BTR1 regsiter value 
+                //Call this function to calculate BTR0, BTR1 regsiter value
                 // for one set of NBT and BRP.
                 if (m_bOption == NO_DEF)
                 {
@@ -100,7 +89,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
             fNBT = (FLOAT)unProductNbtNBrp / i;
         }
         nReturn = 1; // Whatever the return value is, the calculating operation
-                     // is always successful
+        // is always successful
     }
     else
     {
@@ -113,7 +102,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
 /*  Function Name    :  bCalculateICSneoVIRegValues
 
     Input(s)         :  NBT, BRP and Number of Sampling/bit
-    Output           :  true if process of calculation is complete. In case 
+    Output           :  true if process of calculation is complete. In case
                         there are more values remaining, false is returned.
     Functionality    :  Given a value of NBT, BRP and sampling rate, this
                         calculates set of values of CNF1, CNF2, CNF3, PD and
@@ -125,13 +114,13 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
     Author(s)        :  Pradeep Kadoor
     Date Created     :  03.04.2008
 /******************************************************************************/
-bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD wBrp, 
-                                               UINT *puwIndex, INT nSample)
+bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD wBrp,
+        UINT* puwIndex, INT nSample)
 {
     bool bContinue = (defREG_VALUE_LIST_COUNT_MAX > *puwIndex);
 
     WORD  wMinPropDelay = defPropDelayICSneoVI;
-    WORD  wMaxPropDelay = defmcMIN2(defMAXPropDelay, 
+    WORD  wMaxPropDelay = defmcMIN2(defMAXPropDelay,
                                     (wNbt - defMIN_TSEG1_ICSneoVI - defMIN_TSEG2 - 1));
     for (INT i = wMinPropDelay; (i <= wMaxPropDelay) && bContinue; i++)
     {
@@ -145,7 +134,7 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD
         bContinue = bCalculateICSneoVIParams(CurrEntry, *puwIndex, SJW_TS1_TS2);
     }
 
-  return bContinue;
+    return bContinue;
 }
 
 /******************************************************************************/
@@ -162,8 +151,8 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIRegValues(WORD wNbt, WORD
 /*  Date Created     :  11.04.2008                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJW& CurEntry, 
-                                             UINT& unCurrIndex, BYTE bOption)
+bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJW& CurEntry,
+        UINT& unCurrIndex, BYTE bOption)
 {
     bool bContinue    = true;
 
@@ -183,9 +172,9 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJ
             WORD  wSampling   = 0;
 
             bContinue = (defREG_VALUE_LIST_COUNT_MAX > unCurrIndex);
-            wTSEG2max = (BYTE)(defmcMIN2(defMAX_TSEG2, 
+            wTSEG2max = (BYTE)(defmcMIN2(defMAX_TSEG2,
                                          wNbt - defMIN_TSEG1_ICSneoVI - 1 - wPropDelay));
-            wTSEG2min = (BYTE)(defmcMAX3(defMIN_TSEG2, 0, 
+            wTSEG2min = (BYTE)(defmcMAX3(defMIN_TSEG2, 0,
                                          wNbt - defMAX_TSEG1_ICSneoVI - 1 - wPropDelay));
             for (INT j = wTSEG2min; (j < wTSEG2max + 1) && bContinue; j++)
             {
@@ -207,7 +196,7 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJ
                     //Fill the structure with BRP, Sampling, NBT,SJW values for display
                     m_asColListCtrl[unCurrIndex].sBRPNBTSampNSJW.usBRP       = wBrp;
                     m_asColListCtrl[unCurrIndex].sBRPNBTSampNSJW.usSampling  = wSampling;
-                    m_asColListCtrl[unCurrIndex].sBRPNBTSampNSJW.usNBT       = wNbt;             
+                    m_asColListCtrl[unCurrIndex].sBRPNBTSampNSJW.usNBT       = wNbt;
                     m_asColListCtrl[unCurrIndex].sBRPNBTSampNSJW.usSJW       = wSJW;
 
                     //Pack the register CNF1 its bit BRPbit = BRP -1; SJWbit = SJW -1;
@@ -233,12 +222,12 @@ bool CChangeRegisters_CAN_ICS_neoVI::bCalculateICSneoVIParams(sBRP_NBT_SAMP_n_SJ
         case PD_TS1_TS2:
         {
             WORD wMinPropDelay = defPropDelayICSneoVI;
-            WORD wMaxPropDelay = defmcMIN2(defMAXPropDelay, 
-                           (CurEntry.usNBT - defMIN_TSEG1_ICSneoVI - defMIN_TSEG2 - 1));
+            WORD wMaxPropDelay = defmcMIN2(defMAXPropDelay,
+                                           (CurEntry.usNBT - defMIN_TSEG1_ICSneoVI - defMIN_TSEG2 - 1));
 
             for (INT i = wMinPropDelay; (i <= wMaxPropDelay) && bContinue; i++)
             {
-                CurEntry.usPropDelay = (USHORT)i;                    
+                CurEntry.usPropDelay = (USHORT)i;
                 bContinue = bCalculateICSneoVIParams(CurEntry, unCurrIndex, TS1_TS2);
             }
         }

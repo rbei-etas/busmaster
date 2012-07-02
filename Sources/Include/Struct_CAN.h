@@ -42,7 +42,7 @@ struct sTCAN_MSG
     unsigned char m_ucData[8];  // Databytes 0..7
 };
 typedef sTCAN_MSG STCAN_MSG;
-typedef sTCAN_MSG *PSTCAN_MSG;
+typedef sTCAN_MSG* PSTCAN_MSG;
 
 // This structure holds the error and the channel number
 typedef struct sCAN_ERR
@@ -52,6 +52,11 @@ typedef struct sCAN_ERR
     unsigned char m_ucChannel;
 
 } SCAN_ERR, *SPCAN_ERR;
+// To copy the data and advance the pointer of the target data stream
+#define COPY_DATA(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes;}
+
+// To copy the data and advance the pointer of the source data stream
+#define COPY_DATA_2(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes;}
 
 #define defMODE_ACTIVE                         1
 #define defMODE_PASSIVE                        2
@@ -87,96 +92,535 @@ const short CAN_MSG_IDS = 2;
 //This enum defines different filter types
 enum eHW_FILTER_TYPES
 {
-	HW_FILTER_ACCEPT_ALL = 0,
-	HW_FILTER_REJECT_ALL,
-	HW_FILTER_MANUAL_SET
+    HW_FILTER_ACCEPT_ALL = 0,
+    HW_FILTER_REJECT_ALL,
+    HW_FILTER_MANUAL_SET
 };
 
 
 // Controller details
-// information on the baud rate 
-struct sCONTROLLERDETAILS
+// information on the baud rate
+class sCONTROLLERDETAILS
 {
-    INT     m_nItemUnderFocus;      // item number under focus
-    INT     m_nBTR0BTR1;            // packed value of bit timing register 0 
-                                    // and bit timing register 1
-    char m_omStrCNF1[MAX_STRING];            // bit timing register 1 information
-    char m_omStrCNF2[MAX_STRING];            // bit timing register 2 information
-    char m_omStrCNF3[MAX_STRING];            // bit timing register 3 information
-    char m_omStrBTR0[MAX_STRING];            // bit timing register 0 information
-    char m_omStrBTR1[MAX_STRING];            // bit timing register 1 information
-    char m_omStrBaudrate[MAX_STRING];        // baudrate information
-    char m_omStrClock[MAX_STRING];           // clock information
-    char m_omStrSamplePercentage[MAX_STRING];        // sampling information
-    char m_omStrSampling[MAX_STRING];        // sampling information
-    char m_omStrWarningLimit[MAX_STRING];    // Warning limit of CAN Controller
-    char m_omStrPropagationDelay[MAX_STRING];// Propagation Delay
-    char m_omStrSjw[MAX_STRING];
-    char m_omStrAccCodeByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte1 information
-    char m_omStrAccCodeByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte2 information
-    char m_omStrAccCodeByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte3 information
-    char m_omStrAccCodeByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance code byte4 information
-    char m_omStrAccMaskByte1[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte1 information
-    char m_omStrAccMaskByte2[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte2 information
-    char m_omStrAccMaskByte3[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte3 information
-    char m_omStrAccMaskByte4[CAN_MSG_IDS][MAX_STRING];    // acceptance mask byte4 information
-	char m_omHardwareDesc[MAX_STRING];       // Hw description which user can  
-                                              // differentiate betw the channels  
-    BOOL  m_bAccFilterMode;       // acceptance filter mode(0: single, 1: Dual)
-    UCHAR m_ucControllerMode;                 // Controller mode : 1 : Active, 
-                                              // 2: Passive
-	BOOL m_bSelfReception;
+private:
+    void vCopyMembers(const sCONTROLLERDETAILS& objRef)
+    {
+        m_nItemUnderFocus   = objRef.m_nItemUnderFocus;                   // item number under focus
+        m_nBTR0BTR1         = objRef.m_nBTR0BTR1;
 
-	//Filter type: 1. Accept All 2. Reject All 3. Manual setting
-	eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];	  
+        m_omStrCNF1 = objRef.m_omStrCNF1;
+        m_omStrCNF2 = objRef.m_omStrCNF2;
+        m_omStrCNF3 = objRef.m_omStrCNF3;
+        m_omStrBTR0 = objRef.m_omStrBTR0;
+        m_omStrBTR1 = objRef.m_omStrBTR1;
+        m_omStrBaudrate = objRef.m_omStrBaudrate;
+        m_omStrClock = objRef.m_omStrClock;
+        m_omStrSamplePercentage = objRef.m_omStrSamplePercentage;
+        m_omStrSampling = objRef.m_omStrSampling;
+        m_omStrWarningLimit = objRef.m_omStrWarningLimit;
+        m_omStrPropagationDelay = objRef.m_omStrPropagationDelay;
+        m_omStrSjw = objRef.m_omStrSjw;
+
+        for(int i = 0; i < CAN_MSG_IDS; i++)
+        {
+            m_omStrAccCodeByte1[i] = objRef.m_omStrAccCodeByte1[i];
+            m_omStrAccCodeByte2[i] = objRef.m_omStrAccCodeByte2[i];
+            m_omStrAccCodeByte3[i] = objRef.m_omStrAccCodeByte3[i];
+            m_omStrAccCodeByte4[i] = objRef.m_omStrAccCodeByte4[i];
+            m_omStrAccMaskByte1[i] = objRef.m_omStrAccMaskByte1[i];
+            m_omStrAccMaskByte2[i] = objRef.m_omStrAccMaskByte2[i];
+            m_omStrAccMaskByte3[i] = objRef.m_omStrAccMaskByte3[i];
+            m_omStrAccMaskByte4[i] = objRef.m_omStrAccMaskByte4[i];
+
+            m_enmHWFilterType[i] = objRef.m_enmHWFilterType[i];
+        }
+        m_omHardwareDesc    = objRef.m_omHardwareDesc;
+        m_bAccFilterMode    = objRef.m_bAccFilterMode;
+        m_ucControllerMode  = objRef.m_ucControllerMode;
+        m_bSelfReception    = objRef.m_bSelfReception;
+    }
+public:
+    int     m_nItemUnderFocus;                   // item number under focus
+    int     m_nBTR0BTR1;                         // packed value of bit timing register 0
+    // and bit timing register 1
+    string  m_omStrCNF1;                         // bit timing register 1 information
+    string  m_omStrCNF2;                         // bit timing register 2 information
+    string  m_omStrCNF3;                         // bit timing register 3 information
+    string  m_omStrBTR0;                         // bit timing register 0 information
+    string  m_omStrBTR1;                         // bit timing register 1 information
+    string  m_omStrBaudrate;                     // baudrate information
+    string  m_omStrClock;                        // clock information
+    string  m_omStrSamplePercentage;             // sampling information
+    string  m_omStrSampling;                     // sampling information
+    string  m_omStrWarningLimit;                 // Warning limit of CAN Controller
+    string  m_omStrPropagationDelay;             // Propagation Delay
+    string  m_omStrSjw;
+    string  m_omStrAccCodeByte1[CAN_MSG_IDS];    // acceptance code byte1 information
+    string  m_omStrAccCodeByte2[CAN_MSG_IDS];    // acceptance code byte2 information
+    string  m_omStrAccCodeByte3[CAN_MSG_IDS];    // acceptance code byte3 information
+    string  m_omStrAccCodeByte4[CAN_MSG_IDS];    // acceptance code byte4 information
+    string  m_omStrAccMaskByte1[CAN_MSG_IDS];    // acceptance mask byte1 information
+    string  m_omStrAccMaskByte2[CAN_MSG_IDS];    // acceptance mask byte2 information
+    string  m_omStrAccMaskByte3[CAN_MSG_IDS];    // acceptance mask byte3 information
+    string  m_omStrAccMaskByte4[CAN_MSG_IDS];    // acceptance mask byte4 information
+    string  m_omHardwareDesc;                    // Hw description which user can
+    // differentiate between the channels
+    int     m_bAccFilterMode;                    // acceptance filter mode(0: single, 1: Dual)
+    int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
+    int     m_bSelfReception;
+
+    //Filter type: 1. Accept All 2. Reject All 3. Manual setting
+    eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
+
     sCONTROLLERDETAILS()
     {
         vInitialize();
+    }
+    sCONTROLLERDETAILS(const sCONTROLLERDETAILS& objRef)
+    {
+        vCopyMembers(objRef);
+    }
+    sCONTROLLERDETAILS& operator=(sCONTROLLERDETAILS& objRef)
+    {
+        vCopyMembers(objRef);
+        return *this;
     }
     void vInitialize()
     {
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
         m_nBTR0BTR1 = 49210;
+        m_omStrCNF1 = "7";
+        m_omStrCNF2 = "B8";
+        m_omStrCNF3 = "5";
+        m_omStrBTR0 = "C0";
+        m_omStrBTR1 = "3A";
+        m_omStrBaudrate = "500";
+        m_omStrClock = "16";
+        m_omStrSamplePercentage = "75";
+        m_omStrSampling = "1";
+        m_omStrWarningLimit = "96";
+        m_omStrPropagationDelay = "ALL";
+        m_omStrSjw = "4";
+        m_omStrAccCodeByte1[0] = "0";
+        m_omStrAccCodeByte2[0] = "0";
+        m_omStrAccCodeByte3[0] = "0";
+        m_omStrAccCodeByte4[0] = "0";
+        m_omStrAccCodeByte1[1] = "0";
+        m_omStrAccCodeByte2[1] = "0";
+        m_omStrAccCodeByte3[1] = "0";
+        m_omStrAccCodeByte4[1] = "0";
+        m_omStrAccMaskByte1[0] = "FF";
+        m_omStrAccMaskByte2[0] = "FF";
+        m_omStrAccMaskByte3[0] = "FF";
+        m_omStrAccMaskByte4[0] = "FF";
+        m_omStrAccMaskByte1[1] = "FF";
+        
+        m_omStrAccMaskByte2[1] = "F";
+        m_omStrAccMaskByte3[1] = "F";
+        m_omStrAccMaskByte4[1] = "F";        
 
-		//_tcscpy(m_omStrCNF1, _T("7"));
-		strcpy_s(m_omStrCNF1, "7");        
-        strcpy_s(m_omStrCNF2, "B8");
-        strcpy_s(m_omStrCNF3, "5");
-        strcpy_s(m_omStrBTR0, "C0");
-        strcpy_s(m_omStrBTR1, "3A");
-        strcpy_s(m_omStrBaudrate, "500");
-        strcpy_s(m_omStrClock, "16");
-        strcpy_s(m_omStrSamplePercentage, "75");
-        strcpy_s(m_omStrSampling, "1");
-        strcpy_s(m_omStrWarningLimit, "96");
-        strcpy_s(m_omStrPropagationDelay, "ALL");
-        strcpy_s(m_omStrSjw, "4");
-        _tcscpy(m_omStrAccCodeByte1[0], "0");
-        _tcscpy(m_omStrAccCodeByte2[0], "0");
-        _tcscpy(m_omStrAccCodeByte3[0], "0");
-        _tcscpy(m_omStrAccCodeByte4[0], "0");
-        _tcscpy(m_omStrAccCodeByte1[1], "0");
-        _tcscpy(m_omStrAccCodeByte2[1], "0");
-        _tcscpy(m_omStrAccCodeByte3[1], "0");
-        _tcscpy(m_omStrAccCodeByte4[1], "0");
-
-        _tcscpy(m_omStrAccMaskByte1[0], "FF");
-        _tcscpy(m_omStrAccMaskByte2[0], "FF");
-        _tcscpy(m_omStrAccMaskByte3[0], "FF");
-        _tcscpy(m_omStrAccMaskByte4[0], "FF");
-        _tcscpy(m_omStrAccMaskByte1[1], "FF");
-        _tcscpy(m_omStrAccMaskByte2[1], "FF");
-        _tcscpy(m_omStrAccMaskByte3[1], "FF");
-        _tcscpy(m_omStrAccMaskByte4[1], "FF");
-		strcpy_s(m_omHardwareDesc, "");
-
+        m_omHardwareDesc = "";
         m_bAccFilterMode = FALSE;
         m_ucControllerMode = 0x1;
-		m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
-		m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
-		m_bSelfReception = TRUE;
-    };
+        m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
+        m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
+        m_bSelfReception = TRUE;
+    }
+    void LoadControllerConfigData(BYTE*& pbyTemp)
+    {
+        COPY_DATA_2(&m_nItemUnderFocus, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&m_nBTR0BTR1, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&m_bAccFilterMode, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&m_ucControllerMode, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&m_bSelfReception, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&m_enmHWFilterType[0], pbyTemp, sizeof(eHW_FILTER_TYPES));
+        COPY_DATA_2(&m_enmHWFilterType[1], pbyTemp, sizeof(eHW_FILTER_TYPES));
+
+        char chTemp[1024] = {'\0'};
+        int nSize;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrCNF1 = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrCNF2 = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrCNF3 = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrBTR0 = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrBTR1 = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrBaudrate = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrClock = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrSamplePercentage = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrSampling = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrWarningLimit = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrPropagationDelay = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrSjw = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte1[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte1[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte2[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte2[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte3[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte3[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte4[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccCodeByte4[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte1[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte1[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte2[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte2[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte3[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte3[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte4[0] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omStrAccMaskByte4[1] = chTemp;
+
+        COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
+        COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
+        chTemp[nSize] = '\0';
+        m_omHardwareDesc = chTemp;
+    }
+    void GetControllerConfigSize(int& nSize)
+    {
+        int nStrSize;
+        nSize = 34 * sizeof(int);
+        nSize += 2 * sizeof(eHW_FILTER_TYPES);
+        nSize += m_omStrCNF1.length();;
+        nSize += m_omStrCNF2.length();;
+        nSize += m_omStrCNF3.length();;
+        nSize += m_omStrBTR0.length();;
+        nSize += m_omStrBTR1.length();;
+        nSize += m_omStrBaudrate.length();;
+        nSize += m_omStrClock.length();;
+        nSize += m_omStrSamplePercentage.length();;
+        nSize += m_omStrSampling.length();;
+        nSize += m_omStrWarningLimit.length();;
+        nSize += m_omStrPropagationDelay.length();;
+        nSize += m_omStrSjw.length();;
+        nSize += m_omStrAccCodeByte1[0].length();;
+        nSize += m_omStrAccCodeByte1[1].length();;
+        nSize += m_omStrAccCodeByte2[0].length();;
+        nSize += m_omStrAccCodeByte2[1].length();;
+        nSize += m_omStrAccCodeByte3[0].length();;
+        nSize += m_omStrAccCodeByte3[1].length();;
+        nSize += m_omStrAccCodeByte4[0].length();;
+        nSize += m_omStrAccCodeByte4[1].length();;
+        nSize += m_omStrAccMaskByte1[0].length();;
+        nSize += m_omStrAccMaskByte1[1].length();;
+        nSize += m_omStrAccMaskByte2[0].length();;
+        nSize += m_omStrAccMaskByte2[1].length();;
+        nSize += m_omStrAccMaskByte3[0].length();;
+        nSize += m_omStrAccMaskByte3[1].length();;
+        nSize += m_omStrAccMaskByte4[0].length();;
+        nSize += m_omStrAccMaskByte4[1].length();;
+        nSize += m_omHardwareDesc.length();;
+    }
+    void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
+    {
+        INT nIntSize = sizeof(INT);
+        COPY_DATA(pbyTemp, &m_nItemUnderFocus, sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_nBTR0BTR1,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_bAccFilterMode,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_ucControllerMode,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_bSelfReception,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_enmHWFilterType[0],  sizeof(eHW_FILTER_TYPES));
+        nSize += sizeof(eHW_FILTER_TYPES);
+        COPY_DATA(pbyTemp, &m_enmHWFilterType[1],  sizeof(eHW_FILTER_TYPES));
+        nSize += sizeof(eHW_FILTER_TYPES);
+
+        int nStrSize;
+
+        nStrSize = m_omStrCNF1.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrCNF1.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrCNF2.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrCNF2.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrCNF3.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrCNF3.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrBTR0.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrBTR0.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrBTR1.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrBTR1.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrBaudrate.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrBaudrate.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrClock.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrClock.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrSamplePercentage.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrSamplePercentage.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrSampling.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrSampling.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrWarningLimit.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrWarningLimit.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrPropagationDelay.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrPropagationDelay.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrSjw.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrSjw.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte1[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte1[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte1[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte1[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte2[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte2[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte2[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte2[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte3[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte3[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte3[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte3[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte4[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte4[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccCodeByte4[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccCodeByte4[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte1[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte1[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte1[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte1[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte2[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte2[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrCNF1.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte2[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte3[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte3[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte3[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte3[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte4[0].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte4[0].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omStrAccMaskByte4[1].length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrAccMaskByte4[1].c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+
+        nStrSize = m_omHardwareDesc.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omHardwareDesc.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
+    }
+    /*void vGetControllerSize()
+    {
+        int nSize = 0;
+        nSize += 5 * sizeof(int) +  CAN_MSG_IDS * sizeof(eHW_FILTER_TYPES)
+            + m_omStrCNF1.length() +
+    }*/
+
 };
 typedef sCONTROLLERDETAILS   SCONTROLLER_DETAILS;
 typedef sCONTROLLERDETAILS*  PSCONTROLLER_DETAILS;
@@ -274,7 +718,7 @@ struct sBUSSTATISTICS
     }
 };
 typedef sBUSSTATISTICS SBUSSTATISTICS;
-typedef sBUSSTATISTICS *PBUSSTATISTICS;
+typedef sBUSSTATISTICS* PBUSSTATISTICS;
 
 
 // This structure holds Error info
@@ -290,18 +734,18 @@ struct sERROR_INFO
     int           m_nSubError;   //added for providing Error bit details
 };
 typedef sERROR_INFO SERROR_INFO;
-typedef sERROR_INFO *PSERROR_INFO;
+typedef sERROR_INFO* PSERROR_INFO;
 
 
 /*****************************************************************************/
 /*This structure is used for communicating between Driver & CAN Application*/
 union sTDATAINFO
 {
-   STCAN_MSG     m_sCANMsg;      //The received / transmitted message
-   SERROR_INFO   m_sErrInfo;
+    STCAN_MSG     m_sCANMsg;      //The received / transmitted message
+    SERROR_INFO   m_sErrInfo;
 };
 typedef sTDATAINFO STDATAINFO;
-typedef sTDATAINFO *PSTDATAINFO;
+typedef sTDATAINFO* PSTDATAINFO;
 
 /*****************************************************************************/
 
@@ -316,14 +760,14 @@ private:
 
 public:
     unsigned char    m_ucDataType;  //Type of the message
-	LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
-                                   //QueryPerf..Counter()
-	STDATAINFO       m_uDataInfo;
+    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
+    //QueryPerf..Counter()
+    STDATAINFO       m_uDataInfo;
 
     static void vSetSortField(int nField);
-	static void vSetSortAscending(bool bAscending);
+    static void vSetSortAscending(bool bAscending);
     static int DoCompareIndiv(const void* pEntry1, const void* pEntry2);
-	static __int64 GetSlotID(sTCANDATA& pDatCAN);
+    static __int64 GetSlotID(sTCANDATA& pDatCAN);
 
 } STCANDATA, *PSTCANDATA;
 
@@ -343,7 +787,7 @@ struct sACC_FILTER_INFO
     unsigned char m_ucACC_Mask3;
 };
 typedef sACC_FILTER_INFO SACC_FILTER_INFO;
-typedef sACC_FILTER_INFO *PSACC_FILTER_INFO;
+typedef sACC_FILTER_INFO* PSACC_FILTER_INFO;
 
 
 // This structure holds Error count of Rx & Tx Process

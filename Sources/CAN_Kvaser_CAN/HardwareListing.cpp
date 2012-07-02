@@ -68,7 +68,7 @@ static char THIS_FILE[] = __FILE__;
  Modifications  : Raja N on 17.3.2005
                   Implemented code review comments
 *******************************************************************************/
-CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
+CHardwareListing::CHardwareListing( INTERFACE_HW* psIntrHw,
                                     int nSize, int* pnSelList, CWnd* pParent /*=NULL*/)
     : CDialog(CHardwareListing::IDD, pParent),
       m_nSize( nSize ),
@@ -78,8 +78,8 @@ CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
     //}}AFX_DATA_INIT
     // Create Image List for Hardware
     m_omImageList.Create(IDR_BMP_NET, defSIGNAL_ICON_SIZE, 1, WHITE_COLOR);
-    m_psHwInterface = psIntrHw;	
-	m_pnSelList = pnSelList;
+    m_psHwInterface = psIntrHw;
+    m_pnSelList = pnSelList;
 }
 
 /*******************************************************************************
@@ -93,7 +93,7 @@ CHardwareListing::CHardwareListing( INTERFACE_HW * psIntrHw,
                   enough arguments
 *******************************************************************************/
 CHardwareListing::CHardwareListing()
-        : CDialog(CHardwareListing::IDD, NULL)
+    : CDialog(CHardwareListing::IDD, NULL)
 {
     // This dialog will not work with out enough constructor parameters
     // Refer previous constructor for the parameter list
@@ -151,70 +151,70 @@ END_MESSAGE_MAP()
  Modifications  : Raja N on 14.03.2005, Create list control to hold selected
                   hardware items
 *******************************************************************************/
-void CHardwareListing::vSetHardwareList(INTERFACE_HW * /*psHwIntr*/, int nSize)
+void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
 {
-	//all the application related to UI shall be performed only if
-	//BUSMASTER is not called from COM
-	
-	// Clear the lsit
-	m_omHardwareList.DeleteAllItems();
-	// Remove all columns
-	m_omHardwareList.DeleteColumn(0);
-	// Set the Image List
-	m_omHardwareList.SetImageList(&m_omImageList, LVSIL_NORMAL );
-	// Set Image List for selected list
-	m_omSelectedHwList.SetImageList(&m_omImageList, LVSIL_SMALL );
-	
-	// Insert First Columns
-	// The style is Icon. So insert Empty column
-	m_omHardwareList.InsertColumn(0, STR_EMPTY);
-	
-	// Create selelected list columns
-	m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
-		defSTR_CHANNEL_NAME );
-	m_omSelectedHwList.SetColumnWidth( defCHANNEL_COL,
-		defSTR_CHANNEL_COL_WIDTH );
-	m_omSelectedHwList.InsertColumn( defHARDWARE_COL,
-		defSTR_HARDWARE_COL_NAME );
-	m_omSelectedHwList.SetColumnWidth( defHARDWARE_COL,
-		defSTR_HARDWARE_COL_WIDTH );
+    //all the application related to UI shall be performed only if
+    //BUSMASTER is not called from COM
 
-	int nImageIndex = 0;
-	CString omStrFormat(STR_EMPTY);
-	// Add List of unselected Hw in to the CListCtrl
-	int index = 0;	
-	bool bSelItem;
-	UINT nItemCount = 0;
-	for( ; index < nSize; index++)
-	{
-		bSelItem = false;
-		//check if the channel is already in selected list
-		for ( int i = 0 ; i < nSize && m_pnSelList[i]!=-1 ; i++ )
-		{
-			if ( m_pnSelList[i] == index )
-			{
-				bSelItem = true;
-				break;
-			}
-		}
+    // Clear the lsit
+    m_omHardwareList.DeleteAllItems();
+    // Remove all columns
+    m_omHardwareList.DeleteColumn(0);
+    // Set the Image List
+    m_omHardwareList.SetImageList(&m_omImageList, LVSIL_NORMAL );
+    // Set Image List for selected list
+    m_omSelectedHwList.SetImageList(&m_omImageList, LVSIL_SMALL );
 
-		//Add the channel only if its not in selected list
-		if ( !bSelItem )			
-		{
-			omStrFormat.Format( defSTR_HW_DISPLAY_FORMAT, index + 1);
-			nImageIndex = defDISCONNECTED_IMAGE_INDEX;
-			// Insert List Item
-			m_omHardwareList.InsertItem( nItemCount, omStrFormat, nImageIndex);
-			// Set the hardware list index as item data
-			m_omHardwareList.SetItemData( nItemCount++, index );
-		}
-	}
-	
-	// Set the selection to the first row
-	m_nSelectedItem = 0;
-	m_omHardwareList.SetItemState( m_nSelectedItem,
-		LVIS_SELECTED | LVIS_FOCUSED,
-		LVIS_SELECTED | LVIS_FOCUSED);
+    // Insert First Columns
+    // The style is Icon. So insert Empty column
+    m_omHardwareList.InsertColumn(0, STR_EMPTY);
+
+    // Create selelected list columns
+    m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
+                                     defSTR_CHANNEL_NAME );
+    m_omSelectedHwList.SetColumnWidth( defCHANNEL_COL,
+                                       defSTR_CHANNEL_COL_WIDTH );
+    m_omSelectedHwList.InsertColumn( defHARDWARE_COL,
+                                     defSTR_HARDWARE_COL_NAME );
+    m_omSelectedHwList.SetColumnWidth( defHARDWARE_COL,
+                                       defSTR_HARDWARE_COL_WIDTH );
+
+    int nImageIndex = 0;
+    CString omStrFormat(STR_EMPTY);
+    // Add List of unselected Hw in to the CListCtrl
+    int index = 0;
+    bool bSelItem;
+    UINT nItemCount = 0;
+    for( ; index < nSize; index++)
+    {
+        bSelItem = false;
+        //check if the channel is already in selected list
+        for ( int i = 0 ; i < nSize && m_pnSelList[i]!=-1 ; i++ )
+        {
+            if ( m_pnSelList[i] == index )
+            {
+                bSelItem = true;
+                break;
+            }
+        }
+
+        //Add the channel only if its not in selected list
+        if ( !bSelItem )
+        {
+            omStrFormat.Format( defSTR_HW_DISPLAY_FORMAT, index + 1);
+            nImageIndex = defDISCONNECTED_IMAGE_INDEX;
+            // Insert List Item
+            m_omHardwareList.InsertItem( nItemCount, omStrFormat, nImageIndex);
+            // Set the hardware list index as item data
+            m_omHardwareList.SetItemData( nItemCount++, index );
+        }
+    }
+
+    // Set the selection to the first row
+    m_nSelectedItem = 0;
+    m_omHardwareList.SetItemState( m_nSelectedItem,
+                                   LVIS_SELECTED | LVIS_FOCUSED,
+                                   LVIS_SELECTED | LVIS_FOCUSED);
 }
 
 /*******************************************************************************
@@ -227,14 +227,14 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW * /*psHwIntr*/, int nSize)
  Author(s)      : Raja N
  Date Created   : 08.09.2004
 *******************************************************************************/
-BOOL CHardwareListing::OnInitDialog() 
+BOOL CHardwareListing::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // Update Hardware List with network details
-    vSetHardwareList(m_psHwInterface, m_nSize);	
+    vSetHardwareList(m_psHwInterface, m_nSize);
 
-	//Update the previously selected channel list
-	vSetSelectedList();
+    //Update the previously selected channel list
+    vSetSelectedList();
 
     return TRUE;
 }
@@ -246,7 +246,7 @@ BOOL CHardwareListing::OnInitDialog()
                     the item that has changed and specifies its previous
                     and new states
   Output          : -
-  Functionality   : This function will be called by the framework when the 
+  Functionality   : This function will be called by the framework when the
                     user selects an item from the Hw List. This will update
                     selected Hw details
   Member of       : CHardwareListing
@@ -255,7 +255,7 @@ BOOL CHardwareListing::OnInitDialog()
   Modifications   : Raja N on 14.03.2005, Modified to get item data for getting
                     actual index.
 ******************************************************************************/
-void CHardwareListing::OnItemchangedHWList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CHardwareListing::OnItemchangedHWList(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     // If it is a selection change update the hardware details
@@ -286,21 +286,21 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
 {
     if(nIndex < m_nSize )
     {
-		//Driver Id
-		CString omStr;
-		omStr.Format(_T("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
-		m_omDriverID.SetWindowText(omStr);
-		//Firmware
-		m_omFirmware.SetWindowText(m_psHwInterface[nIndex].m_acDeviceName);
-		//Description
-        m_omNetName.SetWindowText( m_psHwInterface[nIndex].m_acDescription );
-		
+        //Driver Id
+        CString omStr;
+        omStr.Format(_T("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
+        m_omDriverID.SetWindowText(omStr);
+        //Firmware
+        m_omFirmware.SetWindowText(m_psHwInterface[nIndex].m_acDeviceName.c_str());
+        //Description
+        m_omNetName.SetWindowText( m_psHwInterface[nIndex].m_acDescription.c_str() );
+
     }
 }
 
 /*******************************************************************************
  Function Name  : OnBlinkHw
- Input(s)       :  - 
+ Input(s)       :  -
  Output         :  -
  Functionality  : This function will make the selected hardware LED to blink.
                   This is done by sending the CAN_PARAM_USER_LOCATION_INFO
@@ -385,9 +385,9 @@ void CHardwareListing::OnBlinkHw()
   Member of      : CHardwareListing
   Author(s)      : Raja N
   Date Created   : 25.2.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CHardwareListing::OnButtonSelect() 
+void CHardwareListing::OnButtonSelect()
 {
     int nSelected = m_nSelectedItem;
     // Insert the selected item in to the selected list
@@ -411,12 +411,12 @@ void CHardwareListing::OnButtonSelect()
     m_omSelectedHwList.SetItemText( nItem, 1, omStrHardware );
     // Set the array index
     m_omSelectedHwList.SetItemData( nItem, nArrayIndex );
-    
+
     // Remove the item from the list
     m_omHardwareList.DeleteItem( nSelected );
 
-	//Sort Hardware Items
-	vSortHardwareItems();
+    //Sort Hardware Items
+    vSortHardwareItems();
 
     // Set the focus to the first item
     m_omHardwareList.SetItemState( 0,
@@ -441,7 +441,7 @@ void CHardwareListing::OnButtonSelect()
                    Added code to change channel ID of rest of items when a
                    channel is deleted from the selected channel list
 *******************************************************************************/
-void CHardwareListing::OnButtonRemove() 
+void CHardwareListing::OnButtonRemove()
 {
     // Get the selected item from the list
     POSITION sPos = m_omSelectedHwList.GetFirstSelectedItemPosition();
@@ -450,7 +450,7 @@ void CHardwareListing::OnButtonRemove()
         int nSelectedItem = m_omSelectedHwList.GetNextSelectedItem(sPos);
         int nArrayIndex = (INT)m_omSelectedHwList.GetItemData( nSelectedItem );
         int nImageIndex;
-        
+
         nImageIndex = defDISCONNECTED_IMAGE_INDEX;
 
         // Insert this item in to the available list
@@ -458,13 +458,13 @@ void CHardwareListing::OnButtonRemove()
         int nItemCount = m_omHardwareList.GetItemCount();
         // Insert the new entry
         m_omHardwareList.InsertItem( nItemCount,
-                            m_omSelectedHwList.GetItemText( nSelectedItem, 1),
-                            nImageIndex );
+                                     m_omSelectedHwList.GetItemText( nSelectedItem, 1),
+                                     nImageIndex );
         // Set the hardware list index as item data.
         m_omHardwareList.SetItemData( nItemCount, nArrayIndex );
 
-	//Sort Hardware Items
-	vSortHardwareItems();
+        //Sort Hardware Items
+        vSortHardwareItems();
 
         // Remove the item from the selected list
         m_omSelectedHwList.DeleteItem( nSelectedItem );
@@ -483,7 +483,7 @@ void CHardwareListing::OnButtonRemove()
                 omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
                                      defSTR_CHANNEL_NAME,
                                      nSelectedItem + nIndex + 1 );
-                // Update Text 
+                // Update Text
                 m_omSelectedHwList.SetItemText( nSelectedItem + nIndex,
                                                 0,
                                                 omStrChannel );
@@ -504,9 +504,9 @@ void CHardwareListing::OnButtonRemove()
   Member of      : CHardwareListing
   Author(s)      : Raja N
   Date Created   : 21.2.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CHardwareListing::OnOK() 
+void CHardwareListing::OnOK()
 {
     // Check the number of selections done by the user
     m_nNoOfHwSelected = m_omSelectedHwList.GetItemCount();
@@ -522,18 +522,18 @@ void CHardwareListing::OnOK()
         // Show alert message telling that default association will be
         // used.
         // Assign selected values first
-		int nIndex = 0;
+        int nIndex = 0;
         for( ; nIndex < m_nNoOfHwSelected; nIndex++ )
         {
             // Store the index of hardware list.
             m_anSelectedChannels[ nIndex ] =
-                   (INT)m_omSelectedHwList.GetItemData( nIndex );
+                (INT)m_omSelectedHwList.GetItemData( nIndex );
         }
         // Assign remaining items
         for( nIndex = 0; nIndex < ( nNumberOfHwUsed - m_nNoOfHwSelected ); nIndex++ )
         {
             m_anSelectedChannels[ m_nNoOfHwSelected + nIndex ] =
-                                    (INT)m_omHardwareList.GetItemData( nIndex );
+                (INT)m_omHardwareList.GetItemData( nIndex );
         }
     }
     // User has associated all available hardware with a channel number
@@ -544,14 +544,14 @@ void CHardwareListing::OnOK()
         {
             // Store the index of hardware list.
             m_anSelectedChannels[ nIndex ] =
-                  (INT)m_omSelectedHwList.GetItemData( nIndex );
+                (INT)m_omSelectedHwList.GetItemData( nIndex );
         }
     }
     // This is invalid case. There could be some problem in list
     // control manipulation because the selected item count exceeds the
     // number of hardware available!!!!!
     else
-    {        
+    {
         CString omErr;
         omErr.Format(_T("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
         AfxMessageBox(omErr);
@@ -576,7 +576,7 @@ void CHardwareListing::OnOK()
                    Added check to find the minimum value of available hardware
                    Vs channels supported
 *******************************************************************************/
-void CHardwareListing::OnCancel() 
+void CHardwareListing::OnCancel()
 {
     // Show alert message telling that default association will be
     // used.
@@ -622,13 +622,13 @@ void CHardwareListing::vEnableDisableButtons()
 
     // Check the item count in the selected list and enable/disable
     if( nSelectedHardware != 0 &&
-        m_omSelectedHwList.GetSelectedCount() != 0 )
+            m_omSelectedHwList.GetSelectedCount() != 0 )
     {
         bRemoveEnable = TRUE;
     }
 
     // Update Window.
-    CWnd *pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Select Button
     pWnd = GetDlgItem( IDC_BUT_SELECT );
     if( pWnd != NULL )
@@ -643,7 +643,7 @@ void CHardwareListing::vEnableDisableButtons()
     }
     // Enable Hardware Details
     BOOL bHardwareDetailsEnable = TRUE;
-    
+
 
     // Driver ID
     pWnd = GetDlgItem( IDC_EDIT_DRIVER_ID );
@@ -692,7 +692,7 @@ void CHardwareListing::vEnableDisableButtons()
                     the item that has changed and specifies its previous
                     and new states
   Output          : -
-  Functionality   : This function will be called by the framework when the 
+  Functionality   : This function will be called by the framework when the
                     user selects an item from the selected Hw List. This will
                     UI buttons status based on the current selection
   Member of       : CHardwareListing
@@ -701,7 +701,7 @@ void CHardwareListing::vEnableDisableButtons()
   Modifications   :
 ******************************************************************************/
 void CHardwareListing::OnItemchangedLstcSelectedHwList( NMHDR* pNMHDR,
-                                                        LRESULT* pResult)
+        LRESULT* pResult)
 {
     //NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     // Update UI Buttons
@@ -719,21 +719,21 @@ void CHardwareListing::OnItemchangedLstcSelectedHwList( NMHDR* pNMHDR,
 }
 
 INT CHardwareListing::nGetSelectedList(int* pnList)
-{    
+{
     for (int i = 0; i < m_nNoOfHwSelected; i++)
     {
         pnList[i] = m_anSelectedChannels[i];
     }
-	for ( int i = m_nNoOfHwSelected; i < m_nSize ; i++)
-	{
-		pnList[i] = -1;
-	}
+    for ( int i = m_nNoOfHwSelected; i < m_nSize ; i++)
+    {
+        pnList[i] = -1;
+    }
     return m_nNoOfHwSelected;
 }
 
 /**
 * \brief         This function will set the selected channel list
-* \param[in]	 pnList, contains the list of selected channels 
+* \param[in]     pnList, contains the list of selected channels
 * \return        void
 * \authors       Arunkumar Karri
 * \date          13.12.2011 Created
@@ -747,30 +747,30 @@ void CHardwareListing::vSetSelectedList()
     CString omStrHardware;
     int nArrayIndex = -1;
 
-	for ( int i = 0 ; i < m_nSize && m_pnSelList[i]!=-1 ; i++)
-	{
-		nItem = m_omSelectedHwList.GetItemCount();
-		// Format channel information
-		omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-							 defSTR_CHANNEL_NAME,
-							 nItem + 1 );
-		// Get the Hardware name		
-		omStrHardware.Format( defSTR_HW_DISPLAY_FORMAT, m_pnSelList[i] + 1);				
-		int nImageIndex = defDISCONNECTED_IMAGE_INDEX;
-		// Insert the new item in to the selected list
-		m_omSelectedHwList.InsertItem( nItem, omStrChannel, nImageIndex );
-		// Set the Hardware Name
-		m_omSelectedHwList.SetItemText( nItem, 1, omStrHardware );
-		// Set the array index
-		m_omSelectedHwList.SetItemData( nItem, m_pnSelList[i] );	  
-	}
-	// Set the focus to the first item
-	m_omHardwareList.SetItemState( 0,
-								   LVIS_SELECTED | LVIS_FOCUSED,
-								   LVIS_SELECTED | LVIS_FOCUSED );
+    for ( int i = 0 ; i < m_nSize && m_pnSelList[i]!=-1 ; i++)
+    {
+        nItem = m_omSelectedHwList.GetItemCount();
+        // Format channel information
+        omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
+                             defSTR_CHANNEL_NAME,
+                             nItem + 1 );
+        // Get the Hardware name
+        omStrHardware.Format( defSTR_HW_DISPLAY_FORMAT, m_pnSelList[i] + 1);
+        int nImageIndex = defDISCONNECTED_IMAGE_INDEX;
+        // Insert the new item in to the selected list
+        m_omSelectedHwList.InsertItem( nItem, omStrChannel, nImageIndex );
+        // Set the Hardware Name
+        m_omSelectedHwList.SetItemText( nItem, 1, omStrHardware );
+        // Set the array index
+        m_omSelectedHwList.SetItemData( nItem, m_pnSelList[i] );
+    }
+    // Set the focus to the first item
+    m_omHardwareList.SetItemState( 0,
+                                   LVIS_SELECTED | LVIS_FOCUSED,
+                                   LVIS_SELECTED | LVIS_FOCUSED );
 }
 
-void CHardwareListing::OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult)
+void CHardwareListing::OnNMClickLstcHwList(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     // If it is a selection change update the hardware details
@@ -787,7 +787,7 @@ void CHardwareListing::OnNMClickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult)
+void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult)
 {
     //NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     // Update UI Buttons
@@ -804,49 +804,51 @@ void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResu
 }
 void CHardwareListing::vSortHardwareItems()
 {
-	// clear map data
-	if(mHardwareListMap.size() > 0 )
-		mHardwareListMap.clear();
+    // clear map data
+    if(mHardwareListMap.size() > 0 )
+    {
+        mHardwareListMap.clear();
+    }
 
-	int nItemCount = m_omHardwareList.GetItemCount();
-	for(int nIndex = 0; nIndex < nItemCount; nIndex++)
-	{
-		m_pouHardwareContainer = new HARDWARE_CONTAINER();
-		m_pouHardwareContainer->m_omHardwareName  = m_omHardwareList.GetItemText(nIndex,0);
+    int nItemCount = m_omHardwareList.GetItemCount();
+    for(int nIndex = 0; nIndex < nItemCount; nIndex++)
+    {
+        m_pouHardwareContainer = new HARDWARE_CONTAINER();
+        m_pouHardwareContainer->m_omHardwareName  = m_omHardwareList.GetItemText(nIndex,0);
 
-		// Get the array index
-		m_pouHardwareContainer->m_omDriverId  = m_omHardwareList.GetItemData( nIndex );
+        // Get the array index
+        m_pouHardwareContainer->m_omDriverId  = m_omHardwareList.GetItemData( nIndex );
 
-		// Insert List Item
-		mHardwareListMap.insert ( Int_Pair ( m_pouHardwareContainer->m_omDriverId , m_pouHardwareContainer ) );
+        // Insert List Item
+        mHardwareListMap.insert ( Int_Pair ( m_pouHardwareContainer->m_omDriverId , m_pouHardwareContainer ) );
 
-	}
+    }
 
-	m_omHardwareList.DeleteAllItems(); 
-	int iCount = 0;
-	for(int nIndex = 0; nIndex < m_nSize; nIndex++)
-	{
-		m_pIter = mHardwareListMap.find(nIndex);
+    m_omHardwareList.DeleteAllItems();
+    int iCount = 0;
+    for(int nIndex = 0; nIndex < m_nSize; nIndex++)
+    {
+        m_pIter = mHardwareListMap.find(nIndex);
 
-		if(m_pIter != mHardwareListMap.end() )//Hardware found
-		{
-			PHARDWARE_CONTAINER pTempHardware = m_pIter->second;
-			
-			//insert List Item
-			m_omHardwareList.InsertItem( iCount, pTempHardware->m_omHardwareName, 0);
-			// Set the hardware list index as item data
-			m_omHardwareList.SetItemData( iCount++, pTempHardware->m_omDriverId );
+        if(m_pIter != mHardwareListMap.end() )//Hardware found
+        {
+            PHARDWARE_CONTAINER pTempHardware = m_pIter->second;
 
-		}
-	}
+            //insert List Item
+            m_omHardwareList.InsertItem( iCount, pTempHardware->m_omHardwareName, 0);
+            // Set the hardware list index as item data
+            m_omHardwareList.SetItemData( iCount++, pTempHardware->m_omDriverId );
 
-	for ( m_pIter = mHardwareListMap.begin( ) ; m_pIter != mHardwareListMap.end( ) ; m_pIter++ )
-	{
-		delete(m_pIter->second); //release Memory
-		m_pIter->second = NULL;
-	}
+        }
+    }
 
-	// clear map data
-	mHardwareListMap.clear();
+    for ( m_pIter = mHardwareListMap.begin( ) ; m_pIter != mHardwareListMap.end( ) ; m_pIter++ )
+    {
+        delete(m_pIter->second); //release Memory
+        m_pIter->second = NULL;
+    }
+
+    // clear map data
+    mHardwareListMap.clear();
 }
 

@@ -21,17 +21,17 @@
 
 #include "TSExecutorGUI_StdAfx.h"
 #include "ExpressionExecutor.h"
-extern "C" int bGetExpressionResult(char *pchExpression);
+extern "C" int bGetExpressionResult(char* pchExpression);
 /******************************************************************************
 Function Name  :  SubstituteX
-Input(s)       :  DWORD dwVal - value that has to be replaced with 
+Input(s)       :  DWORD dwVal - value that has to be replaced with
 Output         :  BOOL
-Functionality  :   
+Functionality  :
 Member of      :  CExpressionExecutor
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  01/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CExpressionExecutor::SubstituteX(CString& omFormula, float fVal)
 {
@@ -46,12 +46,12 @@ Function Name  :  bGetExpressionValue
 Input(s)       :  CString omFormula - Expression
                   DWORD dwValue - Variable Value
 Output         :  BOOL
-Functionality  :  Evaluates the Expressioin 
+Functionality  :  Evaluates the Expressioin
 Member of      :  CExpressionExecutor
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  01/04/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CExpressionExecutor::bGetExpressionValue(CString omFormula, float fValue)
 {
@@ -60,9 +60,9 @@ BOOL CExpressionExecutor::bGetExpressionValue(CString omFormula, float fValue)
         return FALSE;
     }
     SubstituteX(omFormula, fValue);
-	char chBuffer[1024] = {'\n'};
-	strcpy(chBuffer, omFormula.GetBuffer(MAX_PATH));
-	chBuffer[omFormula.GetLength()-1] = '\n';
-	int val = bGetExpressionResult(chBuffer);
-	return val;
+    char chBuffer[1024] = {'\n'};
+    strcpy(chBuffer, omFormula.GetBuffer(MAX_PATH));
+    chBuffer[omFormula.GetLength()-1] = '\n';
+    int val = bGetExpressionResult(chBuffer);
+    return val;
 }

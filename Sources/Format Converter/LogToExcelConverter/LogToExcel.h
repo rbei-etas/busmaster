@@ -84,8 +84,9 @@ class CLogToExcel
 public:
     CLogToExcel(string strLogFileName, string strExcelFileName, UINT unNoOfFields, CHAR_ARRAY_20* pacFields) ; // Open spreadsheet for reading and writing
     ~CLogToExcel();
-    BOOL bConvert();
+    HRESULT bConvert();
     void fnSetSelectedFields(CListBox*);
+    void GetErrorString(HRESULT hResult, string& omStrErrorString);
     void fnSetFields();
 
 private:
