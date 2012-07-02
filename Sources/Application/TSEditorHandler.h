@@ -19,7 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #pragma once
-#define def_STR_TESTSETUPEDITORDLL  _T("TestSetupEditorGUI.dll")
+#define def_STR_TESTSETUPEDITORDLL  "TestSetupEditorGUI.dll"
 #include "TestSetupEditorGUI/TSEditorGUI_Extern.h"
 class TSEditorHandler
 {

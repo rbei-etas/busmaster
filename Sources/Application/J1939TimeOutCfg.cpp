@@ -1,26 +1,26 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  J1939TimeOutCfg.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/Application/J1939TimeOutCfg.cpv  $
-   
+
       Rev 1.3   09 Jun 2011 11:28:04   CANMNTTM
-    
-   
+
+
       Rev 1.2   15 Apr 2011 20:00:40   CANMNTTM
    Added RBEI Copyright information.
-   
+
       Rev 1.1   02 Mar 2011 15:38:14   CANMNTTM
    1. Support to J1939 Nodesimulation
    3. Support to J1939 Message window
    2. Removed unwanted macros
-   
+
       Rev 1.0   22 Dec 2010 19:06:28   CANMNTTM
-    
+
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  22/12/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 #include "stdafx.h"
@@ -31,19 +31,19 @@
 #include "J1939TimeOutCfg.h"
 
 
-#define TEXT_BROADCAST_TO   _T("Tb: Time interval between two packets in broadcast transmission.")
-#define TEXT_RESPONSE_TO    _T("Tr: Maximum wait period for a sender without receiving response from the receiver.")
-#define TEXT_HOLDING_TO     _T("Th: Time interval between two 'Clear to Send' message when delaying the data.")
-#define TEXT_T1_TO          _T("T1: Maximum wait period for a receiver when more packets were expected.")
-#define TEXT_T2_TO          _T("T2: Maximum wait period for a receiver to receive data packets after sending 'Clear to Send' message.")
-#define TEXT_T3_TO          _T("T3: Maximum wait period for a sender to receive 'End of Message Acknowledgement' after sending last data packet.")
-#define TEXT_T4_TO          _T("T4: Maximum wait period for a sender to receive another 'Clear to Send' message after receiving one to delay the data.")
-#define TEXT_BOUNDS_ERROR   _T("Error: Timer values should be greater than 0.")
+#define TEXT_BROADCAST_TO   "Tb: Time interval between two packets in broadcast transmission."
+#define TEXT_RESPONSE_TO    "Tr: Maximum wait period for a sender without receiving response from the receiver."
+#define TEXT_HOLDING_TO     "Th: Time interval between two 'Clear to Send' message when delaying the data."
+#define TEXT_T1_TO          "T1: Maximum wait period for a receiver when more packets were expected."
+#define TEXT_T2_TO          "T2: Maximum wait period for a receiver to receive data packets after sending 'Clear to Send' message."
+#define TEXT_T3_TO          "T3: Maximum wait period for a sender to receive 'End of Message Acknowledgement' after sending last data packet."
+#define TEXT_T4_TO          "T4: Maximum wait period for a sender to receive another 'Clear to Send' message after receiving one to delay the data."
+#define TEXT_BOUNDS_ERROR   "Error: Timer values should be greater than 0."
 // CJ1939TimeOutCfg dialog
 
 IMPLEMENT_DYNAMIC(CJ1939TimeOutCfg, CDialog)
 CJ1939TimeOutCfg::CJ1939TimeOutCfg(CWnd* pParent /*=NULL*/)
-	: CDialog(CJ1939TimeOutCfg::IDD, pParent)
+    : CDialog(CJ1939TimeOutCfg::IDD, pParent)
 {
 }
 
@@ -90,7 +90,7 @@ BOOL CJ1939TimeOutCfg::OnInitDialog()
     CButton* pButton = NULL;
     UINT unTimeOutVal = 0;
     pButton = (CButton*)GetDlgItem(IDC_CHECK_BROADCAST);
-    pButton->SetCheck(BST_UNCHECKED);   
+    pButton->SetCheck(BST_UNCHECKED);
 
     GetIJ1939DIL()->DILIJ_GetTimeOut(TYPE_TO_BROADCAST, unTimeOutVal);
     m_omBroadcast.vSetBase(BASE_DECIMAL);
@@ -266,12 +266,12 @@ void CJ1939TimeOutCfg::OnEnChangeEditT4()
 
 BOOL CJ1939TimeOutCfg::bVerifyTimeoutValue(UINT nValue)
 {
-	if ( nValue < 1 )
-	{
-		GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_BOUNDS_ERROR);
-		return FALSE;
-	}
-	return TRUE;
+    if ( nValue < 1 )
+    {
+        GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_BOUNDS_ERROR);
+        return FALSE;
+    }
+    return TRUE;
 }
 void CJ1939TimeOutCfg::OnBnClickedOk()
 {

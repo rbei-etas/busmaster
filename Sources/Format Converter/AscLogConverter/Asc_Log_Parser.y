@@ -9,7 +9,9 @@
 #define TIME_MODE_RELATIVE			 1
 #define	TIME_MODE_UNDEFINED			-1
 #define DEF_LOG_END_TEXT			"\n***END DATE AND TIME ***"
-#define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***"
+
+// Added new line
+#define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***\r\n"
 
 
 int nSize = 0;
@@ -26,8 +28,10 @@ void yyerror(const char *str)
 
 int yywrap()
 {
-	fprintf(yyout, DEF_LOG_END_TEXT);
-	fprintf(yyout, DEF_LOG_STOP_TEXT);
+	
+	//fprintf(yyout, DEF_LOG_END_TEXT);
+	//fprintf(yyout, DEF_LOG_STOP_TEXT);
+	
 	return 1;	//1 Sepcifies conversion is over.
 				//0 specifies the parser start the conversion from different
 				//Input
@@ -93,6 +97,9 @@ command:
 	RemoteFrame
 	|
 	Base_TimeStamps
+	
+	End_Statement
+	
 	|
 	Msg_Len
 	|
@@ -216,7 +223,13 @@ Log_Creation_Time:
 		char* chTemp;
 		int nMonth;
 		int nHour, nMins, nSec;
-		
+				
+		// Added required headers at the start of the file
+		 fprintf(yyout, "***BUSMASTER Ver 1.6.5***\n");
+		 fprintf(yyout, "***PROTOCOL CAN***\n");
+         fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
+         fprintf(yyout, "***[START LOGGING SESSION]***\n");
+	 
 		if( strcmp("Jan", (char*)$3) == 0 )
 			nMonth = 1;
 		else if( strcmp("Feb", (char*)$3) == 0 )
@@ -255,7 +268,10 @@ Log_Creation_Time:
 		{
 			nHour = nHour + 12;
 		}
-		fprintf(yyout,"%s:%d:%s %d:%d:%d:%s%s", $4, nMonth, $7, nHour, nMins, nSec, "000", "***");
+		
+		// Added Start date and Time text
+		fprintf(yyout,"***START DATE AND TIME %s:%d:%s %d:%d:%d:%s%s", $4, nMonth, $7, nHour, nMins, nSec, "000", "***");
+		
 		/*free($1);
 		free($2);
 		free($3);
@@ -269,5 +285,14 @@ Line_End:
 	{
 		nNumLines++;
 	}
+	
+	// Added new entry for End Trigger Token
+End_Statement:
+	ENDTRIGGERTOKEN
+	{
+	fprintf(yyout, DEF_LOG_END_TEXT);
+	fprintf(yyout, DEF_LOG_STOP_TEXT);
+	}
+	
 stmnt: 
 	error ';'

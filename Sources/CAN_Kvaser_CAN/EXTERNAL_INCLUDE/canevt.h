@@ -1,5 +1,5 @@
 /*
-**                         Copyright 1999 by KVASER AB            
+**                         Copyright 1999 by KVASER AB
 **                   P.O Box 4076 SE-51104 KINNAHULT, SWEDEN
 **             E-mail: staff@kvaser.se   WWW: http://www.kvaser.se
 **
@@ -14,7 +14,7 @@
 **
 **
 **
-** 
+**
 **   DO NOT USE THIS FILE.  THE DATA STRUCTURES AND CONSTANTS HERE ARE
 **   NOT YET IMPLEMENTED AND WILL CHANGE IN A FUTURE RELEASE.
 **
@@ -25,7 +25,7 @@
 **
 **
 **
-**   
+**
 **
 */
 #ifndef _CANEVT_H_
@@ -34,8 +34,8 @@
 #include <pshpack1.h>
 
 #define CANEVT_NO_COMMAND            0
-                                  
-  // Events                       
+
+// Events
 #define CANEVT_RECEIVE_MSG           1
 #define CANEVT_STATISTIC_STD         2
 #define CANEVT_STATISTIC_EXT         3
@@ -45,8 +45,8 @@
 #define CANEVT_ERROR                 7
 #define CANEVT_TIMER                 8
 #define CANEVT_TRANSCEIVER           9
-                                  
-  // Commands                     
+
+// Commands
 #define CANEVT_TRANSMIT_MSG          10
 #define CANEVT_SET_TIMER             11
 #define CANEVT_RESET_CLOCK           12
@@ -81,11 +81,12 @@
 #define MSGFLAG_TX                  0x40        // TX acknowledge
 #define MSGFLAG_TXRQ                0x80        // TX request
 
-typedef struct {
-  unsigned long id;
-  unsigned char flags;
-  unsigned char dlc;
-  unsigned char data[MAX_MSG_LEN];
+typedef struct
+{
+    unsigned long id;
+    unsigned char flags;
+    unsigned char dlc;
+    unsigned char data[MAX_MSG_LEN];
 } CanEventMessage;
 
 
@@ -94,59 +95,69 @@ typedef struct {
 #define CHIPSTAT_ERROR_WARNING       0x04
 #define CHIPSTAT_ERROR_ACTIVE        0x08
 
-typedef struct {
-  unsigned char busStatus;
-  unsigned char txErrorCounter;
-  unsigned char rxErrorCounter;
+typedef struct
+{
+    unsigned char busStatus;
+    unsigned char txErrorCounter;
+    unsigned char rxErrorCounter;
 } CanEventChipState;
 
-typedef struct {
-  unsigned long  stdData;
-  unsigned long  stdRemote;
-  unsigned long  errFrame;
-  unsigned short busLoad; // 0.00-100.00%
+typedef struct
+{
+    unsigned long  stdData;
+    unsigned long  stdRemote;
+    unsigned long  errFrame;
+    unsigned short busLoad; // 0.00-100.00%
 } CanEventStatisticsStd;
 
-typedef struct {
-  unsigned long  extData;
-  unsigned long  extRemote;
-  unsigned long  ovrFrame;
+typedef struct
+{
+    unsigned long  extData;
+    unsigned long  extRemote;
+    unsigned long  ovrFrame;
 } CanEventStatisticsExt;
 
-typedef struct {
-  unsigned char code; // qqq
+typedef struct
+{
+    unsigned char code; // qqq
 } CanEventErrorCode;
 
 //------------------------------------------------------------------------------
 // commands
 //------------------------------------------------------------------------------
 
-typedef struct {
-  unsigned long code;
-  unsigned long mask;
+typedef struct
+{
+    unsigned long code;
+    unsigned long mask;
 } CanEventAcceptanceFilter;
 
-typedef struct {
-  unsigned char mode;
+typedef struct
+{
+    unsigned char mode;
 } CanEventDriverMode;
 
-typedef struct {
-  unsigned long rate;
+typedef struct
+{
+    unsigned long rate;
 } CanEventSetTimer;
 
-typedef struct {
-  unsigned char level;
+typedef struct
+{
+    unsigned char level;
 } CanEventSetDebugLevel;
 
 #define OUTPUT_MODE_SILENT 0
 #define OUTPUT_MODE_NORMAL 1
 
-typedef struct {
-  unsigned char mode;
+typedef struct
+{
+    unsigned char mode;
 } CanEventSetOutputMode;
 
-typedef struct {
-  unsigned char code;
+typedef struct
+{
+    unsigned char code;
 } CanEventFunction;
 
 // The following definitions are copied from lapcmds.h !!
@@ -198,24 +209,28 @@ typedef struct {
 
 #endif
 
-typedef struct {
-  unsigned char event;       // TRANSCEIVER_EVENT_xxx
+typedef struct
+{
+    unsigned char event;       // TRANSCEIVER_EVENT_xxx
 } CanEventTransceiver;
 
-typedef struct {
-  unsigned char type;        // TRANSCEIVER_TYPE_xxx
-  unsigned char lineMode;    // TRANSCEIVER_LINEMODE_xxx
-  unsigned char resNet;      // TRANSCEIVER_RESNET_xxx
+typedef struct
+{
+    unsigned char type;        // TRANSCEIVER_TYPE_xxx
+    unsigned char lineMode;    // TRANSCEIVER_LINEMODE_xxx
+    unsigned char resNet;      // TRANSCEIVER_RESNET_xxx
 } CanEventGetTransceiverResponse;
 
-typedef struct {
-  unsigned char type;       // TRANSCEIVER_TYPE_xxx
-  unsigned char lineMode;   // TRANSCEIVER_LINEMODE_xxx
-  unsigned char resNet;     // TRANSCEIVER_RESNET_xxx
+typedef struct
+{
+    unsigned char type;       // TRANSCEIVER_TYPE_xxx
+    unsigned char lineMode;   // TRANSCEIVER_LINEMODE_xxx
+    unsigned char resNet;     // TRANSCEIVER_RESNET_xxx
 } CanEventSetTransceiver;
 
 
-typedef union {
+typedef union
+{
     CanEventMessage                 canEventMessage;
     CanEventChipState               canEventChipState;
     CanEventStatisticsStd           canEventStatisticsStd;
@@ -231,15 +246,16 @@ typedef union {
     CanEventGetTransceiverResponse  canEventGetTransceiverResponse;
     CanEventSetTransceiver          canEventSetTransceiver;
 } CanEventUnion;
-    
 
-typedef struct {
-  unsigned char tag;
-  unsigned char chanIndex;
-  unsigned char _internal1;
-  unsigned char _internal2;
-  unsigned long timeStamp;
-  CanEventUnion x;
+
+typedef struct
+{
+    unsigned char tag;
+    unsigned char chanIndex;
+    unsigned char _internal1;
+    unsigned char _internal2;
+    unsigned long timeStamp;
+    CanEventUnion x;
 } CanEvent, *PCanEvent;
 
 

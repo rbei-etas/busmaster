@@ -101,7 +101,7 @@ CTxMsgBlocksView::~CTxMsgBlocksView()
   Member of      : CTxMsgBlocksView
   Author(s)      : Raja N
   Date Created   : 26.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CTxMsgBlocksView::DoDataExchange(CDataExchange* pDX)
 {
@@ -124,7 +124,7 @@ void CTxMsgBlocksView::DoDataExchange(CDataExchange* pDX)
     //DDX_Check(pDX, IDC_CHKB_TRIGGER_TYPE, m_bTriggerType);
     //}}AFX_DATA_MAP
     DDX_Control(pDX, IDC_COMBO_MSGS, m_omComboAllMsgs);
-	DDV_MaxChars(pDX, m_omStrMsgBlockName, (defBLOCKNAME_SIZE - 1));
+    DDV_MaxChars(pDX, m_omStrMsgBlockName, (defBLOCKNAME_SIZE - 1));
 }
 
 
@@ -146,9 +146,9 @@ BEGIN_MESSAGE_MAP(CTxMsgBlocksView, CFormView)
     ON_BN_CLICKED(IDC_RADIOMONOSHOT, OnBnClickedRadiomonoshot)
     ON_BN_CLICKED(IDC_RADIOCYCLIC, OnBnClickedRadiocyclic)
     ON_CBN_SELCHANGE(IDC_COMBO_MSGS, OnCbnSelchangeComboMsgs)
-	ON_EN_KILLFOCUS(IDC_EDIT_MSG_BLOCK_NAME, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
-	ON_EN_KILLFOCUS(IDC_EDIT_TRG_TIME_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
-	ON_EN_KILLFOCUS(IDC_EDIT_TRG_KEY_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_MSG_BLOCK_NAME, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_TRG_TIME_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_TRG_KEY_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
 END_MESSAGE_MAP()
 
 
@@ -177,26 +177,26 @@ void CTxMsgBlocksView::Dump(CDumpContext& dc) const
   Member of      : CTxMsgBlocksView
   Author(s)      : Raja N
   Date Created   : 26.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CTxMsgBlocksView::OnInitialUpdate() 
+void CTxMsgBlocksView::OnInitialUpdate()
 {
     CFormView::OnInitialUpdate();
     // Set Init Flag to true
     m_bInitDlg = TRUE;
     // Register this to child window
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get Parent window pointer
     pWnd = pomGetParentWindow();
     if( pWnd != NULL )
     {
         // Register view pointer
-        ((CTxMsgChildFrame *)pWnd)->vSetTxMsgViewPointers( eTxMsgBlocksView,
-                                                             this );
+        ((CTxMsgChildFrame*)pWnd)->vSetTxMsgViewPointers( eTxMsgBlocksView,
+                this );
     }
     // Get Message List View Pointer
-    CTxMsgListView * pomListView = NULL;
-    pomListView = (CTxMsgListView *)pomGetListViewPointer();
+    CTxMsgListView* pomListView = NULL;
+    pomListView = (CTxMsgListView*)pomGetListViewPointer();
     // Populate List Control
     CHAR caColumnName[defMESSAGE_FRAME_COLUMN][defSTRING_SIZE] =
     {
@@ -209,27 +209,27 @@ void CTxMsgBlocksView::OnInitialUpdate()
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;
     INT nColumnSize = 0;
-    //Calculate the total size of all column header   
+    //Calculate the total size of all column header
     m_omLctrMsgBlockName.GetWindowRect( &rListCtrlRect);
     nTotalColunmSize     = rListCtrlRect.right - rListCtrlRect.left;
     nTotalStrLengthPixel = 0;
     UINT i;     //i declared outside loop
-    for(i=0; i<defMESSAGE_BLOCK_COLUMN;i++)
+    for(i=0; i<defMESSAGE_BLOCK_COLUMN; i++)
     {
-         nTotalStrLengthPixel += 
-             m_omLctrMsgBlockName.GetStringWidth(caColumnName[i]) ;
+        nTotalStrLengthPixel +=
+            m_omLctrMsgBlockName.GetStringWidth(caColumnName[i]) ;
     }
     //Insert each column name after calculating the size for the same.
-    for(i=0; i<defMESSAGE_BLOCK_COLUMN;i++)
+    for(i=0; i<defMESSAGE_BLOCK_COLUMN; i++)
     {
-         nColumnSize  = m_omLctrMsgBlockName.GetStringWidth(caColumnName[i]) ;
-         nColumnSize +=
-             (nTotalColunmSize-nTotalStrLengthPixel)/defMESSAGE_BLOCK_COLUMN;
-         m_omLctrMsgBlockName.InsertColumn(i,caColumnName[i],
-                                        LVCFMT_CENTER, nColumnSize);
+        nColumnSize  = m_omLctrMsgBlockName.GetStringWidth(caColumnName[i]) ;
+        nColumnSize +=
+            (nTotalColunmSize-nTotalStrLengthPixel)/defMESSAGE_BLOCK_COLUMN;
+        m_omLctrMsgBlockName.InsertColumn(i,caColumnName[i],
+                                          LVCFMT_CENTER, nColumnSize);
     }
     m_omLctrMsgBlockName.SetExtendedStyle(
-                                LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT);
+        LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT);
     // Get the message block count. No memory allocation is required.
     UINT* punCount = &m_unMsgBlockCount;
     CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData(TX_MSG_BLOCK_COUNT, (void**)&punCount);
@@ -278,12 +278,12 @@ void CTxMsgBlocksView::OnInitialUpdate()
     m_omComboAllMsgs.EnableWindow( FALSE );
     /*m_omButtonTxAllFrame.EnableWindow( FALSE );*/
 
-    for(i = 0; i<m_unMsgBlockCount;i++)
+    for(i = 0; i<m_unMsgBlockCount; i++)
     {
         if(psCurrentMsgBlock != NULL )
         {
             m_omLctrMsgBlockName.InsertItem( i,
-                                          psCurrentMsgBlock->m_acStrBlockName);
+                                             psCurrentMsgBlock->m_acStrBlockName);
             if(psCurrentMsgBlock->m_bType == TRUE)
             {
                 m_omLctrMsgBlockName.SetItemText( i,defSUBITEM_MSGBLOCK_TYPE,
@@ -317,7 +317,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
                 omStr += omStrKeyVal;
             }
             m_omLctrMsgBlockName.SetItemText(i,defSUBITEM_MSGBLOCK_TRG_VAL,
-                                                                        omStr);
+                                             omStr);
             m_omLctrMsgBlockName.SetCheck(i,psCurrentMsgBlock->m_bActive);
             psCurrentMsgBlock = psCurrentMsgBlock->m_psNextMsgBlocksList;
         }
@@ -333,14 +333,16 @@ void CTxMsgBlocksView::OnInitialUpdate()
     m_bInitDlg = FALSE;
     // Set the focus to the first entry
     m_omLctrMsgBlockName.SetItemState(0,LVIS_SELECTED|LVIS_FOCUSED,
-                                                    LVIS_SELECTED|LVIS_FOCUSED);
+                                      LVIS_SELECTED|LVIS_FOCUSED);
     // Disable Update Button as this is the initial view
-    CTxFunctionsView *pomFunctionsView = (CTxFunctionsView *)
-                                    pomGetFunctionsViewPointer();
+    CTxFunctionsView* pomFunctionsView = (CTxFunctionsView*)
+                                         pomGetFunctionsViewPointer();
     if( pomFunctionsView != NULL )
     {
-		if(pomFunctionsView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-			pomFunctionsView->m_omButtonApply.EnableWindow( FALSE );
+        if(pomFunctionsView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionsView->m_omButtonApply.EnableWindow( FALSE );
+        }
     }
     //Initiate All msgs combo box
     /*m_omComboAllMsgs.AddString("Single");
@@ -357,13 +359,13 @@ void CTxMsgBlocksView::OnInitialUpdate()
  * or menu. This will add a new message block and
  * initialise it.
  */
-void CTxMsgBlocksView::OnAddMsgBlock() 
+void CTxMsgBlocksView::OnAddMsgBlock()
 {
     PSMSGBLOCKLIST psCurrentMsgBlock  = NULL;
     BOOL bAdd = TRUE;
     // Get Message List View Pointer
-    CTxMsgListView * pomListView = NULL;
-    pomListView = (CTxMsgListView *)pomGetListViewPointer();
+    CTxMsgListView* pomListView = NULL;
+    pomListView = (CTxMsgListView*)pomGetListViewPointer();
     // Call function to add message block
     bAdd = bAddBlock(psCurrentMsgBlock);
     // Once add is successfull, the message details will be updated in control
@@ -383,7 +385,7 @@ void CTxMsgBlocksView::OnAddMsgBlock()
             pomListView->m_omLctrMsgList.DeleteAllItems();
         }
         m_unMsgBlockCount++;
-        
+
         INT nTotalCount = m_omLctrMsgBlockName.GetItemCount();
         m_bInitDlg = TRUE;
         // Insert the new Item
@@ -396,7 +398,7 @@ void CTxMsgBlocksView::OnAddMsgBlock()
         m_omLctrMsgBlockName.SetCheck( nTotalCount,
                                        psCurrentMsgBlock->m_bActive );
         //Update cyclic radio button
-        CButton *pRadioCyclic = (CButton*)GetDlgItem(IDC_RADIOCYCLIC);
+        CButton* pRadioCyclic = (CButton*)GetDlgItem(IDC_RADIOCYCLIC);
         if (pRadioCyclic != NULL)
         {
             pRadioCyclic->SetCheck(psCurrentMsgBlock->m_bType);
@@ -416,20 +418,22 @@ void CTxMsgBlocksView::OnAddMsgBlock()
         m_omLctrMsgBlockName.SetItemState(nTotalCount,
                                           LVIS_SELECTED|LVIS_FOCUSED,
                                           LVIS_SELECTED|LVIS_FOCUSED);
-       CTxFunctionsView * pView =
-                (CTxFunctionsView * )pomGetFunctionsViewPointer();
-       if( pView != NULL )
-       {
-		   if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-			   pView->m_omButtonApply.EnableWindow(TRUE);
-       }
-       if(m_unMsgBlockCount >= defMAX_MSGBLOCK )
-       {
+        CTxFunctionsView* pView =
+            (CTxFunctionsView* )pomGetFunctionsViewPointer();
+        if( pView != NULL )
+        {
+            if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+            {
+                pView->m_omButtonApply.EnableWindow(TRUE);
+            }
+        }
+        if(m_unMsgBlockCount >= defMAX_MSGBLOCK )
+        {
             m_omButtonAddMsgBlock.EnableWindow(FALSE);
-       }
+        }
 
-	   //update the global list for storing the changed data
-		AutoUpdateChanges();
+        //update the global list for storing the changed data
+        AutoUpdateChanges();
     }
 }
 
@@ -449,7 +453,7 @@ void CTxMsgBlocksView::OnAddMsgBlock()
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-BOOL CTxMsgBlocksView::bAddBlock(SMSGBLOCKLIST* &psMsgCurrentBlock)
+BOOL CTxMsgBlocksView::bAddBlock(SMSGBLOCKLIST*& psMsgCurrentBlock)
 {
     BOOL bReturn              = TRUE;
     PSMSGBLOCKLIST psMsgBlock = new SMSGBLOCKLIST;
@@ -472,12 +476,12 @@ BOOL CTxMsgBlocksView::bAddBlock(SMSGBLOCKLIST* &psMsgCurrentBlock)
         psMsgNextBlock         = m_psMsgBlockList;
         if(psMsgNextBlock != NULL )
         {
-            do 
+            do
             {
                 if(psMsgNextBlock->m_psNextMsgBlocksList == NULL )
                 {
-                   psMsgNextBlock->m_psNextMsgBlocksList = psMsgBlock;
-                   psMsgNextBlock = psMsgBlock->m_psNextMsgBlocksList;
+                    psMsgNextBlock->m_psNextMsgBlocksList = psMsgBlock;
+                    psMsgNextBlock = psMsgBlock->m_psNextMsgBlocksList;
                 }
                 else
                 {
@@ -537,7 +541,7 @@ void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
 void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
 {
     BOOL bReturn = FALSE;
-    if ( AfxMessageBox( defDEL_MSG_BLOCK, 
+    if ( AfxMessageBox( defDEL_MSG_BLOCK,
                         MB_YESNO|MB_ICONQUESTION) == IDYES)
     {
         if(m_nSelectedMsgBlockIndex != -1 )
@@ -558,14 +562,14 @@ void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
                 {
                     // Shift the selection to item under fucus as selection
                     // deos not move up if an selected item is deleted.
-                    m_nSelectedMsgBlockIndex = 
-                      m_omLctrMsgBlockName.GetNextItem(-1,LVIS_FOCUSED);
+                    m_nSelectedMsgBlockIndex =
+                        m_omLctrMsgBlockName.GetNextItem(-1,LVIS_FOCUSED);
                     if(m_nSelectedMsgBlockIndex != -1 )
                     {
                         m_omLctrMsgBlockName.SetItemState(
-                                                   m_nSelectedMsgBlockIndex,
-                                                   LVIS_SELECTED,
-                                                   LVIS_SELECTED);
+                            m_nSelectedMsgBlockIndex,
+                            LVIS_SELECTED,
+                            LVIS_SELECTED);
                     }
                 }
                 else
@@ -574,8 +578,8 @@ void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
                     m_omButtonDeleteMsgBlock.EnableWindow(FALSE);
                     vEnableControls(FALSE);
                     // Disable Signal List and related component components
-                    CTxMsgDetailsView * pView = (CTxMsgDetailsView * )
-                                                pomGetDetailsViewPointer();
+                    CTxMsgDetailsView* pView = (CTxMsgDetailsView* )
+                                               pomGetDetailsViewPointer();
                     if( pView != NULL )
                     {
                         pView->vDisableSignalComponents();
@@ -583,18 +587,20 @@ void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
                     }
                 }
 
-                CTxFunctionsView * pView = (CTxFunctionsView * )
-                                                pomGetFunctionsViewPointer();
+                CTxFunctionsView* pView = (CTxFunctionsView* )
+                                          pomGetFunctionsViewPointer();
                 if( pView != NULL )
                 {
-					if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-						pView->m_omButtonApply.EnableWindow(TRUE);
+                    if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+                    {
+                        pView->m_omButtonApply.EnableWindow(TRUE);
+                    }
                 }
                 // Update Modified Flag
                 m_bModified = TRUE;
 
-				//update the global list for storing the changed data
-				AutoUpdateChanges();
+                //update the global list for storing the changed data
+                AutoUpdateChanges();
             }
             m_bMsgBlockDeleted = FALSE;
         }
@@ -621,14 +627,14 @@ BOOL CTxMsgBlocksView::bDeleteBlock()
 {
     BOOL bReturn = FALSE;
     // Get List view pointer
-    CTxMsgListView * pomListView = (CTxMsgListView * )pomGetListViewPointer();
+    CTxMsgListView* pomListView = (CTxMsgListView* )pomGetListViewPointer();
     if( pomListView != NULL )
     {
         bReturn = TRUE;
-        
+
         PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
         PSMSGBLOCKLIST psDelMsgBlock     = NULL;
-        psDelMsgBlock = 
+        psDelMsgBlock =
             psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
         bReturn = pomListView->bDeleteAllMsgFromBlock(psDelMsgBlock);
         if(bReturn == TRUE )
@@ -640,18 +646,18 @@ BOOL CTxMsgBlocksView::bDeleteBlock()
                 if(psDelMsgBlock == m_psMsgBlockList)
                 {
                     m_psMsgBlockList = psDelMsgBlock->m_psNextMsgBlocksList;
-                } 
-                else 
+                }
+                else
                 {
-                    // If the block not the first one, then remove the node 
+                    // If the block not the first one, then remove the node
                     // to be deleted from the list.
-                    psMsgCurrentBlock = 
+                    psMsgCurrentBlock =
                         psGetMsgBlockPointer( m_nSelectedMsgBlockIndex - 1,
                                               m_psMsgBlockList);
                     if(psMsgCurrentBlock != NULL )
                     {
-                        psMsgCurrentBlock->m_psNextMsgBlocksList = 
-                                        psDelMsgBlock->m_psNextMsgBlocksList;
+                        psMsgCurrentBlock->m_psNextMsgBlocksList =
+                            psDelMsgBlock->m_psNextMsgBlocksList;
                     }
                     else
                     {
@@ -690,17 +696,17 @@ BOOL CTxMsgBlocksView::bDeleteBlock()
 /*  Member of        :  CTxMsgBlocksView                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
+/*  Date Created     :  08.01.2004                                            */
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
 SMSGBLOCKLIST* CTxMsgBlocksView::psGetMsgBlockPointer(INT nIndexCurBlock,
-                                                 SMSGBLOCKLIST* psMsgBlockList)
+        SMSGBLOCKLIST* psMsgBlockList)
 {
     if(psMsgBlockList != NULL && nIndexCurBlock != -1)
     {
-	    INT nIndex = 0;
-        // Get the message block pointer in the list at the index 
+        INT nIndex = 0;
+        // Get the message block pointer in the list at the index
         // nIndexCurBlock
         while(nIndex != nIndexCurBlock)
         {
@@ -734,9 +740,9 @@ SMSGBLOCKLIST* CTxMsgBlocksView::psGetMsgBlockPointer(INT nIndexCurBlock,
 /*  Modification By  :  Anish                                                 */
 /*  Modification on  :  26.12.2006, Key trigger + update bug fixed            */
 /******************************************************************************/
-void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR, 
-                                                      LRESULT* pResult) 
-{    
+void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
+        LRESULT* pResult)
+{
     //vSaveCurrentBlockFirst();
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     if(pNMListView->uChanged != LVIF_TEXT && m_bInitDlg == FALSE)
@@ -744,15 +750,15 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
         UINT unCurrentState = 0;
         PSMSGBLOCKLIST psMsgBlock = NULL ;
         // Get Message List View Pointer
-        CTxMsgListView * pomListView = NULL;
-        pomListView = (CTxMsgListView *)pomGetListViewPointer();
-        CTxFunctionsView * pomFunctionView = NULL;
-        pomFunctionView = (CTxFunctionsView *)pomGetFunctionsViewPointer();
+        CTxMsgListView* pomListView = NULL;
+        pomListView = (CTxMsgListView*)pomGetListViewPointer();
+        CTxFunctionsView* pomFunctionView = NULL;
+        pomFunctionView = (CTxFunctionsView*)pomGetFunctionsViewPointer();
         // Get the current state i.e new state of the list control items
         // and check for if it is checked, unchecked, selected and focused.
         unCurrentState = pNMListView->uNewState & defMASK_LIST_CTRL;
         if(  unCurrentState != FALSE
-            &&  pNMListView->uChanged  == LVIF_STATE )
+                &&  pNMListView->uChanged  == LVIF_STATE )
         {
             // check if the item is focused and selected.
             unCurrentState =
@@ -760,6 +766,9 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
             // If yes, update information for newly selected item.
             if(unCurrentState != FALSE)
             {
+                //update the global list for storing the changed data
+                UpdateList(pNMListView);
+
                 m_nSelectedMsgBlockIndex = pNMListView->iItem;
                 psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
                                                   m_psMsgBlockList);
@@ -775,8 +784,8 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
                     vDisplayMsgBlockDetails(psMsgBlock);
                     vEnableControls(TRUE);
                     // Enavle Add Button
-                    CTxMsgDetailsView * pView = (CTxMsgDetailsView * )
-                                        pomGetDetailsViewPointer();
+                    CTxMsgDetailsView* pView = (CTxMsgDetailsView* )
+                                               pomGetDetailsViewPointer();
                     if( pView != NULL )
                     {
                         pView->vEnableAddButton( TRUE );
@@ -786,22 +795,22 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
                         if(psMsgBlock->m_unMsgCount > 0)
                         {
                             pomListView->
-                                m_omButtonDeleteAllMsg.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
+                            m_omButtonDeleteAllMsg.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
                         }
                         else
                         {
                             pomListView->
-                                m_omButtonDeleteAllMsg.EnableWindow(FALSE);
+                            m_omButtonDeleteAllMsg.EnableWindow(FALSE);
                         }
                         // By Default Disable Delete as none of the
                         // items are selected
                         pomListView->m_omButtonDeleteSelMsg.EnableWindow(FALSE);
                     }
-                    // if the block is active and then enable or disable 
+                    // if the block is active and then enable or disable
                     // some button based on if transmission is on or off.
                     if(psMsgBlock->m_bActive == TRUE)
                     {
-                        
+
                         if( IS_KEY_TRIGGERED (psMsgBlock->m_ucTrigger) )
                         {
                             m_omComboAllMsgs.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
@@ -835,20 +844,22 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
             // selected message.
             unCurrentState = pNMListView->uNewState & defMASK_CHECK_UNCHECK;
             psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
-                                                  m_psMsgBlockList);
+                                              m_psMsgBlockList);
             // Update check box selection only if transmission is not on.
             if(unCurrentState != FALSE && CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == FALSE)
             {
-                psMsgBlock->m_bActive = 
+                psMsgBlock->m_bActive =
                     m_omLctrMsgBlockName.GetCheck(pNMListView->iItem);
                 if( pomFunctionView != NULL )
                 {
-					if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-						pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+                    if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+                    {
+                        pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+                    }
                 }
 
-				//update the global list for storing the changed data
-				AutoUpdateChanges();
+                //update the global list for storing the changed data
+                AutoUpdateChanges();
 
                 // Update Modified Flag
                 m_bModified = TRUE;
@@ -858,31 +869,49 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
                 // Keep the check/uncheck condition as it is if transmission is
                 // on
                 m_omLctrMsgBlockName.SetCheck(pNMListView->iItem,
-                    psMsgBlock->m_bActive );
+                                              psMsgBlock->m_bActive );
             }
         }
-        else if(pNMListView->uChanged  == LVIF_STATE && 
+        else if(pNMListView->uChanged  == LVIF_STATE &&
                 pNMListView->uOldState == LVIS_SELECTED )
         {
-          psMsgBlock = NULL ;
-          psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
-                                            m_psMsgBlockList);
-          // Save the changes if items is deselected and not deleted.
-          if(psMsgBlock != NULL && m_bMsgBlockDeleted == FALSE )
-          {
-             // vUpdateMsgBlockDetials(psMsgBlock);
-              m_omButtonDeleteMsgBlock.EnableWindow(FALSE);
-              //Disable Delete All Button
-              if( pomListView != NULL )
-              {
-                  pomListView->m_omButtonDeleteAllMsg.EnableWindow(FALSE);
-              }
-          }
+            psMsgBlock = NULL ;
+            psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
+                                              m_psMsgBlockList);
+            // Save the changes if items is deselected and not deleted.
+            if(psMsgBlock != NULL && m_bMsgBlockDeleted == FALSE )
+            {
+                // vUpdateMsgBlockDetials(psMsgBlock);
+                m_omButtonDeleteMsgBlock.EnableWindow(FALSE);
+                //Disable Delete All Button
+                if( pomListView != NULL )
+                {
+                    pomListView->m_omButtonDeleteAllMsg.EnableWindow(FALSE);
+                }
+            }
         }
     }
     *pResult = 0;
 }
 
+void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* pNMListView)
+{    
+    PSMSGBLOCKLIST psMsgBlock = NULL ;
+    //int nRowNum = m_omLctrMsgBlockName.GetSelectionMark();
+    for(int nItem =0 ; nItem < m_omLctrMsgBlockName.GetItemCount(); nItem++)
+    {
+        CString        csName = m_omLctrMsgBlockName.GetItemText(nItem, 0);
+        psMsgBlock = psGetMsgBlockPointer(nItem,m_psMsgBlockList);
+        if(psMsgBlock == NULL)
+        {
+            return;
+        }
+        if(strcmp(psMsgBlock->m_acStrBlockName, csName.GetBuffer(0)) != 0)
+        {
+            strcpy(psMsgBlock->m_acStrBlockName, csName.GetBuffer(0));
+        }
+    }
+}
 /******************************************************************************/
 /*  Function Name    :  vDisplayMsgBlockDetails                               */
 /*  Input(s)         :  PSMSGBLOCKLIST psMsgBlock: current msg block pointer  */
@@ -910,12 +939,12 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
         m_omEditMsgBlockName.SetWindowText(m_omStrMsgBlockName);
         // TRUE -> CYCLIC so uncheck the check box "Monoshot"
         // FALSE -> MONOSHOT so check the check box "Monoshot"
-        CButton *pRadioCyclic = (CButton*)GetDlgItem(IDC_RADIOCYCLIC);
-        CButton *pRadioMonoShot = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
+        CButton* pRadioCyclic = (CButton*)GetDlgItem(IDC_RADIOCYCLIC);
+        CButton* pRadioMonoShot = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
         if ((pRadioCyclic != NULL) && (pRadioMonoShot != NULL))
         {
             pRadioCyclic->SetCheck(psMsgBlock->m_bType);
-            pRadioMonoShot->SetCheck(!psMsgBlock->m_bType);            
+            pRadioMonoShot->SetCheck(!psMsgBlock->m_bType);
         }
         if (psMsgBlock->m_bType == TRUE)
         {
@@ -926,7 +955,7 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
             SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Monoshot) on event");
         }
         //m_omButtonTriggerType.SetCheck(!psMsgBlock->m_bType);
-        
+
         if (psMsgBlock->m_bTxAllFrame)
         {
             m_omComboAllMsgs.SelectString(0, "All");
@@ -1005,8 +1034,10 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
         // block.
         if(psMsgBlock->m_unMsgCount > 0)
         {
-            CTxMsgListView * pomListView = ( CTxMsgListView * )
-                                        pomGetListViewPointer();
+            int  nChecked= 0;
+            int  nUnCkecked = 0;
+            CTxMsgListView* pomListView = ( CTxMsgListView* )
+                                          pomGetListViewPointer();
             if( pomListView != NULL )
             {
                 PSTXCANMSGLIST psTxMsgList = NULL;
@@ -1016,9 +1047,26 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
                     if(psTxMsgList != NULL )
                     {
                         pomListView->vUpdateMsgListDisplay(
-                                        psTxMsgList->m_sTxMsgDetails,-1 );
+                            psTxMsgList->m_sTxMsgDetails,-1 );
                         psTxMsgList = psTxMsgList->m_psNextMsgDetails;
                     }
+                    //added by ashwin for checkin the header listctrl of list view
+                    if(psMsgBlock->m_psTxCANMsgList->m_sTxMsgDetails.m_bEnabled == TRUE)
+                    {
+                        nChecked++;
+                    }
+                    else if(psMsgBlock->m_psTxCANMsgList->m_sTxMsgDetails.m_bEnabled == FALSE)
+                    {
+                        nUnCkecked++;
+                    }
+                }
+                if(nChecked == psMsgBlock->m_unMsgCount)
+                {
+                    pomListView->vCheckHeaderCtrl(true);
+                }
+                else if(nUnCkecked == psMsgBlock->m_unMsgCount)
+                {
+                    pomListView->vCheckHeaderCtrl(false);
                 }
             }
         }
@@ -1093,17 +1141,17 @@ VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
             psCurrentMsgBlock->m_unTimeInterval = defDEFAULT_TIME_VAL;
         }
 
-      if( IS_KEY_TRIGGERED(psCurrentMsgBlock->m_ucTrigger) )
-      {
-        if(m_omStrKeyVal.IsEmpty() == FALSE)
+        if( IS_KEY_TRIGGERED(psCurrentMsgBlock->m_ucTrigger) )
         {
-            psCurrentMsgBlock->m_ucKeyValue     = m_omStrKeyVal.GetAt(0);
+            if(m_omStrKeyVal.IsEmpty() == FALSE)
+            {
+                psCurrentMsgBlock->m_ucKeyValue     = m_omStrKeyVal.GetAt(0);
+            }
+            else
+            {
+                psCurrentMsgBlock->m_ucKeyValue = defDEFAULT_KEY_VAL;
+            }
         }
-        else
-        {
-            psCurrentMsgBlock->m_ucKeyValue = defDEFAULT_KEY_VAL;
-        }
-      }
     }
 }
 
@@ -1117,11 +1165,11 @@ VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
 /*  Member of        :  CTxMsgBlocksView                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
+/*  Date Created     :  08.01.2004                                            */
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-void CTxMsgBlocksView::OnChangeEditMsgBlockName() 
+void CTxMsgBlocksView::OnChangeEditMsgBlockName()
 {
     CString omStrMsgBlockName = "";
     UpdateData(TRUE);
@@ -1129,13 +1177,15 @@ void CTxMsgBlocksView::OnChangeEditMsgBlockName()
     m_omLctrMsgBlockName.SetItemText(m_nSelectedMsgBlockIndex,
                                      defMAIN_ITEM,
                                      m_omStrMsgBlockName);
-    CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                            pomGetFunctionsViewPointer();
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                        pomGetFunctionsViewPointer();
     if( pomFunctionView != NULL )
     {
-		if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-			pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
-	}
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+        }
+    }
 }
 
 /******************************************************************************/
@@ -1148,11 +1198,11 @@ void CTxMsgBlocksView::OnChangeEditMsgBlockName()
 /*  Member of        :  CTxMsgBlocksView                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
+/*  Date Created     :  08.01.2004                                            */
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  05.08.2004, Added modified flag to indicate change    */
 /******************************************************************************/
-void CTxMsgBlocksView::OnChkbTriggerType() 
+void CTxMsgBlocksView::OnChkbTriggerType()
 {
     if(m_nSelectedMsgBlockIndex != -1 )
     {
@@ -1179,23 +1229,25 @@ void CTxMsgBlocksView::OnChkbTriggerType()
                                              defSUBITEM_MSGBLOCK_TYPE,
                                              defMSG_MONOSHOT);
         }
-        CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                            pomGetFunctionsViewPointer();
+        CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                            pomGetFunctionsViewPointer();
         if( pomFunctionView != NULL )
         {
-			if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-				pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
-		}        
+            if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+            {
+                pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+            }
+        }
         // Update Modified Flag
         PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-        psMsgCurrentBlock = 
+        psMsgCurrentBlock =
             psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
         if (psMsgCurrentBlock != NULL)
         {
             // update this information in the current block
             psMsgCurrentBlock->m_bType = bCheck;
             if( psMsgCurrentBlock->m_bActive == TRUE )
-            {   
+            {
                 m_bModified = TRUE;
             }
         }
@@ -1216,14 +1268,14 @@ void CTxMsgBlocksView::OnChkbTriggerType()
  Modification on  : 02.08.2004, Added code update trigger value in msg block
                     list control
 *******************************************************************************/
-void CTxMsgBlocksView::OnChkbOnTimeTrigger() 
+void CTxMsgBlocksView::OnChkbOnTimeTrigger()
 {
     CString omStrCurrent;
     // Toggle Time Trigger Bit
     m_nRBTNTriggerType ^= defTIME_TRIGGER;
     //get the current block
     PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-    psMsgCurrentBlock = 
+    psMsgCurrentBlock =
         psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
     if( IS_TIME_TRIGGERED( m_nRBTNTriggerType ))
     {
@@ -1267,23 +1319,25 @@ void CTxMsgBlocksView::OnChkbOnTimeTrigger()
     m_omLctrMsgBlockName.SetItemText( m_nSelectedMsgBlockIndex,
                                       defSUBITEM_MSGBLOCK_TRG_VAL,
                                       omStrCurrent );
-    CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                            pomGetFunctionsViewPointer();
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                        pomGetFunctionsViewPointer();
     if( pomFunctionView != NULL )
     {
-		if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-			pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
-    }        
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+        }
+    }
 
     // Update Modified Flag
-    
+
     if( psMsgCurrentBlock->m_bActive == TRUE )
     {
         m_bModified = TRUE;
     }
 
-	//update the global list for storing the changed data
-	AutoUpdateChanges();
+    //update the global list for storing the changed data
+    AutoUpdateChanges();
 }
 
 /*******************************************************************************
@@ -1300,13 +1354,13 @@ void CTxMsgBlocksView::OnChkbOnTimeTrigger()
  Modification on  : 02.08.2004, Added code update trigger value in msg block
                     list control
 *******************************************************************************/
-void CTxMsgBlocksView::OnChkbOnKeyTrigger() 
+void CTxMsgBlocksView::OnChkbOnKeyTrigger()
 {
     CString omStrCurrent;
     // Toggle Time Trigger Bit
     m_nRBTNTriggerType ^= defKEY_TRIGGER;
     PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-    psMsgCurrentBlock = 
+    psMsgCurrentBlock =
         psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
     // If Timer is also enabled then add Time value in to list item text
     if( IS_TIME_TRIGGERED ( m_nRBTNTriggerType ) )
@@ -1327,7 +1381,7 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
             }*/
         }
     }
-    
+
     if( IS_KEY_TRIGGERED( m_nRBTNTriggerType ))
     {
         m_omComboAllMsgs.EnableWindow();
@@ -1354,23 +1408,25 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
     m_omLctrMsgBlockName.SetItemText( m_nSelectedMsgBlockIndex,
                                       defSUBITEM_MSGBLOCK_TRG_VAL,
                                       omStrCurrent );
-    CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                                    pomGetFunctionsViewPointer();
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                        pomGetFunctionsViewPointer();
     if( pomFunctionView != NULL )
     {
-		if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-			pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
-    }        
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+        }
+    }
 
-    // Update Modified Flag    
-    
+    // Update Modified Flag
+
     if( psMsgCurrentBlock->m_bActive == TRUE )
     {
         m_bModified = TRUE;
     }
 
-	//update the global list for storing the changed data
-	AutoUpdateChanges();
+    //update the global list for storing the changed data
+    AutoUpdateChanges();
 }
 
 /******************************************************************************/
@@ -1390,7 +1446,7 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
 /*  Modification on  :  02.08.2004, Added code to update message block trigger*/
 /*                      information on update of timer value                  */
 /******************************************************************************/
-void CTxMsgBlocksView::OnUpdateEditTrgTimeVal() 
+void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
 {
     UINT unTimeInterVal        = 0;
     CString omStrCurrent       = STR_EMPTY;
@@ -1400,19 +1456,21 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
     unTimeInterVal = static_cast<UINT>(strtol(omStrCurrent,&pcChar,BASE_10));
     // If it is valid
     PSMSGBLOCKLIST psMsgCurrentBlock =
-                                psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+        psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
     if(unTimeInterVal > 0 )
     {
         // Update the time valie
         m_omStrTimeIntervalVal = omStrCurrent;
         // Enable apply window
-        CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                            pomGetFunctionsViewPointer();
+        CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                            pomGetFunctionsViewPointer();
         if( pomFunctionView != NULL )
         {
-			if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-				pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
-        }        
+            if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+            {
+                pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+            }
+        }
 
         // Check whether it is enabled and then
         // Add Unit to the time value
@@ -1439,9 +1497,9 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
         // If Key is also enabled the nadd key part
         if( IS_KEY_TRIGGERED ( m_nRBTNTriggerType )  )
         {
-             omStrCurrent += m_omStrKeyVal;
+            omStrCurrent += m_omStrKeyVal;
         }
-        // update the value in list control for message block having current 
+        // update the value in list control for message block having current
         // selection
         m_omLctrMsgBlockName.SetItemText(m_nSelectedMsgBlockIndex,
                                          defSUBITEM_MSGBLOCK_TRG_VAL,
@@ -1450,26 +1508,26 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
         // Update the flag only if the user is changing the text
         // This function will be called even setting the text using
         // SetwindowText or update data.
-        CWnd * pomWnd = NULL;
+        CWnd* pomWnd = NULL;
         pomWnd = GetFocus();
         if( pomWnd != NULL &&
-            pomWnd->m_hWnd == m_omEditTrgTimeIntervalVal.m_hWnd)
+                pomWnd->m_hWnd == m_omEditTrgTimeIntervalVal.m_hWnd)
         {
-            
+
             if( psMsgCurrentBlock->m_bActive == TRUE )
             {
                 m_bModified = TRUE;
             }
         }
     }
-    else 
+    else
     {
         // Restore the old value
         m_omEditTrgTimeIntervalVal.SetWindowText(m_omStrTimeIntervalVal);
         m_omEditTrgTimeIntervalVal.SetSel( 0,
                                            m_omStrTimeIntervalVal.GetLength() );
     }
-    
+    AutoUpdateChanges();
 }
 
 /******************************************************************************/
@@ -1488,7 +1546,7 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
 /*  Modification on  :  02.08.2004, Added code to update message block trigger*/
 /*                      information on update of Key value                    */
 /******************************************************************************/
-void CTxMsgBlocksView::OnUpdateEditTrgKeyVal() 
+void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
 {
     UINT unTextLength = 0;
     CString omStrCurrent = STR_EMPTY;
@@ -1501,13 +1559,15 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
         // Update the value and enable Apply Button
         m_omStrKeyVal = omStrCurrent;
         // Enable Apply Button
-        CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                            pomGetFunctionsViewPointer();
-		if( pomFunctionView != NULL )
-		{
-			if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-				pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
-		}        
+        CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                            pomGetFunctionsViewPointer();
+        if( pomFunctionView != NULL )
+        {
+            if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+            {
+                pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+            }
+        }
 
         // Check whether it is enabled and then
         // Add Unit to the time value
@@ -1523,12 +1583,12 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
         // If Key is also enab7led the nadd key part
         if( IS_KEY_TRIGGERED ( m_nRBTNTriggerType )  )
         {
-			PSMSGBLOCKLIST psMsgBlock = psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,
-                                                  m_psMsgBlockList);
-			psMsgBlock->m_ucKeyValue = m_omStrKeyVal.GetAt(0);
+            PSMSGBLOCKLIST psMsgBlock = psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,
+                                        m_psMsgBlockList);
+            psMsgBlock->m_ucKeyValue = m_omStrKeyVal.GetAt(0);
             omStrCurrent += m_omStrKeyVal;
         }
-        // update the value in list control for message block having current 
+        // update the value in list control for message block having current
         // selection
         m_omLctrMsgBlockName.SetItemText(m_nSelectedMsgBlockIndex,
                                          defSUBITEM_MSGBLOCK_TRG_VAL,
@@ -1537,14 +1597,14 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
         // Update the flag only if the user is changing the text
         // This function will be called even setting the text using
         // SetwindowText or update data.
-        CWnd * pomWnd = NULL;
+        CWnd* pomWnd = NULL;
         pomWnd = GetFocus();
         // If the focus is in the Edit box then proceed
         if( pomWnd != NULL &&
-            pomWnd->m_hWnd == m_omEditTrgTimeIntervalVal.m_hWnd)
+                pomWnd->m_hWnd == m_omEditTrgTimeIntervalVal.m_hWnd)
         {
             PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-            psMsgCurrentBlock = 
+            psMsgCurrentBlock =
                 psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
             if( psMsgCurrentBlock->m_bActive == TRUE )
             {
@@ -1552,7 +1612,7 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
             }
         }
     }
-    else 
+    else
     {
         // Restore the old value
         m_omEditTrgKeyVal.SetWindowText(m_omStrKeyVal);
@@ -1574,18 +1634,20 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CTxMsgBlocksView::OnChkbTxAllFrame() 
+void CTxMsgBlocksView::OnChkbTxAllFrame()
 {
-    CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
                                         pomGetFunctionsViewPointer();
     if( pomFunctionView != NULL )
     {
-		if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
-			pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+        }
     }
     // Update Modified Flag
     PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-    psMsgCurrentBlock = 
+    psMsgCurrentBlock =
         psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
     if (psMsgCurrentBlock != NULL)
     {
@@ -1601,12 +1663,12 @@ void CTxMsgBlocksView::OnChkbTxAllFrame()
             psMsgCurrentBlock->m_bTxAllFrame = FALSE;
         }
         if( psMsgCurrentBlock->m_bActive == TRUE )
-        {        
+        {
             m_bModified = TRUE;
         }
-		AutoUpdateChanges();
+        AutoUpdateChanges();
     }
-    
+
 }
 
 /******************************************************************************/
@@ -1629,7 +1691,7 @@ void CTxMsgBlocksView::OnChkbTxAllFrame()
 /******************************************************************************/
 void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
 {
-    CWnd *pomWnd = NULL;
+    CWnd* pomWnd = NULL;
     /*CButton* pomOnTime = (CButton*)GetDlgItem(IDC_RBTN_ON_TIME);
     if(pomOnTime != NULL )
     {
@@ -1659,8 +1721,8 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
     }
 
     // Update Details View Control
-    CTxMsgDetailsView * pomDetailsView = ( CTxMsgDetailsView * )
-                                            pomGetDetailsViewPointer();
+    CTxMsgDetailsView* pomDetailsView = ( CTxMsgDetailsView* )
+                                        pomGetDetailsViewPointer();
     if( pomDetailsView != NULL )
     {
         // Message ID/Name Combobox
@@ -1701,9 +1763,9 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
             pomWnd->EnableWindow( bEnable );
         }
     }
-    // Update List View 
-    CTxMsgListView *pomListView = ( CTxMsgListView * )
-                                            pomGetListViewPointer();
+    // Update List View
+    CTxMsgListView* pomListView = ( CTxMsgListView* )
+                                  pomGetListViewPointer();
     if( pomListView != NULL )
     {
         // Message List control
@@ -1716,7 +1778,7 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
     m_omButtonKeyTrigger.EnableWindow(bEnable);
     // All Messages Check box
     // Check whether Key is enabled or not
-    
+
     BOOL bChkEnable = FALSE;
     if( bEnable == TRUE )
     {
@@ -1727,7 +1789,7 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
         }
     }
     m_omComboAllMsgs.EnableWindow( bChkEnable );
-   
+
     if(bEnable == TRUE && CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == FALSE )
     {
         m_omButtonDeleteMsgBlock.EnableWindow(TRUE);
@@ -1736,19 +1798,19 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
     {
         m_omButtonDeleteMsgBlock.EnableWindow(FALSE);
     }
-    // Update 
+    // Update
     CButton* pMonoRadioButton = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
     if (pMonoRadioButton != NULL)
-    {   
+    {
         pMonoRadioButton->EnableWindow(bEnable);
     }
     CButton* pRadioCyclic = (CButton*)GetDlgItem(IDC_RADIOCYCLIC);
     if (pRadioCyclic != NULL)
-    {   
+    {
         pRadioCyclic->EnableWindow(bEnable);
     }
     //m_omButtonTriggerType.EnableWindow(bEnable);
-    m_omEditMsgBlockName.EnableWindow(bEnable);
+    m_omEditMsgBlockName.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
     // Include Standard/Extended radion and RTR checkbox
     // Standard Radio Button
     pomWnd = GetDlgItem(IDC_RBTN_MSGTYPE_STD);
@@ -1782,11 +1844,11 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
   Member of      : CTxMsgBlocksView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxMsgBlocksView::pomGetParentWindow() const
+CWnd* CTxMsgBlocksView::pomGetParentWindow() const
 {
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get Tx Msg Child Window pointer from Splitter window pointer
@@ -1813,19 +1875,19 @@ CWnd * CTxMsgBlocksView::pomGetParentWindow() const
   Member of      : CTxMsgBlocksView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxMsgBlocksView::pomGetListViewPointer() const
+CWnd* CTxMsgBlocksView::pomGetListViewPointer() const
 {
-    CWnd * pView = NULL;
+    CWnd* pView = NULL;
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Get View Pointer
     if( pWnd != NULL )
     {
-        pView = ((CTxMsgChildFrame *)pWnd)->pomGetTxMsgViewPointers( 
-                                                        eTxMsgMessageListView );
+        pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
+                    eTxMsgMessageListView );
     }
     // Return view pointer
     return pView;
@@ -1841,19 +1903,19 @@ CWnd * CTxMsgBlocksView::pomGetListViewPointer() const
   Member of      : CTxMsgBlocksView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxMsgBlocksView::pomGetDetailsViewPointer() const
+CWnd* CTxMsgBlocksView::pomGetDetailsViewPointer() const
 {
-    CWnd * pView = NULL;
+    CWnd* pView = NULL;
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Get View Pointer
     if( pWnd != NULL )
     {
-        pView = ((CTxMsgChildFrame *)pWnd)->pomGetTxMsgViewPointers(
-                                                    eTxMsgMessageDetailsView );
+        pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
+                    eTxMsgMessageDetailsView );
     }
     // Return view pointer
     return pView;
@@ -1869,19 +1931,19 @@ CWnd * CTxMsgBlocksView::pomGetDetailsViewPointer() const
   Member of      : CTxMsgBlocksView
   Author(s)      : Raja N
   Date Created   : 25.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-CWnd * CTxMsgBlocksView::pomGetFunctionsViewPointer() const
+CWnd* CTxMsgBlocksView::pomGetFunctionsViewPointer() const
 {
-    CWnd * pView = NULL;
+    CWnd* pView = NULL;
     // Get Child Frame Pointer
-    CWnd * pWnd = NULL;
+    CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Get View Pointer
     if( pWnd != NULL )
     {
-        pView = ((CTxMsgChildFrame *)pWnd)->pomGetTxMsgViewPointers(
-                                                    eTxMsgFunctionsView );
+        pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
+                    eTxMsgFunctionsView );
     }
     // Return view pointer
     return pView;
@@ -1927,7 +1989,7 @@ void CTxMsgBlocksView::vSetControlProperties()
 /*  Modification on  :                                                        */
 /******************************************************************************/
 void CTxMsgBlocksView::OnRclickLstcMsgBlocksName(NMHDR* /*pNMHDR*/,
-                                                 LRESULT* pResult) 
+        LRESULT* pResult)
 {
     bDisplayPopMenu(m_omLctrMsgBlockName,IDM_CONFIG_MSG_BLOCK);
     *pResult = 0;
@@ -1943,7 +2005,7 @@ void CTxMsgBlocksView::OnRclickLstcMsgBlocksName(NMHDR* /*pNMHDR*/,
 /*  Member of        :  CTxMsgBlocksView                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */    
+/*  Date Created     :  08.01.2004                                            */
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  06.08.2004, Added checks to disable Add and Delete All*/
 /*                      Menu Items                                            */
@@ -1952,7 +2014,7 @@ BOOL CTxMsgBlocksView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
 {
     BOOL bReturn = FALSE;
     // Get selected item's index
-    INT nIndex = 
+    INT nIndex =
         omList.GetNextItem( -1, LVNI_SELECTED );
     // create menu
     CMenu* pMainMenu = new CMenu;
@@ -1975,14 +2037,14 @@ BOOL CTxMsgBlocksView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
                 if( m_unMsgBlockCount >= defMAX_MSGBLOCK )
                 {
                     pSubMenu->EnableMenuItem( IDM_ADD_MSG_BLOCK,
-                                    MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+                                              MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
                 }
 
                 if(nIndex == -1 )
                 {
                     // if selection is not valid, disble the menu.
                     pSubMenu->EnableMenuItem(IDM_DELETE_SEL_MSG_BLOCK,
-                                   MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+                                             MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 
                 }
                 else
@@ -1992,11 +2054,16 @@ BOOL CTxMsgBlocksView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
                     if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE )
                     {
                         pSubMenu->EnableMenuItem(IDM_DELETE_SEL_MSG_BLOCK,
-                                    MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
+                                                 MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
                     }
                 }
+                if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE )
+                {
+                    pSubMenu->EnableMenuItem( IDM_ADD_MSG_BLOCK,
+                                              MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+                }
                 // Display menu
-                pSubMenu->TrackPopupMenu( 
+                pSubMenu->TrackPopupMenu(
                     TPM_LEFTALIGN |TPM_RIGHTBUTTON,
                     point.x,
                     point.y,
@@ -2017,27 +2084,27 @@ void CTxMsgBlocksView::OnBnClickedRadiomonoshot()
 {
     SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Monoshot) on event");
     OnChkbTriggerType();
-	//update the global list for storing the changed data
-	AutoUpdateChanges();
+    //update the global list for storing the changed data
+    AutoUpdateChanges();
 }
 
 void CTxMsgBlocksView::OnBnClickedRadiocyclic()
-{   
+{
     SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Cyclic) on event");
     OnChkbTriggerType();
-	//update the global list for storing the changed data
-	AutoUpdateChanges();
+    //update the global list for storing the changed data
+    AutoUpdateChanges();
 }
 
 void CTxMsgBlocksView::OnCbnSelchangeComboMsgs()
-{   
+{
     OnChkbTxAllFrame();
 }
 void CTxMsgBlocksView::vSaveCurrentBlockFirst()
 {
     PSMSGBLOCKLIST psCurrentMsgBlock = NULL;
-    psCurrentMsgBlock = 
-            psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+    psCurrentMsgBlock =
+        psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
     if(psCurrentMsgBlock != NULL )
     {
         //check the All Msgs state
@@ -2056,10 +2123,10 @@ void CTxMsgBlocksView::vSaveCurrentBlockFirst()
         strcpy_s(psCurrentMsgBlock->m_acStrBlockName, defBLOCKNAME_SIZE, m_omStrMsgBlockName.GetBuffer(MAX_PATH));
         //check the Monoshot radio button state
         BOOL bMonoshot = FALSE;
-        CButton *pRadioMonoshot = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
+        CButton* pRadioMonoshot = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
         if (pRadioMonoshot != NULL)
         {
-        bMonoshot = pRadioMonoshot->GetCheck();
+            bMonoshot = pRadioMonoshot->GetCheck();
         }
         psCurrentMsgBlock->m_bType = !bMonoshot;//!m_bTriggerType;
         psCurrentMsgBlock->m_ucTrigger = m_nRBTNTriggerType;
@@ -2095,31 +2162,33 @@ void CTxMsgBlocksView::vSaveCurrentBlockFirst()
         }
     }
 
-	//update the global list for storing the changed data
-	AutoUpdateChanges();
+    //update the global list for storing the changed data
+    AutoUpdateChanges();
 }
 
 /******************************************************************************/
 /*  Function Name    :  OnEnKillfocusEditMsgBlockName                         */
 /*  Input(s)         :                                                        */
-/*  Output           :  void												  */
+/*  Output           :  void                                                  */
 /*  Functionality    :  This function will be called when any of the EditBox  */
-/*                      in this view looses focus. We need to update the	  */
+/*                      in this view looses focus. We need to update the      */
 /*                      global structure each time                            */
 /*  Member of        :  CTxMsgBlocksView                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Ashwin. R.Uchil                                       */
-/*  Date Created     :  25-5-2012                                             */    
-/*																			  */
+/*  Date Created     :  25-5-2012                                             */
+/*                                                                            */
 /******************************************************************************/
 void CTxMsgBlocksView::AutoUpdateChanges()
 {
-	CTxFunctionsView * pomFunctionView = ( CTxFunctionsView *)
-                            pomGetFunctionsViewPointer();
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                        pomGetFunctionsViewPointer();
 
-	if (NULL != pomFunctionView)
-	{
-		if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
-			pomFunctionView->vAccessButtonApply();
-	}
+    if (NULL != pomFunctionView)
+    {
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
+        {
+            pomFunctionView->vAccessButtonApply();
+        }
+    }
 }

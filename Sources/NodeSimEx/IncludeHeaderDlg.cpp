@@ -15,16 +15,16 @@
 
 /**
  * \file      IncludeHeaderDlg.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "NodeSimEx_stdafx.h"   // Standard header file
 #include "HashDefines.h"        // All #defines are here
-            // MDI mainframe definition file
+// MDI mainframe definition file
 #include "FunctionEditorDoc.h"  // Document class definition file
 #include "GlobalObj.h"
 #include "IncludeHeaderDlg.h"   // Class definition file
@@ -45,7 +45,7 @@ static char THIS_FILE[] = __FILE__;
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  13.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CIncludeHeaderDlg::CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
     : CDialog(CIncludeHeaderDlg::IDD, pParent)
@@ -77,7 +77,7 @@ END_MESSAGE_MAP()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  validates the input string and calls the 
+/*  Functionality    :  validates the input string and calls the
                         base class function
 /*  Member of        :  CIncludeHeaderDlg                                      */
 /*  Friend of        :      -                                                 */
@@ -85,10 +85,10 @@ END_MESSAGE_MAP()
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  13.03.2002                                            */
 /*  Modifications    :  Anish kumar
-						20.06.06.get the present Doc view to include the header 
-						file.
+                        20.06.06.get the present Doc view to include the header
+                        file.
 /******************************************************************************/
-void CIncludeHeaderDlg::OnOk() 
+void CIncludeHeaderDlg::OnOk()
 {
     BOOL bRetVal = TRUE;
 
@@ -99,7 +99,7 @@ void CIncludeHeaderDlg::OnOk()
         // check if first char starts with '<' or '"'
         char cFirstChar = m_omStrIncludeFilename.GetAt( 0 );
         // check if last char '>' or '"'
-        char cLastChar = 
+        char cLastChar =
             m_omStrIncludeFilename.GetAt( m_omStrIncludeFilename.GetLength() - 1 );
 
         if ( cFirstChar != '<')
@@ -120,9 +120,9 @@ void CIncludeHeaderDlg::OnOk()
 
         if (bRetVal == FALSE)
         {
-            AfxMessageBox(_T("Please make sure to include the filename in between\n\
- double quotes or in angle brackets appropriately.."),
-                    MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox("Please make sure to include the filename in between\n\
+ double quotes or in angle brackets appropriately..",
+                          MB_OK|MB_ICONINFORMATION);
         }
         else
         {
@@ -133,22 +133,22 @@ void CIncludeHeaderDlg::OnOk()
             if ( m_pDoc != NULL )
             {
                 // Get include header array
-                CStringArray* pArray = 
+                CStringArray* pArray =
                     m_pDoc->omStrGetIncudeHeaderFiles();
 
                 if (pArray != NULL)
                 {
                     CString omStrTemp = STR_EMPTY;
                     for (int nCount = 0;
-                        nCount < pArray->GetSize();
-                        nCount++)
+                            nCount < pArray->GetSize();
+                            nCount++)
                     {
                         omStrTemp = pArray->GetAt(nCount);
-                        if ( omStrTemp.Find(m_omStrIncludeFilename) != 
-                            -1 )
+                        if ( omStrTemp.Find(m_omStrIncludeFilename) !=
+                                -1 )
                         {
-                            AfxMessageBox( _T("File already included!"), 
-                                MB_OK|MB_ICONINFORMATION);
+                            AfxMessageBox( "File already included!",
+                                           MB_OK|MB_ICONINFORMATION);
                             bRetVal = FALSE;
                             nCount = (COMMANINT)pArray->GetSize();// exit loop
                         }
@@ -159,14 +159,18 @@ void CIncludeHeaderDlg::OnOk()
     }
     else
     {
-        AfxMessageBox(_T("Invalid Include file!"), MB_OK|MB_ICONINFORMATION);
+        AfxMessageBox("Invalid Include file!", MB_OK|MB_ICONINFORMATION);
         bRetVal = FALSE;
     }
 
     if (bRetVal == TRUE)
+    {
         CDialog::OnOK();
+    }
     else
+    {
         GetDlgItem(IDC_EDIT_FILENAME)->SetFocus();
+    }
 
 }
 /******************************************************************************/
@@ -174,7 +178,7 @@ void CIncludeHeaderDlg::OnOk()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Displays open file dialog and fills the edit 
+/*  Functionality    :  Displays open file dialog and fills the edit
                         with selected header file
 /*  Member of        :  CIncludeHeaderDlg                                      */
 /*  Friend of        :      -                                                 */
@@ -185,24 +189,24 @@ void CIncludeHeaderDlg::OnOk()
                         Changed the title of the open dialog box
 /******************************************************************************/
 
-void CIncludeHeaderDlg::OnBrowse() 
+void CIncludeHeaderDlg::OnBrowse()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     // Display open file dialog
-    // which will allow the user to select 
+    // which will allow the user to select
     // only .h files
     CFileDialog om_Dlg
-                (
-                    TRUE,  //open an existing file
-                    NULL,  //extension to file
-                    STR_EMPTY,  //initial file name
-                    OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
-                    OFN_PATHMUSTEXIST, 
-                    _T("C Header Files(*.h)|*.h||"), 
-                    NULL 
-                );
+    (
+        TRUE,  //open an existing file
+        NULL,  //extension to file
+        STR_EMPTY,  //initial file name
+        OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
+        OFN_PATHMUSTEXIST,
+        "C Header Files(*.h)|*.h||",
+        NULL
+    );
     // Set caption text
-    om_Dlg.m_ofn.lpstrTitle = _T("Select Header File");
+    om_Dlg.m_ofn.lpstrTitle = "Select Header File";
 
     if ( om_Dlg.DoModal() == IDOK )
     {
@@ -224,9 +228,9 @@ void CIncludeHeaderDlg::OnBrowse()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  13.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CIncludeHeaderDlg::OnCancel() 
+void CIncludeHeaderDlg::OnCancel()
 {
     CDialog::OnCancel();
 }

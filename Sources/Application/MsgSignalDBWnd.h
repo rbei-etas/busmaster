@@ -33,32 +33,32 @@ class CMsgSignalDBWnd : public CMDIChildWnd
 {
     DECLARE_DYNCREATE(CMsgSignalDBWnd)
 protected:
-               // protected constructor used by dynamic creation
+    // protected constructor used by dynamic creation
 
-// Attributes
+    // Attributes
 public:
     static BOOL sm_bValidJ1939Wnd;
 public:
     SDBPARAMS m_sDbParams;
-// Operations
+    // Operations
 public:
     CMsgSignalDBWnd();
     CMsgSignalDBWnd(const SDBPARAMS& sDbParams);
     virtual ~CMsgSignalDBWnd();
     void vSetDBName(CString& omDBName);
-	afx_msg LRESULT OnSaveDBJ1939(WPARAM wParam, LPARAM lParam);
-    void vSaveModifiedDBs(CMsgSignal** & ppTempMsgSg);
-	CWnd* GetWorkingView();
-// Overrides
+    afx_msg LRESULT OnSaveDBJ1939(WPARAM wParam, LPARAM lParam);
+    void vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg);
+    CWnd* GetWorkingView();
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMsgSignalDBWnd)
-    public:
-    protected:
+public:
+protected:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

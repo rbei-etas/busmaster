@@ -1,48 +1,48 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  MonitorNode.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/MonitorNode.cpv  $
-   
+
       Rev 1.11   07 Jun 2011 11:11:16   CANMNTTM
-    
-   
+
+
       Rev 1.10   15 Apr 2011 18:48:38   CANMNTTM
    Added RBEI Copyright information.
-   
+
       Rev 1.9   23 Mar 2011 14:58:04   CANMNTTM
    Support for PDU format 2 message
-   
+
       Rev 1.8   02 Mar 2011 11:36:44   CANMNTTM
    SetCallBackFuncPtr function is added.
-   
+
       Rev 1.7   30 Dec 2010 18:48:48   CANMNTTM
-    
-   
+
+
       Rev 1.6   29 Dec 2010 19:32:38   CANMNTTM
    Connection mode for both transmission and reception added.
-   
+
       Rev 1.5   23 Dec 2010 16:52:20   CANMNTTM
    Macro MAX_MSG_LEN_J1939
     instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
+
       Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
    1. Implemented Call back mechanism.
    2. Exported function SetClBckFnPtrs and GetTimeOut added.
-   
+
       Rev 1.3   14 Dec 2010 17:53:04   CANMNTTM
    Defined a virtual function vTransmitMessage.
-   
+
       Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
    Nodes are made independent of channel.
    Now nodes can send message in any channel.
-   
+
       Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
+
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 #include "DIL_J1939_stdafx.h"
@@ -53,9 +53,9 @@
 #include "NetworkMgmt.h"
 
 
-CMonitorNode::CMonitorNode(int nNodeNo, char* pacNodeName, 
+CMonitorNode::CMonitorNode(int nNodeNo, char* pacNodeName,
                            UINT64 un64ECUName, BYTE byPrefAdres):CNodeConManager(nNodeNo, pacNodeName, un64ECUName, byPrefAdres, TRUE)
-{  
+{
     for (int i = 0; i < MAX_NODE_TO_MONITOR; i++)
     {
         m_pMonNodeConDetArr[i] = NULL;
@@ -103,7 +103,7 @@ void CMonitorNode::vReadCANdataBuffer()
         //If the message is either RX or TX then only process it
         //If Error then notify user ****TBD****
         if ((CurrMsgCAN.m_ucDataType == RX_FLAG) ||
-            (CurrMsgCAN.m_ucDataType == TX_FLAG))
+                (CurrMsgCAN.m_ucDataType == TX_FLAG))
         {
             //Monitor node should handle RX/TX messages but
             //Other nodes should handle only RX
@@ -121,8 +121,8 @@ void static vGetSrcDestFromId(BYTE& bySrc, BYTE& byDest, UINT32 unExtId)
     bySrc = uExtId.m_s29BitId.m_bySrcAddress;
     byDest = uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific;
 }
-void CMonitorNode::vProcessBroadCastDataByMonNode(const sTCANDATA& CurrMsgCAN, 
-                                                         CConnectionDet* pConDet)
+void CMonitorNode::vProcessBroadCastDataByMonNode(const sTCANDATA& CurrMsgCAN,
+        CConnectionDet* pConDet)
 {
     const STCAN_MSG& sCanMsg = CurrMsgCAN.m_uDataInfo.m_sCANMsg;
     BYTE byLastReceived = (pConDet->m_BCRxSeqVar) % MAX_SEQ_NO;
@@ -139,7 +139,7 @@ void CMonitorNode::vProcessBroadCastDataByMonNode(const sTCANDATA& CurrMsgCAN,
             STJ1939_MSG sJ1939Msg;
             vCreateTempJ1939Msg(sJ1939Msg, CurrMsgCAN, pConDet->m_BCRXLongDataLen,
                                 pConDet->m_BCRXLongData, MSG_TYPE_BROADCAST);
-            
+
             sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.vSetPGN(pConDet->m_BCPGN);
             WriteIntoClientsBuffer(sJ1939Msg);
             pConDet->m_BCRxSeqVar = 0;
@@ -148,7 +148,7 @@ void CMonitorNode::vProcessBroadCastDataByMonNode(const sTCANDATA& CurrMsgCAN,
         else
         {
             memcpy(&(pConDet->m_BCRXLongData[unDataIndex]),&(sCanMsg.m_ucData[1]),
-                MAX_TPDU_DATA_SIZE);
+                   MAX_TPDU_DATA_SIZE);
         }
     }
 }
@@ -160,37 +160,37 @@ void CMonitorNode::vTransmitMessage(STJ1939_MSG* psMsg)
         {
             UINT unPGN = psMsg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN();
             BYTE byDestAddress = psMsg->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific;
-                
+
             if (psMsg->m_unDLC > MAX_FRAME_DATA_SIZE)
             {
                 BYTE byPriority = psMsg->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority;
                 vSendBAM(psMsg->m_unDLC, unPGN, byDestAddress, byPriority, psMsg->m_sMsgProperties.m_byChannel);
                 vSendBroadCastData(psMsg->m_pbyData, psMsg->m_unDLC, byDestAddress, byPriority, psMsg->m_sMsgProperties.m_byChannel);
-                EXECUTE_CLBCK_FN(CLBCK_FN_BC_LDATA_CONF, 
-                                 unPGN, byGetNodeAddress(), 
+                EXECUTE_CLBCK_FN(CLBCK_FN_BC_LDATA_CONF,
+                                 unPGN, byGetNodeAddress(),
                                  byDestAddress, TRUE);
             }
             else
             {
-                vSendFrame((UCHAR)psMsg->m_unDLC, psMsg->m_pbyData, 
-                    psMsg->m_sMsgProperties.m_uExtendedID.m_unExtID, psMsg->m_sMsgProperties.m_byChannel);
-                EXECUTE_CLBCK_FN(CLBCK_FN_BC_LDATA_CONF, 
-                                 unPGN, byGetNodeAddress(), 
+                vSendFrame((UCHAR)psMsg->m_unDLC, psMsg->m_pbyData,
+                           psMsg->m_sMsgProperties.m_uExtendedID.m_unExtID, psMsg->m_sMsgProperties.m_byChannel);
+                EXECUTE_CLBCK_FN(CLBCK_FN_BC_LDATA_CONF,
+                                 unPGN, byGetNodeAddress(),
                                  byDestAddress, TRUE);
             }
         }
         break;
         case MSG_TYPE_DATA:
-        {       
+        {
             BYTE byDestAddress = psMsg->m_sMsgProperties.
-                                        m_uExtendedID.m_s29BitId.
-                                        m_uPGN.m_sPGN.m_byPDU_Specific;
+                                 m_uExtendedID.m_s29BitId.
+                                 m_uPGN.m_sPGN.m_byPDU_Specific;
             BYTE byPriorirty = psMsg->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPriority;
             UINT unPGN = psMsg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN();
             if (psMsg->m_unDLC > MAX_FRAME_DATA_SIZE)
             {
                 HRESULT hResult = TransmitRequestToSend(byDestAddress, byPriorirty,
-                    psMsg->m_unDLC, unPGN, psMsg->m_sMsgProperties.m_byChannel);
+                                                        psMsg->m_unDLC, unPGN, psMsg->m_sMsgProperties.m_byChannel);
                 TRACE("SENT REQUEST TO SEND\n");
                 if ((hResult == DATA_CLEAR_2_SEND) || (hResult == DATA_DELAY_2_SEND))
                 {
@@ -199,40 +199,40 @@ void CMonitorNode::vTransmitMessage(STJ1939_MSG* psMsg)
                     if (SendLongMsg(psMsg, m_pConDet, hResult) == DATA_EOM)
                     {
                         psMsg->m_sMsgProperties.m_eDirection = DIR_TX;
-                        EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF, 
-                                         unPGN, byGetNodeAddress(), 
+                        EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF,
+                                         unPGN, byGetNodeAddress(),
                                          byDestAddress, TRUE);
                     }
                     else
                     {
-                        EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF, 
-                                         unPGN, byGetNodeAddress(), 
+                        EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF,
+                                         unPGN, byGetNodeAddress(),
                                          byDestAddress, FALSE);
                     }
                     TRACE("SENT LONG\n");
                 }
                 else
                 {
-                    EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF, 
-                                         unPGN, byGetNodeAddress(), 
-                                         byDestAddress, FALSE);
+                    EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF,
+                                     unPGN, byGetNodeAddress(),
+                                     byDestAddress, FALSE);
                 }
                 vCloseConnection(m_pConDet);
             }
             else
             {
-                vSendFrame((UCHAR)psMsg->m_unDLC, psMsg->m_pbyData, 
-                    psMsg->m_sMsgProperties.m_uExtendedID.m_unExtID, psMsg->m_sMsgProperties.m_byChannel);
-                EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF, 
-                                         unPGN, byGetNodeAddress(), 
-                                         byDestAddress, TRUE);
+                vSendFrame((UCHAR)psMsg->m_unDLC, psMsg->m_pbyData,
+                           psMsg->m_sMsgProperties.m_uExtendedID.m_unExtID, psMsg->m_sMsgProperties.m_byChannel);
+                EXECUTE_CLBCK_FN(CLBCK_FN_LDATA_CONF,
+                                 unPGN, byGetNodeAddress(),
+                                 byDestAddress, TRUE);
             }
         }
         break;
         case MSG_TYPE_NM_ACL:
         {
-            vSendFrame((UCHAR)psMsg->m_unDLC, psMsg->m_pbyData, 
-                psMsg->m_sMsgProperties.m_uExtendedID.m_unExtID, psMsg->m_sMsgProperties.m_byChannel);
+            vSendFrame((UCHAR)psMsg->m_unDLC, psMsg->m_pbyData,
+                       psMsg->m_sMsgProperties.m_uExtendedID.m_unExtID, psMsg->m_sMsgProperties.m_byChannel);
             Sleep(CNetworkMgmt::sg_unTO_RESPONSE);
         }
         break;
@@ -243,8 +243,8 @@ void CMonitorNode::vTransmitMessage(STJ1939_MSG* psMsg)
         break;
     }
 }
-void CMonitorNode::vProcessLongDataByMonNode(const sTCANDATA& CurrMsgCAN, 
-                                                    CConnectionDet* pConDet)
+void CMonitorNode::vProcessLongDataByMonNode(const sTCANDATA& CurrMsgCAN,
+        CConnectionDet* pConDet)
 {
     const STCAN_MSG& sCanMsg = CurrMsgCAN.m_uDataInfo.m_sCANMsg;
     BYTE byLastReceived = (pConDet->m_byRxSeqNo) % MAX_SEQ_NO;
@@ -258,7 +258,7 @@ void CMonitorNode::vProcessLongDataByMonNode(const sTCANDATA& CurrMsgCAN,
         UINT unDataIndex = (pConDet->m_byRxSeqNo - 1) * MAX_TPDU_DATA_SIZE;
         //If it is the last packet of the whole msg send EOM msg come out of wait
         if (pConDet->m_byRxSeqNo == pConDet->m_unRxTotalPackets)
-        {   
+        {
             for (UINT i = 0; i < pConDet->m_unRxLastFrameLen; i++)
             {
                 pConDet->m_RxLongData[unDataIndex + i] = sCanMsg.m_ucData[i + 1];
@@ -273,7 +273,7 @@ void CMonitorNode::vProcessLongDataByMonNode(const sTCANDATA& CurrMsgCAN,
         else
         {
             memcpy(&(pConDet->m_RxLongData[unDataIndex]), &(sCanMsg.m_ucData[1]),
-                MAX_TPDU_DATA_SIZE);
+                   MAX_TPDU_DATA_SIZE);
         }
     }
 }
@@ -292,10 +292,10 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
             pConDet->m_byResult = DATA_EOM;
             SetEvent(pConDet->m_hDataAckWait);
             vCloseConnection(pConDet);
-        }   
+        }
     }
     else if (bIsConAbortMsg(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
-    {   
+    {
         pConDet = pGetConDet(byDest, bySrc);
         if (pConDet != NULL)
         {
@@ -349,7 +349,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
         }
     }
     else if(bIsConReqMsg(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
-    {        
+    {
         if (pConDet == NULL)
         {
             pConDet = pAddConDet(sCanMsg.m_unMsgID);
@@ -363,22 +363,22 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
                 WORD* pwLen = (WORD*)&(sCanMsg.m_ucData[1]);
                 pConDet->m_unRXLongDataLen = *pwLen;
 
-			    /* Validate the maximum allowed size for a J1939 message data */
-				if (*pwLen > MAX_DATA_LEN_J1939 )
-				{					
-					/* If maximum size exceeds, RTS frame bytes 1 and 2 might have 
-					   been sent in reverse order, so try to change the byte order */					
-					pConDet->m_unRXLongDataLen  = (UINT32)sCanMsg.m_ucData[2];
-					pConDet->m_unRXLongDataLen |= ((UINT32)sCanMsg.m_ucData[1]) << 8;
-					if (pConDet->m_unRXLongDataLen > MAX_DATA_LEN_J1939)
-					{
-						bIsProcessed = FALSE;
-					}
-				}
-				else
-				{
-					pConDet->m_unRXLongDataLen = *pwLen;
-				}
+                /* Validate the maximum allowed size for a J1939 message data */
+                if (*pwLen > MAX_DATA_LEN_J1939 )
+                {
+                    /* If maximum size exceeds, RTS frame bytes 1 and 2 might have
+                       been sent in reverse order, so try to change the byte order */
+                    pConDet->m_unRXLongDataLen  = (UINT32)sCanMsg.m_ucData[2];
+                    pConDet->m_unRXLongDataLen |= ((UINT32)sCanMsg.m_ucData[1]) << 8;
+                    if (pConDet->m_unRXLongDataLen > MAX_DATA_LEN_J1939)
+                    {
+                        bIsProcessed = FALSE;
+                    }
+                }
+                else
+                {
+                    pConDet->m_unRXLongDataLen = *pwLen;
+                }
 
                 pConDet->m_unRxLastFrameLen = (UINT)byGetLastFrameLen(pConDet->m_unRXLongDataLen);
                 pConDet->m_unRxTotalPackets = sCanMsg.m_ucData[3];
@@ -389,7 +389,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
             }
         }
     }
-    else if (bIsBAM(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))	/* BROADCAST Announce*/
+    else if (bIsBAM(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))    /* BROADCAST Announce*/
     {
         if (pConDet == NULL)
         {
@@ -439,7 +439,7 @@ void CMonitorNode::vProcessCANMsgByMonNode(const sTCANDATA CurrMsgCAN)
     {
         bProcessConLevelMsgByMon(CurrMsgCAN);
     }
-    
+
 }
 BOOL CMonitorNode::bProcessNodeLevelMsgByMonNode(const STCANDATA& sCanData)
 {
@@ -447,8 +447,8 @@ BOOL CMonitorNode::bProcessNodeLevelMsgByMonNode(const STCANDATA& sCanData)
     BOOL bResult = TRUE;
     STJ1939_MSG sJ1939Msg;
     EJ1939_MSG_TYPE eType = eGetMsgType(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID,
-                                    (BYTE*)sCanData.m_uDataInfo.m_sCANMsg.m_ucData);
-    vCreateTempJ1939Msg(sJ1939Msg, sCanData, sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen,  
+                                        (BYTE*)sCanData.m_uDataInfo.m_sCANMsg.m_ucData);
+    vCreateTempJ1939Msg(sJ1939Msg, sCanData, sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen,
                         (BYTE*)sCanData.m_uDataInfo.m_sCANMsg.m_ucData, eType);
     WriteIntoClientsBuffer(sJ1939Msg);
     return bResult;
@@ -468,8 +468,8 @@ CConnectionDet* CMonitorNode::pouCreateAndAddConnnection(UINT unId)
 CConnectionDet* CMonitorNode::pGetConDet(BYTE bySrc, BYTE byDest)
 {
     CConnectionDet* pConDet = NULL;
-    if ((m_pConDet->m_bySrcAddress == bySrc) 
-        && (m_pConDet->m_byDestAddress == byDest))
+    if ((m_pConDet->m_bySrcAddress == bySrc)
+            && (m_pConDet->m_byDestAddress == byDest))
     {
         pConDet = m_pConDet;
     }
@@ -480,7 +480,7 @@ CConnectionDet* CMonitorNode::pGetConDet(BYTE bySrc, BYTE byDest)
             if (NULL != m_pMonNodeConDetArr[i])
             {
                 if ((bySrc == m_pMonNodeConDetArr[i]->m_bySrcAddress) ||
-                    (byDest == m_pMonNodeConDetArr[i]->m_byDestAddress) )
+                        (byDest == m_pMonNodeConDetArr[i]->m_byDestAddress) )
                 {
                     pConDet = m_pMonNodeConDetArr[i];
                 }
@@ -494,7 +494,7 @@ CConnectionDet* CMonitorNode::pAddConDet(UINT unID)
 {
     BYTE bySrc = 254, byDest = 254;
     vGetSrcDestFromId(bySrc, byDest, unID);
-    CConnectionDet* pConDet = pGetConDet(bySrc, byDest);    
+    CConnectionDet* pConDet = pGetConDet(bySrc, byDest);
     if (NULL == pConDet)
     {
         pConDet = pouCreateAndAddConnnection(unID);

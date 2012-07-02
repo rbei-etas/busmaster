@@ -14,16 +14,16 @@
  */
 
 /**
- * @file  
+ * @file
  *  CANSelectDlg.cpp
  *
- * @brief 
+ * @brief
  *  This class is not used! The files can be removed one day if
  *  it really will not needed for controller selection.
- * 
+ *
  *  A MFC based dialog for later use to select IXXAT CAN controller
- *  from different boards. 
- *  The reason why it is not used: this dialog will be removed and 
+ *  from different boards.
+ *  The reason why it is not used: this dialog will be removed and
  *  a new dialog in the application itself will be used.
  */
 
@@ -38,19 +38,19 @@ IMPLEMENT_DYNAMIC(CCANSelectDlg, CDialog)
 
 
 BEGIN_MESSAGE_MAP(CCANSelectDlg, CDialog)
-  ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
 /**
- * @brief 
+ * @brief
  *  Constructor.
  *
  * @param [in,out]  pParent
  *  If non-null, the parent windows.
  */
 CCANSelectDlg::CCANSelectDlg(CWnd* pParent /*=NULL*/)
-  : CDialog(CCANSelectDlg::IDD, pParent)
+    : CDialog(CCANSelectDlg::IDD, pParent)
 {
 
 }
@@ -66,7 +66,7 @@ CCANSelectDlg::~CCANSelectDlg()
 }
 
 /**
- * @brief 
+ * @brief
  *  Exchanges data to/from the controls in this dialog.
  *
  * @param [in,out]  pDX
@@ -75,17 +75,17 @@ CCANSelectDlg::~CCANSelectDlg()
  */
 void CCANSelectDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 }
 
 
 /**
- * @brief 
+ * @brief
  *  Called when the user clicks the OK button. This
  *  will close the dialog and return IDOK.
  *
  */
 void CCANSelectDlg::OnBnClickedOk()
 {
-  OnOK();
+    OnOK();
 }

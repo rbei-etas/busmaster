@@ -47,7 +47,7 @@ struct tagBusSpecificInfo
         m_pvDefinedMsgsList = NULL;
     }
     ~tagBusSpecificInfo()
-    {        
+    {
         if (m_pvErrorEventList != NULL)
         {
             delete m_pvErrorEventList;

@@ -1,36 +1,36 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  TxMsgWndJ1939.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/Application/TxMsgWndJ1939.h_v  $
- * 
+ *
  *    Rev 1.7   15 Apr 2011 20:02:20   CANMNTTM
  * Added RBEI Copyright information.
- * 
+ *
  *    Rev 1.6   23 Mar 2011 14:49:22   CANMNTTM
  * Support upto 32 channels
- * 
+ *
  *    Rev 1.5   13 Jan 2011 14:55:50   CANMNTTM
  * Implemented J1939 database specific functions.
- * 
+ *
  *    Rev 1.4   23 Dec 2010 16:43:26   CANMNTTM
  * Transmission stopped before disconnecting.
- * 
+ *
  *    Rev 1.3   22 Dec 2010 19:13:48   CANMNTTM
  * Added Cyclic transmission feature.
- * 
+ *
  *    Rev 1.2   15 Dec 2010 17:06:46   CANMNTTM
  * Added new function to set J1939 client parameter.
- * 
+ *
  *    Rev 1.1   13 Dec 2010 19:06:22   CANMNTTM
  * Removed absolute path inclusion
- * 
+ *
  *    Rev 1.0   13 Dec 2010 18:41:54   CANMNTTM
- *  
+ *
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  10/12/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 #pragma once
@@ -55,25 +55,25 @@ typedef struct tagMsgToBeSent
     BYTE m_byPriority;
     BYTE m_abyData[MAX_DATA_LEN_J1939];
     UINT m_unTimerVal;
-}SMSGTOBESENT;
+} SMSGTOBESENT;
 
 // CTxMsgWndJ1939 dialog
 
 class CTxMsgWndJ1939 : public CDialog
 {
-	DECLARE_DYNAMIC(CTxMsgWndJ1939)
+    DECLARE_DYNAMIC(CTxMsgWndJ1939)
 
 public:
     CTxMsgWndJ1939(CWnd* pParent, SJ1939CLIENTPARAM& sClientParam);   // standard constructor
-	virtual ~CTxMsgWndJ1939();
+    virtual ~CTxMsgWndJ1939();
 
-// Dialog Data
-	enum { IDD = IDD_DLG_TX };
+    // Dialog Data
+    enum { IDD = IDD_DLG_TX };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 
 public:
     virtual BOOL OnInitDialog();
@@ -96,7 +96,7 @@ public:
     BOOL m_bThreadStarted;
     CCriticalSection m_CS_CyclicTrans;
     CCriticalSection m_CS_ConfigData;
-    
+
 public:
     afx_msg void OnBnClickedRadioNm();
     afx_msg void OnBnClickedRadioTpf();
@@ -124,6 +124,7 @@ private:
     void vSetStatusBarText(const char* pacText);
     void vPopulatePGNComboBox(void);
     void vAdjustWidthMessageComboBox();
+    void vVerifyPDUFormatInPGN(UINT unPGN);
 public:
     // Control variable for ECU NAME
     CRadixEdit m_omEcuName;

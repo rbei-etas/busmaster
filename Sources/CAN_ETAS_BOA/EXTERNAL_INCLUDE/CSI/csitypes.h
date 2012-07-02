@@ -23,8 +23,8 @@
 
 typedef int32 CSI_Handle;
 typedef int32 CSI_ESS_Handle;
-/** 
-* @} 
+/**
+* @}
 */
 
 #endif

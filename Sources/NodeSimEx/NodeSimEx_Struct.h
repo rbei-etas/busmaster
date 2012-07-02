@@ -27,25 +27,27 @@ typedef bool (*DISCONNECT_TOOL)(bool);
 typedef void (*RESET_CONTROLLER)(bool);
 typedef bool (*WRITE_TO_LOG)(char*);
 
-enum 
+enum
 {
     LOG_ENABLE_DISABLE = 0,
     DIS_CONNECT,
     WRITE_TO_LOGFILE,
     RESET_HARDWARE_CONTROLLER,
+    WRITE_TO_LOGFILE_J1939
 };
 
 //USER_DLL MESSAGES
 #define WM_FROM_USER_DLL            (WM_USER + 40)
-// enumeration for all flags 
+// enumeration for all flags
 typedef enum eSIMSYSFLAG
 {
-    H_DLLLOADED, 
-    H_TIMERBUTTON, 
-    H_MSGHANDLERBUTTON, 
-    H_FUNCEDITOR, 
+    H_DLLLOADED,
+    H_TIMERBUTTON,
+    H_MSGHANDLERBUTTON,
+    H_FUNCEDITOR,
     H_KEY_HANDLER_ON,
     H_ERROR_HANDLER,
+    H_EVENT_HANDLER,
     H_DLL_HANDLER,
     H_ALL_HANDLER,
     H_CONNECTED
@@ -65,7 +67,7 @@ typedef enum eUpdateType
     UPDATE_ALL = 0,
     UPDATE_DATABASE_MSGS,
     UPDATE_UNIONS_HEADER_FILES
-}E_UPDATE_TYPE;
+} E_UPDATE_TYPE;
 
 typedef struct tagMsgNameMsgCode
 {
@@ -73,10 +75,10 @@ typedef struct tagMsgNameMsgCode
     DWORD           m_dwMsgCode;
     UINT            m_unMsgLen;
     CStringList     m_omSignalNames;
-    
+
 
     tagMsgNameMsgCode()
-    {   
+    {
         m_unMsgLen = 8;
         m_omSignalNames.RemoveAll();
     }
@@ -96,13 +98,13 @@ typedef struct tagMsgNameMsgCode
     {
         return ((RefObj.m_dwMsgCode == m_dwMsgCode) || (RefObj.m_omMsgName == m_omMsgName));
     }
-    
-}SMSG_NAME_CODE;
+
+} SMSG_NAME_CODE;
 
 typedef CList<SMSG_NAME_CODE, SMSG_NAME_CODE&> CMsgNameMsgCodeList;
 
 class CBaseAppServices;
-typedef struct 
+typedef struct
 {
     HWND                m_hWmdMDIParentFrame;
     //CUIThread*          m_pouTraceWnd;
@@ -125,6 +127,6 @@ typedef struct
     RESET_CONTROLLER    RestController;
     WRITE_TO_LOG        WriteToLog;
 
-}S_EXFUNC_PTR, *PS_EXFUNC_PTR;
+} S_EXFUNC_PTR, *PS_EXFUNC_PTR;
 
 #endif //NODESIMEX_STRUCT_H__INCLUDED_

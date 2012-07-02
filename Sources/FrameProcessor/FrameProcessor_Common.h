@@ -15,11 +15,11 @@
 
 /**
  * \file      FrameProcessor_Common.h
- * \brief     Definition file for CFrameProcessor_Common class realising 
+ * \brief     Definition file for CFrameProcessor_Common class realising
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Definition file for CFrameProcessor_Common class realising 
+ * Definition file for CFrameProcessor_Common class realising
  */
 
 #pragma once
@@ -41,9 +41,9 @@ private:
     USHORT  m_ushLastBlkID;
     BOOL    m_bEditingON;
     BYTE    m_bLogFlagTmp;
-	CString m_omStrVersion;
+    CString m_omStrVersion;
 
-    void vCopyLogObjArray(CLogObjArray& omLogObjArrayTarget, 
+    void vCopyLogObjArray(CLogObjArray& omLogObjArrayTarget,
                           const CLogObjArray& omLogObjArraySrc);
     UINT unGetBufSize(void);
     void vUpdateLoggingFlag(void);
@@ -53,11 +53,13 @@ private:
 protected:
     CPARAM_THREADPROC   m_sDataCopyThread;
     BOOL                m_bLogEnabled;
-    BOOL				m_bResetAbsTime;
+    BOOL                m_bResetAbsTime;
     BOOL                m_bClientBufferON;
     CLogObjArray        m_omLogObjectArray;
     CLogObjArray        m_omLogListTmp;
-	SYSTEMTIME			m_LogSysTime;
+    SYSTEMTIME          m_LogSysTime;
+    BOOL                m_bIsDataLogged;
+    BOOL                m_bIsJ1939DataLogged;
 
     BYTE     m_bExprnFlag_Log;
 
@@ -65,20 +67,26 @@ protected:
     virtual void vEmptyLogObjArray(CLogObjArray& omLogObjArray) = 0;
     CBaseLogObject* FindLoggingBlock(USHORT ushID);
     BOOL bIsEditingON(void);
-	// To create a new logging object
-	virtual CBaseLogObject* CreateNewLogObj(const CString& omStrVersion) = 0;
+    // To create a new logging object
+    virtual CBaseLogObject* CreateNewLogObj(const CString& omStrVersion) = 0;
     // To delete a logging object
     virtual void DeleteLogObj(CBaseLogObject*& pouLogObj) = 0;
-	virtual void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime, 
-									   UINT64& unAbsTime) = 0;
+    virtual void CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
+                                       UINT64& unAbsTime) = 0;
 
 public:
+    BOOL                m_bIsThreadBlocked;
     // Alias functions - start
     HRESULT EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
-	HRESULT EnableLogging(BOOL bEnable, ETYPE_BUS);
+    HRESULT EnableLogging(BOOL bEnable, ETYPE_BUS);
     HRESULT EnableFilter(USHORT ushBlk, BOOL bEnable);
     BOOL IsClientBufferON(void);
     BOOL IsLoggingON(void);
+    BOOL IsDataLogged(void);
+    BOOL IsJ1939DataLogged(void);
+    BOOL IsThreadBlocked(void);
+    void DisableDataLogFlag(void);
+    void DisableJ1939DataLogFlag(void);
     BOOL IsFilterON(void);
     HRESULT LogString(CString& omStr);
     HRESULT AddLoggingBlock(const SLOGINFO& sLogObject);
@@ -93,21 +101,21 @@ public:
     HRESULT Confirm(void);
     HRESULT StartEditingSession(void);
     HRESULT StopEditingSession(BOOL bConfirm);
-	HRESULT SetDatabaseFiles(const CStringArray& omList);
-	void GetDatabaseFiles(CStringArray& omList);
-	void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails, 
-									int nNumChannels);
+    HRESULT SetDatabaseFiles(const CStringArray& omList);
+    void GetDatabaseFiles(CStringArray& omList);
+    void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+                                   int nNumChannels);
     // Alias functions - end
 
-// Overrides
+    // Overrides
 public:
-	CFrameProcessor_Common();
+    CFrameProcessor_Common();
     ~CFrameProcessor_Common();
 
     // To be used by the read thread
     virtual void vRetrieveDataFromBuffer(void) = 0;
     void InitTimeParams(void);
 
-	virtual BOOL InitInstance(void);
+    virtual BOOL InitInstance(void);
     virtual int ExitInstance(void);
 };

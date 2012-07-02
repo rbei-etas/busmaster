@@ -15,11 +15,11 @@
 
 /**
  * \file      DLLHandlerDlg.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "NodeSimEx_stdafx.h"
@@ -41,10 +41,10 @@ static char THIS_FILE[] = __FILE__;
 /******************************************************************************
 Function Name    :  CDLLHandlerDlg
 Input(s)         :  byType - Dialog type, (0)Load_Unload dialog or (1)EventIndication Dialog
-                    pDoc - Document pointer 
+                    pDoc - Document pointer
                     pParent - Parent window object pointer
                     bIsDelete - Indicates the working mode. FALSE means handler
-                    to be added. Else handler to be deleted. 
+                    to be added. Else handler to be deleted.
 Output           :  -
 Functionality    :  Constructor
 Member of        :  CDLLHandlerDlg
@@ -54,7 +54,7 @@ Date Created     :  06.03.2003
 Modifications    :  Ratnadip Choudhury, 27/05/2009. Updated function header.
 ******************************************************************************/
 CDLLHandlerDlg::CDLLHandlerDlg(BYTE byType, CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/, BOOL bIsDelete /*FALSE*/)
-   : CDialog(CDLLHandlerDlg::IDD, pParent)
+    : CDialog(CDLLHandlerDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CDLLHandlerDlg)
     m_bCheckDLLLoad = FALSE;
@@ -108,7 +108,7 @@ Member of        :  CDLLHandlerDlg
 Friend of        :  -
 Author(s)        :  Ratnadip Choudhury
 Date Created     :  06.03.2003
-Modifications    :  
+Modifications    :
 ******************************************************************************/
 void CDLLHandlerDlg::OnBnClickedOk()
 {
@@ -133,7 +133,7 @@ void CDLLHandlerDlg::OnBnClickedOk()
             omStrHandlerName = omStrControl;
             if(nCheck == 1 && bIsEnable != 0 )
             {
-                 m_omStrArrayDLLHandler.Add(omStrHandlerName);
+                m_omStrArrayDLLHandler.Add(omStrHandlerName);
             }
         }
     }
@@ -145,13 +145,13 @@ Function Name    :  OnInitDialog
 Input(s)         :  void
 Output           :  BOOL. Returns TRUE as a green signal to continue further.
 Functionality    :  Framework calls this function in response to the message
-                    WM_INITDIALOG. This message is sent to the dialog box 
+                    WM_INITDIALOG. This message is sent to the dialog box
                     during DoModal call.
 Member of        :  CDLLHandlerDlg
 Friend of        :  -
 Author(s)        :  Ratnadip Choudhury
 Date Created     :  27.05.2009
-Modifications    :  
+Modifications    :
 ******************************************************************************/
 BOOL CDLLHandlerDlg::OnInitDialog()
 {
@@ -159,16 +159,16 @@ BOOL CDLLHandlerDlg::OnInitDialog()
     CDialog::OnInitDialog();
 
     CButton* pButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER);
-    
+
     if (pButton != NULL)
     {
-        pButton->SetWindowText(m_byType == 0? _T("Load"): _T("Data Confirm Event"));
+        pButton->SetWindowText(m_byType == 0? "Load": "Data Confirm Event");
     }
     pButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER + 1);
-    
+
     if (pButton != NULL)
     {
-        pButton->SetWindowText(m_byType == 0? _T("Unload"): _T("Address Change Event"));
+        pButton->SetWindowText(m_byType == 0? "Unload": "Address Change Event");
     }
     if( m_pDoc != NULL )
     {
@@ -180,7 +180,7 @@ BOOL CDLLHandlerDlg::OnInitDialog()
         if(pomStrArrayHandlerName != NULL )
         {
             // Check for the handlers already added.
-            for(INT  i = 0;i<defDLL_HANDLER_NUMBER;i++)
+            for(INT  i = 0; i<defDLL_HANDLER_NUMBER; i++)
             {
                 for(INT j =0; j<pomStrArrayHandlerName->GetSize(); j++)
                 {
@@ -191,7 +191,7 @@ BOOL CDLLHandlerDlg::OnInitDialog()
                         pomButton->GetWindowText(omStrControl);
                         omStrControl.Replace(' ','_');
                         // The find the control text in added handlers text
-                        if( omStrHandlerName.Find(omStrControl) != -1 ) 
+                        if( omStrHandlerName.Find(omStrControl) != -1 )
                         {
                             // If the dialog box is invoked for delete, check
                             // the box of already added handlers else check and
@@ -210,11 +210,11 @@ BOOL CDLLHandlerDlg::OnInitDialog()
                 }
             }
         }
-        // Disable all other check box corresponding to which the handlers 
+        // Disable all other check box corresponding to which the handlers
         // are not added and dialog box in invoked to delete the handlers
         if(m_bIsDelete == TRUE )
         {
-            for(INT i = 0;i<defDLL_HANDLER_NUMBER;i++)
+            for(INT i = 0; i<defDLL_HANDLER_NUMBER; i++)
             {
                 pomButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER+i);
                 if(pomButton != NULL )
@@ -226,19 +226,19 @@ BOOL CDLLHandlerDlg::OnInitDialog()
                     }
                 }
             }
-            // Set the dialog caption text to indicate user is deleting 
+            // Set the dialog caption text to indicate user is deleting
             // the handlers
             SetWindowText(defDLL_HANDLER_TEXT_DEL);
         }
         else
         {
-            // Set the dialog caption text to indicate user is adding 
+            // Set the dialog caption text to indicate user is adding
             // the handlers
             SetWindowText(defDLL_HANDLER_TEXT_ADD);
         }
     }
-  return TRUE;  // return TRUE unless you set the focus to a control
-               // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -255,9 +255,9 @@ BOOL CDLLHandlerDlg::OnInitDialog()
 /*  Date Created     : 06.03.2003                                             */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CDLLHandlerDlg::OnCbtnDllCancel() 
+void CDLLHandlerDlg::OnCbtnDllCancel()
 {
-     CDialog::OnCancel();
+    CDialog::OnCancel();
     // TODO: Add your control notification handler code here
-    
+
 }

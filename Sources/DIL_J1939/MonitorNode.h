@@ -4,11 +4,11 @@
   Project       :  Frame_McNet
   FileName      :  MonitorNode.h
   Description   :  MAnage Monitor Node
-  $Log:   
+  $Log:
 
   Author(s)     :  Anish Kumar
   Date Created  :  05/01/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 

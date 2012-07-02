@@ -31,22 +31,22 @@ class CFFListCtrl : public CListCtrl
 {
     // Screen Rectangle
     CRect m_rectClient;
-// Construction
+    // Construction
 public:
     CFFListCtrl();
     VOID vInitMemDCRect();
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFFListCtrl)
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CFFListCtrl();
 

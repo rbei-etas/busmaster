@@ -37,29 +37,35 @@
 
 class CDefineTimerHandler : public CDialog
 {
-// Construction
+    // Construction
 public:
     CString m_omStrTimerFunctionName;
     CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDefineTimerHandler)
     enum { IDD = IDD_DLG_DEFINE_TIMER_HANDLER };
     CRadixEdit  m_omEditTimerValue;
     CEdit   m_omEditTimerFuncName;
     CString m_omEditStrTimerFuncName;
+    CString m_omStrCurrentTimerName;
     UINT    m_unEditTimerValue;
+
+    // Check if timer is created new or existing timer is edited
+    void vSetTimerEdited(BOOL bEdited);
+    BOOL bIsTimerEdited();
+
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDefineTimerHandler)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -71,10 +77,11 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
     CFunctionEditorDoc* m_pDoc;
+    BOOL    m_bIsTimerEdited;
 };
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before 
+// Microsoft Visual C++ will insert additional declarations immediately before
 // the previous line.
-#endif 
+#endif
 //!defined(AFX_DEFINETIMERHANDLER_H__051FC128_3176_11D6_BFEB_0010B599CE39__INCLUDED_)

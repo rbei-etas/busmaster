@@ -38,13 +38,13 @@ extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 // CDriverInfoDlg dialog
 
 /*******************************************************************************
- Function Name    :  CDriverInfoDlg                                  
- Input(s)         :  CWnd* pParent: Pointer to parent class                
+ Function Name    :  CDriverInfoDlg
+ Input(s)         :  CWnd* pParent: Pointer to parent class
  Output           :  -
- Functionality    :  Constructor is called when user create an object of   
-                     this class. Initialisation of all data members        
- Member of        :  CDriverInfoDlg                                  
- Friend of        :      -                                                 
+ Functionality    :  Constructor is called when user create an object of
+                     this class. Initialisation of all data members
+ Member of        :  CDriverInfoDlg
+ Friend of        :      -
  Author(s)        :  Raja N
  Date Created     :  07.09.2004
  Modifications    :  Modified this function to refer HI layer to get information
@@ -62,7 +62,7 @@ CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=NULL*/)
 
 
 /*******************************************************************************
-  Function Name    :  DoDataExchange                                    
+  Function Name    :  DoDataExchange
   Input(s)         :
   Output           :
   Functionality    :  Called by the framework to exchange and validate dialog
@@ -93,22 +93,22 @@ END_MESSAGE_MAP()
   Function Name    :  OnInitDialog
   Input(s)         :    -
   Output           :    -
-  Functionality    :  Called by the framework to when the dialog control is 
+  Functionality    :  Called by the framework to when the dialog control is
                       initialised. The control will be initialised with last
                       used value or default value.
   Member of        :  CDriverInfoDlg
   Friend of        :      -
   Author(s)        :  Raja N
   Date Created     :  07.09.2004
-  Modifications    :  
+  Modifications    :
 *******************************************************************************/
-BOOL CDriverInfoDlg::OnInitDialog() 
+BOOL CDriverInfoDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
     // Resize the dialog in USB build
     // Pointer to components
-    CWnd * pomWnd = NULL;
+    CWnd* pomWnd = NULL;
     // Hide Copywright message
     pomWnd = GetDlgItem(IDC_STAT_COPYRIGHT);
     if( pomWnd != NULL )
@@ -176,5 +176,5 @@ BOOL CDriverInfoDlg::OnInitDialog()
         pomWnd = NULL;
     }
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }

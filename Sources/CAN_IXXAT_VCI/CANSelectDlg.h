@@ -15,16 +15,16 @@
 
 
 /**
- * @file  
- * 	CANSelectDlg.h
+ * @file
+ *  CANSelectDlg.h
  *
- * @brief 
- * 	This class is not used! The files can be removed one day if
- * 	it really will not needed for controller selection.
- * 	A MFC based dialog for later use to select IXXAT CAN controller
- * 	from different boards. 
- * 	The reason why it is not used: this dialog will be removed and 
- * 	a new dialog in the application itself will be used.
+ * @brief
+ *  This class is not used! The files can be removed one day if
+ *  it really will not needed for controller selection.
+ *  A MFC based dialog for later use to select IXXAT CAN controller
+ *  from different boards.
+ *  The reason why it is not used: this dialog will be removed and
+ *  a new dialog in the application itself will be used.
  */
 
 #pragma once
@@ -34,31 +34,31 @@
 /**
  * @class CCANSelectDlg
  *
- * @brief 
- * 	This class is not used! The files can be removed one day if
- * 	it really will not needed for controller selection.
- * 	A MFC based dialog for later use to select IXXAT CAN controller
- * 	from different boards. 
- * 	The reason why it is not used: this dialog will be removed and 
- * 	a new dialog in the application itself will be used.
- * 
+ * @brief
+ *  This class is not used! The files can be removed one day if
+ *  it really will not needed for controller selection.
+ *  A MFC based dialog for later use to select IXXAT CAN controller
+ *  from different boards.
+ *  The reason why it is not used: this dialog will be removed and
+ *  a new dialog in the application itself will be used.
+ *
  *
  */
 class CCANSelectDlg : public CDialog
 {
-  DECLARE_DYNAMIC(CCANSelectDlg)
+    DECLARE_DYNAMIC(CCANSelectDlg)
 
 public:
-  CCANSelectDlg(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CCANSelectDlg();
+    CCANSelectDlg(CWnd* pParent = NULL);   // standard constructor
+    virtual ~CCANSelectDlg();
 
-// Dialog Data
-  enum { IDD = IDD_IXXAT_CAN_SELECTION_DLG };
+    // Dialog Data
+    enum { IDD = IDD_IXXAT_CAN_SELECTION_DLG };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-  DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-  afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedOk();
 };

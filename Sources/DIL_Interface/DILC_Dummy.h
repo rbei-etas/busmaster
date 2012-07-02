@@ -29,30 +29,33 @@
 class CDIL_CAN_DUMMY : public CBaseDIL_CAN_Controller
 {
 public:
-  /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
-	HRESULT CAN_PerformInitOperations(void);
-	HRESULT CAN_PerformClosureOperations(void);
-	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
-	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
-	HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
-	HRESULT CAN_DeselectHwInterface(void);
-	HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
-	HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
-	HRESULT CAN_StartHardware(void);
-	HRESULT CAN_StopHardware(void);
-	HRESULT CAN_ResetHardware(void);
-	HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-	HRESULT CAN_GetLastErrorString(string& acErrorStr);
-	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
-	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
+    /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+    HRESULT CAN_PerformInitOperations(void);
+    HRESULT CAN_PerformClosureOperations(void);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
+    HRESULT CAN_DeselectHwInterface(void);
+    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
+    HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
+    HRESULT CAN_StartHardware(void);
+    HRESULT CAN_StopHardware(void);
+    HRESULT CAN_ResetHardware(void);
+    HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+    HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
+    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
+    HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+    
+    HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
+    
+    HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
-	// Specific function set		
-	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);	
-	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
-	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
-	HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-	HRESULT CAN_LoadDriverLibrary(void);
-	HRESULT CAN_UnloadDriverLibrary(void);
+    // Specific function set
+    HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
+    HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
+    HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
+    HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
+    HRESULT CAN_LoadDriverLibrary(void);
+    HRESULT CAN_UnloadDriverLibrary(void);
 };

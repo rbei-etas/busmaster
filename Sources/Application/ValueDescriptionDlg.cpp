@@ -15,11 +15,11 @@
 
 /**
  * \file      ValueDescriptionDlg.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 #include "stdafx.h"                 // Standard header
 #include "BUSMASTER.h"            // App class header
@@ -34,7 +34,7 @@ extern CCANMonitorApp theApp;
 /*  Function Name    :  CValueDescriptionDlg                                  */
 /*  Input(s)         :  eMODES eMode,
                         CString omStrMsgName,
-                        CString omStrSgName,                    
+                        CString omStrSgName,
                         CWnd* pParent                                         */
 /*  Output           :                                                        */
 /*  Functionality    :  Constructor                                           */
@@ -42,19 +42,19 @@ extern CCANMonitorApp theApp;
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  27.02.2002                                            */
-/*  Modifications    :  11-12-2002, Amarnath S                                */ 
-/*                      Initialised members                                   */  
+/*  Modifications    :  11-12-2002, Amarnath S                                */
+/*                      Initialised members                                   */
 /******************************************************************************/
 CValueDescriptionDlg::CValueDescriptionDlg(const SDBPARAMS& sDbParams,
-                                           eMODES eMode,
-                                           CString omStrMessageCode,
-                                           CString omStrSgName,                 
-                                           INT nIndex,
-                                           CWnd* pParent /*=NULL*/)
+        eMODES eMode,
+        CString omStrMessageCode,
+        CString omStrSgName,
+        INT nIndex,
+        CWnd* pParent /*=NULL*/)
     : CDialog(CValueDescriptionDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CValueDescriptionDlg)
-    m_omStrValueDescriptor = "";
+    m_omStrDescriptor = "";
     m_omStrValue = "";
     m_bIsCanceled = FALSE;
     m_omStrMessageCode = omStrMessageCode;
@@ -62,7 +62,7 @@ CValueDescriptionDlg::CValueDescriptionDlg(const SDBPARAMS& sDbParams,
     m_bMode = eMode;
     m_nIndex = nIndex;
     //}}AFX_DATA_INIT
-
+    bSignalType = "B";
     m_omStrPrevDesc         = STR_EMPTY;
     m_omStrPrevSignalVal    = STR_EMPTY;
     m_sDbParams             = sDbParams;
@@ -73,9 +73,9 @@ void CValueDescriptionDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CValueDescriptionDlg)
-    DDX_Text(pDX, IDC_EDIT_VALUE_DESC, m_omStrValueDescriptor);
+    DDX_Text(pDX, IDC_EDIT_VALUE_DESC, m_omStrDescriptor);
     DDX_Text(pDX, IDC_EDIT_VAL, m_omStrValue);
-	DDV_MaxChars(pDX, m_omStrValue, 16);
+    DDV_MaxChars(pDX, m_omStrValue, 20);
     //}}AFX_DATA_MAP
 }
 
@@ -105,12 +105,13 @@ END_MESSAGE_MAP()
 /*                      Modified to refer inactive data structure for editor  */
 /*                      purpose.                                              */
 /******************************************************************************/
-void CValueDescriptionDlg::OnClickedOk() 
+void CValueDescriptionDlg::OnClickedOk()
 {
     UpdateData(TRUE);
     BOOL bRetValue = TRUE;
+    BOOL bModifiedFlag = FALSE;
     // Validate data
-    if ( m_omStrValueDescriptor.IsEmpty() == TRUE )
+    if ( m_omStrDescriptor.IsEmpty() == TRUE )
     {
         AfxMessageBox("Signal Description cannot be emtpy!",MB_OK);
         GetDlgItem(IDC_EDIT_VALUE_DESC)->SetFocus();
@@ -135,16 +136,16 @@ void CValueDescriptionDlg::OnClickedOk()
             if ( pTempMsgSg != NULL )
             {
                 // Check if description is duplicate
-                if ( m_omStrPrevDesc != m_omStrValueDescriptor )
+                if ( m_omStrPrevDesc != m_omStrDescriptor )
                 {
                     if(pTempMsgSg->bIsDuplicateValueDescription(m_omStrMessageCode,
-                        m_omStrSgName, 
-                        m_omStrValue, 
-                        m_omStrValueDescriptor,
-                        m_nIndex,
-                        m_bMode))
+                            m_omStrSgName,
+                            m_omStrValue,
+                            m_omStrDescriptor,
+                            m_nIndex,
+                            m_bMode))
                     {
-                       AfxMessageBox("Signal Descriptor already exists!",MB_OK);
+                        AfxMessageBox("Signal Descriptor already exists!",MB_OK);
                         GetDlgItem(IDC_EDIT_VALUE_DESC)->SetFocus();
                         bRetValue = FALSE;
                     }
@@ -156,11 +157,11 @@ void CValueDescriptionDlg::OnClickedOk()
                     if ( m_omStrPrevSignalVal  != m_omStrValue )
                     {
                         if ( pTempMsgSg->bIsDuplicateSignalValue(m_omStrMessageCode,
-                            m_omStrSgName, 
-                            m_omStrValue, 
-                            m_omStrValueDescriptor,
-                            m_nIndex,
-                            m_bMode))
+                                m_omStrSgName,
+                                m_omStrValue,
+                                m_omStrDescriptor,
+                                m_nIndex,
+                                m_bMode))
                         {
                             AfxMessageBox("Signal Value already exists!", MB_OK);
                             GetDlgItem(IDC_EDIT_VAL )->SetFocus();
@@ -173,23 +174,24 @@ void CValueDescriptionDlg::OnClickedOk()
                 if ( bRetValue == TRUE )
                 {
                     if (pTempMsgSg->bIsSignalValueOutofRange(m_omStrMessageCode,
-                        m_omStrSgName, 
-                        m_omStrValue ))
+                            m_omStrSgName,
+                            m_omStrValue ))
                     {
                         AfxMessageBox( MSG_SG_VAL_OUT_OF_RANGE, MB_OK);
                         GetDlgItem(IDC_EDIT_VAL )->SetFocus();
                         bRetValue = FALSE;
                     }
 
-                    if ( bRetValue == TRUE )
+                    //check the value is changed or not
+                    if (bIsDataModified()&&( bRetValue == TRUE ))
                     {
+                        bModifiedFlag = TRUE;
                         // Update the desc into the data structure
                         CSignalDescVal* pNew = new CSignalDescVal;
-                        CMainFrame* pMainFrame =
-                            static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+                        //                      CMainFrame* pMainFrame =
+                        //                          static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-                        if ( pNew       != NULL &&
-                             pMainFrame != NULL)
+                        if (pNew != NULL)
                         {
                             CString omStrPrevDesc = STR_EMPTY;
                             if ( MD_ADD == m_bMode )
@@ -198,14 +200,23 @@ void CValueDescriptionDlg::OnClickedOk()
                                 pTempMsgSg->bAddSgDescVal( m_omStrMessageCode,
                                                            m_omStrSgName );
                             }
-                            // convert string to int
-                            pNew->m_n64SignalVal = 
-                                pMainFrame->nConvertStringToInt( m_omStrValue );
-                            pNew->m_omStrSignalDescriptor = 
-                                m_omStrValueDescriptor;
+                            //                              pNew->m_n64SignalVal = _strtoi64( m_omStrValue, NULL, 10);
+                            if(bSignalType.CompareNoCase(defSIGNED_INT) == 0)
+                            {
+                                pNew->m_DescValue.n64Value = _strtoi64( m_omStrValue, NULL, 10);
+                            }
+                            else
+                            {
+                                pNew->m_DescValue.un64Value = _strtoui64( m_omStrValue, NULL, 10);
+                            }
+
+                            //                              // convert string to int
+                            //                              pNew->m_n64SignalVal = pMainFrame->nConvertStringToInt( m_omStrValue );
+                            pNew->m_omStrSignalDescriptor = m_omStrDescriptor;
+
                             if (MD_EDIT == m_bMode)
                             {
-                                //m_omStrPrevDesc = m_omStrValueDescriptor;
+                                m_omStrPrevDesc = m_omStrDescriptor;
                             }
                             // update the edited values to the data structure
                             if ( !pTempMsgSg->bUpdateSgDescVal( m_omStrMessageCode,
@@ -214,16 +225,28 @@ void CValueDescriptionDlg::OnClickedOk()
                                                                 pNew ))
                             {
                                 AfxMessageBox("Could not update...",
-                                               MB_OK|MB_ICONINFORMATION);
+                                              MB_OK|MB_ICONINFORMATION);
+                                bRetValue = FALSE;
                             }
                             // clean up
                             delete pNew;
                             pNew = NULL;
-                            CDialog::OnOK();
                         }
                     }
                 }
             }
+        }
+    }
+
+    if(bRetValue == TRUE)//no error occurs
+    {
+        if(bModifiedFlag == TRUE)//some modification done
+        {
+            CDialog::OnOK();
+        }
+        else //no modification
+        {
+            CDialog::OnCancel();
         }
     }
 }
@@ -238,12 +261,12 @@ void CValueDescriptionDlg::OnClickedOk()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  27.02.2002                                            */
-/*  Modifications    :                                                        */ 
+/*  Modifications    :                                                        */
 /******************************************************************************/
-void CValueDescriptionDlg::OnCancel() 
+void CValueDescriptionDlg::OnCancel()
 {
     m_bIsCanceled = TRUE;
-    
+
     CDialog::OnCancel();
 }
 /******************************************************************************/
@@ -255,21 +278,38 @@ void CValueDescriptionDlg::OnCancel()
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  27.02.2002                                            */
-/*  Modifications    :  11-12-2002, Amarnath S                                */ 
-/*                      Initialised members in edit mode                      */  
+/*  Modifications    :  11-12-2002, Amarnath S                                */
+/*                      Initialised members in edit mode                      */
 /******************************************************************************/
-BOOL CValueDescriptionDlg::OnInitDialog() 
+BOOL CValueDescriptionDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
+    // Get appropriate msg structure ptr
+    CMsgSignal* pTempMsgSg = NULL;
+    pTempMsgSg = *((CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
+
+    CString strMinVal = STR_EMPTY;
+    CString strMaxVal = STR_EMPTY ;
+    BYTE bSignalType;
+    if ( pTempMsgSg != NULL )
+    {
+        pTempMsgSg->vGetSignalValidRange(m_omStrMessageCode,
+                                         m_omStrSgName, strMinVal, strMaxVal);
+
+    }
+    CString strRange;
+    strRange.Format("(Decimal range %s To %s)", strMinVal, strMaxVal);
+
+    GetDlgItem(IDC_STAT_RANGE)->SetWindowText(strRange);
 
     if ( m_bMode == MD_EDIT )
     {
-        m_omStrPrevDesc         = m_omStrValueDescriptor;
+        m_omStrPrevDesc         = m_omStrDescriptor;
         m_omStrPrevSignalVal    = m_omStrValue;
     }
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
@@ -281,10 +321,10 @@ BOOL CValueDescriptionDlg::OnInitDialog()
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  11.12.2002                                            */
-/*  Modifications    :  23-10-2003, Amitesh Bharti                            */ 
-/*                      Remove condition for not processing space.            */  
+/*  Modifications    :  23-10-2003, Amitesh Bharti                            */
+/*                      Remove condition for not processing space.            */
 /******************************************************************************/
-BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
 {
     // Do not process non-hexadecimal characters
     // in signal value edit control
@@ -295,10 +335,10 @@ BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
     {
         if ( omEditCtrlName == omEditFocusName )
         {
-		    int nStart, nEnd;
+            int nStart, nEnd;
             omEditCtrlName->GetSel(nStart, nEnd);
-            if (nStart == 0 && 
-                pMsg->wParam == MINUS_SIGN) 
+            if (nStart == 0 &&
+                    pMsg->wParam == MINUS_SIGN)
             {
                 bSkip = FALSE;
             }
@@ -321,4 +361,15 @@ BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
     }
 
     return bSkip;
+}
+
+BOOL CValueDescriptionDlg::bIsDataModified()
+{
+    BOOL bDataChanged = FALSE;
+    if (m_omStrPrevDesc != m_omStrDescriptor ||
+            m_omStrPrevSignalVal != m_omStrValue)
+    {
+        bDataChanged = TRUE;
+    }
+    return bDataChanged;
 }

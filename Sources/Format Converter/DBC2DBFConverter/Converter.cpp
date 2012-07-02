@@ -26,12 +26,15 @@
 #include "Converter.h"
 #include "Signal.h"
 #include "Tag.h"
-
+#include "Definitions.h"
 using namespace std;
 
 bool CConverter::valid_msg = true;
 unsigned char CConverter::ucMsg_DLC = 8;
-
+extern "C" int nBus ;
+extern "C" int nProtocal ;
+extern "C" int FindProtoCol(char*);
+extern FILE* yyin;
 /**
  * \brief Constructor
  *
@@ -63,8 +66,16 @@ CConverter::~CConverter()
  */
 unsigned int CConverter::Convert(string& sCanoeFile, string& sCanMonFile)
 {
+
     fstream fileInput, fileOutput;
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
+
+    //Protocol type
+    char file[254];
+    strcpy_s(file, 254, sCanoeFile.c_str());
+    FindProtoCol(file);
+
+
     fileInput.open(sCanoeFile.c_str(), fstream::in);
 
     if(!fileInput.is_open())
@@ -84,7 +95,10 @@ unsigned int CConverter::Convert(string& sCanoeFile, string& sCanMonFile)
     GenerateMessageList(fileInput);
     // All information gathered, validate and update if necessary
     // Make appropriate changes in the contents of the list
-    ValidateMessageList();
+    if(m_listMessages.size() > 0)
+    {
+        ValidateMessageList();
+    }
     // the format is OK then open the output file
     fileOutput.open(sCanMonFile.c_str(), fstream::out);
 
@@ -100,7 +114,8 @@ unsigned int CConverter::Convert(string& sCanoeFile, string& sCanMonFile)
     bool bRes = WriteToOutputFile(fileOutput);
     fileInput.close();
     fileOutput.close();
-
+    nProtocal = NONE;
+    nBus = BUS_CAN;
     if(!bRes)
     {
         string sLogFile = sCanMonFile.substr(0, sCanMonFile.length()-4);
@@ -121,6 +136,7 @@ unsigned int CConverter::Convert(string& sCanoeFile, string& sCanMonFile)
             return SetResultCode(CON_RC_COMPLETED_WITH_ERROR);
         }
     }
+    //CConverter::valid_msg = false;
 
     return m_uiResultCode;
 }
@@ -371,7 +387,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
     string local_copy;
     char* pcTok;
     int flag=0;
-	int _flag_BS_= 0; //possible values 0,1,2// this flag is used to check if parsing is done in between NS_: and BS_:  #git issue 174
+    int _flag_BS_= 0; //possible values 0,1,2// this flag is used to check if parsing is done in between NS_: and BS_:  #git issue 174
 
     // parsing the input file
     while(fileInput.getline(acLine, defCON_MAX_LINE_LEN))
@@ -410,15 +426,19 @@ void CConverter::GenerateMessageList(fstream& fileInput)
         if(pcToken)
         {
             //compare token to known types to interpret the line further
-			if(strstr(pcToken, "BS_") != NULL)  // git issue #174
+            if(strstr(pcToken, "BS_") != NULL)  // git issue #174
             {
                 if (_flag_BS_ == 1 )
-					_flag_BS_ = 2; // this means just NS_ and BS_ are done.
+                {
+                    _flag_BS_ = 2;    // this means just NS_ and BS_ are done.
+                }
             }
-			if(strstr(pcToken, "NS_") != NULL)
+            if(strstr(pcToken, "NS_") != NULL)
             {
                 if (_flag_BS_ == 0 )
-					_flag_BS_ = 1; // this means just NS_ is hit and BS_ is still due.
+                {
+                    _flag_BS_ = 1;    // this means just NS_ is hit and BS_ is still due.
+                }
             }
 
             // new line - skip
@@ -560,7 +580,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 // find the signal from the message, then update the
                 // signal type appropriately of the respective signal
                 pcToken = strtok_s(NULL, " :;", &pcTok); // msgid
-                unsigned int id = (unsigned int)atoi(pcToken);
+                unsigned int id = (unsigned int)strtoul(pcToken, NULL, 10);
 
                 if(id != 3221225472)
                 {
@@ -676,7 +696,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 else if(strcmp(pcToken,"BO_") == 0)
                 {
                     pcToken = strtok_s(NULL, " ", &pcTok);
-                    cm.m_msgID = atoi(pcToken);
+                    cm.m_msgID = strtoul(pcToken, NULL, 10);
 
                     // set the id and frame format
                     // canoe puts MSbit = 1 for extended ID
@@ -738,7 +758,8 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                 else
                 {
                     //comment = pcToken;
-                    if(comment.find(";") < 0)
+                    int nRetVal = comment.find(";");
+                    if( nRetVal < 0)
                     {
                         while(strstr(pcToken, "\";") == NULL)
                         {
@@ -903,12 +924,27 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
     fileOutput << T_DB_VER " " T_VER_NO << endl;
     fileOutput << endl;
+    if(nProtocal == PROTOCAL_J1939)
+    {
+        fileOutput << T_PROTOCOL " " T_PRPTOCOL_J1939;
+    }
+    else
+    {
+        //default CAN
+        fileOutput << T_PROTOCOL " " T_PROTOCOL_CAN;
+    }
+    fileOutput << endl;
+    fileOutput << endl;
+
+    //For easy replacement of version Info #define is not added
+    fileOutput<< "[BUSMASTER_VERSION] [1.6.5]"<<endl;
+
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;
     fileOutput << endl;
     //Write Messagess to the Output file
     CMessage msg;
-    bResult &= msg.writeMessageToFile(fileOutput, m_listMessages, false);
+    bResult &= msg.writeMessageToFile(fileOutput, m_listMessages, false, nProtocal);
 
     // write all messages, signals not associated with any Messages
     if(!m_listSignal.empty())
@@ -953,7 +989,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     for(cmt=m_cmNet.begin(); cmt!=m_cmNet.end(); ++cmt)
     {
         fileOutput << cmt->m_elementName.c_str();
-        fileOutput << " " << fileOutput << cmt->m_comment.c_str() << endl;
+        fileOutput << " " << cmt->m_comment.c_str() << endl;
     }
 
     fileOutput << T_END_CM_NET << endl;
@@ -1086,7 +1122,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
     //list of not supported
     fileOutput << T_ST_NOT_SUP << endl;
-    msg.writeMessageToFile(fileOutput, m_unsupList, true);
+    msg.writeMessageToFile(fileOutput, m_unsupList, true, nProtocal);
     fileOutput << T_END_NOT_SUP << endl;
     fileOutput << endl;
     //lines that were not processed
@@ -1232,7 +1268,7 @@ void CConverter::create_Node_List(char* pcLine)
  *
  * Encrypts all the strings present in the list
  */
-void CConverter::EncryptData(list<string> &m_notProcessed)
+void CConverter::EncryptData(list<string>& m_notProcessed)
 {
     list<string>::iterator str;
 

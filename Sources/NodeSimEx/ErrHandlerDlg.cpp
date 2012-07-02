@@ -15,11 +15,11 @@
 
 /**
  * \file      ErrHandlerDlg.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 #include "NodeSimEx_stdafx.h"
 
@@ -103,7 +103,7 @@ END_MESSAGE_MAP()
 /*                      On 15.09.2004, Removed code to disable handlers as    */
 /*                      they are supported now                                */
 /******************************************************************************/
-BOOL CErrHandlerDlg::OnInitDialog() 
+BOOL CErrHandlerDlg::OnInitDialog()
 {
     CStringArray* pomStrArrayHandlerName = NULL;
 
@@ -111,7 +111,7 @@ BOOL CErrHandlerDlg::OnInitDialog()
     // remove all the element previously added, if any.
     m_omStrArrayErrorHandler.RemoveAll();
     // Get the pointer to document
-    
+
     if( m_pDoc != NULL )
     {
         CButton* pomButton = NULL;
@@ -129,14 +129,14 @@ BOOL CErrHandlerDlg::OnInitDialog()
             for(int j = 0; j < pomStrArrayHandlerName->GetSize(); j++)
             {
                 pomButton = (CButton*)
-                    GetDlgItem(IDC_CHKB_ERROR_ACTIVE_HANDLER + nIndex);
+                            GetDlgItem(IDC_CHKB_ERROR_ACTIVE_HANDLER + nIndex);
                 if(pomButton != NULL )
                 {
                     omStrHandlerName = pomStrArrayHandlerName->GetAt(j);
                     pomButton->GetWindowText(omStrControl);
                     omStrControl.Replace(' ','_');
                     // The find the control text in added handlers text
-                    if( omStrHandlerName.Find(omStrControl) != -1 ) 
+                    if( omStrHandlerName.Find(omStrControl) != -1 )
                     {
                         // If the dialog box is invoked for delete, check
                         // the box of already added handlers else check and
@@ -155,28 +155,28 @@ BOOL CErrHandlerDlg::OnInitDialog()
             }
         }
 
-        // Disable all other check box corresponding to which the handlers 
+        // Disable all other check box corresponding to which the handlers
         // are not added and dialog box in invoked to delete the handlers
         if(m_bIsDelete == TRUE )
         {
             for( nIndex = 0; nIndex < defERROR_HANDLER_NUMBER;
-                nIndex++)
+                    nIndex++)
             {
                 pomButton = (CButton*)
-                    GetDlgItem(IDC_CHKB_ERROR_ACTIVE_HANDLER + nIndex);
+                            GetDlgItem(IDC_CHKB_ERROR_ACTIVE_HANDLER + nIndex);
                 nCheck = pomButton->GetCheck();
                 if(nCheck == 0 )
                 {
                     pomButton->EnableWindow(FALSE);
                 }
             }
-            // Set the dialog caption text to indicate user is deleting 
+            // Set the dialog caption text to indicate user is deleting
             // the handlers
             SetWindowText(defERROR_HANDLER_TEXT_DEL);
         }
         else
         {
-            // Set the dialog caption text to indicate user is adding 
+            // Set the dialog caption text to indicate user is adding
             // the handlers
             SetWindowText(defERROR_HANDLER_TEXT_ADD);
         }
@@ -197,9 +197,9 @@ BOOL CErrHandlerDlg::OnInitDialog()
 /*  Date Created     :  19.02.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CErrHandlerDlg::OnCbtnErrorCancel() 
+void CErrHandlerDlg::OnCbtnErrorCancel()
 {
-    CDialog::OnCancel();    
+    CDialog::OnCancel();
 }
 
 /******************************************************************************/
@@ -216,7 +216,7 @@ void CErrHandlerDlg::OnCbtnErrorCancel()
 /*  Date Created     :  19.02.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-void CErrHandlerDlg::OnCbtnErrorOk() 
+void CErrHandlerDlg::OnCbtnErrorOk()
 {
     CButton* pomButton       = NULL;
     CString omStrHandlerName = STR_EMPTY ;
@@ -227,8 +227,8 @@ void CErrHandlerDlg::OnCbtnErrorOk()
     // add the name in the array
     for(int j=0; j<defERROR_HANDLER_NUMBER; j++)
     {
-        pomButton = 
-        (CButton*)GetDlgItem(IDC_CHKB_ERROR_ACTIVE_HANDLER + j);
+        pomButton =
+            (CButton*)GetDlgItem(IDC_CHKB_ERROR_ACTIVE_HANDLER + j);
         if(pomButton != NULL )
         {
             nCheck      = pomButton->GetCheck();
@@ -243,7 +243,7 @@ void CErrHandlerDlg::OnCbtnErrorOk()
             {
                 m_omStrArrayErrorHandler.Add(omStrHandlerName);
             }
-       }
+        }
     }
     CDialog::OnOK();
 }

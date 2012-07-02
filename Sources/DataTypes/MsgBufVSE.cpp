@@ -31,7 +31,7 @@
 #include "include/Error.h"
 
 
-//type 
+//type
 #define DATA_LEN   WORD
 #define TYPE       BYTE
 #define MAX_BUFFER_SIZE 100000
@@ -49,9 +49,9 @@ const int HEADER_LEN = TYPE_SIZE + DATA_LEN_SIZE;
 
 
 /**********************************************************************************
-Function Name   :   CMsgBufVSE() 
-Input           :   
-Output          :   
+Function Name   :   CMsgBufVSE()
+Input           :
+Output          :
 Functionality   :   Initializes buffer with minimum memory.
 Member of       :   CMsgBufVSE
 Friend of       :   -
@@ -82,8 +82,8 @@ CMsgBufVSE::~CMsgBufVSE(void)
 }
 /**********************************************************************************
 Function Name   :   vClearMessageBuffer()
-Input           :   
-Output          :   
+Input           :
+Output          :
 Functionality   :   Clears msg buffer and initializes all variables.
 Member of       :   CMsgBufVSE
 Friend of       :   -
@@ -103,7 +103,7 @@ void CMsgBufVSE::vClearMessageBuffer(void)
 /**********************************************************************************
 Function Name   :   ReadFromBuffer()
 Input           :   TYPE, SIZE, pointer to msg.
-Output          :   CALL_SUCCESS for success.                    
+Output          :   CALL_SUCCESS for success.
                     ERR_READ_MEMORY_SHORT when caller specifies size of the msg
                     less than required size.
 Functionality   :   Interface function. reads current msg from circular buffer.
@@ -146,7 +146,7 @@ HRESULT CMsgBufVSE::ReadFromBuffer(INT& nType, BYTE* pbyMsg, INT& nSize)
 /**********************************************************************************
 Function Name   :   WriteIntoBuffer()
 Input           :   TYPE, SIZE, pointer to msg.
-Output          :   CALL_SUCCESS for success.                    
+Output          :   CALL_SUCCESS for success.
                     ERR_WRITE_MSG_TOO_LARGE when caller specifies size of the msg
                     more than buffer size.
 Functionality   :   Interface function. Writes msg into circular function.
@@ -201,7 +201,7 @@ int CMsgBufVSE::GetBufferLength(void) const
 
 /**********************************************************************************
 Function Name   :   nSetBufferSize()
-Output          :   CALL_SUCCESS for success. 
+Output          :   CALL_SUCCESS for success.
                     WARN_BUFFER_SIZE_MIN_ASSUMED when caller specifies less than
                     minimum buffer size.
                     WARN_BUFFER_SIZE_MAX_ASSUMED when caller specifies more than
@@ -247,7 +247,7 @@ int CMsgBufVSE::nSetBufferSize(int& nSize)
     }
 
     LeaveCriticalSection(&m_CritSectionForGB);
-    
+
     return nResult;
 }
 /**********************************************************************************
@@ -255,7 +255,7 @@ Function Name   :   AdvanceToNextMsg()
 Output          :   CALL_SUCCESS for success. CALL_FAILURE for failure.
                     if allocated memory by the caller is not enough.
 Functionality   :   Interface function. Current msg is skipped.
-                    Caller can use this function when wishes to skip the 
+                    Caller can use this function when wishes to skip the
                     current msg due to memory constraint.
 Member of       :   CMsgBufVSE
 Friend of       :   -
@@ -271,9 +271,9 @@ HRESULT CMsgBufVSE::AdvanceToNextMsg()
         Result = EMPTY_APP_BUFFER;
     }
     else
-    {        
+    {
         nAdvanceReadIndex();//Helper function to advance the read index
-                            //to the next msg.
+        //to the next msg.
     }
     return Result;
 }
@@ -303,9 +303,9 @@ int CMsgBufVSE::nAdvanceReadIndex(void)
     else
     {
         m_nIndexRead = (m_nIndexRead + HEADER_LEN + nMsgLen) - m_nBufferSize;
-    }    
+    }
     m_nMsgSkipped++;
-    m_nMsgCount--;        
+    m_nMsgCount--;
     return nResult;
 }
 
@@ -313,7 +313,7 @@ int CMsgBufVSE::nAdvanceReadIndex(void)
 Function Name   :   nWriteBuffer()
 Input(s)        :   TYPE, SIZE, pointer to the message.
 Output          :   CALL_SUCCESS for success. CALL_FAILURE for failure.
-Functionality   :   Helper function. Current msg is written into the 
+Functionality   :   Helper function. Current msg is written into the
                     circular buffer.
 Member of       :   CMsgBufVSE
 Friend of       :   -
@@ -337,7 +337,7 @@ int CMsgBufVSE::nWriteBuffer(INT nType, BYTE* pbyMsg, INT nSize)
         m_nIndexWrite += (HEADER_LEN + nSize);
     }
     else if (m_nIndexWrite + HEADER_LEN <= m_nBufferSize)
-    {   
+    {
         memcpy(m_pbyMsgBuffer + m_nIndexWrite, abyHeader, HEADER_LEN);
         // Write msg
         memcpy(m_pbyMsgBuffer + m_nIndexWrite + HEADER_LEN, pbyMsg, (m_nBufferSize - m_nIndexWrite - HEADER_LEN));
@@ -369,7 +369,7 @@ Authors         :   Pradeep Kadoor
 Date Created    :   22/06/2009
 Modifications   :   -
 ************************************************************************************/
-HRESULT CMsgBufVSE::ReadBuffer(INT& nType, BYTE* pbyMsg, INT& nSize) 
+HRESULT CMsgBufVSE::ReadBuffer(INT& nType, BYTE* pbyMsg, INT& nSize)
 {
     HRESULT Return = CALL_SUCCESS;
     BYTE abyHeader[HEADER_LEN];
@@ -386,18 +386,18 @@ HRESULT CMsgBufVSE::ReadBuffer(INT& nType, BYTE* pbyMsg, INT& nSize)
         Return = ERR_READ_MEMORY_SHORT;
         nSize   = MsgLen - nSize;
     }
-    else  
-    {            
+    else
+    {
         if ((m_nIndexRead + HEADER_LEN + MsgLen) <= m_nBufferSize)
-        { 
+        {
             memcpy(pbyMsg, (m_pbyMsgBuffer + m_nIndexRead + HEADER_LEN), MsgLen);
             m_nIndexRead += (HEADER_LEN + MsgLen);
         }
         else if ((m_nIndexRead + HEADER_LEN) <= m_nBufferSize)
-        {                     
+        {
             memcpy(pbyMsg, (m_pbyMsgBuffer + m_nIndexRead + HEADER_LEN), (m_nBufferSize - m_nIndexRead - HEADER_LEN));
             memcpy((pbyMsg + (m_nBufferSize - m_nIndexRead - HEADER_LEN)), m_pbyMsgBuffer, (MsgLen - (m_nBufferSize - m_nIndexRead - HEADER_LEN)));
-            m_nIndexRead = MsgLen - (m_nBufferSize - m_nIndexRead - HEADER_LEN);                
+            m_nIndexRead = MsgLen - (m_nBufferSize - m_nIndexRead - HEADER_LEN);
         }
         else
         {
@@ -457,7 +457,7 @@ int CMsgBufVSE::nGetCurrMsgHeader(BYTE* pbyHeader)
 Function Name   :   nHandleBufferOverrun()
 Input(s)        :   -
 Output          :   CALL_SUCCESS for success. CALL_FAILURE for failure.
-Functionality   :   If buffer overrun criteria is met, read index 
+Functionality   :   If buffer overrun criteria is met, read index
                     is advanced until it solves buffer overrun.
 Member of       :   CMsgBufVSE
 Friend of       :   -

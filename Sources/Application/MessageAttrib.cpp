@@ -52,8 +52,8 @@ CMessageAttrib CMessageAttrib::sm_ouMsgAttrib[BUS_TOTAL];
 ******************************************************************************/
 CMessageAttrib::CMessageAttrib()
 {
-    // Initialise the hash table. For best performance, the hash table size 
-    // should be a prime number. To minimize collisions the size should be 
+    // Initialise the hash table. For best performance, the hash table size
+    // should be a prime number. To minimize collisions the size should be
     // roughly 20 percent larger than the largest anticipated data set.
     // Hence SIZE_HASH_TABLE
     m_omMsgIDMap.InitHashTable(SIZE_HASH_TABLE);
@@ -78,7 +78,7 @@ CMessageAttrib::~CMessageAttrib()
 /******************************************************************************
  Function Name  :   ouGetHandle
 
- Description    :   This is a public static function which should be called to 
+ Description    :   This is a public static function which should be called to
                     get hold of the singleton class.
  Input(s)       :   -
  Output         :   CMessageAttrib&
@@ -133,7 +133,7 @@ void CMessageAttrib::vSetMessageAttribData(PSMESSAGE_ATTRIB pMsgAttributes)
     if (pMsgAttributes != NULL)
     {
         int nMsgCount = pMsgAttributes->m_usMsgCount;
-        PSMESSAGEATTR pNext = pMsgAttributes->m_psMsgAttribDetails;		
+        PSMESSAGEATTR pNext = pMsgAttributes->m_psMsgAttribDetails;
 
         for (int j = 0; j < nMsgCount; j++)
         {
@@ -141,17 +141,17 @@ void CMessageAttrib::vSetMessageAttribData(PSMESSAGE_ATTRIB pMsgAttributes)
             m_sIDAttrTmp.Colour = pNext->sColor;
             unMsgID = pNext->unMsgID;
             pNext++;
-			
+
             // set the information into the map, the key is the Msg ID
-            m_omMsgIDMap.SetAt(unMsgID, m_sIDAttrTmp);			
-			//store Msg IDs
-			m_omIDList.AddTail(unMsgID);
+            m_omMsgIDMap.SetAt(unMsgID, m_sIDAttrTmp);
+            //store Msg IDs
+            m_omIDList.AddTail(unMsgID);
         }
         pMsgAttributes = NULL;
     }
 
     vMapCopy(m_omMsgIDMapTmp, m_omMsgIDMap);
-	vIDCopy(m_omIDListTmp, m_omIDList);
+    vIDCopy(m_omIDListTmp, m_omIDList);
 
 
     m_omCritSec.Unlock();
@@ -161,25 +161,25 @@ void CMessageAttrib::vSetMessageAttribData(PSMESSAGE_ATTRIB pMsgAttributes)
  Function Name  :   vIDCopy
  Input(s)       :   omDestMap, omSrcMap of IDs
  Output         :   -
- Functionality  :   Copies the source ID map values into destination. 
+ Functionality  :   Copies the source ID map values into destination.
  Member of      :   CMessageAttrib
 
  Author(s)      :   Arunkumar K
  Date Created   :   08-03-2011
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
-void CMessageAttrib::vIDCopy(CList <UINT, UINT&>& omDestMap, 
-							 CList <UINT, UINT&>& omSrcMap)
+void CMessageAttrib::vIDCopy(CList <UINT, UINT&>& omDestMap,
+                             CList <UINT, UINT&>& omSrcMap)
 {
-	UINT unMsgID;
-	omDestMap.RemoveAll();
-	
+    UINT unMsgID;
+    omDestMap.RemoveAll();
 
-	POSITION psCurrPos = omSrcMap.GetHeadPosition();
-    while (psCurrPos != NULL) 
+
+    POSITION psCurrPos = omSrcMap.GetHeadPosition();
+    while (psCurrPos != NULL)
     {
-		unMsgID = omSrcMap.GetNext(psCurrPos);
-		omDestMap.AddTail(unMsgID);
+        unMsgID = omSrcMap.GetNext(psCurrPos);
+        omDestMap.AddTail(unMsgID);
     }
 }
 
@@ -189,7 +189,7 @@ void CMessageAttrib::vIDCopy(CList <UINT, UINT&>& omDestMap,
  Input(s)       :   -
  Output         :   -
  Functionality  :   Writes the registry to save message attribute data to from
-                    the CArray structure. 
+                    the CArray structure.
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
@@ -205,7 +205,7 @@ void CMessageAttrib::vSaveMessageAttribData()
     // write into the configuration file
     SMESSAGE_ATTRIB sMsgAttribDetails;
 
-	UINT unMsgCount = m_omMsgIDMap.GetCount();
+    UINT unMsgCount = m_omMsgIDMap.GetCount();
     UINT unMsgID;
 
     // store info into the structure
@@ -222,13 +222,13 @@ void CMessageAttrib::vSaveMessageAttribData()
             sMsgAttribDetails.m_psMsgAttribDetails = pMsgAttributes;
             PSMESSAGEATTR pNext = pMsgAttributes;
             //POSITION posNextPos = m_omMsgIDMap.GetStartPosition();
-			POSITION posNextPos = m_omIDList.GetHeadPosition();		
+            POSITION posNextPos = m_omIDList.GetHeadPosition();
 
             for (UINT j = 0; j < unMsgCount; j++)
             {
-				//m_omMsgIDMap.GetNextAssoc(posNextPos, unMsgID, m_sIDAttrTmp);
-				unMsgID = m_omIDList.GetNext(posNextPos);			
-				m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp);
+                //m_omMsgIDMap.GetNextAssoc(posNextPos, unMsgID, m_sIDAttrTmp);
+                unMsgID = m_omIDList.GetNext(posNextPos);
+                m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp);
 
                 pNext->omStrMsgname = m_sIDAttrTmp.omMsgIDName;
                 pNext->sColor = m_sIDAttrTmp.Colour;
@@ -254,7 +254,7 @@ void CMessageAttrib::vGetMessageAttribData(SMESSAGE_ATTRIB& sMsgAttribDetails)
 {
     m_omCritSec.Lock();
 
-	UINT unMsgCount = m_omMsgIDMap.GetCount();
+    UINT unMsgCount = m_omMsgIDMap.GetCount();
     UINT unMsgID;
 
     // store info into the structure
@@ -270,20 +270,20 @@ void CMessageAttrib::vGetMessageAttribData(SMESSAGE_ATTRIB& sMsgAttribDetails)
         {
             sMsgAttribDetails.m_psMsgAttribDetails = pMsgAttributes;
             PSMESSAGEATTR pNext = pMsgAttributes;
-            //POSITION posNextPos = m_omMsgIDMap.GetStartPosition();			
-			POSITION posNextPos = m_omIDList.GetHeadPosition();			
+            //POSITION posNextPos = m_omMsgIDMap.GetStartPosition();
+            POSITION posNextPos = m_omIDList.GetHeadPosition();
 
             for (UINT j = 0; j < unMsgCount; j++)
             {
                 //m_omMsgIDMap.GetNextAssoc(posNextPos, unMsgID, m_sIDAttrTmp);
-				unMsgID = m_omIDList.GetNext(posNextPos);			
-				m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp);
+                unMsgID = m_omIDList.GetNext(posNextPos);
+                m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp);
 
                 pNext->omStrMsgname = m_sIDAttrTmp.omMsgIDName;
                 pNext->sColor = m_sIDAttrTmp.Colour;
                 pNext->unMsgID = unMsgID;
 
-                pNext++;				
+                pNext++;
             }
         }// end of if(pMsgAttributes != NULL)
     }// end of if(unMsgCount != 0)
@@ -307,7 +307,7 @@ int CMessageAttrib::nAddNewAttrib(SCanIDList sNewItem)
     int nResult = 0;
 
     // First check if this particular message ID exists
-    if (m_omMsgIDMapTmp.Lookup(sNewItem.nCANID, m_sIDAttrTmp) == TRUE) 
+    if (m_omMsgIDMapTmp.Lookup(sNewItem.nCANID, m_sIDAttrTmp) == TRUE)
     {
         nResult = MSGID_DUPLICATE;
     }
@@ -317,7 +317,7 @@ int CMessageAttrib::nAddNewAttrib(SCanIDList sNewItem)
         m_sIDAttrTmp.Colour = sNewItem.Colour;
 
         m_omMsgIDMapTmp.SetAt(sNewItem.nCANID, m_sIDAttrTmp);
-		m_omIDListTmp.AddTail(sNewItem.nCANID);
+        m_omIDListTmp.AddTail(sNewItem.nCANID);
     }
 
     return nResult;
@@ -339,17 +339,17 @@ int CMessageAttrib::nRemoveAttrib(unsigned int unCanID)
     int nResult = 0;
 
     // If this message ID does not exist, send back an appropriate error code
-    if (m_omMsgIDMapTmp.Lookup(unCanID, m_sIDAttrTmp) == FALSE) 
+    if (m_omMsgIDMapTmp.Lookup(unCanID, m_sIDAttrTmp) == FALSE)
     {
         nResult = MSGID_NONEXISTENT;
     }
-    else 
+    else
     {
-        if (m_omMsgIDMapTmp.RemoveKey(unCanID) == FALSE) 
+        if (m_omMsgIDMapTmp.RemoveKey(unCanID) == FALSE)
         {
             nResult = MSGID_ERROR_OPRN;
         }
-		m_omIDListTmp.RemoveAt(m_omIDListTmp.Find(unCanID));
+        m_omIDListTmp.RemoveAt(m_omIDListTmp.Find(unCanID));
     }
     return nResult;
 }
@@ -359,11 +359,11 @@ int CMessageAttrib::nRemoveAttrib(unsigned int unCanID)
  Function Name  :   nModifyAttrib
 
  Input(s)       :   SCanIDList (new data values with an existing CAN identifier)
- Output         :   index of the entry modified if successful, else 
+ Output         :   index of the entry modified if successful, else
                     MSGID_NONEXISTENT
- Functionality  :   Modifies attribute Reference to a user defined structure 
+ Functionality  :   Modifies attribute Reference to a user defined structure
                     (type SCanIDList) to receive attribute data of a particular
-                    CanID which is specified by nCANID member of the SCanIDList 
+                    CanID which is specified by nCANID member of the SCanIDList
                     structure
  Member of      :   CMessageAttrib
 
@@ -373,7 +373,7 @@ int CMessageAttrib::nRemoveAttrib(unsigned int unCanID)
 int CMessageAttrib::nModifyAttrib(SCanIDList sNewItem)
 {
     int nResult = nRemoveAttrib(sNewItem.nCANID);
-    if (nResult == 0) 
+    if (nResult == 0)
     {
         nResult = nAddNewAttrib(sNewItem);
     }
@@ -393,11 +393,11 @@ int CMessageAttrib::nModifyAttrib(SCanIDList sNewItem)
  Date Created   :   21-03-2002
  Modified by    :   Ratnadip Choudhury
  Date modified  :   30-04-2002
- Modifications  :   Krishnaswamy B.N.                                   
+ Modifications  :   Krishnaswamy B.N.
                     23.05.2003, Changed formatting of display mode
  Modifications  :   Amitesh Bharti
-                    08.03.2004,Changes due to message ID and name is displayed 
-                    and logged together side. 
+                    08.03.2004,Changes due to message ID and name is displayed
+                    and logged together side.
  Modifications  :   Raja N
                     23.06.2004, Modified the return type as BOOL. This will be
                     TRUE for successfullookup. Otherwise FASLE.
@@ -405,7 +405,7 @@ int CMessageAttrib::nModifyAttrib(SCanIDList sNewItem)
 BOOL CMessageAttrib::bGetCanIDName(unsigned int unMsgID, CString& omMsgStr)
 {
     BOOL bFound = FALSE;
-    if (m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp) == TRUE) 
+    if (m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp) == TRUE)
     {
         bFound = TRUE;
         omMsgStr = defMSGID_NAME_DELIMITER;
@@ -432,11 +432,11 @@ COLORREF CMessageAttrib::GetCanIDColour(unsigned int unMsgID)
 {
     static COLORREF Colour;
 
-    if (m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp) == TRUE) 
+    if (m_omMsgIDMap.Lookup(unMsgID, m_sIDAttrTmp) == TRUE)
     {
         Colour = m_sIDAttrTmp.Colour;
     }
-    else 
+    else
     {
         Colour = BLACK_COLOR;
     }
@@ -447,35 +447,35 @@ COLORREF CMessageAttrib::GetCanIDColour(unsigned int unMsgID)
 /******************************************************************************
  Function Name  :   vDoCommit
 
- Input(s)       :   - 
+ Input(s)       :   -
  Output         :   -
  Functionality  :   Confirms change in the message attribute list.
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 void CMessageAttrib::vDoCommit()
 {
     vMapCopy(m_omMsgIDMap, m_omMsgIDMapTmp);
-	vIDCopy(m_omIDList, m_omIDListTmp);
+    vIDCopy(m_omIDList, m_omIDListTmp);
 }
 
 /******************************************************************************
  Function Name  :   vDoRollback
 
- Input(s)       :   - 
+ Input(s)       :   -
  Output         :   -
  Functionality  :   Undoes change in the message attribute list.
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 void CMessageAttrib::vDoRollback()
 {
     vMapCopy(m_omMsgIDMapTmp, m_omMsgIDMap);
-	vIDCopy(m_omIDListTmp, m_omIDList);
+    vIDCopy(m_omIDListTmp, m_omIDList);
 }
 
 /******************************************************************************
@@ -488,18 +488,18 @@ void CMessageAttrib::vDoRollback()
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 void CMessageAttrib::vMapCopy(CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>&
-                                                                    omDestMap,
-                           CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>& omSrcMap)
+                              omDestMap,
+                              CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>& omSrcMap)
 {
     UINT unMsgID;
 
     omDestMap.RemoveAll();
 
     POSITION psCurrPos = omSrcMap.GetStartPosition();
-    while (psCurrPos != NULL) 
+    while (psCurrPos != NULL)
     {
         omSrcMap.GetNextAssoc(psCurrPos, unMsgID, m_sIDAttrTmp);
         omDestMap.SetAt(unMsgID, m_sIDAttrTmp);
@@ -515,7 +515,7 @@ void CMessageAttrib::vMapCopy(CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>&
  Member of      :   CMessageAttrib7
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 void CMessageAttrib::vClearAllEntries()
 {
@@ -523,8 +523,8 @@ void CMessageAttrib::vClearAllEntries()
 
     m_omMsgIDMap.RemoveAll();
     m_omMsgIDMapTmp.RemoveAll();
-	m_omIDList.RemoveAll();
-	m_omIDListTmp.RemoveAll();
+    m_omIDList.RemoveAll();
+    m_omIDListTmp.RemoveAll();
 
     m_omCritSec.Unlock();
 }
@@ -534,21 +534,21 @@ void CMessageAttrib::vClearAllEntries()
 
  Input(s)       :   unMsgID - New message ID to be validated
  Output         :   TRUE ID already exists, else FALSE
- Functionality  :   Validates a new message ID to check if it is already 
+ Functionality  :   Validates a new message ID to check if it is already
                     existing
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 int CMessageAttrib::nValidateNewID(unsigned int unMsgID)
 {
-   int nResult = 0;
-   if (m_omMsgIDMapTmp.Lookup(unMsgID, m_sIDAttrTmp) == TRUE) 
-   {
-       nResult = MSGID_DUPLICATE;
-   }
-   return nResult;
+    int nResult = 0;
+    if (m_omMsgIDMapTmp.Lookup(unMsgID, m_sIDAttrTmp) == TRUE)
+    {
+        nResult = MSGID_DUPLICATE;
+    }
+    return nResult;
 }
 
 /******************************************************************************
@@ -560,12 +560,12 @@ int CMessageAttrib::nValidateNewID(unsigned int unMsgID)
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 int CMessageAttrib::nGetMsgAttribs(SCanIDList* psMsgIDList)
 {
     int nResult = 0, nCount = 0;
-    SCanIDList *psMsgIDListTmp = NULL;
+    SCanIDList* psMsgIDListTmp = NULL;
     UINT unMsgID;
 
     POSITION psCurrPos = m_omMsgIDMap.GetStartPosition();
@@ -576,17 +576,17 @@ int CMessageAttrib::nGetMsgAttribs(SCanIDList* psMsgIDList)
         // in unMsgID and m_sIDAttrTmp respectively.
         m_omMsgIDMap.GetNextAssoc(psCurrPos, unMsgID, m_sIDAttrTmp);
 
-        // Indirect way to initialise destination message attribute list. The 
+        // Indirect way to initialise destination message attribute list. The
         // current destination is (psMsgIDList + nCount)
         psMsgIDListTmp = psMsgIDList + nCount;
-        if (psMsgIDListTmp != NULL) 
+        if (psMsgIDListTmp != NULL)
         {
             psMsgIDListTmp->nCANID = unMsgID;
             psMsgIDListTmp->Colour = m_sIDAttrTmp.Colour;
             psMsgIDListTmp->omCANIDName = m_sIDAttrTmp.omMsgIDName;
             nCount++;
         }
-        else 
+        else
         {
             nResult = ERR_INVALID_ADDRESS;
         }
@@ -599,24 +599,24 @@ int CMessageAttrib::nGetMsgAttribs(SCanIDList* psMsgIDList)
  Function Name  :   nGetAttrib
 
  Input(s)       :   unMsgID - Message ID whose attribute is to be fetched.
-                    sCanIDItem - Where current message attribute is to be 
+                    sCanIDItem - Where current message attribute is to be
                     copied on.
  Output         :   Zero if successful, else MSGID_NONEXISTENT
  Functionality  :   Called to get attributes of a particular message ID.
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-05-2002 
+ Date Created   :   03-05-2002
 ******************************************************************************/
 int CMessageAttrib::nGetAttrib(unsigned int unMsgID, SCanIDList& sCanIDItem)
 {
     int nResult = 0;
 
-    if (m_omMsgIDMapTmp.Lookup(unMsgID, m_sIDAttrTmp) == FALSE) 
+    if (m_omMsgIDMapTmp.Lookup(unMsgID, m_sIDAttrTmp) == FALSE)
     {
         nResult = MSGID_NONEXISTENT;
     }
-    else 
+    else
     {
         sCanIDItem.nCANID = unMsgID;
         sCanIDItem.Colour = m_sIDAttrTmp.Colour;
@@ -636,12 +636,12 @@ int CMessageAttrib::nGetAttrib(unsigned int unMsgID, SCanIDList& sCanIDItem)
  Member of      :   CMessageAttrib
 
  Author(s)      :   Ratnadip Choudhury
- Date Created   :   12-06-2002 
+ Date Created   :   12-06-2002
  Modification By:   Amitesh Bharti,
                     17.06.2003, m_acMsgIDFormat is used to format message ID
 ******************************************************************************/
-BOOL CMessageAttrib::bMsgIDFromMsgName(const CString &omMsgName, UINT &unMsgID
-                                       )
+BOOL CMessageAttrib::bMsgIDFromMsgName(const CString& omMsgName, UINT& unMsgID
+                                      )
 {
     BOOL bFound = FALSE;
 
@@ -649,13 +649,13 @@ BOOL CMessageAttrib::bMsgIDFromMsgName(const CString &omMsgName, UINT &unMsgID
     while ((psCurrPos != NULL) && (bFound == FALSE))
     {
         m_omMsgIDMap.GetNextAssoc(psCurrPos, unMsgID, m_sIDAttrTmp);
-        if (m_sIDAttrTmp.omMsgIDName == omMsgName) 
+        if (m_sIDAttrTmp.omMsgIDName == omMsgName)
         {
             bFound = TRUE;
         }
     }
 
-    if (bFound == FALSE) 
+    if (bFound == FALSE)
     {
         if (sscanf_s((LPCTSTR) omMsgName, m_acMsgIDFormat, &unMsgID) == 1)
         {
@@ -668,55 +668,55 @@ BOOL CMessageAttrib::bMsgIDFromMsgName(const CString &omMsgName, UINT &unMsgID
 
 /******************************************************************************
   Function Name    :  bMessageNameFromMsgCode
-                                                                            
+
   Input(s)         :  UINT unMsgCode
-  Output           :  TRUE or FALSE  
-  Functionality    :  Returns TRUE if message name for message code unMsgCode 
-                      is found,otherwise FALSE. The message name will be 
+  Output           :  TRUE or FALSE
+  Functionality    :  Returns TRUE if message name for message code unMsgCode
+                      is found,otherwise FALSE. The message name will be
                       returned through omMsgName.
-  Member of        :  CMessageAttrib                                        
-  Friend of        :      -                                                 
-                                                                            
+  Member of        :  CMessageAttrib
+  Friend of        :      -
+
   Author(s)        :  Arunkumar K
-  Date Created     :  01.06.2011                                            
-  Modifications    :  
+  Date Created     :  01.06.2011
+  Modifications    :
 ******************************************************************************/
 BOOL CMessageAttrib::bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName)
 {
     BOOL bResult = FALSE;
-	if (unMsgCode >= 0)
-	{
-		if (m_omMsgIDMapTmp.Lookup(unMsgCode, m_sIDAttrTmp) == TRUE) 						
-		{
-			omMsgName = m_sIDAttrTmp.omMsgIDName;
-			bResult = TRUE;
-		}
-	}
+    if (unMsgCode >= 0)
+    {
+        if (m_omMsgIDMapTmp.Lookup(unMsgCode, m_sIDAttrTmp) == TRUE)
+        {
+            omMsgName = m_sIDAttrTmp.omMsgIDName;
+            bResult = TRUE;
+        }
+    }
     return bResult;
 }
 
 /******************************************************************************
  Function Name  :   vChangeNumericalMode
 
- Input(s)       :   bHexON- Type of display 
-                
- Output         :   void 
+ Input(s)       :   bHexON- Type of display
+
+ Output         :   void
  Functionality  :   Call this function to format the string based on the mode.
  Member of      :   CMessageAttrib
 
  Author(s)      :   Krishnaswamy .B.N
- Date Created   :   24-05-2003 
+ Date Created   :   24-05-2003
 ******************************************************************************/
 void CMessageAttrib::vChangeNumericalMode(BOOL bHexON)
 {
     if(bHexON == TRUE)
     {
-		//Tobias - venkat
+        //Tobias - venkat
         strcpy_s(m_acMsgIDFormat, 3, "%X");
     }
     else
     {
-		//Tobias - venkat
-		strcpy_s(m_acMsgIDFormat, 3, "%d");
+        //Tobias - venkat
+        strcpy_s(m_acMsgIDFormat, 3, "%d");
     }
 }

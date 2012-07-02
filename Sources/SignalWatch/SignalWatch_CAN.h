@@ -58,13 +58,13 @@ public:
     HRESULT SW_ShowSigWatchWnd(CWnd* pParent, INT nCmd);
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
-    HRESULT SW_GetConfigData(void* pbyConfigData);    
+    HRESULT SW_GetConfigData(void* pbyConfigData);
     HRESULT SW_SetConfigData(const void* pbyConfigData);
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
     void vDisplayInSigWatchWnd(STCANDATA& sCanData);
-	void vDeleteRemovedListEntries();
+    void vDeleteRemovedListEntries();
 
 private:
     BOOL bStartSigWatchReadThread(void);

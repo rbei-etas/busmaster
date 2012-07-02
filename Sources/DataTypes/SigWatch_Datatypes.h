@@ -39,6 +39,6 @@ struct tagSignalWatchList
 };
 
 typedef tagSignalWatchList sSignalWatchList;
-typedef sSignalWatchList * PSSIGNALWATCHLIST;
+typedef sSignalWatchList* PSSIGNALWATCHLIST;
 
 #endif //SIGWATCH_H__INCLUDED_

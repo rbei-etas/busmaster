@@ -36,23 +36,24 @@ typedef struct _tagDBPARAMS
     UINT        m_unMaxMsgLen;
     void**      m_ppvActiveDB;
     void**      m_ppvImportedDBs;
-}SDBPARAMS;
+} SDBPARAMS;
 
-static SDBPARAMS sg_asDbParams[BUS_TOTAL] = {
+static SDBPARAMS sg_asDbParams[BUS_TOTAL] =
+{
     {CAN,     "CAN",    "", "Message ID :",  8,0,0},
     {MCNET,   "MCNET",  "", "Message Code :",  MAX_DATA_LEN_MCNET,0,0},
     {J1939,   "J1939",  "", "PGN :",  MAX_DATA_LEN_J1939,0,0},
     {FLEXRAY, "FLEXRAY","", "FRAME ID :",  128,0,0},
     {LIN,     "LIN",    "", "Msg ID :",  0,0,0},
     {MOST,    "MOST",   "", "Msg ID :",  0,0,0}
-                                            };
+};
 
 enum eWAVEFORMTYPE
 {
     eWave_NONE = 0,
-	eWave_SINE,
+    eWave_SINE,
     eWave_TRIANGLE,
-	eWave_COS
+    eWave_COS
 };
 
 struct sINTERPRETSIGNALINFO
@@ -65,20 +66,26 @@ struct sINTERPRETSIGNALINFO
     unsigned char   m_ucSigLength;
 
     sINTERPRETSIGNALINFO(): m_omStrSignalName(""),
-                            m_un64RawValue(0),
-                            m_dPhyValue(0),
-                            m_omStrSignalDescValue(""),
-                            m_omStrUnit(""),
-                            m_ucSigLength(0)
+        m_un64RawValue(0),
+        m_dPhyValue(0),
+        m_omStrSignalDescValue(""),
+        m_omStrUnit(""),
+        m_ucSigLength(0)
     {
         // Do Additional Init here
     }
 };
 
 typedef sINTERPRETSIGNALINFO SINTERPRETSIGNALINFO;
-typedef SINTERPRETSIGNALINFO * PINTERPRETSIGNALINFO;
+typedef SINTERPRETSIGNALINFO* PINTERPRETSIGNALINFO;
 typedef CArray<SINTERPRETSIGNALINFO,SINTERPRETSIGNALINFO> CSignalInfoArray;
 
+
+typedef union _SIG_VALUE
+{
+    __int64  n64Value;
+    unsigned __int64  un64Value;
+} SIG_VALUE;
 
 class CSignalDescVal
 {
@@ -89,55 +96,50 @@ public:
     void vClearNext(void);
 
     CString m_omStrSignalDescriptor;                // Name of the Signal ID
-    __int64 m_n64SignalVal;                         // Value of the Signal ID
-    CSignalDescVal *m_pouNextSignalSignalDescVal;   // Next Signal desc and value	
+    SIG_VALUE m_DescValue;
+    CSignalDescVal* m_pouNextSignalSignalDescVal;   // Next Signal desc and value
 };
 
-typedef union _SIG_VALUE 
-{
-    __int64  n64Value;
-    __int64  un64Value;
-} SIG_VALUE;
 
 struct sWaveformInfo
-{	
-	eWAVEFORMTYPE m_eSignalWaveType;
-	float m_fAmplitude;   // Maximum amplitude
-	float m_fFrequency;
+{
+    eWAVEFORMTYPE m_eSignalWaveType;
+    float m_fAmplitude;   // Maximum amplitude
+    float m_fFrequency;
     float m_fGranularity; // Of each time amplitude calculation. Value depends
-                          // on the sampling frequency.
+    // on the sampling frequency.
 
-	sWaveformInfo();
+    sWaveformInfo();
 
-	sWaveformInfo& operator=(const sWaveformInfo& RefObj);
+    sWaveformInfo& operator=(const sWaveformInfo& RefObj);
     static CString omGetWaveformName(eWAVEFORMTYPE eWaveform);
 };
 
 struct sSigWaveMap
 {
-	CString m_omSigName;
-	sWaveformInfo sWaveInfo;
+    CString m_omSigName;
+    sWaveformInfo sWaveInfo;
 
-	sSigWaveMap();
+    sSigWaveMap();
 
-	sSigWaveMap& operator=(const sSigWaveMap& RefObj);
-	BOOL operator==(const sSigWaveMap& RefObj) const;
+    sSigWaveMap& operator=(const sSigWaveMap& RefObj);
+    BOOL operator==(const sSigWaveMap& RefObj) const;
 };
 
 typedef CList<sSigWaveMap, sSigWaveMap&> CSigWaveMapList;
 
 struct SSigGeneration
 {
-	UINT m_nMsgID;
-	float m_fDefaultAmplitude;
-	CSigWaveMapList m_omSigWaveMapList;
+    UINT m_nMsgID;
+    float m_fDefaultAmplitude;
+    CSigWaveMapList m_omSigWaveMapList;
 
     SSigGeneration();
     ~SSigGeneration();
 
     void Reset(void);
-	BOOL operator ==(const SSigGeneration& RefObj) const;
-	SSigGeneration& operator=(const SSigGeneration& RefObj);
+    BOOL operator ==(const SSigGeneration& RefObj) const;
+    SSigGeneration& operator=(const SSigGeneration& RefObj);
 };
 
 typedef CList<SSigGeneration, SSigGeneration&> CSigGenerationInfoList;
@@ -149,7 +151,7 @@ struct sSIGNALS
     UINT    m_unSignalLength;       // Signal Length, One indexed
     BYTE    m_byStartBit;           // Signal start bit, Zero indexed
     BYTE    m_bySignalType;         // Signal Type
-    
+
     SIG_VALUE m_SignalMinValue;
     SIG_VALUE m_SignalMaxValue;
 
@@ -162,9 +164,9 @@ struct sSIGNALS
     sSIGNALS* m_psNextSignalList;   // Next Signal
 
     // Call this function to set the data bits of a signal with the given value
-    static void vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8], 
+    static void vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8],
                                 UINT64 u64SignVal);
-    // Call this function to get the bit mask for a signal. In a bit mask all 
+    // Call this function to get the bit mask for a signal. In a bit mask all
     // bits petaining to but this signal is 0.
     static UINT64 un64GetBitMask(sSIGNALS* pouCurrSignal);
 };
@@ -172,15 +174,15 @@ struct sSIGNALS
 
 struct sMESSAGE
 {
-    CString m_omStrMessageName; // Message Name 
-    UINT m_unMessageCode;       // Message Code         
-    UINT m_unNumberOfSignals;   // Number Of Signals a Message has  
-    UINT m_unMessageLength;     // Message Length           
-    BOOL m_bMessageFrameFormat; // Message Frame Format     
-    sSIGNALS* m_psSignals;      // Signal associated with Message       
-    BYTE m_bySignalMatrix[8];   // Matrix to validate overlapping signals    
-    int m_nMsgDataFormat;       // 1-Intel, 0-Motorola  
-};  
+    CString m_omStrMessageName; // Message Name
+    UINT m_unMessageCode;       // Message Code
+    UINT m_unNumberOfSignals;   // Number Of Signals a Message has
+    UINT m_unMessageLength;     // Message Length
+    BOOL m_bMessageFrameFormat; // Message Frame Format
+    sSIGNALS* m_psSignals;      // Signal associated with Message
+    BYTE m_bySignalMatrix[8];   // Matrix to validate overlapping signals
+    int m_nMsgDataFormat;       // 1-Intel, 0-Motorola
+};
 
 typedef struct tagSSIGNALINFO
 {
@@ -209,7 +211,7 @@ typedef struct tagSMSGENTRY
     static BOOL bUpdateMsgList(tagSMSGENTRY*& Root, sMESSAGE* psMsg);
     static sSIGNALS* psCopySignalList(sSIGNALS* psSignal);
     static BOOL bGetMsgPtrFromMsgId(const tagSMSGENTRY* psRoot,UINT unMsgId, sMESSAGE*& pMsg);
-    
+
 
 } SMSGENTRY;
 #endif //MSGSIGNAL_H__INCLUDED_

@@ -42,7 +42,7 @@ public:
     virtual ~CValueDescriptor();
     int Format(char* pcLine);
     //  CValueDescriptor& operator=(CValueDescriptor& valDesc);
-    void writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor> &m_listValueDescriptor);
+    void writeValueDescToFile(fstream& fileOutput, char m_ucType, list<CValueDescriptor>& m_listValueDescriptor);
     string      m_sDescriptor;
     CSignalValue   m_value;
 };

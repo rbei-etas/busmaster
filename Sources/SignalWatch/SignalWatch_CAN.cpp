@@ -31,24 +31,24 @@ int ReadCANDataBuffer(CSignalWatch_CAN* pSWCan)
         INT Result = pSWCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
         if (Result == ERR_READ_MEMORY_SHORT)
         {
-            TRACE(_T("ERR_READ_MEMORY_SHORT"));
+            TRACE("ERR_READ_MEMORY_SHORT");
         }
         else if (Result == EMPTY_APP_BUFFER)
         {
-            TRACE(_T("EMPTY_APP_BUFFER"));
+            TRACE("EMPTY_APP_BUFFER");
         }
         else
         {
             pSWCan->vDisplayInSigWatchWnd(sCanData);
         }
-        
+
     }
     return 0;
 }
 
 DWORD WINAPI SigWatchDataReadThreadProc_C(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
     if (pThreadParam == NULL)
     {
         return (DWORD)-1;
@@ -98,7 +98,7 @@ BOOL CSignalWatch_CAN::InitInstance(void)
     m_pouSigWnd = NULL;
     m_pMsgInterPretObj = NULL;
     m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
-	return TRUE;
+    return TRUE;
 }
 
 int CSignalWatch_CAN::ExitInstance(void)
@@ -116,16 +116,16 @@ int CSignalWatch_CAN::ExitInstance(void)
     DeleteCriticalSection(&m_omCritSecSW); //delete critical section
 
     if (m_pouSigWnd != NULL)
-    {   
+    {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
         m_pouSigWnd = NULL;
     }
-	return TRUE;
+    return TRUE;
 }
 
 BOOL CSignalWatch_CAN::bStartSigWatchReadThread()
-{   
+{
     m_ouReadThread.m_pBuffer = this;
     m_ouReadThread.bStartThread(SigWatchDataReadThreadProc_C);
     return TRUE;
@@ -139,7 +139,7 @@ void CSignalWatch_CAN::vDisplayInSigWatchWnd(STCANDATA& sCanData)
         static CString omMsgName;
         static CStringArray omSigNames, omRawValues, omPhyValues;
         if (m_pMsgInterPretObj->bInterpretMsgSigList(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID,
-            sCanData.m_uDataInfo.m_sCANMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))
+                sCanData.m_uDataInfo.m_sCANMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))
         {
             if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
             {
@@ -149,58 +149,60 @@ void CSignalWatch_CAN::vDisplayInSigWatchWnd(STCANDATA& sCanData)
     }
     LeaveCriticalSection(&m_omCritSecSW);
 
-	//delete the invalid entries
+    //delete the invalid entries
     vDeleteRemovedListEntries();
 }
 
 void CSignalWatch_CAN::vDeleteRemovedListEntries()
 {
-	if ((m_pMsgInterPretObj != NULL) && (m_pouSigWnd != NULL))
-	{
-		CStringArray strMsgList; 
-		int inSize = 0;
+    if ((m_pMsgInterPretObj != NULL) && (m_pouSigWnd != NULL))
+    {
+        CStringArray strMsgList;
+        int inSize = 0;
 
-		//get the number of signals
-		int iCount = (int)m_pouSigWnd->m_omSignalList.GetItemCount(); 
+        //get the number of signals
+        int iCount = (int)m_pouSigWnd->m_omSignalList.GetItemCount();
 
-		for(int iIndex = 0; iIndex < iCount ; iIndex++ )
-		{
-			CString strMsgName = m_pouSigWnd->m_omSignalList.GetItemText(iIndex, 0);
-			inSize = (int)strMsgList.GetSize(); 
-			bool bFound = false;
+        for(int iIndex = 0; iIndex < iCount ; iIndex++ )
+        {
+            CString strMsgName = m_pouSigWnd->m_omSignalList.GetItemText(iIndex, 0);
+            inSize = (int)strMsgList.GetSize();
+            bool bFound = false;
 
-			//check for the unique message name 
-			for(int inPos = 0; inPos < inSize ; inPos++ )
-			{
-				if(strMsgName.CompareNoCase(strMsgList.GetAt(inPos)) == 0 )
-				{
-					bFound = true;
-					break;
-				}
-			}
+            //check for the unique message name
+            for(int inPos = 0; inPos < inSize ; inPos++ )
+            {
+                if(strMsgName.CompareNoCase(strMsgList.GetAt(inPos)) == 0 )
+                {
+                    bFound = true;
+                    break;
+                }
+            }
 
-			//add the message in list
-			if(bFound == false)
-				strMsgList.Add(strMsgName); 
-		}
+            //add the message in list
+            if(bFound == false)
+            {
+                strMsgList.Add(strMsgName);
+            }
+        }
 
-		//get the message count
-		inSize = (int)strMsgList.GetSize(); 
+        //get the message count
+        inSize = (int)strMsgList.GetSize();
 
-		for(int inPos = 0; inPos < inSize ; inPos++ )
-		{
-			CString strMsgName = strMsgList.GetAt(inPos); 
-			int iSignalCount = m_pMsgInterPretObj->nGetSignalCount(strMsgName);
-			if(iSignalCount == 0 ) //no signal is configured
-			{
-				if((int)m_pouSigWnd->m_omSignalList.GetItemCount() > 0  )
-				{
-					//remove the signal from signal watch window.
-					m_pouSigWnd->SendMessage( WM_REMOVE_SIGNAL, 0, (LPARAM) &strMsgName);
-				}
-			}
-		}
-	}
+        for(int inPos = 0; inPos < inSize ; inPos++ )
+        {
+            CString strMsgName = strMsgList.GetAt(inPos);
+            int iSignalCount = m_pMsgInterPretObj->nGetSignalCount(strMsgName);
+            if(iSignalCount == 0 ) //no signal is configured
+            {
+                if((int)m_pouSigWnd->m_omSignalList.GetItemCount() > 0  )
+                {
+                    //remove the signal from signal watch window.
+                    m_pouSigWnd->SendMessage( WM_REMOVE_SIGNAL, 0, (LPARAM) &strMsgName);
+                }
+            }
+        }
+    }
 }
 
 HRESULT CSignalWatch_CAN::SW_DoInitialization()
@@ -240,7 +242,7 @@ HRESULT CSignalWatch_CAN::SW_ShowAddDelSignalsDlg(CWnd* pParent, CMainEntryList*
 }
 
 HRESULT CSignalWatch_CAN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, INT nCmd)
-{    
+{
     if (m_pouSigWnd != NULL)
     {
         return m_pouSigWnd->ShowWindow(nCmd);
@@ -259,7 +261,7 @@ HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
     UINT nDebugSize  = 0;
     BYTE* pbyTemp = (BYTE*)pbyConfigData;
     if ((m_pouSigWnd != NULL) && (pbyTemp != NULL))
-    {   
+    {
         m_pouSigWnd->GetWindowPlacement(&WndPlace);
         COPY_DATA(pbyTemp, &WndPlace, sizeof (WINDOWPLACEMENT));
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
@@ -275,7 +277,7 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
 {
     const BYTE* pbyTemp = (BYTE*)pbyConfigData;
     if ((pbyConfigData != NULL) && (m_pouSigWnd != NULL))
-    {        
+    {
         WINDOWPLACEMENT WndPlace;
         memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
         m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
@@ -287,8 +289,8 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
     }
     if(m_pouSigWnd != NULL)
     {
-		//Signal watch window will move the List control in OnSize().
-		//So the default values should be as followes.
+        //Signal watch window will move the List control in OnSize().
+        //So the default values should be as followes.
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
         {
             RECT sClientRect;
@@ -312,8 +314,8 @@ HRESULT CSignalWatch_CAN::SW_ClearSigWatchWnd(void)
     if (m_pouSigWnd != NULL)
     {
         //m_pouSigWnd->PostMessage(WM_REMOVE_SIGNAL);
-		
-		//send the message without any extra value in LPARAM
+
+        //send the message without any extra value in LPARAM
         m_pouSigWnd->PostMessage(WM_REMOVE_SIGNAL,0,0);
     }
     return S_OK;
@@ -325,7 +327,7 @@ HRESULT CSignalWatch_CAN::SW_UpdateMsgInterpretObj(void* pvRefObj)
     EnterCriticalSection(&m_omCritSecSW);
     if (m_pMsgInterPretObj == NULL)
     {
-        m_pMsgInterPretObj = new CMsgInterpretation;        
+        m_pMsgInterPretObj = new CMsgInterpretation;
     }
     RefObj->vCopy(m_pMsgInterPretObj);
     LeaveCriticalSection(&m_omCritSecSW);

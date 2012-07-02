@@ -7,7 +7,7 @@
 * $Revision: 4532 $
 */
 
-/** 
+/**
 * @file
 * @brief  AutoPtr<> template definition
 * @remark The header structure of the OLI may change
@@ -25,60 +25,63 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 /** @brief  Acquire internal @ref AutoPtr<> assignment mutex.
-*    
+*
 *   @exception <none> This function must not throw exceptions.
 *
 *   @remark This is an OLI-internal function. Do not call it directly
 *           from client application code.
-*   @since  BOA 1.3 
+*   @since  BOA 1.3
 *   @see    AutoPtr
 */
 OLL_API void OLI_CALL __AutoPtr_assignment_lock() OLI_NOTHROW;
 
 /** @brief  Release internal @ref AutoPtr<> assignment mutex.
-*    
+*
 *   @exception <none> This function must not throw exceptions.
 *
 *   @remark This is an OLI-internal function. Do not call it directly
 *           from client application code.
-*   @since  BOA 1.3 
+*   @since  BOA 1.3
 *   @see    AutoPtr
 */
 OLL_API void OLI_CALL __AutoPtr_assignment_unlock() OLI_NOTHROW;
 
 /** @ingroup GROUP_OLI_COMMON_BASE
-* @brief  Utility class template for automatic reference counting. 
+* @brief  Utility class template for automatic reference counting.
 *
 * This template class uses the RAII pattern to satisfy the constraints
 * of reference counting OLI objects. All interfaces deriving from
-* @ref IRefCountable should be accessed only through pointers wrapped 
+* @ref IRefCountable should be accessed only through pointers wrapped
 * by AutoPtr<>.
 *
 * Typical pointer operators (assigment, dereferencing, conversion
 * to boolean) are being provided. However, there is not comparison
 * operator, particularly for @c NULL. Use the @ref get() method
-* to compare two pointers. Also, calling the @ref reset method is 
+* to compare two pointers. Also, calling the @ref reset method is
 * more efficient than assigning NULL.
 *
-* Since @a operator& has not been overloaded, AutoPtr<> objects are 
-* compatbile with STL containers.  
+* Since @a operator& has not been overloaded, AutoPtr<> objects are
+* compatbile with STL containers.
 *
 * AutoPtr<> objects are not meant to be shared between threads.
-* Every thread should have its own reference to the underlying 
-* object. To allow duplication of AutoPtr<> among differnt threads, 
-* copy construction, assigment and destruction have been made 
+* Every thread should have its own reference to the underlying
+* object. To allow duplication of AutoPtr<> among differnt threads,
+* copy construction, assigment and destruction have been made
 * thread-safe.
 *
 * @param  I  Type of the wrapped interface pointer. Must be derived
 *            from @ref IRefCountable.
 *
 * @remark Only construction, destruction and assignment are thread-safe.
-* @remark This is client-application-side code. Depending on the 
-*         compiler used for the client application, some features 
+* @remark This is client-application-side code. Depending on the
+*         compiler used for the client application, some features
 *         may not be available.
 * @coding This class is considered "final". Do not inherit from it.
 *
@@ -91,9 +94,9 @@ class AutoPtr
 private:
 
     /** @brief  Wrapped instance pointer.
-         
+
         @remark May be @c NULL.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
     */
     I* m_instance;
@@ -101,20 +104,21 @@ private:
 public:
 
     /** @brief  Default constructor.
-        
+
         This will initialize the internal pointer with @c NULL.
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     AutoPtr() OLI_NOTHROW
-        : m_instance (NULL)
+:
+    m_instance (NULL)
     {
     }
 
     /** @brief  Initialize with a new, counted reference.
-        
+
         Initialize the internal pointer with the given @a instance.
         If it is not @c NULL, the reference count will be increased
         by 1.
@@ -124,19 +128,22 @@ public:
         @exception <none> This function must not throw exceptions.
 
         @remark The resulting AutoPtr<> object will be treated as
-                a new reference to the object. 
-        @since  BOA 1.3 
+                a new reference to the object.
+        @since  BOA 1.3
         @see    IRefCountable
      */
     AutoPtr (I* instance) OLI_NOTHROW
-        : m_instance (instance)
+:
+    m_instance (instance)
     {
         if (m_instance)
+        {
             m_instance->AddRef();
+        }
     }
 
     /** @brief  Initialize with a new, counted reference.
-        
+
         Initialize the internal pointer with the given @a instance.
         If it is not @c NULL, the reference count will be increased
         by 1.
@@ -149,22 +156,25 @@ public:
                             Ignored if @a instance is @c NULL.
         @exception <none> This function must not throw exceptions.
 
-        @remark Client applications should not need to call this 
-                constructor directly. 
-        @since  BOA 1.3 
+        @remark Client applications should not need to call this
+                constructor directly.
+        @since  BOA 1.3
         @see    IRefCountable
      */
     AutoPtr (I* instance, bool addRef) OLI_NOTHROW
-        : m_instance (instance)
+:
+    m_instance (instance)
     {
         if ((m_instance != NULL) && addRef)
+        {
             m_instance->AddRef();
+        }
     }
 
     /** @brief  Duplicate an interface reference.
-        
+
         Initialize the internal pointer with a reference to the same
-        interface as @a rhs. If it is not @c NULL, the reference count 
+        interface as @a rhs. If it is not @c NULL, the reference count
         will be increased by 1.
 
         @param[in] rhs  Source interface reference to be copied.
@@ -174,11 +184,11 @@ public:
         @remark This constructor is guarateed to work if @a rhs
                 is managed by a different thread. If the source
                 pointer gets @ref reset or destroyed by the other
-                thread while this construction is being executed, 
-                the copy may either result in a @em valid, counted 
-                reference to the old interface. In that case, it is 
+                thread while this construction is being executed,
+                the copy may either result in a @em valid, counted
+                reference to the old interface. In that case, it is
                 safe to use. Or, it will contain a @a NULL reference.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
      */
     AutoPtr (const AutoPtr& rhs) OLI_NOTHROW
@@ -189,19 +199,21 @@ public:
 
         m_instance = rhs.m_instance;
         if (m_instance)
+        {
             m_instance->AddRef();
+        }
 
         __AutoPtr_assignment_unlock();
     }
 
 #if defined(_MSC_VER)
     /** @brief  Duplicate an interface reference.
-        
+
         Initialize the internal pointer with a reference to a different
-        interface on the same object as @a rhs. If it is not @c NULL, 
+        interface on the same object as @a rhs. If it is not @c NULL,
         the reference count will be increased by 1.
 
-        @param Other    Source interface type. This interface must be  
+        @param Other    Source interface type. This interface must be
                         equal to @a I or an interface derived from it.
         @param[in] rhs  Source interface reference to be copied.
                         May be a @c NULL reference.
@@ -210,13 +222,13 @@ public:
         @remark This constructor is guarateed to work if @a rhs
                 is managed by a different thread. If the source
                 pointer gets @ref reset or destroyed by the other
-                thread while this construction is being executed, 
-                the copy may either result in a @em valid, counted 
-                reference to the old interface. In that case, it is 
+                thread while this construction is being executed,
+                the copy may either result in a @em valid, counted
+                reference to the old interface. In that case, it is
                 safe to use. Or, it will contain a @a NULL reference.
         @remark This constructor is only available with Microsoft
                 Visual C++ compilers.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
      */
     template<class Other>
@@ -228,14 +240,16 @@ public:
 
         m_instance = rhs.get();
         if (m_instance)
+        {
             m_instance->AddRef();
+        }
 
         __AutoPtr_assignment_unlock();
     }
 
 #if (_MSC_VER >= 1600)
     /** @brief  Move-construct from a temporary interface reference.
-        
+
         Moves the reference from the temporary @a rhs object to the new
         wrapper instance. The source reference will be reset, i.e. the
         new object takes ownership of the moved reference.
@@ -245,13 +259,14 @@ public:
         @exception <none> This function must not throw exceptions.
 
         @remark This constructor is only available with Microsoft
-                Visual C++ compilers version 16.00 or newer 
+                Visual C++ compilers version 16.00 or newer
                 (Visual Studio 2010+).
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
      */
     AutoPtr (AutoPtr&& rhs) OLI_NOTHROW
-        : m_instance (rhs.m_instance)
+:
+    m_instance (rhs.m_instance)
     {
         rhs.m_instance = NULL;
     }
@@ -260,17 +275,17 @@ public:
 #endif // _MSC_VER
 
     /** @brief  Destructor.
-        
+
         Resets the internal interface reference. If this reference is
         not @c NULL, the reference count will be decreased by 1. If the
-        last reference has been released, the underlying object will be 
+        last reference has been released, the underlying object will be
         destroyed automatically.
 
         @exception <none> This function must not throw exceptions.
 
         @remark This method is guarateed to work correctly even while a copy
-                of this reference is being created by a different thread . 
-        @since  BOA 1.3 
+                of this reference is being created by a different thread .
+        @since  BOA 1.3
         @see    IRefCountable
      */
     ~AutoPtr() OLI_NOTHROW
@@ -279,10 +294,10 @@ public:
     }
 
     /** @brief  Replace an interface reference.
-        
+
         Assign the internal pointer with a reference to the same
-        interface as @a rhs. If it is not @c NULL, the reference count 
-        will be increased by 1. Similarly, the previously held reference 
+        interface as @a rhs. If it is not @c NULL, the reference count
+        will be increased by 1. Similarly, the previously held reference
         will be released and the underlying object destroyed as soon
         as the last reference has been @ref IRefCountable::Release "removed".
 
@@ -294,13 +309,13 @@ public:
         @remark Assignment is guarateed to work correctly even if @a rhs
                 is managed by a different thread. If the source
                 pointer gets @ref reset or destroyed by the other
-                thread while this construction is being executed, 
-                the copy may either result in a @em valid, counted 
-                reference to the old interface. In that case, it is 
+                thread while this construction is being executed,
+                the copy may either result in a @em valid, counted
+                reference to the old interface. In that case, it is
                 safe to use. Or, it will contain a @a NULL reference.
                 These guarantees are valid for source and destination alike.
         @remark Self-assignment is legal and thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
      */
     AutoPtr<I>& operator=(const AutoPtr<I>& rhs) OLI_NOTHROW
@@ -341,14 +356,14 @@ public:
 
 #if defined(_MSC_VER)
     /** @brief  Replace the interface reference.
-        
+
         Assign the internal pointer with a reference to the same
-        interface as @a rhs. If it is not @c NULL, the reference count 
-        will be increased by 1. Similarly, the previously held reference 
+        interface as @a rhs. If it is not @c NULL, the reference count
+        will be increased by 1. Similarly, the previously held reference
         will be released and the underlying object destroyed as soon
         as the last reference has been @ref IRefCountable::Release "removed".
 
-        @param Other    Source interface type. This interface must be  
+        @param Other    Source interface type. This interface must be
                         equal to @a I or an interface derived from it.
         @param[in] rhs  Source interface reference to be copied.
                         May be a @c NULL reference.
@@ -358,16 +373,16 @@ public:
         @remark Assignment is guarateed to work correctly even if @a rhs
                 is managed by a different thread. If the source
                 pointer gets @ref reset or destroyed by the other
-                thread while this construction is being executed, 
-                the copy may either result in a @em valid, counted 
-                reference to the old interface. In that case, it is 
+                thread while this construction is being executed,
+                the copy may either result in a @em valid, counted
+                reference to the old interface. In that case, it is
                 safe to use. Or, it will contain a @a NULL reference.
                 These guarantees are valid for source and destination alike.
         @remark Self-assignment is legal and thread-safe even if
                 @a I and @a Other differ but refer to the same object.
         @remark This constructor is only available with Microsoft
                 Visual C++ compilers.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
      */
     template<class Other>
@@ -409,9 +424,9 @@ public:
 
 #if (_MSC_VER >= 1600)
     /** @brief  Replace from a temporary interface reference.
-        
+
         Move the reference held by the temporary wrapper instance to
-        this instance and reset the tempoary. The previously held reference 
+        this instance and reset the tempoary. The previously held reference
         will be released and the underlying object destroyed as soon
         as the last reference has been @ref IRefCountable::Release "removed".
 
@@ -423,17 +438,17 @@ public:
         @remark Assignment is guarateed to work correctly even if @a rhs
                 is managed by a different thread. If the source
                 pointer gets @ref reset or destroyed by the other
-                thread while this construction is being executed, 
-                the copy may either result in a @em valid, counted 
-                reference to the old interface. In that case, it is 
+                thread while this construction is being executed,
+                the copy may either result in a @em valid, counted
+                reference to the old interface. In that case, it is
                 safe to use. Or, it will contain a @a NULL reference.
                 These guarantees are valid for source and destination alike.
         @remark Self-assignment is legal and thread-safe.
         @remark This constructor is only available with Microsoft
-                Visual C++ compilers version 16.00 or newer 
+                Visual C++ compilers version 16.00 or newer
                 (Visual Studio 2010+).
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IRefCountable
      */
     AutoPtr<I>& operator=(AutoPtr<I>&& rhs) OLI_NOTHROW
@@ -479,7 +494,7 @@ public:
 #endif // _MSC_VER
 
     /** @brief  Get the interface pointer.
-        
+
         @return The interface pointer managed by this object.
                 May be @c NULL.
         @exception <none> This function must not throw exceptions.
@@ -487,7 +502,7 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     I* get() const OLI_NOTHROW
     {
@@ -495,18 +510,18 @@ public:
     }
 
     /** @brief  Release the interface reference.
-        
+
         Resets the internal interface reference. If this reference is
         not @c NULL, the reference count will be decreased by 1. Once the
-        last reference has been @ref IRefCountable::Release "released", 
+        last reference has been @ref IRefCountable::Release "released",
         the underlying object will be destroyed automatically.
 
         @exception <none> This function must not throw exceptions.
 
         @remark This method is guarateed to work correctly even while a copy
-                of this reference is being created by a different thread. 
-        @remark May be called even if the internal pointer is @c NULL. 
-        @since  BOA 1.3 
+                of this reference is being created by a different thread.
+        @remark May be called even if the internal pointer is @c NULL.
+        @since  BOA 1.3
         @see    IRefCountable
      */
     void reset() OLI_NOTHROW
@@ -542,7 +557,7 @@ public:
 
     /** @brief  Check for a non-NULL interface reference.
         @anchor operator_bool
-        
+
         @return @c true, if the wrapped pointer is not @c NULL.
                 @c false, otherwise.
         @exception <none> This function must not throw exceptions.
@@ -550,7 +565,7 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     operator bool() const OLI_NOTHROW
     {
@@ -559,7 +574,7 @@ public:
 
     /** @brief  Check for a NULL interface reference.
         @anchor operator_not
-        
+
         @return @c true, if the wrapped pointer is @c NULL.
                 @c false, otherwise.
         @exception <none> This function must not throw exceptions.
@@ -567,7 +582,7 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     bool operator!() const OLI_NOTHROW
     {
@@ -575,7 +590,7 @@ public:
     }
 
     /** @brief  Dereference a constant interface pointer.
-        
+
         @return The interface being referenced by this object.
         @exception <none> This function must not throw exceptions.
 
@@ -584,8 +599,8 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
-        @see    @ref operator_not "operator!", 
+        @since  BOA 1.3
+        @see    @ref operator_not "operator!",
                 @ref operator_bool "operator bool"
      */
     const I* operator->() const OLI_NOTHROW
@@ -594,7 +609,7 @@ public:
     }
 
     /** @brief  Dereference an interface pointer.
-        
+
         @return The interface being referenced by this object.
         @exception <none> This function must not throw exceptions.
 
@@ -603,8 +618,8 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
-        @see    @ref operator_not "operator!", 
+        @since  BOA 1.3
+        @see    @ref operator_not "operator!",
                 @ref operator_bool "operator bool"
      */
     I* operator->() OLI_NOTHROW
@@ -613,7 +628,7 @@ public:
     }
 
     /** @brief  Dereference a constant interface pointer.
-        
+
         @return The interface being referenced by this object.
         @exception <none> This function must not throw exceptions.
 
@@ -622,8 +637,8 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
-        @see    @ref operator_not "operator!", 
+        @since  BOA 1.3
+        @see    @ref operator_not "operator!",
                 @ref operator_bool "operator bool"
      */
     const I& operator*() const OLI_NOTHROW
@@ -632,7 +647,7 @@ public:
     }
 
     /** @brief  Dereference an interface pointer.
-        
+
         @return The interface being referenced by this object.
         @exception <none> This function must not throw exceptions.
 
@@ -641,8 +656,8 @@ public:
         @remark This function is not thread-safe with respect to
                 assignment or destruction. Concurrent read-only
                 access is legal.
-        @since  BOA 1.3 
-        @see    @ref operator_not "operator!", 
+        @since  BOA 1.3
+        @see    @ref operator_not "operator!",
                 @ref operator_bool "operator bool"
      */
     I& operator*() OLI_NOTHROW
@@ -654,7 +669,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

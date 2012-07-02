@@ -15,11 +15,11 @@
 
 /**
  * \file      SelectFunctions.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 
 #include "NodeSimEx_stdafx.h"
@@ -46,14 +46,14 @@ static char THIS_FILE[] = __FILE__;
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
 CSelectFunctions::CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
     : CDialog(CSelectFunctions::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSelectFunctions)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     m_omSelectedFunctionPrototype = STR_EMPTY;
     m_eBus = eBus;
@@ -85,17 +85,17 @@ END_MESSAGE_MAP()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the double clicks on selected item.
-                        
-                                                                              */  
+
+                                                                              */
 /*  Member of        :  CSelectFunctions                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CSelectFunctions::OnDblclkListFunctions() 
+void CSelectFunctions::OnDblclkListFunctions()
 {
     OnSelect();
 }
@@ -105,19 +105,19 @@ void CSelectFunctions::OnDblclkListFunctions()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Called when the user clicks on Ok button.
-                        
-                                                                              */  
+
+                                                                              */
 /*  Member of        :  CSelectFunctions                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
 /*  Modifications    :  06.01.2003, Amarnath S                                */
-/*                      Introduced a check for nSelectedIndex to avoid        */ 
+/*                      Introduced a check for nSelectedIndex to avoid        */
 /*                      possible crash.                                       */
 /******************************************************************************/
 
-void CSelectFunctions::OnSelect() 
+void CSelectFunctions::OnSelect()
 {
     // get the selected text
     int nSelectedIndex = m_omFnListBox.GetCurSel();
@@ -133,25 +133,25 @@ void CSelectFunctions::OnSelect()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Opens wrapper.h file and adds all the function 
-                        prototypes to the list box.                     
-                                                                              */  
+/*  Functionality    :  Opens wrapper.h file and adds all the function
+                        prototypes to the list box.
+                                                                              */
 /*  Member of        :  CSelectFunctions                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
 /*  Modifications    :  06.01.2003, Amarnath S                                */
-/*                      Introduced a hashdefine for the registry location     */ 
+/*                      Introduced a hashdefine for the registry location     */
 /*  Modifications    :  07.01.2003, Amitesh Bharti                            */
-/*                      Introduced a hashdefine for error message. Wrapper.h  */ 
+/*                      Introduced a hashdefine for error message. Wrapper.h  */
 /*                  file is open only if path is read correctly from registry.*/
 /******************************************************************************/
 
-BOOL CSelectFunctions::OnInitDialog() 
+BOOL CSelectFunctions::OnInitDialog()
 {
     CDialog::OnInitDialog();
-	int nCount = (COMMANINT)CGlobalObj::ouGetObj(m_eBus).m_ArrAPIsList.GetSize();
+    int nCount = (COMMANINT)CGlobalObj::ouGetObj(m_eBus).m_ArrAPIsList.GetSize();
     for (int i = 0; i < nCount; i++)
     {
         m_omFnListBox.AddString( CGlobalObj::ouGetObj(m_eBus).m_ArrAPIsList.GetAt(i) );
@@ -164,18 +164,20 @@ BOOL CSelectFunctions::OnInitDialog()
     CDC*  pDC = m_omFnListBox.GetDC();
     int nDx = 0;
 
-    for (int nCount = 0;nCount < m_omFnListBox.GetCount();nCount++)
+    for (int nCount = 0; nCount < m_omFnListBox.GetCount(); nCount++)
     {
-    m_omFnListBox.GetText( nCount, omStrText );
-    // remove space
-    omStrText.TrimRight();
-    sz = pDC->GetTextExtent(omStrText);
+        m_omFnListBox.GetText( nCount, omStrText );
+        // remove space
+        omStrText.TrimRight();
+        sz = pDC->GetTextExtent(omStrText);
 
-    if (sz.cx > nDx)
-        nDx = sz.cx;
+        if (sz.cx > nDx)
+        {
+            nDx = sz.cx;
+        }
     }
     m_omFnListBox.ReleaseDC(pDC);
-    // Set the horizontal extent so every character of all strings 
+    // Set the horizontal extent so every character of all strings
     // can be scrolled to.
     m_omFnListBox.SetHorizontalExtent(nDx);
     return TRUE;
@@ -186,21 +188,21 @@ BOOL CSelectFunctions::OnInitDialog()
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Calls base class function
-                                                                              */  
+                                                                              */
 /*  Member of        :  CSelectFunctions                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  01.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CSelectFunctions::OnCancel() 
+void CSelectFunctions::OnCancel()
 {
     CDialog::OnCancel();
 }
 
-BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
+BOOL CSelectFunctions::bFormatFunctionPrototype(CString& omStrFunctionPrototype)
 {
     BOOL bReturn = TRUE;
     CStringArray omStrArrayParaType;
@@ -209,7 +211,7 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
     if(m_omStrSelectedText.IsEmpty() == 0 )
     {
         CString omStrTemp =    m_omStrSelectedText;
-        omStrTemp = omStrTemp.Right(omStrTemp.GetLength() - 
+        omStrTemp = omStrTemp.Right(omStrTemp.GetLength() -
                                     omStrTemp.Find(" ") - 1 );
         omStrTemp.TrimLeft();
         omStrTemp.TrimRight();
@@ -238,19 +240,19 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
         omStrReturnType.TrimRight();
         omStrFuncName.TrimLeft();
         omStrFuncName.TrimRight();
-        if(omStrReturnType.CompareNoCase(_T("void")) !=0)
+        if(omStrReturnType.CompareNoCase("void") !=0)
         {
             omStrFunctionPrototype  = defTODO_FUNCTION_INSERT;
             omStrFunctionPrototype += defNEW_LINE;
-            omStrFunctionPrototype += _T("/* ");
+            omStrFunctionPrototype += "/* ";
             omStrFunctionPrototype += omStrReturnType;
-            omStrFunctionPrototype += _T(" ");
+            omStrFunctionPrototype += " ";
             omStrFunctionPrototype += defRETURN_TYPE_NAME;
-            omStrFunctionPrototype += _T(" ;*/");
+            omStrFunctionPrototype += " ;*/";
         }
         UINT unCount = (COMMANUINT)omStrArrayParaType.GetSize();
-        omStrFuncName += _T("(");
-        for(UINT i = 0; i<unCount ;i++)
+        omStrFuncName += "(";
+        for(UINT i = 0; i<unCount ; i++)
         {
             omStrTemp = omStrArrayParaType.GetAt(i);
             omStrTemp.TrimLeft();
@@ -262,25 +264,25 @@ BOOL CSelectFunctions::bFormatFunctionPrototype(CString &omStrFunctionPrototype)
             omStrTemp               = "";
             omStrTemp.Format(defPARAMETER_NAME,i+1);
             omStrFunctionPrototype += " ";
-            omStrFunctionPrototype +=omStrTemp; 
+            omStrFunctionPrototype +=omStrTemp;
             omStrFunctionPrototype += " ;*/";
 
             omStrFuncName +=omStrTemp;
             if(i != unCount - 1 )
             {
-                omStrFuncName += _T(",");
+                omStrFuncName += ",";
             }
         }
-        omStrFuncName += _T(")");
-        if(omStrReturnType.CompareNoCase(_T("void")) !=0)
+        omStrFuncName += ")";
+        if(omStrReturnType.CompareNoCase("void") !=0)
         {
 
             omStrFunctionPrototype += defNEW_LINE;
             omStrFunctionPrototype += defRETURN_TYPE_NAME;
-            omStrFunctionPrototype += _T(" = ");
+            omStrFunctionPrototype += " = ";
         }
         omStrFunctionPrototype += omStrFuncName;
-        omStrFunctionPrototype += _T(";");
+        omStrFunctionPrototype += ";";
         omStrFunctionPrototype += defNEW_LINE;
     }
 

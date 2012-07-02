@@ -35,8 +35,8 @@ static AFX_EXTENSION_MODULE ReplayDLL = { NULL, NULL };
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-	// Remove this if you use lpReserved
-	UNREFERENCED_PARAMETER(lpReserved);
+    // Remove this if you use lpReserved
+    UNREFERENCED_PARAMETER(lpReserved);
 
     if (dwReason == DLL_PROCESS_ATTACH)
     {
@@ -73,28 +73,28 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
 USAGEMODE void vREP_DisplayReplayConfigDlg(ETYPE_BUS eType, const void* pvFilterConfigured)
 {
-	//Place this code at the beginning of the export function.
-	//Save previous resource handle and switch to current one.
-	HINSTANCE hInst = AfxGetResourceHandle();
-	AfxSetResourceHandle(ReplayDLL.hResource);
+    //Place this code at the beginning of the export function.
+    //Save previous resource handle and switch to current one.
+    HINSTANCE hInst = AfxGetResourceHandle();
+    AfxSetResourceHandle(ReplayDLL.hResource);
 
     switch(eType)
     {
         case CAN:
         {
             CReplayManager::ouGetReplayManager().
-                                dShowReplayConfigurationDlg((SFILTERAPPLIED_CAN*)pvFilterConfigured);
+            dShowReplayConfigurationDlg((SFILTERAPPLIED_CAN*)pvFilterConfigured);
         }
         break;
         default:
         {
             ASSERT(FALSE);
         }
-        break;        
+        break;
     }
-	//Place this at the end of the export function.
-	//switch back to previous resource handle.
-	AfxSetResourceHandle(hInst); 
+    //Place this at the end of the export function.
+    //switch back to previous resource handle.
+    AfxSetResourceHandle(hInst);
 }
 
 USAGEMODE void vREP_CmdGo()
@@ -165,7 +165,7 @@ USAGEMODE BOOL bREP_GetUIStateCmdStop()
 {
     return CReplayManager::ouGetReplayManager().bGetUIStateCmdStop();
 }
-USAGEMODE void vREP_GetReplayFileNameList(CStringArray &omRepalyFiles)
+USAGEMODE void vREP_GetReplayFileNameList(CStringArray& omRepalyFiles)
 {
     CReplayManager::ouGetReplayManager().vGetReplayFileNameList(omRepalyFiles);
 }

@@ -15,11 +15,11 @@
 
 /**
  * \file      MsgInterpretation.cpp
- * \brief     This file contain the definition member function of 
+ * \brief     This file contain the definition member function of
  * \author    Amitesh Bharti
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain the definition member function of 
+ * This file contain the definition member function of
  */
 #include "Utils_stdafx.h"             // Standard header definition file
 #include "MsgInterpretation.h"  // Class definition file
@@ -27,7 +27,7 @@
 #include "include/utils_macro.h"
 
 //Later put in a different file
-#define defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT  _T("%-16s %s")
+#define defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT  "%-16s %s"
 #define defMAX_BITS             64
 #define defBITS_IN_BYTE         8
 #define defMAX_BYTE             8
@@ -42,16 +42,16 @@
 #define defMSGID_STD            's'
 #define defMSGID_EXTENDED       'x'
 #define defEMPTY_CHAR           ' '
-#define defFORMAT_DATA_DECIMAL  _T("%03d")
-#define defFORMAT_DATA_HEX      _T("%02X")
-#define defFORMAT_MSGID_DECIMAL _T("%d")
-#define defFORMAT_INT64_DECIMAL _T("%I64d")
-#define defFORMAT_INT64_HEX     _T("%I64X")
-#define defFORMAT_MSGID_HEX     _T("0x%X")
-#define defFORMAT_MSGID_HEX_STR _T("%X")
-#define defFORMAT_DATA_FLOAT _T("%f")
+#define defFORMAT_DATA_DECIMAL  "%03d"
+#define defFORMAT_DATA_HEX      "%02X"
+#define defFORMAT_MSGID_DECIMAL "%d"
+#define defFORMAT_INT64_DECIMAL "%I64d"
+#define defFORMAT_INT64_HEX     "%I64X"
+#define defFORMAT_MSGID_HEX     "0x%X"
+#define defFORMAT_MSGID_HEX_STR "%X"
+#define defFORMAT_DATA_FLOAT "%f"
 #define defNUMBER_OF_BIT_TO_SHIFT 3
-#define defSTR_FORMAT_PHY_VALUE _T("%.3f")
+#define defSTR_FORMAT_PHY_VALUE "%.3f"
 #define STR_EMPTY ""
 
 //////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  20.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CMsgInterpretation::CMsgInterpretation()
 {
@@ -86,11 +86,11 @@ CMsgInterpretation::CMsgInterpretation()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  20.03.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 CMsgInterpretation::~CMsgInterpretation()
 {
-	m_psMsgRoot = NULL;
+    m_psMsgRoot = NULL;
 }
 
 void CMsgInterpretation::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
@@ -100,31 +100,31 @@ void CMsgInterpretation::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
 
 int CMsgInterpretation::nGetSignalCount(CString strMsgName)
 {
-	int iSignalCount = 0;
-	SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
-	while(m_psMsgTemp != NULL)
-	{
-		if(m_psMsgTemp->m_psMsg != NULL)
-		{
-			//check for same message name
-			if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
-			{
-				sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
-				while(m_psSignalTemp != NULL)
-				{
-					iSignalCount++; //increment the signal count
-					m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
-				}
-				break;
-			}
-			else //go for next message name
-			{
-				m_psMsgTemp = m_psMsgTemp->m_psNext; 
-			}
-		}
-	}
-	//return the number of signals in the given message.
-	return iSignalCount;
+    int iSignalCount = 0;
+    SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
+    while(m_psMsgTemp != NULL)
+    {
+        if(m_psMsgTemp->m_psMsg != NULL)
+        {
+            //check for same message name
+            if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
+            {
+                sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
+                while(m_psSignalTemp != NULL)
+                {
+                    iSignalCount++; //increment the signal count
+                    m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
+                }
+                break;
+            }
+            else //go for next message name
+            {
+                m_psMsgTemp = m_psMsgTemp->m_psNext;
+            }
+        }
+    }
+    //return the number of signals in the given message.
+    return iSignalCount;
 }
 
 void CMsgInterpretation::vSetCurrNumMode(EFORMAT eNumFormat)
@@ -136,7 +136,7 @@ UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
 {
     ASSERT(nSigLen > 0);
     UINT nBytesToRead = 1; //Consider first byte
-    
+
     INT nRemainingLength = nSigLen - (defBITS_IN_BYTE - nBitNum);
 
     if (nRemainingLength > 0)
@@ -145,14 +145,14 @@ UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
         nBytesToRead += (INT)(nRemainingLength / defBITS_IN_BYTE);
 
         // Check for extra bits which traverse to the next byte.
-        INT nTotalBitsConsidered = ((nBytesToRead - 1) * defBITS_IN_BYTE) + 
-                                                        (defBITS_IN_BYTE - nBitNum);
+        INT nTotalBitsConsidered = ((nBytesToRead - 1) * defBITS_IN_BYTE) +
+                                   (defBITS_IN_BYTE - nBitNum);
         if (nTotalBitsConsidered < (INT)nSigLen)
         {
             nBytesToRead++;
         }
     }
-    
+
     return nBytesToRead;
 }
 /* checks whether signal cross array boundary or not */
@@ -160,9 +160,9 @@ static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum, UINT nLength
 {
     BOOL bValid = TRUE;
     UINT nBytesToRead = nGetNoOfBytesToRead(nBitNum, nLength);
-    bValid = (bDataFormat == DATA_FORMAT_INTEL)? 
-                (INT)(nByteNum + nBytesToRead - 1) <= nDLC : 
-                (INT)(nByteNum - nBytesToRead) >= 0;
+    bValid = (bDataFormat == DATA_FORMAT_INTEL)?
+             (INT)(nByteNum + nBytesToRead - 1) <= nDLC :
+             (INT)(nByteNum - nBytesToRead) >= 0;
     return bValid;
 }
 /*******************************************************************************
@@ -171,7 +171,7 @@ static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum, UINT nLength
                      UINT unBitNum,
                      UINT unLength,
  Return           :  64 bit signal value
- Functionality    :  Helper Function calculates the signal value represented 
+ Functionality    :  Helper Function calculates the signal value represented
                      in bits. It takes care of motorola and intel byte order.
  Member of        :  CMsgInterpretation
  Friend of        :      -
@@ -179,10 +179,10 @@ static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum, UINT nLength
  Date Created     :  09/07/2010.
 *******************************************************************************/
 __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
-                                                UINT byteNumber,
-                                                UINT unBitNum,
-                                                UINT unLength,
-                                                EFORMAT_DATA bByteOrder)
+                                       UINT byteNumber,
+                                       UINT unBitNum,
+                                       UINT unLength,
+                                       EFORMAT_DATA bByteOrder)
 {
     __int64 nSigValueInBits = 0;
 
@@ -190,7 +190,7 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
     {
         UINT nBytesToRead = 0;
         /* Find out how many data bytes the signal consumes */
-        nBytesToRead = nGetNoOfBytesToRead(unBitNum, unLength);       
+        nBytesToRead = nGetNoOfBytesToRead(unBitNum, unLength);
 
         /* Whether the format is Intel or Motorola reading bits inside
            a byte is always same */
@@ -198,33 +198,33 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
         /* If Byte order is motorola then Bytes have to be read in
         reverse order */
         INT nByteOrder = (bByteOrder == DATA_FORMAT_INTEL)? 1: -1;
-		BOOL bValid = bValidateSignal((UINT)pMsgArray->GetSize(), byteNumber, unBitNum, unLength, nByteOrder);
+        BOOL bValid = bValidateSignal((UINT)pMsgArray->GetSize(), byteNumber, unBitNum, unLength, nByteOrder);
         ASSERT(bValid == TRUE);
         if (bValid == TRUE)
         {
-        UINT nBitsRead = 0;
-        for (register UINT i = 0; i < nBytesToRead; i++)
-        {
-            /* Please note: If byte number is byteNumber then array index = byteNumber - 1 */
-            BYTE byMsgByteVal = pMsgArray->GetAt( (byteNumber - 1) + (nByteOrder * i) );
-
-            if (CurrBitNum != 0)
+            UINT nBitsRead = 0;
+            for (register UINT i = 0; i < nBytesToRead; i++)
             {
-                byMsgByteVal >>= CurrBitNum;
-            }
-            
-            /* Find out how bits to read from the current byte */
-            UINT nCurrBitsToRead  = min (defBITS_IN_BYTE - CurrBitNum, unLength - nBitsRead);
-            
-            /*After the reading first byte reading will be always from 
-            byte's start index. So reset the CurrBitNum */
-            CurrBitNum = 0;
-            BYTE byMask = 0;
-            byMask = (BYTE)(pow((float) 2.0, (int) nCurrBitsToRead) - 1);
-            //Update the signal value
-            nSigValueInBits |= (byMsgByteVal & byMask) << nBitsRead;
+                /* Please note: If byte number is byteNumber then array index = byteNumber - 1 */
+                BYTE byMsgByteVal = pMsgArray->GetAt( (byteNumber - 1) + (nByteOrder * i) );
 
-            nBitsRead += nCurrBitsToRead;
+                if (CurrBitNum != 0)
+                {
+                    byMsgByteVal >>= CurrBitNum;
+                }
+
+                /* Find out how bits to read from the current byte */
+                UINT nCurrBitsToRead  = min (defBITS_IN_BYTE - CurrBitNum, unLength - nBitsRead);
+
+                /*After the reading first byte reading will be always from
+                byte's start index. So reset the CurrBitNum */
+                CurrBitNum = 0;
+                BYTE byMask = 0;
+                byMask = (BYTE)(pow((float) 2.0, (int) nCurrBitsToRead) - 1);
+                //Update the signal value
+                nSigValueInBits |= (__int64)(byMsgByteVal & byMask) << nBitsRead;
+
+                nBitsRead += nCurrBitsToRead;
             }
         }
     }
@@ -249,18 +249,18 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
                      original value back.
 *******************************************************************************/
 __int64 CMsgInterpretation::n64GetSignalValue(register CByteArray* pMsgArray,
-                                                UINT byteNumber,
-                                                UINT unBitNum,
-                                                UINT unLength,
-                                                BYTE bySigType, 
-                                                EFORMAT_DATA bSigDataFormat)
+        UINT byteNumber,
+        UINT unBitNum,
+        UINT unLength,
+        BYTE bySigType,
+        EFORMAT_DATA bSigDataFormat)
 {
     __int64 n64SigVal = 0;
 
 
     n64SigVal = n64GetSignalValueInBits(pMsgArray, byteNumber, unBitNum, unLength, bSigDataFormat);
     //*************************** added on 31/05/2002 ****************
-    // check for negative numbers 
+    // check for negative numbers
     if(bySigType == CHAR_INT)
     {
         // Extend the sign bit to get signed value
@@ -271,7 +271,7 @@ __int64 CMsgInterpretation::n64GetSignalValue(register CByteArray* pMsgArray,
     return n64SigVal;
 }
 /*******************************************************************************
- Function Name    :  vInterpretMsgs                                        
+ Function Name    :  vInterpretMsgs
  Input(s)         :  unMsgCode - Message ID
                      ucData - Message Data
                      omStrMsgName - Message Name (o/p)
@@ -279,13 +279,13 @@ __int64 CMsgInterpretation::n64GetSignalValue(register CByteArray* pMsgArray,
                      omStrRawValues - CAlculated Raw Values
                      omStrPhyValues - Physical Value with Unit
                      bHexON - HEX/DEC format
- Output           :  CStringArray &omStrArrayMsgInterpretArray             
+ Output           :  CStringArray &omStrArrayMsgInterpretArray
  Functionality    :  Function translates the message bytes to meaningful signals
                      It returns Message Name, Signal Names, Raw Values, Physical
                      Values. The formatting done based on the hex flag.
- Member of        :  CMsgInterpretation                                    
- Friend of        :      -                                                 
-                                                                           
+ Member of        :  CMsgInterpretation
+ Friend of        :      -
+
  Author(s)        :  Raja N
  Date Created     :  31.03.2004
  Modifications    :  Raja N on 14.04.2004
@@ -301,7 +301,7 @@ __int64 CMsgInterpretation::n64GetSignalValue(register CByteArray* pMsgArray,
                     10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
-                                        const UCHAR *ucData,
+                                        const UCHAR* ucData,
                                         CString& omStrMsgName,
                                         CStringArray& omStrSigNames,
                                         CStringArray& omStrRawValues,
@@ -316,7 +316,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
 
     sMESSAGE* pMsgs = NULL;
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
-    {            
+    {
         omStrMsgName = pMsgs->m_omStrMessageName;
         CByteArray omMsgByte;
         register UINT unByteNo       = 1; // One based Indexing
@@ -326,8 +326,8 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
 
         /*Whether it is |Intel or motorola format, Data is fed from\
         1st byte to DLC */
-        for ( register UINT nCount = 0; 
-                nCount < pMsgs->m_unMessageLength; 
+        for ( register UINT nCount = 0;
+                nCount < pMsgs->m_unMessageLength;
                 nCount++)
         {
             omMsgByte.Add(ucData[nCount]);
@@ -335,7 +335,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
         __int64 n64Vaule = 0;
 
         // loop thro all the message bytes which signifies signal
-        while (unByteNo <= pMsgs->m_unMessageLength && 
+        while (unByteNo <= pMsgs->m_unMessageLength &&
                 un_NoOfSignals <= pMsgs->m_unNumberOfSignals)
         {
             unBitNumber = unSigLength % defBITS_IN_BYTE;
@@ -343,10 +343,10 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
             // Use shift operator to do division by 8
             // number of bits to shift is 3 here
             unByteNo = ( unSigLength >> defNUMBER_OF_BIT_TO_SHIFT ) + 1;
-            
+
             // Get signal details in a byte
-            register sSIGNALS* psSignal = 
-                                                    pMsgs->m_psSignals;
+            register sSIGNALS* psSignal =
+                pMsgs->m_psSignals;
             // Get corresponding Signal List pointer
             BOOL bSignalFound = FALSE;
             while (psSignal != NULL && bSignalFound == FALSE)
@@ -368,56 +368,57 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 __int64 n64SigVal = 0;
                 CString omSignalValue(STR_EMPTY), omStrTemp(STR_EMPTY);
                 BOOL bFoundSignalDesc = FALSE;
-                        
+
                 // Get signal value
                 n64SigVal = n64GetSignalValue(&omMsgByte,
-                                        unByteNo,
-                                        unBitNumber,
-                                        psSignal->m_unSignalLength,
-                                        psSignal->m_bySignalType,
-                                        psSignal->m_eFormat);
+                                              unByteNo,
+                                              unBitNumber,
+                                              psSignal->m_unSignalLength,
+                                              psSignal->m_bySignalType,
+                                              psSignal->m_eFormat);
 
                 // If the mode is Hex then discard unwanter bits
                 if( bHexON == TRUE )
                 {
                     n64Vaule = n64SigVal;
                     CUtilFunctions::s_vRemoveUnwantedBits( n64Vaule,
-                                        psSignal->m_unSignalLength );
+                                                           psSignal->m_unSignalLength );
                     omSignalValue.Format( defFORMAT_INT64_HEX,
-                                        n64Vaule );
+                                          n64Vaule );
                 }
                 else
                 {
                     omSignalValue.Format( defFORMAT_INT64_DECIMAL,
-                                        n64SigVal );
+                                          n64SigVal );
                 }
 
                 //Add the Signal Name First
                 omStrSigNames.Add(psSignal->m_omStrSignalName);
-                
+
                 // Add the val to Raw Array
                 omStrRawValues.Add(omSignalValue);
-                
+
                 // Replace signal value if any related signal
                 // descriptor is defined
-                CSignalDescVal* pouCurrSignalDesc = 
-                                            psSignal->m_oSignalIDVal;
+                CSignalDescVal* pouCurrSignalDesc =
+                    psSignal->m_oSignalIDVal;
                 while ( pouCurrSignalDesc != NULL &&
                         bFoundSignalDesc == FALSE )
                 {
-                    if (pouCurrSignalDesc->m_n64SignalVal == n64SigVal )
+                    //                    if (pouCurrSignalDesc->m_n64SignalVal == n64SigVal )
+                    if (pouCurrSignalDesc->m_DescValue.n64Value  == n64SigVal )
                     {
                         omStrTemp = pouCurrSignalDesc->
-                                                m_omStrSignalDescriptor;
+                                    m_omStrSignalDescriptor;
                         bFoundSignalDesc = TRUE;
                     }
                     else
                     {
                         pouCurrSignalDesc = pouCurrSignalDesc->
-                                        m_pouNextSignalSignalDescVal;
+                                            m_pouNextSignalSignalDescVal;
                     }
                 }
-                        
+
                 if( bFoundSignalDesc == FALSE )
                 {
                     // Calculate Phy Value
@@ -426,13 +427,13 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                     dPhysical *= psSignal->m_fSignalFactor;
                     dPhysical += psSignal->m_fSignalOffset;
                     omSignalValue.Format( defSTR_FORMAT_PHY_VALUE,
-                                        dPhysical);
+                                          dPhysical);
                     // If unit is not enpty then only copy the Unit
                     if( psSignal->m_omStrSignalUnit.IsEmpty() != TRUE )
                     {
                         omStrTemp.Format(
-                        defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT,
-                        omSignalValue, psSignal->m_omStrSignalUnit );
+                            defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT,
+                            omSignalValue, psSignal->m_omStrSignalUnit );
                     }
                     // Else copy the string directly
                     else
@@ -440,25 +441,25 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                         omStrTemp = omSignalValue;
                     }
                 }
-                
+
                 // Add it to Phy Array
                 omStrPhyValues.Add(omStrTemp);
-                
+
                 // Increment Number of Signals Got
-                un_NoOfSignals++;   
-                
+                un_NoOfSignals++;
+
                 // Update Signal Length
                 unSigLength += psSignal->m_unSignalLength;
 
                 if (
-                    unSigLength >= 
-                    ( pMsgs->m_unMessageLength << 
-                    defNUMBER_OF_BIT_TO_SHIFT ) 
+                    unSigLength >=
+                    ( pMsgs->m_unMessageLength <<
+                      defNUMBER_OF_BIT_TO_SHIFT )
                 )
                 {
                     un_NoOfSignals = pMsgs->m_unNumberOfSignals;
                 }
-                
+
             }
             else
             {
@@ -467,7 +468,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 unSigLength++;
             }
         } // Main While loop for Bytes
-    
+
         // Set the Flag to TRUE to denote success
         bSuccess = TRUE;
     }
@@ -476,7 +477,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
 
 
 /*******************************************************************************
- Function Name    : vInterpretMsgs                                        
+ Function Name    : vInterpretMsgs
  Input(s)         : unMsgCode - Message ID
                     psWatchList - Pointer to Signal Watch Node
                     ucData - Message Data
@@ -485,15 +486,15 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                     omStrRawValues - CAlculated Raw Values
                     omStrPhyValues - Physical Value with Unit
                     bHexON - HEX/DEC format
- Output           : CStringArray &omStrArrayMsgInterpretArray             
+ Output           : CStringArray &omStrArrayMsgInterpretArray
  Functionality    : Function translates the message bytes to meaningful signals
                     It returns Message Name, Signal Names, Raw Values, Physical
                     Values. The formatting done based on the hex flag. This is
                     used to calculate only the signals that are in the signal
                     watch list.
- Member of        : CMsgInterpretation                                    
- Friend of        :     -                                                 
-                                                                          
+ Member of        : CMsgInterpretation
+ Friend of        :     -
+
  Author(s)        : Raja N
  Date Created     : 31.03.2004
  Modifications    : Raja N on 22.07.2004
@@ -506,12 +507,12 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                     10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
-                                        const UCHAR *ucData,
-                                        CString& omStrMsgName,
-                                        CStringArray& omStrSigNames,
-                                        CStringArray& omStrRawValues,
-                                        CStringArray& omStrPhyValues,//with Unit
-                                        BOOL bHexON)
+        const UCHAR* ucData,
+        CString& omStrMsgName,
+        CStringArray& omStrSigNames,
+        CStringArray& omStrRawValues,
+        CStringArray& omStrPhyValues,//with Unit
+        BOOL bHexON)
 {
     BOOL bSuccess = FALSE;
     // Remove all elements in the string array
@@ -520,121 +521,123 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
     omStrSigNames.RemoveAll();
 
     // Get message name from msg code
-    
+
     sMESSAGE* pMsgs = NULL;
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
-    {         
+    {
         omStrMsgName = pMsgs->m_omStrMessageName;
         CByteArray omMsgByte;
 
         /*Whether it is Intel or Motorola format, Data is fed from\
             1st byte to DLC */
-        for ( register UINT nCount = 0; 
-                    nCount < pMsgs->m_unMessageLength; 
-                    nCount++)
+        for ( register UINT nCount = 0;
+                nCount < pMsgs->m_unMessageLength;
+                nCount++)
         {
             omMsgByte.Add(ucData[nCount]);
         }
         register sSIGNALS* psSignal = pMsgs->m_psSignals;
-        
+
         // Get corresponding Signal List pointer
         if(psSignal != NULL)
-        {   
+        {
             bSuccess = TRUE;
             __int64 n64Vaule = 0;
-            
-                register sSIGNALS* psCurrentSignal = psSignal;
-                
-                while(psCurrentSignal != NULL)
-                {                
-                    __int64 n64SigVal = 0;
-                    CString omSignalValue(STR_EMPTY);
-                    CString omStrTemp(STR_EMPTY);
-                    BOOL bFound = FALSE;
 
-                    // Get signal value
-                    n64SigVal = n64GetSignalValue(&omMsgByte,
-                            psCurrentSignal->m_unStartByte,
-                            psCurrentSignal->m_byStartBit,
-                            psCurrentSignal->m_unSignalLength,
-                            psCurrentSignal->m_bySignalType,
-                            psCurrentSignal->m_eFormat);
-                    // If the mode is Hex then discard unwanter bits
-                    if( bHexON == TRUE )
+            register sSIGNALS* psCurrentSignal = psSignal;
+
+            while(psCurrentSignal != NULL)
+            {
+                __int64 n64SigVal = 0;
+                CString omSignalValue(STR_EMPTY);
+                CString omStrTemp(STR_EMPTY);
+                BOOL bFound = FALSE;
+
+                // Get signal value
+                n64SigVal = n64GetSignalValue(&omMsgByte,
+                                              psCurrentSignal->m_unStartByte,
+                                              psCurrentSignal->m_byStartBit,
+                                              psCurrentSignal->m_unSignalLength,
+                                              psCurrentSignal->m_bySignalType,
+                                              psCurrentSignal->m_eFormat);
+                // If the mode is Hex then discard unwanter bits
+                if( bHexON == TRUE )
+                {
+                    n64Vaule = n64SigVal;
+                    CUtilFunctions::s_vRemoveUnwantedBits(
+                        n64Vaule,
+                        psCurrentSignal->m_unSignalLength );
+                    omSignalValue.Format( defFORMAT_INT64_HEX,
+                                          n64Vaule );
+                }
+                else
+                {
+                    omSignalValue.Format(
+                        defFORMAT_INT64_DECIMAL,
+                        n64SigVal );
+                }
+
+                //Add the Signal Name First
+                omStrSigNames.Add(psCurrentSignal->m_omStrSignalName);
+
+                // Add the val to Raw Array
+                omStrRawValues.Add(omSignalValue);
+
+                // Replace signal value if any related signal
+                // descriptor is defined
+                register CSignalDescVal* pouCurrSignalDesc =
+                    psCurrentSignal->m_oSignalIDVal;
+                // Calculate Phy Value
+                while ( pouCurrSignalDesc != NULL &&
+                        bFound == FALSE )
+                {
+                    //                        if (pouCurrSignalDesc->m_n64SignalVal ==
+                    //                                              n64SigVal )
+                    if (pouCurrSignalDesc->m_DescValue.n64Value  ==
+                            n64SigVal )
                     {
-                        n64Vaule = n64SigVal;
-                        CUtilFunctions::s_vRemoveUnwantedBits(
-                                        n64Vaule,
-                                        psCurrentSignal->m_unSignalLength );
-                        omSignalValue.Format( defFORMAT_INT64_HEX,
-                                        n64Vaule );
+                        omStrTemp = pouCurrSignalDesc->
+                                    m_omStrSignalDescriptor;
+                        bFound = TRUE;
                     }
                     else
                     {
-                        omSignalValue.Format(
-                                        defFORMAT_INT64_DECIMAL,
-                                        n64SigVal );
+                        pouCurrSignalDesc = pouCurrSignalDesc->
+                                            m_pouNextSignalSignalDescVal;
                     }
+                }
+                // IF not found in the list
+                if( bFound == FALSE )
+                {
+                    // Use Factor and offset to calculate the
+                    // physical value
+                    double dPhysical =
+                        static_cast<double>(n64SigVal);
+                    dPhysical *= psCurrentSignal->m_fSignalFactor;
+                    dPhysical += psCurrentSignal->m_fSignalOffset;
+                    omSignalValue.Format(defSTR_FORMAT_PHY_VALUE,
+                                         dPhysical );
 
-                    //Add the Signal Name First
-                    omStrSigNames.Add(psCurrentSignal->m_omStrSignalName);
-                    
-                    // Add the val to Raw Array
-                    omStrRawValues.Add(omSignalValue);
-                    
-                    // Replace signal value if any related signal
-                    // descriptor is defined
-                    register CSignalDescVal* pouCurrSignalDesc = 
-                                    psCurrentSignal->m_oSignalIDVal;
-                    // Calculate Phy Value
-                    while ( pouCurrSignalDesc != NULL &&
-                            bFound == FALSE )
+                    // If unit is not enpty then only copy the Unit
+                    if( psCurrentSignal->m_omStrSignalUnit.IsEmpty() != TRUE )
                     {
-                        if (pouCurrSignalDesc->m_n64SignalVal ==
-                                                n64SigVal )
-                        {
-                            omStrTemp = pouCurrSignalDesc->
-                                            m_omStrSignalDescriptor;
-                            bFound = TRUE;
-                        }
-                        else
-                        {
-                            pouCurrSignalDesc = pouCurrSignalDesc->
-                                        m_pouNextSignalSignalDescVal;
-                        }
+                        omStrTemp.Format(
+                            defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT,
+                            omSignalValue, psCurrentSignal->m_omStrSignalUnit );
                     }
-                    // IF not found in the list
-                    if( bFound == FALSE )
+                    // Else copy the string directly
+                    else
                     {
-                        // Use Factor and offset to calculate the
-                        // physical value
-                        double dPhysical =
-                            static_cast<double>(n64SigVal);
-                        dPhysical *= psCurrentSignal->m_fSignalFactor;
-                        dPhysical += psCurrentSignal->m_fSignalOffset;
-                        omSignalValue.Format(defSTR_FORMAT_PHY_VALUE,
-                                            dPhysical );
-                        
-                        // If unit is not enpty then only copy the Unit
-                        if( psCurrentSignal->m_omStrSignalUnit.IsEmpty() != TRUE )
-                        {
-                            omStrTemp.Format(
-                                defSTR_FORMAT_PHY_VALUE_WITH_UNIT_FOR_IPT,
-                                omSignalValue, psCurrentSignal->m_omStrSignalUnit );
-                        }
-                        // Else copy the string directly
-                        else
-                        {
-                            omStrTemp = omSignalValue;
-                        }
+                        omStrTemp = omSignalValue;
                     }
-                    
-                    // Add it to Phy Array
-                    omStrPhyValues.Add(omStrTemp);
-                    
-                    // Break the loop
-                    psCurrentSignal = psCurrentSignal->m_psNextSignalList;
-                } // While Loop
+                }
+
+                // Add it to Phy Array
+                omStrPhyValues.Add(omStrTemp);
+
+                // Break the loop
+                psCurrentSignal = psCurrentSignal->m_psNextSignalList;
+            } // While Loop
         }// IF Signal pointer loop
     }// If Message Name Loop
     return bSuccess;
@@ -642,7 +645,7 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
 
 
 /*******************************************************************************
- Function Name    : vInterpretMsgs                                        
+ Function Name    : vInterpretMsgs
  Input(s)         : unMsgCode - Message ID
                     ucData - Message Data
                     omStrMsgName - Message Name (o/p)
@@ -650,13 +653,13 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
                     omStrRawValues - CAlculated Raw Values
                     omStrPhyValues - Physical Value with Unit
                     bHexON - HEX/DEC format
- Output           : CStringArray &omStrArrayMsgInterpretArray             
+ Output           : CStringArray &omStrArrayMsgInterpretArray
  Functionality    : Function translates the message bytes to meaningful signals
                     It returns Message Name, Signal Names, Raw Values, Physical
                     Values. The formatting done based on the hex flag.
- Member of        : CMsgInterpretation                                    
- Friend of        :     -                                                 
-                                                                          
+ Member of        : CMsgInterpretation
+ Friend of        :     -
+
  Author(s)        : Raja N
  Date Created     : 31.03.2004
  Modifications    : Raja N on 14.04.2004
@@ -672,166 +675,168 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
                     10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
-                                        const UCHAR *ucData,
+                                        const UCHAR* ucData,
                                         CSignalInfoArray& omSignalInfo )
 {
     BOOL bSuccess = FALSE;
-    
+
     // Get message name from msg code
     sMESSAGE* pMsgs = NULL;
     omSignalInfo.RemoveAll();
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
-    {            
+    {
         // Get message pointer from message name for future use
         // Use Msg Code instead of Message Name
-        
-            CByteArray omMsgByte;
-            register UINT unByteNo       = 1; // One based Indexing
-            register UINT unBitNumber    = 0;
-            UINT un_NoOfSignals          = 0;
-            register UINT unSigLength    = 0;
-            SINTERPRETSIGNALINFO    sSigInfo;
 
-            /*Whether it is |Intel or motorola format, Data is fed from\
-                1st byte to DLC */
-            for ( register UINT nCount = 0; 
-                        nCount < pMsgs->m_unMessageLength; 
-                        nCount++)
+        CByteArray omMsgByte;
+        register UINT unByteNo       = 1; // One based Indexing
+        register UINT unBitNumber    = 0;
+        UINT un_NoOfSignals          = 0;
+        register UINT unSigLength    = 0;
+        SINTERPRETSIGNALINFO    sSigInfo;
+
+        /*Whether it is |Intel or motorola format, Data is fed from\
+            1st byte to DLC */
+        for ( register UINT nCount = 0;
+                nCount < pMsgs->m_unMessageLength;
+                nCount++)
+        {
+            omMsgByte.Add(ucData[nCount]);
+        }
+
+        // loop thro all the message bytes which signifies signal
+        while (unByteNo <= pMsgs->m_unMessageLength &&
+                un_NoOfSignals <= pMsgs->m_unNumberOfSignals)
+        {
+            unBitNumber = unSigLength % defBITS_IN_BYTE;
+            // One base index
+            // Use shift operator to do division by 8
+            unByteNo = ( unSigLength >> defNUMBER_OF_BIT_TO_SHIFT ) + 1;
+
+            // Get signal details in a byte
+            register sSIGNALS* psSignal =
+                pMsgs->m_psSignals;
+            // Get corresponding Signal List pointer
+            BOOL bSignalFound = FALSE;
+            while (psSignal != NULL && bSignalFound == FALSE )
             {
-                omMsgByte.Add(ucData[nCount]);
-            }
-
-            // loop thro all the message bytes which signifies signal
-            while (unByteNo <= pMsgs->m_unMessageLength && 
-                    un_NoOfSignals <= pMsgs->m_unNumberOfSignals)
-            {
-                unBitNumber = unSigLength % defBITS_IN_BYTE;
-                // One base index
-                // Use shift operator to do division by 8
-                unByteNo = ( unSigLength >> defNUMBER_OF_BIT_TO_SHIFT ) + 1;
-                
-                // Get signal details in a byte
-                register sSIGNALS* psSignal = 
-                                                        pMsgs->m_psSignals;
-                // Get corresponding Signal List pointer
-                BOOL bSignalFound = FALSE;
-                while (psSignal != NULL && bSignalFound == FALSE )
+                if ((psSignal->m_byStartBit == unBitNumber) &&
+                        (psSignal->m_unStartByte == unByteNo))
                 {
-                    if ((psSignal->m_byStartBit == unBitNumber) &&
-                            (psSignal->m_unStartByte == unByteNo))
-                    {
-                        bSignalFound = TRUE;
-                    }
-                    else
-                    {
-                        psSignal = psSignal->m_psNextSignalList;
-                    }
-                }
-
-                // If Signal found at Bit position
-                if (psSignal != NULL)
-                {
-                    __int64 n64SigVal = 0;
-                    CString omSignalValue;
-                    BOOL bFoundSignalDesc = FALSE;
-                            
-                    // Get signal value
-                    n64SigVal = n64GetSignalValue(&omMsgByte,
-                                            unByteNo,
-                                            unBitNumber,
-                                            psSignal->m_unSignalLength,
-                                            psSignal->m_bySignalType, 
-                                            psSignal->m_eFormat);
-                    // Store Raw Value
-                    sSigInfo.m_un64RawValue = n64SigVal;
-                    // Store Signal Length
-                    sSigInfo.m_ucSigLength = (UCHAR)(psSignal->m_unSignalLength);
-                    // Init Signal Description string
-                    sSigInfo.m_omStrSignalDescValue = STR_EMPTY;
-
-                    // Replace signal value if any related signal
-                    // descriptor is defined
-                    CSignalDescVal* pouCurrSignalDesc = 
-                                                psSignal->m_oSignalIDVal;
-                    while (pouCurrSignalDesc != NULL && bFoundSignalDesc == FALSE)
-                    {
-                        if (pouCurrSignalDesc->m_n64SignalVal == 
-                                                n64SigVal )
-                        {
-                            // Store Signal Description
-                            sSigInfo.m_omStrSignalDescValue =
-                                pouCurrSignalDesc->m_omStrSignalDescriptor;
-                            bFoundSignalDesc = TRUE;
-                        }
-                        else
-                        {
-                            pouCurrSignalDesc = pouCurrSignalDesc->
-                                                m_pouNextSignalSignalDescVal;
-                        }
-                    }
-                            
-                    //Store the Signal Name
-                    sSigInfo.m_omStrSignalName =
-                                psSignal->m_omStrSignalName;
-                    
-                    // Calculate Phy Value only if the Signal Descriptor is
-                    // not defined
-                    double dPhysical = static_cast<double>(n64SigVal);
-                    if( bFoundSignalDesc == FALSE )
-                    {
-                        dPhysical *= psSignal->m_fSignalFactor;
-                        dPhysical += psSignal->m_fSignalOffset;
-                    }
-
-                    // Store Phy val and Unit
-                    sSigInfo.m_dPhyValue = dPhysical;
-                    sSigInfo.m_omStrUnit = psSignal->m_omStrSignalUnit;
-
-                    omSignalInfo.Add( sSigInfo );
-                    
-                    // Increment Number of Signals Got
-                    un_NoOfSignals++;   
-                    
-                    // Update Signal Length
-                    unSigLength += psSignal->m_unSignalLength;
-
-                    if (
-                        unSigLength >= 
-                        (pMsgs->m_unMessageLength << defNUMBER_OF_BIT_TO_SHIFT)
-                        )
-                    {
-                        un_NoOfSignals = pMsgs->m_unNumberOfSignals;
-                    }
-                    
+                    bSignalFound = TRUE;
                 }
                 else
                 {
-                    // Signal not found at bit position.
-                    // So increment the pos.
-                    unSigLength++;
+                    psSignal = psSignal->m_psNextSignalList;
                 }
-            } // Main While loop for Bytes
-            // Set the Flag to TRUE to denote success
-            bSuccess = TRUE;
+            }
+
+            // If Signal found at Bit position
+            if (psSignal != NULL)
+            {
+                __int64 n64SigVal = 0;
+                CString omSignalValue;
+                BOOL bFoundSignalDesc = FALSE;
+
+                // Get signal value
+                n64SigVal = n64GetSignalValue(&omMsgByte,
+                                              unByteNo,
+                                              unBitNumber,
+                                              psSignal->m_unSignalLength,
+                                              psSignal->m_bySignalType,
+                                              psSignal->m_eFormat);
+                // Store Raw Value
+                sSigInfo.m_un64RawValue = n64SigVal;
+                // Store Signal Length
+                sSigInfo.m_ucSigLength = (UCHAR)(psSignal->m_unSignalLength);
+                // Init Signal Description string
+                sSigInfo.m_omStrSignalDescValue = STR_EMPTY;
+
+                // Replace signal value if any related signal
+                // descriptor is defined
+                CSignalDescVal* pouCurrSignalDesc =
+                    psSignal->m_oSignalIDVal;
+                while (pouCurrSignalDesc != NULL && bFoundSignalDesc == FALSE)
+                {
+                    //                        if (pouCurrSignalDesc->m_n64SignalVal ==
+                    //                                              n64SigVal )
+                    if (pouCurrSignalDesc->m_DescValue.n64Value  ==
+                            n64SigVal )
+                    {
+                        // Store Signal Description
+                        sSigInfo.m_omStrSignalDescValue =
+                            pouCurrSignalDesc->m_omStrSignalDescriptor;
+                        bFoundSignalDesc = TRUE;
+                    }
+                    else
+                    {
+                        pouCurrSignalDesc = pouCurrSignalDesc->
+                                            m_pouNextSignalSignalDescVal;
+                    }
+                }
+
+                //Store the Signal Name
+                sSigInfo.m_omStrSignalName =
+                    psSignal->m_omStrSignalName;
+
+                // Calculate Phy Value only if the Signal Descriptor is
+                // not defined
+                double dPhysical = static_cast<double>(n64SigVal);
+                if( bFoundSignalDesc == FALSE )
+                {
+                    dPhysical *= psSignal->m_fSignalFactor;
+                    dPhysical += psSignal->m_fSignalOffset;
+                }
+
+                // Store Phy val and Unit
+                sSigInfo.m_dPhyValue = dPhysical;
+                sSigInfo.m_omStrUnit = psSignal->m_omStrSignalUnit;
+
+                omSignalInfo.Add( sSigInfo );
+
+                // Increment Number of Signals Got
+                un_NoOfSignals++;
+
+                // Update Signal Length
+                unSigLength += psSignal->m_unSignalLength;
+
+                if (
+                    unSigLength >=
+                    (pMsgs->m_unMessageLength << defNUMBER_OF_BIT_TO_SHIFT)
+                )
+                {
+                    un_NoOfSignals = pMsgs->m_unNumberOfSignals;
+                }
+
+            }
+            else
+            {
+                // Signal not found at bit position.
+                // So increment the pos.
+                unSigLength++;
+            }
+        } // Main While loop for Bytes
+        // Set the Flag to TRUE to denote success
+        bSuccess = TRUE;
     }
     return bSuccess;
 }
 
 /*******************************************************************************
- Function Name    :  bInterpretMsgs                                        
+ Function Name    :  bInterpretMsgs
  Input(s)         :  unMsgCode - Message ID
                      ucData - Message Data
                      omStrMsgName - Message Name (o/p)
                      omStrSigNames - Signal Names
                      omStrRawValues - CAlculated Raw Values
                      omStrPhyValues - Physical Value with Unit
- Output           :  CStringArray &omStrArrayMsgInterpretArray             
+ Output           :  CStringArray &omStrArrayMsgInterpretArray
  Functionality    :  Function translates the message bytes to meaningful signals
                      It returns Message Name, Signal Names, Raw Values, Physical
                      Values. The formatting done based on the hex flag.
- Member of        :  CMsgInterpretation                                    
- Friend of        :      -                                                 
-                                                                           
+ Member of        :  CMsgInterpretation
+ Friend of        :      -
+
  Author(s)        :  Raja N
  Date Created     :  31.03.2004
  Modifications    :  Raja N on 14.04.2004
@@ -847,7 +852,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                     10.08.2004, Removed adding Unit if Signal Descriptor present
 *******************************************************************************/
 BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
-                                        const UCHAR *ucData,
+                                        const UCHAR* ucData,
                                         CString& omStrMsgName,
                                         CStringArray& omStrSigNames,
                                         CStringArray& omStrRawValues,
@@ -859,7 +864,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
     omStrSigNames.RemoveAll();
 
     sMESSAGE* pMsgs = NULL;
-    
+
     for (SMSGENTRY* psTmp = m_psMsgRoot; NULL != psTmp; psTmp = psTmp->m_psNext)
     {
         if (psTmp->m_psMsg->m_unMessageCode == unMsgCode)
@@ -880,9 +885,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
 
     /*Whether it is |Intel or motorola format, Data is fed from\
                   1st byte to DLC */
-    for ( register UINT nCount = 0; 
-                nCount < pMsgs->m_unMessageLength; 
-                nCount++)
+    for ( register UINT nCount = 0;
+            nCount < pMsgs->m_unMessageLength;
+            nCount++)
     {
         omMsgByte.Add(ucData[nCount]);
     }
@@ -897,9 +902,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         omStrSigNames.Add(psCurrSignal->m_omStrSignalName);
 
         // Get signal value
-        n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte, 
-            psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
-            psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
+        n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte,
+                                      psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
+                                      psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
 
         CString omSignalValue;
         UINT unSigLen = psCurrSignal->m_unSignalLength;
@@ -907,10 +912,10 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         //1 character means 1 nibble
         UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
         //Ignore extra FFs incase of a negative number.
-		double dblVal = 16;
+        double dblVal = 16;
         __int64 nWidthMask = 0 | (__int64)(pow(dblVal, (int)unWidth) - 1);
         n64SigVal = n64SigVal &  nWidthMask;
-        omSignalValue.Format(_T("0x%X"), n64SigVal);
+        omSignalValue.Format("0x%X", n64SigVal);
 
         // Add the value to Raw Array
         omStrRawValues.Add(omSignalValue);
@@ -921,7 +926,8 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         CString omStrTemp;
         while ((NULL != pouCurrSigDesc) && !bFoundDesc)
         {
-            if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+            //            if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+            if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
             {
                 omStrTemp = pouCurrSigDesc->m_omStrSignalDescriptor;
                 bFoundDesc = TRUE;
@@ -942,7 +948,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
             // If unit is not enpty then only copy the Unit
             if (psCurrSignal->m_omStrSignalUnit.IsEmpty() != TRUE)
             {
-                omStrTemp += _T(" ");
+                omStrTemp += " ";
                 omStrTemp += psCurrSignal->m_omStrSignalUnit;
             }
         }
@@ -954,11 +960,11 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
     return TRUE;
 }
 
-BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat, 
-                                        SMSGENTRY* psMsgRoot, 
-                                        UINT unMsgCode, 
-                                        const UCHAR *ucData,
-                                        CString& omStrMsgName, 
+BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
+                                        SMSGENTRY* psMsgRoot,
+                                        UINT unMsgCode,
+                                        const UCHAR* ucData,
+                                        CString& omStrMsgName,
                                         SSignalInfoArray& SigInfoArray)
 {
     //BOOL bReturn = TRUE;
@@ -966,7 +972,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
     SigInfoArray.RemoveAll();
 
     sMESSAGE* pMsgs = NULL;
-    
+
     for (SMSGENTRY* psTmp = psMsgRoot; NULL != psTmp; psTmp = psTmp->m_psNext)
     {
         if (psTmp->m_psMsg->m_unMessageCode == unMsgCode)
@@ -987,11 +993,11 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
     return TRUE;
 }
-BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/, 
+BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
                                         const sMESSAGE* pMsg,
-                                        const UCHAR *ucData, 
+                                        const UCHAR* ucData,
                                         CSignalInfoArray& omSigInfoArray)
-{   
+{
     BOOL bReturn = FALSE;
     omSigInfoArray.RemoveAll();
     if ((pMsg != NULL) && (ucData != NULL))
@@ -999,9 +1005,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
         CByteArray omMsgByte;
         /*Whether it is |Intel or motorola format, Data is fed from\
                   1st byte to DLC */
-        for ( register UINT nCount = 0; 
-                    nCount < pMsg->m_unMessageLength; 
-                    nCount++)
+        for ( register UINT nCount = 0;
+                nCount < pMsg->m_unMessageLength;
+                nCount++)
         {
             omMsgByte.Add(ucData[nCount]);
         }
@@ -1018,9 +1024,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             sInterSigInfo.m_omStrSignalName = psCurrSignal->m_omStrSignalName;
 
             // Get signal value
-            n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte, 
-                psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength, 
-                psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
+            n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte,
+                                          psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
+                                          psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
 
             // Calculate the raw value
             UINT unSigLen = psCurrSignal->m_unSignalLength;
@@ -1038,12 +1044,13 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             sInterSigInfo.m_ucSigLength = (UCHAR)(psCurrSignal->m_unSignalLength);
 
             // Replace signal value if any related signal descriptor is defined
-            
+
             CSignalDescVal* pouCurrSigDesc = psCurrSignal->m_oSignalIDVal;
             BOOL bFoundDesc = FALSE;
             while ((NULL != pouCurrSigDesc) && !bFoundDesc)
             {
-                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                //                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
                 {
                     sInterSigInfo.m_omStrSignalDescValue = pouCurrSigDesc->m_omStrSignalDescriptor;
                     bFoundDesc = TRUE;
@@ -1065,18 +1072,18 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             psCurrSignal = psCurrSignal->m_psNextSignalList;
         }
     }
-	if (0 < omSigInfoArray.GetSize())
+    if (0 < omSigInfoArray.GetSize())
     {
         bReturn = TRUE;
     }
     return bReturn;
 }
 
-BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat, 
+BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
                                         const sMESSAGE* pMsg,
-                                        const UCHAR *ucData, 
+                                        const UCHAR* ucData,
                                         SSignalInfoArray& SigInfoArray)
-{   
+{
     BOOL bReturn = FALSE;
     SigInfoArray.RemoveAll();
     if ((pMsg != NULL) && (ucData != NULL))
@@ -1084,9 +1091,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
         CByteArray omMsgByte;
         /*Whether it is |Intel or motorola format, Data is fed from\
                   1st byte to DLC */
-        for ( register UINT nCount = 0; 
-                    nCount < pMsg->m_unMessageLength; 
-                    nCount++)
+        for ( register UINT nCount = 0;
+                nCount < pMsg->m_unMessageLength;
+                nCount++)
         {
             omMsgByte.Add(ucData[nCount]);
         }
@@ -1103,9 +1110,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
             sSigInfoTmp.m_omSigName = psCurrSignal->m_omStrSignalName;
 
             // Get signal value
-            n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte, 
-                psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
-                psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
+            n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte,
+                                          psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
+                                          psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
 
             // Calculate the raw value
             UINT unSigLen = psCurrSignal->m_unSignalLength;
@@ -1120,11 +1127,11 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
             if(eNumFormat == HEXADECIMAL)
             {
-                sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
+                sSigInfoTmp.m_omRawValue.Format("0x%I64X", n64SigVal);
             }
             else
             {
-                sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
+                sSigInfoTmp.m_omRawValue.Format("%I64d", n64SigVal);
             }
 
             // Assign the unit, if there is any
@@ -1135,7 +1142,8 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
             BOOL bFoundDesc = FALSE;
             while ((NULL != pouCurrSigDesc) && !bFoundDesc)
             {
-                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                //                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
                 {
                     sSigInfoTmp.m_omEnggValue = pouCurrSigDesc->m_omStrSignalDescriptor;
                     bFoundDesc = TRUE;
@@ -1159,7 +1167,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
             psCurrSignal = psCurrSignal->m_psNextSignalList;
         }
     }
-	if (0 < SigInfoArray.GetSize())
+    if (0 < SigInfoArray.GetSize())
     {
         bReturn = TRUE;
     }
@@ -1169,11 +1177,13 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 void CMsgInterpretation::vClear()
 {
     if(NULL != m_psMsgRoot)
-		SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    {
+        SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    }
 }
 
 void CMsgInterpretation::vCopy(CMsgInterpretation* pDest) const
-{    
+{
     if ( pDest != NULL)
     {
         pDest->vClear();
@@ -1199,31 +1209,33 @@ CMsgInterpretationJ1939::CMsgInterpretationJ1939()
 
 CMsgInterpretationJ1939::~CMsgInterpretationJ1939()
 {
-	if(NULL != m_psMsgRoot)
-		SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    if(NULL != m_psMsgRoot)
+    {
+        SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    }
 }
 
 BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
-                                        EFORMAT eNumFormat,
-                                        UINT32 unPGN, 
-                                        UINT unDLC, 
-                                        BYTE* pbyData, 
-                                        CString& omMsgName, 
-                                        SSignalInfoArray& odSigInfoArray)
-{   
+    EFORMAT eNumFormat,
+    UINT32 unPGN,
+    UINT unDLC,
+    BYTE* pbyData,
+    CString& omMsgName,
+    SSignalInfoArray& odSigInfoArray)
+{
     BOOL bReturn = FALSE;
     sMESSAGE* pMsg = NULL;
     odSigInfoArray.RemoveAll();
     SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unPGN, pMsg);
-    if ((pMsg != NULL) && (pbyData != NULL) && (unDLC >=  pMsg->m_unMessageLength))
+    if ((pMsg != NULL) && (pbyData != NULL))
     {
         omMsgName = pMsg->m_omStrMessageName;
         CByteArray omMsgByte;
         /*Whether it is |Intel or motorola format, Data is fed from\
                   1st byte to DLC */
-        for ( register UINT nCount = 0; 
-                    nCount < pMsg->m_unMessageLength; 
-                    nCount++)
+        for ( register UINT nCount = 0;
+                nCount < pMsg->m_unMessageLength;
+                nCount++)
         {
             omMsgByte.Add(pbyData[nCount]);
         }
@@ -1239,10 +1251,20 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
             // Add the Signal Name First
             sSigInfoTmp.m_omSigName = psCurrSignal->m_omStrSignalName;
 
-            // Get signal value
-            n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte, 
-                psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
-                psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
+
+            /* Check if the signal is within the current message DLC range */
+            if ( unDLC >= psCurrSignal->m_unStartByte )
+            {
+                // Get signal value
+                n64SigVal = n64GetSignalValue(&omMsgByte, psCurrSignal->m_unStartByte,
+                                              psCurrSignal->m_byStartBit, psCurrSignal->m_unSignalLength,
+                                              psCurrSignal->m_bySignalType, psCurrSignal->m_eFormat);
+            }
+            else
+            {
+                /* Set signal value to Zero */
+                n64SigVal = 0;
+            }
 
             // Calculate the raw value
             UINT unSigLen = psCurrSignal->m_unSignalLength;
@@ -1256,11 +1278,11 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
 
             if(eNumFormat == HEXADECIMAL)
             {
-                sSigInfoTmp.m_omRawValue.Format(_T("0x%X"), n64SigVal);
+                sSigInfoTmp.m_omRawValue.Format("0x%X", n64SigVal);
             }
             else
             {
-                sSigInfoTmp.m_omRawValue.Format(_T("%d"), n64SigVal);
+                sSigInfoTmp.m_omRawValue.Format("%d", n64SigVal);
             }
 
             // Assign the unit, if there is any
@@ -1271,7 +1293,8 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
             BOOL bFoundDesc = FALSE;
             while ((NULL != pouCurrSigDesc) && !bFoundDesc)
             {
-                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                //                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
+                if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
                 {
                     sSigInfoTmp.m_omEnggValue = pouCurrSigDesc->m_omStrSignalDescriptor;
                     bFoundDesc = TRUE;
@@ -1295,7 +1318,7 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
             psCurrSignal = psCurrSignal->m_psNextSignalList;
         }
     }
-	if (0 < odSigInfoArray.GetSize())
+    if (0 < odSigInfoArray.GetSize())
     {
         bReturn = TRUE;
     }
@@ -1335,21 +1358,21 @@ void CMsgInterpretationJ1939::vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry)
  Friend of        :      -
  Author(s)        : Pradeep Kadoor
  Date Created     :
- Modifications    :  
+ Modifications    :
 *******************************************************************************/
 __int64 CMsgInterpretationJ1939::n64GetSignalValue(register CByteArray* pMsgArray,
-                                                UINT byteNumber,
-                                                UINT unBitNum,
-                                                UINT unLength,
-                                                BYTE bySigType, 
-                                                EFORMAT_DATA bSigDataFormat)
+        UINT byteNumber,
+        UINT unBitNum,
+        UINT unLength,
+        BYTE bySigType,
+        EFORMAT_DATA bSigDataFormat)
 {
     __int64 n64SigVal = 0;
 
 
     n64SigVal = n64GetSignalValueInBits(pMsgArray, byteNumber, unBitNum, unLength, bSigDataFormat);
     //*************************** added on 31/05/2002 ****************
-    // check for negative numbers 
+    // check for negative numbers
     if(bySigType == CHAR_INT)
     {
         // Extend the sign bit to get signed value
@@ -1362,63 +1385,65 @@ __int64 CMsgInterpretationJ1939::n64GetSignalValue(register CByteArray* pMsgArra
 
 int CMsgInterpretationJ1939::nGetJ1939SignalCount(CString strMsgName)
 {
-  int iSignalCount = 0;
-  SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
-  while(m_psMsgTemp != NULL)
-  {
-    if(m_psMsgTemp->m_psMsg != NULL)
+    int iSignalCount = 0;
+    SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
+    while(m_psMsgTemp != NULL)
     {
-      //check for same message name
-      if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
-      {
-        sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
-        while(m_psSignalTemp != NULL)
+        if(m_psMsgTemp->m_psMsg != NULL)
         {
-          iSignalCount++; //increment the signal count
-          m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
+            //check for same message name
+            if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
+            {
+                sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
+                while(m_psSignalTemp != NULL)
+                {
+                    iSignalCount++; //increment the signal count
+                    m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
+                }
+                break;
+            }
+            else
+            {
+                //go for next message name
+                m_psMsgTemp = m_psMsgTemp->m_psNext;
+            }
         }
-        break;
-      }
-      else
-      {
-        //go for next message name
-        m_psMsgTemp = m_psMsgTemp->m_psNext; 
-      }
     }
-  }
-  //return the number of signals for the given message.
-  return iSignalCount;
+    //return the number of signals for the given message.
+    return iSignalCount;
 }
 
 /******************************************************************************
 Function Name  :  vClear
-Input(s)       :  
-Output         :  
-Functionality  :  
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CMsgInterpretationJ1939
 Friend of      :  -
 Author(s)      :  Pradeep Kadoor
 Date Created   :  16/02/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vClear()
 {
-	if(NULL != m_psMsgRoot)
-		SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    if(NULL != m_psMsgRoot)
+    {
+        SMSGENTRY::vClearMsgList(m_psMsgRoot);
+    }
 }
 /******************************************************************************
 Function Name  :  vCopy
-Input(s)       :  
-Output         :  
-Functionality  :  
+Input(s)       :
+Output         :
+Functionality  :
 Member of      :  CMsgInterpretationJ1939
 Friend of      :  -
 Author(s)      :  Pradeep Kadoor
 Date Created   :  16/02/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vCopy(CMsgInterpretationJ1939* pDest) const
-{    
+{
     if ( pDest != NULL)
     {
         pDest->vClear();
@@ -1439,118 +1464,120 @@ void CMsgInterpretationJ1939::vCopy(CMsgInterpretationJ1939* pDest) const
 /* IMPLEMENTATION CLASS CMsgInterpretationJ1939 ENDS */
 //venkat
 BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
-                                        const UCHAR *ucData,
+                                        const UCHAR* ucData,
                                         CSignalInfoArray& omSignalInfo )
 {
     BOOL bSuccess = FALSE;
-    
-     // Get message name from msg code
+
+    // Get message name from msg code
     sMESSAGE* pMsgs = NULL;
     omSignalInfo.RemoveAll();
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
-    {            
+    {
         // Get message pointer from message name for future use
         // Use Msg Code instead of Message Name
-        
-            CByteArray omMsgByte;
-            //register UINT unByteNo       = 1; // One based Indexing
-            //register UINT unBitNumber    = 0;
-            UINT un_NoOfSignals          = 0;
-            register UINT unSigLength    = 0;
-            SINTERPRETSIGNALINFO    sSigInfo;
 
-            /*Whether it is |Intel or motorola format, Data is fed from\
-                1st byte to DLC */
-            for ( register UINT nCount = 0; 
-                        nCount < pMsgs->m_unMessageLength; 
-                        nCount++)
+        CByteArray omMsgByte;
+        //register UINT unByteNo       = 1; // One based Indexing
+        //register UINT unBitNumber    = 0;
+        UINT un_NoOfSignals          = 0;
+        register UINT unSigLength    = 0;
+        SINTERPRETSIGNALINFO    sSigInfo;
+
+        /*Whether it is |Intel or motorola format, Data is fed from\
+            1st byte to DLC */
+        for ( register UINT nCount = 0;
+                nCount < pMsgs->m_unMessageLength;
+                nCount++)
+        {
+            omMsgByte.Add(ucData[nCount]);
+        }
+
+        // Get signal details in a byte
+        register sSIGNALS* psSignal = pMsgs->m_psSignals;
+        // If Signal found at Bit position
+        while (psSignal!= NULL)
+        {
+            //if (psSignal != NULL)
+            //{
+            __int64 n64SigVal = 0;
+            CString omSignalValue;
+            BOOL bFoundSignalDesc = FALSE;
+
+            // Get signal value
+            n64SigVal = n64GetSignalValue(&omMsgByte,
+                                          psSignal->m_unStartByte,
+                                          psSignal->m_byStartBit,
+                                          psSignal->m_unSignalLength,
+                                          psSignal->m_bySignalType,
+                                          psSignal->m_eFormat);
+            // Store Raw Value
+            sSigInfo.m_un64RawValue = n64SigVal;
+            // Store Signal Length
+            sSigInfo.m_ucSigLength = (UCHAR)(psSignal->m_unSignalLength);
+            // Init Signal Description string
+            sSigInfo.m_omStrSignalDescValue = STR_EMPTY;
+
+            // Replace signal value if any related signal
+            // descriptor is defined
+            CSignalDescVal* pouCurrSignalDesc =
+                psSignal->m_oSignalIDVal;
+            while (pouCurrSignalDesc != NULL && bFoundSignalDesc == FALSE)
             {
-                omMsgByte.Add(ucData[nCount]);
+                //                    if (pouCurrSignalDesc->m_n64SignalVal ==
+                //                                          n64SigVal )
+                if (pouCurrSignalDesc->m_DescValue.n64Value ==
+                        n64SigVal )
+                {
+                    // Store Signal Description
+                    sSigInfo.m_omStrSignalDescValue =
+                        pouCurrSignalDesc->m_omStrSignalDescriptor;
+                    bFoundSignalDesc = TRUE;
+                }
+                else
+                {
+                    pouCurrSignalDesc = pouCurrSignalDesc->
+                                        m_pouNextSignalSignalDescVal;
+                }
             }
 
-            // Get signal details in a byte
-            register sSIGNALS* psSignal = pMsgs->m_psSignals;
-            // If Signal found at Bit position
-            while (psSignal!= NULL)
+            //Store the Signal Name
+            sSigInfo.m_omStrSignalName =
+                psSignal->m_omStrSignalName;
+
+            // Calculate Phy Value only if the Signal Descriptor is
+            // not defined
+            double dPhysical = static_cast<double>(n64SigVal);
+            if( bFoundSignalDesc == FALSE )
             {
-                    //if (psSignal != NULL)
-                    //{
-                __int64 n64SigVal = 0;
-                CString omSignalValue;
-                BOOL bFoundSignalDesc = FALSE;
-                        
-                // Get signal value
-                n64SigVal = n64GetSignalValue(&omMsgByte,
-                                        psSignal->m_unStartByte,
-                                        psSignal->m_byStartBit,
-                                        psSignal->m_unSignalLength,
-                                        psSignal->m_bySignalType, 
-                                        psSignal->m_eFormat);
-                // Store Raw Value
-                sSigInfo.m_un64RawValue = n64SigVal;
-                // Store Signal Length
-                sSigInfo.m_ucSigLength = (UCHAR)(psSignal->m_unSignalLength);
-                // Init Signal Description string
-                sSigInfo.m_omStrSignalDescValue = STR_EMPTY;
-
-                // Replace signal value if any related signal
-                // descriptor is defined
-                CSignalDescVal* pouCurrSignalDesc = 
-                                            psSignal->m_oSignalIDVal;
-                while (pouCurrSignalDesc != NULL && bFoundSignalDesc == FALSE)
-                {
-                    if (pouCurrSignalDesc->m_n64SignalVal == 
-                                            n64SigVal )
-                    {
-                        // Store Signal Description
-                        sSigInfo.m_omStrSignalDescValue =
-                            pouCurrSignalDesc->m_omStrSignalDescriptor;
-                        bFoundSignalDesc = TRUE;
-                    }
-                    else
-                    {
-                        pouCurrSignalDesc = pouCurrSignalDesc->
-                                            m_pouNextSignalSignalDescVal;
-                    }
-                }
-                        
-                //Store the Signal Name
-                sSigInfo.m_omStrSignalName =
-                            psSignal->m_omStrSignalName;
-                
-                // Calculate Phy Value only if the Signal Descriptor is
-                // not defined
-                double dPhysical = static_cast<double>(n64SigVal);
-                if( bFoundSignalDesc == FALSE )
-                {
-                    dPhysical *= psSignal->m_fSignalFactor;
-                    dPhysical += psSignal->m_fSignalOffset;
-                }
-
-                // Store Phy val and Unit
-                sSigInfo.m_dPhyValue = dPhysical;
-                sSigInfo.m_omStrUnit = psSignal->m_omStrSignalUnit;
-
-                omSignalInfo.Add( sSigInfo );
-                
-                // Increment Number of Signals Got
-                un_NoOfSignals++;   
-                
-                // Update Signal Length
-                unSigLength += psSignal->m_unSignalLength;
-
-                if (
-                    unSigLength >= 
-                    (pMsgs->m_unMessageLength << defNUMBER_OF_BIT_TO_SHIFT)
-                    )
-                {
-                    un_NoOfSignals = pMsgs->m_unNumberOfSignals;
-                }
-                
-                psSignal = psSignal->m_psNextSignalList;
+                dPhysical *= psSignal->m_fSignalFactor;
+                dPhysical += psSignal->m_fSignalOffset;
             }
-           
-            bSuccess = TRUE;
+
+            // Store Phy val and Unit
+            sSigInfo.m_dPhyValue = dPhysical;
+            sSigInfo.m_omStrUnit = psSignal->m_omStrSignalUnit;
+
+            omSignalInfo.Add( sSigInfo );
+
+            // Increment Number of Signals Got
+            un_NoOfSignals++;
+
+            // Update Signal Length
+            unSigLength += psSignal->m_unSignalLength;
+
+            if (
+                unSigLength >=
+                (pMsgs->m_unMessageLength << defNUMBER_OF_BIT_TO_SHIFT)
+            )
+            {
+                un_NoOfSignals = pMsgs->m_unNumberOfSignals;
+            }
+
+            psSignal = psSignal->m_psNextSignalList;
+        }
+
+        bSuccess = TRUE;
     }
     return bSuccess;
 }

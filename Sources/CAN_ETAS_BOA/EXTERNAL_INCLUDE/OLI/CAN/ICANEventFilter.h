@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ICANEventFilter definition
 * @remark The header structure of the OLI may change
@@ -30,7 +30,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // forward declaration
@@ -39,47 +42,47 @@ class ICANEventFilter;
 
 /**
 * @ingroup GROUP_OLI_CAN_FILTERS
-* @brief This function instantiates an object supporting 
-*        @ref ICANEventFilter. 
+* @brief This function instantiates an object supporting
+*        @ref ICANEventFilter.
 *
-*        See @ref BinaryCompatibility "binary compatibility" 
+*        See @ref BinaryCompatibility "binary compatibility"
 *        for an explanation of why it is needed.
 *
-*        NOTE that clients are encouraged to access this function 
+*        NOTE that clients are encouraged to access this function
 *        via the wrapper @ref ICANEventFilter::Create().
 *
-* @param[in]  eventCodeMask   
+* @param[in]  eventCodeMask
 *         Any combination of @ref CANBusState flags.
 *         The filter will report it in @ref IFilter::GetIDMask.
-* @param[in]  eventCodeValue  
+* @param[in]  eventCodeValue
 *         Any combination of @ref CANBusState flags.
 *         The filter will report it in @ref IFilter::GetIDValue.
-* @param[out] ppCanEventFilter   
-*         A pointer to an object supporting @ref ICANEventFilter, 
-*         which has already been AddRef-ed. The object must be 
+* @param[out] ppCanEventFilter
+*         A pointer to an object supporting @ref ICANEventFilter,
+*         which has already been AddRef-ed. The object must be
 *         reference-counted by the caller, using the object's
-*         methods @ref IRefCountable::AddRef "AddRef()" and 
-*         @ref IRefCountable::Release "Release()". This is easily 
-*         done by wrapping the object pointer in an instance of the 
-*         @ref AutoPtr class, which will be done automatically if 
-*         the caller accesses @ref ICANEventFilter_Create() 
+*         methods @ref IRefCountable::AddRef "AddRef()" and
+*         @ref IRefCountable::Release "Release()". This is easily
+*         done by wrapping the object pointer in an instance of the
+*         @ref AutoPtr class, which will be done automatically if
+*         the caller accesses @ref ICANEventFilter_Create()
 *         via the wrapper @ref ICANEventFilter::Create().
 *
-* @return A pointer to an interface based on @ref IError, describing 
-*         the error which occurred during this function. @c NULL if 
+* @return A pointer to an interface based on @ref IError, describing
+*         the error which occurred during this function. @c NULL if
 *         no error occurred. See @ref ErrorReporting "error reporting"
 *         for more information on how errors are reported.
 *
 * @exception <none> This function must not throw exceptions.
 *
-* @since  BOA 1.3 
-* @see    @ref BinaryCompatibility "binary compatibility", 
+* @since  BOA 1.3
+* @see    @ref BinaryCompatibility "binary compatibility",
 *         @ref ErrorReporting "error reporting",
 *         ICANEventFilter
 */
-OLL_API IError* OLI_CALL ICANEventFilter_Create( 
-    uint32 eventCodeMask, 
-    uint32 eventCodeValue, 
+OLL_API IError* OLI_CALL ICANEventFilter_Create(
+    uint32 eventCodeMask,
+    uint32 eventCodeValue,
     ICANEventFilter** ppCanEventFilter);
 
 
@@ -87,7 +90,7 @@ OLL_API IError* OLI_CALL ICANEventFilter_Create(
 * @brief  Extension to @ref IEventFilter that also filters for
 *         @ref ICANEvent -specific members.
 *
-* The implementation is expected to match @ref ICANEvent 
+* The implementation is expected to match @ref ICANEvent
 * instances only.
 *
 * This interface's implementation of IFilter::GetIDMask and IFilter::GetIDValue return the event code mask
@@ -99,8 +102,9 @@ OLL_API IError* OLI_CALL ICANEventFilter_Create(
 * @see    @ref filterConcepts "Filter concepts", ICANEvent
 */
 
-OLI_INTERFACE ICANEventFilter 
-    : public IEventFilter
+OLI_INTERFACE ICANEventFilter
+:
+public IEventFilter
 {
 protected:
 
@@ -111,7 +115,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ICANEventFilter() OLI_NOTHROW {};
 
@@ -119,38 +123,38 @@ public:
 
     /** @brief  Create an @ref ICANEventFilter instance.
 
-                The instance returned here will only match 
+                The instance returned here will only match
                 @ref ICANEvent messages. All other
                 types will not pass the filter.
 
-        @param[in]  eventCodeMask   
+        @param[in]  eventCodeMask
                 Any combination of @ref CANBusState flags.
                 The filter will report it in @ref IFilter::GetIDMask.
-        @param[in]  eventCodeValue  
+        @param[in]  eventCodeValue
                 Any combination of @ref CANBusState flags.
                 The filter will report it in @ref IFilter::GetIDValue.
         @return New @ref ICANEventFilter instance.
         @exception CError This function may throw an exception
                 derived from @ref CError.
 
-        @remark This is a helper method which wraps 
-                @ref ICANEventFilter_Create(): 
-                see @ref BinaryCompatibility "binary compatibility" 
+        @remark This is a helper method which wraps
+                @ref ICANEventFilter_Create():
+                see @ref BinaryCompatibility "binary compatibility"
                 and @ref ErrorReporting "error reporting"
                 for an explanation of why it is needed.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ICANEvent
      */
-    static AutoPtr<ICANEventFilter> OLI_CALL 
+    static AutoPtr<ICANEventFilter> OLI_CALL
     Create( uint32 eventCodeMask, uint32 eventCodeValue )
     {
         ICANEventFilter* pCanEventFilter = NULL;
-        CheckAndThrow( ICANEventFilter_Create( eventCodeMask, 
-                                               eventCodeValue, 
+        CheckAndThrow( ICANEventFilter_Create( eventCodeMask,
+                                               eventCodeValue,
                                                &pCanEventFilter ) );
 
-        // The wrapped method has already AddRef-ed the pointer, 
-        // so we tell AutoPtr to take ownership of the pointer 
+        // The wrapped method has already AddRef-ed the pointer,
+        // so we tell AutoPtr to take ownership of the pointer
         // without a further AddRef.
         return AutoPtr<ICANEventFilter>( pCanEventFilter, false );
     }
@@ -159,7 +163,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

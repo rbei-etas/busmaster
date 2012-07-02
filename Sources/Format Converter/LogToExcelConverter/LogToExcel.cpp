@@ -77,34 +77,8 @@ CLogToExcel::CLogToExcel(string strLogFileName, string strExcelFileName, UINT un
     m_pacFields = pacFields;
     m_strLogFileName = strLogFileName;
     m_strExcelFileName = strExcelFileName;
-    //open log file in read mode
-    m_pLogFile.open(m_strLogFileName.c_str(), fstream::in);
-
-    if(!m_pLogFile.is_open())
-    {
-        //log file could not be opened
-        MessageBox(NULL,EXPORTTOEXCEL_LOGFILEOPENERROR,APPLICATION_NAME,MB_OK);
-        m_bFilesOpened = FALSE;
-    }
-    else
-    {
-        //open Excel file in write
-        m_pExcelFile.open(m_strExcelFileName.c_str(), fstream::out);
-
-        if(!m_pExcelFile.is_open())
-        {
-            //Excel file could not be opened
-            MessageBox(NULL,EXPORTTOEXCEL_CSVFILEOPENERROR,APPLICATION_NAME,MB_OK);
-            m_bFilesOpened = FALSE;
-        }
-        else
-        {
-            m_unNumOfFields = unNoOfFields;
-            m_bFilesOpened = TRUE;
-        }
-    }
-
-    //set selected fields
+    m_unNumOfFields = unNoOfFields;
+    m_bFilesOpened = FALSE;
     fnSetFields();
 }
 
@@ -239,9 +213,39 @@ void CLogToExcel::vPrintFields()
  *
  * Converts the .log file to .xls file
  */
-BOOL CLogToExcel::bConvert()
+HRESULT CLogToExcel::bConvert()
 {
-    if(m_bFilesOpened)
+    HRESULT hRetVal = S_OK;
+    //open log file in read mode
+    m_pLogFile.open(m_strLogFileName.c_str(), fstream::in);
+
+    if(!m_pLogFile.is_open())
+    {
+        //log file could not be opened
+        hRetVal = ERR_EXPORTTOEXCEL_LOGFILEOPENERROR;
+        //MessageBox(NULL,EXPORTTOEXCEL_LOGFILEOPENERROR,APPLICATION_NAME,MB_OK);
+        m_bFilesOpened = FALSE;
+    }
+    else
+    {
+        //open Excel file in write
+        m_pExcelFile.open(m_strExcelFileName.c_str(), fstream::out);
+
+        if(!m_pExcelFile.is_open())
+        {
+            //Excel file could not be opened
+            hRetVal = ERR_EXPORTTOEXCEL_CSVFILEOPENERROR;
+            //MessageBox(NULL,EXPORTTOEXCEL_CSVFILEOPENERROR,APPLICATION_NAME,MB_OK);
+            m_bFilesOpened = FALSE;
+        }
+        else
+        {
+            m_bFilesOpened = TRUE;
+
+        }
+    }
+
+    if(m_bFilesOpened == TRUE)
     {
         m_pExcelFile << "<HTML><HEAD></HEAD><BODY>" << endl;
         m_pExcelFile << "<FONT COLOR =\"GREEN\"><CENTER><B>BUSMASTER - Exported Log File Report</B></CENTER>";
@@ -268,8 +272,52 @@ BOOL CLogToExcel::bConvert()
         //close file
         m_pExcelFile.close();
         m_pLogFile.close();
-        return TRUE;
+        hRetVal =S_OK;
+    }
+    else
+    {
+        if(m_pLogFile.is_open())
+        {
+            m_pLogFile.close();
+        }
+        if(m_pExcelFile.is_open())
+        {
+            m_pExcelFile.close();
+        }
     }
 
-    return FALSE;
+    return hRetVal;
+}
+void CLogToExcel::GetErrorString(HRESULT hResult, string& omStrErrorString)
+{
+    switch(hResult)
+    {
+        case ERR_EXPORTTOEXCEL_SYNTAXERROR:
+            omStrErrorString = EXPORTTOEXCEL_SYNTAXERROR;
+            break;
+        case ERR_EXPORTTOEXCEL_FILESNOTOPEN:
+            omStrErrorString = EXPORTTOEXCEL_FILESNOTOPEN;
+            break;
+        case ERR_EXPORTTOEXCEL_FIELDSELECTIONERROR:
+            omStrErrorString = EXPORTTOEXCEL_FIELDSELECTIONERROR;
+            break;
+        case ERR_EXPORTTOEXCEL_LOGFILEERROR:
+            omStrErrorString = EXPORTTOEXCEL_LOGFILEERROR;
+            break;
+        case ERR_EXPORTTOEXCEL_CSVFILEERROR:
+            omStrErrorString = EXPORTTOEXCEL_CSVFILEERROR;
+            break;
+        case ERR_EXPORTTOEXCEL_FILEERROR:
+            omStrErrorString = EXPORTTOEXCEL_FILEERROR;
+            break;
+        case ERR_EXPORTTOEXCEL_LOGFILEOPENERROR:
+            omStrErrorString = EXPORTTOEXCEL_LOGFILEOPENERROR;
+            break;
+        case ERR_EXPORTTOEXCEL_CSVFILEOPENERROR:
+            omStrErrorString = EXPORTTOEXCEL_CSVFILEOPENERROR;
+            break;
+        default:
+            omStrErrorString = "Invalid Error";
+            break;
+    }
 }

@@ -26,7 +26,10 @@
 
 #include "Application/struct.h"
 
-class CReplayFile  
+#define REPLAY_MANAGER_INITIAL_VERSION      0x1
+#define REPLAY_MANAGER_REPLAY_MSG_ADD       0x2
+
+class CReplayFile
 {
 public:
     // Methods
@@ -48,8 +51,8 @@ public:
     friend class CMsgReplayWnd;
     UINT  unGetConfigSize();
     BYTE* pbySaveConfig(BYTE* pDesBuffer);
-    BYTE* pbyLoadConfig(BYTE* pSrcBuffer);
-    BOOL  bisConfigChanged(BYTE* &pSrcBuffer);
+    BYTE* pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion);
+    BOOL  bisConfigChanged(BYTE*& pSrcBuffer);
 
 public:
     // Members
@@ -69,4 +72,5 @@ private:
     //CModuleFilterArray m_sFilter; // Filter List
     BOOL    m_bEnabled, m_bEnabledTmp;         // To indicate replay is enabled or not
     BOOL    m_bInteractive, m_bInteractiveTmp;     // 0 - Non Interactive, 1 - interactive
+    eDirection m_ouReplayMsgType;
 };

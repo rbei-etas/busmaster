@@ -26,26 +26,20 @@
 #include "MessageDetailsDlg.h"
 #include "MainFrm.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 extern CCANMonitorApp theApp;
 
 /******************************************************************************
-  Function Name    :  CMessageDetailsDlg                                    
-  Input(s)         :                                                        
-  Output           :                                                        
-  Functionality    :  Constructor is called when user create an object of   
-                      this class. Initialisation of all data members done here   
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  07-05-2002                                            
+  Function Name    :  CMessageDetailsDlg
+  Input(s)         :
+  Output           :
+  Functionality    :  Constructor is called when user create an object of
+                      this class. Initialisation of all data members done here
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  07-05-2002
 *****************************************************************************/
-CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE *pMsg /*=NULL*/,
+CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE* pMsg /*=NULL*/,
                                        CWnd* pParent /*=NULL*/)
     : CDialog(CMessageDetailsDlg::IDD, pParent)
 {
@@ -58,6 +52,11 @@ CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE *pMsg
     //}}AFX_DATA_INIT
     m_psMsgStuctPtr = pMsg;
     m_sDbParams = sDbParams;
+    
+    m_sMessage.m_omStrMessageName = "";
+    m_sMessage.m_unMessageCode = 0;
+    m_sMessage.m_unMessageLength = 8;
+    m_sMessage.m_bMessageFrameFormat = 1;
 }
 
 
@@ -82,28 +81,28 @@ BEGIN_MESSAGE_MAP(CMessageDetailsDlg, CDialog)
 END_MESSAGE_MAP()
 
 /******************************************************************************
-  Function Name    :  OnInitDialog                                    
-  Input(s)         :                                                        
-  Output           :                                                        
-  Functionality    :  Initialises the dialog with the data if the mode is edit 
+  Function Name    :  OnInitDialog
+  Input(s)         :
+  Output           :
+  Functionality    :  Initialises the dialog with the data if the mode is edit
                       mode. Otherwise the default values will be initialised.
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  07-05-2002                                            
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  07-05-2002
 *****************************************************************************/
-BOOL CMessageDetailsDlg::OnInitDialog() 
+BOOL CMessageDetailsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     //Set the message Id field's text as 'PGN' if J1939,else 'Msg Id'
     GetDlgItem(IDC_STAT_MSG_CODE)->SetWindowText(m_sDbParams.m_omIdFieldName);
 
     //Select only extended messages
-    
+
     // Set message length range 0-8
     m_omSpinMsgLen.SetBase( BASE_10 );
     m_omSpinMsgLen.SetRange( 0, (SHORT)m_sDbParams.m_unMaxMsgLen );
-	m_odMsgNumericEdit.SubclassDlgItem(IDC_EDIT_MSG_NAME,this);
+    m_odMsgNumericEdit.SubclassDlgItem(IDC_EDIT_MSG_NAME,this);
     // If Not NULL, mode is Edit,
     // Fill the dialog with the message details
     if (m_psMsgStuctPtr != NULL)
@@ -127,37 +126,42 @@ BOOL CMessageDetailsDlg::OnInitDialog()
         m_nFrameFormat = 1;
     }
     UpdateData(FALSE);
+    // Update the initial values 
+    m_sMessage.m_omStrMessageName = m_omStrMessageName;
+    m_sMessage.m_unMessageCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, NULL, 16) );
+    m_sMessage.m_unMessageLength = m_unMessageLength;
+    m_sMessage.m_bMessageFrameFormat = m_nFrameFormat;
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************
   Function Name    :  OnOK
-  Input(s)         :                                                        
-  Output           :                                                        
-  Functionality    :  Called when the user presses OK button. 
+  Input(s)         :
+  Output           :
+  Functionality    :  Called when the user presses OK button.
                       Validation of the fileds.
                       Frame format conversion if mode is edit.
                       Allocate memory for new message.
                       Update the values in the edit to the data structure.
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
   Date Created     :  07-05-2002
   Modification     :  10-12-2002, Amarnath Shastry
                       If message length is reduced than previous value,
                       then user is thrown a message which, gets delete
                       confirmation to delete the redundent signals
-                      
+
                       03-03-2003 Rajesh Kumar
                       1. User confirmation for Frame Format change removed
                          as MsgCode conversion is not done now
-                      2. Validation of MsgCode when FrameFormat = Standard  
+                      2. Validation of MsgCode when FrameFormat = Standard
   Modification      : Raja N on 10.03.2004
                       Modified to refer inactive database structure for
                       editor related operation
 *****************************************************************************/
-void CMessageDetailsDlg::OnOK() 
+void CMessageDetailsDlg::OnOK()
 {
     BOOL bRetVal = TRUE;
     CString omStrDummy;
@@ -184,301 +188,307 @@ void CMessageDetailsDlg::OnOK()
     }
 
     if (bRetVal == TRUE &&
-        m_omStrMessageName.IsEmpty())
+            m_omStrMessageName.IsEmpty())
     {
         AfxMessageBox("Message Name cannot be empty!",
-            MB_OK|MB_ICONINFORMATION);
+                      MB_OK|MB_ICONINFORMATION);
         GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
         bRetVal = FALSE;
     }
 
     if ( bRetVal == TRUE &&
-         m_omStrMessageCode.IsEmpty())
+            m_omStrMessageCode.IsEmpty())
     {
-        CString omMsg = _T(" cannot be empty!");
+        CString omMsg = " cannot be empty!";
         omMsg = m_sDbParams.m_omIdFieldName + omMsg;
         AfxMessageBox(omMsg.GetBuffer(MAX_PATH),
-            MB_OK|MB_ICONINFORMATION);
+                      MB_OK|MB_ICONINFORMATION);
         GetDlgItem(IDC_EDIT_MSGCODE)->SetFocus();
         bRetVal = FALSE;
     }
+
     
-    if (bRetVal)
+    if (bIsDataModified())
     {
-        // check if the value is valid hex number
-        CString omStrMsgCode = m_omStrMessageCode;
-        m_omStrMessageCode.MakeUpper();
-        
-        for ( int nCount = 0; nCount < m_omStrMessageCode.GetLength(); nCount++ )
+        if (bRetVal)
         {
-            char tChar = m_omStrMessageCode.GetAt( nCount );
+            // check if the value is valid hex number
+            CString omStrMsgCode = m_omStrMessageCode;
+            m_omStrMessageCode.MakeUpper();
 
-            if ( !((tChar >= 'A') && ( tChar <= 'F' ) ||
-                 (tChar >= '0' && tChar <= '9') ) )
+            for ( int nCount = 0; nCount < m_omStrMessageCode.GetLength(); nCount++ )
             {
-                AfxMessageBox("Invalid message ID!", 
-                    MB_OK|MB_ICONINFORMATION );
-                m_omStrMessageCode.Empty();
-                GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
-                UpdateData( FALSE);
-                return;
-            }
-            
-        }
-        
-        // rajesh: 03-03-2003: BEGIN: check range based on FrameFormat
-        //CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
-        UINT unTempMsgCode =
-            static_cast <UINT> (strtol((LPCTSTR )m_omStrMessageCode,NULL, 16) );
+                char tChar = m_omStrMessageCode.GetAt( nCount );
 
-        if (m_sDbParams.m_eBus == CAN)
-        {
-            if((m_nFrameFormat == 0) && (unTempMsgCode >= MAX_LMT_FOR_STD_MSG_ID))    // standard frame
-            {
-                AfxMessageBox("Invalid message ID!", 
-                   MB_OK|MB_ICONINFORMATION );
-                m_omStrMessageCode.Empty();
-                GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
-                UpdateData( FALSE);
-                return;         
-            }
-        }
-        else if (m_sDbParams.m_eBus == J1939)
-        {
-            if (unTempMsgCode > MAX_LMT_FOR_PGN)
-            {
-                AfxMessageBox("Invalid message ID!", 
-                   MB_OK|MB_ICONINFORMATION );
-                m_omStrMessageCode.Empty();
-                GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
-                UpdateData( FALSE);
-                return;  
-            }
-        }
-        // rajesh: 03-03-2003: END: 
-
-        m_omStrMessageCode = omStrMsgCode;
-
-        CMsgSignal* pTempMsgSg = NULL;
-
-        pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
-
-        // Check if the entered messsage name is a duplacate
-        BOOL bDuplicateFound = FALSE;
-
-        if ( m_psMsgStuctPtr != NULL )
-        {
-            // the following line of code is moved from the outer block to get
-            // rid of the crash when m_psMsgStuctPtr is NULL
-
-            if ( m_psMsgStuctPtr->m_omStrMessageName != m_omStrMessageName)
-            {
-                bDuplicateFound = 
-                    pTempMsgSg->bIsDuplicateMessageName( 
-                                m_psMsgStuctPtr->m_unMessageCode,
-                                m_omStrMessageName );
-            }
-            // Now that if the user reduces the message length,
-            // then delete the signals defined whch are redundent
-            if ( m_psMsgStuctPtr->m_unMessageLength > m_unMessageLength)
-            {
-                // See if signals are defined
-                if ( m_psMsgStuctPtr->m_unNumberOfSignals > 0 )
+                if ( !((tChar >= 'A') && ( tChar <= 'F' ) ||
+                        (tChar >= '0' && tChar <= '9') ) )
                 {
-                    // Get the delete confirmation from the user
-                    if ( AfxMessageBox(
-_T("You have signals defined for this message for previous message length.\n\
+                    AfxMessageBox("Invalid message ID!",
+                                  MB_OK|MB_ICONINFORMATION );
+                    m_omStrMessageCode.Empty();
+                    GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
+                    UpdateData( FALSE);
+                    return;
+                }
+
+            }
+
+            // rajesh: 03-03-2003: BEGIN: check range based on FrameFormat
+            //CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
+            UINT unTempMsgCode =
+                static_cast <UINT> (strtol((LPCTSTR )m_omStrMessageCode,NULL, 16) );
+
+            if (m_sDbParams.m_eBus == CAN)
+            {
+                if((m_nFrameFormat == 0) && (unTempMsgCode >= MAX_LMT_FOR_STD_MSG_ID))    // standard frame
+                {
+                    AfxMessageBox("Invalid message ID!",
+                                  MB_OK|MB_ICONINFORMATION );
+                    m_omStrMessageCode.Empty();
+                    GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
+                    UpdateData( FALSE);
+                    return;
+                }
+            }
+            else if (m_sDbParams.m_eBus == J1939)
+            {
+                if (unTempMsgCode > MAX_LMT_FOR_PGN)
+                {
+                    AfxMessageBox("Invalid message ID!",
+                                  MB_OK|MB_ICONINFORMATION );
+                    m_omStrMessageCode.Empty();
+                    GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
+                    UpdateData( FALSE);
+                    return;
+                }
+            }
+            // rajesh: 03-03-2003: END:
+
+            m_omStrMessageCode = omStrMsgCode;
+
+            CMsgSignal* pTempMsgSg = NULL;
+
+            pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
+
+            // Check if the entered messsage name is a duplacate
+            BOOL bDuplicateFound = FALSE;
+
+            if ( m_psMsgStuctPtr != NULL )
+            {
+                // the following line of code is moved from the outer block to get
+                // rid of the crash when m_psMsgStuctPtr is NULL
+
+                if ( m_psMsgStuctPtr->m_omStrMessageName != m_omStrMessageName)
+                {
+                    bDuplicateFound =
+                        pTempMsgSg->bIsDuplicateMessageName(
+                            m_psMsgStuctPtr->m_unMessageCode,
+                            m_omStrMessageName );
+                }
+                // Now that if the user reduces the message length,
+                // then delete the signals defined whch are redundent
+                if ( m_psMsgStuctPtr->m_unMessageLength > m_unMessageLength)
+                {
+                    // See if signals are defined
+                    if ( m_psMsgStuctPtr->m_unNumberOfSignals > 0 )
+                    {
+                        // Get the delete confirmation from the user
+                        if ( AfxMessageBox(
+                                    "You have signals defined for this message for previous message length.\n\
 Reducing message length will delete redundent signals and associated description\n\
 defined for this message.Do you want to delete these signals?\n\n\
 Select \"Yes\" to delete the signal(s) and to accept new message length value.\n\
-Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
-                    {
-                        // Delete redundent signals and update new message length
-                        if ( bDeleteRedundentSignals() == FALSE )
+Select \"No\" to retain the previous message length.", MB_YESNO) == IDYES)
                         {
-                            AfxMessageBox(_T("Could not delete the signals..."),
-                                MB_OK);
+                            // Delete redundent signals and update new message length
+                            if ( bDeleteRedundentSignals() == FALSE )
+                            {
+                                AfxMessageBox("Could not delete the signals...",
+                                              MB_OK);
+                            }
                         }
-                    }
-                    else
-                    {
-                        // Retain old message length value
-                        m_unMessageLength = m_psMsgStuctPtr->m_unMessageLength;
+                        else
+                        {
+                            // Retain old message length value
+                            m_unMessageLength = m_psMsgStuctPtr->m_unMessageLength;
+                        }
                     }
                 }
             }
-        }
-        else // 2. Don't know the code
-        {
-            sMESSAGE* pMsgPtr = 
-                pTempMsgSg->psGetMessagePointerInactive( m_omStrMessageName );
-
-            // if this pointer exists, it means that message with 
-            // the same name exists
-            if ( pMsgPtr != NULL)
+            else // 2. Don't know the code
             {
-                bDuplicateFound = TRUE;
-            }
-        }
+                sMESSAGE* pMsgPtr =
+                    pTempMsgSg->psGetMessagePointerInactive( m_omStrMessageName );
 
-// *** MODIFICATION : END ***
-
-        // Display message if duplicate is found
-        if (bDuplicateFound == TRUE)
-        {
-            AfxMessageBox("Duplicate message name found!", 
-                MB_OK|MB_ICONINFORMATION);
-            GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
-            bRetVal = FALSE;
-        }
-        else
-        {
-            // Get form view pointer
-            CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-            int nMsgCode = -1;
-            if ( pMainFrm != NULL )
-            {
-                nMsgCode = 
-                    static_cast <INT> (strtol((LPCTSTR )m_omStrMessageCode,
-                             NULL, 16) );
-            }
-
-            // Validate message code for duplication
-            // 1. Edit mode
-            if ( m_psMsgStuctPtr != NULL )
-            {
-                bDuplicateFound = 
-                    pTempMsgSg->bIsDuplicateMessageCode( 
-                    m_psMsgStuctPtr->m_omStrMessageName,
-                    nMsgCode);
-            }
-            else
-            {
-                // Add mode, if message name coressponding to the message
-                // code is not empty, then their exists a message 
-                // with given code
-                CString omStr = 
-                    pTempMsgSg->omStrGetMessageNameFromMsgCodeInactive( nMsgCode);
-
-                if (!omStr.IsEmpty())
+                // if this pointer exists, it means that message with
+                // the same name exists
+                if ( pMsgPtr != NULL)
                 {
                     bDuplicateFound = TRUE;
                 }
             }
 
+            // *** MODIFICATION : END ***
+
+            // Display message if duplicate is found
             if (bDuplicateFound == TRUE)
             {
-                AfxMessageBox("Duplicate message code found!", 
-                    MB_OK|MB_ICONINFORMATION);
-                GetDlgItem(IDC_EDIT_MSGCODE)->SetFocus();
+                AfxMessageBox("Duplicate message name found!",
+                              MB_OK|MB_ICONINFORMATION);
+                GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
                 bRetVal = FALSE;
             }
             else
             {
-
-                CString omStrPrevMsg = STR_EMPTY;
-
-                // if this is add mode, allocate
-                // memory for the new message
-                if ( m_psMsgStuctPtr == NULL )
+                // Get form view pointer
+                CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
+                int nMsgCode = -1;
+                if ( pMainFrm != NULL )
                 {
-                    // Add message to the data structure
-                    pTempMsgSg->bAddMsg();
+                    nMsgCode =
+                        static_cast <INT> (strtol((LPCTSTR )m_omStrMessageCode,
+                                                  NULL, 16) );
+                }
+
+                // Validate message code for duplication
+                // 1. Edit mode
+                if ( m_psMsgStuctPtr != NULL )
+                {
+                    bDuplicateFound =
+                        pTempMsgSg->bIsDuplicateMessageCode(
+                            m_psMsgStuctPtr->m_omStrMessageName,
+                            nMsgCode);
                 }
                 else
                 {
-                    omStrPrevMsg = m_psMsgStuctPtr->m_omStrMessageName;
-                }
-        
-                // In any case u got to update the dialog data
-                // to the data structure
+                    // Add mode, if message name coressponding to the message
+                    // code is not empty, then their exists a message
+                    // with given code
+                    CString omStr =
+                        pTempMsgSg->omStrGetMessageNameFromMsgCodeInactive( nMsgCode);
 
-                // Get message details
-                sMESSAGE od_Temp;
-
-                od_Temp.m_bMessageFrameFormat   = m_nFrameFormat;
-                od_Temp.m_nMsgDataFormat        = DATA_FORMAT_INTEL;
-                od_Temp.m_omStrMessageName      = m_omStrMessageName;
-                od_Temp.m_psSignals             = NULL;
-                od_Temp.m_unMessageLength       = m_unMessageLength;
-
-
-                if ( pMainFrm != NULL )
-                {
-                    od_Temp.m_unMessageCode         = 
-                        static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode,
-                                                        NULL, 
-                                                        16)      );
-                }
-                
-                // Update the data
-                if (( bRetVal = pTempMsgSg->bUpdateMsg( MSG_NAME, 
-                                                  omStrPrevMsg,
-                                                  &od_Temp)) != FALSE )
-                {
-
-                    if (( bRetVal = pTempMsgSg->bUpdateMsg( MSG_CODE, 
-                                           m_omStrMessageName,
-                                           &od_Temp)) != FALSE )
+                    if (!omStr.IsEmpty())
                     {
-
-
-                        if ((bRetVal = pTempMsgSg->bUpdateMsg( MSG_LENGTH, 
-                                                  m_omStrMessageName,
-                                                  &od_Temp)) != FALSE )
-                        {
-                            if ((bRetVal = pTempMsgSg->bUpdateMsg( MSG_FRAME_FORMAT, 
-                                                                   m_omStrMessageName,
-                                                                   &od_Temp)) != FALSE )
-                            {
-                                bRetVal = 
-                                    pTempMsgSg->bUpdateMsg( MSG_DATA_FORMAT, 
-                                                            m_omStrMessageName,
-                                                            &od_Temp);
-                            }
-
-                        }
+                        bDuplicateFound = TRUE;
                     }
                 }
 
-                if ( !bRetVal )
+                if (bDuplicateFound == TRUE)
                 {
-                    AfxMessageBox("Could not update the changes..!",
-                        MB_OK|MB_ICONERROR );
+                    AfxMessageBox("Duplicate message code found!",
+                                  MB_OK|MB_ICONINFORMATION);
+                    GetDlgItem(IDC_EDIT_MSGCODE)->SetFocus();
+                    bRetVal = FALSE;
+                }
+                else
+                {
+
+                    CString omStrPrevMsg = STR_EMPTY;
+
+                    // if this is add mode, allocate
+                    // memory for the new message
+                    if ( m_psMsgStuctPtr == NULL )
+                    {
+                        // Add message to the data structure
+                        pTempMsgSg->bAddMsg();
+                    }
+                    else
+                    {
+                        omStrPrevMsg = m_psMsgStuctPtr->m_omStrMessageName;
+                    }
+
+                    // In any case u got to update the dialog data
+                    // to the data structure
+
+                    // Get message details
+                    sMESSAGE od_Temp;
+
+                    od_Temp.m_bMessageFrameFormat   = m_nFrameFormat;
+                    od_Temp.m_nMsgDataFormat        = DATA_FORMAT_INTEL;
+                    od_Temp.m_omStrMessageName      = m_omStrMessageName;
+                    od_Temp.m_psSignals             = NULL;
+                    od_Temp.m_unMessageLength       = m_unMessageLength;
+
+
+                    if ( pMainFrm != NULL )
+                    {
+                        od_Temp.m_unMessageCode         =
+                            static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode,
+                                                        NULL,
+                                                        16)      );
+                    }
+
+                    // Update the data
+                    if (( bRetVal = pTempMsgSg->bUpdateMsg( MSG_NAME,
+                                                            omStrPrevMsg,
+                                                            &od_Temp)) != FALSE )
+                    {
+
+                        if (( bRetVal = pTempMsgSg->bUpdateMsg( MSG_CODE,
+                                                                m_omStrMessageName,
+                                                                &od_Temp)) != FALSE )
+                        {
+
+
+                            if ((bRetVal = pTempMsgSg->bUpdateMsg( MSG_LENGTH,
+                                                                   m_omStrMessageName,
+                                                                   &od_Temp)) != FALSE )
+                            {
+                                if ((bRetVal = pTempMsgSg->bUpdateMsg( MSG_FRAME_FORMAT,
+                                                                       m_omStrMessageName,
+                                                                       &od_Temp)) != FALSE )
+                                {
+                                    bRetVal =
+                                        pTempMsgSg->bUpdateMsg( MSG_DATA_FORMAT,
+                                                                m_omStrMessageName,
+                                                                &od_Temp);
+                                }
+
+                            }
+                        }
+                    }
+
+                    if ( !bRetVal )
+                    {
+                        AfxMessageBox("Could not update the changes..!",
+                                      MB_OK|MB_ICONERROR );
+                    }
                 }
             }
         }
     }
 
     if ( bRetVal == TRUE )
+    {
         CDialog::OnOK();
+    }
 }
 /******************************************************************************
   Function Name    :  OnCancel
-  Input(s)         :                                                        
-  Output           :                                                        
+  Input(s)         :
+  Output           :
   Functionality    :  Calls base class functionality.
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  07-05-2002                                            
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  07-05-2002
 *****************************************************************************/
-void CMessageDetailsDlg::OnCancel() 
+void CMessageDetailsDlg::OnCancel()
 {
     // TODO: Add extra cleanup here
-    
+
     CDialog::OnCancel();
 }
 /******************************************************************************
   Function Name    :  vConvertToExtended
-  Input(s)         :                                                        
-  Output           :                                                        
+  Input(s)         :
+  Output           :
   Functionality    :  Function converts standard to extended frame format.
                       Changes the value of the code if necessary.
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  09-05-2002                                            
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  09-05-2002
   Modification      : Raja N on 10.03.2004
                       Modified to refer inactive database structure for
                       editor related operations
@@ -520,14 +530,14 @@ void CMessageDetailsDlg::vConvertToExtended()
 }
 /******************************************************************************
   Function Name    :  vConvertToStandard
-  Input(s)         :                                                        
-  Output           :                                                        
+  Input(s)         :
+  Output           :
   Functionality    :  Function converts extended to standard frame format.
                       Changes the value of the code if necessary.
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  09-05-2002                                            
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  09-05-2002
   Modification      : Raja N on 10.03.2004
                       Modified to refer inactive database structure for
                       editor related operations
@@ -568,29 +578,29 @@ void CMessageDetailsDlg::vConvertToStandard()
 }
 /******************************************************************************
   Function Name    :  PreTranslateMessage
-  Input(s)         :  MSG* pMsg                                                      
-  Output           :                                                        
-  Functionality    :  Prevents the space character in the name and code 
+  Input(s)         :  MSG* pMsg
+  Output           :
+  Functionality    :  Prevents the space character in the name and code
                       edit control to be processed as it is not recommended
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  09-05-2002                                            
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  09-05-2002
 *****************************************************************************/
-BOOL CMessageDetailsDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CMessageDetailsDlg::PreTranslateMessage(MSG* pMsg)
 {
     BOOL bSkip = FALSE;
     if ( pMsg->message == WM_CHAR )
     {
         // if the control is message length,
-        // allow only numbersfrom 0-8 and 
+        // allow only numbersfrom 0-8 and
         // backspace only
         CEdit* omEditCtrlLen   = (CEdit*) GetDlgItem(IDC_EDIT_MSG_LENGTH);
         CEdit* omEditFocusLen  = (CEdit*)GetFocus();
         if ( omEditCtrlLen == omEditFocusLen)
         {
             if ( (pMsg->wParam >= '0' && pMsg->wParam <= '8') ||
-                  pMsg->wParam == 0x08)
+                    pMsg->wParam == 0x08)
             {
                 bSkip = FALSE;
             }
@@ -601,7 +611,7 @@ BOOL CMessageDetailsDlg::PreTranslateMessage(MSG* pMsg)
         }
 
         // If the control is message name and code
-        // do not allow space characters 
+        // do not allow space characters
         if ( pMsg->wParam == ' ')
         {
             CEdit* omEditCtrlName   = (CEdit*) GetDlgItem(IDC_EDIT_MSG_NAME);
@@ -613,7 +623,7 @@ BOOL CMessageDetailsDlg::PreTranslateMessage(MSG* pMsg)
             // Shud not process space characters in Name and Code
             // Edit Control only
             if ( omEditCtrlName == omEditFocusName ||
-                 omEditCtrlCode == omEditFocusCode)
+                    omEditCtrlCode == omEditFocusCode)
             {
                 bSkip = TRUE;
             }
@@ -621,20 +631,22 @@ BOOL CMessageDetailsDlg::PreTranslateMessage(MSG* pMsg)
     }
 
     if ( bSkip == FALSE)
+    {
         bSkip = CDialog::PreTranslateMessage(pMsg);
+    }
 
     return bSkip;
 }
 /******************************************************************************
   Function Name    :  bDeleteRedundentSignals
-  Input(s)         :  -                                                      
-  Output           :  BOOL                                                     
-  Functionality    :  Deletes redundent signals if the user reduces the message 
+  Input(s)         :  -
+  Output           :  BOOL
+  Functionality    :  Deletes redundent signals if the user reduces the message
                       length and if he  has defined signals in that range
-  Member of        :  CMessageDetailsDlg                                            
-  Friend of        :      -                                                 
-  Author(s)        :  Amarnath Shastry                                        
-  Date Created     :  10-12-2002                                            
+  Member of        :  CMessageDetailsDlg
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  10-12-2002
   Modification      : Raja N on 10.03.2004
                       Modified to refer inactive database structure for
                       editor related operations
@@ -643,7 +655,7 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
 {
     BOOL bReturnValue = TRUE;
     // Here suppose that prev message length = 5,
-    // and now he has reduced to 4, then 
+    // and now he has reduced to 4, then
     // only the redundent signal(s) that was defined in
     // index 5 will be deleted
 
@@ -660,14 +672,14 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
     {
         // Get signal names and their indexes to be deleted
         pTempMsgSg->vGetSigNamesAndIndexTobeDeleted( m_unMessageLength,
-            m_omStrMessageName,
-            strSignalList,
-            unIndexes);
+                m_omStrMessageName,
+                strSignalList,
+                unIndexes);
 
         for ( int unCount = 0;
-        unCount < strSignalList.GetSize(); unCount++)
+                unCount < strSignalList.GetSize(); unCount++)
         {
-            bReturnValue = 
+            bReturnValue =
                 pTempMsgSg->bDeleteSignalFromMsg(
                     unIndexes[unCount], // Zero based position of signal
                     m_omStrMessageName,
@@ -677,4 +689,20 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
 
     return (bReturnValue);
 
+}
+
+BOOL CMessageDetailsDlg::bIsDataModified()
+{
+    BOOL bDataChanged = FALSE;
+    UINT unMsgCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, NULL, 16) );
+
+    if (m_sMessage.m_omStrMessageName != m_omStrMessageName ||
+            m_sMessage.m_unMessageCode != unMsgCode ||
+            m_sMessage.m_unMessageLength != m_unMessageLength ||
+            m_sMessage.m_bMessageFrameFormat != m_nFrameFormat)
+    {
+        bDataChanged = TRUE;
+    }
+
+    return bDataChanged;
 }

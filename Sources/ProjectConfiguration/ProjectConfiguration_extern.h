@@ -41,31 +41,31 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
 
-USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo);
-USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo);
-//return type's definition for DoDatastorageOperation
-/*
-    0             NoError
-	1             problem in opening file
-   -1             file not present
-    2             problem in writing/reading file
-	3             Invalid file
-	4             Unknown error
-*/  
-USAGEMODE int DoDatastorageOperation(short);/*OPEN = 0x1,SAVE = 0x2,CLOSE = 0x4*/
+    USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo);
+    USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo);
+    //return type's definition for DoDatastorageOperation
+    /*
+        0             NoError
+        1             problem in opening file
+       -1             file not present
+        2             problem in writing/reading file
+        3             Invalid file
+        4             Unknown error
+    */
+    USAGEMODE int DoDatastorageOperation(short);/*OPEN = 0x1,SAVE = 0x2,CLOSE = 0x4*/
 
 
-USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData);
-USAGEMODE int DeleteProjectTable(string& ProjectName);
-USAGEMODE int GetProjectCount(void);
-USAGEMODE int GetProjectList(LISTSTR* ProjList);
-USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData);
+    USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData);
+    USAGEMODE int DeleteProjectTable(string& ProjectName);
+    USAGEMODE int GetProjectCount(void);
+    USAGEMODE int GetProjectList(LISTSTR* ProjList);
+    USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData);
 
-USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SECTIONDATA* SectionData);
-USAGEMODE int DeleteSectionData(string& ProjectName, SECTIONDATA* SectionData);
-USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIONDATA& SectionData);
-USAGEMODE int GetSectionCount(string& ProjectName);
-USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList);
+    USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SECTIONDATA* SectionData);
+    USAGEMODE int DeleteSectionData(string& ProjectName, SECTIONDATA* SectionData);
+    USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIONDATA& SectionData);
+    USAGEMODE int GetSectionCount(string& ProjectName);
+    USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList);
 
 
 #ifdef __cplusplus

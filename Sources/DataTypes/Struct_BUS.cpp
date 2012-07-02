@@ -48,16 +48,16 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
         {
             Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucChannel - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucChannel);
             Result *= m_nMFactor;
-			if (Result != 0)
+            if (Result != 0)
             {
                 break;
             }
-		}
-		case 5: // Sort by CAN id
+        }
+        case 5: // Sort by CAN id
         {
-			Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID - pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID);
-			Result *= m_nMFactor;
-			if (Result != 0)
+            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID - pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID);
+            Result *= m_nMFactor;
+            if (Result != 0)
             {
                 break;
             }
@@ -78,11 +78,11 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
 };
 
 __int64 sTCANDATA::GetSlotID(sTCANDATA& pDatCAN)
-{				
-    STCAN_MSG &sMsg = pDatCAN.m_uDataInfo.m_sCANMsg;
+{
+    STCAN_MSG& sMsg = pDatCAN.m_uDataInfo.m_sCANMsg;
     // Form message to get message index in the CMap
-    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_unMsgID, 
-									IS_RX_MESSAGE(pDatCAN.m_ucDataType));
+    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_unMsgID,
+                                     IS_RX_MESSAGE(pDatCAN.m_ucDataType));
 
     nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
     // For extended message
@@ -92,7 +92,7 @@ __int64 sTCANDATA::GetSlotID(sTCANDATA& pDatCAN)
     }
     // Apply Channel Information
     __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
-                                                         sMsg.m_ucChannel );	
-	return n64MapIndex;
+                          sMsg.m_ucChannel );
+    return n64MapIndex;
 };
 

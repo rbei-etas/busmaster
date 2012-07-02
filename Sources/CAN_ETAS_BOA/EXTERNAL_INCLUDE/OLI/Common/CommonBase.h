@@ -7,7 +7,7 @@
 * $Revision: 4806 $
 */
 
-/** 
+/**
 * @file
 * @brief  Non-bus specific global constants
 * @remark The header structure of the OLI may change
@@ -27,10 +27,13 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief  Common type range constants and masks.
 *
@@ -43,9 +46,9 @@ namespace ETAS {namespace OLI {
 *
 * TYPE = 0x00PPCCTT
 * @li 00 - reserved. Must be 0.
-* @li PP - part of the API that the interface belongs to. It can be 
+* @li PP - part of the API that the interface belongs to. It can be
 *          the "common" or one of the vehicle-bus-specific parts.
-* @li CC - classification. Can be "event", "frame" etc.      
+* @li CC - classification. Can be "event", "frame" etc.
 * @li TT - specific type
 *
 * @since  BOA 1.3
@@ -54,8 +57,8 @@ namespace ETAS {namespace OLI {
 
 enum CommonConstants
 {
-    /** Mask the first-level @c TYPE classification; 
-        the masked value can be @ref COMMON_TYPE_BASE, @ref CAN_TYPE_BASE, 
+    /** Mask the first-level @c TYPE classification;
+        the masked value can be @ref COMMON_TYPE_BASE, @ref CAN_TYPE_BASE,
         @ref LIN_TYPE_BASE or @ref FLEXRAY_TYPE_BASE */
     COMMON_BASE_MASK = 0xff0000,
 
@@ -82,7 +85,7 @@ enum CommonConstants
     /** Base value for all non-bus-specific event @c TYPEs */
     COMMON_TYPE_EVENT_BASE = COMMON_TYPE_BASE + COMMON_TYPE_EVENT,
 
-    /** Base value for all non-bus-specific frame @c TYPEs; 
+    /** Base value for all non-bus-specific frame @c TYPEs;
         currently not in use. */
     COMMON_TYPE_FRAME_BASE = COMMON_TYPE_BASE + COMMON_TYPE_FRAME,
 
@@ -90,7 +93,7 @@ enum CommonConstants
     COMMON_TYPE_ERROR_BASE = COMMON_TYPE_BASE + COMMON_TYPE_ERROR
 };
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief  Event codes for internal errors.
 *
@@ -111,7 +114,7 @@ enum InternalErrorEventCode
     INTERNAL_GENERAL_ERROR = (1 << OCI_INTERNAL_GENERAL_ERROR)
 };
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief  Event codes for timer events.
 *
@@ -141,12 +144,12 @@ enum TimerEventCode
 
     /**
     * Timer event - A leap second occurs. The offset between TAI and UTC
-    * has changed by one second. The change may be positive or negative. 
+    * has changed by one second. The change may be positive or negative.
     */
     TIMER_EVENT_LEAP_SECOND = (1 << OCI_TIMER_EVENT_LEAP_SECOND)
 };
 
-/** 
+/**
 * @ingroup GROUP_OLI_COMMON_BASE
 * @brief  Event codes for queue events.
 *
@@ -164,7 +167,7 @@ enum TimerEventCode
 enum QueueEventCode
 {
     /**
-    * Queue event - the receive queue has overflown and at least one 
+    * Queue event - the receive queue has overflown and at least one
     * message has been lost.
     */
     QUEUE_OVERFLOW = (1 << OCI_QUEUE_OVERFLOW)
@@ -173,7 +176,8 @@ enum QueueEventCode
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

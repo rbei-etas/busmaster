@@ -40,11 +40,11 @@ IMPLEMENT_DYNCREATE(CMsgBufferConfigPage, CPropertyPage)
 
  Author(s)      :   Raja N
  Date Created   :   22.07.2004
- Modifications  :   
+ Modifications  :
 ******************************************************************************/
-CMsgBufferConfigPage::CMsgBufferConfigPage() : 
-                    CPropertyPage(CMsgBufferConfigPage::IDD,
-                        IDS_PPAGE_TITLE_BUFFER)
+CMsgBufferConfigPage::CMsgBufferConfigPage() :
+    CPropertyPage(CMsgBufferConfigPage::IDD,
+                  IDS_PPAGE_TITLE_BUFFER)
 {
     m_unAppendSize = 0;
     m_unOverWriteSize = 0;
@@ -103,17 +103,17 @@ END_MESSAGE_MAP()
  Date Created   : 22.07.2004
  Modifications  : Raja N on 31.07.2004, Removed unused local variable
 *******************************************************************************/
-void CMsgBufferConfigPage::OnOK() 
+void CMsgBufferConfigPage::OnOK()
 {
     // Update Global Data Here
     UpdateData( TRUE );
     // Check for data boundary condition
     if( m_unAppendSize >= defMIN_BUFFER_SIZE &&
-        m_unAppendSize <= defMAX_BUFFER_SIZE &&
-        m_unOverWriteSize >= defMIN_BUFFER_SIZE && 
-        m_unOverWriteSize <= defMAX_BUFFER_SIZE &&
-        m_unDisplayUpdateRate >= defMIN_DISPLAY_UPDATE_TIME &&
-        m_unDisplayUpdateRate <= defMAX_DISPLAY_UPDATE_TIME )
+            m_unAppendSize <= defMAX_BUFFER_SIZE &&
+            m_unOverWriteSize >= defMIN_BUFFER_SIZE &&
+            m_unOverWriteSize <= defMAX_BUFFER_SIZE &&
+            m_unDisplayUpdateRate >= defMIN_DISPLAY_UPDATE_TIME &&
+            m_unDisplayUpdateRate <= defMAX_DISPLAY_UPDATE_TIME )
     {
         // Append Bufer Size
         m_pnBufferSize[defAPPEND_DATA_INDEX] = m_unAppendSize;
@@ -127,8 +127,8 @@ void CMsgBufferConfigPage::OnOK()
 
 /*******************************************************************************
 Function Name    : OnInitDialog
-Input(s)         : 
-Output           : 
+Input(s)         :
+Output           :
 Functionality    : This function will be called during initialization of dialog
                    box. This function will load the initial data from
                    configuration module
@@ -136,9 +136,9 @@ Member of        : CMsgBufferConfigPage
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 22.07.2004
-Modifications    : 
+Modifications    :
 *******************************************************************************/
-BOOL CMsgBufferConfigPage::OnInitDialog() 
+BOOL CMsgBufferConfigPage::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
     // Update the UI controls
@@ -146,9 +146,9 @@ BOOL CMsgBufferConfigPage::OnInitDialog()
     m_unOverWriteSize = m_pnBufferSize[defOVERWRITE_DATE_INDEX];
     m_unDisplayUpdateRate = m_pnBufferSize[defDISPLAY_UPDATE_DATA_INDEX];
     UpdateData(FALSE);
-        
+
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /*******************************************************************************
@@ -162,12 +162,12 @@ Member of        : CMsgBufferConfigPage
 Friend of        :  -
 Author(s)        : Raja N
 Date Created     : 22.07.2004
-Modifications    : 
+Modifications    :
 *******************************************************************************/
-void CMsgBufferConfigPage::OnCbtnSetDefault() 
+void CMsgBufferConfigPage::OnCbtnSetDefault()
 {
     m_unAppendSize = defDEF_APPEND_BUFFER_SIZE;
     m_unOverWriteSize = defDEF_OVERWRITE_BUFFER_SIZE;
-    m_unDisplayUpdateRate = defDEF_DISPLAY_UPDATE_TIME; 
+    m_unDisplayUpdateRate = defDEF_DISPLAY_UPDATE_TIME;
     UpdateData( FALSE );
 }

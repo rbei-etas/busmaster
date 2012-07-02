@@ -34,7 +34,7 @@
 class CTSExecutorChildFrame : public CMDIChildWnd
 {
     DECLARE_DYNCREATE(CTSExecutorChildFrame)
-    CBaseEntityTA *m_pCurrentEntity;
+    CBaseEntityTA* m_pCurrentEntity;
     DWORD m_dwCurrentEntityID;
     HTREEITEM m_hCurrentTreeItem;
     CDataBaseMsgList m_odDataBaseManager;
@@ -45,39 +45,39 @@ class CTSExecutorChildFrame : public CMDIChildWnd
     CSemaphore m_ouExecutionSync;
     BOOL m_bConnected;
     CSplitterWnd m_omSplitterWnd;
-    CImageList  *m_pomImageList;
-	CString m_strVersionInfo;
+    CImageList*  m_pomImageList;
+    CString m_strVersionInfo;
 public:
     CTSExecutorLIB m_ouTSExecutor;
     BOOL m_bModified;
-    CTreeViewEx *m_odTreeView;
-    CResultView *m_odResultView;
+    CTreeViewEx* m_odTreeView;
+    CResultView* m_odResultView;
     HTREEITEM m_hParentTreeItem;
     BOOL m_bPasted;
 
-//Member Functions
+    //Member Functions
 public:
     CTSExecutorChildFrame(void);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
     VOID vEnableItem(DWORD dwID, BOOL& bEnable);
     VOID vSetBusStatus(BOOL bConnected);
-	VOID vSetBUSMASTERVersionInfo(CString strVersion);
+    VOID vSetBUSMASTERVersionInfo(CString strVersion);
     BOOL bGetBusStatus(void);
     UINT unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwInsertAfterItemID);
 
 protected:
-	// protected constructor used by dynamic creation
-	virtual ~CTSExecutorChildFrame(void);
-	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+    // protected constructor used by dynamic creation
+    virtual ~CTSExecutorChildFrame(void);
+    virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     DECLARE_MESSAGE_MAP()
 
 private:
     VOID vInitialise(void);
     VOID vUpdateTreeView(void);
     BOOL bParseTestSetup(INT nIndex);
-    
-//Message Handlers
+
+    //Message Handlers
 public:
     afx_msg void OnDestroy(void);
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

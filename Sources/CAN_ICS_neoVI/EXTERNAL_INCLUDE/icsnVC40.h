@@ -4,10 +4,10 @@
 
 
 // OpenPort "OpenType" Argument Constants
-#define	NEOVI_COMMTYPE_RS232  0
-#define	NEOVI_COMMTYPE_USB_BULK	1
-#define	NEOVI_COMMTYPE_USB_ISO_DONT_USE	2
-#define	NEOVI_COMMTYPE_TCPIP 3
+#define NEOVI_COMMTYPE_RS232  0
+#define NEOVI_COMMTYPE_USB_BULK 1
+#define NEOVI_COMMTYPE_USB_ISO_DONT_USE 2
+#define NEOVI_COMMTYPE_TCPIP 3
 
 //hardware constants
 #define NEODEVICE_BLUE  1
@@ -144,20 +144,20 @@ const long icsspystatusChangedGlobal = 65536 ;
 const long SCRIPT_STATUS_STOPPED  = 0;
 const long SCRIPT_STATUS_RUNNING = 1;
 
-const long SCRIPT_LOCATION_FLASH_MEM = 0;		//(Valid only on a neoVI Fire or neoVI Red)
-const long SCRIPT_LOCATION_SDCARD = 1;		//(Valid only on a neoVI Fire or neoVI Red)
-const long SCRIPT_LOCATION_VCAN3_MEM = 2;	 //(Valid only on a ValueCAN 3 device)
+const long SCRIPT_LOCATION_FLASH_MEM = 0;       //(Valid only on a neoVI Fire or neoVI Red)
+const long SCRIPT_LOCATION_SDCARD = 1;      //(Valid only on a neoVI Fire or neoVI Red)
+const long SCRIPT_LOCATION_VCAN3_MEM = 2;    //(Valid only on a ValueCAN 3 device)
 
 //Structure for neoVI device types
 
 
-typedef struct 
+typedef struct
 {
-	int DeviceType;
-	int Handle;
-	int NumberOfClients;
-	int SerialNumber;
-	int MaxAllowedClients;
+    int DeviceType;
+    int Handle;
+    int NumberOfClients;
+    int SerialNumber;
+    int MaxAllowedClients;
 } NeoDevice;
 
 typedef struct
@@ -179,7 +179,7 @@ typedef struct
     unsigned short time_500us;
     unsigned short k;
     unsigned short l;
-}ISO9141_KEYWORD2000__INIT_STEP;
+} ISO9141_KEYWORD2000__INIT_STEP;
 
 typedef struct
 {
@@ -219,15 +219,15 @@ typedef struct _LIN_SETTINGS
     unsigned char Mode;
 } LIN_SETTINGS;
 
-typedef struct 
-{ 
-    CAN_SETTINGS can1;   
+typedef struct
+{
+    CAN_SETTINGS can1;
     CAN_SETTINGS can2;
     CAN_SETTINGS can3;
     CAN_SETTINGS can4;
-    SWCAN_SETTINGS swcan;    
+    SWCAN_SETTINGS swcan;
     CAN_SETTINGS lsftcan;
-    LIN_SETTINGS lin1;      
+    LIN_SETTINGS lin1;
     LIN_SETTINGS lin2;
     LIN_SETTINGS lin3;
     LIN_SETTINGS lin4;
@@ -247,18 +247,18 @@ typedef struct
     unsigned short misc_io_on_report_events;
     unsigned short ain_sample_period;
     unsigned short ain_threshold;
-    unsigned short iso15765_separation_time_offset; 
+    unsigned short iso15765_separation_time_offset;
     unsigned short iso9141_kwp_enable;
-    ISO9141_KW2000SETTINGS iso9141_kwp_settings; 
+    ISO9141_KW2000SETTINGS iso9141_kwp_settings;
     unsigned short perf_en;
-    unsigned short iso_parity; 
-    unsigned short iso_msg_termination; 
-}SFireSettings; 
+    unsigned short iso_parity;
+    unsigned short iso_msg_termination;
+} SFireSettings;
 
 
 
 
-typedef struct 
+typedef struct
 {
     CAN_SETTINGS can1;
     CAN_SETTINGS can2;
@@ -275,167 +275,167 @@ typedef struct
 
 
 typedef struct // matching C structure
-    {
-	unsigned long StatusValue;  // 4
-	unsigned long StatusMask;  // 4
-	unsigned long Status2Value;  // 4
-	unsigned long Status2Mask;  // 4
-	unsigned long Header;	// 4
-	unsigned long HeaderMask;  // 4
-	unsigned long MiscData; // 4
-	unsigned long MiscDataMask;  // 4 
-	unsigned long ByteDataMSB;	// 4
-	unsigned long ByteDataLSB;	// 4
-	unsigned long ByteDataMaskMSB;  // 4
-	unsigned long ByteDataMaskLSB;  // 4
-	unsigned long HeaderLength; // 4 
-	unsigned long ByteDataLength; // 4
-	unsigned long NetworkID;	// 4
-	unsigned short FrameMaster;	// 2
-	unsigned char bUseArbIdRangeFilter;
-	unsigned char bStuff2;
-	unsigned long ExpectedLength;
-	unsigned long NodeID;
-	}  spyFilterLong;
+{
+    unsigned long StatusValue;  // 4
+    unsigned long StatusMask;  // 4
+    unsigned long Status2Value;  // 4
+    unsigned long Status2Mask;  // 4
+    unsigned long Header;   // 4
+    unsigned long HeaderMask;  // 4
+    unsigned long MiscData; // 4
+    unsigned long MiscDataMask;  // 4
+    unsigned long ByteDataMSB;  // 4
+    unsigned long ByteDataLSB;  // 4
+    unsigned long ByteDataMaskMSB;  // 4
+    unsigned long ByteDataMaskLSB;  // 4
+    unsigned long HeaderLength; // 4
+    unsigned long ByteDataLength; // 4
+    unsigned long NetworkID;    // 4
+    unsigned short FrameMaster; // 2
+    unsigned char bUseArbIdRangeFilter;
+    unsigned char bStuff2;
+    unsigned long ExpectedLength;
+    unsigned long NodeID;
+}  spyFilterLong;
 
 typedef struct // matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;
-	unsigned char Protocol;
-	unsigned char MessagePieceID;	// 1
-	unsigned char ColorID;			// 1
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;
+    unsigned char Protocol;
+    unsigned char MessagePieceID;   // 1
+    unsigned char ColorID;          // 1
     unsigned char NumberBytesHeader;// 1
     unsigned char NumberBytesData;  // 1
-	short DescriptionID;			// 2
-    long ArbIDOrHeader;				// 4
-    unsigned char Data[8];			
-	unsigned char AckBytes[8];			
-    float Value;
-	unsigned char MiscData;
-    }  icsSpyMessage;
-
-typedef struct // matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;	// 1
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;			// 1
-	unsigned char Protocol;			// 1
-	unsigned char MessagePieceID;	// 1
-	unsigned char ColorID;			// 1
-    unsigned char NumberBytesHeader;// 1
-    unsigned char NumberBytesData;  // 1
-	short DescriptionID;			// 2
-    unsigned char Header[4];		// 4
+    short DescriptionID;            // 2
+    long ArbIDOrHeader;             // 4
     unsigned char Data[8];
-	unsigned char AckBytes[8];			
+    unsigned char AckBytes[8];
     float Value;
-	unsigned char MiscData;
-    }  icsSpyMessageJ1850;
+    unsigned char MiscData;
+}  icsSpyMessage;
+
+typedef struct // matching C structure
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;    // 1
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;           // 1
+    unsigned char Protocol;         // 1
+    unsigned char MessagePieceID;   // 1
+    unsigned char ColorID;          // 1
+    unsigned char NumberBytesHeader;// 1
+    unsigned char NumberBytesData;  // 1
+    short DescriptionID;            // 2
+    unsigned char Header[4];        // 4
+    unsigned char Data[8];
+    unsigned char AckBytes[8];
+    float Value;
+    unsigned char MiscData;
+}  icsSpyMessageJ1850;
 
 
 
 typedef struct _stCM_ISO157652_TxMessage
 {
-	//transmit message
-	unsigned short vs_netid;	///< The netid of the message (determines which network to transmit on),  not supported
+    //transmit message
+    unsigned short vs_netid;    ///< The netid of the message (determines which network to transmit on),  not supported
 
-	unsigned char padding;	///< The padding byte to use to fill the unused portion of
-							///  transmitted CAN frames (single frame, first frame, consecutive frame),
-							///  not supported as it is always 0xAA.
-	
-	unsigned char	reserved;
+    unsigned char padding;  ///< The padding byte to use to fill the unused portion of
+    ///  transmitted CAN frames (single frame, first frame, consecutive frame),
+    ///  not supported as it is always 0xAA.
 
-	unsigned int    id;	///< arbId of transmitted frames (CAN id to transmit to).
-	unsigned int    fc_id;		///< flow control arb id filter value (response id from receiver).
-    unsigned int    fc_id_mask;	///< The flow control arb filter mask (response id from receiver).
+    unsigned char   reserved;
 
-	unsigned char		reserved1;
-	unsigned char		reserved2;
-	unsigned char		flowControlExtendedAddress;	///< Expected Extended Address byte of response from receiver.  see fc_ext_address_enable, not supported.
-	unsigned char		extendedAddress;			///< Extended Address byte of transmitter. see ext_address_enable, not supported.
+    unsigned int    id; ///< arbId of transmitted frames (CAN id to transmit to).
+    unsigned int    fc_id;      ///< flow control arb id filter value (response id from receiver).
+    unsigned int    fc_id_mask; ///< The flow control arb filter mask (response id from receiver).
 
-	//flow control timeouts
-	unsigned short    fs_timeout;				///< max timeout (ms) for waiting on flow control respons, not supported.
-	unsigned short    fs_wait;				///< max timeout (ms) for waiting on flow control response that does not have 
-											///flow status set to WAIT, not supported.
+    unsigned char       reserved1;
+    unsigned char       reserved2;
+    unsigned char       flowControlExtendedAddress; ///< Expected Extended Address byte of response from receiver.  see fc_ext_address_enable, not supported.
+    unsigned char       extendedAddress;            ///< Extended Address byte of transmitter. see ext_address_enable, not supported.
 
-	unsigned char data[4*1024];	///< The data
+    //flow control timeouts
+    unsigned short    fs_timeout;               ///< max timeout (ms) for waiting on flow control respons, not supported.
+    unsigned short    fs_wait;              ///< max timeout (ms) for waiting on flow control response that does not have
+    ///flow status set to WAIT, not supported.
 
-	unsigned int num_bytes;	///< Number of data bytes
+    unsigned char data[4*1024]; ///< The data
 
-	//option bits
-	union
-	{
-		struct
-		{
-			unsigned id_29_bit_enable:1;	///< Enables 29 bit arbId for transmitted frames.  Set to 1 so transmitted frames use 29 bit ids, not supported.
-			unsigned fc_id_29_bit_enable:1;	///< Enables 29 bit arbId for Flow Control filter.  Set to 1 if receiver response uses 29 bit ids, not supported.
-			unsigned ext_address_enable:1;	///< Enables Extended Addressing, Set to 1 if transmitted frames should have extended addres byte, not supported.
-			unsigned fc_ext_address_enable:1;	///< Enables Extended Addressing for Flow Control filter.  Set to 1 if receiver responds with extended address byte, not supported.
-		};
-		unsigned short flags;
-	};
-      
-	
-}stCM_ISO157652_TxMessage;
+    unsigned int num_bytes; ///< Number of data bytes
+
+    //option bits
+    union
+    {
+        struct
+        {
+            unsigned id_29_bit_enable:1;    ///< Enables 29 bit arbId for transmitted frames.  Set to 1 so transmitted frames use 29 bit ids, not supported.
+            unsigned fc_id_29_bit_enable:1; ///< Enables 29 bit arbId for Flow Control filter.  Set to 1 if receiver response uses 29 bit ids, not supported.
+            unsigned ext_address_enable:1;  ///< Enables Extended Addressing, Set to 1 if transmitted frames should have extended addres byte, not supported.
+            unsigned fc_ext_address_enable:1;   ///< Enables Extended Addressing for Flow Control filter.  Set to 1 if receiver responds with extended address byte, not supported.
+        };
+        unsigned short flags;
+    };
+
+
+} stCM_ISO157652_TxMessage;
 
 typedef struct _stCM_ISO157652_RxMessage
 {
-	//transmit message
-	unsigned short vs_netid;	///< The netid of the message (determines which network to decode receives),  not supported
+    //transmit message
+    unsigned short vs_netid;    ///< The netid of the message (determines which network to decode receives),  not supported
 
-	unsigned char padding;	///< The padding byte to use to fill the unused portion of
-							///  transmitted CAN frames (flow control),
-							///  not supported as it is always 0xAA.
+    unsigned char padding;  ///< The padding byte to use to fill the unused portion of
+    ///  transmitted CAN frames (flow control),
+    ///  not supported as it is always 0xAA.
 
-	unsigned int    id;			///< ArbId filter value for frames from transmitter (from ECU to neoVI).
-	unsigned int    id_mask;	///< ArbId filter mask for frames from transmitter (from ECU to neoVI).
-	unsigned int    fc_id;		///< flow control arbId to transmit in flow control (from neoVI to ECU).
+    unsigned int    id;         ///< ArbId filter value for frames from transmitter (from ECU to neoVI).
+    unsigned int    id_mask;    ///< ArbId filter mask for frames from transmitter (from ECU to neoVI).
+    unsigned int    fc_id;      ///< flow control arbId to transmit in flow control (from neoVI to ECU).
 
-	unsigned char		flowControlExtendedAddress;	///< Extended Address byte used in flow control (from neoVI to ECU). see fc_ext_address_enable.
-	unsigned char		extendedAddress;	///< Expected Extended Address byte of frames sent by transmitter (from ECU to neoVI).  see ext_address_enable.
+    unsigned char       flowControlExtendedAddress; ///< Extended Address byte used in flow control (from neoVI to ECU). see fc_ext_address_enable.
+    unsigned char       extendedAddress;    ///< Expected Extended Address byte of frames sent by transmitter (from ECU to neoVI).  see ext_address_enable.
 
-	unsigned char		blockSize;	
-	unsigned char		stMin;				
+    unsigned char       blockSize;
+    unsigned char       stMin;
 
-	//flow control timeouts
-	unsigned short    cf_timeout;				///< max timeout (ms) for waiting on consecutive frame. not supported.
+    //flow control timeouts
+    unsigned short    cf_timeout;               ///< max timeout (ms) for waiting on consecutive frame. not supported.
 
-	unsigned char dataValues[4*1024];	///< The filter data byte values
-	unsigned char dataMask[4*1024];	///< The filter data byte mask
+    unsigned char dataValues[4*1024];   ///< The filter data byte values
+    unsigned char dataMask[4*1024]; ///< The filter data byte mask
 
-	unsigned int num_bytes;	///< Number of data bytes
+    unsigned int num_bytes; ///< Number of data bytes
 
-	//option bits
-	union
-	{
-		struct
-		{
-			unsigned id_29_bit_enable:1;	///< Enables 29 bit arbId filter for frames (from ECU to neoVI).
-			unsigned fc_id_29_bit_enable:1;	///< Enables 29 bit arbId for Flow Control (from neoVI to ECU).
-			unsigned ext_address_enable:1;	///< Enables Extended Addressing (from ECU to neoVI).
-			unsigned fc_ext_address_enable:1;	///< Enables Extended Addressing (from neoVI to ECU).
-			unsigned enableFlowControlTransmission:1;	///< Enables Flow Control frame transmission (from neoVI to ECU).
-		};
-		unsigned int flags;
-	};
+    //option bits
+    union
+    {
+        struct
+        {
+            unsigned id_29_bit_enable:1;    ///< Enables 29 bit arbId filter for frames (from ECU to neoVI).
+            unsigned fc_id_29_bit_enable:1; ///< Enables 29 bit arbId for Flow Control (from neoVI to ECU).
+            unsigned ext_address_enable:1;  ///< Enables Extended Addressing (from ECU to neoVI).
+            unsigned fc_ext_address_enable:1;   ///< Enables Extended Addressing (from neoVI to ECU).
+            unsigned enableFlowControlTransmission:1;   ///< Enables Flow Control frame transmission (from neoVI to ECU).
+        };
+        unsigned int flags;
+    };
 
-	unsigned char reserved[12];
-        
-}stCM_ISO157652_RxMessage;
+    unsigned char reserved[12];
+
+} stCM_ISO157652_RxMessage;

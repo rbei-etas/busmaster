@@ -33,7 +33,7 @@
 //////////////////////////////////////////////////////////////////////
 /*******************************************************************************
  Function Name  : CUtilFunctions
- Description    : Standard default constructor. This is not required as it is 
+ Description    : Standard default constructor. This is not required as it is
                   private.
  Member of      : CUtilFunctions
  Functionality  : -

@@ -1,19 +1,19 @@
 /*******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  CGCtrl.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/SigGrphWnd/CGCtrl.h_v  $
- * 
+ *
  *    Rev 1.3   06 Jun 2011 11:51:36   CANMNTTM
  * All W4 level Warnings Are removed
- * 
+ *
  *    Rev 1.2   15 Apr 2011 19:43:30   rac2kor
  * Inserted RBEI Copyright information text into the file header.
 
 
   Author(s)     :  Arunkumar Karri
-  Date Created  :  
-  Modified By   :  
+  Date Created  :
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 *******************************************************************************/
 
@@ -43,20 +43,24 @@ public:
         return clsid;
     }
     virtual BOOL Create(LPCTSTR /*lpszClassName*/,
-        LPCTSTR lpszWindowName, DWORD dwStyle,
-        const RECT& rect,
-        CWnd* pParentWnd, UINT nID,
-        CCreateContext* /*pContext = NULL*/)
-    { return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID); }
+                        LPCTSTR lpszWindowName, DWORD dwStyle,
+                        const RECT& rect,
+                        CWnd* pParentWnd, UINT nID,
+                        CCreateContext* /*pContext = NULL*/)
+    {
+        return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID);
+    }
 
     BOOL Create(LPCTSTR lpszWindowName, DWORD dwStyle,
-        const RECT& rect, CWnd* pParentWnd, UINT nID,
-        CFile* pPersist = NULL, BOOL bStorage = FALSE,
-        BSTR bstrLicKey = NULL)
-    { return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID,
-        pPersist, bStorage, bstrLicKey); }
+                const RECT& rect, CWnd* pParentWnd, UINT nID,
+                CFile* pPersist = NULL, BOOL bStorage = FALSE,
+                BSTR bstrLicKey = NULL)
+    {
+        return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID,
+                             pPersist, bStorage, bstrLicKey);
+    }
 
-// Attributes
+    // Attributes
 public:
     short GetAppearance();
     void SetAppearance(short);
@@ -171,7 +175,7 @@ public:
     short GetLineDisplay();
     void  SetLineDisplay(short);
 
-// Operations
+    // Operations
 public:
     void SetRange(double xmin, double xmax, double ymin, double ymax);
     void AutoRange();
@@ -206,7 +210,7 @@ public:
     void SetGridLines(short xGrids, short yGrids);
     void SetElementUnit(LPCTSTR lpszUnit);
     void GetXAxisRange(double FAR* pXMin, double FAR* pXMax);
-	void GetElementValueAtCursor(short ElementID, double dblCursorVal, double * dblElemVal);	
+    void GetElementValueAtCursor(short ElementID, double dblCursorVal, double* dblElemVal);
     void AboutBox();
 };
 

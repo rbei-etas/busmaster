@@ -15,17 +15,17 @@
 
 /**
  * \file      SignalDetailsDlg.cpp
- * \brief     This file contain definition of all function of 
+ * \brief     This file contain definition of all function of
  * \author    Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This file contain definition of all function of 
+ * This file contain definition of all function of
  */
 #include "TxWindow_stdafx.h"             // Standard header
 #include "TxWindow_resource.h"
 #include "SignalDetailsDlg.h"   // for creating and editing signal details
 #include "Utility/Utility.h"      // For Utility Functions
-#include "Utility/Utility_Structs.h" 
+#include "Utility/Utility_Structs.h"
 #include "include/Basedefs.h"
 
 enum eMODES
@@ -40,19 +40,19 @@ enum eMODES
 #define CHAR_BOOL               'B'
 #define CHAR_UINT               'U'
 #define defEMPTY_CHAR           ' '
-#define defFORMAT_DATA_FLOAT    _T("%f")
-#define defBOOLEAN              _T("bool")
-#define defSIGNED_INT           _T("int")
-#define defUNSIGNED_INT         _T("unsigned int")
-#define defSTR_CLOSE_MENU_TEXT  _T("&Close")
-#define defSTR_MAX_VAL_INVALID              _T("Maximum value is out of bounds!")
-#define defSTR_MIN_VAL_INVALID              _T("Minimum value is out of bounds!")
-#define defSTR_SIGNAL_NAME_INVALID          _T("Signal name cannot be empty")
-#define defSTR_SIGNAL_END_BIT_INVALID       _T("End bit of signal is out of message length")
-#define defSTR_SIGNAL_DUP_START_BIT         _T("Duplicate signal start bit value")
-#define MSG_DUPLICATE_SG_NAME               _T("Signal name already exists!")
-#define MSG_MAX_VAL_LESS                    _T("Maximum value cannot be less than minimum value!")
-#define MSG_MIN_VAL_MORE                    _T("Minimum value cannot be more than maximum value!")
+#define defFORMAT_DATA_FLOAT    "%f"
+#define defBOOLEAN              "bool"
+#define defSIGNED_INT           "int"
+#define defUNSIGNED_INT         "unsigned int"
+#define defSTR_CLOSE_MENU_TEXT  "&Close"
+#define defSTR_MAX_VAL_INVALID              "Maximum value is out of bounds!"
+#define defSTR_MIN_VAL_INVALID              "Minimum value is out of bounds!"
+#define defSTR_SIGNAL_NAME_INVALID          "Signal name cannot be empty"
+#define defSTR_SIGNAL_END_BIT_INVALID       "End bit of signal is out of message length"
+#define defSTR_SIGNAL_DUP_START_BIT         "Duplicate signal start bit value"
+#define MSG_DUPLICATE_SG_NAME               "Signal name already exists!"
+#define MSG_MAX_VAL_LESS                    "Maximum value cannot be less than minimum value!"
+#define MSG_MIN_VAL_MORE                    "Minimum value cannot be more than maximum value!"
 /////////////////////////////////////////////////////////////////////////////
 // CSignalDetailsDlg dialog
 
@@ -73,7 +73,7 @@ enum eMODES
 /******************************************************************************/
 CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
                                      int nDataFormat,
-                                     CString omStrMsgName, 
+                                     CString omStrMsgName,
                                      UINT nMsgLen,
                                      CString omStrSignalType/*""*/,
                                      CString omStrMaxVal/*""*/,
@@ -84,7 +84,7 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
     : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
-    m_byByteIndex = 1;
+    m_shByteIndex = 0;
     m_unSgLen = 1;
     m_omStrSignalName = "";
     m_byStartBit = 0;
@@ -123,15 +123,15 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
                      comments and changed code with utility class function calls
 /******************************************************************************/
 CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
-                                     sSIGNALS * psSigInfo,
-                                     CWnd* pParent /*=NULL*/)
-                            : CDialog(CSignalDetailsDlg::IDD, pParent)
+                                      sSIGNALS* psSigInfo,
+                                      CWnd* pParent /*=NULL*/)
+    : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
     if( psSigInfo != NULL)
     {
         if( eMode == MD_READ_ONLY )
         {
-            m_byByteIndex = (BYTE)psSigInfo->m_unStartByte;
+            m_shByteIndex = (SHORT)psSigInfo->m_unStartByte-1;
             m_unSgLen = psSigInfo->m_unSignalLength;
             m_omStrSignalName = psSigInfo->m_omStrSignalName;
             m_byStartBit = psSigInfo->m_byStartBit;
@@ -142,17 +142,21 @@ CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
             m_unMode = eMode;
             m_nDataFormat = psSigInfo->m_eFormat;
             m_omStrSgType = CString((wchar_t)(psSigInfo->m_bySignalType));
-        
-            // Format the min value
-            __int64 unVal = psSigInfo->m_SignalMaxValue.n64Value;
-            s_vRemoveUnwantedBits( unVal,
-                                                 psSigInfo->m_unSignalLength);
-            m_omStrMaxVal.Format(defFORMAT_INT64_HEX, unVal);
 
-            unVal = psSigInfo->m_SignalMinValue.n64Value;
-            s_vRemoveUnwantedBits( unVal,
-                                                 psSigInfo->m_unSignalLength);
-            m_omStrMinVal.Format(defFORMAT_INT64_HEX, unVal);
+            // Format the min/max value
+            if(psSigInfo->m_bySignalType  == CHAR_INT)
+            {
+                m_omStrMaxVal.Format(defFORMAT_INT64_DECIMAL, psSigInfo->m_SignalMaxValue.n64Value);
+
+                m_omStrMinVal.Format(defFORMAT_INT64_DECIMAL, psSigInfo->m_SignalMinValue.n64Value);
+            }
+            else
+            {
+                m_omStrMaxVal.Format(defFORMAT_UINT64_DEC, psSigInfo->m_SignalMaxValue.un64Value);
+
+                m_omStrMinVal.Format(defFORMAT_UINT64_DEC, psSigInfo->m_SignalMinValue.un64Value);
+            }
+
             // Format the factor value
             m_omStrScale.Format(defFORMAT_DATA_FLOAT,psSigInfo->m_fSignalFactor);
             // Foramt the offset value
@@ -187,14 +191,14 @@ void CSignalDetailsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SPIN_BYINDEX, m_omSpinByIndex);
     DDX_Control(pDX, IDC_SPIN_BIT, m_omSpinStartBit);
     DDX_Control(pDX, IDC_COMB_SGTYPE, m_omComboSgType);
-    DDX_Text(pDX, IDC_EDIT_BYINDEX, m_byByteIndex);
-    DDV_MinMaxByte(pDX, m_byByteIndex, 1, 8);
+    DDX_Text(pDX, IDC_EDIT_BYINDEX, m_shByteIndex);
+    DDV_MinMaxShort(pDX, m_shByteIndex, 0, (SHORT)m_nMsgLength-1);
     DDX_Text(pDX, IDC_EDIT_SGLEN, m_unSgLen);
-    DDV_MinMaxUInt(pDX, m_unSgLen, 1, m_nMsgLength*8);
+    DDV_MinMaxUInt(pDX, m_unSgLen, 1, min (64, m_nMsgLength*8));
     DDX_Text(pDX, IDC_EDIT_SGNAME, m_omStrSignalName);
     DDX_Text(pDX, IDC_EDIT_STBIT, m_byStartBit);
     DDV_MinMaxByte(pDX, m_byStartBit, 0, 7);
-    DDX_Text(pDX, IDC_EDIT_UNIT, m_omStrUnit);  
+    DDX_Text(pDX, IDC_EDIT_UNIT, m_omStrUnit);
     //}}AFX_DATA_MAP
 }
 
@@ -247,12 +251,15 @@ END_MESSAGE_MAP()
 /*                      Implemented code review comments to check pointers    */
 /******************************************************************************/
 
-BOOL CSignalDetailsDlg::OnInitDialog() 
+BOOL CSignalDetailsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
+    m_odMaxValue.vSetBase(BASE_DECIMAL);
+    m_odMinValue.vSetBase(BASE_DECIMAL);
     m_odNumericEdit.SubclassDlgItem(IDC_EDIT_SGNAME,this);
     SIG_VALUE minVal;
-    SIG_VALUE maxVal;   
+    SIG_VALUE maxVal;
 
     // Add options to the combo
     m_omComboSgType.AddString( defBOOLEAN );
@@ -261,10 +268,11 @@ BOOL CSignalDetailsDlg::OnInitDialog()
 
     // Set range for byte index, signal length and bit index
     UINT unMaxSignalLength = static_cast <UINT> (m_nMsgLength * 8) ;
-    m_omSpinLen.SetRange( 1, (short)unMaxSignalLength );
-    m_omSpinByIndex.SetRange( 1,  (short)m_nMsgLength );
+    m_omSpinLen.SetRange( 1, (short)min (64, unMaxSignalLength) );
+    m_omSpinByIndex.SetRange( 0,  (short)m_nMsgLength-1 );
     m_omSpinStartBit.SetRange( 0, 7 );
-    // Set Byte order (m_nDataFormat)    
+
+    // Set Byte order (m_nDataFormat)
     CButton* pRadioIntel = (CButton*)GetDlgItem(IDC_RADIO_INTEL);
     CButton* pRadioMotorola = (CButton*)GetDlgItem(IDC_RADIO_MOTOROLA);
     if ((pRadioIntel != NULL) && (pRadioMotorola != NULL))
@@ -320,12 +328,12 @@ BOOL CSignalDetailsDlg::OnInitDialog()
             m_omComboSgType.SetCurSel( 0 );
             // Calculate maxmin values
             vCalculateMaxMinValues(minVal, maxVal);
-            
+
             // Set values
             if ( !m_omStrSgType.CompareNoCase(defSIGNED_INT))
             {
                 m_odMaxValue.vSetValue( maxVal.n64Value);
-                m_odMinValue.vSetValue( minVal.n64Value );  
+                m_odMinValue.vSetValue( minVal.n64Value );
             }
             else
             {
@@ -335,7 +343,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
 
             // Disable the signal MIN AND MAX
             GetDlgItem(IDC_EDIT_MIN)->EnableWindow(FALSE);
-            GetDlgItem(IDC_EDIT_MAX)->EnableWindow(FALSE);            
+            GetDlgItem(IDC_EDIT_MAX)->EnableWindow(FALSE);
         }
     }
     if(m_unMode == MD_READ_ONLY)
@@ -358,8 +366,8 @@ BOOL CSignalDetailsDlg::OnInitDialog()
             ASSERT( FALSE );
             m_omComboSgType.SetCurSel( -1 );
         }
-        
-        // Disable all controls 
+
+        // Disable all controls
         // Use control name if it is defined
         m_odScale.SetReadOnly();
         m_odOffset.SetReadOnly();
@@ -367,39 +375,39 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         m_odMaxValue.SetReadOnly();
 
         // Use control ID if control is not defined
-        CEdit * pomEdit = NULL;
+        CEdit* pomEdit = NULL;
         // Unit edit box
-        pomEdit = static_cast<CEdit *>(GetDlgItem(IDC_EDIT_UNIT));
+        pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_UNIT));
         if( pomEdit != NULL )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Name
-        pomEdit = static_cast<CEdit *>(GetDlgItem(IDC_EDIT_SGNAME));
+        pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGNAME));
         if( pomEdit != NULL )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Length
-        pomEdit = static_cast<CEdit *>(GetDlgItem(IDC_EDIT_SGLEN));
+        pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGLEN));
         if( pomEdit != NULL )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Byte Index
-        pomEdit = static_cast<CEdit *>(GetDlgItem(IDC_EDIT_BYINDEX));
+        pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_BYINDEX));
         if( pomEdit != NULL )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Start Bit
-        pomEdit = static_cast<CEdit *>(GetDlgItem(IDC_EDIT_STBIT));
+        pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_STBIT));
         if( pomEdit != NULL )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Length
-        pomEdit = static_cast<CEdit *>(GetDlgItem(IDC_EDIT_SGLEN));
+        pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGLEN));
         if( pomEdit != NULL )
         {
             pomEdit->SetReadOnly();
@@ -408,7 +416,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         pomEdit = NULL;
         // These controls doesn't support read only property
         // So Disable these
-        CWnd * pomWnd = NULL;
+        CWnd* pomWnd = NULL;
         // Signal Type Combobox
         pomWnd = GetDlgItem(IDC_COMB_SGTYPE);
         if( pomWnd != NULL )
@@ -453,8 +461,8 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         }
 
         // Now rename cancel button to "Close" and center the button
-        CButton * pomCancelButton;
-        pomCancelButton = (CButton *)GetDlgItem(IDCANCEL);
+        CButton* pomCancelButton;
+        pomCancelButton = (CButton*)GetDlgItem(IDCANCEL);
         if( pomCancelButton != NULL )
         {
             pomCancelButton->SetWindowText(defSTR_CLOSE_MENU_TEXT);
@@ -469,20 +477,26 @@ BOOL CSignalDetailsDlg::OnInitDialog()
             ScreenToClient(&omRect2);
             // Change the top position
             pomCancelButton->SetWindowPos(&wndTop,
-                                        omRect2.left,
-                                        omRect1.top,
-                                        omRect1.Width(),
-                                        omRect1.Height(),
-                                        SWP_SHOWWINDOW);
+                                          omRect2.left,
+                                          omRect1.top,
+                                          omRect1.Width(),
+                                          omRect1.Height(),
+                                          SWP_SHOWWINDOW);
         }
     }
-    // Shud take only hex value
-    m_odMaxValue.vSetBase(BASE_HEXADECIMAL);
-    m_odMinValue.vSetBase(BASE_HEXADECIMAL);
-    m_odMaxValue.vSetSigned( FALSE );
-    m_odMinValue.vSetSigned( FALSE );
 
-    // Set edit values 
+    if (m_omStrSgType == defSIGNED_INT)// for int should take signed value
+    {
+        m_odMaxValue.vSetSigned( TRUE );
+        m_odMinValue.vSetSigned( TRUE );
+    }
+    else // Should take only +ve value
+    {
+        m_odMaxValue.vSetSigned( FALSE );
+        m_odMinValue.vSetSigned( FALSE );
+    }
+
+    // Set edit values
     if ( !m_omStrMaxVal.IsEmpty() && !m_omStrMinVal.IsEmpty())
     {
         m_odMaxValue.SetWindowText( m_omStrMaxVal );
@@ -499,7 +513,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     m_odScale.vAcceptFloatingNum( TRUE );
 
 
-    // Set edit values 
+    // Set edit values
     if ( !m_omStrOffset.IsEmpty() && !m_omStrScale.IsEmpty())
     {
         m_odOffset.SetWindowText( m_omStrOffset );
@@ -511,7 +525,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     m_omComboSgType.GetWindowText(m_omStrPrevSignalType);
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
 /*  Function Name    :  OnKillfocusEditSgname                                 */
@@ -529,7 +543,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditSgname() 
+void CSignalDetailsDlg::OnKillfocusEditSgname()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -537,11 +551,11 @@ void CSignalDetailsDlg::OnKillfocusEditSgname()
     // "m_bIsCanceled" will be set to true
     if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY )
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
@@ -560,7 +574,7 @@ void CSignalDetailsDlg::OnKillfocusEditSgname()
             }
             else
             {
-                /*AfxMessageBox( "Signal name cannot be empty", 
+                /*AfxMessageBox( "Signal name cannot be empty",
                     MB_OK|MB_ICONINFORMATION);
                 GetDlgItem(IDC_EDIT_SGNAME)->SetFocus();*/
             }
@@ -578,11 +592,11 @@ void CSignalDetailsDlg::OnKillfocusEditSgname()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  22.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditByindex() 
+void CSignalDetailsDlg::OnKillfocusEditByindex()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -590,25 +604,25 @@ void CSignalDetailsDlg::OnKillfocusEditByindex()
     // "m_bIsCanceled" will be set to true
     if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY)
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
-            BYTE byPrevByteIndex = m_byByteIndex;
+            SHORT shPrevByteIndex = m_shByteIndex;
 
             UpdateData(TRUE);
 
-            if (byPrevByteIndex != m_byByteIndex)
+            if (shPrevByteIndex != m_shByteIndex)
             {
                 m_bIsDataSaved = FALSE;
             }
         }
     }
-    
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnKillfocusEditFactor                                 */
@@ -621,11 +635,11 @@ void CSignalDetailsDlg::OnKillfocusEditByindex()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  22.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditFactor() 
+void CSignalDetailsDlg::OnKillfocusEditFactor()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -633,11 +647,11 @@ void CSignalDetailsDlg::OnKillfocusEditFactor()
     // "m_bIsCanceled" will be set to true
     if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY)
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
@@ -657,7 +671,7 @@ void CSignalDetailsDlg::OnKillfocusEditFactor()
 /*  Author(s)        :  Krishnaswamy B.N                                      */
 /*  Date Created     :  28.08.2003                                            */
 /******************************************************************************/
-BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid() 
+BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -668,11 +682,11 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
 
     if ( !m_bIsCanceled )
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
@@ -684,21 +698,21 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             //check for the empty string
             if(unMinLength == 0)
             {
-                AfxMessageBox( "Minimum value field can't be empty!", 
-                                    MB_OK|MB_ICONINFORMATION);
+                AfxMessageBox( "Minimum value field can't be empty!",
+                               MB_OK|MB_ICONINFORMATION);
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MIN)->SetFocus();
                 bRetVal = FALSE;
             }
             else if(unMaxLength == 0)
             {
-                AfxMessageBox( "Maximum value field can't be empty!", 
-                                    MB_OK|MB_ICONINFORMATION);
+                AfxMessageBox( "Maximum value field can't be empty!",
+                               MB_OK|MB_ICONINFORMATION);
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MAX)->SetFocus();
                 bRetVal = FALSE;
             }//check for the boundary condition
-            else if( bIsMaximumValueValid() == FALSE) 
+            else if( bIsMaximumValueValid() == FALSE)
             {
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MAX)->SetFocus();
@@ -706,7 +720,7 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             }
             else
             {
-                if(bIsMinimumValueValid() == FALSE) 
+                if(bIsMinimumValueValid() == FALSE)
                 {
                     UpdateData(FALSE);
                     GetDlgItem(IDC_EDIT_MIN)->SetFocus();
@@ -728,11 +742,11 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  22.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditOffset() 
+void CSignalDetailsDlg::OnKillfocusEditOffset()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -740,11 +754,11 @@ void CSignalDetailsDlg::OnKillfocusEditOffset()
     // "m_bIsCanceled" will be set to true
     if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY)
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
@@ -773,29 +787,29 @@ void CSignalDetailsDlg::OnKillfocusEditOffset()
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditSglen() 
+void CSignalDetailsDlg::OnKillfocusEditSglen()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
     // if the user presses escape button,
     // "m_bIsCanceled" will be set to true
-    
+
     SIG_VALUE minVal, maxVal;
     BOOL bError = FALSE;
-    if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY)
+    if ( !m_bIsCanceled && (m_unMode != MD_READ_ONLY))
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
 
             UpdateData(TRUE);
 
-            // Validate signal length 
+            // Validate signal length
             // depending on the type
             CString omStrPrevSgName = STR_EMPTY;
 
@@ -828,12 +842,12 @@ void CSignalDetailsDlg::OnKillfocusEditSglen()
                 if ( m_unSgLen > 0 )
                 {
                     // check for duplicate start bit value
-                    // Auto-Update the max and min value 
+                    // Auto-Update the max and min value
                     // depending on signal byte index, bit index and type
                     if ( m_bLenChanged == TRUE)
                     {
-                        UINT unMaxSignalLength = 
-                                static_cast<UINT> (m_nMsgLength * 8);
+                        UINT unMaxSignalLength =
+                            static_cast<UINT> (m_nMsgLength * 8);
                         if ( m_unSgLen <= unMaxSignalLength )
                         {
                             vCalculateMaxMinValues(minVal, maxVal);
@@ -889,7 +903,7 @@ void CSignalDetailsDlg::OnKillfocusEditSglen()
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditStbit() 
+void CSignalDetailsDlg::OnKillfocusEditStbit()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -897,11 +911,11 @@ void CSignalDetailsDlg::OnKillfocusEditStbit()
     // "m_bIsCanceled" will be set to true
     if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY)
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
@@ -927,11 +941,11 @@ void CSignalDetailsDlg::OnKillfocusEditStbit()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  25.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /*  Modification     :  Raja N on 10.03.2004                                  */
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnKillfocusEditUnit() 
+void CSignalDetailsDlg::OnKillfocusEditUnit()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -939,11 +953,11 @@ void CSignalDetailsDlg::OnKillfocusEditUnit()
     // "m_bIsCanceled" will be set to true
     if ( !m_bIsCanceled && m_unMode != MD_READ_ONLY)
     {
-        CButton* pCancelButton1 = 
-                (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
+        CButton* pCancelButton1 =
+            (CButton*)GetDlgItem(IDCANCEL)->GetFocus();
 
-        CButton* pCancelButton2 = 
-                (CButton*)GetDlgItem(IDCANCEL);
+        CButton* pCancelButton2 =
+            (CButton*)GetDlgItem(IDCANCEL);
 
         if ( pCancelButton1 != pCancelButton2 )
         {
@@ -958,7 +972,7 @@ void CSignalDetailsDlg::OnKillfocusEditUnit()
             }
         }
     }
-    
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnSelchangeCombSgtype                                 */
@@ -973,7 +987,7 @@ void CSignalDetailsDlg::OnKillfocusEditUnit()
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  25.02.2002                                            */
 /*  Modifications    :  Rajesh Kumar : 04.03.2003
-/*                      min max type changes            
+/*                      min max type changes
 /*  Modifications    :  Raja N on 10.03.2004                                  */
 /*                      Added code to check the previous selection before     */
 /*                      changing the signal len to default                    */
@@ -982,15 +996,15 @@ void CSignalDetailsDlg::OnKillfocusEditUnit()
 /*                      values as these are displayed in hex format           */
 /*  Modifications    :  Raja N on 31.07.2004, Added checks of returned pointer*/
 /******************************************************************************/
-void CSignalDetailsDlg::OnSelchangeCombSgtype() 
+void CSignalDetailsDlg::OnSelchangeCombSgtype()
 {
     if ( !m_bIsCanceled )
     {
         SIG_VALUE minVal, maxVal;
-        CWnd * pomWnd = NULL;
+        CWnd* pomWnd = NULL;
         CButton* pCancelButton1 = NULL;
         CButton* pCancelButton2 = NULL;
-        // Get 
+        // Get
         pomWnd = GetDlgItem(IDCANCEL);
         if( pomWnd != NULL )
         {
@@ -1002,13 +1016,13 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
             CString omStrPrevSgName = "";
             m_omComboSgType.GetWindowText(omStrPrevSgName);
 
-            if ( !omStrPrevSgName.IsEmpty() 
+            if ( !omStrPrevSgName.IsEmpty()
                     && m_omStrPrevSignalType != omStrPrevSgName )
             {
                 // Auto-update the signal length
                 // for a given signal type
-                if ( ( !omStrPrevSgName.CompareNoCase(defBOOLEAN))  || 
-                     ( !omStrPrevSgName.CompareNoCase(defUNSIGNED_INT)) )
+                if ( ( !omStrPrevSgName.CompareNoCase(defBOOLEAN))  ||
+                        ( !omStrPrevSgName.CompareNoCase(defUNSIGNED_INT)) )
                 {
                     m_unSgLen = 1;
                 }
@@ -1017,7 +1031,7 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
                     m_unSgLen = 2;
                 }
 
-                // Auto-Update the max and min value 
+                // Auto-Update the max and min value
                 // depending on signal byte index, bit index and type
                 vCalculateMaxMinValues(minVal, maxVal);
                 // Set values
@@ -1045,7 +1059,7 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
                     GetDlgItem(IDC_EDIT_MIN)->EnableWindow(TRUE);
                     GetDlgItem(IDC_EDIT_MAX)->EnableWindow(TRUE);
                 }
-                
+
                 //Store Current Selection
                 m_omStrPrevSignalType = omStrPrevSgName;
 
@@ -1066,9 +1080,9 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  25.02.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CSignalDetailsDlg::OnCancel() 
+void CSignalDetailsDlg::OnCancel()
 {
     m_bIsCanceled = TRUE;
 
@@ -1104,7 +1118,7 @@ void CSignalDetailsDlg::OnCancel()
 /*                      mode and modified the value to extend sign bit        */
 /*  Modifications    :  Raja N on 31.07.2004, Removed hardcoded strings       */
 /******************************************************************************/
-void CSignalDetailsDlg::OnOK() 
+void CSignalDetailsDlg::OnOK()
 {
     BOOL bReturnFlag = TRUE;
     if(m_unMode != MD_READ_ONLY)
@@ -1131,9 +1145,9 @@ void CSignalDetailsDlg::OnOK()
 
             if(pTempMsgSg != NULL)
             {
-                if ( m_bNameChanged && 
-                    (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
-                     m_omStrSignalName)) && bReturnFlag == TRUE)
+                if ( m_bNameChanged &&
+                        (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
+                                m_omStrSignalName)) && bReturnFlag == TRUE)
                 {
                     AfxMessageBox( MSG_DUPLICATE_SG_NAME, MB_OK|MB_ICONINFORMATION);
                     m_omStrSignalName.Empty();
@@ -1143,23 +1157,23 @@ void CSignalDetailsDlg::OnOK()
                     bReturnFlag = FALSE;
                 }
             }
-            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex, 
-                                                m_byStartBit, m_unSgLen, 
-                                                m_nDataFormat)) && 
-                                                (bReturnFlag == TRUE))
+            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex,
+                                             m_byStartBit, m_unSgLen,
+                                             m_nDataFormat)) &&
+                    (bReturnFlag == TRUE))
             {
                 AfxMessageBox( defSTR_SIGNAL_END_BIT_INVALID,
-                                            MB_OK | MB_ICONINFORMATION );
+                               MB_OK | MB_ICONINFORMATION );
                 GetDlgItem( IDC_EDIT_SGLEN )->SetFocus();
                 bReturnFlag = FALSE;
             }
             // check for duplicate start bit value
             if ( pTempMsgSg->bIsDuplicateSignalStartBitValue( m_omStrMsgName,
-                        m_byByteIndex, m_unSgLen, m_byStartBit, m_nDataFormat )
-                        && bReturnFlag == TRUE)
+                    m_byByteIndex, m_unSgLen, m_byStartBit, m_nDataFormat )
+                    && bReturnFlag == TRUE)
             {
                 AfxMessageBox( defSTR_SIGNAL_DUP_START_BIT,
-                                            MB_OK | MB_ICONINFORMATION );
+                               MB_OK | MB_ICONINFORMATION );
                 GetDlgItem( IDC_EDIT_STBIT )->SetFocus();
                 bReturnFlag = FALSE;
             }
@@ -1205,11 +1219,11 @@ void CSignalDetailsDlg::OnOK()
                         {
                             // Extend the sign bit to actual value
                             s_vExtendSignBit(
-                                                pSg->m_SignalMaxValue.n64Value,
-                                                m_unSgLen );
+                                pSg->m_SignalMaxValue.n64Value,
+                                m_unSgLen );
                             s_vExtendSignBit(
-                                                pSg->m_SignalMinValue.n64Value,
-                                                m_unSgLen );
+                                pSg->m_SignalMinValue.n64Value,
+                                m_unSgLen );
                         }
                     }
                     else
@@ -1224,7 +1238,7 @@ void CSignalDetailsDlg::OnOK()
                     pSg->m_omStrSignalName          = m_omStrSignalName;
                     pSg->m_omStrSignalUnit          = m_omStrUnit;
                     pSg->m_unSignalLength           = m_unSgLen;
-                    pSg->m_byStartByte              = m_byByteIndex;
+                    pSg->m_unStartByte              = m_shByteIndex+1;
                     pSg->m_byStartBit               = m_byStartBit;
 
                     if ( m_unMode == MD_ADD )
@@ -1234,7 +1248,7 @@ void CSignalDetailsDlg::OnOK()
 
                     // Fill the matrix for edited signal
                     pTempMsgSg->vUpdateSignalDetails( m_omStrMsgName,
-                        m_omStrPrevSignalName,  pSg );                      
+                                                      m_omStrPrevSignalName,  pSg );
 
                     // Now saved
                     m_bIsDataSaved = TRUE;
@@ -1261,7 +1275,7 @@ void CSignalDetailsDlg::OnOK()
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  Calculates max and mininmum value 
+/*  Functionality    :  Calculates max and mininmum value
 /*  Member of        :  CSignalDetailsDlg                                     */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -1274,16 +1288,16 @@ void CSignalDetailsDlg::OnOK()
 /*                      Modified the Min and Max calculation for -ve value fix*/
 /*  Modifications    :  Raja N on 31.07.2004, Removed hardcoded strings       */
 /******************************************************************************/
-void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE &rMinVal, 
-                                               SIG_VALUE &rMaxVal)
+void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE& rMinVal,
+        SIG_VALUE& rMaxVal)
 {
     // Get signal type
     CString omStrSgType = "";
     m_omComboSgType.GetWindowText(omStrSgType );
-    
+
     // if signal type is bool and signal length is 1
     // then set max and min values to 1 and 0
-    if ( !omStrSgType.CompareNoCase(defBOOLEAN) && m_unSgLen == 1 )
+    if ( !omStrSgType.CompareNoCase(defBOOLEAN) && (m_unSgLen == 1) )
     {
         rMinVal.un64Value = FALSE;
         rMaxVal.un64Value = TRUE;
@@ -1294,10 +1308,10 @@ void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE &rMinVal,
         rMinVal.un64Value = 0;
         rMaxVal.un64Value = 1;
         UINT nPower = m_unSgLen;
-        if(m_unSgLen == defMAX_BITS )
-        {
-            nPower = m_unSgLen - 1;
-        }
+        //        if(m_unSgLen == defMAX_BITS )
+        //        {
+        //            nPower = m_unSgLen - 1;
+        //        }
         // Get the 2 power Signal Len
         // 2 ^ n == 2 << n
         rMaxVal.un64Value <<= nPower;
@@ -1308,12 +1322,13 @@ void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE &rMinVal,
     // {(2**(sigLen-1))-1} and -{(2**(sigLen-1))-1}
     else if ( !omStrSgType.CompareNoCase(defSIGNED_INT) )
     {
-        rMaxVal.n64Value = 1;        
+        rMaxVal.n64Value = 1;
         // The Range is from - (2 ^ Signal Len) to + ( min - 1 )
         // say for 8 bits it is - (128) to + (127)
         // Find the min first
         rMinVal.n64Value = rMaxVal.n64Value << (m_unSgLen - 1);
         rMaxVal.n64Value = rMinVal.n64Value - 1;
+        rMinVal.n64Value = -(rMinVal.n64Value);
     }
 
     m_bLenChanged = FALSE;
@@ -1331,17 +1346,17 @@ void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE &rMinVal,
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  25.04.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
-void CSignalDetailsDlg::OnChangeEditSglen() 
+void CSignalDetailsDlg::OnChangeEditSglen()
 {
     // TODO: If this is a RICHEDIT control, the control will not
     // send this notification unless you override the CDialog::OnInitDialog()
     // function and call CRichEditCtrl().SetEventMask()
     // with the ENM_CHANGE flag ORed into the mask.
-    
+
     m_bLenChanged = TRUE;
-    
+
 }
 /******************************************************************************/
 /*  Function Name    :  OnChangeEditSgname                                    */
@@ -1354,16 +1369,16 @@ void CSignalDetailsDlg::OnChangeEditSglen()
 /*                                                                            */
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  20.05.2002                                            */
-/*  Modifications    :  
+/*  Modifications    :
 /******************************************************************************/
 
-void CSignalDetailsDlg::OnChangeEditSgname() 
+void CSignalDetailsDlg::OnChangeEditSgname()
 {
     // TODO: If this is a RICHEDIT control, the control will not
     // send this notification unless you override the CDialog::OnInitDialog()
     // function and call CRichEditCtrl().SetEventMask()
     // with the ENM_CHANGE flag ORed into the mask.
-    
+
     // TODO: Add your control notification handler code here
     m_bNameChanged = TRUE;
 }
@@ -1380,9 +1395,9 @@ void CSignalDetailsDlg::OnChangeEditSgname()
 /*  Date Created     :  23.10.2002                                            */
 /*  Modifications    :  Raja N on 31.07.2004, Removed hardcoded strings       */
 /******************************************************************************/
-BOOL CSignalDetailsDlg::PreTranslateMessage(MSG* pMsg) 
+BOOL CSignalDetailsDlg::PreTranslateMessage(MSG* pMsg)
 {
-    // Capture the space character and 
+    // Capture the space character and
     // do not process the same
     BOOL bSkip = FALSE;
     if ( pMsg->message == WM_CHAR )
@@ -1422,12 +1437,13 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
     m_omComboSgType.GetLBText(m_omComboSgType.GetCurSel(), strSignalType);
     if( !strSignalType.CompareNoCase(defSIGNED_INT) )
     {
-        __int64 n64 = nConvertStringToInt(m_omStrMaxVal);
+        //       __int64 n64 = nConvertStringToInt(m_omStrMaxVal);
+        __int64 n64MaxVal = _strtoi64(m_omStrMaxVal, NULL, 10);
         __int64 n64MinVal   = m_odMinValue.lGetValue();
         // Extend the Sign bit
-        s_vExtendSignBit( n64MinVal, m_unSgLen );
-        s_vExtendSignBit( n64, m_unSgLen );
-        if ( n64 < n64MinVal )
+        //       s_vExtendSignBit( n64MinVal, m_unSgLen );
+        //       s_vExtendSignBit( n64, m_unSgLen );
+        if ( n64MaxVal < n64MinVal )
         {
             AfxMessageBox(MSG_MAX_VAL_LESS, MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
@@ -1438,12 +1454,12 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
             {
                 // Get possible max and min value
                 vCalculateMaxMinValues( minVal, maxVal);
-                if ( n64 > maxVal.n64Value )
+                if ( n64MaxVal > maxVal.n64Value )
                 {
                     AfxMessageBox( defSTR_MAX_VAL_INVALID,
                                    MB_OK | MB_ICONINFORMATION );
                     m_odMaxValue.vSetValue( maxVal.n64Value );
-                    bRetVal = FALSE; 
+                    bRetVal = FALSE;
                 }
                 else
                 {
@@ -1460,16 +1476,17 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
     }
     else // unsigned int / boolean
     {
-        __int64 un64 = nConvertStringToInt(m_omStrMaxVal);
+        //       __int64 un64 = nConvertStringToInt(m_omStrMaxVal);
+        __int64 un64MaxVal = _strtoui64(m_omStrMaxVal, NULL, 10);
         __int64 un64MinVal    = m_odMinValue.lGetValue();
 
-        int nLength = m_omStrMaxVal.GetLength();
-        if( nLength > 16 )
-        {   
-             AfxMessageBox( defSTR_MAX_VAL_INVALID, MB_OK | MB_ICONINFORMATION);
-             bRetVal = FALSE;
-        }
-        if ( un64 < un64MinVal && bRetVal == TRUE)
+        //        int nLength = m_omStrMaxVal.GetLength();
+        //        if( nLength > 16 )
+        //        {
+        //             AfxMessageBox( defSTR_MAX_VAL_INVALID, MB_OK | MB_ICONINFORMATION);
+        //             bRetVal = FALSE;
+        //        }
+        if ( un64MaxVal < un64MinVal && bRetVal == TRUE)
         {
             AfxMessageBox(MSG_MAX_VAL_LESS, MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
@@ -1480,12 +1497,12 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
             {
                 // Get possible max and min value
                 vCalculateMaxMinValues( minVal, maxVal);
-                if ( un64 > maxVal.un64Value )
+                if ( un64MaxVal > maxVal.un64Value )
                 {
                     AfxMessageBox( defSTR_MAX_VAL_INVALID,
                                    MB_OK | MB_ICONINFORMATION );
                     m_odMaxValue.vSetValue(maxVal.un64Value);
-                    bRetVal = FALSE; 
+                    bRetVal = FALSE;
                 }
                 else
                 {
@@ -1525,12 +1542,13 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
     m_omComboSgType.GetLBText(m_omComboSgType.GetCurSel(), strSignalType);
     if( !strSignalType.CompareNoCase(defSIGNED_INT))
     {
-        __int64 n64 = nConvertStringToInt(m_omStrMinVal);
+        //        __int64 n64 = nConvertStringToInt(m_omStrMinVal);
         // Extend the Sign Bit
-        s_vExtendSignBit( n64, m_unSgLen );
+        //        s_vExtendSignBit( n64, m_unSgLen );
+        __int64 n64MinVal = _strtoi64(m_omStrMinVal, NULL, 10);
         __int64 n64MaxVal   = m_odMaxValue.lGetValue();
-        s_vExtendSignBit( n64MaxVal, m_unSgLen );
-        if ( n64 > n64MaxVal )
+        //        s_vExtendSignBit( n64MaxVal, m_unSgLen );
+        if ( n64MinVal > n64MaxVal )
         {
             AfxMessageBox(MSG_MIN_VAL_MORE, MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
@@ -1542,8 +1560,8 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
                 // Get possible max and min value
                 vCalculateMaxMinValues( minVal,maxVal);
                 // Extend the Sign Bit to get the actual value
-                s_vExtendSignBit( minVal.n64Value, m_unSgLen);
-                if ( n64 < minVal.n64Value)
+                //                s_vExtendSignBit( minVal.n64Value, m_unSgLen);
+                if ( n64MinVal < minVal.n64Value)
                 {
                     AfxMessageBox( defSTR_MIN_VAL_INVALID,
                                    MB_OK | MB_ICONINFORMATION );
@@ -1564,21 +1582,21 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
     }
     else // unsigned int
     {
-        __int64 un64 = nConvertStringToInt(m_omStrMinVal);
-        __int64 un64MaxVal   = m_odMaxValue.lGetValue();
-         if ( un64 > un64MaxVal )
+        __int64 un64MinVal = nConvertStringToInt(m_omStrMinVal);
+        unsigned __int64 un64MaxVal   = m_odMaxValue.lGetValue();
+        if ( un64MinVal > un64MaxVal )
         {
             AfxMessageBox(MSG_MIN_VAL_MORE, MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
         }
         else
         {
-    
+
             if ( m_unSgLen <= defMAX_BITS )
             {
                 // Get possible max and min value
                 vCalculateMaxMinValues( minVal,maxVal);
-                if ( un64 < minVal.un64Value)
+                if ( un64MinVal < minVal.un64Value)
                 {
                     AfxMessageBox( defSTR_MIN_VAL_INVALID,
                                    MB_OK | MB_ICONINFORMATION );

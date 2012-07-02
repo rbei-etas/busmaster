@@ -24,8 +24,8 @@
 #include "include/struct_can.h"
 #define defTX_MSG_WND_BOTTOM_MARGIN     0.14
 #define defTX_MSG_WND_RIGHT_MARGIN      0.17
-//#define defTX_MSG_WND_VERSION			0x01 // Initial version
-#define defTX_MSG_WND_VERSION			0x02 // Added auto save option
+//#define defTX_MSG_WND_VERSION         0x01 // Initial version
+#define defTX_MSG_WND_VERSION           0x02 // Added auto save option
 
 // Tx window spilitter details
 struct tagTxMsgSplitterData
@@ -37,13 +37,13 @@ struct tagTxMsgSplitterData
 
 typedef tagTxMsgSplitterData sTxMsgSplitterData;
 typedef sTxMsgSplitterData STXMSGSPLITTERDATA;
-typedef STXMSGSPLITTERDATA * PSTXMSGSPLITTERDATA;
+typedef STXMSGSPLITTERDATA* PSTXMSGSPLITTERDATA;
 
 
 struct sTXCANMSGDETAILS
 {
-    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter 
-                                // bytes value instead of signal value.
+    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
+    // bytes value instead of signal value.
     BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
     STCAN_MSG m_sTxMsg;
 };
@@ -62,7 +62,7 @@ struct sTXCANMSGLIST
 typedef sTXCANMSGLIST STXCANMSGLIST;
 typedef sTXCANMSGLIST* PSTXCANMSGLIST;
 
-#define defDEFAULT_MSG_BLOCK_NAME   _T("OnTime")
+#define defDEFAULT_MSG_BLOCK_NAME   "OnTime"
 #define defDEFAULT_TIME_VAL         100
 // Bit wise representation of trigger condition
 // Bit 0        - Time Trigger
@@ -141,7 +141,7 @@ struct sTXMSGINFO
     PSTXCANMSGLIST m_psTxCANMsgList;
     struct sTXMSGINFO* m_psNextTxMsgInfo;
 
-private:
+public:
     int nGetMsgCount()
     {
         int nCount = 0;
@@ -240,7 +240,7 @@ struct sTXMSGDATA
 {
     UINT  m_unCount;              // Total array element in the point m_psTxMsg
     PSTCAN_MSG m_psTxMsg;         // pointer to array of structure for
-                                  // Transmitting the data.
+    // Transmitting the data.
 };
 
 typedef sTXMSGDATA STXSELMSGDATA;
@@ -270,12 +270,12 @@ typedef ETXMSGVIEWTYPE* PETXMSGVIEWTYPE;
 
 typedef enum eUSERSELCTION
 {
-	eHEXDECCMD = 0,
+    eHEXDECCMD = 0,
     eTXMSGCMD,
     eCONNECTCMD,
     eDATABASEIMPORTCMD,
-	eCONFIGCHANGECMD,
-	eCHANNELCOUNTUPDATED
+    eCONFIGCHANGECMD,
+    eCHANNELCOUNTUPDATED
 };
 
 typedef struct tagSBYTE
@@ -294,7 +294,7 @@ typedef union tagUBYTE
 {
     BYTE        byByte;
     STRUCT_BYTE sByte;
-}UNION_BYTE;
+} UNION_BYTE;
 
 
 #define CHAR_INT                'I'

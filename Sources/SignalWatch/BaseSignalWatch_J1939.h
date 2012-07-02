@@ -1,14 +1,14 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  BaseSignalWatch_J1939.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/SignalWatch/BaseSignalWatch_J1939.h_v  $
- * 
+ *
  *    Rev 1.1   15 Apr 2011 19:18:42   CANMNTTM
  * Added RBEI Copyright information.
- * 
+ *
  *    Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
- *  
+ *
 
 /**
  * \file      BaseSignalWatch_J1939.h

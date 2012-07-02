@@ -251,7 +251,7 @@ int CParameterValues::ReadParamValue(string& paramType,char* pcToken)
     {
         if(strcmp(pcToken, " ") != 0)
         {
-            m_ParamVal.iValue = atoi(pcToken);
+            m_ParamVal.iValue = strtoul(pcToken, NULL, 10);
         }
     }
     //Param type :ENUM

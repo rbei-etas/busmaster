@@ -1,48 +1,48 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  NetworkMgmt.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/NetworkMgmt.cpv  $
-   
+
       Rev 1.11   07 Jun 2011 11:11:16   CANMNTTM
-    
-   
+
+
       Rev 1.10   15 Apr 2011 18:48:38   CANMNTTM
    Added RBEI Copyright information.
-   
+
       Rev 1.9   02 Mar 2011 11:36:44   CANMNTTM
    SetCallBackFuncPtr function is added.
-   
+
       Rev 1.7   02 Feb 2011 14:10:16   CANMNTTM
    DIL_CAN interface pointer is validated.
-   
+
       Rev 1.6   13 Jan 2011 14:47:00   CANMNTTM
    GoOnline() return value is used.
-   
+
       Rev 1.5   23 Dec 2010 16:52:20   CANMNTTM
    Macro MAX_MSG_LEN_J1939
     instead of MAX_DATA_LEN_J1939 wherever applicable.
-   
+
       Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
    1. Implemented Call back mechanism.
    2. Exported function SetClBckFnPtrs and GetTimeOut added.
-   
+
       Rev 1.3   15 Dec 2010 16:22:58   CANMNTTM
    Added new function to remove all the register nodes.
-   
+
       Rev 1.2   13 Dec 2010 18:46:54   CANMNTTM
    New API DILJ_bIsOnline(void) added
-   
+
       Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
    Nodes are made independent of channel.
    Now nodes can send message in any channel.
-   
+
       Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
+
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -131,7 +131,7 @@ void CNetworkMgmt::vMInitCon(char /*cInitResult*/)
 
 void CNetworkMgmt::vMInitInd(char /*cInitResult*/,char /*cInitReason*/)
 {
-	// not implemented right now.
+    // not implemented right now.
 
 }
 
@@ -154,9 +154,9 @@ void CNetworkMgmt::vInitializeAllNodes(void)
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
         CNodeConManager* pNodConMgr = m_ConMgrArr[i];
-        
+
         if (pNodConMgr != NULL)
-        {   
+        {
             pNodConMgr->vActivate();
         }
     }
@@ -252,9 +252,9 @@ void CNetworkMgmt::vUnInitializeAllNodes(void)
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
         CNodeConManager* pNodConMgr = m_ConMgrArr[i];
-        
+
         if (pNodConMgr != NULL)
-        {   
+        {
             pNodConMgr->vDeactivate();
         }
     }
@@ -266,14 +266,14 @@ BYTE CNetworkMgmt::byGetNodeAddress(DWORD dwClient)
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
         CNodeConManager* pNodConMgr = m_ConMgrArr[i];
-        
+
         if (pNodConMgr != NULL)
-        {   
+        {
             if (pNodConMgr->m_dwClientID == dwClient)
             {
                 i = m_nConMgrCnt; //break the loop
                 byAddress = pNodConMgr->byGetNodeAddress();
-            }           
+            }
         }
     }
     return byAddress;
@@ -283,14 +283,14 @@ void CNetworkMgmt::vGetNodeName(BYTE byAddress, char* acNodeName)
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
         CNodeConManager* pNodConMgr = m_ConMgrArr[i];
-        
+
         if (pNodConMgr != NULL)
-        {   
+        {
             if (pNodConMgr->byGetNodeAddress() == byAddress)
             {
                 i = m_nConMgrCnt; //break the loop
                 _tcscpy(acNodeName, pNodConMgr->m_acNodeName);
-            }           
+            }
         }
     }
 }
@@ -318,7 +318,7 @@ BOOL CNetworkMgmt::bIsAddressClaimed(BYTE byAddress)
 BYTE CNetworkMgmt::byGetUnclaimedAddress(int nStartFrom)
 {
     BYTE byAdres = ADDRESS_NULL;
-    
+
     for (BYTE i = (BYTE)nStartFrom; i < ADDRESS_NULL; i++)
     {
         if (!bIsAddressClaimed(i))
@@ -340,9 +340,9 @@ HRESULT CNetworkMgmt::StartAdresClaimProc(void)
     for (int i = 0; i < m_nConMgrCnt; i++)
     {
         CNodeConManager* pNodConMgr = m_ConMgrArr[i];
-        
+
         if (pNodConMgr != NULL)
-        {   
+        {
             byPreferedAdres = pNodConMgr->m_byPrefAddress;
             if (bIsAddressClaimed(byPreferedAdres) == TRUE)
             {
@@ -364,7 +364,7 @@ void CNetworkMgmt::vReinitAdresClaimProc(DWORD dwClient)
     CNodeConManager* pNodConMgr = pouGetConMagrObj(dwClient);
 
     if (pNodConMgr != NULL)
-    {   
+    {
         BYTE byPreferedAdres = byGetUnclaimedAddress();
         pNodConMgr->StartAdresClaimProc(byPreferedAdres);
     }
@@ -409,8 +409,8 @@ void CNetworkMgmt::vMConnectionCon(short /*sLocalLc*/, short /*sRemoteLc*/,
     }
     /*if (m_pfConConf != NULL)
     {
-        
-        (*m_pfConConf)(sLocalLc, sRemoteLc, eWdStatus, eConStatus);        
+
+        (*m_pfConConf)(sLocalLc, sRemoteLc, eWdStatus, eConStatus);
     }kadoor*/
 }
 
@@ -429,8 +429,8 @@ void CNetworkMgmt::vMConnectionInd(short /*sLocalLc*/, short /*sRemoteLc*/,
 
 void CNetworkMgmt::vMErrorInd(short /*sLocalLc*/,short /*sRemoteLc*/,char /*cError*/)
 {
-	// to be clarified with handling of physical layer.	
-	//as on now not used.
+    // to be clarified with handling of physical layer.
+    //as on now not used.
 
 }
 
@@ -522,19 +522,19 @@ BYTE CNetworkMgmt::byGetConMagrNumber(short shConNumber)
 }
 /**************************************************************
  ************************************************************** */
- void CNetworkMgmt::vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pIDIL_CAN)
- {
+void CNetworkMgmt::vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pIDIL_CAN)
+{
     m_pILog = pILog;
     m_pIDIL_CAN = pIDIL_CAN;
     CTransferLayer::ouGetTransLayerObj().vSetIDIL_CAN(pIDIL_CAN);
- }
+}
 
 /**************************************************************
 ************************************************************** */
-LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName, 
-                                         UINT64 un64ECUName,
-                                         BYTE   byPrefAdres,
-                                         DWORD& dwClientId)
+LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
+        UINT64 un64ECUName,
+        BYTE   byPrefAdres,
+        DWORD& dwClientId)
 {
     VALIDATE_POINTER_RETURN_VAL(m_pIDIL_CAN, S_FALSE);
     LONG lResult = S_OK;
@@ -550,12 +550,12 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
     else if(m_nConMgrCnt == DEF_MAX_SIMULATED_NODE)
     {
         lResult = ALLOWED_NOMORE;
-    }    
+    }
     //Create new node
     if (lResult == S_OK)
     {
         //Find the first available position in the Array. There will
-        //be empty places in beween due to deletion 
+        //be empty places in beween due to deletion
         int nEmptyPos = 0;
         for (int i = 0; i < DEF_MAX_SIMULATED_NODE; i++)
         {
@@ -577,13 +577,13 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
         if (pNodeConMgr != NULL)
         {
             m_ConMgrArr[nEmptyPos] = pNodeConMgr;
-            m_nConMgrCnt++; 
+            m_nConMgrCnt++;
             HRESULT hResult = S_FALSE;
             // Connection manager is created. Proceed with rest of the procedures
             if ( _tcscmp(pacNodeName, J1939_MONITOR_NODE) == 0 )
             {
-                hResult = m_pIDIL_CAN->DILC_RegisterClient(TRUE, dwClientId, 
-                                                                    CAN_MONITOR_NODE);
+                hResult = m_pIDIL_CAN->DILC_RegisterClient(TRUE, dwClientId,
+                          CAN_MONITOR_NODE);
                 if (hResult == ERR_CLIENT_EXISTS)
                 {
                     hResult = S_OK;
@@ -591,8 +591,8 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
             }
             else
             {
-                hResult = m_pIDIL_CAN->DILC_RegisterClient(TRUE, dwClientId, 
-                                                                    pacNodeName);
+                hResult = m_pIDIL_CAN->DILC_RegisterClient(TRUE, dwClientId,
+                          pacNodeName);
             }
             //ASSERT(hResult == S_OK);
             if ((hResult == S_OK) || (hResult == ERR_CLIENT_EXISTS))
@@ -610,7 +610,7 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
                 {
                     pNodeConMgr->vActivate();
                     BYTE byPrefAddress = pNodeConMgr->m_byPrefAddress;
-                    
+
                     if ((byPrefAddress >= ADDRESS_NULL) || (bIsAddressClaimed(byPrefAddress) == TRUE))
                     {
                         byPrefAddress = byGetUnclaimedAddress();
@@ -649,7 +649,7 @@ LONG CNetworkMgmt::lRemoveNodeConManager(DWORD dwClientId)
                 CString omClientName = "";
                 if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID) //Do not remove client from CAN if monitor
                 {
-					m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
+                    m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
                 }
                 else //Do not remove client from CAN if monitor, remove only the buffer
                 {
@@ -687,10 +687,10 @@ void CNetworkMgmt::vRemoveAllNodes(void)
                 TRACE("Called bDeleteEventHandle\n");
             }
             CString omClientName = "";
-            
-            if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID) 
+
+            if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID)
             {
-				m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
+                m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
             }
             else //Do not remove client from CAN if monitor, remove only the buffer
             {

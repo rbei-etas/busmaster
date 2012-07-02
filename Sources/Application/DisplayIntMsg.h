@@ -26,25 +26,25 @@
 
 class CDisplayIntMsg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CDisplayIntMsg(CONST CStringArray& omStrStringArray);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDisplayIntMsg)
     enum { IDD = IDD_DLG_INTERPRETED_MSG };
     CEdit   m_omEditControl;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDisplayIntMsg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

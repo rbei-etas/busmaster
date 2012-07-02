@@ -24,23 +24,23 @@
 
 #pragma once
 
-class CComputeCheckSum  
+class CComputeCheckSum
 {
 public:
-	// Default constructor
-	CComputeCheckSum();
-	// Default destructor
-	virtual ~CComputeCheckSum();
+    // Default constructor
+    CComputeCheckSum();
+    // Default destructor
+    virtual ~CComputeCheckSum();
 protected:
-	// compute the check for a buffer pass as parameter
-	BOOL bComputeCheckSum(UCHAR *pcBuff,DWORD dwSize, UCHAR* pucCheckSum);
-	// Get the computed checksum of file whose name is passed as parameter
+    // compute the check for a buffer pass as parameter
+    BOOL bComputeCheckSum(UCHAR* pcBuff,DWORD dwSize, UCHAR* pucCheckSum);
+    // Get the computed checksum of file whose name is passed as parameter
     // Also the computed checksum and stored checksum is returned.
-	BOOL bGetCheckSum(CString &omStrConfigFileName, UCHAR* pucCheckSum,
-					  UCHAR* pucCheckSumInFile);
-	// Sets the checksum at last byte location after computing it.
-	BOOL bSetCheckSum(CString& omStrConfigFileName,UCHAR* pucCheckSum);
-    BOOL COM_bSetCheckSum(CString &omStrConfigFileName,
-                                        UCHAR* pucCheckSum, CString &strError);
+    BOOL bGetCheckSum(CString& omStrConfigFileName, UCHAR* pucCheckSum,
+                      UCHAR* pucCheckSumInFile);
+    // Sets the checksum at last byte location after computing it.
+    BOOL bSetCheckSum(CString& omStrConfigFileName,UCHAR* pucCheckSum);
+    BOOL COM_bSetCheckSum(CString& omStrConfigFileName,
+                          UCHAR* pucCheckSum, CString& strError);
 
 };

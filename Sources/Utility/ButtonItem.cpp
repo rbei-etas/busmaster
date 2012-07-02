@@ -22,8 +22,8 @@
 #include "Utils_stdafx.h"         // For standard include
 #include "buttonitem.h"
 
-CBrowseEditItem::CBrowseEditItem(int nItem, int nSubItem, CString &sContent, CButtonItem* pomButtonItem)
-:CEditItem(nItem, nSubItem, sContent)
+CBrowseEditItem::CBrowseEditItem(int nItem, int nSubItem, CString& sContent, CButtonItem* pomButtonItem)
+    :CEditItem(nItem, nSubItem, sContent)
 {
     m_pomButton = pomButtonItem;
     m_bIsButtonValid = TRUE;
@@ -36,14 +36,14 @@ BEGIN_MESSAGE_MAP(CBrowseEditItem, CEditItem)
     ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
-void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd) 
+void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
 {
     CEdit::OnKillFocus(pNewWnd);
-    
+
     // TODO: Add your message handler code here
-    if( pNewWnd // NULL condition 
-        && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
-        && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
+    if( pNewWnd // NULL condition
+            && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
+            && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
     {
         AfxTrace("In if Condition\n");
         CString str;
@@ -51,17 +51,17 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
         // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispInfo;
         lvDispInfo.hdr.hwndFrom = GetParent()->m_hWnd;
-        lvDispInfo.hdr.idFrom = GetDlgCtrlID(); 
+        lvDispInfo.hdr.idFrom = GetDlgCtrlID();
         lvDispInfo.hdr.code = LVN_ENDLABELEDIT;
-        lvDispInfo.item.mask = LVIF_TEXT;   
+        lvDispInfo.item.mask = LVIF_TEXT;
         lvDispInfo.item.iItem = m_nItem;
         lvDispInfo.item.iSubItem = m_nSubItem;
         // Restore the old text on press of ESCAPE key
-        lvDispInfo.item.pszText = 
+        lvDispInfo.item.pszText =
             m_bVK_ESCAPE ? LPTSTR((LPCTSTR)m_sContent) : LPTSTR((LPCTSTR)str);
         lvDispInfo.item.cchTextMax = str.GetLength();
         // Send the notification message to the parent
-        GetParent()->GetParent()->SendMessage( WM_NOTIFY, 
+        GetParent()->GetParent()->SendMessage( WM_NOTIFY,
                                                GetParent()->GetDlgCtrlID(),
                                                (LPARAM)&lvDispInfo);
     }
@@ -73,7 +73,7 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
             return;
         }
     }
-   if((((CButtonItem*)m_pomButton)->m_bButtonclicked == FALSE) && (m_bKillFocus ==  TRUE))
+    if((((CButtonItem*)m_pomButton)->m_bButtonclicked == FALSE) && (m_bKillFocus ==  TRUE))
     {
         ((CButtonItem*)m_pomButton)->m_bIsEditValid = FALSE;
         if(m_bIsButtonValid == TRUE)
@@ -97,7 +97,7 @@ CButtonItem::CButtonItem(CString omStrDefExt, CString omStrFilter)
 CButtonItem::~CButtonItem(void)
 {
 }
-void CButtonItem::vSetEditItem(CBrowseEditItem *pomEditItem)
+void CButtonItem::vSetEditItem(CBrowseEditItem* pomEditItem)
 {
     m_pomEditItem = pomEditItem;
 }
@@ -120,12 +120,12 @@ void CButtonItem::OnKillFocus(CWnd* pNewWnd)
     if((m_bButtonclicked == FALSE)&&(m_bKillFocus == TRUE))
     {
         ((CBrowseEditItem*)m_pomEditItem)->m_bIsButtonValid = FALSE;
-        
+
         if((m_bIsEditValid == TRUE))
         {
             ((CBrowseEditItem*)m_pomEditItem)->m_bKillFocus = TRUE;
             m_pomEditItem->SendMessage(WM_KILLFOCUS, 0, 0);
-            
+
         }
         DestroyWindow();
     }
@@ -146,6 +146,6 @@ void CButtonItem::OnBnClicked()
     m_bKillFocus = TRUE;
     ((CBrowseEditItem*)m_pomEditItem)->m_bKillFocus = TRUE;
     m_bButtonclicked = FALSE;
-    
+
 
 }

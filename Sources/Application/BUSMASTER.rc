@@ -150,8 +150,9 @@ BEGIN
     EDITTEXT        IDC_EDIT_VAL,8,58,197,14,ES_UPPERCASE | ES_AUTOHSCROLL,0,HIDC_EDIT_VAL
     DEFPUSHBUTTON   "&OK",IDC_CBTN_OK,92,79,50,14,0,0,HIDC_CBTN_OK
     PUSHBUTTON      "&Cancel",IDC_CBTN_CANCEL,155,79,50,14,0,0,HIDC_CBTN_CANCEL
-    LTEXT           "&Value :",IDC_STAT_VALUE,8,45,23,8
-    LTEXT           "Value &Description :",IDC_STAT_VALUE_DESC,8,8,60,8
+    LTEXT           "&Value: ",IDC_STAT_VALUE,8,38,23,8
+    LTEXT           "&Description Name:",IDC_STAT_VALUE_DESC,8,8,60,8
+    LTEXT           "",IDC_STAT_RANGE,32,38,170,17
 END
 
 IDD_DLG_SIGNAL DIALOGEX 0, 0, 277, 142
@@ -178,11 +179,11 @@ BEGIN
     LTEXT           "&Name:",IDC_STAT_SGNAME,10,10,22,8
     LTEXT           "&Length :",IDC_STAT_SGLEN,9,57,26,8
     LTEXT           "&Byte Index :",IDC_STAT_BYINDEX,98,34,38,8
-    LTEXT           "&Factor :",IDC_STAT_FACTOR,106,80,25,8
-    LTEXT           "&Unit :",IDC_STAT_UNIT,205,80,18,8
-    LTEXT           "&Max Val : 0x",IDC_STAT_MAX,184,57,40,8
-    LTEXT           "M&in Val : 0x",IDC_STAT_MIN,98,57,38,8
-    LTEXT           "&Start Bit :",IDC_STAT_STBIT,184,34,30,8
+    RTEXT           "&Factor :",IDC_STAT_FACTOR,108,80,25,8
+    RTEXT           "&Unit :",IDC_STAT_UNIT,205,80,18,8
+    RTEXT           "&Max Val : ",IDC_STAT_MAX,184,57,40,8
+    RTEXT           "M&in Val : ",IDC_STAT_MIN,98,57,38,8
+    RTEXT           "&Start Bit :",IDC_STAT_STBIT,193,34,30,8
     LTEXT           "&Type :",IDC_STAT_TYPE,9,33,21,8
     LTEXT           "&Offset :",IDC_STAT_OFFSET,9,80,24,8
     LTEXT           "Bits",IDC_STATIC,70,57,12,8
@@ -572,7 +573,7 @@ CAPTION "J1939 Transmit Message Window"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "",IDC_STATIC,16,47,346,84,0,WS_EX_TRANSPARENT
-    COMBOBOX        IDC_COMBO_PGN,54,63,59,102,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_PGN,54,63,59,102,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO_MSGTYPE,159,63,68,83,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_FROM,269,63,22,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_TO,330,63,24,14,ES_AUTOHSCROLL
@@ -581,8 +582,8 @@ BEGIN
     EDITTEXT        IDC_EDIT_PRIORITY,76,107,22,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMBO_CHANNEL,158,107,27,52,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "",IDC_STATIC,16,136,346,50,0,WS_EX_TRANSPARENT
-    CONTROL         "Network Management",IDC_RADIO_NM,"Button",BS_AUTORADIOBUTTON,21,136,86,10,WS_EX_TRANSPARENT
-    CONTROL         "Claim Address",IDC_CLAIM_ADDRESS,"Button",BS_AUTORADIOBUTTON,31,146,61,12
+    CONTROL         "Network Management",IDC_RADIO_NM,"Button",BS_AUTORADIOBUTTON,21,135,86,10,WS_EX_TRANSPARENT
+    CONTROL         "Claim Address",IDC_CLAIM_ADDRESS,"Button",BS_AUTORADIOBUTTON | WS_GROUP,31,146,61,12
     CONTROL         "Request Address",IDC_RQST_ADDRESS,"Button",BS_AUTORADIOBUTTON,31,159,71,10
     CONTROL         "Command Address",IDC_CMD_ADDRESS,"Button",BS_AUTORADIOBUTTON,31,172,75,8
     COMBOBOX        IDC_COMBO_NODE,187,146,74,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
@@ -592,7 +593,7 @@ BEGIN
     CONTROL         "Cyclic",IDC_CHECK_CYCLIC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,199,31,10
     EDITTEXT        IDC_EDIT_MILI_SEC,110,197,25,14,ES_AUTOHSCROLL
     PUSHBUTTON      "OK",IDC_OK,311,196,50,14
-    CONTROL         "Transport Protocol Function",IDC_RADIO_TPF,"Button",BS_AUTORADIOBUTTON,21,47,105,10,WS_EX_TRANSPARENT
+    CONTROL         "Transport Protocol Function",IDC_RADIO_TPF,"Button",BS_AUTORADIOBUTTON,21,46,105,10,WS_EX_TRANSPARENT
     LTEXT           "DLC (decimal)",IDC_STATIC,30,87,44,8
     LTEXT           "Data  0x",IDC_STATIC,121,86,28,8
     LTEXT           "Msg Type",IDC_STATIC,122,65,32,8
@@ -690,13 +691,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.6.4"
+            VALUE "FileVersion", "Ver 1.6.5"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.6.4"
+            VALUE "ProductVersion", "Ver 1.6.5"
         END
     END
     BLOCK "VarFileInfo"
@@ -949,9 +950,9 @@ BEGIN
             MENUITEM "&Disassociate...",            33001,MFT_STRING,MFS_ENABLED
         END
         MENUITEM MFT_SEPARATOR
-        POPUP "Utilities",                      65535,MFT_STRING,MFS_ENABLED
+        POPUP "&Utilities",                      65535,MFT_STRING,MFS_ENABLED
         BEGIN
-            MENUITEM "Format Converters",           32959,MFT_STRING,MFS_ENABLED
+            MENUITEM "&Format Converters",           32959,MFT_STRING,MFS_ENABLED
         END
         MENUITEM "&Properties",                 62455,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
@@ -982,7 +983,7 @@ BEGIN
     END
     POPUP "&Configure",                     65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "Hardware Selection",          ID_CONFIGURE_CHANNELSELECTION,MFT_STRING,MFS_ENABLED
+        MENUITEM "Hardware Se&lection",          ID_CONFIGURE_CHANNELSELECTION,MFT_STRING,MFS_ENABLED
         MENUITEM "&Controller",                 32811,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         MENUITEM "&Message Display",            32809,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         MENUITEM "L&og",                        32956,MFT_STRING,MFS_ENABLED
@@ -1033,8 +1034,8 @@ BEGIN
         END
         POPUP "C&ontroller",                    65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         BEGIN
-            MENUITEM "Goto &Active",                32921,MFT_STRING,MFS_CHECKED
-            MENUITEM "Goto &Passive",               32920,MFT_STRING,MFS_CHECKED
+            MENUITEM "Set All Channels to &Active",                32921,MFT_STRING,MFS_CHECKED
+            MENUITEM "Set All Channels to &Passive",               32920,MFT_STRING,MFS_CHECKED
             MENUITEM "&Test Interface",             32925,MFT_STRING,MFS_ENABLED
             MENUITEM "&Reset Hardware",             32930,MFT_STRING,MFS_ENABLED
         END
@@ -1057,7 +1058,7 @@ BEGIN
         MENUITEM "All &Error Handler(s)",       32910,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
         MENUITEM "&All Handler(s)",             32909,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
     END
-    POPUP "J1939",                          65535,MFT_STRING,MFS_ENABLED
+    POPUP "&J1939",                          65535,MFT_STRING,MFS_ENABLED
     BEGIN
         MENUITEM "&Activate",                   33056,MFT_STRING,MFS_ENABLED
         POPUP "&Database",                      65535,MFT_STRING,MFS_ENABLED
@@ -1071,7 +1072,7 @@ BEGIN
             MENUITEM "&Associate",                  33082,MFT_STRING,MFS_ENABLED
             MENUITEM "&Dissociate",                 33083,MFT_STRING,MFS_ENABLED
         END
-        POPUP "View",                           65535,MFT_STRING,MFS_ENABLED
+        POPUP "&View",                           65535,MFT_STRING,MFS_ENABLED
         BEGIN
             MENUITEM "&Message Window",             33106,MFT_STRING,MFS_CHECKED
             MENUITEM "&Transmit Window",            33064,MFT_STRING,MFS_ENABLED
@@ -1081,9 +1082,9 @@ BEGIN
         BEGIN
             MENUITEM "&Log",                        33062,MFT_STRING,MFS_ENABLED
             MENUITEM "&Timeouts",                   33077,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Signal Watch",               33098,MFT_STRING,MFS_ENABLED
+            MENUITEM "Signal &Watch",               33098,MFT_STRING,MFS_ENABLED
             MENUITEM "&Message Display",            33104,MFT_STRING,MFS_ENABLED
-            MENUITEM "Simulated &Systems",          33085,MFT_STRING,MFS_ENABLED
+            MENUITEM "&Simulated Systems",          33085,MFT_STRING,MFS_ENABLED
         END
         POPUP "&Function",                      65535,MFT_STRING,MFS_ENABLED
         BEGIN
@@ -1101,7 +1102,7 @@ BEGIN
             MENUITEM "All &Message Handlers",       33092,MFT_STRING,MFS_CHECKED
             MENUITEM "All &Key Handlers ",          33093,MFT_STRING,MFS_CHECKED
             MENUITEM "All &Timer Handlers",         33094,MFT_STRING,MFS_CHECKED
-            MENUITEM "All &Event Handlers",         33095,MFT_STRING,MFS_CHECKED
+            MENUITEM "All &Event Handlers",         ID_EXECUTE_ALLEVENTHANDLERS,MFT_STRING,MFS_CHECKED
             MENUITEM "&All Handlers",               33096,MFT_STRING,MFS_CHECKED
         END
     END
@@ -1264,6 +1265,9 @@ IDI_ICON_HELP           ICON                    "Res\\Help.ico"
 IDI_ICON_ABOUT          ICON                    "Res\\About.ico"
 IDI_ICON_CASCADE        ICON                    "Res\\cascade.ico"
 IDI_ICON_TILE           ICON                    "Res\\Tile.ico"
+IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
+IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
+IDI_ICON_LOG_ONLIGHT    ICON					"res\\LoggingONLIGHT.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1590,7 +1594,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.6.4"
+    IDS_VERSION             "Ver 1.6.5"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1774,6 +1778,9 @@ BEGIN
     IDS_HIDE                "&Hide"
     IDS_PPAGE_TITLE_BUFFER  "Buffer"
     IDS_CHANNELS            "Channels"
+    ID_LOG_RECORD_STATUS    "CAN"
+    ID_LOG_RECORD_CAN_ICON   "CAN Recording..."
+    ID_LOG_RECORD_J1939_ICON "J1939 Recording..."
 END
 
 STRINGTABLE 

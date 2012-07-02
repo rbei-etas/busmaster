@@ -25,24 +25,24 @@
 typedef HRESULT (*CREATEGRAPHWINDOW)(CMDIFrameWnd* pParentWnd, short eBusType);
 typedef BOOL (*ISWINDOWVISIBLE)(short eBusType);
 typedef HRESULT (*SHOWGRAPHWINDOW)(short eBusType, BOOL bShow);
-typedef HRESULT (*SETSIGNALLISTDETAILS)(short eBusType, CGraphList * pSignalList);
+typedef HRESULT (*SETSIGNALLISTDETAILS)(short eBusType, CGraphList* pSignalList);
 typedef HRESULT (*POSTMESSAGETOSGWND)(short eBusType, UINT msg, WPARAM wParam, LPARAM lParam);
 typedef CMsgBufVSE* (*GETGRAPHBUFFER)();
 typedef HRESULT (*GETWINDOWSPLITTERPOS)(short eBusType,
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHSPLITTERDATA& sGraphSplitter);
+                                        WINDOWPLACEMENT& sWndPlacement,
+                                        SGRAPHSPLITTERDATA& sGraphSplitter);
 typedef HRESULT (*SETWINDOWSPLITTERPOS)(short eBusType,
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHSPLITTERDATA& sGraphSplitter);
+                                        WINDOWPLACEMENT& sWndPlacement,
+                                        SGRAPHSPLITTERDATA& sGraphSplitter);
 
-CREATEGRAPHWINDOW		pfCreateGraphWindow;
-ISWINDOWVISIBLE			pfIsWindowVisible;
-SHOWGRAPHWINDOW			pfShowGraphWindow;
-SETSIGNALLISTDETAILS	pfSetSignalListDetails;
-POSTMESSAGETOSGWND		pfPostMessageToSGWnd;
-GETGRAPHBUFFER			pfGetGraphBuffer;
-GETWINDOWSPLITTERPOS	pfGetWindowSplitterPos;
-SETWINDOWSPLITTERPOS	pfSetWindowSplitterPos;
+CREATEGRAPHWINDOW       pfCreateGraphWindow;
+ISWINDOWVISIBLE         pfIsWindowVisible;
+SHOWGRAPHWINDOW         pfShowGraphWindow;
+SETSIGNALLISTDETAILS    pfSetSignalListDetails;
+POSTMESSAGETOSGWND      pfPostMessageToSGWnd;
+GETGRAPHBUFFER          pfGetGraphBuffer;
+GETWINDOWSPLITTERPOS    pfGetWindowSplitterPos;
+SETWINDOWSPLITTERPOS    pfSetWindowSplitterPos;
 
 /*******************************************************************************
   Function Name  : CSigGrphHandler
@@ -52,11 +52,11 @@ SETWINDOWSPLITTERPOS	pfSetWindowSplitterPos;
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 26.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CSigGrphHandler::CSigGrphHandler(void)
 {
-	m_hSigGrphHandle = NULL;
+    m_hSigGrphHandle = NULL;
 }
 
 /*******************************************************************************
@@ -67,7 +67,7 @@ CSigGrphHandler::CSigGrphHandler(void)
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 26.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CSigGrphHandler::~CSigGrphHandler(void)
 {
@@ -85,17 +85,17 @@ CSigGrphHandler::~CSigGrphHandler(void)
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 26.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSigGrphHandler::vLoadSigGrph_DLL()
 {
-	if ( m_hSigGrphHandle != NULL )
+    if ( m_hSigGrphHandle != NULL )
     {
         FreeLibrary(m_hSigGrphHandle);
-		m_hSigGrphHandle = NULL;
+        m_hSigGrphHandle = NULL;
     }
-	m_hSigGrphHandle = LoadLibrary(_T("SigGrphWnd.dll"));
-	vloadFuncPtrAddress();
+    m_hSigGrphHandle = LoadLibrary(_T("SigGrphWnd.dll"));
+    vloadFuncPtrAddress();
 }
 
 /*******************************************************************************
@@ -106,18 +106,18 @@ void CSigGrphHandler::vLoadSigGrph_DLL()
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 26.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSigGrphHandler::vInitializeFuncPtrs()
 {
-	pfCreateGraphWindow		= NULL;
-	pfIsWindowVisible		= NULL;
-	pfShowGraphWindow		= NULL;
-	pfSetSignalListDetails	= NULL;
-	pfPostMessageToSGWnd	= NULL;
-	pfGetGraphBuffer		= NULL;
-	pfGetWindowSplitterPos	= NULL;
-	pfSetWindowSplitterPos	= NULL;
+    pfCreateGraphWindow     = NULL;
+    pfIsWindowVisible       = NULL;
+    pfShowGraphWindow       = NULL;
+    pfSetSignalListDetails  = NULL;
+    pfPostMessageToSGWnd    = NULL;
+    pfGetGraphBuffer        = NULL;
+    pfGetWindowSplitterPos  = NULL;
+    pfSetWindowSplitterPos  = NULL;
 }
 
 /*******************************************************************************
@@ -128,27 +128,27 @@ void CSigGrphHandler::vInitializeFuncPtrs()
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 26.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSigGrphHandler::vloadFuncPtrAddress()
 {
     vInitializeFuncPtrs();
-	pfCreateGraphWindow		= (CREATEGRAPHWINDOW)
-							  GetProcAddress(m_hSigGrphHandle, "SG_CreateGraphWindow");
-	pfIsWindowVisible		= (ISWINDOWVISIBLE)
-							  GetProcAddress(m_hSigGrphHandle, "SG_IsWindowVisible");
-	pfShowGraphWindow		= (SHOWGRAPHWINDOW)
-							  GetProcAddress(m_hSigGrphHandle, "SG_ShowGraphWindow");
-	pfSetSignalListDetails	= (SETSIGNALLISTDETAILS)
-							  GetProcAddress(m_hSigGrphHandle, "SG_SetSignalListDetails");
-	pfPostMessageToSGWnd	= (POSTMESSAGETOSGWND)
-							  GetProcAddress(m_hSigGrphHandle, "SG_vPostMessageToSGWnd");
-	pfGetGraphBuffer		= (GETGRAPHBUFFER)
-							  GetProcAddress(m_hSigGrphHandle, "SG_GetGraphBuffer");
-	pfGetWindowSplitterPos	= (GETWINDOWSPLITTERPOS)
-							  GetProcAddress(m_hSigGrphHandle, "SG_GetWindowSplitterPos");
-	pfSetWindowSplitterPos	= (SETWINDOWSPLITTERPOS)
-							  GetProcAddress(m_hSigGrphHandle, "SG_SetWindowSplitterPos");
+    pfCreateGraphWindow     = (CREATEGRAPHWINDOW)
+                              GetProcAddress(m_hSigGrphHandle, "SG_CreateGraphWindow");
+    pfIsWindowVisible       = (ISWINDOWVISIBLE)
+                              GetProcAddress(m_hSigGrphHandle, "SG_IsWindowVisible");
+    pfShowGraphWindow       = (SHOWGRAPHWINDOW)
+                              GetProcAddress(m_hSigGrphHandle, "SG_ShowGraphWindow");
+    pfSetSignalListDetails  = (SETSIGNALLISTDETAILS)
+                              GetProcAddress(m_hSigGrphHandle, "SG_SetSignalListDetails");
+    pfPostMessageToSGWnd    = (POSTMESSAGETOSGWND)
+                              GetProcAddress(m_hSigGrphHandle, "SG_vPostMessageToSGWnd");
+    pfGetGraphBuffer        = (GETGRAPHBUFFER)
+                              GetProcAddress(m_hSigGrphHandle, "SG_GetGraphBuffer");
+    pfGetWindowSplitterPos  = (GETWINDOWSPLITTERPOS)
+                              GetProcAddress(m_hSigGrphHandle, "SG_GetWindowSplitterPos");
+    pfSetWindowSplitterPos  = (SETWINDOWSPLITTERPOS)
+                              GetProcAddress(m_hSigGrphHandle, "SG_SetWindowSplitterPos");
 }
 
 /*******************************************************************************
@@ -159,7 +159,7 @@ void CSigGrphHandler::vloadFuncPtrAddress()
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 26.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 HRESULT CSigGrphHandler::CreateGraphWindow(CMDIFrameWnd* pParentWnd,short eBusType)
 {
@@ -181,7 +181,7 @@ HRESULT CSigGrphHandler::CreateGraphWindow(CMDIFrameWnd* pParentWnd,short eBusTy
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 29.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CSigGrphHandler::bIsWindowVisible(short eBusType)
 {
@@ -203,7 +203,7 @@ BOOL CSigGrphHandler::bIsWindowVisible(short eBusType)
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 29.10.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 HRESULT CSigGrphHandler::ShowGraphWindow(short eBusType, BOOL bShow)
 {
@@ -225,9 +225,9 @@ HRESULT CSigGrphHandler::ShowGraphWindow(short eBusType, BOOL bShow)
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 02.11.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-HRESULT CSigGrphHandler::SetSignalListDetails(short eBusType, CGraphList * pSignalList)
+HRESULT CSigGrphHandler::SetSignalListDetails(short eBusType, CGraphList* pSignalList)
 {
     if(pfSetSignalListDetails!=NULL)
     {
@@ -247,10 +247,10 @@ HRESULT CSigGrphHandler::SetSignalListDetails(short eBusType, CGraphList * pSign
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 09.11.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CSigGrphHandler::vPostMessageToSGWnd(short eBusType, UINT msg, 
-											WPARAM wParam, LPARAM lParam)
+void CSigGrphHandler::vPostMessageToSGWnd(short eBusType, UINT msg,
+        WPARAM wParam, LPARAM lParam)
 {
     if(pfPostMessageToSGWnd != NULL)
     {
@@ -266,7 +266,7 @@ void CSigGrphHandler::vPostMessageToSGWnd(short eBusType, UINT msg,
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 25.11.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CMsgBufVSE* CSigGrphHandler::vGetGraphBuffer()
 {
@@ -288,11 +288,11 @@ CMsgBufVSE* CSigGrphHandler::vGetGraphBuffer()
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 08.12.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-HRESULT CSigGrphHandler::GetWindowSplitterPos(short eBusType, 
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHSPLITTERDATA& sGraphSplitter)
+HRESULT CSigGrphHandler::GetWindowSplitterPos(short eBusType,
+        WINDOWPLACEMENT& sWndPlacement,
+        SGRAPHSPLITTERDATA& sGraphSplitter)
 {
     if(pfGetWindowSplitterPos!=NULL)
     {
@@ -312,11 +312,11 @@ HRESULT CSigGrphHandler::GetWindowSplitterPos(short eBusType,
   Member of      : CSigGrphHandler
   Author(s)      : ArunKumar K
   Date Created   : 08.12.2010
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-HRESULT CSigGrphHandler::SetWindowSplitterPos(short eBusType, 
-										WINDOWPLACEMENT& sWndPlacement, 
-										SGRAPHSPLITTERDATA& sGraphSplitter)
+HRESULT CSigGrphHandler::SetWindowSplitterPos(short eBusType,
+        WINDOWPLACEMENT& sWndPlacement,
+        SGRAPHSPLITTERDATA& sGraphSplitter)
 {
     if(pfSetWindowSplitterPos!=NULL)
     {

@@ -4,7 +4,7 @@
 #ifdef CSI_ESS_DLLEXPORT
 #define CSI_ESS_DECLSPEC __declspec(dllexport)
 #define CSI_ESS_IMPLSPEC __declspec(dllexport)
-#else 
+#else
 #define CSI_ESS_DECLSPEC __declspec(dllimport)
 #define CSI_ESS_IMPLSPEC __declspec(dllimport)
 #endif
@@ -12,7 +12,7 @@
 #ifdef CSI_APP_DLLEXPORT
 #define CSI_APP_DECLSPEC __declspec(dllexport)
 #define CSI_APP_IMPLSPEC __declspec(dllexport)
-#else 
+#else
 #define CSI_APP_DECLSPEC __declspec(dllimport)
 #define CSI_APP_IMPLSPEC __declspec(dllimport)
 #endif
@@ -44,13 +44,13 @@
 
 
 /**
-* @def CSI_STATICLIB  
+* @def CSI_STATICLIB
 * Statically-linked library (LIB)
 *
-* @def CSI_STATICDLL  
+* @def CSI_STATICDLL
 * Dynamic-link library (DLL) with automatic import/export.
 *
-* @def CSI_DYNAMICDLL 
+* @def CSI_DYNAMICDLL
 * Dynamic-link library (DLL).
 */
 
@@ -77,7 +77,7 @@ Set default to CSI_STATICLIB
 /**
 * @def CSI_CALLBACK
 * Calling convention of all callback functions.
-* @todo  Define CSI_CALLBACK (and CSI_CALL) for all platforms and 
+* @todo  Define CSI_CALLBACK (and CSI_CALL) for all platforms and
 *        compilers.
 */
 
@@ -86,11 +86,11 @@ Set default to CSI_STATICLIB
 #elif defined(__GNUC__) && defined (__QNX__)
 #define CSI_CALLBACK
 #define CSI_DECLSPEC __attribute__ ((visibility("default")))
-#define CSI_CALL 
+#define CSI_CALL
 #elif defined(__GNUC__) && defined (__LINUX__)
 #define CSI_CALLBACK
 #define CSI_DECLSPEC __attribute__ ((visibility("default")))
-#define CSI_CALL 
+#define CSI_CALL
 #else
 #error Unsupported platform
 #endif
@@ -106,15 +106,15 @@ Set default to CSI_STATICLIB
 
 /**
 * @def CSI_DLLEXPORT
-* Specify the API dynamic-link library (DLL) with automatic import 
-* and export. 
+* Specify the API dynamic-link library (DLL) with automatic import
+* and export.
 *
-* This is the standard way of creating macros which make exporting 
-* from a DLL simpler. All files within this DLL are compiled with 
-* the @ref CSI_DLLEXPORT symbol defined on the command line. This 
-* symbol should not be defined on any project that uses this DLL. 
-* This way any other project whose source files include this file see 
-* @ref CSI_DECLSPEC functions as being imported from a DLL, whereas 
+* This is the standard way of creating macros which make exporting
+* from a DLL simpler. All files within this DLL are compiled with
+* the @ref CSI_DLLEXPORT symbol defined on the command line. This
+* symbol should not be defined on any project that uses this DLL.
+* This way any other project whose source files include this file see
+* @ref CSI_DECLSPEC functions as being imported from a DLL, whereas
 * this DLL sees symbols defined with this macro as being exported.
 *
 * @def CSI_DECLSPEC
@@ -125,7 +125,7 @@ Set default to CSI_STATICLIB
 #ifdef CSI_DLLEXPORT
 #define CSI_DECLSPEC __declspec(dllexport)
 #define CSI_IMPLSPEC __declspec(dllexport)
-#else 
+#else
 #define CSI_DECLSPEC __declspec(dllimport)
 #define CSI_IMPLSPEC __declspec(dllimport)
 #endif
@@ -135,7 +135,7 @@ Set default to CSI_STATICLIB
 
 #if defined(_MSC_VER)
 /*
-Specify the API for statically-linked library (LIB) 
+Specify the API for statically-linked library (LIB)
 */
 #define CSI_CALL
 #define CSI_DECLSPEC

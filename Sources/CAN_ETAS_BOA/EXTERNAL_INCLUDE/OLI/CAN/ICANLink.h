@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  ICANLink definition
 * @remark The header structure of the OLI may change
@@ -32,7 +32,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 /// \addtogroup GROUP_OLI_CAN_LINKS
@@ -55,12 +58,13 @@ class ICANLink;
  * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL if no error
  * occurred. See \ref ErrorReporting for more information on how errors are reported.
  */
-OLL_API IError* OLI_CALL ICANLink_Create( const char *URI, ICANLink** ppCanLink, uint32 version );
+OLL_API IError* OLI_CALL ICANLink_Create( const char* URI, ICANLink** ppCanLink, uint32 version );
 
 /** CAN-specific extension to ILink.
 */
 
-OLI_INTERFACE ICANLink : public ILink
+OLI_INTERFACE ICANLink :
+public ILink
 {
 protected:
 
@@ -110,7 +114,7 @@ public:
      * This is a helper method which wraps ICANLink_Create(): see \ref BinaryCompatibility and \ref ErrorReporting for an
      * explanation of why it is needed.
      */
-    static AutoPtr<ICANLink> OLI_CALL 
+    static AutoPtr<ICANLink> OLI_CALL
     Create( const char *URI, uint32 version = VERSION )
     {
         ICANLink* pCanLink = NULL;
@@ -125,7 +129,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

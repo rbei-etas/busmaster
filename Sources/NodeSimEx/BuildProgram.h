@@ -30,7 +30,7 @@
 #endif // _MSC_VER > 1000
 #include"OutWnd.h"
 #include"SimSysNodeInfo.h"
-class CBuildProgram  
+class CBuildProgram
 {
 public:
     // Build the DLL from the source file and call function to display the output
@@ -41,23 +41,23 @@ public:
     virtual ~CBuildProgram();
     // Pointer to output window
     COutWnd* m_podOutWnd;
-	//Clear the m_omStrArray
-	void vClearArray();
-	 // Add strings to output window;s list box
+    //Clear the m_omStrArray
+    void vClearArray();
+    // Add strings to output window;s list box
     BOOL bAddString(CStringArray& omStrArray );
 
 private:
     ETYPE_BUS m_eBus;
     DWORD dwConvertShortPathName(CONST CString& omStrToConvert,
-                                    char* pcStrShortPath);
+                                 char* pcStrShortPath);
     // Create output window
     VOID vCreateOutputWindow();
     // Get strings from file and add it to string array
-    BOOL bAddStrToArrayFromFile (CString& omStrTextFileName, 
-                                    CStringArray& omStrArray );
+    BOOL bAddStrToArrayFromFile (CString& omStrTextFileName,
+                                 CStringArray& omStrArray );
     // Create a make file from makefile template
-    BOOL bCreateMakeFile(CString& omStrMakeFileTemplateName, 
-                                    CString& omStrMakeFileName);
+    BOOL bCreateMakeFile(CString& omStrMakeFileTemplateName,
+                         CString& omStrMakeFileName);
     // Source file name to be built to DLL
     CString m_omStrSourceFilename;
     // Module handle for DLL

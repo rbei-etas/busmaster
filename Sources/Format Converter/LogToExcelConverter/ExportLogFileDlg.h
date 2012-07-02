@@ -72,7 +72,6 @@ public:
     CButton m_omRemoveOneField;
     CButton m_omRemoveAllFields;
     afx_msg void OnBnClickedConvert();
-    afx_msg void OnBnClickedCbtnCancelexport();
     afx_msg void OnLbnSelchangeLstAvailable();
     afx_msg void OnLbnSelchangeLstSelected();
     afx_msg void OnBnClickedButtonSelectone();

@@ -26,34 +26,34 @@
 
 class CNotificListbox : public CListBox
 {
-// Construction
+    // Construction
 public:
-	CNotificListbox();
+    CNotificListbox();
 
-// Attributes
-public:
-
-// Operations
+    // Attributes
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CNotificListbox)
-	//}}AFX_VIRTUAL
-
-// Implementation
+    // Operations
 public:
-	virtual ~CNotificListbox();
 
-	// Generated message map functions
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CNotificListbox)
+    //}}AFX_VIRTUAL
+
+    // Implementation
+public:
+    virtual ~CNotificListbox();
+
+    // Generated message map functions
 protected:
-	//{{AFX_MSG(CNotificListbox)
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnTraceWndClear();
-	afx_msg void OnTraceWndDelete();
-	//}}AFX_MSG
+    //{{AFX_MSG(CNotificListbox)
+    afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+    afx_msg void OnTraceWndClear();
+    afx_msg void OnTraceWndDelete();
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnNotificwndSelectall();
     afx_msg void OnNotificwndCopytoclipboard();

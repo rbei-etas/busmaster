@@ -85,18 +85,18 @@ END_MESSAGE_MAP()
 
  Input(s)       :   -
  Output         :   -
- Functionality  :   Called by the frame work on keying a character. This 
-                    function filters the display on the edit control 
+ Functionality  :   Called by the frame work on keying a character. This
+                    function filters the display on the edit control
                     depending on the flags set
 
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Soj Thomas
  Date Created   :   08-03-2002
  Modifications  :   Ratnadip Choudhury, Amarnath Shastry
 ******************************************************************************/
-void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     bool bSkip = true;
 
@@ -107,21 +107,21 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         case BASE_ALPHANUMERIC:
             // Accept '0-9' or backspace and a-z, A- Z
             if (
-                ((unCurChar >= '0') && (unCurChar <= '9')) 
+                ((unCurChar >= '0') && (unCurChar <= '9'))
                 || (unCurChar == BACK_SPACE)
                 ||((unCurChar >= 'a') && (unCurChar <= 'z'))
                 ||((unCurChar >= 'A') && (unCurChar <= 'Z'))
 
-               )
+            )
             {
                 bSkip = false;
             }
         case BASE_DECIMAL:
             // Accept '0-9' or backspace
             if (
-                ((unCurChar >= '0') && (unCurChar <= '9')) 
+                ((unCurChar >= '0') && (unCurChar <= '9'))
                 || (unCurChar == BACK_SPACE)
-               )
+            )
             {
                 bSkip = false;
             }
@@ -131,18 +131,18 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
             {
                 int nStart, nEnd;
                 GetSel(nStart, nEnd);
-                if (nStart == 0) 
+                if (nStart == 0)
                 {
                     bSkip = false;
                 }
             }
-            // Do not accept '.' char if floatig point is not allowed. 
+            // Do not accept '.' char if floatig point is not allowed.
             // Obviously this should occur only once
             else if ((unCurChar == DECIMAL_POINT) && (m_bFloatAllowed == true))
             {
                 CString omBuf;
                 GetWindowText(omBuf);
-                if (omBuf.Find(_T('.')) == -1) 
+                if (omBuf.Find(_T('.')) == -1)
                 {
                     bSkip = false;
                 }
@@ -155,7 +155,7 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
                 ((unCurChar >= '0') && (unCurChar <= '9'))
                 || (unCurChar == BACK_SPACE)
                 || ((unCurChar >= 'A') && (unCurChar <= 'F'))
-               )
+            )
             {
                 bSkip = false;
             }
@@ -165,7 +165,7 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
             {
                 int nStart, nEnd;
                 GetSel(nStart, nEnd);
-                if (nStart == 0) 
+                if (nStart == 0)
                 {
                     bSkip = false;
                 }
@@ -176,7 +176,7 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
             {
                 CString omBuf;
                 GetWindowText(omBuf);
-                if (omBuf.Find(_T('.')) == -1) 
+                if (omBuf.Find(_T('.')) == -1)
                 {
                     bSkip = false;
                 }
@@ -186,9 +186,9 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         case BASE_OCTAL:
             // Accept '0-7' or backspace
             if (
-                ((unCurChar >= '0') && (unCurChar <= '7')) 
+                ((unCurChar >= '0') && (unCurChar <= '7'))
                 || (unCurChar == BACK_SPACE)
-               )
+            )
             {
                 bSkip = false;
             }
@@ -197,9 +197,9 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         case BASE_BINARY:
             // Accept '0-1' or backspace
             if (
-                ((unCurChar >= '0') && (unCurChar <= '1')) 
+                ((unCurChar >= '0') && (unCurChar <= '1'))
                 || (unCurChar == BACK_SPACE)
-               )
+            )
             {
                 bSkip = false;
             }
@@ -208,7 +208,7 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
         default:
             break;
     }
-    
+
     if (!bSkip)
     {
         CEdit::OnChar(unCurChar, nRepCnt, nFlags);
@@ -225,7 +225,7 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
  Output         :   -
  Functionality  :   Sets base of numbers.
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Soj Thomas
  Date Created   :   08-03-2002
@@ -235,25 +235,25 @@ void CRadixEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 ******************************************************************************/
 void CRadixEdit::vSetBase(int nBase)
 {
-    switch (nBase) 
+    switch (nBase)
     {
-        case BASE_ALPHANUMERIC: 
-             m_nBase = nBase;
-             break;
-        case BASE_HEXADECIMAL: 
-             m_nBase = nBase;
-             break;
-        case BASE_OCTAL: 
-             m_nBase = nBase;
-             break;
-        case BASE_BINARY: 
-             m_nBase = nBase;
-             break;
+        case BASE_ALPHANUMERIC:
+            m_nBase = nBase;
+            break;
+        case BASE_HEXADECIMAL:
+            m_nBase = nBase;
+            break;
+        case BASE_OCTAL:
+            m_nBase = nBase;
+            break;
+        case BASE_BINARY:
+            m_nBase = nBase;
+            break;
         case BASE_DECIMAL:
-             m_nBase = nBase;
-             break;
+            m_nBase = nBase;
+            break;
         default:
-             m_nBase = BASE_DECIMAL;
+            m_nBase = BASE_DECIMAL;
     }
 }
 
@@ -264,7 +264,7 @@ void CRadixEdit::vSetBase(int nBase)
  Output         :   int (currently selected base)
  Functionality  :   Call the function to get the base currently selected
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Soj Thomas
  Date Created   :   08-03-2002
@@ -281,19 +281,19 @@ int CRadixEdit::nGetBase()
  Input(s)       :   -
  Output         :   -
  Functionality  :   Called by the frame work on keying a character. If floating
-                    point is not allowed, then charactres until "." are 
+                    point is not allowed, then charactres until "." are
                     considered as valid.
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Soj Thomas
  Date Created   :   08-03-2002
  Modifications  :   Ratnadip Choudhury, Amarnath Shastry
-					Rajesh Kumar 05.03.2003 : call strtol/strtoul based on sign 
- Modifications  :   Amitesh Bharti, 05.06.2003,replace datatype for supporting 
-                    64bits to __int64                             
+                    Rajesh Kumar 05.03.2003 : call strtol/strtoul based on sign
+ Modifications  :   Amitesh Bharti, 05.06.2003,replace datatype for supporting
+                    64bits to __int64
 ******************************************************************************/
-void CRadixEdit::OnChange() 
+void CRadixEdit::OnChange()
 {
     int nBufLength = LineLength() + 1;
     char* acBuffer = new char[nBufLength];
@@ -301,28 +301,37 @@ void CRadixEdit::OnChange()
     if (acBuffer != NULL)
     {
         GetWindowText(acBuffer, nBufLength);
-        if (m_bFloatAllowed) 
+        if (m_bFloatAllowed)
         {
             m_fValue = (float) _tstof(acBuffer);
         }
-        else 
+        else
         {
-			if(m_nBase == BASE_DECIMAL )
-			{
-				m_n64Value = _tstoi64(acBuffer);
-			}
-			else 
-			{
+            if(m_nBase == BASE_DECIMAL )
+            {
+                if(bIsSigned())
+                {
+                    m_n64Value = _tstoi64(acBuffer);
+                    m_un64Value = m_n64Value;
+                }
+                else
+                {
+                    m_un64Value = _strtoui64(acBuffer, NULL, 10);
+                    m_n64Value = m_un64Value;
+                }
+            }
+            else
+            {
                 INT nCurrentPost = 0;
                 __int64 n64Val = 0;
                 INT nActualLength = nBufLength - 1;
                 BOOL bNegativeNumber = FALSE;
                 m_n64Value = 0;
 
-				while(nActualLength > nCurrentPost)
+                while(nActualLength > nCurrentPost)
                 {
-                    if(acBuffer[nCurrentPost] >='0' 
-                       && acBuffer[nCurrentPost] <='9')
+                    if(acBuffer[nCurrentPost] >='0'
+                            && acBuffer[nCurrentPost] <='9')
                     {
                         acBuffer[nCurrentPost] -='0';
                     }
@@ -347,7 +356,7 @@ void CRadixEdit::OnChange()
                 {
                     m_n64Value = -m_n64Value;
                 }
-			}
+            }
         }
         delete []acBuffer;
         acBuffer = NULL;
@@ -358,15 +367,15 @@ void CRadixEdit::OnChange()
  Function Name  :   lGetValue
 
  Input(s)       :   -
- Output         :   long 
+ Output         :   long
  Functionality  :   call this function to get the value if non-floating number
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Soj Thomas
  Date Created   :   08-03-2002
- Modifications  :   Amitesh Bharti, 05.06.2003,replace datatype for supporting 
-                    64bits to __int64                             
+ Modifications  :   Amitesh Bharti, 05.06.2003,replace datatype for supporting
+                    64bits to __int64
 ******************************************************************************/
 __int64 CRadixEdit::lGetValue()
 {
@@ -374,24 +383,30 @@ __int64 CRadixEdit::lGetValue()
     return m_n64Value;
 }
 
+unsigned __int64 CRadixEdit::lGetUnsignedValue()
+{
+    OnChange();
+    return m_un64Value;
+}
+
 /******************************************************************************
  Function Name  :   vSetValue
 
  Input(s)       :   long (value to set for non-floating number)
  Output         :   -
- Functionality  :   Sets long value passed as parameter and displays on the 
-                    edit control. At present binary conversion is not taken 
-                    care of. 
+ Functionality  :   Sets long value passed as parameter and displays on the
+                    edit control. At present binary conversion is not taken
+                    care of.
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Soj Thomas
  Date Created   :   08-03-2002
  Modifications  :   Ratnadip Choudhury, Amarnath Shastry
                 :   Rajesh Kumar : 05.03.2003: formating changed to accomodate
-                    signed and unsigned to full 32 bits        
-                 :  Amitesh Bharti, 05.06.2003,replace datatype for supporting 
-                    64bits to __int64                             
+                    signed and unsigned to full 32 bits
+                 :  Amitesh Bharti, 05.06.2003,replace datatype for supporting
+                    64bits to __int64
 ******************************************************************************/
 void CRadixEdit::vSetValue(__int64 n64NewVal)
 {
@@ -400,35 +415,35 @@ void CRadixEdit::vSetValue(__int64 n64NewVal)
     // if the number is having negative value
     char acFormat[8] = {NULL};
 
-    if (m_nBase == BASE_DECIMAL) 
+    if (m_nBase == BASE_DECIMAL)
     {
         if(m_bSigned == true)
         {
-            strcpy_s(acFormat, 8,  _T("%I64d"));
+            strcpy_s(acFormat, 8,  "%I64d");
         }
         else
         {
-            strcpy_s(acFormat, 8,  _T("%I64u"));
+            strcpy_s(acFormat, 8,  "%I64u");
         }
     }
-    else 
+    else
     {
         if (m_bSigned == true && n64NewVal < 0)
         {
-            strcpy_s(acFormat, 8, _T("-"));
+            strcpy_s(acFormat, 8, "-");
             n64NewVal = -n64NewVal;
         }
 
         if (m_nBase == BASE_HEXADECIMAL)
         {
-            strcat_s(acFormat, 8, _T("%I64X"));
+            strcat_s(acFormat, 8, "%I64X");
         }
-        else if (m_nBase == BASE_OCTAL) 
+        else if (m_nBase == BASE_OCTAL)
         {
-            strcat_s(acFormat, 8, _T("%I64o"));
+            strcat_s(acFormat, 8, "%I64o");
         }
     }
-	// rajesh: 05.03.2003: END:
+    // rajesh: 05.03.2003: END:
 
     m_n64Value = n64NewVal;
     CString omStr;
@@ -439,16 +454,16 @@ void CRadixEdit::vSetValue(__int64 n64NewVal)
 /******************************************************************************
  Function Name  :   vSetSigned
 
- Input(s)       :   bool 
+ Input(s)       :   bool
  Output         :   -
- Functionality  :  
+ Functionality  :
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Amarnath Shastry
  Date Created   :   08-03-2002
- Modifications  :   
- Date Modified  :   
+ Modifications  :
+ Date Modified  :
 ******************************************************************************/
 void CRadixEdit::vSetSigned(bool bSigned)
 {
@@ -460,14 +475,14 @@ void CRadixEdit::vSetSigned(bool bSigned)
 
  Input(s)       :   -
  Output         :   bool (true if signed values are allowed, else false)
- Functionality  :  
+ Functionality  :
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Amarnath Shastry
  Date Created   :   08-03-2002
- Modifications  :   
- Date Modified  :   
+ Modifications  :
+ Date Modified  :
 ******************************************************************************/
 bool CRadixEdit::bIsSigned()
 {
@@ -481,12 +496,12 @@ bool CRadixEdit::bIsSigned()
  Output         :   -
  Functionality  :   Allows accepting floting point number
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Amarnath Shastry
  Date Created   :   08-03-2002
- Modifications  :   
- Date Modified  :   
+ Modifications  :
+ Date Modified  :
 ******************************************************************************/
 void CRadixEdit::vAcceptFloatingNum(bool bFloatAllow)
 {
@@ -500,12 +515,12 @@ void CRadixEdit::vAcceptFloatingNum(bool bFloatAllow)
  Output         :   float
  Functionality  :   Returns floating point value
  Member of      :   CRadixEdit
- Friend of      :   
+ Friend of      :
 
  Author(s)      :   Amarnath Shastry
  Date Created   :   08-03-2002
- Modifications  :   
- Date Modified  :   
+ Modifications  :
+ Date Modified  :
 ******************************************************************************/
 float CRadixEdit::fGetValue()
 {

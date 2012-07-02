@@ -15,7 +15,7 @@
 
 /**
  * \file      RadixEdit.h
- * \brief     This file contains the definition of CRadixEdit class     
+ * \brief     This file contains the definition of CRadixEdit class
  * \authors   RBIN/EMC2 - Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
@@ -40,11 +40,11 @@ static const int DECIMAL_POINT     = 0x2E;
 
 class CRadixEdit : public CEdit
 {
-// Construction
+    // Construction
 public:
     CRadixEdit();
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CRadixEdit)
     //}}AFX_VIRTUAL
@@ -58,7 +58,9 @@ public:
     void vSetValue(__int64 n64NewVal);
     // Get long value
     __int64 lGetValue();
-    // Set number base 
+    // Get unsigned long value
+    unsigned __int64 lGetUnsignedValue();
+    // Set number base
     void vSetBase(int nBase);
     // Get base
     int  nGetBase();
@@ -81,6 +83,7 @@ protected:
 private:
     float m_fValue;
     __int64 m_n64Value;
+    unsigned __int64 m_un64Value;
     int  m_nBase;
     bool m_bSigned;
     bool m_bFloatAllowed;

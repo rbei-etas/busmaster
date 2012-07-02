@@ -28,7 +28,7 @@ public:
     CConfigAdapter();
     ~CConfigAdapter();
 
-    BOOL bGetConfigData(BYTE*& lpData, int &nStreamLength, eSECTION_ID eSectionId);
+    BOOL bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_ID eSectionId);
 
     INT nLoadConfigFile(CString omFileName);
 private:

@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  IConfigurationContainer definition
 * @remark The header structure of the OLI may change
@@ -30,7 +30,10 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // interface forward declarations
@@ -40,7 +43,7 @@ class IConfigurationParameter;
 
 /// @ingroup GROUP_OLI_COMMON_CONFIGURATION
 
-/** Represents the controller configuration as a flat list of 
+/** Represents the controller configuration as a flat list of
 * @ref IConfigurationParameter instances.
 *
 * Objects providing this interface are expected to be unique
@@ -57,8 +60,8 @@ class IConfigurationParameter;
 *
 * Virtual parameters (like file names) are allowed. Use observers
 * (see @ref IConfigurationObserver) to ensure consistency and to
-* map virtual parameters onto 'real' ones. Observers are called 
-* nestedly (if they modify other parameters) and in the same 
+* map virtual parameters onto 'real' ones. Observers are called
+* nestedly (if they modify other parameters) and in the same
 * sequence they have been added.
 *
 * If modifying a parameter value fails with a (possibly
@@ -67,7 +70,8 @@ class IConfigurationParameter;
 * nested changes that have completed successfully.
 */
 
-OLI_INTERFACE IConfigurationContainer : public IDictionary
+OLI_INTERFACE IConfigurationContainer :
+public IDictionary
 {
 protected:
 
@@ -76,9 +80,9 @@ protected:
 
     virtual ~IConfigurationContainer() OLI_NOTHROW {};
 
-    /// access to the individual parameters. 
+    /// access to the individual parameters.
     /// Valid @a index range is 0 .. GetCount-1.
-    /// The ownership over the @ref IConfigurationParameter instances 
+    /// The ownership over the @ref IConfigurationParameter instances
     /// remains with the container object.
     /// Throws an exception when @a index is out of range.
 
@@ -96,7 +100,7 @@ protected:
 
     /// Case-sensitive parameter lookup.
     /// Returns NULL, if there is no such parameter.
-    /// The ownership over the @ref IConfigurationParameter instances 
+    /// The ownership over the @ref IConfigurationParameter instances
     /// remains with the container object.
 
     /**
@@ -214,7 +218,8 @@ public:
 };
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

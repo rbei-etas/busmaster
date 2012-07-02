@@ -53,6 +53,10 @@
       <p>In Append file mode, log sessions will be appended at the end of the file. Each logging session will have its own session header and footer. In Overwrite file mode the file will be overwritten for the first session. For consecutive sessions the file name will be suffixed with an incrementing number and each session will be logged in new files. The log file name will be incremented every-time when you stop the logging process.</p>
       <p>If already log files are created in the previous session and if a new session is started, then the log files created already will be overwritten in both overwrite and append mode. In this case, the successive files already created in the previous session will contain old session data.</p>
     </section>
+    <section>
+      <title>Logging Indication</title>
+      <p>Recording or logging is indicated in the status bar for both CAN and J1939. When the logging is enabled and data is logged in to the file, an icon will be shown in the status bar with glowing on and glowing off continuously till the logging is stopped. When the logging is stopped then icon will be disabled.</p>
+    </section>
     <example>
       <title>Example</title>
       <p>If the log file name is xyz.log for the first time, then for the next time the log file name will be xyz0.log.</p>
@@ -85,6 +89,7 @@
     <section>
       <title>Replay Mode</title>
       <p>Replay mode instructs whether the replay file has to be transmitted only once or cyclically. In cyclic mode, messages will be transmitted periodically. User can specify the cycle delay which will be used in between cycles. Where as in monoshot or once, the replay of messages will happen only once.</p>
+      <p>Replay messages option is provided to select the messages to tbe replayed. Tx, Rx and All messages options are listed. All the messages in the log file will be replayed if All is selected. If Tx is selected then only the messages logged with Tx flag in the log file will be replayed. If Rx is selected then only the messages logged with Rx flag in the log file will be replayed.</p>
     </section>
     <section>
       <title>Interactive Replay</title>

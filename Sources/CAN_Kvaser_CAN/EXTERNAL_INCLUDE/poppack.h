@@ -1,5 +1,5 @@
 /*
-**                   Copyright 2005 by KVASER AB, SWEDEN      
+**                   Copyright 2005 by KVASER AB, SWEDEN
 **                        WWW: http://www.kvaser.com
 **
 **

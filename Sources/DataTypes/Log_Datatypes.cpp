@@ -36,11 +36,11 @@
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagLogInfo::tagLogInfo()
 {
@@ -53,11 +53,11 @@ tagLogInfo::tagLogInfo()
   Output           :  void
   Functionality    :  Clears information inthe current logging block
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void tagLogInfo::vClear(void)
 {
@@ -73,7 +73,7 @@ void tagLogInfo::vClear(void)
 
     // Init Trigger Condition
     m_sLogTrigger.m_unTriggerType = NONE;   // No trigger
-    m_sLogTrigger.m_unStartID = 0;	        // No Start-ID
+    m_sLogTrigger.m_unStartID = 0;          // No Start-ID
     m_sLogTrigger.m_unStopID = 0;           // No Stop-ID
 }
 
@@ -83,16 +83,16 @@ void tagLogInfo::vClear(void)
   Output           :  UINT - size of the current logging block
   Functionality    :  Returns in bytes size of the current logging block.
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT tagLogInfo::unGetSize(void) const
 {
-    UINT Result = 
-        sizeof(m_bIsUpdated) + sizeof(m_bEnabled) + sizeof(m_eLogTimerMode) + 
+    UINT Result =
+        sizeof(m_bIsUpdated) + sizeof(m_bEnabled) + sizeof(m_eLogTimerMode) +
         sizeof(m_eNumFormat) + sizeof(m_eFileMode) + sizeof(m_bResetAbsTimeStamp) + sizeof(m_ChannelSelected)
         + sizeof(m_sLogFileName) + sizeof(m_sLogTrigger);
 
@@ -109,11 +109,11 @@ UINT tagLogInfo::unGetSize(void) const
                       the target buffer. Advances the writing pointer to the
                       next byte occurring after the written block.
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -142,11 +142,11 @@ BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
                       the current object. Advances the reading pointer to the
                       next byte occurring after the block.
   Member of        :  tagLogInfo
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagLogInfo::pbSetConfigData(BYTE* pbSource, BYTE bytLogVersion)
 {
@@ -158,11 +158,13 @@ BYTE* tagLogInfo::pbSetConfigData(BYTE* pbSource, BYTE bytLogVersion)
     COPY_DATA_2(&m_eNumFormat,       pbSStream, sizeof(m_eNumFormat      ));
     COPY_DATA_2(&m_eFileMode,        pbSStream, sizeof(m_eFileMode       ));
 
-	/* If version is 1.6.2 and above */
-	if ( bytLogVersion > 0x1 )
-		COPY_DATA_2(&m_bResetAbsTimeStamp, pbSStream, sizeof(m_bResetAbsTimeStamp));
-    
-	COPY_DATA_2(&m_ChannelSelected,  pbSStream, sizeof(m_ChannelSelected ));
+    /* If version is 1.6.2 and above */
+    if ( bytLogVersion > 0x1 )
+    {
+        COPY_DATA_2(&m_bResetAbsTimeStamp, pbSStream, sizeof(m_bResetAbsTimeStamp));
+    }
+
+    COPY_DATA_2(&m_ChannelSelected,  pbSStream, sizeof(m_ChannelSelected ));
     COPY_DATA_2(m_sLogFileName,      pbSStream, sizeof(m_sLogFileName    ));
     COPY_DATA_2(&m_sLogTrigger,      pbSStream, sizeof(m_sLogTrigger     ));
 

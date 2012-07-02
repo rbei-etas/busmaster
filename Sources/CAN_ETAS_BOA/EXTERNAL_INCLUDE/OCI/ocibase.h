@@ -23,36 +23,36 @@
 * @defgroup GROUP_OCI_CONTROLLER Controller Handling
 * @ingroup  GROUP_OCI_COMMON
 *
-* The Open Controller Interface (OCI) implements a state machine 
+* The Open Controller Interface (OCI) implements a state machine
 * for the Controller (CAN-Controller, LIN-Controller, FlexRay-
-* Controller).\ All functions use bus interface specific names and 
+* Controller).\ All functions use bus interface specific names and
 * parameter, but have a common structure.
 *
 * The API use three states of a Controller:
-* @li Created 
+* @li Created
 *      - The controller is created and a basic set of functions
 *        can be executed. The controller is not configured. So
 *        it is not possible to take part in the bus communication
-* @li Suspended 
+* @li Suspended
 *      - The controller is configured, but set into a suspended
 *        state. It is possible to use any function that uses a
 *        hController, but the controller will not interact
 *        with the bus system. This state allows the configuration
-*        of several filter conditions. Switching to the Running 
+*        of several filter conditions. Switching to the Running
 *        state will activate all new settings at the same time.
-* @li Running 
+* @li Running
 *      - The controller is configured and takes part in the bus
 *        communication. It is possible to use any function that
 *        uses a hController. Any change will immediately be
-*        active.  
+*        active.
 *
 * The following figure gives an overview of the supported functions
-* for a controller. A detailed description of the different data 
-* structures and functions for the different Bus Interfaces can be 
+* for a controller. A detailed description of the different data
+* structures and functions for the different Bus Interfaces can be
 * found here:
 *
-* @sa    @ref GROUP_OCI_CAN_CONTROLLER, 
-*        @ref GROUP_OCI_LIN_CONTROLLER, 
+* @sa    @ref GROUP_OCI_CAN_CONTROLLER,
+*        @ref GROUP_OCI_LIN_CONTROLLER,
 *        @ref GROUP_OCI_FLEXRAY_CONTROLLER
 *
 * <HR>
@@ -65,7 +65,7 @@
 * The event handling in the Open Controller Interface allows an
 * in band handling of events by inserting events into the receive
 * data stream and fast reaction based on a callback mechanism.
-* 
+*
 * Any event can be registered to occur in the rxQueue. In this case
 * the event will be inserted at the corresponding position in the
 * sequence of received frames.

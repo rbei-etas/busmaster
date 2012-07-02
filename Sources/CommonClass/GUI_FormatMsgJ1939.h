@@ -1,10 +1,10 @@
 
 /**********************************************************************************
-  Project		:	Auto-SAT_Tools
-  FileName		:	GUI_FormatMsgJ1939.h
-  Description	:	Implementation of CRefTimeKeeper class
+  Project       :   Auto-SAT_Tools
+  FileName      :   GUI_FormatMsgJ1939.h
+  Description   :   Implementation of CRefTimeKeeper class
   $Log:   X:/Archive/Sources/CommonClass/GUI_FormatMsgJ1939.h_v  $
- * 
+ *
  *    Rev 1.1   15 Apr 2011 19:07:08   rac2kor
  * Inserted RBEI Copyright information text into the file header.
 
@@ -35,7 +35,7 @@ private:
 public:
     CFormatMsgJ1939(void);
     ~CFormatMsgJ1939(void);
-    void vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData, 
-                           SFORMATTEDATA_J1939* CurrDataJ1939,
-                           BYTE bExprnFlag_Log);
+    void vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
+                             SFORMATTEDATA_J1939* CurrDataJ1939,
+                             BYTE bExprnFlag_Log);
 };

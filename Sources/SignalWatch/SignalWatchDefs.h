@@ -22,43 +22,43 @@
 #pragma once
 
 #define WM_REMOVE_SIGNAL            WM_USER + 41
-#define defSTR_PHYSICAL_COLUMN      _T("Physical Value")
-#define defSTR_RAW_COLUMN           _T("Raw Value")
+#define defSTR_PHYSICAL_COLUMN      "Physical Value"
+#define defSTR_RAW_COLUMN           "Raw Value"
 
 #define defSW_LIST_COLUMN_COUNT     4
-#define defSTR_SW_MSG_NAME          _T("Message")
+#define defSTR_SW_MSG_NAME          "Message"
 #define defSTR_SW_MSG_COL           0
-#define defSTR_SW_SIG_NAME          _T("Signal")
+#define defSTR_SW_SIG_NAME          "Signal"
 #define defSTR_SW_SIG_COL           1
 #define defSTR_SW_RAW_VALUE         defSTR_RAW_COLUMN
 #define defSTR_SW_RAW_VAL_COL       3
 #define defSTR_SW_PHY_VALUE         defSTR_PHYSICAL_COLUMN
 #define defSTR_SW_PHY_VAL_COL       2
 #define defCOLOR_WHITE              RGB(255,255,255)
-#define defSTR_SIGNAL_WATCH_FMT     _T(" %-2s %-16s-> %-14s %-10s[%s]")
+#define defSTR_SIGNAL_WATCH_FMT     " %-2s %-16s-> %-14s %-10s[%s]"
 
 
 
 #define STR_EMPTY ""
-#define defSTR_MSG_SIG_SEPERATER _T(" -> ")
-#define defSTR_FORMAT_SW_LIST    _T("%s%s%s")
+#define defSTR_MSG_SIG_SEPERATER " -> "
+#define defSTR_FORMAT_SW_LIST    "%s%s%s"
 #define defSIZE_OF_IMAGE         25
-#define defSTR_SW_DELETE_ERROR   _T("Error while deleting temporary list!!!")
-#define defSTR_SW_DELETE_SIG_ERROR  _T("Error while deleting Signal %s from Message %s !!!")
-#define defSTR_SW_DELETE_SIG_MSGID_ERROR _T("Error while deleting Signal %s from Message ID: %x !!!")
-#define defSTR_SW_PARSE_ERROR    _T("Parse Error in %s ")
-#define defSTR_SW_SIGNAL_DETAIL_ERROR   _T("Signal Not Found in the Database!!\nPlease remove the Signal")
-#define defSTR_SW_SIGNAL_GENERIC_ERROR  _T("Error showing Signal Details!!")
-#define defSTR_MSG_ID_IN_HEX          _T("[0x%x]")
+#define defSTR_SW_DELETE_ERROR   "Error while deleting temporary list!!!"
+#define defSTR_SW_DELETE_SIG_ERROR  "Error while deleting Signal %s from Message %s !!!"
+#define defSTR_SW_DELETE_SIG_MSGID_ERROR "Error while deleting Signal %s from Message ID: %x !!!"
+#define defSTR_SW_PARSE_ERROR    "Parse Error in %s "
+#define defSTR_SW_SIGNAL_DETAIL_ERROR   "Signal Not Found in the Database!!\nPlease remove the Signal"
+#define defSTR_SW_SIGNAL_GENERIC_ERROR  "Error showing Signal Details!!"
+#define defSTR_MSG_ID_IN_HEX          "[0x%x]"
 #define defMSGID_EXTENDED       'x'
 #define defMSGID_NAME_DELIMITER  "["
 #define defMSGID_NAME_START_CHAR '['
 #define defMSG_NAME_END_CHAR     ']'
 
-#define defSTR_FORMAT_DISPLAY_DEC    _T("%-60s   [%16I64d]")
-#define defSTR_FORMAT_DISPLAY_HEX    _T("%-60s   [%16I64X]")
-#define defSTR_FORMAT_OL_INTRP   _T("         %-20s %-20s")
-#define defSTR_FORMAT_PHY_VALUE  _T("%.3f")
-#define defSTR_FORMAT_PHY_VALUE_WITH_UNIT  _T("%16s %s")
+#define defSTR_FORMAT_DISPLAY_DEC    "%-60s   [%16I64d]"
+#define defSTR_FORMAT_DISPLAY_HEX    "%-60s   [%16I64X]"
+#define defSTR_FORMAT_OL_INTRP   "         %-20s %-20s"
+#define defSTR_FORMAT_PHY_VALUE  "%.3f"
+#define defSTR_FORMAT_PHY_VALUE_WITH_UNIT  "%16s %s"
 
 #define defSIGNAL_ICON_SIZE               16

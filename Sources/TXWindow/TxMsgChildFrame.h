@@ -34,10 +34,10 @@
 class CTxMsgChildFrame : public CMDIChildBase
 {
     DECLARE_DYNCREATE(CTxMsgChildFrame)
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
     // To update window size and splitter after loading a conf file
     void vUpdateWinStatus();
@@ -48,20 +48,20 @@ public:
     // Standard destructor
     virtual ~CTxMsgChildFrame();
     // To Set View Pointers
-    void vSetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity, CWnd *pomWnd);
+    void vSetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity, CWnd* pomWnd);
     // To get View pointers
-    CWnd * pomGetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity) const;
+    CWnd* pomGetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity) const;
 
-	void vSetMsgDBPtrInDetailsView(void* pMsgDB);
+    void vSetMsgDBPtrInDetailsView(void* pMsgDB);
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CTxMsgChildFrame)
-    protected:
+protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 
 
     // Generated message map functions
@@ -71,7 +71,7 @@ public:
     afx_msg LRESULT vUserCommand(WPARAM wParam, LPARAM lParam);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
-// Members
+    // Members
 protected:
     CSplitterWnd m_omRootSplitter;
     CSplitterWnd m_omLeftViewSplitter;
@@ -79,20 +79,20 @@ protected:
 
 private:
 
-// Attributes
+    // Attributes
     // Structure to hold splitter window postion
     STXMSGSPLITTERDATA m_sSplitterPosition;
     // Pointers to all views
-    CTxMsgBlocksView * m_pomTxMsgBlocksView;
+    CTxMsgBlocksView* m_pomTxMsgBlocksView;
     // Message List view Pointer
-    CTxMsgListView * m_pomTxMsgListView;
+    CTxMsgListView* m_pomTxMsgListView;
     // For functions view poniter
-    CTxFunctionsView * m_pomFunctionsView;
+    CTxFunctionsView* m_pomFunctionsView;
     // Message Details view pointer
-    CTxMsgDetailsView * m_pomTxMsgDetailsView;
+    CTxMsgDetailsView* m_pomTxMsgDetailsView;
     BOOL m_bInit;
 
-// Methods
+    // Methods
     // Function to set splitter postion.
     void vSetSplitterPostion();
     // Function to get splitter postion from configuration file

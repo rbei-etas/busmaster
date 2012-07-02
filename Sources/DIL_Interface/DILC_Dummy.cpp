@@ -59,12 +59,12 @@ HRESULT CDIL_CAN_DUMMY::CAN_DeselectHwInterface(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_DisplayConfigDlg(PCHAR& /*InitData*/, int& /*Length*/)
+HRESULT CDIL_CAN_DUMMY::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /*InitData*/, int& /*Length*/)
 {
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_SetConfigData(PCHAR /*pInitData*/, int /*Length*/)
+HRESULT CDIL_CAN_DUMMY::CAN_SetConfigData(PSCONTROLLER_DETAILS /*pInitData*/, int /*Length*/)
 {
     return WARN_DUMMY_API;
 }
@@ -117,7 +117,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
 
 HRESULT CDIL_CAN_DUMMY::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
-	return WARN_DUMMY_API;
+    return WARN_DUMMY_API;
 }
 
 HRESULT CDIL_CAN_DUMMY::CAN_ManageMsgBuf(BYTE /*bAction*/, DWORD /*ClientID*/, CBaseCANBufFSE* /*pBufObj*/)
@@ -136,6 +136,11 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unC
 }
 
 HRESULT CDIL_CAN_DUMMY::CAN_GetControllerParams(LONG& /*lParam*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_CAN_DUMMY::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {
     return WARN_DUMMY_API;
 }

@@ -255,6 +255,7 @@ unsigned int CSignal::Validate()
     // data format mismatch with previous signal
 
     // if more than 64 bits should be discarded
+    /*
     if(m_ucLength > 64)
     {
         return (m_uiError = SIG_EC_LENGTH_ERR);
@@ -264,7 +265,7 @@ unsigned int CSignal::Validate()
     if(m_ucStartBit > 63)
     {
         return (m_uiError = SIG_EC_STARTBIT_ERR);
-    }
+    }*/
 
     // errors eliminated now do necessary conversions
     if(m_ucLength == 1) // single bit - change type to bool

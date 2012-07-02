@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINErrSyncEventFilter definition
 * @remark The header structure of the OLI may change
@@ -30,7 +30,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // forward declaration
@@ -39,51 +42,51 @@ class ILINErrSyncEventFilter;
 
 /**
 * @ingroup GROUP_OLI_LIN_FILTERS
-* @brief  This function instantiates an object supporting 
-*         @ref ILINErrSyncEventFilter. 
+* @brief  This function instantiates an object supporting
+*         @ref ILINErrSyncEventFilter.
 *
-*         See @ref BinaryCompatibility "binary compatibility" 
+*         See @ref BinaryCompatibility "binary compatibility"
 *         for an explanation of why it is needed.
 *
-*         NOTE that clients are encouraged to access this function 
+*         NOTE that clients are encouraged to access this function
 *         via the wrapper @ref ILINErrSyncEventFilter::Create().
 *
 * @param[in]  baudrateMask
 *         Any mask for the baudrate (DLC) to be
 *         applied to @ref ILINErrSyncEvent::GetBaudrate.
-*         The filter will report it in 
+*         The filter will report it in
 *         @ref ILINErrSyncEventFilter::GetBaudrateMask.
 * @param[in]  baudrateValue
 *         Any value for the baudrate to be
 *         applied to @ref ILINErrSyncEvent::GetBaudrate.
-*         The filter will report it in 
+*         The filter will report it in
 *         @ref ILINErrSyncEventFilter::GetBaudrateValue.
-* @param[out] ppLinErrSyncEventFilter   
-*         A pointer to an object supporting @ref ILINErrSyncEventFilter, 
-*         which has already been AddRef-ed. The object must be 
+* @param[out] ppLinErrSyncEventFilter
+*         A pointer to an object supporting @ref ILINErrSyncEventFilter,
+*         which has already been AddRef-ed. The object must be
 *         reference-counted by the caller, using the object's
-*         methods @ref IRefCountable::AddRef "AddRef()" and 
-*         @ref IRefCountable::Release "Release()". This is easily 
-*         done by wrapping the object pointer in an instance of the 
-*         @ref AutoPtr class, which will be done automatically if 
-*         the caller accesses @ref ILINErrSyncEventFilter_Create() 
+*         methods @ref IRefCountable::AddRef "AddRef()" and
+*         @ref IRefCountable::Release "Release()". This is easily
+*         done by wrapping the object pointer in an instance of the
+*         @ref AutoPtr class, which will be done automatically if
+*         the caller accesses @ref ILINErrSyncEventFilter_Create()
 *         via the wrapper @ref ILINErrSyncEventFilter::Create().
 *
-* @return A pointer to an interface based on @ref IError, describing 
-*         the error which occurred during this function. @c NULL if 
+* @return A pointer to an interface based on @ref IError, describing
+*         the error which occurred during this function. @c NULL if
 *         no error occurred. See @ref ErrorReporting "error reporting"
 *         for more information on how errors are reported.
 *
 * @exception <none> This function must not throw exceptions.
 *
-* @since  BOA 1.3 
-* @see    @ref BinaryCompatibility "binary compatibility", 
+* @since  BOA 1.3
+* @see    @ref BinaryCompatibility "binary compatibility",
 *         @ref ErrorReporting "error reporting",
 *         ILINErrSyncEventFilter
 */
-OLL_API IError* OLI_CALL ILINErrSyncEventFilter_Create( 
-    uint32 baudrateMask, 
-    uint32 baudrateValue, 
+OLL_API IError* OLI_CALL ILINErrSyncEventFilter_Create(
+    uint32 baudrateMask,
+    uint32 baudrateValue,
     ILINErrSyncEventFilter** ppLinErrSyncEventFilter);
 
 
@@ -96,7 +99,7 @@ OLL_API IError* OLI_CALL ILINErrSyncEventFilter_Create(
 *
 * This interface's implementation of IFilter::GetIDMask and IFilter::GetIDValue always return 0.
 *
-* The implementation is expected to match @ref ILINErrSyncEvent 
+* The implementation is expected to match @ref ILINErrSyncEvent
 * instances only.
 *
 * @remark All public methods are thread-safe.
@@ -105,8 +108,9 @@ OLL_API IError* OLI_CALL ILINErrSyncEventFilter_Create(
 * @see    @ref filterConcepts "Filter concepts", ILINErrSyncEvent
 */
 
-OLI_INTERFACE ILINErrSyncEventFilter 
-    : public IEventFilter
+OLI_INTERFACE ILINErrSyncEventFilter
+:
+public IEventFilter
 {
 protected:
 
@@ -117,7 +121,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINErrSyncEventFilter() OLI_NOTHROW {};
 
@@ -126,12 +130,12 @@ public:
     /** @brief  Returns the mask for the condition on the event's
                 @ref ILINErrSyncEvent::GetBaudrate "baudrate".
 
-        @return @ref filterConcepts "filter mask" for the event's 
+        @return @ref filterConcepts "filter mask" for the event's
                 @ref ILINErrSyncEvent::GetBaudrate "baudrate".
         @exception <none> This function must not throw exceptions.
 
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINErrSyncEvent
      */
     virtual uint32 OLI_CALL GetBaudrateMask() const OLI_NOTHROW = 0;
@@ -144,14 +148,14 @@ public:
         @exception <none> This function must not throw exceptions.
 
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINErrSyncEvent
      */
-	virtual uint32 OLI_CALL GetBaudrateValue() const OLI_NOTHROW = 0;
+    virtual uint32 OLI_CALL GetBaudrateValue() const OLI_NOTHROW = 0;
 
     /** @brief  Create an @ref ILINErrSyncEventFilter instance.
 
-                The instance returned here will only match 
+                The instance returned here will only match
                 @ref ILINErrSyncEvent messages. All other
                 types will not pass the filter.
 
@@ -167,26 +171,26 @@ public:
         @exception CError This function may throw an exception
                 derived from @ref CError.
 
-        @remark This is a helper method which wraps 
-                @ref ILINErrSyncEventFilter_Create(): 
-                see @ref BinaryCompatibility "binary compatibility" 
+        @remark This is a helper method which wraps
+                @ref ILINErrSyncEventFilter_Create():
+                see @ref BinaryCompatibility "binary compatibility"
                 and @ref ErrorReporting "error reporting"
                 for an explanation of why it is needed.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", ILINErrSyncEvent
      */
-    static AutoPtr<ILINErrSyncEventFilter> OLI_CALL 
+    static AutoPtr<ILINErrSyncEventFilter> OLI_CALL
     Create ( uint32 baudrateMask
-           , uint32 baudrateValue )
+             , uint32 baudrateValue )
     {
         ILINErrSyncEventFilter* pLinErrSyncEventFilter = NULL;
-        CheckAndThrow( 
-            ILINErrSyncEventFilter_Create( baudrateMask, 
-                                           baudrateValue, 
+        CheckAndThrow(
+            ILINErrSyncEventFilter_Create( baudrateMask,
+                                           baudrateValue,
                                            &pLinErrSyncEventFilter ) );
 
-        // The wrapped method has already AddRef-ed the pointer, 
-        // so we tell AutoPtr to take ownership of the pointer 
+        // The wrapped method has already AddRef-ed the pointer,
+        // so we tell AutoPtr to take ownership of the pointer
         // without a further AddRef.
         return AutoPtr<ILINErrSyncEventFilter>( pLinErrSyncEventFilter, false );
     }
@@ -195,7 +199,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

@@ -36,39 +36,39 @@ const int SIZE_CHAR = sizeof(char);
 const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 
 #define MAX_LOG_FILE_IN_GRP              9
-#define FILE_COUNT_STR                    _T("_%d")
+#define FILE_COUNT_STR                    "_%d"
 
 
-#define BUS_LOG_HEADER			_T("***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***")
-#define BUS_LOG_START			_T("***[START LOGGING SESSION]***")
-#define BUS_LOG_STOP			_T("***[STOP LOGGING SESSION]***")
-#define BUS_LOG_START_DATE_TIME	\
-								_T("***START DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
-#define BUS_LOG_END_DATE_TIME	_T("***END DATE AND TIME %d:%d:%d %d:%d:%d:%d***")
-#define BUS_LOG_HEXFORMAT		_T("***HEX***")
-#define BUS_LOG_DECFORMAT		_T("***DEC***")
-#define BUS_LOG_ABSMODE			_T("***ABSOLUTE MODE***")
-#define BUS_LOG_RELMODE			_T("***RELATIVE MODE***")
-#define BUS_LOG_SYSMODE			_T("***SYSTEM MODE***")
-#define BUS_LOG_BAUDRATE		_T("***CHANNEL %d BAUD RATE %d kbps***")
-#define BUS_LOG_DATABASE_START	_T("***START DATABASE FILES (DBF/DBC)***")
-#define BUS_LOG_DATABASE_END	_T("***END DATABASE FILES (DBF/DBC)***")
-#define BUS_LOG_BAUDRATE_START	_T("***START CHANNEL BAUD RATE***")
-#define BUS_LOG_BAUDRATR_END	_T("***END CHANNEL BAUD RATE***")
-#define BUS_LOG_CHANNEL			_T("***CHANNEL %d - %s - %s Kbps***")
+#define BUS_LOG_HEADER          "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
+#define BUS_LOG_START           "***[START LOGGING SESSION]***"
+#define BUS_LOG_STOP            "***[STOP LOGGING SESSION]***"
+#define BUS_LOG_START_DATE_TIME \
+    "***START DATE AND TIME %d:%d:%d %d:%d:%d:%d***"
+#define BUS_LOG_END_DATE_TIME   "***END DATE AND TIME %d:%d:%d %d:%d:%d:%d***"
+#define BUS_LOG_HEXFORMAT       "***HEX***"
+#define BUS_LOG_DECFORMAT       "***DEC***"
+#define BUS_LOG_ABSMODE         "***ABSOLUTE MODE***"
+#define BUS_LOG_RELMODE         "***RELATIVE MODE***"
+#define BUS_LOG_SYSMODE         "***SYSTEM MODE***"
+#define BUS_LOG_BAUDRATE        "***CHANNEL %d BAUD RATE %d kbps***"
+#define BUS_LOG_DATABASE_START  "***START DATABASE FILES (DBF/DBC)***"
+#define BUS_LOG_DATABASE_END    "***END DATABASE FILES (DBF/DBC)***"
+#define BUS_LOG_BAUDRATE_START  "***START CHANNEL BAUD RATE***"
+#define BUS_LOG_BAUDRATR_END    "***END CHANNEL BAUD RATE***"
+#define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s Kbps***"
 
-#define PROTOCOL _T("***PROTOCOL");
+#define PROTOCOL "***PROTOCOL";
 
 //********************************************************************************
-//	Function Name	 	: CBaseLogObject
-//	Input(s)	      	: none
-//	Output				: none
-//	Description			: Contructor
-//	Member of			: CBaseLogObject
-//	Friend of			: None
-//	Author				: Arun Kumar
-//	Creation Date		: 10/11/06
-//	Modifications		:
+//  Function Name       : CBaseLogObject
+//  Input(s)            : none
+//  Output              : none
+//  Description         : Contructor
+//  Member of           : CBaseLogObject
+//  Friend of           : None
+//  Author              : Arun Kumar
+//  Creation Date       : 10/11/06
+//  Modifications       :
 //********************************************************************************
 /*CBaseLogObject::CBaseLogObject()
 {
@@ -76,13 +76,13 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 }*/
 
 /******************************************************************************
-Function Name	: CBaseLogObject
-Input(s)	    : -
-Output			: -
-Description		: Overloaded contructor
-Member of		: CBaseLogObject
-Author			: Ratnadip Choudhury
-Creation Date	: 2/12/11
+Function Name   : CBaseLogObject
+Input(s)        : -
+Output          : -
+Description     : Overloaded contructor
+Member of       : CBaseLogObject
+Author          : Ratnadip Choudhury
+Creation Date   : 2/12/11
 Modifications   :
 ******************************************************************************/
 CBaseLogObject::CBaseLogObject(CString omVersion):m_omVersion(omVersion)
@@ -91,13 +91,13 @@ CBaseLogObject::CBaseLogObject(CString omVersion):m_omVersion(omVersion)
 }
 
 /******************************************************************************
-Function Name	: vResetValues
-Input(s)	    : -
-Output			: -
-Description		: Resets values of certain data members
-Member of		: CBaseLogObject
-Author			: Ratnadip Choudhury
-Creation Date	: 2/12/11
+Function Name   : vResetValues
+Input(s)        : -
+Output          : -
+Description     : Resets values of certain data members
+Member of       : CBaseLogObject
+Author          : Ratnadip Choudhury
+Creation Date   : 2/12/11
 Modifications   :
 ******************************************************************************/
 void CBaseLogObject::vResetValues(void)
@@ -108,7 +108,7 @@ void CBaseLogObject::vResetValues(void)
     m_CurrTriggerType = NONE;
     m_nCurrFileCnt = 0;
     m_dTotalBytes = 0;
-	m_bNewSession = TRUE;
+    m_bNewSession = TRUE;
     InitializeCriticalSection(&m_CritSection);
 }
 
@@ -130,18 +130,18 @@ CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
     m_nCurrFileCnt = RefObj.m_nCurrFileCnt;
     m_dTotalBytes = RefObj.m_dTotalBytes;
 
-	// Update the log file name based on the current file count to update the data
-	// This occurs when some of the config dialog members are changed
-	if (m_nCurrFileCnt > 0)
-	{		
-		int nIdx = m_omCurrLogFile.Find('_');
-		if (nIdx != -1)
-		{
-			m_omCurrLogFile = m_omCurrLogFile.Left(nIdx);
-			m_omCurrLogFile += ".log";
-		}
-		m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, m_omCurrLogFile.GetBuffer(MAX_CHAR));
-	}
+    // Update the log file name based on the current file count to update the data
+    // This occurs when some of the config dialog members are changed
+    if (m_nCurrFileCnt > 0)
+    {
+        int nIdx = m_omCurrLogFile.Find('_');
+        if (nIdx != -1)
+        {
+            m_omCurrLogFile = m_omCurrLogFile.Left(nIdx);
+            m_omCurrLogFile += ".log";
+        }
+        m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, m_omCurrLogFile.GetBuffer(MAX_CHAR));
+    }
 
     Der_CopySpecificData(&RefObj);
 
@@ -179,8 +179,8 @@ void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 {
     m_sLogInfo = sLoginfo;
 
-    //Now if the name of the file is changed then only search for other file 
-    //in this file cycle else curr file name and size will be same 
+    //Now if the name of the file is changed then only search for other file
+    //in this file cycle else curr file name and size will be same
     vGetNameAndSizeOfCurrentLogFile();
 }
 
@@ -190,7 +190,7 @@ void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion)
 {
     BYTE* pbSStream = pvDataStream;
-	pbSStream = m_sLogInfo.pbSetConfigData(pbSStream, bytLogVersion);
+    pbSStream = m_sLogInfo.pbSetConfigData(pbSStream, bytLogVersion);
     pbSStream = Der_SetConfigData(pbSStream);
 
     // The default value of current log file should be the log file name
@@ -216,7 +216,7 @@ BYTE* CBaseLogObject::GetConfigData(BYTE* pvDataStream) const
  */
 UINT CBaseLogObject::unGetBufSize(void) const
 {
-	return (m_sLogInfo.unGetSize() + Der_unGetBufSize());
+    return (m_sLogInfo.unGetSize() + Der_unGetBufSize());
 }
 
 /**
@@ -232,7 +232,7 @@ UINT CBaseLogObject::GetID(void)
  */
 BOOL CBaseLogObject::bLogString(CString& omStr)
 {
-    if (m_sLogInfo.m_bEnabled == FALSE) 
+    if (m_sLogInfo.m_bEnabled == FALSE)
     {
         return FALSE;
     }
@@ -244,7 +244,7 @@ BOOL CBaseLogObject::bLogString(CString& omStr)
     }
 
     EnterCriticalSection(&m_CritSection);
-	_ftprintf(m_pLogFile, omStr.GetBuffer(MAX_PATH));
+    _ftprintf(m_pLogFile, omStr.GetBuffer(MAX_PATH));
     LeaveCriticalSection(&m_CritSection);
 
     return TRUE;
@@ -280,7 +280,10 @@ void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
     }
 
     EnterCriticalSection(&m_CritSection);
-	_ftprintf(m_pLogFile, om_LogText.GetBuffer(MAX_PATH));
+    if ( m_pLogFile )
+    {
+        _ftprintf(m_pLogFile, om_LogText.GetBuffer(MAX_PATH));
+    }
     LeaveCriticalSection(&m_CritSection);
 
     //Get the file size
@@ -291,7 +294,7 @@ void CBaseLogObject::vSetNextFileName(void)
 {
     //If it is not default file then remove "_File count no."
     if (_tcscmp(m_omCurrLogFile.GetBuffer(MAX_PATH), m_sLogInfo.m_sLogFileName) &&
-        m_omCurrLogFile.GetLength() > 2)
+            m_omCurrLogFile.GetLength() > 2)
     {
         m_omCurrLogFile.Left(m_omCurrLogFile.GetLength() - 2);
     }
@@ -305,8 +308,8 @@ void CBaseLogObject::vSetNextFileName(void)
     else
     {
         //Add the file count with "_"
-        m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, 
-                                                m_sLogInfo.m_sLogFileName);
+        m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt,
+                          m_sLogInfo.m_sLogFileName);
     }
 }
 
@@ -317,7 +320,8 @@ CString CBaseLogObject::omAddGroupCountToFileName(int nCount, char sFileName[])
     CString omStrAdd;
     omStrAdd.Format(FILE_COUNT_STR, nCount);
     //Remove Extension
-    int nExt = omFileName.Find(L'.');
+    //Arun- Reverse find the file path for '.'
+    int nExt = omFileName.ReverseFind(L'.');
     CString omExt = omFileName.Right(omFileName.GetLength() - nExt);
     omFileName = omFileName.Left(nExt);
     //Now add the file count
@@ -350,7 +354,7 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
     {
         // This function should be called every time logging is started
         m_CurrTriggerType = m_sLogInfo.m_sLogTrigger.m_unTriggerType;
-        char Mode[2] =  _T(" ");
+        char Mode[2] =  " ";
         Mode[0] = (m_sLogInfo.m_eFileMode == APPEND_MODE) ? L'a' : L'w';
         EnterCriticalSection(&m_CritSection);
         //In case user has deleted the content of the file
@@ -373,8 +377,8 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
         if (m_pLogFile != NULL)
         {
             CString omHeader = "";
-			vFormatHeader(omHeader, eBus);
-            _ftprintf(m_pLogFile,  _T("%s"), omHeader.GetBuffer(MAX_PATH));
+            vFormatHeader(omHeader, eBus);
+            _ftprintf(m_pLogFile,  "%s", omHeader.GetBuffer(MAX_PATH));
             bResult = TRUE;
         }
         LeaveCriticalSection(&m_CritSection);
@@ -390,21 +394,21 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
  */
 BOOL CBaseLogObject::bStopLogging()
 {
-	BOOL bResult = FALSE;
+    BOOL bResult = FALSE;
 
     if ((m_pLogFile != NULL) && (m_sLogInfo.m_bEnabled))
     {
         m_CurrTriggerType = NONE;
         CString omFooter = "";
         vFormatFooter(omFooter);
-        _ftprintf(m_pLogFile,  _T("%s\n"), omFooter.GetBuffer(MAX_PATH));
+        _ftprintf(m_pLogFile,  "%s\n", omFooter.GetBuffer(MAX_PATH));
         fclose(m_pLogFile);
         m_pLogFile = NULL;
         bResult = TRUE;
-		m_bNewSession = FALSE;	// Old session closed
+        m_bNewSession = FALSE;  // Old session closed
     }
 
-	return bResult;
+    return bResult;
 }
 
 #define MIN_NAME_LENGTH    5
@@ -415,7 +419,7 @@ BOOL CBaseLogObject::bStopLogging()
  */
 void CBaseLogObject::vGetNameAndSizeOfCurrentLogFile()
 {
-    //Two conditions to search for the current file present at the main file 
+    //Two conditions to search for the current file present at the main file
     //path folder
     //1.If logging is initialised
     //2.if file name is modified ie.m_omCurrLogFile belongs to diff. main file cycle
@@ -455,15 +459,15 @@ void CBaseLogObject::vGetNameAndSizeOfCurrentLogFile()
                         m_nCurrFileCnt = --i;
                     }
                 }
-                m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, 
-                                                            m_sLogInfo.m_sLogFileName);
+                m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt,
+                                  m_sLogInfo.m_sLogFileName);
             }
             //Now find the size of the file
             m_dTotalBytes = dwGetFileSize(m_omCurrLogFile);
         }
         else
         {
-            //If main file is not present initialise the current file 
+            //If main file is not present initialise the current file
             //with main file
             m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
             m_dTotalBytes = 0;
@@ -490,23 +494,23 @@ DWORD CBaseLogObject::dwGetFileSize(CString omFileName)
 
 void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
 {
-    omHeader = _T("***BUSMASTER ");
+    omHeader = "***BUSMASTER ";
 
     omHeader += m_omVersion;
-    omHeader += _T("***");
+    omHeader += "***";
     omHeader += L'\n';
-	if(eBus == CAN)
-	{
-		omHeader += PROTOCOL;
-		omHeader += _T(" CAN***");
-		omHeader += L'\n';
-	}
-	else if(eBus == J1939)
-	{
-		omHeader += PROTOCOL;
-		omHeader += _T(" J1939***");
-		omHeader += L'\n';
-	}
+    if(eBus == CAN)
+    {
+        omHeader += PROTOCOL;
+        omHeader += " CAN***";
+        omHeader += L'\n';
+    }
+    else if(eBus == J1939)
+    {
+        omHeader += PROTOCOL;
+        omHeader += " J1939***";
+        omHeader += L'\n';
+    }
     omHeader += BUS_LOG_HEADER;
     omHeader += L'\n';
     omHeader += BUS_LOG_START;
@@ -517,8 +521,8 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     GetLocalTime(&CurrSysTime);
     CString omBuf;
     omBuf.Format(BUS_LOG_START_DATE_TIME, CurrSysTime.wDay, CurrSysTime.wMonth,
-        CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute, 
-        CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
+                 CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute,
+                 CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
     omHeader += omBuf;
     omHeader += L'\n';
 
@@ -544,36 +548,36 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     }
     omHeader += L'\n';
 
-	// Update the channel and its baudrate information	
-	sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
-	int nNumChannels = 0;
-	GetChannelBaudRateDetails(controllerDetails, nNumChannels);
-	omHeader += BUS_LOG_BAUDRATE_START;
-	omHeader += L'\n';
-	CString strChannelNum = "";
-	for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
-	{
-		strChannelNum.Format(BUS_LOG_CHANNEL, nChannelNum, 
-						controllerDetails[nChannelNum - 1].m_omHardwareDesc,
-						controllerDetails[nChannelNum - 1].m_omStrBaudrate);
-		omHeader += strChannelNum;
-		omHeader += L'\n';
-	}
-	omHeader += BUS_LOG_BAUDRATR_END;
-	omHeader += L'\n';
+    // Update the channel and its baudrate information
+    sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
+    int nNumChannels = 0;
+    GetChannelBaudRateDetails(controllerDetails, nNumChannels);
+    omHeader += BUS_LOG_BAUDRATE_START;
+    omHeader += L'\n';
+    CString strChannelNum = "";
+    for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
+    {
+        strChannelNum.Format(BUS_LOG_CHANNEL, nChannelNum,
+                             controllerDetails[nChannelNum - 1].m_omHardwareDesc.c_str(),
+                             controllerDetails[nChannelNum - 1].m_omStrBaudrate.c_str());
+        omHeader += strChannelNum;
+        omHeader += L'\n';
+    }
+    omHeader += BUS_LOG_BAUDRATR_END;
+    omHeader += L'\n';
 
-	//Update Baud Rate and Associated DBC and DBF files
-	CStringArray aomList;
-	GetDatabaseFiles(aomList);
-	omHeader += BUS_LOG_DATABASE_START;
-	omHeader += L'\n';
-	for (int nIdx = 0; nIdx < aomList.GetSize(); nIdx++)
-	{
-		omHeader += "***" + aomList.GetAt(nIdx) + "***";
-		omHeader += L'\n';
-	}
-	omHeader += BUS_LOG_DATABASE_END;
-	omHeader += L'\n';
+    //Update Baud Rate and Associated DBC and DBF files
+    CStringArray aomList;
+    GetDatabaseFiles(aomList);
+    omHeader += BUS_LOG_DATABASE_START;
+    omHeader += L'\n';
+    for (int nIdx = 0; nIdx < aomList.GetSize(); nIdx++)
+    {
+        omHeader += "***" + aomList.GetAt(nIdx) + "***";
+        omHeader += L'\n';
+    }
+    omHeader += BUS_LOG_DATABASE_END;
+    omHeader += L'\n';
 }
 
 void CBaseLogObject::vFormatFooter(CString& omFooter)
@@ -583,8 +587,8 @@ void CBaseLogObject::vFormatFooter(CString& omFooter)
     GetLocalTime(&CurrSysTime);
     CString omBuf;
     omBuf.Format(BUS_LOG_END_DATE_TIME, CurrSysTime.wDay, CurrSysTime.wMonth,
-        CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute, 
-        CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
+                 CurrSysTime.wYear, CurrSysTime.wHour, CurrSysTime.wMinute,
+                 CurrSysTime.wSecond, CurrSysTime.wMilliseconds);
     omFooter += omBuf;
     omFooter += L'\n';
 
@@ -594,25 +598,25 @@ void CBaseLogObject::vFormatFooter(CString& omFooter)
 
 void CBaseLogObject::GetDatabaseFiles(CStringArray& omList)
 {
-	Der_GetDatabaseFiles(omList);
+    Der_GetDatabaseFiles(omList);
 }
 
 void CBaseLogObject::SetDatabaseFiles(const CStringArray& omList)
 {
-	Der_SetDatabaseFiles(omList);
+    Der_SetDatabaseFiles(omList);
 }
 
 // Set the baud rate details for each channel
 void CBaseLogObject::Der_SetChannelBaudRateDetails
-					(SCONTROLLER_DETAILS* controllerDetails, 
-					int nNumChannels)
+(SCONTROLLER_DETAILS* controllerDetails,
+ int nNumChannels)
 {
-	Der_SetChannelBaudRateDetails(controllerDetails, nNumChannels);
+    Der_SetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }
 
 // To get the channel baud rate
 void CBaseLogObject::GetChannelBaudRateDetails
-					(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
+(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
 {
-	Der_GetChannelBaudRateDetails(controllerDetails, nNumChannels);
+    Der_GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }

@@ -54,16 +54,16 @@ public:
     void vInitSignalWatchList();
     LRESULT vRemoveSignalFromMap(WPARAM wParam, LPARAM lParam);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CSigWatchDlg)
     enum { IDD = IDD_DLG_SIGNAL_WATCH };
     CSignalWatchListBox m_omSignalList;
     //}}AFX_DATA
 
-// Construction
+    // Construction
     CSigWatchDlg(CWnd* pParent = NULL);   // standard constructor
 
-// Operation
+    // Operation
     void vAddMsgSigIntoList(const CString& omStrMsgName,
                             const CStringArray& omSASignals,
                             const CStringArray& omSARaw,
@@ -73,14 +73,14 @@ public:
     void vSaveDefaultWinStatus( );
     void vSetDefaultWinStatus( );
     //void vUpdateWinStatus();
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSigWatchDlg)
-    protected:
+protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions
@@ -93,8 +93,8 @@ protected:
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     virtual BOOL OnInitDialog();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
@@ -104,7 +104,7 @@ private:
     WINDOWPLACEMENT m_sWinCurrStatus;
     INT m_anColWidth[defSW_LIST_COLUMN_COUNT];
     CImageList m_omSigImageList;
-	CWnd* m_pParent;
+    CWnd* m_pParent;
 private:
     void vDisplayMsgSigList(void);
     CCriticalSection m_omCSDispEntry;

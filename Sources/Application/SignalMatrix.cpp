@@ -146,9 +146,9 @@ END_MESSAGE_MAP()
   Member of      : CSignalMatrix
   Author(s)      : Raja N
   Date Created   : 15.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CSignalMatrix::OnPaint() 
+void CSignalMatrix::OnPaint()
 {
     // device context for painting
     CPaintDC sdc(this);
@@ -178,29 +178,29 @@ void CSignalMatrix::OnPaint()
         {
             // Create current bit rectangle
             CRect omCurrentBox( (int)(omClientRect.left + xOffset * nBits + nGap),
-                (int)(omClientRect.top + yOffset * nBytes + nGap),
-                (int)(omClientRect.left + xOffset * nBits + xOffset - nGap),
-                (int)(omClientRect.top + yOffset * nBytes + yOffset - nGap ));
+                                (int)(omClientRect.top + yOffset * nBytes + nGap),
+                                (int)(omClientRect.left + xOffset * nBits + xOffset - nGap),
+                                (int)(omClientRect.top + yOffset * nBytes + yOffset - nGap ));
             // Format value text
             CString omStrText;
             // Get Bit Index
             int nBitIndex = (defMAX_BYTE - 1 - nBits) +
-                                nBytes * defMAX_BYTE;
+                            nBytes * defMAX_BYTE;
             // Format bit text
             omStrText.Format( defFORMAT_MSGID_DECIMAL,
                               m_abSignalData[ nBitIndex ] );
             // Check type of bit it is
             switch( m_aunHighlight[ nBitIndex ] )
             {
-            // Not with in message length
-            case GRAYED:
+                    // Not with in message length
+                case GRAYED:
                 {
                     // Draw Grey Rectangle
                     dc.FillRect(&omCurrentBox,m_pDisabledBrush);
                 }
                 break;
-            // Highlighted bit
-            case HIGHLIGHT:
+                // Highlighted bit
+                case HIGHLIGHT:
                 {
                     // Fill back color
                     dc.FillRect(&omCurrentBox,m_pHighlightBrush);
@@ -213,8 +213,8 @@ void CSignalMatrix::OnPaint()
                         omStrText );
                 }
                 break;
-            // Non-Highlighted
-            case NO_HIGHLIGHT:
+                // Non-Highlighted
+                case NO_HIGHLIGHT:
                 {
                     // Fill back color
                     dc.FillRect( &omCurrentBox ,m_pNoHighlightBrush );
@@ -243,21 +243,21 @@ void CSignalMatrix::OnPaint()
   Member of      : CSignalMatrix
   Author(s)      : Raja N
   Date Created   : 15.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSignalMatrix::vResetHighlight()
 {
     // Clear Highlight
     UINT nCount;    //nCount is declared outside the for loop
-    for ( nCount = 0;nCount < m_unMessageLength * defBITS_IN_BYTE; nCount++)
+    for ( nCount = 0; nCount < m_unMessageLength * defBITS_IN_BYTE; nCount++)
     {
         m_aunHighlight[nCount] = NO_HIGHLIGHT;
     }
 
     // Clear bits that are not part of message
     for ( nCount = m_unMessageLength * defBITS_IN_BYTE;
-          nCount < MAX_SIGNALS;
-          nCount++ )
+            nCount < MAX_SIGNALS;
+            nCount++ )
     {
         m_aunHighlight[nCount] = GRAYED;
     }
@@ -282,7 +282,7 @@ void CSignalMatrix::vSetHighlight(const BYTE* pbySigMask, UINT unArrayLen)
     //Set the highlight bits
     UINT BitIndex = 0;
     for (UINT i = 0; i < unArrayLen; i++)
-    {   
+    {
         for (UINT nShift = 0; nShift < defBITS_IN_BYTE; nShift++)
         {
             m_aunHighlight[BitIndex] = ((pbySigMask[i] >> nShift) & 0x1)? HIGHLIGHT : NO_HIGHLIGHT;
@@ -301,7 +301,7 @@ void CSignalMatrix::vSetHighlight(const BYTE* pbySigMask, UINT unArrayLen)
   Member of      : CSignalMatrix
   Author(s)      : Raja N
   Date Created   : 15.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSignalMatrix::vResetValues()
 {
@@ -319,7 +319,7 @@ void CSignalMatrix::vResetValues()
   Member of      : CSignalMatrix
   Author(s)      : Raja N
   Date Created   : 15.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSignalMatrix::vSetValue(UINT* punValues)
 {
@@ -327,8 +327,8 @@ void CSignalMatrix::vSetValue(UINT* punValues)
     if ( punValues != NULL )
     {
         for ( UINT unIndex = 0;
-              unIndex < m_unMessageLength * defBITS_IN_BYTE;
-              unIndex++ )
+                unIndex < m_unMessageLength * defBITS_IN_BYTE;
+                unIndex++ )
         {
             //Get value at unIndex
             m_abSignalData[ unIndex ] = punValues[ unIndex ];
@@ -346,7 +346,7 @@ void CSignalMatrix::vSetValue(UINT* punValues)
   Member of      : CSignalMatrix
   Author(s)      : Raja N
   Date Created   : 15.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSignalMatrix::vSetMessageLength(UINT unMsgLength)
 {
@@ -366,7 +366,7 @@ void CSignalMatrix::vSetMessageLength(UINT unMsgLength)
   Member of      : CSignalMatrix
   Author(s)      : Raja N
   Date Created   : 15.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 void CSignalMatrix::vSetByteValue(UCHAR* punValues)
 {
@@ -377,21 +377,25 @@ void CSignalMatrix::vSetByteValue(UCHAR* punValues)
         UINT unValue;
         // Iterate through the array
         for ( UINT unIndex = 0;
-              unIndex < m_unMessageLength * defBITS_IN_BYTE;
-              unIndex++ )
+                unIndex < m_unMessageLength * defBITS_IN_BYTE;
+                unIndex++ )
         {
             //Get value at unIndex
             nByte = unIndex / defBITS_IN_BYTE;
             nBit = unIndex % defBITS_IN_BYTE;
             unValue = punValues[ nByte ] &
-                            ( 1 << nBit ) ? 1 : 0;
+                      ( 1 << nBit ) ? 1 : 0;
             if ( unValue == 1 )
+            {
                 m_abSignalData[ unIndex ] = 1;
+            }
             else
+            {
                 m_abSignalData[ unIndex ] = 0;
+            }
         }
-    // Update UI
-    Invalidate();
+        // Update UI
+        Invalidate();
     }
 }
 
@@ -409,7 +413,7 @@ void CSignalMatrix::vSetByteValue(UCHAR* punValues)
  Modified by      :
  Modification     :
 *******************************************************************************/
-BOOL CSignalMatrix::OnEraseBkgnd(CDC* /*pDC*/) 
+BOOL CSignalMatrix::OnEraseBkgnd(CDC* /*pDC*/)
 {
     // Return TRUE. Paint function will take care of erasing the background
     return TRUE;

@@ -40,7 +40,6 @@
 #define IDC_BTN_LOG_BROWSE              1010
 #define IDC_BTN_CSV_BROWSE              1011
 #define ID_CONVERT                      1012
-#define IDC_CBTN_CANCELEXPORT           1013
 #define IDC_COMBO_BUSTYPE               1015
 
 // Next default values for new objects

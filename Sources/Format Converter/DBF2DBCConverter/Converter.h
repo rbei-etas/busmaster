@@ -63,7 +63,7 @@ private:
     bool WriteToOutputFile(fstream& fileOutput);
     void CreateLogFile(fstream& fileLog);
     void create_Node_List(char*);
-    void DecryptData(list<string> &m_notProcessed);
+    void DecryptData(list<string>& m_notProcessed);
 
     unsigned int m_uiResultCode;
     list<string> m_notProcessed;

@@ -1,21 +1,21 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  ReadCanMsg.cpp
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/ReadCanMsg.cpv  $
-   
+
       Rev 1.2   07 Jun 2011 11:11:18   CANMNTTM
-    
-   
+
+
       Rev 1.1   15 Apr 2011 18:48:38   CANMNTTM
    Added RBEI Copyright information.
-   
+
       Rev 1.0   06 Dec 2010 18:47:22   rac2kor
-    
+
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 #include "DIL_J1939_stdafx.h"
@@ -115,11 +115,11 @@ BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
 
             if (bFound)
             {
-                /* A hole will be created. So make the list contiguous by moving slots 
+                /* A hole will be created. So make the list contiguous by moving slots
                 down. If its the last slot of the array, then no movement takes place*/
                 m_omHandleToNodeMgrMap.RemoveKey(m_ahActionEvent[Index]);
 
-                // Removing an entry means that a hole will be created. This 
+                // Removing an entry means that a hole will be created. This
                 // means the last event handle can be directly copied onto the
                 // hole and the last entry can be removed.
                 m_ahActionEvent[Index] = m_ahActionEvent[m_nEvents - 1];
@@ -137,10 +137,10 @@ BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
 }
 DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
     if (pThreadParam != NULL)
     {
-        CReadCanMsg* pCurrObj = (CReadCanMsg *) pThreadParam->m_pBuffer;
+        CReadCanMsg* pCurrObj = (CReadCanMsg*) pThreadParam->m_pBuffer;
         if (pCurrObj != NULL)
         {
             pThreadParam->m_unActionCode = INVOKE_FUNCTION; // Set default action
@@ -154,7 +154,7 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
             while (bLoopON)
             {
                 dwWaitRet = WaitForMultipleObjects(pCurrObj->m_nEvents,
-                    pCurrObj->m_ahActionEvent, FALSE, INFINITE);
+                                                   pCurrObj->m_ahActionEvent, FALSE, INFINITE);
 
                 ///// TEMP : BEGIN
                 DWORD dwLLimit = WAIT_OBJECT_0;
@@ -167,7 +167,7 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
                     switch (pThreadParam->m_unActionCode)
                     {
                         case INVOKE_FUNCTION:
-                        {                            
+                        {
                             //Get the handle's index and pass it
                             byHIndex = (BYTE)(dwWaitRet - WAIT_OBJECT_0);
                             HANDLE hHandleSet = pCurrObj->m_ahActionEvent[byHIndex];
@@ -177,7 +177,7 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
                                 //vRetrieveDataFromBuffer to read from that buffer
                                 pCurrObj->vRetrieveDataFromBuffer(byNodeIndex);
                             }
-                            //BOOL Result = ResetEvent(hHandleSet);        
+                            //BOOL Result = ResetEvent(hHandleSet);
                             ResetEvent(hHandleSet);
                         }
                         break;
@@ -189,15 +189,18 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
                         case INACTION:
                         {
                             // Signal the owner
-                            SetEvent(pThreadParam->m_hThread2Owner); Sleep(0);
+                            SetEvent(pThreadParam->m_hThread2Owner);
+                            Sleep(0);
                             // Wait until owner signals back.
                             WaitForSingleObject(pThreadParam->m_hOwner2Thread, INFINITE);
                             // Signal the owner
-                            SetEvent(pThreadParam->m_hThread2Owner); Sleep(0);
+                            SetEvent(pThreadParam->m_hThread2Owner);
+                            Sleep(0);
                         }
                         break;
                         case CREATE_TIME_MAP:
-                        default: break;
+                        default:
+                            break;
                     }
                 }
                 else if ((dwWaitRet >= dwLLError) && (dwWaitRet <= dwULError))
@@ -216,19 +219,19 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
             }
             SetEvent(pThreadParam->hGetExitNotifyEvent());
         }
-    }    
+    }
     return 0;
 }
 
 void CReadCanMsg::vRetrieveDataFromBuffer(BYTE byIndex)
 {
     //Get the node manager and indicate to read data
-    CNodeConManager* pouNodeManager = 
+    CNodeConManager* pouNodeManager =
         CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(byIndex);
     if (pouNodeManager != NULL)
     {
         pouNodeManager->vReadCANdataBuffer();
-    }    
+    }
 }
 
 void CReadCanMsg::vDoInit(void)

@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  Include this for the complete OLI
 * @remark The header structure of the OLI may change
@@ -29,42 +29,42 @@
 * @image html "figure_oli_pap.gif"
 * Figure 2: Typical OLI call sequence
 
-	\addtogroup GROUP_OLI_COMMON OLI Common
-	@{
-		\defgroup GROUP_OLI_COMMON_BASE Base
-		\defgroup GROUP_OLI_COMMON_ERROR Error Handling
-		\defgroup GROUP_OLI_COMMON_CONFIGURATION Configuration
-		\defgroup GROUP_OLI_COMMON_LINK Link
-		\defgroup GROUP_OLI_COMMON_QUEUES Queues
-		\defgroup GROUP_OLI_COMMON_MESSAGES Messages
-		\defgroup GROUP_OLI_COMMON_FILTERS Filters
-		\defgroup GROUP_OLI_COMMON_EXCEPTIONS Exceptions
-		\ingroup GROUP_OLI_COMMON
-	@}
+    \addtogroup GROUP_OLI_COMMON OLI Common
+    @{
+        \defgroup GROUP_OLI_COMMON_BASE Base
+        \defgroup GROUP_OLI_COMMON_ERROR Error Handling
+        \defgroup GROUP_OLI_COMMON_CONFIGURATION Configuration
+        \defgroup GROUP_OLI_COMMON_LINK Link
+        \defgroup GROUP_OLI_COMMON_QUEUES Queues
+        \defgroup GROUP_OLI_COMMON_MESSAGES Messages
+        \defgroup GROUP_OLI_COMMON_FILTERS Filters
+        \defgroup GROUP_OLI_COMMON_EXCEPTIONS Exceptions
+        \ingroup GROUP_OLI_COMMON
+    @}
 
-	\addtogroup GROUP_OLI_CAN OLI CAN
-	@{
-		\defgroup GROUP_OLI_CAN_LINKS Link
-		\defgroup GROUP_OLI_CAN_MESSAGES Messages
-		\defgroup GROUP_OLI_CAN_FILTERS Filters
-		\ingroup GROUP_OLI_CAN
-	@}
+    \addtogroup GROUP_OLI_CAN OLI CAN
+    @{
+        \defgroup GROUP_OLI_CAN_LINKS Link
+        \defgroup GROUP_OLI_CAN_MESSAGES Messages
+        \defgroup GROUP_OLI_CAN_FILTERS Filters
+        \ingroup GROUP_OLI_CAN
+    @}
 
-	\addtogroup GROUP_OLI_FLEXRAY OLI Flexray
-	@{
-		\defgroup GROUP_OLI_FLEXRAY_LINKS Link
-		\defgroup GROUP_OLI_FLEXRAY_MESSAGES Messages
-		\defgroup GROUP_OLI_FLEXRAY_FILTERS Filters
-		\ingroup GROUP_OLI_FLEXRAY
-	@}
+    \addtogroup GROUP_OLI_FLEXRAY OLI Flexray
+    @{
+        \defgroup GROUP_OLI_FLEXRAY_LINKS Link
+        \defgroup GROUP_OLI_FLEXRAY_MESSAGES Messages
+        \defgroup GROUP_OLI_FLEXRAY_FILTERS Filters
+        \ingroup GROUP_OLI_FLEXRAY
+    @}
 
-	\addtogroup GROUP_OLI_LIN OLI LIN
-	@{
-		\defgroup GROUP_OLI_LIN_LINKS Link
-		\defgroup GROUP_OLI_LIN_MESSAGES Messages
-		\defgroup GROUP_OLI_LIN_FILTERS Filters
-		\ingroup GROUP_OLI_LIN
-	@}
+    \addtogroup GROUP_OLI_LIN OLI LIN
+    @{
+        \defgroup GROUP_OLI_LIN_LINKS Link
+        \defgroup GROUP_OLI_LIN_MESSAGES Messages
+        \defgroup GROUP_OLI_LIN_FILTERS Filters
+        \ingroup GROUP_OLI_LIN
+    @}
 */
 
 /**

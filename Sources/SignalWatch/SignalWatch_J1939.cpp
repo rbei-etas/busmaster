@@ -26,18 +26,18 @@ int ReadJ1939DataBuffer(CSignalWatch_J1939* pSWJ1939)
         HRESULT Result = pSWJ1939->m_ouMsgBufVSE_J.ReadFromBuffer(nType, abyData, nSize);
         if (Result == ERR_READ_MEMORY_SHORT)
         {
-            TRACE(_T("ERR_READ_MEMORY_SHORT"));
+            TRACE("ERR_READ_MEMORY_SHORT");
         }
         else if (Result == EMPTY_APP_BUFFER)
         {
-            TRACE(_T("EMPTY_APP_BUFFER"));
+            TRACE("EMPTY_APP_BUFFER");
         }
         else if (Result == CALL_SUCCESS)
         {
             sMsg.vSetDataStream(abyData);
             pSWJ1939->vDisplayInSigWatchWnd(sMsg);
         }
-        
+
     }
     return 0;
 }
@@ -46,7 +46,7 @@ DWORD WINAPI SigWatchDataReadThreadProc_J(LPVOID pVoid)
 {
     /*USES_CONVERSION;*/
 
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
     if (pThreadParam == NULL)
     {
         return (DWORD)-1;
@@ -96,7 +96,7 @@ BOOL CSignalWatch_J1939::InitInstance(void)
     m_pouSigWnd = NULL;
     m_pMsgInterPretObj_J = NULL;
     m_ouReadThread.m_hActionEvent = m_ouMsgBufVSE_J.hGetNotifyingEvent();
-	return TRUE;
+    return TRUE;
 }
 
 int CSignalWatch_J1939::ExitInstance(void)
@@ -114,16 +114,16 @@ int CSignalWatch_J1939::ExitInstance(void)
     DeleteCriticalSection(&m_omCritSecSW); //delete critical section
 
     if (m_pouSigWnd != NULL)
-    {   
+    {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
         m_pouSigWnd = NULL;
     }
-	return TRUE;
+    return TRUE;
 }
 
 BOOL CSignalWatch_J1939::bStartSigWatchReadThread()
-{   
+{
     m_ouReadThread.m_pBuffer = this;
     m_ouReadThread.bStartThread(SigWatchDataReadThreadProc_J);
     return TRUE;
@@ -142,12 +142,12 @@ void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
         omPhyValues.RemoveAll();
 
         if (m_pMsgInterPretObj_J->bInterPretJ1939_MSGS(m_bHex ? HEXADECIMAL : DEC,
-                                                       sMsg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),
-                                                       sMsg.m_unDLC,
-                                                       sMsg.m_pbyData,
-                                                       omMsgName,
-                                                       omSigInfoArray) == TRUE)  
-        {                   
+                sMsg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),
+                sMsg.m_unDLC,
+                sMsg.m_pbyData,
+                omMsgName,
+                omSigInfoArray) == TRUE)
+        {
             UINT unCount = (UINT)omSigInfoArray.GetSize();
             for (UINT i = 0; i < unCount; i++)
             {
@@ -159,64 +159,66 @@ void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
             if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
             {
                 m_pouSigWnd->vAddMsgSigIntoList(omMsgName,omSigNames, omRawValues, omPhyValues, FALSE);
-            }            
+            }
         }
     }
     LeaveCriticalSection(&m_omCritSecSW);
-	
-	//delete the invalid entries
+
+    //delete the invalid entries
     vDeleteRemovedListEntries();
 }
 
 void CSignalWatch_J1939::vDeleteRemovedListEntries()
 
 {
-	if ((m_pMsgInterPretObj_J != NULL) && (m_pouSigWnd != NULL))
-	{
-		CStringArray strMsgList; 
-		int inSize = 0;
+    if ((m_pMsgInterPretObj_J != NULL) && (m_pouSigWnd != NULL))
+    {
+        CStringArray strMsgList;
+        int inSize = 0;
 
-		//get the number of signals
-		int iCount = (int)m_pouSigWnd->m_omSignalList.GetItemCount(); 
+        //get the number of signals
+        int iCount = (int)m_pouSigWnd->m_omSignalList.GetItemCount();
 
-		for(int iIndex = 0; iIndex < iCount ; iIndex++ )
-		{
-			CString strMsgName = m_pouSigWnd->m_omSignalList.GetItemText(iIndex, 0);
-			inSize = (int)strMsgList.GetSize(); 
-			bool bFound = false;
+        for(int iIndex = 0; iIndex < iCount ; iIndex++ )
+        {
+            CString strMsgName = m_pouSigWnd->m_omSignalList.GetItemText(iIndex, 0);
+            inSize = (int)strMsgList.GetSize();
+            bool bFound = false;
 
-			//check for the unique message name 
-			for(int inPos = 0; inPos < inSize ; inPos++ )
-			{
-				if(strMsgName.CompareNoCase(strMsgList.GetAt(inPos)) == 0 )
-				{
-					bFound = true;
-					break;
-				}
-			}
+            //check for the unique message name
+            for(int inPos = 0; inPos < inSize ; inPos++ )
+            {
+                if(strMsgName.CompareNoCase(strMsgList.GetAt(inPos)) == 0 )
+                {
+                    bFound = true;
+                    break;
+                }
+            }
 
-			//add the message in list
-			if(bFound == false)
-				strMsgList.Add(strMsgName); 
-		}
+            //add the message in list
+            if(bFound == false)
+            {
+                strMsgList.Add(strMsgName);
+            }
+        }
 
-		//get the message count
-		inSize = (int)strMsgList.GetSize(); 
+        //get the message count
+        inSize = (int)strMsgList.GetSize();
 
-		for(int inPos = 0; inPos < inSize ; inPos++ )
-		{
-			CString strMsgName = strMsgList.GetAt(inPos); 
-			int iSignalCount = m_pMsgInterPretObj_J->nGetJ1939SignalCount(strMsgName);
-			if(iSignalCount == 0 ) //no signal is configured
-			{
-				if((int)m_pouSigWnd->m_omSignalList.GetItemCount() > 0  )
-				{
-					//remove the signal from signal watch window.
-					m_pouSigWnd->SendMessage( WM_REMOVE_SIGNAL, 0, (LPARAM) &strMsgName);
-				}
-			}
-		}
-	}
+        for(int inPos = 0; inPos < inSize ; inPos++ )
+        {
+            CString strMsgName = strMsgList.GetAt(inPos);
+            int iSignalCount = m_pMsgInterPretObj_J->nGetJ1939SignalCount(strMsgName);
+            if(iSignalCount == 0 ) //no signal is configured
+            {
+                if((int)m_pouSigWnd->m_omSignalList.GetItemCount() > 0  )
+                {
+                    //remove the signal from signal watch window.
+                    m_pouSigWnd->SendMessage( WM_REMOVE_SIGNAL, 0, (LPARAM) &strMsgName);
+                }
+            }
+        }
+    }
 }
 
 HRESULT CSignalWatch_J1939::SW_DoInitialization()
@@ -249,7 +251,7 @@ HRESULT CSignalWatch_J1939::SW_ShowAddDelSignalsDlg(CWnd* pParent, CMainEntryLis
 }
 
 HRESULT CSignalWatch_J1939::SW_ShowSigWatchWnd(CWnd* /*pParent*/, INT nCmd)
-{    
+{
     if (m_pouSigWnd != NULL)
     {
         return m_pouSigWnd->ShowWindow(nCmd);
@@ -266,7 +268,7 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(void* pbyConfigData)
     UINT nDebugSize  = 0;
     BYTE* pbyTemp = (BYTE*)pbyConfigData;
     if ((m_pouSigWnd != NULL) && (pbyTemp != NULL))
-    {   
+    {
         m_pouSigWnd->GetWindowPlacement(&WndPlace);
         COPY_DATA(pbyTemp, &WndPlace, sizeof (WINDOWPLACEMENT));
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
@@ -282,7 +284,7 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
 {
     const BYTE* pbyTemp = (BYTE*)pbyConfigData;
     if ((pbyConfigData != NULL) && (m_pouSigWnd != NULL))
-    {        
+    {
         WINDOWPLACEMENT WndPlace;
         memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
         m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
@@ -294,8 +296,8 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
     }
     if(m_pouSigWnd != NULL)
     {
-		//Signal watch window will move the List control in OnSize().
-		//So the default values should be as followes.
+        //Signal watch window will move the List control in OnSize().
+        //So the default values should be as followes.
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
         {
             RECT sClientRect;
@@ -326,7 +328,7 @@ HRESULT CSignalWatch_J1939::SW_UpdateMsgInterpretObj(void* pvRefObj)
     EnterCriticalSection(&m_omCritSecSW);
     if (m_pMsgInterPretObj_J == NULL)
     {
-        m_pMsgInterPretObj_J = new CMsgInterpretationJ1939;        
+        m_pMsgInterPretObj_J = new CMsgInterpretationJ1939;
     }
     RefObj->vCopy(m_pMsgInterPretObj_J);
     LeaveCriticalSection(&m_omCritSecSW);

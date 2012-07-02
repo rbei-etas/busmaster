@@ -34,3 +34,9 @@
 #define defVTAB_MAX_DESC_LEN 65  /* Maximum length of a value descriptor */
 #define defVTAB_MAX_TNAM_LEN 65  /* Maximum length of the table name */
 #define defVTAB_MAX_VALU_LEN 65  /* Maximum length of value */
+
+
+
+#define BUS_CAN         0
+#define PROTOCAL_J1939  1
+#define NONE            -1

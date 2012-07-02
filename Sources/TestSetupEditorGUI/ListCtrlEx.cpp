@@ -114,14 +114,14 @@ END_MESSAGE_MAP()
  Date Created   : 22.07.2004
  Modifications  :
 ******************************************************************************/
-void CListCtrlEx::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult) 
+void CListCtrlEx::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
     // Get the item index
-    LV_ITEM *plvItem = &pDispInfo->item;
+    LV_ITEM* plvItem = &pDispInfo->item;
     // Proceed only for valid item change
     if( plvItem->iItem != -1 &&  // valid item
-        plvItem->pszText != NULL)       // valid text
+            plvItem->pszText != NULL)       // valid text
     {
         // Copy the change information. This is required to validate the
         // data from OnItemChanged.
@@ -134,7 +134,7 @@ void CListCtrlEx::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
             // this will invoke an ItemChanged handler in parent
             CString cs = GetItemText( plvItem->iItem,0);
             SetItemText( plvItem->iItem, 0, cs);
-            CWnd* wndParent = GetParent()->GetParent()->GetParent();   
+            CWnd* wndParent = GetParent()->GetParent()->GetParent();
             ((CTSEditorChildFrame*)wndParent)->vSetModifiedFlag(TRUE);
         }
     }
@@ -151,7 +151,7 @@ void CListCtrlEx::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CListCtrlEx::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CListCtrlEx::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
@@ -173,7 +173,7 @@ void CListCtrlEx::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CListCtrlEx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CListCtrlEx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
@@ -200,7 +200,7 @@ void CListCtrlEx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
  Modifications  : Raja N on 08.07.2005, Modified the function send
                   LVN_BEGINLABELEDIT before showing the UI control.
 *******************************************************************************/
-void CListCtrlEx::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult) 
+void CListCtrlEx::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     // TODO: Add your control notification handler code here
     if( m_bSingleClickActivate == FALSE )
@@ -213,8 +213,8 @@ void CListCtrlEx::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
         // Send Notification to Parent so that Begin Label Edit
         // Handler will be getting called
         NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-        
-        // Send Notification to parent of ListView ctrl 
+
+        // Send Notification to parent of ListView ctrl
         LV_DISPINFO lvDispInfo;
         lvDispInfo.hdr.hwndFrom = m_hWnd;
         lvDispInfo.hdr.idFrom = GetDlgCtrlID();
@@ -224,11 +224,11 @@ void CListCtrlEx::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
         lvDispInfo.item.iSubItem = pNMListView->iSubItem;
         lvDispInfo.item.pszText = NULL;
         lvDispInfo.item.cchTextMax = 0;
-        CWnd * pWnd = GetParent();
+        CWnd* pWnd = GetParent();
         if( pWnd != NULL )
         {
             pWnd->SendMessage( WM_NOTIFY, GetDlgCtrlID(),
-                                  (LPARAM)&lvDispInfo );
+                               (LPARAM)&lvDispInfo );
         }
         // Call Handler Function with required parameters
         vShowControl(pNMListView->iItem, pNMListView->iSubItem);
@@ -248,7 +248,7 @@ void CListCtrlEx::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
  Modifications  : Raja N on 01.08.2004, Modified the function name ShowControl
                   as vShowControl.
 *******************************************************************************/
-void CListCtrlEx::OnClick(NMHDR* pNMHDR, LRESULT* pResult) 
+void CListCtrlEx::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     if( m_bSingleClickActivate == TRUE )
     {
@@ -257,12 +257,12 @@ void CListCtrlEx::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
         {
             SetFocus();
         }
-        
+
         NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
         // Call Handler Function with required parameters
         vShowControl(pNMListView->iItem, pNMListView->iSubItem);
     }
-    
+
     *pResult = 0;
 }
 
@@ -350,7 +350,7 @@ void CListCtrlEx::vShowControl(int nItem, int nSubItem)
         CString omStr = STR_EMPTY;
         // Got the entry type from the CMap
         if( m_omListItemType.Lookup(
-                lGetMapID(nItem, nSubItem) , sInfo) == TRUE )
+                    lGetMapID(nItem, nSubItem) , sInfo) == TRUE )
         {
             // Begining of Controls creation
             m_bCreating = TRUE;
@@ -363,7 +363,7 @@ void CListCtrlEx::vShowControl(int nItem, int nSubItem)
                 case eBuddy:
                     // Get the numeric control parameters
                     if( m_omNumDetails.Lookup( lGetMapID(nItem, nSubItem),
-                                                sNumInfo ) == TRUE )
+                                               sNumInfo ) == TRUE )
                     {
                         pomNumItem(nItem, nSubItem, sNumInfo);
                     }
@@ -375,23 +375,23 @@ void CListCtrlEx::vShowControl(int nItem, int nSubItem)
                         pomNumItem(nItem, nSubItem, sNumInfo);
                     }
                     break;
-                // General Edit control
+                    // General Edit control
                 case eText:
                     pomEditItem(nItem, nSubItem);
                     break;
-                // Editalble Combo Box
+                    // Editalble Combo Box
                 case eComboList:
                     pomComboList(nItem, nSubItem, sInfo.m_omEntries);
                     break;
-                // Non - Editable combo box
+                    // Non - Editable combo box
                 case eComboItem:
                     pomComboItem(nItem, nSubItem, sInfo.m_omEntries);
                     break;
-                // User function will be executed
+                    // User function will be executed
                 case eUser:
                     // Get the user program pointer and parameter details
                     if( m_omUserProg.Lookup( lGetMapID(nItem, nSubItem),
-                                                sProgInfo ) == TRUE )
+                                             sProgInfo ) == TRUE )
                     {
                         sProgInfo.m_pfHandler( this,
                                                nItem,
@@ -404,7 +404,7 @@ void CListCtrlEx::vShowControl(int nItem, int nSubItem)
                         ASSERT( FALSE );
                     }
                     break;
-                // Toggling type control
+                    // Toggling type control
                 case eBool:
                     // Get the current text
                     omStr = GetItemText(nItem, nSubItem);
@@ -425,20 +425,20 @@ void CListCtrlEx::vShowControl(int nItem, int nSubItem)
 
                     // For boolean type this is the end of Controls creation
                     m_bCreating = FALSE;
-                    
+
                     // For boolean send the EndLAbleEdit message here itself
                     LV_DISPINFO lvDispInfo;
                     lvDispInfo.hdr.hwndFrom = m_hWnd;
-                    lvDispInfo.hdr.idFrom = GetDlgCtrlID(); 
+                    lvDispInfo.hdr.idFrom = GetDlgCtrlID();
                     lvDispInfo.hdr.code = LVN_ENDLABELEDIT;
-                    lvDispInfo.item.mask = LVIF_TEXT;   
+                    lvDispInfo.item.mask = LVIF_TEXT;
                     lvDispInfo.item.iItem = nItem;
                     lvDispInfo.item.iSubItem = nSubItem;
                     lvDispInfo.item.pszText = LPTSTR((LPCTSTR)omStr);
                     lvDispInfo.item.cchTextMax = omStr.GetLength();
                     SendMessage( WM_NOTIFY, GetDlgCtrlID(),(LPARAM)&lvDispInfo);
                     break;
-            case eNoControl:
+                case eNoControl:
                     break;
                 default:
                     // Unknown control type
@@ -464,7 +464,7 @@ void CListCtrlEx::vShowControl(int nItem, int nSubItem)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CComboItem * CListCtrlEx::pomComboItem(int nItem,
+CComboItem* CListCtrlEx::pomComboItem(int nItem,
                                       int nSubItem,
                                       const CStringArray& omList)
 {
@@ -503,15 +503,15 @@ CComboItem * CListCtrlEx::pomComboItem(int nItem,
         omRect.right = omClientRect.right;
     }
     //basic code end
-    
+
     //dropdown area
     omRect.bottom += 100;
-    
+
     // Set the standard style and combobox type
     DWORD dwStyle =  WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                      CBS_DROPDOWNLIST;
     // Create the non editable combobox
-    CComboItem *pomCBox = NULL;
+    CComboItem* pomCBox = NULL;
     // Create the control
     pomCBox = new CComboItem( nItem,        // Item Index
                               nSubItem,     // Sub Item Index
@@ -525,7 +525,7 @@ CComboItem * CListCtrlEx::pomComboItem(int nItem,
         // Set the text
         pomCBox->SetWindowText(strFind);
         // Select the text from the list
-        pomCBox->SelectString(-1 , strFind.GetBuffer(1)); 
+        pomCBox->SelectString(-1 , strFind.GetBuffer(1));
         // Show the drop-down list
         pomCBox->ShowDropDown();
     }
@@ -534,7 +534,7 @@ CComboItem * CListCtrlEx::pomComboItem(int nItem,
         CString omStrErr;
         omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_ITEM);
         AfxMessageBox( omStrErr );
-    }    
+    }
     // The return the pointer just for reference
     // Destroy will delete this memory. So this should not be deleted outside
     return pomCBox;
@@ -555,9 +555,9 @@ CComboItem * CListCtrlEx::pomComboItem(int nItem,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CComboItem * CListCtrlEx::pomComboList( int nItem,
-                                          int nSubItem,
-                                          const CStringArray& omList)
+CComboItem* CListCtrlEx::pomComboList( int nItem,
+                                       int nSubItem,
+                                       const CStringArray& omList)
 {
     // Get the item text from the list control
     CString strFind = GetItemText(nItem, nSubItem);
@@ -602,9 +602,9 @@ CComboItem * CListCtrlEx::pomComboList( int nItem,
     DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                     CBS_DROPDOWN;
 
-    CComboItem *pomCBox = NULL;
+    CComboItem* pomCBox = NULL;
     pomCBox = new CComboItem(nItem, nSubItem, omList, strFind, TRUE);
-    
+
     if( pomCBox != NULL )
     {
         // Create the UI control
@@ -627,7 +627,7 @@ CComboItem * CListCtrlEx::pomComboList( int nItem,
         omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_LIST);
         AfxMessageBox( omStrErr );
     }
-    
+
     // The returned pointer should not be saved
     return pomCBox;
 }
@@ -643,14 +643,14 @@ CComboItem * CListCtrlEx::pomComboList( int nItem,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CEdit *CListCtrlEx::pomEditItem(int nItem, int nSubItem)
+CEdit* CListCtrlEx::pomEditItem(int nItem, int nSubItem)
 {
     // Item rect and Client rect
     CRect omRect, omClientRect;
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
-    { 
-        return NULL;    
+    {
+        return NULL;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -658,7 +658,7 @@ CEdit *CListCtrlEx::pomEditItem(int nItem, int nSubItem)
     GetClientRect(omClientRect);
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
-        CSize size(omRect.left,0);      
+        CSize size(omRect.left,0);
         Scroll(size);
         omRect.left -= size.cx;
     }
@@ -667,10 +667,10 @@ CEdit *CListCtrlEx::pomEditItem(int nItem, int nSubItem)
     // If the size is bigger then the client size then resizes
     if(omRect.right > omClientRect.right)
     {
-       omRect.right = omClientRect.right;
+        omRect.right = omClientRect.right;
     }
 
-    // Get Column alignment 
+    // Get Column alignment
     LV_COLUMN lvcol;
     lvcol.mask = LVCF_FMT;
     GetColumn(nSubItem, &lvcol);
@@ -694,7 +694,7 @@ CEdit *CListCtrlEx::pomEditItem(int nItem, int nSubItem)
     // Get the item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control now
-    CEdit *pomEdit = NULL;
+    CEdit* pomEdit = NULL;
     pomEdit = new CEditItem(nItem, nSubItem, omStrText);
     if( pomEdit != NULL )
     {
@@ -724,14 +724,14 @@ CEdit *CListCtrlEx::pomEditItem(int nItem, int nSubItem)
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-CNumEdit *CListCtrlEx::pomNumItem( int nItem, int nSubItem,
-                                     const SNUMERICINFO& sInfo)
+CNumEdit* CListCtrlEx::pomNumItem( int nItem, int nSubItem,
+                                   const SNUMERICINFO& sInfo)
 {
     CRect omRect;
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
-    { 
-        return NULL;    
+    {
+        return NULL;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -740,7 +740,7 @@ CNumEdit *CListCtrlEx::pomNumItem( int nItem, int nSubItem,
     GetClientRect(omClientRect);
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
-        CSize size( omRect.left, 0 );     
+        CSize size( omRect.left, 0 );
         Scroll( size );
         omRect.left -= size.cx;
     }
@@ -750,7 +750,7 @@ CNumEdit *CListCtrlEx::pomNumItem( int nItem, int nSubItem,
         omRect.right = omClientRect.right;
     }
 
-    // Get Column alignment 
+    // Get Column alignment
     LV_COLUMN lvcol;
     lvcol.mask = LVCF_FMT;
     GetColumn(nSubItem, &lvcol);
@@ -764,16 +764,16 @@ CNumEdit *CListCtrlEx::pomNumItem( int nItem, int nSubItem,
     {
         dwStyle = ES_RIGHT;
     }
-    else 
+    else
     {
         dwStyle = ES_CENTER;
     }
-    // Set the standard windows style 
+    // Set the standard windows style
     dwStyle |=WS_BORDER|WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
     // Get the selected item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control
-    CNumEdit *pomEdit = NULL;
+    CNumEdit* pomEdit = NULL;
     pomEdit = new CNumEdit(nItem, nSubItem, omStrText, sInfo);
     if( pomEdit != NULL )
     {
@@ -802,8 +802,8 @@ CNumEdit *CListCtrlEx::pomNumItem( int nItem, int nSubItem,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CListCtrlEx::vSetNumericInfo( int nRow, int nColunm, 
-                                     const SNUMERICINFO& sInfo)
+void CListCtrlEx::vSetNumericInfo( int nRow, int nColunm,
+                                   const SNUMERICINFO& sInfo)
 {
     // Get the Unique Index
     int nIndex = lGetMapID(nRow, nColunm);
@@ -824,8 +824,8 @@ void CListCtrlEx::vSetNumericInfo( int nRow, int nColunm,
  Date Created   : 22.07.2004
  Modifications  :
 *******************************************************************************/
-void CListCtrlEx::vSetUserProgInfo( int nRow, int nColunm, 
-                                     const SUSERPROGINFO& sUSerProgInfo)
+void CListCtrlEx::vSetUserProgInfo( int nRow, int nColunm,
+                                    const SUSERPROGINFO& sUSerProgInfo)
 {
     // Get the Unique Index
     int nIndex = lGetMapID(nRow, nColunm);
@@ -913,23 +913,23 @@ void CListCtrlEx::vSetMapColumnCount(int nColumn)
 
 /******************************************************************************
 Function Name  :  pomBrowserIem
-Input(s)       :  
+Input(s)       :
 Output         :  CWnd
-Functionality  :   
+Functionality  :
 Member of      :  *CListCtrlEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
-CWnd *CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
+CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
 {
     // Item rect and Client rect
     CRect omRect, omClientRect;
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
-    { 
-        return NULL;    
+    {
+        return NULL;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -937,7 +937,7 @@ CWnd *CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     GetClientRect(omClientRect);
     if( omRect.left < 0 || omRect.left > omClientRect.right )
     {
-        CSize size(omRect.left,0);      
+        CSize size(omRect.left,0);
         Scroll(size);
         omRect.left -= size.cx;
     }
@@ -946,10 +946,10 @@ CWnd *CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     // If the size is bigger then the client size then resizes
     if(omRect.right > omClientRect.right)
     {
-       omRect.right = omClientRect.right;
+        omRect.right = omClientRect.right;
     }
 
-    // Get Column alignment 
+    // Get Column alignment
     LV_COLUMN lvcol;
     lvcol.mask = LVCF_FMT;
     GetColumn(nSubItem, &lvcol);
@@ -979,12 +979,12 @@ CWnd *CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     omButtonRect.left = omRect.right - def_WIDTH_BUTTON;
     omEditRect.right = omRect.right - def_HEIGHT_BUTTON;
 
-	if(omList.GetSize() >=2)
+    if(omList.GetSize() >=2)
     {
-        CButtonItem *pomButton  = new CButtonItem(omList.GetAt(0), omList.GetAt(1));
-        CBrowseEditItem *pomEdit = new CBrowseEditItem(nItem, nSubItem, omStrText, pomButton);
+        CButtonItem* pomButton  = new CButtonItem(omList.GetAt(0), omList.GetAt(1));
+        CBrowseEditItem* pomEdit = new CBrowseEditItem(nItem, nSubItem, omStrText, pomButton);
         pomButton->vSetEditItem(pomEdit);
-       
+
         if( pomEdit != NULL )
         {
             pomEdit->Create(dwStyle, omEditRect, this, IDC_CONTROL);
@@ -993,10 +993,10 @@ CWnd *CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
         {
             dwStyle = WS_CHILD|WS_VISIBLE|BS_TEXT|BS_BOTTOM;
             //ID is not required
-            pomButton->Create("...", dwStyle, omButtonRect, this, 0); 
+            pomButton->Create("...", dwStyle, omButtonRect, this, 0);
         }
         //Edit box will have the focus first
-        pomEdit->SetFocus();        
+        pomEdit->SetFocus();
     }
     return NULL;
 }
@@ -1004,22 +1004,22 @@ CWnd *CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
 Function Name  :  OnEraseBkgnd
 Input(s)       :  CDC* - The pointer of Client DC
 Output         :  BOOL - Nonzero if it erases the background; otherwise 0.
-Functionality  :   
+Functionality  :
 Member of      :  CListCtrlEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 BOOL CListCtrlEx::OnEraseBkgnd(CDC* pDC)
 {
     CRect omClientRect;
-    POINT omItemPos;  
+    POINT omItemPos;
 
     int nTotalItems =  GetCountPerPage();
     GetClientRect(omClientRect);
 
-    for(int i=0;i<nTotalItems+2;i++)
+    for(int i=0; i<nTotalItems+2; i++)
     {
         GetItemPosition(i,&omItemPos);
         omClientRect.top=omItemPos.y ;
@@ -1035,21 +1035,21 @@ BOOL CListCtrlEx::OnEraseBkgnd(CDC* pDC)
 
 /******************************************************************************
 Function Name  :  OnNMCustomdraw
-Input(s)       :  NMHDR* - Contains information about a notification message. 
+Input(s)       :  NMHDR* - Contains information about a notification message.
                   LRESULT* - Output value
 Output         :  -
-Functionality  :  Paints The ListControl rows with the specified colors 
+Functionality  :  Paints The ListControl rows with the specified colors
 Member of      :  CListCtrlEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 void CListCtrlEx::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
     *pResult = 0;
-    
+
     if ( CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage )
     {
         *pResult = CDRF_NOTIFYITEMDRAW;         //Use Default Drawing
@@ -1061,7 +1061,7 @@ void CListCtrlEx::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
     else if ( (CDDS_ITEMPREPAINT | CDDS_SUBITEM) == pLVCD->nmcd.dwDrawStage )
     {
         COLORREF omcrText, omcrBkgnd;
-        if((pLVCD->nmcd.dwItemSpec % 2) == 0)       
+        if((pLVCD->nmcd.dwItemSpec % 2) == 0)
         {
             omcrBkgnd = m_colRow2;
             omcrText = def_COLOR_ROW1_TEXT;
@@ -1074,7 +1074,7 @@ void CListCtrlEx::OnNMCustomdraw(NMHDR* pNMHDR, LRESULT* pResult)
         }
         pLVCD->clrText = omcrText;
         pLVCD->clrTextBk = omcrBkgnd;
-       
+
         *pResult = CDRF_DODEFAULT;
     }
 }
@@ -1084,12 +1084,12 @@ Function Name  :  vSetRowColors
 Input(s)       :  COLORREF crRow1 - even number row color
                   COLORREF crRow2 - odd number row color
 Output         :  -
-Functionality  :  Sets the Row1 and Row2 Colors 
+Functionality  :  Sets the Row1 and Row2 Colors
 Member of      :  CListCtrlEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 VOID CListCtrlEx::vSetRowColors(COLORREF crRow1, COLORREF crRow2)
 {
@@ -1103,12 +1103,12 @@ Function Name  :  vGetRowColors
 Input(s)       :  COLORREF crRow1 - even number row color
                   COLORREF crRow2 - odd number row color
 Output         :  -
-Functionality  :  Returns the Row1 and Row2 colors in crRow1, crRow2 
+Functionality  :  Returns the Row1 and Row2 colors in crRow1, crRow2
 Member of      :  CListCtrlEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 VOID CListCtrlEx::vGetRowColors(COLORREF& colRow1, COLORREF& colRow2)
 {
@@ -1119,13 +1119,13 @@ VOID CListCtrlEx::vGetRowColors(COLORREF& colRow1, COLORREF& colRow2)
 /******************************************************************************
 Function Name  :  vSetDefaultColors
 Input(s)       :  -
-Output         :  - 
-Functionality  :  Assigns default colors to the even and odd rows 
+Output         :  -
+Functionality  :  Assigns default colors to the even and odd rows
 Member of      :  CListCtrlEx
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 VOID CListCtrlEx::vSetDefaultColors(void)
 {
@@ -1135,14 +1135,13 @@ VOID CListCtrlEx::vSetDefaultColors(void)
 
 BOOL CListCtrlEx::PreTranslateMessage(MSG* pMsg)
 {
-// TODO: Add your specialized code here and/or call the base class
+    // TODO: Add your specialized code here and/or call the base class
     if(pMsg->message == WM_KEYDOWN)
     {
         if(GetKeyState(VK_TAB)<0)
         {
-            AfxTrace(_T("I got the message\n"));
+            AfxTrace("I got the message\n");
         }
     }
     return CFFListCtrl::PreTranslateMessage(pMsg);
 }
- 

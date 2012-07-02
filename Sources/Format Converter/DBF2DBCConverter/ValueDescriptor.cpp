@@ -125,7 +125,7 @@ int CValueDescriptor::Format(char* pcLine)
  *
  * Writes the Value Descriptor in the CANoe format in the output file
  */
-void CValueDescriptor::writeValueDescToFile(fstream& fileOutput,char m_ucType,list<CValueDescriptor> &m_listValueDescriptor)
+void CValueDescriptor::writeValueDescToFile(fstream& fileOutput,char m_ucType,list<CValueDescriptor>& m_listValueDescriptor)
 {
     list<CValueDescriptor>::iterator rValDesc;
 

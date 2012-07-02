@@ -205,11 +205,19 @@ void CDefConverterPage::OnBnClickedBtnConvert()
                 UpdateData();
                 string inputFilePath  = (LPCTSTR) m_omStrInputFilePath;
                 string outputFilePath = (LPCTSTR) m_omStrOutputFilePath;
-                HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(inputFilePath, outputFilePath);
-                string conversionComment;
-                ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
-                m_omstrConversionComment = conversionComment.c_str();
-                UpdateData(FALSE);
+
+                if( S_OK == ValidateFileExtensions(m_omStrInputFilePath, m_omStrOutputFilePath, ouConverterInfo.m_pouConverter))
+                {
+                    HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(inputFilePath, outputFilePath);
+                    string conversionComment;
+                    ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
+                    m_omstrConversionComment = conversionComment.c_str();
+                    UpdateData(FALSE);
+                }
+                else
+                {
+                    MessageBox("Invalid Input/Output Files", "Error", MB_OK|MB_ICONERROR);
+                }
             }
         }
     }
@@ -266,3 +274,54 @@ INT CDefConverterPage::GetConverterPos()
         return -1;
     }
 }
+HRESULT CDefConverterPage::ValidateFileExtensions(CString& m_omStrInputFilePath, CString& m_omStrOutputFilePath, CBaseConverter*& m_pouConverter)
+{
+    CString omStrExtension;
+    CString omStrFileExtension;
+    string strFilter1, strFilter2;
+    HRESULT hResult = S_OK;
+    if(m_pouConverter == NULL)
+    {
+        return S_FALSE;
+    }
+
+    INT nIndex = m_omStrInputFilePath.ReverseFind('.');
+    if( nIndex >= 0 )
+    {
+        omStrExtension = m_omStrInputFilePath.Right(m_omStrInputFilePath.GetLength() - nIndex-1);
+        omStrExtension.MakeLower();
+        m_pouConverter->GetInputFileFilters(strFilter1, strFilter2);
+        omStrFileExtension = strFilter1.c_str();
+        omStrFileExtension.MakeLower();
+        if(omStrExtension == strFilter1.c_str())
+        {
+            nIndex = m_omStrOutputFilePath.ReverseFind('.');
+            if( nIndex >= 0 )
+            {
+                omStrExtension = m_omStrOutputFilePath.Right(m_omStrOutputFilePath.GetLength() - nIndex-1);
+                omStrExtension.MakeLower();
+                m_pouConverter->GetOutputFileFilters(strFilter1, strFilter2);
+                omStrFileExtension = strFilter1.c_str();
+                omStrFileExtension.MakeLower();
+                if(omStrExtension != strFilter1.c_str())
+                {
+                    hResult = S_FALSE;
+                }
+            }
+            else
+            {
+                hResult = S_FALSE;
+            }
+        }
+        else
+        {
+            hResult = S_FALSE;
+        }
+    }
+    else
+    {
+        hResult = S_FALSE;
+    }
+    return hResult;
+}
+

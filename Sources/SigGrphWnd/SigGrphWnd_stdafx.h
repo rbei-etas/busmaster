@@ -3,18 +3,18 @@
   FileName      :  SigGrphWnd_stdafx.h
   Description   :  Standard inclusion file
   $Log:   X:/Archive/Sources/SigGrphWnd/SigGrphWnd_stdafx.h_v  $
- * 
+ *
  *    Rev 1.2   10 Jun 2011 17:34:44   CANMNTTM
  * _CRT_SECURE_NO_DEPRECATE is added
- * 
+ *
  * to remove depreciation warning in vs2005
- * 
+ *
  *    Rev 1.1   15 Apr 2011 19:43:38   rac2kor
  * Inserted RBEI Copyright information text into the file header.
 
   Author(s)     :  Arunkumar Karri
-  Date Created  :  
-  Modified By   :  
+  Date Created  :
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  *********************************************************************/
 
@@ -37,16 +37,16 @@
 #endif // _AFX_NO_OLE_SUPPORT
 
 #ifndef _AFX_NO_DB_SUPPORT
-#include <afxdb.h>			// MFC ODBC database classes
+#include <afxdb.h>          // MFC ODBC database classes
 #endif // _AFX_NO_DB_SUPPORT
 
 #ifndef _AFX_NO_DAO_SUPPORT
-#include <afxdao.h>			// MFC DAO database classes
+#include <afxdao.h>         // MFC DAO database classes
 #endif // _AFX_NO_DAO_SUPPORT
 
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#include <afxdtctl.h>       // MFC support for Internet Explorer 4 Common Controls
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
+#include <afxcmn.h>         // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxctl.h>

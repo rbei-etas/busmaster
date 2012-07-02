@@ -15,14 +15,14 @@
 
 /**
  * \file      ChangeRegDefines.h
- * \brief     This header file contains the hash define and micro     
+ * \brief     This header file contains the hash define and micro
  * \authors   Amitesh Bharti, Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the hash define and micro     
+ * This header file contains the hash define and micro
  */
-#if !defined Include_Change_Register_Defines_Header
-#define Include_Change_Register_Defines_Header
+
+#pragma once
 
 #define  defSECTION_CHANGE_REG       "Change Registers"
 #define  defITEM_BAUD_RATE           "Baud Rate"
@@ -79,52 +79,48 @@
 #define  defHEXADECIMAL                   16
 #define  defWARNING_LIMIT_MIN             1
 #define  defWARNING_LIMIT_MAX             127
-#define defWARNINGLIMIT_MSG _T("The Warning limit \"%s\" is beyond the limit %d - %d")
+#define defWARNINGLIMIT_MSG "The Warning limit \"%s\" is beyond the limit %d - %d"
 // Allowed valid decimal values in NBT and BRP product
 #define  defVALID_DECIMAL_VALUE          0.004
 // Maximum size of Column Headers Displayed in list box
-#define  defMAX_COLUMN_SIZE           100  
-                                                     
+#define  defMAX_COLUMN_SIZE           100
+
 // Maximum value of SJW    = SJWbit + 1 ( BTR0 :6-7 )
-#define  defMAX_SJW                    4  
+#define  defMAX_SJW                    4
 // Maximum value of NBT    = TSEG2+TSEG1+1
-#define  defMAX_NBT                    25 
+#define  defMAX_NBT                    25
 // Maximum value of BRP    = BRPbit + 1 ( BTR0 :0-5 )
-#define  defMAX_BRP                    64 
+#define  defMAX_BRP                    64
 
 
 // Maximum value of TSEG1   = TSEG1bit + 1 ( BTR1 : 0-3)
-#define  defMAX_TSEG1                      16 
+#define  defMAX_TSEG1                      16
 #define defMAX_TSEG1_ICSneoVI               8
 #define defMIN_TSEG1_ICSneoVI               1
-#define  defMAX_SAMPLING                   50 
+#define  defMAX_SAMPLING                   50
 
 // Maximum value of TSEG2   = TSEG2bit + 1 ( BTR1 : 4-6)
-#define  defMAX_TSEG2                      8  
-  // Minimum value of SJW   = SJWbit + 1 ( BTR0 :6-7 )
+#define  defMAX_TSEG2                      8
+// Minimum value of SJW   = SJWbit + 1 ( BTR0 :6-7 )
 #define  defMIN_SJW                    1
- // Minimum value of NBT    = TSEG2+TSEG1+1
-#define  defMIN_NBT                    8 
+// Minimum value of NBT    = TSEG2+TSEG1+1
+#define  defMIN_NBT                    8
 // Minimum value of   BRP   = BRPbit + 1 ( BTR0 :0-5 )
 #define  defMIN_BRP                       1
 // Minimum value of TSEG1   = TSEG1bit + 1 ( BTR1 : 0-3)
-#define  defMIN_TSEG1                      3  
+#define  defMIN_TSEG1                      3
 // Minimum vaue of Sampling point = ( (NBT-TSEG2)/NBT ) * 100
 #define  defMIN_SAMPLING                   50
- // Minimum value of TSEG2  = TSEG2bit + 1 ( BTR1 : 4-6)
-#define  defMIN_TSEG2                  2 
+// Minimum value of TSEG2  = TSEG2bit + 1 ( BTR1 : 4-6)
+#define  defMIN_TSEG2                  2
 
- // Find Max of two numbers
-#define  defmcMAX2(X,Y)    ( ( X>Y ) ? X:Y ) 
- // Find Min of two numbers
-#define  defmcMIN2(X,Y)    ( ( X<Y ) ? X:Y ) 
+// Find Max of two numbers
+#define  defmcMAX2(X,Y)    ( ( X>Y ) ? X:Y )
+// Find Min of two numbers
+#define  defmcMIN2(X,Y)    ( ( X<Y ) ? X:Y )
 // Find Max of three numbers
-#define  defmcMAX3(X,Y,Z)  ( ( ( ( X>Y ) ? X:Y ) > Z ) ? ( ( X>Y ) ? X:Y ) : Z ) 
+#define  defmcMAX3(X,Y,Z)  ( ( ( ( X>Y ) ? X:Y ) > Z ) ? ( ( X>Y ) ? X:Y ) : Z )
 // Find Min of three numbers
 #define  defmcMIN3(X,Y,Z)  ( ( ( ( X<Y ) ? X:Y ) < Z ) ? ( ( X<Y ) ? X:Y ) : Z )
 // Round to next interger value if decimal value is >=0.5 else remove decimal value.
 #define  defmcROUND5(X)        X - (unsigned int)X >= 0.5 ? (unsigned int)(X+0.5):(unsigned int)(X)
-
-
-
-#endif

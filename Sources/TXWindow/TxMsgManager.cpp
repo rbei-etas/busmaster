@@ -34,13 +34,13 @@
 
 //CLient Id from the DIL
 static DWORD g_dwClientID = 0;
-//DIL Interface	
+//DIL Interface
 static CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL;
 // Application object declaration
 //extern CCANMonitorApp theApp;
 
 //extern HWND GUI_hDisplayWindow;
-// Flag for breaking the loop of message transmission for 
+// Flag for breaking the loop of message transmission for
 // selected message blocks
 BOOL g_bStopSelectedMsgTx = TRUE;
 
@@ -97,7 +97,7 @@ CTxMsgManager::~CTxMsgManager()
 *******************************************************************************/
 void CTxMsgManager::vSetClientID(DWORD dwClientID)
 {
-	g_dwClientID = dwClientID;
+    g_dwClientID = dwClientID;
 }
 
 /*******************************************************************************
@@ -111,7 +111,7 @@ void CTxMsgManager::vSetClientID(DWORD dwClientID)
 *******************************************************************************/
 void CTxMsgManager::vSetDILInterfacePtr(void* ptrDILIntrf)
 {
-	g_pouDIL_CAN_Interface = (CBaseDIL_CAN*)ptrDILIntrf;
+    g_pouDIL_CAN_Interface = (CBaseDIL_CAN*)ptrDILIntrf;
 }
 
 /*******************************************************************************
@@ -125,7 +125,7 @@ void CTxMsgManager::vSetDILInterfacePtr(void* ptrDILIntrf)
 *******************************************************************************/
 void* CTxMsgManager::pGetDILInterfacePtr()
 {
-	return (void*)g_pouDIL_CAN_Interface;
+    return (void*)g_pouDIL_CAN_Interface;
 }
 
 /*******************************************************************************
@@ -138,7 +138,7 @@ void* CTxMsgManager::pGetDILInterfacePtr()
   Member of      : CTxMsgManager
   Author(s)      : Raja N
   Date Created   : 19.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 CTxMsgManager* CTxMsgManager::s_podGetTxMsgManager()
 {
@@ -166,7 +166,7 @@ CTxMsgManager* CTxMsgManager::s_podGetTxMsgManager()
   Member of      : CTxMsgManager
   Author(s)      : Raja N
   Date Created   : 20.4.2005
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
 BOOL CTxMsgManager::s_bDeleteTxMsgManager()
 {
@@ -203,8 +203,8 @@ BOOL CTxMsgManager::s_bDeleteTxMsgManager()
 /******************************************************************************/
 VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
 {
-   if(m_psTxMsgBlockList != NULL )
-    { 
+    if(m_psTxMsgBlockList != NULL )
+    {
         PSMSGBLOCKLIST psMsgBlock = NULL;
         PSTXMSG psTxMsg           = NULL;
         // Get the message block header pointer from configuration module.
@@ -217,7 +217,7 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
         UINT* punCount = &unMsgBlockCount;
         CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData(TX_MSG_BLOCK_COUNT, (void**)&punCount);
         UINT unCount = 0;
-        // If there is a key value,  this function is called from 
+        // If there is a key value,  this function is called from
         // CMainFrame::PreTranslateMessage to start transmission on press
         // of a key if key value is zero then the function is called from
         // CMainFrame:: OnSendMessage to start the transmission
@@ -227,25 +227,25 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
             // find a matching key value in the list of message block pointer
             // in configuration  module. Also loop through the global list
             // to get the same message block having a matching key value.
-             while( psMsgBlock != NULL && psTxMsg != NULL &&
+            while( psMsgBlock != NULL && psTxMsg != NULL &&
                     unCount < unMsgBlockCount)
-             {
-                 // Check if the valid pointers are obtained before it reaches
-                 // the if pointer is not valid then there is not match of the
-                 // key pressed.Also check if there is a match and if that block
-                 // is active
-                 if( psMsgBlock->m_unMsgCount >0 &&
-                     psMsgBlock->m_bActive == TRUE &&
-                     IS_KEY_TRIGGERED( psMsgBlock->m_ucTrigger ) &&
-                     psMsgBlock->m_ucKeyValue == ucKeyVal)
-                 {
-                     // Check if the user has selected option to transmit
-                     // message one frame at a time on each key press from same
-                     // message block.If the user has selected to send all
-                     // message in block one after another then create a thread
-                     // and start transmission without creating key event.
-                     if(psMsgBlock->m_bTxAllFrame != TRUE )
-                     {
+            {
+                // Check if the valid pointers are obtained before it reaches
+                // the if pointer is not valid then there is not match of the
+                // key pressed.Also check if there is a match and if that block
+                // is active
+                if( psMsgBlock->m_unMsgCount >0 &&
+                        psMsgBlock->m_bActive == TRUE &&
+                        IS_KEY_TRIGGERED( psMsgBlock->m_ucTrigger ) &&
+                        psMsgBlock->m_ucKeyValue == ucKeyVal)
+                {
+                    // Check if the user has selected option to transmit
+                    // message one frame at a time on each key press from same
+                    // message block.If the user has selected to send all
+                    // message in block one after another then create a thread
+                    // and start transmission without creating key event.
+                    if(psMsgBlock->m_bTxAllFrame != TRUE )
+                    {
                         // Check the thread handle to check the thread status
                         // If it is already created then signal the thread
                         // Or create a new thread
@@ -253,7 +253,7 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
                         {
                             psTxMsg->m_omKeyEvent.SetEvent();
                         }
-                        else 
+                        else
                         {
                             // For monoshot key block transmission should happen
                             // only once. So check the CMap to see the entry for
@@ -263,8 +263,8 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
                                 // Set the properties of the block
                                 psTxMsg->m_bSendAllMessages = FALSE;
                                 psTxMsg->m_omKeyEvent.ResetEvent();
-                                psTxMsg->m_sKeyThreadInfo.m_hThread = 
-                                  AfxBeginThread(s_unSendMsgBlockOnKey,psTxMsg);
+                                psTxMsg->m_sKeyThreadInfo.m_hThread =
+                                    AfxBeginThread(s_unSendMsgBlockOnKey,psTxMsg);
                                 // Save the pointer for monoshot key blocks
                                 // Update the CMap to indicate that thread
                                 // has been Created
@@ -274,20 +274,20 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
                                 }
                             }
                         }
-                     }
-                     else
-                     {
-                         // If the thread is terminated and if it is already
-                         // created once, don't create it again since it is
-                         // key trigger. This is done for same transmission
-                         // start command. If user has selected stop and start
-                         // then again this transmission will start.
+                    }
+                    else
+                    {
+                        // If the thread is terminated and if it is already
+                        // created once, don't create it again since it is
+                        // key trigger. This is done for same transmission
+                        // start command. If user has selected stop and start
+                        // then again this transmission will start.
                         if( psTxMsg->m_sKeyThreadInfo.m_hThread == NULL )
                         {
                             if( m_omMonoshotBlocks [ psTxMsg ] == FALSE )
                             {
                                 psTxMsg->m_bSendAllMessages = TRUE;
-                                psTxMsg->m_sKeyThreadInfo.m_hThread = 
+                                psTxMsg->m_sKeyThreadInfo.m_hThread =
                                     AfxBeginThread(s_unSendMsgBlockOnKey,psTxMsg);
                                 if( psTxMsg->m_bType == FALSE )
                                 {
@@ -295,12 +295,12 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
                                 }
                             }
                         }
-                     }
-                 }
-                 unCount++;
-                 psMsgBlock = psMsgBlock->m_psNextMsgBlocksList;
-                 psTxMsg    = psTxMsg->m_psNextTxMsgInfo;
-             } // while
+                    }
+                }
+                unCount++;
+                psMsgBlock = psMsgBlock->m_psNextMsgBlocksList;
+                psTxMsg    = psTxMsg->m_psNextTxMsgInfo;
+            } // while
         } // if(ucKeyVal != 0 )
         else
         {
@@ -309,19 +309,19 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
             // check if the message block with time trigger are active
             // if so then only start tranmission in a seperate thread.
             while(psMsgBlock != NULL && psTxMsg != NULL &&
-                  unCount < unMsgBlockCount)
+                    unCount < unMsgBlockCount)
             {
-                // Set the flag to FALSE to indicate that user has started the 
+                // Set the flag to FALSE to indicate that user has started the
                 // transmission and it will be set to true for key trigger
                 // as key trigger thread should be created only once even thread
                 // has existed.
-              //  m_bTransmittedOnce = FALSE;
+                //  m_bTransmittedOnce = FALSE;
                 if( psMsgBlock->m_unMsgCount > 0 &&
-                    psMsgBlock->m_bActive == TRUE &&
-                    IS_TIME_TRIGGERED(psMsgBlock->m_ucTrigger) &&
-                    psTxMsg->m_sTimerThreadInfo.m_hThread == NULL )
+                        psMsgBlock->m_bActive == TRUE &&
+                        IS_TIME_TRIGGERED(psMsgBlock->m_ucTrigger) &&
+                        psTxMsg->m_sTimerThreadInfo.m_hThread == NULL )
                 {
-                    psTxMsg->m_sTimerThreadInfo.m_hThread = 
+                    psTxMsg->m_sTimerThreadInfo.m_hThread =
                         AfxBeginThread(s_unSendMsgBlockOnTime,psTxMsg);
                 }
                 psMsgBlock = psMsgBlock->m_psNextMsgBlocksList;
@@ -357,7 +357,7 @@ VOID CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
             // Wait for thread to exit.
             dwTimerThreadStatus =
                 WaitForSingleObject( psTxMsg->m_omTxBlockTimerEvent,
-                                        unMaxWaitTime );
+                                     unMaxWaitTime );
         }
         // If key thread is active then wait for key thread termination
         if(psTxMsg->m_sKeyThreadInfo.m_hThread != NULL )
@@ -365,19 +365,19 @@ VOID CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
             // Wait for thread to exit.
             dwKeyThreadStatus =
                 WaitForSingleObject( psTxMsg->m_omTxBlockKeyEvent,
-                                        unMaxWaitTime );
+                                     unMaxWaitTime );
         }
         // If time out, terminate the thread and delete the memory
         // if it is allocated inside the thread function and not
         // deleted
         if( dwTimerThreadStatus == WAIT_TIMEOUT &&
-            psTxMsg->m_sTimerThreadInfo.m_hThread != NULL)
+                psTxMsg->m_sTimerThreadInfo.m_hThread != NULL)
         {
             TerminateThread(psTxMsg->m_sTimerThreadInfo.m_hThread, 0);
             // Invalidate the handle
             psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
             // Delete if any memory is allocated for this thread.
-            // Currently there are all global data so not required 
+            // Currently there are all global data so not required
             // to be deleted here.
             /***********************************************************/
             // Right now Tx timer thread isn't using any dynamic memory
@@ -390,14 +390,14 @@ VOID CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
         }
         // If the key handler is not terminated yet then kill the thread
         if( dwKeyThreadStatus == WAIT_TIMEOUT &&
-            psTxMsg->m_sKeyThreadInfo.m_hThread != NULL)
+                psTxMsg->m_sKeyThreadInfo.m_hThread != NULL)
         {
             TerminateThread(psTxMsg->m_sKeyThreadInfo.m_hThread, 0);
             // Invalidate the handle
             psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
             /***********************************************************/
             // Delete if any memory is allocated for this thread.
-            // Currently there are all global data so not required 
+            // Currently there are all global data so not required
             // to be deleted here.
             /*if( psTxMsg->m_sThreadInfo1.m_pvThread !=NULL )
             {
@@ -448,8 +448,8 @@ BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
         // Go to end of the list
         while(psTxMsg->m_psNextTxMsgInfo != NULL )
         {
-           psTxMsg = psTxMsg->m_psNextTxMsgInfo;
-           unCount++;
+            psTxMsg = psTxMsg->m_psNextTxMsgInfo;
+            unCount++;
         }
 
     }
@@ -466,7 +466,7 @@ BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
         }
         else
         {
-//           InitializeCriticalSection(&psTxMsgMem->m_sMsgBlocksCriticalSection);
+            //           InitializeCriticalSection(&psTxMsgMem->m_sMsgBlocksCriticalSection);
             // Set the maximum count to two
             psTxMsgMem->m_hSemaphore = CreateSemaphore( NULL,
                                        defTX_BLOCK_SEM_MAX_COUNT,
@@ -562,7 +562,7 @@ VOID CTxMsgManager::vDeleteTxBlockMemory()
         // from begining. It is a singly link list.
         while(psTxMsg != NULL )
         {
-///            DeleteCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
+            ///            DeleteCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
             if(psTxMsg->m_hSemaphore != NULL )
             {
                 CloseHandle(psTxMsg->m_hSemaphore);
@@ -581,13 +581,13 @@ VOID CTxMsgManager::vDeleteTxBlockMemory()
     Function Name    :  g_unSendSelectedMsg
     Input(s)         :  pParam - Typecasted address of PSTXMSG pointer
     Output           :  Zero
-    Functionality    :  This is a thread control function to process 
+    Functionality    :  This is a thread control function to process
                         transmission of selected message from the dialog.
     Member of        :  CTxMsgManager
     Friend of        :      -
     Author(s)        :  Amitesh Bharti
     Date Created     :  15.01.2004
-    Modifiecations   :  Raja N on 08.09.2004, Replaced nWriteToCAN with HIL 
+    Modifiecations   :  Raja N on 08.09.2004, Replaced nWriteToCAN with HIL
                         function
 ******************************************************************************/
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
@@ -608,15 +608,15 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
                 int nReturn = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, psTxCanMsg->m_psTxMsg[unIndex]);
                 if (nReturn != S_OK)
                 {
-                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
+                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
                     //            ERROR_DRIVER_API_FAIL, 0);
                 }
-				//SDLL_MSG sTempDllMsg;
-				//memcpy(&sTempDllMsg.sRxMsg,&psTxCanMsg->m_psTxMsg[unIndex],SIZE_STCAN_MSG);
-				//sTempDllMsg.h_DllHandle=NULL;
-				//EnterCriticalSection(&g_CritSectDllBufferRead);
-				//g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
-				//LeaveCriticalSection(&g_CritSectDllBufferRead);
+                //SDLL_MSG sTempDllMsg;
+                //memcpy(&sTempDllMsg.sRxMsg,&psTxCanMsg->m_psTxMsg[unIndex],SIZE_STCAN_MSG);
+                //sTempDllMsg.h_DllHandle=NULL;
+                //EnterCriticalSection(&g_CritSectDllBufferRead);
+                //g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
+                //LeaveCriticalSection(&g_CritSectDllBufferRead);
             }
             unIndex++;
         }
@@ -635,7 +635,7 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
     Function Name    :  g_unSendMsgBlockOnTime
     Input(s)         :  pParam - Typecasted address of PSTXMSG pointer
     Output           :  Zero
-    Functionality    :  This is a thread control function to process 
+    Functionality    :  This is a thread control function to process
                         message block transmission on time trigger.
     Member of        :  Global Thread Function
     Friend of        :      -
@@ -675,8 +675,8 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
         hEventWait = CreateEvent(NULL, FALSE, FALSE, NULL);
         MMRESULT Result = 0;
         Result = timeSetEvent(unTimeInterval, time.wPeriodMin,
-                    (LPTIMECALLBACK) hEventWait, NULL,
-                     TIME_CALLBACK_EVENT_SET | TIME_PERIODIC);
+                              (LPTIMECALLBACK) hEventWait, NULL,
+                              TIME_CALLBACK_EVENT_SET | TIME_PERIODIC);
 
         LPLONG lpPreviousCount = NULL;
         BOOL bStopMsgBlockTx = CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag();
@@ -695,6 +695,8 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
             // return. A check has been introduced before transmission to
             // find this condition
             // Check whether currently available message is selected or not
+
+            bStopMsgBlockTx = CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag();
             if (psTxMsgList->m_sTxMsgDetails.m_bEnabled == FALSE)
             {
                 // Save current position
@@ -707,16 +709,20 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
                 {
                     psTxMsgList = psTxMsg->m_psTxCANMsgList;
                 }
-
+                int nMsgCnt =           psTxMsg->nGetMsgCount();
+                int nVarMsgCnt = 0;
                 // Go through the list of nodes
                 while( psTxMsgList != NULL &&
-                       psTxMsgList != psCurrentPosition &&
-                       psTxMsgList->m_sTxMsgDetails.m_bEnabled == FALSE )
+                        psTxMsgList != psCurrentPosition &&
+                        psTxMsgList->m_sTxMsgDetails.m_bEnabled == FALSE &&
+                        bStopMsgBlockTx == FALSE &&
+                        nVarMsgCnt <= nMsgCnt)
                 {
                     // Get Next Node in the list
                     psTxMsgList = psTxMsgList->m_psNextMsgDetails;
-                    // If this is the last node then select first node as 
+                    // If this is the last node then select first node as
                     // next if it is of Cyclic type
+                    nVarMsgCnt++;
                     if( psTxMsgList == NULL && psTxMsg->m_bType == TRUE )
                     {
                         psTxMsgList = psTxMsg->m_psTxCANMsgList;
@@ -731,26 +737,26 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
             // psTxMsgList msg is enabled -> Transmit selected message
             // psTxMsgList msg is disabled -> There is no message in the message
             // block which has a enabled message. Skip this iteration
-            bStopMsgBlockTx = CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag();
+
 
             if (bStopMsgBlockTx == FALSE && psTxMsgList!= NULL &&
-                (psTxMsgList->m_sTxMsgDetails.m_bEnabled == TRUE))
+                    (psTxMsgList->m_sTxMsgDetails.m_bEnabled == TRUE))
             {
                 WaitForSingleObject(psTxMsg->m_hSemaphore, INFINITE);
                 // Use HIL Function to send CAN Message
-                int nRet = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, 
-					                                    psTxMsgList->m_sTxMsgDetails.m_sTxMsg);
+                int nRet = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID,
+                           psTxMsgList->m_sTxMsgDetails.m_sTxMsg);
                 if (nRet != S_OK)
                 {
-                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
+                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
                     //            ERROR_DRIVER_API_FAIL, 0);
                 }
-				//SDLL_MSG sTempDllMsg;
-				//memcpy(&sTempDllMsg.sRxMsg,&psTxMsgList->m_sTxMsgDetails.m_sTxMsg,SIZE_STCAN_MSG);
-				//sTempDllMsg.h_DllHandle=NULL;
-				//EnterCriticalSection(&g_CritSectDllBufferRead);
-				//g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
-				//LeaveCriticalSection(&g_CritSectDllBufferRead);
+                //SDLL_MSG sTempDllMsg;
+                //memcpy(&sTempDllMsg.sRxMsg,&psTxMsgList->m_sTxMsgDetails.m_sTxMsg,SIZE_STCAN_MSG);
+                //sTempDllMsg.h_DllHandle=NULL;
+                //EnterCriticalSection(&g_CritSectDllBufferRead);
+                //g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
+                //LeaveCriticalSection(&g_CritSectDllBufferRead);
                 ReleaseSemaphore(psTxMsg->m_hSemaphore,1,lpPreviousCount);
             }
             else
@@ -783,17 +789,17 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
         }
         CloseHandle(hEventWait);
     }
-	if(psTxMsg != NULL)
-	{
-	    psTxMsg->m_omTxBlockTimerEvent.SetEvent();
-	    if(psTxMsg->m_sTimerThreadInfo.m_pvThread != NULL )
-	    {
-	        // Delete the pointer in case there is any memory allocated and used
-	        // inside the thread function.
-	        psTxMsg->m_sTimerThreadInfo.m_pvThread = NULL;
-	    }
-	    psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
-	}
+    if(psTxMsg != NULL)
+    {
+        psTxMsg->m_omTxBlockTimerEvent.SetEvent();
+        if(psTxMsg->m_sTimerThreadInfo.m_pvThread != NULL )
+        {
+            // Delete the pointer in case there is any memory allocated and used
+            // inside the thread function.
+            psTxMsg->m_sTimerThreadInfo.m_pvThread = NULL;
+        }
+        psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
+    }
     return 0;
 }
 
@@ -801,7 +807,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
     Function Name    :  g_unSendMsgBlockOnKey
     Input(s)         :  pParam - Typecasted address of PSTXMSG pointer
     Output           :  Zero
-    Functionality    :  This is a thread control function to process 
+    Functionality    :  This is a thread control function to process
                         message block transmission on key trigger.
     Member of        :  Global Thread Function
     Friend of        :      -
@@ -822,7 +828,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
                         member before transmissting a message and to select
                         next available enabled message
     Modifiecations   :  ArunKumar K on 28.10.2011, Addition of delay after SendMsg(..)
-	                    to reduce bus overload.
+                        to reduce bus overload.
 ******************************************************************************/
 UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 {
@@ -856,8 +862,8 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 
         if( bMsgFound == TRUE )
         {
-            // Search through the list            
-	        LPLONG lpPreviousCount = NULL;
+            // Search through the list
+            LPLONG lpPreviousCount = NULL;
             while(psTxMsgList != NULL  && CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag() == FALSE)
             {
                 // Get the first enabled message
@@ -872,7 +878,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
                     PSTXCANMSGLIST psCurrentPosition = psTxMsgList;
                     // Get Next Node in the list
                     psTxMsgList = psTxMsgList->m_psNextMsgDetails;
-                    // If this is the last node then select first node as 
+                    // If this is the last node then select first node as
                     // next if it is of Cyclic type
                     if( psTxMsgList == NULL && psTxMsg->m_bType == TRUE )
                     {
@@ -882,12 +888,12 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 
                     // Go through the list of nodes if current one is not enabled
                     while( psTxMsgList != NULL &&
-                           psTxMsgList != psCurrentPosition &&
-                           psTxMsgList->m_sTxMsgDetails.m_bEnabled == FALSE )
+                            psTxMsgList != psCurrentPosition &&
+                            psTxMsgList->m_sTxMsgDetails.m_bEnabled == FALSE )
                     {
                         // Get Next Node in the list
                         psTxMsgList = psTxMsgList->m_psNextMsgDetails;
-                        // If this is the last node then select first node as 
+                        // If this is the last node then select first node as
                         // next if it is of Cyclic type
                         if( psTxMsgList == NULL && psTxMsg->m_bType == TRUE )
                         {
@@ -902,32 +908,32 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
                 // from got enabled from current position then return
 
                 // psTxMsgList msg is enabled -> Transmit selected message
-                // psTxMsgList msg is disabled -> There is no message 
+                // psTxMsgList msg is disabled -> There is no message
                 //                                  in the message
                 // block which has a enabled message. Skip this iteration
                 if( psTxMsgList != NULL &&
-                    psTxMsgList->m_sTxMsgDetails.m_bEnabled == TRUE )
+                        psTxMsgList->m_sTxMsgDetails.m_bEnabled == TRUE )
                 {
-//                    EnterCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
+                    //                    EnterCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
                     WaitForSingleObject(psTxMsg->m_hSemaphore, INFINITE);
-                    int nRet = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, 
-						                        psTxMsgList->m_sTxMsgDetails.m_sTxMsg);					
-						Sleep(psTxMsg->m_unTimeInterval);
+                    int nRet = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID,
+                               psTxMsgList->m_sTxMsgDetails.m_sTxMsg);
+                    Sleep(psTxMsg->m_unTimeInterval);
                     if (nRet != S_OK)
                     {
-                        //::PostMessage(GUI_hDisplayWindow, WM_ERROR, 
+                        //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
                         //            ERROR_DRIVER_API_FAIL, 0);
                     }
-					/*SDLL_MSG sTempDllMsg;
-					memcpy(&sTempDllMsg.sRxMsg,&psTxMsgList->m_sTxMsgDetails.m_sTxMsg,SIZE_STCAN_MSG);
-					sTempDllMsg.h_DllHandle=NULL;*/
-					//EnterCriticalSection(&g_CritSectDllBufferRead);
-					//g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
-					//LeaveCriticalSection(&g_CritSectDllBufferRead);
+                    /*SDLL_MSG sTempDllMsg;
+                    memcpy(&sTempDllMsg.sRxMsg,&psTxMsgList->m_sTxMsgDetails.m_sTxMsg,SIZE_STCAN_MSG);
+                    sTempDllMsg.h_DllHandle=NULL;*/
+                    //EnterCriticalSection(&g_CritSectDllBufferRead);
+                    //g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
+                    //LeaveCriticalSection(&g_CritSectDllBufferRead);
                     ReleaseSemaphore(psTxMsg->m_hSemaphore,1,lpPreviousCount);
-//                    LeaveCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
+                    //                    LeaveCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
                 }
-            
+
                 // Go to the next node
                 if( psTxMsgList != NULL )
                 {
@@ -948,21 +954,21 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
             }// while
         }
     }
-	if(psTxMsg != NULL)
-	{
-	    // if thread is about to close, set the event. 
-	    psTxMsg->m_omKeyEvent.SetEvent();
-	    psTxMsg->m_omTxBlockKeyEvent.SetEvent();
-	    // Clear any memory used
-	    if(psTxMsg->m_sKeyThreadInfo.m_pvThread != NULL )
-	    {
-	        // Delete the pointer in case there is any memory allocated and used
-	        // inside the thread function.
-	        psTxMsg->m_sKeyThreadInfo.m_pvThread = NULL;
-	    }
-	    // Set the thread handle to NULL
-	    psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
-	}
+    if(psTxMsg != NULL)
+    {
+        // if thread is about to close, set the event.
+        psTxMsg->m_omKeyEvent.SetEvent();
+        psTxMsg->m_omTxBlockKeyEvent.SetEvent();
+        // Clear any memory used
+        if(psTxMsg->m_sKeyThreadInfo.m_pvThread != NULL )
+        {
+            // Delete the pointer in case there is any memory allocated and used
+            // inside the thread function.
+            psTxMsg->m_sKeyThreadInfo.m_pvThread = NULL;
+        }
+        // Set the thread handle to NULL
+        psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
+    }
     return 0;
 }
 
@@ -971,7 +977,7 @@ int CTxMsgManager::nGetBlockCount()
     int nBlockCount = 0;
     int* pnBlockCount = &nBlockCount;
     CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData( TX_MSG_BLOCK_COUNT,
-                            (LPVOID*)&pnBlockCount);    
+            (LPVOID*)&pnBlockCount);
     return nBlockCount;
 }
 
@@ -1013,7 +1019,7 @@ void CTxMsgManager::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
     vDeleteTxBlockMemory();
     CTxWndDataStore::ouGetTxWndDataStoreObj().pbySetConfigData(pSrcBuffer, nBuffSize);
     BOOL bAllocateMemory =
-                CTxMsgManager::s_podGetTxMsgManager()->bAllocateMemoryForGlobalTxList();
+        CTxMsgManager::s_podGetTxMsgManager()->bAllocateMemoryForGlobalTxList();
     // Update Message List
     if(bAllocateMemory == TRUE )
     {
@@ -1044,10 +1050,10 @@ void CTxMsgManager::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
 //BOOL CTxMsgManager::bIsTxWndConfigChanged()
 //{
 //    BOOL bReturn = TRUE;
-    /**************Get the old buffer pointer and then proceed *********/
+/**************Get the old buffer pointer and then proceed *********/
 //    BYTE* pOldConfigBuff = NULL;
 //    int nOldBufferCount = 0;
-    /**************Get the old buffer pointer and then proceed *********/
+/**************Get the old buffer pointer and then proceed *********/
 //    BYTE* pCurrConfigBuff = NULL;
 //    int nCurrBuffSize = 0;
 //    vGetTxWndConfigData(pCurrConfigBuff, nCurrBuffSize);

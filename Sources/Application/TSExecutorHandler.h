@@ -19,7 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #pragma once
-#define def_STR_TESTSIUTEEXECUTORDLL  _T("TestSuiteExecutorGUI.dll")
+#define def_STR_TESTSIUTEEXECUTORDLL  "TestSuiteExecutorGUI.dll"
 #include "TestSuiteExecutorGUI/TSExecutorGUI_Extern.h"
 class TSExecutorHandler
 {
@@ -38,5 +38,5 @@ public:
     void vStartStopReadThread(ETYPE_BUS eBus, BOOL bStart);
     void vDoInitailization(ETYPE_BUS eBus);
     void vBusConnected(BOOL bConnected);
-	void vSetTSEVersionInfo(BYTE bytMajor, BYTE bytMinor, BYTE bytBuild);
+    void vSetTSEVersionInfo(BYTE bytMajor, BYTE bytMinor, BYTE bytBuild);
 };

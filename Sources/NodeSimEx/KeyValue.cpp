@@ -44,31 +44,31 @@ static char THIS_FILE[] = __FILE__;
 /*  Member of        :  CKeyValue                                             */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.03.2002                                            */    
+/*  Date Created     :  08.03.2002                                            */
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  28.03.2002, Review commenrs                           */
 /******************************************************************************/
-CKeyValue::CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc, 
+CKeyValue::CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc,
                      CWnd* pParent/*=NULL*/,char* pcKeyVal )
-    : CDialog(CKeyValue::IDD, pParent),m_pcKeyVal(pcKeyVal)  
+    : CDialog(CKeyValue::IDD, pParent),m_pcKeyVal(pcKeyVal)
 {
     //{{AFX_DATA_INIT(CKeyValue)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     m_pFnsTreeView  = pFnsTreeView;
     m_pDoc          = pDoc;
 }
 /******************************************************************************/
-/*  Function Name    :  DoDataExchange                                        */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  DoDataExchange                                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  Called by the framework to exchange and validate      */
 /*                         dialog data                                        */
 /*                                                                            */
-/*  Member of        :  CKeyValue                                             */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  08.03.2002                                            */    
+/*  Member of        :  CKeyValue                                             */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  08.03.2002                                            */
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
@@ -76,7 +76,7 @@ void CKeyValue::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CKeyValue)
-        // NOTE: the ClassWizard will add DDX and DDV calls here
+    // NOTE: the ClassWizard will add DDX and DDV calls here
     //}}AFX_DATA_MAP
 }
 
@@ -89,38 +89,41 @@ BEGIN_MESSAGE_MAP(CKeyValue, CDialog)
 END_MESSAGE_MAP()
 
 /******************************************************************************/
-/*  Function Name    :  OnCancel                                              */    
-/*  Input(s)         :                                                        */    
-/*  Output           :                                                        */    
+/*  Function Name    :  OnCancel                                              */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
 /*  Functionality    :  This function is called by frame work when user presse*/
 /*                      CANCEL button. The value pointer by data member is    */
 /*                      initialised to NULL                                   */
 /*                                                                            */
-/*  Member of        :  CKeyValue                                             */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  08.03.2002                                            */    
+/*  Member of        :  CKeyValue                                             */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  08.03.2002                                            */
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-void CKeyValue::OnCancel() 
+void CKeyValue::OnCancel()
 {
-    *m_pcKeyVal = NULL; 
+    if (NULL != m_pcKeyVal) 
+    {
+        *m_pcKeyVal = NULL;
+    }
     CDialog::OnCancel();
 }
 /******************************************************************************/
-/*  Function Name    :  PreTranslateMessage                                   */    
-/*  Input(s)         :  Pointer to MSG structure containing information of MSG*/    
-/*  Output           :                                                        */    
+/*  Function Name    :  PreTranslateMessage                                   */
+/*  Input(s)         :  Pointer to MSG structure containing information of MSG*/
+/*  Output           :                                                        */
 /*  Functionality    :  This function is called by frame work to filter       */
 /*                      messages before they are sent. WM_CHAR message is     */
 /*                      checked for and key value is assign to data member.   */
 /*                      Only alphanumeric key value is assigned allowed.      */
 /*                                                                            */
-/*  Member of        :  CKeyValue                                             */    
-/*  Friend of        :      -                                                 */    
-/*  Author(s)        :  Amitesh Bharti                                        */    
-/*  Date Created     :  08.03.2002                                            */    
+/*  Member of        :  CKeyValue                                             */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  08.03.2002                                            */
 /*  Modification By  :  Amarnath Shastry                                      */
 /*  Modification on  :  27.03.2002                                            */
 /*  Modification By  :  Amitesh Bharti                                        */
@@ -130,26 +133,26 @@ void CKeyValue::OnCancel()
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  07.04.2003,numeric key is also processed  key handler */
 /******************************************************************************/
-BOOL CKeyValue::PreTranslateMessage(MSG* pMsg) 
+BOOL CKeyValue::PreTranslateMessage(MSG* pMsg)
 {
     CString omStrKey = "";
     // check for WM_CHAR message and then check for key pressed.
     // Stored only alphabatic keys pressed and "*". display the key values
     if(pMsg->message == WM_CHAR)
     {
-        omStrKey.Format(_T("Key Pressed : %c"),pMsg->wParam);
-        if(   ( pMsg->wParam >= 'a' && pMsg->wParam<='z' ) 
-            ||( pMsg->wParam >= 'A' && pMsg->wParam<='Z' ) 
-            ||( pMsg->wParam >= '0' && pMsg->wParam<='9' ) 
-            || pMsg->wParam == defGENERIC_KEY )
+        omStrKey.Format("Key Pressed : %c",pMsg->wParam);
+        if(   ( pMsg->wParam >= 'a' && pMsg->wParam<='z' )
+                ||( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )
+                ||( pMsg->wParam >= '0' && pMsg->wParam<='9' )
+                || pMsg->wParam == defGENERIC_KEY )
         {
             *m_pcKeyVal = static_cast <CHAR> (pMsg->wParam);
             SetDlgItemText(IDC_STAT_KEY, omStrKey);
 
             // Amarnath S , 27.03.2002
             // Enable the Ok button if disabled
-            if (!(GetDlgItem( IDOK )->IsWindowEnabled()) && 
-                !(GetDlgItem( IDC_CBTN_KEY_APPLY )->IsWindowEnabled()))
+            if (!(GetDlgItem( IDOK )->IsWindowEnabled()) &&
+                    !(GetDlgItem( IDC_CBTN_KEY_APPLY )->IsWindowEnabled()))
             {
                 GetDlgItem( IDOK )->EnableWindow(TRUE);
                 GetDlgItem( IDC_CBTN_KEY_APPLY )->EnableWindow(TRUE);
@@ -174,7 +177,7 @@ BOOL CKeyValue::PreTranslateMessage(MSG* pMsg)
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-BOOL CKeyValue::OnHelpInfo(HELPINFO* pHelpInfo) 
+BOOL CKeyValue::OnHelpInfo(HELPINFO* pHelpInfo)
 {
     //theApp.vSetHelpID(pHelpInfo->dwContextId);
     return CDialog::OnHelpInfo(pHelpInfo);
@@ -193,16 +196,16 @@ BOOL CKeyValue::OnHelpInfo(HELPINFO* pHelpInfo)
 /*  Modifications    :  Amitesh Bharti                                        */
 /*                      07.03.2003, "*" key is process for generic key hanlder*/
 /******************************************************************************/
-void CKeyValue::OnOK() 
+void CKeyValue::OnOK()
 {
     BOOL bRetVal = TRUE;
-    // Check for duplicate selection 
+    // Check for duplicate selection
     // Get key handler array from the document
     // Check for valid pointer
     if (m_pDoc != NULL)
     {
         CStringArray* pKeyArray = m_pDoc->omStrGetKeyHandlerPrototypes();
-        
+
         if (pKeyArray)
         {
             CString omStrMsgPro   = STR_EMPTY;
@@ -225,11 +228,11 @@ void CKeyValue::OnOK()
                 omStrFuncName += omStrKeyPressed;
                 // Construct Function definiton
                 CString omStrFuncPrototype = defDEFAULT_KEY_HANDLER_CODE;
-                omStrFuncPrototype.Replace(_T("KEYNAME"), omStrKeyPressed );
+                omStrFuncPrototype.Replace("KEYNAME", omStrKeyPressed );
                 if ( omStrMsgPro == omStrFuncPrototype )
                 {
                     omStrMsgPro = defMSG_DUPL_KEY_HANDLER;
-                    omStrMsgPro.Replace( _T("KEYNAME"), m_pcKeyVal );
+                    omStrMsgPro.Replace( "KEYNAME", m_pcKeyVal );
                     // Duplicate message hanlder, shout
                     AfxMessageBox( omStrMsgPro, MB_OK|MB_ICONINFORMATION );
                     nCount = (COMMANUINT)pKeyArray->GetSize();
@@ -240,14 +243,16 @@ void CKeyValue::OnOK()
     }
 
     if ( bRetVal == TRUE)
+    {
         CDialog::OnOK();
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnInitDialog                                          */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :  BOOL                                                  */
-/*  Functionality    :  Disables the OK button 
+/*  Functionality    :  Disables the OK button
 /*  Member of        :  CKeyValue                                             */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
@@ -256,7 +261,7 @@ void CKeyValue::OnOK()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-BOOL CKeyValue::OnInitDialog() 
+BOOL CKeyValue::OnInitDialog()
 {
     CDialog::OnInitDialog();
     CWnd* pWnd = GetDlgItem(IDOK );
@@ -271,7 +276,7 @@ BOOL CKeyValue::OnInitDialog()
     }
 
     return TRUE;  // return TRUE unless you set the focus to a control
-                  // EXCEPTION: OCX Property Pages should return FALSE
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
 /*  Function Name    :  OnCbtnKeyApply                                        */
@@ -288,7 +293,7 @@ BOOL CKeyValue::OnInitDialog()
 /*  Author(s)        :  Amarnath Shastry                                      */
 /*  Date Created     :  07.03.2003                                            */
 /******************************************************************************/
-void CKeyValue::OnCbtnKeyApply() 
+void CKeyValue::OnCbtnKeyApply()
 {
     BOOL bValidateSelection = TRUE;
     if(m_pDoc != NULL )
@@ -296,7 +301,7 @@ void CKeyValue::OnCbtnKeyApply()
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         m_pDoc->bGetBusSpecificInfo(sBusSpecInfo);
 
-        bValidateSelection = bValidateDuplicateKeyHandler(m_pDoc); 
+        bValidateSelection = bValidateDuplicateKeyHandler(m_pDoc);
         if(bValidateSelection == TRUE)
         {
             CString omSelectedText = "";
@@ -310,19 +315,19 @@ void CKeyValue::OnCbtnKeyApply()
             {
                 omFunc += defGENERIC_KEY_HANDLER_TEXT;
             }
-            omSelectedText.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-            omSelectedText.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                omFunc );
+            omSelectedText.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+            omSelectedText.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                    omFunc );
             m_pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
             // Form the function prototype
             omSelectedText = defDEFAULT_KEY_HANDLER_CODE;
             if(*m_pcKeyVal != defGENERIC_KEY)
             {
-                omSelectedText.Replace( _T("KEYNAME"), m_pcKeyVal );
+                omSelectedText.Replace( "KEYNAME", m_pcKeyVal );
             }
             else
             {
-                omSelectedText.Replace( _T("KEYNAME"), defGENERIC_KEY_HANDLER_TEXT );
+                omSelectedText.Replace( "KEYNAME", defGENERIC_KEY_HANDLER_TEXT );
             }
             m_pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
             CString omStrPrototype = omSelectedText;
@@ -332,7 +337,7 @@ void CKeyValue::OnCbtnKeyApply()
                 // Add the prototype to the tree view
                 CTreeCtrl& omTree = m_pFnsTreeView->GetTreeCtrl();
                 HTREEITEM hItem = omTree.GetSelectedItem();
-                HTREEITEM hNew = 
+                HTREEITEM hNew =
                     omTree.InsertItem( omSelectedText, hItem);
                 omTree.SetItemImage( hNew, 5, 5 );
                 omTree.SelectItem( hNew );
@@ -345,13 +350,13 @@ void CKeyValue::OnCbtnKeyApply()
 
                 // Form the function footer
                 omSelectedText = BUS_FN_FOOTER;
-                omSelectedText.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-                omSelectedText.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
-                    omFunc );
+                omSelectedText.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+                omSelectedText.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                        omFunc );
 
                 m_pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
 
-                CStringArray* pKeyArray = 
+                CStringArray* pKeyArray =
                     m_pDoc->omStrGetKeyHandlerPrototypes();
                 if ( pKeyArray != NULL )
                 {
@@ -361,7 +366,7 @@ void CKeyValue::OnCbtnKeyApply()
                 m_pDoc->SetModifiedFlag( TRUE );
             }
         }
-    }  
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  bValidateDuplicateKeyHandler                          */
@@ -402,10 +407,10 @@ BOOL CKeyValue:: bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc)
             }
             else
             {
-                omStrKeyHandlerSelected.Replace(_T("KEYNAME"),
-                                                 defGENERIC_KEY_HANDLER_TEXT);
+                omStrKeyHandlerSelected.Replace("KEYNAME",
+                                                defGENERIC_KEY_HANDLER_TEXT);
             }
-           
+
             for(UINT i = 0; i<unKeyCount ; i++)
             {
                 omStrKeyhandler = pKeyArray->GetAt(i);
@@ -414,7 +419,7 @@ BOOL CKeyValue:: bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc)
                     i = unKeyCount;
                     bReturn = FALSE;
                     omStrKeyhandler = defMSG_DUPL_KEY_HANDLER;
-                    omStrKeyhandler.Replace( _T("KEYNAME"), m_pcKeyVal );
+                    omStrKeyhandler.Replace( "KEYNAME", m_pcKeyVal );
                     // Duplicate message hanlder, shout
                     AfxMessageBox( omStrKeyhandler, MB_OK|MB_ICONINFORMATION );
                 }

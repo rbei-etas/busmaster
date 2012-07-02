@@ -35,14 +35,15 @@
 #define defBASE_DEC                         10
 #define defBASE_HEX                         16
 #define defCREATE_FAILED                    -1
-#define defFORMAT_INT64_DECIMAL             _T("%I64d")
-#define defFORMAT_INT64_HEX                 _T("%I64X")
-#define defSTR_FORMAT_PHY_VALUE             _T("%.3f")
-#define defFLC_CREATE_FAILED                _T("Failed to create %s Control")
-#define defCOMBO_ITEM                       _T("ComboItem")
-#define defCOMBO_LIST                       _T("ComboLsit")
-#define defEDIT_ITEM                        _T("EditItem")
-#define defNUM_ITEM                         _T("NumItem")
+#define defFORMAT_INT64_DECIMAL             "%I64d"
+#define defFORMAT_UINT64_DEC                "%I64u"
+#define defFORMAT_INT64_HEX                 "%I64X"
+#define defSTR_FORMAT_PHY_VALUE             "%.3f"
+#define defFLC_CREATE_FAILED                "Failed to create %s Control"
+#define defCOMBO_ITEM                       "ComboItem"
+#define defCOMBO_LIST                       "ComboLsit"
+#define defEDIT_ITEM                        "EditItem"
+#define defNUM_ITEM                         "NumItem"
 #define defLIST_ITEM_TYPE_TABLE_SIZE        131
 #define defLIST_NUM_DETAILS_TABLE_SIZE      67
 #define defVIRTUAL_COL_COUNT                50
@@ -50,12 +51,12 @@
 #define defMAX_BITS                         64
 #define defSIGN_MASK                0x8000000000000000
 
-typedef void (*PFCTRLHANDLER)(CListCtrl *pList, int nItem, int nSubItem, void * UParam);
+typedef void (*PFCTRLHANDLER)(CListCtrl* pList, int nItem, int nSubItem, void* UParam);
 
 struct sUserProgInfo
 {
     PFCTRLHANDLER   m_pfHandler;
-    void *          m_pUserParam;
+    void*           m_pUserParam;
 };
 
 typedef sUserProgInfo   SUSERPROGINFO;
@@ -79,7 +80,7 @@ struct sListInfo
 {
     eListTypes  m_eType;
     CStringArray m_omEntries;
-    
+
     sListInfo();
     sListInfo(sListInfo& sCopy);
     void operator = (sListInfo& sCopy);
@@ -91,6 +92,7 @@ union uDN64Number
 {
     double  m_dValue;
     __int64 m_n64Value;
+    UINT64 m_un64Value;
 };
 
 typedef uDN64Number UDN64NUMBER;
@@ -103,11 +105,11 @@ struct sNumericInfo
     BYTE    m_byFlag;                       //Type flag Float, Buddy & Signed
     short int m_nTextLimit;                 //Allowed Text width
     short int m_nSigLength;                 //Length of the num representation.
-                                            //This is required for 2s complement
+    //This is required for 2s complement
     sNumericInfo() : m_byBase(10),
-                     m_byFlag(0),
-                     m_nTextLimit(0),
-                     m_nSigLength(64)
+        m_byFlag(0),
+        m_nTextLimit(0),
+        m_nSigLength(64)
     {
         m_uMinVal.m_n64Value = 0;
         m_uMaxVal.m_n64Value = 0;

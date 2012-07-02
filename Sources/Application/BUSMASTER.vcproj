@@ -49,7 +49,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
+				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;WINVER=0x0500"
 				BasicRuntimeChecks="3"
@@ -64,7 +64,7 @@
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="4"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -86,7 +86,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
 				ProgramDatabaseFile=".\Debug/BUSMASTER.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
@@ -225,6 +225,115 @@
 				CommandLine="copy &quot;.\BUSMASTER_Interface.h&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER_Interface.h&quot;&#x0D;&#x0A;copy &quot;.\BUSMASTER_Interface.c&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER_Interface.c&quot;&#x0D;&#x0A;copy &quot;.\$(OutDir)\BUSMASTER.tlb&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER.tlb&quot;&#x0D;&#x0A;copy &quot;.\Res\Splsh16.bmp&quot; &quot;$(SolutionDir)\bin\$(OutDir)\Splsh16.bmp&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
+		<Configuration
+			Name="busmaster_debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/CAN_Monitor.tlb"
+				HeaderFileName="CAN_Monitor_Interface.h"
+				DLLDataFileName="CAN_Monitor_Interface.c"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				InlineFunctionExpansion="0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;WINVER=0x0500"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="true"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Release/CAN_Monitor.pch"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="0"
+				WarningLevel="4"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG;PEAK_USB_BUILD"
+				Culture="1033"
+				AdditionalIncludeDirectories="C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/ProjectConfiguration.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/NodeSimEx.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/FrameProcessor.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Replay.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalWatch.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Filter.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CommonClass.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/PSDI_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/TXWindow.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/SignalDefiner.lib&quot;"
+				AdditionalDependencies="Winmm.lib shlwapi.lib htmlhelp.lib psapi.lib"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/BUSMASTER.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
+				GenerateManifest="true"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Release/BUSMASTER.pdb"
+				GenerateMapFile="false"
+				MapFileName=""
+				MapExports="false"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+				AllowIsolation="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;.\BUSMASTER_Interface.h&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER_Interface.h&quot;&#x0D;&#x0A;copy &quot;.\BUSMASTER_Interface.c&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER_Interface.c&quot;&#x0D;&#x0A;copy &quot;.\$(OutDir)\BUSMASTER.tlb&quot; &quot;$(SolutionDir)\bin\$(OutDir)\BUSMASTER.tlb&quot;&#x0D;&#x0A;copy &quot;.\Res\Splsh16.bmp&quot; &quot;$(SolutionDir)\bin\$(OutDir)\Splsh16.bmp&quot;&#x0D;&#x0A;"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -256,12 +365,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\AppServices_Impl.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -285,6 +413,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -320,9 +458,25 @@
 						InterfaceIdentifierFileName="BUSMASTER_Interface.c"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCMIDLTool"
+						MkTypLibCompatible="false"
+						TypeLibraryName=".\Release/BUSMASTER.tlb"
+						HeaderFileName="BUSMASTER_Interface.h"
+						DLLDataFileName="dlldata.c"
+						InterfaceIdentifierFileName="BUSMASTER_Interface.c"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\BUSMASTER.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\BusmasterDump.cpp"
 				>
 			</File>
 			<File
@@ -337,12 +491,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\BusStatistics.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -366,6 +538,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -398,12 +580,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\CNVTCImageList.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -424,6 +625,15 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\ConfigAdapter.cpp"
@@ -437,12 +647,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\ConfigData.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -474,6 +702,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\ConfigMsgLogDlg.cpp"
@@ -487,12 +725,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\DatabaseDissociateDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -516,6 +772,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -548,6 +814,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="ElementSelection.cpp"
@@ -564,6 +840,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -596,6 +882,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="GraphConfiguration.cpp"
@@ -620,12 +916,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\GraphElement.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -649,6 +964,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -681,12 +1006,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\InterfaceGetter.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -722,6 +1066,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MDIChildBase.cpp"
@@ -738,6 +1092,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -770,6 +1134,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MessageDetailsDlg.cpp"
@@ -786,6 +1160,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -818,6 +1202,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MessageList.cpp"
@@ -834,6 +1228,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -866,6 +1270,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MsgFilterConfigPage.cpp"
@@ -890,12 +1304,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\MsgFrmtWnd.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -919,6 +1352,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -951,6 +1394,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MsgSgTreeView.cpp"
@@ -967,6 +1420,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -999,6 +1462,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="MsgSignalDBWnd.cpp"
@@ -1023,6 +1496,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\MsgWndHdrInfo.cpp"
@@ -1036,12 +1519,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\MsgWndThread.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1081,6 +1582,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="Properties.cpp"
@@ -1105,12 +1616,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\RxMsgList.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1131,12 +1661,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\SigGrphWndHandler.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1160,6 +1708,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1192,6 +1750,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Splash.cpp"
@@ -1205,12 +1773,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\SplFileDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1244,12 +1830,32 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="1"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Struct.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1281,12 +1887,31 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\TreeItemParam.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1307,6 +1932,15 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\TSExecutorHandler.cpp"
@@ -1320,12 +1954,30 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\TxHandler.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1365,6 +2017,16 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="ValueDescriptionDlg.cpp"
@@ -1381,6 +2043,16 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						PreprocessorDefinitions=""
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -1414,6 +2086,15 @@
 						BrowseInformation="0"
 					/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						BrowseInformation="0"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -1430,6 +2111,10 @@
 			</File>
 			<File
 				RelativePath=".\BUSMASTER.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BusmasterDump.h"
 				>
 			</File>
 			<File

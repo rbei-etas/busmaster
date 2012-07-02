@@ -15,11 +15,11 @@
 
 /**
  * \file      FunctionEditorDoc.h
- * \brief     This header file contains the defintion of class 
+ * \brief     This header file contains the defintion of class
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defintion of class 
+ * This header file contains the defintion of class
  */
 
 #if !defined(AFX_FUNCTIONEDITORDOC_H__E02A6C64_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
@@ -38,17 +38,17 @@ protected: // create from serialization only
     CFunctionEditorDoc();
     DECLARE_DYNCREATE(CFunctionEditorDoc)
 
-// Attributes
+    // Attributes
 public:
     CStringList m_omSourceCodeTextList;
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CFunctionEditorDoc)
-    public:
+public:
     virtual BOOL OnNewDocument();
     virtual void Serialize(CArchive& ar);
     virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
@@ -56,15 +56,15 @@ public:
     virtual void OnCloseDocument();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
-    
+
     // Function to get initialised string for database messages
     CString omStrGetInitialisedMessage( UINT unMsgID,
-									   const CString& omStrMsgName,
-                                       const CString& omStrVarName,
-                                       BOOL bInitData,
-									   UCHAR ucChannelId);
+                                        const CString& omStrMsgName,
+                                        const CString& omStrVarName,
+                                        BOOL bInitData,
+                                        UCHAR ucChannelId);
     CStringArray* pomStrGetErrorHandlerPrototypes();
     CStringArray* pomStrGetDLLHandlerPrototypes();
     CStringArray* omStrGetEventIndPrototypes();
@@ -81,14 +81,14 @@ public:
     long m_lCurrentWarningLineNum;
     POSITION SetPosToFirstLine();
     int nGetDocumentSize();
-    const char* pcGetLine(POSITION &rPosition);
+    const char* pcGetLine(POSITION& rPosition);
     DWORD dwGetLineCount();
     BOOL bInitBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
     BOOL bGetBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
 
     virtual ~CFunctionEditorDoc();
     BOOL bCreateNewDocument(CString& omPath);
-    
+
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
@@ -109,17 +109,17 @@ private:
     CStringArray m_omIncludeFileArray ;
     SBUS_SPECIFIC_INFO m_sBusSpecInfo;
 
-	// To get the application version
-	CString GetApplicationVersion();
-    void vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR unChannel, 
+    // To get the application version
+    CString GetApplicationVersion();
+    void vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR unChannel,
                                      SMSG_NAME_CODE& sMsgNameCode, BOOL bInitData);
 protected:
 
-// Generated message map functions
+    // Generated message map functions
 protected:
     //{{AFX_MSG(CFunctionEditorDoc)
-        // NOTE - the ClassWizard will add and remove member functions here.
-        //    DO NOT EDIT what you see in these blocks of generated code !
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };

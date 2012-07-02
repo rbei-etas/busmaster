@@ -12,7 +12,7 @@
 * @remarks    All strings are UNICODE UTF8 encoded.
 *
 * @coding     All pointer parameters can be @c NULL.
-*             An implementation must explicitly check for @c NULL 
+*             An implementation must explicitly check for @c NULL
 *             pointers and react appropriately.
 */
 
@@ -29,21 +29,21 @@
 * @page PAGE_OCI_RECEIVE_MESSAGES OCI - Receive Messages
 * Depending on callback functions and filters, there are different
 * ways to receive events and data frames.
-* 
-* The following pseudo code shows the internal handling of incoming 
+*
+* The following pseudo code shows the internal handling of incoming
 * messages:
 * @code
 * if (MessageIsFrame(message))
 * {
 *     if (MatchFrameFilter(message))
-*     {            
+*     {
 *         if (onFrame.function != NULL)
 *         {
-*             // Call <onFrame.function> for receiving a frame.                    
+*             // Call <onFrame.function> for receiving a frame.
 *         }
 *         else
 *         {
-*             // Write frame to receive queue.                   
+*             // Write frame to receive queue.
 *         }
 *     }
 * }
@@ -53,21 +53,21 @@
 *     {
 *         if (MatchEventFilter(message, OCI_EVENT_DESTINATION_CALLBACK))
 *         {
-*             // Call <onEvent.function> for receiving an event.                    
+*             // Call <onEvent.function> for receiving an event.
 *         }
 *     }
 *     if (MatchEventFilter(message, OCI_EVENT_DESTINATION_INBAND))
 *     {
 *         if (onFrame.function != NULL)
 *         {
-*             // Call <onFrame.function> for receiving an event.                    
+*             // Call <onFrame.function> for receiving an event.
 *         }
 *         else
 *         {
 *             // Write event to receive queue.
 *         }
 *     }
-* }       
+* }
 * @endcode
 * @todo Verify pseudo code.
 * @todo Add additional documentation.

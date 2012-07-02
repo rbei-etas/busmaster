@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINRxFrame definition
 * @remark The header structure of the OLI may change
@@ -28,10 +28,13 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
-/** 
+/**
 * @ingroup GROUP_OLI_LIN_MESSAGES
 * @brief  A received LIN bus data frame.
 *
@@ -41,26 +44,27 @@ namespace ETAS {namespace OLI {
 * This interface's implementation of @ref IMessage::GetID returns the message ID of the LIN frame.
 *
 * @remark All public methods are thread-safe.
-* @remark The lifetime of all objects implementing this interface 
+* @remark The lifetime of all objects implementing this interface
 *         is defined by the @ref IRxQueue "receive queue" instance
-*         that contains them. Consequently, the same applies to the 
+*         that contains them. Consequently, the same applies to the
 *         payload as well.
 * @since  BOA 1.3
 * @see    IRxQueue, ILINLink
 */
 
-OLI_INTERFACE ILINRxFrame : public IRxFrame
+OLI_INTERFACE ILINRxFrame :
+public IRxFrame
 {
 protected:
 
     /** @brief Destructor.
 
-        This destructor has been hidden since objects implementing 
+        This destructor has been hidden since objects implementing
         this class are controlled by the receiving queue.
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~ILINRxFrame() OLI_NOTHROW {};
 
@@ -72,11 +76,11 @@ public:
     enum {TYPE = LIN_TYPE_FRAME_BASE + 1};
 
     /** @brief  Get the CRC calculation method.
-        
-        @return CRC calculation method. 
+
+        @return CRC calculation method.
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual LINCRCType OLI_CALL GetCRCType() const OLI_NOTHROW = 0;
 };
@@ -84,7 +88,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

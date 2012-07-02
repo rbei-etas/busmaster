@@ -35,11 +35,11 @@ const int SIZE_CHAR = sizeof(char);
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  tagFilterName
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagFilterName::tagFilterName()
 {
@@ -53,11 +53,11 @@ tagFilterName::tagFilterName()
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  tagFilterName
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void tagFilterName::vClear(void)
 {
@@ -71,11 +71,11 @@ void tagFilterName::vClear(void)
   Output           :  tagFilterName& - The current object reference.
   Functionality    :  Copies a source object by '=' operator overloading.
   Member of        :  tagFilterName
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagFilterName& tagFilterName::operator=(const tagFilterName& RefObj)
 {
@@ -95,11 +95,11 @@ tagFilterName& tagFilterName::operator=(const tagFilterName& RefObj)
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  tagFilterName
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -121,11 +121,11 @@ BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
                       into the current object. Advances the reading pointer to
                       the next byte occurring after the block.
   Member of        :  tagFilterName
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
 {
@@ -147,11 +147,11 @@ BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  tagSFILTER
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagSFILTER::tagSFILTER()
 {
@@ -164,11 +164,11 @@ tagSFILTER::tagSFILTER()
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  tagSFILTER
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void tagSFILTER::vClear(void)
 {
@@ -184,16 +184,16 @@ void tagSFILTER::vClear(void)
   Output           :  tagSFILTER& - The current object reference.
   Functionality    :  Copies a source object by '=' operator overloading.
   Member of        :  tagSFILTER
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagSFILTER& tagSFILTER::operator=(const tagSFILTER& RefObj)
 {
     m_ucFilterType  = RefObj.m_ucFilterType;
-    m_dwMsgIDFrom   = RefObj.m_dwMsgIDFrom; 
+    m_dwMsgIDFrom   = RefObj.m_dwMsgIDFrom;
     m_dwMsgIDTo     = RefObj.m_dwMsgIDTo;
     m_eDrctn        = RefObj.m_eDrctn;
 
@@ -206,15 +206,15 @@ tagSFILTER& tagSFILTER::operator=(const tagSFILTER& RefObj)
   Output           :  UINT - size of the current filtering block
   Functionality    :  Returns in bytes size of the current filtering block.
   Member of        :  tagSFILTER
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT tagSFILTER::unGetSize(void) const
 {
-    return (sizeof(m_ucFilterType) + sizeof(m_dwMsgIDFrom) + 
+    return (sizeof(m_ucFilterType) + sizeof(m_dwMsgIDFrom) +
             sizeof(m_dwMsgIDTo) + sizeof(m_eDrctn));
 }
 
@@ -228,11 +228,11 @@ UINT tagSFILTER::unGetSize(void) const
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  tagSFILTER
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagSFILTER::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -256,11 +256,11 @@ BYTE* tagSFILTER::pbGetConfigData(BYTE* pbTarget) const
                       into the current object. Advances the reading pointer to
                       the next byte occurring after the block.
   Member of        :  tagSFILTER
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* tagSFILTER::pbSetConfigData(BYTE* pbTarget)
 {
@@ -286,11 +286,11 @@ BYTE* tagSFILTER::pbSetConfigData(BYTE* pbTarget)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_CAN::SFILTER_CAN()
 {
@@ -303,11 +303,11 @@ SFILTER_CAN::SFILTER_CAN()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_CAN::~SFILTER_CAN()
 {
@@ -320,11 +320,11 @@ SFILTER_CAN::~SFILTER_CAN()
   Output           :  SFILTER_CAN& - The current object reference.
   Functionality    :  Copies a source object by '=' operator overloading.
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_CAN& SFILTER_CAN::operator=(const SFILTER_CAN& RefObj)
 {
@@ -343,11 +343,11 @@ SFILTER_CAN& SFILTER_CAN::operator=(const SFILTER_CAN& RefObj)
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void SFILTER_CAN::vClear(void)
 {
@@ -361,20 +361,20 @@ void SFILTER_CAN::vClear(void)
   Function Name    :  bDoesFrameOccur
   Input(s)         :  psCurrFrame - The frame in question.
   Output           :  TRUE if the frame occurs in the filtering block.
-  Functionality    :  Query function to know if this filtering block is 
+  Functionality    :  Query function to know if this filtering block is
                       configured for the message entry passed.
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
 {
     BOOL bResult = FALSE;
 
-    SFRAMEINFO_BASIC_CAN& sCurrFrame = *((SFRAMEINFO_BASIC_CAN *) psCurrFrame);
+    SFRAMEINFO_BASIC_CAN& sCurrFrame = *((SFRAMEINFO_BASIC_CAN*) psCurrFrame);
 
     // For Signle Id Filtering
     if (m_ucFilterType == defFILTER_TYPE_SINGLE_ID)
@@ -384,26 +384,26 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
         {
             // Check for message Channel
             if ( (CAN_CHANNEL_ALL == m_eChannel) ||
-                 (m_eChannel == sCurrFrame.m_eChannel) )
+                    (m_eChannel == sCurrFrame.m_eChannel) )
             {
                 // Check for message direction
                 if ( (DIR_ALL == m_eDrctn) ||
-                     (DIR_ALL == sCurrFrame.m_eDrctn) ||
-                     (m_eDrctn == sCurrFrame.m_eDrctn) )
-				{
+                        (DIR_ALL == sCurrFrame.m_eDrctn) ||
+                        (m_eDrctn == sCurrFrame.m_eDrctn) )
+                {
                     // Check for extended Id
                     if ((TYPE_ID_CAN_ALL == m_byIDType) ||
-                        (m_byIDType == sCurrFrame.m_byIDType))
+                            (m_byIDType == sCurrFrame.m_byIDType))
                     {
                         //Check for RTR
                         if ((TYPE_MSG_CAN_ALL == m_byMsgType) ||
-                            (m_byMsgType == sCurrFrame.m_byMsgType))
+                                (m_byMsgType == sCurrFrame.m_byMsgType))
                         {
-					        bResult = TRUE;
+                            bResult = TRUE;
                         }
                     }
-				}
-			}
+                }
+            }
         }
     }
     // For Range Filter
@@ -411,31 +411,31 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
     {
         // Check for message falling in the Range
         if ( (sCurrFrame.m_dwFrameID >= m_dwMsgIDFrom) &&
-             (sCurrFrame.m_dwFrameID <= m_dwMsgIDTo) )
+                (sCurrFrame.m_dwFrameID <= m_dwMsgIDTo) )
         {
             // Check for message Channel
             if ( (CAN_CHANNEL_ALL == m_eChannel) ||
-                 (m_eChannel == sCurrFrame.m_eChannel) )
+                    (m_eChannel == sCurrFrame.m_eChannel) )
             {
-               // Check for message Direction
+                // Check for message Direction
                 if ( (DIR_ALL == m_eDrctn) ||
-                     (DIR_ALL == sCurrFrame.m_eDrctn) ||
-                     (m_eDrctn == sCurrFrame.m_eDrctn) )
-				{
-					// Check for extended Id
+                        (DIR_ALL == sCurrFrame.m_eDrctn) ||
+                        (m_eDrctn == sCurrFrame.m_eDrctn) )
+                {
+                    // Check for extended Id
                     if ((TYPE_ID_CAN_ALL == m_byIDType) ||
-                        (m_byIDType == sCurrFrame.m_byIDType))
+                            (m_byIDType == sCurrFrame.m_byIDType))
                     {
                         //Check for RTR
                         if ((TYPE_MSG_CAN_ALL == m_byMsgType) ||
-                            (m_byMsgType == sCurrFrame.m_byMsgType))
+                                (m_byMsgType == sCurrFrame.m_byMsgType))
                         {
-					        bResult = TRUE;
+                            bResult = TRUE;
                         }
                     }
-				}
+                }
             }
-		}
+        }
     }
     else
     {
@@ -451,11 +451,11 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
   Output           :  UINT - size of the current filtering block
   Functionality    :  Returns in bytes size of the current filtering block.
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT SFILTER_CAN::unGetSize(void) const
 {
@@ -477,11 +477,11 @@ UINT SFILTER_CAN::unGetSize(void) const
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_CAN::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -505,11 +505,11 @@ BYTE* SFILTER_CAN::pbGetConfigData(BYTE* pbTarget) const
                       into the current object. Advances the reading pointer to
                       the next byte occurring after the block.
   Member of        :  SFILTER_CAN
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_CAN::pbSetConfigData(BYTE* pbTarget)
 {
@@ -535,11 +535,11 @@ BYTE* SFILTER_CAN::pbSetConfigData(BYTE* pbTarget)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_FLEXRAY::SFILTER_FLEXRAY()
 {
@@ -552,11 +552,11 @@ SFILTER_FLEXRAY::SFILTER_FLEXRAY()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_FLEXRAY::~SFILTER_FLEXRAY()
 {
@@ -569,11 +569,11 @@ SFILTER_FLEXRAY::~SFILTER_FLEXRAY()
   Output           :  SFILTER_FLEXRAY& - The current object reference.
   Functionality    :  Copies a source object by '=' operator overloading.
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_FLEXRAY& SFILTER_FLEXRAY::operator=(const SFILTER_FLEXRAY& RefObj)
 {
@@ -590,11 +590,11 @@ SFILTER_FLEXRAY& SFILTER_FLEXRAY::operator=(const SFILTER_FLEXRAY& RefObj)
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void SFILTER_FLEXRAY::vClear(void)
 {
@@ -606,20 +606,20 @@ void SFILTER_FLEXRAY::vClear(void)
   Function Name    :  bDoesFrameOccur
   Input(s)         :  psCurrFrame - The frame in question.
   Output           :  TRUE if the frame occurs in the filtering block.
-  Functionality    :  Query function to know if this filtering block is 
+  Functionality    :  Query function to know if this filtering block is
                       configured for the message entry passed.
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BOOL SFILTER_FLEXRAY::bDoesFrameOccur(const void* psCurrFrame) const
 {
     BOOL bResult = FALSE;
 
-    SFRAMEINFO_BASIC_FLEXRAY& sCurrFrame = *((SFRAMEINFO_BASIC_FLEXRAY *) psCurrFrame);
+    SFRAMEINFO_BASIC_FLEXRAY& sCurrFrame = *((SFRAMEINFO_BASIC_FLEXRAY*) psCurrFrame);
     // For Signle Id Filtering
     if (m_ucFilterType == defFILTER_TYPE_SINGLE_ID)
     {
@@ -628,17 +628,17 @@ BOOL SFILTER_FLEXRAY::bDoesFrameOccur(const void* psCurrFrame) const
         {
             // Check for message Channel
             if ( (FLEXRAY_CHANNEL_AB == m_eChannel) ||
-                 (FLEXRAY_CHANNEL_AB == sCurrFrame.m_eChannel) ||
-                 (m_eChannel == sCurrFrame.m_eChannel) )
+                    (FLEXRAY_CHANNEL_AB == sCurrFrame.m_eChannel) ||
+                    (m_eChannel == sCurrFrame.m_eChannel) )
             {
                 // Check for message direction
                 if ( (DIR_ALL == m_eDrctn) ||
-                     (DIR_ALL == sCurrFrame.m_eDrctn) ||
-                     (m_eDrctn == sCurrFrame.m_eDrctn) )
-				{
-					bResult = TRUE;
-				}
-			}
+                        (DIR_ALL == sCurrFrame.m_eDrctn) ||
+                        (m_eDrctn == sCurrFrame.m_eDrctn) )
+                {
+                    bResult = TRUE;
+                }
+            }
         }
     }
     // For Range Filter
@@ -646,22 +646,22 @@ BOOL SFILTER_FLEXRAY::bDoesFrameOccur(const void* psCurrFrame) const
     {
         // Check for message falling in the Range
         if ( (sCurrFrame.m_dwFrameID >= m_dwMsgIDFrom) &&
-             (sCurrFrame.m_dwFrameID <= m_dwMsgIDTo) )
+                (sCurrFrame.m_dwFrameID <= m_dwMsgIDTo) )
         {
             // Check for message Channel
             if ( (FLEXRAY_CHANNEL_AB == m_eChannel) ||
-                 (FLEXRAY_CHANNEL_AB == sCurrFrame.m_eChannel) ||
-                 (m_eChannel == sCurrFrame.m_eChannel) )
+                    (FLEXRAY_CHANNEL_AB == sCurrFrame.m_eChannel) ||
+                    (m_eChannel == sCurrFrame.m_eChannel) )
             {
-               // Check for message Direction
+                // Check for message Direction
                 if ( (DIR_ALL == m_eDrctn) ||
-                     (DIR_ALL == sCurrFrame.m_eDrctn) ||
-                     (m_eDrctn == sCurrFrame.m_eDrctn) )
-				{
-					bResult = TRUE;
-				}
+                        (DIR_ALL == sCurrFrame.m_eDrctn) ||
+                        (m_eDrctn == sCurrFrame.m_eDrctn) )
+                {
+                    bResult = TRUE;
+                }
             }
-		}
+        }
     }
     else
     {
@@ -677,11 +677,11 @@ BOOL SFILTER_FLEXRAY::bDoesFrameOccur(const void* psCurrFrame) const
   Output           :  UINT - size of the current filtering block
   Functionality    :  Returns in bytes size of the current filtering block.
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT SFILTER_FLEXRAY::unGetSize(void) const
 {
@@ -701,11 +701,11 @@ UINT SFILTER_FLEXRAY::unGetSize(void) const
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_FLEXRAY::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -727,11 +727,11 @@ BYTE* SFILTER_FLEXRAY::pbGetConfigData(BYTE* pbTarget) const
                       into the current object. Advances the reading pointer to
                       the next byte occurring after the block.
   Member of        :  SFILTER_FLEXRAY
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_FLEXRAY::pbSetConfigData(BYTE* pbTarget)
 {
@@ -756,11 +756,11 @@ BYTE* SFILTER_FLEXRAY::pbSetConfigData(BYTE* pbTarget)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_MCNET::SFILTER_MCNET()
 {
@@ -773,11 +773,11 @@ SFILTER_MCNET::SFILTER_MCNET()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_MCNET::~SFILTER_MCNET()
 {
@@ -790,11 +790,11 @@ SFILTER_MCNET::~SFILTER_MCNET()
   Output           :  SFILTER_MCNET& - The current object reference.
   Functionality    :  Copies a source object by '=' operator overloading.
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_MCNET& SFILTER_MCNET::operator=(const SFILTER_MCNET& RefObj)
 {
@@ -808,11 +808,11 @@ SFILTER_MCNET& SFILTER_MCNET::operator=(const SFILTER_MCNET& RefObj)
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void SFILTER_MCNET::vClear(void)
 {
@@ -823,20 +823,20 @@ void SFILTER_MCNET::vClear(void)
   Function Name    :  bDoesFrameOccur
   Input(s)         :  psCurrFrame - The frame in question.
   Output           :  TRUE if the frame occurs in the filtering block.
-  Functionality    :  Query function to know if this filtering block is 
+  Functionality    :  Query function to know if this filtering block is
                       configured for the message entry passed.
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BOOL SFILTER_MCNET::bDoesFrameOccur(const void* psCurrFrame) const
 {
     BOOL bResult = FALSE;
 
-    SFRAMEINFO_BASIC_MCNET& sCurrFrame = *((SFRAMEINFO_BASIC_MCNET *) psCurrFrame);
+    SFRAMEINFO_BASIC_MCNET& sCurrFrame = *((SFRAMEINFO_BASIC_MCNET*) psCurrFrame);
     // For Signle Id Filtering
     if (m_ucFilterType == defFILTER_TYPE_SINGLE_ID)
     {
@@ -851,10 +851,10 @@ BOOL SFILTER_MCNET::bDoesFrameOccur(const void* psCurrFrame) const
     {
         // Check for message falling in the Range
         if ( (sCurrFrame.m_dwFrameID >= m_dwMsgIDFrom) &&
-             (sCurrFrame.m_dwFrameID <= m_dwMsgIDTo) )
+                (sCurrFrame.m_dwFrameID <= m_dwMsgIDTo) )
         {
             bResult = TRUE;
-		}
+        }
     }
     else
     {
@@ -870,11 +870,11 @@ BOOL SFILTER_MCNET::bDoesFrameOccur(const void* psCurrFrame) const
   Output           :  UINT - size of the current filtering block
   Functionality    :  Returns in bytes size of the current filtering block.
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT SFILTER_MCNET::unGetSize(void) const
 {
@@ -892,11 +892,11 @@ UINT SFILTER_MCNET::unGetSize(void) const
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_MCNET::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -915,11 +915,11 @@ BYTE* SFILTER_MCNET::pbGetConfigData(BYTE* pbTarget) const
                       into the current object. Advances the reading pointer to
                       the next byte occurring after the block.
   Member of        :  SFILTER_MCNET
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_MCNET::pbSetConfigData(BYTE* pbTarget)
 {
@@ -939,11 +939,11 @@ BYTE* SFILTER_MCNET::pbSetConfigData(BYTE* pbTarget)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_J1939::SFILTER_J1939()
 {
@@ -956,11 +956,11 @@ SFILTER_J1939::SFILTER_J1939()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_J1939::~SFILTER_J1939()
 {
@@ -973,11 +973,11 @@ SFILTER_J1939::~SFILTER_J1939()
   Output           :  SFILTER_J1939& - The current object reference.
   Functionality    :  Copies a source object by '=' operator overloading.
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SFILTER_J1939& SFILTER_J1939::operator=(const SFILTER_J1939& RefObj)
 {
@@ -991,11 +991,11 @@ SFILTER_J1939& SFILTER_J1939::operator=(const SFILTER_J1939& RefObj)
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void SFILTER_J1939::vClear(void)
 {
@@ -1006,20 +1006,20 @@ void SFILTER_J1939::vClear(void)
   Function Name    :  bDoesFrameOccur
   Input(s)         :  psCurrFrame - The frame in question.
   Output           :  TRUE if the frame occurs in the filtering block.
-  Functionality    :  Query function to know if this filtering block is 
+  Functionality    :  Query function to know if this filtering block is
                       configured for the message entry passed.
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BOOL SFILTER_J1939::bDoesFrameOccur(const void* psCurrFrame) const
 {
     BOOL bResult = FALSE;
 
-    SFRAMEINFO_BASIC_J1939& sCurrFrame = *((SFRAMEINFO_BASIC_J1939 *) psCurrFrame);
+    SFRAMEINFO_BASIC_J1939& sCurrFrame = *((SFRAMEINFO_BASIC_J1939*) psCurrFrame);
     // For Signle Id Filtering
     if (m_ucFilterType == defFILTER_TYPE_SINGLE_ID)
     {
@@ -1034,10 +1034,10 @@ BOOL SFILTER_J1939::bDoesFrameOccur(const void* psCurrFrame) const
     {
         // Check for message falling in the Range
         if ( (sCurrFrame.m_dwPGN >= m_dwMsgIDFrom) &&
-             (sCurrFrame.m_dwPGN <= m_dwMsgIDTo) )
+                (sCurrFrame.m_dwPGN <= m_dwMsgIDTo) )
         {
             bResult = TRUE;
-		}
+        }
     }
     else
     {
@@ -1053,11 +1053,11 @@ BOOL SFILTER_J1939::bDoesFrameOccur(const void* psCurrFrame) const
   Output           :  UINT - size of the current filtering block
   Functionality    :  Returns in bytes size of the current filtering block.
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 UINT SFILTER_J1939::unGetSize(void) const
 {
@@ -1075,11 +1075,11 @@ UINT SFILTER_J1939::unGetSize(void) const
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_J1939::pbGetConfigData(BYTE* pbTarget) const
 {
@@ -1098,11 +1098,11 @@ BYTE* SFILTER_J1939::pbGetConfigData(BYTE* pbTarget) const
                       into the current object. Advances the reading pointer to
                       the next byte occurring after the block.
   Member of        :  SFILTER_J1939
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  30.11.2010
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 BYTE* SFILTER_J1939::pbSetConfigData(BYTE* pbTarget)
 {
@@ -1120,11 +1120,11 @@ BYTE* SFILTER_J1939::pbSetConfigData(BYTE* pbTarget)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagFilterSet::tagFilterSet()
 {
@@ -1141,11 +1141,11 @@ tagFilterSet::tagFilterSet()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 tagFilterSet::~tagFilterSet()
 {
@@ -1158,7 +1158,7 @@ tagFilterSet::~tagFilterSet()
   Output           :  void
   Functionality    :  Clears information inthe current filtering block
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
   ****************************************************************************/
@@ -1172,33 +1172,34 @@ void tagFilterSet::vClear(void)
         {
             case CAN:
             {
-                PSFILTER_CAN psFilterCAN 
-                                   = static_cast<PSFILTER_CAN>(m_psFilterInfo);
+                PSFILTER_CAN psFilterCAN
+                    = static_cast<PSFILTER_CAN>(m_psFilterInfo);
                 delete[] psFilterCAN;
             }
             break;
             case FLEXRAY:
             {
-                PSFILTER_FLEXRAY psFilterFlex 
-                               = static_cast<PSFILTER_FLEXRAY>(m_psFilterInfo);
+                PSFILTER_FLEXRAY psFilterFlex
+                    = static_cast<PSFILTER_FLEXRAY>(m_psFilterInfo);
                 delete[] psFilterFlex;
             }
             break;
             case MCNET:
             {
-                PSFILTER_MCNET psFilterMCNet 
-                                   = static_cast<PSFILTER_MCNET>(m_psFilterInfo);
+                PSFILTER_MCNET psFilterMCNet
+                    = static_cast<PSFILTER_MCNET>(m_psFilterInfo);
                 delete[] psFilterMCNet;
             }
             break;
             case J1939:
             {
-                PSFILTER_J1939 psFilterJ1939 
-                                   = static_cast<PSFILTER_J1939>(m_psFilterInfo);
+                PSFILTER_J1939 psFilterJ1939
+                    = static_cast<PSFILTER_J1939>(m_psFilterInfo);
                 delete[] psFilterJ1939;
             }
             break;
-            default: ASSERT(FALSE);
+            default:
+                ASSERT(FALSE);
         }
         m_psFilterInfo = NULL;
     }
@@ -1211,7 +1212,7 @@ void tagFilterSet::vClear(void)
   Output           :  true if cloning operation is successful, else false.
   Functionality    :  Clones a filtering object to initialise the current one.
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
 ******************************************************************************/
@@ -1238,8 +1239,8 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                     bResult = true;
                     for (USHORT i = 0; i < m_ushFilters; i++)
                     {
-                        SFILTER_CAN* pDestObj = ((SFILTER_CAN *)m_psFilterInfo) + i;
-                        SFILTER_CAN* pSrcObj = ((SFILTER_CAN *)RefObj.m_psFilterInfo) + i;
+                        SFILTER_CAN* pDestObj = ((SFILTER_CAN*)m_psFilterInfo) + i;
+                        SFILTER_CAN* pSrcObj = ((SFILTER_CAN*)RefObj.m_psFilterInfo) + i;
                         *pDestObj = *pSrcObj;
                     }
                 }
@@ -1257,8 +1258,8 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                     bResult = true;
                     for (USHORT i = 0; i < m_ushFilters; i++)
                     {
-                        SFILTER_FLEXRAY* pDestObj = ((SFILTER_FLEXRAY *) m_psFilterInfo) + i;
-                        SFILTER_FLEXRAY* pSrcObj = ((SFILTER_FLEXRAY *) RefObj.m_psFilterInfo) + i;
+                        SFILTER_FLEXRAY* pDestObj = ((SFILTER_FLEXRAY*) m_psFilterInfo) + i;
+                        SFILTER_FLEXRAY* pSrcObj = ((SFILTER_FLEXRAY*) RefObj.m_psFilterInfo) + i;
                         *pDestObj = *pSrcObj;
                     }
                 }
@@ -1276,8 +1277,8 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                     bResult = true;
                     for (USHORT i = 0; i < m_ushFilters; i++)
                     {
-                        SFILTER_MCNET* pDestObj = ((SFILTER_MCNET *)m_psFilterInfo) + i;
-                        SFILTER_MCNET* pSrcObj = ((SFILTER_MCNET *)RefObj.m_psFilterInfo) + i;
+                        SFILTER_MCNET* pDestObj = ((SFILTER_MCNET*)m_psFilterInfo) + i;
+                        SFILTER_MCNET* pSrcObj = ((SFILTER_MCNET*)RefObj.m_psFilterInfo) + i;
                         *pDestObj = *pSrcObj;
                     }
                 }
@@ -1295,8 +1296,8 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                     bResult = true;
                     for (USHORT i = 0; i < m_ushFilters; i++)
                     {
-                        SFILTER_J1939* pDestObj = ((SFILTER_J1939 *)m_psFilterInfo) + i;
-                        SFILTER_J1939* pSrcObj = ((SFILTER_J1939 *)RefObj.m_psFilterInfo) + i;
+                        SFILTER_J1939* pDestObj = ((SFILTER_J1939*)m_psFilterInfo) + i;
+                        SFILTER_J1939* pSrcObj = ((SFILTER_J1939*)RefObj.m_psFilterInfo) + i;
                         *pDestObj = *pSrcObj;
                     }
                 }
@@ -1306,7 +1307,8 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                 }
             }
             break;
-            default: ASSERT(FALSE);
+            default:
+                ASSERT(FALSE);
         }
     }
     else
@@ -1324,13 +1326,13 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
   Output           :  UINT - size of the current filtering block
   Functionality    :  Returns in bytes size of the current filtering block.
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
 ******************************************************************************/
 UINT tagFilterSet::unGetSize(void) const
 {
-    UINT Result = sizeof(m_sFilterName) + sizeof(m_bEnabled) + 
+    UINT Result = sizeof(m_sFilterName) + sizeof(m_bEnabled) +
                   sizeof(m_eCurrBus) + sizeof(m_ushFilters);
 
     switch (m_eCurrBus)
@@ -1373,7 +1375,7 @@ UINT tagFilterSet::unGetSize(void) const
         break;
         default:
         {
-            ASSERT(FALSE);            
+            ASSERT(FALSE);
         }
         break;
     }
@@ -1391,7 +1393,7 @@ UINT tagFilterSet::unGetSize(void) const
                       into the target buffer. Advances the writing pointer to
                       the next byte occurring after the written block.
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
 ******************************************************************************/
@@ -1449,7 +1451,7 @@ BYTE* tagFilterSet::pbGetConfigData(BYTE* pbTarget) const
                       the current object. Advances the reading pointer to the
                       next byte occurring after the block.
   Member of        :  tagFilterSet
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
 ******************************************************************************/
@@ -1469,11 +1471,20 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
     {
         switch (m_eCurrBus)
         {
-            case CAN: m_psFilterInfo = new SFILTER_CAN[m_ushFilters]; break;
-            case FLEXRAY: m_psFilterInfo = new SFILTER_FLEXRAY[m_ushFilters]; break;
-            case MCNET: m_psFilterInfo = new SFILTER_MCNET[m_ushFilters]; break;
-            case J1939: m_psFilterInfo = new SFILTER_J1939[m_ushFilters]; break;
-            default: ASSERT(FALSE);
+            case CAN:
+                m_psFilterInfo = new SFILTER_CAN[m_ushFilters];
+                break;
+            case FLEXRAY:
+                m_psFilterInfo = new SFILTER_FLEXRAY[m_ushFilters];
+                break;
+            case MCNET:
+                m_psFilterInfo = new SFILTER_MCNET[m_ushFilters];
+                break;
+            case J1939:
+                m_psFilterInfo = new SFILTER_J1939[m_ushFilters];
+                break;
+            default:
+                ASSERT(FALSE);
         }
 
         if (NULL != m_psFilterInfo)
@@ -1526,11 +1537,20 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
             UINT unFilterSize = 0;
             switch (m_eCurrBus)
             {
-                case CAN: unFilterSize = sizeof(SFILTER_CAN); break;
-                case FLEXRAY: unFilterSize = sizeof(SFILTER_FLEXRAY); break;
-                case MCNET: unFilterSize = sizeof(SFILTER_MCNET); break;
-                case J1939: unFilterSize = sizeof(SFILTER_J1939); break;
-                default: ASSERT(FALSE);
+                case CAN:
+                    unFilterSize = sizeof(SFILTER_CAN);
+                    break;
+                case FLEXRAY:
+                    unFilterSize = sizeof(SFILTER_FLEXRAY);
+                    break;
+                case MCNET:
+                    unFilterSize = sizeof(SFILTER_MCNET);
+                    break;
+                case J1939:
+                    unFilterSize = sizeof(SFILTER_J1939);
+                    break;
+                default:
+                    ASSERT(FALSE);
             }
             pbTStream += m_ushFilters * unFilterSize;
             m_ushFilters = 0;
@@ -1542,7 +1562,7 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
 }
 
 tagFilterSet* tagFilterSet::psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, char* acFilterName)
-{    
+{
     for (UINT i = 0; i < Count; i++)
     {
         tagFilterSet* psTemp = psSet + i;

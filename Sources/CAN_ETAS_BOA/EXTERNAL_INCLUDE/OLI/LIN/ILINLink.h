@@ -7,7 +7,7 @@
 * $Revision: 4509 $
 */
 
-/** 
+/**
 * @file
 * @brief  ILINLink definition
 * @remark The header structure of the OLI may change
@@ -32,7 +32,10 @@
 #include "../Common/BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 // forward declaration
@@ -60,12 +63,13 @@ class ILINLink;
  * \return A pointer to an interface based on IError, describing the error which occurred during this function. NULL if no error
  * occurred. See \ref ErrorReporting for more information on how errors are reported.
  */
-OLL_API IError* OLI_CALL ILINLink_Create( const char *URI, uint32 version, ILINLink** ppLinLink );
+OLL_API IError* OLI_CALL ILINLink_Create( const char* URI, uint32 version, ILINLink** ppLinLink );
 
 /** LIN-specific extension of ILink.
 */
 
-OLI_INTERFACE ILINLink : public ILink
+OLI_INTERFACE ILINLink :
+public ILink
 {
 protected:
 
@@ -98,17 +102,17 @@ protected:
 public:
 
     /// \name LIN-specific interface
-	/// @{
+    /// @{
 
-	/// Creates a LIN master tx queue
+    /// Creates a LIN master tx queue
     /**
-		The underlying controller must be the bus master.
+        The underlying controller must be the bus master.
 
-		There can only be one master queue on a single CLINLink. Repeated calls
-		to CreateMasterQueue will merely return a pointer to the original queue.
+        There can only be one master queue on a single CLINLink. Repeated calls
+        to CreateMasterQueue will merely return a pointer to the original queue.
 
-		\throws OCIException
-			If the controller is not the bus master, or if OCI reported another problem.
+        \throws OCIException
+            If the controller is not the bus master, or if OCI reported another problem.
     */
 
     /**
@@ -135,7 +139,7 @@ public:
      * This is a helper method which wraps ILINLink_Create(): see \ref BinaryCompatibility and \ref ErrorReporting for an
      * explanation of why it is needed.
      */
-    static AutoPtr<ILINLink> OLI_CALL 
+    static AutoPtr<ILINLink> OLI_CALL
     Create( const char *URI, uint32 version = VERSION )
     {
         ILINLink* pLinLink = NULL;
@@ -150,7 +154,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "../Common/EndNamespace.h"

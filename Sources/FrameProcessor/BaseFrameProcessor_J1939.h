@@ -2,27 +2,27 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  BaseFrameProcessor_J1939.h
-  Description   :  Definition file for CBaseFrameProcessor_J1939 class which 
+  Description   :  Definition file for CBaseFrameProcessor_J1939 class which
                    describes the interface of J1939 logging module.
   $Log:   X:/Archive/Sources/FrameProcessor/BaseFrameProcessor_J1939.h_v  $
- * 
+ *
  *    Rev 1.3   02 Dec 2011 20:16:48   rac2kor
- * Removed hard coding of version information 
+ * Removed hard coding of version information
  * string in the log file by accepting it as a parameter
  * from the application / client.
- * 
+ *
  *    Rev 1.2   15 Apr 2011 19:20:30   rac2kor
  * Inserted RBEI Copyright information text into the file header.
- * 
+ *
  *    Rev 1.1   11 Dec 2010 15:43:30   rac2kor
  * Wrong constructor name was used.
- * 
+ *
  *    Rev 1.0   06 Dec 2010 18:53:02   rac2kor
- *  
+ *
 
   Author(s)     :  Ratnadip Choudhury
   Date Created  :  1.12.2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -71,9 +71,14 @@ public:
     to FOR_ALL, signifies the operation to be performed for all the blocks */
     virtual HRESULT FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
 
-    // Query function - current logging status (OFF/ON). 
+    // Query function - current logging status (OFF/ON).
     virtual BOOL FPJ1_IsLoggingON(void) = 0;
 
+    virtual BOOL FPJ1_IsJ1939DataLogged(void) = 0;
+
+    virtual void FPJ1_DisableJ1939DataLogFlag(void) = 0;
+
+    virtual BOOL FPJ1_IsJ1939ThreadBlocked(void) = 0;
     // Query function - current filtering status
     virtual BOOL FPJ1_IsFilterON(void) = 0;
 
@@ -96,16 +101,16 @@ public:
     virtual HRESULT FPJ1_GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject) = 0;
 
     // Setter for a logging block by specifying its index in the list
-    virtual HRESULT FPJ1_SetLoggingBlock(USHORT ushBlk, 
-                                    const SLOGINFO& sLogObject) = 0;
+    virtual HRESULT FPJ1_SetLoggingBlock(USHORT ushBlk,
+                                         const SLOGINFO& sLogObject) = 0;
 
     // To modify the filtering scheme of a logging block
     virtual HRESULT FPJ1_ApplyFilteringScheme(USHORT ushLogBlkID,
-                                     const SFILTERAPPLIED_J1939& sFilterObj) = 0;
+            const SFILTERAPPLIED_J1939& sFilterObj) = 0;
 
     // Getter for the filtering scheme of a logging block
-    virtual HRESULT FPJ1_GetFilteringScheme(USHORT ushLogBlk, 
-                                       SFILTERAPPLIED_J1939& sFilterObj) = 0;
+    virtual HRESULT FPJ1_GetFilteringScheme(USHORT ushLogBlk,
+                                            SFILTERAPPLIED_J1939& sFilterObj) = 0;
 
     // Getter for the logging configuration data
     virtual HRESULT FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
@@ -125,11 +130,11 @@ public:
     // To stop logging block editing session
     virtual HRESULT FPJ1_StopEditingSession(BOOL bConfirm) = 0;
 
-	// To update the associated database list to logger
-	virtual HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList) = 0;
+    // To update the associated database list to logger
+    virtual HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList) = 0;
 
-	// To update the channel baud rate info to logger
-	virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-														int nNumChannels) = 0;
+    // To update the channel baud rate info to logger
+    virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+            int nNumChannels) = 0;
 
 };

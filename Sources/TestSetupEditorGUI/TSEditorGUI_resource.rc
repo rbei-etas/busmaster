@@ -147,7 +147,7 @@ BEGIN
         MENUITEM "&Save\tCtrl + S",             IDM_FILE_SAVE
         MENUITEM "Save &As",                    IDM_FILE_SAVEAS
         MENUITEM SEPARATOR
-        MENUITEM "Validate",                    IDM_FILE_VALIDATE
+        MENUITEM "&Validate",                   IDM_FILE_VALIDATE
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       IDM_FILE_EXIT
     END
@@ -160,12 +160,12 @@ BEGIN
     POPUP "Display"
     BEGIN
         MENUITEM "&Reset",                      IDM_DISPLAY_RESET
-        MENUITEM "Settings",                    ID_DISPLAY_SETTINGS
+        MENUITEM "Se&ttings",                    ID_DISPLAY_SETTINGS
     END
     POPUP "Help"
     BEGIN
-        MENUITEM "Test Setup Editor Help\tF1",  IDM_HELP_TESTEDITORHELP
-        MENUITEM "About Test Setup Editor",     IDM_HELP_ABOUTTESTSETUPEDITOR
+        MENUITEM "Test Setup Editor &Help\tF1",  IDM_HELP_TESTEDITORHELP
+        MENUITEM "About Test Setup Ed&itor",     IDM_HELP_ABOUTTESTSETUPEDITOR
 
     END
 END

@@ -7,7 +7,7 @@
 * $Revision: 4794 $
 */
 
-/** 
+/**
 * @file
 * @brief  IFilter definition
 * @remark The header structure of the OLI may change
@@ -25,7 +25,10 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
 
 /** @page filterConcepts Filter Concepts
@@ -35,7 +38,7 @@ namespace ETAS {namespace OLI {
 * to make the respective message pass.
 *
 * All standard filter implementations provided with OLI
-* are stateless: Each filter is usually a combination of 
+* are stateless: Each filter is usually a combination of
 * conditions on the message data wich must all be met,
 * e.g. one condition on the frame ID and one on the
 * frame content.
@@ -45,22 +48,22 @@ namespace ETAS {namespace OLI {
 * message.VALUE & filter.MASK == filter.VALUE
 * @endcode
 *
-* To let all frames pass through a filter set all conditions to 
+* To let all frames pass through a filter set all conditions to
 * @code
 * filter.MASK = 0
-* filter.VALUE = 0 
+* filter.VALUE = 0
 * @endcode
 *
-* To filter for an exact match use 
+* To filter for an exact match use
 * @code
 * MASK = 0xffffffff
 * VALUE = required value.
 * @endcode
 *
 * To filter a subset of flags in a bitfield, i.e. to
-* block all if any @em other flag is set, use 
+* block all if any @em other flag is set, use
 * @code
-* MASK = ~(PASSED_FLAG_A|PASSED_FLAG_B|PASSED_FLAG_C) 
+* MASK = ~(PASSED_FLAG_A|PASSED_FLAG_B|PASSED_FLAG_C)
 * VALUE = 0
 * @endcode
 */
@@ -71,7 +74,7 @@ class IRxMessage;
 class IQuickFilterSupport;
 
 /** @ingroup GROUP_OLI_COMMON_FILTERS
-* @brief  Base interface for all @ref IRxMessage "message" filters. 
+* @brief  Base interface for all @ref IRxMessage "message" filters.
 *
 * This base interface is implemented by any object which is able to filter instances of @ref IRxMessage, usually
 * in order to decide whether such an instance should be  added to a @ref IRxQueue "receive queue".
@@ -108,18 +111,19 @@ class IQuickFilterSupport;
 * called.
 *
 * Any kind of stateless or stateful filter implementation is allowed.
-* For maximum efficiency, filters should also support 
+* For maximum efficiency, filters should also support
 * @ref IQuickFilterSupport "quick filtering". Return a pointer to
 * that interface in you implementation of @ref GetQuickFilterSupport.
 *
 * @remark All public methods are thread-safe.
 * @coding Client applications may implement this interface.
 * @since  BOA 1.3
-* @see    @ref filterConcepts "Filter concepts", 
+* @see    @ref filterConcepts "Filter concepts",
 *         IRxQueue, IRxMessage, IQuickFilterSupport
 */
 
-OLI_INTERFACE IFilter : public IRefCountable
+OLI_INTERFACE IFilter :
+public IRefCountable
 {
 protected:
 
@@ -130,7 +134,7 @@ protected:
 
         @exception <none> This function must not throw exceptions.
 
-        @since  BOA 1.3 
+        @since  BOA 1.3
      */
     virtual ~IFilter() OLI_NOTHROW {};
 
@@ -142,19 +146,19 @@ public:
         Client applications implementing @ref IFilter are encouraged
         to implement @ref IQuickFilterSupport as well and not to
         return NULL in this method.
-        
+
         @return Pointer to the @ref IQuickFilterSupport implementation
                 or NULL, if not supported.
         @exception <none> This function must not throw exceptions.
 
         @remark The life-time of the reference returned must be
-                no less than the life-time of this filter instance. 
-        @remark This method is necessary because OLI does not support 
+                no less than the life-time of this filter instance.
+        @remark This method is necessary because OLI does not support
                 multiple inheritance. Client applications may use multiple
                 inheritance internally to implement that second interface.
 
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    IQuickFilterSupport
      */
     virtual const IQuickFilterSupport* OLI_CALL GetQuickFilterSupport() const OLI_NOTHROW = 0;
@@ -167,19 +171,19 @@ public:
         @exception <none> This function must not throw exceptions.
 
         @remark There is no guarantee that this function will be
-                called at all. Other filters or the quick filtering 
+                called at all. Other filters or the quick filtering
                 mechanism may already accepted the respective message.
 
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
+        @since  BOA 1.3
         @see    @ref filterConcepts "Filter concepts", IQuickFilterSupport
      */
-	virtual bool OLI_CALL Matches (const IRxMessage* message) const OLI_NOTHROW = 0;
+    virtual bool OLI_CALL Matches (const IRxMessage* message) const OLI_NOTHROW = 0;
 
     /** @brief  Returns the mask for the condition on the message
                 @ref IMessage::GetID "ID".
 
-        @return @ref filterConcepts "filter mask" for the message 
+        @return @ref filterConcepts "filter mask" for the message
                 @ref IMessage::GetID "ID".
         @exception <none> This function must not throw exceptions.
 
@@ -187,16 +191,16 @@ public:
                 @ref IQuickFilterSupport "quick filtering" is
                 supported.
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
-        @see    @ref filterConcepts "Filter concepts", 
+        @since  BOA 1.3
+        @see    @ref filterConcepts "Filter concepts",
                 GetQuickFilterSupport, IRxMessage
      */
-	virtual uint32 OLI_CALL GetIDMask() const OLI_NOTHROW = 0;
+    virtual uint32 OLI_CALL GetIDMask() const OLI_NOTHROW = 0;
 
     /** @brief  Returns the value for the condition on the message
                 @ref IMessage::GetID "ID".
 
-        @return @ref filterConcepts "filter value" for the message 
+        @return @ref filterConcepts "filter value" for the message
                 @ref IMessage::GetID "ID".
         @exception <none> This function must not throw exceptions.
 
@@ -204,8 +208,8 @@ public:
                 @ref IQuickFilterSupport "quick filtering" is
                 supported.
         @coding The implemementation must be thread-safe.
-        @since  BOA 1.3 
-        @see    @ref filterConcepts "Filter concepts", 
+        @since  BOA 1.3
+        @see    @ref filterConcepts "Filter concepts",
                 GetQuickFilterSupport, IRxMessage
      */
     virtual uint32 OLI_CALL GetIDValue() const OLI_NOTHROW = 0;
@@ -214,7 +218,8 @@ public:
 // close ETAS::OLI namespace
 
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"

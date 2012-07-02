@@ -56,7 +56,7 @@ void CSplashScreen::DisplaySplashScreen(CWnd* pParentWnd /*= NULL*/, INT nShow/*
     if (nShow == SW_SHOW) //if show
     {
         if ((sm_bShowScreen == TRUE) && (sm_pouSplashScreen == NULL))
-        {            
+        {
             sm_pouSplashScreen = new CSplashScreen();
             if (sm_pouSplashScreen->Create(pParentWnd) == TRUE)
             {
@@ -65,7 +65,7 @@ void CSplashScreen::DisplaySplashScreen(CWnd* pParentWnd /*= NULL*/, INT nShow/*
             else
             {
                 delete sm_pouSplashScreen;
-            }            
+            }
         }
     }
     else // If Hide
@@ -84,14 +84,14 @@ BOOL CSplashScreen::PreTranslateAppMessage(MSG* pMsg)
     if (sm_pouSplashScreen != NULL)
     {
         //Hide the screen if mouse clicked or key down
-        if ((pMsg->message == WM_LBUTTONDOWN)    ||      
-            (pMsg->message == WM_RBUTTONDOWN)    || 
-            (pMsg->message == WM_NCRBUTTONDOWN)  ||
-            (pMsg->message == WM_KEYDOWN)        ||  
-            (pMsg->message == WM_MBUTTONDOWN)    ||
-            (pMsg->message == WM_SYSKEYDOWN)     ||
-            (pMsg->message == WM_NCLBUTTONDOWN)  ||            
-            (pMsg->message == WM_NCMBUTTONDOWN))
+        if ((pMsg->message == WM_LBUTTONDOWN)    ||
+                (pMsg->message == WM_RBUTTONDOWN)    ||
+                (pMsg->message == WM_NCRBUTTONDOWN)  ||
+                (pMsg->message == WM_KEYDOWN)        ||
+                (pMsg->message == WM_MBUTTONDOWN)    ||
+                (pMsg->message == WM_SYSKEYDOWN)     ||
+                (pMsg->message == WM_NCLBUTTONDOWN)  ||
+                (pMsg->message == WM_NCMBUTTONDOWN))
         {
             sm_pouSplashScreen->DisplaySplashScreen(NULL, SW_HIDE);
             bResult = TRUE;
@@ -149,6 +149,6 @@ void CSplashScreen::OnPaint()
 }
 
 void CSplashScreen::OnTimer(UINT /*nIDEvent*/)
-{    
+{
     DisplaySplashScreen(NULL, SW_HIDE);// Hide the splash.
 }

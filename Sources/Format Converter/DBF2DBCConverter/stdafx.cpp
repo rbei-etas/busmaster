@@ -39,7 +39,7 @@
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
-extern void Truncate_str(char *type,char *pcToken,bool bToLog)
+extern void Truncate_str(char* type,char* pcToken,bool bToLog)
 {
     CString strTemp = pcToken;
     strTemp = strTemp.Left(32);
@@ -68,7 +68,7 @@ extern void Truncate_str(char *type,char *pcToken,bool bToLog)
 * \authors    Mahesh.B.S
 * \date       15.11.2004
 */
-extern void Truncate_str(char *type,CString &strTemp,bool bToLog)
+extern void Truncate_str(char* type,CString& strTemp,bool bToLog)
 {
 
     char acLine[100];

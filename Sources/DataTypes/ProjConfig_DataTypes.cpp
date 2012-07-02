@@ -45,11 +45,11 @@ FILESTORAGEINFO::FILESTORAGEINFO()
   Output           :  void
   Functionality    :  Does initialisation.
   Member of        :  PROJECTDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void PROJECTDATA::Initialise(void)
 {
@@ -59,8 +59,8 @@ void PROJECTDATA::Initialise(void)
     m_ProjectName   = "";
     m_Language      = "eng";
     memcpy(&m_ProjSysTime, &CurrSysTime, sizeof (SYSTEMTIME));
-	m_fAppVersion = 0;
-	m_dwAppUniqueId = 0;
+    m_fAppVersion = 0;
+    m_dwAppUniqueId = 0;
 };
 
 /******************************************************************************
@@ -69,11 +69,11 @@ void PROJECTDATA::Initialise(void)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  PROJECTDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 PROJECTDATA::PROJECTDATA()
 {
@@ -86,11 +86,11 @@ PROJECTDATA::PROJECTDATA()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  PROJECTDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 PROJECTDATA::~PROJECTDATA()
 {
@@ -102,19 +102,19 @@ PROJECTDATA::~PROJECTDATA()
   Output           :  PROJECTDATA& - The current object, the modified one.
   Functionality    :  Equal operator overloaded.
   Member of        :  PROJECTDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 PROJECTDATA& PROJECTDATA::operator=(const PROJECTDATA& RefObj)
 {
     m_ProjectName = RefObj.m_ProjectName;
     m_Language    = RefObj.m_Language;
-	m_fAppVersion = RefObj.m_fAppVersion;
-	m_dwAppUniqueId = RefObj.m_dwAppUniqueId;
-	memcpy(&m_ProjSysTime, &RefObj.m_ProjSysTime, sizeof (SYSTEMTIME));
+    m_fAppVersion = RefObj.m_fAppVersion;
+    m_dwAppUniqueId = RefObj.m_dwAppUniqueId;
+    memcpy(&m_ProjSysTime, &RefObj.m_ProjSysTime, sizeof (SYSTEMTIME));
 
     return *this;
 }
@@ -125,15 +125,15 @@ PROJECTDATA& PROJECTDATA::operator=(const PROJECTDATA& RefObj)
   Output           :  true if all the operations are successful, else false.
   Functionality    :  Writes the current object data into the target file.
   Member of        :  PROJECTDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 bool PROJECTDATA::Write(FILE* pFile)
 {
-	bool bResult = false;
+    bool bResult = false;
 
     /* Below is shown the order in which project data are saved:
     1. Length of the project name [int]
@@ -144,32 +144,32 @@ bool PROJECTDATA::Write(FILE* pFile)
     6. Application version number [float]
     7. Application identifier [DWORD] */
 
-	const char* Buffer = m_ProjectName.c_str();
-	int n =  (int) strlen(Buffer);
-	if (fwrite(&n, sizeof(int), 1, pFile) == 1)
-	{
-		if ((int) fwrite(Buffer, sizeof(char), n, pFile) == n)
-		{
-			Buffer = m_Language.c_str();
-			n =  (int) strlen(Buffer);
-			if (fwrite(&n, sizeof(int), 1, pFile) == 1)
-			{
-				if ((int) fwrite(Buffer, sizeof(char), n, pFile) == n)
-				{
-					if (fwrite(&m_ProjSysTime, sizeof(SYSTEMTIME), 1, pFile) == 1)
-					{
-						if (fwrite(&m_fAppVersion, sizeof(float), 1, pFile) == 1)
-						{
-							if (fwrite(&m_dwAppUniqueId, sizeof(DWORD), 1, pFile) == 1)
-							{
-								bResult = true;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    const char* Buffer = m_ProjectName.c_str();
+    int n =  (int) strlen(Buffer);
+    if (fwrite(&n, sizeof(int), 1, pFile) == 1)
+    {
+        if ((int) fwrite(Buffer, sizeof(char), n, pFile) == n)
+        {
+            Buffer = m_Language.c_str();
+            n =  (int) strlen(Buffer);
+            if (fwrite(&n, sizeof(int), 1, pFile) == 1)
+            {
+                if ((int) fwrite(Buffer, sizeof(char), n, pFile) == n)
+                {
+                    if (fwrite(&m_ProjSysTime, sizeof(SYSTEMTIME), 1, pFile) == 1)
+                    {
+                        if (fwrite(&m_fAppVersion, sizeof(float), 1, pFile) == 1)
+                        {
+                            if (fwrite(&m_dwAppUniqueId, sizeof(DWORD), 1, pFile) == 1)
+                            {
+                                bResult = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     return bResult;
 }
 
@@ -177,15 +177,15 @@ bool PROJECTDATA::Write(FILE* pFile)
   Function Name    :  Read
   Input(s)         :  pFile - The source file pointer.
   Output           :  true if all the operations are successful, else false.
-  Functionality    :  Assuming the current file pointer points to a project 
-                      data entry, this function retrieves project data entry 
+  Functionality    :  Assuming the current file pointer points to a project
+                      data entry, this function retrieves project data entry
                       and initialises the current object with the information.
   Member of        :  PROJECTDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 bool PROJECTDATA::Read(FILE* pFile)
 {
@@ -193,33 +193,33 @@ bool PROJECTDATA::Read(FILE* pFile)
 
     bool bResult = false;
     char Buffer[_MAX_PATH] = {'\0'};
-	int n;
+    int n;
 
     // For obvious reason reading takes place in the same order as writing.
-	if (fread(&n, sizeof(int), 1, pFile) == 1)
-	{
-		if (fread(Buffer, sizeof(char) * n, 1, pFile) != NULL)
-		{
-			m_ProjectName = Buffer;
-			if (fread(&n, sizeof(int), 1, pFile) == 1)
-			{
-				if (fread(Buffer, sizeof(char) * n, 1, pFile) != NULL)
-				{
-					m_Language = Buffer;
-					if (fread(&m_ProjSysTime, sizeof(SYSTEMTIME), 1, pFile) == 1)
-					{
-						if (fread(&m_fAppVersion, sizeof(float), 1, pFile) == 1)
-						{
-							if (fread(&m_dwAppUniqueId, sizeof(DWORD), 1, pFile) == 1)
-							{
-								bResult = true;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    if (fread(&n, sizeof(int), 1, pFile) == 1)
+    {
+        if (fread(Buffer, sizeof(char) * n, 1, pFile) != NULL)
+        {
+            m_ProjectName = Buffer;
+            if (fread(&n, sizeof(int), 1, pFile) == 1)
+            {
+                if (fread(Buffer, sizeof(char) * n, 1, pFile) != NULL)
+                {
+                    m_Language = Buffer;
+                    if (fread(&m_ProjSysTime, sizeof(SYSTEMTIME), 1, pFile) == 1)
+                    {
+                        if (fread(&m_fAppVersion, sizeof(float), 1, pFile) == 1)
+                        {
+                            if (fread(&m_dwAppUniqueId, sizeof(DWORD), 1, pFile) == 1)
+                            {
+                                bResult = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     return bResult;
 }
 /* ENDS IMPLEMENTATION OF PROJECTDATA */
@@ -233,11 +233,11 @@ bool PROJECTDATA::Read(FILE* pFile)
   Output           :  -
   Functionality    :  Standard constructor
   Member of        :  SECTIONDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SECTIONDATA::SECTIONDATA()
 {
@@ -252,11 +252,11 @@ SECTIONDATA::SECTIONDATA()
   Output           :  -
   Functionality    :  Destructor
   Member of        :  SECTIONDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SECTIONDATA::~SECTIONDATA()
 {
@@ -269,19 +269,19 @@ SECTIONDATA::~SECTIONDATA()
   Output           :  void
   Functionality    :  Does initialisation
   Member of        :  SECTIONDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 void SECTIONDATA::Initialise(void)
 {
-	if (NULL != m_bBLOB)
-	{
-		delete[] m_bBLOB;
-		m_bBLOB = NULL;
-	}
+    if (NULL != m_bBLOB)
+    {
+        delete[] m_bBLOB;
+        m_bBLOB = NULL;
+    }
     m_nBLOBLen = 0;
     m_omSectionName = "";
 }
@@ -292,21 +292,21 @@ void SECTIONDATA::Initialise(void)
   Output           :  SECTIONDATA& - The current object, the modified one.
   Functionality    :  Equal operator overloaded.
   Member of        :  SECTIONDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 SECTIONDATA& SECTIONDATA::operator=(const SECTIONDATA& RefObj)
 {
     Initialise();
 
-	m_bBLOB = new BYTE[RefObj.m_nBLOBLen];
+    m_bBLOB = new BYTE[RefObj.m_nBLOBLen];
     if (m_bBLOB != NULL)
     {
         m_nBLOBLen = RefObj.m_nBLOBLen;
-		memcpy(m_bBLOB, RefObj.m_bBLOB, RefObj.m_nBLOBLen);
+        memcpy(m_bBLOB, RefObj.m_bBLOB, RefObj.m_nBLOBLen);
         m_omSectionName = RefObj.m_omSectionName;
     }
     return *this;
@@ -318,11 +318,11 @@ SECTIONDATA& SECTIONDATA::operator=(const SECTIONDATA& RefObj)
   Output           :  true if all the operations are successful, else false.
   Functionality    :  Writes the current object data into the target file.
   Member of        :  SECTIONDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 bool SECTIONDATA::Write(FILE* pFile)
 {
@@ -335,66 +335,66 @@ bool SECTIONDATA::Write(FILE* pFile)
     4. BLOB (section data) [byte stream] */
 
     const char* Buffer = m_omSectionName.c_str();
-	int n = (int) strlen(Buffer);
-	if (fwrite(&n, sizeof(int), 1, pFile) == 1)
-	{
-		if ((int) fwrite(Buffer, sizeof(char), n, pFile) == n)
-		{
-			if (fwrite(&m_nBLOBLen, sizeof(m_nBLOBLen), 1, pFile) == 1)
-			{
-				if (m_bBLOB != NULL)
-				{
-					if ((int) fwrite(m_bBLOB, 1, m_nBLOBLen, pFile) == m_nBLOBLen)
-					{
-						bResult = true;
-					}
-				}
-			}
-		}
-	}
-	return bResult;
+    int n = (int) strlen(Buffer);
+    if (fwrite(&n, sizeof(int), 1, pFile) == 1)
+    {
+        if ((int) fwrite(Buffer, sizeof(char), n, pFile) == n)
+        {
+            if (fwrite(&m_nBLOBLen, sizeof(m_nBLOBLen), 1, pFile) == 1)
+            {
+                if (m_bBLOB != NULL)
+                {
+                    if ((int) fwrite(m_bBLOB, 1, m_nBLOBLen, pFile) == m_nBLOBLen)
+                    {
+                        bResult = true;
+                    }
+                }
+            }
+        }
+    }
+    return bResult;
 }
 
 /******************************************************************************
   Function Name    :  Read
   Input(s)         :  pFile - The source file pointer.
   Output           :  true if all the operations are successful, else false.
-  Functionality    :  Assuming the current file pointer points to a section 
-                      entry, this function retrieves section entry and 
+  Functionality    :  Assuming the current file pointer points to a section
+                      entry, this function retrieves section entry and
                       initialises the current object with the information.
   Member of        :  SECTIONDATA
-  Friend of        :  -                                   
+  Friend of        :  -
   Author(s)        :  Ratnadip Choudhury
   Date Created     :  1.12.2009
-  Modification date:  
-  Modification By  :  
+  Modification date:
+  Modification By  :
 ******************************************************************************/
 bool SECTIONDATA::Read(FILE* pFile)
 {
     Initialise();
 
     bool bResult = false;
-	char Buffer[_MAX_PATH] = {'\0'};
-	int n;
+    char Buffer[_MAX_PATH] = {'\0'};
+    int n;
 
-	if (fread(&n, sizeof(int), 1, pFile) == 1)
-	{
-		if (fread(Buffer, sizeof(char) * n, 1,pFile) != NULL)
-		{
-			m_omSectionName = Buffer;
-			if (fread(&m_nBLOBLen, sizeof(m_nBLOBLen), 1, pFile) == 1)
-			{
-				m_bBLOB = new BYTE[m_nBLOBLen];
-				if (m_bBLOB != NULL)
-				{
-					if ((int) fread(m_bBLOB, 1, m_nBLOBLen, pFile) == m_nBLOBLen)
-					{
-						bResult = true;
-					}
-				}
-			}
-		}
-	}
+    if (fread(&n, sizeof(int), 1, pFile) == 1)
+    {
+        if (fread(Buffer, sizeof(char) * n, 1,pFile) != NULL)
+        {
+            m_omSectionName = Buffer;
+            if (fread(&m_nBLOBLen, sizeof(m_nBLOBLen), 1, pFile) == 1)
+            {
+                m_bBLOB = new BYTE[m_nBLOBLen];
+                if (m_bBLOB != NULL)
+                {
+                    if ((int) fread(m_bBLOB, 1, m_nBLOBLen, pFile) == m_nBLOBLen)
+                    {
+                        bResult = true;
+                    }
+                }
+            }
+        }
+    }
     return bResult;
 }
 /* ENDS IMPLEMENTATION OF SECTIONDATA */

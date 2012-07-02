@@ -28,102 +28,102 @@
 #define MSG_STRUCT_NAME_J1939          _T("STJ1939_MSG");
 #define WRAPPER_NAME_J1939             _T("Wrapper_J1939.o");
 #define TOTAL_API_COUNT                18
-#define TOTAL_ERROR_COUNT              5 
+#define TOTAL_ERROR_COUNT              5
 
-static const CString sg_omAPIFuncList[TOTAL_API_COUNT] = 
+static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
 {
-    _T("UINT EnableLogging()"), 
-    _T("UINT DisableLogging()"), 
-    _T("UINT WriteToLogFile(char*)"), 
-    _T("UINT Connect(DWORD)"),
-    _T("UINT Disconnect(DWORD)"),
-    _T("UINT GoOnline()"),
-    _T("UINT GoOffline()"),
-    _T("UINT StartTimer(char*, UINT)"),
-    _T("UINT StopTimer(char*)"),
-    _T("BOOL SetTimerVal(char*, UINT)"),
-    _T("BOOL EnableMsgHandlers(BOOL)"),
-    _T("BOOL EnableErrorHandlers(BOOL)"),
-    _T("BOOL EnableKeyHandlers(BOOL)"),
-    _T("BOOL EnableDisableMsgTx(BOOL)"),
-    _T("UINT SendMsg(STCAN_MSG)"),
-    _T("HMODULE GetDllHandle(char*)"),
-    _T("UINT Trace(char*, ...)"),
-    _T("void ResetController(BOOL)")
+    "UINT EnableLogging()",
+    "UINT DisableLogging()",
+    "UINT WriteToLogFile(char*)",
+    "UINT Connect(DWORD)",
+    "UINT Disconnect(DWORD)",
+    "UINT GoOnline()",
+    "UINT GoOffline()",
+    "UINT StartTimer(char*, UINT)",
+    "UINT StopTimer(char*)",
+    "BOOL SetTimerVal(char*, UINT)",
+    "BOOL EnableMsgHandlers(BOOL)",
+    "BOOL EnableErrorHandlers(BOOL)",
+    "BOOL EnableKeyHandlers(BOOL)",
+    "BOOL EnableDisableMsgTx(BOOL)",
+    "UINT SendMsg(STCAN_MSG)",
+    "HMODULE GetDllHandle(char*)",
+    "UINT Trace(char*, ...)",
+    "void ResetController(BOOL)"
 };
 
-static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] = 
+static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
 {
-    _T("EnableLogging"), 
-    _T("DisableLogging"), 
-    _T("WriteToLogFile"), 
-    _T("Connect"),
-    _T("Disconnect"),
-    _T("GoOnline"),
-    _T("GoOffline"),
-    _T("StartTimer"),
-    _T("StopTimer"),
-    _T("SetTimerVal"),
-    _T("EnableMsgHandlers"),
-    _T("EnableErrorHandlers"),
-    _T("EnableKeyHandlers"),
-    _T("EnableDisableMsgTx"),
-    _T("SendMsg"),
-    _T("GetDllHandle"),
-    _T("Trace"),
-    _T("ResetController")
+    "EnableLogging",
+    "DisableLogging",
+    "WriteToLogFile",
+    "Connect",
+    "Disconnect",
+    "GoOnline",
+    "GoOffline",
+    "StartTimer",
+    "StopTimer",
+    "SetTimerVal",
+    "EnableMsgHandlers",
+    "EnableErrorHandlers",
+    "EnableKeyHandlers",
+    "EnableDisableMsgTx",
+    "SendMsg",
+    "GetDllHandle",
+    "Trace",
+    "ResetController"
 };
 
 #define TOTAL_API_COUNT_J1939 21
-static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] = 
+static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] =
 {
-    _T("UINT EnableLogging()"), 
-    _T("UINT DisableLogging()"), 
-    _T("UINT WriteToLogFile(char*)"), 
-    _T("UINT GoOnline()"),
-    _T("UINT GoOffline()"),
-    _T("UINT StartTimer(char*, UINT)"),
-    _T("UINT StopTimer(char*)"),
-    _T("BOOL SetTimerVal(char*, UINT)"),
-    _T("BOOL EnableAllHandlers(BOOL)"),
-    _T("BOOL EnableMsgHandlers(BOOL)"),
-    _T("BOOL EnableKeyHandlers(BOOL)"),
-    _T("BOOL EnableDisableMsgTx(BOOL)"),
-    _T("UINT SendMsg(STJ1939_MSG* psMsg)"),
-    _T("UINT RequestPGN(UINT PGN, BYTE DestAdres, UINT Channel)"),
-    _T("UINT SendAckMsg(UINT PGN, BYTE AckType, BYTE DestAdres, UINT Channel)"),
-    _T("UINT ClaimAddress(BYTE Address, UINT Channel)"),
-    _T("UINT RequestAddress(UINT Channel)"),
-    _T("UINT CommandAddress(UINT64 EcuName, BYTE NewAddress, UINT Channel)"),
-    _T("UINT SetTimeout(BYTE TimeoutType, UINT TimeoutValue)"),
-    _T("HMODULE GetDllHandle(char*)"),
-    _T("UINT Trace(char*, ...)")
+    "UINT EnableLogging()",
+    "UINT DisableLogging()",
+    "UINT WriteToLogFile(char*)",
+    "UINT GoOnline()",
+    "UINT GoOffline()",
+    "UINT StartTimer(char*, UINT)",
+    "UINT StopTimer(char*)",
+    "BOOL SetTimerVal(char*, UINT)",
+    "BOOL EnableAllHandlers(BOOL)",
+    "BOOL EnableMsgHandlers(BOOL)",
+    "BOOL EnableKeyHandlers(BOOL)",
+    "BOOL EnableDisableMsgTx(BOOL)",
+    "UINT SendMsg(STJ1939_MSG* psMsg)",
+    "UINT RequestPGN(UINT PGN, BYTE DestAdres, UINT Channel)",
+    "UINT SendAckMsg(UINT PGN, BYTE AckType, BYTE DestAdres, UINT Channel)",
+    "UINT ClaimAddress(BYTE Address, UINT Channel)",
+    "UINT RequestAddress(UINT Channel)",
+    "UINT CommandAddress(UINT64 EcuName, BYTE NewAddress, UINT Channel)",
+    "UINT SetTimeout(BYTE TimeoutType, UINT TimeoutValue)",
+    "HMODULE GetDllHandle(char*)",
+    "UINT Trace(char*, ...)"
 };
 
-static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] = 
+static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] =
 {
-    _T("EnableLogging"), 
-    _T("DisableLogging"), 
-    _T("WriteToLogFile"), 
-    _T("GoOnline"),
-    _T("GoOffline"),
-    _T("StartTimer"),
-    _T("StopTimer"),
-    _T("SetTimerVal"),
-    _T("EnableAllHandlers"),
-    _T("EnableMsgHandlers"),
-    _T("EnableKeyHandlers"),
-    _T("EnableDisableMsgTx"),
-    _T("SendMsg"),
-    _T("RequestPGN"),
-    _T("SendAckMsg"),
-    _T("ClaimAddress"),
-    _T("RequestAddress"),
-    _T("CommandAddress"),
-    _T("SetTimeout"),
-    _T("GetDllHandle"),
-    _T("Trace")
+    "EnableLogging",
+    "DisableLogging",
+    "WriteToLogFile",
+    "GoOnline",
+    "GoOffline",
+    "StartTimer",
+    "StopTimer",
+    "SetTimerVal",
+    "EnableAllHandlers",
+    "EnableMsgHandlers",
+    "EnableKeyHandlers",
+    "EnableDisableMsgTx",
+    "SendMsg",
+    "RequestPGN",
+    "SendAckMsg",
+    "ClaimAddress",
+    "RequestAddress",
+    "CommandAddress",
+    "SetTimeout",
+    "GetDllHandle",
+    "Trace"
 };
 
 
-static const CString sg_omMcNetErrorHandlerList[TOTAL_ERROR_COUNT] = {_T("Error Active"), _T("Error Passive"), _T("Warning Limit"), _T("Bus Off"), _T("Error Frame")};
+static const CString sg_omMcNetErrorHandlerList[TOTAL_ERROR_COUNT] = {"Error Active", "Error Passive", "Warning Limit", "Bus Off", "Error Frame"};

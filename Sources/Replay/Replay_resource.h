@@ -25,3 +25,4 @@
 #define IDC_BTN_ADD_FILTER              1257
 #define IDC_LSTC_FILTER_LIST            1258
 #define IDC_BTN_ADD_FILE                1262
+#define IDC_COMBO_MSG_TYPE              1266

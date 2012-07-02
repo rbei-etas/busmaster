@@ -26,10 +26,13 @@
 
 #define T_HEADER "//******************************BUSMASTER Messages and signals Database ******************************//"
 
-#define T_STRAT_BRAC    "["
-#define T_END_BRAC      "]"
-#define T_DB_VER        T_STRAT_BRAC"DATABASE_VERSION"T_END_BRAC
-#define T_VER_NO        "1.2"
+#define T_STRAT_BRAC        "["
+#define T_END_BRAC          "]"
+#define T_DB_VER            T_STRAT_BRAC"DATABASE_VERSION"T_END_BRAC
+#define T_VER_NO            "1.3"
+#define T_PROTOCOL          T_STRAT_BRAC"PROTOCOL"T_END_BRAC
+#define T_PROTOCOL_CAN      "CAN"
+#define T_PRPTOCOL_J1939    "J1939"
 #define T_NUM_OF_MSG    T_STRAT_BRAC"NUMBER_OF_MESSAGES"T_END_BRAC
 #define T_START_MSG     T_STRAT_BRAC"START_MSG"T_END_BRAC
 #define T_END_MSG       T_STRAT_BRAC"END_MSG"T_END_BRAC

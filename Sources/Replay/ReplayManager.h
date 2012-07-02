@@ -29,7 +29,9 @@
 class CMsgReplayWnd;
 class CReplayProcess;
 
-class CReplayManager  
+
+
+class CReplayManager
 {
 public:
     // Avoid Virtual to optimize performance
@@ -47,9 +49,9 @@ public:
     // To start hidden replay threads
     VOID vStartNonInteractiveReplays();
     // To set the active replay window
-    VOID vSetActiveReplayWindow(CMsgReplayWnd * pomWindow);
+    VOID vSetActiveReplayWindow(CMsgReplayWnd* pomWindow);
     // To delete window pointer from the list
-    BOOL bRemovePointerFromList(CWnd * pWnd);
+    BOOL bRemovePointerFromList(CWnd* pWnd);
     // To indicate stop signal to running threads
     void vSetThreadStopSignal();
     // To terminate the thread
@@ -80,7 +82,7 @@ public:
 public:
     void vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     void vSetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize);
-	//BOOL bIsReplayConfigChanged();
+    //BOOL bIsReplayConfigChanged();
     void vSetTraceObjPtr( PVOID pvObj);
     void vSendToTrace(char* pcString);
 private:
@@ -99,11 +101,11 @@ private:
     // To indicate object creation
     static BOOL m_bCreated;
     // To keep track of active replay window pointer
-    CMsgReplayWnd * m_pomActiveWindow;
+    CMsgReplayWnd* m_pomActiveWindow;
     // To keep all instances
-    CArray<CMsgReplayWnd *,CMsgReplayWnd *> m_omReplayWindowArray;
+    CArray<CMsgReplayWnd*,CMsgReplayWnd*> m_omReplayWindowArray;
     // To keep all background tasks
-    CArray<CReplayProcess *, CReplayProcess*> m_omReplayProcess;
+    CArray<CReplayProcess*, CReplayProcess*> m_omReplayProcess;
     // Connection Status
     BOOL m_bConnection;
 };

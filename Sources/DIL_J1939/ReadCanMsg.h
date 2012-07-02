@@ -1,18 +1,18 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  ReadCanMsg.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/ReadCanMsg.h_v  $
- * 
+ *
  *    Rev 1.1   15 Apr 2011 18:48:38   CANMNTTM
  * Added RBEI Copyright information.
- * 
+ *
  *    Rev 1.0   06 Dec 2010 18:47:22   rac2kor
- *  
+ *
 
   Author(s)     :  Pradeep Kadoor
   Date Created  :  23/11/2010
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -42,10 +42,10 @@ public:
     // while closing the thread.
     void vRetrieveDataFromBuffer(BYTE byIndex);
 
-    // To add event handle for a client 
+    // To add event handle for a client
     HRESULT AddEventHandle(HANDLE hHandle, BYTE byNodeMgrIndex);
 
-    // To remove event handle of a client 
+    // To remove event handle of a client
     BOOL bDeleteEventHandle(HANDLE handle);
 
     // Do initialisation operations

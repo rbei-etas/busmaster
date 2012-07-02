@@ -37,7 +37,7 @@ CTxWndDataStore::CTxWndDataStore(void)
     m_sTxWndPlacement.rcNormalPosition.top = -1;
     m_sTxWndPlacement.length = 0;
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = -1;
-	m_bAutoSavedEnabled = false;
+    m_bAutoSavedEnabled = false;
 }
 
 CTxWndDataStore::~CTxWndDataStore(void)
@@ -67,7 +67,7 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
             {
                 bRetVal = FALSE;
             }
-            
+
         }
         break;
         case TX_WND_SPLITTER_DATA: // Tx configure splitter position
@@ -85,9 +85,9 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
             if (psMsgBlockList != NULL)
             {
                 vInitialiseMsgBlock(psMsgBlockList);
-                // multiple message 
+                // multiple message
                 bRetVal = bGetMultiMsgInfo(psMsgBlockList);
-                
+
                 // release memory if any error occurs
                 if (bRetVal == FALSE)
                 {
@@ -100,7 +100,7 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
                 // memory not enough
                 bRetVal = FALSE;
             }
-            
+
             if (bRetVal == TRUE)
             {
                 *lpData = static_cast<LPVOID>(psMsgBlockList);
@@ -114,12 +114,12 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
             *psData = m_sTxWndPlacement;
         }
         break;
-		case TX_AUTO_UPDATE_ENABLE:
-			{
-				bool *psData = static_cast<bool*>(*lpData);
-				*psData = m_bAutoSavedEnabled;
-				break;
-			}
+        case TX_AUTO_UPDATE_ENABLE:
+        {
+            bool* psData = static_cast<bool*>(*lpData);
+            *psData = m_bAutoSavedEnabled;
+            break;
+        }
         default:
         {
             ASSERT(FALSE);
@@ -163,9 +163,9 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
         break;
         case TX_SEND_MULTI_MSGS:
         {
-            PSMSGBLOCKLIST psMsgBlockInfo = 
+            PSMSGBLOCKLIST psMsgBlockInfo =
                 static_cast<PSMSGBLOCKLIST>(lpVoid);
-            // multiple message 
+            // multiple message
             bRetVal = bSetMultiMsgInfo(psMsgBlockInfo);
             if (bRetVal == FALSE)
             {
@@ -184,13 +184,13 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
             m_bIsConfigurationModified = TRUE;
         }
         break;
-		case TX_AUTO_UPDATE_ENABLE:
-			{
-				bool *psData = static_cast<bool*>(lpVoid);
-				*psData = m_bAutoSavedEnabled;
-				 m_bIsConfigurationModified = TRUE;
-				break;
-			}
+        case TX_AUTO_UPDATE_ENABLE:
+        {
+            bool* psData = static_cast<bool*>(lpVoid);
+            *psData = m_bAutoSavedEnabled;
+            m_bIsConfigurationModified = TRUE;
+            break;
+        }
         default:
         {
             ASSERT(FALSE);
@@ -212,13 +212,13 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
     {
         BYTE byVersion = 0;
         COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-		int nVersion = (int)byVersion;
+        int nVersion = (int)byVersion;
 
         COPY_DATA_2(&m_unNumberOfMsgBlockCount, pbyTemp, sizeof(UINT));
 
-        
+
         for (UINT i = 0; i < m_unNumberOfMsgBlockCount; i++)
-        {        
+        {
             PSMSGBLOCKLIST psTempBlock = new SMSGBLOCKLIST;
             char acName[MAX_PATH] = {_T('\0')};
             COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
@@ -264,21 +264,21 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         STXMSGSPLITTERDATA sTxSpliiterData;
         COPY_DATA_2(&sTxSpliiterData, pbyTemp,  sizeof(STXMSGSPLITTERDATA));
         bSetTxData(TX_WND_SPLITTER_DATA, &sTxSpliiterData);
-		
-		if(nVersion >= 2)
-		{
-			COPY_DATA_2(&m_bAutoSavedEnabled, pbyTemp,  sizeof(bool));
-			bSetTxData(TX_AUTO_UPDATE_ENABLE, &m_bAutoSavedEnabled);		//save the status of auto save
-		}
+
+        if(nVersion >= 2)
+        {
+            COPY_DATA_2(&m_bAutoSavedEnabled, pbyTemp,  sizeof(bool));
+            bSetTxData(TX_AUTO_UPDATE_ENABLE, &m_bAutoSavedEnabled);        //save the status of auto save
+        }
     }
-    return pbyTemp; 
+    return pbyTemp;
 }
 
 BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 {
     BYTE* pbyCfgData = NULL;
     UINT unSize = 0;
-    
+
     //FIRST CALCULATE THE SIZE
     unSize += sizeof(BYTE);// configuration version
     UINT unBlockCount = m_unNumberOfMsgBlockCount;
@@ -303,19 +303,19 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 
     unSize += sizeof(WINDOWPLACEMENT);
     unSize += sizeof(STXMSGSPLITTERDATA);
-	unSize += sizeof(bool);					//allocation for auto update
+    unSize += sizeof(bool);                 //allocation for auto update
 
     //ALLOCATE THE MEMORY
     pbyCfgData = new BYTE[unSize];
     BYTE* pbyTemp = pbyCfgData;
 
     BYTE byVersion = defTX_MSG_WND_VERSION;
-	COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
     COPY_DATA(pbyTemp, &unBlockCount, sizeof(UINT));
 
     PSMSGBLOCKLIST psTempBlock = m_psMsgBlockList;
     while (psTempBlock != NULL && unBlockCount > 0)
-    {    
+    {
         CString m_omStrBlockName;
         char acName[MAX_PATH] = {_T('\0')};
         strcpy_s(acName, MAX_PATH, psTempBlock->m_acStrBlockName);
@@ -344,13 +344,13 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     //Get the Tx splitter position
     COPY_DATA(pbyTemp, &m_sTxMsgWndSplitterPos, sizeof(STXMSGSPLITTERDATA));
 
-	//Get the Auto save option
-	COPY_DATA(pbyTemp, &m_bAutoSavedEnabled, sizeof(bool)); 
+    //Get the Auto save option
+    COPY_DATA(pbyTemp, &m_bAutoSavedEnabled, sizeof(bool));
 
     //Update the OUT PARAMETERS
     pbyConfigData = pbyCfgData;
     nConfigSize = unSize;
-    
+
     return pbyTemp;//return the latest pointer
 }
 
@@ -390,57 +390,57 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
 {
     BOOL bRetVal = TRUE;
-    PSMSGBLOCKLIST psSrcMsgBlockList = m_psMsgBlockList; 
+    PSMSGBLOCKLIST psSrcMsgBlockList = m_psMsgBlockList;
     PSTXCANMSGLIST psSrcTxMsgList    = NULL;
     PSTXCANMSGLIST psDestTxMsgList   = NULL;
     if (psSrcMsgBlockList != NULL && psDestMsgBlockList != NULL)
     {
-        for (UINT i =0; (i<m_unNumberOfMsgBlockCount) && (bRetVal == TRUE);i++)
+        for (UINT i =0; (i<m_unNumberOfMsgBlockCount) && (bRetVal == TRUE); i++)
         {
-            psDestMsgBlockList->m_bActive        = 
+            psDestMsgBlockList->m_bActive        =
                 psSrcMsgBlockList->m_bActive;
             psDestMsgBlockList->m_bType          = psSrcMsgBlockList->m_bType;
-            psDestMsgBlockList->m_bTxAllFrame     = 
+            psDestMsgBlockList->m_bTxAllFrame     =
                 psSrcMsgBlockList->m_bTxAllFrame;
             psDestMsgBlockList->m_ucTrigger       =
                 psSrcMsgBlockList->m_ucTrigger;
-            psDestMsgBlockList->m_ucKeyValue     = 
+            psDestMsgBlockList->m_ucKeyValue     =
                 psSrcMsgBlockList->m_ucKeyValue;
-            psDestMsgBlockList->m_unMsgCount     = 
+            psDestMsgBlockList->m_unMsgCount     =
                 psSrcMsgBlockList->m_unMsgCount;
-            psDestMsgBlockList->m_unTimeInterval = 
+            psDestMsgBlockList->m_unTimeInterval =
                 psSrcMsgBlockList->m_unTimeInterval;
             strcpy_s( psDestMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE,
                       psSrcMsgBlockList->m_acStrBlockName);
 
             if (psSrcMsgBlockList->m_unMsgCount > 0)
             {
-                
+
                 psSrcTxMsgList = psSrcMsgBlockList->m_psTxCANMsgList;
                 psDestMsgBlockList->m_psTxCANMsgList = new STXCANMSGLIST;
                 psDestTxMsgList = psDestMsgBlockList->m_psTxCANMsgList;
                 if (psDestTxMsgList != NULL)
                 {
                     for (UINT j =0;
-                    (j<psSrcMsgBlockList->m_unMsgCount)&&(bRetVal == TRUE);
-                    j++)
+                            (j<psSrcMsgBlockList->m_unMsgCount)&&(bRetVal == TRUE);
+                            j++)
                     {
-                        
+
                         memcpy(&(psDestTxMsgList->m_sTxMsgDetails),
-                            &(psSrcTxMsgList->m_sTxMsgDetails),
-                            sizeof(psSrcTxMsgList->m_sTxMsgDetails));
-                        if (psSrcTxMsgList->m_psNextMsgDetails != NULL && 
-                            j+1 <psSrcMsgBlockList->m_unMsgCount)
+                               &(psSrcTxMsgList->m_sTxMsgDetails),
+                               sizeof(psSrcTxMsgList->m_sTxMsgDetails));
+                        if (psSrcTxMsgList->m_psNextMsgDetails != NULL &&
+                                j+1 <psSrcMsgBlockList->m_unMsgCount)
                         {
-                            psDestTxMsgList->m_psNextMsgDetails = 
+                            psDestTxMsgList->m_psNextMsgDetails =
                                 new STXCANMSGLIST;
                             vInitialiseMsgDetails(
                                 psDestTxMsgList->m_psNextMsgDetails);
                             if (psDestTxMsgList->m_psNextMsgDetails != NULL)
                             {
-                                psDestTxMsgList = 
+                                psDestTxMsgList =
                                     psDestTxMsgList->m_psNextMsgDetails;
-                                psSrcTxMsgList  = 
+                                psSrcTxMsgList  =
                                     psSrcTxMsgList->m_psNextMsgDetails;
                             }
                             else
@@ -460,22 +460,22 @@ BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                 }
             }
             // Check the message count and don't allocate if the assignment for
-            // last node is done i + 1 Because i is not incremented here 
-            
+            // last node is done i + 1 Because i is not incremented here
+
             if (psSrcMsgBlockList->m_psNextMsgBlocksList != NULL &&
-                (i + 1) < m_unNumberOfMsgBlockCount)
+                    (i + 1) < m_unNumberOfMsgBlockCount)
             {
                 psDestMsgBlockList->m_psNextMsgBlocksList = new SMSGBLOCKLIST;
                 vInitialiseMsgBlock(psDestMsgBlockList->m_psNextMsgBlocksList);
                 if (psDestMsgBlockList->m_psNextMsgBlocksList != NULL)
                 {
-                    psDestMsgBlockList = 
+                    psDestMsgBlockList =
                         psDestMsgBlockList->m_psNextMsgBlocksList;
                     psDestMsgBlockList->m_psNextMsgBlocksList = NULL;
                     psDestMsgBlockList->m_psTxCANMsgList = NULL;
-                    psSrcMsgBlockList = 
+                    psSrcMsgBlockList =
                         psSrcMsgBlockList->m_psNextMsgBlocksList;
-                }       
+                }
                 else
                 {
                     bRetVal = FALSE;
@@ -499,7 +499,7 @@ static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
     strcpy_s(psDest->m_acStrBlockName, defBLOCKNAME_SIZE, psSrc->m_acStrBlockName);
     psDest->m_bActive              = psSrc->m_bActive;
     psDest->m_bTxAllFrame          = psSrc->m_bTxAllFrame;
-    psDest->m_bType                = psSrc->m_bType;    
+    psDest->m_bType                = psSrc->m_bType;
     psDest->m_ucKeyValue           = psSrc->m_ucKeyValue;
     psDest->m_ucTrigger            = psSrc->m_ucTrigger;
     psDest->m_unMsgCount           = psSrc->m_unMsgCount;
@@ -512,8 +512,8 @@ static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
     {
         PSTXCANMSGLIST psDestTemp = new STXCANMSGLIST;
         psDestTemp->m_psNextMsgDetails = NULL;
-        memcpy(&(psDestTemp->m_sTxMsgDetails), &(psSrcTemp->m_sTxMsgDetails), 
-                                                            sizeof(STXCANMSGDETAILS));
+        memcpy(&(psDestTemp->m_sTxMsgDetails), &(psSrcTemp->m_sTxMsgDetails),
+               sizeof(STXCANMSGDETAILS));
         if (psDest->m_psTxCANMsgList == NULL)
         {
             psDest->m_psTxCANMsgList = psDestTemp;
@@ -576,7 +576,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             psTail->m_psNextMsgBlocksList = psTemp;
             psTail = psTemp;
         }
-    }   
+    }
     /*PSMSGBLOCKLIST psSrcMsgBlockList = psMsgBlockList;
     PSMSGBLOCKLIST psDesMsgBlockList = m_psMsgBlockList;
     PSTXMSG psTxMsg = m_psTxMsgBlockList;
@@ -595,7 +595,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             m_psMsgBlockList->m_psTxCANMsgList = NULL;
         }
     }
-    if (psSrcMsgBlockList != NULL && 
+    if (psSrcMsgBlockList != NULL &&
         psDesMsgBlockList != NULL &&
         bRetVal == TRUE)
     {
@@ -603,23 +603,23 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
         {
             psDesMsgBlockList->m_bActive        = psSrcMsgBlockList->m_bActive;
             psDesMsgBlockList->m_bType          = psSrcMsgBlockList->m_bType;
-            psDesMsgBlockList->m_bTxAllFrame     = 
+            psDesMsgBlockList->m_bTxAllFrame     =
                 psSrcMsgBlockList->m_bTxAllFrame;
-            psDesMsgBlockList->m_ucTrigger       = 
+            psDesMsgBlockList->m_ucTrigger       =
                 psSrcMsgBlockList->m_ucTrigger;
-            
+
             psDesMsgBlockList->m_ucKeyValue  = psSrcMsgBlockList->m_ucKeyValue;
             psDesMsgBlockList->m_unMsgCount  = psSrcMsgBlockList->m_unMsgCount;
 
-            _tcscpy( psDesMsgBlockList->m_acStrBlockName, 
+            _tcscpy( psDesMsgBlockList->m_acStrBlockName,
                 psSrcMsgBlockList->m_acStrBlockName);
-            
-            psDesMsgBlockList->m_unTimeInterval = 
+
+            psDesMsgBlockList->m_unTimeInterval =
                 psSrcMsgBlockList->m_unTimeInterval;
-            
+
             if (psSrcMsgBlockList->m_unMsgCount>0)
             {
-                PSTXCANMSGLIST psSrcTxMsgList = 
+                PSTXCANMSGLIST psSrcTxMsgList =
                     psSrcMsgBlockList->m_psTxCANMsgList;
                 PSTXCANMSGLIST psDesTxMsgList = NULL;
                 if (psDesMsgBlockList->m_psTxCANMsgList == NULL)
@@ -643,12 +643,12 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                             //EnterCriticalSection(
                             //          &psTxMsg->m_sMsgBlocksCriticalSection);
                             //Wait for twice to block both Key and Timer threads
-                            WaitForSingleObject(psTxMsg->m_hSemaphore, 
+                            WaitForSingleObject(psTxMsg->m_hSemaphore,
                                 INFINITE);
-                            WaitForSingleObject(psTxMsg->m_hSemaphore, 
+                            WaitForSingleObject(psTxMsg->m_hSemaphore,
                                 INFINITE);
                         }
-                        psDesTxMsgList->m_sTxMsgDetails = 
+                        psDesTxMsgList->m_sTxMsgDetails =
                             psSrcTxMsgList->m_sTxMsgDetails;
                         if (psTxMsg != NULL && bTxON == TRUE)
                         {
@@ -667,7 +667,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                         {
                             if (psDesTxMsgList->m_psNextMsgDetails == NULL)
                             {
-                                psDesTxMsgList->m_psNextMsgDetails = 
+                                psDesTxMsgList->m_psNextMsgDetails =
                                     new STXCANMSGLIST;
                                 if (psDesTxMsgList->m_psNextMsgDetails == NULL)
                                 {
@@ -675,14 +675,14 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                                 }
                                 else
                                 {
-                                    psDesTxMsgList = 
+                                    psDesTxMsgList =
                                         psDesTxMsgList->m_psNextMsgDetails;
                                     psDesTxMsgList->m_psNextMsgDetails = NULL;
                                 }
                             }
                             else
                             {
-                                psDesTxMsgList = 
+                                psDesTxMsgList =
                                     psDesTxMsgList->m_psNextMsgDetails;
                             }
                         }
@@ -690,7 +690,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     // Delete the extra element if user has reduced the size.
                     if (psDesTxMsgList->m_psNextMsgDetails != NULL)
                     {
-                        PSTXCANMSGLIST psDelTxMsgList = 
+                        PSTXCANMSGLIST psDelTxMsgList =
                             psDesTxMsgList->m_psNextMsgDetails;
                         psDesTxMsgList->m_psNextMsgDetails = NULL;
                         while(psDesTxMsgList != NULL && psDelTxMsgList != NULL)
@@ -700,7 +700,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                             psDelTxMsgList  = NULL;
                             if (psDesTxMsgList != NULL)
                             {
-                                psDelTxMsgList = 
+                                psDelTxMsgList =
                                     psDesTxMsgList->m_psNextMsgDetails;
                             }
                         }
@@ -715,7 +715,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             {
                 if (psDesMsgBlockList->m_psNextMsgBlocksList == NULL)
                 {
-                    psDesMsgBlockList->m_psNextMsgBlocksList = 
+                    psDesMsgBlockList->m_psNextMsgBlocksList =
                         new SMSGBLOCKLIST;
                     vInitialiseMsgBlock(
                         psDesMsgBlockList->m_psNextMsgBlocksList);
@@ -725,7 +725,7 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     }
                     else
                     {
-                        psDesMsgBlockList = 
+                        psDesMsgBlockList =
                             psDesMsgBlockList->m_psNextMsgBlocksList;
                         psDesMsgBlockList->m_psTxCANMsgList = NULL;
                         psDesMsgBlockList->m_psNextMsgBlocksList = NULL;
@@ -733,19 +733,19 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                 }
                 else
                 {
-                    psDesMsgBlockList = 
+                    psDesMsgBlockList =
                         psDesMsgBlockList->m_psNextMsgBlocksList;
                 }
-                
+
             }
             psSrcMsgBlockList = psSrcMsgBlockList->m_psNextMsgBlocksList;
             if (psTxMsg != NULL)
             {
                 psTxMsg = psTxMsg->m_psNextTxMsgInfo;
             }
-        }while( psSrcMsgBlockList != NULL 
+        }while( psSrcMsgBlockList != NULL
             && bRetVal == TRUE);
-        
+
     }
     else
     {
@@ -790,11 +790,11 @@ void CTxWndDataStore::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
         {
             if (psCurrentMsgBlockList->m_unMsgCount > 0)
             {
-                psCurrentTxCANMsgList = 
+                psCurrentTxCANMsgList =
                     psCurrentMsgBlockList->m_psTxCANMsgList;
                 do
                 {
-                    psNextTxCANMsgList    = 
+                    psNextTxCANMsgList    =
                         psCurrentTxCANMsgList->m_psNextMsgDetails;
                     delete psCurrentTxCANMsgList;
                     psCurrentTxCANMsgList = NULL;
@@ -816,7 +816,7 @@ void CTxWndDataStore::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
     {
         psMsgDetails->m_psNextMsgDetails    = NULL;
     }
-    
+
 }
 void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
 {
@@ -842,13 +842,13 @@ PSMSGBLOCKLIST CTxWndDataStore::psReturnMsgBlockPointer()
 }
 
 BOOL CTxWndDataStore::bGetDefaultTXSplitterPostion(CRect omWndSize,
-                                                   LPVOID* psSplitterData)
+        LPVOID* psSplitterData)
 {
     BOOL bWindowFound = TRUE;
     // Init Tx Window postion
     // Cast the data to STXMSGSPLITTERDATA type
-    STXMSGSPLITTERDATA * pData = static_cast<STXMSGSPLITTERDATA*>
-        (*psSplitterData);
+    STXMSGSPLITTERDATA* pData = static_cast<STXMSGSPLITTERDATA*>
+                                (*psSplitterData);
     // Init Graph window splitter postion
     if (pData != NULL)
     {
@@ -856,29 +856,29 @@ BOOL CTxWndDataStore::bGetDefaultTXSplitterPostion(CRect omWndSize,
         pData->m_nRootSplitterData[0][0] =
             (int)(omWndSize.Height() * defTX_WND_ROOT_SPLITTER_RATIO);
         pData->m_nRootSplitterData[0][1] = 0;
-        
+
         pData->m_nRootSplitterData[1][0] =
             (int)(omWndSize.Height() * ( 1 - defTX_WND_ROOT_SPLITTER_RATIO));
         pData->m_nRootSplitterData[1][1] = 0;
-        
+
         // Left splitter information
         pData->m_nLeftViewSplitterData[0][0] =
             (int)(omWndSize.Width() * defTX_WND_LEFT_SPLITTER_RATIO);
         pData->m_nLeftViewSplitterData[0][1] = 0;
-        
+
         pData->m_nLeftViewSplitterData[1][0] =
             (int)(omWndSize.Width() * (1 - defTX_WND_LEFT_SPLITTER_RATIO));
         pData->m_nLeftViewSplitterData[1][1] = 0;
-        
+
         // Take Right view height as size
         pData->m_nRightViewSplitterData[0][0] =
             (int)(pData->m_nRootSplitterData[0][0] *
-                            defTX_WND_RIGHT_SPLITTER_RATIO);
+                  defTX_WND_RIGHT_SPLITTER_RATIO);
         pData->m_nRightViewSplitterData[0][1] = 0;
-        
-        pData->m_nRightViewSplitterData[1][0] = 
+
+        pData->m_nRightViewSplitterData[1][0] =
             (int)(pData->m_nRootSplitterData[0][0] *
-                    ( 1- defTX_WND_RIGHT_SPLITTER_RATIO));
+                  ( 1- defTX_WND_RIGHT_SPLITTER_RATIO));
         pData->m_nRightViewSplitterData[1][1] = 0;
     }
     else

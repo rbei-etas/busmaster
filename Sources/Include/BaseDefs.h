@@ -36,9 +36,9 @@
 
 typedef enum eProtocol
 {
-	PROTOCOL_CAN    = 0,
-	PROTOCOL_J1939,
-	PROTOCOL_UNKNOWN
+    PROTOCOL_CAN    = 0,
+    PROTOCOL_J1939,
+    PROTOCOL_UNKNOWN
 };
 
 typedef enum eTYPE_BUS
@@ -176,7 +176,7 @@ typedef struct tagFormattedData_CAN
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 
-    
+
 };
 
 typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
@@ -186,7 +186,7 @@ typedef struct sWMUpdatePtrPara
     int              m_nListIndex;
     EINTERPRET_MODE  m_eInPretMode;
     BOOL             m_bResult;
-}SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
+} SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
 
 #define MAX_MSG_WND_COL_CNT              12
 
@@ -200,10 +200,10 @@ typedef struct sMsgWndHdrCol
     BYTE m_byDLCPos;
     BYTE m_byDataPos;
     BYTE m_byChannel;
-	BYTE m_byPGNPos;
-	BYTE m_bySrcPos;
-	BYTE m_byDestPos;
-	BYTE m_byPriorityPos;
+    BYTE m_byPGNPos;
+    BYTE m_bySrcPos;
+    BYTE m_byDestPos;
+    BYTE m_byPriorityPos;
 
     sMsgWndHdrCol()
     {
@@ -215,9 +215,9 @@ typedef struct sMsgWndHdrCol
         m_byDLCPos      = (BYTE) -1;
         m_byDataPos     = (BYTE) -1;
         m_byChannel     = (BYTE) -1;
-		m_byPGNPos      = (BYTE) -1;
-		m_bySrcPos      = (BYTE) -1;
-		m_byDestPos     = (BYTE) -1;
-		m_byPriorityPos = (BYTE) -1;		
+        m_byPGNPos      = (BYTE) -1;
+        m_bySrcPos      = (BYTE) -1;
+        m_byDestPos     = (BYTE) -1;
+        m_byPriorityPos = (BYTE) -1;
     }
 } SMSGWNDHDRCOL;

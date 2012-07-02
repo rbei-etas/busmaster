@@ -33,7 +33,7 @@
 
 #include "NodeSimEx_Struct.h"
 
-class CFlags  
+class CFlags
 {
 public:
     int nGetFlagStatus(eSIMSYSFLAG WhichFlag);
@@ -48,6 +48,7 @@ private:
     BOOL m_bMsgHandlerOn;
     BOOL m_bKeyHandlerOn;
     BOOL m_bErrorHandlerOn;
+    BOOL m_bEventHandlerOn;
     BOOL m_bDLLHandlerOn;
     BOOL m_bALLHandler;
 private:

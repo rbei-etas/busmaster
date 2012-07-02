@@ -1,21 +1,21 @@
 /******************************************************************************
   Project       :  Auto-SAT_Tools
   FileName      :  J1939_UtilityFuncs.h
-  Description   :  
+  Description   :
   $Log:   X:/Archive/Sources/DIL_J1939/J1939_UtilityFuncs.h_v  $
- * 
+ *
  *    Rev 1.6   09 Jun 2011 17:55:46   CANMNTTM
  * All errors in VS2005 are removed
- * 
+ *
  *    Rev 1.5   07 Jun 2011 11:11:16   CANMNTTM
- *  
- * 
+ *
+ *
  *    Rev 1.4   15 Apr 2011 18:48:36   CANMNTTM
  * Added RBEI Copyright information.
-  
+
   Author(s)     :  Pradeep Kadoor
   Date Created  :  15/04/2011
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  ******************************************************************************/
 #if !defined J1939_UTILITYFUNCS_H__INCLUDED_
@@ -46,7 +46,7 @@ const UCHAR ucCONACK_MSG_LEN              = 2;
 #define DATA_CLEAR_2_SEND   7
 #define DATA_DELAY_2_SEND   8
 #define EXECUTE_CLBCK_FN(TYPE, PGN, SRC, DEST, SUCCESS) \
-                vExecuteClbckFuncPtrs(TYPE, PGN, SRC, DEST, SUCCESS)
+    vExecuteClbckFuncPtrs(TYPE, PGN, SRC, DEST, SUCCESS)
 
 /* Waiting for */
 const WORD WF_BROADCAST     = 0xA1;
@@ -73,9 +73,9 @@ const UINT TO_T4        = 1050; //ms
 /* PDU FORMATS */
 const BYTE PDU_FORMAT_TPCM = 236;
 const BYTE PDU_FORMAT_TPDT = 235;
-const BYTE PDU_FORMAT_REQUEST4 = 234; 
+const BYTE PDU_FORMAT_REQUEST4 = 234;
 const BYTE PDU_FORMAT_ACL  = 238;
-const BYTE PDU_FORMAT_ACK  = 232; 
+const BYTE PDU_FORMAT_ACK  = 232;
 
 /* CONTROL BYTE */
 const BYTE CB_REQ_TO_SEND = 16;
@@ -111,14 +111,14 @@ typedef enum
 {
     CM_STANDARD = 0,
     CM_BROADCAST
-}eCON_MODE;
+} eCON_MODE;
 
 /* TYPES OF REASON FOR DISCONNECTION */
 typedef enum
 {
     T_FAULT = 0,
     T_SHUTDOWN
-}eREASON;
+} eREASON;
 
 /* static functions */
 
@@ -127,11 +127,11 @@ Function Name  :  byGetLastFrameLen
 Input(s)       :  UINT unDLC
 Output         :  BYTE - length of last frame
 Functionality  :  returns length of last frame
-Member of      :  
+Member of      :
 Friend of      :  -
 Author(s)      :  Pradeep Kadoor
 Date Created   :  23/11/2010
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 static BYTE byGetLastFrameLen(UINT unDLC)
 {
@@ -146,10 +146,10 @@ static BYTE byGetLastFrameLen(UINT unDLC)
 static BOOL bIsCommandAddress(BYTE byPduFormat, UINT unMsgLen)
 {
     return ((byPduFormat == PDU_FORMAT_ACL)
-           && (unMsgLen == DATA_LEN_CMD_ADDRESS));
+            && (unMsgLen == DATA_LEN_CMD_ADDRESS));
 }
 static void PrepareEOM_ACK(BYTE* byCANData, UINT unDLC, BYTE byNoOfPackets, UINT32 unPGN)
-{    
+{
     byCANData[0] = CB_EOM_ACK;
     byCANData[1] = (BYTE)unDLC;
     byCANData[2] = (BYTE)(unDLC >> 8);
@@ -160,7 +160,7 @@ static void PrepareEOM_ACK(BYTE* byCANData, UINT unDLC, BYTE byNoOfPackets, UINT
     byCANData[7] = (BYTE)(unPGN >> 16);
 }
 static void PrepareClear_2_Send(BYTE* byCANData, BYTE byNoOfPackets, BYTE byNextPacket, UINT32 unPGN)
-{    
+{
     byCANData[0] = CB_CLEAR_TO_SEND;
     byCANData[1] = byNoOfPackets;
     byCANData[2] = byNextPacket;
@@ -197,15 +197,15 @@ static void vPrepareData(BYTE* byFrameData, BYTE byControlByte, UINT unDLC, UINT
     byFrameData[6] = (BYTE)(unPGN >> 8);
     byFrameData[7] = (BYTE)(unPGN >> 16);
 }
-static UINT32 Prepare_P2P_Id(BYTE byPDUFormat, BYTE bySrcAdres, 
-                        BYTE byDestAdres, BYTE byPriority)
+static UINT32 Prepare_P2P_Id(BYTE byPDUFormat, BYTE bySrcAdres,
+                             BYTE byDestAdres, BYTE byPriority)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPriority = byPriority;
     uExtId.m_s29BitId.m_bySrcAddress = bySrcAdres;
     uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byDataPage = 0;
     uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byReserved = 0;
-    uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format = byPDUFormat;  
+    uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format = byPDUFormat;
     uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific = byDestAdres;
     return uExtId.m_unExtID;
 
@@ -223,51 +223,51 @@ static BOOL bIsBAM(UINT32 unExtId, BYTE byControlByte)
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = unExtId;
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
-        && (byControlByte == CB_BAM));
+            && (byControlByte == CB_BAM));
 }
 static BOOL bIsEOM_ACK(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = unExtId;
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
-        && (byControlByte == CB_EOM_ACK));
+            && (byControlByte == CB_EOM_ACK));
 }
 static BOOL bIsConAbortMsg(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = unExtId;
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
-        && (byControlByte == CB_CON_ABORT));
+            && (byControlByte == CB_CON_ABORT));
 }
 static BOOL bIsConAckMsg(STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = sCanMsg.m_unMsgID;
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
-        && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (0 == sCanMsg.m_ucData[2]));
+            && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (0 == sCanMsg.m_ucData[2]));
 }
 static BOOL bIsDataAckMsg(STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = sCanMsg.m_unMsgID;
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
-        && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (sCanMsg.m_ucData[2] > 0));
+            && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (sCanMsg.m_ucData[2] > 0));
 }
 static BOOL bIsTPDT(UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = unExtId;
-    return (uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPDT);            
+    return (uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPDT);
 }
 
-static void vCreateTempJ1939Msg(STJ1939_MSG& sMsg, const STCANDATA& sCanData, 
+static void vCreateTempJ1939Msg(STJ1939_MSG& sMsg, const STCANDATA& sCanData,
                                 UINT unDLC, BYTE* pbyData, EJ1939_MSG_TYPE eType)
 {
     const STCAN_MSG& sCanMsg = sCanData.m_uDataInfo.m_sCANMsg;
     sMsg.vClear();
     sMsg.m_sMsgProperties.m_uExtendedID.m_unExtID = sCanMsg.m_unMsgID;
-    sMsg.m_sMsgProperties.m_eDirection = (sCanData.m_ucDataType == RX_FLAG)? 
-                                            DIR_RX : DIR_TX;
+    sMsg.m_sMsgProperties.m_eDirection = (sCanData.m_ucDataType == RX_FLAG)?
+                                         DIR_RX : DIR_TX;
     sMsg.m_sMsgProperties.m_eType = eType;
     sMsg.m_sMsgProperties.m_byChannel = sCanMsg.m_ucChannel;
     sMsg.m_sMsgProperties.m_un64TimeStamp = sCanData.m_lTickCount.QuadPart;
@@ -281,7 +281,7 @@ static BOOL bIsConLevelMsg(UINT32 unExtId)
     UNION_29_BIT_ID uExtId;
     uExtId.m_unExtID = unExtId;
     if ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPDT)
-        || (uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM))
+            || (uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM))
     {
         bReturn = TRUE;
     }
@@ -292,11 +292,11 @@ Function Name  :  eGetMsgType
 Input(s)       :  UINT32 unExtId - 29 bit CAN identifier,BYTE* pbyData - CAN data
 Output         :  EJ1939_MSG_TYPE
 Functionality  :  returns the type of the message.
-Member of      :  
+Member of      :
 Friend of      :  -
 Author(s)      :  Pradeep Kadoor
 Date Created   :  23/11/2010
-Modifications  :  
+Modifications  :
 ******************************************************************************/
 static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
 {
@@ -341,7 +341,7 @@ static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
                 break;
                 case CB_REQ_TO_SEND:
                 {
-                     eType = MSG_TYPE_NM_TPCM_RTS;
+                    eType = MSG_TYPE_NM_TPCM_RTS;
                 }
                 break;
                 case CB_CLEAR_TO_SEND:
@@ -356,11 +356,11 @@ static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
                 break;
                 case CB_EOM_ACK:
                 {
-                     eType = MSG_TYPE_NM_TPCM_EOM_ACK;
+                    eType = MSG_TYPE_NM_TPCM_EOM_ACK;
                 }
                 break;
             }
-            
+
         }
         break;
         case PDU_FORMAT_TPDT:

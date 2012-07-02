@@ -43,13 +43,13 @@ Functionality   : Constructor of Wait Indicator.
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 CWaitIndicator::CWaitIndicator()
 {
     //Register Custom window class name
-    RegisterWindowClass();                  
+    RegisterWindowClass();
 }
 
 /******************************************************************************
@@ -60,8 +60,8 @@ Functionality   : Destrutor of Wait Indicator.
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 CWaitIndicator::~CWaitIndicator()
 {
@@ -69,18 +69,18 @@ CWaitIndicator::~CWaitIndicator()
 
 /******************************************************************************
 Function Name   : DisplayWindow
-Input(s)        : 1. strTitle - Contain the title that has to diaplay on 
+Input(s)        : 1. strTitle - Contain the title that has to diaplay on
                   Wait indicator window
                   2. pParentWnd - contains the pointer to the parent window
                   3. nID - ID of the control.Default to Zero
 
 Output          : BOOL - Nonzero if successful, otherwise 0.
-Functionality   : Creates and Displays the indicator window. 
+Functionality   : Creates and Displays the indicator window.
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 BOOL CWaitIndicator::DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID )
 {
@@ -90,8 +90,8 @@ BOOL CWaitIndicator::DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID 
     DWORD dwStyle = WS_CHILD | SS_CENTER | WS_VISIBLE;
     //Create window with zero size.
     CWnd::Create(INDICATOR_CLASSNAME, "", dwStyle, CRect(0,0,0,0), pParentWnd, nID, NULL);
-	Redraw();
-	return TRUE;
+    Redraw();
+    return TRUE;
 }
 
 /******************************************************************************
@@ -102,13 +102,13 @@ Functionality   : Draws the Indicators client window
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 void CWaitIndicator::OnPaint(void)
 {
     // Device context for painting
-    CPaintDC dc(this); 
+    CPaintDC dc(this);
     /*CRect ClientRect;
 
     // Client Rect Painting
@@ -126,15 +126,15 @@ void CWaitIndicator::OnPaint(void)
 
 /******************************************************************************
 Function Name   : OnCreate
-Input(s)        : lpCreateStruct - Contains the details of window such as 
+Input(s)        : lpCreateStruct - Contains the details of window such as
                   width, height, window style.
 Output          : int
 Functionality   : Resizes and Moves the window to the center of its parent
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 int CWaitIndicator::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -155,8 +155,8 @@ Functionality   : Moves the Indicator Window to center of its parents
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 void CWaitIndicator::MoveToCenter(void)
 {
@@ -164,7 +164,7 @@ void CWaitIndicator::MoveToCenter(void)
     CRect    ParentRect;
     int      nWidth;
     int      nHeight;
-    CWnd     *MainWindow;
+    CWnd*     MainWindow;
 
     MainWindow = GetParent();
 
@@ -178,7 +178,7 @@ void CWaitIndicator::MoveToCenter(void)
     // 1.1 Times the Text Length;
     nWidth =  (int) (1.1 * TxtSize.cx);
     // Fixed.Height is always Fixed;
-    nHeight = 45;                   
+    nHeight = 45;
 
     // Find the center point and convert to screen coordinates.
     Point.x = ParentRect.Width() / 2;
@@ -199,8 +199,8 @@ Functionality   : Register the Indicator window as a custom Window control.
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 BOOL CWaitIndicator::RegisterWindowClass(void)
 {
@@ -238,8 +238,8 @@ Functionality   : Closes the indicator window if its open.
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 void CWaitIndicator::CloseWindow(void)
 {
@@ -254,14 +254,14 @@ Functionality   : Redraws the window.
 Member of       : CWaitIndicator
 Friend of       : -
 Author(s)       : Venkatanarayana Makam
-Date Created    : 
-Modifications   : 
+Date Created    :
+Modifications   :
 ******************************************************************************/
 void CWaitIndicator::Redraw(void)
 {
-	CClientDC dc(this);
-	PaintWindow(dc);
-	PaintWindow(dc);
+    CClientDC dc(this);
+    PaintWindow(dc);
+    PaintWindow(dc);
 }
 void CWaitIndicator::SetWindowText(char* acText)
 {
@@ -270,7 +270,7 @@ void CWaitIndicator::SetWindowText(char* acText)
 }
 void CWaitIndicator::PaintWindow(CDC& dc)
 {
-    
+
     CRect ClientRect;
 
     // Client Rect Painting

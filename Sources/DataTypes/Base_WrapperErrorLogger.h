@@ -34,8 +34,8 @@ using namespace std;
 class Base_WrapperErrorLogger
 {
 public:
-    Base_WrapperErrorLogger(void){};
-    ~Base_WrapperErrorLogger(void){};
+    Base_WrapperErrorLogger(void) {};
+    ~Base_WrapperErrorLogger(void) {};
 
     // Maximum characters in File and Msg are FILENAME_MAX and BUFSIZ respectively
     virtual void vLogAMessage(char File[], int Line, string Msg) = 0;

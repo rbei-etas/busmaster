@@ -79,7 +79,7 @@ Set default to OCI_STATICLIB
 #elif defined (__GNUC__) && (__WIN32__)
 #define OCI_CALLBACK __cdecl
 #elif defined (__GNUC__) && (__LINUX__)
-#define OCI_CALLBACK 
+#define OCI_CALLBACK
 #else
 #error Unsupported platform
 #endif

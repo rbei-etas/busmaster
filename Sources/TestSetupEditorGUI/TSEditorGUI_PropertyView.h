@@ -29,8 +29,8 @@
 class CTSEditorChildFrame;
 class CPropertyView : public CFormView
 {
-//Member Variables
-	DECLARE_DYNCREATE(CPropertyView)
+    //Member Variables
+    DECLARE_DYNCREATE(CPropertyView)
     CRect m_rectList;
     CRect m_rectHelp;
     CRect m_rectCancel;
@@ -39,26 +39,26 @@ class CPropertyView : public CFormView
     CImageList m_omImageList;
     CListCtrlEx m_omPropertyList;
 public:
-	enum { IDD = IDD_PROPERTYVIEW };
+    enum { IDD = IDD_PROPERTYVIEW };
 
-//Member Functions
+    //Member Functions
 public:
-    void vShowHelpInfo(CString &omHelpString);
+    void vShowHelpInfo(CString& omHelpString);
 
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+    virtual void AssertValid() const;
+    virtual void Dump(CDumpContext& dc) const;
 #endif
 
     virtual void OnInitialUpdate();
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnBnClickedCancel();
     afx_msg void OnBnClickedConfirm();
-    afx_msg void OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnItemchanged(NMHDR* pNMHDR, LRESULT* pResult);
 
 protected:
-	CPropertyView();           // protected constructor used by dynamic creation
-	virtual ~CPropertyView();
+    CPropertyView();           // protected constructor used by dynamic creation
+    virtual ~CPropertyView();
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     DECLARE_MESSAGE_MAP()
 

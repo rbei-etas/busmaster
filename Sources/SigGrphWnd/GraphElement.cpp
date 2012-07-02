@@ -6,7 +6,7 @@
 
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
-  Modified By   : 
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
  *********************************************************************/
 // For standard Headers
@@ -27,8 +27,8 @@ CGraphElement::CGraphElement()
 {
     // Message ID
     m_nMsgID = -1;
-	// Message Name
-	m_strMsgName = STR_EMPTY;
+    // Message Name
+    m_strMsgName = STR_EMPTY;
     // Format - Standard or Extended
     m_nFrameFormat = -1;
     // Element Name
@@ -72,7 +72,7 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
         COPY_DATA(pbyTemp, &m_nMsgID, sizeof(int));
         // Message Name
         char MsgName[MAX_PATH] = {_T('\0')};
-		//Tobias - venkat
+        //Tobias - venkat
         strcpy_s(MsgName, MAX_PATH, m_strMsgName.GetBuffer(MAX_PATH));
         COPY_DATA(pbyTemp, MsgName, (sizeof(char) * MAX_PATH));
         // Frame Format - Standard
@@ -142,7 +142,7 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
  Member of      : CGraphElement
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 int CGraphElement::nSerialize(CArchive& omArch)
 {

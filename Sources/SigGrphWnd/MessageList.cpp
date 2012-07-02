@@ -55,7 +55,7 @@ END_MESSAGE_MAP()
 /*******************************************************************************
   Function Name  : DrawItem
   Input(s)       : lpDis - Pointer to Display Structure
-  Output         : 
+  Output         :
   Functionality  : This will be callee by the framework to draw list control
                    items
   Member of      : CMessageList
@@ -67,24 +67,24 @@ END_MESSAGE_MAP()
                    Raja N on 14.12.2004
                    Review comments implemented. Removed hardcoded value.
 *******************************************************************************/
-void CMessageList::DrawItem(LPDRAWITEMSTRUCT lpDis) 
+void CMessageList::DrawItem(LPDRAWITEMSTRUCT lpDis)
 {
     // Get the column Count
-    CHeaderCtrl * pHeader = GetHeaderCtrl();
+    CHeaderCtrl* pHeader = GetHeaderCtrl();
     int nColCount = pHeader->GetItemCount();
-    const int nOffset = 2;    
+    const int nOffset = 2;
     // Initialise to default values
     COLORREF TxtColour = (COLORREF)GetItemData(lpDis->itemID);
     HBRUSH hBkBrush = m_hWhiteBrush;
-    
+
     // Select Blue brush and white pen if this item is selected
     if ((lpDis->itemState & ODS_SELECTED) &&
-        (lpDis->itemState & ODS_FOCUS))
+            (lpDis->itemState & ODS_FOCUS))
     {
         TxtColour = WHITE_COLOR;
         hBkBrush = m_hBlueBrush;
     }
-    
+
     // Set Text color and fill background
     ::SetTextColor(lpDis->hDC, TxtColour);
     ::FillRect(lpDis->hDC, &(lpDis->rcItem), hBkBrush);
@@ -95,8 +95,8 @@ void CMessageList::DrawItem(LPDRAWITEMSTRUCT lpDis)
     {
         // Get Item boundary
         GetSubItemRect( lpDis->itemID,
-                            nIndex, LVIR_BOUNDS,
-                            omSubItemRect);
+                        nIndex, LVIR_BOUNDS,
+                        omSubItemRect);
         // Correct right magin
         if( nIndex != nColCount - 1 )
         {
@@ -110,7 +110,7 @@ void CMessageList::DrawItem(LPDRAWITEMSTRUCT lpDis)
         omSubItemRect.left += nOffset;
         // Draw Message Name
         m_omStrInARow = GetItemText(lpDis->itemID, nIndex);
-        ::DrawText( lpDis->hDC, 
+        ::DrawText( lpDis->hDC,
                     m_omStrInARow,
                     m_omStrInARow.GetLength(),
                     &omSubItemRect, DT_LEFT);
@@ -121,13 +121,13 @@ void CMessageList::DrawItem(LPDRAWITEMSTRUCT lpDis)
   Function Name  : OnDestroy
   Input(s)       : -
   Output         : -
-  Functionality  : 
+  Functionality  :
   Member of      : CMessageList
   Author(s)      : Ratnadip Choudhury
   Date Created   : 02/12/2004
-  Modifications  : 
+  Modifications  :
 *******************************************************************************/
-void CMessageList::OnDestroy() 
+void CMessageList::OnDestroy()
 {
     // Call Parent function to do normal destroy
     CFFListCtrl::OnDestroy();

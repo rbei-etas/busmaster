@@ -36,6 +36,7 @@
 #include "ConfigAdapter.h"
 #include "InterfaceGetter.h"
 
+#include "BusmasterDump.h"
 #include "BUSMASTER_Interface.h"
 #include "BUSMASTER_Interface.c"
 
@@ -185,6 +186,7 @@ BOOL CCANMonitorApp::InitInstance()
         return FALSE;
     }
 
+    CBusmasterDump dump("BUSMASTER");
     // END CHANGES MADE FOR AUTOMATION
     // Enable OLE/ActiveX objects support
     AfxEnableControlContainer();
@@ -200,7 +202,7 @@ BOOL CCANMonitorApp::InitInstance()
     // Change the registry key under which our settings are stored.
     // TODO: You should modify this string to be something appropriate
     // such as the name of your company or organization.
-    SetRegistryKey(_T("RBIN"));
+    SetRegistryKey("RBIN");
     // START CHANGES MADE FOR AUTOMATION
     COleTemplateServer::RegisterAll();
     // END CHANGES MADE FOR AUTOMATION
@@ -592,7 +594,7 @@ void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
     DATASTORAGEINFO stempDataInfo;
     FILESTORAGEINFO FileStoreInfo;
     //Tobias - venkat
-	strcpy_s(FileStoreInfo.m_FilePath, MAX_PATH, oCfgFilename.GetBuffer(MAX_PATH));
+    strcpy_s(FileStoreInfo.m_FilePath, MAX_PATH, oCfgFilename.GetBuffer(MAX_PATH));
     stempDataInfo.FSInfo = &FileStoreInfo;
     stempDataInfo.m_Datastore = FILEMODE;
     CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
@@ -632,7 +634,7 @@ void CCANMonitorApp::OnFileOpen()
                          "C File(s)(*.c)|*.c||",
                          NULL );
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = _T("Select BUSMASTER Source Filename...");
+    fileDlg.m_ofn.lpstrTitle  = "Select BUSMASTER Source Filename...";
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -655,11 +657,11 @@ void CCANMonitorApp::OnFileOpen()
         {
             // Now open the selected file
             CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
-			if(pMainFrame != NULL)
-			{
-				GetICANNodeSim()->FE_OpenFunctioneditorFile(omStrNewCFileName, pMainFrame->GetSafeHwnd(),
-					pMainFrame->m_sExFuncPtr[CAN]);
-			}
+            if(pMainFrame != NULL)
+            {
+                GetICANNodeSim()->FE_OpenFunctioneditorFile(omStrNewCFileName, pMainFrame->GetSafeHwnd(),
+                        pMainFrame->m_sExFuncPtr[CAN]);
+            }
             // Save the selected filename into the configuration details
             // if it is is not the same C file
 
@@ -696,15 +698,15 @@ void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
 
     if ( bOperation == defCONFIG_FILE_LOADING )
     {
-        omStrSuffixMessage = _T(" while loading.\nOperation unsuccessful.");
+        omStrSuffixMessage = " while loading.\nOperation unsuccessful.";
     }
     else if ( bOperation == defCONFIG_FILE_SAVING )
     {
-        omStrSuffixMessage = _T(" while saving.\nOperation unsuccessful.");
+        omStrSuffixMessage = " while saving.\nOperation unsuccessful.";
     }
     else
     {
-        omStrSuffixMessage = _T(".\nOperation unsuccessful.");
+        omStrSuffixMessage = ".\nOperation unsuccessful.";
     }
 
     // Get actual error message
@@ -712,87 +714,87 @@ void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
     {
         case defCONFIG_FILE_ERROR:
         {
-            m_omConfigErr = _T("File error occured");
+            m_omConfigErr = "File error occured";
         }
         break;
 
         case defCONFIG_FILE_NOT_FOUND:
         {
-            m_omConfigErr = _T("Configuration file not found");
+            m_omConfigErr = "Configuration file not found";
         }
         break;
 
         case defCONFIG_FILE_OPEN_FAILED:
         {
-            m_omConfigErr = _T("Unable to open configuration file");
+            m_omConfigErr = "Unable to open configuration file";
         }
         break;
 
         case defCONFIG_FILE_READ_FAILED:
         {
-            m_omConfigErr = _T("Unable to read configuration file");
+            m_omConfigErr = "Unable to read configuration file";
         }
         break;
 
         case defCONFIG_FILE_WRITE_FAILED:
         {
-            m_omConfigErr = _T("Unable to write into configuration file");
+            m_omConfigErr = "Unable to write into configuration file";
         }
         break;
 
         case defCONFIG_FILE_CLOSE_FAILED:
         {
-            m_omConfigErr = _T("Unable to close configuration file successfully");
+            m_omConfigErr = "Unable to close configuration file successfully";
         }
         break;
 
         case defCONFIG_FILE_INVALID_FILE_EXTN:
         {
-            m_omConfigErr = _T("Invalid configuration file extension found");
+            m_omConfigErr = "Invalid configuration file extension found";
         }
         break;
 
         case defCONFIG_PATH_NOT_FOUND:
         {
-            m_omConfigErr = _T("Configuration file path not found");
+            m_omConfigErr = "Configuration file path not found";
         }
         break;
 
         case defCONFIG_FILE_ACCESS_DENIED:
         {
-            m_omConfigErr = _T("Configuration file access was denied");
+            m_omConfigErr = "Configuration file access was denied";
         }
         break;
 
         case defCONFIG_FILE_HANDLE_INVALID:
         {
-            m_omConfigErr = _T("Invalid file handle obtained");
+            m_omConfigErr = "Invalid file handle obtained";
         }
         break;
 
         case defCONFIG_DRIVE_NOT_FOUND:
         {
-            m_omConfigErr = _T("Specified drive not found");
+            m_omConfigErr = "Specified drive not found";
         }
         break;
 
         case defCONFIG_FILE_CORRUPT:
         {
-            m_omConfigErr = _T("An attempt\
+            m_omConfigErr = "An attempt\
  to edit the file has been made from outside the application.\n\
-Corrupt configuration file found");
+Corrupt configuration file found";
         }
         break;
 
         case defCONFIG_FILE_HDR_CORRUPT:
         {
-            m_omConfigErr = _T("Corrupt configuration file header found");
+            m_omConfigErr = "Corrupt configuration file header found";
         }
         break;
 
         default:
         {
-            m_omConfigErr = _T("Unknown error encountered");
+            m_omConfigErr = "Unknown error encountered";
         }
         break;
     }
@@ -862,24 +864,24 @@ void CCANMonitorApp::OnFileNew()
 
         while (bStop == FALSE)
         {
-            omStrCFileName.Format(_T("%s%d%s"),_T("NewEd"), ++unCount, _T(".c"));
+            omStrCFileName.Format("%s%d%s","NewEd", ++unCount, _T(".c"));
 
             // Search for the file name and if it is not present, set
             // the flag to TRUE to break the loop.
             if (_tfindfirst( omStrCFileName.GetBuffer(MAX_PATH), &fileinfo) == -1L)
             {
                 strFilePath = cBuffer ;
-                strFilePath += _T("\\")+ omStrCFileName ;
+                strFilePath += "\\"+ omStrCFileName ;
                 bStop = TRUE;
             }
         }
 
         CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
-		if(pMainFrame != NULL)
-		{
-			GetICANNodeSim()->FE_OpenFunctioneditorFile(strFilePath, pMainFrame->GetSafeHwnd(),
-				pMainFrame->m_sExFuncPtr[CAN]);
-		}
+        if(pMainFrame != NULL)
+        {
+            GetICANNodeSim()->FE_OpenFunctioneditorFile(strFilePath, pMainFrame->GetSafeHwnd(),
+                    pMainFrame->m_sExFuncPtr[CAN]);
+        }
         //CWinApp::OnFileNew();
         // Since creating of the document
         // loads another menu,
@@ -1131,7 +1133,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
                             // Reset corresponding flag
                             m_pouFlags->vSetFlagStatus( SELECTDATABASEFILE, TRUE );
                             m_pouMsgSignal->
-								bFillDataStructureFromDatabaseFile(omStrDatabase, PROTOCOL_UNKNOWN);
+                            bFillDataStructureFromDatabaseFile(omStrDatabase, PROTOCOL_UNKNOWN);
                             // Create Unions.h in local directory
                             // and fill the file with the structure
                             m_pouMsgSignal->bWriteDBHeader(omStrDatabase);
@@ -1156,7 +1158,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
                     {
                         char acName[MAX_PATH] = {_T('\0')};
                         CString omDBName = aomNewDatabases.GetAt(i);
-						//Tobias - venkat
+                        //Tobias - venkat
                         strcpy_s(acName, MAX_PATH, omDBName.GetBuffer(MAX_PATH));
                         COPY_DATA(pbyTemp, acName, sizeof(char) * MAX_PATH);
                     }

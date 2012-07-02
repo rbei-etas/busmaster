@@ -22,7 +22,7 @@
 // prevent collision with <winuser.h> definition
 
 // The Windows SDK defines GetMessage as a preprocessor macro, so we must undefine it before we can use it as a function name.
-#ifdef GetMessage 
+#ifdef GetMessage
 #undef GetMessage
 #endif
 
@@ -36,7 +36,7 @@ class IFilter;
 /**
 * \brief Receive queue
 *
-* It extends the base interface by a method 
+* It extends the base interface by a method
 * to extract the oldest message from the queue.
 *
 * The messages that will be received must match at least one
@@ -50,7 +50,8 @@ class IFilter;
 * the same events in-band.
 */
 
-OLI_INTERFACE IRxQueue : public IQueue
+OLI_INTERFACE IRxQueue :
+public IQueue
 {
 protected:
 
@@ -115,7 +116,7 @@ protected:
      * \return A pointer to an interface based on IError, describing the error which occurred during this function, or NULL
      * if no error occurred. See \ref ErrorReporting for more information on how errors are reported.
      */
-	virtual IError* OLI_CALL AddFilter( const IFilter* pFilter, uint32* pFilterToken ) OLI_NOTHROW = 0;
+    virtual IError* OLI_CALL AddFilter( const IFilter* pFilter, uint32* pFilterToken ) OLI_NOTHROW = 0;
 
     /**
      * This method removes a filter which was previously added with AddFilter().
@@ -130,8 +131,8 @@ protected:
 
 public:
 
-    /// Get a reference to the oldest messages in the queue. 
-    /// May be called on inactive queues. The ownership of the 
+    /// Get a reference to the oldest messages in the queue.
+    /// May be called on inactive queues. The ownership of the
     /// returned message object remains with the queue.
     /// Throws an exception for empty queues.
 
@@ -155,8 +156,8 @@ public:
         return pRxMsg;
     }
 
-    /// Remove the @a count oldest messages from the queue. 
-    /// May be called on inactive queues. 
+    /// Remove the @a count oldest messages from the queue.
+    /// May be called on inactive queues.
     /// If the queues contains less than @a count messages,
     /// \ref Pop will remove all of them and return.
     /// \param count number of messages to remove
@@ -166,7 +167,7 @@ public:
     /**
      * This is a helper method which wraps a corresponding protected method: \ref ErrorReporting for an explanation of why it is needed.
      */
-	uint32 OLI_CALL AddFilter( const IFilter* pFilter )
+    uint32 OLI_CALL AddFilter( const IFilter* pFilter )
     {
         uint32 filterToken = 0;
         CheckAndThrow( AddFilter( pFilter, &filterToken ) );
@@ -183,14 +184,14 @@ public:
         return bResult;
     }
 
-    /// 
+    ///
 
-	virtual bool OLI_CALL GetAutoPop() const OLI_NOTHROW = 0;
+    virtual bool OLI_CALL GetAutoPop() const OLI_NOTHROW = 0;
 
     /// fill level to reach to get this observer triggered.
     /// Must not change over the lifetime of this instance.
 
-	virtual uint32 OLI_CALL GetWatermark() const OLI_NOTHROW = 0;
+    virtual uint32 OLI_CALL GetWatermark() const OLI_NOTHROW = 0;
 
     /**
      * This is a helper method which wraps a corresponding protected method: \ref ErrorReporting for an explanation of why it is needed.

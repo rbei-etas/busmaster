@@ -14,11 +14,11 @@
  */
 
 /**
- * @file 
- * 	ClientBuffer.h
+ * @file
+ *  ClientBuffer.h
  *
- * @brief 
- * 	Declares the client buffer class.
+ * @brief
+ *  Declares the client buffer class.
  */
 
 #pragma once
@@ -41,11 +41,11 @@ static DWORD g_dwIxxatBufObjectCounter = 0;
 /**
  * @class CClientBuffer
  *
- * @brief 
- * 		Implements the client buffer class. This class includes a STL::vector
- * 		which holds the pointers to the CBaseCANBufFSE* objects. 
- * 		Do not delete this CBaseCANBufFSE* objects because they were created
- * 		by another function and should deleted by the creator.
+ * @brief
+ *      Implements the client buffer class. This class includes a STL::vector
+ *      which holds the pointers to the CBaseCANBufFSE* objects.
+ *      Do not delete this CBaseCANBufFSE* objects because they were created
+ *      by another function and should deleted by the creator.
  *
  */
 class CClientBuffer
@@ -64,7 +64,7 @@ public:
 
     int NumOfSEBuffers()
     {
-      return m_BaseCANBufFSEVector.size();
+        return m_BaseCANBufFSEVector.size();
     }
 
     CClientBuffer();
@@ -72,10 +72,10 @@ public:
     ~CClientBuffer();
 
 protected:
-  typedef std::vector<CBaseCANBufFSE*> BaseCANBufFSEVector;
-  BaseCANBufFSEVector m_BaseCANBufFSEVector;
+    typedef std::vector<CBaseCANBufFSE*> BaseCANBufFSEVector;
+    BaseCANBufFSEVector m_BaseCANBufFSEVector;
 
-  //DWORD m_dwUniqueBufferID; ///< Key value for the clients, never decement this variable
+    //DWORD m_dwUniqueBufferID; ///< Key value for the clients, never decement this variable
 
-  BOOL MsgBufExist(CBaseCANBufFSE* pBufObj);
+    BOOL MsgBufExist(CBaseCANBufFSE* pBufObj);
 };

@@ -17,9 +17,9 @@
 /**
  * @file  ClientList.cpp
  *
- * @brief 
+ * @brief
  *  This is a class to handle the registered clients.
- *  In the original code of the busmaster DIL classes there 
+ *  In the original code of the busmaster DIL classes there
  *  is array inside the CPP files. I add this extra class
  *  to make it easy replaceable.
  *  Here we use a MAP from the STL. Maybe this must be changed
@@ -29,28 +29,28 @@
 #include "ClientList.h"
 
 /**
- * @def 
+ * @def
  *  MAX_CLIENT_ALLOWED
  *
- * @brief 
+ * @brief
  *  Gets the maximum client allowed.
  *
- * @remarks 
+ * @remarks
  *  This define is in many CPP files. Maybe this should
  *  changed someday.
  */
 #define MAX_CLIENT_ALLOWED 16
 
 /**
- * @brief 
+ * @brief
  *  Default constructor. Set the class members to
  *  default values.
   */
 CClientList::CClientList(void)
 {
-  // set it to 0, never never never decrement it!
-  // make only increments for this variable
-  m_dwUniqueClientID = 0;
+    // set it to 0, never never never decrement it!
+    // make only increments for this variable
+    m_dwUniqueClientID = 0;
 }
 
 /**
@@ -59,27 +59,27 @@ CClientList::CClientList(void)
  */
 CClientList::~CClientList(void)
 {
-  // removing all entries from the map.
-  m_ClientBufferMap.clear();
+    // removing all entries from the map.
+    m_ClientBufferMap.clear();
 }
 
 /**
- * @brief 
+ * @brief
  *  Deletes the entry objects and clear the map.
  */
 void CClientList::DeleteAllEntries()
 {
-  ClientBufferMap::iterator iter;
-  for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
-  {
-    delete iter->second;
-    iter->second= NULL;
-  }
-  m_ClientBufferMap.clear();
+    ClientBufferMap::iterator iter;
+    for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
+    {
+        delete iter->second;
+        iter->second= NULL;
+    }
+    m_ClientBufferMap.clear();
 }
 
 /**
- * @brief 
+ * @brief
  *  Registers a new client.
  *
  * @param [out]  pdwClientID
@@ -95,40 +95,40 @@ void CClientList::DeleteAllEntries()
  */
 HRESULT CClientList::RegisterClient(DWORD& pdwClientID, string pacClientName)
 {
-  HRESULT hResult = S_FALSE;
-  if (!GetClient(pacClientName))
-  {
-    // this client is not registered at this time
-    if (m_ClientBufferMap.size() <= MAX_CLIENT_ALLOWED)    
-    {        
-      pdwClientID = m_dwUniqueClientID;
+    HRESULT hResult = S_FALSE;
+    if (!GetClient(pacClientName))
+    {
+        // this client is not registered at this time
+        if (m_ClientBufferMap.size() <= MAX_CLIENT_ALLOWED)
+        {
+            pdwClientID = m_dwUniqueClientID;
 
-      // do not forget to delete this object later, we are the creator so we delete it!
-      CClientBuffer* pNewClient = new CClientBuffer(m_dwUniqueClientID, NULL, NULL,  pacClientName);
-      m_ClientBufferMap[m_dwUniqueClientID] = pNewClient;
-      m_dwUniqueClientID++;
-      hResult = S_OK;
+            // do not forget to delete this object later, we are the creator so we delete it!
+            CClientBuffer* pNewClient = new CClientBuffer(m_dwUniqueClientID, NULL, NULL,  pacClientName);
+            m_ClientBufferMap[m_dwUniqueClientID] = pNewClient;
+            m_dwUniqueClientID++;
+            hResult = S_OK;
+        }
+        else
+        {
+            // we have already MAX_CLIENT_ALLOWED clients
+            hResult = ERR_NO_MORE_CLIENT_ALLOWED;
+        }
+
     }
     else
     {
-      // we have already MAX_CLIENT_ALLOWED clients
-      hResult = ERR_NO_MORE_CLIENT_ALLOWED;
+        // a client with this name is already registered,
+        // write the ID to the variable
+        hResult = ERR_CLIENT_EXISTS;
     }
-
-  }
-  else
-  {
-    // a client with this name is already registered,
-    // write the ID to the variable
-    hResult = ERR_CLIENT_EXISTS;
-  }
-  return hResult;
+    return hResult;
 }
 
 
 /**
- * @brief 
- * 	Removes the client described by dwClientID.
+ * @brief
+ *  Removes the client described by dwClientID.
  *
  * @param dwClientID
  *  Identifier for the client.
@@ -139,20 +139,20 @@ HRESULT CClientList::RegisterClient(DWORD& pdwClientID, string pacClientName)
  */
 HRESULT CClientList::RemoveClient(DWORD dwClientID)
 {
-  HRESULT hResult = ERR_NO_CLIENT_EXIST;
-  ClientBufferMap::iterator iter = m_ClientBufferMap.find(dwClientID);
-  if (iter != m_ClientBufferMap.end())
-  {
-    delete iter->second;
-    iter->second = NULL;
-    m_ClientBufferMap.erase(iter);
-    hResult = S_OK;
-  }
-  return hResult;
+    HRESULT hResult = ERR_NO_CLIENT_EXIST;
+    ClientBufferMap::iterator iter = m_ClientBufferMap.find(dwClientID);
+    if (iter != m_ClientBufferMap.end())
+    {
+        delete iter->second;
+        iter->second = NULL;
+        m_ClientBufferMap.erase(iter);
+        hResult = S_OK;
+    }
+    return hResult;
 }
 
 /**
- * @brief 
+ * @brief
  *  Gets a client with the given identifier.
  *
  * @param dwClientID
@@ -163,73 +163,73 @@ HRESULT CClientList::RemoveClient(DWORD dwClientID)
  */
 CClientBuffer* CClientList::GetClientByID(DWORD dwClientID)
 {
-  CClientBuffer* pReturnClientObj = NULL;
-  if (m_ClientBufferMap.find(dwClientID) != m_ClientBufferMap.end())
-  {
-     pReturnClientObj = m_ClientBufferMap[dwClientID];
-  }
-  return pReturnClientObj;
+    CClientBuffer* pReturnClientObj = NULL;
+    if (m_ClientBufferMap.find(dwClientID) != m_ClientBufferMap.end())
+    {
+        pReturnClientObj = m_ClientBufferMap[dwClientID];
+    }
+    return pReturnClientObj;
 }
 
 /**
- * @brief 
+ * @brief
  *  Gets a client by the index in the list.
  *  Starting with 0 up to size() - 1,
  *
  * @param iIndexInList
  *  Index in the list.
  *
- * @return  
+ * @return
  *  Null if it fails, else the client by index.
  */
 CClientBuffer* CClientList::GetClientByIndex(int iIndexInList)
 {
-  CClientBuffer* pReturnClientObj = NULL;
-  ClientBufferMap::iterator iter;
-  int iCurIndex = 0;
-  for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
-  {
-    if (iCurIndex == iIndexInList)
+    CClientBuffer* pReturnClientObj = NULL;
+    ClientBufferMap::iterator iter;
+    int iCurIndex = 0;
+    for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
     {
-      pReturnClientObj = iter->second;
-      break;
+        if (iCurIndex == iIndexInList)
+        {
+            pReturnClientObj = iter->second;
+            break;
+        }
+        iCurIndex++;
     }
-    iCurIndex++;
-  }
-  return pReturnClientObj;
+    return pReturnClientObj;
 
 }
 
 /**
- * @brief 
+ * @brief
  *  Get a client with the given name.
  *
  * @param [in]  pacClientName
  *  Name of the client.
  *
- * @return  
+ * @return
  *  Null if it fails, else the client.
  */
 CClientBuffer* CClientList::GetClient(string pacClientName)
 {
-  CClientBuffer* pReturnClientObj = NULL;
-  ClientBufferMap::iterator iter;
-  for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
-  {
-    if (!iter->second->m_pacClientName.compare(pacClientName))
-    // if (iter->second->m_pacClientName == pacClientName)
+    CClientBuffer* pReturnClientObj = NULL;
+    ClientBufferMap::iterator iter;
+    for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
     {
-      pReturnClientObj = iter->second;
-      break;
+        if (!iter->second->m_pacClientName.compare(pacClientName))
+            // if (iter->second->m_pacClientName == pacClientName)
+        {
+            pReturnClientObj = iter->second;
+            break;
+        }
     }
-  }
-  return pReturnClientObj;
+    return pReturnClientObj;
 }
 
 
 
 /**
- * @brief 
+ * @brief
  *  Removes all message buffers on all clients.
  *
  * @return
@@ -238,10 +238,10 @@ CClientBuffer* CClientList::GetClient(string pacClientName)
  */
 HRESULT CClientList::RemoveAllMsgBufOnAllClients()
 {
-  ClientBufferMap::iterator iter;
-  for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
-  {
-    iter->second->RemoveAllMsgBuf();
-  }
-  return S_OK;
+    ClientBufferMap::iterator iter;
+    for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
+    {
+        iter->second->RemoveAllMsgBuf();
+    }
+    return S_OK;
 }

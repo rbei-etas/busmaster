@@ -7,10 +7,10 @@
 * $Revision: 4412 $
 */
 
-/** 
+/**
 * @file
 * @brief  Implementation of the @ref CheckAndThrow function.
-* 
+*
 *         By default, this code will be included into the @ref ErrorProxies.h
 *         header file and the function will be @c inline.
 *
@@ -18,10 +18,10 @@
 *         source file as part of your client application, if you don't want
 *         @a CheckAndThrow to be inline.
 *
-* @remark The header structure of the OLI may change in future releases. 
+* @remark The header structure of the OLI may change in future releases.
 *         Don't include this file directly. Use @ref OLI.h instead.
 *
-* @remark You may compile and link this file as part of your client 
+* @remark You may compile and link this file as part of your client
 *         application even if @ref OLI_DONT_INLINE_CHECKANDTHROW has not
 *         been defined. The function will still be inlined in that case
 *         and this file will contribute no further object code. Thus, you
@@ -39,7 +39,7 @@
  * as part of your client application.
  */
 
-/* Detect whether this CPP file is being compiled directly or if it has 
+/* Detect whether this CPP file is being compiled directly or if it has
  * been included into ErrorProxies.h
  */
 #if defined(__OLI_ERRORPROXIES__INCLUDED__)
@@ -47,10 +47,10 @@
 #define AUTO_INLINE inline
 #else
 #define __IN_SOURCE__
-#define AUTO_INLINE 
+#define AUTO_INLINE
 #endif
 
-/* Include other headers and the namespace only if we are in a source file, 
+/* Include other headers and the namespace only if we are in a source file,
  * i.e. we didn't #include this file as for inlining
  */
 #if defined(__IN_SOURCE__)
@@ -61,9 +61,12 @@
 #include "BeginNamespace.h"
 
 #ifdef _DOXYGEN
-namespace ETAS {namespace OLI {
+namespace ETAS
+{
+namespace OLI
+{
 #endif
-#endif 
+#endif
 
 /* Implement CheckAndThrow().
  * Compile the code only if
@@ -81,45 +84,85 @@ AUTO_INLINE void CheckAndThrow( IError* pError )
 
     /* Discover the type of the error and throw an appropriately-typed proxy.
      *
-     * First check for the most-derived error types which we know about. 
+     * First check for the most-derived error types which we know about.
      */
-    if( pError->IsOfType( INotSupportedError::TYPE ) )      throw CNotSupportedError    ( (INotSupportedError*)( pError ) );
-    if( pError->IsOfType( IVersionError::TYPE ) )           throw CVersionError         ( (IVersionError*)( pError ) );
-    if( pError->IsOfType( IInvalidStateError::TYPE ) )      throw CInvalidStateError    ( (IInvalidStateError*)( pError ) );
-    if( pError->IsOfType( IControlFlowError::TYPE ) )       throw CControlFlowError     ( (IControlFlowError*)( pError ) );
-    if( pError->IsOfType( IInvalidOperationError::TYPE ) )  throw CInvalidOperationError( (IInvalidOperationError*)( pError ) );
-    if( pError->IsOfType( IOutOfRangeError::TYPE ) )        throw COutOfRangeError      ( (IOutOfRangeError*)( pError ) );
-    if( pError->IsOfType( IAllocError::TYPE ) )             throw CAllocError           ( (IAllocError*)( pError ) );
-    if( pError->IsOfType( IUnexpectedError::TYPE ) )        throw CUnexpectedError      ( (IUnexpectedError*)( pError ) );
-    if( pError->IsOfType( IOCIError::TYPE ) )               throw COCIError             ( (IOCIError*)( pError ) );
-    if( pError->IsOfType( IOverflowError::TYPE ) )          throw COverflowError        ( (IOverflowError*)( pError ) );
-    if( pError->IsOfType( IInvalidArgumentError::TYPE ) )   throw CInvalidArgumentError ( (IInvalidArgumentError*)( pError ) );
-    if( pError->IsOfType( IDomainError::TYPE ) )            throw CDomainError          ( (IDomainError*)( pError ) );
+    if( pError->IsOfType( INotSupportedError::TYPE ) )
+    {
+        throw CNotSupportedError    ( (INotSupportedError*)( pError ) );
+    }
+    if( pError->IsOfType( IVersionError::TYPE ) )
+    {
+        throw CVersionError         ( (IVersionError*)( pError ) );
+    }
+    if( pError->IsOfType( IInvalidStateError::TYPE ) )
+    {
+        throw CInvalidStateError    ( (IInvalidStateError*)( pError ) );
+    }
+    if( pError->IsOfType( IControlFlowError::TYPE ) )
+    {
+        throw CControlFlowError     ( (IControlFlowError*)( pError ) );
+    }
+    if( pError->IsOfType( IInvalidOperationError::TYPE ) )
+    {
+        throw CInvalidOperationError( (IInvalidOperationError*)( pError ) );
+    }
+    if( pError->IsOfType( IOutOfRangeError::TYPE ) )
+    {
+        throw COutOfRangeError      ( (IOutOfRangeError*)( pError ) );
+    }
+    if( pError->IsOfType( IAllocError::TYPE ) )
+    {
+        throw CAllocError           ( (IAllocError*)( pError ) );
+    }
+    if( pError->IsOfType( IUnexpectedError::TYPE ) )
+    {
+        throw CUnexpectedError      ( (IUnexpectedError*)( pError ) );
+    }
+    if( pError->IsOfType( IOCIError::TYPE ) )
+    {
+        throw COCIError             ( (IOCIError*)( pError ) );
+    }
+    if( pError->IsOfType( IOverflowError::TYPE ) )
+    {
+        throw COverflowError        ( (IOverflowError*)( pError ) );
+    }
+    if( pError->IsOfType( IInvalidArgumentError::TYPE ) )
+    {
+        throw CInvalidArgumentError ( (IInvalidArgumentError*)( pError ) );
+    }
+    if( pError->IsOfType( IDomainError::TYPE ) )
+    {
+        throw CDomainError          ( (IDomainError*)( pError ) );
+    }
 
-    /* If we reach this point, the error is of a derived type of which we 
-     * are ignorant. Therefore we now check to see if the error is of a 
+    /* If we reach this point, the error is of a derived type of which we
+     * are ignorant. Therefore we now check to see if the error is of a
      * super-type which we know about.
      *
-     * Note that although the "real" type of the error can never be a 
-     * super-type, we can construct an instance of a super-type proxy to 
+     * Note that although the "real" type of the error can never be a
+     * super-type, we can construct an instance of a super-type proxy to
      * represent the error.
      */
-    if( pError->IsOfType( IOLIError::TYPE ) )               throw COLIError             ( (IOLIError*)( pError ) );
+    if( pError->IsOfType( IOLIError::TYPE ) )
+    {
+        throw COLIError             ( (IOLIError*)( pError ) );
+    }
 
-    /* If we reach this point, the error is not of any recognised derived 
-     * type, nor any recognised super-type. Therefore we use the base-type 
+    /* If we reach this point, the error is not of any recognised derived
+     * type, nor any recognised super-type. Therefore we use the base-type
      * proxy to represent the error.
      */
     throw CError( (IError*)( pError ) );
 }
 #endif
 
-/* Close the namespace only if we are in a source file, 
+/* Close the namespace only if we are in a source file,
  * i.e. we didn't #include this file as for inlining
  */
 #if defined(__IN_SOURCE__)
 #ifdef _DOXYGEN
-}}
+}
+}
 #endif
 
 #include "EndNamespace.h"
@@ -132,4 +175,4 @@ AUTO_INLINE void CheckAndThrow( IError* pError )
 #else
 #undef __IN_HEADER__
 #endif
-#undef AUTO_INLINE 
+#undef AUTO_INLINE

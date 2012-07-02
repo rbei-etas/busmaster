@@ -1,0 +1,796 @@
+# Measurements
+/17:9700716:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\++--++++----++++-
+/8:9766437:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+/193:9449038:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\asclogconverter\asc_log_lexer.c
+\-+++----------+---++-+--+++-++-----+---++--+--------+-------++-++++-++-+--+----------+++----+--+---+----------------++--+++-+-----+-------+----+---+---+--++--++---+--+++----++--+-++--++--++++++
+/120:5737607:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\asclogconverter\asc_log_parser.c
+\++-+++-++-+-+-+--++------------++++++---++---+---------------+++++++-------+-----------+--+-+-+-++---++++++---++++++----
+# Measurements
+/14:3055539:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+--+-+----++++-
+/8:13089055:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\------------------------------------------------------------------+-+-----------------
+/18:9142375:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\+-+-++-++--+---------+-+---+---++++-++-+++++++++++++++++++--+++++
+/9:2867929:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-+-++++--
+/28:855016:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\srinivas_r\busmaster\rbeisvn\trunk\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---+-++---+--+--------+------------------------------------+--+-+++-+++++++----+++---+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---+-++---+--+--------+------------------------------------+--+-+++-+++++++----+++---+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-+-++++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---++++---+--+--------+--------+-------------------------+-+--+-+++-+++++++-++-+++---+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---+-++---+--+--------+------------------------------------+--+-+++-+++++++----+++---+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---+-++---+---------------------------------------------------+-+++-+++++++----+++---+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---+-++---+--+--------+---+--------------------------------+--+-+++-+++++++++--+++--++
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\+-++++++--+-+--------------------------------------------+----+-+++-++++++++++++++++++
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\---+-++---+--+--------+---+--------------------------------+--+-+++-+++++++++--+++--++
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------
+# Measurements
+/17:9700716:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverter.cpp
+\+-----------++++-
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+++++
+# Measurements
+/14:3055539:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverter.cpp
+\+++---+-------
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+++++
+/715:2783357:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cpropertypage.cpp
+\------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------++----------------------------------
+# Measurements
+/16:6889296:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverter.cpp
+\-+---------+-++-
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+++++
+# Measurements
+/16:3404448:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverter.cpp
+\-+---------+-++-
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+++++
+# Measurements
+/27:14213633:d:\busmaster oss\sources\format converter\logascconverter\logascconverter.cpp
+\---+------------------+-++-
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+++++
+# Measurements
+/86:10092669:d:\busmaster oss\sources\format converter\logtoexcelconverter\exportlogfiledlg.cpp
+\+-++++++--+-++--------+----------------------------------+---++-+++-++++++++++++++++++
+/81:9560832:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcel.cpp
+\----------------+++--------++---------+--+------+++++++++----------------+-------
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-++++++-------++
+# Measurements
+/65:14102542:d:\busmaster oss\sources\format converter\formatconverterapp\defconverterpage.cpp
+\----++-----+---------+---------+++---------------+++++++++--+++++
+/9:2867929:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterapp.cpp
+\-++-+++--
+/28:855016:d:\busmaster oss\sources\format converter\formatconverterapp\formatconverterwnd.cpp
+\+-+++---++++--+-+++--++-++++
+/4:11157439:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerbase.cpp
+\+++-
+/31:4799365:d:\busmaster oss\sources\format converter\formatconverterapp\pluginmanagerdll.cpp
+\-+++-+---++++++++--+++--++--+-+
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\++-+-+------------
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\+--+-+-+
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\+--+-+-+
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\+--+-+-+
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\+--+-+-+
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\+-+-+-+
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\-----------------------------------------------------------------------------------+-----------------------------------
+# Measurements
+/7:14838700:d:\busmaster oss\sources\format converter\capl2cconverter\capl2cconverterdll.cpp
+\---++--
+/119:11081366:d:\busmaster oss\sources\format converter\capl2cconverter\converter.cpp
+\------------------------------------------------------------------------------------+----------------------------------
+# Measurements
+/8:13089055:d:\busmaster oss\sources\format converter\dbc2dbfconverter\dbc2dbfconverterdll.cpp
+\----++--
+# Measurements
+/8:12276132:d:\busmaster oss\sources\format converter\logascconverter\logascconverterdll.cpp
+\----++--
+# Measurements
+/8:16285674:d:\busmaster oss\sources\format converter\dbf2dbcconverter\dbf2dbcconverterdll.cpp
+\----++--
+# Measurements
+/8:9766437:d:\busmaster oss\sources\format converter\asclogconverter\asclogconverterdll.cpp
+\----++--
+# Measurements
+/18:9142375:d:\busmaster oss\sources\format converter\logtoexcelconverter\logtoexcelconverter.cpp
+\----++------------

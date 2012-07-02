@@ -4,48 +4,48 @@
   FileName      :  NetworkMgmt.h
   Description   :  Network management layer services
   $Log:   X:/Archive/Sources/DIL_J1939/NetworkMgmt.h_v  $
- * 
+ *
  *    Rev 1.7   15 Apr 2011 18:48:38   CANMNTTM
  * Added RBEI Copyright information.
- * 
+ *
  *    Rev 1.6   02 Mar 2011 11:36:44   CANMNTTM
  * SetCallBackFuncPtr function is added.
- * 
+ *
  *    Rev 1.5   13 Jan 2011 14:47:00   CANMNTTM
  * GoOnline() return value is used.
- * 
+ *
  *    Rev 1.4   22 Dec 2010 19:23:42   CANMNTTM
  * 1. Implemented Call back mechanism.
  * 2. Exported function SetClBckFnPtrs and GetTimeOut added.
- * 
+ *
  *    Rev 1.3   15 Dec 2010 16:22:58   CANMNTTM
  * Added new function to remove all the register nodes.
- * 
+ *
  *    Rev 1.2   13 Dec 2010 18:46:54   CANMNTTM
  * New API DILJ_bIsOnline(void) added
- * 
+ *
  *    Rev 1.1   13 Dec 2010 16:37:06   CANMNTTM
  * Nodes are made independent of channel.
  * Now nodes can send message in any channel.
- * 
+ *
  *    Rev 1.0   06 Dec 2010 18:47:22   rac2kor
- *  
- * 
+ *
+ *
  *    Rev 1.4   12 Jan 2010 14:22:46   mcnetpl
  * Bugfixing
- * 
+ *
  *    Rev 1.3   04 Jan 2010 14:46:12   mcnetpl
- *  
- * 
+ *
+ *
  *    Rev 1.1   07 Dec 2009 13:02:00   mcnetpl
  * Bugfix
- * 
+ *
  *    Rev 1.0   02 Dec 2009 17:53:04   mcnetpl
  * Initial version
 
   Author(s)     :  Anish Kumar
   Date Created  :  15/09/2009
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -60,13 +60,13 @@
 
 
 
-typedef enum 
+typedef enum
 {
     CB_CON_CON,
     CB_CON_IND,
     CB_CONTEST_CON,
     CB_CONTEST_IND
-}E_NW_CALLBK_TYPE;
+} E_NW_CALLBK_TYPE;
 
 typedef CMap<UINT, UINT, short, short> CCombineLCsToConNoMap;
 typedef CMap<UINT64, UINT64, BYTE, BYTE> CNameAddressMap;
@@ -83,7 +83,7 @@ private:
     int m_nConMgrCnt;
     CNameAddressMap m_odClaimedAdresMap;
     BOOL m_bOnline;
-    
+
 public:
     static UINT sg_unTO_BROADCAST;
     static UINT sg_unTO_RESPONSE;
@@ -113,14 +113,14 @@ public:
     CNodeConManager* pouGetConMagrObj(char* pacClientName);
     CNodeConManager* pouGetConMagrObj(BYTE byIndex);
     BYTE byGetConMagrNumber(short shConNumber);
-    //Singleton Class 
+    //Singleton Class
     static CNetworkMgmt& ouGetNWManagementObj();
     //
     void vSetLogAndICANPtr(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pouIDIL_CAN);
-    LONG lCreateNodeConManager(char* pacNodeName, 
-                                UINT64 un64ECUName, 
-                                BYTE byPrefAdres,
-                                DWORD& dwClientId);
+    LONG lCreateNodeConManager(char* pacNodeName,
+                               UINT64 un64ECUName,
+                               BYTE byPrefAdres,
+                               DWORD& dwClientId);
     void vRemoveAllNodes(void);
     LONG lRemoveNodeConManager(DWORD dwClientId);
     BOOL bRemoveConnectionFromConMap(short shConnectionNo);

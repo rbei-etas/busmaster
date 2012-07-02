@@ -26,33 +26,33 @@
 
 IMPLEMENT_DYNAMIC(CFlickerFreeListCtrl, CListCtrl)
 /**********************************************************************************
-Function Name	:	CFlickerFreeListCtrl
-Input(s)		:	-
-Output			: 	-
-Functionality	:	Constructor
-Member of		:	CFlickerFreeListCtrl
-Friend of		: 	-
-Authors			:	Anupam
-Date Created	:	21/02/2007
-Modifications	:	-
+Function Name   :   CFlickerFreeListCtrl
+Input(s)        :   -
+Output          :   -
+Functionality   :   Constructor
+Member of       :   CFlickerFreeListCtrl
+Friend of       :   -
+Authors         :   Anupam
+Date Created    :   21/02/2007
+Modifications   :   -
 ************************************************************************************/
 
 CFlickerFreeListCtrl::CFlickerFreeListCtrl()
 {
-	m_rectClient = CRect(0,0,0,0);
+    m_rectClient = CRect(0,0,0,0);
 }
 
 
 /**********************************************************************************
-Function Name	:	~CFlickerFreeListCtrl
-Input(s)		:	-
-Output			: 	-
-Functionality	:	Destructor
-Member of		:	CFlickerFreeListCtrl
-Friend of		: 	-
-Authors			:	Ravi D
-Date Created	:	19/09/2006
-Modifications	:	-
+Function Name   :   ~CFlickerFreeListCtrl
+Input(s)        :   -
+Output          :   -
+Functionality   :   Destructor
+Member of       :   CFlickerFreeListCtrl
+Friend of       :   -
+Authors         :   Ravi D
+Date Created    :   19/09/2006
+Modifications   :   -
 ************************************************************************************/
 CFlickerFreeListCtrl::~CFlickerFreeListCtrl()
 {
@@ -60,118 +60,118 @@ CFlickerFreeListCtrl::~CFlickerFreeListCtrl()
 
 
 BEGIN_MESSAGE_MAP(CFlickerFreeListCtrl, CListCtrl)
-	ON_WM_ERASEBKGND()
-	ON_WM_PAINT()
-	ON_WM_SIZE()
-	//ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetdispinfo)
-	//ON_WM_LBUTTONDBLCLK()
-	ON_WM_GETDLGCODE()
+    ON_WM_ERASEBKGND()
+    ON_WM_PAINT()
+    ON_WM_SIZE()
+    //ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetdispinfo)
+    //ON_WM_LBUTTONDBLCLK()
+    ON_WM_GETDLGCODE()
 END_MESSAGE_MAP()
 
 UINT CFlickerFreeListCtrl::OnGetDlgCode( )
 {
-	UINT result = CListCtrl::OnGetDlgCode();
-	result = result | DLGC_WANTALLKEYS;
-	return(result);
+    UINT result = CListCtrl::OnGetDlgCode();
+    result = result | DLGC_WANTALLKEYS;
+    return(result);
 }
 
 
 // CFlickerFreeListCtrl message handlers
 
 /**********************************************************************************
-Function Name	:	OnEraseBkgnd
-Input(s)		:	pDC - device context
-Output			: 	true - to erase the window background
-					flase - otherwise
-Functionality	:	To paint the window background
-Member of		:	CFlickerFreeListCtrl
-Friend of		: 	-
-Authors			:	Ravi D
-Date Created	:	19/09/2006
-Modifications	:	-
+Function Name   :   OnEraseBkgnd
+Input(s)        :   pDC - device context
+Output          :   true - to erase the window background
+                    flase - otherwise
+Functionality   :   To paint the window background
+Member of       :   CFlickerFreeListCtrl
+Friend of       :   -
+Authors         :   Ravi D
+Date Created    :   19/09/2006
+Modifications   :   -
 ************************************************************************************/
 BOOL CFlickerFreeListCtrl::OnEraseBkgnd(CDC* /*pDC*/)
 {
-	// TODO: Add your message handler code here and/or call default
+    // TODO: Add your message handler code here and/or call default
 
-	//return CListCtrl::OnEraseBkgnd(pDC);
-	return TRUE;
+    //return CListCtrl::OnEraseBkgnd(pDC);
+    return TRUE;
 }
 
 
 /**********************************************************************************
-Function Name	:	OnPaint
-Input(s)		:	-
-Output			: 	-
-Functionality	:	To paint the window
-Member of		:	CFlickerFreeListCtrl
-Friend of		: 	-
-Authors			:	Ravi D
-Date Created	:	19/09/2006
-Modifications	:	-
+Function Name   :   OnPaint
+Input(s)        :   -
+Output          :   -
+Functionality   :   To paint the window
+Member of       :   CFlickerFreeListCtrl
+Friend of       :   -
+Authors         :   Ravi D
+Date Created    :   19/09/2006
+Modifications   :   -
 ************************************************************************************/
 void CFlickerFreeListCtrl::OnPaint()
 {
-	CPaintDC dc(this); // device context for painting
-	CDC pDC;
+    CPaintDC dc(this); // device context for painting
+    CDC pDC;
     pDC.CreateCompatibleDC(&dc);
-	CBitmap*	m_oldBitmap;
-	CBitmap m_NewBitmap;
+    CBitmap*    m_oldBitmap;
+    CBitmap m_NewBitmap;
 
-	BOOL bSuccess = m_NewBitmap.CreateCompatibleBitmap(&dc, m_rectClient.Width(), m_rectClient.Height());
- 
+    BOOL bSuccess = m_NewBitmap.CreateCompatibleBitmap(&dc, m_rectClient.Width(), m_rectClient.Height());
+
     m_oldBitmap = pDC.SelectObject(&m_NewBitmap);
 
     pDC.FillSolidRect( &m_rectClient, GetSysColor(COLOR_WINDOW));
 
-	CWnd::DefWindowProc( WM_PAINT, (WPARAM)pDC.m_hDC, 0 );
+    CWnd::DefWindowProc( WM_PAINT, (WPARAM)pDC.m_hDC, 0 );
 
-    dc.BitBlt(m_rectClient.left, m_rectClient.top, m_rectClient.Width(), m_rectClient.Height(), 
-					&pDC, m_rectClient.left, m_rectClient.top, SRCCOPY);
+    dc.BitBlt(m_rectClient.left, m_rectClient.top, m_rectClient.Width(), m_rectClient.Height(),
+              &pDC, m_rectClient.left, m_rectClient.top, SRCCOPY);
 
-	pDC.SelectObject(m_oldBitmap);
+    pDC.SelectObject(m_oldBitmap);
 }
 
 /**********************************************************************************
-Function Name	:	OnSize
-Input(s)		:	nType - type of rezsizing
-					cx - width of the client area
-					cy - height of trhe client area
-Output			: 	-
-Functionality	:	To resize the window controls after the window has resized
-Member of		:	CFlickerFreeListCtrl
-Friend of		: 	-
-Authors			:	Ravi D
-Date Created	:	19/09/2006
-Modifications	:	-
+Function Name   :   OnSize
+Input(s)        :   nType - type of rezsizing
+                    cx - width of the client area
+                    cy - height of trhe client area
+Output          :   -
+Functionality   :   To resize the window controls after the window has resized
+Member of       :   CFlickerFreeListCtrl
+Friend of       :   -
+Authors         :   Ravi D
+Date Created    :   19/09/2006
+Modifications   :   -
 ************************************************************************************/
 void CFlickerFreeListCtrl::OnSize(UINT nType, int cx, int cy)
 {
-	CListCtrl::OnSize(nType, cx, cy);
+    CListCtrl::OnSize(nType, cx, cy);
 
-	// TODO: Add your message handler code here
+    // TODO: Add your message handler code here
     GetClientRect(&m_rectClient);
-	CHeaderCtrl* pHC;
-	// Get the Header Control
-	pHC = GetHeaderCtrl();
-	if (pHC != NULL)
-	{
+    CHeaderCtrl* pHC;
+    // Get the Header Control
+    pHC = GetHeaderCtrl();
+    if (pHC != NULL)
+    {
         CRect rectHeader;
 
-		// Get the size of Header
-		BOOL bSuccess = pHC->GetItemRect( 0, &rectHeader );
-		if(bSuccess == TRUE )
-		{
-			// Shift the screen rectangle down
-			m_rectClient.top += rectHeader.bottom;
-			m_rectClient.bottom += rectHeader.bottom;
-      }
-	}
+        // Get the size of Header
+        BOOL bSuccess = pHC->GetItemRect( 0, &rectHeader );
+        if(bSuccess == TRUE )
+        {
+            // Shift the screen rectangle down
+            m_rectClient.top += rectHeader.bottom;
+            m_rectClient.bottom += rectHeader.bottom;
+        }
+    }
 }
 #if 0
-void CFlickerFreeListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult) 
+void CFlickerFreeListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 {
-    CWnd * pParent = GetParent();
+    CWnd* pParent = GetParent();
     if( pParent != NULL && pParent->m_hWnd != 0 )
     {
         ::SendMessage( pParent->m_hWnd,
@@ -183,13 +183,13 @@ void CFlickerFreeListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CFlickerFreeListCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-	// Send corresponding message to parent window with current selection
+    // Send corresponding message to parent window with current selection
     INT nItem = GetNextItem(-1, LVNI_SELECTED);
     if (nItem != -1)
     {
         GetParent()->SendMessage(WM_LSTC_DBLCLK, nItem);
     }
 
-	CListCtrl::OnLButtonDblClk(nFlags, point);
+    CListCtrl::OnLButtonDblClk(nFlags, point);
 }
 #endif

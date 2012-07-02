@@ -6,7 +6,7 @@
 
   Author(s)     :  Raja N
   Date Created  :  01.12.2004
-  Modified By   :  
+  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved
  *********************************************************************/
 
@@ -28,7 +28,7 @@
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 CGraphParameters::CGraphParameters()
 {
@@ -61,8 +61,8 @@ void CGraphParameters::vInitialize(void)
     m_nAction = defTRACK_MODE_NONE; // None
     // Grid Setting
     m_bShowGrid = TRUE;
-	//Graph Line Display
-	m_eDisplayType = eDISPLAY_NORMAL;	
+    //Graph Line Display
+    m_eDisplayType = eDISPLAY_NORMAL;
 }
 /*******************************************************************************
  Function Name  : ~CGraphParameters
@@ -73,7 +73,7 @@ void CGraphParameters::vInitialize(void)
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 CGraphParameters::~CGraphParameters()
 {
@@ -88,7 +88,7 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData)
         COPY_DATA(pbyTemp, &m_nBufferSize, sizeof(int));
         // Display ref
         COPY_DATA(pbyTemp, &m_nRefreshRate, sizeof(int));
-        // View Style 
+        // View Style
         // Frame Color
         COPY_DATA(pbyTemp, &m_nFrameColor, sizeof(int));
         // Frame Style
@@ -109,8 +109,8 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData)
         COPY_DATA(pbyTemp, &m_nAction, sizeof(int));
         // Grid Setting
         COPY_DATA(pbyTemp, &m_bShowGrid, sizeof(BOOL));
-		//Line Display type
-		COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));		
+        //Line Display type
+        COPY_DATA(pbyTemp, &m_eDisplayType, sizeof(eDISPLAY_TYPE));
     }
     return pbyTemp;
 }
@@ -123,7 +123,7 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
         COPY_DATA_2(&m_nBufferSize, pbyTemp, sizeof(int));
         // Display ref
         COPY_DATA_2(&m_nRefreshRate, pbyTemp, sizeof(int));
-        // View Style 
+        // View Style
         // Frame Color
         COPY_DATA_2(&m_nFrameColor, pbyTemp, sizeof(int));
         // Frame Style
@@ -144,8 +144,8 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
         COPY_DATA_2(&m_nAction, pbyTemp, sizeof(int));
         // Grid Setting
         COPY_DATA_2(&m_bShowGrid, pbyTemp, sizeof(BOOL));
-		//Line Display type
-		COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));	
+        //Line Display type
+        COPY_DATA_2(&m_eDisplayType, pbyTemp, sizeof(eDISPLAY_TYPE));
     }
     return pbyTemp;
 }
@@ -157,7 +157,7 @@ BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
  Member of      : CGraphParameters
  Author(s)      : Raja N
  Date Created   : 01.12.2004
- Modifications  : 
+ Modifications  :
 *******************************************************************************/
 int CGraphParameters::nSerialize(CArchive& omArchive)
 {
@@ -171,7 +171,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
             omArchive << m_nBufferSize;
             // Display ref
             omArchive << m_nRefreshRate;
-            // View Style 
+            // View Style
             // Frame Color
             omArchive << m_nFrameColor;
             // Frame Style
@@ -200,7 +200,7 @@ int CGraphParameters::nSerialize(CArchive& omArchive)
             omArchive >> m_nBufferSize;
             // Display ref
             omArchive >> m_nRefreshRate;
-            // View Style 
+            // View Style
             // Frame Color
             omArchive >> m_nFrameColor;
             // Frame Style

@@ -25,9 +25,9 @@
 
 /******************************************************************************
     Function Name    :  DataCopyThreadProc
-    Input(s)         :  
-    Output           :  
-    Functionality    :  Read thread for the messages from DIL buffer 
+    Input(s)         :
+    Output           :
+    Functionality    :  Read thread for the messages from DIL buffer
     Member of        :  Global
     Friend of        :      -
     Author(s)        :  Anish kumar
@@ -35,43 +35,43 @@
 ******************************************************************************/
 DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC *) pVoid;
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
     if (pThreadParam == NULL)
     {
         // TBD
     }
     CMsgContainerBase* pCurrObj = NULL;
-	if(pThreadParam != NULL)
-	{
-		pCurrObj = (CMsgContainerBase*) pThreadParam->m_pBuffer;
-	}
-	if (pCurrObj == NULL)
-	{
+    if(pThreadParam != NULL)
+    {
+        pCurrObj = (CMsgContainerBase*) pThreadParam->m_pBuffer;
+    }
+    if (pCurrObj == NULL)
+    {
         // TBD
-	}
+    }
 
     pThreadParam->m_unActionCode = CREATE_TIME_MAP;
 
     bool bLoopON = true;
 
-	while (bLoopON)
-	{
+    while (bLoopON)
+    {
         WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
 
         switch (pThreadParam->m_unActionCode)
-		{
-			case INVOKE_FUNCTION:
-			{
-				// Retrieve message from the driver
+        {
+            case INVOKE_FUNCTION:
+            {
+                // Retrieve message from the driver
                 pCurrObj->vRetrieveDataFromBuffer();
                 ResetEvent(pThreadParam->m_hActionEvent);
-			}
-			break;
-			case EXIT_THREAD:
-			{
-				bLoopON = false;
-			}
-			break;
+            }
+            break;
+            case EXIT_THREAD:
+            {
+                bLoopON = false;
+            }
+            break;
             case CREATE_TIME_MAP:
             {
                 pCurrObj->InitTimeParams();
@@ -79,14 +79,14 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
                 SetEvent(pThreadParam->m_hActionEvent);
             }
             break;
-			default:
-			case INACTION:
-			{
-				// nothing right at this moment
-			}
-			break;
-		}
-	}
+            default:
+            case INACTION:
+            {
+                // nothing right at this moment
+            }
+            break;
+        }
+    }
     SetEvent(pThreadParam->hGetExitNotifyEvent());
     //Sleep(0);
 
@@ -101,15 +101,15 @@ CMsgContainerBase::CMsgContainerBase()
 
 CMsgContainerBase::~CMsgContainerBase()
 {
-	m_sDataCopyThread.bTerminateThread();
+    m_sDataCopyThread.bTerminateThread();
 }
 
 /******************************************************************************
     Function Name    :  vSetRxMsgCallBkPtr
-    Input(s)         :  
-    Output           :  
-    Functionality    :  Save the call back function pointer from the User 
-                        for any new Rx/Tx message 
+    Input(s)         :
+    Output           :
+    Functionality    :  Save the call back function pointer from the User
+                        for any new Rx/Tx message
     Member of        :  CMsgContainerBase
     Friend of        :      -
     Author(s)        :  Anish kumar
@@ -122,19 +122,19 @@ void CMsgContainerBase::vSetRxMsgCallBkPtr(MSG_RX_CALL_BK pFuncPtr)
 
 
 /**********************************************************************************
-	Function Name	:	bStartReadThread
-	Input(s)		:	-
-	Output		: 	-
-	Functionality	:	-
-	Member of		:	CMsgContainerBase
-	Friend of		: 	-
-	Authors		:	
-	Date Created	:	
-	Modifications	:	
+    Function Name   :   bStartReadThread
+    Input(s)        :   -
+    Output      :   -
+    Functionality   :   -
+    Member of       :   CMsgContainerBase
+    Friend of       :   -
+    Authors     :
+    Date Created    :
+    Modifications   :
 ************************************************************************************/
 BOOL CMsgContainerBase:: bStartReadThread(HANDLE hActionEvent)
 {
-	BOOL bResult = TRUE;
+    BOOL bResult = TRUE;
     m_sDataCopyThread.m_pBuffer = this;
     m_sDataCopyThread.m_hActionEvent = hActionEvent;
 
@@ -149,8 +149,8 @@ BOOL CMsgContainerBase:: bStartReadThread(HANDLE hActionEvent)
 
 /******************************************************************************
     Function Name    :  bStopReadThread
-    Input(s)         :  
-    Output           :  
+    Input(s)         :
+    Output           :
     Functionality    :  Stop the read thread
     Member of        :  CMsgContainerBase
     Friend of        :      -
