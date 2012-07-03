@@ -14,12 +14,5 @@ if WinActive("Signal Details") Then
 	$sType=ControlGetText("Signal Details","","[CLASS:ComboBox; INSTANCE:1]")
 	$sLength=ControlGetText("Signal Details","","[CLASS:Edit; INSTANCE:4]")
 	ControlClick("Signal Details","","[CLASS:Button; INSTANCE:1]","Left")
-	if $sName="SIG1" and $sType="int" and $sLength=5 Then
-	_ExcelWriteCell($oExcel, "OK", 30, 10)
-    else
-   _ExcelWriteCell($oExcel, "Error",30, 10)
-   EndIf
-   Else
-	_ExcelWriteCell($oExcel, "Error",30, 10)   
 EndIf
 
