@@ -15,18 +15,6 @@
 
 Global $oExcel
 Global $crashRes, $lConfig, $cConfig,$channelCount,$time
-;Open the test specification file.
-$sFilePath1 = "D:\Projects\BusMaster\AutoIt\TestRun_Usecase's\Result\STS_BUSMASTER_UseCase's.xls" ;This file should already exist
-Global $oExcel = _ExcelBookOpen($sFilePath1)
-If @error = 1 Then
-    MsgBox(0, "Error!", "Unable to Create the Excel Object")
-    Exit
-ElseIf @error = 2 Then
-    MsgBox(0, "Error!", "File does not exist")
-    Exit
-EndIf
-_ExcelSheetActivate($oExcel, "Test Spec-Report")
-
 
 #include "TC_UC1_01.au3"
 #include "TC_UC1_02.au3"

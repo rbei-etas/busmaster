@@ -12,17 +12,8 @@ ConsoleWrite("****Start : TC_UC9_04.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
 	_loadConfig("UseCase4")
-	if $crashRes=1 Then
-		_writeCrashRes(48,10)
-	Endif
 	_loadJ1939Database("J1939Test",25,10,8)
-	if $crashRes=1 Then
-		_writeCrashRes(48,10)
-	Endif
 	_associateDB("&J1939","J1939Test.dbf")
-	if $crashRes=1 Then
-		_writeCrashRes(48,10)
-	Endif
 	if winexists("BUSMASTER") Then
 		_act_dctJ1939("&Activate")
 		ConsoleWrite("$sel : "&$sel&@CRLF)
@@ -51,11 +42,7 @@ if winexists("BUSMASTER") Then
 	ControlClick("J1939 Transmit Message Window","",1001,"left")
 EndIf
 $RQST=StringSplit($row2,"|")
-if $RQST[5]=059904 and $RQST[7]="RQST_ACL" and $RQST[9]=255 and $RQST[11]="Tx" and $RQST[12]=3 then   ; validate the entries in message window
-	_ExcelWriteCell($oExcel, "Pass", 48, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 48, 10)
-EndIf
+
 ConsoleWrite("****End : TC_UC9_04.au3****"&@CRLF)
 ConsoleWrite("***********UseCase 9 Script Execution Started************"&@CRLF)
 ConsoleWrite(@CRLF)

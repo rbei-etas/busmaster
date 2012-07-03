@@ -11,8 +11,3 @@ local $res
 WinWaitActive("BUSMASTER","",5)
 call ("_delBlockMsg")								; call delete message block function
 send("!y")
-if $res=1 Then
-	_ExcelWriteCell($oExcel, "OK", 19, 10)
-else
-	_ExcelWriteCell($oExcel, "Error", 19, 10)
-EndIf

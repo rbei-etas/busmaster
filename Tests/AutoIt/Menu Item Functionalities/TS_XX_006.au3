@@ -18,8 +18,9 @@ Sleep(500) ; 0.5 sec
 
 
 if WinWaitActive("Select BUSMASTER Database Filename...", "", 2) Then ; wait till its open
-	$Result = "ok"		
-	Send("d:\BUSMASTER\Tests\AutoIt\Common\Empty.dbf")
+	$Result = "ok"
+	$Script6path = _SetOneFolderUp()
+	Send($Script6path&"\dbc2dbf_signals_expected.dbf")
 	Sleep(250)
 	ControlClick("Select BUSMASTER Database Filename...", "","Button2")	
 Else

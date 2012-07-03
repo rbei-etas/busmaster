@@ -22,8 +22,8 @@ if WinExists("BUSMASTER") then
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Tx Messages")
 	sleep(1000)
 	_txMSG("Cyclic",$Count)
-	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:26]","left")
-	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:25]","left")
+	ControlClick("BUSMASTER","",17000,"left")
+	ControlClick("BUSMASTER","",1015,"left")
 	sleep(1000)
 	$cntToolhWd=ControlGetHandle("BUSMASTER","",128)
 	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)
@@ -37,4 +37,6 @@ if WinExists("BUSMASTER") then
 	$msgWinHWD=ControlGetHandle("BUSMASTER","","[CLASS:SysListView32; INSTANCE:1]")
 	_GUICtrlListView_ClickItem($msgWinHWD,1)						;select the 1st item in signal list view
 	send("{ENTER}")
+	Sleep(2000)
+	send("!umi")
 EndIf

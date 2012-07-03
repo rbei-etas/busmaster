@@ -10,9 +10,6 @@ _launchApp()														; check whether the app exists or else launch it.
 if $app=0 Then
 	Send("!ct")
 	sleep(2000)
-	if $crashRes=1 then												; If application crash is found then update the result sheet by calling _writeCrashRes function.
-	_writeCrashRes(11,10)
-	EndIf
 Endif
 WinWaitActive("BUSMASTER","",5)
 $mName=ControlCommand ("BUSMASTER", "Name/ ID (in Dec)",1221, "IsVisible") ;checks whether the conttrol is visible or not. if visible returns 1 else 0.
@@ -41,9 +38,4 @@ if ($mChid and $mRadstd and $mRadextd and $mRTR and $mSdetails and $mData and $m
 		$defg=1
 	Else
 		$defg=0
-EndIf
-if ($abc and $defg)=1 Then
-	_ExcelWriteCell($oExcel, "OK", 11, 10)
-else
-	_ExcelWriteCell($oExcel, "Error", 11, 10)
 EndIf

@@ -12,17 +12,8 @@ ReDim $Tx[1000],$Rx[1000]
 _launchApp()
 if $app=0 Then
 	_loadConfig("UseCase4")
-	if $crashRes=1 Then
-		_writeCrashRes(39,10)
-	Endif
 	_loadJ1939Database("J1939Test",25,10,8)
-	if $crashRes=1 Then
-		_writeCrashRes(39,10)
-	Endif
 	_associateDB("&J1939","J1939Test.dbf")
-	if $crashRes=1 Then
-		_writeCrashRes(39,10)
-	Endif
 EndIf
 _J1939tMsgWin("Data")
 if winexists("BUSMASTER") Then
@@ -65,14 +56,7 @@ EndIf
 $hWd=ControlGetHandle("BUSMASTER","",128)
 _GUICtrlToolbar_ClickIndex($hWd,4,"left")
 sleep(1000)
-if $Tx[3]=1 and $Rx[3]=2 and $Tx[11]="Tx" and $Rx[11]="Rx" and $match=1 Then
-	_ExcelWriteCell($oExcel, "Pass", 39, 10)
-Elseif $test="Fail" then
-	_ExcelWriteCell($oExcel, "Fail", 39, 10)
-	_ExcelWriteCell($oExcel, "Rows in message window is incorrect", 39, 9)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 39, 10)
-EndIf
+
 ConsoleWrite("****End : TC_UC7_05.au3****"&@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
