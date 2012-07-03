@@ -15,90 +15,53 @@ ConsoleWrite("****Start : TC_UC1_05.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
 	_loadConfig("UseCase1")
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
+
 	_associateDB("&File","AutoitTest.dbf")
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
+
 	if winexists("BUSMASTER") Then
 	sleep(1000)
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Hardware Interface","&Kvaser CAN")
-		if $crashRes=1 Then
-			_writeCrashRes(10,10)
-		Endif
+
 	sleep(500)
 		if winexists("Hardware Selection") Then
 			ControlClick("Hardware Selection","&Select","[CLASS:Button; INSTANCE:2]")
 			sleep(1000)
-			if $crashRes=1 Then
-				_writeCrashRes(10,10)
-			EndIf
+
 			ControlClick("Hardware Selection","&Select","[CLASS:Button; INSTANCE:2]")
 			sleep(1000)
-			if $crashRes=1 Then
-				_writeCrashRes(10,10)
-			EndIf
+
 			$channelCount=ControlListView("Hardware Selection","","SysListView322","GetItemCount")
 			ControlClick("Hardware Selection","&OK","[CLASS:Button; INSTANCE:4]")
 			sleep(1000)
-			if $crashRes=1 Then
-				_writeCrashRes(10,10)
-			Endif
 		EndIf
 	EndIf
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Tx Messages")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
+
 	_txMSG("Cyclic",$Count)
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
+
 	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:23]","left")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
+
 	if winexists("BUSMASTER","Do you want to save changes?") Then
 		ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:2]","left")
 		sleep(1000)
-		if $crashRes=1 Then
-			_writeCrashRes(10,10)
-		Endif
 	EndIf
 Endif
 if winexists("BUSMASTER") Then
 	WinMenuSelectItem("BUSMASTER","","&Window","&1")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Message Window","&Overwrite")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Connect")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Normal Blocks")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
 	sleep(5000)
 	send("{ESC}")
 	WinMenuSelectItem("BUSMASTER","","F&unctions","D&isconnect	ESC")
 	sleep(1000)
-	if $crashRes=1 Then
-		_writeCrashRes(10,10)
-	Endif
  if winexists("BUSMASTER - [Message Window - CAN]") Then
 	$hWnd=ControlGetHandle ("BUSMASTER","","SysListView321")
 	$msg1Tx=_GUICtrlListView_GetItemTextString($hWnd, 0)
@@ -177,14 +140,6 @@ if winexists("BUSMASTER") Then
 	EndIf
   EndIf
 EndIf
-if $time=1 and ($sendMsg1 and $recMsg1 and $sendMsg2 and $recMsg2=1) then
-	_ExcelWriteCell($oExcel, "Pass", 10, 10)
-elseif $time=0 and ($sendMsg1 and $recMsg1 and $sendMsg2 and $recMsg2=1) then
-	_ExcelWriteCell($oExcel, "Fail", 10, 10)
-	_ExcelWriteCell($oExcel, "Sent and received time are incorrect!!!known issue", 10, 9)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 10, 10)
-endif
 ConsoleWrite("****End : TC_UC1_05.au3****"&@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)

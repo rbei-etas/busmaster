@@ -77,7 +77,9 @@ WinActivate("BUSMASTER","")
 Send("!fda") ; File -> Database -> Associate...
 
 WinWaitActive("Select Active Database Filename...", "BUSMASTER Datatbase File(*.dbf)", 2) ; wait till its open
-Send("d:\BUSMASTER\Tests\AutoIt\Common\test.dbf")
+$Script1Path = _SetOneFolderUp()
+$DBFFile = $Script1Path &"\dbc2dbf_signals_expected.dbf"
+Send($DBFFile)
 Sleep(1000)
 ControlClick("Select Active Database Filename...", "","Button2")
 

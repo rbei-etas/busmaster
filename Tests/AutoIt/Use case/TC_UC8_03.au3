@@ -11,17 +11,8 @@ ConsoleWrite("****Start : TC_UC8_03.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
 	_loadConfig("UseCase4")
-	if $crashRes=1 Then
-		_writeCrashRes(43,10)
-	Endif
 	_loadJ1939Database("J1939Test",25,10,8)
-	if $crashRes=1 Then
-		_writeCrashRes(43,10)
-	Endif
 	_associateDB("&J1939","J1939Test.dbf")
-	if $crashRes=1 Then
-		_writeCrashRes(43,10)
-	Endif
 EndIf
 if winexists("BUSMASTER") Then
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Hardware Interface","&Kvaser CAN")
@@ -38,11 +29,6 @@ if winexists("BUSMASTER") Then
 	ConsoleWrite("$sel : "&$sel&@CRLF)
 	_goOnline()
 	ConsoleWrite("$gLine : "&$gLine&@CRLF)
-EndIf
-if $channelCount=1 and $sel=1 and $gLine=1 Then
-	_ExcelWriteCell($oExcel, "Pass", 43, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 43, 10)
 EndIf
 ConsoleWrite("****End : TC_UC8_03.au3****"&@CRLF)
 ConsoleWrite(@CRLF)

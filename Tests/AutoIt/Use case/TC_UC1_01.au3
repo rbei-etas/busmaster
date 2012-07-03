@@ -12,9 +12,6 @@ ConsoleWrite(@CRLF)
 ConsoleWrite("***********UseCase 1 Script Execution Started************"&@CRLF)
 ConsoleWrite("****Start : TC_UC1_01.au3****"&@CRLF)
 _launchApp()													; invoke the application and run the Process
-if $crashRes=1 Then
-	_writeCrashRes(6,10)
-Endif
 sleep(1000)
 if WinWaitActive("MCNet","",1) Then
 	ControlClick("MCNet","OK","[CLASS:Button; INSTANCE:1]")
@@ -26,15 +23,8 @@ EndIf
 if WinExists("BUSMASTER") then
 	_loadConfig("UseCase1.cfx")									; load cfx file
 	ConsoleWrite("isAppCrash value="&$crashRes&@CRLF)
-	if $crashRes=1 Then
-		_writeCrashRes(6,10)
-	Endif
 EndIf
-if $funcRes=1 Then												; write the result to excel sheet
-	_ExcelWriteCell($oExcel, "Pass", 6, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 6, 10)
-EndIf
+
 ConsoleWrite("****End : TC_UC1_01.au3****"&@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)

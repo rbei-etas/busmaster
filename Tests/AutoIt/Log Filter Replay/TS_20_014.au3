@@ -19,7 +19,8 @@ if (WinActive("BUSMASTER", "Configuration File is modified")) Then
 	Send("!y") ; Yes
 EndIf
 WinWaitActive("New Configuration Filename...", "", 2) ; wait till its open
-Send("test.cfx") ; Filename
+$Script14Path = _SetOneFolderUp()
+Send($Script14Path&"\test.cfx") ; Filename
 Send("!s") ; Save
 if (WinWaitActive("New Configuration Filename...", "Do you want to replace it?", 2)) Then
 	Send("!y") ; Yestest.cfx

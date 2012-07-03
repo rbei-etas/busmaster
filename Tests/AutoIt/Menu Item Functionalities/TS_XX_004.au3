@@ -18,7 +18,8 @@ Sleep(1000) ; 1 sec
 
 
 if WinWaitActive("SaveAs Configuration Filename...", "", 2) Then ; wait till its open
-	Send("test_new.cfx") ; Filename
+	$Script4path = _SetOneFolderUp()
+	Send($Script4path&"\test_new.cfx") ; Filename
 	ControlClick("SaveAs Configuration Filename...", "Save","Button2")
 
 	Sleep(500)

@@ -14,17 +14,9 @@ if winexists("BUSMASTER") Then
 		$fPath=ControlListView("Configure Logging for CAN","","SysListView321","GetText",0,0)
 		ControlClick("Configure Logging for CAN","&OK","[CLASS:Button; INSTANCE:14]")
 		sleep(1000)
-		if $crashRes=1 Then
-			_writeCrashRes(22,10)
-		Endif
 	EndIf
 EndIf
 ConsoleWrite("File Path : " &$fPath&@CRLF)
-if FileExists($fPath) Then
-	_ExcelWriteCell($oExcel, "Pass", 22, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 22, 10)
-EndIf
 ConsoleWrite("****End : TC_UC3_07.au3****"&@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)

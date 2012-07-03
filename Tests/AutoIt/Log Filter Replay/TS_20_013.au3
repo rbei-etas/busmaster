@@ -24,30 +24,6 @@ ControlCommand("Configure Filter List", "", 1004, "SetCurrentSelection", 0)
 ; Select Add button in 'Filter Attributes' groupbox.
 ControlClick("Configure Filter List","Add", 3) ;   3 is the ID for "Add" button in Filter Attributes groupbox.
 
-GUICreate("BUSMASTER_Filter_Module_test_case_TS_20_013", 640, 80)
-GUICtrlCreateLabel("Verify the test case :'Filter details for each entry in 'Filter List' groupbox should get updated upon selection of Filter from 'Filter List''.", 30, 10)
-$okbutton1 = GUICtrlCreateButton("Success", 250, 40, 60,20)
-$okbutton2 = GUICtrlCreateButton("Failure", 320, 40, 60,20)
-GUISetState(@SW_SHOW)
-
-While 1
-  $msg = GUIGetMsg()
-
-  Select
-	Case $msg = $okbutton1
-		$Result = "ok"
-		ExitLoop
-    Case $msg = $okbutton2
-		$Result = "failed"		
-		ExitLoop
-		
-    Case $msg = $GUI_EVENT_CLOSE
-		$Result = "failed"				
-		ExitLoop
-  EndSelect
-WEnd 
-GUIDelete(); 
-
 ; --- Write results ---
 If $Result = "ok" Then
 	$SuccessCount += 1

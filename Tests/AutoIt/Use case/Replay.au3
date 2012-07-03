@@ -6,6 +6,22 @@
 ; Test Data:		-
 ; === Test Procedure ===
 
+Func _SetOneFolderUp()
+	$CurrentDirPath = @ScriptDir
+	ConsoleWrite($CurrentDirPath&@CRLF)
+	$arrStrings = StringSplit($CurrentDirPath, "\")
+
+	ConsoleWrite("Size  = "&$arrStrings[0]&@CRLF)
+	ConsoleWrite("Value = "&$arrStrings[$arrStrings[0]]&@CRLF)
+
+	$CntRemove = stringlen($arrStrings[$arrStrings[0]]) + 1
+	$TrimmedPath = StringTrimRight($CurrentDirPath, $CntRemove)
+
+	ConsoleWrite("Trimmed  = "&$TrimmedPath&@CRLF)
+	return $TrimmedPath
+EndFunc
+
+Dim $DataPath
 if WinExists("BUSMASTER") Then
 	sleep(2000)
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Replay")   ; select Configure-->Replay
@@ -13,7 +29,8 @@ if WinExists("BUSMASTER") Then
 		ControlClick("Replay Configuration","",1262)			; Click Add button
 		sleep(1000)
 		if WinExists("Select Replay File Name") Then
-			send(@ScriptDir&"\CanLog.log")						; Enter file name
+			$DataPath = _SetOneFolderUp()
+			send($DataPath&"\CanLog.log")						; Enter file name
 			send("{ENTER}")										; click enter
 		EndIf
 		ControlCommand("Replay Configuration","",1014,"Check")	; Checkinteractive replay checkbox

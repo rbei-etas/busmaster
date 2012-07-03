@@ -7,6 +7,21 @@ $FileName = "TS_XX"
 $file = FileOpen($FileName & ".txt", 2)
 $SuccessCount = 0
 
+Func _SetOneFolderUp()
+	$CurrentDirPath = @ScriptDir
+	ConsoleWrite($CurrentDirPath&@CRLF)
+	$arrStrings = StringSplit($CurrentDirPath, "\")
+
+	ConsoleWrite("Size  = "&$arrStrings[0]&@CRLF)
+	ConsoleWrite("Value = "&$arrStrings[$arrStrings[0]]&@CRLF)
+
+	$CntRemove = stringlen($arrStrings[$arrStrings[0]]) + 1
+	$TrimmedPath = StringTrimRight($CurrentDirPath, $CntRemove)
+
+	ConsoleWrite("Trimmed  = "&$TrimmedPath&@CRLF)
+	return $TrimmedPath
+EndFunc
+
 #include "TS_XX_001.au3"
 #include "TS_XX_002.au3"
 #include "TS_XX_003.au3"

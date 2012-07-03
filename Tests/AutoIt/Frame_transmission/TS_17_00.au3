@@ -9,19 +9,7 @@
 #include<globalFunc.au3>
 Global $oExcel
 Global $crashRes
-;Open the test specification file.
-$sFilePath1 = "D:\Projects\BusMaster\AutoIt\Test_Run\STS_BUSMASTER_Tx_Window.xls" ;This file should already exist
-Global $oExcel = _ExcelBookOpen($sFilePath1)
-If @error = 1 Then
-    MsgBox(0, "Error!", "Unable to Create the Excel Object")
-    Exit
-ElseIf @error = 2 Then
-    MsgBox(0, "Error!", "File does not exist")
-    Exit
-EndIf
-_ExcelSheetActivate($oExcel, "Test Spec-Report")
 
-#include "IsAppCrash.au3"
 #include "TS_17_001.au3"
 #include "TS_17_002.au3"
 #include "TS_17_003.au3"

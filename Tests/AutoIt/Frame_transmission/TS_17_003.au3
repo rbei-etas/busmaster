@@ -13,11 +13,3 @@ if WinWaitActive("BUSMASTER","",5) then
 EndIf
 _GUICtrlToolbar_clickbutton($handle,32891,"left") 					;Clicks a specific button.32891 is the command ID of the specific button
 sleep(2000)
-	if $crashRes=1 then												; If application crash is found then update the result sheet by calling _writeCrashRes function.
-	_writeCrashRes(8,10)
-	EndIf
-if ControlCommand("BUSMASTER", "Configure Transmission Messages","", "IsVisible") = 1 Then
-	_ExcelWriteCell($oExcel, "OK", 8, 10)
-Else
-	_ExcelWriteCell($oExcel, "Error", 8, 10)
-EndIf

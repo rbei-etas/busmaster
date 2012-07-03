@@ -30,7 +30,8 @@ if (WinActive("BUSMASTER", "Configuration File is modified")) Then
 EndIf
 
 if WinWaitActive("New Configuration Filename...", "", 2) Then ; wait till its open
-	Send("test.cfx") ; Filename
+	$Script1Path = _SetOneFolderUp()
+	Send($Script1Path&"\MenuConfig.cfx") ; Filename
 	Send("!s") ; Save
 	if (WinWaitActive("New Configuration Filename...", "Do you want to replace it?", 2)) Then
 		Send("!y") ; Yes

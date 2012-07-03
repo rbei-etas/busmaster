@@ -10,17 +10,8 @@ ConsoleWrite("****Start : TC_UC7_04.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
 	_loadConfig("UseCase4")
-	if $crashRes=1 Then
-		_writeCrashRes(38,10)
-	Endif
 	_loadJ1939Database("J1939Test",25,10,8)
-	if $crashRes=1 Then
-		_writeCrashRes(38,10)
-	Endif
 	_associateDB("&J1939","J1939Test.dbf")
-	if $crashRes=1 Then
-		_writeCrashRes(38,10)
-	Endif
 	if winexists("BUSMASTER") Then
 		_hdWareSelect()
 		ConsoleWrite("$channelCount : "&$channelCount&@CRLF)
@@ -49,11 +40,7 @@ ConsoleWrite("$logMenu : "&$logMenu&@CRLF)
 ConsoleWrite("$addBtn : "&$addBtn&@CRLF)
 ConsoleWrite("$enableLog : "&$enableLog&@CRLF)
 ConsoleWrite("$oK : "&$oK&@CRLF)
-if ($logMenu and $addBtn and $oK)=1 then
-	_ExcelWriteCell($oExcel, "Pass", 38, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 38, 10)
-EndIf
+
 
 ConsoleWrite("****End : TC_UC7_04.au3****"&@CRLF)
 ConsoleWrite(@CRLF)

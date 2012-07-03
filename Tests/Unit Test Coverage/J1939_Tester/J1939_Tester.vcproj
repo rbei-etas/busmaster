@@ -208,6 +208,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\BaseLogObject.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\ConnectionDet.cpp"
 				>
 			</File>
@@ -220,7 +224,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\Format\FormatMsgCommon.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\Format\FormatMsgJ1939.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\FrameProcessor_Common.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\FrameProcessor_J1939.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\J1939_Tester.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\LogObjectJ1939.cpp"
 				>
 			</File>
 			<File
@@ -240,6 +264,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\RefTimeKeeper.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\TransferLayer.cpp"
 				>
 			</File>
@@ -253,6 +281,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\BaseFrameProcessor_J1939.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\BaseLogObject.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\ConnectionDet.h"
 				>
@@ -270,11 +306,31 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\Format\FormatMsgCommon.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\Format\FormatMsgJ1939.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\FrameProcessor_Common.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\FrameProcessor_J1939.h"
+				>
+			</File>
+			<File
 				RelativePath=".\J1939_Tester_StdAfx.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\J1939_UtilityFuncs.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\LogObjectJ1939.h"
 				>
 			</File>
 			<File
@@ -295,6 +351,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\ReadCanMsg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\FrameProcessor\RefTimeKeeper.h"
 				>
 			</File>
 			<File

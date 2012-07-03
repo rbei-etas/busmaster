@@ -70,8 +70,6 @@ if $app=0 Then																	;if not found then run the app
 		ControlClick("MCNet","OK","[CLASS:Button; INSTANCE:1]")
 		sleep(2000)
 	EndIf
-	Return $app
-	Return $rVal
 EndIf
 if winexists("Hardware Selection") Then											; if a Hardware Selection dialog appears then click 'OK'
 	ControlClick("Hardware Selection","&Select","[CLASS:Button; INSTANCE:2]")
@@ -81,6 +79,8 @@ if winexists("Hardware Selection") Then											; if a Hardware Selection dial
 	ControlClick("Hardware Selection","&OK","[CLASS:Button; INSTANCE:4]")
 	sleep(1000)
 EndIf
+Return $app
+	Return $rVal
 EndFunc
 
 ;==========================================================
@@ -104,7 +104,8 @@ sleep(1000)
 	EndIf
 sleep(150)
 	if winexists("Load Configuration Filename...") Then
-		ControlSend("Load Configuration Filename...","","[CLASS:Edit; INSTANCE:1]",$fName)				;load cfx file
+		$DirPath = _SetOneFolderUp()
+		ControlSend("Load Configuration Filename...","","[CLASS:Edit; INSTANCE:1]",$DirPath&"\"&$fName)				;load cfx file
 		sleep(1000)
 		ControlClick("Load Configuration Filename...","Load","[CLASS:Button; INSTANCE:2]","")
 		sleep(1000)
@@ -125,7 +126,7 @@ sleep(150)
 				EndIf
 				sleep(500)
 				if winexists("New Configuration Filename...") Then
-					ControlSend("New Configuration Filename...","","[CLASS:Edit; INSTANCE:1]",$fName)
+					ControlSend("New Configuration Filename...","","[CLASS:Edit; INSTANCE:1]",$DirPath&"\"&$fName)
 					sleep(1000)
 					$cConfig=ControlClick("New Configuration Filename...","","[CLASS:Button; INSTANCE:2]","left")
 					sleep(2000)
@@ -176,7 +177,9 @@ sleep(1000)
 	EndIf
 sleep(150)
 if winexists("Select BUSMASTER Database Filename...") Then
-	ControlSend("Select BUSMASTER Database Filename...","","[CLASS:Edit; INSTANCE:1]",$dbFName)			;load dbf file
+	
+	$DBFolderPath = _SetOneFolderUp()
+	ControlSend("Select BUSMASTER Database Filename...","","[CLASS:Edit; INSTANCE:1]",$DBFolderPath&"\"&$dbFName)			;load dbf file
 	$lDb=ControlClick("Select BUSMASTER Database Filename...","","[CLASS:Button; INSTANCE:2]","left")
 	sleep(1000)
 		if winexists("BUSMASTER","Specified database file is not found.") Then							; if the database file doesn't exists then create a new one
@@ -189,7 +192,7 @@ if winexists("Select BUSMASTER Database Filename...") Then
 				Exit
 			EndIf
 			if winexists("Save As") Then
-				ControlSend("Save As","","[CLASS:Edit; INSTANCE:1]",$dbFName)
+				ControlSend("Save As","","[CLASS:Edit; INSTANCE:1]",$DBFolderPath&"\"&$dbFName)
 				sleep(1000)
 				$cDB=ControlClick("Save As","","[CLASS:Button; INSTANCE:2]","left")
 				sleep(1000)
@@ -313,7 +316,8 @@ sleep(1000)
 	EndIf
 sleep(150)
 	if winexists("Select J1939 Database Filename...") Then
-		ControlSend("Select J1939 Database Filename...","","[CLASS:Edit; INSTANCE:1]",$dbFName)			;load dbf file
+		$J1939DBFolderPath = _SetOneFolderUp()
+		ControlSend("Select J1939 Database Filename...","","[CLASS:Edit; INSTANCE:1]",$J1939DBFolderPath&"\"&$dbFName)			;load dbf file
 		$lDb=ControlClick("Select J1939 Database Filename...","","[CLASS:Button; INSTANCE:2]","left")
 		sleep(1000)
 		if winexists("BUSMASTER","Specified database file is not found.") Then							; if the database file doesn't exists then create a new one
@@ -326,7 +330,7 @@ sleep(150)
 				Exit
 			EndIf
 			if winexists("Save As") Then
-				ControlSend("Save As","","[CLASS:Edit; INSTANCE:1]",$dbFName)
+				ControlSend("Save As","","[CLASS:Edit; INSTANCE:1]",$J1939DBFolderPath&"\"&$dbFName)
 				sleep(1000)
 				$cDB=ControlClick("Save As","","[CLASS:Button; INSTANCE:2]","left")
 				sleep(1000)
@@ -394,7 +398,8 @@ Func _associateDB($menu,$afName)
 	$dbMenu=WinMenuSelectItem("BUSMASTER","",$menu,"&Database","&Associate")
 	if winexists("Select Active Database Filename...") Then
 		$flag=1
-		ControlSend("Select Active Database Filename...","","[CLASS:Edit; INSTANCE:1]",$afName)
+		$AsscPath = _SetOneFolderUp()
+		ControlSend("Select Active Database Filename...","","[CLASS:Edit; INSTANCE:1]",$AsscPath&"\"&$afName)
 		$aDB=ControlClick("Select Active Database Filename...","","[CLASS:Button; INSTANCE:2]","left")
 		sleep(1000)
 	EndIf
@@ -556,6 +561,80 @@ Func _overWriteMode()
 	EndIf
 EndFunc
 
+Func _SetOneFolderUp()
+	$CurrentDirPath = @ScriptDir
+	ConsoleWrite($CurrentDirPath&@CRLF)
+	$arrStrings = StringSplit($CurrentDirPath, "\")
+
+	ConsoleWrite("Size  = "&$arrStrings[0]&@CRLF)
+	ConsoleWrite("Value = "&$arrStrings[$arrStrings[0]]&@CRLF)
+
+	$CntRemove = stringlen($arrStrings[$arrStrings[0]]) + 1
+	$TrimmedPath = StringTrimRight($CurrentDirPath, $CntRemove)
+
+	ConsoleWrite("Trimmed  = "&$TrimmedPath&@CRLF)
+	return $TrimmedPath
+EndFunc
+
+;=====================================================================================================
+;Function Name : _CANConfigSignalWatch
+;Functionality : Configures 'signal watch list' for J1939
+;Input 		   : $Confirm('OK' or 'Cancel') is passed from calling script.
+;Output 	   : void
+;=====================================================================================================
+
+Func _CANConfigSignalWatch($Confirm)
+	WinActivate("BUSMASTER")
+	; Open 'Configure Signal Watch' dialog
+	Send("!cn") ; Configure -> Signal Watch
+	Sleep(1000)
+	$hndSignalList = ControlGetHandle("Signal Watch List","",1071)		; Get Signal list control handle
+
+	;Select a signal in Signal List View
+	_GUICtrlListView_ClickItem($hndSignalList, 0);
+	Sleep(500)
+
+	; Click Add button
+	Send("!a");
+
+	Sleep(500)
+
+	$hndSignalWatchList = ControlGetHandle("Signal Watch List","",1070)		; Get Signal watch list control handle
+
+	;Select signal in Signal Watch List View
+	_GUICtrlListView_ClickItem($hndSignalWatchList, 0);
+
+	Sleep(500)
+	; Click Delete button
+	Send("!d");
+
+	Sleep(500)
+	; Click Add All button
+	Send("!l");
+
+	Sleep(500)
+	; Click Delete All button
+	Send("!e");
+
+	Sleep(500)
+	; Click Add All button
+	Send("!l")
+
+	Sleep(500)
+	; Select broadcast message - WFI
+	ControlCommand("Signal Watch List","",1231,"SelectString","[0x55]msg2")
+
+	Sleep(500)
+	; Click Add All button
+	Send("!l");
+	Sleep(500)
+	
+	if $Confirm = "OK" Then
+		ControlClick("Signal Watch List","OK",1,"left")		; Click 'OK' button
+	Else
+		ControlClick("Signal Watch List","Cancel",2,"left")		; Click 'Cancel' button
+	EndIf
+EndFunc	
 
 
 

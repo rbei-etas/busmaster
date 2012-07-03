@@ -12,9 +12,4 @@ WinWaitActive("BUSMASTER","",5)
 call ("_delBlockMsg"); call delete message block function
 sleep(500)
 send("!n")
-$listViewCount1=ControlListView("BUSMASTER", "", "SysListView323", "GetItemCount")  
-if $listViewCount1=$listViewCount Then
-	_ExcelWriteCell($oExcel, "OK", 21, 10)
-else
-	_ExcelWriteCell($oExcel, "Error", 21, 10)
-EndIf
+$listViewCount1=ControlListView("BUSMASTER", "", "SysListView323", "GetItemCount")
