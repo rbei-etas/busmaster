@@ -4,7 +4,6 @@
 ; Critical 			: Y
 ;===========Main Script==============
 
-#include <IsAppCrash.au3>
 #Include <Excel.au3>
 #Include <GuiStatusBar.au3>
 #include <globalFunc.au3>
