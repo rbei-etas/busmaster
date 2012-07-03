@@ -9,12 +9,15 @@
 #Include <GuiToolBar.au3>
 #include <GuiComboBox.au3>
 #Include <GuiComboBoxEx.au3>
+
+$TS17DBPath = _SetOneFolderUp()
+
 if (WinWaitActive("BUSMASTER","",5) ) Then
 send("!fgn")         ;File->Configuration->New
 Send("!n")
 EndIf
 if (WinWaitActive("New Configuration Filename...","",5)) Then
-send("cfx_TS_17_FT!s")
+send($TS17DBPath&"\cfx_TS_17_FT!s")
 if (WinWaitActive("New Configuration Filename...","Do you want to replace it?",5)) Then
 Send("!y")
 Else
@@ -24,7 +27,7 @@ EndIf
 if (WinWaitActive("BUSMASTER","",5) ) Then
 Send("!fdo")         ;File->Database->Open
 ;WinWaitActive("Select BUSMASTER Database Filename...",5)
-send("DBF_TS_17_FT")
+send($TS17DBPath&"\DBF_TS_17_FT")
 sleep(100)
 ;ControlSend ("BUSMASTER","",1152,"DBF_TS_17_FT")
 ControlClick("Select BUSMASTER Database Filename...","&Open","[CLASS:Button; INSTANCE:2]","left")
@@ -32,7 +35,7 @@ ControlClick("Select BUSMASTER Database Filename...","&Open","[CLASS:Button; INS
 if (WinWaitActive("BUSMASTER","Specified database file is not found",5)) Then
 send("{ENTER}")
 Send("!fdn")         ;File->Database->New
-Send("DBF_TS_17_FT!s")
+Send($TS17DBPath&"\DBF_TS_17_FT!s")
 sleep(100)
 WinWaitActive("BUSMASTER - [DatabaseEditor - CAN]","",5)
 $pos=ControlGetPos("BUSMASTER - [DatabaseEditor - CAN]", "", "[CLASS:SysTreeView32; INSTANCE:1]" )
@@ -63,7 +66,7 @@ sleep(50)
 send("!fda")
 WinWaitActive("Select Active Database Filename...","",5)
 sleep(100)
-send("DBF_TS_17_FT.dbf")
+send($TS17DBPath&"\DBF_TS_17_FT.dbf")
 sleep(100)
 ControlClick("Select Active Database Filename...","&Open","[CLASS:Button; INSTANCE:2]")
 $handle=ControlGetHandle("BUSMASTER", "","[CLASS:ToolbarWindow32; INSTANCE:3]")
@@ -81,9 +84,4 @@ sleep(100)
 controlCommand("BUSMASTER","",1215,"Check")
 _GUICtrlComboBox_ShowDropDown($hWnd, False)
 $DLC=ControlGetText("BUSMASTER", "", 1125)
-if $a=0 and $DLC=5 Then
-   _ExcelWriteCell($oExcel, "OK", 27, 10)
-else
-   _ExcelWriteCell($oExcel, "Error", 27, 10)
-EndIf
 EndIf

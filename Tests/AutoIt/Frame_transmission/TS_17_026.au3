@@ -15,8 +15,3 @@ ControlClick("BUSMASTER","",1232,"Left",2,$a[0]+100,$a[1])
 $spinCtrlRaw=ControlCommand("BUSMASTER","",74565,"IsVisible")
 ControlClick("BUSMASTER","",1232,"Left",2,$a[0]+200,$a[1])
 $spinCtrlPhy=ControlCommand("BUSMASTER","",74565,"IsVisible")
-if $spinCtrlRaw=1 and $spinCtrlRaw=1 Then
-	_ExcelWriteCell($oExcel, "OK", 31, 10)
-    else
-   _ExcelWriteCell($oExcel, "Error",31, 10)
-EndIf
