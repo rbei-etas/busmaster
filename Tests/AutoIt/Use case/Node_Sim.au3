@@ -5,7 +5,20 @@
 ; Test Strategy:	Black Box
 ; Test Data:		-
 ; === Test Procedure ===
-#Include <GuiTreeView.au3>
+Func _SetOneFolderUp()
+	$CurrentDirPath = @ScriptDir
+	ConsoleWrite($CurrentDirPath&@CRLF)
+	$arrStrings = StringSplit($CurrentDirPath, "\")
+
+	ConsoleWrite("Size  = "&$arrStrings[0]&@CRLF)
+	ConsoleWrite("Value = "&$arrStrings[$arrStrings[0]]&@CRLF)
+
+	$CntRemove = stringlen($arrStrings[$arrStrings[0]]) + 1
+	$TrimmedPath = StringTrimRight($CurrentDirPath, $CntRemove)
+
+	ConsoleWrite("Trimmed  = "&$TrimmedPath&@CRLF)
+	return $TrimmedPath
+EndFunc
 
 if WinExists("BUSMASTER") Then
 	sleep(2000)
@@ -13,7 +26,8 @@ if WinExists("BUSMASTER") Then
 	$pos=ControlGetPos("BUSMASTER","","[CLASS:SysTreeView32; INSTANCE:1]")
 	MouseClick("right",$pos[0]+30,$pos[1]+55)							 ; select new sim
 	send("n")
-	send(@DesktopDir&"\testCANSim.sim")
+	$NodeSimPath = _SetOneFolderUp()
+	send($NodeSimPath&"\testCANSim.sim")
 	send("{ENTER}")
 	sleep(1000)
 	if winexists("New Simulated system Configuration Filename...") Then
@@ -32,7 +46,7 @@ if WinExists("BUSMASTER") Then
 		sleep(1000)
 		if WinExists("Select BUSMASTER Source Filename...") Then
 			sleep(1000)
-			send(@DesktopDir&"\CANtestinsim")
+			send($NodeSimPath&"\CANtestinsim")
 			send("{ENTER}")
 		EndIf
 		sleep(1000)

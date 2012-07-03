@@ -247,7 +247,7 @@ WinMenuSelectItem("BUSMASTER","","&Configure","&Log")
 ;Tx Window
 send("!ct")
 sleep(1000)
-ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:25]")
+ControlClick("BUSMASTER","",1015)
 
 ;~    Replay
 WinMenuSelectItem("BUSMASTER","","&Configure","&Replay")

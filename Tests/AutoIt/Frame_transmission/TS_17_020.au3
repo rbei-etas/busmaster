@@ -24,8 +24,3 @@ sleep(100)
 controlCommand("BUSMASTER","",1215,"Check")
 $errDLC=controlGetText ( "BUSMASTER", "", 1233)
 $button=ControlCommand("BUSMASTER","","[CLASS:Button; INSTANCE:4]","IsEnabled")
-if $errID="Invalid Message ID or Name" and $errDLC="Invalid DLC value" and $button=0 then 
-   _ExcelWriteCell($oExcel, "OK", 25, 10)
-else
-   _ExcelWriteCell($oExcel, "Error", 25, 10)
-EndIf

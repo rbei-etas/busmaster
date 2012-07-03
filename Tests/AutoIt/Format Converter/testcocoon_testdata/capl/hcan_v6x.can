@@ -1,0 +1,4120 @@
+/*@@var:*/
+/* TemplateVersion: 1.0.2 */
+variables 
+{
+    /**********************************************************************************************/
+    /* BEGIN AUTO                                                                                 */
+    /**********************************************************************************************/
+    
+    message BMS_HYB_02 MsgObj_BMS_HYB_02;
+    message BMS_HYB_03 MsgObj_BMS_HYB_03;
+    message BMS_HYB_04 MsgObj_BMS_HYB_04;
+    message BMS_HYB_06 MsgObj_BMS_HYB_06;
+    message BMS_HYB_08 MsgObj_BMS_HYB_08;
+    message CCU_HYB_01 MsgObj_CCU_HYB_01;
+    message CCU_HYB_02 MsgObj_CCU_HYB_02;
+    message DC_HYB_01 MsgObj_DC_HYB_01;
+    message DC_HYB_02 MsgObj_DC_HYB_02;
+    message EM_HYB_02 MsgObj_EM_HYB_02;
+    message EM_HYB_03 MsgObj_EM_HYB_03;
+    message EM_HYB_04 MsgObj_EM_HYB_04;
+    message EM_HYB_05 MsgObj_EM_HYB_05;
+    message EM_HYB_06 MsgObj_EM_HYB_06;
+    message EM_HYB_07 MsgObj_EM_HYB_07;
+    message Getriebe_HYB_01 MsgObj_Getriebe_HYB_01;
+    message Getriebe_HYB_02 MsgObj_Getriebe_HYB_02;
+
+    const FRM_HANDLE_BMS_HYB_02 = 0;
+    const FRM_HANDLE_BMS_HYB_03 = 1;
+    const FRM_HANDLE_BMS_HYB_04 = 2;
+    const FRM_HANDLE_BMS_HYB_06 = 3;
+    const FRM_HANDLE_BMS_HYB_08 = 4;
+    const FRM_HANDLE_CCU_HYB_01 = 5;
+    const FRM_HANDLE_CCU_HYB_02 = 6;
+    const FRM_HANDLE_DC_HYB_01 = 7;
+    const FRM_HANDLE_DC_HYB_02 = 8;
+    const FRM_HANDLE_EM_HYB_02 = 9;
+    const FRM_HANDLE_EM_HYB_03 = 10;
+    const FRM_HANDLE_EM_HYB_04 = 11;
+    const FRM_HANDLE_EM_HYB_05 = 12;
+    const FRM_HANDLE_EM_HYB_06 = 13;
+    const FRM_HANDLE_EM_HYB_07 = 14;
+    const FRM_HANDLE_Getriebe_HYB_01 = 15;
+    const FRM_HANDLE_Getriebe_HYB_02 = 16;
+
+    const FRM_NUM_MAX = 17;
+
+
+    /**********************************************************************************************/
+    /* END AUTO                                                                                   */
+    /**********************************************************************************************/
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  timer                                                                                     */
+    /* ------------------------------------------------------------------------------------------ */
+    msTimer Timer_10ms;                   /* 10ms base timer */
+    const TIMER_DURATION_10MS = 10;       /* timer duration for 10ms timer */
+    
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  frame scheduler                                                                           */
+    /* ------------------------------------------------------------------------------------------ */
+    int FrmSched_SchedTmr[FRM_NUM_MAX];   /* schedule timer, incremented every 10ms, resolution [1ms] */
+    int FrmSched_CycleTime[FRM_NUM_MAX];  /* cycle time of the CAN frame, resolution [1ms] */
+    int FrmSched_FrmEna[FRM_NUM_MAX];     /* frame enable status */
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  frame manager                                                                             */
+    /* ------------------------------------------------------------------------------------------ */
+    int Frm_MsgCounter[FRM_NUM_MAX];      /* current message counter value */
+    int Frm_MsgCounterEna[FRM_NUM_MAX];   /* message counter enable status */
+    int Frm_MsgChksmEna[FRM_NUM_MAX];     /* checksum enable status */
+    int Frm_DLC[FRM_NUM_MAX];             /* DLC */
+    int Frm_DLCOk[FRM_NUM_MAX];           /* DLC status (0=DLC wrong, 1=DLC ok) */
+
+    
+    /* ------------------------------------------------------------------------------------------ */
+    /*  CAPL control                                                                              */
+    /* ------------------------------------------------------------------------------------------ */
+    const CAPLCTRL_LEVEL_NOSEL = 0;
+    const CAPLCTRL_LEVEL_FRAME = 1;
+    const CAPLCTRL_LEVEL_SIGNAL = 2;
+
+    const CAPLCTRL_NOVAL = -1;
+
+    const CAPLCTRL_INPUTBUF_LEN = 32;
+    const CAPLCTRL_CHARBUF_LEN = 64;
+
+    const CAPLCTRL_PROMPTMODE_NUM = 0;
+    const CAPLCTRL_PROMPTMODE_CHAR = 1;
+
+    int  CaplCtrl_LevelActv = CAPLCTRL_LEVEL_NOSEL;  /* current active level */
+    int  CaplCtrl_FrameActv = 0;                     /* current selected frame */
+    int  CaplCtrl_SignalActv = 0;                    /* current selected signal */
+    int  CaplCtrl_InputValue = 0;                    /* current input value */
+    char CaplCtrl_InputBuf[CAPLCTRL_INPUTBUF_LEN];   /* user input buffer */
+    int  CaplCtrl_InputIdx = 0;                      /* index into input buffer */
+    char CaplCtrl_FrameName[32];                     /* buffer to store frame name */
+    char CaplCtrl_SignalName[64];                    /* buffer to store signal name */
+    int  CaplCtrl_PromptMode;                        /* prompt mode */
+    char CaplCtrl_CharBuf[CAPLCTRL_CHARBUF_LEN];     /* buffer for char output in prompt */
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  key codes                                                                                 */
+    /* ------------------------------------------------------------------------------------------ */
+    const KEY_ENTER = 0x0D;
+    const KEY_BACKSPACE = 0x08;
+    const KEY_UP = 0x4800;
+    const KEY_DOWN = 0x5000;
+    const KEY_TAB = 0x09;
+    const KEY_LEVEL_DOWN = '.';
+    const KEY_TIMEOUT = 'a';
+    const KEY_MSGCNT = 'b';
+    const KEY_CHKSM = 'c';
+    const KEY_DLC = 'd';
+    const KEY_HELP = '?';
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  checksum related variables                                                                */
+    /* ------------------------------------------------------------------------------------------ */
+    byte CRC8_tab_256[256] =
+    {
+        0x00, 0x2f, 0x5e, 0x71, 0xbc, 0x93, 0xe2, 0xcd,
+        0x57, 0x78, 0x09, 0x26, 0xeb, 0xc4, 0xb5, 0x9a,
+        0xae, 0x81, 0xf0, 0xdf, 0x12, 0x3d, 0x4c, 0x63,
+        0xf9, 0xd6, 0xa7, 0x88, 0x45, 0x6a, 0x1b, 0x34,
+        0x73, 0x5c, 0x2d, 0x02, 0xcf, 0xe0, 0x91, 0xbe,
+        0x24, 0x0b, 0x7a, 0x55, 0x98, 0xb7, 0xc6, 0xe9,
+        0xdd, 0xf2, 0x83, 0xac, 0x61, 0x4e, 0x3f, 0x10,
+        0x8a, 0xa5, 0xd4, 0xfb, 0x36, 0x19, 0x68, 0x47,
+        0xe6, 0xc9, 0xb8, 0x97, 0x5a, 0x75, 0x04, 0x2b,
+        0xb1, 0x9e, 0xef, 0xc0, 0x0d, 0x22, 0x53, 0x7c,
+        0x48, 0x67, 0x16, 0x39, 0xf4, 0xdb, 0xaa, 0x85,
+        0x1f, 0x30, 0x41, 0x6e, 0xa3, 0x8c, 0xfd, 0xd2,
+        0x95, 0xba, 0xcb, 0xe4, 0x29, 0x06, 0x77, 0x58,
+        0xc2, 0xed, 0x9c, 0xb3, 0x7e, 0x51, 0x20, 0x0f,
+        0x3b, 0x14, 0x65, 0x4a, 0x87, 0xa8, 0xd9, 0xf6,
+        0x6c, 0x43, 0x32, 0x1d, 0xd0, 0xff, 0x8e, 0xa1,
+        0xe3, 0xcc, 0xbd, 0x92, 0x5f, 0x70, 0x01, 0x2e,
+        0xb4, 0x9b, 0xea, 0xc5, 0x08, 0x27, 0x56, 0x79,
+        0x4d, 0x62, 0x13, 0x3c, 0xf1, 0xde, 0xaf, 0x80,
+        0x1a, 0x35, 0x44, 0x6b, 0xa6, 0x89, 0xf8, 0xd7,
+        0x90, 0xbf, 0xce, 0xe1, 0x2c, 0x03, 0x72, 0x5d,
+        0xc7, 0xe8, 0x99, 0xb6, 0x7b, 0x54, 0x25, 0x0a,
+        0x3e, 0x11, 0x60, 0x4f, 0x82, 0xad, 0xdc, 0xf3,
+        0x69, 0x46, 0x37, 0x18, 0xd5, 0xfa, 0x8b, 0xa4,
+        0x05, 0x2a, 0x5b, 0x74, 0xb9, 0x96, 0xe7, 0xc8,
+        0x52, 0x7d, 0x0c, 0x23, 0xee, 0xc1, 0xb0, 0x9f,
+        0xab, 0x84, 0xf5, 0xda, 0x17, 0x38, 0x49, 0x66,
+        0xfc, 0xd3, 0xa2, 0x8d, 0x40, 0x6f, 0x1e, 0x31,
+        0x76, 0x59, 0x28, 0x07, 0xca, 0xe5, 0x94, 0xbb,
+        0x21, 0x0e, 0x7f, 0x50, 0x9d, 0xb2, 0xc3, 0xec,
+        0xd8, 0xf7, 0x86, 0xa9, 0x64, 0x4b, 0x3a, 0x15,
+        0x8f, 0xa0, 0xd1, 0xfe, 0x33, 0x1c, 0x6d, 0x42
+    };
+}
+/*@@end*/
+
+/*@@timer:Timer_10ms:*/
+on timer Timer_10ms
+{
+    int FrmIdx;
+
+    /* restart the 10ms timer */
+    setTimer(Timer_10ms,TIMER_DURATION_10MS);
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  BEGIN Frame Scheduler                                                                     */
+    /* ------------------------------------------------------------------------------------------ */
+
+    for (FrmIdx = 0; FrmIdx < FRM_NUM_MAX; FrmIdx++)
+    {
+        /* check if frame is enabled */
+        if (FrmSched_FrmEna[FrmIdx] != 0)
+        {
+            /* increment schedule timer */
+            FrmSched_SchedTmr[FrmIdx] += 10;
+        }
+        else
+        {
+            /* frame disabled, stop schedule timer */
+            FrmSched_SchedTmr[FrmIdx] = 0;
+        }
+
+        /* if schedule timer reaches cycle time, trigger transfer of CAN frame */
+        if (FrmSched_SchedTmr[FrmIdx] >= FrmSched_CycleTime[FrmIdx])
+        {
+            /* reset schedule timer */
+            FrmSched_SchedTmr[FrmIdx] = 0;
+
+            /* trigger transmission of frame */
+            FrmSched_SendFrame(FrmIdx);
+        }
+    }
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  END Frame Scheduler                                                                       */
+    /* ------------------------------------------------------------------------------------------ */
+}
+/*@@end*/
+
+/*@@preStart:PreStart:*/
+on preStart
+{
+    dword fhdlIn;
+    dword fhdlOut;
+    
+    /* ------------------------------------------------------------------------------------------ */
+    /*  BEGIN frame and signal handle export for remote control of CAPL by Perl script            */
+    /* ------------------------------------------------------------------------------------------ */
+
+    /* check if CAPL is remote controlled by CaplCtrl Perl script */
+    /* NOTE: Communication between CAPL program and Perl scritp is done via file, since with */
+    /*       CANalyzer Version v4 it is not possible to use environment variables, so this is */
+    /*       just a workaround. */
+    fhdlIn = openFileRead ("caplctrl_req.txt", 0);
+    if (fhdlIn != 0)
+    {
+        /* close input file */
+        fileClose(fhdlIn);
+
+        /* export frame and signal handles to file for remote control scripts */
+        fhdlOut = openFileWrite ("caplctrl.txt", 0);
+        if (fhdlOut != 0)
+        {
+            /* NOTE:   handles are 2 bytes long. */
+            /* LAYOUT: frame handle: lower byte = 0xFF, upper byte = frame handle for CAPL program */
+            /*         signal handle: lower byte = signal index, upper byte = frame index */
+            filePutString ("BMS_HYB_02;255\n", 15, fhdlOut);
+            filePutString ("BMS_HYB_02;BMS2;AliasName\n", 26, fhdlOut);    /* alias frame handle for BMS_HYB_02 */
+            filePutString ("BMS_HYB_03;511\n", 15, fhdlOut);
+            filePutString ("BMS_HYB_03;BMS3;AliasName\n", 26, fhdlOut);    /* alias frame handle for BMS_HYB_03 */
+            filePutString ("BMS_HYB_04;767\n", 15, fhdlOut);
+            filePutString ("BMS_HYB_04;BMS4;AliasName\n", 26, fhdlOut);    /* alias frame handle for BMS_HYB_04 */
+            filePutString ("BMS_HYB_06;1023\n", 16, fhdlOut);
+            filePutString ("BMS_HYB_06;BMS6;AliasName\n", 26, fhdlOut);    /* alias frame handle for BMS_HYB_06 */
+            filePutString ("BMS_HYB_08;1279\n", 16, fhdlOut);
+            filePutString ("BMS_HYB_08;BMS8;AliasName\n", 26, fhdlOut);    /* alias frame handle for BMS_HYB_08 */
+            filePutString ("CCU_HYB_01;1535\n", 16, fhdlOut);
+            filePutString ("CCU_HYB_01;CCU1;AliasName\n", 26, fhdlOut);    /* alias frame handle for CCU_HYB_01 */
+            filePutString ("CCU_HYB_02;1791\n", 16, fhdlOut);
+            filePutString ("CCU_HYB_02;CCU2;AliasName\n", 26, fhdlOut);    /* alias frame handle for CCU_HYB_02 */
+            filePutString ("DC_HYB_01;2047\n", 15, fhdlOut);
+            filePutString ("DC_HYB_01;DC1;AliasName\n", 24, fhdlOut);    /* alias frame handle for DC_HYB_01 */
+            filePutString ("DC_HYB_02;2303\n", 15, fhdlOut);
+            filePutString ("DC_HYB_02;DC2;AliasName\n", 24, fhdlOut);    /* alias frame handle for DC_HYB_02 */
+            filePutString ("EM_HYB_02;2559\n", 15, fhdlOut);
+            filePutString ("EM_HYB_02;EM2;AliasName\n", 24, fhdlOut);    /* alias frame handle for EM_HYB_02 */
+            filePutString ("EM_HYB_03;2815\n", 15, fhdlOut);
+            filePutString ("EM_HYB_03;EM3;AliasName\n", 24, fhdlOut);    /* alias frame handle for EM_HYB_03 */
+            filePutString ("EM_HYB_04;3071\n", 15, fhdlOut);
+            filePutString ("EM_HYB_04;EM4;AliasName\n", 24, fhdlOut);    /* alias frame handle for EM_HYB_04 */
+            filePutString ("EM_HYB_05;3327\n", 15, fhdlOut);
+            filePutString ("EM_HYB_05;EM5;AliasName\n", 24, fhdlOut);    /* alias frame handle for EM_HYB_05 */
+            filePutString ("EM_HYB_06;3583\n", 15, fhdlOut);
+            filePutString ("EM_HYB_06;EM6;AliasName\n", 24, fhdlOut);    /* alias frame handle for EM_HYB_06 */
+            filePutString ("EM_HYB_07;3839\n", 15, fhdlOut);
+            filePutString ("EM_HYB_07;EM7;AliasName\n", 24, fhdlOut);    /* alias frame handle for EM_HYB_07 */
+            filePutString ("Getriebe_HYB_01;4095\n", 21, fhdlOut);
+            filePutString ("Getriebe_HYB_01;GBXHC01;AliasName\n", 34, fhdlOut);    /* alias frame handle for Getriebe_HYB_01 */
+            filePutString ("Getriebe_HYB_02;4351\n", 21, fhdlOut);
+            filePutString ("Getriebe_HYB_02;GBXHC02;AliasName\n", 34, fhdlOut);    /* alias frame handle for Getriebe_HYB_02 */
+
+            filePutString ("BMS_Fehler_HS_offen;0\n", 22, fhdlOut);
+            filePutString ("BMS_Fehler_HS_offen/BMS_HYB_02;0\n", 33, fhdlOut);
+            filePutString ("BMS_Fehler_HS_offen/BMS2;0\n", 27, fhdlOut);
+            filePutString ("BMS_Fehler_HS_verschweisst;1\n", 29, fhdlOut);
+            filePutString ("BMS_Fehler_HS_verschweisst/BMS_HYB_02;1\n", 40, fhdlOut);
+            filePutString ("BMS_Fehler_HS_verschweisst/BMS2;1\n", 34, fhdlOut);
+            filePutString ("BMS_Fehler_HVBattAbschaltung;2\n", 31, fhdlOut);
+            filePutString ("BMS_Fehler_HVBattAbschaltung/BMS_HYB_02;2\n", 42, fhdlOut);
+            filePutString ("BMS_Fehler_HVBattAbschaltung/BMS2;2\n", 36, fhdlOut);
+            filePutString ("BMS_Fehler_HVBattAbschaltung_Anf;3\n", 35, fhdlOut);
+            filePutString ("BMS_Fehler_HVBattAbschaltung_Anf/BMS_HYB_02;3\n", 46, fhdlOut);
+            filePutString ("BMS_Fehler_HVBattAbschaltung_Anf/BMS2;3\n", 40, fhdlOut);
+            filePutString ("BMS_Fehler_Isolation;4\n", 23, fhdlOut);
+            filePutString ("BMS_Fehler_Isolation/BMS_HYB_02;4\n", 34, fhdlOut);
+            filePutString ("BMS_Fehler_Isolation/BMS2;4\n", 28, fhdlOut);
+            filePutString ("BMS_Fehler_Kaltstartleistung;5\n", 31, fhdlOut);
+            filePutString ("BMS_Fehler_Kaltstartleistung/BMS_HYB_02;5\n", 42, fhdlOut);
+            filePutString ("BMS_Fehler_Kaltstartleistung/BMS2;5\n", 36, fhdlOut);
+            filePutString ("BMS_Fehler_Leistungsred;6\n", 26, fhdlOut);
+            filePutString ("BMS_Fehler_Leistungsred/BMS_HYB_02;6\n", 37, fhdlOut);
+            filePutString ("BMS_Fehler_Leistungsred/BMS2;6\n", 31, fhdlOut);
+            filePutString ("BMS_Fehler_Notabschaltung_Crash;7\n", 34, fhdlOut);
+            filePutString ("BMS_Fehler_Notabschaltung_Crash/BMS_HYB_02;7\n", 45, fhdlOut);
+            filePutString ("BMS_Fehler_Notabschaltung_Crash/BMS2;7\n", 39, fhdlOut);
+            filePutString ("BMS_Fehler_Notabschaltung_Pilot;8\n", 34, fhdlOut);
+            filePutString ("BMS_Fehler_Notabschaltung_Pilot/BMS_HYB_02;8\n", 45, fhdlOut);
+            filePutString ("BMS_Fehler_Notabschaltung_Pilot/BMS2;8\n", 39, fhdlOut);
+            filePutString ("BMS_Fehler_Pilot;9\n", 19, fhdlOut);
+            filePutString ("BMS_Fehler_Pilot/BMS_HYB_02;9\n", 30, fhdlOut);
+            filePutString ("BMS_Fehler_Pilot/BMS2;9\n", 24, fhdlOut);
+            filePutString ("BMS_Fehler_Sicherung;10\n", 24, fhdlOut);
+            filePutString ("BMS_Fehler_Sicherung/BMS_HYB_02;10\n", 35, fhdlOut);
+            filePutString ("BMS_Fehler_Sicherung/BMS2;10\n", 29, fhdlOut);
+            filePutString ("BMS_HYB_02_BZ;11\n", 17, fhdlOut);
+            filePutString ("BMS_HYB_02_BZ/BMS_HYB_02;11\n", 28, fhdlOut);
+            filePutString ("BMS_HYB_02_BZ/BMS2;11\n", 22, fhdlOut);
+            filePutString ("BMS_HYB_02_CHK;12\n", 18, fhdlOut);
+            filePutString ("BMS_HYB_02_CHK/BMS_HYB_02;12\n", 29, fhdlOut);
+            filePutString ("BMS_HYB_02_CHK/BMS2;12\n", 23, fhdlOut);
+            filePutString ("BMS_Init_abgeschlossen;13\n", 26, fhdlOut);
+            filePutString ("BMS_Init_abgeschlossen/BMS_HYB_02;13\n", 37, fhdlOut);
+            filePutString ("BMS_Init_abgeschlossen/BMS2;13\n", 31, fhdlOut);
+            filePutString ("BMS_IsoMessungAktiv;14\n", 23, fhdlOut);
+            filePutString ("BMS_IsoMessungAktiv/BMS_HYB_02;14\n", 34, fhdlOut);
+            filePutString ("BMS_IsoMessungAktiv/BMS2;14\n", 28, fhdlOut);
+            filePutString ("BMS_IstModus;15\n", 16, fhdlOut);
+            filePutString ("BMS_IstModus/BMS_HYB_02;15\n", 27, fhdlOut);
+            filePutString ("BMS_IstModus/BMS2;15\n", 21, fhdlOut);
+            filePutString ("BMS_IstSpannung;16\n", 19, fhdlOut);
+            filePutString ("BMS_IstSpannung/BMS_HYB_02;16\n", 30, fhdlOut);
+            filePutString ("BMS_IstSpannung/BMS2;16\n", 24, fhdlOut);
+            filePutString ("BMS_IstStrom;17\n", 16, fhdlOut);
+            filePutString ("BMS_IstStrom/BMS_HYB_02;17\n", 27, fhdlOut);
+            filePutString ("BMS_IstStrom/BMS2;17\n", 21, fhdlOut);
+            filePutString ("BMS_SleepInd;18\n", 16, fhdlOut);
+            filePutString ("BMS_SleepInd/BMS_HYB_02;18\n", 27, fhdlOut);
+            filePutString ("BMS_SleepInd/BMS2;18\n", 21, fhdlOut);
+            filePutString ("BMS_Status_ServiceDisconnect;19\n", 32, fhdlOut);
+            filePutString ("BMS_Status_ServiceDisconnect/BMS_HYB_02;19\n", 43, fhdlOut);
+            filePutString ("BMS_Status_ServiceDisconnect/BMS2;19\n", 37, fhdlOut);
+            filePutString ("BMS_Status_Spannungsfreiheit;20\n", 32, fhdlOut);
+            filePutString ("BMS_Status_Spannungsfreiheit/BMS_HYB_02;20\n", 43, fhdlOut);
+            filePutString ("BMS_Status_Spannungsfreiheit/BMS2;20\n", 37, fhdlOut);
+            filePutString ("BMS_BattLuefterGeschw_rel;256\n", 30, fhdlOut);
+            filePutString ("BMS_BattLuefterGeschw_rel/BMS_HYB_03;256\n", 41, fhdlOut);
+            filePutString ("BMS_BattLuefterGeschw_rel/BMS3;256\n", 35, fhdlOut);
+            filePutString ("BMS_HYB_03_BZ;257\n", 18, fhdlOut);
+            filePutString ("BMS_HYB_03_BZ/BMS_HYB_03;257\n", 29, fhdlOut);
+            filePutString ("BMS_HYB_03_BZ/BMS3;257\n", 23, fhdlOut);
+            filePutString ("BMS_HYB_03_CHK;258\n", 19, fhdlOut);
+            filePutString ("BMS_HYB_03_CHK/BMS_HYB_03;258\n", 30, fhdlOut);
+            filePutString ("BMS_HYB_03_CHK/BMS3;258\n", 24, fhdlOut);
+            filePutString ("BMS_MaxPred_EntladeStrom;259\n", 29, fhdlOut);
+            filePutString ("BMS_MaxPred_EntladeStrom/BMS_HYB_03;259\n", 40, fhdlOut);
+            filePutString ("BMS_MaxPred_EntladeStrom/BMS3;259\n", 34, fhdlOut);
+            filePutString ("BMS_MaxPred_LadeStrom;260\n", 26, fhdlOut);
+            filePutString ("BMS_MaxPred_LadeStrom/BMS_HYB_03;260\n", 37, fhdlOut);
+            filePutString ("BMS_MaxPred_LadeStrom/BMS3;260\n", 31, fhdlOut);
+            filePutString ("BMS_MinPred_EntladeSpannung;261\n", 32, fhdlOut);
+            filePutString ("BMS_MinPred_EntladeSpannung/BMS_HYB_03;261\n", 43, fhdlOut);
+            filePutString ("BMS_MinPred_EntladeSpannung/BMS3;261\n", 37, fhdlOut);
+            filePutString ("BMS_MinPred_LadeSpannung;262\n", 29, fhdlOut);
+            filePutString ("BMS_MinPred_LadeSpannung/BMS_HYB_03;262\n", 40, fhdlOut);
+            filePutString ("BMS_MinPred_LadeSpannung/BMS3;262\n", 34, fhdlOut);
+            filePutString ("BMS_SOC;263\n", 12, fhdlOut);
+            filePutString ("BMS_SOC/BMS_HYB_03;263\n", 23, fhdlOut);
+            filePutString ("BMS_SOC/BMS3;263\n", 17, fhdlOut);
+            filePutString ("BMS_ErwGrenzen_aktiv;512\n", 25, fhdlOut);
+            filePutString ("BMS_ErwGrenzen_aktiv/BMS_HYB_04;512\n", 36, fhdlOut);
+            filePutString ("BMS_ErwGrenzen_aktiv/BMS4;512\n", 30, fhdlOut);
+            filePutString ("BMS_HYB_04_BZ;513\n", 18, fhdlOut);
+            filePutString ("BMS_HYB_04_BZ/BMS_HYB_04;513\n", 29, fhdlOut);
+            filePutString ("BMS_HYB_04_BZ/BMS4;513\n", 23, fhdlOut);
+            filePutString ("BMS_HYB_04_CHK;514\n", 19, fhdlOut);
+            filePutString ("BMS_HYB_04_CHK/BMS_HYB_04;514\n", 30, fhdlOut);
+            filePutString ("BMS_HYB_04_CHK/BMS4;514\n", 24, fhdlOut);
+            filePutString ("BMS_MaxDyn_EntladeStrom;515\n", 28, fhdlOut);
+            filePutString ("BMS_MaxDyn_EntladeStrom/BMS_HYB_04;515\n", 39, fhdlOut);
+            filePutString ("BMS_MaxDyn_EntladeStrom/BMS4;515\n", 33, fhdlOut);
+            filePutString ("BMS_MaxDyn_LadeStrom;516\n", 25, fhdlOut);
+            filePutString ("BMS_MaxDyn_LadeStrom/BMS_HYB_04;516\n", 36, fhdlOut);
+            filePutString ("BMS_MaxDyn_LadeStrom/BMS4;516\n", 30, fhdlOut);
+            filePutString ("BMS_MinDyn_EntladeSpannung;517\n", 31, fhdlOut);
+            filePutString ("BMS_MinDyn_EntladeSpannung/BMS_HYB_04;517\n", 42, fhdlOut);
+            filePutString ("BMS_MinDyn_EntladeSpannung/BMS4;517\n", 36, fhdlOut);
+            filePutString ("BMS_MinDyn_LadeSpannung;518\n", 28, fhdlOut);
+            filePutString ("BMS_MinDyn_LadeSpannung/BMS_HYB_04;518\n", 39, fhdlOut);
+            filePutString ("BMS_MinDyn_LadeSpannung/BMS4;518\n", 33, fhdlOut);
+            filePutString ("BMS_Spannung_ZwKr;519\n", 22, fhdlOut);
+            filePutString ("BMS_Spannung_ZwKr/BMS_HYB_04;519\n", 33, fhdlOut);
+            filePutString ("BMS_Spannung_ZwKr/BMS4;519\n", 27, fhdlOut);
+            filePutString ("BMS_Ausgleichsladung_Anf;768\n", 29, fhdlOut);
+            filePutString ("BMS_Ausgleichsladung_Anf/BMS_HYB_06;768\n", 40, fhdlOut);
+            filePutString ("BMS_Ausgleichsladung_Anf/BMS6;768\n", 34, fhdlOut);
+            filePutString ("BMS_Fehlerlampe_Anf;769\n", 24, fhdlOut);
+            filePutString ("BMS_Fehlerlampe_Anf/BMS_HYB_06;769\n", 35, fhdlOut);
+            filePutString ("BMS_Fehlerlampe_Anf/BMS6;769\n", 29, fhdlOut);
+            filePutString ("BMS_HYB_06_BZ;770\n", 18, fhdlOut);
+            filePutString ("BMS_HYB_06_BZ/BMS_HYB_06;770\n", 29, fhdlOut);
+            filePutString ("BMS_HYB_06_BZ/BMS6;770\n", 23, fhdlOut);
+            filePutString ("BMS_HYB_06_CHK;771\n", 19, fhdlOut);
+            filePutString ("BMS_HYB_06_CHK/BMS_HYB_06;771\n", 30, fhdlOut);
+            filePutString ("BMS_HYB_06_CHK/BMS6;771\n", 24, fhdlOut);
+            filePutString ("BMS_Max_LadeSpannung;772\n", 25, fhdlOut);
+            filePutString ("BMS_Max_LadeSpannung/BMS_HYB_06;772\n", 36, fhdlOut);
+            filePutString ("BMS_Max_LadeSpannung/BMS6;772\n", 30, fhdlOut);
+            filePutString ("BMS_Min_EntladeSpannung;773\n", 28, fhdlOut);
+            filePutString ("BMS_Min_EntladeSpannung/BMS_HYB_06;773\n", 39, fhdlOut);
+            filePutString ("BMS_Min_EntladeSpannung/BMS6;773\n", 33, fhdlOut);
+            filePutString ("BMS_OBD_Lampe_Anf;774\n", 22, fhdlOut);
+            filePutString ("BMS_OBD_Lampe_Anf/BMS_HYB_06;774\n", 33, fhdlOut);
+            filePutString ("BMS_OBD_Lampe_Anf/BMS6;774\n", 27, fhdlOut);
+            filePutString ("BMS_Temperatur;775\n", 19, fhdlOut);
+            filePutString ("BMS_Temperatur/BMS_HYB_06;775\n", 30, fhdlOut);
+            filePutString ("BMS_Temperatur/BMS6;775\n", 24, fhdlOut);
+            filePutString ("BMS_Temperatur_Ansaugluft;776\n", 30, fhdlOut);
+            filePutString ("BMS_Temperatur_Ansaugluft/BMS_HYB_06;776\n", 41, fhdlOut);
+            filePutString ("BMS_Temperatur_Ansaugluft/BMS6;776\n", 35, fhdlOut);
+            filePutString ("BMS_Umluftklappe_Anf;777\n", 25, fhdlOut);
+            filePutString ("BMS_Umluftklappe_Anf/BMS_HYB_06;777\n", 36, fhdlOut);
+            filePutString ("BMS_Umluftklappe_Anf/BMS6;777\n", 30, fhdlOut);
+            filePutString ("BMS_Warnlampe_Anf;778\n", 22, fhdlOut);
+            filePutString ("BMS_Warnlampe_Anf/BMS_HYB_06;778\n", 33, fhdlOut);
+            filePutString ("BMS_Warnlampe_Anf/BMS6;778\n", 27, fhdlOut);
+            filePutString ("BMS_Anf_Mo_Luefter;1024\n", 24, fhdlOut);
+            filePutString ("BMS_Anf_Mo_Luefter/BMS_HYB_08;1024\n", 35, fhdlOut);
+            filePutString ("BMS_Anf_Mo_Luefter/BMS8;1024\n", 29, fhdlOut);
+            filePutString ("BMS_DCLS_Spannung;1025\n", 23, fhdlOut);
+            filePutString ("BMS_DCLS_Spannung/BMS_HYB_08;1025\n", 34, fhdlOut);
+            filePutString ("BMS_DCLS_Spannung/BMS8;1025\n", 28, fhdlOut);
+            filePutString ("BMS_HVBatt_Perf_Ind;1026\n", 25, fhdlOut);
+            filePutString ("BMS_HVBatt_Perf_Ind/BMS_HYB_08;1026\n", 36, fhdlOut);
+            filePutString ("BMS_HVBatt_Perf_Ind/BMS8;1026\n", 30, fhdlOut);
+            filePutString ("BMS_SOC_HiRes;1027\n", 19, fhdlOut);
+            filePutString ("BMS_SOC_HiRes/BMS_HYB_08;1027\n", 30, fhdlOut);
+            filePutString ("BMS_SOC_HiRes/BMS8;1027\n", 24, fhdlOut);
+            filePutString ("BMS_Status_DCLS;1028\n", 21, fhdlOut);
+            filePutString ("BMS_Status_DCLS/BMS_HYB_08;1028\n", 32, fhdlOut);
+            filePutString ("BMS_Status_DCLS/BMS8;1028\n", 26, fhdlOut);
+            filePutString ("CCU_Fehler_CAN;1280\n", 20, fhdlOut);
+            filePutString ("CCU_Fehler_CAN/CCU_HYB_01;1280\n", 31, fhdlOut);
+            filePutString ("CCU_Fehler_CAN/CCU1;1280\n", 25, fhdlOut);
+            filePutString ("CCU_Fehler_HW;1281\n", 19, fhdlOut);
+            filePutString ("CCU_Fehler_HW/CCU_HYB_01;1281\n", 30, fhdlOut);
+            filePutString ("CCU_Fehler_HW/CCU1;1281\n", 24, fhdlOut);
+            filePutString ("CCU_Fehler_Temperatur;1282\n", 27, fhdlOut);
+            filePutString ("CCU_Fehler_Temperatur/CCU_HYB_01;1282\n", 38, fhdlOut);
+            filePutString ("CCU_Fehler_Temperatur/CCU1;1282\n", 32, fhdlOut);
+            filePutString ("CCU_Fehler_Unterspannung;1283\n", 30, fhdlOut);
+            filePutString ("CCU_Fehler_Unterspannung/CCU_HYB_01;1283\n", 41, fhdlOut);
+            filePutString ("CCU_Fehler_Unterspannung/CCU1;1283\n", 35, fhdlOut);
+            filePutString ("CCU_Fehler_mechanisch;1284\n", 27, fhdlOut);
+            filePutString ("CCU_Fehler_mechanisch/CCU_HYB_01;1284\n", 38, fhdlOut);
+            filePutString ("CCU_Fehler_mechanisch/CCU1;1284\n", 32, fhdlOut);
+            filePutString ("CCU_HYB_01_BZ;1285\n", 19, fhdlOut);
+            filePutString ("CCU_HYB_01_BZ/CCU_HYB_01;1285\n", 30, fhdlOut);
+            filePutString ("CCU_HYB_01_BZ/CCU1;1285\n", 24, fhdlOut);
+            filePutString ("CCU_HYB_01_CHK;1286\n", 20, fhdlOut);
+            filePutString ("CCU_HYB_01_CHK/CCU_HYB_01;1286\n", 31, fhdlOut);
+            filePutString ("CCU_HYB_01_CHK/CCU1;1286\n", 25, fhdlOut);
+            filePutString ("CCU_IstDruck;1287\n", 18, fhdlOut);
+            filePutString ("CCU_IstDruck/CCU_HYB_01;1287\n", 29, fhdlOut);
+            filePutString ("CCU_IstDruck/CCU1;1287\n", 23, fhdlOut);
+            filePutString ("CCU_IstPosition;1288\n", 21, fhdlOut);
+            filePutString ("CCU_IstPosition/CCU_HYB_01;1288\n", 32, fhdlOut);
+            filePutString ("CCU_IstPosition/CCU1;1288\n", 26, fhdlOut);
+            filePutString ("CCU_IstWinkelGeschw;1289\n", 25, fhdlOut);
+            filePutString ("CCU_IstWinkelGeschw/CCU_HYB_01;1289\n", 36, fhdlOut);
+            filePutString ("CCU_IstWinkelGeschw/CCU1;1289\n", 30, fhdlOut);
+            filePutString ("CCU_Istmodus;1290\n", 18, fhdlOut);
+            filePutString ("CCU_Istmodus/CCU_HYB_01;1290\n", 29, fhdlOut);
+            filePutString ("CCU_Istmodus/CCU1;1290\n", 23, fhdlOut);
+            filePutString ("CCU_SleepInd;1291\n", 18, fhdlOut);
+            filePutString ("CCU_SleepInd/CCU_HYB_01;1291\n", 29, fhdlOut);
+            filePutString ("CCU_SleepInd/CCU1;1291\n", 23, fhdlOut);
+            filePutString ("CCU_Strom_momentbildend;1292\n", 29, fhdlOut);
+            filePutString ("CCU_Strom_momentbildend/CCU_HYB_01;1292\n", 40, fhdlOut);
+            filePutString ("CCU_Strom_momentbildend/CCU1;1292\n", 34, fhdlOut);
+            filePutString ("CCU_Warnung_Temperatur;1293\n", 28, fhdlOut);
+            filePutString ("CCU_Warnung_Temperatur/CCU_HYB_01;1293\n", 39, fhdlOut);
+            filePutString ("CCU_Warnung_Temperatur/CCU1;1293\n", 33, fhdlOut);
+            filePutString ("CCU_HW_Version;1536\n", 20, fhdlOut);
+            filePutString ("CCU_HW_Version/CCU_HYB_02;1536\n", 31, fhdlOut);
+            filePutString ("CCU_HW_Version/CCU2;1536\n", 25, fhdlOut);
+            filePutString ("CCU_HYB_02_BZ;1537\n", 19, fhdlOut);
+            filePutString ("CCU_HYB_02_BZ/CCU_HYB_02;1537\n", 30, fhdlOut);
+            filePutString ("CCU_HYB_02_BZ/CCU2;1537\n", 24, fhdlOut);
+            filePutString ("CCU_HYB_02_CHK;1538\n", 20, fhdlOut);
+            filePutString ("CCU_HYB_02_CHK/CCU_HYB_02;1538\n", 31, fhdlOut);
+            filePutString ("CCU_HYB_02_CHK/CCU2;1538\n", 25, fhdlOut);
+            filePutString ("CCU_Medium;1539\n", 16, fhdlOut);
+            filePutString ("CCU_Medium/CCU_HYB_02;1539\n", 27, fhdlOut);
+            filePutString ("CCU_Medium/CCU2;1539\n", 21, fhdlOut);
+            filePutString ("CCU_SW_Version;1540\n", 20, fhdlOut);
+            filePutString ("CCU_SW_Version/CCU_HYB_02;1540\n", 31, fhdlOut);
+            filePutString ("CCU_SW_Version/CCU2;1540\n", 25, fhdlOut);
+            filePutString ("CCU_Seriennummer;1541\n", 22, fhdlOut);
+            filePutString ("CCU_Seriennummer/CCU_HYB_02;1541\n", 33, fhdlOut);
+            filePutString ("CCU_Seriennummer/CCU2;1541\n", 27, fhdlOut);
+            filePutString ("CCU_Teilenummer;1542\n", 21, fhdlOut);
+            filePutString ("CCU_Teilenummer/CCU_HYB_02;1542\n", 32, fhdlOut);
+            filePutString ("CCU_Teilenummer/CCU2;1542\n", 26, fhdlOut);
+            filePutString ("DC_Fehler_Leistungsred;1792\n", 28, fhdlOut);
+            filePutString ("DC_Fehler_Leistungsred/DC_HYB_01;1792\n", 38, fhdlOut);
+            filePutString ("DC_Fehler_Leistungsred/DC1;1792\n", 32, fhdlOut);
+            filePutString ("DC_Fehler_Spannung;1793\n", 24, fhdlOut);
+            filePutString ("DC_Fehler_Spannung/DC_HYB_01;1793\n", 34, fhdlOut);
+            filePutString ("DC_Fehler_Spannung/DC1;1793\n", 28, fhdlOut);
+            filePutString ("DC_Fehler_intern;1794\n", 22, fhdlOut);
+            filePutString ("DC_Fehler_intern/DC_HYB_01;1794\n", 32, fhdlOut);
+            filePutString ("DC_Fehler_intern/DC1;1794\n", 26, fhdlOut);
+            filePutString ("DC_HYB_01_BZ;1795\n", 18, fhdlOut);
+            filePutString ("DC_HYB_01_BZ/DC_HYB_01;1795\n", 28, fhdlOut);
+            filePutString ("DC_HYB_01_BZ/DC1;1795\n", 22, fhdlOut);
+            filePutString ("DC_HYB_01_CHK;1796\n", 19, fhdlOut);
+            filePutString ("DC_HYB_01_CHK/DC_HYB_01;1796\n", 29, fhdlOut);
+            filePutString ("DC_HYB_01_CHK/DC1;1796\n", 23, fhdlOut);
+            filePutString ("DC_IstModus;1797\n", 17, fhdlOut);
+            filePutString ("DC_IstModus/DC_HYB_01;1797\n", 27, fhdlOut);
+            filePutString ("DC_IstModus/DC1;1797\n", 21, fhdlOut);
+            filePutString ("DC_IstSpannung_HV;1798\n", 23, fhdlOut);
+            filePutString ("DC_IstSpannung_HV/DC_HYB_01;1798\n", 33, fhdlOut);
+            filePutString ("DC_IstSpannung_HV/DC1;1798\n", 27, fhdlOut);
+            filePutString ("DC_IstStrom_HV;1799\n", 20, fhdlOut);
+            filePutString ("DC_IstStrom_HV/DC_HYB_01;1799\n", 30, fhdlOut);
+            filePutString ("DC_IstStrom_HV/DC1;1799\n", 24, fhdlOut);
+            filePutString ("DC_LangsRegelung_aktiv;1800\n", 28, fhdlOut);
+            filePutString ("DC_LangsRegelung_aktiv/DC_HYB_01;1800\n", 38, fhdlOut);
+            filePutString ("DC_LangsRegelung_aktiv/DC1;1800\n", 32, fhdlOut);
+            filePutString ("DC_SleepInd;1801\n", 17, fhdlOut);
+            filePutString ("DC_SleepInd/DC_HYB_01;1801\n", 27, fhdlOut);
+            filePutString ("DC_SleepInd/DC1;1801\n", 21, fhdlOut);
+            filePutString ("DC_Abregelung_SpannungLim_HV;2048\n", 34, fhdlOut);
+            filePutString ("DC_Abregelung_SpannungLim_HV/DC_HYB_02;2048\n", 44, fhdlOut);
+            filePutString ("DC_Abregelung_SpannungLim_HV/DC2;2048\n", 38, fhdlOut);
+            filePutString ("DC_Abregelung_SpannungLim_NV;2049\n", 34, fhdlOut);
+            filePutString ("DC_Abregelung_SpannungLim_NV/DC_HYB_02;2049\n", 44, fhdlOut);
+            filePutString ("DC_Abregelung_SpannungLim_NV/DC2;2049\n", 38, fhdlOut);
+            filePutString ("DC_Abregelung_StromLim_HV;2050\n", 31, fhdlOut);
+            filePutString ("DC_Abregelung_StromLim_HV/DC_HYB_02;2050\n", 41, fhdlOut);
+            filePutString ("DC_Abregelung_StromLim_HV/DC2;2050\n", 35, fhdlOut);
+            filePutString ("DC_Abregelung_StromLim_NV;2051\n", 31, fhdlOut);
+            filePutString ("DC_Abregelung_StromLim_NV/DC_HYB_02;2051\n", 41, fhdlOut);
+            filePutString ("DC_Abregelung_StromLim_NV/DC2;2051\n", 35, fhdlOut);
+            filePutString ("DC_Abregelung_Temperatur;2052\n", 30, fhdlOut);
+            filePutString ("DC_Abregelung_Temperatur/DC_HYB_02;2052\n", 40, fhdlOut);
+            filePutString ("DC_Abregelung_Temperatur/DC2;2052\n", 34, fhdlOut);
+            filePutString ("DC_Auslastungsgrad;2053\n", 24, fhdlOut);
+            filePutString ("DC_Auslastungsgrad/DC_HYB_02;2053\n", 34, fhdlOut);
+            filePutString ("DC_Auslastungsgrad/DC2;2053\n", 28, fhdlOut);
+            filePutString ("DC_HYB_02_BZ;2054\n", 18, fhdlOut);
+            filePutString ("DC_HYB_02_BZ/DC_HYB_02;2054\n", 28, fhdlOut);
+            filePutString ("DC_HYB_02_BZ/DC2;2054\n", 22, fhdlOut);
+            filePutString ("DC_HYB_02_CHK;2055\n", 19, fhdlOut);
+            filePutString ("DC_HYB_02_CHK/DC_HYB_02;2055\n", 29, fhdlOut);
+            filePutString ("DC_HYB_02_CHK/DC2;2055\n", 23, fhdlOut);
+            filePutString ("DC_IdentifikationsNr;2056\n", 26, fhdlOut);
+            filePutString ("DC_IdentifikationsNr/DC_HYB_02;2056\n", 36, fhdlOut);
+            filePutString ("DC_IdentifikationsNr/DC2;2056\n", 30, fhdlOut);
+            filePutString ("DC_IstSpannung_NV;2057\n", 23, fhdlOut);
+            filePutString ("DC_IstSpannung_NV/DC_HYB_02;2057\n", 33, fhdlOut);
+            filePutString ("DC_IstSpannung_NV/DC2;2057\n", 27, fhdlOut);
+            filePutString ("DC_IstStrom_NV;2058\n", 20, fhdlOut);
+            filePutString ("DC_IstStrom_NV/DC_HYB_02;2058\n", 30, fhdlOut);
+            filePutString ("DC_IstStrom_NV/DC2;2058\n", 24, fhdlOut);
+            filePutString ("DC_Temperatur;2059\n", 19, fhdlOut);
+            filePutString ("DC_Temperatur/DC_HYB_02;2059\n", 29, fhdlOut);
+            filePutString ("DC_Temperatur/DC2;2059\n", 23, fhdlOut);
+            filePutString ("EM_AR_aktiv;2304\n", 17, fhdlOut);
+            filePutString ("EM_AR_aktiv/EM_HYB_02;2304\n", 27, fhdlOut);
+            filePutString ("EM_AR_aktiv/EM2;2304\n", 21, fhdlOut);
+            filePutString ("EM_HYB_02_BZ;2305\n", 18, fhdlOut);
+            filePutString ("EM_HYB_02_BZ/EM_HYB_02;2305\n", 28, fhdlOut);
+            filePutString ("EM_HYB_02_BZ/EM2;2305\n", 22, fhdlOut);
+            filePutString ("EM_HYB_02_CHK;2306\n", 19, fhdlOut);
+            filePutString ("EM_HYB_02_CHK/EM_HYB_02;2306\n", 29, fhdlOut);
+            filePutString ("EM_HYB_02_CHK/EM2;2306\n", 23, fhdlOut);
+            filePutString ("EM_IstDrehzahl;2307\n", 20, fhdlOut);
+            filePutString ("EM_IstDrehzahl/EM_HYB_02;2307\n", 30, fhdlOut);
+            filePutString ("EM_IstDrehzahl/EM2;2307\n", 24, fhdlOut);
+            filePutString ("EM_IstMoment;2308\n", 18, fhdlOut);
+            filePutString ("EM_IstMoment/EM_HYB_02;2308\n", 28, fhdlOut);
+            filePutString ("EM_IstMoment/EM2;2308\n", 22, fhdlOut);
+            filePutString ("EM_IstMoment_ohneAR;2309\n", 25, fhdlOut);
+            filePutString ("EM_IstMoment_ohneAR/EM_HYB_02;2309\n", 35, fhdlOut);
+            filePutString ("EM_IstMoment_ohneAR/EM2;2309\n", 29, fhdlOut);
+            filePutString ("EM_Status_Spannungsfreiheit;2310\n", 33, fhdlOut);
+            filePutString ("EM_Status_Spannungsfreiheit/EM_HYB_02;2310\n", 43, fhdlOut);
+            filePutString ("EM_Status_Spannungsfreiheit/EM2;2310\n", 37, fhdlOut);
+            filePutString ("EM_Abregelung_MaxMoment;2560\n", 29, fhdlOut);
+            filePutString ("EM_Abregelung_MaxMoment/EM_HYB_03;2560\n", 39, fhdlOut);
+            filePutString ("EM_Abregelung_MaxMoment/EM3;2560\n", 33, fhdlOut);
+            filePutString ("EM_Abregelung_MaxSpannung;2561\n", 31, fhdlOut);
+            filePutString ("EM_Abregelung_MaxSpannung/EM_HYB_03;2561\n", 41, fhdlOut);
+            filePutString ("EM_Abregelung_MaxSpannung/EM3;2561\n", 35, fhdlOut);
+            filePutString ("EM_Abregelung_MaxStrom;2562\n", 28, fhdlOut);
+            filePutString ("EM_Abregelung_MaxStrom/EM_HYB_03;2562\n", 38, fhdlOut);
+            filePutString ("EM_Abregelung_MaxStrom/EM3;2562\n", 32, fhdlOut);
+            filePutString ("EM_Abregelung_MinMoment;2563\n", 29, fhdlOut);
+            filePutString ("EM_Abregelung_MinMoment/EM_HYB_03;2563\n", 39, fhdlOut);
+            filePutString ("EM_Abregelung_MinMoment/EM3;2563\n", 33, fhdlOut);
+            filePutString ("EM_Abregelung_MinSpannung;2564\n", 31, fhdlOut);
+            filePutString ("EM_Abregelung_MinSpannung/EM_HYB_03;2564\n", 41, fhdlOut);
+            filePutString ("EM_Abregelung_MinSpannung/EM3;2564\n", 35, fhdlOut);
+            filePutString ("EM_Abregelung_MinStrom;2565\n", 28, fhdlOut);
+            filePutString ("EM_Abregelung_MinStrom/EM_HYB_03;2565\n", 38, fhdlOut);
+            filePutString ("EM_Abregelung_MinStrom/EM3;2565\n", 32, fhdlOut);
+            filePutString ("EM_Abregelung_Temperatur;2566\n", 30, fhdlOut);
+            filePutString ("EM_Abregelung_Temperatur/EM_HYB_03;2566\n", 40, fhdlOut);
+            filePutString ("EM_Abregelung_Temperatur/EM3;2566\n", 34, fhdlOut);
+            filePutString ("EM_AnlernenElMotor_Anf;2567\n", 28, fhdlOut);
+            filePutString ("EM_AnlernenElMotor_Anf/EM_HYB_03;2567\n", 38, fhdlOut);
+            filePutString ("EM_AnlernenElMotor_Anf/EM3;2567\n", 32, fhdlOut);
+            filePutString ("EM_Freigabe_Verfallsinfo_WFS;2568\n", 34, fhdlOut);
+            filePutString ("EM_Freigabe_Verfallsinfo_WFS/EM_HYB_03;2568\n", 44, fhdlOut);
+            filePutString ("EM_Freigabe_Verfallsinfo_WFS/EM3;2568\n", 38, fhdlOut);
+            filePutString ("EM_HYB_03_BZ;2569\n", 18, fhdlOut);
+            filePutString ("EM_HYB_03_BZ/EM_HYB_03;2569\n", 28, fhdlOut);
+            filePutString ("EM_HYB_03_BZ/EM3;2569\n", 22, fhdlOut);
+            filePutString ("EM_HYB_03_CHK;2570\n", 19, fhdlOut);
+            filePutString ("EM_HYB_03_CHK/EM_HYB_03;2570\n", 29, fhdlOut);
+            filePutString ("EM_HYB_03_CHK/EM3;2570\n", 23, fhdlOut);
+            filePutString ("EM_IstSpannung;2571\n", 20, fhdlOut);
+            filePutString ("EM_IstSpannung/EM_HYB_03;2571\n", 30, fhdlOut);
+            filePutString ("EM_IstSpannung/EM3;2571\n", 24, fhdlOut);
+            filePutString ("EM_IstStrom;2572\n", 17, fhdlOut);
+            filePutString ("EM_IstStrom/EM_HYB_03;2572\n", 27, fhdlOut);
+            filePutString ("EM_IstStrom/EM3;2572\n", 21, fhdlOut);
+            filePutString ("EM_Kuehlpumpe_Status;2573\n", 26, fhdlOut);
+            filePutString ("EM_Kuehlpumpe_Status/EM_HYB_03;2573\n", 36, fhdlOut);
+            filePutString ("EM_Kuehlpumpe_Status/EM3;2573\n", 30, fhdlOut);
+            filePutString ("EM_Verlustleistung;2574\n", 24, fhdlOut);
+            filePutString ("EM_Verlustleistung/EM_HYB_03;2574\n", 34, fhdlOut);
+            filePutString ("EM_Verlustleistung/EM3;2574\n", 28, fhdlOut);
+            filePutString ("EM_HYB_04_BZ;2816\n", 18, fhdlOut);
+            filePutString ("EM_HYB_04_BZ/EM_HYB_04;2816\n", 28, fhdlOut);
+            filePutString ("EM_HYB_04_BZ/EM4;2816\n", 22, fhdlOut);
+            filePutString ("EM_HYB_04_CHK;2817\n", 19, fhdlOut);
+            filePutString ("EM_HYB_04_CHK/EM_HYB_04;2817\n", 29, fhdlOut);
+            filePutString ("EM_HYB_04_CHK/EM4;2817\n", 23, fhdlOut);
+            filePutString ("EM_MaxPred_Abknickdrehzahl;2818\n", 32, fhdlOut);
+            filePutString ("EM_MaxPred_Abknickdrehzahl/EM_HYB_04;2818\n", 42, fhdlOut);
+            filePutString ("EM_MaxPred_Abknickdrehzahl/EM4;2818\n", 36, fhdlOut);
+            filePutString ("EM_MaxPred_Moment;2819\n", 23, fhdlOut);
+            filePutString ("EM_MaxPred_Moment/EM_HYB_04;2819\n", 33, fhdlOut);
+            filePutString ("EM_MaxPred_Moment/EM4;2819\n", 27, fhdlOut);
+            filePutString ("EM_MinPred_Abknickdrehzahl;2820\n", 32, fhdlOut);
+            filePutString ("EM_MinPred_Abknickdrehzahl/EM_HYB_04;2820\n", 42, fhdlOut);
+            filePutString ("EM_MinPred_Abknickdrehzahl/EM4;2820\n", 36, fhdlOut);
+            filePutString ("EM_MinPred_Moment;2821\n", 23, fhdlOut);
+            filePutString ("EM_MinPred_Moment/EM_HYB_04;2821\n", 33, fhdlOut);
+            filePutString ("EM_MinPred_Moment/EM4;2821\n", 27, fhdlOut);
+            filePutString ("EM_Moment_HVVerbraucher;2822\n", 29, fhdlOut);
+            filePutString ("EM_Moment_HVVerbraucher/EM_HYB_04;2822\n", 39, fhdlOut);
+            filePutString ("EM_Moment_HVVerbraucher/EM4;2822\n", 33, fhdlOut);
+            filePutString ("EM_Fehler_Pilot;3072\n", 21, fhdlOut);
+            filePutString ("EM_Fehler_Pilot/EM_HYB_05;3072\n", 31, fhdlOut);
+            filePutString ("EM_Fehler_Pilot/EM5;3072\n", 25, fhdlOut);
+            filePutString ("EM_Fehlerlampe_Anf;3073\n", 24, fhdlOut);
+            filePutString ("EM_Fehlerlampe_Anf/EM_HYB_05;3073\n", 34, fhdlOut);
+            filePutString ("EM_Fehlerlampe_Anf/EM5;3073\n", 28, fhdlOut);
+            filePutString ("EM_HTKreis_Umgehung_Freigabe;3074\n", 34, fhdlOut);
+            filePutString ("EM_HTKreis_Umgehung_Freigabe/EM_HYB_05;3074\n", 44, fhdlOut);
+            filePutString ("EM_HTKreis_Umgehung_Freigabe/EM5;3074\n", 38, fhdlOut);
+            filePutString ("EM_HYB_05_BZ;3075\n", 18, fhdlOut);
+            filePutString ("EM_HYB_05_BZ/EM_HYB_05;3075\n", 28, fhdlOut);
+            filePutString ("EM_HYB_05_BZ/EM5;3075\n", 22, fhdlOut);
+            filePutString ("EM_HYB_05_CHK;3076\n", 19, fhdlOut);
+            filePutString ("EM_HYB_05_CHK/EM_HYB_05;3076\n", 29, fhdlOut);
+            filePutString ("EM_HYB_05_CHK/EM5;3076\n", 23, fhdlOut);
+            filePutString ("EM_OBD_Lampe_Anf;3077\n", 22, fhdlOut);
+            filePutString ("EM_OBD_Lampe_Anf/EM_HYB_05;3077\n", 32, fhdlOut);
+            filePutString ("EM_OBD_Lampe_Anf/EM5;3077\n", 26, fhdlOut);
+            filePutString ("EM_Temperatur_ElMotor;3078\n", 27, fhdlOut);
+            filePutString ("EM_Temperatur_ElMotor/EM_HYB_05;3078\n", 37, fhdlOut);
+            filePutString ("EM_Temperatur_ElMotor/EM5;3078\n", 31, fhdlOut);
+            filePutString ("EM_Temperatur_PWR;3079\n", 23, fhdlOut);
+            filePutString ("EM_Temperatur_PWR/EM_HYB_05;3079\n", 33, fhdlOut);
+            filePutString ("EM_Temperatur_PWR/EM5;3079\n", 27, fhdlOut);
+            filePutString ("EM_Temperatur_Rotor;3080\n", 25, fhdlOut);
+            filePutString ("EM_Temperatur_Rotor/EM_HYB_05;3080\n", 35, fhdlOut);
+            filePutString ("EM_Temperatur_Rotor/EM5;3080\n", 29, fhdlOut);
+            filePutString ("EM_Warnlampe_Anf;3081\n", 22, fhdlOut);
+            filePutString ("EM_Warnlampe_Anf/EM_HYB_05;3081\n", 32, fhdlOut);
+            filePutString ("EM_Warnlampe_Anf/EM5;3081\n", 26, fhdlOut);
+            filePutString ("EM_ErwGrenzen_aktiv;3328\n", 25, fhdlOut);
+            filePutString ("EM_ErwGrenzen_aktiv/EM_HYB_06;3328\n", 35, fhdlOut);
+            filePutString ("EM_ErwGrenzen_aktiv/EM6;3328\n", 29, fhdlOut);
+            filePutString ("EM_Fehler_ElAntriebAbschaltung;3329\n", 36, fhdlOut);
+            filePutString ("EM_Fehler_ElAntriebAbschaltung/EM_HYB_06;3329\n", 46, fhdlOut);
+            filePutString ("EM_Fehler_ElAntriebAbschaltung/EM6;3329\n", 40, fhdlOut);
+            filePutString ("EM_Fehler_ElAntriebFreilauf;3330\n", 33, fhdlOut);
+            filePutString ("EM_Fehler_ElAntriebFreilauf/EM_HYB_06;3330\n", 43, fhdlOut);
+            filePutString ("EM_Fehler_ElAntriebFreilauf/EM6;3330\n", 37, fhdlOut);
+            filePutString ("EM_Fehler_Leistungsred;3331\n", 28, fhdlOut);
+            filePutString ("EM_Fehler_Leistungsred/EM_HYB_06;3331\n", 38, fhdlOut);
+            filePutString ("EM_Fehler_Leistungsred/EM6;3331\n", 32, fhdlOut);
+            filePutString ("EM_Fehler_Notabschaltung;3332\n", 30, fhdlOut);
+            filePutString ("EM_Fehler_Notabschaltung/EM_HYB_06;3332\n", 40, fhdlOut);
+            filePutString ("EM_Fehler_Notabschaltung/EM6;3332\n", 34, fhdlOut);
+            filePutString ("EM_HV_betriebsbereit;3333\n", 26, fhdlOut);
+            filePutString ("EM_HV_betriebsbereit/EM_HYB_06;3333\n", 36, fhdlOut);
+            filePutString ("EM_HV_betriebsbereit/EM6;3333\n", 30, fhdlOut);
+            filePutString ("EM_HYB_06_BZ;3334\n", 18, fhdlOut);
+            filePutString ("EM_HYB_06_BZ/EM_HYB_06;3334\n", 28, fhdlOut);
+            filePutString ("EM_HYB_06_BZ/EM6;3334\n", 22, fhdlOut);
+            filePutString ("EM_HYB_06_CHK;3335\n", 19, fhdlOut);
+            filePutString ("EM_HYB_06_CHK/EM_HYB_06;3335\n", 29, fhdlOut);
+            filePutString ("EM_HYB_06_CHK/EM6;3335\n", 23, fhdlOut);
+            filePutString ("EM_Init_abgeschlossen;3336\n", 27, fhdlOut);
+            filePutString ("EM_Init_abgeschlossen/EM_HYB_06;3336\n", 37, fhdlOut);
+            filePutString ("EM_Init_abgeschlossen/EM6;3336\n", 31, fhdlOut);
+            filePutString ("EM_Istmodus;3337\n", 17, fhdlOut);
+            filePutString ("EM_Istmodus/EM_HYB_06;3337\n", 27, fhdlOut);
+            filePutString ("EM_Istmodus/EM6;3337\n", 21, fhdlOut);
+            filePutString ("EM_MaxDyn_Moment;3338\n", 22, fhdlOut);
+            filePutString ("EM_MaxDyn_Moment/EM_HYB_06;3338\n", 32, fhdlOut);
+            filePutString ("EM_MaxDyn_Moment/EM6;3338\n", 26, fhdlOut);
+            filePutString ("EM_Max_Moment;3339\n", 19, fhdlOut);
+            filePutString ("EM_Max_Moment/EM_HYB_06;3339\n", 29, fhdlOut);
+            filePutString ("EM_Max_Moment/EM6;3339\n", 23, fhdlOut);
+            filePutString ("EM_MinDyn_Moment;3340\n", 22, fhdlOut);
+            filePutString ("EM_MinDyn_Moment/EM_HYB_06;3340\n", 32, fhdlOut);
+            filePutString ("EM_MinDyn_Moment/EM6;3340\n", 26, fhdlOut);
+            filePutString ("EM_Min_Moment;3341\n", 19, fhdlOut);
+            filePutString ("EM_Min_Moment/EM_HYB_06;3341\n", 29, fhdlOut);
+            filePutString ("EM_Min_Moment/EM6;3341\n", 23, fhdlOut);
+            filePutString ("EM_SleepInd;3342\n", 17, fhdlOut);
+            filePutString ("EM_SleepInd/EM_HYB_06;3342\n", 27, fhdlOut);
+            filePutString ("EM_SleepInd/EM6;3342\n", 21, fhdlOut);
+            filePutString ("EM_IstDrehzahl;3584\n", 20, fhdlOut);
+            filePutString ("EM_IstDrehzahl/EM_HYB_07;3584\n", 30, fhdlOut);
+            filePutString ("EM_IstDrehzahl/EM7;3584\n", 24, fhdlOut);
+            filePutString ("GE_Fehler_HYB_AblaufStrg;3840\n", 30, fhdlOut);
+            filePutString ("GE_Fehler_HYB_AblaufStrg/Getriebe_HYB_01;3840\n", 46, fhdlOut);
+            filePutString ("GE_Fehler_HYB_AblaufStrg/GBXHC01;3840\n", 38, fhdlOut);
+            filePutString ("GE_Fehler_Zusatzoelpumpe;3841\n", 30, fhdlOut);
+            filePutString ("GE_Fehler_Zusatzoelpumpe/Getriebe_HYB_01;3841\n", 46, fhdlOut);
+            filePutString ("GE_Fehler_Zusatzoelpumpe/GBXHC01;3841\n", 38, fhdlOut);
+            filePutString ("GE_Fehler_oeffnen_K0;3842\n", 26, fhdlOut);
+            filePutString ("GE_Fehler_oeffnen_K0/Getriebe_HYB_01;3842\n", 42, fhdlOut);
+            filePutString ("GE_Fehler_oeffnen_K0/GBXHC01;3842\n", 34, fhdlOut);
+            filePutString ("GE_Fehler_oeffnen_K1;3843\n", 26, fhdlOut);
+            filePutString ("GE_Fehler_oeffnen_K1/Getriebe_HYB_01;3843\n", 42, fhdlOut);
+            filePutString ("GE_Fehler_oeffnen_K1/GBXHC01;3843\n", 34, fhdlOut);
+            filePutString ("GE_Fehler_schliessen_K0;3844\n", 29, fhdlOut);
+            filePutString ("GE_Fehler_schliessen_K0/Getriebe_HYB_01;3844\n", 45, fhdlOut);
+            filePutString ("GE_Fehler_schliessen_K0/GBXHC01;3844\n", 37, fhdlOut);
+            filePutString ("GE_IstMoment_K0;3845\n", 21, fhdlOut);
+            filePutString ("GE_IstMoment_K0/Getriebe_HYB_01;3845\n", 37, fhdlOut);
+            filePutString ("GE_IstMoment_K0/GBXHC01;3845\n", 29, fhdlOut);
+            filePutString ("GE_Istzustand;3846\n", 19, fhdlOut);
+            filePutString ("GE_Istzustand/Getriebe_HYB_01;3846\n", 35, fhdlOut);
+            filePutString ("GE_Istzustand/GBXHC01;3846\n", 27, fhdlOut);
+            filePutString ("GE_Kraftschluss_Ist;3847\n", 25, fhdlOut);
+            filePutString ("GE_Kraftschluss_Ist/Getriebe_HYB_01;3847\n", 41, fhdlOut);
+            filePutString ("GE_Kraftschluss_Ist/GBXHC01;3847\n", 33, fhdlOut);
+            filePutString ("GE_Kraftschluss_Ziel;3848\n", 26, fhdlOut);
+            filePutString ("GE_Kraftschluss_Ziel/Getriebe_HYB_01;3848\n", 42, fhdlOut);
+            filePutString ("GE_Kraftschluss_Ziel/GBXHC01;3848\n", 34, fhdlOut);
+            filePutString ("GE_Momentenreserve_EM;3849\n", 27, fhdlOut);
+            filePutString ("GE_Momentenreserve_EM/Getriebe_HYB_01;3849\n", 43, fhdlOut);
+            filePutString ("GE_Momentenreserve_EM/GBXHC01;3849\n", 35, fhdlOut);
+            filePutString ("GE_Status_Ablauf;3850\n", 22, fhdlOut);
+            filePutString ("GE_Status_Ablauf/Getriebe_HYB_01;3850\n", 38, fhdlOut);
+            filePutString ("GE_Status_Ablauf/GBXHC01;3850\n", 30, fhdlOut);
+            filePutString ("GE_Status_K0;3851\n", 18, fhdlOut);
+            filePutString ("GE_Status_K0/Getriebe_HYB_01;3851\n", 34, fhdlOut);
+            filePutString ("GE_Status_K0/GBXHC01;3851\n", 26, fhdlOut);
+            filePutString ("GE_Zielzustand;3852\n", 20, fhdlOut);
+            filePutString ("GE_Zielzustand/Getriebe_HYB_01;3852\n", 36, fhdlOut);
+            filePutString ("GE_Zielzustand/GBXHC01;3852\n", 28, fhdlOut);
+            filePutString ("Getriebe_HYB_01_BZ;3853\n", 24, fhdlOut);
+            filePutString ("Getriebe_HYB_01_BZ/Getriebe_HYB_01;3853\n", 40, fhdlOut);
+            filePutString ("Getriebe_HYB_01_BZ/GBXHC01;3853\n", 32, fhdlOut);
+            filePutString ("Getriebe_HYB_01_CRC;3854\n", 25, fhdlOut);
+            filePutString ("Getriebe_HYB_01_CRC/Getriebe_HYB_01;3854\n", 41, fhdlOut);
+            filePutString ("Getriebe_HYB_01_CRC/GBXHC01;3854\n", 33, fhdlOut);
+            filePutString ("GE_Drehzahleingriff_EM;4096\n", 28, fhdlOut);
+            filePutString ("GE_Drehzahleingriff_EM/Getriebe_HYB_02;4096\n", 44, fhdlOut);
+            filePutString ("GE_Drehzahleingriff_EM/GBXHC02;4096\n", 36, fhdlOut);
+            filePutString ("GE_Drehzahleingriff_VM;4097\n", 28, fhdlOut);
+            filePutString ("GE_Drehzahleingriff_VM/Getriebe_HYB_02;4097\n", 44, fhdlOut);
+            filePutString ("GE_Drehzahleingriff_VM/GBXHC02;4097\n", 36, fhdlOut);
+            filePutString ("GE_Momenteneingriff_EM;4098\n", 28, fhdlOut);
+            filePutString ("GE_Momenteneingriff_EM/Getriebe_HYB_02;4098\n", 44, fhdlOut);
+            filePutString ("GE_Momenteneingriff_EM/GBXHC02;4098\n", 36, fhdlOut);
+            filePutString ("GE_Momenteneingriff_VM;4099\n", 28, fhdlOut);
+            filePutString ("GE_Momenteneingriff_VM/Getriebe_HYB_02;4099\n", 44, fhdlOut);
+            filePutString ("GE_Momenteneingriff_VM/GBXHC02;4099\n", 36, fhdlOut);
+            filePutString ("GE_SollMoment_EM;4100\n", 22, fhdlOut);
+            filePutString ("GE_SollMoment_EM/Getriebe_HYB_02;4100\n", 38, fhdlOut);
+            filePutString ("GE_SollMoment_EM/GBXHC02;4100\n", 30, fhdlOut);
+            filePutString ("GE_SollMoment_VM;4101\n", 22, fhdlOut);
+            filePutString ("GE_SollMoment_VM/Getriebe_HYB_02;4101\n", 38, fhdlOut);
+            filePutString ("GE_SollMoment_VM/GBXHC02;4101\n", 30, fhdlOut);
+            filePutString ("GE_Solldrehzahl_EM;4102\n", 24, fhdlOut);
+            filePutString ("GE_Solldrehzahl_EM/Getriebe_HYB_02;4102\n", 40, fhdlOut);
+            filePutString ("GE_Solldrehzahl_EM/GBXHC02;4102\n", 32, fhdlOut);
+            filePutString ("GE_Solldrehzahl_VM;4103\n", 24, fhdlOut);
+            filePutString ("GE_Solldrehzahl_VM/Getriebe_HYB_02;4103\n", 40, fhdlOut);
+            filePutString ("GE_Solldrehzahl_VM/GBXHC02;4103\n", 32, fhdlOut);
+            filePutString ("Getriebe_HYB_02_BZ;4104\n", 24, fhdlOut);
+            filePutString ("Getriebe_HYB_02_BZ/Getriebe_HYB_02;4104\n", 40, fhdlOut);
+            filePutString ("Getriebe_HYB_02_BZ/GBXHC02;4104\n", 32, fhdlOut);
+            filePutString ("Getriebe_HYB_02_CRC;4105\n", 25, fhdlOut);
+            filePutString ("Getriebe_HYB_02_CRC/Getriebe_HYB_02;4105\n", 41, fhdlOut);
+            filePutString ("Getriebe_HYB_02_CRC/GBXHC02;4105\n", 33, fhdlOut);
+
+            fileClose(fhdlOut);
+        }
+    }
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  END frame and signal handle export for remote control of CAPL by Perl script              */
+    /* ------------------------------------------------------------------------------------------ */
+}
+/*@@end*/
+
+/*@@startStart:Start:*/
+on start
+{
+    int FrmIdx;
+    int LoopCnt;
+
+    /* start 10ms timer */
+    setTimer(Timer_10ms,TIMER_DURATION_10MS);
+
+    for (FrmIdx = 0; FrmIdx < FRM_NUM_MAX; FrmIdx++)
+    {
+        /* init frame schedule timer */
+        FrmSched_SchedTmr[FrmIdx] = 0;
+        
+        /* enable scheduler for all frames */
+        FrmSched_FrmEna[FrmIdx] = 1;
+
+        /* init message counter values */
+        Frm_MsgCounter[FrmIdx] = 0;
+
+        /* enable message counter increment */
+        Frm_MsgCounterEna[FrmIdx] = 1;
+
+        /* enable checksum calculation */
+        Frm_MsgChksmEna[FrmIdx] = 1;
+
+        /* init DLC error status to OK */
+        Frm_DLCOk[FrmIdx] = 1;
+    }
+
+    
+    /* init CAPL control related variables */
+    for (LoopCnt = 0; LoopCnt < CAPLCTRL_INPUTBUF_LEN; LoopCnt ++)
+    {
+        CaplCtrl_InputBuf[LoopCnt] = 0;
+    }
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  BEGIN variable initialization                                                             */
+    /* ------------------------------------------------------------------------------------------ */
+
+    FrmSched_CycleTime[FRM_HANDLE_BMS_HYB_02] = 10;
+    FrmSched_CycleTime[FRM_HANDLE_BMS_HYB_03] = 100;
+    FrmSched_CycleTime[FRM_HANDLE_BMS_HYB_04] = 20;
+    FrmSched_CycleTime[FRM_HANDLE_BMS_HYB_06] = 500;
+    FrmSched_CycleTime[FRM_HANDLE_BMS_HYB_08] = 100;
+    FrmSched_CycleTime[FRM_HANDLE_CCU_HYB_01] = 5;
+    FrmSched_CycleTime[FRM_HANDLE_CCU_HYB_02] = 1000;
+    FrmSched_CycleTime[FRM_HANDLE_DC_HYB_01] = 10;
+    FrmSched_CycleTime[FRM_HANDLE_DC_HYB_02] = 100;
+    FrmSched_CycleTime[FRM_HANDLE_EM_HYB_02] = 10;
+    FrmSched_CycleTime[FRM_HANDLE_EM_HYB_03] = 100;
+    FrmSched_CycleTime[FRM_HANDLE_EM_HYB_04] = 100;
+    FrmSched_CycleTime[FRM_HANDLE_EM_HYB_05] = 500;
+    FrmSched_CycleTime[FRM_HANDLE_EM_HYB_06] = 10;
+    FrmSched_CycleTime[FRM_HANDLE_EM_HYB_07] = 2;
+    FrmSched_CycleTime[FRM_HANDLE_Getriebe_HYB_01] = 10;
+    FrmSched_CycleTime[FRM_HANDLE_Getriebe_HYB_02] = 10;
+
+    Frm_DLC[FRM_HANDLE_BMS_HYB_02] = 8;
+    Frm_DLC[FRM_HANDLE_BMS_HYB_03] = 8;
+    Frm_DLC[FRM_HANDLE_BMS_HYB_04] = 8;
+    Frm_DLC[FRM_HANDLE_BMS_HYB_06] = 8;
+    Frm_DLC[FRM_HANDLE_BMS_HYB_08] = 8;
+    Frm_DLC[FRM_HANDLE_CCU_HYB_01] = 8;
+    Frm_DLC[FRM_HANDLE_CCU_HYB_02] = 8;
+    Frm_DLC[FRM_HANDLE_DC_HYB_01] = 8;
+    Frm_DLC[FRM_HANDLE_DC_HYB_02] = 8;
+    Frm_DLC[FRM_HANDLE_EM_HYB_02] = 8;
+    Frm_DLC[FRM_HANDLE_EM_HYB_03] = 8;
+    Frm_DLC[FRM_HANDLE_EM_HYB_04] = 8;
+    Frm_DLC[FRM_HANDLE_EM_HYB_05] = 8;
+    Frm_DLC[FRM_HANDLE_EM_HYB_06] = 8;
+    Frm_DLC[FRM_HANDLE_EM_HYB_07] = 2;
+    Frm_DLC[FRM_HANDLE_Getriebe_HYB_01] = 8;
+    Frm_DLC[FRM_HANDLE_Getriebe_HYB_02] = 8;
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  END variable initialization                                                               */
+    /* ------------------------------------------------------------------------------------------ */
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  BEGIN OnStart                                                                             */
+    /* ------------------------------------------------------------------------------------------ */
+
+    write("");
+    write("#===================================================================");
+    write("# CAPL program hcan_v6x.can");
+    write("# Generated by:  dbc2capl.pl v1.4.6 (dbcparser.pm 1.3.0)");
+    write("# CAPL template: dbc2capl_template.can v1.0.2");
+    write("# Generated on:  01.07.2011 11:03:13");
+    write("# DBC file:      hcan_v6x.dbc");
+    write("#===================================================================");
+    write("");
+
+
+    /* ------------------------------------------------------------------------------------------ */
+    /*  END OnStart                                                                               */
+    /* ------------------------------------------------------------------------------------------ */
+
+    /* HelpFrameList(); */
+
+    write("Hit '?' to get list of all available frames ...");
+    ShowPrompt();
+}
+/*@@end*/
+
+/*@@key:*:*/
+on key *
+{
+    int InputVal = 0;
+    int LevelActvOld;
+    char CharBufTmp[CAPLCTRL_CHARBUF_LEN];
+    
+    /* store current input level to be able to check for level change */
+    LevelActvOld = CaplCtrl_LevelActv;
+
+    /* empty string */
+    CharBufTmp[0] = 0;
+
+
+    switch (this)
+    {
+        /* --- numeric input -------------------------------------------------------------------- */
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        {
+            /* copy input to input buffer */
+            CaplCtrl_InputBuf[CaplCtrl_InputIdx] = this;
+            
+            /* increment to next buffer value */
+            CaplCtrl_InputIdx ++;
+
+            /* limit input to buffer length */
+            if (CaplCtrl_InputIdx >= CAPLCTRL_INPUTBUF_LEN)
+            {
+                CaplCtrl_InputIdx = CAPLCTRL_INPUTBUF_LEN - 1;
+            }
+
+            /* make sure that string is terminated properly */
+            CaplCtrl_InputBuf[CaplCtrl_InputIdx] = 0;
+        }
+        break;
+
+        /* --- numeric input -------------------------------------------------------------------- */
+        case KEY_ENTER:
+        {
+            if (CaplCtrl_InputIdx > 0)
+            {
+                InputVal = atol(CaplCtrl_InputBuf);
+            
+                /* reset input variables */
+                CaplCtrl_InputIdx = 0;
+                CaplCtrl_InputBuf[0] = 0;
+
+                switch (CaplCtrl_LevelActv)
+                {
+                    /* currently no level selected */
+                    case CAPLCTRL_LEVEL_NOSEL:
+                    {
+                        /* select frame only if selection was valid */
+                        if (InputVal < FRM_NUM_MAX)
+                        {
+                            /* switch to next level */
+                            CaplCtrl_LevelActv = CAPLCTRL_LEVEL_FRAME;
+
+                            /* select frame */
+                            CaplCtrl_FrameActv = InputVal;
+                        }
+                        break;
+                    }
+
+                    case CAPLCTRL_LEVEL_FRAME:
+                    {
+                        /* switch to next level */
+                        CaplCtrl_LevelActv = CAPLCTRL_LEVEL_SIGNAL;
+                
+                        /* select signal */
+                        CaplCtrl_SignalActv = InputVal;
+                        break;
+                    }
+            
+                    case CAPLCTRL_LEVEL_SIGNAL:
+                    {
+                        /* set signal to input value */
+                        CaplCtrl_InputValue = InputVal;
+                        Frm_SetSignal(CaplCtrl_FrameActv, CaplCtrl_SignalActv, CaplCtrl_InputValue);
+                        break;
+                    }
+                }
+            }
+        }
+        break;
+
+        case KEY_LEVEL_DOWN:
+        {
+            switch (CaplCtrl_LevelActv)
+            {
+                /* currently no level selected */
+                case CAPLCTRL_LEVEL_NOSEL:
+                {
+                    /* keep level, do nothing */
+                    break;
+                }
+
+                case CAPLCTRL_LEVEL_FRAME:
+                {
+                    /* switch back to above level */
+                    CaplCtrl_LevelActv = CAPLCTRL_LEVEL_NOSEL;
+                    break;
+                }
+        
+                case CAPLCTRL_LEVEL_SIGNAL:
+                {
+                    /* switch back to above level */
+                    CaplCtrl_LevelActv = CAPLCTRL_LEVEL_FRAME;
+                    break;
+                }
+            }
+        }
+        break;
+
+        case KEY_BACKSPACE:
+        {
+            /* update index */
+            if (CaplCtrl_InputIdx > 0)
+            {
+                CaplCtrl_InputIdx --;
+            }
+            else
+            {
+                CaplCtrl_InputIdx = 0;
+            }
+
+            /* remove last character */
+            CaplCtrl_InputBuf[CaplCtrl_InputIdx] = 0;
+        }
+        break;
+
+        case KEY_TIMEOUT:
+        {
+            switch (CaplCtrl_LevelActv)
+            {
+                /* currently no level selected */
+                case CAPLCTRL_LEVEL_NOSEL:
+                {
+                    /* enable/disable all frames */
+                    if (FrmSched_FrmEna[0] != 0)
+                    {
+                        FrmSch_DisableAllFrames();
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "all frames disabled!");
+                    }
+                    else
+                    {
+                        FrmSch_EnableAllFrames();
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "all frames enabled!");
+                    }
+                    CaplCtrl_PromptMode = CAPLCTRL_PROMPTMODE_CHAR;
+                    break;
+                }
+
+                case CAPLCTRL_LEVEL_FRAME:
+                case CAPLCTRL_LEVEL_SIGNAL:
+                {
+                    /* toggle timeout status for selected frame */
+                    FrmSched_FrmEna[CaplCtrl_FrameActv] ^= 1;
+                    
+                    /* get current frame status */
+                    snprintf(CharBufTmp,
+                             CAPLCTRL_CHARBUF_LEN,
+                             "[tx=%d dlc=%d cs=%d cnt=%d]",
+                             FrmSched_FrmEna[CaplCtrl_FrameActv],
+                             Frm_DLCOk[CaplCtrl_FrameActv],
+                             Frm_MsgChksmEna[CaplCtrl_FrameActv],
+                             Frm_MsgCounterEna[CaplCtrl_FrameActv]);
+
+                    if (FrmSched_FrmEna[CaplCtrl_FrameActv] != 0)
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s TX enabled!",
+                                 CharBufTmp);
+                    }
+                    else
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s TX disabled!",
+                                 CharBufTmp);
+                    }
+
+                    CaplCtrl_PromptMode = CAPLCTRL_PROMPTMODE_CHAR;
+                    break;
+                }
+            }
+            break;
+        }
+
+        case KEY_MSGCNT:
+        {
+            switch (CaplCtrl_LevelActv)
+            {
+                /* currently no level selected */
+                case CAPLCTRL_LEVEL_NOSEL:
+                {
+                    /* keep level, do nothing */
+                    break;
+                }
+
+                case CAPLCTRL_LEVEL_FRAME:
+                case CAPLCTRL_LEVEL_SIGNAL:
+                {
+                    /* toggle message counter enable status */
+                    Frm_MsgCounterEna[CaplCtrl_FrameActv] ^= 1;
+
+                    /* get current frame status */
+                    snprintf(CharBufTmp,
+                             CAPLCTRL_CHARBUF_LEN,
+                             "[tx=%d dlc=%d cs=%d cnt=%d]",
+                             FrmSched_FrmEna[CaplCtrl_FrameActv],
+                             Frm_DLCOk[CaplCtrl_FrameActv],
+                             Frm_MsgChksmEna[CaplCtrl_FrameActv],
+                             Frm_MsgCounterEna[CaplCtrl_FrameActv]);
+
+                    if (Frm_MsgCounterEna[CaplCtrl_FrameActv] != 0)
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s Message counter running!",
+                                 CharBufTmp);
+                    }
+                    else
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s Message counter stopped!",
+                                 CharBufTmp);
+                    }
+
+                    CaplCtrl_PromptMode = CAPLCTRL_PROMPTMODE_CHAR;
+                    break;
+                }
+            }
+            break;
+        }
+
+        case KEY_CHKSM:
+        {
+            switch (CaplCtrl_LevelActv)
+            {
+                /* currently no level selected */
+                case CAPLCTRL_LEVEL_NOSEL:
+                {
+                    /* keep level, do nothing */
+                    break;
+                }
+
+                case CAPLCTRL_LEVEL_FRAME:
+                case CAPLCTRL_LEVEL_SIGNAL:
+                {
+                    /* toggle checksum enable status */
+                    Frm_MsgChksmEna[CaplCtrl_FrameActv] ^= 1;
+
+                    /* get current frame status */
+                    snprintf(CharBufTmp,
+                             CAPLCTRL_CHARBUF_LEN,
+                             "[tx=%d dlc=%d cs=%d cnt=%d]",
+                             FrmSched_FrmEna[CaplCtrl_FrameActv],
+                             Frm_DLCOk[CaplCtrl_FrameActv],
+                             Frm_MsgChksmEna[CaplCtrl_FrameActv],
+                             Frm_MsgCounterEna[CaplCtrl_FrameActv]);
+
+                    if (Frm_MsgChksmEna[CaplCtrl_FrameActv] != 0)
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s Checksum calculation enabled!",
+                                 CharBufTmp);
+                    }
+                    else
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s Checksum calculation disabled!",
+                                 CharBufTmp);
+                    }
+
+                    CaplCtrl_PromptMode = CAPLCTRL_PROMPTMODE_CHAR;
+                    break;
+                }
+            }
+            break;
+        }
+
+        case KEY_DLC:
+        {
+            switch (CaplCtrl_LevelActv)
+            {
+                /* currently no level selected */
+                case CAPLCTRL_LEVEL_NOSEL:
+                {
+                    /* keep level, do nothing */
+                    break;
+                }
+
+                case CAPLCTRL_LEVEL_FRAME:
+                case CAPLCTRL_LEVEL_SIGNAL:
+                {
+                    /* toggle DLC ok status */
+                    Frm_DLCOk[CaplCtrl_FrameActv] ^= 1;
+
+                    /* get current frame status */
+                    snprintf(CharBufTmp,
+                             CAPLCTRL_CHARBUF_LEN,
+                             "[tx=%d dlc=%d cs=%d cnt=%d]",
+                             FrmSched_FrmEna[CaplCtrl_FrameActv],
+                             Frm_DLCOk[CaplCtrl_FrameActv],
+                             Frm_MsgChksmEna[CaplCtrl_FrameActv],
+                             Frm_MsgCounterEna[CaplCtrl_FrameActv]);
+
+                    if (Frm_DLCOk[CaplCtrl_FrameActv] != 0)
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s correct DLC!",
+                                 CharBufTmp);
+
+                        Frm_SetDLC (CaplCtrl_FrameActv, Frm_DLC[CaplCtrl_FrameActv]);
+                    }
+                    else
+                    {
+                        snprintf(CaplCtrl_CharBuf,
+                                 CAPLCTRL_CHARBUF_LEN,
+                                 "%s incorrect DLC!",
+                                 CharBufTmp);
+
+                        Frm_SetDLC (CaplCtrl_FrameActv, 0);
+                    }
+
+
+                    CaplCtrl_PromptMode = CAPLCTRL_PROMPTMODE_CHAR;
+                    break;
+                }
+            }
+            break;
+        }
+        
+        case KEY_HELP:
+        {
+            CaplCtrl_LevelChanged();
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+
+    if (LevelActvOld != CaplCtrl_LevelActv)
+    {
+        //CaplCtrl_LevelChanged();
+    }
+
+    ShowPrompt();
+    CaplCtrl_PromptMode = CAPLCTRL_PROMPTMODE_NUM;
+}
+/*@@end*/
+
+/*@@caplFunc:CaplCtrl_LevelChanged():*/
+CaplCtrl_LevelChanged ()
+{
+    switch(CaplCtrl_LevelActv)
+    {
+        case CAPLCTRL_LEVEL_NOSEL:
+        {
+           HelpFrameList();
+        }
+        break;
+
+        case CAPLCTRL_LEVEL_FRAME:
+        {
+            HelpSignalList();
+        }
+        break;
+
+        case CAPLCTRL_LEVEL_SIGNAL:
+        {
+           
+        }
+        break;
+    }
+}
+/*@@end*/
+
+/*@@msg:*:*/
+on message *
+{
+   output(this);
+}
+/*@@end*/
+
+/*@@caplFunc:FrmSched_SendFrame(int):*/
+FrmSched_SendFrame (int FrmIdx)
+{
+    switch (FrmIdx)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+            MsgObj_BMS_HYB_02.BMS_HYB_02_BZ = Frm_CalcMsgCounter(FRM_HANDLE_BMS_HYB_02);
+            MsgObj_BMS_HYB_02.BMS_HYB_02_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_BMS_HYB_02, MsgObj_BMS_HYB_02, 0);
+            output(MsgObj_BMS_HYB_02);
+            break;
+        case FRM_HANDLE_BMS_HYB_03:
+            MsgObj_BMS_HYB_03.BMS_HYB_03_BZ = Frm_CalcMsgCounter(FRM_HANDLE_BMS_HYB_03);
+            MsgObj_BMS_HYB_03.BMS_HYB_03_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_BMS_HYB_03, MsgObj_BMS_HYB_03, 0);
+            output(MsgObj_BMS_HYB_03);
+            break;
+        case FRM_HANDLE_BMS_HYB_04:
+            MsgObj_BMS_HYB_04.BMS_HYB_04_BZ = Frm_CalcMsgCounter(FRM_HANDLE_BMS_HYB_04);
+            MsgObj_BMS_HYB_04.BMS_HYB_04_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_BMS_HYB_04, MsgObj_BMS_HYB_04, 0);
+            output(MsgObj_BMS_HYB_04);
+            break;
+        case FRM_HANDLE_BMS_HYB_06:
+            MsgObj_BMS_HYB_06.BMS_HYB_06_BZ = Frm_CalcMsgCounter(FRM_HANDLE_BMS_HYB_06);
+            MsgObj_BMS_HYB_06.BMS_HYB_06_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_BMS_HYB_06, MsgObj_BMS_HYB_06, 0);
+            output(MsgObj_BMS_HYB_06);
+            break;
+        case FRM_HANDLE_BMS_HYB_08:
+            output(MsgObj_BMS_HYB_08);
+            break;
+        case FRM_HANDLE_CCU_HYB_01:
+            MsgObj_CCU_HYB_01.CCU_HYB_01_BZ = Frm_CalcMsgCounter(FRM_HANDLE_CCU_HYB_01);
+            MsgObj_CCU_HYB_01.CCU_HYB_01_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_CCU_HYB_01, MsgObj_CCU_HYB_01, 0);
+            output(MsgObj_CCU_HYB_01);
+            break;
+        case FRM_HANDLE_CCU_HYB_02:
+            MsgObj_CCU_HYB_02.CCU_HYB_02_BZ = Frm_CalcMsgCounter(FRM_HANDLE_CCU_HYB_02);
+            MsgObj_CCU_HYB_02.CCU_HYB_02_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_CCU_HYB_02, MsgObj_CCU_HYB_02, 0);
+            output(MsgObj_CCU_HYB_02);
+            break;
+        case FRM_HANDLE_DC_HYB_01:
+            MsgObj_DC_HYB_01.DC_HYB_01_BZ = Frm_CalcMsgCounter(FRM_HANDLE_DC_HYB_01);
+            MsgObj_DC_HYB_01.DC_HYB_01_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_DC_HYB_01, MsgObj_DC_HYB_01, 0);
+            output(MsgObj_DC_HYB_01);
+            break;
+        case FRM_HANDLE_DC_HYB_02:
+            MsgObj_DC_HYB_02.DC_HYB_02_BZ = Frm_CalcMsgCounter(FRM_HANDLE_DC_HYB_02);
+            MsgObj_DC_HYB_02.DC_HYB_02_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_DC_HYB_02, MsgObj_DC_HYB_02, 0);
+            output(MsgObj_DC_HYB_02);
+            break;
+        case FRM_HANDLE_EM_HYB_02:
+            MsgObj_EM_HYB_02.EM_HYB_02_BZ = Frm_CalcMsgCounter(FRM_HANDLE_EM_HYB_02);
+            MsgObj_EM_HYB_02.EM_HYB_02_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_EM_HYB_02, MsgObj_EM_HYB_02, 0);
+            output(MsgObj_EM_HYB_02);
+            break;
+        case FRM_HANDLE_EM_HYB_03:
+            MsgObj_EM_HYB_03.EM_HYB_03_BZ = Frm_CalcMsgCounter(FRM_HANDLE_EM_HYB_03);
+            MsgObj_EM_HYB_03.EM_HYB_03_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_EM_HYB_03, MsgObj_EM_HYB_03, 0);
+            output(MsgObj_EM_HYB_03);
+            break;
+        case FRM_HANDLE_EM_HYB_04:
+            MsgObj_EM_HYB_04.EM_HYB_04_BZ = Frm_CalcMsgCounter(FRM_HANDLE_EM_HYB_04);
+            MsgObj_EM_HYB_04.EM_HYB_04_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_EM_HYB_04, MsgObj_EM_HYB_04, 0);
+            output(MsgObj_EM_HYB_04);
+            break;
+        case FRM_HANDLE_EM_HYB_05:
+            MsgObj_EM_HYB_05.EM_HYB_05_BZ = Frm_CalcMsgCounter(FRM_HANDLE_EM_HYB_05);
+            MsgObj_EM_HYB_05.EM_HYB_05_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_EM_HYB_05, MsgObj_EM_HYB_05, 0);
+            output(MsgObj_EM_HYB_05);
+            break;
+        case FRM_HANDLE_EM_HYB_06:
+            MsgObj_EM_HYB_06.EM_HYB_06_BZ = Frm_CalcMsgCounter(FRM_HANDLE_EM_HYB_06);
+            MsgObj_EM_HYB_06.EM_HYB_06_CHK = Frm_CalcChecksumXOR(FRM_HANDLE_EM_HYB_06, MsgObj_EM_HYB_06, 0);
+            output(MsgObj_EM_HYB_06);
+            break;
+        case FRM_HANDLE_EM_HYB_07:
+            output(MsgObj_EM_HYB_07);
+            break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+            MsgObj_Getriebe_HYB_01.Getriebe_HYB_01_BZ = Frm_CalcMsgCounter(FRM_HANDLE_Getriebe_HYB_01);
+            MsgObj_Getriebe_HYB_01.Getriebe_HYB_01_CRC = Frm_CalcChecksumCRC8Id(FRM_HANDLE_Getriebe_HYB_01, MsgObj_Getriebe_HYB_01);
+            output(MsgObj_Getriebe_HYB_01);
+            break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+            MsgObj_Getriebe_HYB_02.Getriebe_HYB_02_BZ = Frm_CalcMsgCounter(FRM_HANDLE_Getriebe_HYB_02);
+            MsgObj_Getriebe_HYB_02.Getriebe_HYB_02_CRC = Frm_CalcChecksumCRC8Id(FRM_HANDLE_Getriebe_HYB_02, MsgObj_Getriebe_HYB_02);
+            output(MsgObj_Getriebe_HYB_02);
+            break;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_SetDLC(long, long):*/
+Frm_SetDLC (long FrmIdx, long FrmDLC)
+{
+    switch (FrmIdx)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+            MsgObj_BMS_HYB_02.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_BMS_HYB_03:
+            MsgObj_BMS_HYB_03.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_BMS_HYB_04:
+            MsgObj_BMS_HYB_04.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_BMS_HYB_06:
+            MsgObj_BMS_HYB_06.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_BMS_HYB_08:
+            MsgObj_BMS_HYB_08.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_CCU_HYB_01:
+            MsgObj_CCU_HYB_01.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_CCU_HYB_02:
+            MsgObj_CCU_HYB_02.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_DC_HYB_01:
+            MsgObj_DC_HYB_01.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_DC_HYB_02:
+            MsgObj_DC_HYB_02.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_EM_HYB_02:
+            MsgObj_EM_HYB_02.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_EM_HYB_03:
+            MsgObj_EM_HYB_03.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_EM_HYB_04:
+            MsgObj_EM_HYB_04.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_EM_HYB_05:
+            MsgObj_EM_HYB_05.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_EM_HYB_06:
+            MsgObj_EM_HYB_06.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_EM_HYB_07:
+            MsgObj_EM_HYB_07.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+            MsgObj_Getriebe_HYB_01.DLC = FrmDLC;
+            break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+            MsgObj_Getriebe_HYB_02.DLC = FrmDLC;
+            break;
+    }
+}
+/*@@end*/
+
+/*@@busOff:BusOff:*/
+on busOff
+{
+    resetCan();
+}
+/*@@end*/
+
+/*@@caplFunc:HelpCommands():*/
+HelpCommands ()
+{
+    write("-------------------------------------------");
+    write("Supported commands:");
+    write("[a] ... toggle timeout error status");
+    write("[b] ... toggle message counter error status");
+    write("[c] ... toggle checksumm error status");
+    write("[d] ... toggle DLC error status");
+    write("[.] ... one level up in command prompt");
+    write("-------------------------------------------");
+}
+
+/*@@caplFunc:HelpFrameList():*/
+HelpFrameList ()
+{
+    HelpCommands();
+
+    write("[0] ... BMS_HYB_02");
+    write("[1] ... BMS_HYB_03");
+    write("[2] ... BMS_HYB_04");
+    write("[3] ... BMS_HYB_06");
+    write("[4] ... BMS_HYB_08");
+    write("[5] ... CCU_HYB_01");
+    write("[6] ... CCU_HYB_02");
+    write("[7] ... DC_HYB_01");
+    write("[8] ... DC_HYB_02");
+    write("[9] ... EM_HYB_02");
+    write("[10] ... EM_HYB_03");
+    write("[11] ... EM_HYB_04");
+    write("[12] ... EM_HYB_05");
+    write("[13] ... EM_HYB_06");
+    write("[14] ... EM_HYB_07");
+    write("[15] ... Getriebe_HYB_01");
+    write("[16] ... Getriebe_HYB_02");
+
+}
+
+/*@@caplFunc:HelpSignalList():*/
+HelpSignalList ()
+{
+    HelpCommands();
+
+    switch(CaplCtrl_FrameActv)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+        {
+            write("[0] ... BMS_Fehler_HS_offen");
+            write("[1] ... BMS_Fehler_HS_verschweisst");
+            write("[2] ... BMS_Fehler_HVBattAbschaltung");
+            write("[3] ... BMS_Fehler_HVBattAbschaltung_Anf");
+            write("[4] ... BMS_Fehler_Isolation");
+            write("[5] ... BMS_Fehler_Kaltstartleistung");
+            write("[6] ... BMS_Fehler_Leistungsred");
+            write("[7] ... BMS_Fehler_Notabschaltung_Crash");
+            write("[8] ... BMS_Fehler_Notabschaltung_Pilot");
+            write("[9] ... BMS_Fehler_Pilot");
+            write("[10] ... BMS_Fehler_Sicherung");
+            write("[11] ... BMS_HYB_02_BZ");
+            write("[12] ... BMS_HYB_02_CHK");
+            write("[13] ... BMS_Init_abgeschlossen");
+            write("[14] ... BMS_IsoMessungAktiv");
+            write("[15] ... BMS_IstModus");
+            write("[16] ... BMS_IstSpannung");
+            write("[17] ... BMS_IstStrom");
+            write("[18] ... BMS_SleepInd");
+            write("[19] ... BMS_Status_ServiceDisconnect");
+            write("[20] ... BMS_Status_Spannungsfreiheit");
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_03:
+        {
+            write("[0] ... BMS_BattLuefterGeschw_rel");
+            write("[1] ... BMS_HYB_03_BZ");
+            write("[2] ... BMS_HYB_03_CHK");
+            write("[3] ... BMS_MaxPred_EntladeStrom");
+            write("[4] ... BMS_MaxPred_LadeStrom");
+            write("[5] ... BMS_MinPred_EntladeSpannung");
+            write("[6] ... BMS_MinPred_LadeSpannung");
+            write("[7] ... BMS_SOC");
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_04:
+        {
+            write("[0] ... BMS_ErwGrenzen_aktiv");
+            write("[1] ... BMS_HYB_04_BZ");
+            write("[2] ... BMS_HYB_04_CHK");
+            write("[3] ... BMS_MaxDyn_EntladeStrom");
+            write("[4] ... BMS_MaxDyn_LadeStrom");
+            write("[5] ... BMS_MinDyn_EntladeSpannung");
+            write("[6] ... BMS_MinDyn_LadeSpannung");
+            write("[7] ... BMS_Spannung_ZwKr");
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_06:
+        {
+            write("[0] ... BMS_Ausgleichsladung_Anf");
+            write("[1] ... BMS_Fehlerlampe_Anf");
+            write("[2] ... BMS_HYB_06_BZ");
+            write("[3] ... BMS_HYB_06_CHK");
+            write("[4] ... BMS_Max_LadeSpannung");
+            write("[5] ... BMS_Min_EntladeSpannung");
+            write("[6] ... BMS_OBD_Lampe_Anf");
+            write("[7] ... BMS_Temperatur");
+            write("[8] ... BMS_Temperatur_Ansaugluft");
+            write("[9] ... BMS_Umluftklappe_Anf");
+            write("[10] ... BMS_Warnlampe_Anf");
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_08:
+        {
+            write("[0] ... BMS_Anf_Mo_Luefter");
+            write("[1] ... BMS_DCLS_Spannung");
+            write("[2] ... BMS_HVBatt_Perf_Ind");
+            write("[3] ... BMS_SOC_HiRes");
+            write("[4] ... BMS_Status_DCLS");
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_01:
+        {
+            write("[0] ... CCU_Fehler_CAN");
+            write("[1] ... CCU_Fehler_HW");
+            write("[2] ... CCU_Fehler_Temperatur");
+            write("[3] ... CCU_Fehler_Unterspannung");
+            write("[4] ... CCU_Fehler_mechanisch");
+            write("[5] ... CCU_HYB_01_BZ");
+            write("[6] ... CCU_HYB_01_CHK");
+            write("[7] ... CCU_IstDruck");
+            write("[8] ... CCU_IstPosition");
+            write("[9] ... CCU_IstWinkelGeschw");
+            write("[10] ... CCU_Istmodus");
+            write("[11] ... CCU_SleepInd");
+            write("[12] ... CCU_Strom_momentbildend");
+            write("[13] ... CCU_Warnung_Temperatur");
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_02:
+        {
+            write("[0] ... CCU_HW_Version");
+            write("[1] ... CCU_HYB_02_BZ");
+            write("[2] ... CCU_HYB_02_CHK");
+            write("[3] ... CCU_Medium");
+            write("[4] ... CCU_SW_Version");
+            write("[5] ... CCU_Seriennummer");
+            write("[6] ... CCU_Teilenummer");
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_01:
+        {
+            write("[0] ... DC_Fehler_Leistungsred");
+            write("[1] ... DC_Fehler_Spannung");
+            write("[2] ... DC_Fehler_intern");
+            write("[3] ... DC_HYB_01_BZ");
+            write("[4] ... DC_HYB_01_CHK");
+            write("[5] ... DC_IstModus");
+            write("[6] ... DC_IstSpannung_HV");
+            write("[7] ... DC_IstStrom_HV");
+            write("[8] ... DC_LangsRegelung_aktiv");
+            write("[9] ... DC_SleepInd");
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_02:
+        {
+            write("[0] ... DC_Abregelung_SpannungLim_HV");
+            write("[1] ... DC_Abregelung_SpannungLim_NV");
+            write("[2] ... DC_Abregelung_StromLim_HV");
+            write("[3] ... DC_Abregelung_StromLim_NV");
+            write("[4] ... DC_Abregelung_Temperatur");
+            write("[5] ... DC_Auslastungsgrad");
+            write("[6] ... DC_HYB_02_BZ");
+            write("[7] ... DC_HYB_02_CHK");
+            write("[8] ... DC_IdentifikationsNr");
+            write("[9] ... DC_IstSpannung_NV");
+            write("[10] ... DC_IstStrom_NV");
+            write("[11] ... DC_Temperatur");
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_02:
+        {
+            write("[0] ... EM_AR_aktiv");
+            write("[1] ... EM_HYB_02_BZ");
+            write("[2] ... EM_HYB_02_CHK");
+            write("[3] ... EM_IstDrehzahl");
+            write("[4] ... EM_IstMoment");
+            write("[5] ... EM_IstMoment_ohneAR");
+            write("[6] ... EM_Status_Spannungsfreiheit");
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_03:
+        {
+            write("[0] ... EM_Abregelung_MaxMoment");
+            write("[1] ... EM_Abregelung_MaxSpannung");
+            write("[2] ... EM_Abregelung_MaxStrom");
+            write("[3] ... EM_Abregelung_MinMoment");
+            write("[4] ... EM_Abregelung_MinSpannung");
+            write("[5] ... EM_Abregelung_MinStrom");
+            write("[6] ... EM_Abregelung_Temperatur");
+            write("[7] ... EM_AnlernenElMotor_Anf");
+            write("[8] ... EM_Freigabe_Verfallsinfo_WFS");
+            write("[9] ... EM_HYB_03_BZ");
+            write("[10] ... EM_HYB_03_CHK");
+            write("[11] ... EM_IstSpannung");
+            write("[12] ... EM_IstStrom");
+            write("[13] ... EM_Kuehlpumpe_Status");
+            write("[14] ... EM_Verlustleistung");
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_04:
+        {
+            write("[0] ... EM_HYB_04_BZ");
+            write("[1] ... EM_HYB_04_CHK");
+            write("[2] ... EM_MaxPred_Abknickdrehzahl");
+            write("[3] ... EM_MaxPred_Moment");
+            write("[4] ... EM_MinPred_Abknickdrehzahl");
+            write("[5] ... EM_MinPred_Moment");
+            write("[6] ... EM_Moment_HVVerbraucher");
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_05:
+        {
+            write("[0] ... EM_Fehler_Pilot");
+            write("[1] ... EM_Fehlerlampe_Anf");
+            write("[2] ... EM_HTKreis_Umgehung_Freigabe");
+            write("[3] ... EM_HYB_05_BZ");
+            write("[4] ... EM_HYB_05_CHK");
+            write("[5] ... EM_OBD_Lampe_Anf");
+            write("[6] ... EM_Temperatur_ElMotor");
+            write("[7] ... EM_Temperatur_PWR");
+            write("[8] ... EM_Temperatur_Rotor");
+            write("[9] ... EM_Warnlampe_Anf");
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_06:
+        {
+            write("[0] ... EM_ErwGrenzen_aktiv");
+            write("[1] ... EM_Fehler_ElAntriebAbschaltung");
+            write("[2] ... EM_Fehler_ElAntriebFreilauf");
+            write("[3] ... EM_Fehler_Leistungsred");
+            write("[4] ... EM_Fehler_Notabschaltung");
+            write("[5] ... EM_HV_betriebsbereit");
+            write("[6] ... EM_HYB_06_BZ");
+            write("[7] ... EM_HYB_06_CHK");
+            write("[8] ... EM_Init_abgeschlossen");
+            write("[9] ... EM_Istmodus");
+            write("[10] ... EM_MaxDyn_Moment");
+            write("[11] ... EM_Max_Moment");
+            write("[12] ... EM_MinDyn_Moment");
+            write("[13] ... EM_Min_Moment");
+            write("[14] ... EM_SleepInd");
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_07:
+        {
+            write("[0] ... EM_IstDrehzahl");
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+        {
+            write("[0] ... GE_Fehler_HYB_AblaufStrg");
+            write("[1] ... GE_Fehler_Zusatzoelpumpe");
+            write("[2] ... GE_Fehler_oeffnen_K0");
+            write("[3] ... GE_Fehler_oeffnen_K1");
+            write("[4] ... GE_Fehler_schliessen_K0");
+            write("[5] ... GE_IstMoment_K0");
+            write("[6] ... GE_Istzustand");
+            write("[7] ... GE_Kraftschluss_Ist");
+            write("[8] ... GE_Kraftschluss_Ziel");
+            write("[9] ... GE_Momentenreserve_EM");
+            write("[10] ... GE_Status_Ablauf");
+            write("[11] ... GE_Status_K0");
+            write("[12] ... GE_Zielzustand");
+            write("[13] ... Getriebe_HYB_01_BZ");
+            write("[14] ... Getriebe_HYB_01_CRC");
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+        {
+            write("[0] ... GE_Drehzahleingriff_EM");
+            write("[1] ... GE_Drehzahleingriff_VM");
+            write("[2] ... GE_Momenteneingriff_EM");
+            write("[3] ... GE_Momenteneingriff_VM");
+            write("[4] ... GE_SollMoment_EM");
+            write("[5] ... GE_SollMoment_VM");
+            write("[6] ... GE_Solldrehzahl_EM");
+            write("[7] ... GE_Solldrehzahl_VM");
+            write("[8] ... Getriebe_HYB_02_BZ");
+            write("[9] ... Getriebe_HYB_02_CRC");
+        }
+        break;
+
+    }
+}
+
+/*@@caplFunc:HelpSignal():*/
+HelpSignal ()
+{
+    //REPLACE_HELP_SIGNAL
+}
+/*@@end*/
+
+/*@@caplFunc:GetFrameName(int):*/
+GetFrameName (int FrmIdx)
+{
+    switch (FrmIdx)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+            strncpy(CaplCtrl_FrameName, "BMS_HYB_02", 11);
+            break;
+        case FRM_HANDLE_BMS_HYB_03:
+            strncpy(CaplCtrl_FrameName, "BMS_HYB_03", 11);
+            break;
+        case FRM_HANDLE_BMS_HYB_04:
+            strncpy(CaplCtrl_FrameName, "BMS_HYB_04", 11);
+            break;
+        case FRM_HANDLE_BMS_HYB_06:
+            strncpy(CaplCtrl_FrameName, "BMS_HYB_06", 11);
+            break;
+        case FRM_HANDLE_BMS_HYB_08:
+            strncpy(CaplCtrl_FrameName, "BMS_HYB_08", 11);
+            break;
+        case FRM_HANDLE_CCU_HYB_01:
+            strncpy(CaplCtrl_FrameName, "CCU_HYB_01", 11);
+            break;
+        case FRM_HANDLE_CCU_HYB_02:
+            strncpy(CaplCtrl_FrameName, "CCU_HYB_02", 11);
+            break;
+        case FRM_HANDLE_DC_HYB_01:
+            strncpy(CaplCtrl_FrameName, "DC_HYB_01", 10);
+            break;
+        case FRM_HANDLE_DC_HYB_02:
+            strncpy(CaplCtrl_FrameName, "DC_HYB_02", 10);
+            break;
+        case FRM_HANDLE_EM_HYB_02:
+            strncpy(CaplCtrl_FrameName, "EM_HYB_02", 10);
+            break;
+        case FRM_HANDLE_EM_HYB_03:
+            strncpy(CaplCtrl_FrameName, "EM_HYB_03", 10);
+            break;
+        case FRM_HANDLE_EM_HYB_04:
+            strncpy(CaplCtrl_FrameName, "EM_HYB_04", 10);
+            break;
+        case FRM_HANDLE_EM_HYB_05:
+            strncpy(CaplCtrl_FrameName, "EM_HYB_05", 10);
+            break;
+        case FRM_HANDLE_EM_HYB_06:
+            strncpy(CaplCtrl_FrameName, "EM_HYB_06", 10);
+            break;
+        case FRM_HANDLE_EM_HYB_07:
+            strncpy(CaplCtrl_FrameName, "EM_HYB_07", 10);
+            break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+            strncpy(CaplCtrl_FrameName, "Getriebe_HYB_01", 16);
+            break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+            strncpy(CaplCtrl_FrameName, "Getriebe_HYB_02", 16);
+            break;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:GetSignalName(int,int):*/
+GetSignalName (int FrmIdx, int SigIdx)
+{
+    switch (FrmIdx)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_HS_offen", 20);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_HS_verschweisst", 27);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_HVBattAbschaltung", 29);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_HVBattAbschaltung_Anf", 33);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Isolation", 21);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Kaltstartleistung", 29);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Leistungsred", 24);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Notabschaltung_Crash", 32);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Notabschaltung_Pilot", 32);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Pilot", 17);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehler_Sicherung", 21);
+                    break;
+                case 11:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_02_BZ", 14);
+                    break;
+                case 12:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_02_CHK", 15);
+                    break;
+                case 13:
+                    strncpy(CaplCtrl_SignalName, "BMS_Init_abgeschlossen", 23);
+                    break;
+                case 14:
+                    strncpy(CaplCtrl_SignalName, "BMS_IsoMessungAktiv", 20);
+                    break;
+                case 15:
+                    strncpy(CaplCtrl_SignalName, "BMS_IstModus", 13);
+                    break;
+                case 16:
+                    strncpy(CaplCtrl_SignalName, "BMS_IstSpannung", 16);
+                    break;
+                case 17:
+                    strncpy(CaplCtrl_SignalName, "BMS_IstStrom", 13);
+                    break;
+                case 18:
+                    strncpy(CaplCtrl_SignalName, "BMS_SleepInd", 13);
+                    break;
+                case 19:
+                    strncpy(CaplCtrl_SignalName, "BMS_Status_ServiceDisconnect", 29);
+                    break;
+                case 20:
+                    strncpy(CaplCtrl_SignalName, "BMS_Status_Spannungsfreiheit", 29);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_03:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "BMS_BattLuefterGeschw_rel", 26);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_03_BZ", 14);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_03_CHK", 15);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "BMS_MaxPred_EntladeStrom", 25);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "BMS_MaxPred_LadeStrom", 22);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "BMS_MinPred_EntladeSpannung", 28);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "BMS_MinPred_LadeSpannung", 25);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "BMS_SOC", 8);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_04:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "BMS_ErwGrenzen_aktiv", 21);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_04_BZ", 14);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_04_CHK", 15);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "BMS_MaxDyn_EntladeStrom", 24);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "BMS_MaxDyn_LadeStrom", 21);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "BMS_MinDyn_EntladeSpannung", 27);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "BMS_MinDyn_LadeSpannung", 24);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "BMS_Spannung_ZwKr", 18);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_06:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "BMS_Ausgleichsladung_Anf", 25);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "BMS_Fehlerlampe_Anf", 20);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_06_BZ", 14);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "BMS_HYB_06_CHK", 15);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "BMS_Max_LadeSpannung", 21);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "BMS_Min_EntladeSpannung", 24);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "BMS_OBD_Lampe_Anf", 18);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "BMS_Temperatur", 15);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "BMS_Temperatur_Ansaugluft", 26);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "BMS_Umluftklappe_Anf", 21);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "BMS_Warnlampe_Anf", 18);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_08:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "BMS_Anf_Mo_Luefter", 19);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "BMS_DCLS_Spannung", 18);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "BMS_HVBatt_Perf_Ind", 20);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "BMS_SOC_HiRes", 14);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "BMS_Status_DCLS", 16);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "CCU_Fehler_CAN", 15);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "CCU_Fehler_HW", 14);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "CCU_Fehler_Temperatur", 22);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "CCU_Fehler_Unterspannung", 25);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "CCU_Fehler_mechanisch", 22);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "CCU_HYB_01_BZ", 14);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "CCU_HYB_01_CHK", 15);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "CCU_IstDruck", 13);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "CCU_IstPosition", 16);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "CCU_IstWinkelGeschw", 20);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "CCU_Istmodus", 13);
+                    break;
+                case 11:
+                    strncpy(CaplCtrl_SignalName, "CCU_SleepInd", 13);
+                    break;
+                case 12:
+                    strncpy(CaplCtrl_SignalName, "CCU_Strom_momentbildend", 24);
+                    break;
+                case 13:
+                    strncpy(CaplCtrl_SignalName, "CCU_Warnung_Temperatur", 23);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "CCU_HW_Version", 15);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "CCU_HYB_02_BZ", 14);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "CCU_HYB_02_CHK", 15);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "CCU_Medium", 11);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "CCU_SW_Version", 15);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "CCU_Seriennummer", 17);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "CCU_Teilenummer", 16);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "DC_Fehler_Leistungsred", 23);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "DC_Fehler_Spannung", 19);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "DC_Fehler_intern", 17);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "DC_HYB_01_BZ", 13);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "DC_HYB_01_CHK", 14);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "DC_IstModus", 12);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "DC_IstSpannung_HV", 18);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "DC_IstStrom_HV", 15);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "DC_LangsRegelung_aktiv", 23);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "DC_SleepInd", 12);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "DC_Abregelung_SpannungLim_HV", 29);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "DC_Abregelung_SpannungLim_NV", 29);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "DC_Abregelung_StromLim_HV", 26);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "DC_Abregelung_StromLim_NV", 26);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "DC_Abregelung_Temperatur", 25);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "DC_Auslastungsgrad", 19);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "DC_HYB_02_BZ", 13);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "DC_HYB_02_CHK", 14);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "DC_IdentifikationsNr", 21);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "DC_IstSpannung_NV", 18);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "DC_IstStrom_NV", 15);
+                    break;
+                case 11:
+                    strncpy(CaplCtrl_SignalName, "DC_Temperatur", 14);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "EM_AR_aktiv", 12);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_02_BZ", 13);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_02_CHK", 14);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "EM_IstDrehzahl", 15);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "EM_IstMoment", 13);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "EM_IstMoment_ohneAR", 20);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "EM_Status_Spannungsfreiheit", 28);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_03:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_MaxMoment", 24);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_MaxSpannung", 26);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_MaxStrom", 23);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_MinMoment", 24);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_MinSpannung", 26);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_MinStrom", 23);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "EM_Abregelung_Temperatur", 25);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "EM_AnlernenElMotor_Anf", 23);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "EM_Freigabe_Verfallsinfo_WFS", 29);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_03_BZ", 13);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_03_CHK", 14);
+                    break;
+                case 11:
+                    strncpy(CaplCtrl_SignalName, "EM_IstSpannung", 15);
+                    break;
+                case 12:
+                    strncpy(CaplCtrl_SignalName, "EM_IstStrom", 12);
+                    break;
+                case 13:
+                    strncpy(CaplCtrl_SignalName, "EM_Kuehlpumpe_Status", 21);
+                    break;
+                case 14:
+                    strncpy(CaplCtrl_SignalName, "EM_Verlustleistung", 19);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_04:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_04_BZ", 13);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_04_CHK", 14);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "EM_MaxPred_Abknickdrehzahl", 27);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "EM_MaxPred_Moment", 18);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "EM_MinPred_Abknickdrehzahl", 27);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "EM_MinPred_Moment", 18);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "EM_Moment_HVVerbraucher", 24);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_05:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "EM_Fehler_Pilot", 16);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "EM_Fehlerlampe_Anf", 19);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "EM_HTKreis_Umgehung_Freigabe", 29);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_05_BZ", 13);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_05_CHK", 14);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "EM_OBD_Lampe_Anf", 17);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "EM_Temperatur_ElMotor", 22);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "EM_Temperatur_PWR", 18);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "EM_Temperatur_Rotor", 20);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "EM_Warnlampe_Anf", 17);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_06:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "EM_ErwGrenzen_aktiv", 20);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "EM_Fehler_ElAntriebAbschaltung", 31);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "EM_Fehler_ElAntriebFreilauf", 28);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "EM_Fehler_Leistungsred", 23);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "EM_Fehler_Notabschaltung", 25);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "EM_HV_betriebsbereit", 21);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_06_BZ", 13);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "EM_HYB_06_CHK", 14);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "EM_Init_abgeschlossen", 22);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "EM_Istmodus", 12);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "EM_MaxDyn_Moment", 17);
+                    break;
+                case 11:
+                    strncpy(CaplCtrl_SignalName, "EM_Max_Moment", 14);
+                    break;
+                case 12:
+                    strncpy(CaplCtrl_SignalName, "EM_MinDyn_Moment", 17);
+                    break;
+                case 13:
+                    strncpy(CaplCtrl_SignalName, "EM_Min_Moment", 14);
+                    break;
+                case 14:
+                    strncpy(CaplCtrl_SignalName, "EM_SleepInd", 12);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_07:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "EM_IstDrehzahl", 15);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "GE_Fehler_HYB_AblaufStrg", 25);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "GE_Fehler_Zusatzoelpumpe", 25);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "GE_Fehler_oeffnen_K0", 21);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "GE_Fehler_oeffnen_K1", 21);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "GE_Fehler_schliessen_K0", 24);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "GE_IstMoment_K0", 16);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "GE_Istzustand", 14);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "GE_Kraftschluss_Ist", 20);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "GE_Kraftschluss_Ziel", 21);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "GE_Momentenreserve_EM", 22);
+                    break;
+                case 10:
+                    strncpy(CaplCtrl_SignalName, "GE_Status_Ablauf", 17);
+                    break;
+                case 11:
+                    strncpy(CaplCtrl_SignalName, "GE_Status_K0", 13);
+                    break;
+                case 12:
+                    strncpy(CaplCtrl_SignalName, "GE_Zielzustand", 15);
+                    break;
+                case 13:
+                    strncpy(CaplCtrl_SignalName, "Getriebe_HYB_01_BZ", 19);
+                    break;
+                case 14:
+                    strncpy(CaplCtrl_SignalName, "Getriebe_HYB_01_CRC", 20);
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    strncpy(CaplCtrl_SignalName, "GE_Drehzahleingriff_EM", 23);
+                    break;
+                case 1:
+                    strncpy(CaplCtrl_SignalName, "GE_Drehzahleingriff_VM", 23);
+                    break;
+                case 2:
+                    strncpy(CaplCtrl_SignalName, "GE_Momenteneingriff_EM", 23);
+                    break;
+                case 3:
+                    strncpy(CaplCtrl_SignalName, "GE_Momenteneingriff_VM", 23);
+                    break;
+                case 4:
+                    strncpy(CaplCtrl_SignalName, "GE_SollMoment_EM", 17);
+                    break;
+                case 5:
+                    strncpy(CaplCtrl_SignalName, "GE_SollMoment_VM", 17);
+                    break;
+                case 6:
+                    strncpy(CaplCtrl_SignalName, "GE_Solldrehzahl_EM", 19);
+                    break;
+                case 7:
+                    strncpy(CaplCtrl_SignalName, "GE_Solldrehzahl_VM", 19);
+                    break;
+                case 8:
+                    strncpy(CaplCtrl_SignalName, "Getriebe_HYB_02_BZ", 19);
+                    break;
+                case 9:
+                    strncpy(CaplCtrl_SignalName, "Getriebe_HYB_02_CRC", 20);
+                    break;
+            }
+        }
+        break;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_SetSignal(long,long,long):*/
+Frm_SetSignal (long FrmIdx, long SigIdx, long SigVal)
+{
+    switch (FrmIdx)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_HS_offen = SigVal;
+                    break;
+                case 1:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_HS_verschweisst = SigVal;
+                    break;
+                case 2:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_HVBattAbschaltung = SigVal;
+                    break;
+                case 3:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_HVBattAbschaltung_Anf = SigVal;
+                    break;
+                case 4:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Isolation = SigVal;
+                    break;
+                case 5:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Kaltstartleistung = SigVal;
+                    break;
+                case 6:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Leistungsred = SigVal;
+                    break;
+                case 7:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Notabschaltung_Crash = SigVal;
+                    break;
+                case 8:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Notabschaltung_Pilot = SigVal;
+                    break;
+                case 9:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Pilot = SigVal;
+                    break;
+                case 10:
+                    MsgObj_BMS_HYB_02.BMS_Fehler_Sicherung = SigVal;
+                    break;
+                case 11:
+                    MsgObj_BMS_HYB_02.BMS_HYB_02_BZ = SigVal;
+                    break;
+                case 12:
+                    MsgObj_BMS_HYB_02.BMS_HYB_02_CHK = SigVal;
+                    break;
+                case 13:
+                    MsgObj_BMS_HYB_02.BMS_Init_abgeschlossen = SigVal;
+                    break;
+                case 14:
+                    MsgObj_BMS_HYB_02.BMS_IsoMessungAktiv = SigVal;
+                    break;
+                case 15:
+                    MsgObj_BMS_HYB_02.BMS_IstModus = SigVal;
+                    break;
+                case 16:
+                    MsgObj_BMS_HYB_02.BMS_IstSpannung = SigVal;
+                    break;
+                case 17:
+                    MsgObj_BMS_HYB_02.BMS_IstStrom = SigVal;
+                    break;
+                case 18:
+                    MsgObj_BMS_HYB_02.BMS_SleepInd = SigVal;
+                    break;
+                case 19:
+                    MsgObj_BMS_HYB_02.BMS_Status_ServiceDisconnect = SigVal;
+                    break;
+                case 20:
+                    MsgObj_BMS_HYB_02.BMS_Status_Spannungsfreiheit = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_03:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_BMS_HYB_03.BMS_BattLuefterGeschw_rel = SigVal;
+                    break;
+                case 1:
+                    MsgObj_BMS_HYB_03.BMS_HYB_03_BZ = SigVal;
+                    break;
+                case 2:
+                    MsgObj_BMS_HYB_03.BMS_HYB_03_CHK = SigVal;
+                    break;
+                case 3:
+                    MsgObj_BMS_HYB_03.BMS_MaxPred_EntladeStrom = SigVal;
+                    break;
+                case 4:
+                    MsgObj_BMS_HYB_03.BMS_MaxPred_LadeStrom = SigVal;
+                    break;
+                case 5:
+                    MsgObj_BMS_HYB_03.BMS_MinPred_EntladeSpannung = SigVal;
+                    break;
+                case 6:
+                    MsgObj_BMS_HYB_03.BMS_MinPred_LadeSpannung = SigVal;
+                    break;
+                case 7:
+                    MsgObj_BMS_HYB_03.BMS_SOC = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_04:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_BMS_HYB_04.BMS_ErwGrenzen_aktiv = SigVal;
+                    break;
+                case 1:
+                    MsgObj_BMS_HYB_04.BMS_HYB_04_BZ = SigVal;
+                    break;
+                case 2:
+                    MsgObj_BMS_HYB_04.BMS_HYB_04_CHK = SigVal;
+                    break;
+                case 3:
+                    MsgObj_BMS_HYB_04.BMS_MaxDyn_EntladeStrom = SigVal;
+                    break;
+                case 4:
+                    MsgObj_BMS_HYB_04.BMS_MaxDyn_LadeStrom = SigVal;
+                    break;
+                case 5:
+                    MsgObj_BMS_HYB_04.BMS_MinDyn_EntladeSpannung = SigVal;
+                    break;
+                case 6:
+                    MsgObj_BMS_HYB_04.BMS_MinDyn_LadeSpannung = SigVal;
+                    break;
+                case 7:
+                    MsgObj_BMS_HYB_04.BMS_Spannung_ZwKr = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_06:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_BMS_HYB_06.BMS_Ausgleichsladung_Anf = SigVal;
+                    break;
+                case 1:
+                    MsgObj_BMS_HYB_06.BMS_Fehlerlampe_Anf = SigVal;
+                    break;
+                case 2:
+                    MsgObj_BMS_HYB_06.BMS_HYB_06_BZ = SigVal;
+                    break;
+                case 3:
+                    MsgObj_BMS_HYB_06.BMS_HYB_06_CHK = SigVal;
+                    break;
+                case 4:
+                    MsgObj_BMS_HYB_06.BMS_Max_LadeSpannung = SigVal;
+                    break;
+                case 5:
+                    MsgObj_BMS_HYB_06.BMS_Min_EntladeSpannung = SigVal;
+                    break;
+                case 6:
+                    MsgObj_BMS_HYB_06.BMS_OBD_Lampe_Anf = SigVal;
+                    break;
+                case 7:
+                    MsgObj_BMS_HYB_06.BMS_Temperatur = SigVal;
+                    break;
+                case 8:
+                    MsgObj_BMS_HYB_06.BMS_Temperatur_Ansaugluft = SigVal;
+                    break;
+                case 9:
+                    MsgObj_BMS_HYB_06.BMS_Umluftklappe_Anf = SigVal;
+                    break;
+                case 10:
+                    MsgObj_BMS_HYB_06.BMS_Warnlampe_Anf = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_08:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_BMS_HYB_08.BMS_Anf_Mo_Luefter = SigVal;
+                    break;
+                case 1:
+                    MsgObj_BMS_HYB_08.BMS_DCLS_Spannung = SigVal;
+                    break;
+                case 2:
+                    MsgObj_BMS_HYB_08.BMS_HVBatt_Perf_Ind = SigVal;
+                    break;
+                case 3:
+                    MsgObj_BMS_HYB_08.BMS_SOC_HiRes = SigVal;
+                    break;
+                case 4:
+                    MsgObj_BMS_HYB_08.BMS_Status_DCLS = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_CCU_HYB_01.CCU_Fehler_CAN = SigVal;
+                    break;
+                case 1:
+                    MsgObj_CCU_HYB_01.CCU_Fehler_HW = SigVal;
+                    break;
+                case 2:
+                    MsgObj_CCU_HYB_01.CCU_Fehler_Temperatur = SigVal;
+                    break;
+                case 3:
+                    MsgObj_CCU_HYB_01.CCU_Fehler_Unterspannung = SigVal;
+                    break;
+                case 4:
+                    MsgObj_CCU_HYB_01.CCU_Fehler_mechanisch = SigVal;
+                    break;
+                case 5:
+                    MsgObj_CCU_HYB_01.CCU_HYB_01_BZ = SigVal;
+                    break;
+                case 6:
+                    MsgObj_CCU_HYB_01.CCU_HYB_01_CHK = SigVal;
+                    break;
+                case 7:
+                    MsgObj_CCU_HYB_01.CCU_IstDruck = SigVal;
+                    break;
+                case 8:
+                    MsgObj_CCU_HYB_01.CCU_IstPosition = SigVal;
+                    break;
+                case 9:
+                    MsgObj_CCU_HYB_01.CCU_IstWinkelGeschw = SigVal;
+                    break;
+                case 10:
+                    MsgObj_CCU_HYB_01.CCU_Istmodus = SigVal;
+                    break;
+                case 11:
+                    MsgObj_CCU_HYB_01.CCU_SleepInd = SigVal;
+                    break;
+                case 12:
+                    MsgObj_CCU_HYB_01.CCU_Strom_momentbildend = SigVal;
+                    break;
+                case 13:
+                    MsgObj_CCU_HYB_01.CCU_Warnung_Temperatur = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_CCU_HYB_02.CCU_HW_Version = SigVal;
+                    break;
+                case 1:
+                    MsgObj_CCU_HYB_02.CCU_HYB_02_BZ = SigVal;
+                    break;
+                case 2:
+                    MsgObj_CCU_HYB_02.CCU_HYB_02_CHK = SigVal;
+                    break;
+                case 3:
+                    MsgObj_CCU_HYB_02.CCU_Medium = SigVal;
+                    break;
+                case 4:
+                    MsgObj_CCU_HYB_02.CCU_SW_Version = SigVal;
+                    break;
+                case 5:
+                    MsgObj_CCU_HYB_02.CCU_Seriennummer = SigVal;
+                    break;
+                case 6:
+                    MsgObj_CCU_HYB_02.CCU_Teilenummer = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_DC_HYB_01.DC_Fehler_Leistungsred = SigVal;
+                    break;
+                case 1:
+                    MsgObj_DC_HYB_01.DC_Fehler_Spannung = SigVal;
+                    break;
+                case 2:
+                    MsgObj_DC_HYB_01.DC_Fehler_intern = SigVal;
+                    break;
+                case 3:
+                    MsgObj_DC_HYB_01.DC_HYB_01_BZ = SigVal;
+                    break;
+                case 4:
+                    MsgObj_DC_HYB_01.DC_HYB_01_CHK = SigVal;
+                    break;
+                case 5:
+                    MsgObj_DC_HYB_01.DC_IstModus = SigVal;
+                    break;
+                case 6:
+                    MsgObj_DC_HYB_01.DC_IstSpannung_HV = SigVal;
+                    break;
+                case 7:
+                    MsgObj_DC_HYB_01.DC_IstStrom_HV = SigVal;
+                    break;
+                case 8:
+                    MsgObj_DC_HYB_01.DC_LangsRegelung_aktiv = SigVal;
+                    break;
+                case 9:
+                    MsgObj_DC_HYB_01.DC_SleepInd = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_DC_HYB_02.DC_Abregelung_SpannungLim_HV = SigVal;
+                    break;
+                case 1:
+                    MsgObj_DC_HYB_02.DC_Abregelung_SpannungLim_NV = SigVal;
+                    break;
+                case 2:
+                    MsgObj_DC_HYB_02.DC_Abregelung_StromLim_HV = SigVal;
+                    break;
+                case 3:
+                    MsgObj_DC_HYB_02.DC_Abregelung_StromLim_NV = SigVal;
+                    break;
+                case 4:
+                    MsgObj_DC_HYB_02.DC_Abregelung_Temperatur = SigVal;
+                    break;
+                case 5:
+                    MsgObj_DC_HYB_02.DC_Auslastungsgrad = SigVal;
+                    break;
+                case 6:
+                    MsgObj_DC_HYB_02.DC_HYB_02_BZ = SigVal;
+                    break;
+                case 7:
+                    MsgObj_DC_HYB_02.DC_HYB_02_CHK = SigVal;
+                    break;
+                case 8:
+                    MsgObj_DC_HYB_02.DC_IdentifikationsNr = SigVal;
+                    break;
+                case 9:
+                    MsgObj_DC_HYB_02.DC_IstSpannung_NV = SigVal;
+                    break;
+                case 10:
+                    MsgObj_DC_HYB_02.DC_IstStrom_NV = SigVal;
+                    break;
+                case 11:
+                    MsgObj_DC_HYB_02.DC_Temperatur = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_EM_HYB_02.EM_AR_aktiv = SigVal;
+                    break;
+                case 1:
+                    MsgObj_EM_HYB_02.EM_HYB_02_BZ = SigVal;
+                    break;
+                case 2:
+                    MsgObj_EM_HYB_02.EM_HYB_02_CHK = SigVal;
+                    break;
+                case 3:
+                    MsgObj_EM_HYB_02.EM_IstDrehzahl = SigVal;
+                    break;
+                case 4:
+                    MsgObj_EM_HYB_02.EM_IstMoment = SigVal;
+                    break;
+                case 5:
+                    MsgObj_EM_HYB_02.EM_IstMoment_ohneAR = SigVal;
+                    break;
+                case 6:
+                    MsgObj_EM_HYB_02.EM_Status_Spannungsfreiheit = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_03:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_EM_HYB_03.EM_Abregelung_MaxMoment = SigVal;
+                    break;
+                case 1:
+                    MsgObj_EM_HYB_03.EM_Abregelung_MaxSpannung = SigVal;
+                    break;
+                case 2:
+                    MsgObj_EM_HYB_03.EM_Abregelung_MaxStrom = SigVal;
+                    break;
+                case 3:
+                    MsgObj_EM_HYB_03.EM_Abregelung_MinMoment = SigVal;
+                    break;
+                case 4:
+                    MsgObj_EM_HYB_03.EM_Abregelung_MinSpannung = SigVal;
+                    break;
+                case 5:
+                    MsgObj_EM_HYB_03.EM_Abregelung_MinStrom = SigVal;
+                    break;
+                case 6:
+                    MsgObj_EM_HYB_03.EM_Abregelung_Temperatur = SigVal;
+                    break;
+                case 7:
+                    MsgObj_EM_HYB_03.EM_AnlernenElMotor_Anf = SigVal;
+                    break;
+                case 8:
+                    MsgObj_EM_HYB_03.EM_Freigabe_Verfallsinfo_WFS = SigVal;
+                    break;
+                case 9:
+                    MsgObj_EM_HYB_03.EM_HYB_03_BZ = SigVal;
+                    break;
+                case 10:
+                    MsgObj_EM_HYB_03.EM_HYB_03_CHK = SigVal;
+                    break;
+                case 11:
+                    MsgObj_EM_HYB_03.EM_IstSpannung = SigVal;
+                    break;
+                case 12:
+                    MsgObj_EM_HYB_03.EM_IstStrom = SigVal;
+                    break;
+                case 13:
+                    MsgObj_EM_HYB_03.EM_Kuehlpumpe_Status = SigVal;
+                    break;
+                case 14:
+                    MsgObj_EM_HYB_03.EM_Verlustleistung = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_04:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_EM_HYB_04.EM_HYB_04_BZ = SigVal;
+                    break;
+                case 1:
+                    MsgObj_EM_HYB_04.EM_HYB_04_CHK = SigVal;
+                    break;
+                case 2:
+                    MsgObj_EM_HYB_04.EM_MaxPred_Abknickdrehzahl = SigVal;
+                    break;
+                case 3:
+                    MsgObj_EM_HYB_04.EM_MaxPred_Moment = SigVal;
+                    break;
+                case 4:
+                    MsgObj_EM_HYB_04.EM_MinPred_Abknickdrehzahl = SigVal;
+                    break;
+                case 5:
+                    MsgObj_EM_HYB_04.EM_MinPred_Moment = SigVal;
+                    break;
+                case 6:
+                    MsgObj_EM_HYB_04.EM_Moment_HVVerbraucher = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_05:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_EM_HYB_05.EM_Fehler_Pilot = SigVal;
+                    break;
+                case 1:
+                    MsgObj_EM_HYB_05.EM_Fehlerlampe_Anf = SigVal;
+                    break;
+                case 2:
+                    MsgObj_EM_HYB_05.EM_HTKreis_Umgehung_Freigabe = SigVal;
+                    break;
+                case 3:
+                    MsgObj_EM_HYB_05.EM_HYB_05_BZ = SigVal;
+                    break;
+                case 4:
+                    MsgObj_EM_HYB_05.EM_HYB_05_CHK = SigVal;
+                    break;
+                case 5:
+                    MsgObj_EM_HYB_05.EM_OBD_Lampe_Anf = SigVal;
+                    break;
+                case 6:
+                    MsgObj_EM_HYB_05.EM_Temperatur_ElMotor = SigVal;
+                    break;
+                case 7:
+                    MsgObj_EM_HYB_05.EM_Temperatur_PWR = SigVal;
+                    break;
+                case 8:
+                    MsgObj_EM_HYB_05.EM_Temperatur_Rotor = SigVal;
+                    break;
+                case 9:
+                    MsgObj_EM_HYB_05.EM_Warnlampe_Anf = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_06:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_EM_HYB_06.EM_ErwGrenzen_aktiv = SigVal;
+                    break;
+                case 1:
+                    MsgObj_EM_HYB_06.EM_Fehler_ElAntriebAbschaltung = SigVal;
+                    break;
+                case 2:
+                    MsgObj_EM_HYB_06.EM_Fehler_ElAntriebFreilauf = SigVal;
+                    break;
+                case 3:
+                    MsgObj_EM_HYB_06.EM_Fehler_Leistungsred = SigVal;
+                    break;
+                case 4:
+                    MsgObj_EM_HYB_06.EM_Fehler_Notabschaltung = SigVal;
+                    break;
+                case 5:
+                    MsgObj_EM_HYB_06.EM_HV_betriebsbereit = SigVal;
+                    break;
+                case 6:
+                    MsgObj_EM_HYB_06.EM_HYB_06_BZ = SigVal;
+                    break;
+                case 7:
+                    MsgObj_EM_HYB_06.EM_HYB_06_CHK = SigVal;
+                    break;
+                case 8:
+                    MsgObj_EM_HYB_06.EM_Init_abgeschlossen = SigVal;
+                    break;
+                case 9:
+                    MsgObj_EM_HYB_06.EM_Istmodus = SigVal;
+                    break;
+                case 10:
+                    MsgObj_EM_HYB_06.EM_MaxDyn_Moment = SigVal;
+                    break;
+                case 11:
+                    MsgObj_EM_HYB_06.EM_Max_Moment = SigVal;
+                    break;
+                case 12:
+                    MsgObj_EM_HYB_06.EM_MinDyn_Moment = SigVal;
+                    break;
+                case 13:
+                    MsgObj_EM_HYB_06.EM_Min_Moment = SigVal;
+                    break;
+                case 14:
+                    MsgObj_EM_HYB_06.EM_SleepInd = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_07:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_EM_HYB_07.EM_IstDrehzahl = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_Getriebe_HYB_01.GE_Fehler_HYB_AblaufStrg = SigVal;
+                    break;
+                case 1:
+                    MsgObj_Getriebe_HYB_01.GE_Fehler_Zusatzoelpumpe = SigVal;
+                    break;
+                case 2:
+                    MsgObj_Getriebe_HYB_01.GE_Fehler_oeffnen_K0 = SigVal;
+                    break;
+                case 3:
+                    MsgObj_Getriebe_HYB_01.GE_Fehler_oeffnen_K1 = SigVal;
+                    break;
+                case 4:
+                    MsgObj_Getriebe_HYB_01.GE_Fehler_schliessen_K0 = SigVal;
+                    break;
+                case 5:
+                    MsgObj_Getriebe_HYB_01.GE_IstMoment_K0 = SigVal;
+                    break;
+                case 6:
+                    MsgObj_Getriebe_HYB_01.GE_Istzustand = SigVal;
+                    break;
+                case 7:
+                    MsgObj_Getriebe_HYB_01.GE_Kraftschluss_Ist = SigVal;
+                    break;
+                case 8:
+                    MsgObj_Getriebe_HYB_01.GE_Kraftschluss_Ziel = SigVal;
+                    break;
+                case 9:
+                    MsgObj_Getriebe_HYB_01.GE_Momentenreserve_EM = SigVal;
+                    break;
+                case 10:
+                    MsgObj_Getriebe_HYB_01.GE_Status_Ablauf = SigVal;
+                    break;
+                case 11:
+                    MsgObj_Getriebe_HYB_01.GE_Status_K0 = SigVal;
+                    break;
+                case 12:
+                    MsgObj_Getriebe_HYB_01.GE_Zielzustand = SigVal;
+                    break;
+                case 13:
+                    MsgObj_Getriebe_HYB_01.Getriebe_HYB_01_BZ = SigVal;
+                    break;
+                case 14:
+                    MsgObj_Getriebe_HYB_01.Getriebe_HYB_01_CRC = SigVal;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    MsgObj_Getriebe_HYB_02.GE_Drehzahleingriff_EM = SigVal;
+                    break;
+                case 1:
+                    MsgObj_Getriebe_HYB_02.GE_Drehzahleingriff_VM = SigVal;
+                    break;
+                case 2:
+                    MsgObj_Getriebe_HYB_02.GE_Momenteneingriff_EM = SigVal;
+                    break;
+                case 3:
+                    MsgObj_Getriebe_HYB_02.GE_Momenteneingriff_VM = SigVal;
+                    break;
+                case 4:
+                    MsgObj_Getriebe_HYB_02.GE_SollMoment_EM = SigVal;
+                    break;
+                case 5:
+                    MsgObj_Getriebe_HYB_02.GE_SollMoment_VM = SigVal;
+                    break;
+                case 6:
+                    MsgObj_Getriebe_HYB_02.GE_Solldrehzahl_EM = SigVal;
+                    break;
+                case 7:
+                    MsgObj_Getriebe_HYB_02.GE_Solldrehzahl_VM = SigVal;
+                    break;
+                case 8:
+                    MsgObj_Getriebe_HYB_02.Getriebe_HYB_02_BZ = SigVal;
+                    break;
+                case 9:
+                    MsgObj_Getriebe_HYB_02.Getriebe_HYB_02_CRC = SigVal;
+                    break;
+            }
+        }
+        break;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:GetSignalVal(int,int):*/
+int GetSignalVal (int FrmIdx, int SigIdx)
+{
+    int SigVal;
+
+    switch (FrmIdx)
+    {
+        case FRM_HANDLE_BMS_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_HS_offen;
+                    break;
+                case 1:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_HS_verschweisst;
+                    break;
+                case 2:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_HVBattAbschaltung;
+                    break;
+                case 3:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_HVBattAbschaltung_Anf;
+                    break;
+                case 4:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Isolation;
+                    break;
+                case 5:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Kaltstartleistung;
+                    break;
+                case 6:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Leistungsred;
+                    break;
+                case 7:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Notabschaltung_Crash;
+                    break;
+                case 8:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Notabschaltung_Pilot;
+                    break;
+                case 9:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Pilot;
+                    break;
+                case 10:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Fehler_Sicherung;
+                    break;
+                case 11:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_HYB_02_BZ;
+                    break;
+                case 12:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_HYB_02_CHK;
+                    break;
+                case 13:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Init_abgeschlossen;
+                    break;
+                case 14:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_IsoMessungAktiv;
+                    break;
+                case 15:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_IstModus;
+                    break;
+                case 16:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_IstSpannung;
+                    break;
+                case 17:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_IstStrom;
+                    break;
+                case 18:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_SleepInd;
+                    break;
+                case 19:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Status_ServiceDisconnect;
+                    break;
+                case 20:
+                    SigVal = MsgObj_BMS_HYB_02.BMS_Status_Spannungsfreiheit;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_03:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_BattLuefterGeschw_rel;
+                    break;
+                case 1:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_HYB_03_BZ;
+                    break;
+                case 2:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_HYB_03_CHK;
+                    break;
+                case 3:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_MaxPred_EntladeStrom;
+                    break;
+                case 4:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_MaxPred_LadeStrom;
+                    break;
+                case 5:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_MinPred_EntladeSpannung;
+                    break;
+                case 6:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_MinPred_LadeSpannung;
+                    break;
+                case 7:
+                    SigVal = MsgObj_BMS_HYB_03.BMS_SOC;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_04:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_ErwGrenzen_aktiv;
+                    break;
+                case 1:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_HYB_04_BZ;
+                    break;
+                case 2:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_HYB_04_CHK;
+                    break;
+                case 3:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_MaxDyn_EntladeStrom;
+                    break;
+                case 4:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_MaxDyn_LadeStrom;
+                    break;
+                case 5:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_MinDyn_EntladeSpannung;
+                    break;
+                case 6:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_MinDyn_LadeSpannung;
+                    break;
+                case 7:
+                    SigVal = MsgObj_BMS_HYB_04.BMS_Spannung_ZwKr;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_06:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Ausgleichsladung_Anf;
+                    break;
+                case 1:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Fehlerlampe_Anf;
+                    break;
+                case 2:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_HYB_06_BZ;
+                    break;
+                case 3:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_HYB_06_CHK;
+                    break;
+                case 4:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Max_LadeSpannung;
+                    break;
+                case 5:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Min_EntladeSpannung;
+                    break;
+                case 6:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_OBD_Lampe_Anf;
+                    break;
+                case 7:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Temperatur;
+                    break;
+                case 8:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Temperatur_Ansaugluft;
+                    break;
+                case 9:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Umluftklappe_Anf;
+                    break;
+                case 10:
+                    SigVal = MsgObj_BMS_HYB_06.BMS_Warnlampe_Anf;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_BMS_HYB_08:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_BMS_HYB_08.BMS_Anf_Mo_Luefter;
+                    break;
+                case 1:
+                    SigVal = MsgObj_BMS_HYB_08.BMS_DCLS_Spannung;
+                    break;
+                case 2:
+                    SigVal = MsgObj_BMS_HYB_08.BMS_HVBatt_Perf_Ind;
+                    break;
+                case 3:
+                    SigVal = MsgObj_BMS_HYB_08.BMS_SOC_HiRes;
+                    break;
+                case 4:
+                    SigVal = MsgObj_BMS_HYB_08.BMS_Status_DCLS;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Fehler_CAN;
+                    break;
+                case 1:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Fehler_HW;
+                    break;
+                case 2:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Fehler_Temperatur;
+                    break;
+                case 3:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Fehler_Unterspannung;
+                    break;
+                case 4:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Fehler_mechanisch;
+                    break;
+                case 5:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_HYB_01_BZ;
+                    break;
+                case 6:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_HYB_01_CHK;
+                    break;
+                case 7:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_IstDruck;
+                    break;
+                case 8:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_IstPosition;
+                    break;
+                case 9:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_IstWinkelGeschw;
+                    break;
+                case 10:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Istmodus;
+                    break;
+                case 11:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_SleepInd;
+                    break;
+                case 12:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Strom_momentbildend;
+                    break;
+                case 13:
+                    SigVal = MsgObj_CCU_HYB_01.CCU_Warnung_Temperatur;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_CCU_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_HW_Version;
+                    break;
+                case 1:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_HYB_02_BZ;
+                    break;
+                case 2:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_HYB_02_CHK;
+                    break;
+                case 3:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_Medium;
+                    break;
+                case 4:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_SW_Version;
+                    break;
+                case 5:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_Seriennummer;
+                    break;
+                case 6:
+                    SigVal = MsgObj_CCU_HYB_02.CCU_Teilenummer;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_DC_HYB_01.DC_Fehler_Leistungsred;
+                    break;
+                case 1:
+                    SigVal = MsgObj_DC_HYB_01.DC_Fehler_Spannung;
+                    break;
+                case 2:
+                    SigVal = MsgObj_DC_HYB_01.DC_Fehler_intern;
+                    break;
+                case 3:
+                    SigVal = MsgObj_DC_HYB_01.DC_HYB_01_BZ;
+                    break;
+                case 4:
+                    SigVal = MsgObj_DC_HYB_01.DC_HYB_01_CHK;
+                    break;
+                case 5:
+                    SigVal = MsgObj_DC_HYB_01.DC_IstModus;
+                    break;
+                case 6:
+                    SigVal = MsgObj_DC_HYB_01.DC_IstSpannung_HV;
+                    break;
+                case 7:
+                    SigVal = MsgObj_DC_HYB_01.DC_IstStrom_HV;
+                    break;
+                case 8:
+                    SigVal = MsgObj_DC_HYB_01.DC_LangsRegelung_aktiv;
+                    break;
+                case 9:
+                    SigVal = MsgObj_DC_HYB_01.DC_SleepInd;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_DC_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_DC_HYB_02.DC_Abregelung_SpannungLim_HV;
+                    break;
+                case 1:
+                    SigVal = MsgObj_DC_HYB_02.DC_Abregelung_SpannungLim_NV;
+                    break;
+                case 2:
+                    SigVal = MsgObj_DC_HYB_02.DC_Abregelung_StromLim_HV;
+                    break;
+                case 3:
+                    SigVal = MsgObj_DC_HYB_02.DC_Abregelung_StromLim_NV;
+                    break;
+                case 4:
+                    SigVal = MsgObj_DC_HYB_02.DC_Abregelung_Temperatur;
+                    break;
+                case 5:
+                    SigVal = MsgObj_DC_HYB_02.DC_Auslastungsgrad;
+                    break;
+                case 6:
+                    SigVal = MsgObj_DC_HYB_02.DC_HYB_02_BZ;
+                    break;
+                case 7:
+                    SigVal = MsgObj_DC_HYB_02.DC_HYB_02_CHK;
+                    break;
+                case 8:
+                    SigVal = MsgObj_DC_HYB_02.DC_IdentifikationsNr;
+                    break;
+                case 9:
+                    SigVal = MsgObj_DC_HYB_02.DC_IstSpannung_NV;
+                    break;
+                case 10:
+                    SigVal = MsgObj_DC_HYB_02.DC_IstStrom_NV;
+                    break;
+                case 11:
+                    SigVal = MsgObj_DC_HYB_02.DC_Temperatur;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_EM_HYB_02.EM_AR_aktiv;
+                    break;
+                case 1:
+                    SigVal = MsgObj_EM_HYB_02.EM_HYB_02_BZ;
+                    break;
+                case 2:
+                    SigVal = MsgObj_EM_HYB_02.EM_HYB_02_CHK;
+                    break;
+                case 3:
+                    SigVal = MsgObj_EM_HYB_02.EM_IstDrehzahl;
+                    break;
+                case 4:
+                    SigVal = MsgObj_EM_HYB_02.EM_IstMoment;
+                    break;
+                case 5:
+                    SigVal = MsgObj_EM_HYB_02.EM_IstMoment_ohneAR;
+                    break;
+                case 6:
+                    SigVal = MsgObj_EM_HYB_02.EM_Status_Spannungsfreiheit;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_03:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_MaxMoment;
+                    break;
+                case 1:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_MaxSpannung;
+                    break;
+                case 2:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_MaxStrom;
+                    break;
+                case 3:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_MinMoment;
+                    break;
+                case 4:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_MinSpannung;
+                    break;
+                case 5:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_MinStrom;
+                    break;
+                case 6:
+                    SigVal = MsgObj_EM_HYB_03.EM_Abregelung_Temperatur;
+                    break;
+                case 7:
+                    SigVal = MsgObj_EM_HYB_03.EM_AnlernenElMotor_Anf;
+                    break;
+                case 8:
+                    SigVal = MsgObj_EM_HYB_03.EM_Freigabe_Verfallsinfo_WFS;
+                    break;
+                case 9:
+                    SigVal = MsgObj_EM_HYB_03.EM_HYB_03_BZ;
+                    break;
+                case 10:
+                    SigVal = MsgObj_EM_HYB_03.EM_HYB_03_CHK;
+                    break;
+                case 11:
+                    SigVal = MsgObj_EM_HYB_03.EM_IstSpannung;
+                    break;
+                case 12:
+                    SigVal = MsgObj_EM_HYB_03.EM_IstStrom;
+                    break;
+                case 13:
+                    SigVal = MsgObj_EM_HYB_03.EM_Kuehlpumpe_Status;
+                    break;
+                case 14:
+                    SigVal = MsgObj_EM_HYB_03.EM_Verlustleistung;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_04:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_EM_HYB_04.EM_HYB_04_BZ;
+                    break;
+                case 1:
+                    SigVal = MsgObj_EM_HYB_04.EM_HYB_04_CHK;
+                    break;
+                case 2:
+                    SigVal = MsgObj_EM_HYB_04.EM_MaxPred_Abknickdrehzahl;
+                    break;
+                case 3:
+                    SigVal = MsgObj_EM_HYB_04.EM_MaxPred_Moment;
+                    break;
+                case 4:
+                    SigVal = MsgObj_EM_HYB_04.EM_MinPred_Abknickdrehzahl;
+                    break;
+                case 5:
+                    SigVal = MsgObj_EM_HYB_04.EM_MinPred_Moment;
+                    break;
+                case 6:
+                    SigVal = MsgObj_EM_HYB_04.EM_Moment_HVVerbraucher;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_05:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_EM_HYB_05.EM_Fehler_Pilot;
+                    break;
+                case 1:
+                    SigVal = MsgObj_EM_HYB_05.EM_Fehlerlampe_Anf;
+                    break;
+                case 2:
+                    SigVal = MsgObj_EM_HYB_05.EM_HTKreis_Umgehung_Freigabe;
+                    break;
+                case 3:
+                    SigVal = MsgObj_EM_HYB_05.EM_HYB_05_BZ;
+                    break;
+                case 4:
+                    SigVal = MsgObj_EM_HYB_05.EM_HYB_05_CHK;
+                    break;
+                case 5:
+                    SigVal = MsgObj_EM_HYB_05.EM_OBD_Lampe_Anf;
+                    break;
+                case 6:
+                    SigVal = MsgObj_EM_HYB_05.EM_Temperatur_ElMotor;
+                    break;
+                case 7:
+                    SigVal = MsgObj_EM_HYB_05.EM_Temperatur_PWR;
+                    break;
+                case 8:
+                    SigVal = MsgObj_EM_HYB_05.EM_Temperatur_Rotor;
+                    break;
+                case 9:
+                    SigVal = MsgObj_EM_HYB_05.EM_Warnlampe_Anf;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_06:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_EM_HYB_06.EM_ErwGrenzen_aktiv;
+                    break;
+                case 1:
+                    SigVal = MsgObj_EM_HYB_06.EM_Fehler_ElAntriebAbschaltung;
+                    break;
+                case 2:
+                    SigVal = MsgObj_EM_HYB_06.EM_Fehler_ElAntriebFreilauf;
+                    break;
+                case 3:
+                    SigVal = MsgObj_EM_HYB_06.EM_Fehler_Leistungsred;
+                    break;
+                case 4:
+                    SigVal = MsgObj_EM_HYB_06.EM_Fehler_Notabschaltung;
+                    break;
+                case 5:
+                    SigVal = MsgObj_EM_HYB_06.EM_HV_betriebsbereit;
+                    break;
+                case 6:
+                    SigVal = MsgObj_EM_HYB_06.EM_HYB_06_BZ;
+                    break;
+                case 7:
+                    SigVal = MsgObj_EM_HYB_06.EM_HYB_06_CHK;
+                    break;
+                case 8:
+                    SigVal = MsgObj_EM_HYB_06.EM_Init_abgeschlossen;
+                    break;
+                case 9:
+                    SigVal = MsgObj_EM_HYB_06.EM_Istmodus;
+                    break;
+                case 10:
+                    SigVal = MsgObj_EM_HYB_06.EM_MaxDyn_Moment;
+                    break;
+                case 11:
+                    SigVal = MsgObj_EM_HYB_06.EM_Max_Moment;
+                    break;
+                case 12:
+                    SigVal = MsgObj_EM_HYB_06.EM_MinDyn_Moment;
+                    break;
+                case 13:
+                    SigVal = MsgObj_EM_HYB_06.EM_Min_Moment;
+                    break;
+                case 14:
+                    SigVal = MsgObj_EM_HYB_06.EM_SleepInd;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_EM_HYB_07:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_EM_HYB_07.EM_IstDrehzahl;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_01:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Fehler_HYB_AblaufStrg;
+                    break;
+                case 1:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Fehler_Zusatzoelpumpe;
+                    break;
+                case 2:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Fehler_oeffnen_K0;
+                    break;
+                case 3:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Fehler_oeffnen_K1;
+                    break;
+                case 4:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Fehler_schliessen_K0;
+                    break;
+                case 5:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_IstMoment_K0;
+                    break;
+                case 6:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Istzustand;
+                    break;
+                case 7:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Kraftschluss_Ist;
+                    break;
+                case 8:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Kraftschluss_Ziel;
+                    break;
+                case 9:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Momentenreserve_EM;
+                    break;
+                case 10:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Status_Ablauf;
+                    break;
+                case 11:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Status_K0;
+                    break;
+                case 12:
+                    SigVal = MsgObj_Getriebe_HYB_01.GE_Zielzustand;
+                    break;
+                case 13:
+                    SigVal = MsgObj_Getriebe_HYB_01.Getriebe_HYB_01_BZ;
+                    break;
+                case 14:
+                    SigVal = MsgObj_Getriebe_HYB_01.Getriebe_HYB_01_CRC;
+                    break;
+            }
+        }
+        break;
+        case FRM_HANDLE_Getriebe_HYB_02:
+        {
+            switch (SigIdx)
+            {
+                case 0:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_Drehzahleingriff_EM;
+                    break;
+                case 1:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_Drehzahleingriff_VM;
+                    break;
+                case 2:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_Momenteneingriff_EM;
+                    break;
+                case 3:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_Momenteneingriff_VM;
+                    break;
+                case 4:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_SollMoment_EM;
+                    break;
+                case 5:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_SollMoment_VM;
+                    break;
+                case 6:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_Solldrehzahl_EM;
+                    break;
+                case 7:
+                    SigVal = MsgObj_Getriebe_HYB_02.GE_Solldrehzahl_VM;
+                    break;
+                case 8:
+                    SigVal = MsgObj_Getriebe_HYB_02.Getriebe_HYB_02_BZ;
+                    break;
+                case 9:
+                    SigVal = MsgObj_Getriebe_HYB_02.Getriebe_HYB_02_CRC;
+                    break;
+            }
+        }
+        break;
+    }
+
+    return (SigVal);
+}
+/*@@end*/
+
+/*@@caplFunc:ShowPrompt():*/
+ShowPrompt ()
+{
+    int SigVal = 0;
+
+    switch (CaplCtrl_LevelActv)
+    {
+        /* currently no level selected */
+        case CAPLCTRL_LEVEL_NOSEL:
+        {
+            if (CaplCtrl_PromptMode == CAPLCTRL_PROMPTMODE_NUM)
+            {
+                write("# > %s", CaplCtrl_InputBuf);
+            }
+            else
+            {
+                write("# > %s", CaplCtrl_CharBuf);
+            }
+        }
+        break;
+
+        case CAPLCTRL_LEVEL_FRAME:
+        {
+            GetFrameName(CaplCtrl_FrameActv);
+
+            if (CaplCtrl_PromptMode == CAPLCTRL_PROMPTMODE_NUM)
+            {
+                write("# %s> %s", CaplCtrl_FrameName, CaplCtrl_InputBuf);
+            }
+            else
+            {
+                write("# %s> %s", CaplCtrl_FrameName, CaplCtrl_CharBuf);
+            }
+        }
+        break;
+
+        case CAPLCTRL_LEVEL_SIGNAL:
+        {
+            GetFrameName(CaplCtrl_FrameActv);
+            GetSignalName(CaplCtrl_FrameActv, CaplCtrl_SignalActv);
+
+            SigVal = GetSignalVal(CaplCtrl_FrameActv, CaplCtrl_SignalActv);
+
+            if (CaplCtrl_PromptMode == CAPLCTRL_PROMPTMODE_NUM)
+            {
+                write("# %s.%s = %d> %s", CaplCtrl_FrameName, CaplCtrl_SignalName, SigVal, CaplCtrl_InputBuf);
+            }
+            else
+            {
+                write("# %s.%s = %d> %s", CaplCtrl_FrameName, CaplCtrl_SignalName, SigVal, CaplCtrl_CharBuf);
+            }
+        }
+        break;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcChecksumCRC8(int, message*, byte):*/
+byte Frm_CalcChecksumCRC8(int FrmIdx, message *MsgObj, byte endval)
+{
+    int idx;
+    byte crc;
+
+    /* calculate CRC8 checksum */
+    crc = 0xFF;
+    /* IMPORTANT NOTE: assumes CRC8 is in byte 0 */
+    for (idx = 1; idx < MsgObj.DLC; idx++)
+    {
+        crc = CRC8_tab_256[(MsgObj.BYTE(idx) ^ crc)];
+    }
+    crc = CRC8_tab_256[(endval ^ crc)];
+    crc = ~crc;
+
+    /* checksum calculation disabled, make sure checksum is wrong */
+    if (Frm_MsgChksmEna[FrmIdx] == 0)
+    {
+        crc = ~crc;
+    }
+
+   	return (crc);
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcChecksumCRC8Id(int, message*):*/
+byte Frm_CalcChecksumCRC8Id(int FrmIdx, message *MsgObj)
+{
+    byte crcid;
+
+    /* XOR high byte and low byte of CAN ID - used as checksum end value */
+	crcid = MsgObj.ID;
+    crcid = crcid ^ ((MsgObj.ID >> 8) & 0xFF);
+
+    return Frm_CalcChecksumCRC8(FrmIdx, MsgObj, crcid);
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcChecksumCRC8Dyn(int, message*, int):*/
+byte Frm_CalcChecksumCRC8Dyn(int FrmIdx, message *MsgObj, int MsgCnt)
+{
+    byte crcid;
+    byte ChksmEndVal[FRM_NUM_MAX][16] =
+    {
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 },
+        { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00 }
+    };
+
+    /* checksum end value is based on message counter value */
+    crcid = ChksmEndVal[FrmIdx][MsgCnt];
+
+    return Frm_CalcChecksumCRC8(FrmIdx, MsgObj, crcid);
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcChecksumXOR(int, message*, int):*/
+byte Frm_CalcChecksumXOR(int FrmIdx, message *MsgObj, int dChksmIdx)
+{
+    int idx;
+    byte chksm;
+
+    /* reset checksum byte */
+    MsgObj.BYTE(dChksmIdx) = 0;
+
+    /* init checksum value */
+    chksm = 0;
+
+    /* calculate checksum */
+    for (idx = 0; idx < MsgObj.DLC; idx++)
+    {
+        if (idx != dChksmIdx)
+        {
+            /* XOR all bytes */
+            chksm = chksm ^ MsgObj.BYTE(idx);
+        }
+    }
+
+    /* checksum calculation disabled, make sure checksum is wrong */
+    if (Frm_MsgChksmEna[FrmIdx] == 0)
+    {
+        chksm = ~chksm;
+    }
+
+	return (chksm);
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcChecksumXORID(int, message*, int):*/
+byte Frm_CalcChecksumXORID(int FrmIdx, message *MsgObj, int dChksmIdx)
+{
+    int idx;
+    byte chksm;
+
+    /* reset checksum byte */
+    MsgObj.BYTE(dChksmIdx) = 0;
+
+    /* init checksum value */
+    chksm = 0;
+
+    /* calculate checksum */
+    for (idx = 0; idx < MsgObj.DLC; idx++)
+    {
+        if (idx != dChksmIdx)
+        {
+            /* XOR all bytes */
+            chksm = chksm ^ MsgObj.BYTE(idx);
+        }
+    }
+
+    /* add high and low byte of CAN ID */
+    chksm = chksm ^ (MsgObj.ID & 0xFF);
+    chksm = chksm ^ ((MsgObj.ID >> 8) & 0xFF);
+
+    /* checksum calculation disabled, make sure checksum is wrong */
+    if (Frm_MsgChksmEna[FrmIdx] == 0)
+    {
+        chksm = ~chksm;
+    }
+
+	return (chksm);
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcChecksumLW1(int, message*, int):*/
+byte Frm_CalcChecksumLW1(int FrmIdx, message *MsgObj, int dChksmIdx)
+{
+    int idx;
+    byte chksm;
+
+    /* reset checksum byte */
+    MsgObj.BYTE(dChksmIdx) = 0;
+
+    /* init checksum value */
+    chksm = 0;
+
+    /* calculate checksum */
+    chksm = ((MsgObj.BYTE(0) + MsgObj.BYTE(1) + MsgObj.BYTE(2) + MsgObj.BYTE(3) + MsgObj.BYTE(5)) & 0xFF);
+    chksm = ~chksm;
+
+    /* checksum calculation disabled, make sure checksum is wrong */
+    if (Frm_MsgChksmEna[FrmIdx] == 0)
+    {
+        chksm = ~chksm;
+    }
+
+	return (chksm);
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_CalcMsgCounter(int):*/
+int Frm_CalcMsgCounter(int FrmIdx)
+{
+    /* IMPORTANT NOTE: currently it is assumed that message counter is 4 bit long */
+    if (Frm_MsgCounterEna[FrmIdx] != 0)
+    {
+        Frm_MsgCounter[FrmIdx] ++;
+        Frm_MsgCounter[FrmIdx] &= 0x0F;
+    }
+
+    return (Frm_MsgCounter[FrmIdx]);
+}
+/*@@end*/
+
+/*@@caplFunc:FrmSch_EnableFrame(long):*/
+FrmSch_EnableFrame(long FrmIdx)
+{
+    /* enable TX of CAN frame */
+    FrmSched_FrmEna[FrmIdx] = 1;
+}
+/*@@end*/
+
+/*@@caplFunc:FrmSch_DisableFrame(long):*/
+FrmSch_DisableFrame(long FrmIdx)
+{
+    /* enable TX of CAN frame */
+    FrmSched_FrmEna[FrmIdx] = 0;
+}
+/*@@end*/
+
+/*@@caplFunc:FrmSch_EnableAllFrames():*/
+FrmSch_EnableAllFrames()
+{
+    int FrmIdx;
+
+    for (FrmIdx = 0; FrmIdx < FRM_NUM_MAX; FrmIdx++)
+    {
+        /* enable scheduler for all frames */
+        FrmSched_FrmEna[FrmIdx] = 1;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:FrmSch_DisableAllFrames():*/
+FrmSch_DisableAllFrames()
+{
+    int FrmIdx;
+
+    for (FrmIdx = 0; FrmIdx < FRM_NUM_MAX; FrmIdx++)
+    {
+        /* disable scheduler for all frames */
+        FrmSched_FrmEna[FrmIdx] = 0;
+    }
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_EnableMsgCounter(long):*/
+Frm_EnableMsgCounter(long FrmIdx)
+{
+    /* enable message counter calculation */
+    Frm_MsgCounterEna[FrmIdx] = 1;
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_DisableMsgCounter(long):*/
+Frm_DisableMsgCounter(long FrmIdx)
+{
+    /* disable message counter calculation */
+    Frm_MsgCounterEna[FrmIdx] = 0;
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_EnableChksm(long):*/
+Frm_EnableChksm(long FrmIdx)
+{
+    /* enable checksum calculation */
+    Frm_MsgChksmEna[FrmIdx] = 1;
+}
+/*@@end*/
+
+/*@@caplFunc:Frm_DisableChksm(long):*/
+Frm_DisableChksm(long FrmIdx)
+{
+    /* disable checksum calculation */
+    Frm_MsgChksmEna[FrmIdx] = 0;
+}
+/*@@end*/

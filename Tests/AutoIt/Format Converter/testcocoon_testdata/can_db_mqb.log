@@ -1,0 +1,65 @@
+Conversion Error Log
+
+
+MSG_ID: 1607	MSG_NAME: Motor_09
+	Discarded SIG_NAME: MO_MKB_02, Reason: Overlapping signal
+
+MSG_ID: 1607	MSG_NAME: Motor_09
+	Discarded SIG_NAME: MO_MKB_03, Reason: Overlapping signal
+
+MSG_ID: 1607	MSG_NAME: Motor_09
+	Discarded SIG_NAME: MO_MKB_04, Reason: Overlapping signal
+
+MSG_ID: 967	MSG_NAME: Motor_26
+	Discarded SIG_NAME: MO_Kuehlerluefter_2, Reason: Overlapping signal
+
+MSG_ID: 157	MSG_NAME: Motor_Hybrid_01
+	Discarded SIG_NAME: MO_HYB_KnickDZ_Rek, Reason: Overlapping signal
+
+MSG_ID: 157	MSG_NAME: Motor_Hybrid_01
+	Discarded SIG_NAME: MO_HYB_Momverlauf_EM, Reason: Overlapping signal
+
+MSG_ID: 157	MSG_NAME: Motor_Hybrid_01
+	Discarded SIG_NAME: MO_HYB_KnickDZ_EM, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_4, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_11, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_5, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_12, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_6, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_13, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_7, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_14, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_8, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_15, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_9, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_16, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_10, Reason: Overlapping signal
+
+MSG_ID: 1716	MSG_NAME: VIN_01
+	Discarded SIG_NAME: VIN_17, Reason: Overlapping signal

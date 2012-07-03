@@ -18,12 +18,4 @@ $listViewCount1=ControlListView("BUSMASTER", "", "SysListView322", "GetItemCount
 if $listViewCount1>0 Then
 	ControlListView ("BUSMASTER","","SysListView322","Select",0)
 	$mID = ControlListView("BUSMASTER", "", "SysListView322", "GetText", "0", "0")
-	if $ID=$mID Then
-	_ExcelWriteCell($oExcel, "OK", 23, 10)
-else
-	_ExcelWriteCell($oExcel, "Error", 23, 10)
-	EndIf
-Else
-	_ExcelWriteCell($oExcel,"No messages Exists in Tx Message List",23,9)
-	_ExcelWriteCell($oExcel, "Error", 23, 10)
 EndIf

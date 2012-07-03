@@ -78,11 +78,7 @@ EndIf
 ConsoleWrite("$match: "&$match & @CRLF)
 ConsoleWrite("$type: "&$type & @CRLF)
 ConsoleWrite("$db: "&$db & @CRLF)
-if $match=1 and $type=1 and $db=1 Then
-	_ExcelWriteCell($oExcel, "Pass", 52, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 52, 10)
-EndIf
+
 ConsoleWrite("****End : TC_UC10_04.au3****"&@CRLF)
 ConsoleWrite("***********UseCase 10 Script Execution Started************"&@CRLF)
 ConsoleWrite(@CRLF)

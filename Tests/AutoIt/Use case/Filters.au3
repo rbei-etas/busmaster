@@ -22,6 +22,7 @@ if WinExists("BUSMASTER") Then
 	EndIf
 	_loadConfig("12FLTTest")					;load cfx file
 	_loadDatabase("12AutoitTest")				;load dbf file
+	send("!fdc")
 	_associateDB("&File","12AutoitTest.dbf")	;associate dbf
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Hardware Interface","&Simulation")
 	sleep(1000)
@@ -133,7 +134,7 @@ if WinExists("BUSMASTER") Then
 		ControlClick("Configure Message Display- CAN","OK","[CLASS:Button; INSTANCE:4]")
 	EndIf
 	sleep(2000)
-	$cntToolhWd=ControlGetHandle("BUSMASTER","","[CLASS:ToolbarWindow32; INSTANCE:6]")
+	$cntToolhWd=ControlGetHandle("BUSMASTER","",128)
 	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Normal Blocks")
 	sleep(5000)

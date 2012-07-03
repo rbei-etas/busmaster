@@ -1,0 +1,1 @@
+winclose("selog.txt - Notepad")
