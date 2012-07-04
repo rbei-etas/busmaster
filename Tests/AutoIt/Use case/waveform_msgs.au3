@@ -92,11 +92,16 @@ if WinExists("BUSMASTER") then
 		controlclick("Waveform Selection List","","[CLASS:Button; INSTANCE:1]")
 		sleep(1000)
 		if winexists("Signal Definer Dialog") then
-			ControlCommand("Signal Definer Dialog","","[CLASS:ComboBox; INSTANCE:2]","SelectString","Cos Wave") ;select cos wave
-			ControlCommand("Signal Definer Dialog","","[CLASS:ComboBox; INSTANCE:2]","HideDropDown")
-			controlsettext("Signal Definer Dialog","",1001,20)
-			controlsettext("Signal Definer Dialog","",1004,150)
-			controlsettext("Signal Definer Dialog","",1002,150)
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1000,"ShowDropDown")
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1000,"HideDropDown")
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1000,"SelectString","Cos Wave") ;select cos wave
+			sleep(500)
+			controlsettext("Signal Definer Dialog","",1001,20)	; Amplitude
+			controlsettext("Signal Definer Dialog","",1004,150)	; Sampling time period
+			controlsettext("Signal Definer Dialog","",1002,150)	; Frequency
 			controlclick("Signal Definer Dialog","","[CLASS:Button; INSTANCE:1]")
 		EndIf
 		sleep(2000)
@@ -106,9 +111,12 @@ if WinExists("BUSMASTER") then
 		controlclick("Waveform Selection List","","[CLASS:Button; INSTANCE:1]")
 		sleep(1000)
 		if winexists("Signal Definer Dialog") then
-			ControlCommand("Signal Definer Dialog","","[CLASS:ComboBox; INSTANCE:2]","ShowDropDown")
+			ControlCommand("Signal Definer Dialog","",1003,"ShowDropDown")	; Cycles combobox
 			sleep(500)
-			ControlCommand("Signal Definer Dialog","","[CLASS:ComboBox; INSTANCE:2]","HideDropDown")
+			ControlCommand("Signal Definer Dialog","",1003,"HideDropDown")
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1003,"SelectString","2") ;select cycles as 2
+			sleep(500)
 			controlsettext("Signal Definer Dialog","",1001,20)
 			controlsettext("Signal Definer Dialog","",1004,150)
 			controlsettext("Signal Definer Dialog","",1002,150)
@@ -118,8 +126,13 @@ if WinExists("BUSMASTER") then
 		controlclick("Waveform Selection List","","[CLASS:Button; INSTANCE:1]")
 		sleep(1000)
 		if winexists("Signal Definer Dialog") then
-			ControlCommand("Signal Definer Dialog","","[CLASS:ComboBox; INSTANCE:2]","SelectString","Cos Wave")
-			ControlCommand("Signal Definer Dialog","","[CLASS:ComboBox; INSTANCE:2]","HideDropDown")
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1000,"ShowDropDown")
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1000,"HideDropDown")
+			sleep(500)
+			ControlCommand("Signal Definer Dialog","",1000,"SelectString","Triangular Wave") ;select Triangular Wave 			
+			sleep(500)
 			controlsettext("Signal Definer Dialog","",1001,20)
 			controlsettext("Signal Definer Dialog","",1004,150)
 			controlsettext("Signal Definer Dialog","",1002,150)
