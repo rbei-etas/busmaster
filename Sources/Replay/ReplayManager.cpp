@@ -151,53 +151,6 @@ DWORD CReplayManager::dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFi
 }
 
 /*******************************************************************************
-  Function Name  : Serialize
-  Input(s)       : omArchive - Arcieve to configuration file
-  Output         : -
-  Functionality  : To serialize replay manager class data
-  Member of      : CReplayManager
-  Author(s)      : Raja N
-  Date Created   : 16.7.2005
-  Modifications  :
-*******************************************************************************/
-BOOL CReplayManager::Serialize(CArchive& omArchive)
-{
-    BOOL bResult = FALSE;
-    // Loading
-    if( omArchive.IsLoading() )
-    {
-        // Serialise Log Files
-        m_omReplayFiles.RemoveAll();
-        int nSize = 0;
-        omArchive >> nSize;
-        // Serialise each log files
-        for( int nIndex = 0; nIndex < nSize; nIndex++ )
-        {
-            CReplayFile ouFile;
-            ouFile.bSerialize( omArchive );
-            m_omReplayFiles.Add( ouFile );
-        }
-        // Set the result to true
-        bResult = TRUE;
-    }
-    //Storing
-    else
-    {
-        // Serialise Log Files
-        int nSize = (int)m_omReplayFiles.GetSize();
-        omArchive << nSize;
-        // Serialise each log files
-        for( int nIndex = 0; nIndex < nSize; nIndex++ )
-        {
-            m_omReplayFiles.ElementAt( nIndex ).bSerialize( omArchive );
-        }
-        // Set the result to true
-        bResult = TRUE;
-    }
-    return bResult;
-}
-
-/*******************************************************************************
   Function Name  : vInitReplayManager
   Input(s)       : -
   Output         : -
@@ -686,37 +639,6 @@ void CReplayManager::vGetReplayFileNameList(CStringArray& omList)
         omList.Add( ouFile.m_omStrFileName );
     }
 }
-
-/*******************************************************************************
-  Function Name  : vAddOlderVersionReplayInformation
-  Input(s)       : -
-  Output         : -
-  Functionality  : To populate replay list with olb version information
-  Member of      : CReplayManager
-  Author(s)      : Raja N
-  Date Created   : 19.7.2005
-  Modifications  :
-*******************************************************************************/
-void CReplayManager::vAddOlderVersionReplayInformation()
-{
-    //// Remove all entries
-    //m_omReplayFiles.RemoveAll();
-    //// Get Replay File Name
-    //CString * pomName = NULL;
-    //theApp.bGetData( REPLAY_FILE_NAME, (void **)&pomName);
-    //if( pomName != NULL && pomName->IsEmpty() == FALSE )
-    //{
-    //    // Create replay file info
-    //    CReplayFile omFile;
-    //    omFile.m_omStrFileName = *pomName;
-    //    // Make it interactive
-    //    omFile.m_bInteractive = TRUE;
-    //    // Others keep as default value
-    //    // Add the file to list
-    //    m_omReplayFiles.Add( omFile );
-    //}
-}
-
 
 void CReplayManager::vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
 {
