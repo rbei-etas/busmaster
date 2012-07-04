@@ -42,8 +42,6 @@ public:
     // Don't use virtual as of not it is not going to be inherited
     // and to have optimization
     ~CReplayFile();
-    // To serialise the class
-    BOOL bSerialize(CArchive& omArchive);
     // Friends of this class
     friend class CReplayFileConfigDlg;
     friend class CReplayManager;
