@@ -39,9 +39,7 @@ public:
     // To get the singleton instance of Replay Manager
     static CReplayManager& ouGetReplayManager();
     // To show Replay configuration dialog
-    DWORD dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFilterConfigured);
-    // To load/store details in to config file
-    BOOL Serialize(CArchive& omArchive);
+    DWORD dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFilterConfigured);        
     // Initialize to default
     VOID vInitReplayManager();
     // To show all interactive replay windows
@@ -63,8 +61,6 @@ public:
     void vStartStopReplay( BOOL bStart );
     // To get list of replay file names
     void vGetReplayFileNameList(CStringArray& omList);
-    // To get information from old version cfg file
-    void vAddOlderVersionReplayInformation();
     // Declare Dialog class as Friend
     friend class CReplayFileConfigDlg;
 

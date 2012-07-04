@@ -1,0 +1,18 @@
+***BUSMASTER Ver 1.6.5***
+***PROTOCOL CAN***
+***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***
+***[START LOGGING SESSION]***
+***START DATE AND TIME 3:7:2012 13:22:5:150***
+***HEX***
+***SYSTEM MODE***
+***START CHANNEL BAUD RATE***
+***CHANNEL 1 - Vector - Virtual Channel 1 SN - 0Channel Index - 0 - 500 Kbps***
+***CHANNEL 2 - Vector - Virtual Channel 2 SN - 0Channel Index - 1 - 500 Kbps***
+***END CHANNEL BAUD RATE***
+***START DATABASE FILES (DBF/DBC)***
+***D:\BUSMASTER OSS\Config Files\PQ35_46_ACAN_V5_7_6_E_20091013_MH.dbf***
+***END DATABASE FILES (DBF/DBC)***
+***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***
+***END DATE AND TIME 3:7:2012 13:22:5:619***
+***[STOP LOGGING SESSION]***
+
