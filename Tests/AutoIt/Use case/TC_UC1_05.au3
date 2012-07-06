@@ -58,8 +58,18 @@ if winexists("BUSMASTER") Then
 	sleep(1000)
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Normal Blocks")
 	sleep(1000)
-	sleep(5000)
+	Send("!vm")		; Hide CAN message window
+	sleep(2000)
+	Send("!vm")		; Show CAN message window	
+	sleep(3000)	
 	send("{ESC}")
+	
+	; Sort message window
+	$pos=ControlGetPos ("BUSMASTER", "Message Window - CAN",200 )
+	MouseClick("Left",$pos[0]+50,$pos[1]+55)
+	sleep(1000)
+	MouseClick("Left",$pos[0]+50,$pos[1]+55)
+	
 	WinMenuSelectItem("BUSMASTER","","F&unctions","D&isconnect	ESC")
 	sleep(1000)
  if winexists("BUSMASTER - [Message Window - CAN]") Then

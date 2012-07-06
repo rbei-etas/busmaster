@@ -73,6 +73,25 @@ if winexists("BUSMASTER") Then
 		EndIf
 	EndIf
 EndIf
+
+WinActivate("BUSMASTER")
+Send("!jvm")	; Show J1939 message window
+sleep(2000)
+Send("!jvm")	; Hide J1939 message window
+
+Sleep(500)
+Send("!umma")	; absolute time
+sleep(500)
+Send("!ummr")	; relative time
+sleep(500)
+Send("!umms")	; system   time
+
+; Sort message window
+$pos=ControlGetPos ("BUSMASTER", "Message Window - J1939",200 )
+MouseClick("Left",$pos[0]+50,$pos[1]+55)
+sleep(500)
+MouseClick("Left",$pos[0]+50,$pos[1]+55)
+	
 $hWd=ControlGetHandle("BUSMASTER","",128)
 _GUICtrlToolbar_ClickIndex($hWd,4,"left")
 sleep(1000)

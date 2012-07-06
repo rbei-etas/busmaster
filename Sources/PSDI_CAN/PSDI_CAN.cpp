@@ -58,9 +58,6 @@
 
 // CPSDI_CANApp
 
-BEGIN_MESSAGE_MAP(CPSDI_CANApp, CWinApp)
-END_MESSAGE_MAP()
-
 
 // CPSDI_CANApp construction
 
