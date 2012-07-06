@@ -140,6 +140,11 @@ Section "BUSMASTER"
 	bCanVctrbExists:
 			Delete "$INSTDIR\CAN_Vector_XL.dll"
 			
+	; Deleting If CAN_IXXAT_VCI.dll exists
+	IfFileExists $INSTDIR\CAN_IXXAT_VCI.dll bCanIXXATbExists
+	bCanIXXATbExists:
+			Delete "$INSTDIR\CAN_IXXAT_VCI.dll"
+			
 	; Deleting If Changelog.txt exists
 	IfFileExists $INSTDIR\Changelog.txt bChngLogbExists
 	bChngLogbExists:
@@ -366,6 +371,7 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
     File ..\Sources\BIN\Release\CAN_STUB.dll
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
+    File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\DIL_Interface.dll
     File ..\Sources\BIN\Release\DIL_J1939.dll
