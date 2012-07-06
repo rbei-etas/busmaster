@@ -5,6 +5,9 @@
 ; Test Cases:		Check for stop filter mode - Message filter
 ; Test Strategy:	Black Box
 ; Test Data:		-
+
+#Include <GuiListView.au3>
+
 $Number = "TS_20_021"
 $Result = "Test did not finish"
 
@@ -46,7 +49,47 @@ WinWaitActive("Configure Message Display- CAN","",5)
 ControlClick("Configure Message Display- CAN", "", 1031)	;1031 is the ID for 'Configure' button in Filter tab of 'Configure Message Display- CAN' dialog.
 WinWaitActive("Filter Selection Dialog","",5)
 ; Select few filters from the available list of filters and note down the selected filter list.
-ControlClick("Filter Selection Dialog", "", 32946) ;32946 is the ID for 'Add All' button in 'Filter Selection Dialog'.
+
+$hndFilterList = ControlGetHandle("Filter Selection Dialog","",1071)		; Get configured filters view handle
+;Select a filter
+_GUICtrlListView_ClickItem($hndFilterList, 0)
+
+_GUICtrlListView_ClickItem($hndFilterList, 0, "Right")
+
+; Click Add button
+Send("!a")
+
+Sleep(250)
+$hndSelFilterList = ControlGetHandle("Filter Selection Dialog","",1070)		; Get Signal watch list control handle
+
+;Select signal in Signal Watch List View
+_GUICtrlListView_ClickItem($hndSelFilterList, 0)
+
+_GUICtrlListView_ClickItem($hndSelFilterList, 0, "Right")
+
+Sleep(250)
+; Click Delete button
+Send("!d");
+
+Sleep(250)
+; Click Add All button
+Send("!l");
+
+Sleep(250)
+; Click Delete All button
+Send("!e");
+
+Sleep(250)
+
+;Double click on filter
+_GUICtrlListView_ClickItem($hndFilterList, 0,"left",false,2,1)
+
+ControlCommand("Filter Selection Dialog","",1231,"ShowDropDown")	; BUS combobox
+sleep(500)
+ControlCommand("Filter Selection Dialog","",1231,"HideDropDown")
+sleep(500)
+ControlCommand("Filter Selection Dialog","",1231,"SelectString","CAN") ;select BUS as CAN
+
 ; Select OK to save changes.
 ControlClick("Filter Selection Dialog", "", 1) ;1 is the ID for 'OK' button in 'Filter Selection Dialog'.
 WinWaitActive("Configure Message Display- CAN","",5) 
