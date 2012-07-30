@@ -249,9 +249,9 @@ public:
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    
+    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    
+    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
     // Specific function set
@@ -1109,12 +1109,15 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
             sCanData.m_ucDataType = RX_FLAG;
         }
 
-        /* Copy data length */
-        sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = (UCHAR)xlEvent.tagData.msg.dlc;
+    	if ( xlEvent.tagData.msg.dlc <= 8 ) /* Valid CAN message length */
+		{
+			/* Copy data length */
+			sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = (UCHAR)xlEvent.tagData.msg.dlc;
 
-        /* Copy the message data */
-        memcpy(sCanData.m_uDataInfo.m_sCANMsg.m_ucData,
-               xlEvent.tagData.msg.data, xlEvent.tagData.msg.dlc);
+			/* Copy the message data */
+			memcpy(sCanData.m_uDataInfo.m_sCANMsg.m_ucData,
+				   xlEvent.tagData.msg.data, xlEvent.tagData.msg.dlc);
+		}
 
         /* Copy the message ID */
         sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID = (UINT)xlEvent.tagData.msg.id;
@@ -1547,7 +1550,8 @@ static int nWriteMessage(STCAN_MSG sMessage, DWORD dwClientID)
     if ((sMessage.m_ucChannel > 0) &&
             (sMessage.m_ucChannel <= sg_nNoOfChannels))
     {
-        static XLevent       xlEvent;        
+        static XLevent       xlEvent;
+        // PTV CPP
         XLstatus             xlStatus = 0;
         unsigned int         messageCount = 1;
 
@@ -1778,7 +1782,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
 
     return hResult;
 }
-
+//MVN
 HRESULT CDIL_CAN_VectorXL::CAN_SetControllerParams(INT nValue, ECONTR_PARAM eContrparam)
 {
     switch(eContrparam)
@@ -1821,7 +1825,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetControllerParams(INT nValue, ECONTR_PARAM eCon
     }
     return S_OK;
 }
-
+//~MVN
 /**
 * \brief         Gets the error counter for corresponding channel.
 * \param[out]    sErrorCnt, is SERROR_CNT structure
