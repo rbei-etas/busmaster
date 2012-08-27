@@ -2018,6 +2018,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                 {
                     SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_eBus).
                                                 m_odMsgNameMsgCodeListDb.GetNext(MainPos);
+					sMsgCode.m_dwMsgCode = -1;
                     pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgCode);
                     if(pos != NULL)         //if present stop searching
                     {

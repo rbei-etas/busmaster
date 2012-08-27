@@ -81,6 +81,7 @@ typedef struct tagMsgNameMsgCode
     tagMsgNameMsgCode()
     {
         m_unMsgLen = 8;
+		m_dwMsgCode = 0;
         m_omSignalNames.RemoveAll();
     }
 

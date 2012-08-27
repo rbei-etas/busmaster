@@ -526,10 +526,10 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     m_omStrFirstSignalName = m_omStrSignalName;
     // Save Current type selection
     m_omComboSgType.GetWindowText(m_omStrPrevSignalType);
-    //KSS
+    
     // Save the intial values
     vSetInitialData();
-    //KSS
+    
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
