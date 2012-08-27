@@ -693,6 +693,14 @@ void CMsgContainerJ1939::vSetCurrMsgName(CString strMsgNameOrCode)
     CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acMsgName, strMsgNameOrCode,
             sizeof(m_sOutFormattedData.m_acMsgName));
 }
+void CMsgContainerJ1939::vSetMsgLength(CString strsgLength)
+{
+    if(strsgLength.IsEmpty() == FALSE)
+    {
+        CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acDataLen, strsgLength,
+                sizeof(m_sOutFormattedData.m_acDataLen));
+    }
+}
 /******************************************************************************
     Function Name    :  vClearFormattedMsgStruct
     Input(s)         :

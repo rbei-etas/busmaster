@@ -1,5 +1,5 @@
 
-/*  A Bison parser, made from d:\1.6.5 release oss\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
+/*  A Bison parser, made from d:\build for testing\busmaster oss\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
   */
 
 #define YYBISON 1  /* Identify Bison output.  */

@@ -12,7 +12,7 @@
 ; === Test Procedure ===
 ; --- Test SetUp ---
 #Include <GuiListView.au3>
-#include "globalFunc.au3"
+#include "globalFunc_J1939.au3"
 
 ;Launch BUSMASTER Application
 _launchApp()
@@ -37,6 +37,8 @@ Send("!ja") ; J1939 -> Activate
 ; 3. Go Online on J1939 
 Send("!jfg") ; J1939 -> Functions -> Go Online
 
+;~ ; Associate database_
+;_associateDB("&J1939","J1939_SAE.dbf")
 
 ; ------------------ J1939 Transmission Window ------------------------------
 
@@ -190,7 +192,5 @@ _J1939tMsgWin("Broadcast")
 WinClose("Signal Watch - J1939")
 
 ; --- Closure ---
-WinClose("BUSMASTER")
-ControlClick("BUSMASTER", "", 7)	;7 is the ID for 'No' button
-
-	
+;WinClose("BUSMASTER")
+;ControlClick("BUSMASTER", "", 7)	;7 is the ID for 'No' button

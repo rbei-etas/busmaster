@@ -19,8 +19,9 @@
     </p>
     <image href="../images/statusbar.bmp" placement="break"/>
     <ul>
-      <li>The center pane shows the loaded configuration file path.</li>
-      <li>The extreme right pane indicates the number of channels supported by the application.</li>
+      <li>The first pane shows the loaded configuration file path.</li>
+      <li>The second pane displays the data logging status for CAN and J1939</li>
+      <li>The extreme right pane indicates the hardware selected, baud rate and the number of channels supported by the application.</li>
     </ul>
     <note>
       <ul>

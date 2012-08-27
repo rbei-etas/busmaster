@@ -322,9 +322,9 @@ public:
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 
-    
+    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    
+    //~MVN
 
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -787,7 +787,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterf
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    if (nInitHwNetwork() == 0)
+    if (( hResult = nInitHwNetwork()) == 0)
     {
         nCount = sg_nNoOfChannels;
         hResult = S_OK;
@@ -795,7 +795,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterf
     }
     else
     {
-        hResult = NO_HW_INTERFACE;
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
     }
     return hResult;
@@ -2107,10 +2106,18 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
     CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd);
-    HwList.DoModal();
+    INT nRet = HwList.DoModal();
     objMainWnd.Detach();
-    nCount = HwList.nGetSelectedList(pnSelList);
-    return 0;
+
+    if ( nRet == IDOK)
+    {
+        nCount = HwList.nGetSelectedList(pnSelList);
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /**
@@ -2145,8 +2152,10 @@ static int nCreateMultipleHardwareNetwork()
         sg_HardwareIntr[nCount].m_acDeviceName = chBuffer;
         //sprintf(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
     }
-    ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
-
+    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+    {
+        return HW_INTERFACE_NO_SEL;
+    }
     sg_ucNoOfHardware = (UCHAR)nHwCount;
     sg_nNoOfChannels = (UINT)nHwCount;
 
@@ -2248,7 +2257,7 @@ static int nGetNoOfConnectedHardware(void)
 static int nInitHwNetwork()
 {
     int nChannelCount = 0;
-    int nResult = -1;
+    int nResult = NO_HW_INTERFACE;
 
     /* Select Hardware */
     nChannelCount = nGetNoOfConnectedHardware();

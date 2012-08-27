@@ -77,9 +77,9 @@ public:
 
     //HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    
+
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    
+
 
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
@@ -117,7 +117,11 @@ protected:
 
     BYTE m_byCurrHardwareState; // <- current state of the hardware access
 
-    CIxxatCanChannel m_arrIxxatCanChannels[CHANNEL_CAN_MAX];  ///< internal can channel list
+    CIxxatCanChannel m_arrIxxatCanChannels[CHANNEL_CAN_MAX];    ///< internal can channel list
+    CIxxatCanChannel m_arrTmpIxxatCanChannels[CHANNEL_CAN_MAX];  ///< internal can channel list Temp
+
+    INTERFACE_HW_LIST m_sSelHwInterface;
+    INT m_anSelectedItems[CHANNEL_ALLOWED];
 
     int  VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINFO* pVciDevInfo, INTERFACE_HW_LIST& sSelHwInterface);
 

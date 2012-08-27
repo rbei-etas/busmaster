@@ -76,6 +76,8 @@ public:
     // To get the flexray buffer of this module
     CBaseCANBufFSE* FPC_GetCANBuffer(void);
 
+    void FPC_vCloseLogFile();
+
 
     /* USE COMMON BASE CLASS ALIAS FUNCTIONS */
 
@@ -96,6 +98,7 @@ public:
     // Query function - current logging status (OFF/ON).
     BOOL FPC_IsLoggingON(void);
 
+    // PTV[1.6.4]
     BOOL FPC_IsDataLogged(void);
 
     BOOL FPC_IsThreadBlocked(void);
@@ -141,8 +144,13 @@ public:
     // Getter for the logging configuration data
     HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength);
 
+	// For writing in to XML
+	HRESULT FPC_GetConfigData(xmlNodePtr pxmlNodePtr);
     // Setter for the logging configuration data
     HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
+	//MVN
+	HRESULT FPC_SetConfigData(xmlDocPtr pDoc);
+	//~MVN
 
     // To update the associated database list to logger
     HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);

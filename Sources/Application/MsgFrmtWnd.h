@@ -84,8 +84,15 @@ public:
 
     //Get Config Data.
     HRESULT GetConfigData(BYTE* pvDataStream);
+	bool GetConfigData(xmlNodePtr pxmlNodePtr);
     //Set Config Data.
     HRESULT SetConfigData(BYTE* pvDataStream);
+	// PTV XML
+	HRESULT SetConfigData(xmlDocPtr pNodeSet);
+	HRESULT SetConfigDataJ1939(xmlDocPtr pDocPtr);
+	// PTV XML
+	
+	HRESULT SetConfigData(xmlNodePtr pNode);
     UINT nGetMsgFrmtWndConfigSize();
     void vSetMsgDataBasePtr(void** ppvMsgDBPtr);
     void vSetDILInterfacePointer(void** ppvJ1939DIL);
@@ -104,6 +111,7 @@ private:
     BOOL m_bMsgIntrprtnDlgShown;
     LRESULT OnUpdateFont(WPARAM wParam, LPARAM lParam);
     CString strGetMsgNameOrCode(UINT nMsgCode);
+    CString strGetMsgLengthFromMessageCode(UINT unMsgCode);
     void vExpandContractAllEntries (BOOL bInterpretationON, BOOL bChangeIntptnState = TRUE);
     void vCreateAllMsgTree();
     void vChangeStateOfInterpretableMsgs();

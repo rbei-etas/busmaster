@@ -34,7 +34,9 @@ typedef HRESULT (*ASSIGNMSGBLOCKLIST)();
 typedef HRESULT (*DELETETXBLOCKMEMORY)();
 typedef HRESULT (*STOPTRANSMISSION)(UINT unMaxWaitTime);
 typedef HRESULT (*GETTXWNDCONFIGDATA)(BYTE*& pDesBuffer, int& nBuffSize);
-typedef HRESULT (*SETTXWNDCONFIGDATA)(BYTE* pSrcBuffer, int nBuffSize);
+typedef HRESULT (*GETTXWNDCONFIGDATAXML)(xmlNodePtr pxmlNodePtr);
+//typedef HRESULT (*SETTXWNDCONFIGDATA)(BYTE* pSrcBuffer, int nBuffSize);
+typedef HRESULT (*SETTXWNDCONFIGDATA)(xmlDocPtr pDoc);
 //typedef HRESULT (*ISTXWNDCONFIGCHANGED)();
 typedef UINT    (*GETTXBLOCKCOUNT)(void);
 typedef HRESULT (*SETTXSTOPFLAG)(BOOL bStartStop);
@@ -51,7 +53,7 @@ ALLOCMEMFORGLOBALTXLIST     pfAllocateMemoryForGlobalTxList;
 ASSIGNMSGBLOCKLIST          pfAssignMsgBlockList;
 DELETETXBLOCKMEMORY         pfDeleteTxBlockMemory;
 STOPTRANSMISSION            pfStopTransmission;
-GETTXWNDCONFIGDATA          pfGetTxWndConfigData;
+GETTXWNDCONFIGDATAXML       pfGetTxWndConfigData;
 SETTXWNDCONFIGDATA          pfSetTxWndConfigData;
 //ISTXWNDCONFIGCHANGED      pfIsTxWndConfigChanged;
 GETTXBLOCKCOUNT             pfGetTxBlockCount;
@@ -146,7 +148,7 @@ void CTxHandler::vloadFuncPtrAddress()
     pfAssignMsgBlockList                = (ASSIGNMSGBLOCKLIST)GetProcAddress(m_hTxHandle, "TX_vAssignMsgBlockList");
     pfDeleteTxBlockMemory               = (DELETETXBLOCKMEMORY)GetProcAddress(m_hTxHandle, "TX_vDeleteTxBlockMemory");
     pfStopTransmission                  = (STOPTRANSMISSION)GetProcAddress(m_hTxHandle, "TX_vStopTransmission");
-    pfGetTxWndConfigData                = (GETTXWNDCONFIGDATA)GetProcAddress(m_hTxHandle, "TX_vGetTxWndConfigData");
+    pfGetTxWndConfigData                = (GETTXWNDCONFIGDATAXML)GetProcAddress(m_hTxHandle, "TX_vGetTxWndConfigData");
     pfSetTxWndConfigData                = (SETTXWNDCONFIGDATA)GetProcAddress(m_hTxHandle, "TX_vSetTxWndConfigData");
     //pfIsTxWndConfigChanged                = (ISTXWNDCONFIGCHANGED)GetProcAddress(m_hTxHandle, "TX_bIsTxWndConfigChanged");
     pfSetTxStopFlag                     = (SETTXSTOPFLAG)GetProcAddress(m_hTxHandle, "TX_vSetTxStopFlag");
@@ -359,6 +361,23 @@ void CTxHandler::vStopTransmission(UINT unMaxWaitTime)
         pfStopTransmission(unMaxWaitTime);
     }
 }
+/*******************************************************************************
+  Function Name  : vGetTxWndConfigData
+  Input(s)       : xmlNodePtr
+  Output         : -
+  Functionality  : Gets the configuration data of Tx Window in XML format.
+  Member of      : CTxHandler
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 2-8-2012
+  Modifications  :
+*******************************************************************************/
+void CTxHandler::vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
+{
+    if(pfGetTxWndConfigData != NULL)
+    {
+        pfGetTxWndConfigData(pxmlNodePtr);
+    }
+}
 
 /*******************************************************************************
   Function Name  : vGetTxWndConfigData
@@ -374,7 +393,7 @@ void CTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
 {
     if(pfGetTxWndConfigData != NULL)
     {
-        pfGetTxWndConfigData(pDesBuffer, nBuffSize);
+        // pfGetTxWndConfigData(pDesBuffer, nBuffSize);
     }
 }
 
@@ -390,9 +409,12 @@ void CTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
 *******************************************************************************/
 void CTxHandler::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
+}
+void CTxHandler::vSetTxWndConfigData(xmlDocPtr pDoc)
+{
     if(pfSetTxWndConfigData != NULL)
     {
-        pfSetTxWndConfigData(pSrcBuffer, nBuffSize);
+        pfSetTxWndConfigData(pDoc);
     }
 }
 

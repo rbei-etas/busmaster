@@ -26,6 +26,7 @@
 #include "include/Error.h"
 #include "TestSetupEditorLib/TestSetupEntity.h"
 #include "TSExecutorResult.h"
+#include "Utility/XMLUtils.h"
 
 typedef struct _STestSetupInfo
 {
@@ -35,6 +36,12 @@ typedef struct _STestSetupInfo
     INT m_nTCCount;
     //Result;
 } STestSetupInfo;
+typedef struct tagTestSuiteConfigInfo
+{
+	string m_strFileName;
+	bool m_bEnable;
+	list<int> m_nListSelctedCases;
+}sTestSuiteConfigInfo;
 typedef CList<CTestSetupEntity, CTestSetupEntity&> CTestSetupEntiyList;
 
 class CTSExecutorLIB
@@ -62,7 +69,9 @@ public:
     HRESULT GetTestCaseInfo( DWORD dwID, UINT unIndex, CBaseEntityTA** pTCInfo);
     HRESULT EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize);
+	HRESULT GetConfigurationData(xmlNodePtr pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pDesBuffer, UINT unBuffSize);
+    HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
     HRESULT EnableItem(DWORD dwID, BOOL& bEnable);
     HRESULT RemoveAllItems(void);
     HRESULT GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable);
@@ -75,5 +84,5 @@ public:
 private:
     BOOL bExecuteTestSetup(CTestSetupEntity& pEntiy );
     BOOL bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult);
-
+	int nParseTestSuite(xmlNodePtr pNode, sTestSuiteConfigInfo& sConfigInfo);
 };

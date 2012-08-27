@@ -1,28 +1,6 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// FormatConverter.cpp : Defines the class behaviors for the application.
+//
 
-/**
- * \file      FormatConverterApp.h
- * \brief     Defines the class behaviors for the application.
- * \authors   Tobias Lorenz
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Defines the class behaviors for the application.
- */
-
-#include "stdafx.h"
 #include "FormatConverterApp.h"
 #include "FormatConverterWnd.h"
 #ifdef _DEBUG
@@ -64,8 +42,11 @@ BOOL CFormatConverterApp::InitInstance()
     // in your application.
     InitCtrls.dwICC = ICC_WIN95_CLASSES;
     InitCommonControlsEx(&InitCtrls);
+
     CWinApp::InitInstance();
+
     AfxEnableControlContainer();
+
     // Standard initialization
     // If you are not using these features and wish to reduce the size
     // of your final executable, you should remove from the following
@@ -74,13 +55,14 @@ BOOL CFormatConverterApp::InitInstance()
     // TODO: You should modify this string to be something appropriate
     // such as the name of your company or organization
     SetRegistryKey(_T("Local AppWizard-Generated Applications"));
+
     CFormatConverterWnd dlg(_T("BUSMASTER Format Conversions"));
     dlg.m_psh.dwFlags &= ~PSH_HASHELP;
     dlg.m_psh.dwFlags &= ~PSH_NOAPPLYNOW;
     dlg.LoadConverters();
     m_pMainWnd = &dlg;
-    INT_PTR nResponse = dlg.DoModal();
 
+    INT_PTR nResponse = dlg.DoModal();
     if (nResponse == IDOK)
     {
         // TODO: Place code here to handle when the dialog is

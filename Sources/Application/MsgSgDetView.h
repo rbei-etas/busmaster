@@ -57,6 +57,7 @@ public:
     // Attributes
 private:
     SDBPARAMS m_sDbParams;
+	int		m_nSelectedSignalIndex;   //stores the curent selection index in m_omListCtrlSignal AUC
 public:
     static SDBPARAMS sm_sDbParams;
     // Operations

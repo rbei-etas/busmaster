@@ -40,3 +40,4 @@
 #include <wtypes.h>
 #include <string>
 #include <list>
+#include "Utility/XMLUtils.h"

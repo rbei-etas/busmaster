@@ -21,11 +21,13 @@
 // NodeSimEx.cpp : Defines the initialization routines for the DLL.
 //
 #include "NodeSimEx_stdafx.h"
+#include "Utility/XMLUtils.h"
 #include "include/BaseDefs.h"
 #include "GlobalObj.h"
 #include "ExecuteManager.h"
 #include "EditFrameWnd.h"
 #include "SimSysManager.h"
+#include "Utility/Utility.h"
 
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "NodeSim.h"
@@ -112,6 +114,7 @@ HRESULT CNodeSim::FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInit
                     WS_CHILD | WS_OVERLAPPEDWINDOW,
                     omRect, (CMDIFrameWnd*)pParent ) == TRUE )
             {
+
                 // Show window and set focus
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_SHOW );
                 CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->SetFocus();
@@ -177,9 +180,14 @@ void CNodeSim::NS_ManageOnKeyHandler(UCHAR ucKey)
     CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnKeyHandler(ucKey);
 }
 
+void CNodeSim::NS_ManageBusEventHandler(eBUSEVEHANDLER eBusEvent)
+{
+    CExecuteManager::ouGetExecuteManager(m_eBus).vManageBusEventHandler(eBusEvent);
+}
+
 void CNodeSim::NS_ManageOnMessageHandler(void* psRxMsgInfo)
 {
-    STCAN_MSG* psRxMsg = (STCAN_MSG*)psRxMsgInfo;
+    STCAN_TIME_MSG* psRxMsg = (STCAN_TIME_MSG*)psRxMsgInfo;
     CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnMessageHandlerCAN(*psRxMsg, CAN_MONITOR_CLIENT_ID);
 }
 
@@ -238,8 +246,8 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
                 CGlobalObj::ouGetObj(m_eBus).m_omMsgStructFile = psExInitStruct->m_omStructFile;
                 CGlobalObj::ouGetObj(m_eBus).m_omDefinedMsgHeaders.RemoveAll();
                 CGlobalObj::ouGetObj(m_eBus).m_omDefinedMsgHeaders.Copy(psExInitStruct->m_omDefinedMsgHeaders);
-                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.RemoveAll();
-                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.AddTail(&(psExInitStruct->m_odMsgNameMsgCodeList));
+                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.RemoveAll();      //CAPL_DB_NAME_CHANGE
+                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.AddTail(&(psExInitStruct->m_odMsgNameMsgCodeListDB));
                 CGlobalObj::ouGetObj(m_eBus).m_omErrorHandlerList.RemoveAll();
                 CGlobalObj::ouGetObj(m_eBus).m_omErrorHandlerList.Copy(psExInitStruct->m_omErrorHandlerList);
                 //CGlobalObj::g_podNodeToDllMap = psExInitStruct->m_podNodeToDllMap;
@@ -254,9 +262,10 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
             break;
             case UPDATE_DATABASE_MSGS:
             {
-                CMsgNameMsgCodeList* podMsgNameCodeList = (CMsgNameMsgCodeList*)pvFuncStructs;
-                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.RemoveAll();
-                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.AddTail(podMsgNameCodeList);
+                //CAPL_DB_NAME_CHANGE
+                CMsgNameMsgCodeListDataBase* podMsgNameCodeListDb = (CMsgNameMsgCodeListDataBase*)pvFuncStructs;
+                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.RemoveAll();
+                CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.AddTail(podMsgNameCodeListDb);
             }
             break;
             case UPDATE_UNIONS_HEADER_FILES:
@@ -331,6 +340,11 @@ void CNodeSim::NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize)
     memcpy (pDesBuffer, CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, nBuffSize);
 }
 
+bool CNodeSim::NS_GetSimSysConfigData(xmlNodePtr pNodePtr)
+{
+    CSimSysManager::ouGetSimSysManager(m_eBus).bGetConfigData(pNodePtr);
+    return true;
+}
 void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
     if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
@@ -346,6 +360,36 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
     }
     //Update Internal Data
     CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig();
+}
+
+void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
+{
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    {
+        delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
+        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
+    }
+    if (pXmlDoc != NULL)
+    {
+        /*CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = new BYTE[nBuffSize];
+        memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
+        CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize = nBuffSize;*/
+        CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig(pXmlDoc, m_eBus);
+    }
+    //Update Internal Data
+
+}
+int  CNodeSim::NS_nOnBusConnected(bool bConnected)
+{
+    if(bConnected)
+    {
+        m_n64TimeElapsedSinceConnection = gnGetCpuClocks();
+    }
+    else
+    {
+        m_n64TimeElapsedSinceConnection = 0;
+    }
+    return TRUE;
 }
 BOOL CNodeSim::NS_IsSimSysConfigChanged()
 {

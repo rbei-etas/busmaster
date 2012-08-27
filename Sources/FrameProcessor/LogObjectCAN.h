@@ -49,8 +49,10 @@ protected:
     void Der_CopySpecificData(const CBaseLogObject* pouLogObjRef);
     // Set configuration data - concrete class specific logics
     BYTE* Der_SetConfigData(BYTE* pvDataStream);
+	virtual int Der_SetConfigData(xmlNodePtr);
     // Get configuration data - concrete class specific logics
     BYTE* Der_GetConfigData(BYTE* pvDataStream) const;
+	void Der_GetConfigData(xmlNodePtr pNodePtr) const;
     // To get the total buffer size - concrete class specific logics
     UINT Der_unGetBufSize(void) const;
 

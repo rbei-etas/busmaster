@@ -867,16 +867,20 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         GetWindowText(m_strCurrWndText);
         m_strCurrWndText+=" - Read Only as Logging is ON";
         //SetWindowText(m_strCurrWndText);
+        // PTV [1.6.4]
         // If Logging is on
         GetDlgItem(IDOK)->EnableWindow(FALSE);
+        // PTV [1.6.4]
         SetWindowText("");
         m_unDispUpdateTimerId = SetTimer(600, 600, NULL);
     }
     else
     {
+        // PTV [1.6.4]
         // If Logging is on
         GetDlgItem(IDOK)->EnableWindow(TRUE);
 
+        // PTV [1.6.4]
     }
 
     // Hide or show the Filters button in the dialog based on the protocol

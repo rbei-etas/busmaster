@@ -31,6 +31,8 @@ public:
     BOOL InitInstance(void);
     int ExitInstance(void);
 
+	//gives the time of connection
+	__int64 m_n64TimeElapsedSinceConnection;
     //INTERFACE FUNCTIONS STARTS
     HRESULT FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInitStruct);
     HRESULT FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMainFrame,
@@ -42,6 +44,7 @@ public:
     void NS_EnableAllErrorHandler(BOOL bEnable);
     void NS_EnableAllEventHandler(BOOL bEnable);
     void NS_ManageOnKeyHandler(UCHAR ucKey);
+    void NS_ManageBusEventHandler(eBUSEVEHANDLER eBusEvent);
     void NS_ManageOnMessageHandler(void* psRxMsgInfo);
     void NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal);
     HRESULT NS_DLLBuildAll(CStringArray* pomStrErrorFiles);
@@ -58,8 +61,13 @@ public:
     BOOL NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag);
     //Load and save the Simsys config details in terms of bytes
     void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize);
+	bool NS_GetSimSysConfigData(xmlNodePtr pNodePtr);
     void NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize);
+	//MVN
+	void NS_SetSimSysConfigData(xmlDocPtr pXmlDoc);
+    //~MVN
     BOOL NS_IsSimSysConfigChanged();
+	int NS_nOnBusConnected( bool bConnected);
     //INTERFACE FUNCTIONS ENDS
 private:
     ETYPE_BUS m_eBus;

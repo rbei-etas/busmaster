@@ -39,7 +39,7 @@ public:
     // To get the singleton instance of Replay Manager
     static CReplayManager& ouGetReplayManager();
     // To show Replay configuration dialog
-    DWORD dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFilterConfigured);        
+    DWORD dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFilterConfigured);
     // Initialize to default
     VOID vInitReplayManager();
     // To show all interactive replay windows
@@ -77,7 +77,12 @@ public:
 
 public:
     void vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize);
+	void vGetReplayConfigData(xmlNodePtr pxmlNodePtr);
     void vSetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize);
+	//MVN
+	void vSetReplayConfigData(xmlDocPtr pDoc);
+	void vAddReplayFile(CReplayFile& ouFile);
+	//~MVN
     //BOOL bIsReplayConfigChanged();
     void vSetTraceObjPtr( PVOID pvObj);
     void vSendToTrace(char* pcString);

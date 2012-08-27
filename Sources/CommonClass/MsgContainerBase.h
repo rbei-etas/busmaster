@@ -56,6 +56,7 @@ public:
     virtual HRESULT hUpdateFormattedMsgStruct(int nListIndex, int& nMsgCode,
             BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0) = 0;
     virtual void vSetCurrMsgName(CString strMsgNameOrCode) = 0;
+    virtual void vSetMsgLength(CString strMsgNameOrCode) = 0;
     virtual void vClearFormattedMsgStruct() = 0;
     virtual void vSaveOWandGetDetails(void* pMsg, __int64& dwMapIndex,
                                       __int64& dwTimeStamp, UINT& nMsgCode, int& nBufferIndex ) = 0;

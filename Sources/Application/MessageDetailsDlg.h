@@ -41,6 +41,7 @@ public:
     CString m_omStrMessageCode;
     UINT    m_unMessageLength;
     int     m_nFrameFormat;
+	BOOL ValidateMessageName(CString );
     //}}AFX_DATA
 
 
@@ -70,7 +71,7 @@ private:
     sMESSAGE* m_psMsgStuctPtr;
     CAlphanumiricEdit m_odMsgNumericEdit;
     SDBPARAMS m_sDbParams;
-    
+    //KSS
     sMESSAGE m_sMessage;
     BOOL bIsDataModified();
 };

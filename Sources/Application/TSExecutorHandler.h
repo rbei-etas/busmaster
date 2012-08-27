@@ -34,7 +34,9 @@ public:
     void vLoadTSExecutor_DLL();
     void vShowTSExecutorWindow(VOID* pParentWnd);
     void vGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
+	void vGetConfigurationData(xmlNodePtr pxmlNodePtr);
     void vSetConfigurationData(BYTE*& pSrcBuffer, UINT& nBuffSize);
+	void vSetConfigurationData(xmlDocPtr pDoc);
     void vStartStopReadThread(ETYPE_BUS eBus, BOOL bStart);
     void vDoInitailization(ETYPE_BUS eBus);
     void vBusConnected(BOOL bConnected);

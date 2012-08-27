@@ -40,6 +40,10 @@ public:
     int nSerialize(CArchive& omArchive);
     BYTE* pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
     BYTE* pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
+    // PTV XML
+    void pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr pDocPtr);
+    void pbyGetConfigData(xmlNodePtr pNodePt, BYTE byVersion);
+    // PTV XML
     // Default constructor and destructor.
     CGraphParameters();
     virtual ~CGraphParameters();

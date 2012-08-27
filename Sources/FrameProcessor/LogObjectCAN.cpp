@@ -27,7 +27,7 @@
 #include "LogObjectCAN.h"            // For CLogObjectCAN class declaration
 
 
-#define CAN_VERSION           "***BUSMASTER Ver 1.6.5***"
+#define CAN_VERSION           "***BUSMASTER Ver 1.6.6***"
 #define CAN_LOG_HEADER        "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
 #define CAN_LOG_START         "***[START LOGGING SESSION]***"
 #define CAN_LOG_STOP          "***[STOP LOGGING SESSION]***"
@@ -282,6 +282,34 @@ BYTE* CLogObjectCAN::Der_SetConfigData(BYTE* pvDataStream)
     return pbSStream;
 }
 
+int CLogObjectCAN::Der_SetConfigData(xmlNodePtr pNodePtr)
+{
+    int nResult = S_OK;
+    SFILTERAPPLIED_CAN sFilterApplied;
+    CStringArray omStrFilters;
+
+    if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc))
+    {
+        while(pNodePtr != NULL) //TODO:Move To Utils
+        {
+            if ( pNodePtr->xmlChildrenNode != NULL )
+            {
+                if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
+                {
+                    xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                    if(NULL != key)
+                    {
+                        omStrFilters.Add((char*)key);
+                        xmlFree(key);
+                    }
+                }
+            }
+            pNodePtr = pNodePtr->next;
+        }
+        sFilterApplied.nGetFiltersFromName(m_sFilterApplied, omStrFilters);
+    }
+    return nResult;
+}
 BYTE* CLogObjectCAN::Der_GetConfigData(BYTE* pvDataStream) const
 {
     BYTE* pbTStream = pvDataStream;
@@ -291,6 +319,10 @@ BYTE* CLogObjectCAN::Der_GetConfigData(BYTE* pvDataStream) const
     return pbTStream;
 }
 
+void CLogObjectCAN::Der_GetConfigData(xmlNodePtr pNodePtr) const
+{
+    m_sFilterApplied.pbGetConfigFilterData(pNodePtr);
+}
 UINT CLogObjectCAN::Der_unGetBufSize(void) const
 {
     return m_sFilterApplied.unGetSize();

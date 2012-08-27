@@ -83,7 +83,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/MHS_CNFG.pdb"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"

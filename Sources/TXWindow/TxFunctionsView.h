@@ -90,6 +90,7 @@ private:
     CWnd* pomGetListViewPointer() const;
     // To Get CTxMsgDetailsView Pointer
     CWnd* pomGetDetailsViewPointer() const;
+    void SetUpdateBtnChanges();
     afx_msg void OnBnClickedCheckAutoUpdate();
 public:
     void vAccessButtonApply();

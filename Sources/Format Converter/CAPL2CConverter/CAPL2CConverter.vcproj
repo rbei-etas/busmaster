@@ -52,7 +52,7 @@
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="0"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -68,11 +68,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;../bin/$(IntDir)/ConverterPlugins/DBC2DBFConverterLibrary.lib&quot;&#x0D;&#x0A;&quot;../../BIN/Libs/$(IntDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/ConverterPlugins/$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -98,7 +99,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -131,7 +132,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				AdditionalIncludeDirectories=".;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;YYLMAX"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -151,11 +152,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;../bin/$(IntDir)/ConverterPlugins/DBC2DBFConverterLibrary.lib&quot;&#x0D;&#x0A;&quot;../../BIN/Libs/$(IntDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/ConverterPlugins/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -183,7 +185,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
+				CommandLine="mkdir ..\..\bin\$(IntDir)\ConverterPlugins&#x0D;&#x0A;copy &quot;$(TargetPath) &quot; &quot;..\..\bin\$(IntDir)\ConverterPlugins\&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -208,53 +210,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Converter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\lexer_rule.l"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="..\..\..\Tools\flex\flex.exe -i -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
-						Outputs="lexer.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						CommandLine="..\..\..\Tools\flex\flex.exe -i -L -olexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;exit 0&#x0D;&#x0A;"
-						Outputs="lexer.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\List.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Message.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Selectdb.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Signal.cpp"
+				RelativePath=".\EnvVarHandlerDlg.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\SymbolTable.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ValueDescriptor.cpp"
 				>
 			</File>
 		</Filter>
@@ -268,7 +228,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CAPL2CConverter_Definitions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CAPL2CConverter_Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CAPL2CConverter_stdafx.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAPL2CPropertyPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CAPL_C_Lexer.h"
 				>
 			</File>
 			<File
@@ -276,51 +252,23 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Converter.h"
+				RelativePath=".\EnvVarHandlerDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Definitions.h"
+				RelativePath=".\LexerHandlers.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Functions.h"
+				RelativePath=".\LexerHandlers.hpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Functions.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\List.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Message.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Selectdb.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Signal.h"
+				RelativePath=".\resource.h"
 				>
 			</File>
 			<File
 				RelativePath=".\SymbolTable.h"
-				>
-			</File>
-			<File
-				RelativePath=".\unistd.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ValueDescriptor.h"
 				>
 			</File>
 		</Filter>
@@ -342,15 +290,33 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Generated Files"
+		<File
+			RelativePath=".\lexer_rule.l"
 			>
-			<File
-				RelativePath=".\lexer.h"
+			<FileConfiguration
+				Name="Debug|Win32"
 				>
-			</File>
-		</Filter>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="flex.exe -i -oCAPL_C_Lexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="CAPL_C_Lexer.h"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="..\..\..\Tools\flex\flex.exe -i -oCAPL_C_Lexer.h &quot;$(InputPath)&quot;&#x0D;&#x0A;"
+					Outputs="CAPL_C_Lexer.h"
+				/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Resource.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

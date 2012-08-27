@@ -63,4 +63,17 @@ void s_vExtendSignBit( __int64& n64Val, int nSize);
 // To conver string to __int64. The string value could be in Hex or dec
 BOOL bConvertStringToInt64( CString omStrHexNo,    // String
                             __int64& n64Value,     // Value
-                            int nBase);
+                            int nBase);       
+//Physical to value
+unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal);
+int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, long long int& nMaxVal, long long int& nMinVal);
+
+//Raw to Physical value
+unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal);
+int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal);
+
+//Helper function
+unsigned long long int unRoundOffdoubleValue(double dValue);
+
+//to get the time elapsed
+__int64 gnGetCpuClocks();

@@ -11,11 +11,12 @@
 
 CColorSelector::CColorSelector()
 {
-
+    m_MapMsgIdToClr.RemoveAll();
 }
 
 CColorSelector::~CColorSelector()
 {
+    m_MapMsgIdToClr.RemoveAll();
 }
 
 
@@ -87,12 +88,21 @@ void CColorSelector::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 void CColorSelector::OnBnClicked()
 {
+    COLORREF clrRefObj = NULL;
+    /*if(m_nSelIndex != -1)
+    {
+        m_MapMsgIdToClr.Lookup(m_nSelIndex, clrRefObj);
+    }*/
+
     // TODO: Add your control notification handler code here
-    CColorDialog omColorDialog;
+    CColorDialog omColorDialog(m_omColorBkg);
     omColorDialog.m_cc.Flags |= CC_SOLIDCOLOR| CC_RGBINIT;
     if (IDOK == omColorDialog.DoModal())
     {
         m_omColorBkg = omColorDialog.GetColor();
+        //m_MapMsgIdToClr.SetAt(m_nSelIndex, m_omColorBkg);
+
+        SetColour(m_omColorBkg);
         RedrawWindow();
     }
 
@@ -110,3 +120,23 @@ void CColorSelector::SetColour(COLORREF omColor)
         RedrawWindow();
     }
 };
+
+void CColorSelector::SetSelectedIndex(INT nSelIndex)
+{
+    if(nSelIndex != -1)
+    {
+        m_nSelIndex = nSelIndex;
+    }
+    else
+    {
+        m_nSelIndex = -1;
+    }
+}
+
+COLORREF CColorSelector::GetColourForSelectedIndex(INT nSelectedIndex)
+{
+    COLORREF objClrRef = NULL;
+    m_MapMsgIdToClr.Lookup(nSelectedIndex, objClrRef);
+
+    return objClrRef;
+}

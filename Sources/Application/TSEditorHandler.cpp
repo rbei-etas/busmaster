@@ -27,8 +27,10 @@ typedef HRESULT (*POSTMESSAGETOTSWND)(UINT msg, WPARAM wParam, LPARAM lParam);
 typedef HRESULT (*TSEDITORWINDOWSHOWN)();
 typedef HRESULT (*TSEDITORLOADTESTSETUPFILE)(CString omFilePath);
 typedef HWND (*TSEDITORHWND)();
-typedef HRESULT (*TSEDITORGETCONFIGDATA)(BYTE*& pDesBuffer, UINT& nBuffSize);
+//typedef HRESULT (*TSEDITORGETCONFIGDATA)(BYTE*& pDesBuffer, UINT& nBuffSize);
+typedef HRESULT (*TSEDITORGETCONFIGDATA)(xmlNodePtr pxmlNodePtr);
 typedef HRESULT (*TSEDITORSETCONFIGDATA)(BYTE* pSrcBuffer, UINT nBuffSize);
+typedef HRESULT (*TSEDITORSETXMLCONFIGDATA)(xmlDocPtr pDoc);
 
 
 SHOWTSEDITORWINDOW  pfShowTSEditorwindow;
@@ -39,6 +41,7 @@ TSEDITORLOADTESTSETUPFILE pfTSEditorLoadTestSetupFile;
 TSEDITORHWND pfTSEditorHwnd;
 TSEDITORGETCONFIGDATA pfTSEditorGetConfigdata;
 TSEDITORSETCONFIGDATA pfTSEditorSetConfigdata;
+TSEDITORSETXMLCONFIGDATA pfTSEditorSetXMLConfigdata;
 
 
 TSEditorHandler::TSEditorHandler(void)
@@ -73,6 +76,7 @@ void TSEditorHandler::vInitializeFuncPtrs()
     pfTSEditorHwnd = NULL;
     pfTSEditorGetConfigdata = NULL;
     pfTSEditorSetConfigdata = NULL;
+    pfTSEditorSetXMLConfigdata = NULL;
 }
 void TSEditorHandler::vloadFuncPtrAddress()
 {
@@ -84,6 +88,7 @@ void TSEditorHandler::vloadFuncPtrAddress()
     pfTSEditorHwnd = (TSEDITORHWND)GetProcAddress(m_hTSEditorHandle, "hGetHwnd");
     pfTSEditorGetConfigdata = (TSEDITORGETCONFIGDATA)GetProcAddress(m_hTSEditorHandle, "TSE_hGetConfigurationData");
     pfTSEditorSetConfigdata = (TSEDITORSETCONFIGDATA)GetProcAddress(m_hTSEditorHandle, "TSE_hSetConfigurationData");
+    pfTSEditorSetXMLConfigdata = (TSEDITORSETXMLCONFIGDATA)GetProcAddress(m_hTSEditorHandle, "TSE_hSetXmlConfigurationData");
 }
 void TSEditorHandler::vShowTSEditorWindow(void* pParentWnd)
 {
@@ -116,7 +121,14 @@ void TSEditorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize)
 {
     if(pfTSEditorLoadTestSetupFile != NULL)
     {
-        pfTSEditorGetConfigdata(pDesBuffer, unBuffSize);
+        // pfTSEditorGetConfigdata(pDesBuffer, unBuffSize);
+    }
+}
+void TSEditorHandler::vGetConfigurationData(xmlNodePtr pxmlNodePtr)
+{
+    if(pfTSEditorLoadTestSetupFile != NULL)
+    {
+        pfTSEditorGetConfigdata(pxmlNodePtr);
     }
 }
 
@@ -125,5 +137,12 @@ void TSEditorHandler::vSetConfigurationData(BYTE*& pSrcBuffer, UINT& unBuffSize)
     if(pfTSEditorSetConfigdata!= NULL)
     {
         pfTSEditorSetConfigdata(pSrcBuffer, unBuffSize);
+    }
+}
+void TSEditorHandler::vSetConfigurationData(xmlDocPtr pXmlDoc)
+{
+    if(pfTSEditorSetXMLConfigdata!= NULL)
+    {
+        pfTSEditorSetXMLConfigdata(pXmlDoc);
     }
 }

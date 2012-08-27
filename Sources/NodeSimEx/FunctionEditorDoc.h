@@ -67,6 +67,7 @@ public:
                                         UCHAR ucChannelId);
     CStringArray* pomStrGetErrorHandlerPrototypes();
     CStringArray* pomStrGetDLLHandlerPrototypes();
+    CStringArray* pomStrGetBusEventHandlerPrototypes();
     CStringArray* omStrGetEventIndPrototypes();
     CStringArray* omStrGetIncudeHeaderFiles();
     int nGetMaxLineLength();
@@ -85,7 +86,8 @@ public:
     DWORD dwGetLineCount();
     BOOL bInitBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
     BOOL bGetBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
-
+    BOOL bAddFunctionPrototype(CString omStrFunton, BOOL bGCCExport);
+    BOOL bAddGCCExportPrototype(CString& omStrFunction);
     virtual ~CFunctionEditorDoc();
     BOOL bCreateNewDocument(CString& omPath);
 
@@ -96,6 +98,7 @@ public:
 private:
     CStringArray m_omErrorHandlerArray;
     CStringArray m_omDLLHandlerArray;
+    CStringArray m_omBusEventsHandlerArray;
     CStringArray m_omEventIndArray;
     int m_nMaxLineLength;
     void vUpdateDEFFile(CString omStrFileName);

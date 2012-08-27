@@ -30,7 +30,7 @@ void yyerror(const char *str)
 
 int yywrap()
 {
-	
+	// PTV[1.6.4]
 	// Removed from here and added at the end of every block
 	//fprintf(yyout, "End TriggerBlock\n");
 	return nRetval;	//1 Sepcifies conversion is over.
@@ -118,7 +118,7 @@ command:
 	Standard_R_Msg
 	|
 	Extended_R_Msg
-	|
+	|// PTV[1.6.4]
 	End_Statement
 	|
 	stmnt
@@ -181,7 +181,7 @@ Number_Mode:
 			{
 				fprintf(yyout, "base dec  ");
 			}
-			
+			// PTV[1.6.4]
 			// Commented to generate mode for every block
 			//nNumModeProcd = 1;
 		}
@@ -205,7 +205,7 @@ TimeStamp_Mode:
 			}
 			fprintf(yyout, "no internal events logged\n");
 			fprintf(yyout, "// version 7.1.0\n");
-			
+			// PTV[1.6.4]
 			// Commented to generate mode for every block
 			//nTimeModeProcd = 1;
 		}
@@ -256,13 +256,13 @@ Extended_R_Msg:
 		/*0.001250 1  9               Tx   d 8 00 00 00 00 00 00 00 00*/
 		fprintf(yyout, "%s %s %s %s r\n", chAscTime, $3, $4, $2, $6);
 	}
-
+// PTV[1.6.4]
 // Added new entry to add End Trigger Block at the end of the every block
 End_Statement:
 	ENDLOGTOKEN
 	{
 		fprintf(yyout, "End TriggerBlock\n\n");
 	}
-
+// PTV[1.6.4]
 stmnt: 
 	error ';'

@@ -223,7 +223,7 @@ public:
 	// IPersistStreamInit
 	STDMETHOD(InitNew)();
 
-	int					m_nZoomLevel; // To maintain the zoom level 
+	int					m_nZoomLevel; // To maintain the zoom level //KSS
 
 	CComBSTR			m_bstrCaption;
 	COLORREF			m_colAxis,
@@ -288,6 +288,7 @@ private:
 
 	void vCursorEventHandler(EDMGRAPHEVENT eEvent, long x = 0, long y = 0);
 	void vUpdateCursorSelection(POINT point);
+	void vUpdateCursorSelectionOnMove(POINT point);
 	void vSendCursorDetails();
 
 	HFONT SelectFontObject(HDC hdc, IFont* pFont);

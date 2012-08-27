@@ -144,6 +144,7 @@ BEGIN_MESSAGE_MAP(CSimSysTreeView, CTreeView)
     ON_COMMAND(IDM_SIMSYS_ALLKEYHANDLERS, OnSimsysAllKeyhandlers)
     ON_COMMAND(IDM_SIMSYS_ALLMSGHANDLERS, OnSimsysAllMsghandlers)
     ON_COMMAND(IDM_SIMSYS_ALLTIMERHANDLERS, OnSimsysAllTimerhandlers)
+    ON_COMMAND(IDM_SIMSYS_ALLEVENTHANDLERS, OnSimsysAllEventhandlers)
     ON_COMMAND(IDM_SIMSYS_BUILDALL, OnSimsysBuildall)
     ON_COMMAND(IDM_SIMSYS_DELETEALLNODES, OnDeleteAllNodes)
     ON_COMMAND(IDM_SIMSYS_DELETESIMULATEDSYSTEM, OnDeleteSimulatedsystem)
@@ -200,6 +201,7 @@ void CSimSysTreeView::Dump(CDumpContext& dc) const
 
 BOOL CSimSysTreeView::bPopulateTree()
 {
+
     BOOL bReturnValue = TRUE;
     // Get reference to the tree control
     CTreeCtrl& om_tree = GetTreeCtrl();
@@ -213,6 +215,24 @@ BOOL CSimSysTreeView::bPopulateTree()
     if (pSimSysNodeInfo != NULL)
     {
         PSSIMSYSINFO pSimSysInfo = pSimSysNodeInfo->psReturnSimsysInfoListPtr();
+
+        if(pSimSysInfo == NULL)
+        {
+            if(m_eBus == J1939 && CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode != NULL)
+            {
+                CSimSysManager::ouGetSimSysManager(m_eBus).CopySIMDataFromBuffer(CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode, m_eBus);
+                pSimSysInfo = pSimSysNodeInfo->psReturnSimsysInfoListPtr();
+
+                xmlFreeNode(CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode);
+                CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode = NULL;
+            }
+            else
+            {
+                xmlFreeNode(CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode);
+                CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode = NULL;
+            }
+        }
+
         while(pSimSysInfo != NULL)
         {
             HTREEITEM hSimsys = om_tree.InsertItem( pSimSysInfo->m_omStrSimSysName, m_hRootItem  );
@@ -697,10 +717,15 @@ void CSimSysTreeView::vDisplaySimSysMenu()
                                              | MF_ENABLED );
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND
                                              | MF_ENABLED );
-                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND
-                                             | MF_ENABLED );
                 m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND
                                              | MF_ENABLED );
+                m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND
+                                             | MF_DISABLED | MF_GRAYED );
+                if (m_eBus == J1939)
+                {
+                    m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND
+                                                 | MF_ENABLED );
+                }
             }
             else
             {
@@ -731,6 +756,8 @@ void CSimSysTreeView::vDisplaySimSysMenu()
                                          MF_DISABLED | MF_GRAYED );
             m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND |
                                          MF_DISABLED | MF_GRAYED );
+            m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND |
+                                         MF_DISABLED | MF_GRAYED );
         }
     }
     else
@@ -745,6 +772,8 @@ void CSimSysTreeView::vDisplaySimSysMenu()
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLERRORHANDLERS, MF_BYCOMMAND |
                                      MF_DISABLED | MF_GRAYED );
         m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLTIMERHANDLERS, MF_BYCOMMAND |
+                                     MF_DISABLED | MF_GRAYED );
+        m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ALLEVENTHANDLERS, MF_BYCOMMAND |
                                      MF_DISABLED | MF_GRAYED );
     }
     ClientToScreen(&m_omRightClickPoint);
@@ -1690,6 +1719,28 @@ void CSimSysTreeView::OnNodeErrorhandlers()
     {
         ASSERT(FALSE);
     }
+    sSIMSYSINFO* pSimsys = NULL;
+    sNODEINFO* pNode = NULL;
+    CSimSysDetView* pSimsysDetView =
+        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
+    if ( pSimsysDetView != NULL )
+    {
+        CSimSysNodeInfo* pTempSimsys = NULL;
+        pTempSimsys = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+        if (NULL != pTempSimsys)
+        {
+            pSimsys = pTempSimsys->psGetSimSysPointer(omStrSimSysName);
+            pNode = pTempSimsys->psGetSimSysNodePointer(omStrSimSysName, omStrNodeName );
+            if ( pNode != NULL ) //if it is node
+            {
+                if ( pSimsysDetView->bGetControlStatus() == TRUE )//  TRUE - Hidden
+                {
+                    pSimsysDetView->vHideControls(SW_SHOW);
+                }
+                pSimsysDetView->vDisplayNodeInformation( pNode );
+            }
+        }
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnNodeKeyhandlers                                     */
@@ -1719,7 +1770,7 @@ void CSimSysTreeView::OnNodeKeyhandlers()
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     if (m_pomSubMenu != NULL)
     {
-        m_pomSubMenu->GetMenuString(IDM_NODE_ERRORHANDLERS , omStrMenuText , MF_BYCOMMAND);
+        m_pomSubMenu->GetMenuString(IDM_NODE_KEYHANDLERS , omStrMenuText , MF_BYCOMMAND);
     }
     if(omStrMenuText == "Enable Key Handlers" )
     {
@@ -1738,6 +1789,28 @@ void CSimSysTreeView::OnNodeKeyhandlers()
     else
     {
         ASSERT(FALSE);
+    }
+    sSIMSYSINFO* pSimsys = NULL;
+    sNODEINFO* pNode = NULL;
+    CSimSysDetView* pSimsysDetView =
+        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
+    if ( pSimsysDetView != NULL )
+    {
+        CSimSysNodeInfo* pTempSimsys = NULL;
+        pTempSimsys = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+        if (NULL != pTempSimsys)
+        {
+            pSimsys = pTempSimsys->psGetSimSysPointer(omStrSimSysName);
+            pNode = pTempSimsys->psGetSimSysNodePointer(omStrSimSysName, omStrNodeName );
+            if ( pNode != NULL ) //if it is node
+            {
+                if ( pSimsysDetView->bGetControlStatus() == TRUE )//  TRUE - Hidden
+                {
+                    pSimsysDetView->vHideControls(SW_SHOW);
+                }
+                pSimsysDetView->vDisplayNodeInformation( pNode );
+            }
+        }
     }
 }
 /******************************************************************************/
@@ -2108,6 +2181,28 @@ void CSimSysTreeView::OnSimsysAllTimerhandlers()
 }
 
 /******************************************************************************/
+void CSimSysTreeView::OnSimsysAllEventhandlers()
+{
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+    if (NULL != pSimSysNodeInfo)
+    {
+        CTreeCtrl& om_Tree = GetTreeCtrl();
+        HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
+        CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
+        CString omStrMenuText = STR_EMPTY;
+        m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLEVENTHANDLERS , omStrMenuText
+                                    , MF_BYCOMMAND);
+        if(omStrMenuText == "Enable All Event Handlers" )
+        {
+            pSimSysNodeInfo->vSetEnableAllSimSysEventHandlers(omStrSimSysName, TRUE );
+        }
+        else
+        {
+            pSimSysNodeInfo->vSetEnableAllSimSysEventHandlers(omStrSimSysName, FALSE );
+        }
+    }
+}
 /*  Function Name    :  OnSimsysBuildall                                      */
 /*                                                                            */
 /*  Input(s)         :                                                        */
@@ -2196,7 +2291,13 @@ void CSimSysTreeView::OnSimsysBuildall()
                         CString omStrPrevDllName = STR_EMPTY;
                         omStrPrevDllName = pTempNode->m_sNodeInfo.m_omStrDllName;
                         omStrFileName = pTempNode->m_sNodeInfo.m_omStrFileName;
-                        omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
+                        //omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
+                        int nIndex = omStrFileName.ReverseFind('.');
+                        if( nIndex >= 0 )
+                        {
+                            omStrFileName = omStrFileName.Left(nIndex);
+                            omStrFileName += defDOT_DLL;
+                        }
                         pTempNode->m_sNodeInfo.m_omStrDllName = omStrFileName;
                         bPopulateTree();
                     }

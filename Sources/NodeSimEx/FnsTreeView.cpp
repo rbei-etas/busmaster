@@ -31,6 +31,7 @@
 #include "IncludeHeaderDlg.h"   // Dialog class for adding new include header
 #include "ErrHandlerDlg.h"      // Dialog class for error handlers
 #include "DLLHandlerDlg.h"      // Dialog class for dll handlers
+#include "BusEventHandlerDlg.h" // Dialog class for BusEvent Handler
 #include "MsgHandlerDlg.h"      // Dialog class for message handlers
 #include "EventHandlerDlg.h"    // Dialog class for event handlers
 #include "UtlityDlg.h"          // Dialog class for adding utility func
@@ -183,6 +184,7 @@ BOOL CFnsTreeView::bPopulateTree()
 
         // Add headers, set bold and expand the root
         HTREEITEM hHdr = omTree.InsertItem( INCLUDE_HEADERS, hItem );
+        HTREEITEM hBus = omTree.InsertItem( BUSEVENT_HANDLERS, hItem );
         HTREEITEM hMsg = omTree.InsertItem( MESSAGE_HANDLERS, hItem );
         HTREEITEM hTmr = omTree.InsertItem( TIMER_HANDLERS, hItem );
         HTREEITEM hKey = omTree.InsertItem( KEY_HANDLERS, hItem );
@@ -232,6 +234,8 @@ BOOL CFnsTreeView::bPopulateTree()
         omTree.Expand( hHdr, TVE_EXPAND );
         omTree.SetItemImage(hErr,9,9);
         omTree.Expand( hErr, TVE_EXPAND );
+        //Venkatanarayana --- Bus Event Handlers Start
+        omTree.SetItemImage(hBus, 11, 11);
         // Get message handler array from the doc
         CStringArray* pMsgArray =
             pDoc->omStrGetMessageHandlerPrototypes();
@@ -354,6 +358,27 @@ BOOL CFnsTreeView::bPopulateTree()
         }
         omTree.SetItemImage(hDLL,10,10);
         omTree.Expand( hDLL, TVE_EXPAND );
+        // venkatanarayana
+        //Get Bus Event Handlers
+        CStringArray* pomBusEvArray =
+            pDoc->pomStrGetBusEventHandlerPrototypes();
+        if(pomBusEvArray != NULL )
+        {
+            // Add all the DLL handlers under the key handler
+            // header
+            for ( UINT unCount = 0;
+                    unCount < (UINT)pomBusEvArray->GetSize();
+                    unCount++ )
+            {
+                HTREEITEM hBusEvChildItem =
+                    omTree.InsertItem( pomBusEvArray->GetAt(unCount), hBus );
+
+                omTree.SetItemImage( hBusEvChildItem, 5, 5 );
+            }
+        }
+        omTree.SetItemImage(hBus,11,11);
+        omTree.Expand( hBus, TVE_EXPAND );
+        //~venkatanarayana
 
         // Get Utility func array from the doc
         CStringArray* pUtilArray =
@@ -376,6 +401,9 @@ BOOL CFnsTreeView::bPopulateTree()
         omTree.SetItemImage( hUti, 6, 6 );
         omTree.Expand( hUti, TVE_EXPAND );
 
+        // Get global varaible array from the doc
+        CStringArray* pGloArray =
+            pDoc->omStrGetGlobalVariablePrototypes();
         omTree.SetItemImage( hGlv, 3, 3 );
         omTree.Expand( hGlv, TVE_EXPAND );
     }
@@ -780,7 +808,8 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
                         }
                         if( omStrText != ERROR_HANDLERS &&
-                                omStrText != DLL_HANDLERS  )
+                                omStrText != DLL_HANDLERS &&
+                                omStrText != BUSEVENT_HANDLERS )
                         {
                             pomSubMenu->EnableMenuItem(IDM_DEL_HAND,
                                                        MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
@@ -919,15 +948,16 @@ void CFnsTreeView::OnDeleteHandle()
                     // Delete the function from the source file
                     bReturnVal = bDeleteHandler(omStrFnName, pDoc);
 
+                    CString omTemp = BUS_FN_PROTOTYPE_HDR;
+                    omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                     // Delete Prototype declaration if it is a Util Fn
-                    if( omStrSelectedText.Find(UTILS_PREFIX,0) != -1)
+                    if( omStrSelectedText.Find(UTILS_PREFIX,0) == -1)
                     {
                         // Use the existing function to clear the line
-                        CString omTemp = BUS_FN_PROTOTYPE_HDR;
-                        omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
-                        bDeleteALineFromHeader(omTemp,
-                                               omStrSelectedText);
+                        pDoc->bAddGCCExportPrototype(omStrSelectedText);
+
                     }
+                    bDeleteALineFromHeader(omTemp, omStrSelectedText);
                 }
             }
             else
@@ -1009,6 +1039,29 @@ void CFnsTreeView::OnDeleteHandle()
             }
 
         }
+        //Venkatanarayana
+        else if(omStrSelectedText == BUSEVENT_HANDLERS)
+        {
+            // Invoke Dialog to delete DLL handlers
+            CBusEventHandlerDlg od_Dlg(pDoc, NULL, TRUE);
+            int nUserOption = (COMMANINT)od_Dlg.DoModal();
+            if(nUserOption == IDOK)
+            {
+                int nCount = 0;
+                CStringArray omStrBusEventHandlers;
+                nCount = (COMMANINT)od_Dlg.m_omStrArrayBusEventHandler.GetSize();
+                for( int i = 0; i <nCount ; i++)
+                {
+                    // Construct Function name
+                    CString omStrFuncName = defBUSEVE_HANDLER_FN;
+                    omStrFuncName += od_Dlg.m_omStrArrayBusEventHandler.GetAt(i);
+                    omStrBusEventHandlers.Add(omStrFuncName) ;
+                }
+                bReturnVal = bDeleteHandlerInArray(omStrBusEventHandlers,pDoc);
+            }
+
+        }
+        //~venkatanarayana
         if ( bReturnVal != FALSE)
         {
             // Update all views
@@ -1101,7 +1154,10 @@ void CFnsTreeView::OnAddHandle()
     {
         vOnNewDLLHandler();
     }
-
+    else if (omStrSelectedText == BUSEVENT_HANDLERS )
+    {
+        vOnNewBusEventHandler();
+    }
     omTree.Expand( hSelItem, TVE_EXPAND );
     OnTreeItemDoubleClick(NULL, NULL);
 
@@ -1127,7 +1183,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
         //Construct the Function Footer
-        CString omStrFnFooter = BUS_FN_FOOTER;
+        CString omStrFnFooter = EDITOR_BUS_FN_FOOTER;
         omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
         omStrFnFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME", omStrFuncName );
 
@@ -1150,7 +1206,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
         {
             omStr = pDoc->m_omSourceCodeTextList.GetNext( pos );
             omStrListTemp.AddHead(omStr);
-            if ( omStr == omStrFnFooter)
+            if ( omStr.Find(omStrFnFooter) != -1)
             {
                 bFlag = FALSE;
             }
@@ -1213,6 +1269,10 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
         {
             // Dll Handler
             pArray = pDoc->pomStrGetDLLHandlerPrototypes();
+        }
+        else if (omStrFuncName.Find( defBUSEVE_HANDLER_FN ) != -1)
+        {
+            pArray = pDoc->pomStrGetBusEventHandlerPrototypes();
         }
         else if (omStrFuncName.Find( defHASHINCLUDE ) != -1)
         {
@@ -1379,8 +1439,8 @@ void CFnsTreeView::vOnNewTimerHandler()
         omStrFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
                              od_Dlg.m_omStrTimerFunctionName );
 
-        od_Dlg.vSetTimerEdited(FALSE); //New timer is created 
-        od_Dlg.m_omStrCurrentTimerName = ""; 
+        od_Dlg.vSetTimerEdited(FALSE); //New timer is created //KSS
+        od_Dlg.m_omStrCurrentTimerName = ""; //KSS
 
         if ( pDoc != NULL )
         {
@@ -1402,6 +1462,7 @@ void CFnsTreeView::vOnNewTimerHandler()
             HTREEITEM hNew = omTree.InsertItem( omStrFuncPrototype,
                                                 5, 5,
                                                 omTree.GetSelectedItem());
+            pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
             omTree.SelectItem( hNew );
             // Add body of the fn
             pDoc->m_omSourceCodeTextList.AddTail( "{" );
@@ -1450,6 +1511,7 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
     int nSpaceIndex = omStrVariable.Find( SPACE );
     if(nIndex != -1)
     {
+        int nLength = omStrVariable.GetLength();
         //create dialog
         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
         CDefineTimerHandler od_Dlg(pDoc);
@@ -1461,8 +1523,8 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
         od_Dlg.m_unEditTimerValue = StrToInt(omStrTimerVal);
         CString omOldFuncProtoType =
             omStrVariable.Mid(nSpaceIndex+1, nParanthesisIndex-nSpaceIndex-1);
-        od_Dlg.vSetTimerEdited(TRUE); //Edit timer is invoked 
-        od_Dlg.m_omStrCurrentTimerName = omOldFuncProtoType; 
+        od_Dlg.vSetTimerEdited(TRUE); //Edit timer is invoked //KSS
+        od_Dlg.m_omStrCurrentTimerName = omOldFuncProtoType; //KSS
 
         if (od_Dlg.DoModal() == IDOK)
         {
@@ -1584,7 +1646,8 @@ void CFnsTreeView::vOnNewKeyHandler()
     char* pcCharacter = new char[2];
 
     if ( pcCharacter != NULL )
-    {        
+    {
+        // PTV CPP moved line to down
         pcCharacter[1] = '\0';
         CFunctionEditorDoc* pDoc   = (CFunctionEditorDoc*)CView::GetDocument();
         CFnsTreeView* pFnsTreeView = CGlobalObj::ouGetObj(m_eBus).podGetFuncsTreeViewPtr();
@@ -1640,7 +1703,7 @@ void CFnsTreeView::vOnNewKeyHandler()
                 HTREEITEM hNew = omTree.InsertItem( omStrFuncPrototype,
                                                     5, 5,
                                                     omTree.GetSelectedItem());
-
+                pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
                 omTree.SelectItem( hNew );
 
                 // Add body of the fn
@@ -1662,7 +1725,7 @@ void CFnsTreeView::vOnNewKeyHandler()
             }
         }
     }
-    delete [] pcCharacter; 
+    delete [] pcCharacter; //KSS
     pcCharacter = NULL;
 }
 void CFnsTreeView::vOnNewEventHandler()
@@ -1748,6 +1811,7 @@ void CFnsTreeView::vOnNewErrorHandler()
                                                5, 5,
                                                omTree.GetSelectedItem());
 
+                        pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
                         omTree.SelectItem( hNew );
 
                         // Add body of the fn
@@ -1874,6 +1938,99 @@ void CFnsTreeView::vOnNewDLLHandler()
                         pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
                         // Add fn definition
                         pDoc->m_omSourceCodeTextList.AddTail(omStrFuncPrototype );
+                        pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
+
+                        // Insert the prototype into the tree under
+                        // error handler header
+                        CTreeCtrl& omTree = GetTreeCtrl();
+                        HTREEITEM hNew =
+                            omTree.InsertItem( omStrFuncPrototype,
+                                               5, 5,
+                                               omTree.GetSelectedItem());
+
+                        omTree.SelectItem( hNew );
+
+                        // Add body of the fn
+                        pDoc->m_omSourceCodeTextList.AddTail( "{" );
+                        pDoc->m_omSourceCodeTextList.AddTail( defTODO );
+                        // Add footer
+                        pDoc->m_omSourceCodeTextList.AddTail( omStrFooter );
+
+                        pDLLArray->Add(omStrFuncPrototype);
+
+                    }
+                    if(nCount >0)
+                    {
+                        pDoc->UpdateAllViews( NULL );
+                        pDoc->SetModifiedFlag( TRUE );
+                    }
+                }
+            }
+        }
+    }
+}
+/******************************************************************************/
+/*  Function Name    :  vOnNewBusEventHandler                                 */
+/*                                                                            */
+/*  Input(s)         :  NONE                                                  */
+/*  Output           :  NONE                                                  */
+/*  Functionality    :  Displays a dialog for the user to add nee bus event   */
+/*                      handler.                                              */
+/*                                                                            */
+/*  Member of        :  CFnsTreeView                                          */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Venkatanarayana Makam
+/*  Date Created     :  09/01/2012
+/******************************************************************************/
+void CFnsTreeView::vOnNewBusEventHandler()
+{
+    //AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
+    if ( pDoc != NULL )
+    {
+        SBUS_SPECIFIC_INFO sBusSpecInfo;
+        pDoc->bGetBusSpecificInfo(sBusSpecInfo);
+        // Update key handler array
+        CStringArray* pDLLArray = pDoc->pomStrGetBusEventHandlerPrototypes();
+        if ( pDLLArray != NULL )
+        {
+            if(pDLLArray->GetSize()< 2 )
+            {
+                CBusEventHandlerDlg od_Dlg(pDoc);
+                if ( od_Dlg.DoModal() == IDOK )
+                {
+                    int nCount = (COMMANINT)od_Dlg.m_omStrArrayBusEventHandler.GetSize();
+                    for( int i = 0; i <nCount ; i++)
+                    {
+                        // Construct Function name
+                        CString omStrFuncName = defBUSEVE_HANDLER_FN;
+                        omStrFuncName.Insert( omStrFuncName.GetLength(),
+                                              od_Dlg.m_omStrArrayBusEventHandler.GetAt(i));
+
+                        // Construct Function definiton
+                        CString omStrFuncPrototype = omStrFuncName;
+                        omStrFuncPrototype.Insert( 0, SPACE );
+                        omStrFuncPrototype.Insert( 0, defVOID );
+                        omStrFuncPrototype.Insert(
+                            omStrFuncPrototype.GetLength(), "()" );
+
+
+                        // Form the function header
+                        CString omStrHdr = BUS_FN_HDR;
+                        omStrHdr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+                        omStrHdr.Replace(_T("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
+
+                        // Form the function footer
+                        CString omStrFooter = BUS_FN_FOOTER;
+                        omStrFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+                        omStrFooter.Replace(_T("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
+
+                        pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
+                        // Add fn definition
+                        pDoc->m_omSourceCodeTextList.AddTail(omStrFuncPrototype );
+
+                        pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
 
                         // Insert the prototype into the tree under
                         // error handler header

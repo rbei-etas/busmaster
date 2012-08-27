@@ -275,10 +275,80 @@ UINT unDLLloadHandlerProc(LPVOID pParam)
             psExecuteLoadHandler=NULL;
         }
     }
+    return 0;
+}
+UINT unBusConnectHandlerProc(LPVOID pParam)
+{
+    //USES_CONVERSION;
+    if (pParam != NULL)
+    {
+        PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=(PSEXECUTE_BUSEVENT_HANDLER) pParam;
+        // Reset the event signaled
+        if(psExecuteBusEventHandler->m_pCExecuteFunc!=NULL)
+        {
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_aomState[defBUSEVENT_HANDLER_THREAD].ResetEvent();
+            try
+            {
+                psExecuteBusEventHandler->pFBusEventHandler();
+            }
+            catch(...)
+            {
+                // Display the error information in the Trace window
+                gbSendStrToTrace(defSTR_ERROR_IN_BUS_DISCONNECT);
+            }
+            // There is no memory allocation is this thread. So initialise it to NULL
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+            // Reinitialise the Thread handle before terminating it.
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = NULL;
+            // Set the event to indicate termination of this thread.
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_aomState[defBUSEVENT_HANDLER_THREAD].SetEvent();
+            delete psExecuteBusEventHandler;
+            psExecuteBusEventHandler=NULL;
+        }
+    }
 
     return 0;
 }
+UINT unBusDisConnectHandlerProc(LPVOID pParam)
+{
+    //USES_CONVERSION;
+    if (pParam != NULL)
+    {
+        PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=(PSEXECUTE_BUSEVENT_HANDLER) pParam;
+        // Reset the event signaled
+        if(psExecuteBusEventHandler->m_pCExecuteFunc!=NULL)
+        {
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_aomState[defBUSEVENT_HANDLER_THREAD].ResetEvent();
+            try
+            {
+                psExecuteBusEventHandler->pFBusEventHandler();
+            }
+            catch(...)
+            {
+                // Display the error information in the Trace window
+                gbSendStrToTrace(defSTR_ERROR_IN_BUS_CONNECT);
+            }
+            // There is no memory allocation is this thread. So initialise it to NULL
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+            // Reinitialise the Thread handle before terminating it.
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = NULL;
+            // Set the event to indicate termination of this thread.
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_aomState[defBUSEVENT_HANDLER_THREAD].SetEvent();
+            delete psExecuteBusEventHandler;
+            psExecuteBusEventHandler=NULL;
+        }
+    }
 
+    return 0;
+}
 /******************************************************************************
     Function Name    :  unReadNodeMsgHandlerBuffer
     Input(s)         :  pParam - Typecasted address CExecuteFunc object
@@ -311,7 +381,7 @@ UINT unReadNodeMsgHandlerBuffer(LPVOID pParam)
             while( unMsgCnt>0 && pCExecuteFunc->bIsDllLoaded() &&
                     !(pCExecuteFunc->m_bStopMsgHandlers) )
             {
-                STCAN_MSG sCanMsg=pCExecuteFunc->sReadFromQMsg();
+                STCAN_TIME_MSG sCanMsg=pCExecuteFunc->sReadFromQMsg();
                 pCExecuteFunc->vExecuteOnMessageHandlerCAN(sCanMsg);
                 unMsgCnt=pCExecuteFunc->unGetBufferMsgCnt();
             }
@@ -390,6 +460,7 @@ UINT unTimerHandlerProc(LPVOID pParam)
                 {
                     try
                     {
+                        psTimerStruct->bFromTimer = TRUE;
                         psTimerStruct->pFTimerHandler();
                     }
                     catch(...)
@@ -403,7 +474,7 @@ UINT unTimerHandlerProc(LPVOID pParam)
 
                     }
                     psTimerStruct->unCurrTime=0;
-                    if(psTimerStruct->bTimerType==TRUE)
+                    if( (psTimerStruct->bFromTimer == TRUE) && (psTimerStruct->bTimerType==TRUE))
                     {
                         psTimerStruct->bTimerSelected=FALSE;
                     }

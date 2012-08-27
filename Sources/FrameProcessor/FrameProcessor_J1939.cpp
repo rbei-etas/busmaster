@@ -101,6 +101,7 @@ CFrameProcessor_J1939::CFrameProcessor_J1939()
     ASSERT(NULL != m_sCurrFormatDat.m_pcDataDec);
     memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(char));
     m_sDataCopyThread.m_hActionEvent = m_ouVSEBufJ1939.hGetNotifyingEvent();
+    // PTV [1.6.4]
     m_bIsJ1939DataLogged = FALSE;
 }
 
@@ -209,6 +210,7 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
                 CLogObjectJ1939* pouLogObjCon = static_cast<CLogObjectJ1939*> (pouLogObjBase);
                 BOOL bIsDataLogged = pouLogObjCon->bLogData(m_sCurrFormatDat);
 
+                // PTV [1.6.4]
                 if(bIsDataLogged == TRUE)
                 {
                     m_bIsJ1939DataLogged = TRUE;
@@ -325,6 +327,22 @@ HRESULT CFrameProcessor_J1939::FPJ1_EnableLogging(BOOL bEnable)
     return EnableLogging(bEnable, J1939);
 }
 
+void CFrameProcessor_J1939::FPJ1_vCloseLogFile(void)
+{
+    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+
+    CBaseLogObject* pouCurrLogObj = NULL;
+    for (USHORT i = 0; i < ushBlocks; i++)
+    {
+        pouCurrLogObj = m_omLogObjectArray.GetAt(i);
+
+        if (pouCurrLogObj != NULL)
+        {
+            pouCurrLogObj->bStopOnlyLogging();
+        }
+    }
+}
+
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
 HRESULT CFrameProcessor_J1939::FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable)
@@ -338,6 +356,7 @@ BOOL CFrameProcessor_J1939::FPJ1_IsLoggingON(void)
     return IsLoggingON();
 }
 
+// PTV [1.6.4]
 BOOL CFrameProcessor_J1939::FPJ1_IsJ1939DataLogged(void)
 {
     return IsJ1939DataLogged();
@@ -352,6 +371,7 @@ void CFrameProcessor_J1939::FPJ1_DisableJ1939DataLogFlag(void)
 {
     DisableJ1939DataLogFlag();
 }
+// PTV [1.6.4]
 // Query function - current filtering status
 BOOL CFrameProcessor_J1939::FPJ1_IsFilterON(void)
 {
@@ -431,12 +451,23 @@ HRESULT CFrameProcessor_J1939::FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& un
     return GetConfigData(ppvConfigData, unLength);
 }
 
+// PTV XML
+// Getter for the logging configuration data
+HRESULT CFrameProcessor_J1939::FPJ1_GetConfigData(xmlNodePtr pNodePtr)
+{
+    return GetConfigData(pNodePtr);
+}
+// PTV XML
+
 // Setter for the logging configuration data
 HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
     return SetConfigData(pvDataStream, omStrVersion);
 }
-
+HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(xmlDocPtr pDoc)
+{
+    return SetConfigData(pDoc, J1939);
+}
 // Empty log object
 void CFrameProcessor_J1939::vEmptyLogObjArray(CLogObjArray& omLogObjArray)
 {

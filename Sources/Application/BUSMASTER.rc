@@ -128,7 +128,7 @@ BEGIN
     DEFPUSHBUTTON "OK",IDOK,186,6,50,14
     ICON IDR_MAINFRAME,IDC_STATIC,7,11,20,20
     LTEXT "",IDC_STATIC_VERSION,38,14,138,8
-    LTEXT "Copyright© 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
+    LTEXT "Copyright 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
     LTEXT "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
 #ifdef FOR_ETIN
     LTEXT "Entitlement ID",IDC_STATIC,38,60,45,8
@@ -239,7 +239,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,182,7,50,14
     LTEXT           "CAN Driver 1.00.D10",IDC_STAT_DRIVER_VERSION,56,16,122,8
-    LTEXT           "CopyrightÂ© 2003 RBEI",IDC_STAT_COPYRIGHT,56,31,122,8
+    LTEXT           "Copyright© 2003 RBEI",IDC_STAT_COPYRIGHT,56,31,122,8
     ICON            IDR_MAINFRAME,IDC_STATIC,9,13,20,20
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE3,7,45,221,9,WS_DISABLED
     CONTROL         184,IDC_STATIC,"Static",SS_BITMAP,34,59,167,36
@@ -573,7 +573,7 @@ CAPTION "J1939 Transmit Message Window"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     GROUPBOX        "",IDC_STATIC,16,47,346,84,0,WS_EX_TRANSPARENT
-    COMBOBOX        IDC_COMBO_PGN,54,63,59,102,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_PGN,54,63,59,102,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO_MSGTYPE,159,63,68,83,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_EDIT_FROM,269,63,22,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_TO,330,63,24,14,ES_AUTOHSCROLL
@@ -618,7 +618,7 @@ CAPTION "Configure Timeouts"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Apply",IDOK,36,235,46,14
-    PUSHBUTTON      "Cancel",IDCANCEL,84,235,46,14
+    PUSHBUTTON      "Close",IDCANCEL,84,235,46,14
     CONTROL         "Broadcast (Tb)",IDC_CHECK_BROADCAST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,16,63,10
     CONTROL         "Response (Tr)",IDC_CHECK_RESPONSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,38,61,10
     CONTROL         "Holding (Th)",IDC_CHECK_HOLDING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,62,55,10
@@ -691,13 +691,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.6.5"
+            VALUE "FileVersion", "Ver 1.6.6"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.6.5"
+            VALUE "ProductVersion", "Ver 1.6.6"
         END
     END
     BLOCK "VarFileInfo"
@@ -1594,7 +1594,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.6.5"
+    IDS_VERSION             "Ver 1.6.6"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"

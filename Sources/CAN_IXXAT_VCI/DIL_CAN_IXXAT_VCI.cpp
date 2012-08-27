@@ -35,6 +35,7 @@
 
 #include "CANControllerConfigDlg.h"
 #include "CANSelectDlg.h"
+#include "HardwareListing.h"
 
 
 //C++ Includes
@@ -112,6 +113,13 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_PerformInitOperations(void)
 #ifdef _IXXAT_DEBUG
     LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_PerformInitOperations\n"));
 #endif
+
+    //Initialize the selected channel items array to -1
+    for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+    {
+        m_anSelectedItems[i] = -1;
+    }
+
     return S_OK;
 }
 
@@ -137,6 +145,35 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_PerformClosureOperations(void)
     return S_OK;
 }
 
+/**
+* \brief         This function will popup hardware selection dialog and gets the user selection of channels.
+* \param[in]     psInterfaces, is INTERFACE_HW structue
+* \param[out]    pnSelList, contains channels selected array
+* \param[out]    nCount, contains selected channel count
+* \return        returns 0 if success, else -1
+* \authors       Arunkumar Karri
+* \date          11.07.2012 Created
+*/
+int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+    CWnd objMainWnd;
+    objMainWnd.Attach(hParent);
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd);
+    INT nRet = HwList.DoModal();
+    objMainWnd.Detach();
+
+    if ( nRet == IDOK)
+    {
+        nCount = HwList.nGetSelectedList(pnSelList);
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
+}
 
 /**
  * @brief
@@ -180,13 +217,49 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
             while (DYNCALL(vciEnumDeviceNext)(hEnum, &sInfo) == VCI_OK)
             {
                 // increment the counter and add the device info to our list
-                m_iNumberOfCANChannelsTotal += VciDeviceInfoAddToArray(nCount, &sInfo, sSelHwInterface);
+                m_iNumberOfCANChannelsTotal += VciDeviceInfoAddToArray(nCount, &sInfo, m_sSelHwInterface);
             }
         }
+        int nHwCount = m_iNumberOfCANChannelsTotal;
         //TODO: currently only 1 interface selected
         if (m_iNumberOfCANChannelsTotal > 0)
         {
-            nCount = 1;
+            INT64 qiVCIDeviceID = 0;
+            int iCANControllerNumber = 0;
+            CClientList* pClientList = NULL;
+
+            if ( m_iNumberOfCANChannelsTotal == 1 ) /* Only single channel available */
+            {
+                sSelHwInterface[0] = m_sSelHwInterface[0];
+
+                /* Rearrange hardware parameters */
+                m_arrTmpIxxatCanChannels[0].GetHardwareParams(&qiVCIDeviceID,
+                        &iCANControllerNumber, (void**)&pClientList);
+                m_arrIxxatCanChannels[0].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
+                        pClientList);
+            }
+            else    /* Multiple channels available */
+            {
+                if ( ListHardwareInterfaces(m_hOwnerWndHandle, DRIVER_CAN_IXXAT, m_sSelHwInterface, m_anSelectedItems, nHwCount) != 0 )
+                {
+                    /* return if user cancels hardware selection */
+                    return HW_INTERFACE_NO_SEL;
+                }
+
+                for ( int nCount = 0; nCount < nHwCount; nCount++ )
+                {
+                    /* Order the hardware information according to user selection */
+                    sSelHwInterface[nCount] = m_sSelHwInterface[m_anSelectedItems[nCount]];
+
+                    /* Rearrange hardware parameters */
+                    m_arrTmpIxxatCanChannels[m_anSelectedItems[nCount]].GetHardwareParams(&qiVCIDeviceID,
+                            &iCANControllerNumber, (void**)&pClientList);
+                    m_arrIxxatCanChannels[nCount].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
+                            pClientList);
+                }
+                m_iNumberOfCANChannelsTotal = nHwCount;
+            }
+            nCount = m_iNumberOfCANChannelsTotal;
         }
 
         if (m_iNumberOfCANChannelsTotal == 0)
@@ -241,7 +314,10 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelH
 
     if (m_iNumberOfCANChannelsTotal > 0)
     {
-        m_arrIxxatCanChannels[0].Selected(TRUE);
+        for (int i = 0 ; i < nCount ; i++)
+        {
+            m_arrIxxatCanChannels[i].Selected(TRUE);
+        }
 #ifdef _IXXAT_DEBUG
         LogMessage( TRUE, _T("------> Selected CAN controller: %s - %s (%s)\n")
                     , sSelHwInterface[0].m_acDeviceName.c_str()
@@ -401,15 +477,20 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StartHardware(void)
 
     if (m_iNumberOfCANChannelsTotal > 0)
     {
-        hResult = m_arrIxxatCanChannels[0].AccessController(1);
-        if ( (VCI_OK == hResult) || (HW_INTERFACE_ALREADY_SELECTED == hResult) )
+        for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
         {
-            hResult = m_arrIxxatCanChannels[0].InitController();
+            hResult = m_arrIxxatCanChannels[i].AccessController(i+1);
+            if ( (VCI_OK == hResult) || (HW_INTERFACE_ALREADY_SELECTED == hResult) )
+            {
+                hResult = m_arrIxxatCanChannels[i].InitController();
+            }
+            if ( (VCI_OK == hResult) || (INFO_INITDAT_CONFIRM_CONFIG == hResult) )
+            {
+                hResult = m_arrIxxatCanChannels[i].StartController();
+            }
         }
-        if ( (VCI_OK == hResult) || (INFO_INITDAT_CONFIRM_CONFIG == hResult) )
-        {
-            hResult = m_arrIxxatCanChannels[0].StartController();
-        }
+        /* Get connection time */
+        GetLocalTime(&m_sCurrSysTime);
     }
 
     return hResult;
@@ -435,10 +516,13 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StopHardware(void)
     HRESULT hResult = E_POINTER;
     if (m_iNumberOfCANChannelsTotal > 0)
     {
-        hResult = m_arrIxxatCanChannels[0].StopController();
-        if (VCI_OK == hResult)
+        for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
         {
-            hResult = m_arrIxxatCanChannels[0].ReleaseController();
+            hResult = m_arrIxxatCanChannels[i].StopController();
+            if (VCI_OK == hResult)
+            {
+                hResult = m_arrIxxatCanChannels[i].ReleaseController();
+            }
         }
     }
 
@@ -466,7 +550,10 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ResetHardware(void)
     HRESULT hResult = E_POINTER;
     if (m_iNumberOfCANChannelsTotal > 0)
     {
-        hResult = m_arrIxxatCanChannels[0].ResetController();
+        for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
+        {
+            hResult = m_arrIxxatCanChannels[i].ResetController();
+        }
     }
     return hResult;
 }
@@ -542,9 +629,9 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
 #endif
 
     HRESULT hResult = E_POINTER;
-    if (m_iNumberOfCANChannelsTotal > 0)
+    if ( sCanTxMsg.m_ucChannel > 0 && sCanTxMsg.m_ucChannel <= m_iNumberOfCANChannelsTotal)
     {
-        hResult = m_arrIxxatCanChannels[0].SendMessage(dwClientID, sCanTxMsg);
+        hResult = m_arrIxxatCanChannels[sCanTxMsg.m_ucChannel-1].SendMessage(dwClientID, sCanTxMsg);
     }
     return hResult;
 }
@@ -1096,7 +1183,7 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
                     iNumOfCANController++;
 
                     // store the current information in our class internal structure
-                    m_arrIxxatCanChannels[iStartPosArray].SetHardwareParams(pVciDevInfo->VciObjectId.AsInt64, i, &m_ClientList);
+                    m_arrTmpIxxatCanChannels[iStartPosArray].SetHardwareParams(pVciDevInfo->VciObjectId.AsInt64, i, &m_ClientList);
 
                     sSelHwInterface[iStartPosArray].m_dwIdInterface = iStartPosArray;
                     sSelHwInterface[iStartPosArray].m_bytNetworkID = (BYTE) i;    ///< Controller number inside this device.

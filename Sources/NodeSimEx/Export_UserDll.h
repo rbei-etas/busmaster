@@ -68,6 +68,17 @@ typedef HMODULE (*GETNODEHANDLER) (char*);
 // Prototype of the exported function from user-defined DLL
 typedef void (*DLLGETNODEHANDLER)(GETNODEHANDLER);
 
+typedef int (*KEYPRESSED)();
+typedef void (*SETKEYPRESSED)(KEYPRESSED);
+
+typedef int (*GETMESSAGENAME)(DWORD, DWORD , char* ,DWORD );
+typedef void (*DLLGETMESSAGENAME)(GETMESSAGENAME);
+
+typedef long (*TIMENOW)();
+typedef void (*DLLTIMENOW)(TIMENOW);
+
+typedef DWORD (*GETFIRSTCANDBNAME)(char [], DWORD);
+typedef void (*DLLGETFIRSTCANDBNAME)(GETFIRSTCANDBNAME);
 // Name of the exported function from user-defined DLL
 #define NAME_FUNC_LOG_DISABLE           "vSetDisableLoggingProcAddress"
 #define NAME_FUNC_LOG_ENABLE            "vSetEnableLoggingProcAddress"

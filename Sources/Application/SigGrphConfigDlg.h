@@ -59,10 +59,12 @@ public:
     afx_msg void OnBnClickedBtnVisible();
     afx_msg void OnBnClickedBtnEnable();
     afx_msg void OnBnClickedBtnConfigure();
+	afx_msg void OnBnClickedBtnLineColor();
     CColorSelector m_omLineColor;
     CColorSelector m_omPointColor;
     CButton m_omBtnVisible;
     CButton m_omBtnEnable;
+	INT m_nSelectedIndex;
     CMessageList m_omSignalList;
     CComboBox m_omCmbBusType;
     afx_msg void OnCbnSelchangeComboBusType();

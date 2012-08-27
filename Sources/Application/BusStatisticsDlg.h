@@ -27,6 +27,7 @@
 // For Color ListBox
 #include "MessageList.h"
 #include "BaseBusStatisticCAN.h"
+#include "Utility/XMLUtils.h"
 
 // information of CBusStatisticsDlg serialization data
 struct sBUSSTATTISTICSDATA
@@ -54,12 +55,17 @@ public:
 
     static sBUSSTATTISTICSDATA sm_sBusSerializationData;
     HRESULT GetConfigData(BYTE* pvDataStream);
+    HRESULT GetConfigData(xmlNodePtr pxmlNodePtr);
     HRESULT SetConfigData(BYTE* pvDataStream);
+    HRESULT SetConfigData(xmlNodePtr pDocPtr);
     UINT nGetBusStatsDlgConfigSize();
     void vLoadDefaultValues();
     void vLoadDataFromStore();
+    void vLoadDataFromStore(xmlNodePtr pDocPtr);
     static void vSaveDataToStore(BYTE* pvDataStream);
+    static void vSaveDataToStore();
     static void vGetDataFromStore(BYTE** pvDataStream, UINT& nSize);
+    static void vGetDataFromStore(xmlNodePtr pxmlNodePtr);
     static void vSetDefaultsToStore();
     void vUpdateChannelCountInfo(int nChannelCount);
 

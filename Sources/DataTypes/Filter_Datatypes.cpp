@@ -111,6 +111,39 @@ BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+void tagFilterName::pbGetConfigData(xmlNodePtr pFilterTag) const
+{
+    /*BYTE* pbTStream = pbTarget;
+
+    COPY_DATA(pbTStream, m_acFilterName, LENGTH_FILTERNAME * SIZE_CHAR);
+    COPY_DATA(pbTStream, &m_bFilterType, sizeof(m_bFilterType));
+
+    return pbTStream;*/
+
+    /*xmlNodePtr pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+    xmlAddChild(pxmlNodePtr, pFilterTag);*/
+
+    // Adding Filter Name to the xml
+    xmlNodePtr pFilterNameNodePtr = xmlNewChild(pFilterTag, NULL, BAD_CAST DEF_NAME, BAD_CAST m_acFilterName);
+    xmlAddChild(pFilterTag, pFilterNameNodePtr);
+
+    const char* omstrFilterType = "";
+
+    // Getting the Filter Type
+    if(m_bFilterType == 1)
+    {
+        omstrFilterType = "PASS";
+    }
+    else
+    {
+        omstrFilterType = "STOP";
+    }
+
+
+    // Adding Filter Type to the xml
+    xmlNodePtr pFilterTypeNodePtr = xmlNewChild(pFilterTag, NULL, BAD_CAST DEF_TYPE, BAD_CAST omstrFilterType);
+    xmlAddChild(pFilterTag, pFilterTypeNodePtr);
+}
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -137,6 +170,79 @@ BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
     return pbTStream;
 }
 
+// PTV XML
+void tagFilterName::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFiledoc)
+{
+    pNodePtr = pNodePtr->xmlChildrenNode;
+
+    while(pNodePtr != NULL)
+    {
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
+        {
+            char* ptext = (char*)xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                if(ptext != NULL)
+                {
+                    strcpy_s(m_acFilterName, 128, ptext);
+                }
+
+                xmlFree(ptext);
+            }
+        }
+        pNodePtr = pNodePtr->next;
+    }
+
+    // PTV TODO
+
+    /*BYTE* pbTStream = pbTarget;
+
+    COPY_DATA_2(m_acFilterName, pbTStream, LENGTH_FILTERNAME * SIZE_CHAR);
+    COPY_DATA_2(&m_bFilterType, pbTStream, sizeof(m_bFilterType));
+
+    return pbTStream;*/
+}
+// PTV XML
+INT tagFilterName::nSetXMLConfigData(xmlNodePtr pFilter)
+{
+    INT nRetVal = S_OK;
+    xmlNodePtr pTempFilter = pFilter->xmlChildrenNode;
+    m_acFilterName[0] = '\0';
+    m_bFilterType = FALSE;
+    while (pTempFilter != NULL)
+    {
+        if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"Name")))
+        {
+            char* pcTemp = (char*)xmlNodeListGetString(pTempFilter->doc, pTempFilter->xmlChildrenNode, 1);
+            if(pcTemp != NULL)
+            {
+                strcpy_s(m_acFilterName, 128, pcTemp);
+            }
+        }
+        if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"Type")))
+        {
+            m_bFilterType = nFilterType((char*)xmlNodeListGetString(pTempFilter->doc, pTempFilter->xmlChildrenNode, 1));
+        }
+        pTempFilter = pTempFilter->next;
+    }
+    if( strlen(m_acFilterName ) == 0 )
+    {
+        UINT unRand = time(NULL);
+        sprintf_s(m_acFilterName, 128, "Filter_%u", (UINT)time(NULL));
+        nRetVal = S_FALSE;
+    }
+    return nRetVal;
+}
+
+BOOL tagFilterName::nFilterType(string strFilteType)
+{
+    m_bFilterType = FALSE;
+    if(strFilteType == "PASS")
+    {
+        m_bFilterType = TRUE;
+    }
+    return m_bFilterType;
+}
 /* Ends SFILTERNAME / tagFilterName */
 
 /* Starts SFILTER / tagSFILTER */
@@ -246,6 +352,55 @@ BYTE* tagSFILTER::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+// PTV XML
+void tagSFILTER::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
+{
+
+    CString omStartId = "";
+    const char* omcStartId;
+
+    omStartId.Format("%d", m_dwMsgIDFrom);
+
+    omcStartId = omStartId;
+
+    const char* omcStpId;
+
+    CString omStpId = "";
+    omStpId.Format("%d", m_dwMsgIDTo);
+
+    omcStpId = omStpId;
+
+    CString omstrDir = "ALL";
+
+    if(m_eDrctn == DIR_RX)
+    {
+        omstrDir = "Rx";
+    }
+    else if(m_eDrctn == DIR_TX)
+    {
+        omstrDir = "Tx";
+    }
+
+
+    xmlNodePtr pStrtIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IDFROM, BAD_CAST omcStartId);
+    xmlAddChild(pxmlNodePtr, pStrtIdPtr);
+
+    xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IDTO, BAD_CAST omcStpId);
+    xmlAddChild(pxmlNodePtr, pStpIdPtr);
+
+    xmlNodePtr pDirPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_DIRECTION, BAD_CAST omstrDir.GetBufferSetLength(omstrDir.GetLength()));
+    xmlAddChild(pxmlNodePtr, pDirPtr);
+
+    /*BYTE* pbTStream = pbTarget;
+
+    COPY_DATA(pbTStream, &m_ucFilterType, sizeof(m_ucFilterType));
+    COPY_DATA(pbTStream, &m_dwMsgIDFrom, sizeof(m_dwMsgIDFrom));
+    COPY_DATA(pbTStream, &m_dwMsgIDTo, sizeof(m_dwMsgIDTo));
+    COPY_DATA(pbTStream, &m_eDrctn, sizeof(m_eDrctn));
+
+    return pbTStream;*/
+}
+// PTV XML
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -275,6 +430,60 @@ BYTE* tagSFILTER::pbSetConfigData(BYTE* pbTarget)
 
     return pbTStream;
 }
+eDirection tagSFILTER::eGetMsgDirection(string strDirection)
+{
+    eDirection eDir = DIR_ALL;
+    if(strDirection == "Tx")
+    {
+        eDir = DIR_TX;
+    }
+    if(strDirection == "Rx")
+    {
+        eDir = DIR_RX;
+    }
+    return eDir;
+}
+
+INT tagSFILTER::nSetXMLConfigData(xmlNodePtr pNodePtr)
+{
+    INT nRetValue = S_OK;
+    m_dwMsgIDFrom = 0;
+    m_dwMsgIDTo = 0;
+    m_eDrctn = DIR_ALL;
+    while (pNodePtr != NULL)
+    {
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IdFrom")))
+        {
+            if( NULL != pNodePtr->xmlChildrenNode )
+            {
+                m_dwMsgIDFrom = atoi((char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1)); //single nodee);
+            }
+        }
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IdTo")))
+        {
+            if( NULL != pNodePtr->xmlChildrenNode )
+            {
+                m_dwMsgIDTo = atoi((char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1));
+            }
+        }
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Direction")))
+        {
+            if( NULL != pNodePtr->xmlChildrenNode )
+            {
+                m_eDrctn = eGetMsgDirection((char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1));
+            }
+        }
+        pNodePtr = pNodePtr->next;
+    }
+
+    m_ucFilterType = defFILTER_TYPE_ID_RANGE;
+    if(m_dwMsgIDFrom == m_dwMsgIDTo)
+    {
+        m_ucFilterType = defFILTER_TYPE_SINGLE_ID;
+    }
+    return nRetValue;
+}
+
 /* Ends SFILTER / tagSFILTER */
 
 
@@ -495,6 +704,83 @@ BYTE* SFILTER_CAN::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+// PTV XML
+void SFILTER_CAN::pbGetConfigData(xmlNodePtr pNodePtr) const
+{
+    xmlNodePtr pFltrMsgPtr = xmlNewNode(NULL, BAD_CAST DEF_FILTER_MESSAGE);
+    xmlAddChild(pNodePtr, pFltrMsgPtr);
+
+    this->SFILTER::pbGetConfigData(pFltrMsgPtr);
+
+    CString omstrMsgType = "";
+    CString omstrIdType = "";
+
+    if(m_byIDType == TYPE_ID_CAN_EXTENDED)
+    {
+        omstrIdType = "EXT";
+    }
+    else if(m_byIDType == TYPE_ID_CAN_ALL)
+    {
+        omstrIdType = "ALL";
+    }
+    else if(m_byIDType == TYPE_ID_CAN_NONE)
+    {
+        omstrIdType = "NONE";
+    }
+    else
+    {
+        omstrIdType = "STD";
+    }
+
+    if(m_byMsgType == TYPE_MSG_CAN_RTR)
+    {
+        omstrMsgType = "RTR";
+    }
+    else if(m_byMsgType == TYPE_MSG_CAN_ALL)
+    {
+        omstrMsgType = "ALL";
+    }
+    else if(m_byMsgType == TYPE_MSG_CAN_NONE)
+    {
+        omstrMsgType = "NONE";
+    }
+    else
+    {
+        omstrMsgType = "NONRTR";
+    }
+    xmlNodePtr pIdTypePtr = xmlNewChild(pFltrMsgPtr, NULL, BAD_CAST DEF_IDTYPE, BAD_CAST omstrIdType.GetBuffer(omstrIdType.GetLength()));
+    xmlAddChild(pFltrMsgPtr, pIdTypePtr);
+
+    xmlNodePtr pMsgPtr = xmlNewChild(pFltrMsgPtr, NULL, BAD_CAST DEF_MSGTYPE, BAD_CAST omstrMsgType.GetBuffer(omstrMsgType.GetLength()));
+    xmlAddChild(pFltrMsgPtr, pMsgPtr);
+
+    CString omStrChannel = "";
+
+    omStrChannel.Format("%d", m_eChannel);
+
+    xmlNodePtr pChnlPtr = xmlNewChild(pFltrMsgPtr, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST omStrChannel.GetBuffer(omStrChannel.GetLength()));
+    xmlAddChild(pFltrMsgPtr, pChnlPtr);
+
+    /* COPY_DATA(pbTStream, &m_byIDType, sizeof(m_byIDType));
+     COPY_DATA(pbTStream, &m_byMsgType, sizeof(m_byMsgType));
+     COPY_DATA(pbTStream, &m_eChannel, sizeof(m_eChannel));*/
+
+    //return pbTStream;
+}
+void SFILTER_CAN::pbSetConfigData(xmlNodePtr xmlNodePtr)
+{
+    vClear();
+
+    /*BYTE* pbTStream = pbTarget;
+
+    pbTStream = this->SFILTER::pbSetConfigData(pbTStream);
+    COPY_DATA_2(&m_byIDType, pbTStream, sizeof(m_byIDType));
+    COPY_DATA_2(&m_byMsgType, pbTStream, sizeof(m_byMsgType));
+    COPY_DATA_2(&m_eChannel, pbTStream, sizeof(m_eChannel));*/
+
+    /*  return pbTStream;*/
+}
+// PTV XML
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -524,7 +810,79 @@ BYTE* SFILTER_CAN::pbSetConfigData(BYTE* pbTarget)
 
     return pbTStream;
 }
+INT SFILTER_CAN::nGetIDType(string strIDType)
+{
+    int nId = TYPE_ID_CAN_ALL;
+    if(strIDType == "STD")
+    {
+        nId = TYPE_ID_CAN_STANDARD;
+    }
+    if(strIDType == "EXT")
+    {
+        nId = TYPE_ID_CAN_EXTENDED;
+    }
+    return nId;
+}
+INT SFILTER_CAN::nGetMsgType(string strMsgType)
+{
+    int nId = TYPE_MSG_CAN_ALL;
+    if(strMsgType == "RTR")
+    {
+        nId = TYPE_MSG_CAN_RTR;
+    }
+    if(strMsgType == "NONRTR")
+    {
+        nId = TYPE_MSG_CAN_NON_RTR;
+    }
+    return nId;
+}
 
+INT SFILTER_CAN::nSetXMLConfigData(xmlNodePtr pNodePtr)
+{
+    int nRetValue = S_OK;
+    vClear();
+
+    nRetValue = this->SFILTER::nSetXMLConfigData(pNodePtr);
+    //<IDType>NONRTR</IDType>
+    //<MsgType>EXT</MsgType>
+    //<Channel>2</Channel>
+    string strTemp;
+    m_byMsgType = TYPE_MSG_CAN_ALL;
+    m_byIDType = TYPE_ID_CAN_ALL;
+    m_eChannel = 0;
+    while (pNodePtr != NULL)
+    {
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IDType")))
+        {
+            if ( NULL != pNodePtr->xmlChildrenNode )
+            {
+                strTemp = (char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1); //single node
+                m_byIDType  =  nGetIDType(strTemp);
+            }
+        }
+        else if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"MsgType")))
+        {
+            if ( NULL != pNodePtr->xmlChildrenNode )
+            {
+                strTemp = (char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                m_byMsgType  = nGetMsgType(strTemp);
+            }
+        }
+        else if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Channel")))
+        {
+            if ( NULL != pNodePtr->xmlChildrenNode )
+            {
+                m_eChannel = atoi((char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1));
+                if( m_eChannel < 0 || m_eChannel > CHANNEL_ALLOWED )
+                {
+                    m_eChannel = 0;
+                }
+            }
+        }
+        pNodePtr = pNodePtr->next;
+    }
+    return nRetValue;
+}
 /* Ends SFILTER_CAN */
 
 /* Starts SFILTER_FLEXRAY */
@@ -717,6 +1075,15 @@ BYTE* SFILTER_FLEXRAY::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+// PTV XML
+void SFILTER_FLEXRAY::pbGetConfigData(xmlNodePtr pNodePtr) const
+{
+    this->SFILTER::pbGetConfigData(pNodePtr);
+    /* COPY_DATA(pbTStream, &m_eChannel, sizeof(m_eChannel));*/
+
+    //return pbTStream;
+}
+// PTV XML
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -905,6 +1272,12 @@ BYTE* SFILTER_MCNET::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+void SFILTER_MCNET::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
+{
+    //BYTE* pbTStream = pbTarget;
+    this->SFILTER::pbGetConfigData(pxmlNodePtr);
+    //return pbTStream;
+}
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -1088,6 +1461,14 @@ BYTE* SFILTER_J1939::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+// PTV XML
+void SFILTER_J1939::pbGetConfigData(xmlNodePtr pNodePtr) const
+{
+    //BYTE* pbTStream = pbTarget;
+    this->SFILTER::pbGetConfigData(pNodePtr);
+    //return pbTStream;
+}
+// PTV XML
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -1441,6 +1822,244 @@ BYTE* tagFilterSet::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
+void tagFilterSet::pbGetConfigData(xmlNodePtr pNodePtr) const
+{
+    //BYTE* pbTStream = pbTarget;
+
+    xmlNodePtr pNodeCanFilterPtr;
+    xmlNodePtr pNodeMCNEtFilterPtr;
+    xmlNodePtr pNodeJ1939FilterPtr;
+    xmlNodePtr pNodeFLEXRAYFilterPtr;
+    xmlNodePtr pNodeLINFilterPtr;
+    xmlNodePtr pNodeMOSTFilterPtr;
+
+    xmlNodePtr pFilterTag;
+
+
+    if(m_eCurrBus == MCNET)
+    {
+        // Adding Filter to the xml
+        pNodeMCNEtFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MCNETFILTERS);
+        xmlAddChild(pNodePtr, pNodeMCNEtFilterPtr);
+
+        pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+        xmlAddChild(pNodeMCNEtFilterPtr, pFilterTag);
+    }
+    else if(m_eCurrBus == J1939)
+    {
+        // Adding Filter to the xml
+        pNodeJ1939FilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_J1939FILTERS);
+        xmlAddChild(pNodePtr, pNodeJ1939FilterPtr);
+
+        pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+        xmlAddChild(pNodeJ1939FilterPtr, pFilterTag);
+    }
+    else if(m_eCurrBus == FLEXRAY)
+    {
+        // Adding Filter to the xml
+        pNodeFLEXRAYFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FLEXRAYFILTERS);
+        xmlAddChild(pNodePtr, pNodeFLEXRAYFilterPtr);
+
+        pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+        xmlAddChild(pNodeFLEXRAYFilterPtr, pFilterTag);
+    }
+    else if(m_eCurrBus == LIN)
+    {
+        // Adding Filter to the xml
+        pNodeLINFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_LINFILTERS);
+        xmlAddChild(pNodePtr, pNodeLINFilterPtr);
+
+        pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+        xmlAddChild(pNodeLINFilterPtr, pFilterTag);
+    }
+    else if(m_eCurrBus == MOST)
+    {
+        // Adding Filter to the xml
+        pNodeMOSTFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MOSTFILTERS);
+        xmlAddChild(pNodePtr, pNodeMOSTFilterPtr);
+
+        pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+        xmlAddChild(pNodeMOSTFilterPtr, pFilterTag);
+    }
+    else
+    {
+        // Adding Filter to the xml
+        pNodeCanFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_CANFILTERS);
+        xmlAddChild(pNodePtr, pNodeCanFilterPtr);
+
+        pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
+        xmlAddChild(pNodeCanFilterPtr, pFilterTag);
+    }
+    m_sFilterName.pbGetConfigData(pFilterTag);
+
+    //COPY_DATA(pbTStream, &m_bEnabled, sizeof(m_bEnabled));
+    //COPY_DATA(pbTStream, &m_eCurrBus, sizeof(m_eCurrBus));
+    //COPY_DATA(pbTStream, &m_ushFilters, sizeof(m_ushFilters));
+
+    for (USHORT i = 0; i < m_ushFilters; i++)
+    {
+        switch (m_eCurrBus)
+        {
+            case CAN:
+            {
+                //pbTStream = (((SFILTER_CAN*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
+
+                (((SFILTER_CAN*) m_psFilterInfo) + i)->pbGetConfigData(pFilterTag);
+            }
+            break;
+            case FLEXRAY:
+            {
+                //pbTStream = (((SFILTER_FLEXRAY*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
+                (((SFILTER_FLEXRAY*) m_psFilterInfo) + i)->pbGetConfigData(pFilterTag);
+            }
+            break;
+            case MCNET:
+            {
+                //pbTStream = (((SFILTER_MCNET*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
+                (((SFILTER_MCNET*) m_psFilterInfo) + i)->pbGetConfigData(pFilterTag);
+            }
+            break;
+            case J1939:
+            {
+                //pbTStream = (((SFILTER_J1939*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
+                (((SFILTER_J1939*) m_psFilterInfo) + i)->pbGetConfigData(pFilterTag);
+            }
+            break;
+            default:
+            {
+                ASSERT(FALSE);
+            }
+            break;
+        }
+    }
+
+    //return pbTStream;
+}
+
+// PTV XML
+/******************************************************************************
+  Function Name    :  pbSetConfigData
+  Input(s)         :  pbSource - The source buffer to retrieve filtering data.
+                      It assumes that pbSource is currently pointing to locati-
+                      on of a filtering block data.
+  Output           :  BYTE * - Location of the next byte after the block.
+  Functionality    :  Retrieves filtering block information and copies them into
+                      the current object. Advances the reading pointer to the
+                      next byte occurring after the block.
+  Member of        :  tagFilterSet
+  Friend of        :  -
+  Author(s)        :  Ratnadip Choudhury
+  Date Created     :  1.12.2009
+******************************************************************************/
+void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,bool& Result)
+{
+    vClear(); // First clear everything
+
+    //BYTE* pbTStream = pbTarget;
+    Result = true;
+
+    m_eCurrBus = CAN;
+
+
+    m_sFilterName.pbSetConfigData(pNodePtr, pxmlDocPtr);
+
+
+    //COPY_DATA_2(&m_bEnabled, pbTStream, sizeof(m_bEnabled));
+    //COPY_DATA_2(&m_eCurrBus, pbTStream, sizeof(m_eCurrBus));
+    //COPY_DATA_2(&m_ushFilters, pbTStream, sizeof(m_ushFilters));
+
+    if (m_ushFilters > 0)
+    {
+        switch (m_eCurrBus)
+        {
+            case CAN:
+                m_psFilterInfo = new SFILTER_CAN[m_ushFilters];
+                break;
+            case FLEXRAY:
+                m_psFilterInfo = new SFILTER_FLEXRAY[m_ushFilters];
+                break;
+            case MCNET:
+                m_psFilterInfo = new SFILTER_MCNET[m_ushFilters];
+                break;
+            case J1939:
+                m_psFilterInfo = new SFILTER_J1939[m_ushFilters];
+                break;
+            default:
+                ASSERT(FALSE);
+        }
+
+        if (NULL != m_psFilterInfo)
+        {
+            switch (m_eCurrBus)
+            {
+                case CAN:
+                {
+
+                    for (USHORT i = 0; i < m_ushFilters; i++)
+                    {
+                        //(((SFILTER_CAN*) m_psFilterInfo) + i)->pbSetConfigData(pbTStream);
+                    }
+                }
+                break;
+                case FLEXRAY:
+                {
+
+                    for (USHORT i = 0; i < m_ushFilters; i++)
+                    {
+                        //(((SFILTER_FLEXRAY*) m_psFilterInfo) + i)->pbSetConfigData(pbTStream);
+                    }
+                }
+                break;
+                case MCNET:
+                {
+                    for (USHORT i = 0; i < m_ushFilters; i++)
+                    {
+                        //(((SFILTER_MCNET*) m_psFilterInfo) + i)->pbSetConfigData(pbTStream);
+                    }
+                }
+                break;
+                case J1939:
+                {
+                    for (USHORT i = 0; i < m_ushFilters; i++)
+                    {
+                        //(((SFILTER_J1939*) m_psFilterInfo) + i)->pbSetConfigData(pbTStream);
+                    }
+                }
+                break;
+                default:
+                {
+                    ASSERT(FALSE);
+                }
+                break;
+            }
+        }
+        else
+        {
+            UINT unFilterSize = 0;
+            switch (m_eCurrBus)
+            {
+                case CAN:
+                    unFilterSize = sizeof(SFILTER_CAN);
+                    break;
+                case FLEXRAY:
+                    unFilterSize = sizeof(SFILTER_FLEXRAY);
+                    break;
+                case MCNET:
+                    unFilterSize = sizeof(SFILTER_MCNET);
+                    break;
+                case J1939:
+                    unFilterSize = sizeof(SFILTER_J1939);
+                    break;
+                default:
+                    ASSERT(FALSE);
+            }
+            //pbTStream += m_ushFilters * unFilterSize;
+            m_ushFilters = 0;
+            Result = false;
+        }
+    }
+}
+// PTV XML
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -1561,6 +2180,61 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
     return pbTStream;
 }
 
+int tagFilterSet::nSetXMLConfigData( ETYPE_BUS eBus, xmlNodePtr pFilter)
+{
+    vClear(); // First clear everything
+
+    INT nResult = S_OK;
+
+    m_sFilterName.nSetXMLConfigData(pFilter);
+
+    //xmlXPathObjectPtr pObj = xmlUtils::pGetChildNodes(pFilter,  ( xmlChar *)"FilterMessage");
+
+    m_eCurrBus = eBus;
+    xmlNodePtr pTempFilter = pFilter->xmlChildrenNode;
+    m_ushFilters = 0;
+    while (pTempFilter != NULL)
+    {
+        if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"FilterMessage")))
+        {
+            m_ushFilters++;
+        }
+        pTempFilter = pTempFilter->next;
+    }
+
+
+    if (m_ushFilters > 0)
+    {
+        switch (m_eCurrBus)
+        {
+            case CAN:
+                m_psFilterInfo = new SFILTER_CAN[m_ushFilters];
+        }
+    }
+
+    if (NULL != m_psFilterInfo)
+    {
+        switch (m_eCurrBus)
+        {
+            case CAN:
+            {
+                pTempFilter = pFilter->xmlChildrenNode;
+                int i =0;
+                while (pTempFilter != NULL)
+                {
+                    if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"FilterMessage")))
+                    {
+                        xmlNodePtr pTempNode = pTempFilter->children;
+                        (((SFILTER_CAN*) m_psFilterInfo) + i)->nSetXMLConfigData(pTempNode);
+                        i++;
+                    }
+                    pTempFilter = pTempFilter->next;
+                }
+            }
+        }
+    }
+    return nResult;
+}
 tagFilterSet* tagFilterSet::psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, char* acFilterName)
 {
     for (UINT i = 0; i < Count; i++)

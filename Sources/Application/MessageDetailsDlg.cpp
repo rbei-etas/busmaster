@@ -52,7 +52,7 @@ CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE* pMsg
     //}}AFX_DATA_INIT
     m_psMsgStuctPtr = pMsg;
     m_sDbParams = sDbParams;
-    
+    //KSS
     m_sMessage.m_omStrMessageName = "";
     m_sMessage.m_unMessageCode = 0;
     m_sMessage.m_unMessageLength = 8;
@@ -126,7 +126,7 @@ BOOL CMessageDetailsDlg::OnInitDialog()
         m_nFrameFormat = 1;
     }
     UpdateData(FALSE);
-    // Update the initial values 
+    // Update the initial values //KSS
     m_sMessage.m_omStrMessageName = m_omStrMessageName;
     m_sMessage.m_unMessageCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, NULL, 16) );
     m_sMessage.m_unMessageLength = m_unMessageLength;
@@ -196,6 +196,18 @@ void CMessageDetailsDlg::OnOK()
         bRetVal = FALSE;
     }
 
+    if((bRetVal == TRUE) && (m_omStrMessageName.IsEmpty() == FALSE))
+    {
+        BOOL bIsMsgValid = ValidateMessageName(m_omStrMessageName);
+
+        if(bIsMsgValid == FALSE)
+        {
+            AfxMessageBox(MSG_INVALID_MSG_NAME,
+                          MB_OK|MB_ICONINFORMATION);
+            GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
+            bRetVal = FALSE;
+        }
+    }
     if ( bRetVal == TRUE &&
             m_omStrMessageCode.IsEmpty())
     {
@@ -207,7 +219,7 @@ void CMessageDetailsDlg::OnOK()
         bRetVal = FALSE;
     }
 
-    
+    //KSS
     if (bIsDataModified())
     {
         if (bRetVal)
@@ -463,6 +475,49 @@ Select \"No\" to retain the previous message length.", MB_YESNO) == IDYES)
         CDialog::OnOK();
     }
 }
+
+BOOL CMessageDetailsDlg::ValidateMessageName(CString omStrMessageName)
+{
+    BOOL bValid = FALSE;
+    TCHAR buffer[256];
+
+    int nChar,nlen,nChar1;
+
+    _tcscpy(buffer,omStrMessageName);
+
+    nlen=(int)_tcslen(buffer);
+
+    if(nlen > 0)
+    {
+        nChar = buffer[0];
+
+        if((nChar >= '0' && nChar<= '9'))
+        {
+            bValid = FALSE;
+        }
+        else
+        {
+            bValid = TRUE;
+        }
+    }
+
+    if(bValid == TRUE)
+    {
+        for(int ni=1; ni<nlen; ni++)
+        {
+            nChar = buffer[ni];
+
+            if(((nChar >= 'A' && nChar <= 'Z') ||
+                    (nChar >= 'a' && nChar<= 'z') ||
+                    (nChar >= '0' && nChar<= '9') ||
+                    (nChar == '_')))
+            {
+                bValid = TRUE;
+            }
+        }
+    }
+    return bValid;
+}
 /******************************************************************************
   Function Name    :  OnCancel
   Input(s)         :
@@ -690,7 +745,7 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
     return (bReturnValue);
 
 }
-
+//KSS
 BOOL CMessageDetailsDlg::bIsDataModified()
 {
     BOOL bDataChanged = FALSE;

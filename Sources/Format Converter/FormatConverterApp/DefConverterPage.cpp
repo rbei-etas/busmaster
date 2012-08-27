@@ -1,41 +1,22 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// DefConverterPage.cpp : implementation file
+//
 
-/**
- * \file      DefConverterPage.h
- * \brief     Implementation of CDefConverterPage dialog
- * \authors   Tobias Lorenz
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Implementation of CDefConverterPage dialog
- */
 
-#include "stdafx.h"
 #include "DefConverterPage.h"
 #include <strsafe.h>
 
+// CDefConverterPage dialog
+
 IMPLEMENT_DYNAMIC(CDefConverterPage, CPropertyPage)
 
-CDefConverterPage::CDefConverterPage()
+CDefConverterPage::CDefConverterPage(INT nTabPosition)
     : CPropertyPage(CDefConverterPage::IDD)
-    , m_pouPluginManager(0)
     , m_omStrInputFilePath(_T(""))
     , m_omStrOutputFilePath(_T(""))
     , m_omstrConversionComment(_T(""))
     , m_omstrEditHelp(_T(""))
 {
+    m_nTabPosition = nTabPosition;
 }
 
 CDefConverterPage::~CDefConverterPage()
@@ -44,7 +25,6 @@ CDefConverterPage::~CDefConverterPage()
 
 void CDefConverterPage::DoDataExchange(CDataExchange* pDX)
 {
-    CString str;
     CPropertyPage::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_COMBO_CONVERSIONS, m_omComboConverterNames);
     DDX_Control(pDX, IDC_EDIT_INPUTFILEPATH, m_omEditInputPath);
@@ -74,34 +54,67 @@ HRESULT CDefConverterPage::SetPluginManager(CPluginManagerBase* pouPluginManager
 HRESULT CDefConverterPage::LoadConverters()
 {
     HRESULT hResult = S_FALSE;
-
     if(m_pouPluginManager != NULL)
     {
         INT nCount = m_pouPluginManager->m_ConverterList.GetCount();
         string strConverterName;
-
         for(INT i = 0; i < nCount; i++)
         {
             POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(i);
             ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
-
             if(ouConverterInfo.m_pouConverter->bHaveOwnWindow() == FALSE)
             {
                 ouConverterInfo.m_pouConverter->GetConverterName(strConverterName);
                 INT nItem = m_omComboConverterNames.AddString(strConverterName.c_str());
-
                 if(nItem >= 0)
                 {
                     m_omComboConverterNames.SetItemData(nItem, i);
                 }
             }
         }
-
+        vAdjustWidthMessageComboBox();
         hResult = S_OK;
     }
 
     return hResult;
 }
+
+void CDefConverterPage::vAdjustWidthMessageComboBox()
+{
+    CString str;
+    CSize sz;
+    int dx = 0;
+    TEXTMETRIC tm;
+    CDC* pDC = m_omComboConverterNames.GetDC();
+    CFont* pFont = m_omComboConverterNames.GetFont();
+    // Select the listbox font, save the old font
+    CFont* pOldFont = pDC->SelectObject(pFont);
+    // Get the text metrics for avg char width
+    pDC->GetTextMetrics(&tm);
+
+    for (int i = 0; i < m_omComboConverterNames.GetCount(); i++)
+    {
+        m_omComboConverterNames.GetLBText(i, str);
+        sz = pDC->GetTextExtent(str);
+        sz = pDC->GetTextExtent(str);
+        // Add the avg width to prevent clipping
+        sz.cx += tm.tmAveCharWidth;
+
+        if (sz.cx > dx)
+        {
+            dx = sz.cx;
+        }
+    }
+
+    // Select the old font back into the DC
+    pDC->SelectObject(pOldFont);
+    m_omComboConverterNames.ReleaseDC(pDC);
+    // Adjust the width for the vertical scroll bar and the left and right border.
+    dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2*::GetSystemMetrics(SM_CXEDGE);
+    // Set the width of the list box so that every item is completely visible.
+    m_omComboConverterNames.SetDroppedWidth(dx);
+}
+
 BOOL CDefConverterPage::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
@@ -118,17 +131,14 @@ void CDefConverterPage::OnBnClickedBtnInput()
     string strFileExt;
     string strFileFilters;
     INT nSelected = GetConverterPos();
-
-    if( nSelected < m_pouPluginManager->m_ConverterList.GetCount())
+    if( (nSelected != -1) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
     {
         POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelected);
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
-
         if( ouConverterInfo.m_pouConverter != NULL)
         {
             ouConverterInfo.m_pouConverter->GetInputFileFilters(strFileExt, strFileFilters);
         }
-
         CFileDialog fileDlg( TRUE,     // Open File dialog
                              strFileExt.c_str(),     // Default Extension,
                              NULL,     // Initial file name.
@@ -137,13 +147,11 @@ void CDefConverterPage::OnBnClickedBtnInput()
                              strFileFilters.c_str(),
                              this );
         INT_PTR nRetVal = fileDlg.DoModal();
-
         if(IDOK == nRetVal)
         {
             m_omEditInputPath.SetWindowText(fileDlg.GetPathName());
-            CString omStrOutputFile = (LPCTSTR) fileDlg.GetPathName();
+            CString omStrOutputFile = fileDlg.GetPathName();
             INT nIndex = omStrOutputFile.ReverseFind('.');
-
             if ( nIndex >= 0)
             {
                 omStrOutputFile = omStrOutputFile.Left(nIndex);
@@ -152,10 +160,10 @@ void CDefConverterPage::OnBnClickedBtnInput()
                 omStrOutputFile += strFileExt.c_str();
                 m_omEditOutputPath.SetWindowText(omStrOutputFile);
             }
-
             GetDlgItem(IDC_EDIT_COMMENT)->SetWindowText("");
         }
     }
+
 }
 
 void CDefConverterPage::OnBnClickedBtnOutput()
@@ -163,18 +171,15 @@ void CDefConverterPage::OnBnClickedBtnOutput()
     string strFileExt;
     string strFileFilters;
     INT nSelected = GetConverterPos();
-
-    if( nSelected < m_pouPluginManager->m_ConverterList.GetCount())
+    if( (nSelected != -1) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
     {
         POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelected);
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
-
         if( ouConverterInfo.m_pouConverter != NULL)
         {
             ouConverterInfo.m_pouConverter->GetOutputFileFilters(strFileExt, strFileFilters);
         }
     }
-
     CFileDialog fileDlg( TRUE,     // Open File dialog
                          strFileExt.c_str(),     // Default Extension,
                          NULL,     // Initial file name.
@@ -186,6 +191,7 @@ void CDefConverterPage::OnBnClickedBtnOutput()
     if(IDOK == nRetVal)
     {
         m_omEditOutputPath.SetWindowText(fileDlg.GetPathName());
+        GetDlgItem(IDC_EDIT_COMMENT)->SetWindowText("");
     }
 }
 
@@ -193,39 +199,33 @@ void CDefConverterPage::OnBnClickedBtnConvert()
 {
     // TODO: Add your control notification handler code here
     INT nSelected = GetConverterPos();
-    TRY
+
+    if( (nSelected >= 0 ) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
     {
-        if( (nSelected >= 0 ) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
+        POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelected);
+        ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
+        if( ouConverterInfo.m_pouConverter != NULL)
         {
-            POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelected);
-            ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
+            UpdateData();
+            string strInputFilePath  = (LPCTSTR) m_omStrInputFilePath;
+            string strOutputFilePath = (LPCTSTR) m_omStrOutputFilePath;
 
-            if( ouConverterInfo.m_pouConverter != NULL)
+            //StringCbCopy(strInputFilePath, sizeof(strInputFilePath), m_omStrInputFilePath);
+            //StringCbCopy(strOutputFilePath, sizeof(strOutputFilePath), m_omStrOutputFilePath);
+            if( S_OK == ValidateFileExtensions(m_omStrInputFilePath, m_omStrOutputFilePath, ouConverterInfo.m_pouConverter))
             {
-                UpdateData();
-                string inputFilePath  = (LPCTSTR) m_omStrInputFilePath;
-                string outputFilePath = (LPCTSTR) m_omStrOutputFilePath;
-
-                if( S_OK == ValidateFileExtensions(m_omStrInputFilePath, m_omStrOutputFilePath, ouConverterInfo.m_pouConverter))
-                {
-                    HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(inputFilePath, outputFilePath);
-                    string conversionComment;
-                    ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
-                    m_omstrConversionComment = conversionComment.c_str();
-                    UpdateData(FALSE);
-                }
-                else
-                {
-                    MessageBox("Invalid Input/Output Files", "Error", MB_OK|MB_ICONERROR);
-                }
+                HRESULT hResult = ouConverterInfo.m_pouConverter->ConvertFile(strInputFilePath, strOutputFilePath);
+                string conversionComment;
+                ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
+                m_omstrConversionComment = conversionComment.c_str();
+                UpdateData(FALSE);
+            }
+            else
+            {
+                MessageBox("Invalid Input/Output Files", "Error", MB_OK|MB_ICONERROR);
             }
         }
     }
-    CATCH(CException, e)
-    {
-        MessageBox("Unexpected Error Occured.Conversion Oberted", "Error", MB_OK|MB_ICONERROR);
-    }
-    END_CATCH
 }
 
 void CDefConverterPage::OnCbnSelchangeComboConversions()
@@ -244,27 +244,18 @@ void CDefConverterPage::OnCbnSelchangeComboConversions()
         POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelectedItemIndex);
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
         ouConverterInfo.m_pouConverter->GetHelpText(chHelpText);
-        ouConverterInfo.m_pouConverter->GetConverterName(chConversionName);
-        m_omstrEditHelp = chHelpText.c_str();
-        m_omstrConversionName = chConversionName.c_str();
-        //TODO::Require some more knowledge on how to change
-        //propertypage title.
-        TC_ITEM tcItem;
-        tcItem.mask = TCIF_TEXT;
-        tcItem.pszText = (LPTSTR)(m_omstrConversionName.c_str());
-        ((CPropertySheet*)GetParent())->GetTabControl()->SetItem(0, &tcItem );
-        SetWindowText(m_omstrConversionName.c_str());
-    }
 
+        m_omstrEditHelp = chHelpText.c_str();
+    }
     UpdateData(FALSE);
 }
+
 
 
 INT CDefConverterPage::GetConverterPos()
 {
     INT nComboBoxIndex = m_omComboConverterNames.GetCurSel();
     INT nListIndex = m_omComboConverterNames.GetItemData(nComboBoxIndex);
-
     if( (nListIndex >= 0 ) && (nListIndex < m_pouPluginManager->m_ConverterList.GetCount()))
     {
         return nListIndex;
@@ -274,6 +265,7 @@ INT CDefConverterPage::GetConverterPos()
         return -1;
     }
 }
+
 HRESULT CDefConverterPage::ValidateFileExtensions(CString& m_omStrInputFilePath, CString& m_omStrOutputFilePath, CBaseConverter*& m_pouConverter)
 {
     CString omStrExtension;
@@ -324,4 +316,3 @@ HRESULT CDefConverterPage::ValidateFileExtensions(CString& m_omStrInputFilePath,
     }
     return hResult;
 }
-

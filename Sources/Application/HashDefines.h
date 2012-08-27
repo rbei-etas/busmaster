@@ -227,8 +227,9 @@ typedef CList<int,int>      defomIntegerList;
 #define defDATA_WORD_ARRAY         "\tunsigned short int m_auwData[4];\n"
 #define defDATA_LONG_ARRAY         "\tunsigned long  int m_aulData[2];\n"
 
-#define H_FILE_HEADER_START     "#ifndef %s_UNIONS_H_\n#define %s_UNIONS_H_\n#pragma pack(push,8)\n"
-#define H_FILE_HEADER_END       "\n\n#pragma pack(pop,8)\n#endif"
+#define H_FILE_HEADER_START "#pragma once"
+//#define H_FILE_HEADER_START     "#ifndef %s_UNIONS_H_\n#define %s_UNIONS_H_\n#pragma pack(push,8)\n"
+//#define H_FILE_HEADER_END       "\n\n#pragma pack(pop,8)\n#endif"
 #define GLOBALS                 "Global Variable(s)"
 
 // for creating new fonts
@@ -338,6 +339,8 @@ typedef CList<int,int>      defomIntegerList;
 #define MSG_SELECT_DATABASE     "User can select database file from 'File->Database->Import Database' menu option."
 #define MSG_SG_NAME_EMPTY       "Signal name cannot be empty!"
 #define MSG_DUPLICATE_SG_NAME   "Signal name already exists!"
+#define MSG_INVALID_SG_NAME     "Invalid Signal name specified.\n\nSignal name must begin with an alpha character or a '_' and \nmay only contain alpa, numeric and '_' characters."
+#define MSG_INVALID_MSG_NAME    "Invalid Message name specified.\n\nMessage name must begin with an alpha character or a '_' and \nmay only contain alpa, numeric and '_' characters."
 #define MSG_SG_SELECTED         "No item selected!"
 #define MSG_INVALID_HEX_NO      "Invalid hexa-decimal number!"
 #define MSG_MAX_VAL_LESS        "Maximum value cannot be less than minimum value!"
@@ -1777,3 +1780,31 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defMINOR_VERSION_POSITION                   0
 //This line is used to separate two files Build,Build&load messages on output window
 #define defSTR_BUILD_TRACE_LINE_MARK               " "
+
+
+//Key Handlers
+#define BMKEY_BACK          0x80
+#define BMKEY_TAB           0x81
+#define BMKEY_RETURN        0x82
+#define BMKEY_PAGEUP        0x83
+#define BMKEY_PAGEDOWN      0x84
+#define BMKEY_END           0x85
+#define BMKEY_HOME          0x86
+#define BMKEY_LEFTARROW     0x87
+#define BMKEY_UPARROW       0x88
+#define BMKEY_RIGHTARROW    0x89
+#define BMKEY_DOWNARROW     0x8a
+#define BMKEY_INSERT        0x8b
+#define BMKEY_DELETE        0x8c
+#define BMKEY_F1            0x8d
+#define BMKEY_F2            0x8e
+#define BMKEY_F3            0x8f
+#define BMKEY_F4            0x90
+#define BMKEY_F5            0x91
+#define BMKEY_F6            0x92
+#define BMKEY_F7            0x93
+#define BMKEY_F8            0x94
+#define BMKEY_F9            0x95
+#define BMKEY_F10           0x96
+#define BMKEY_F11           0x97
+#define BMKEY_F12           0x98

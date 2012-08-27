@@ -149,6 +149,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
 {
     ASSERT(psNodeInfo != NULL);
 
+    // PTV CPP
     if(psNodeInfo != NULL)
     {
         switch (psNodeInfo->m_eBus)
@@ -159,6 +160,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                 {
                     static STCANDATA sCanData;
 
+                    // PTV CPP
                     if(psNodeInfo != NULL)
                     {
                         INT Result = psNodeInfo->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
@@ -173,7 +175,15 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         // Give the msg to NodeSimx for simulation
                         if (sCanData.m_ucDataType == RX_FLAG)
                         {
-                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerCAN(sCanData.m_uDataInfo.m_sCANMsg, psNodeInfo->m_dwClientId);
+                            static STCAN_TIME_MSG sCanTimeData;
+                            sCanTimeData.m_ucChannel    = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
+                            memcpy(sCanTimeData.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sizeof(sCanTimeData.m_ucData));
+                            sCanTimeData.m_ucDataLen    = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
+                            sCanTimeData.m_ucEXTENDED   = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
+                            sCanTimeData.m_ucRTR        = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
+                            sCanTimeData.m_ulTimeStamp  = (ULONG)sCanData.m_lTickCount.QuadPart;
+                            sCanTimeData.m_unMsgID      = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
+                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerCAN(sCanTimeData, psNodeInfo->m_dwClientId);
                         }
                         else if (sCanData.m_ucDataType == ERR_FLAG)
                         {
@@ -275,7 +285,7 @@ DWORD WINAPI NodeDataReadThreadProc(LPVOID pVoid)
 sNODEINFO::sNODEINFO(ETYPE_BUS eBus)
 {
     m_eBus = eBus;
-    m_byPrefAddress = 254;
+    m_byPrefAddress = ADDRESS_NULL;
     m_unEcuName     = 0x0;
     m_ouCanBufFSE.vClearMessageBuffer();
     m_dwClientId = 0;
@@ -1070,8 +1080,11 @@ void CSimSysNodeInfo::vSetEnableAllSimSysHandlers(CString omStrSimSysName, BOOL 
                 pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = bIsEnabled;
                 pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = bIsEnabled;
                 pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = bIsEnabled;
-                pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
                 pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = bIsEnabled;
+                if (pTempNode->m_eBus == J1939)
+                {
+                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
+                }
             }
 
             pTempNode = pTempNode->m_psNextNode;
@@ -1343,7 +1356,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysEventHandlers(CString& omStrSimSysName
             // Set all handlers are enbled in all the nodes under the sim sys
             if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
             {
-                pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
+                if (pTempNode->m_eBus == J1939)
+                {
+                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
+                }
                 CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeEventHandler(
                     &pTempNode->m_sNodeInfo , bIsEnabled);
             }
@@ -1594,8 +1610,11 @@ void CSimSysNodeInfo::vSetEnableNodeAllHandlers(CString omStrSimSysName ,
                     pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = bIsEnabled;
                     pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = bIsEnabled;
                     pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = bIsEnabled;
-                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
                     pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = bIsEnabled;
+                    if (pTempNode->m_eBus == J1939)
+                    {
+                        pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
+                    }
                 }
 
 
@@ -1872,7 +1891,10 @@ void CSimSysNodeInfo::vSetEnableNodeEventHandlers(CString omStrSimSysName ,
                     CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeEventHandler(
                         &pTempNode->m_sNodeInfo , bIsEnabled);
                     // Set all event handlers as enabled in the node
-                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
+                    if (pTempNode->m_eBus == J1939)
+                    {
+                        pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
+                    }
                 }
                 pTempNode = pTempNode->m_psNextNode;
             }

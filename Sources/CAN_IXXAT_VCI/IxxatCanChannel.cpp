@@ -108,8 +108,32 @@ void CIxxatCanChannel::SetHardwareParams(INT64 qiVCIDeviceID, int iCANController
     m_qiVCIDeviceID = qiVCIDeviceID;
     m_iCANControllerNumber = iCANControllerNumber;
     m_pClientList = pClientList;
-
 }
+
+/**
+ * @brief
+ *  Gets hardware parameter to use for CAN controller
+ *  initialization and the client list to use.
+ *
+ * @param qiVCIDeviceID
+ *  The IXXAT device object identifier. Every IXAT interface
+ *  has an own unique number which must be used to open it.
+ *  Interface means a PCI card or a USB based interface with
+ *  can have more CAN controllers.
+ * @param iCANControllerNumber
+ *  Zero-based index of the can controller number to use in
+ *  this class object.
+ * @param [out]  ppvClientList
+ *  void double pointer returned which is used to handle the clients and
+ *  message buffers to dispatch CAN messages.
+ */
+void CIxxatCanChannel::GetHardwareParams(INT64* pqiVCIDeviceID, int* piCANControllerNumber, void** ppvClientList)
+{
+    *pqiVCIDeviceID = m_qiVCIDeviceID;
+    *piCANControllerNumber = m_iCANControllerNumber;
+    *ppvClientList = (void*)m_pClientList;
+}
+
 
 /**
  * @brief
@@ -498,7 +522,7 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
 {
     HRESULT hResult = ERR_LOAD_HW_INTERFACE;
 
-    if (!m_hVciDevice)
+    if (m_hVciDevice)
     {
         // no channel existing, but device accessed
         if (!m_hCANChannel)
@@ -572,7 +596,7 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
         {
             hResult = HW_INTERFACE_ALREADY_SELECTED;
         }
-    }  // if (!m_hVciDevice)
+    }  // if (m_hVciDevice)
 
     return hResult;
 }

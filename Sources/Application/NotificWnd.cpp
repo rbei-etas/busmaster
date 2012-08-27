@@ -339,6 +339,11 @@ void CNotificWnd::vAddString(CString omStr)
             }
             m_omListBox.ReleaseDC(pDC);
         }
+        int nCount = m_omListBox.GetCount();
+        if (nCount > 0)
+        {
+            m_omListBox.SetCaretIndex(nCount-1);
+        }
     }
 }
 

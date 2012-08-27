@@ -31,6 +31,7 @@
 #include "Datatypes/MsgSignal_Datatypes.h"
 #include "UIThread.h"
 
+#include "NodeSimEx/NodeSimEx_Struct.h"		//CAPL_DB_NAME_CHANGE
 
 
 class CMsgSignal
@@ -210,6 +211,7 @@ public:
     // Get message name from code
     BOOL bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName);
 
+    BOOL bMessageLengthFromMsgCode(UINT unMsgCode, CString& omMsgLength);
     // Get message code from name
     int nGetMessageCode( CString strMsgName);
 
@@ -248,11 +250,14 @@ public:
     static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
                                 UINT nLength, EFORMAT_DATA bDataFormat);
 
+	//CAPL_DB_NAME_CHANGE
+	//fill database list
+	BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase &odMsgNameMsgCodeListDB);
 
 
 private:
     BOOL bFormSigNameAndLength( UINT* punLength,
-                                const UINT* punStartBit,
+                                UINT* punStartBit,
                                 CStringArray& omStrArraySigName,
                                 const INT nIndex );
     BOOL bSortSignalStartBitAscend(UINT* punSigStartBit ,UINT unCount);

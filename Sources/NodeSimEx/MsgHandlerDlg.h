@@ -45,16 +45,20 @@ private:
     ETYPE_BUS m_eBus;
 public:
     CString m_omStrSelectedItemText;
+    CString m_omStrFunctionAdded;
     CMsgHandlerDlg(ETYPE_BUS eBus, CWnd* pParent = NULL);   // standard constructor
 private:
     void vInitDlgWithBusSpecNames(void);
+	void vTokenize(CString strInput, CString strToken, CString& strOutput, int& nStart);
     // Dialog Data
     //{{AFX_DATA(CMsgHandlerDlg)
     enum { IDD = IDD_DLG_MSG_HANDLERS };
     CListBox    m_omListMsgName;
     CRadixEdit  m_odEditMsgIDTo;
     CRadixEdit  m_odEditMsgIDFrom;
-    CRadixEdit  m_odEditMsgID;
+    //VENKATNARAYANA
+	//CRadixEdit	m_odEditMsgID;
+    CEdit m_odEditMsgID;
     CButton m_omButtonApply;
     CButton m_omButtonOK;
     CString m_omStrMsgID;

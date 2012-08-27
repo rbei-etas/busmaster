@@ -16,48 +16,50 @@
 /**
  * \file      ConverterDlg.h
  * \brief     Interface file for CCAPL2CPropertyPage class
- * \authors   Amit Ranjan
+ * \author    Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CCAPL2CPropertyPage class
  */
 
+
+#if !defined(AFX_KEYOPTIONDLG_H__0AAD69C7_73D0_11D8_90D3_0010B5A6E0E0__INCLUDED_)
+#define AFX_KEYOPTIONDLG_H__0AAD69C7_73D0_11D8_90D3_0010B5A6E0E0__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
-#define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
-#include <afxwin.h>         /* MFC core and standard components */
-#include <afxext.h>         /* MFC extensions */
-#include <afxdisp.h>        /* MFC Automation classes */
-#include <afxdtctl.h>       /* MFC support for Internet Explorer 4 Common Controls */
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>         /* MFC support for Windows Common Controls */
-#endif /* _AFX_NO_AFXCMN_SUPPORT */
-#include <afxdlgs.h>
-
-/* Project includes */
-#include "resource.h"
-
+/////////////////////////////////////////////////////////////////////////////
+// CCAPL2CPropertyPage dialog
+#include "CAPL2CConverter_Resource.h"
+#include "afxcmn.h"
+#include "../DBC2DBFConverterLibrary/DBCConverterBase.h"
 class CCAPL2CPropertyPage : public CPropertyPage
 {
-    // Construction
+    HMODULE m_hDLLModule;
+    GETCONVERTER m_pfGetConverter;
+    CDBCConverterBase* m_pouDBC2DBFConverter;
+    CString m_omLogFile;
+// Construction
 public:
     void SaveSettings();
-    CCAPL2CPropertyPage(CWnd* pParent = NULL);  // standard constructor
-
-    // Dialog Data
+    CCAPL2CPropertyPage(CWnd* pParent = NULL);	// standard constructor
+    
+// Dialog Data
     //{{AFX_DATA(CCAPL2CPropertyPage)
     enum { IDD = IDD_DLG_LANG_CNVRTR };
-    BOOL    m_check;
-    BOOL    m_savedb;
+    //BOOL	m_check;
+    BOOL	m_savedb;
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCAPL2CPropertyPage)
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
     //}}AFX_VIRTUAL
 
-    // Implementation
+// Implementation
 protected:
     HICON m_hIcon;
 
@@ -73,10 +75,23 @@ protected:
     afx_msg void OnConvert();
     afx_msg void OnCancel();
     afx_msg void OnChangeEditInput();
-    afx_msg void OnChkbOptn();
+    //afx_msg void OnChkbOptn();
     afx_msg void OnBrowseCANoeDb();
     afx_msg void OnBrowseBUSMASTERDb();
     afx_msg void OnChkbSavedb();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
+public:
+    CListCtrl m_omDBCList;
+    CListCtrl m_omDBFList;
+    afx_msg void OnBnCanoedbDel();
+    BOOL m_bConvertDbc2Dbf;
+    afx_msg void OnNMClickListDbcFiles(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnItemActivateListDbcFiles(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnItemchangedListDbcFiles(NMHDR *pNMHDR, LRESULT *pResult);
 };
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_KEYOPTIONDLG_H__0AAD69C7_73D0_11D8_90D3_0010B5A6E0E0__INCLUDED_)

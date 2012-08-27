@@ -23,8 +23,10 @@
 
 typedef HRESULT (*SHOWTSEXECUTORWINDOW)(void* pParentWnd);
 typedef HRESULT (*TSEXECUTORWINDOWSHOWN)();
-typedef HRESULT (*TSEXECUTORGETCONFIGDATA)(BYTE*& pDesBuffer, UINT& nBuffSize);
+//typedef HRESULT (*TSEXECUTORGETCONFIGDATA)(BYTE*& pDesBuffer, UINT& nBuffSize);
+typedef HRESULT (*TSEXECUTORGETCONFIGDATA)(xmlNodePtr pxmlNodePtr);
 typedef HRESULT (*TSEXECUTORSETCONFIGDATA)(BYTE* pSrcBuffer, UINT nBuffSize);
+typedef HRESULT (*TSEXECUTORSETXMLCONFIGDATA)(xmlDocPtr);
 typedef HRESULT (*PFTSSTARTSTOPREADTHREAD)(ETYPE_BUS eBus, BOOL bStart);
 typedef HRESULT (*PTSDOINITIALIZATION)(ETYPE_BUS eBus);
 typedef HRESULT (*PTSBUSCONNECTED)(BOOL bConnected);
@@ -34,6 +36,7 @@ SHOWTSEXECUTORWINDOW  pfShowTSExecutorwindow;
 TSEXECUTORWINDOWSHOWN pfTSExecutorWindowShown;
 TSEXECUTORGETCONFIGDATA pfTSExecutorGetConfigdata;
 TSEXECUTORSETCONFIGDATA pfTSExecutorSetConfigdata;
+TSEXECUTORSETXMLCONFIGDATA pfTSExecutorSetXMLConfigdata;
 PFTSSTARTSTOPREADTHREAD pfTSStartStopReadThread;
 PTSDOINITIALIZATION pfTSDoInitialization;
 PTSBUSCONNECTED pfTSBusConnected;
@@ -68,6 +71,7 @@ void TSExecutorHandler::vInitializeFuncPtrs()
     pfTSExecutorWindowShown = NULL;
     pfTSExecutorGetConfigdata = NULL;
     pfTSExecutorSetConfigdata = NULL;
+    pfTSExecutorSetXMLConfigdata = NULL;
     pfTSStartStopReadThread = NULL;
     pfTSDoInitialization = NULL;
     pfTSBusConnected = NULL;
@@ -79,6 +83,7 @@ void TSExecutorHandler::vloadFuncPtrAddress()
     pfTSExecutorWindowShown = (TSEXECUTORWINDOWSHOWN)GetProcAddress(m_hTSExecutorHandle, "TS_hTSEexecutorWindowShown");
     pfTSExecutorGetConfigdata = (TSEXECUTORGETCONFIGDATA)GetProcAddress(m_hTSExecutorHandle, "TS_hGetConfigurationData");
     pfTSExecutorSetConfigdata = (TSEXECUTORSETCONFIGDATA)GetProcAddress(m_hTSExecutorHandle, "TS_hSetConfigurationData");
+    pfTSExecutorSetXMLConfigdata = (TSEXECUTORSETXMLCONFIGDATA)GetProcAddress(m_hTSExecutorHandle, "TS_hSetXMLConfigurationData");
     pfTSStartStopReadThread = (PFTSSTARTSTOPREADTHREAD)GetProcAddress(m_hTSExecutorHandle, "TS_StartStopReadThread");
     pfTSDoInitialization = (PTSDOINITIALIZATION)GetProcAddress(m_hTSExecutorHandle, "TS_DoInitialization");
     pfTSBusConnected = (PTSBUSCONNECTED)GetProcAddress(m_hTSExecutorHandle, "TS_BUSConnected");
@@ -96,7 +101,15 @@ void TSExecutorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSiz
 {
     if(pfShowTSExecutorwindow != NULL)
     {
-        pfTSExecutorGetConfigdata(pDesBuffer, unBuffSize);
+        // pfTSExecutorGetConfigdata(pDesBuffer, unBuffSize);
+    }
+}
+
+void TSExecutorHandler::vGetConfigurationData(xmlNodePtr pxmlNodePtr)
+{
+    if(pfShowTSExecutorwindow != NULL)
+    {
+        pfTSExecutorGetConfigdata(pxmlNodePtr);
     }
 }
 
@@ -105,6 +118,13 @@ void TSExecutorHandler::vSetConfigurationData(BYTE*& pSrcBuffer, UINT& unBuffSiz
     if(pfTSExecutorSetConfigdata!= NULL)
     {
         pfTSExecutorSetConfigdata(pSrcBuffer, unBuffSize);
+    }
+}
+void TSExecutorHandler::vSetConfigurationData(xmlDocPtr pDoc)
+{
+    if( NULL != pfTSExecutorSetXMLConfigdata )
+    {
+        pfTSExecutorSetXMLConfigdata(pDoc);
     }
 }
 void TSExecutorHandler::vStartStopReadThread(ETYPE_BUS eBus, BOOL bStart)

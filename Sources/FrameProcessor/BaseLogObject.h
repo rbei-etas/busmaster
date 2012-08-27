@@ -72,6 +72,8 @@ protected:
 
     // Set config. data - additional tasks to be done by the concrete class
     virtual BYTE* Der_SetConfigData(BYTE* pvDataStream) = 0;
+	virtual void Der_GetConfigData(xmlNodePtr pNodePtr) const = 0;
+	virtual int Der_SetConfigData(xmlNodePtr) = 0;
     // Get config. data - additional tasks to be done by the concrete class
     virtual BYTE* Der_GetConfigData(BYTE* pvDataStream) const = 0;
     // Buffer size calculation - additional tasks to be done by the concrete class
@@ -91,8 +93,12 @@ public:
     // To do actions before logging starts
     BOOL bStartLogging(ETYPE_BUS);
 
+    void vCloseLogFile();
+
     // To do actions before logging stop
     BOOL bStopLogging(void);
+
+    BOOL bStopOnlyLogging(void);
 
     // To log a string
     BOOL bLogString(CString& omString);
@@ -112,8 +118,14 @@ public:
 
     // Set configuration data
     BYTE* SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion);
+	//MVN
+	INT nSetConfigData(xmlNodePtr pNode);
+	//~MVN
     // Get configuration data
     BYTE* GetConfigData(BYTE* pvDataStream) const;
+	// PTV XML
+	BOOL GetConfigData(xmlNodePtr pxmlNodePtr) const;
+	// PTV XML
     // To get the total buffer size
     UINT unGetBufSize(void) const;
 

@@ -840,7 +840,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    if (nInitHwNetwork() == 0)
+    hResult = nInitHwNetwork();
+    if ( hResult == 0)
     {
         nCount = sg_nNoOfChannels;
         for (UINT i = 0; i < sg_nNoOfChannels; i++)
@@ -867,7 +868,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     }
     else
     {
-        hResult = NO_HW_INTERFACE;
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
     }
     return hResult;
@@ -1109,15 +1109,15 @@ static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
             sCanData.m_ucDataType = RX_FLAG;
         }
 
-    	if ( xlEvent.tagData.msg.dlc <= 8 ) /* Valid CAN message length */
-		{
-			/* Copy data length */
-			sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = (UCHAR)xlEvent.tagData.msg.dlc;
+        if ( xlEvent.tagData.msg.dlc <= 8 ) /* Valid CAN message length */
+        {
+            /* Copy data length */
+            sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = (UCHAR)xlEvent.tagData.msg.dlc;
 
-			/* Copy the message data */
-			memcpy(sCanData.m_uDataInfo.m_sCANMsg.m_ucData,
-				   xlEvent.tagData.msg.data, xlEvent.tagData.msg.dlc);
-		}
+            /* Copy the message data */
+            memcpy(sCanData.m_uDataInfo.m_sCANMsg.m_ucData,
+                   xlEvent.tagData.msg.data, xlEvent.tagData.msg.dlc);
+        }
 
         /* Copy the message ID */
         sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID = (UINT)xlEvent.tagData.msg.id;
@@ -1933,7 +1933,7 @@ static int nGetNoOfConnectedHardware(void)
 * \param[in]     psInterfaces, is INTERFACE_HW structue
 * \param[out]    pnSelList, contains channels selected array
 * \param[out]    nCount, contains selected channel count
-* \return        returns 0 (always)
+* \return        returns 0 if success, else -1
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
@@ -1944,10 +1944,18 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
     CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd);
-    HwList.DoModal();
+    INT nRet = HwList.DoModal();
     objMainWnd.Detach();
-    nCount = HwList.nGetSelectedList(pnSelList);
-    return 0;
+
+    if ( nRet == IDOK)
+    {
+        nCount = HwList.nGetSelectedList(pnSelList);
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /**
@@ -1985,8 +1993,10 @@ static int nCreateMultipleHardwareNetwork()
         }
     }
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
-    ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
-
+    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+    {
+        return HW_INTERFACE_NO_SEL;
+    }
     sg_ucNoOfHardware = (UCHAR)nHwCount;
     sg_nNoOfChannels = (UINT)nHwCount;
     g_xlChannelMask = 0;
@@ -2047,7 +2057,7 @@ static int nCreateSingleHardwareNetwork()
 static int nInitHwNetwork()
 {
     int nChannelCount = 0;
-    int nResult = -1;
+    int nResult = NO_HW_INTERFACE;
 
     /* Select Hardware */
     nChannelCount = nGetNoOfConnectedHardware();

@@ -91,3 +91,40 @@ BOOL gbStartStopHardware_CAN(BOOL bState)
     ::SendMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)DIS_CONNECT,(LPARAM)bState);
     return TRUE ;
 }
+/******************************************************************************
+    Function Name    :  gdGetFirstCANdbName
+    Input(s)         :  cBuffer to store the output string
+                        size of the output buffer
+    Output           :  Returns the DB name in cBuffer
+    Functionality    :  Returns the first Database name connected
+                        to BUSMASTER
+    Member of        :  None (Global function)
+    Friend of        :  None
+    Author(s)        :  Ashwin. R. Uchil
+    Date Created     :  9-5-2012
+******************************************************************************/
+DWORD gdGetFirstCANdbName(char* cBuffer, DWORD size)
+{
+    strcpy(cBuffer,"");
+    //cBuffer = NULL;
+
+    if (CExecuteManager::bIsExist((ETYPE_BUS)0) == TRUE)
+    {
+        POSITION        MainPos = NULL;
+        //CAPL_DB_NAME_CHANGE
+        //loop through the DB list to search in all the DB whether the message is present.
+
+        MainPos =  CGlobalObj::ouGetObj((ETYPE_BUS)0).m_odMsgNameMsgCodeListDb.GetTailPosition();// get only CAN db
+        if(MainPos != NULL)         //if present stop searching
+        {
+            SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj((ETYPE_BUS)0).
+                                        m_odMsgNameMsgCodeListDb.GetAt(MainPos);
+            strcpy(cBuffer, (LPCSTR)sDbNameMsg.m_omDbName);
+            //cBuffer = sDbNameMsg.m_omDbName.GetBuffer(sDbNameMsg.m_omDbName.GetLength());
+
+            return (DWORD)TRUE;
+        }
+    }
+
+    return (DWORD)FALSE;
+}

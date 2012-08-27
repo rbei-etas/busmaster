@@ -68,12 +68,18 @@ typedef sTHREAD_INFO* PTHREADINFO;
 #define SPLT_TWO_ROWS   2
 #define SPLT_TWO_COLS   1
 
+#define GCC_EXTREN                  __cdecl extern "C"              //gcc c++ compiler export
+#define GCC_EXPORT                  __declspec(dllexport)           //gcc c++ compiler export
+#define defGCC_EXTERN               "GCC_EXTERN"
+#define defGCC_EXPORT               "GCC_EXPORT"
 #define BUS_FN_HDR           _T("/* Start PLACE_HODLER_FOR_BUSNAME generated function - \
 PLACE_HODLER_FOR_FUNCTIONNAME */")
 
 #define BUS_FN_FOOTER        _T("}/* End PLACE_HODLER_FOR_BUSNAME generated function - \
 PLACE_HODLER_FOR_FUNCTIONNAME */")
 
+#define EDITOR_BUS_FN_FOOTER        _T("/* End PLACE_HODLER_FOR_BUSNAME generated function - \
+PLACE_HODLER_FOR_FUNCTIONNAME */")
 #define FRAME_FN_PARTIAL_HDR   _T("/* Start PLACE_HODLER_FOR_BUSNAME generated function - ")
 
 #define BUS_VAR_HDR          _T("/* Start PLACE_HODLER_FOR_BUSNAME global variable */")
@@ -115,6 +121,7 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 #define UTILITY_FUNCS     _T("Utility Functions")
 #define GLOBAL_VARIABLES  _T("Global Variables")
 #define INCLUDE_HEADERS   _T("Include Headers")
+#define BUSEVENT_HANDLERS _T("Bus Events")
 
 #define SPACE                   _T(' ')
 #define SEMI_COLON              _T(';')
@@ -147,12 +154,14 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defTIMER_HANDLER           _T("OnTimer_")
 #define defERROR_HANDLER_FN        _T("OnError_")
 #define defDLL_HANDLER_FN          _T("OnDLL_")
+#define defBUSEVE_HANDLER_FN       _T("OnBus_")     //Venkatanarayana
 #define defEVENT_IND_HANDLER       _T("OnEvent_")
 #define defUTILS_FUNCTION_FN       _T("Utils_")
 #define defMSG_NAME_HANDLER        _T("Name_")
 #define defMSG_ID_HANDLER          _T("ID_")
 #define defMSG_ALL                 _T("_All")
 #define defMSG_IDRANGE_HANDLER     _T("IDRange_")
+#define defMSG_IDLIST_HANDLER      _T("IDList_")
 #define defMSGID_NAME_START_CHAR   '['
 
 #define WM_LOAD_UNLOAD              (WM_USER + 39) //If you are changing this change in McNet/CommonDefs.h accordingly
@@ -181,10 +190,13 @@ Are you sure you want to delete?")
 
 #define defERROR_HANDLER_NUMBER  5
 #define defDLL_HANDLER_NUMBER    2
+#define defBUSEV_HANDLER_NUMBER    2
 #define defERROR_HANDLER_TEXT_ADD _T("Add Error Handler(s)")
 #define defERROR_HANDLER_TEXT_DEL _T("Delete Error Handler(s)")
 #define defDLL_HANDLER_TEXT_ADD   _T("Add DLL Handler(s)")
 #define defDLL_HANDLER_TEXT_DEL   _T("Delete DLL Handler(s)")
+#define defBUSEV_HANDLER_TEXT_DEL   _T("Delete Bus Events Handler(s)")
+#define defBUSEV_HANDLER_TEXT_ADD   _T("Add Bus Events Handler(s)")
 #define defGENERIC_KEY            _T('*')
 #define defGENERIC_KEY_HANDLER_TEXT  _T("All")
 // Signal Type
@@ -201,6 +213,7 @@ Are you sure you want to delete?")
 
 #define defMSG_NAME_TEXT        _T("message name")
 #define defMSG_ID_TEXT          _T("message id")
+#define defMSG_IDLIST_TEXT          _T("message id list")
 #define defMSG_IDRANGE_TEXT     _T("message id range")
 #define defMSG_ALL_TEXT         _T("all")
 #define defMSG_HANDLER_ARG_TYPE1  _T("void*")
@@ -260,7 +273,7 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defDOT                 _T('.')
 
 //Parameters for the CEvent objects array used in CExecuteFunc
-#define defEVENT_EXFUNC_TOTAL        6
+#define defEVENT_EXFUNC_TOTAL        7
 //define for CExecute utility thread
 #define defKEY_HANDLER_THREAD        0
 #define defERROR_HANDLER_THREAD      1
@@ -268,6 +281,7 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defDLL_UNLOAD_HANDLER_THREAD 3
 #define defMSG_HANDLER_THREAD        4
 #define defEVENT_HANDLER_THREAD      5
+#define defBUSEVENT_HANDLER_THREAD      6
 
 
 #define NAME_BUS                     _T("CAN Bus")
@@ -276,14 +290,27 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defERROR_OPEN_REGISTRY_FN    _T("The registry value is corrupted. The interface function is not available.\nPlease re-install.")
 #define defIMPORT_DLLLOAD_WARNNING   _T("Please Unload all the Dlls and try again")
 
+typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
+{
+    UINT m_unMsgID;     // 11/29 Bit-
+    UCHAR m_ucEXTENDED; // true, for (29 Bit) Frame
+    UCHAR m_ucRTR;      // true, for remote request
+    UCHAR m_ucDataLen;  // Data len (0..8)
+    UCHAR m_ucChannel;
+    UCHAR m_ucData[8];  // Databytes 0..7
+    ULONG m_ulTimeStamp;
+};
+typedef sTCAN_TIME_MSG STCAN_TIME_MSG;
+typedef sTCAN_TIME_MSG *PSTCAN_TIME_MSG;
 // All function prototype is used in function editor.
-typedef VOID (__cdecl* PFMSG_HANDLER_CAN)(STCAN_MSG Rx_Msg);
+typedef VOID (__cdecl *PFMSG_HANDLER_CAN)(STCAN_TIME_MSG Rx_Msg); 
 typedef VOID (__cdecl* PFMSG_HANDLER)(void* pRxMsg);
 typedef VOID (__cdecl* PFTIMER_HANDLER)();
 typedef VOID (__cdecl* PFKEY_HANDLER)(UCHAR ucKeyVal);
 typedef VOID (__cdecl* PFEVENT_HANDLER)(...);
 typedef VOID (__cdecl* PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
 typedef VOID (__cdecl* PFDLL_HANDLER)();
+typedef VOID (__cdecl *PFBUSEV_HANDLER)();
 typedef BOOL (__cdecl* PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
 typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
@@ -293,6 +320,7 @@ typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 // defined by user.
 struct sTIMERHANDLER
 {
+    BOOL            bFromTimer;
     CString         omStrTimerHandlerName; // Name of Timer Handler Function
     BOOL            bTimerType;            // Type : Cyclic or Monshot
     BOOL            bTimerSelected;        // Selected or not for execution
@@ -304,6 +332,8 @@ struct sTIMERHANDLER
     //    BOOL            bIsExecuting;          // Timer call back is under execution
     UINT            unCurrTime; //(ani1)
     CEvent          omWaitEvent;
+    CEvent          omTimerEvent;
+    CCriticalSection omCriticalSec;
     //  sTIMERHANDLER*  psNextTimer;
     HANDLE          hDllHandle;
     CWinThread*     pomThreadHandle;
@@ -353,6 +383,13 @@ struct sDLLHANDLER
 };
 typedef sDLLHANDLER  SDLLHANDLER;
 typedef sDLLHANDLER* PSDLLHANDLER;
+struct sBUSEVHANDLER
+{
+    eBUSEVEHANDLER  m_eBusEvHandler;           // Bus Event Handler
+    PFBUSEV_HANDLER m_pFBusEvHandlers;       // Long pointer to the function to be
+};
+typedef sBUSEVHANDLER  SBUSEVHANDLER;
+typedef sBUSEVHANDLER* PSBUSEVHANDLER;
 
 // This structure stores the error code and pointer to its corresponding function
 // to be executed on press of the key.
@@ -445,6 +482,15 @@ struct sMSGID_RANGE_HANDLER_CAN
 
 typedef sMSGID_RANGE_HANDLER_CAN SMSGID_RANGE_HANDLER_CAN;
 typedef sMSGID_RANGE_HANDLER_CAN* PSMSGID_RANGE_HANDLER_CAN;
+//VENKATNARAYANA
+
+struct sMSGID_LIST_HANDLER_CAN
+{
+    CList<UINT, UINT&> m_listMsgId;
+    PFMSG_HANDLER_CAN m_pFMsgHandler;
+};
+typedef sMSGID_LIST_HANDLER_CAN SMSGID_LIST_HANDLER_CAN;
+typedef sMSGID_LIST_HANDLER_CAN* PSMSGID_LIST_HANDLER_CAN;
 
 //This is used for all the buses except CAN
 struct sMSGID_RANGE_HANDLER
@@ -458,7 +504,7 @@ typedef sMSGID_RANGE_HANDLER* PSMSGID_RANGE_HANDLER;
 
 struct sEXECUTE_MSG_HANDLER_CAN
 {
-    STCAN_MSG m_sRxMsg;
+    STCAN_TIME_MSG m_sRxMsg;
     PFMSG_HANDLER_CAN m_pFMsgHandler;
     CExecuteFunc* m_pCExecuteFunc;
 };
@@ -572,6 +618,8 @@ typedef SMSGHANDLERDATA* PSMSGHANDLERDATA;
 #define defSTR_ERROR_IN_DLL_LOAD   "Exception occured in DLL Load Handler"
 #define defSTR_ERROR_IN_DLL_UNLOAD "Exception occured in DLL UnLoad Handler"
 #define defSTR_ERROR_IN_TIMER_PROG "Exception occured in Timer Handler \"%s\""
+#define defSTR_ERROR_IN_BUS_CONNECT "Exception occured in Bus Connect Handler \"%s\""
+#define defSTR_ERROR_IN_BUS_DISCONNECT "Exception occured in Bus Disconnect Handler \"%s\""
 const BYTE BIT_MSG_HANDLER_THREAD       = 0x01; // First bit
 const BYTE BIT_KEY_HANDLER_THREAD       = 0x02; // Second bit
 //const BYTE BIT_TX_SEL_MSG_THREAD        = 0x04; // Third bit
@@ -665,6 +713,14 @@ struct sEXECUTE_LOAD_HANDLER
 };
 typedef sEXECUTE_LOAD_HANDLER SEXECUTE_LOAD_HANDLER;
 typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
+//The structure pass to thread function for load Fn execution
+struct sEXECUTE_BUSEVENT_HANDLER
+{
+    PFBUSEV_HANDLER pFBusEventHandler;
+	CExecuteFunc* m_pCExecuteFunc;
+};
+typedef sEXECUTE_BUSEVENT_HANDLER SEXECUTE_BUSEVENT_HANDLER;
+typedef sEXECUTE_BUSEVENT_HANDLER* PSEXECUTE_BUSEVENT_HANDLER;
 
 #define BLUE_COLOR              RGB(0,0,255)
 #define DEFAULT_FONT            _T("Courier")

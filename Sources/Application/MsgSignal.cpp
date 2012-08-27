@@ -29,7 +29,7 @@
 #include "MsgSignal.h"      // Class defintion file
 #include "MessageAttrib.h"   //Saving contents on dissocation of database
 #include "BUSMASTER.h"
-
+#include <algorithm>
 static CHAR s_acTraceStr[1024] = {""};
 
 //Trace window ptr
@@ -335,7 +335,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             }
 
             // add "#endif.."
-            omHeaderFile.WriteString(H_FILE_HEADER_END);
+            //omHeaderFile.WriteString(H_FILE_HEADER_END);
 
             omStrPath = omStrHeaderFileName;
             // Close opened file
@@ -1058,6 +1058,25 @@ BOOL CMsgSignal::bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName)
     return bResult;
 }
 
+BOOL CMsgSignal::bMessageLengthFromMsgCode(UINT unMsgCode, CString& omMsgLength)
+{
+    BOOL bResult = FALSE;
+    if (unMsgCode >= 0)
+    {
+        sMESSAGE* psMsgStruct = NULL;
+        m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
+        if(psMsgStruct != NULL)
+        {
+            CString omstrMsgLength = "";
+
+            omstrMsgLength.Format("%d", psMsgStruct->m_unMessageLength);
+
+            omMsgLength = omstrMsgLength;
+            bResult = TRUE;
+        }
+    }
+    return bResult;
+}
 /******************************************************************************
   Function Name    :  bCreateDataBase
 
@@ -4516,16 +4535,26 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
                       Raja N 12.02.2004
                       Modified to include data type along with signal name
 ******************************************************************************/
-BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
-                                       const UINT* punStartBit,
+/*BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
+                                       UINT* punStartBit,
                                        CStringArray& omStrArraySigName,
                                        const INT nIndex)
 {
     BOOL bReturn    = FALSE;
-    sSIGNALS* pSg = m_psMessages[nIndex].m_psSignals;
+    UINT unSigCount = unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;;
+    sSIGNALS *pSg = m_psMessages[nIndex].m_psSignals;
+    UINT unStartBit = 0;
+    UINT unUnused   = 0;
+    UINT unCount    = 0;
+
+    //rmdup(punStartBit, unSigCount);
+    UINT *p;
+    p = (UINT*)(std::unique(punStartBit, punStartBit+unSigCount));
+    unSigCount = (p-punStartBit);
+
     if( pSg != NULL && punLength != NULL && punStartBit != NULL )
     {
-        UINT unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
+       // UINT unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
         UINT unStartBit = 0;
         UINT unUnused   = 0;
         UINT unCount    = 0;
@@ -4688,7 +4717,7 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
     }
     return bReturn;
 }
-
+*/
 static sSIGNALS* psGetSigPtr(UINT unStartBitSrc, sSIGNALS* psSigRoot)
 {
     sSIGNALS* psTemSig = psSigRoot;
@@ -4706,6 +4735,152 @@ static sSIGNALS* psGetSigPtr(UINT unStartBitSrc, sSIGNALS* psSigRoot)
     }
     return psTemSig;
 }
+BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
+                                       UINT* punStartBit,
+                                       CStringArray& omStrArraySigName,
+                                       const INT nIndex)
+{
+    BOOL bReturn    = FALSE;
+    UINT unSigCount = unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;;
+    sSIGNALS* pSg = m_psMessages[nIndex].m_psSignals;
+    UINT unStartBit = 0;
+    UINT unUnused   = 0;
+    UINT unCount    = 0;
+
+    //rmdup(punStartBit, unSigCount);
+    UINT* p = (UINT*)std::unique(punStartBit, punStartBit+unSigCount);
+    unSigCount = (p-punStartBit);
+    if( pSg != NULL && punLength != NULL && punStartBit != NULL )
+    {
+        //unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
+        CString omFormatString;
+        for(UINT i = 0 ; i < unSigCount ; i++ )
+        {
+            sSIGNALS* pSg = psGetSigPtr(punStartBit[i],
+                                        m_psMessages[nIndex].m_psSignals);
+            if(pSg != NULL)
+            {
+                // if first signal is not defined from first bit in first
+                // byte
+                if(punStartBit[i] > 0  && i == 0)
+                {
+                    // If more then first 32 bits are not having
+                    // any signal defined, add two signal without
+                    // any name one with size 32 bit and other
+                    // with size of rest of bits.
+                    INT nTempBitLen = static_cast<INT> (punStartBit[i]);
+                    while (nTempBitLen > defBITS_IN_FOUR_BYTE )
+                    {
+                        omFormatString.Format(defUNION_FORMAT_STRING,
+                                              defUNSIGNED_INT,
+                                              STR_EMPTY,
+                                              defUINT_LENGTH);
+                        omStrArraySigName.Add(omFormatString);
+                        nTempBitLen -= defBITS_IN_FOUR_BYTE;
+                    }
+
+
+                    omFormatString.Format(defUNION_FORMAT_STRING,
+                                          defUNSIGNED_INT,
+                                          STR_EMPTY,
+                                          nTempBitLen);
+                    omStrArraySigName.Add(omFormatString);
+                }
+
+                // For signals > 32 bits
+                if( pSg->m_unSignalLength > defBITS_IN_FOUR_BYTE)
+                {
+                    omFormatString.Format(defUNION_FORMAT_STRING,
+                                          defINTEGER64,
+                                          pSg->m_omStrSignalName,
+                                          pSg->m_unSignalLength);
+                }
+                // For < 32 bits use signed int
+                else
+                {
+                    // Check for the Sign of the signal
+                    if( pSg->m_bySignalType == CHAR_INT )
+                    {
+                        omFormatString.Format(defUNION_FORMAT_STRING,
+                                              defSIGNED_INTEGER,
+                                              pSg->m_omStrSignalName,
+                                              pSg->m_unSignalLength);
+                    }
+                    else
+                    {
+                        omFormatString.Format(defUNION_FORMAT_STRING,
+                                              defUNSIGNED_INTEGER,
+                                              pSg->m_omStrSignalName,
+                                              pSg->m_unSignalLength);
+                    }
+                }
+                omStrArraySigName.Add(omFormatString);
+                // check if there is some unsed in between two signal
+                // defined
+
+                if( ( (punStartBit[i] + pSg->m_unSignalLength) <
+                        ( punStartBit[i + 1] ) )
+                        && (unSigCount != i + 1 )
+                  )
+                {
+                    INT nLengthTemp = static_cast<INT>(punStartBit[i + 1])
+                                      - static_cast<INT>(punStartBit[i] + pSg->m_unSignalLength);
+                    while (nLengthTemp > defBITS_IN_FOUR_BYTE)
+                    {
+                        omFormatString.Format(defUNION_FORMAT_STRING,
+                                              defUNSIGNED_INT,
+                                              STR_EMPTY,
+                                              defUINT_LENGTH);
+                        omStrArraySigName.Add(omFormatString);
+                        nLengthTemp -= defBITS_IN_FOUR_BYTE;
+                    }
+                    omFormatString.Format(defUNION_FORMAT_STRING,
+                                          defUNSIGNED_INT,
+                                          STR_EMPTY,
+                                          nLengthTemp);
+                    omStrArraySigName.Add(omFormatString);
+                }
+                else if (i == (unSigCount -1))// if last signal, check if unsed bits at the end
+
+                {
+
+                    INT nLastBitLength = 0;
+                    nLastBitLength = static_cast<INT>
+                                     ((m_psMessages[nIndex].m_unMessageLength) *
+                                      defBITS_IN_BYTE ) ;
+                    nLastBitLength -= static_cast<INT> (punStartBit[i]);
+                    nLastBitLength -= static_cast<INT> (pSg->m_unSignalLength);
+                    // If there is unsed bits at the end add bit wise definition
+                    // without giving any name.
+                    if(nLastBitLength >0 )
+                    {
+                        // If last unsed signal is more then 32 bit
+                        // add two signal with no name and first
+                        // having length of
+                        INT nTempLastBitLen = nLastBitLength;
+                        while (nTempLastBitLen > defBITS_IN_FOUR_BYTE)
+                        {
+                            omFormatString.Format(defUNION_FORMAT_STRING,
+                                                  defUNSIGNED_INT,
+                                                  STR_EMPTY,
+                                                  defUINT_LENGTH);
+                            omStrArraySigName.Add(omFormatString);
+                            nTempLastBitLen -= defBITS_IN_FOUR_BYTE;
+                        }
+                        omFormatString.Format(defUNION_FORMAT_STRING,
+                                              defUNSIGNED_INT,
+                                              STR_EMPTY,
+                                              nTempLastBitLen);
+                        omStrArraySigName.Add(omFormatString);
+                    }
+                }
+            }
+        }
+        bReturn = TRUE;
+    }
+    return bReturn;
+}
+
 /******************************************************************************
   Function Name    :  bFormSigNameAndLengthJ1939
 
@@ -4985,6 +5160,7 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
 
             omHeaderFile.WriteString(omStrcommandLine);
 
+            omHeaderFile.WriteString("\n\tUINT m_ulTimeStamp;\n");
             omStrcommandLine.Format(defEND_OF_STRUCT_DEF,
                                     pMsg->m_omStrMessageName );
             omHeaderFile.WriteString(omStrcommandLine);
@@ -5033,7 +5209,7 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
 
             omStrcommandLine.Format(defDATATYPE_MSG_DATA,
                                     pMsg->m_omStrMessageName +
-                                    defUNDERSCORE, defSIGNALMEMBER);
+                                    defUNDERSCORE+"*", defSIGNALMEMBER);
             omHeaderFile.WriteString(omStrcommandLine);
 
             omStrcommandLine.Format(defEND_OF_STRUCT_DEF,
@@ -5086,4 +5262,52 @@ void CMsgSignal::vGetSignalValidRange(CString omStrMessageCode,
             }
         }
     }
+}
+
+//CAPL_DB_NAME_CHANGE
+BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB)
+{
+    if(m_psDatbaseStructList != NULL)
+    {
+        //get the database list and message structure
+        sDBFileStruct* psTempDatbaseStructList = m_psDatbaseStructList;
+        odMsgNameMsgCodeListDB.RemoveAll();
+        //loop through the linked list to get all the DB name ans details
+        while(psTempDatbaseStructList != NULL)
+        {
+            SDB_NAME_MSG                    osDbNameMess;                   //DB name and details
+            UINT    unMessageCount = psTempDatbaseStructList->m_unMessageCount;
+            sMESSAGE* psMessages = psTempDatbaseStructList->m_psMessages;   //Message info
+
+            for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
+            {
+                if ( &psMessages[nMsgIndex] != NULL )
+                {
+                    SMSG_NAME_CODE sMsgNameCode;                        //structure to store mess info in output list
+                    sMsgNameCode.m_omMsgName = psMessages[nMsgIndex].m_omStrMessageName;
+                    sMsgNameCode.m_dwMsgCode = (DWORD)psMessages[nMsgIndex].m_unMessageCode;
+                    sMsgNameCode.m_unMsgLen  = psMessages[nMsgIndex].m_unMessageLength;
+                    sSIGNALS* psSignal = psMessages[nMsgIndex].m_psSignals;
+                    while (psSignal != NULL)                            //loop through signal pointer of message
+                    {
+                        //and get the details
+                        sMsgNameCode.m_omSignalNames.AddTail(psSignal->m_omStrSignalName);
+                        psSignal = psSignal->m_psNextSignalList;
+                    }
+                    osDbNameMess.m_oMsgNameMsgCodeList.AddTail(sMsgNameCode);
+                }
+            }
+            osDbNameMess.m_omDbName = psTempDatbaseStructList->m_omStrDatabasePath;
+            odMsgNameMsgCodeListDB.AddTail(osDbNameMess);                   //add structure to output list
+            psTempDatbaseStructList = psTempDatbaseStructList->m_psNextDBFileStruct; //get nxt DB
+        }
+    }
+    else        //if the last DB is removed then m_psDatbaseStructList will be NULL, clear DB list as well
+    {
+        if(odMsgNameMsgCodeListDB.GetCount() != NULL)
+        {
+            odMsgNameMsgCodeListDB.RemoveAll();
+        }
+    }
+    return TRUE;
 }

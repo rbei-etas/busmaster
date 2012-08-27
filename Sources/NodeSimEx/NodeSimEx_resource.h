@@ -101,6 +101,7 @@
 #define IDC_EDIT_ECU_NAME               4001
 #define IDD_EVENT_HANDLER               4001
 #define IDC_STATIC_ECU_NAME             4002
+#define IDD_DLG_BUSEV_HANDLER           4002
 #define IDC_STATIC_ADDRESS              4003
 #define IDC_STATIC_MSG_ID               4004
 #define IDC_STATIC_MSG_ID_RANGE         4005
@@ -109,6 +110,9 @@
 #define IDC_CHECK_ADDRESS_CLAIM         4008
 #define IDC_STATIC_PREF_ADRES           4009
 #define IDC_EDIT_ECUNAME                4010
+#define IDC_CHKB_BUSEV_CONNECT_HANDLER  4011
+#define IDC_CHKB_BUSEV_DISCONNECT_HANDLER 4012
+#define IDC_CHECK1                      4013
 #define IDD_MSG_SG_DLG                  5000
 #define ID_FUNCTIONEDITOR_SAVE          32772
 #define ID_RYUJ_SJ                      32778

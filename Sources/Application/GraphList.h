@@ -29,6 +29,10 @@ class CGraphList
 public:
     int nSerialize(CArchive& omArch);
     BYTE* pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
+    // XML PTV
+    void pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion);
+    void pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
+    // XML PTV
     BYTE* pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
     UINT unGetConfigSize(BYTE byVersion);
     // Default Constructor & destructor

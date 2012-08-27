@@ -19,10 +19,12 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "NodeSimEx_stdafx.h"
+#include "Utility/XMLUtils.h"
 #include "HashDefines.h"
 #include "Include/Utils_macro.h"
 #include "simsysmanager.h"
 #include "GlobalObj.h"
+#include "include/XMLDefines.h"
 
 #define SIM_WND_CONFIG_SECTION_NAME "SimWndConfigSection"
 #define SIMSYS_CONFIG_SECTION_NAME      "SimSysConfig"
@@ -35,7 +37,10 @@ CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus),
 {
     m_pomSimSysDetView = NULL;
     m_pomSimSysTreeView = NULL;
+    m_CopyJ1939SimNode = NULL;
     m_eBus = eBus;
+
+    m_pTEXmlNode = NULL;
 }
 
 CSimSysManager::~CSimSysManager(void)
@@ -185,6 +190,79 @@ void CSimSysManager::vSaveSimSysWndConfig()
     }
 }
 
+bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
+{
+
+    const char* omcVarChar ;
+    UINT unCount = m_ouSimSysNodeInfo.unGetNumberOfSimSys();
+    PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
+    for (UINT i = 0; (i < unCount) && (pSimSysInfo != NULL); i++)
+    {
+        CString omTmp = pSimSysInfo->m_omStrSimSysName;
+        omcVarChar = omTmp;
+        xmlNodePtr pColName = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_SYS_PATH,BAD_CAST omcVarChar);
+        xmlAddChild(pNodePtr, pColName);
+
+        pSimSysInfo = pSimSysInfo->m_psSimsysNext;
+    }
+
+
+    //window placement
+    xmlNodePtr pNodeWindowsPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlAddChild(pNodePtr, pNodeWindowsPos);
+
+
+    WINDOWPLACEMENT sWndPlacement;
+    if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
+    {
+        CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->GetWindowPlacement(&sWndPlacement);
+        xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos,sWndPlacement);
+    }
+
+    ////visibility
+    //CString csVisibility;
+    //csVisibility.Format("%d",  sWndPlacement.flags);
+    //omcVarChar = csVisibility;
+    //xmlNodePtr pVisibility = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pVisibility);
+
+    ////WindowPlacement
+    //CString csWindowPlacement;
+    //csWindowPlacement.Format("%d",  sWndPlacement.flags);
+    //omcVarChar = csWindowPlacement;
+    //xmlNodePtr pWindowPlacement = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pWindowPlacement);
+
+    ////Top
+    //CString csTop;
+    //csTop.Format("%d",  sWndPlacement.rcNormalPosition.top);
+    //omcVarChar = csTop;
+    //xmlNodePtr pTop= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pTop);
+
+    ////Left
+    //CString csLeft;
+    //csLeft.Format("%d",  sWndPlacement.rcNormalPosition.left);
+    //omcVarChar = csLeft;
+    //xmlNodePtr pLeft = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pLeft);
+
+    ////Bottom
+    //CString csBottom;
+    //csBottom.Format("%d",  sWndPlacement.rcNormalPosition.bottom);
+    //omcVarChar = csBottom;
+    //xmlNodePtr pBottom= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pBottom);
+
+    ////Right
+    //CString csRight;
+    //csRight.Format("%d",  sWndPlacement.rcNormalPosition.right);
+    //omcVarChar = csRight;
+    //xmlNodePtr pRight = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pRight);
+
+    return true;
+}
 /******************************************************************************
     Function Name    :  unGetStoreSIMBufferSize
     Input(s)         :  -
@@ -246,7 +324,211 @@ void CSimSysManager::SaveSIMDataIntoBuffer(BYTE* DesBuffer)
     }
 
 }
+//MVN
+void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
+{
+    //First initialize all data
+    vInitailizeSimSysInfo();
 
+    if ( NULL != pDoc )
+    {
+        /* Copy the retrieved config data into member variables and apply*/
+        CopySIMDataFromBuffer(pDoc, eBus);
+        //delete SrcBuffer;
+    }
+
+    if(eBus == J1939)
+    {
+        //m_bByXml = TRUE;
+        if(m_pTEXmlNode != NULL)
+        {
+            xmlFreeNode(m_pTEXmlNode);
+            m_pTEXmlNode = NULL;
+        }
+        xmlXPathObjectPtr pTempNode = xmlUtils::pGetNodes(pDoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems"));
+
+        if(pTempNode != NULL)
+        {
+            m_pTEXmlNode = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
+        }
+        else
+        {
+            m_pTEXmlNode = NULL;
+        }
+    }
+
+    //Now Populate the tree view if it is present
+    if (m_pomSimSysTreeView != NULL)
+    {
+        if (m_pomSimSysTreeView->IsWindowVisible())
+        {
+            m_pomSimSysTreeView->bPopulateTree();
+        }
+    }
+}
+void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
+{
+    /*xmlChar* pXpath = NULL;
+    xmlXPathObjectPtr pObjectPath = NULL;
+
+    if(eBus == CAN)
+    {
+        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Simulated_Systems";
+        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+    }
+    else if(eBus == J1939)
+    {
+        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems";
+        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+    }
+
+    if(m_CopyJ1939SimNode != NULL && (eBus == J1939))
+    {
+        xmlFreeNode(m_CopyJ1939SimNode);
+        m_CopyJ1939SimNode = NULL;
+    }
+
+    else if(pObjectPath != NULL && (eBus == J1939))
+    {
+        m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
+    }
+    else
+    {
+        xmlFreeNode(m_CopyJ1939SimNode);
+        m_CopyJ1939SimNode = NULL;
+    }*/
+
+    xmlNodePtr pNode = pDoc;
+    //if( NULL != pObjectPath )
+    {
+        //xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
+        //if( NULL != pNodeSet )
+        //{
+        //  pNode = pNodeSet->nodeTab[0];       //Take First One only
+        //}
+        if( NULL != pNode )
+        {
+            pNode = pNode->xmlChildrenNode;
+            while (pNode != NULL)
+            {
+                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
+                {
+                    xmlUtils::ParseWindowsPlacement(pNode, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+                }
+                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
+                {
+                    xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+                    if(NULL != key)
+                    {
+                        vLoadSimInfoFromConfiguration((char*)key);
+                        xmlFree(key);
+                    }
+                }
+                pNode = pNode->next;
+            }
+        }
+        //xmlXPathFreeObject(pObjectPath);
+    }
+    /*
+    COPY_DATA_2(&CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement, tempBuffAddress, sizeof(WINDOWPLACEMENT));
+    UINT UnCount = 0;
+    COPY_DATA_2(&UnCount, tempBuffAddress, sizeof(UINT));
+
+    CString omTmp = "";
+    for (UINT i = 0; i < UnCount; i++)
+    {
+        char acFilename[MAX_PATH] = {'\0'};
+        COPY_DATA_2(acFilename, tempBuffAddress, sizeof (char) * MAX_PATH);
+        omTmp.Format("%s", acFilename);
+        //Add the simsys file details
+        vLoadSimInfoFromConfiguration(omTmp);
+    }*/
+}
+
+void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
+{
+    xmlChar* pXpath = NULL;
+    xmlXPathObjectPtr pObjectPath = NULL;
+
+    if(eBus == CAN)
+    {
+        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Simulated_Systems";
+        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+    }
+    else if(eBus == J1939)
+    {
+        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems";
+        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+    }
+
+    if(m_CopyJ1939SimNode != NULL && (eBus == J1939))
+    {
+        xmlFreeNode(m_CopyJ1939SimNode);
+        m_CopyJ1939SimNode = NULL;
+    }
+
+    else if(pObjectPath != NULL && (eBus == J1939))
+    {
+        m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
+    }
+    else
+    {
+        xmlFreeNode(m_CopyJ1939SimNode);
+        m_CopyJ1939SimNode = NULL;
+    }
+
+    xmlNodePtr pNode = NULL;
+
+    INT nWndPos = S_FALSE;
+
+    BOOL bWndPosition = FALSE;
+    if( NULL != pObjectPath )
+    {
+        xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
+        if( NULL != pNodeSet )
+        {
+            pNode = pNodeSet->nodeTab[0];       //Take First One only
+        }
+        if( NULL != pNode )
+        {
+            pNode = pNode->xmlChildrenNode;
+
+            while (pNode != NULL)
+            {
+                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
+                {
+                    nWndPos =  xmlUtils::ParseWindowsPlacement(pNode, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+                }
+                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
+                {
+                    xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+                    if(NULL != key)
+                    {
+                        vLoadSimInfoFromConfiguration((char*)key);
+                        xmlFree(key);
+                    }
+                }
+                pNode = pNode->next;
+            }
+            if(bWndPosition == FALSE)
+            {
+                CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+            }
+        }
+        xmlXPathFreeObject(pObjectPath);
+    }
+
+    if(nWndPos == S_FALSE)
+    {
+        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top  = 160;
+        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.left = 520;
+        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.right = 1458;
+        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.bottom = 686;
+        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.showCmd = SW_NORMAL;
+        //CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+    }
+}
+//~MVN
 /******************************************************************************
     Function Name    :  vLoadSimSysWndConfig
     Input(s)         :  -
@@ -307,7 +589,10 @@ void CSimSysManager ::vInitailizeSimSysInfo()
             vSaveAllSimSys();
         }
     }
-    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
+    //if(m_CopyJ1939SimNode == NULL)
+    {
+        m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
+    }
     //Now Populate the tree view if it is present
     if (m_pomSimSysTreeView != NULL)
     {

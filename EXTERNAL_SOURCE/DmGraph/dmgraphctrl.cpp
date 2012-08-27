@@ -104,7 +104,7 @@ CDMGraphCtrl::CDMGraphCtrl()
 	m_ToolTipText[0] = _T('\0');
 
 	m_nCursorCount = 0;	
-	m_nZoomLevel = 1; // Initialize the zoom level as 1 ie., no zoom 
+	m_nZoomLevel = 1; // Initialize the zoom level as 1 ie., no zoom //KSS
 }
 
 HRESULT CDMGraphCtrl::FinalConstruct()
@@ -547,7 +547,7 @@ STDMETHODIMP CDMGraphCtrl::put_TrackMode(TrackModeState newVal)
 	m_bUnzoom = TRUE;
 
 	// Get the range before zooming
-	if (m_nZoomLevel == 1) 
+	if (m_nZoomLevel == 1) //KSS
 	{
 		dOldRangeX[MIN]=dRangeX[MIN];
 		dOldRangeY[MIN]=dRangeY[MIN];
@@ -807,7 +807,8 @@ STDMETHODIMP CDMGraphCtrl::AutoRange()
 		dAutoRangeX[MAX]=dRangeX[MAX];
 		dAutoRangeY[MAX]=dRangeY[MAX];
 	}
-	
+
+	//KSS
 	// Set the zoom level to inital value as zoom values are invald now 	
 	HRESULT hResult = SetRange(dAutoRangeX[MIN],dAutoRangeX[MAX],dAutoRangeY[MIN],dAutoRangeY[MAX]);
 	m_nZoomLevel = 1; 
@@ -816,7 +817,8 @@ STDMETHODIMP CDMGraphCtrl::AutoRange()
 	dOldRangeX[MAX]=dRangeX[MAX];
 	dOldRangeY[MAX]=dRangeY[MAX];
 
-	return hResult;	
+	return hResult;
+	//KSS
 }
 
 STDMETHODIMP CDMGraphCtrl::ShowProperties()
@@ -2337,7 +2339,7 @@ void CDMGraphCtrl::DoZoom(UINT nFlags, const LPPOINT point)
         
 		SetRange(xmin,xmax,ymin,ymax);
 		// Increase the zoom level
-		m_nZoomLevel += 1; 
+		m_nZoomLevel += 1; //KSS
     }
 }
 
@@ -2365,8 +2367,9 @@ LRESULT CDMGraphCtrl::OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 					DoPan(&point, PanY);
 					break;
 				default:					
-					vUpdateCursorSelection(point);
+					
 					CursorPosition(&point);	
+					vUpdateCursorSelectionOnMove(point);
 					break;
 			}				
 		}
@@ -2394,7 +2397,7 @@ LRESULT CDMGraphCtrl::OnLButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
         {
 			UpdateToolTip(&point, wParam);
 		}
-		
+		vUpdateCursorSelection(point);
     }
 
 	bHandled = FALSE;
@@ -2419,7 +2422,7 @@ LRESULT CDMGraphCtrl::OnRButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 	if(m_eTrackMode == Zoom || m_eTrackMode == ZoomX || m_eTrackMode == ZoomY)
 	{
 		// If zoomed already then reset the zoom
-		if (m_nZoomLevel > 1) 
+		if (m_nZoomLevel > 1) //KSS
 		{
 			SetRange(dOldRangeX[MIN],dOldRangeX[MAX],dOldRangeY[MIN],dOldRangeY[MAX]);
 
@@ -3392,42 +3395,44 @@ void CDMGraphCtrl::CursorPosition(const LPPOINT point)
 			pCursor->position.x = rx;
 			pCursor->position.y = ry;
 
-			/* Get hold of unselected cursor */
+			long lUnSelCursorIdx;
+			SHORT shSelCursorID, shUnSelCursorID;
 			CGraphCursor* pUnSelCursor;
-			long nUnSelCursorIdx;
 			if ( nCursorIdx == 0 ) 
 			{				
-				nUnSelCursorIdx = 1;
-				pUnSelCursor= (*m_pCursorList)[ nUnSelCursorIdx ];				
+				lUnSelCursorIdx = 1;
+				pUnSelCursor= (*m_pCursorList)[ lUnSelCursorIdx ];				
 			}
 			else
 			{				
-				nUnSelCursorIdx = 0;
-				pUnSelCursor= (*m_pCursorList)[ nUnSelCursorIdx ];				
+				lUnSelCursorIdx = 0;
+				pUnSelCursor= (*m_pCursorList)[ lUnSelCursorIdx ];				
 			}
 
 			/* Check if swap is needed */
-			SHORT shSelCursorID, shUnSelCursorID;
 			pCursor->get_CursorID(&shSelCursorID);
 			pUnSelCursor->get_CursorID(&shUnSelCursorID);
-			if ( pUnSelCursor->position.x < pCursor->position.x )
+
+			if(shSelCursorID == 1)
 			{
-				if ( shUnSelCursorID != 1 )
+				//swap if Line 1 is moving beyond Line 2
+				if ( pCursor->position.x > pUnSelCursor->position.x )
 				{
 					/* Swap */		
 					pCursor->put_CursorID(shUnSelCursorID);				
 					pUnSelCursor->put_CursorID(shSelCursorID);				
-					m_pCursorList->put_Selected(nUnSelCursorIdx);
+					m_pCursorList->put_Selected(lUnSelCursorIdx);
 				}
 			}
-			else if ( pUnSelCursor->position.x > pCursor->position.x )
+			else if(shSelCursorID == 2)
 			{
-				if ( shUnSelCursorID != 2 )
+				//swap if Line 2 is coming to left of Line 1
+				if ( pCursor->position.x < pUnSelCursor->position.x )
 				{
 					/* Swap */		
 					pCursor->put_CursorID(shUnSelCursorID);				
 					pUnSelCursor->put_CursorID(shSelCursorID);				
-					m_pCursorList->put_Selected(nUnSelCursorIdx);
+					m_pCursorList->put_Selected(lUnSelCursorIdx);
 				}
 			}			
 		}
@@ -3589,7 +3594,47 @@ void CDMGraphCtrl::vUpdateCursorSelection(POINT point)
 		}
 	}
 }
+//Update the cursor OnMove
+//added by ashwin
+void  CDMGraphCtrl::vUpdateCursorSelectionOnMove(POINT point)
+{
+	if ( !PtInRect (&m_axisRect, point) ) 
+	{
+		return;
+	}
 
+	HRESULT hr;	
+	CComPtr<IDMGraphCollection> spGraphCollection;
+	CComPtr<IDispatch> spItem;
+	CComPtr<IDMGraphCursor> spCursor;
+	hr = get_Cursors(&spGraphCollection);
+
+	if(hr == E_POINTER)							//AUC
+		return;
+
+	long lngCount = 0;
+	spGraphCollection->get_Count(&lngCount);
+	for ( UINT nIndex = 0 ; nIndex < lngCount; nIndex++ )
+	{
+		hr = spGraphCollection->get_Item(nIndex, &spItem);
+
+		if(hr == E_POINTER)					//AUC
+		return;
+
+		spItem.QueryInterface(&spCursor);
+		POINT ptCursor;
+		double dLogX,dLogY;
+		spCursor->get_X(&dLogX);
+		spCursor->get_Y(&dLogY);
+		Corrdinate(dLogX, dLogY, &ptCursor);
+		if ( ptCursor.x-1 <= point.x && 	//the gap b/n 2 lines are reduced so that the distance		 
+			ptCursor.x+1 >= point.x )		//between the 2 lines are reduced during exchange
+		{
+			spGraphCollection->put_Selected(nIndex);
+			break;
+		}
+	}
+}
 //update tool tip text and position
 void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 {

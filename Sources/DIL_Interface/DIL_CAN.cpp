@@ -50,7 +50,8 @@ public:
 };
 
 static ENTRY_DIL sg_ListDIL[] =
-{    
+{
+    /* PTV[1.6.4] */
     // Added Short cut keys
     /* simulation should be the first entry... */
     {DRIVER_CAN_STUB,       "&Simulation"       },
@@ -68,9 +69,11 @@ static ENTRY_DIL sg_ListDIL[] =
 CDIL_CAN::CDIL_CAN()
 {
     m_hDll = NULL;
+    m_hOldDll = NULL;
     m_dwDriverID = DAL_NONE;
     pfGetIDILCAN_Controller = NULL;
     m_pBaseDILCAN_Controller = NULL;
+    m_pOldBaseDILCAN_Controller = NULL;
     vSelectInterface_Dummy();
 }
 
@@ -81,6 +84,12 @@ CDIL_CAN::~CDIL_CAN()
     {
         FreeLibrary(m_hDll);
         m_hDll = NULL;
+    }
+    //Free the previosuly selected DIL library
+    if ( m_hOldDll )
+    {
+        FreeLibrary(m_hOldDll);
+        m_hOldDll = NULL;
     }
 }
 
@@ -170,10 +179,13 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             owner window handle. */
         }
 
-        //Free the currently selected DIL library
+        //Save the currently selected DIL library handle
         if ( m_hDll )
         {
-            FreeLibrary(m_hDll);
+            //FreeLibrary(m_hDll);
+            m_hOldDll = m_hDll;
+            m_pOldBaseDILCAN_Controller = m_pBaseDILCAN_Controller;
+            m_dwOldDriverID = m_dwDriverID;
             m_hDll = NULL;
         }
 
@@ -230,7 +242,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         else
         {
             // First select the dummy interface
-            DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
+            //DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, "Load library successful...");
             pfGetIDILCAN_Controller = (GETIDIL_CAN_CONTROLLER)GetProcAddress(m_hDll, "GetIDIL_CAN_Controller");
@@ -244,7 +256,6 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 {
                     case S_OK:
                     case DLL_ALREADY_LOADED:
-                        m_pBaseDILCAN_Controller->CAN_PerformInitOperations();
                         m_dwDriverID = dwDriverID;
                         hResult = S_OK;
                         break;
@@ -351,7 +362,44 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
  */
 HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-    return m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);
+    HRESULT hr = m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);
+
+    if ( hr != S_OK && m_hOldDll )
+    {
+        /* If it is a not same Dll, Ex: in case of ES581, IntrepidCS */
+        if ( m_hOldDll != m_hDll )
+        {
+            /* Get rid of current DIL library */
+            if ( m_pBaseDILCAN_Controller )
+            {
+                m_pBaseDILCAN_Controller->CAN_PerformClosureOperations();
+                m_pBaseDILCAN_Controller->CAN_UnloadDriverLibrary();
+            }
+            FreeLibrary(m_hDll);
+        }
+
+        /* Retain old DIL selection */
+        m_hDll = m_hOldDll;
+        m_pBaseDILCAN_Controller = m_pOldBaseDILCAN_Controller;
+        m_dwDriverID = m_dwOldDriverID;
+    }
+    else if ( m_hOldDll )
+    {
+        /* If it is a not same Dll, Ex: in case of ES581, IntrepidCS */
+        if ( m_hOldDll != m_hDll )
+        {
+            if ( m_pOldBaseDILCAN_Controller )
+            {
+                m_pOldBaseDILCAN_Controller->CAN_PerformClosureOperations();
+                m_pOldBaseDILCAN_Controller->CAN_UnloadDriverLibrary();
+            }
+            /* Get rid of old DIL library */
+            FreeLibrary(m_hOldDll);
+        }
+    }
+    m_hOldDll = NULL;
+
+    return hr;
 }
 
 /**

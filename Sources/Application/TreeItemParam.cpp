@@ -78,21 +78,66 @@ CTreeItemParam::CTreeItemParam(CWnd* pomParent,
 
 void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF TextColour)
 {
+    // PTV [1.6.6]
+    CString omCurrStr;
+    int nCount = omStringArray.GetSize();
+    if(nCount != m_aomItemHandle.GetSize())
+    {
+        m_aomItemHandle.RemoveAll();
+        m_odTreeCtrl.DeleteAllItems();
+
+        for (int i = 0; i < nCount; i++)
+        {
+            omCurrStr = omStringArray.ElementAt(i);
+            HTREEITEM ItemHandle =  m_odTreeCtrl.InsertItem(omCurrStr);
+            if (ItemHandle != NULL)
+            {
+                m_aomItemHandle.Add(ItemHandle);
+            }
+        }
+
+        m_odTreeCtrl.SetRedraw(TRUE);
+
+        VERIFY(m_omFont.CreateFont(
+                   14,                        // nHeight
+                   0,                         // nWidth
+                   0,                         // nEscapement
+                   0,                         // nOrientation
+                   FW_LIGHT,                 // nWeight
+                   FALSE,                     // bItalic
+                   FALSE,                     // bUnderline
+                   0,                         // cStrikeOut
+                   ANSI_CHARSET,              // nCharSet
+                   OUT_DEFAULT_PRECIS,        // nOutPrecision
+                   CLIP_DEFAULT_PRECIS,       // nClipPrecision
+                   DEFAULT_QUALITY,           // nQuality
+                   DEFAULT_PITCH | FF_ROMAN,  // nPitchAndFamily
+                   _T("Courier New")));
+
+        m_odTreeCtrl.SetFont(&m_omFont, TRUE);
+    }
     if (TextColour != m_TextColour)
     {
         m_TextColour = TextColour;
         m_odTreeCtrl.SetTextColor(m_TextColour);
     }
     HTREEITEM ItemHandle = NULL;
-    int nCount = omStringArray.GetSize();
+
     if (nCount > m_aomItemHandle.GetSize())
     {
         ASSERT(FALSE);
     }
+    omCurrStr = "";
     for (int i = 0; i < nCount; i++)
     {
-        CString omCurrStr = omStringArray.ElementAt(i);
-        ItemHandle = m_aomItemHandle.GetAt(i);
+        omCurrStr = omStringArray.ElementAt(i);
+        // PTV [1.6.6]
+        ItemHandle = NULL;
+
+        if(m_aomItemHandle.GetSize() > i)
+        {
+            ItemHandle = m_aomItemHandle.GetAt(i);
+        }
         if (ItemHandle != NULL)
         {
             m_odTreeCtrl.SetItemText(ItemHandle, omCurrStr.GetBuffer(MAX_PATH));

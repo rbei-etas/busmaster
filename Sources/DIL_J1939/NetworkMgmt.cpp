@@ -74,6 +74,7 @@ CNetworkMgmt::CNetworkMgmt()
     {
         m_ConMgrArr[i]  = NULL;
     }
+    m_dwCANMonitorNodeClientId = 0;
 }
 
 /**************************************************************
@@ -584,6 +585,7 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
             {
                 hResult = m_pIDIL_CAN->DILC_RegisterClient(TRUE, dwClientId,
                           CAN_MONITOR_NODE);
+                m_dwCANMonitorNodeClientId = dwClientId;
                 if (hResult == ERR_CLIENT_EXISTS)
                 {
                     hResult = S_OK;
@@ -647,7 +649,7 @@ LONG CNetworkMgmt::lRemoveNodeConManager(DWORD dwClientId)
                     TRACE("Called bDeleteEventHandle\n");
                 }
                 CString omClientName = "";
-                if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID) //Do not remove client from CAN if monitor
+                if (m_ConMgrArr[i]->m_dwClientID != m_dwCANMonitorNodeClientId) //Do not remove client from CAN if monitor
                 {
                     m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
                 }
@@ -688,7 +690,7 @@ void CNetworkMgmt::vRemoveAllNodes(void)
             }
             CString omClientName = "";
 
-            if (m_ConMgrArr[i]->m_dwClientID != CAN_MONITOR_CLIENT_ID)
+            if (m_ConMgrArr[i]->m_dwClientID != m_dwCANMonitorNodeClientId)
             {
                 m_pIDIL_CAN->DILC_RegisterClient(FALSE, m_ConMgrArr[i]->m_dwClientID, omClientName.GetBuffer(MAX_CHAR));
             }
