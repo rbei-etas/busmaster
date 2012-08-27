@@ -203,6 +203,88 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
     return pDesBuffer;
 }
 
+BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the parent node coming to this function
+{
+    const char* omcVarChar ;
+
+    //<Log_File_Path>path</Log_File_Path>
+    omcVarChar = m_omStrFileName;
+    xmlNodePtr pPath = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOG_PATH,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pPath);
+
+    //<IsEnabled>bool</IsEnabled>
+    CString     csEnabled;
+    csEnabled.Format("%d",m_bEnabled);
+    omcVarChar = csEnabled;
+    xmlNodePtr pEnabled = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_ENABLED,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pEnabled);
+
+    //<Retain_Recored_Time>bool</Retain_Recored_Time>
+    CString     csRetainTimeRec;
+    csRetainTimeRec.Format("%d",m_nTimeMode);
+    omcVarChar = csRetainTimeRec;
+    xmlNodePtr pRetainTimeRec = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_RETAIN_RECORD_TIME,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pRetainTimeRec);
+
+    //<Message_Delay>1</Message_Delay>
+    CString     csMsgDelay;
+    csMsgDelay.Format("%u",m_unMsgTimeDelay);
+    omcVarChar = csMsgDelay;
+    xmlNodePtr pMsgDelay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MSG_DELAY,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pMsgDelay);
+
+    // <Is_Cyclic_Mode>bool</Is_Cyclic_Mode>
+    CString     csCyclicMode;
+    csCyclicMode.Format("%d",m_nReplayMode);
+    omcVarChar = csCyclicMode;
+    xmlNodePtr pCyclicMode = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CYCLIC_MODE,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pCyclicMode);
+
+    //<Cyclic_Delay>int</Cyclic_Delay>
+    CString     csCyclicDelay;
+    csCyclicDelay.Format("%u",m_unCycleTimeDelay);
+    omcVarChar = csCyclicDelay;
+    xmlNodePtr pCyclicDelay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CYCLIC_DELAY,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pCyclicDelay);
+
+    //  <IsInteractive>FALSE</IsInteractive>
+    CString     csIterative;
+    csIterative.Format("%u",m_bInteractive);
+    omcVarChar = csIterative;
+    xmlNodePtr pIterative = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_INTERACTIVE,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pIterative);
+
+    //<Replay_Message_Direction>ALL</Replay_Message_Direction>
+    CString     csMsgDirection;
+    if(m_ouReplayMsgType == DIR_RX)
+    {
+        csMsgDirection = "RX";
+    }
+    else if(m_ouReplayMsgType == DIR_TX)
+    {
+        csMsgDirection = "TX";
+    }
+    else
+    {
+        csMsgDirection = "ALL";
+    }
+
+    omcVarChar = csMsgDirection;
+    xmlNodePtr pDirection = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_REPLAY_MSG_DIRECTN,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pDirection);
+
+    //<Filter>FILTER_NAME</Filter>
+    CString     csFilter;
+    for(int iCnt=0; iCnt < m_sFilterApplied.m_ushTotal; iCnt++)
+    {
+        csFilter.Format("%s",((m_sFilterApplied.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
+        omcVarChar = csFilter;
+        xmlNodePtr pFilter = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
+        xmlAddChild(pxmlNodePtr, pFilter);
+    }
+
+    return TRUE;
+}
 /*******************************************************************************
   Function Name  : pbyLoadConfig
   Input(s)       : pointer to buffer from where the config will be loaded
@@ -247,6 +329,146 @@ BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion)
     bool bRet = false;
     pSrcBuffer = m_sFilterApplied.pbSetConfigData(pSrcBuffer, bRet);
     return pSrcBuffer;
+}
+int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
+{
+    int nRetValue = S_OK;
+    xmlNodePtr pTempNode = pNodePtr;
+    CStringArray omStrFilters;
+    while( NULL != pNodePtr )
+    {
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Log_File_Path")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_omStrFileName = (char*)key;
+                xmlFree(key);
+            }
+        }
+
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsEnabled")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_bEnabled = xmlUtils::bGetBooleanValue((char*)key);
+                xmlFree(key);
+            }
+        }
+
+
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Retain_Recored_Time")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_nTimeMode = xmlUtils::bGetBooleanValue((char*)key);
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_Delay")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_unMsgTimeDelay = atoi((char*)key);
+                xmlFree(key);
+            }
+        }
+
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Is_Cyclic_Mode")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_nReplayMode = (int)xmlUtils::bGetBooleanValue((char*)key);
+                xmlFree(key);
+            }
+        }
+
+
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Cyclic_Delay")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_unCycleTimeDelay = atoi((char*)key);
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsInteractive")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                m_bInteractive = (int)xmlUtils::bGetBooleanValue((char*)key);
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Replay_Message_Direction")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                this->m_ouReplayMsgType = xmlUtils::bGetDirection((char*)key);
+                xmlFree(key);
+            }
+        }
+
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                omStrFilters.Add((char*)key);
+                xmlFree(key);
+            }
+        }
+        pNodePtr = pNodePtr->next;
+    }
+    //Filters
+
+    if( omStrFilters.GetSize() > 0 && pTempNode != NULL)
+    {
+        SFILTERAPPLIED_CAN sFilterApplied;
+        if( sFilterApplied.nSetXMLConfigData(pTempNode->doc) == S_OK)
+        {
+            sFilterApplied.nGetFiltersFromName(m_sFilterApplied, omStrFilters);
+            /*
+            int nRealFilters = 0;
+            for(int i = 0; i < omStrFilters.GetSize(); i++)
+            {
+                int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i), sFilterApplied);
+                if(nIndex >= 0)
+                {
+                    nRealFilters++;
+                }
+                else
+                {
+                    omStrFilters.RemoveAt(i);
+                }
+            }
+            m_sFilterApplied.m_bEnabled = sFilterApplied.m_bEnabled;
+            m_sFilterApplied.m_ushTotal = omStrFilters.GetSize();
+            m_sFilterApplied.m_psFilters = new SFILTERSET[m_sFilterApplied.m_ushTotal];
+
+            for(int i = 0; i < omStrFilters.GetSize(); i++)
+            {
+                int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i), sFilterApplied);
+                if(nIndex >= 0)
+                {
+                    m_sFilterApplied.m_psFilters[i].bClone(sFilterApplied.m_psFilters[nIndex]);
+                }
+            }*/
+        }
+
+    }
+    return nRetValue;
+}
+void CReplayFile::GetFileName(CString& omStrFileName)
+{
+    omStrFileName = m_omStrFileName;
 }
 /*******************************************************************************
   Function Name  : bisConfigChanged

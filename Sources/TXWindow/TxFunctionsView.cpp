@@ -233,6 +233,33 @@ void CTxFunctionsView::OnInitialUpdate()
 /******************************************************************************/
 void CTxFunctionsView::OnButtonApply()
 {
+    SetUpdateBtnChanges();
+    //save the values of delay between blocks
+    UINT                    unTimerVal;
+    CString                 csTimerVal;
+    CTxMsgBlocksView* pomBlockView = NULL;
+    pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+    pomBlockView->GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
+
+    if(((CButton*) pomBlockView->GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->GetCheck() == BST_CHECKED)
+    {
+        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;
+        CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+    }
+    else
+    {
+        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+        CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+    }
+
+    unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
+
+    CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
+    CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
+    this->SetFocus();
+}
+void CTxFunctionsView::SetUpdateBtnChanges()
+{
     // Apply changed to global Tx Block
     // User is trying to apply late changes
     // Prevent this as some message/block could be deleted after
@@ -243,16 +270,18 @@ void CTxFunctionsView::OnButtonApply()
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
     if( pomBlockView != NULL )
     {
-        if( (pomBlockView->m_bModified == TRUE) && (TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG)) )
-        {
-            if(AfxMessageBox( defSTR_RELOAD_CONFIRMATION,
-                              MB_YESNO | MB_DEFBUTTON2) == IDYES )
-            {
-                // Reload the data from Configuration
-                vReloadData();
-            }
-        }
-        else
+        //the below commented should be enabled if any control is enabled in blocksview
+
+        //if( (pomBlockView->m_bModified == TRUE) && (TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG)) )
+        //{
+        //    if(AfxMessageBox( defSTR_RELOAD_CONFIRMATION,
+        //                      MB_YESNO | MB_DEFBUTTON2) == IDYES )
+        //    {
+        //        // Reload the data from Configuration
+        //        vReloadData();
+        //    }
+        //}
+        //else
         {
             vApplyChanges();
             // Disable the button
@@ -295,6 +324,7 @@ void CTxFunctionsView::vApplyChanges()
         if(psMsgBlock != NULL )
         {
             pomBlockView->vUpdateMsgBlockDetials(psMsgBlock);
+            psMsgBlock->m_bModified = true;
         }
 
         // Set the value in configuration class.
@@ -303,7 +333,7 @@ void CTxFunctionsView::vApplyChanges()
         // Data is set only if messagae block count is more then zero.
         if( pomBlockView->m_unMsgBlockCount > 0 )
         {
-            CTxWndDataStore::ouGetTxWndDataStoreObj().bSetTxData( TX_SEND_MULTI_MSGS,
+            CTxWndDataStore::ouGetTxWndDataStoreObj().bSetTxData( TX_MSG_UPDATE,
                     (void*)(pomBlockView->m_psMsgBlockList) );
             // Allocate memory for globle list
             BOOL bAllocateMemory =
@@ -323,6 +353,9 @@ void CTxFunctionsView::vApplyChanges()
             pTxWnd->vUpdateWndCo_Ords();
 
         }
+        /* CString                     csTimeDelay;
+         ((CEdit*)pomBlockView->GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->GetWindowTextA(csTimeDelay);
+         CTxMsgManager::s_unTimeDelayBtnMsgBlocks = atol(csTimeDelay.GetBuffer(0));*/
     }
 }
 
@@ -610,6 +643,7 @@ void CTxFunctionsView::OnBtnClose()
                            MB_YESNO | MB_ICONQUESTION ) == IDYES )
         {
             // Save Changes
+            /*OnButtonApply();*/
             OnButtonApply();
         }
     }
@@ -658,15 +692,38 @@ void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
     {
         vAccessButtonApply();
         CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = true;
+        //CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+        if (NULL != pBlocksView)
+        {
+            UINT                    unTimerVal;
+            CString                 csTimerVal;
+            pBlocksView->GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
+            unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
+            CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
+            CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
+            //set the status of delay between blocks
+            if(pBlocksView->m_omDelayBtwnBlocks.GetCheck() == BST_CHECKED)
+            {
+                CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+                CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;
+            }
+            else
+            {
+                CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+                CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+            }
+        }
     }
     else
     {
         CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = false;
+        //CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
     }
 }
 
 void CTxFunctionsView::vAccessButtonApply()
 {
-    OnButtonApply();
+    /*OnButtonApply();*/
+    SetUpdateBtnChanges();
 }
 

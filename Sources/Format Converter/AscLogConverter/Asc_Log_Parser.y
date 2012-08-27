@@ -9,7 +9,7 @@
 #define TIME_MODE_RELATIVE			 1
 #define	TIME_MODE_UNDEFINED			-1
 #define DEF_LOG_END_TEXT			"\n***END DATE AND TIME ***"
-
+// PTV[1.6.4]
 // Added new line
 #define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***\r\n"
 
@@ -28,10 +28,10 @@ void yyerror(const char *str)
 
 int yywrap()
 {
-	
+	// PTV[1.6.4]
 	//fprintf(yyout, DEF_LOG_END_TEXT);
 	//fprintf(yyout, DEF_LOG_STOP_TEXT);
-	
+	// PTV[1.6.4]
 	return 1;	//1 Sepcifies conversion is over.
 				//0 specifies the parser start the conversion from different
 				//Input
@@ -97,9 +97,9 @@ command:
 	RemoteFrame
 	|
 	Base_TimeStamps
-	
+	|// PTV[1.6.4]
 	End_Statement
-	
+	// PTV[1.6.4]
 	|
 	Msg_Len
 	|
@@ -223,13 +223,14 @@ Log_Creation_Time:
 		char* chTemp;
 		int nMonth;
 		int nHour, nMins, nSec;
-				
+		
+		// PTV[1.6.4]
 		// Added required headers at the start of the file
-		 fprintf(yyout, "***BUSMASTER Ver 1.6.5***\n");
+		 fprintf(yyout, "***BUSMASTER Ver 1.6.6***\n");
 		 fprintf(yyout, "***PROTOCOL CAN***\n");
          fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
          fprintf(yyout, "***[START LOGGING SESSION]***\n");
-	 
+	 // PTV[1.6.4]
 		if( strcmp("Jan", (char*)$3) == 0 )
 			nMonth = 1;
 		else if( strcmp("Feb", (char*)$3) == 0 )
@@ -268,10 +269,10 @@ Log_Creation_Time:
 		{
 			nHour = nHour + 12;
 		}
-		
+		// PTV[1.6.4]
 		// Added Start date and Time text
 		fprintf(yyout,"***START DATE AND TIME %s:%d:%s %d:%d:%d:%s%s", $4, nMonth, $7, nHour, nMins, nSec, "000", "***");
-		
+		// PTV[1.6.4]
 		/*free($1);
 		free($2);
 		free($3);
@@ -285,7 +286,7 @@ Line_End:
 	{
 		nNumLines++;
 	}
-	
+	// PTV[1.6.4]
 	// Added new entry for End Trigger Token
 End_Statement:
 	ENDTRIGGERTOKEN
@@ -293,6 +294,6 @@ End_Statement:
 	fprintf(yyout, DEF_LOG_END_TEXT);
 	fprintf(yyout, DEF_LOG_STOP_TEXT);
 	}
-	
+	// PTV[1.6.4]
 stmnt: 
 	error ';'

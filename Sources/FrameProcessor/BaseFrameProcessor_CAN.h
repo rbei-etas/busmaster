@@ -71,6 +71,8 @@ public:
     // To enable/disable logging
     virtual HRESULT FPC_EnableLogging(BOOL bEnable) = 0;
 
+    virtual void FPC_vCloseLogFile() = 0;
+
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
     virtual HRESULT FPC_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
@@ -126,8 +128,12 @@ public:
     // Getter for the logging configuration data
     virtual HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
 
+	// PTV XML
+	virtual HRESULT FPC_GetConfigData(xmlNodePtr pNodePtr) = 0;
+	// PTV XML
     // Setter for the logging configuration data
     virtual HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion) = 0;
+	virtual HRESULT FPC_SetConfigData(xmlDocPtr pDoc) = 0;
 
     // To reset or revoke the modifications made
     virtual HRESULT FPC_Reset(void) = 0;

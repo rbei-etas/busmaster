@@ -81,6 +81,9 @@ public:
     void vSetControlProperties();
     void vUpdateChannelIDInfo();
 
+    void vUpdateAllBlocksFrmDB();
+    afx_msg void vCallApplyChanges();
+    afx_msg void vAutoUpdateModifyChanges();
 
 protected:
     // protected constructor used by dynamic creation
@@ -184,6 +187,5 @@ private:
     // To set default values for Message ID, DLC, databytes and Channel ID
     void vSetDefaultValues();
     void vUpdateSignalMatrix(void);
-    afx_msg void vCallApplyChanges();
-    afx_msg void vAutoUpdateModifyChanges();
+
 };

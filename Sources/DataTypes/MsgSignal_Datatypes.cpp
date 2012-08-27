@@ -220,45 +220,53 @@ UINT64 sSIGNALS::un64GetBitMask(sSIGNALS* CurrSig)
 }
 
 void sSIGNALS::vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8],
-							   UINT64 u64SignVal)
+                               UINT64 u64SignVal)
 {
-	ASSERT(pouCurrSignal != NULL);
-	/* Signal valuedata type happens to be of the same size of the entire CAN
-	data byte array. Hence there is an opportunity to take advantage of this
-	idiosyncratic characteristics. We will shifts the bit array in u64SignVal
-	by the required number of bit positions to exactly map it as a data byte
-	array and then interchange positions of bytes as per the endianness and
-	finally use it as the etching mask on the target. */
-	UINT64* pu64Target = (UINT64 *) aucData;// We should be able to work on
-	BYTE* pbData = (BYTE *)&u64SignVal;// these variables as an arrayof
-	// bytes andvice versa.
-	// First findout offset between the last significant bits of the signal
-	// and theframe. Finding out the lsb will directly answer to thisquery.
-	//venkat
-	UINT64 unMaxVal = pow((double)2, (double)pouCurrSignal->m_unSignalLength);
-	unMaxVal -= 1;
-	u64SignVal = u64SignVal&unMaxVal;
-	if(pouCurrSignal->m_eFormat ==DATA_FORMAT_INTEL)// If Intel format
-	{
-		int Offset = (pouCurrSignal->m_unStartByte- 1) * 8 +
-			pouCurrSignal->m_byStartBit;
-		u64SignVal<<= Offset;// Exactly map the data bits on the databytes.
-	}
-	else// If Motorola format
-	{
-		int Offset = pouCurrSignal->m_unStartByte *8 -
-			pouCurrSignal->m_byStartBit;
-		u64SignVal<<= (64 - Offset);
-		BYTE byTmp = 0x0;
-		byTmp = pbData[7]; pbData[7] = pbData[0]; pbData[0] = byTmp;
-		byTmp = pbData[6]; pbData[6] = pbData[1]; pbData[1] = byTmp;
-		byTmp = pbData[5]; pbData[5] = pbData[2]; pbData[2] = byTmp;
-		byTmp = pbData[4]; pbData[4] = pbData[3]; pbData[3] = byTmp;
-	}
-	UINT64 unTmp = un64GetBitMask(pouCurrSignal);
-	*pu64Target&= ~unTmp;// All bits related to the current signal willbe
-	// be made0.
-	*pu64Target |= u64SignVal;
+    ASSERT(pouCurrSignal != NULL);
+    /* Signal valuedata type happens to be of the same size of the entire CAN
+    data byte array. Hence there is an opportunity to take advantage of this
+    idiosyncratic characteristics. We will shifts the bit array in u64SignVal
+    by the required number of bit positions to exactly map it as a data byte
+    array and then interchange positions of bytes as per the endianness and
+    finally use it as the etching mask on the target. */
+    UINT64* pu64Target = (UINT64*) aucData; // We should be able to work on
+    BYTE* pbData = (BYTE*)&u64SignVal; // these variables as an arrayof
+    // bytes andvice versa.
+    // First findout offset between the last significant bits of the signal
+    // and theframe. Finding out the lsb will directly answer to thisquery.
+    //venkat
+    UINT64 unMaxVal = pow((double)2, (double)pouCurrSignal->m_unSignalLength);
+    unMaxVal -= 1;
+    u64SignVal = u64SignVal&unMaxVal;
+    if(pouCurrSignal->m_eFormat ==DATA_FORMAT_INTEL)// If Intel format
+    {
+        int Offset = (pouCurrSignal->m_unStartByte- 1) * 8 +
+                     pouCurrSignal->m_byStartBit;
+        u64SignVal<<= Offset;// Exactly map the data bits on the databytes.
+    }
+    else// If Motorola format
+    {
+        int Offset = pouCurrSignal->m_unStartByte *8 -
+                     pouCurrSignal->m_byStartBit;
+        u64SignVal<<= (64 - Offset);
+        BYTE byTmp = 0x0;
+        byTmp = pbData[7];
+        pbData[7] = pbData[0];
+        pbData[0] = byTmp;
+        byTmp = pbData[6];
+        pbData[6] = pbData[1];
+        pbData[1] = byTmp;
+        byTmp = pbData[5];
+        pbData[5] = pbData[2];
+        pbData[2] = byTmp;
+        byTmp = pbData[4];
+        pbData[4] = pbData[3];
+        pbData[3] = byTmp;
+    }
+    UINT64 unTmp = un64GetBitMask(pouCurrSignal);
+    *pu64Target&= ~unTmp;// All bits related to the current signal willbe
+    // be made0.
+    *pu64Target |= u64SignVal;
 }
 // Ends static functions of sSIGNALS
 

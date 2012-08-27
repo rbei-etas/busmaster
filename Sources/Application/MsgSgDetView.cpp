@@ -62,6 +62,7 @@ CMsgSgDetView::CMsgSgDetView()
     m_nDataFormat = DATA_FORMAT_INTEL;
     //}}AFX_DATA_INIT
     m_sDbParams = sm_sDbParams;
+    m_nSelectedSignalIndex = -1;
 }
 /******************************************************************************/
 /*  Function Name    :  ~CMsgSgDetView                                        */
@@ -1810,10 +1811,10 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
         {
             // Get index of the selected signal item
             // from the signal list
-            int nIndex =
-                m_omListCtrlSignal.GetNextItem(-1, LVNI_SELECTED);
+            //int nIndex = m_omListCtrlSignal.GetSelectionMark();
+            /* int nIndex = m_omListCtrlSignal.GetNextItem(-1, LVNI_SELECTED);*/
 
-            if ( nIndex != -1 )
+            if ( m_nSelectedSignalIndex != -1 )
             {
                 // Get signal desc
                 CString omStrDesc =
@@ -1821,7 +1822,7 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
 
                 // Get signal name from signal list
                 CString omStrSgName =
-                    m_omListCtrlSignal.GetItemText( nIndex, 0 );
+                    m_omListCtrlSignal.GetItemText( m_nSelectedSignalIndex, 0 );
 
                 CMsgSignal* pTempMsgSg = NULL;
 
@@ -2571,6 +2572,7 @@ void CMsgSgDetView::OnItemchangedLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResu
     if(pNMListView->uNewState == unItemStateMask)
     {
         vUpDownArrowKeySelection(pNMListView->iItem);
+        m_nSelectedSignalIndex = pNMListView->iItem;
     }
     *pResult = 0;
 }

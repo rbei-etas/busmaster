@@ -62,8 +62,8 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_ArrAPIsList.RemoveAll();
     m_ArrAPIFuncNames.RemoveAll();
     m_omDefinedMsgHeaders.RemoveAll();
-    m_odMsgNameMsgCodeList.RemoveAll();
-    m_omMsgStructName = "STCAN_MSG";
+    m_odMsgNameMsgCodeListDb.RemoveAll();       //CAPL_DB_NAME_CHANGE
+    m_omMsgStructName = "STCAN_TIME_MSG";       //changed from STCAN_MSG
     m_omMsgStructFile = "Struct.h";
     m_omErrorHandlerList.RemoveAll();
     m_omObjWrapperName = "wrapper.o";

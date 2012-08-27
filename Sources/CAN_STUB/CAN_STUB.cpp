@@ -1046,12 +1046,12 @@ HRESULT CDIL_CAN_STUB::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, 
     }
     return hResult;
 }
-
+//MVN
 HRESULT CDIL_CAN_STUB::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {
     return S_OK;
 }
-
+//~MVN
 HRESULT CDIL_CAN_STUB::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
     memset(&sErrorCnt, 0, sizeof(SERROR_CNT));

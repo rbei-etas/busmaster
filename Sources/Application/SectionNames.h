@@ -70,3 +70,16 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
     "TestSetupEditorSectionName",
     "TestSuiteExecutorSectionName"
 };
+// XML GENERATION DEFINES
+#define DEF_BUSMASTER_CONFIGURATION		"BUSMASTER_CONFIGURATION"
+#define DEF_GLOBAL_CONFIGURATION		"Global_Configuration"
+#define DEF_MODULE_CONFIGURATION		"Module_Configuration"
+#define DEF_CAN_DATABASE_FILES			"CAN_Database_Files"
+#define DEF_J1939_DATABASE_FILES		"J1939_Database_Files"
+#define DEF_FILE_PATH					"FilePath"
+#define DEF_CAN_DIL_SECTION				"CAN_DIL_Section"
+#define DEF_DRIVER_NAME					"DriverName"
+#define DEF_CONTROLLER_MODE				"ControllerMode"
+#define DEF_CONTROLLER_SETTINGS			"ControllerSettings"
+#define DEF_CHANNEL						"Channel"
+// XML GENERATION DEFINES END

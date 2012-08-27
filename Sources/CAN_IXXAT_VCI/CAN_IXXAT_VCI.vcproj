@@ -156,7 +156,7 @@
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
 				ModuleDefinitionFile=".\CAN_IXXAT_VCI.def"
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				GenerateMapFile="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -337,6 +337,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HardwareListing.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\IxxatCanChannel.cpp"
 				>
 			</File>
@@ -384,6 +388,10 @@
 			</File>
 			<File
 				RelativePath=".\DIL_CAN_IXXAT_VCI.h"
+				>
+			</File>
+			<File
+				RelativePath=".\HardwareListing.h"
 				>
 			</File>
 			<File

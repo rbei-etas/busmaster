@@ -39,3 +39,4 @@
 #include <afxmt.h>
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
+#include "Utility/XMLUtils.h"

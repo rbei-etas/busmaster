@@ -49,7 +49,12 @@ public:
     friend class CMsgReplayWnd;
     UINT  unGetConfigSize();
     BYTE* pbySaveConfig(BYTE* pDesBuffer);
+	BOOL pbySaveConfig(xmlNodePtr pxmlNodePtr);	
     BYTE* pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion);
+	//MVN
+	int nLoadXMLConfig(xmlNodePtr pNode);
+	//int GetFilterNameIndex(string strName, const SFILTERAPPLIED_CAN& sFilterSrc);
+	//~MVN
     BOOL  bisConfigChanged(BYTE*& pSrcBuffer);
 
 public:
@@ -59,6 +64,7 @@ private:
     // Methods
     void vCopyContent(const CReplayFile& ouRef);
     UINT  unGetConfigSizeOfCommonMembers();
+	void GetFileName(CString& omStrFileName);
 
 private:
     // Members, tmp members for config comparision so they have to be of same data type

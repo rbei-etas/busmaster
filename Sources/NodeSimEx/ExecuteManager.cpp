@@ -669,6 +669,15 @@ void CExecuteManager::vManageOnKeyHandler(UCHAR ucKey)
     }
 }
 
+void CExecuteManager::vManageBusEventHandler(eBUSEVEHANDLER eBusEvent)
+{
+    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
+    while(psTempNodeObject!=NULL)
+    {
+        psTempNodeObject->m_psExecuteFunc->vExecuteOnBusEventHandler(eBusEvent);
+        psTempNodeObject=psTempNodeObject->m_psNextNode;
+    }
+}
 /***************************************************************************************
     Function Name    :  vManageOnMessageHandler
     Input(s)         :  Message structure
@@ -678,7 +687,7 @@ void CExecuteManager::vManageOnKeyHandler(UCHAR ucKey)
     Author(s)        :  Anish kumar
     Date Created     :  19.12.05
 ***************************************************************************************/
-void CExecuteManager::vManageOnMessageHandlerCAN(STCAN_MSG sRxMsgInfo, DWORD dwClientId)
+void CExecuteManager::vManageOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo, DWORD dwClientId)
 {
     EnterCriticalSection(&m_CritSectPsNodeObject);
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
@@ -1419,7 +1428,7 @@ void CExecuteManager::vManageDllMessageHandler(SDLL_MSG sDllMessages)
                                 bGetFlagStatus(EXMSG_HANDLER);
                 if(bMsgFlag)
                 {
-                    STCAN_MSG* psRxMsgInfo = (STCAN_MSG*)sDllMessages.sRxMsg;
+                    STCAN_TIME_MSG* psRxMsgInfo = (STCAN_TIME_MSG*)sDllMessages.sRxMsg;
                     psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*psRxMsgInfo);
                 }
             }
@@ -1798,7 +1807,8 @@ BOOL CExecuteManager::bDLLBuildAll(CStringArray* pomStrErrorFiles)
                             pWnd->GetWindowText(omStrWndName);
                             //if the file is opened save it
                             if(!(omStrFileName.Compare(omStrWndName)))
-                            {                                
+                            {
+                                // PTV To check if the file is already opened
                                 CFunctionEditorDoc* pDocCheck = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(pTempNode->
                                                                 m_sNodeInfo.m_omStrFileName);
                                 if (pDocCheck != NULL)

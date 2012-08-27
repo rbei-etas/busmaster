@@ -252,7 +252,7 @@ void CMsgSignalDBWnd::OnClose()
         if ((*ppTempMsgSg)->bGetModifiedFlag() == FALSE)
         {
             UINT bRetVal =  AfxMessageBox(ASK_SAVE_PROMPT,
-                                          MB_YESNO|MB_ICONQUESTION);
+                                          MB_YESNOCANCEL|MB_ICONQUESTION);
             if ( bRetVal == IDYES )
             {
                 //save the database modificatins.
@@ -268,6 +268,10 @@ void CMsgSignalDBWnd::OnClose()
                     CFile::Remove( m_sDbParams.m_omDBPath );
                     pFrame->vSetNewDatabaseFlag(FALSE);
                 }
+            }
+            else if ( bRetVal == IDCANCEL )
+            {
+                return;
             }
 
         }
@@ -330,7 +334,8 @@ LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM wParam, LPARAM /*lParam*/)
 void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
 {
     // Get active frame
-    CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;    
+    CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+    // PTV [1.6.4]
     eProtocol eProtocolName = PROTOCOL_CAN;
 
     if(m_sDbParams.m_eBus == J1939)
@@ -340,7 +345,8 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
     else if(m_sDbParams.m_eBus == CAN)
     {
         eProtocolName = PROTOCOL_CAN;
-    }    
+    }
+    // PTV [1.6.4]
 
     (*ppTempMsgSg)->bWriteIntoDatabaseFileFromDataStructure(m_sDbParams.m_omDBPath, eProtocolName );
 

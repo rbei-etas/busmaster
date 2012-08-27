@@ -295,7 +295,7 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                 // extract the header information
                 oSimCfgArchive >> m_fSimSysVersion;
                 oSimCfgArchive >> omCopyRight;
-                
+                // PTV
                 if ((m_fSimSysVersion == static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS)))
                 {
                     oSimCfgArchive >> m_omstrProtocolName;
@@ -347,7 +347,7 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                 m_fSimSysVersion = static_cast<FLOAT> (defSIMSYSVERSION_ALL_BUS);
                 oSimCfgArchive << m_fSimSysVersion;
                 oSimCfgArchive << omCopyRight;
-                
+                // PTV
                 if(m_eBus == CAN)
                 {
                     CString omStrCanProtocol = "CAN";

@@ -526,10 +526,10 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     m_omStrFirstSignalName = m_omStrSignalName;
     // Save Current type selection
     m_omComboSgType.GetWindowText(m_omStrPrevSignalType);
-    
+    //KSS
     // Save the intial values
     vSetInitialData();
-    
+    //KSS
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -697,11 +697,18 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
 
         if ( pCancelButton1 != pCancelButton2 )
         {
+            CString omstrFactorValue = "";
+
+            m_odScale.GetWindowText(omstrFactorValue);
+
             // Get max and min values
             m_odMaxValue.GetWindowText( m_omStrMaxVal );
             m_odMinValue.GetWindowText( m_omStrMinVal );
             UINT unMaxLength = m_omStrMaxVal.GetLength();
             UINT unMinLength = m_omStrMinVal.GetLength();
+
+            UINT unFactorValue = omstrFactorValue.GetLength();
+
             //check for the empty string
             if(unMinLength == 0)
             {
@@ -723,6 +730,14 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             {
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MAX)->SetFocus();
+                bRetVal = FALSE;
+            }
+            else if(unFactorValue == 0)
+            {
+                AfxMessageBox( "Factor value field can't be empty!",
+                               MB_OK|MB_ICONINFORMATION);
+                UpdateData(FALSE);
+                GetDlgItem(IDC_EDIT_FACTOR)->SetFocus();
                 bRetVal = FALSE;
             }
             else
@@ -795,6 +810,23 @@ void CSignalDetailsDlg::OnKillfocusEditOffset()
 /*                      Added check for READ_ONLY mode to avoide manipulations*/
 /******************************************************************************/
 void CSignalDetailsDlg::OnKillfocusEditSglen()
+{
+    SaveSigLength();
+}
+
+/******************************************************************************/
+/*  Function Name    :  SaveSigLength()                                       */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  saves length and validates the range of data          */
+/*  Member of        :  CSignalDetailsDlg                                     */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Ashwin. R. Uchil                                      */
+/*  Date Created     :  1-8-2012                                              */
+/******************************************************************************/
+void CSignalDetailsDlg::SaveSigLength()
 {
     // check if the user has pressed cancel button
     // if yes, skip validation
@@ -1027,16 +1059,32 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
             if ( !omStrPrevSgName.IsEmpty()
                     && m_omStrPrevSignalType != omStrPrevSgName )
             {
+                //---------Added by ashwin for setting the signal length---------------------------
+                CMsgSignal* pTempMsgSg = NULL;
+                UINT  unSigLength = 0;
+                pTempMsgSg = (*(CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
+                sMESSAGE* psMSG = pTempMsgSg ->psGetMessagePointer(m_omStrMsgName);
+                sSIGNALS* psSignal = NULL;
+                if(psMSG != NULL)
+                {
+                    psSignal = psMSG->m_psSignals;
+                    while(psSignal)
+                    {
+                        unSigLength += psSignal->m_unSignalLength;
+                        psSignal = psSignal->m_psNextSignalList;
+                    }
+                }
+                //----------------------------------------------------------------------------------
                 // Auto-update the signal length
                 // for a given signal type
-                if ( ( !omStrPrevSgName.CompareNoCase(defBOOLEAN))  ||
-                        ( !omStrPrevSgName.CompareNoCase(defUNSIGNED_INT)) )
+                if (!omStrPrevSgName.CompareNoCase(defBOOLEAN))
                 {
                     m_unSgLen = 1;
                 }
-                else if ( !omStrPrevSgName.CompareNoCase(defSIGNED_INT) )
+                else if ( !omStrPrevSgName.CompareNoCase(defUNSIGNED_INT)
+                          ||  !omStrPrevSgName.CompareNoCase(defSIGNED_INT) )
                 {
-                    m_unSgLen = 2;
+                    m_unSgLen = (m_nMsgLength * 8) - unSigLength; //assign the remaining bits as signal length
                 }
 
                 // Auto-Update the max and min value
@@ -1136,6 +1184,7 @@ void CSignalDetailsDlg::OnOK()
 {
     BOOL bReturnFlag = TRUE;
     BOOL bModifiedFlag = FALSE;
+    SaveSigLength();
     // UPdate the structure only if something is modified
     if(m_unMode != MD_READ_ONLY)
     {
@@ -1177,6 +1226,21 @@ void CSignalDetailsDlg::OnOK()
                         GetDlgItem( IDC_EDIT_SGNAME )->SetFocus();
                         m_bNameChanged = FALSE;
                         bReturnFlag = FALSE;
+                    }
+                    else if(m_bNameChanged == TRUE && bReturnFlag == TRUE)
+                    {
+                        // Check if the signal name configured is valid
+                        BOOL bIsSignalNameValid = ValidateSignalShortName(m_omStrSignalName);
+
+                        if(bIsSignalNameValid == FALSE)
+                        {
+                            AfxMessageBox( MSG_INVALID_SG_NAME, MB_OK|MB_ICONINFORMATION);
+                            m_omStrSignalName.Empty();
+                            UpdateData(FALSE);
+                            GetDlgItem( IDC_EDIT_SGNAME )->SetFocus();
+                            m_bNameChanged = FALSE;
+                            bReturnFlag = FALSE;
+                        }
                     }
                 }
                 if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_shByteIndex+1,
@@ -1297,6 +1361,55 @@ void CSignalDetailsDlg::OnOK()
         }
     }
 }
+
+BOOL CSignalDetailsDlg::ValidateSignalShortName(CString omStrSignalShortName)
+{
+    BOOL bValid = FALSE;
+    TCHAR buffer[256];
+
+    int nChar,nlen,nChar1;
+
+    _tcscpy(buffer,omStrSignalShortName);
+
+    nlen=(int)_tcslen(buffer);
+
+    if(nlen > 0)
+    {
+        nChar = buffer[0];
+
+        if((nChar >= '0' && nChar<= '9'))
+        {
+            bValid = FALSE;
+        }
+        else
+        {
+            bValid = TRUE;
+        }
+    }
+
+    if(bValid == TRUE)
+    {
+        for(int ni=1; ni<nlen; ni++)
+        {
+            nChar = buffer[ni];
+
+            /*if(!((nChar >= 65 && nChar <= 90) ||
+            (nChar >= 97 && nChar<= 122)   ||
+            (nChar >= 48 && nChar<= 57)   ||
+            (nChar == 95)||(nChar == 46)||(nChar == 45)||(nChar == 47))) */
+            if(((nChar >= 'A' && nChar <= 'Z') ||
+                    (nChar >= 'a' && nChar<= 'z') ||
+                    (nChar >= '0' && nChar<= '9') ||
+                    (nChar == '_')))
+            {
+                bValid = TRUE;
+            }
+        }
+    }
+
+    return bValid;
+}
+
 /******************************************************************************/
 /*  Function Name    :  vCalculateMaxMinValues                                */
 /*                                                                            */

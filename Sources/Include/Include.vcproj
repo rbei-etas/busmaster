@@ -242,6 +242,10 @@
 				RelativePath=".\Utils_macro.h"
 				>
 			</File>
+			<File
+				RelativePath=".\XMLDefines.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

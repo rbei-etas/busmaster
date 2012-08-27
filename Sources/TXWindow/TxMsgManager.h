@@ -26,6 +26,7 @@
 
 #include "TxFlags.h"
 #include "Utility/Utility_Thread.h"
+#include "Utility/XMLUtils.h"
 
 class CTxMsgManager
 {
@@ -52,7 +53,9 @@ public:
     //Return the database pointer
     VOID vStopTransmission(UINT unMaxWaitTime);
     void vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
+	void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
     void vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
+	void vSetTxWndConfigData(xmlDocPtr pDoc);
     //BOOL bIsTxWndConfigChanged();
     void vSetTxStopFlag(BOOL bStartStop);
     BOOL bGetTxStopFlag();
@@ -64,6 +67,10 @@ public:
 
 public:
     static CFlags         s_TxFlags;
+    static bool           s_bDelayBetweenBlocksOnly;
+    static UINT           s_unTimeDelayBtnMsgBlocks;
+    static PSCOMPLETEMSGINFO    m_psCompleteMsgInfo ;   //used in delay btwn msg
+    static CRITICAL_SECTION     m_csUpdationLock;
     // Standard Constructor and Destructor are protected to avoid
     // multiple instances
     CTxMsgManager();

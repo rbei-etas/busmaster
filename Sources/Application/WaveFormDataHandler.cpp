@@ -26,7 +26,7 @@
 #include "WaveFormDataHandler.h"
 #include "HashDefines.h"
 #include "include/Utils_macro.h"
-
+#include "Utility/XMLUtils.h"
 const BYTE WAVEFORM_DATA_HANDLER_VERSION = 0x1;
 
 CWaveFormDataHandler::CWaveFormDataHandler(void)
@@ -423,6 +423,166 @@ HRESULT CWaveFormDataHandler::GetConfigData(BYTE** ppvDataStream, UINT& unLength
     return S_OK;
 }
 
+HRESULT CWaveFormDataHandler::GetConfigData(xmlNodePtr pNodePtr)
+{
+    pbyGetListConfigData(pNodePtr);
+    return true;
+}
+HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
+{
+    //Initialise
+    m_lstSignalWaveformInfo.RemoveAll();
+    m_lstTempSignalWaveformInfo.RemoveAll();
+    INT nRetVal = S_OK;
+    if( NULL != pDoc )
+    {
+        xmlXPathObjectPtr pOjectPath = NULL;
+        xmlNodePtr pNodePtr = NULL;
+        xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/WAVE_FORM";
+
+        pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+        if(pOjectPath != NULL)
+        {
+            xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+            UINT nMsgCount = pNodeSet->nodeNr;
+            if(pNodeSet != NULL)
+            {
+                for(UINT i=0; i<nMsgCount; i++)
+                {
+                    BOOL bMsgIdFound = FALSE;
+                    SSigGeneration objSigGeneration;
+                    xmlNodePtr pNode = pNodeSet->nodeTab[i]->children;
+                    while (pNode != NULL)
+                    {
+                        if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Message_ID")))    //Reading Message ID.
+                        {
+                            xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
+                            if(NULL != key)
+                            {
+                                objSigGeneration.m_nMsgID = atoi((char*)key);
+                                xmlFree(key);
+                                bMsgIdFound = TRUE;
+                            }
+                        }
+                        if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Default_Amplitude")))     //Reading Default Amplitude.
+                        {
+                            xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
+                            if(NULL != key)
+                            {
+                                objSigGeneration.m_fDefaultAmplitude = atof((char*)key);
+                                xmlFree(key);
+                            }
+                        }
+                        if ((!xmlStrcmp(pNode->name, (const xmlChar*)"SIGNALS")))   //Signals.
+                        {
+                            sSigWaveMap objSigWaveMap;
+                            ParseSignalNode(pNode, objSigWaveMap);
+                            objSigGeneration.m_omSigWaveMapList.AddTail(objSigWaveMap);
+                        }
+                        //Reading Signal Count
+                        pNode = pNode->next;
+                    }
+                    if(bMsgIdFound == TRUE)
+                    {
+                        m_lstSignalWaveformInfo.AddTail(objSigGeneration);
+                        m_lstTempSignalWaveformInfo.AddTail(objSigGeneration);
+                    }
+                }
+            }
+            //Storing Sampling Time period.
+            //COPY_DATA_2(&m_shSamplingTP, pByteTrgt, sizeof(m_shSamplingTP));
+            xmlXPathFreeObject(pOjectPath);
+        }
+        else
+        {
+            nRetVal = S_FALSE;
+        }
+        m_shSamplingTP = 125;
+        xmlChar* pXpath2 = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/Default_Sampling_Period";
+
+        pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath2);
+        if(pOjectPath != NULL)
+        {
+            xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+            if(pNodeSet != NULL)
+            {
+                xmlNodePtr pNode = pNodeSet->nodeTab[0];
+                if(pNode != NULL)
+                {
+                    xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
+                    if(NULL != key)
+                    {
+                        m_shSamplingTP = atoi((char*)key);
+                        xmlFree((char*)key);
+                    }
+                }
+            }
+            xmlXPathFreeObject(pOjectPath);
+        }
+    }
+    else if( pDoc == NULL || nRetVal == FALSE )   //Assign Default Values
+    {
+        m_sDefaultWaveInfo.m_eSignalWaveType = eWave_SINE;
+        m_sDefaultWaveInfo.m_fAmplitude   = 10;
+        m_sDefaultWaveInfo.m_fFrequency   = 1;
+        m_shSamplingTP = 125;
+    }
+    return S_OK;
+}
+int CWaveFormDataHandler::ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignalWave)
+{
+    pNode = pNode->children;
+    while (pNode != NULL)
+    {
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Name")))  //Reading Message ID.
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                sSignalWave.m_omSigName = (char*)key;
+                xmlFree(key);
+            }
+        }
+        else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Wave_Type")))    //Reading Message ID.
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                sSignalWave.sWaveInfo.m_eSignalWaveType = xmlUtils::eGetWaveType((char*)key);
+                xmlFree(key);
+            }
+        }
+        else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Amplitude")))    //Reading Message ID.
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                sSignalWave.sWaveInfo.m_fAmplitude = atoi((char*)key);
+                xmlFree(key);
+            }
+        }
+        else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Frequency")))    //Reading Message ID.
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                sSignalWave.sWaveInfo.m_fFrequency = atoi((char*)key);
+                xmlFree(key);
+            }
+        }
+        else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Granularity")))  //Reading Message ID.
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                sSignalWave.sWaveInfo.m_fGranularity = atof((char*)key);
+                xmlFree(key);
+            }
+        }
+        pNode = pNode->next;
+    }
+    return S_OK;
+}
 HRESULT CWaveFormDataHandler::SetConfigData(BYTE* pvDataStream)
 {
     m_lstSignalWaveformInfo.RemoveAll();
@@ -561,6 +721,99 @@ BYTE* CWaveFormDataHandler::pbyGetListConfigData(BYTE* pbyTrgtStream, const UINT
     //Storing Sampling Time period.
     COPY_DATA(pByteTrgt, &m_shSamplingTP, sizeof(m_shSamplingTP));
     return pByteTrgt;
+}
+BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
+{
+    const char* omcVarChar ;
+    POSITION pos = m_lstSignalWaveformInfo.GetHeadPosition();
+    while(pos)
+    {
+        //<WAVE_FORM>
+        xmlNodePtr pWaveForm = xmlNewNode(NULL, BAD_CAST DEF_WAVE_FORM);
+        xmlAddChild(pxmlNodePtr, pWaveForm);
+
+        SSigGeneration& objSigGen = m_lstSignalWaveformInfo.GetNext(pos);
+
+        //<Message_ID />
+        CString csMsdID;
+        csMsdID.Format("%d", objSigGen.m_nMsgID);
+        omcVarChar = csMsdID;
+        xmlNodePtr pMsgID= xmlNewChild(pWaveForm, NULL, BAD_CAST DEF_MSG_ID, BAD_CAST omcVarChar);
+        xmlAddChild(pWaveForm, pMsgID);
+
+        //<Default_Amplitude />
+        CString csDefaultAmp;
+        csDefaultAmp.Format("%f", objSigGen.m_fDefaultAmplitude);
+        omcVarChar = csDefaultAmp;
+        xmlNodePtr pDefAmp= xmlNewChild(pWaveForm, NULL, BAD_CAST DEF_DEFAULT_AMPLITUDE, BAD_CAST omcVarChar);
+        xmlAddChild(pWaveForm, pDefAmp);
+
+        POSITION posSig = objSigGen.m_omSigWaveMapList.GetHeadPosition();
+        while(posSig)
+        {
+            sSigWaveMap& objSigMap = objSigGen.m_omSigWaveMapList.GetNext(posSig);
+
+            //<SIGNALS>
+            xmlNodePtr pSignals = xmlNewNode(NULL, BAD_CAST DEF_SIGNALS);
+            xmlAddChild(pWaveForm, pSignals);
+
+            //<Name>
+            omcVarChar = objSigMap.m_omSigName;
+            xmlNodePtr pName = xmlNewChild(pSignals, NULL, BAD_CAST DEF_NAME, BAD_CAST omcVarChar);
+            xmlAddChild(pSignals, pName);
+
+            //<Wave_Type>
+            CString csWaveType;
+            if(objSigMap.sWaveInfo.m_eSignalWaveType == eWave_NONE)
+            {
+                csWaveType = "NONE";
+            }
+            else if(objSigMap.sWaveInfo.m_eSignalWaveType == eWave_SINE)
+            {
+                csWaveType = "SINE";
+            }
+            else if(objSigMap.sWaveInfo.m_eSignalWaveType == eWave_TRIANGLE)
+            {
+                csWaveType = "TRIANGLE";
+            }
+            else if(objSigMap.sWaveInfo.m_eSignalWaveType == eWave_COS)
+            {
+                csWaveType = "COS";
+            }
+            omcVarChar = csWaveType;
+            xmlNodePtr pWaveType= xmlNewChild(pSignals, NULL, BAD_CAST DEF_WAVE_TYPE, BAD_CAST omcVarChar);
+            xmlAddChild(pSignals, pWaveType);
+            //<Amplitude>9</Amplitude>
+            CString csAmp;
+            csAmp.Format("%f", objSigMap.sWaveInfo.m_fAmplitude);
+            omcVarChar = csAmp;
+            xmlNodePtr pAmp= xmlNewChild(pSignals, NULL, BAD_CAST DEF_AMPLITUDE, BAD_CAST omcVarChar);
+            xmlAddChild(pSignals, pAmp);
+
+            //<Frequency>100</Frequency>
+            CString csFreq;
+            csFreq.Format("%f", objSigMap.sWaveInfo.m_fFrequency);
+            omcVarChar = csFreq;
+            xmlNodePtr pFreq= xmlNewChild(pSignals, NULL, BAD_CAST DEF_FREQUENCY, BAD_CAST omcVarChar);
+            xmlAddChild(pSignals, pFreq);
+
+            //<Granularity>1</Granularity>
+            CString csGranularity;
+            csGranularity.Format("%f", objSigMap.sWaveInfo.m_fGranularity);
+            omcVarChar = csGranularity;
+            xmlNodePtr pGranularity = xmlNewChild(pSignals, NULL, BAD_CAST DEF_GRANULARITY, BAD_CAST omcVarChar);
+            xmlAddChild(pSignals, pGranularity);
+        }
+    }
+
+    //<Default_Sampling_Period>100</Default_Sampling_Period>
+    CString csDefSamplinPeriod;
+    csDefSamplinPeriod.Format("%d", m_shSamplingTP);
+    omcVarChar = csDefSamplinPeriod;
+    xmlNodePtr pDefSP= xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_DEF_SAMPLING_PERIOD, BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pDefSP);
+
+    return true;
 }
 
 UINT CWaveFormDataHandler::nGetWaveInfoListSize()

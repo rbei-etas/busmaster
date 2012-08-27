@@ -44,6 +44,7 @@ public:
     virtual ~CIxxatCanChannel(void);
 
     void    SetHardwareParams(INT64 qiVCIDeviceID, int iCANControllerNumber, CClientList* pClientList);
+    void    GetHardwareParams(INT64* pqiVCIDeviceID, int* piCANControllerNumber, void** ppvClientList);
     void    Selected(BOOL bIsSelected);
     BOOL    IsSelected();
     DWORD   GetRxErrorFrameCounter();

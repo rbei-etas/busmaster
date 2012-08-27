@@ -27,7 +27,10 @@ typedef enum eTXWNDDETAILS
     TX_WND_SPLITTER_DATA,
     TX_SEND_MULTI_MSGS,
     TX_WINDOW_PLACEMENT,
-    TX_AUTO_UPDATE_ENABLE
+    TX_AUTO_UPDATE_ENABLE,
+    TX_DELAY_BTWN_MSG_BLCK_BOOL,
+    TX_DELAY_BTWN_MSG_BLCK_UINT,
+    TX_MSG_UPDATE
 };
 
 class CTxWndDataStore
@@ -38,6 +41,8 @@ public:
     static CTxWndDataStore& ouGetTxWndDataStoreObj();
     static CTxWndDataStore m_sTxWndDataStoreObj;
     bool                 m_bAutoSavedEnabled;
+    bool                 m_bDelayBetweenMsgBlocks;              //AUC
+    UINT                 m_unTimeDelayBtwnMsgBlocks;            //AUC
     BOOL bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData);
     BOOL bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid);
     // sets the multiple message structure data member with the info
@@ -49,7 +54,18 @@ public:
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
     BOOL bGetDefaultTXSplitterPostion(CRect omWndSize, LPVOID* psSplitterData);
     BYTE* pbySetConfigData(BYTE* pbyConfigData, INT nConfigSize);
+    bool bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList);
+    //Copies the data and content from one msgblock to another
+    bool bCopyBlockData(PSMSGBLOCKLIST psDestBlockList,PSMSGBLOCKLIST psSrcBlockList);
+    //delete the massages in MsgList of a block
+    bool bDeleteMsgList(PSTXCANMSGLIST& psMsgList);
+    //copy MsgList from local to global
+    bool bCopyMsgList(PSTXCANMSGLIST&  ppsDestTxCANMsgList , PSTXCANMSGLIST*  ppsSrcTxCANMsgList);
     BYTE* pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize);
+		bool pbySetConfigData(xmlDocPtr pDoc);
+	BOOL pbyGetConfigData(xmlNodePtr pxmlNodePtr);
+	bool bSplitterConfig(xmlNodePtr pxmlNodePtr);
+	bool bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr);
 private:
 
     UINT               m_unNumberOfMsgBlockCount;

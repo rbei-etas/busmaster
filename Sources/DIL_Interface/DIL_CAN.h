@@ -45,12 +45,18 @@ public:
 
     /* Variable to maintain currently selected Driver ID */
     DWORD m_dwDriverID;
+    /* Variable to store previously selected Driver ID */
+    DWORD m_dwOldDriverID;
 
     /* member variable to hold the pointer of currently selected controller interface */
     CBaseDIL_CAN_Controller* m_pBaseDILCAN_Controller;
+    /* member variable to hold the previously selected controller interface */
+    CBaseDIL_CAN_Controller* m_pOldBaseDILCAN_Controller;
 
     /* Variable to hold handle to currently selected controller DIL */
     HMODULE m_hDll;
+    /* Variable to hold handle to previously selected controller DIL */
+    HMODULE m_hOldDll;
 
     /**
      * Based on the parameter this function renders number of the driver interface

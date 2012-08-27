@@ -50,13 +50,13 @@ static char THIS_FILE[] = __FILE__;
 /******************************************************************************/
 
 CExploreMsgSg::CExploreMsgSg( CFunctionEditorDoc* pDoc,
-                              CMsgNameMsgCodeList& odMsgNameCodelist,
+                              CMsgNameMsgCodeListDataBase& odMsgNameCodeListDb, //CAPL_DB_NAME_CHANGE
                               BOOL bCheckRequired,
                               eMESSAGEFROM eWindow,
                               eSELTYPE eSelType,
                               CWnd* pParent /*=NULL*/)
     : CDialog(CExploreMsgSg::IDD, pParent),
-      m_odMsgNameCodeList(odMsgNameCodelist)
+      m_odMsgNameCodeListDb(odMsgNameCodeListDb)            //CAPL_DB_NAME_CHANGE
 {
     //{{AFX_DATA_INIT(CExploreMsgSg)
     m_bWantStructure = FALSE;
@@ -409,23 +409,27 @@ BOOL CExploreMsgSg::OnInitDialog()
 
     // Init last selection to -1
     m_nMsgIndex = -1;
-    if (m_odMsgNameCodeList.GetCount() > 0)
+    if (m_odMsgNameCodeListDb.GetCount() > 0)                           //CAPL_DB_NAME_CHANGE
     {
-        POSITION pos = m_odMsgNameCodeList.GetHeadPosition();
-        int nIndex = 0;
-        while (pos != NULL)
+        for(int nItr =0; nItr < m_odMsgNameCodeListDb.GetCount(); nItr++)
         {
-            SMSG_NAME_CODE& sMsgNameCode = m_odMsgNameCodeList.GetNext(pos);
-            CString omMsgWithId;
-            omMsgWithId.Format("%s[0x%x]", sMsgNameCode.m_omMsgName, sMsgNameCode.m_dwMsgCode);
-            int nInsertedIndex = m_omMsgList.InsertItem( nIndex++, omMsgWithId);
-            m_omMsgList.SetItemData(nInsertedIndex, sMsgNameCode.m_dwMsgCode);
+            POSITION posMsg = m_odMsgNameCodeListDb.FindIndex(nItr);
+            SDB_NAME_MSG& sDbNameMsg = m_odMsgNameCodeListDb.GetAt(posMsg);
+            POSITION pos = sDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
+            int nIndex = 0;
+            while (pos != NULL)
+            {
+                SMSG_NAME_CODE& sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetNext(pos);
+                CString omMsgWithId;
+                omMsgWithId.Format("%s[0x%x]", sMsgNameCode.m_omMsgName, sMsgNameCode.m_dwMsgCode);
+                int nInsertedIndex = m_omMsgList.InsertItem( nIndex++, omMsgWithId);
+                m_omMsgList.SetItemData(nInsertedIndex, sMsgNameCode.m_dwMsgCode);
+            }
+            m_nMsgIndex = 0;
+            m_omMsgList.SetItemState(m_nMsgIndex, LVIS_SELECTED|LVIS_FOCUSED,
+                                     LVIS_SELECTED|LVIS_FOCUSED);
         }
-        m_nMsgIndex = 0;
-        m_omMsgList.SetItemState(m_nMsgIndex, LVIS_SELECTED|LVIS_FOCUSED,
-                                 LVIS_SELECTED|LVIS_FOCUSED);
     }
-
     //Set Default channel as Channel 1
     CButton* pButtn=(CButton*)GetDlgItem(IDC_RBTN_CHANNEL1);
     pButtn->SetCheck(BST_CHECKED);
@@ -583,10 +587,18 @@ void CExploreMsgSg::vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSign
     SMSG_NAME_CODE sMsgCodeName;
     omSignalNames.RemoveAll();
     sMsgCodeName.m_dwMsgCode = dwMsgCode;
-    POSITION pos = m_odMsgNameCodeList.Find(sMsgCodeName);
-    if (pos != NULL)
+    for(int nItr =0; nItr < m_odMsgNameCodeListDb.GetCount(); nItr++)
     {
-        sMsgCodeName = m_odMsgNameCodeList.GetAt(pos);
-        omSignalNames.AddTail(&(sMsgCodeName.m_omSignalNames));
+        POSITION pos = m_odMsgNameCodeListDb.FindIndex(nItr);
+        if( NULL != pos )
+        {
+            SDB_NAME_MSG& sDbNameMsg = m_odMsgNameCodeListDb.GetAt(pos);
+            POSITION pos1 = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgCodeName);
+            if (pos1 != NULL)
+            {
+                sMsgCodeName = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos1);
+                omSignalNames.AddTail(&(sMsgCodeName.m_omSignalNames));
+            }
+        }
     }
 }

@@ -41,5 +41,5 @@
 #include <math.h>
 #include <IO.H>             // i/0 header definitions
 #include <stdlib.h>         // standard library definitions
-
-#import <msxml4.dll>
+#include "Utility/XMLUtils.h"
+#import <msxml6.dll>

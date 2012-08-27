@@ -105,7 +105,7 @@ END_MESSAGE_MAP()
 /******************************************************************************/
 void CKeyValue::OnCancel()
 {
-    if (NULL != m_pcKeyVal) 
+    if (NULL != m_pcKeyVal) //KSS
     {
         *m_pcKeyVal = NULL;
     }
@@ -156,6 +156,7 @@ BOOL CKeyValue::PreTranslateMessage(MSG* pMsg)
             {
                 GetDlgItem( IDOK )->EnableWindow(TRUE);
                 GetDlgItem( IDC_CBTN_KEY_APPLY )->EnableWindow(TRUE);
+                SetDefID( IDOK );
             }
         }
     }
@@ -202,7 +203,7 @@ void CKeyValue::OnOK()
     // Check for duplicate selection
     // Get key handler array from the document
     // Check for valid pointer
-    if (m_pDoc != NULL)
+    if (m_pDoc != NULL && m_bDataSaved == false)
     {
         CStringArray* pKeyArray = m_pDoc->omStrGetKeyHandlerPrototypes();
 
@@ -242,9 +243,21 @@ void CKeyValue::OnOK()
         }
     }
 
-    if ( bRetVal == TRUE)
+    if ( bRetVal == TRUE && m_bDataSaved == false)
     {
         CDialog::OnOK();
+    }
+    else
+    {
+        if ( m_bDataSaved == true)
+        {
+            m_bDataSaved = false;
+            CDialog::OnCancel();
+        }
+        else
+        {
+            CDialog::OnOK();
+        }
     }
 }
 /******************************************************************************/
@@ -275,6 +288,12 @@ BOOL CKeyValue::OnInitDialog()
         pWnd->EnableWindow(FALSE);
     }
 
+    pWnd = GetDlgItem(IDCANCEL);
+    if (pWnd != NULL)
+    {
+        pWnd->SetWindowTextA("Close");
+    }
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -296,6 +315,7 @@ BOOL CKeyValue::OnInitDialog()
 void CKeyValue::OnCbtnKeyApply()
 {
     BOOL bValidateSelection = TRUE;
+    m_bDataSaved = false;
     if(m_pDoc != NULL )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
@@ -364,6 +384,8 @@ void CKeyValue::OnCbtnKeyApply()
                 }
                 m_pDoc->UpdateAllViews( NULL );
                 m_pDoc->SetModifiedFlag( TRUE );
+                GetDlgItem(IDC_CBTN_KEY_APPLY)->EnableWindow(FALSE);
+                m_bDataSaved = true;
             }
         }
     }

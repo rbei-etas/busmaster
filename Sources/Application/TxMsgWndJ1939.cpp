@@ -374,6 +374,7 @@ BEGIN_MESSAGE_MAP(CTxMsgWndJ1939, CDialog)
     ON_BN_CLICKED(IDC_CHECK_CYCLIC, OnBnClickedCheckCyclic)
     ON_MESSAGE(WM_CONNECT_CHANGE, OnMessageConnect)
     ON_CBN_SELCHANGE(IDC_COMBO_PGN, OnCbnSelchangeComboPgn)
+    ON_CBN_EDITCHANGE(IDC_COMBO_PGN, OnCbnEditChangeComboPgn)
 END_MESSAGE_MAP()
 
 
@@ -699,6 +700,7 @@ void CTxMsgWndJ1939::vInitializeTpfFields(void)
     else
     {
         m_omComboPGN.SetWindowText("0");
+        vVerifyPDUFormatInPGN(0);
     }
     //Calling this to update the message type combobox
     OnCbnSelchangeComboPgn();
@@ -1045,6 +1047,24 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboPgn()
         }
         UpdateData(TRUE);
     }
+}
+
+/**
+* \brief         Called when editing PGN combobox
+* \param[in]     void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          17.07.2012 Created
+*/
+void CTxMsgWndJ1939::OnCbnEditChangeComboPgn()
+{
+    CString omPGN;
+    m_omComboPGN.GetWindowText(omPGN);
+    UINT unPGN = 0;
+    sscanf((LPCTSTR)omPGN, "%04X", &unPGN);
+
+    /* Verify PGN and update message type accordingly */
+    vVerifyPDUFormatInPGN(unPGN);
 }
 
 /**

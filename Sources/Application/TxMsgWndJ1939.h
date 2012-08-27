@@ -145,4 +145,5 @@ public:
     CButton m_omCheckCyclic;
     CComboBox m_omComboPGN;
     afx_msg void OnCbnSelchangeComboPgn();
+    afx_msg void OnCbnEditChangeComboPgn();
 };

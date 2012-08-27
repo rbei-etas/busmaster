@@ -83,6 +83,7 @@ private:
     int m_nConMgrCnt;
     CNameAddressMap m_odClaimedAdresMap;
     BOOL m_bOnline;
+    DWORD m_dwCANMonitorNodeClientId;
 
 public:
     static UINT sg_unTO_BROADCAST;

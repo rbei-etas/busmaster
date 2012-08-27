@@ -29,6 +29,8 @@
 BYTE* m_pbyTEConfigData = NULL;
 UINT m_unTEConfigSize = 0;
 
+xmlNodePtr m_pTEXmlNode = NULL;
+BOOL m_bByXml = TRUE;
 static AFX_EXTENSION_MODULE TestSetupEditor = { NULL, NULL };
 CTSEditorChildFrame* g_pomTSEditorChildWindow = NULL;
 extern "C" int APIENTRY
@@ -69,6 +71,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         {
             delete[] m_pbyTEConfigData;
         }
+        if(m_pTEXmlNode != NULL)
+        {
+            xmlFreeNode(m_pTEXmlNode);
+        }
         // Terminate the library before destructors are called
         AfxTermExtensionModule(TestSetupEditor);
     }
@@ -105,7 +111,14 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
                                                   WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
                                                   omRect, ((CMDIFrameWnd*)pParentWnd)) == TRUE )
             {
-                g_pomTSEditorChildWindow->SetConfigurationData(m_pbyTEConfigData, m_unTEConfigSize);
+                if(m_bByXml == TRUE)
+                {
+                    g_pomTSEditorChildWindow->SetConfigurationData(m_pTEXmlNode);
+                }
+                else
+                {
+                    g_pomTSEditorChildWindow->SetConfigurationData(m_pbyTEConfigData, m_unTEConfigSize);
+                }
                 g_pomTSEditorChildWindow->ShowWindow(SW_SHOW);
                 g_pomTSEditorChildWindow->SetFocus();
 
@@ -175,18 +188,26 @@ USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath)
     g_pomTSEditorChildWindow->vLoadTestSetupFile(omFilePath);
     return S_OK;
 }
-USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
+//USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
+//{
+//    if(g_pomTSEditorChildWindow != NULL)
+//    {
+//        return g_pomTSEditorChildWindow->GetConfigurationData(pDesBuffer, nBuffSize);
+//    }
+//    else
+//    {
+//        nBuffSize = m_unTEConfigSize;
+//        pDesBuffer = new BYTE[m_unTEConfigSize];
+//        memcpy(pDesBuffer, m_pbyTEConfigData, m_unTEConfigSize);
+//        return S_FALSE;
+//    }
+//}
+
+USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr pxmlNodePtr)
 {
     if(g_pomTSEditorChildWindow != NULL)
     {
-        return g_pomTSEditorChildWindow->GetConfigurationData(pDesBuffer, nBuffSize);
-    }
-    else
-    {
-        nBuffSize = m_unTEConfigSize;
-        pDesBuffer = new BYTE[m_unTEConfigSize];
-        memcpy(pDesBuffer, m_pbyTEConfigData, m_unTEConfigSize);
-        return S_FALSE;
+        return g_pomTSEditorChildWindow->GetConfigurationData(pxmlNodePtr);
     }
 }
 USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
@@ -199,9 +220,34 @@ USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
     m_unTEConfigSize = unBuffSize;
     m_pbyTEConfigData = new BYTE[m_unTEConfigSize];
     memcpy(m_pbyTEConfigData, pSrcBuffer, m_unTEConfigSize);
+    m_bByXml = FALSE;
     if(g_pomTSEditorChildWindow != NULL)
     {
         g_pomTSEditorChildWindow->SetConfigurationData(m_pbyTEConfigData, m_unTEConfigSize);
+    }
+    return S_OK;
+}
+USAGEMODE HRESULT TSE_hSetXmlConfigurationData(xmlDocPtr pXmlDoc)
+{
+    m_bByXml = TRUE;
+    if(m_pTEXmlNode != NULL)
+    {
+        xmlFreeNode(m_pTEXmlNode);
+        m_pTEXmlNode = NULL;
+    }
+    xmlXPathObjectPtr pTempNode = xmlUtils::pGetNodes(pXmlDoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_TS_Editor"));
+
+    if(pTempNode != NULL)
+    {
+        m_pTEXmlNode = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
+    }
+    else
+    {
+        m_pTEXmlNode = NULL;
+    }
+    if(g_pomTSEditorChildWindow != NULL)
+    {
+        g_pomTSEditorChildWindow->SetConfigurationData(m_pTEXmlNode);
     }
     return S_OK;
 }

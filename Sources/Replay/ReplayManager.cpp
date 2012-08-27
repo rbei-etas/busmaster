@@ -674,6 +674,18 @@ void CReplayManager::vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
     COPY_DATA(pbyTemp, &m_sWndPlacement, sizeof (WINDOWPLACEMENT));
 }
 
+void CReplayManager::vGetReplayConfigData(xmlNodePtr pxmlNodePtr)
+{
+    int nSize = (int)m_omReplayFiles.GetSize();
+    CReplayFile ouFile;
+    for( int nIndex = 0; nIndex < nSize; nIndex++ )
+    {
+        xmlNodePtr pNodeReplay = xmlNewNode(NULL, BAD_CAST DEF_REPLAY);
+        xmlAddChild(pxmlNodePtr, pNodeReplay);
+        ouFile = m_omReplayFiles.ElementAt( nIndex );
+        ouFile.pbySaveConfig(pNodeReplay);
+    }
+}
 void CReplayManager::vSetReplayConfigData(BYTE* pSrcBuffer, int /*nBuffSize*/)
 {
     //Before loading another config initialize the display
@@ -695,6 +707,60 @@ void CReplayManager::vSetReplayConfigData(BYTE* pSrcBuffer, int /*nBuffSize*/)
             m_omReplayFiles.Add(ouFile);
         }
         COPY_DATA_2(&m_sWndPlacement, pSrcBuffer, sizeof(WINDOWPLACEMENT));
+    }
+}
+void CReplayManager::vSetReplayConfigData(xmlDocPtr pDoc)
+{
+    vStopReplayThread();
+    vInitReplayManager();
+    if (NULL != pDoc)
+    {
+        //Now load new config
+        xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Replay/Replay";
+        xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(pDoc, pXpath);
+        xmlNodePtr pNode = NULL;
+        if( NULL != pPathObject )
+        {
+            xmlNodeSetPtr pNodeSet = pPathObject->nodesetval;
+            if( NULL != pNodeSet)
+            {
+                INT nSize = pNodeSet->nodeNr;
+                CReplayFile ouFile;
+                for( int nIndex = 0; nIndex < nSize; nIndex++ )
+                {
+                    ouFile.nLoadXMLConfig(pNodeSet->nodeTab[nIndex]->children);
+                    m_omReplayFiles.Add(ouFile);//Duplicate FileNames Allowed
+                }
+            }
+        }
+        //COPY_DATA_2(&m_sWndPlacement, pSrcBuffer, sizeof(WINDOWPLACEMENT));
+    }
+}
+void CReplayManager::vAddReplayFile(CReplayFile& ouFile)
+{
+    int nCount = m_omReplayFiles.GetSize();
+    BOOL bDuplicate = FALSE;
+    if(nCount == 0 )
+    {
+        m_omReplayFiles.Add(ouFile);
+    }
+    else
+    {
+        for(int i = 0; i < nCount; i++)
+        {
+            CReplayFile& ouReplayFile = m_omReplayFiles.GetAt(i);
+            CString omStrFileName1, omStrFileName2;
+            ouReplayFile.GetFileName(omStrFileName1);
+            ouFile.GetFileName(omStrFileName2);
+            if(omStrFileName1 == omStrFileName2)
+            {
+                bDuplicate = TRUE;
+            }
+        }
+        if(bDuplicate == FALSE)
+        {
+            m_omReplayFiles.Add(ouFile);
+        }
     }
 }
 

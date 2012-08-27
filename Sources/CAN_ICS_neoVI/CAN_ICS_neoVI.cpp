@@ -425,9 +425,9 @@ public:
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    
+    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    
+    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
     // Specific function set
@@ -1444,22 +1444,33 @@ static int nCreateSingleHardwareNetwork()
 }
 
 /**
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
- *
- * This function will popup hardware selection dialog and gets the user selection of channels.
- *
- */
+* \brief         This function will popup hardware selection dialog and gets the user selection of channels.
+* \param[in]     psInterfaces, is INTERFACE_HW structue
+* \param[out]    pnSelList, contains channels selected array
+* \param[out]    nCount, contains selected channel count
+* \return        returns 0 if success, else -1
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
 int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd, vBlinkHw);
-    HwList.DoModal();
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd);
+    INT nRet = HwList.DoModal();
     objMainWnd.Detach();
-    nCount = HwList.nGetSelectedList(pnSelList);
-    return 0;
+
+    if ( nRet == IDOK)
+    {
+        nCount = HwList.nGetSelectedList(pnSelList);
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /**
@@ -1554,7 +1565,10 @@ static int nCreateMultipleHardwareNetwork()
     }
 
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
-    ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount);
+    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+    {
+        return HW_INTERFACE_NO_SEL;
+    }
     sg_ucNoOfHardware = (UCHAR)nHwCount;
     //Reorder hardware interface as per the user selection
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
@@ -1595,7 +1609,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     // 0, Query successful, but no device found
     // > 0, Number of devices found
     // < 0, query for devices unsucessful
-    int nReturn = 0;
+    int nReturn = NO_HW_INTERFACE;
 
     for (BYTE i = 0; i < 16; i++)
     {
@@ -1613,7 +1627,6 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     }
     else
     {
-        nReturn = -1;
         nHardwareCount = 0;
         _tcscpy(m_omErrStr,"Query for devices unsuccessful");
     }
@@ -1632,7 +1645,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
 static int nInitHwNetwork()
 {
     int nDevices = 0;
-    int nReturn = -1;
+    int nReturn = NO_HW_INTERFACE;
     // Select Hardware
     // This function will be called only for USB mode
     nReturn = nGetNoOfConnectedHardware(nDevices);
@@ -1649,7 +1662,6 @@ static int nInitHwNetwork()
     if( nDevices == 0 )
     {
         MessageBox(NULL,m_omErrStr, NULL, MB_OK | MB_ICONERROR);
-        nReturn = -1;
     }
     // Available hardware is lesser then the supported channels
     else
@@ -2196,7 +2208,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     HRESULT hResult = S_FALSE;
     if (bGetDriverStatus())
     {
-        if (nConnectToDriver() == CAN_USB_OK)
+        if (( hResult = nConnectToDriver() ) == CAN_USB_OK)
         {
             nCount = sg_ucNoOfHardware;
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
@@ -2212,7 +2224,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         }
         else
         {
-            hResult = NO_HW_INTERFACE;
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "Error connecting to driver");
         }
     }
@@ -3255,7 +3266,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
                 }
             }
             break;
-            
+            //MVN
             case CNTR_STATUS:
             {
                 char pGetFireParms[] = "can1/Mode";
@@ -3272,7 +3283,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
                     lParam = defMODE_ACTIVE;
                 }
             }
-            
+            //~MVN
             default:
             {
                 hResult = S_FALSE;

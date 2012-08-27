@@ -105,6 +105,7 @@ BEGIN_MESSAGE_MAP(CTxMsgChildFrame, CMDIChildBase)
     //}}AFX_MSG_MAP
     ON_MESSAGE(WM_USER_CMD,vUserCommand)
     ON_WM_SIZE()
+    ON_WM_MDIACTIVATE()
 END_MESSAGE_MAP()
 
 /*******************************************************************************
@@ -667,25 +668,54 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                                 EnableWindow(!bTxON);
                             }
                         }
-                        // If it is time triggered then time interval edit box
-                        if( IS_TIME_TRIGGERED (psMsgBlock->m_ucTrigger) )
-                        {
-                            m_pomTxMsgBlocksView->m_omEditTrgTimeIntervalVal.
-                            EnableWindow(!bTxON);
-                        }
                         //If it is key triggered then Enable/Diable All Messages
                         //Check box and Key val edit box
                         if( IS_KEY_TRIGGERED (psMsgBlock->m_ucTrigger) )
                         {
                             /*m_pomTxMsgBlocksView->m_omButtonTxAllFrame.
-                                                        EnableWindow(!bTxON);*/
+                            EnableWindow(!bTxON);*/
                             m_pomTxMsgBlocksView->m_omComboAllMsgs.EnableWindow(!bTxON);
                             m_pomTxMsgBlocksView->m_omEditTrgKeyVal.
                             EnableWindow(!bTxON);
                         }
 
-                        m_pomTxMsgBlocksView->m_omButtonTimeTrigger.
-                        EnableWindow(!bTxON);
+                        if(bTxON)
+                        {
+                            m_pomTxMsgBlocksView->m_omComboAllMsgs.EnableWindow(!bTxON);
+                            m_pomTxMsgBlocksView->m_omEditTrgKeyVal.
+                            EnableWindow(!bTxON);
+                        }
+
+
+                        //AUC
+                        //only if DElay btn msg blocks check box is not checked den check time trigger button
+                        if(((CButton*) m_pomTxMsgBlocksView->
+                                GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->GetCheck() == BST_UNCHECKED)
+                        {
+                            m_pomTxMsgBlocksView->m_omButtonTimeTrigger.
+                            EnableWindow(!bTxON);
+                            // If it is time triggered then time interval edit box
+                            if( IS_TIME_TRIGGERED (psMsgBlock->m_ucTrigger) )
+                            {
+                                m_pomTxMsgBlocksView->m_omEditTrgTimeIntervalVal.
+                                EnableWindow(!bTxON);
+                            }
+                        }
+                        ((CButton*) m_pomTxMsgBlocksView->GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->EnableWindow(!bTxON);
+
+                        if((((CButton*) m_pomTxMsgBlocksView->
+                                GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->IsWindowEnabled() == TRUE)&&
+                                ((CButton*) m_pomTxMsgBlocksView->
+                                 GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->GetCheck() == BST_CHECKED)
+                        {
+                            ((CEdit*) m_pomTxMsgBlocksView->
+                             GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->EnableWindow(TRUE);
+                        }
+                        else
+                        {
+                            ((CEdit*) m_pomTxMsgBlocksView->
+                             GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->EnableWindow(FALSE);
+                        }
                         m_pomTxMsgBlocksView->m_omButtonKeyTrigger.
                         EnableWindow(!bTxON);
                         CButton* pRadioMonoshot = (CButton*)m_pomTxMsgBlocksView->GetDlgItem(IDC_RADIOMONOSHOT);
@@ -695,6 +725,8 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                             pRadioMonoshot->EnableWindow(!bTxON);
                             pRadioCyclic->EnableWindow(!bTxON);
                         }
+                        m_pomTxMsgBlocksView->m_omButtonAddMsgBlock.EnableWindow(!bTxON);
+                        m_pomTxMsgBlocksView->m_omEditMsgBlockName.EnableWindow(!bTxON);
                         /*m_pomTxMsgBlocksView->m_omButtonTriggerType.
                                                         EnableWindow(!bTxON);*/
                     }
@@ -711,9 +743,12 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         EnableWindow(!bTxON);
                     }
 
-                    m_pomTxMsgBlocksView->m_omButtonAddMsgBlock.EnableWindow(!bTxON);
-                    m_pomTxMsgBlocksView->m_omEditMsgBlockName.EnableWindow(!bTxON);
-
+                    // Set the focus to the block list control if transmission is started
+                    // to capture the key events
+                    if (bTxON)
+                    {
+                        m_pomTxMsgBlocksView->m_omLctrMsgBlockName.SetFocus();
+                    }
                 }
                 break;
             case eCONNECTCMD:
@@ -762,6 +797,8 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         m_pomTxMsgListView->m_omLctrMsgList.DeleteAllItems();
                         m_pomTxMsgBlocksView->
                         vDisplayMsgBlockDetails(psMsgBlock);
+                        m_pomTxMsgDetailsView->vUpdateAllBlocksFrmDB();
+                        m_pomTxMsgBlocksView->AutoUpdateChanges();
                     }
                 }
                 m_pomTxMsgDetailsView->vSetValues(NULL);
@@ -806,4 +843,13 @@ void CTxMsgChildFrame::OnSize(UINT nType, int cx, int cy)
         m_bInit = FALSE;
     }
     // TODO: Add your message handler code here
+}
+
+void CTxMsgChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd)
+{
+    if(bActivate == FALSE)
+    {
+        this->SetFocus();
+    }
+    CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
 }

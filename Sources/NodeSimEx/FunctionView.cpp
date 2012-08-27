@@ -224,9 +224,9 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
             omStrFnHeader.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
                                    omStrFunction );
             //Construct the Function Footer
-            omStrFnFooter = BUS_FN_FOOTER;
-            omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
-            omStrFnFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+            omStrFnFooter = EDITOR_BUS_FN_FOOTER;
+            omStrFnFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+            omStrFnFooter.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
                                    omStrFunction );
         }
 
@@ -259,11 +259,11 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
 
                         //Loop through the function body till we encounter
                         //the function footer
-                        while ( (sPos != NULL) && ( omStrLine != omStrFnFooter) )
+                        while ( (sPos != NULL) && ( m_bIsValidFunction != TRUE) )
                         {
-                            omStrLine =
-                                pDoc->m_omSourceCodeTextList.GetNext(sPos);
-                            if ( omStrLine == omStrFnFooter )
+
+                            omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
+                            if ( omStrLine.Find(omStrFnFooter) >= 0 )
                             {
                                 m_bIsValidFunction = TRUE;
                             }
@@ -285,7 +285,7 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
                     {
                         omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
 
-                        if ( omStrLine == omStrFnFooter )
+                        if ( omStrLine.Find(omStrFnFooter) >= 0 )
                         {
                             m_bIsValidFunction = TRUE;
                         }
@@ -307,6 +307,10 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
                 //We got to remove the last '\n' that got added
                 //when we constructed omStrFnBody from the source lines
                 omStrFnBody.TrimRight();
+                if ( omStrFnBody.ReverseFind('}') >= 0)
+                {
+
+                }
                 SetWindowText(omStrFnBody);
                 GetRichEditCtrl().SetReadOnly(FALSE);
             }
@@ -372,7 +376,7 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
                     int nDisable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED ;
                     // Disable insert Message and Signal if there is no active
                     //database
-                    if( CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetCount() == 0)
+                    if( CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetCount() == 0)
                     {
                         pomCtxMenu->EnableMenuItem(
                             IDM_CONTEXT_INSERTMESSAGE, nDisable );
@@ -608,7 +612,7 @@ BOOL CFunctionView::UpdateFunctionInDocument()
             else
             {
                 // Select function common footer
-                omStrFnFooter = BUS_FN_FOOTER;
+                omStrFnFooter = EDITOR_BUS_FN_FOOTER;
                 // Form function specific footer
                 omStrFnFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 omStrFnFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
@@ -636,7 +640,7 @@ BOOL CFunctionView::UpdateFunctionInDocument()
             {
                 CString omStrDel =
                     pDoc->m_omSourceCodeTextList.GetNext( sPos1 );
-                if( omStrDel == omStrFnFooter )
+                if( omStrDel.Find(omStrFnFooter) >= 0 )
                 {
                     bDone = TRUE;
                 }
@@ -735,7 +739,7 @@ void CFunctionView::OnEditUndo()
 void CFunctionView::OnInsertSignal()
 {
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
-    CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList,
+    CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb,
                          TRUE, FNVIEW, SEL_SIGNAL );
 
     if ( od_Dlg.DoModal() == IDOK )
@@ -779,7 +783,7 @@ void CFunctionView::OnInsertMessage()
     eSELTYPE eType =
         m_omStrFnName == GLOBAL_VARIABLES ? SEL_GLOBAL_MESSAGE : SEL_MESSAGE;
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
-    CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList,
+    CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb,
                          TRUE, FNVIEW, eType);
 
     if ( od_Dlg.DoModal() == IDOK )

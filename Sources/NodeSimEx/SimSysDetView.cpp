@@ -159,6 +159,7 @@ void CSimSysDetView::OnButtonBuild()
 {
     BOOL bSuccess = FALSE;
 
+    // PTV CPP
     if(m_psNodeInfo != NULL)
     {
         if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
@@ -200,7 +201,13 @@ void CSimSysDetView::OnButtonBuild()
 void CSimSysDetView::vUpdateNodeDetailsAndView()
 {
     CString omStrFileName = m_psNodeInfo->m_omStrFileName;
-    omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
+    //omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
+    INT nDotIndex = omStrFileName.ReverseFind('.');
+    if(nDotIndex >= 0)
+    {
+        omStrFileName = omStrFileName.Left(nDotIndex);
+        omStrFileName += defDOT_DLL;
+    }
     m_psNodeInfo->m_omStrDllName = omStrFileName;
 
     // to indicate to the tree view about the new dlls built.
@@ -558,11 +565,13 @@ void CSimSysDetView::OnButtonOpenfile()
             CString omStrDefCFileName(STR_EMPTY);
             // Display open dialog box with *.c filter
             // and select the C file by default
+            CHAR szFilters[] = "All Supported Simulation Files (*.cpp;*.c)|*.cpp; *.c|cpp File(s) (*.cpp)|*.cpp|C File(s) (*.c)|*.c||";
+            //CHAR szFilters[] = _T("C Files (*.c)|*.c |C++ Files (*.cpp)|*.cpp||");
             CFileDialog fileDlg( TRUE,      // Open File dialog
-                                 "c",        // Default Extension,
-                                 omStrDefCFileName,
+                                 "cpp",        // Default Extension,
+                                 NULL,
                                  OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                                 "C File(s)(*.c)|*.c||",
+                                 szFilters,
                                  NULL );
 
             // Set Title
@@ -872,7 +881,13 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
     {
         //Check if the corressponding dll is already present
         CString omStrDllName = omStrCFile;
-        omStrDllName.Replace( defDOT_SMALL_C , defDOT_DLL );
+        //omStrDllName.Replace( defDOT_SMALL_C , defDOT_DLL );
+        INT nDotIndex = omStrDllName.ReverseFind('.');
+        if (nDotIndex >= 0)
+        {
+            omStrDllName = omStrDllName.Left(nDotIndex);
+            omStrDllName += defDOT_DLL;
+        }
         bDupDllFound = pSimSysNodeInf->bIsDuplicateDllName( omStrDllName );
         if(bDupDllFound)
         {
@@ -885,7 +900,13 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
         m_psNodeInfo->m_omStrFileName = omStrCFile;
         //Get the corressponding dll name and check if it is already
         //present in the folder
-        omStrCFile.Replace( defDOT_SMALL_C , defDOT_DLL );
+        //omStrCFile.Replace( defDOT_SMALL_C , defDOT_DLL );
+        int nIndex = omStrCFile.ReverseFind('.');
+        if( nIndex >= 0 )
+        {
+            omStrCFile = omStrCFile.Left(nIndex);
+            omStrCFile += defDOT_DLL;
+        }
         // file-attribute information
         _tfinddata_t fileinfo;
         // Check if file exists

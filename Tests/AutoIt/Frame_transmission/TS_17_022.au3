@@ -57,21 +57,27 @@ send("i")
 send("{TAB}")
 send("{TAB}")
 send("{TAB}")
-send("5") 
+send("5")
 ControlClick("Signal Details","","OK")
+sleep(1000)
+controlclick("BUSMASTER - [DatabaseEditor - CAN]","",1089)					; Click on 'New Desc' button
+sleep(1000)
+controlsettext("Enter Value Descriptor and Value","",1010,"Desc1")			; Enter description name
+controlsettext("Enter Value Descriptor and Value","",1011,10)				; Enter description Value
+ControlClick("Enter Value Descriptor and Value","",1042)					; Click 'OK'
 EndIf
 EndIf
 send("!fds")
 sleep(50)
-send("!fda")
+send("!fda")     ;Associate DB
 WinWaitActive("Select Active Database Filename...","",5)
 sleep(100)
 send($TS17DBPath&"\DBF_TS_17_FT.dbf")
 sleep(100)
 ControlClick("Select Active Database Filename...","&Open","[CLASS:Button; INSTANCE:2]")
-$handle=ControlGetHandle("BUSMASTER", "","[CLASS:ToolbarWindow32; INSTANCE:3]")
+$handle=ControlGetHandle("BUSMASTER", "",276)
 _GUICtrlToolbar_clickbutton($handle,32891,"left") ;Clicks a specific button.32891 is the command ID of the specific button
-sleep(100)
+sleep(1000)
 ControlClick("BUSMASTER","Add",1226)
 if (WinWaitActive("BUSMASTER","",5) ) Then
 $hWnd = ControlGetHandle("BUSMASTER","",1221)

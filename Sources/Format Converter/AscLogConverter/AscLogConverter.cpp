@@ -168,13 +168,13 @@ HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
         if(NULL != fpOutputFile)
         {
             //yydebug = 1;
-            
+            // PTV[1.6.4]
             // Removed here and added at the start of every block
-            /* fprintf(fpOutputFile, "***BUSMASTER Ver 1.6.5***\n");
+            /* fprintf(fpOutputFile, "***BUSMASTER Ver 1.6.3***\n");
              fprintf(fpOutputFile, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
              fprintf(fpOutputFile, "***[START LOGGING SESSION]***\n");
              fprintf(fpOutputFile, "***START DATE AND TIME ");*/
-            
+            // PTV[1.6.4]
             nConvertFile(fpInputFile, fpOutputFile);
             m_omstrConversionStatus = "Conversion Completed Successfully";
             fclose(fpInputFile);

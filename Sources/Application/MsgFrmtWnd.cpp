@@ -1112,7 +1112,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         {
             m_ppMsgDB = (CMsgSignal**)lParam;
 
-            if(m_eBusType == J1939)
+            if(m_eBusType == J1939 && m_ppMsgDB != NULL)
             {
                 SMSGENTRY* psMsgEntry = NULL;
                 vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
@@ -1141,8 +1141,10 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         break;
         case eWINID_MSG_WND_GET_CONFIG_DATA:
         {
-            BYTE* pbyData = (BYTE*)lParam;
-            GetConfigData(pbyData);
+            xmlNodePtr pxmlNodePtr = (xmlNodePtr)lParam;
+            //BYTE* pbyData = (BYTE*)lParam;
+            //GetConfigData(pbyData);
+            GetConfigData(pxmlNodePtr);
         }
         break;
 
@@ -1150,6 +1152,32 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         {
             BYTE* pbyData = (BYTE*)lParam;
             SetConfigData(pbyData);
+
+            //xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
+
+            //if(pNodePtr != NULL)
+            //{
+            //  //BYTE* pbyData = (BYTE*)lParam;
+            //  SetConfigData(pNodePtr);
+            //}
+        }
+        break;
+        case eWINID_MSG_WND_SET_CONFIG_DATA_XML:
+        {
+            xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
+            if(pNodePtr != NULL)
+            {
+                SetConfigData(pNodePtr);
+            }
+        }
+        break;
+        case eWINID_MSG_WND_SET_CONFIG_DATA_J1939_XML:
+        {
+            xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
+            if(pNodePtr != NULL)
+            {
+                SetConfigDataJ1939(pNodePtr);
+            }
         }
         break;
         case eWINID_MSG_WND_GET_BUFFER_DETAILS:
@@ -1459,74 +1487,85 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
     psParam = (SWMUPDATEPTRPARA*) wParam;
 
     PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
-    if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
+    if(NULL != m_pouMsgContainerIntrf)
     {
-        hResult = m_pouMsgContainerIntrf->hUpdateFormattedMsgStruct(psParam->m_nListIndex,
-                  nMsgCode,
-                  m_bExprnFlag_Disp);
-        if( hResult == S_FALSE && nMsgCode!= -1)
+        if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
         {
-            //Handle Error Msg display
-            vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
-            m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
-        }
-        else
-        {
-            m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
-        }
-    }
-    else if(m_omMgsIndexVec.size() > psParam->m_nListIndex)
-    {
-        //The Items interpret state will only be supplied if the display mode is
-        //either overwrite or overwrite interpret mode
-        //Over write mode
-        EnterCriticalSection(&m_omCritSecForMapArr);
-        __int64 nMsgKey = m_omMgsIndexVec[psParam->m_nListIndex];
-        if (nMsgKey != 0)
-        {
-            SMSGDISPMAPENTRY sDispEntry;
-            BOOL bFound;
-            bFound = m_omMsgDispMap.Lookup(nMsgKey, sDispEntry );
-            if (bFound)
+            hResult = m_pouMsgContainerIntrf->hUpdateFormattedMsgStruct(psParam->m_nListIndex,
+                      nMsgCode,
+                      m_bExprnFlag_Disp);
+            if( hResult == S_FALSE && nMsgCode!= -1)
             {
-                hResult = m_pouMsgContainerIntrf->hUpdateFormattedMsgStruct(sDispEntry.m_nBufferIndex,
-                          nMsgCode,
-                          m_bExprnFlag_Disp,
-                          sDispEntry.m_nTimeOffset);
-                if( hResult == S_FALSE && nMsgCode!= -1)
+                //Handle Error Msg display
+                vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
+                m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
+                // PTV [1.6.6]
+                //m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
+            }
+            else
+            {
+                m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
+                // PTV [1.6.6]
+                // m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
+            }
+        }
+        else if(m_omMgsIndexVec.size() > psParam->m_nListIndex)
+        {
+            //The Items interpret state will only be supplied if the display mode is
+            //either overwrite or overwrite interpret mode
+            //Over write mode
+            EnterCriticalSection(&m_omCritSecForMapArr);
+            __int64 nMsgKey = m_omMgsIndexVec[psParam->m_nListIndex];
+            if (nMsgKey != 0)
+            {
+                SMSGDISPMAPENTRY sDispEntry;
+                BOOL bFound;
+                bFound = m_omMsgDispMap.Lookup(nMsgKey, sDispEntry );
+                if (bFound)
                 {
-                    //Handle Error Msg display
-                    vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
-                    m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
-                }
-                else
-                {
-                    m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
-                }
-
-                if (hResult == S_OK)
-                {
-                    // if it is overwrite mode then even for interprting mode
-                    // return interpretable so that it will show + sign
-                    // Bcoz in order to remember the mode while interpreting
-                    // while switchhing to appent/OW mode of that entry is not changed
-                    if ((IS_MODE_OVER(m_bExprnFlag_Disp)) &&
-                            ( INTERPRETING == sDispEntry.m_eInterpretMode))
+                    hResult = m_pouMsgContainerIntrf->hUpdateFormattedMsgStruct(sDispEntry.m_nBufferIndex,
+                              nMsgCode,
+                              m_bExprnFlag_Disp,
+                              sDispEntry.m_nTimeOffset);
+                    if( hResult == S_FALSE && nMsgCode!= -1)
                     {
-                        psParam->m_eInPretMode = INTERPRETABLE;
+                        //Handle Error Msg display
+                        vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
+                        m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
+                        // PTV [1.6.6]
+                        //m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
                     }
                     else
                     {
-                        psParam->m_eInPretMode = sDispEntry.m_eInterpretMode;
+                        m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
+                        // PTV [1.6.6]
+                        //m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
+                    }
+
+                    if (hResult == S_OK)
+                    {
+                        // if it is overwrite mode then even for interprting mode
+                        // return interpretable so that it will show + sign
+                        // Bcoz in order to remember the mode while interpreting
+                        // while switchhing to appent/OW mode of that entry is not changed
+                        if ((IS_MODE_OVER(m_bExprnFlag_Disp)) &&
+                                ( INTERPRETING == sDispEntry.m_eInterpretMode))
+                        {
+                            psParam->m_eInPretMode = INTERPRETABLE;
+                        }
+                        else
+                        {
+                            psParam->m_eInPretMode = sDispEntry.m_eInterpretMode;
+                        }
                     }
                 }
             }
+            else
+            {
+                m_pouMsgContainerIntrf->vClearFormattedMsgStruct();
+            }
+            LeaveCriticalSection(&m_omCritSecForMapArr);
         }
-        else
-        {
-            m_pouMsgContainerIntrf->vClearFormattedMsgStruct();
-        }
-        LeaveCriticalSection(&m_omCritSecForMapArr);
     }
     psParam->m_bResult = TRUE;
     return 0;
@@ -1721,6 +1760,17 @@ CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
     return omName;
 }
 
+CString CMsgFrmtWnd::strGetMsgLengthFromMessageCode(UINT unMsgCode)
+{
+    CString omMsgLength = "";
+
+    if (NULL != m_ppMsgDB)
+    {
+        (*m_ppMsgDB)->bMessageLengthFromMsgCode(unMsgCode, omMsgLength);
+
+    }
+    return omMsgLength;
+}
 /*******************************************************************************
   Function Name  : vSetDefaultHeaders
   Input(s)       : -
@@ -3163,6 +3213,7 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
     // Variable to hold message ID
     __int64 n64Temp = 0;
     int nSize = m_omMgsIndexVec.size();
+    static STCANDATA sCANMsg;
     for (int i = 0; i < nSize; i++)
     {
         n64Temp = m_omMgsIndexVec[i];
@@ -3177,7 +3228,6 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
 
                     if(m_eBusType == CAN)
                     {
-                        static STCANDATA sCANMsg;
                         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, n64Temp);
                         rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
                     }
@@ -3203,6 +3253,11 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
                 // String to format interpretted data
 
                 sTemp.m_opTreeWndParam->vUpdateTreeValues(omSigStrArray, rgbTreeItem);
+                // PTV [1.6.6]
+                CRect omTreeRect;
+                vGetTreeRect(i, SigInfoArray.GetSize(), omTreeRect);
+
+                sTemp.m_opTreeWndParam->vUpdateTreeItemRect(omTreeRect);
             }
         }
     }
@@ -3511,6 +3566,1419 @@ HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
     return S_OK;
 }
 
+// PTV XML
+HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
+{
+    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
+
+    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/COLUMN";
+    xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+    if( NULL != pPathObject )
+    {
+        pColMsgWnd = pPathObject->nodesetval;
+    }
+    if(pColMsgWnd != NULL)
+    {
+        ColumnInfoMap InfoMap;
+
+        INT nRetVal = S_OK;
+        nRetVal = xmlUtils::parseColumnInfoNode(pColMsgWnd, InfoMap);
+        //Reading Version.
+        BYTE byVer = 0;
+        //COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+        UINT nSize= 0;
+
+        if(nRetVal == S_OK)
+        {
+            //Reading column Header Positions.
+            CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+            if (pHeaderCtrl != NULL)
+            {
+                int  nColumnCount=0;
+
+                nColumnCount = pColMsgWnd->nodeNr;
+
+                //Reading column count.
+                //COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+
+                LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+
+                for (int i = 0 ; i < nColumnCount; i++)
+                {
+                    xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        CString strName = pNodePtr->name;
+
+                        if(strName == "ID")
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+
+                            strName = ptext;
+
+                            ColumnInfoMap::iterator itr = InfoMap.find(strName.GetBuffer(strName.GetLength()));
+
+                            if(itr != InfoMap.end())
+                            {
+                                INT nOrder = itr->second.nOrder;
+                                pnOrder[i] = itr->second.nOrder;
+                                m_lstMsg.ShowColumn(i, itr->second.isVisble);
+                                m_lstMsg.SetColumnWidth(i, itr->second.nWidth);
+                            }
+                            break;
+                        }
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+                m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+                free(pnOrder);
+            }
+
+            bool bHexDec = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/IsHex";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsHex = ptext;
+                            if(strIsHex == "TRUE")
+                            {
+                                bHexDec = true;
+                            }
+                            else
+                            {
+                                bHexDec = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //Reading Hex/Dec Display.
+
+            //COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
+
+            CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+            //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+            if(bHexDec)
+            {
+                SET_NUM_HEX(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_NUM_DEC(m_bExprnFlag_Disp);
+            }
+
+            //Reading Overwrite/Append Mode.
+            bool bOvrwAppend = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/IsAppend";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsAppend = ptext;
+                            if(strIsAppend == "TRUE")
+                            {
+                                bOvrwAppend = true;
+                            }
+                            else
+                            {
+                                bOvrwAppend = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
+            if(bOvrwAppend)
+            {
+                SET_MODE_APPEND(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_MODE_OVER(m_bExprnFlag_Disp);
+            }
+
+            //Reading Interpret Status if in overwrite Mode.
+            //COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/IsInterpret";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsInterpret = ptext;
+                            if(strIsInterpret == "TRUE")
+                            {
+                                m_bInterPretMsg = TRUE;
+                            }
+                            else
+                            {
+                                m_bInterPretMsg = FALSE;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            if(m_bInterPretMsg)
+            {
+                SET_MODE_INTRP(m_bExprnFlag_Disp);
+            }
+
+            //Reading Time Display.
+            BYTE byTimeDisplay = 0;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Time_Mode";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsTimemode = ptext;
+                            if(strIsTimemode == "ABSOLUTE")
+                            {
+                                byTimeDisplay = BIT_TM_ABS;
+                            }
+                            else if(strIsTimemode == "SYSTEM")
+                            {
+                                byTimeDisplay = BIT_TM_SYS;
+                            }
+                            else if(strIsTimemode == "RELATIVE")
+                            {
+                                byTimeDisplay = BIT_TM_REL;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+            CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+            if(byTimeDisplay == BIT_TM_ABS)
+            {
+                SET_TM_ABS(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_REL)
+            {
+                SET_TM_REL(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_SYS)
+            {
+                SET_TM_SYS(m_bExprnFlag_Disp);
+            }
+
+            WINDOWPLACEMENT sMsgWndPlacement;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            xmlNodeSetPtr pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pvisibility = ptext;
+                                sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pWindowPlacement = ptext;
+                                sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                sMsgWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                sMsgWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                sMsgWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                sMsgWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+
+            //COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+
+            //Save the window visibility status.
+            BOOL bVisible = IsWindowVisible();
+
+            //SetWindowPlacement function call makes the window visible.
+            SetWindowPlacement(&sMsgWndPlacement);
+
+            //Regain the window's visibility status.
+            if(!bVisible)
+            {
+                ShowWindow(SW_HIDE);
+            }
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Interpretation_Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVisibilty = ptext;
+                                m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVWindowPlacement = ptext;
+                                m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+            //COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+        }
+        else
+        {
+            //load default values
+            vSetDefaultConfigValues();
+            vSetDefaultPlacement();
+        }
+    }
+    else
+    {
+        //load default values
+        vSetDefaultConfigValues();
+        vSetDefaultPlacement();
+    }
+    vUpdatePtrInLstCtrl();
+    m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    //Clear all the previous messages.
+    OnEditClearAll();
+
+    //BYTE* pByteSrc = NULL;
+    //pByteSrc = pvDataStream;
+
+    //if (pByteSrc != NULL)
+    //{
+    //    //Reading Version.
+    //    BYTE byVer = 0;
+    //    COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+    //    UINT nSize= 0;
+    //    //Reading Buffer Size.
+    //    COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
+    //    if ((byVer == MSG_FRMT_WND_VERSION) && (nSize > 0))
+    //    {
+    //        //Reading column Header Positions.
+    //        CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+    //        if (pHeaderCtrl != NULL)
+    //        {
+    //            int  nColumnCount=0;
+    //            //Reading column count.
+    //            COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+
+    //            LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+    //            for (int i = 0 ; i < nColumnCount; i++)
+    //            {
+    //                COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
+    //                bool bColumnVisible = false;
+    //                COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
+    //                m_lstMsg.ShowColumn(i, bColumnVisible);
+
+    //                INT nColWidth = 0;
+    //                COPY_DATA_2(&nColWidth, pByteSrc, sizeof(INT));
+    //                m_lstMsg.SetColumnWidth(i, nColWidth);
+    //            }
+    //            m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+    //            free(pnOrder);
+    //        }
+
+
+    //        //Reading Hex/Dec Display.
+    //        bool bHexDec = false;
+    //        COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
+
+    //        CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+    //        //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+    //        if(bHexDec)
+    //        {
+    //            SET_NUM_HEX(m_bExprnFlag_Disp);
+    //        }
+    //        else
+    //        {
+    //            SET_NUM_DEC(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Overwrite/Append Mode.
+    //        bool bOvrwAppend = false;
+    //        COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
+    //        if(bOvrwAppend)
+    //        {
+    //            SET_MODE_APPEND(m_bExprnFlag_Disp);
+    //        }
+    //        else
+    //        {
+    //            SET_MODE_OVER(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Interpret Status if in overwrite Mode.
+    //        COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
+
+    //        if(m_bInterPretMsg)
+    //        {
+    //            SET_MODE_INTRP(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Time Display.
+    //        BYTE byTimeDisplay;
+    //        COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+    //        CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+    //        if(byTimeDisplay == BIT_TM_ABS)
+    //        {
+    //            SET_TM_ABS(m_bExprnFlag_Disp);
+    //        }
+    //        else if(byTimeDisplay == BIT_TM_REL)
+    //        {
+    //            SET_TM_REL(m_bExprnFlag_Disp);
+    //        }
+    //        else if(byTimeDisplay == BIT_TM_SYS)
+    //        {
+    //            SET_TM_SYS(m_bExprnFlag_Disp);
+    //        }
+
+    //        WINDOWPLACEMENT sMsgWndPlacement;
+
+    //        COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+
+    //        //Save the window visibility status.
+    //        BOOL bVisible = IsWindowVisible();
+
+    //        //SetWindowPlacement function call makes the window visible.
+    //        SetWindowPlacement(&sMsgWndPlacement);
+
+    //        //Regain the window's visibility status.
+    //        if(!bVisible)
+    //        {
+    //            ShowWindow(SW_HIDE);
+    //        }
+
+    //        COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+    //    }
+    //    else
+    //    {
+    //        //load default values
+    //        vSetDefaultConfigValues();
+    //        vSetDefaultPlacement();
+    //    }
+    //}
+    //else
+    //{
+    //    //load default values
+    //    vSetDefaultConfigValues();
+    //    vSetDefaultPlacement();
+    //}
+    //vUpdatePtrInLstCtrl();
+    //m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    ////Clear all the previous messages.
+    //OnEditClearAll();
+
+    return S_OK;
+}
+
+HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
+{
+    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
+
+    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/COLUMN";
+    xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+    if( NULL != pPathObject )
+    {
+        pColMsgWnd = pPathObject->nodesetval;
+    }
+    if(pColMsgWnd != NULL)
+    {
+        ColumnInfoMap InfoMap;
+
+        INT nRetVal = S_OK;
+        nRetVal = xmlUtils::parseColumnInfoNode(pColMsgWnd, InfoMap);
+        //Reading Version.
+        BYTE byVer = 0;
+        //COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+        UINT nSize= 0;
+
+        if(nRetVal == S_OK)
+        {
+            //Reading column Header Positions.
+            CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+            if (pHeaderCtrl != NULL)
+            {
+                int  nColumnCount=0;
+
+                nColumnCount = pColMsgWnd->nodeNr;
+
+                //Reading column count.
+                //COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+
+                LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+
+                for (int i = 0 ; i < nColumnCount; i++)
+                {
+                    xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        CString strName = pNodePtr->name;
+
+                        if(strName == "ID")
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+
+                            strName = ptext;
+
+                            ColumnInfoMap::iterator itr = InfoMap.find(strName.GetBuffer(strName.GetLength()));
+
+                            if(itr != InfoMap.end())
+                            {
+                                INT nOrder = itr->second.nOrder;
+                                pnOrder[i] = itr->second.nOrder;
+                                m_lstMsg.ShowColumn(i, itr->second.isVisble);
+                                m_lstMsg.SetColumnWidth(i, itr->second.nWidth);
+                            }
+                            break;
+                        }
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+                m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+                free(pnOrder);
+            }
+
+            bool bHexDec = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/IsHex";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsHex = ptext;
+                            if(strIsHex == "TRUE" || strIsHex == "1")
+                            {
+                                bHexDec = true;
+                            }
+                            else
+                            {
+                                bHexDec = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //Reading Hex/Dec Display.
+
+            //COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
+
+            CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+            //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+            if(bHexDec)
+            {
+                SET_NUM_HEX(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_NUM_DEC(m_bExprnFlag_Disp);
+            }
+
+            //Reading Overwrite/Append Mode.
+            bool bOvrwAppend = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/IsAppend";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsAppend = ptext;
+                            if(strIsAppend == "TRUE")
+                            {
+                                bOvrwAppend = true;
+                            }
+                            else
+                            {
+                                bOvrwAppend = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
+            if(bOvrwAppend)
+            {
+                SET_MODE_APPEND(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_MODE_OVER(m_bExprnFlag_Disp);
+            }
+
+            //Reading Interpret Status if in overwrite Mode.
+            //COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/IsInterpret";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsInterpret = ptext;
+                            if(strIsInterpret == "TRUE" || strIsInterpret == "1")
+                            {
+                                m_bInterPretMsg = TRUE;
+                            }
+                            else
+                            {
+                                m_bInterPretMsg = FALSE;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            if(m_bInterPretMsg)
+            {
+                SET_MODE_INTRP(m_bExprnFlag_Disp);
+            }
+
+            //Reading Time Display.
+            BYTE byTimeDisplay = 0;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Time_Mode";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsTimemode = ptext;
+                            if(strIsTimemode == "ABSOLUTE")
+                            {
+                                byTimeDisplay = BIT_TM_ABS;
+                            }
+                            else if(strIsTimemode == "SYSTEM")
+                            {
+                                byTimeDisplay = BIT_TM_SYS;
+                            }
+                            else if(strIsTimemode == "RELATIVE")
+                            {
+                                byTimeDisplay = BIT_TM_REL;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+            CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+            if(byTimeDisplay == BIT_TM_ABS)
+            {
+                SET_TM_ABS(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_REL)
+            {
+                SET_TM_REL(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_SYS)
+            {
+                SET_TM_SYS(m_bExprnFlag_Disp);
+            }
+
+            WINDOWPLACEMENT sMsgWndPlacement;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            xmlNodeSetPtr pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pvisibility = ptext;
+                                sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pWindowPlacement = ptext;
+                                sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                sMsgWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                sMsgWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                sMsgWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                sMsgWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+
+            //COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+
+            //Save the window visibility status.
+            BOOL bVisible = IsWindowVisible();
+
+            //SetWindowPlacement function call makes the window visible.
+            SetWindowPlacement(&sMsgWndPlacement);
+
+            //Regain the window's visibility status.
+            if(!bVisible)
+            {
+                ShowWindow(SW_HIDE);
+            }
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Interpretation_Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVisibilty = ptext;
+                                m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVWindowPlacement = ptext;
+                                m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+            //COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+        }
+        else
+        {
+            //load default values
+            vSetDefaultConfigValues();
+            vSetDefaultPlacement();
+        }
+    }
+    else
+    {
+        //load default values
+        vSetDefaultConfigValues();
+        vSetDefaultPlacement();
+    }
+    vUpdatePtrInLstCtrl();
+    m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    //Clear all the previous messages.
+    OnEditClearAll();
+
+    //BYTE* pByteSrc = NULL;
+    //pByteSrc = pvDataStream;
+
+    //if (pByteSrc != NULL)
+    //{
+    //    //Reading Version.
+    //    BYTE byVer = 0;
+    //    COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+    //    UINT nSize= 0;
+    //    //Reading Buffer Size.
+    //    COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
+    //    if ((byVer == MSG_FRMT_WND_VERSION) && (nSize > 0))
+    //    {
+    //        //Reading column Header Positions.
+    //        CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+    //        if (pHeaderCtrl != NULL)
+    //        {
+    //            int  nColumnCount=0;
+    //            //Reading column count.
+    //            COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+
+    //            LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+    //            for (int i = 0 ; i < nColumnCount; i++)
+    //            {
+    //                COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
+    //                bool bColumnVisible = false;
+    //                COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
+    //                m_lstMsg.ShowColumn(i, bColumnVisible);
+
+    //                INT nColWidth = 0;
+    //                COPY_DATA_2(&nColWidth, pByteSrc, sizeof(INT));
+    //                m_lstMsg.SetColumnWidth(i, nColWidth);
+    //            }
+    //            m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+    //            free(pnOrder);
+    //        }
+
+
+    //        //Reading Hex/Dec Display.
+    //        bool bHexDec = false;
+    //        COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
+
+    //        CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+    //        //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+    //        if(bHexDec)
+    //        {
+    //            SET_NUM_HEX(m_bExprnFlag_Disp);
+    //        }
+    //        else
+    //        {
+    //            SET_NUM_DEC(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Overwrite/Append Mode.
+    //        bool bOvrwAppend = false;
+    //        COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
+    //        if(bOvrwAppend)
+    //        {
+    //            SET_MODE_APPEND(m_bExprnFlag_Disp);
+    //        }
+    //        else
+    //        {
+    //            SET_MODE_OVER(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Interpret Status if in overwrite Mode.
+    //        COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
+
+    //        if(m_bInterPretMsg)
+    //        {
+    //            SET_MODE_INTRP(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Time Display.
+    //        BYTE byTimeDisplay;
+    //        COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+    //        CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+    //        if(byTimeDisplay == BIT_TM_ABS)
+    //        {
+    //            SET_TM_ABS(m_bExprnFlag_Disp);
+    //        }
+    //        else if(byTimeDisplay == BIT_TM_REL)
+    //        {
+    //            SET_TM_REL(m_bExprnFlag_Disp);
+    //        }
+    //        else if(byTimeDisplay == BIT_TM_SYS)
+    //        {
+    //            SET_TM_SYS(m_bExprnFlag_Disp);
+    //        }
+
+    //        WINDOWPLACEMENT sMsgWndPlacement;
+
+    //        COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+
+    //        //Save the window visibility status.
+    //        BOOL bVisible = IsWindowVisible();
+
+    //        //SetWindowPlacement function call makes the window visible.
+    //        SetWindowPlacement(&sMsgWndPlacement);
+
+    //        //Regain the window's visibility status.
+    //        if(!bVisible)
+    //        {
+    //            ShowWindow(SW_HIDE);
+    //        }
+
+    //        COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+    //    }
+    //    else
+    //    {
+    //        //load default values
+    //        vSetDefaultConfigValues();
+    //        vSetDefaultPlacement();
+    //    }
+    //}
+    //else
+    //{
+    //    //load default values
+    //    vSetDefaultConfigValues();
+    //    vSetDefaultPlacement();
+    //}
+    //vUpdatePtrInLstCtrl();
+    //m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    ////Clear all the previous messages.
+    //OnEditClearAll();
+
+    return S_OK;
+}
+/*******************************************************************************
+  Function Name  : GetConfigData
+  Input(s)       : xmlNodePtr
+  Output         : -
+  Functionality  : Stores configuration to XML node
+  Member of      : CMsgFrmtWnd
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 3-8-2012
+*******************************************************************************/
+bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
+{
+    CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+    int  nColumnCount = pHeaderCtrl->GetItemCount();
+
+    LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+
+    ASSERT(pnOrder != NULL);
+    m_lstMsg.GetColumnOrderArray(pnOrder, nColumnCount);
+    const char* omcVarChar ;
+
+    TCHAR pcName[MAX_PATH]; // sufficient for now
+    LVCOLUMN lvColumn;
+    lvColumn.mask = LVCF_TEXT;
+    lvColumn.pszText = (LPTSTR)pcName;
+    lvColumn.cchTextMax = MAX_PATH;
+
+    for (int i = 0 ; i < nColumnCount; i++)
+    {
+        //<COLUMN>
+        xmlNodePtr pNodeColumn = xmlNewNode(NULL, BAD_CAST DEF_COLUMN);
+        xmlAddChild(pxmlNodePtr, pNodeColumn);
+
+        //<ID>Column_Name</ID>
+        m_lstMsg.GetColumn(i,&lvColumn);
+        CString csColumnName;
+        csColumnName.Format("%s", lvColumn.pszText);
+        omcVarChar = csColumnName;
+        csColumnName.TrimLeft();
+        csColumnName.TrimRight();
+        xmlNodePtr pColName = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
+        xmlAddChild(pNodeColumn, pColName);
+
+        //<Order>1</Order>
+        CString csOrder;
+        csOrder.Format("%d", (pnOrder[i] + 1));
+        omcVarChar = csOrder;
+        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
+        xmlAddChild(pNodeColumn, pOrder);
+
+        //<Width> int </Width>
+        CString csVisible;
+        csVisible.Format("%d", m_lstMsg.IsColumnVisible(i));
+        omcVarChar = csVisible;
+        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_VISIBLE,BAD_CAST omcVarChar);
+        xmlAddChild(pNodeColumn, pVisisble);
+
+        //<IsVisible>bool</IsVisible>
+        CString csWidth;
+        csWidth.Format("%d", m_lstMsg.GetColumnWidth(i));
+        omcVarChar = csWidth;
+        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
+        xmlAddChild(pNodeColumn, pWidth);
+    }
+    free(pnOrder);
+
+    CString csHex;
+    csHex.Format("%d", IS_NUM_HEX_SET(m_bExprnFlag_Disp) > 0 ? true: false);
+    omcVarChar = csHex;
+    xmlNodePtr pHex = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_HEX,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pHex);
+
+    CString csAppend;
+    csAppend.Format("%d",  IS_MODE_APPEND(m_bExprnFlag_Disp) > 0 ? true: false);
+    omcVarChar = csAppend;
+    xmlNodePtr pAppend = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_APPEND,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pAppend);
+
+    CString csInterpret;
+    csInterpret.Format("%d",  IS_MODE_INTRP(m_bExprnFlag_Disp) > 0 ? true: false);
+    omcVarChar = csInterpret;
+    xmlNodePtr pInterpret = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_INTERPRET,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pInterpret);
+
+    //Storing Time Display.
+    CString csTimeDisplay;
+    if(IS_TM_ABS_SET(m_bExprnFlag_Disp))
+    {
+        csTimeDisplay = "ABSOLUTE";
+    }
+    else if(IS_TM_REL_SET(m_bExprnFlag_Disp))
+    {
+        csTimeDisplay = "RELATIVE";
+    }
+    else if(IS_TM_SYS_SET(m_bExprnFlag_Disp))
+    {
+        csTimeDisplay = "SYSTEM";
+    }
+    omcVarChar = csTimeDisplay;
+    xmlNodePtr pTimeDisplay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_TIME_MODE,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pTimeDisplay);
+
+    //window placement
+    xmlNodePtr pNodeWindowsPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlAddChild(pxmlNodePtr, pNodeWindowsPos);
+
+    WINDOWPLACEMENT sMsgWndPlacement;
+    GetWindowPlacement(&sMsgWndPlacement);
+
+    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos, sMsgWndPlacement);
+    ////visibility
+    //CString csVisibility;
+    //csVisibility.Format("%d",  sMsgWndPlacement.flags);
+    //omcVarChar = csVisibility;
+    //xmlNodePtr pVisibility = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pVisibility);
+
+    ////WindowPlacement
+    //CString csWindowPlacement;
+    //csWindowPlacement.Format("%d",  sMsgWndPlacement.flags);
+    //omcVarChar = csWindowPlacement;
+    //xmlNodePtr pWindowPlacement = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pWindowPlacement);
+
+    ////Top
+    //CString csTop;
+    //csTop.Format("%d",  sMsgWndPlacement.rcNormalPosition.top);
+    //omcVarChar = csTop;
+    //xmlNodePtr pTop= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pTop);
+
+    ////Left
+    //CString csLeft;
+    //csLeft.Format("%d",  sMsgWndPlacement.rcNormalPosition.left);
+    //omcVarChar = csLeft;
+    //xmlNodePtr pLeft = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pLeft);
+
+    ////Bottom
+    //CString csBottom;
+    //csBottom.Format("%d",  sMsgWndPlacement.rcNormalPosition.bottom);
+    //omcVarChar = csBottom;
+    //xmlNodePtr pBottom= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pBottom);
+
+    ////Right
+    //CString csRight;
+    //csRight.Format("%d",  sMsgWndPlacement.rcNormalPosition.right);
+    //omcVarChar = csRight;
+    //xmlNodePtr pRight = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeWindowsPos, pRight);
+
+    //Interpretation_Window_Position-------------------------------------------------------
+    xmlNodePtr pNodeInterpretationWndPos = xmlNewNode(NULL, BAD_CAST DEF_INTPRET_WND_POS);
+    xmlAddChild(pxmlNodePtr, pNodeInterpretationWndPos);
+
+    m_podMsgIntprtnDlg->GetWindowPlacement(&m_sMsgIntrpWndPlacement);
+
+    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeInterpretationWndPos, m_sMsgIntrpWndPlacement);
+
+    ////visibility
+    //csVisibility.Format("%d",  sMsgWndPlacement.flags);
+    //omcVarChar = csVisibility;
+    //xmlNodePtr pInterpretVisibility = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeInterpretationWndPos, pInterpretVisibility);
+
+    ////WindowPlacement
+    //csWindowPlacement.Format("%d",  sMsgWndPlacement.flags);
+    //omcVarChar = csWindowPlacement;
+    //xmlNodePtr pInterpretWindowPlacement = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeInterpretationWndPos, pInterpretWindowPlacement);
+
+    ////Top
+    //csTop.Format("%d",  m_sMsgIntrpWndPlacement.rcNormalPosition.top);
+    //omcVarChar = csTop;
+    //xmlNodePtr pInterpretTop= xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeInterpretationWndPos, pInterpretTop);
+
+    ////Left
+    //csLeft.Format("%d",  m_sMsgIntrpWndPlacement.rcNormalPosition.left);
+    //omcVarChar = csLeft;
+    //xmlNodePtr pInterpretLeft = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeInterpretationWndPos, pInterpretLeft);
+
+    ////Bottom
+    //csBottom.Format("%d", m_sMsgIntrpWndPlacement.rcNormalPosition.bottom);
+    //omcVarChar = csBottom;
+    //xmlNodePtr pInterpretBottom= xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeInterpretationWndPos, pInterpretBottom);
+
+    ////Right
+    //csRight.Format("%d", m_sMsgIntrpWndPlacement.rcNormalPosition.right);
+    //omcVarChar = csRight;
+    //xmlNodePtr pInterpretRight = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
+    //xmlAddChild(pNodeInterpretationWndPos, pInterpretRight);
+    //---------------------------------------------------------------------------------------
+    return TRUE;
+}
+
+// PTV XML
 /*******************************************************************************
   Function Name  : SetConfigData
   Input(s)       : pvDataStream
@@ -3656,6 +5124,146 @@ HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
     return S_OK;
 }
 
+HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
+{
+    int         nColCnt =0;
+    xmlNodePtr pCopyNodeptr = NULL;
+    xmlNodePtr pChildNode = NULL;
+    int nIndividualCol = -1;
+    string   strVar;
+
+    pCopyNodeptr = pNode;
+    //get the column count
+    while(pCopyNodeptr)
+    {
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_COLUMN)))
+        {
+            nColCnt++;
+        }
+    }
+
+    LPINT pnOrder = (LPINT) malloc(nColCnt *sizeof(int));
+    while(pNode)
+    {
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_COLUMN)))
+        {
+            nIndividualCol++;
+            pChildNode = pNode->children;
+
+            if (xmlUtils::GetDataFrmNode(pChildNode,DEF_ID,strVar))
+            {
+                pnOrder[nIndividualCol] = (bool)atoi(strVar.c_str());
+            }
+            if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_COL_VISIBLE,strVar))
+            {
+                if(strVar == "TRUE")
+                {
+                    m_lstMsg.ShowColumn(nIndividualCol, true);
+                }
+                else if(strVar == "FALSE")
+                {
+                    m_lstMsg.ShowColumn(nIndividualCol, false);
+                }
+            }
+            if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_COL_WIDTH,strVar))
+            {
+                int nColWidth = atoi(strVar.c_str());
+                m_lstMsg.SetColumnWidth(nIndividualCol, nColWidth);
+            }
+        }
+
+        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_HEX,strVar))
+        {
+            if(strVar == "TRUE")
+            {
+                SET_NUM_HEX(m_bExprnFlag_Disp);
+            }
+            else if(strVar == "FALSE")
+            {
+                SET_NUM_DEC(m_bExprnFlag_Disp);
+            }
+        }
+
+        if  (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_APPEND,strVar))
+        {
+            if(strVar == "TRUE")
+            {
+                SET_MODE_APPEND(m_bExprnFlag_Disp);
+            }
+            else if(strVar == "FALSE")
+            {
+                SET_MODE_OVER(m_bExprnFlag_Disp);
+            }
+        }
+
+        if  (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_INTERPRET,strVar))
+        {
+            if(strVar == "TRUE")
+            {
+                SET_MODE_INTRP(m_bExprnFlag_Disp);
+            }
+        }
+
+        if  (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_TIME_MODE,strVar))
+        {
+            CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+            eTimerMode eTimer = xmlUtils::eGetTimerMode(strVar);
+            if(eTimer == TIME_MODE_ABSOLUTE)
+            {
+                SET_TM_ABS(m_bExprnFlag_Disp);
+            }
+            else if(eTimer == TIME_MODE_RELATIVE)
+            {
+                SET_TM_REL(m_bExprnFlag_Disp);
+            }
+            else if(eTimer == TIME_MODE_SYSTEM)
+            {
+                SET_TM_SYS(m_bExprnFlag_Disp);
+            }
+        }
+
+        WINDOWPLACEMENT sMsgWndPlacement;
+        if (!xmlStrcmp(pNode->name, (const xmlChar*)DEF_WND_POS))
+        {
+            xmlUtils::ParseWindowsPlacement(pNode,sMsgWndPlacement);
+        }
+        //Save the window visibility status.
+        BOOL bVisible = IsWindowVisible();
+        SetWindowPlacement(&sMsgWndPlacement);
+        //Regain the window's visibility status.
+        if(!bVisible)
+        {
+            ShowWindow(SW_HIDE);
+        }
+
+        if (!xmlStrcmp(pNode->name, (const xmlChar*)DEF_INTPRET_WND_POS))
+        {
+            xmlUtils::ParseWindowsPlacement(pNode,m_sMsgIntrpWndPlacement);
+        }
+        pNode = pNode->children;
+
+    }
+
+    if(pnOrder != NULL)
+    {
+        free(pnOrder);
+        pnOrder = NULL;
+    }
+
+    if(!pNode)
+    {
+        //load default values
+        vSetDefaultConfigValues();
+        vSetDefaultPlacement();
+    }
+    vUpdatePtrInLstCtrl();
+    m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    //Clear all the previous messages.
+    OnEditClearAll();
+    return true;
+}
 /*******************************************************************************
   Function Name  : vSetDefaultConfigValues
   Input(s)       : pvDataStream
@@ -3904,6 +5512,8 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
                 m_omMsgDispMap[n64Temp] = sEntry;
             }
         }
+        // PTV [1.6.6]
+        m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
     }
     else //If DB is dissociated
     {
@@ -3946,6 +5556,8 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
             }
         }
 
+        // PTV [1.6.6]
+        m_lstMsg.vShowHideBlankcolumn(FALSE);
     }
     m_lstMsg.Invalidate();
     return 0;

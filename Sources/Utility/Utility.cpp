@@ -670,3 +670,34 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
     }
     return bSuccess;
 }
+/*************************************************************************
+    Function Name    : gnGetCpuClocks
+    Input(s)         : NULL
+    Output           : 64 bit integer
+    Functionality    : Gives the time elapsed
+    Member of        :
+    Author(s)        : Ashwin R Uchil
+    Date Created     : 22-5-2012
+**************************************************************************/
+__int64 gnGetCpuClocks()
+{
+
+    // Counter
+    struct
+    {
+        int low, high;
+    } counter;
+
+    // Use RDTSC instruction to get clocks count
+    __asm push EAX
+    __asm push EDX
+    __asm __emit 0fh __asm __emit 031h // RDTSC
+    __asm mov counter.low, EAX
+    __asm mov counter.high, EDX
+    __asm pop EDX
+    __asm pop EAX
+
+    // Return result
+    return *(__int64*)(&counter);
+
+}

@@ -6,7 +6,7 @@
 ; Test Data:		-
 ; === Test Procedure ===
 #Include <Excel.au3>
-#include<globalFunc.au3>
+#include<globalFunc_J1939.au3>
 Global $oExcel
 Global $crashRes
 

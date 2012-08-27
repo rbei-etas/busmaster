@@ -21,6 +21,9 @@
 #include "TxWindow_stdafx.h"
 #include "TxWndDataStore.h"
 #include "Include/Utils_macro.h"
+#include "include/XMLDefines.h"
+#include "include/XMLDefines.h"
+#include "Utility/XMLUtils.h"
 
 // Tx Window Splitter Position
 #define defTX_WND_ROOT_SPLITTER_RATIO       0.865
@@ -120,6 +123,18 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
             *psData = m_bAutoSavedEnabled;
             break;
         }
+        case TX_DELAY_BTWN_MSG_BLCK_BOOL:
+        {
+            bool* psData = static_cast<bool*>(*lpData);
+            *psData = m_bDelayBetweenMsgBlocks;
+            break;
+        }
+        case TX_DELAY_BTWN_MSG_BLCK_UINT:
+        {
+            UINT* psData = static_cast<UINT*>(*lpData);
+            *psData = m_unTimeDelayBtwnMsgBlocks;
+            break;
+        }
         default:
         {
             ASSERT(FALSE);
@@ -187,9 +202,29 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
         case TX_AUTO_UPDATE_ENABLE:
         {
             bool* psData = static_cast<bool*>(lpVoid);
-            *psData = m_bAutoSavedEnabled;
+            m_bAutoSavedEnabled = *psData;
             m_bIsConfigurationModified = TRUE;
             break;
+        }
+        case TX_DELAY_BTWN_MSG_BLCK_BOOL:
+        {
+            bool* psData = static_cast<bool*>(lpVoid);
+            m_bDelayBetweenMsgBlocks = *psData;
+            m_bIsConfigurationModified = TRUE;
+            break;
+        }
+        case TX_DELAY_BTWN_MSG_BLCK_UINT:
+        {
+            UINT* psData = static_cast<UINT*>(lpVoid);
+            m_unTimeDelayBtwnMsgBlocks = *psData;
+            m_unTimeDelayBtwnMsgBlocks = TRUE;
+            break;
+        }
+        case TX_MSG_UPDATE:
+        {
+            PSMSGBLOCKLIST psMsgBlockInfo =
+                static_cast<PSMSGBLOCKLIST>(lpVoid);
+            bSetDataToGlobal(psMsgBlockInfo);
         }
         default:
         {
@@ -198,6 +233,184 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
         break;
     }
     return bRetVal;
+}
+bool CTxWndDataStore::bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList )
+{
+    if (psMsgBlockList == NULL)
+    {
+        return false;
+    }
+
+    int nIndex = psMsgBlockList->m_unIndex;
+    PSMSGBLOCKLIST psGlobalBlockList        = NULL;
+    PSMSGBLOCKLIST psPrevMsgBlockList       = NULL;
+    if(m_psMsgBlockList == NULL)            //if first message m_psMsgBlockList will be NULL
+    {
+        m_psMsgBlockList = new SMSGBLOCKLIST;
+        psGlobalBlockList = m_psMsgBlockList;
+    }
+    if (psMsgBlockList != NULL)
+    {
+        psGlobalBlockList = m_psMsgBlockList;
+        while((psGlobalBlockList != NULL) && (psMsgBlockList != NULL))
+        {
+            //if theindex are not same then a message is delete, so update the entire linked list
+            if(psMsgBlockList->m_unIndex  != psGlobalBlockList->m_unIndex)
+            {
+                bCopyBlockData(psGlobalBlockList, psMsgBlockList);
+            }
+            else
+            {
+                if(psMsgBlockList ->m_bModified)
+                {
+                    bCopyBlockData(psGlobalBlockList, psMsgBlockList);
+                }
+            }
+            psMsgBlockList->m_bModified = false;
+            psMsgBlockList      = psMsgBlockList->m_psNextMsgBlocksList;
+            if(psMsgBlockList == NULL || psGlobalBlockList->m_psNextMsgBlocksList == NULL )
+            {
+                //store the pointer for later use, we have to make the last pointer NULL
+                psPrevMsgBlockList  = psGlobalBlockList;
+            }
+            psGlobalBlockList   = psGlobalBlockList->m_psNextMsgBlocksList;
+        }
+    }
+
+    while(psGlobalBlockList != NULL)    //messages from the end of Global list have to be deleted since the are delete by user
+    {
+        if(psPrevMsgBlockList)
+        {
+            psPrevMsgBlockList->m_psNextMsgBlocksList = NULL;    //set the last node's nxt node as NULL
+        }
+        while(psGlobalBlockList)
+        {
+            psPrevMsgBlockList = psGlobalBlockList;         //save the current node
+            psGlobalBlockList = psPrevMsgBlockList->m_psNextMsgBlocksList; //get the nxt node
+            bDeleteMsgList(psPrevMsgBlockList->m_psTxCANMsgList);
+            delete psPrevMsgBlockList;                      //delete the current node
+            psPrevMsgBlockList = NULL;
+        }
+    }
+    while(psMsgBlockList != NULL) //if new block are added update global
+    {
+        psGlobalBlockList = new     SMSGBLOCKLIST;
+        bCopyBlockData(psGlobalBlockList,psMsgBlockList);
+        psPrevMsgBlockList->m_psNextMsgBlocksList = psGlobalBlockList;
+        psMsgBlockList = psMsgBlockList->m_psNextMsgBlocksList;
+        psGlobalBlockList->m_psNextMsgBlocksList = NULL;
+        psPrevMsgBlockList = psGlobalBlockList;
+    }
+    return true;
+}
+bool CTxWndDataStore::bDeleteMsgList(PSTXCANMSGLIST& psMsgList)
+{
+    PSTXCANMSGLIST      psPrevMsgList = NULL;
+    while(psMsgList)
+    {
+        psPrevMsgList = psMsgList;
+        psMsgList = psMsgList->m_psNextMsgDetails;
+        delete psPrevMsgList;
+        psPrevMsgList = NULL;
+    }
+    return true;
+}
+/******************************************************************************
+    Function Name    :  bCopyBlockData
+
+    Input(s)         :  PSMSGBLOCKLIST, PSMSGBLOCKLIST
+    Output           :  bool
+    Functionality    :  Copies the PSMSGBLOCKLIST from source to destination
+    Member of        :  CTxWndDataStore
+    Friend of        :      -
+
+    Author(s)        :  Ashwin R Uchil
+    Date Created     :  22.8.2012
+    Modifications    :
+******************************************************************************/
+bool CTxWndDataStore::bCopyBlockData( PSMSGBLOCKLIST psDestBlockList,  PSMSGBLOCKLIST psSrcBlockList)
+{
+    strcpy_s(psDestBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, psSrcBlockList->m_acStrBlockName);
+    psDestBlockList->m_bActive              = psSrcBlockList->m_bActive;
+    psDestBlockList->m_bTxAllFrame          = psSrcBlockList->m_bTxAllFrame;
+    psDestBlockList->m_bType                = psSrcBlockList->m_bType;
+    psDestBlockList->m_ucKeyValue           = psSrcBlockList->m_ucKeyValue;
+    psDestBlockList->m_ucTrigger            = psSrcBlockList->m_ucTrigger;
+    psDestBlockList->m_unMsgCount           = psSrcBlockList->m_unMsgCount;
+    psDestBlockList->m_unTimeInterval       = psSrcBlockList->m_unTimeInterval;
+    psDestBlockList->m_unIndex              = psSrcBlockList->m_unIndex;
+    //if destination block did not have any message list, then add a new one to the destination
+    if(psDestBlockList->m_psTxCANMsgList == NULL && psSrcBlockList->m_psTxCANMsgList != NULL)
+    {
+        psDestBlockList->m_psTxCANMsgList = new STXCANMSGLIST;
+    }
+    //critical section is used so that source is not changed currently in  TxWindow
+    EnterCriticalSection(&CTxMsgManager::m_csUpdationLock);
+    bCopyMsgList(psDestBlockList->m_psTxCANMsgList, &psSrcBlockList->m_psTxCANMsgList);
+    LeaveCriticalSection(&CTxMsgManager::m_csUpdationLock);
+    if(psSrcBlockList->m_unMsgCount == 0)
+    {
+        psDestBlockList->m_psTxCANMsgList = NULL;    //this will not be set in the above function
+    }
+    return true;
+}
+
+/******************************************************************************
+    Function Name    :  bCopyMsgList
+
+    Input(s)         :  PSTXCANMSGLIST&, PSTXCANMSGLIST*
+    Output           :  bool
+    Functionality    :  Copies the CanMsgList from source to destination
+    Member of        :  CTxWndDataStore
+    Friend of        :      -
+
+    Author(s)        :  Ashwin R Uchil
+    Date Created     :  22.8.2012
+    Modifications    :
+******************************************************************************/
+bool CTxWndDataStore::bCopyMsgList(PSTXCANMSGLIST&  ppsDestTxCANMsgList , PSTXCANMSGLIST*  ppsSrcTxCANMsgList)
+{
+    //pointer to pointer is used so that, if its the pointer that is stored in the block and all the messages are deleted,
+    //then the block will point to a junk value and we will not be able to send the new pointer to the block
+    PSTXCANMSGLIST psSrcTxCANMsgList = *ppsSrcTxCANMsgList;         //pointer to pointer
+    PSTXCANMSGLIST psDestTxCANMsgList = ppsDestTxCANMsgList;        //pointer to pointer
+    PSTXCANMSGLIST psPrevTxCANMsgList       = NULL;
+    psPrevTxCANMsgList = NULL;
+    //copy the contents directly from the src msg  list
+    while((psSrcTxCANMsgList != NULL)&& (psDestTxCANMsgList != NULL))
+    {
+        memcpy(&(psDestTxCANMsgList->m_sTxMsgDetails), &(psSrcTxCANMsgList->m_sTxMsgDetails),
+               sizeof(STXCANMSGDETAILS));
+        psDestTxCANMsgList->m_unIndex = psSrcTxCANMsgList->m_unIndex;
+        psSrcTxCANMsgList->m_bModified = false;
+        psSrcTxCANMsgList     = psSrcTxCANMsgList->m_psNextMsgDetails;
+        //store the previous message so that we can provide the link to the next message
+        if(psSrcTxCANMsgList != NULL || psDestTxCANMsgList->m_psNextMsgDetails != NULL)
+        {
+            psPrevTxCANMsgList      = psDestTxCANMsgList;
+        }
+        psDestTxCANMsgList    = psDestTxCANMsgList->m_psNextMsgDetails;
+    }
+    if(psDestTxCANMsgList != NULL)    //if any message is delete then delete the extra messages
+    {
+        if(psPrevTxCANMsgList)
+        {
+            psPrevTxCANMsgList->m_psNextMsgDetails = NULL;
+        }
+        bDeleteMsgList(psDestTxCANMsgList);
+    }
+    while(psSrcTxCANMsgList != NULL)      //if new messages are added update global
+    {
+        psDestTxCANMsgList = new  STXCANMSGLIST;
+        memcpy(&(psDestTxCANMsgList->m_sTxMsgDetails), &(psSrcTxCANMsgList->m_sTxMsgDetails),
+               sizeof(STXCANMSGDETAILS));
+        psDestTxCANMsgList->m_unIndex = psSrcTxCANMsgList->m_unIndex;
+        psPrevTxCANMsgList->m_psNextMsgDetails= psDestTxCANMsgList;
+        psSrcTxCANMsgList = psSrcTxCANMsgList->m_psNextMsgDetails;
+        psDestTxCANMsgList->m_psNextMsgDetails = NULL;
+        psPrevTxCANMsgList = psDestTxCANMsgList;
+    }
+    return true;
 }
 
 BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/)
@@ -231,6 +444,14 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
             COPY_DATA_2(&(psTempBlock->m_bTxAllFrame), pbyTemp, sizeof(BOOL));
 
             COPY_DATA_2(&(psTempBlock->m_unMsgCount), pbyTemp, sizeof(UINT));
+            if(nVersion <3)
+            {
+                psTempBlock->m_unIndex = i;
+            }
+            else
+            {
+                COPY_DATA_2(&(psTempBlock->m_unIndex), pbyTemp, sizeof(UINT));
+            }
             PSTXCANMSGLIST psTxCanMsgTail = NULL;
             for (UINT j = 0; j < psTempBlock->m_unMsgCount; j++)
             {
@@ -269,6 +490,12 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         {
             COPY_DATA_2(&m_bAutoSavedEnabled, pbyTemp,  sizeof(bool));
             bSetTxData(TX_AUTO_UPDATE_ENABLE, &m_bAutoSavedEnabled);        //save the status of auto save
+            COPY_DATA_2(&m_bDelayBetweenMsgBlocks, pbyTemp,  sizeof(bool));
+            bSetTxData(TX_DELAY_BTWN_MSG_BLCK_BOOL, &m_bDelayBetweenMsgBlocks);     //save the delay between msg
+            COPY_DATA_2(&m_unTimeDelayBtwnMsgBlocks, pbyTemp,  sizeof(UINT));
+            bSetTxData(TX_DELAY_BTWN_MSG_BLCK_UINT, &m_unTimeDelayBtwnMsgBlocks);       //save the delay between msg
+            CTxMsgManager::s_bDelayBetweenBlocksOnly = m_bDelayBetweenMsgBlocks;
+            CTxMsgManager::s_unTimeDelayBtnMsgBlocks = m_unTimeDelayBtwnMsgBlocks;
         }
     }
     return pbyTemp;
@@ -296,7 +523,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
         unSize += sizeof (BOOL); // Send All msgs
 
         unSize += sizeof(UINT);// To store no of msgs in each block
-
+        unSize += sizeof(UINT); //index
         unSize += (psTemp->m_unMsgCount) * sizeof (STXCANMSGDETAILS);
         psTemp = psTemp->m_psNextMsgBlocksList;
     }
@@ -304,6 +531,8 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     unSize += sizeof(WINDOWPLACEMENT);
     unSize += sizeof(STXMSGSPLITTERDATA);
     unSize += sizeof(bool);                 //allocation for auto update
+    unSize += sizeof(bool);                 //allocation for delay between msg
+    unSize += sizeof(UINT);                 //allocation for delay between msg
 
     //ALLOCATE THE MEMORY
     pbyCfgData = new BYTE[unSize];
@@ -329,6 +558,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
 
         COPY_DATA(pbyTemp, &(psTempBlock->m_unMsgCount), sizeof(UINT));
 
+        COPY_DATA(pbyTemp, &(psTempBlock->m_unIndex), sizeof(UINT));
         PSTXCANMSGLIST psTempCanList = psTempBlock->m_psTxCANMsgList;
         while (psTempCanList != NULL)
         {
@@ -347,6 +577,8 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     //Get the Auto save option
     COPY_DATA(pbyTemp, &m_bAutoSavedEnabled, sizeof(bool));
 
+    COPY_DATA(pbyTemp, &m_bDelayBetweenMsgBlocks, sizeof(bool));
+    COPY_DATA(pbyTemp, &m_unTimeDelayBtwnMsgBlocks, sizeof(UINT));
     //Update the OUT PARAMETERS
     pbyConfigData = pbyCfgData;
     nConfigSize = unSize;
@@ -354,6 +586,590 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     return pbyTemp;//return the latest pointer
 }
 
+bool CTxWndDataStore::pbySetConfigData(xmlDocPtr pDoc)
+{
+    vReleaseMultiMsgInfo(m_psMsgBlockList);
+    m_psMsgBlockList = NULL;
+    PSMSGBLOCKLIST psBlockTail = NULL;
+    m_unNumberOfMsgBlockCount = 0;
+
+    if(pDoc == NULL)
+    {
+        return false;
+    }
+    xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Tx_Window";
+    xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+    xmlNodePtr pNode = NULL;
+    xmlNodePtr pChildNode = NULL;
+    xmlNodePtr pMsgNode = NULL;
+    xmlNodePtr pDataBytesNode = NULL;
+    PSTXCANMSGLIST psTxCanMsgTail = NULL;
+    string   strVar;
+    if( NULL != pObjectPath )
+    {
+        xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
+        if( NULL != pNodeSet )
+        {
+            pNode = pNodeSet->nodeTab[0];       //Take First One only
+        }
+        if( NULL != pNode )
+        {
+            pNode = pNode->xmlChildrenNode;
+            while (pNode != NULL)           //loop through the node of "CAN_Tx_Window"
+            {
+                if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_MSG_BLOCK)))               //check whether block exists
+                {
+                    PSMSGBLOCKLIST psTempBlock = new SMSGBLOCKLIST;
+                    pChildNode = pNode->xmlChildrenNode;
+                    m_unNumberOfMsgBlockCount++;
+                    int     nNoOfMess = 0;
+                    while(pChildNode)       //loop through the node of "Message_Block"
+                    {
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_BLOCK_NAME,strVar))
+                        {
+                            strcpy(psTempBlock->m_acStrBlockName,strVar.c_str());               //copy block name
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MSG_ENABLED,strVar))
+                        {
+                            psTempBlock->m_bActive = (bool)atoi(strVar.c_str());                //copy Is enabled
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MSG_TRIGGER,strVar))
+                        {
+                            psTempBlock->m_ucTrigger = (UCHAR)atoi( strVar.c_str());            //Trigger value
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_KEY_VAL,strVar))
+                        {
+                            if(strVar.length() > 0)
+                            {
+                                psTempBlock->m_ucKeyValue = strVar.at(0);
+                            }
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_INDEX,strVar))
+                        {
+                            psTempBlock->m_unIndex = (UINT)atoi(strVar.c_str());                    //Index
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_TIME_INTERVAL,strVar))
+                        {
+                            psTempBlock->m_unTimeInterval = (UINT)atoi(strVar.c_str());             //Time interval
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MSG_IS_CYCLIC,strVar))
+                        {
+                            psTempBlock->m_bType = (bool)atoi(strVar.c_str());                      //Is cyclic
+                        }
+                        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_TRANSMIT_ALL_FRAMES,strVar))
+                        {
+                            psTempBlock->m_bTxAllFrame = (bool)atoi(strVar.c_str());                //Transmit all frames
+                        }
+                        if ((!xmlStrcmp(pChildNode->name, (const xmlChar*)DEF_MSGS)))
+                        {
+                            pMsgNode = pChildNode->xmlChildrenNode;
+                            PSTXCANMSGLIST psTempCanList = new STXCANMSGLIST;
+                            STCAN_MSG*   pStcanMsg = &psTempCanList->m_sTxMsgDetails.m_sTxMsg;
+                            nNoOfMess++;
+                            while(pMsgNode)
+                            {
+
+                                if(pStcanMsg)
+                                {
+                                    if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_MSG_ID,strVar))
+                                    {
+                                        pStcanMsg->m_unMsgID =  (UINT)atoi(strVar.c_str());                 //Msg ID
+                                    }
+                                    if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_EXTENDED,strVar))             //Is Extended
+                                    {
+                                        if(strVar == "TRUE")
+                                        {
+                                            pStcanMsg->m_ucEXTENDED = 1;
+                                        }
+                                        else
+                                        {
+                                            pStcanMsg->m_ucEXTENDED = 0;
+                                        }
+                                    }
+                                    if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_RTR,strVar))
+                                    {
+                                        pStcanMsg->m_ucRTR =  (UCHAR)atoi(strVar.c_str());      //Is RTR
+                                    }
+                                    if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_DLC,strVar))
+                                    {
+                                        pStcanMsg->m_ucDataLen =  (UCHAR)atoi(strVar.c_str());          //DLC
+                                    }
+
+                                    if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_CHANNEL,strVar))
+                                    {
+                                        pStcanMsg->m_ucChannel =  (UCHAR)atoi(strVar.c_str());          //Channel
+                                    }
+                                    if ((!xmlStrcmp(pMsgNode->name, (const xmlChar*)DEF_DATABYTES)))
+                                    {
+                                        pDataBytesNode = pMsgNode->xmlChildrenNode;
+                                        int iCnt =0;
+                                        while(pDataBytesNode)
+                                        {
+                                            if (xmlUtils::GetDataFrmNode(pDataBytesNode,DEF_BYTE,strVar))
+                                            {
+                                                pStcanMsg->m_ucData[iCnt] = (UCHAR)atoi(strVar.c_str());    //Channel
+                                                iCnt++;
+                                            }
+                                            pDataBytesNode = pDataBytesNode->next;
+                                        }
+                                    }
+
+                                }
+                                if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_MSG_ENABLED,strVar))
+                                {
+                                    psTempCanList->m_sTxMsgDetails.m_bEnabled =  (bool)atoi(strVar.c_str());    //enabled
+                                    psTempCanList->m_sTxMsgDetails.m_bIsMsgDirty = true;
+                                }
+                                if (xmlUtils::GetDataFrmNode(pMsgNode,DEF_INDEX,strVar))
+                                {
+                                    psTempCanList->m_unIndex =  (UINT)atoi(strVar.c_str());             //Index
+                                }
+                                pMsgNode = pMsgNode->next;          //incerment messages
+                            }
+
+                            if (psTempBlock->m_psTxCANMsgList == NULL)//For the first time
+                            {
+                                psTxCanMsgTail = psTempBlock->m_psTxCANMsgList = psTempCanList;
+                            }
+                            else
+                            {
+                                psTxCanMsgTail->m_psNextMsgDetails = psTempCanList;
+                                psTxCanMsgTail = psTempCanList;
+                            }
+                        }
+                        pChildNode = pChildNode->next;              //increment mesage block
+                    }
+                    psTempBlock->m_unMsgCount = nNoOfMess;
+                    nNoOfMess = 0;
+                    if (m_psMsgBlockList == NULL)//For the first time
+                    {
+                        psBlockTail = m_psMsgBlockList = psTempBlock;
+                    }
+                    else
+                    {
+                        psBlockTail->m_psNextMsgBlocksList = psTempBlock;
+                        psBlockTail = psTempBlock;
+                    }
+                }
+
+                if(!xmlStrcmp(pNode->name, (const xmlChar*)DEF_WND_POS))
+                {
+                    WINDOWPLACEMENT WndPlacement;
+                    xmlUtils::ParseWindowsPlacement(pNode,WndPlacement);
+                    bSetTxData(TX_WINDOW_PLACEMENT, &WndPlacement);
+                }
+                if(xmlUtils::GetDataFrmNode(pNode,DEF_AUTOSAVE,strVar))
+                {
+                    m_bAutoSavedEnabled =  (bool)atoi(strVar.c_str());                  //Channel
+                }
+
+                if(xmlUtils::GetDataFrmNode(pNode,DEF_BLOCKS_TIME_ENABLED,strVar))
+                {
+                    //delay between enabled
+                    if(strVar == "TRUE")
+                    {
+                        m_bDelayBetweenMsgBlocks = true;
+                    }
+                    else
+                    {
+                        m_bDelayBetweenMsgBlocks = false;
+                    }
+                    CTxMsgManager::s_bDelayBetweenBlocksOnly = m_bDelayBetweenMsgBlocks;
+                }
+                if(xmlUtils::GetDataFrmNode(pNode,DEF_BLOCKS_TIME_DELAY,strVar))
+                {
+                    m_unTimeDelayBtwnMsgBlocks =  (UINT)atoi(strVar.c_str());               //delay in milli seconds
+                    CTxMsgManager::s_unTimeDelayBtnMsgBlocks = m_unTimeDelayBtwnMsgBlocks;
+                }
+
+                bGetSplitterDataFrmNode(pNode);
+
+                pNode = pNode->next;
+            }
+        }
+    }
+    return true;
+}
+
+bool CTxWndDataStore::bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr)
+{
+    xmlNodePtr pChildNode = NULL;
+    string   strVar;
+    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_0))
+    {
+        pChildNode = pxmlNodePtr->children;
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = atoi(strVar.c_str());
+        }
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1] = atoi(strVar.c_str());
+        }
+    }
+
+    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_1))
+    {
+        pChildNode = pxmlNodePtr->children;
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0] = atoi(strVar.c_str());
+        }
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1] = atoi(strVar.c_str());
+        }
+    }
+
+    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_LEFT_0))
+    {
+        pChildNode = pxmlNodePtr->children;
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0] = atoi(strVar.c_str());
+        }
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1] = atoi(strVar.c_str());
+        }
+    }
+
+    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_LEFT_1))
+    {
+        pChildNode = pxmlNodePtr->children;
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0] = atoi(strVar.c_str());
+        }
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1] = atoi(strVar.c_str());
+        }
+    }
+
+    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_RIGHT_0))
+    {
+        pChildNode = pxmlNodePtr->children;
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0] = atoi(strVar.c_str());
+        }
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1] = atoi(strVar.c_str());
+        }
+    }
+
+    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_RIGHT_1))
+    {
+        pChildNode = pxmlNodePtr->children;
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][0] = atoi(strVar.c_str());
+        }
+        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+        {
+            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][1] = atoi(strVar.c_str());
+        }
+    }
+    return true;
+}
+
+
+BOOL CTxWndDataStore::pbyGetConfigData(xmlNodePtr pxmlNodePtr)
+{
+    PSMSGBLOCKLIST psTempBlock = m_psMsgBlockList;
+
+    const char* omcVarChar ;
+
+    while (psTempBlock != NULL && m_unNumberOfMsgBlockCount > 0)
+    {
+        //<Message_Block>
+        xmlNodePtr pNodeMsgBlock = xmlNewNode(NULL, BAD_CAST DEF_MSG_BLOCK);
+        xmlAddChild(pxmlNodePtr, pNodeMsgBlock);
+
+        //<Block_Name>Block_name</Block_Name>
+        CString csName = psTempBlock->m_acStrBlockName;
+        omcVarChar = csName;
+        xmlNodePtr pName = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_BLOCK_NAME,BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pName);
+
+        //<IsEnabled>bool</IsEnabled>
+        CString csIsEnabled;
+        csIsEnabled.Format("%d", psTempBlock->m_bActive);
+        omcVarChar = csIsEnabled;
+        xmlNodePtr pEnabled = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_MSG_ENABLED, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pEnabled);
+
+        //<Trigger>KEY</Trigger>
+        CString csTrigger;
+        csTrigger.Format("%d", psTempBlock->m_ucTrigger);
+        omcVarChar = csTrigger;
+        xmlNodePtr pTrigger = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_MSG_TRIGGER, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pTrigger);
+
+        //<Index>int</Index>
+        CString csIndex;
+        csIndex.Format("%d", psTempBlock->m_unIndex);
+        omcVarChar = csIndex;
+        xmlNodePtr pIndex = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pIndex);
+        //<Key_Value>Key</Key_Value>
+        CString csKeyValue;
+        csKeyValue.Format("%c", psTempBlock->m_ucKeyValue);
+        omcVarChar = csKeyValue;
+        xmlNodePtr pKeyValue = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_KEY_VAL, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pKeyValue);
+
+        //<Time_Interval>Int_val</Time_Interval>
+        CString csTimerInterval;
+        csTimerInterval.Format("%u", psTempBlock->m_unTimeInterval);
+        omcVarChar = csTimerInterval;
+        xmlNodePtr pTimerInterval = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_TIME_INTERVAL, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pTimerInterval);
+
+        //<IsCyclic>TRUE</IsCyclic>
+        CString csType;
+        csType.Format("%u", psTempBlock->m_bType);
+        omcVarChar = csType;
+        xmlNodePtr pType = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_MSG_IS_CYCLIC, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pType);
+
+        //<Transmit_All_Frames>bool</Transmit_All_Frames>
+        CString csAllFrame;
+        csAllFrame.Format("%u",psTempBlock->m_bTxAllFrame);
+        omcVarChar = csAllFrame;
+        xmlNodePtr pAllFrame = xmlNewChild(pNodeMsgBlock, NULL, BAD_CAST DEF_TRANSMIT_ALL_FRAMES, BAD_CAST omcVarChar);
+        xmlAddChild(pNodeMsgBlock, pAllFrame);
+
+        PSTXCANMSGLIST psTempCanList = psTempBlock->m_psTxCANMsgList;
+        while (psTempCanList != NULL)           //loop through the message to store it
+        {
+            xmlNodePtr pNodeMsg = xmlNewNode(NULL, BAD_CAST DEF_MSGS); //<MESSAGES>
+            xmlAddChild(pNodeMsgBlock, pNodeMsg);
+
+            //<Id>X</Id> , where X is Msg ID
+            CString csMsgID;
+            csMsgID.Format("%u", psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_unMsgID);
+            omcVarChar = csMsgID;
+            xmlNodePtr pMsgID = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_MSG_ID, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pMsgID);
+
+            //<IsExtended>X</IsExtended> , where X is bool
+            CString csExtended;
+
+            if(psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucEXTENDED == TRUE)
+            {
+                omcVarChar = "TRUE";
+            }
+            else
+            {
+                omcVarChar = "FALSE";
+            }
+
+            //csExtended.Format("%c", psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucEXTENDED);
+            //omcVarChar = csExtended;
+            xmlNodePtr pExtended = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_EXTENDED, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pExtended);
+
+            //<IsRtr>X</IsRtr> , where X is RTR
+            CString csRTR;
+            csRTR.Format("%d", psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucRTR);
+            omcVarChar = csRTR;
+            xmlNodePtr pRTR = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_RTR, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pRTR);
+
+            //<DLC>X</DLC> , where X is DLC
+            CString csDLC;
+            csDLC.Format("%d", psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucDataLen);
+            omcVarChar = csDLC;
+            xmlNodePtr pDLC = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_DLC, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pDLC);
+            //<Index>int</Index>
+            CString csIndex;
+            csIndex.Format("%d", psTempCanList->m_unIndex);
+            omcVarChar = csIndex;
+            xmlNodePtr pIndex = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pIndex);
+
+            //<Channel>X</Channel> , where X is channel
+            CString csChannel;
+            csChannel.Format("%d", psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucChannel);
+            omcVarChar = csChannel;
+            xmlNodePtr pChannel = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pChannel);
+
+            xmlNodePtr pNodeDataBytes = xmlNewNode(NULL, BAD_CAST DEF_DATABYTES);       //<DataBytes>
+            xmlAddChild(pNodeMsg, pNodeDataBytes);
+            for(int iDataCnt =0; iDataCnt <8; iDataCnt++)
+            {
+                //  <Byte>X</Byte>, where X is the data
+                CString  csDataByte;
+                csDataByte.Format("%d", psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucData[iDataCnt]);
+                omcVarChar = csDataByte;
+                xmlNodePtr pDataByte= xmlNewChild(pNodeDataBytes, NULL, BAD_CAST DEF_BYTE, BAD_CAST omcVarChar);
+                xmlAddChild(pNodeDataBytes, pDataByte);
+            }
+            //<Channel>X</Channel> , where X is channel
+            CString csMsgEnabled;
+            csMsgEnabled.Format("%d", psTempCanList->m_sTxMsgDetails.m_bEnabled);
+            omcVarChar = csMsgEnabled;
+            xmlNodePtr pMsgEnabled = xmlNewChild(pNodeMsg, NULL, BAD_CAST DEF_MSG_ENABLED, BAD_CAST omcVarChar);
+            xmlAddChild(pNodeMsg, pMsgEnabled);
+
+            psTempCanList = psTempCanList->m_psNextMsgDetails;
+        }
+
+        psTempBlock = psTempBlock->m_psNextMsgBlocksList;
+    }
+
+    //windows position
+    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlAddChild(pxmlNodePtr, pNodeWndPos);
+
+    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,m_sTxWndPlacement);
+
+    CString csAutoSave;
+    if(m_bAutoSavedEnabled)
+    {
+        csAutoSave = "1";
+    }
+    else
+    {
+        csAutoSave = "0";
+    }
+
+
+    omcVarChar = csAutoSave;
+    xmlNodePtr pAutoSave = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_AUTOSAVE, BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pAutoSave);
+
+    CString strIsDelayBtwnBlcksEnabled = "FALSE";
+
+    if(m_bDelayBetweenMsgBlocks == TRUE)
+    {
+        strIsDelayBtwnBlcksEnabled = "TRUE";
+    }
+
+    xmlNodePtr pIsEnbldBlcksDelay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_BLOCKS_TIME_ENABLED, BAD_CAST strIsDelayBtwnBlcksEnabled.GetBuffer(strIsDelayBtwnBlcksEnabled.GetLength()));
+    xmlAddChild(pxmlNodePtr, pIsEnbldBlcksDelay);
+
+    CString strDelayBtwnBlcks = "";
+
+    strDelayBtwnBlcks.Format("%d", m_unTimeDelayBtwnMsgBlocks);
+
+    xmlNodePtr pIsBlcksDelay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_BLOCKS_TIME_DELAY, BAD_CAST strDelayBtwnBlcks.GetBuffer(strDelayBtwnBlcks.GetLength()));
+    xmlAddChild(pxmlNodePtr, pIsBlcksDelay);
+
+    bSplitterConfig(pxmlNodePtr);
+
+    return TRUE;
+}
+
+bool CTxWndDataStore::bSplitterConfig(xmlNodePtr pxmlNodePtr)
+{
+    const char* omcVarChar ;
+
+    //<Splitter_Window_Root_0>---------------------------------------------
+    xmlNodePtr pNodeSWRoot0 = xmlNewNode(NULL, BAD_CAST DEF_SW_ROOT_0);
+    xmlAddChild(pxmlNodePtr, pNodeSWRoot0);
+
+    //<CxIdeal />
+    CString  csCxIdeal;
+    csCxIdeal.Format("%d", m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] );
+    omcVarChar = csCxIdeal;
+    xmlNodePtr pCxIdeal = xmlNewChild(pNodeSWRoot0, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWRoot0, pCxIdeal);
+
+    // <CxMin />
+    CString  csCxMin;
+    csCxMin.Format("%d", m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1] );
+    omcVarChar = csCxMin;
+    xmlNodePtr pcsCxMin = xmlNewChild(pNodeSWRoot0, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWRoot0, pcsCxMin);
+
+    //<Splitter_Window_Root_1>-----------------------------------------------
+    xmlNodePtr pNodeSWRoot1 = xmlNewNode(NULL, BAD_CAST DEF_SW_ROOT_1);
+    xmlAddChild(pxmlNodePtr, pNodeSWRoot1);
+
+    //<CxIdeal />
+    csCxIdeal.Format("%d", m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0] );
+    omcVarChar = csCxIdeal;
+    pCxIdeal = xmlNewChild(pNodeSWRoot1, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWRoot1, pCxIdeal);
+
+    // <CxMin />
+    csCxMin.Format("%d", m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1] );
+    omcVarChar = csCxMin;
+    pcsCxMin = xmlNewChild(pNodeSWRoot1, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWRoot1, pcsCxMin);
+
+    //<Splitter_Window_Left_0>--------------------------------------------------
+    xmlNodePtr pNodeSWLeft0 = xmlNewNode(NULL, BAD_CAST DEF_SW_LEFT_0);
+    xmlAddChild(pxmlNodePtr, pNodeSWLeft0);
+
+    //<CxIdeal />
+    csCxIdeal.Format("%d", m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0] );
+    omcVarChar = csCxIdeal;
+    pCxIdeal = xmlNewChild(pNodeSWLeft0, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWLeft0, pCxIdeal);
+
+    // <CxMin />
+    csCxMin.Format("%d", m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1] );
+    omcVarChar = csCxMin;
+    pcsCxMin = xmlNewChild(pNodeSWLeft0, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWLeft0, pcsCxMin);
+
+    //<Splitter_Window_Left_1>---------------------------------------------------
+    xmlNodePtr pNodeSWLeft1 = xmlNewNode(NULL, BAD_CAST DEF_SW_LEFT_1);
+    xmlAddChild(pxmlNodePtr, pNodeSWLeft1);
+
+    //<CxIdeal />
+    csCxIdeal.Format("%d", m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0] );
+    omcVarChar = csCxIdeal;
+    pCxIdeal = xmlNewChild(pNodeSWLeft1, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWLeft1, pCxIdeal);
+
+    // <CxMin />
+    csCxMin.Format("%d", m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1] );
+    omcVarChar = csCxMin;
+    pcsCxMin = xmlNewChild(pNodeSWLeft1, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWLeft1, pcsCxMin);
+
+    //<Splitter_Window_Right_0>--------------------------------------------------
+    xmlNodePtr pNodeSWRight0 = xmlNewNode(NULL, BAD_CAST DEF_SW_RIGHT_0);
+    xmlAddChild(pxmlNodePtr, pNodeSWRight0);
+
+    //<CxIdeal />
+    csCxIdeal.Format("%d", m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0] );
+    omcVarChar = csCxIdeal;
+    pCxIdeal = xmlNewChild(pNodeSWRight0, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWRight0, pCxIdeal);
+
+    // <CxMin />
+    csCxMin.Format("%d", m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1] );
+    omcVarChar = csCxMin;
+    pcsCxMin = xmlNewChild(pNodeSWRight0, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWRight0, pcsCxMin);
+
+    //<Splitter_Window_Right_1>---------------------------------------------------
+    xmlNodePtr pNodeSWRight1 = xmlNewNode(NULL, BAD_CAST DEF_SW_RIGHT_1);
+    xmlAddChild(pxmlNodePtr, pNodeSWLeft1);
+
+    //<CxIdeal />
+    csCxIdeal.Format("%d", m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][0] );
+    omcVarChar = csCxIdeal;
+    pCxIdeal = xmlNewChild(pNodeSWLeft1, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWLeft1, pCxIdeal);
+
+    // <CxMin />
+    csCxMin.Format("%d", m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][1] );
+    omcVarChar = csCxMin;
+    pcsCxMin = xmlNewChild(pNodeSWLeft1, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSWLeft1, pcsCxMin);
+
+    return true;
+}
 /******************************************************************************/
 /*  Function Name    :  bGetMultiMsgInfo                                      */
 /*                                                                            */
@@ -410,6 +1226,8 @@ BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                 psSrcMsgBlockList->m_unMsgCount;
             psDestMsgBlockList->m_unTimeInterval =
                 psSrcMsgBlockList->m_unTimeInterval;
+            psDestMsgBlockList->m_unIndex           =
+                psSrcMsgBlockList->m_unIndex;
             strcpy_s( psDestMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE,
                       psSrcMsgBlockList->m_acStrBlockName);
 
@@ -504,6 +1322,7 @@ static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
     psDest->m_ucTrigger            = psSrc->m_ucTrigger;
     psDest->m_unMsgCount           = psSrc->m_unMsgCount;
     psDest->m_unTimeInterval       = psSrc->m_unTimeInterval;
+    psDest->m_unIndex               = psSrc->m_unIndex;
 
     psDest->m_psNextMsgBlocksList = NULL;
 
@@ -814,6 +1633,7 @@ void CTxWndDataStore::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
 {
     if (psMsgDetails != NULL)
     {
+        psMsgDetails->m_unIndex = -1;
         psMsgDetails->m_psNextMsgDetails    = NULL;
     }
 
@@ -831,6 +1651,7 @@ void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
         psMsgBlockList->m_psTxCANMsgList      = NULL;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
+        psMsgBlockList->m_unIndex             = -1;
         strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
     }
 }

@@ -184,7 +184,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=".\DMGraph.def"
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\ReleaseUMinSize/DMGraph.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"

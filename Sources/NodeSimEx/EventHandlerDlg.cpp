@@ -113,6 +113,7 @@ void CEventHandlerDlg::vAddEventHandlerFunction(const CString& omStrFuncName, co
     m_pDoc->m_omSourceCodeTextList.AddTail( defTODO );
 
     m_pDoc->m_omSourceCodeTextList.AddTail( omStrFooter ); // Function footer
+    m_pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
 }
 
 BOOL CEventHandlerDlg::bIsEventHandlerExist(const CString& omStrFuncType)

@@ -42,7 +42,7 @@ public:
 
     // Overrided constructor
     CExploreMsgSg(CFunctionEditorDoc* pDoc,
-                  CMsgNameMsgCodeList& odMsgNameCodelist,
+                  CMsgNameMsgCodeListDataBase& odMsgNameCodeListDb,
                   BOOL bCheckRequired,
                   eMESSAGEFROM,
                   eSELTYPE,
@@ -81,7 +81,8 @@ protected:
 
 private:
     CFunctionEditorDoc* m_pDoc;
-    CMsgNameMsgCodeList& m_odMsgNameCodeList;
+	CMsgNameMsgCodeListDataBase& m_odMsgNameCodeListDb;			//CAPL_DB_NAME_CHANGE
+    //CMsgNameMsgCodeList& m_odMsgNameCodeList;
     // Dialog class may be called by any window
     eMESSAGEFROM m_eWindow;
     // Flag to enable check box option

@@ -171,7 +171,7 @@
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -319,6 +319,10 @@
 			</File>
 			<File
 				RelativePath=".\BuildProgram.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BusEventHandlerDlg.cpp"
 				>
 			</File>
 			<File
@@ -568,6 +572,10 @@
 			</File>
 			<File
 				RelativePath=".\BuildProgram.h"
+				>
+			</File>
+			<File
+				RelativePath=".\BusEventHandlerDlg.h"
 				>
 			</File>
 			<File

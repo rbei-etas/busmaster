@@ -32,7 +32,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.6.5.exe"
+Outfile "BUSMASTER_Installer_Ver_1.6.6.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -143,7 +143,7 @@ Section "BUSMASTER"
 	; Deleting If CAN_IXXAT_VCI.dll exists
 	IfFileExists $INSTDIR\CAN_IXXAT_VCI.dll bCanIXXATbExists
 	bCanIXXATbExists:
-			Delete "$INSTDIR\CAN_IXXAT_VCI.dll"
+			Delete "$INSTDIR\CAN_IXXAT_VCI.dll"			
 			
 	; Deleting If Changelog.txt exists
 	IfFileExists $INSTDIR\Changelog.txt bChngLogbExists
@@ -341,6 +341,21 @@ Section "BUSMASTER"
 	bvxlExists:
 			Delete "$INSTDIR\vxlapi.dll"
 			
+	; Deleting If iconv.dll exists
+	IfFileExists $INSTDIR\iconv.dll biconvExists
+	biconvExists:
+			Delete "$INSTDIR\iconv.dll"
+			
+	; Deleting If libxml2.dll exists
+	IfFileExists $INSTDIR\libxml2.dll blibxml2Exists
+	blibxml2Exists:
+			Delete "$INSTDIR\libxml2.dll"
+			
+	; Deleting If zlib1.dll exists
+	IfFileExists $INSTDIR\zlib1.dll bzlibExists
+	bzlibExists:
+			Delete "$INSTDIR\zlib1.dll"
+			
 	; Deleting If MinGW exists
 	IfFileExists $INSTDIR\MinGW bMinGWExists
 	bMinGWExists:
@@ -371,7 +386,7 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
     File ..\Sources\BIN\Release\CAN_STUB.dll
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
-    File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
+	File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\DIL_Interface.dll
     File ..\Sources\BIN\Release\DIL_J1939.dll
@@ -391,6 +406,9 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\FormatConverter.exe
     File ..\Sources\BIN\Release\SigGrphWnd.dll
     File ..\Sources\BIN\Release\SignalDefiner.dll
+	File ..\Sources\BIN\Release\iconv.dll
+	File ..\Sources\BIN\Release\libxml2.dll
+	File ..\Sources\BIN\Release\zlib1.dll
 
     ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
@@ -398,10 +416,22 @@ Section "BUSMASTER"
     ; Help
     File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 
-	; Simulated Systems
-	File /r ..\Sources\BIN\Release\SimulatedSystems
+	SetOutPath "$INSTDIR\SimulatedSystems\include\"
+	; Simulated Systems Include files
+	File ..\Sources\BIN\Release\SimulatedSystems\include\CANIncludes.h 
+	File ..\Sources\BIN\Release\SimulatedSystems\include\CAPLWrapper.h
+	File ..\Sources\BIN\Release\SimulatedSystems\include\Common.h
+	File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_CAN.h
+	File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_J1939.h
+	File ..\Sources\BIN\Release\SimulatedSystems\include\J1939Includes.h
+	
+	SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
+	; Simulated Systems Library files
+	File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_CAN.a
+	File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_J1939.a
 
-
+	SetOutPath $INSTDIR\
+	
     ; License
     File ..\COPYING.LESSER.txt
     File ..\COPYING.txt

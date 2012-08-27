@@ -27,6 +27,7 @@
 #include "Utility/Utility_Thread.h"
 #include "TestSetupEditorLib/TestSetupEntity.h"
 #include "TestSetupEditorLib/DataBaseMsgList.h"
+#include "Utility/XMLUtils.h"
 
 #define szFilter    "TestSetup Files (*.xml)|*.xml||"
 
@@ -59,7 +60,9 @@ public:
 public:
     CTSExecutorChildFrame(void);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
+	BOOL GetConfigurationData(xmlNodePtr pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
+	HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
     VOID vEnableItem(DWORD dwID, BOOL& bEnable);
     VOID vSetBusStatus(BOOL bConnected);
     VOID vSetBUSMASTERVersionInfo(CString strVersion);

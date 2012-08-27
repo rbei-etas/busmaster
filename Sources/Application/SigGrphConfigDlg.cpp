@@ -52,6 +52,7 @@ CSigGrphConfigDlg::CSigGrphConfigDlg(UINT nHardware , CWnd* pParent /*=NULL*/)
 {
     m_pMainFrame = NULL;
     m_nHardware  = nHardware;
+    m_nSelectedIndex = -1;
 }
 
 CSigGrphConfigDlg::~CSigGrphConfigDlg()
@@ -73,6 +74,7 @@ void CSigGrphConfigDlg::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSigGrphConfigDlg, CDialog)
+    ON_BN_CLICKED(IDC_LINE_COLOR, OnBnClickedBtnLineColor)
     ON_BN_CLICKED(IDC_BTN_VISIBLE, OnBnClickedBtnVisible)
     ON_BN_CLICKED(IDC_BTN_ENABLE, OnBnClickedBtnEnable)
     ON_BN_CLICKED(IDC_BTN_CONFIGURE, OnBnClickedBtnConfigure)
@@ -123,6 +125,22 @@ BOOL CSigGrphConfigDlg::OnInitDialog()
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CSigGrphConfigDlg::OnBnClickedBtnLineColor()
+{
+    if(m_nSelectedIndex != -1)
+    {
+        COLORREF objClrRef = NULL;
+
+        objClrRef = m_omLineColor.GetColourForSelectedIndex(m_nSelectedIndex);
+
+        if(objClrRef != NULL)
+        {
+            m_omSignalList.SetItemData( m_nSelectedIndex, objClrRef );
+            m_omSignalList.Invalidate(TRUE);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -471,6 +489,8 @@ void CSigGrphConfigDlg::OnLvnItemchangedListSignals(NMHDR* pNMHDR, LRESULT* pRes
             {
                 if( hSelItem < podList->m_omElementList.GetSize() )
                 {
+                    m_nSelectedIndex = hSelItem;
+                    m_omLineColor.SetSelectedIndex(m_nSelectedIndex);
                     vSetElementDetails(podList->m_omElementList[ hSelItem ] );
                 }
                 else
@@ -501,8 +521,29 @@ void CSigGrphConfigDlg::vSetElementDetails( CGraphElement odElement )
 {
     // Update Line Type
     m_nLineType = odElement.m_nLineType;
-    // Set Line Color
-    m_omLineColor.SetColour( odElement.m_nLineColor );
+
+    if(m_nSelectedIndex != -1)
+    {
+        COLORREF objClrRef = NULL;
+
+        /*objClrRef = m_omLineColor.GetColourForSelectedIndex(m_nSelectedIndex);
+
+        if(objClrRef != NULL)
+        {
+            m_omLineColor.SetColour(objClrRef);
+            m_omSignalList.SetItemData( m_nSelectedIndex, objClrRef );
+            m_omSignalList.Invalidate(TRUE);
+        }
+        else*/
+        {
+            m_omLineColor.SetColour( odElement.m_nLineColor );
+        }
+    }
+    else
+    {
+        // Set Line Color
+        m_omLineColor.SetColour( odElement.m_nLineColor );
+    }
     // Update symbol Type
     m_nSymbolType = odElement.m_nPointType;
     // Set Sample Point Color

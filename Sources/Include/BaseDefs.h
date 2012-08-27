@@ -34,6 +34,23 @@
 /*Maximum possible length of a MCNET*/
 #define MAX_DATA_LEN_MCNET 0x7FFF
 
+typedef enum eBUSEVEHANDLER
+{
+    BUS_CONNECT = 0,
+    BUS_DISCONNECT
+};
+
+
+#define defLINETYPE_SOLID "SOLID"
+#define defLINETYPE_DASH "DASH"
+#define defLINETYPE_DOT "DOT"
+#define defLINETYPE_DASHDOT "DASHDOT"
+#define defLINETYPE_DASHDOTDOT "DASHDOTDOT"
+#define defLINETYPE_NULL "NULL"
+#define defLINETYPE_XYSTEP "XYSTEP"
+#define defLINETYPE_YXSTEP "YXSTEP"
+#define defLINETYPE_BARS "BARS"
+#define defLINETYPE_STICK "STICK"
 typedef enum eProtocol
 {
     PROTOCOL_CAN    = 0,
