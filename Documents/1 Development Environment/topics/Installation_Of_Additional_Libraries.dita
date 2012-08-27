@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="astyle" xml:lang="en-us">
+  <title>Installation of Runtime Libraries</title>
+  <prolog>
+    <author>VenkataNarayan</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p> Describes about the installation of additional libraries required for BUSMASTER compilation.</p>
+    </section>
+    <section>
+      <title>Support to IXXAT hardware</title>
+      <p>The following steps should be followed to compile CAN_IXXAT_VCI project in BUSMASTER.</p>
+      <ul>
+        <li>Download and install IXXAT VCI drivers from the following link <xref href="http://www.ixxat.com/download_vci_v3_en.html" scope="external" class="- topic/xref "/></li>
+        <li>Set Windows environment variable &apos;IXXAT_VCI_SDK&apos; with the path to the VCI header files (e.g. IXXAT_VCI_SDK = &quot;C:\Program Files\IXXAT\VCI 3.5\sdk\Microsoft_VisualC&quot;).</li>
+        <li>Restart the machine after performing the above two steps</li>
+      </ul>
+    </section>
+    <section>
+      <title>Libxml2 linking support</title>
+      <p>The following steps should be followed to compile BUSMASTER.</p>
+      <ul>
+        <li>Download and Copy libxml2-2.7.8.win32, iconv-1.9.2.win32 and zlib-1.2.5.win32 from the following link <xref href="ftp://xmlsoft.org/libxml2/win32/" scope="external"/> to C: drive</li>
+      </ul>
+      <ul>
+        <li>Include libxml2, iconv and zlib binaries, libraries and include file in VC++ directory in Visual Studio Tools options.This can be done by selecting the Options... menu item occurring under the Tools menu, as shown in the image below:</li>
+      </ul>
+      <image href="../images/vc_options.png" placement="break"/>
+      <p>Clicking the menu item Options... will result in the following dialog box:</p>
+      <image href="../images/libxml2Settings.png" placement="break"/>
+      <image href="../images/libxml2IncludeSettings.png" placement="break"/>
+      <image href="../images/libxml2LibrarySettings.png" placement="break"/>
+    </section>
+    <section>
+      <title>MinGW Installation</title>
+      <p>The following steps should be followed to install MinGW folder and use it to successfully compile  CPP files in   Node Simulation  using BUSMASTER.</p>
+      <ul>
+        <li>Download latest mingw executable from the following link <xref href="http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/" scope="external"/> and then use it to download the actual MinGW and copy the MinGW folder to C: drive</li>
+      </ul>
+      <ul>
+        <li>Set the environment variable path ‘C:\MinGW\bin’.</li>
+      </ul>
+    </section>
+  </body>
+</topic>
