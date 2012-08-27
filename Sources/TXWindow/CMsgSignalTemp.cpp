@@ -241,6 +241,26 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
     return strMsgName;
 }
 
+CString CMsgSignal::omStrGetMessageLengthFromMsgCode( UINT unMsgCode)
+{
+    CString omstrMsgLength = "";
+
+    if (unMsgCode >= 0)
+    {
+        sMESSAGE* psMsgStruct = NULL;
+        m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
+
+        if(psMsgStruct != NULL)
+        {
+            UINT nMsgLength = 0;
+            nMsgLength = psMsgStruct->m_unMessageLength;
+
+            omstrMsgLength.Format("%d", nMsgLength);
+        }
+    }
+
+    return omstrMsgLength;
+}
 /******************************************************************************
   Function Name    :  psGetMessagePointer
   Input(s)         :  UINT unMsgID

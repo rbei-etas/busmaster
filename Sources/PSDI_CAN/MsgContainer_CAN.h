@@ -107,6 +107,7 @@ public:
     HRESULT hUpdateFormattedMsgStruct(int nListIndex, int& nMsgCode,
                                       BYTE bExprnFlag_Disp, __int64 nTimeOffset = 0);
     void vSetCurrMsgName(CString strMsgNameOrCode);
+    void vSetMsgLength(CString strMsgLength);
     void vClearFormattedMsgStruct();
     void vSaveOWandGetDetails(void* pMsg, __int64& dwMapIndex,
                               __int64& dwTimeStamp, UINT& nMsgCode, int& nBufferIndex );

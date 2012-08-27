@@ -55,7 +55,8 @@ public:
     CStringArray m_omErrorHandlerList;
     CString m_omObjWrapperName;
     CStringArray m_omDefinedMsgHeaders;
-    CMsgNameMsgCodeList m_odMsgNameMsgCodeList;
+	CMsgNameMsgCodeListDataBase m_odMsgNameMsgCodeListDb;		//CAPL_DB_NAME_CHANGE
+    //CMsgNameMsgCodeList m_odMsgNameMsgCodeList;
     CMapStringToPtr* m_podNodeToDllMap;
     //static CKeyPanelEntryList* g_podKeyPanelEntryList;
     WINDOWPLACEMENT m_wWindowPlacement;

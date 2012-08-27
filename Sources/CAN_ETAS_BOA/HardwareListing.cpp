@@ -534,7 +534,7 @@ void CHardwareListing::OnCancel()
 {
     // Show alert message telling that default association will be
     // used.
-    AfxMessageBox( defSTR_NOT_FULLY_CONFIGURED );
+    //AfxMessageBox( defSTR_NOT_FULLY_CONFIGURED );
     // Assign Default Association
     // only for supported or available channels
     for( int nIndex = 0; (UINT)nIndex < MIN( (UINT)m_nSize, CHANNEL_ALLOWED ); nIndex++ )

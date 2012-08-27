@@ -30,6 +30,7 @@
 #include "include/Utils_macro.h"
 #include "FrameProcessor_Common.h"
 #include "RefTimeKeeper.h"
+#include "include/XMLDefines.h"
 
 /* Log version..applicable for log files from ver 1.6.2 */
 #define VERSION_CURR    0x02
@@ -62,6 +63,7 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 
     while (bLoopON)
     {
+        // PTV CPP
         if(pCurrObj != NULL)
         {
             pCurrObj->m_bIsThreadBlocked = TRUE;
@@ -115,6 +117,7 @@ CFrameProcessor_Common::CFrameProcessor_Common()
     m_bClientBufferON = TRUE;
     m_ushLastBlkID = 0;
     m_bEditingON = FALSE;
+    // PTV [1.6.4]
     m_bIsDataLogged = FALSE;
     m_bIsJ1939DataLogged = FALSE;
 }
@@ -306,6 +309,23 @@ CLogObjArray* CFrameProcessor_Common::GetActiveLogObjArray(void)
     CLogObjArray* RetVal = m_bEditingON ? &m_omLogListTmp : &m_omLogObjectArray;
     return RetVal;
 }
+
+void CFrameProcessor_Common::vCloseLogFile()
+{
+    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+
+    CBaseLogObject* pouCurrLogObj = NULL;
+    for (USHORT i = 0; i < ushBlocks; i++)
+    {
+        pouCurrLogObj = m_omLogObjectArray.GetAt(i);
+
+        if (NULL == pouCurrLogObj)
+        {
+            pouCurrLogObj->vCloseLogFile();
+        }
+    }
+}
+
 /* End of helper functions in CFrameProcessor_Common */
 
 /* Start of alias functions in CFrameProcessor_Common */
@@ -500,6 +520,42 @@ HRESULT CFrameProcessor_Common::GetConfigData(BYTE** ppvConfigData, UINT& unLeng
     return S_OK;
 }
 
+HRESULT CFrameProcessor_Common::GetConfigData(xmlNodePtr pxmlNodePtr)
+{
+    /*BYTE* pbBuff = new BYTE[unGetBufSize()];
+    *ppvConfigData = pbBuff;*/
+
+    CLogObjArray* pomCurrArray = GetActiveLogObjArray();
+
+    BYTE bVersion = VERSION_CURR;
+    //COPY_DATA(pbBuff, &bVersion, sizeof(bVersion));
+
+    USHORT ushLogBlks = (USHORT) (pomCurrArray->GetSize());
+
+    //COPY_DATA(pbBuff, &ushLogBlks, sizeof(ushLogBlks));
+
+    for (USHORT i = 0; i < ushLogBlks; i++)
+    {
+        xmlNodePtr pNodeLogBlckPtr = xmlNewNode(NULL, BAD_CAST DEF_LOG_BLOCK);
+        xmlAddChild(pxmlNodePtr, pNodeLogBlckPtr);
+
+        CBaseLogObject* pouLogObj = pomCurrArray->GetAt(i);
+
+        if (NULL != pouLogObj)
+        {
+            pouLogObj->GetConfigData(pNodeLogBlckPtr);
+        }
+        else
+        {
+            ASSERT(FALSE);
+        }
+    }
+
+    // unLength = unGetBufSize();
+
+    return S_OK;
+}
+
 // Setter for the logging configuration data
 HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
@@ -527,7 +583,88 @@ HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString&
 
     return S_OK;
 }
+//MVN
+HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
+{
+    if (FALSE == bIsEditingON())
+    {
+        return S_FALSE;
+    }
 
+    ClearLoggingBlockList();
+
+
+
+    USHORT ushLogBlks = 0;
+    xmlChar* pchXpath = NULL;
+    xmlXPathObjectPtr pXpathPtr = NULL;
+
+    if(eBus == CAN)
+    {
+        pchXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Log/Log_Block";
+    }
+    else if(eBus == J1939)
+    {
+        pchXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Log/Log_Block";
+    }
+    pXpathPtr = xmlUtils::pGetNodes(pDoc, pchXpath);
+    xmlNodePtr pNodePtr;
+
+    if ( pXpathPtr != NULL)
+    {
+        xmlNodeSetPtr pNodeSet = pXpathPtr->nodesetval;
+        if(pNodeSet != NULL)
+        {
+            ushLogBlks = pNodeSet->nodeNr;
+            for(int i = 0; i < ushLogBlks; i++)
+            {
+                CBaseLogObject* pouBaseLogObj = CreateNewLogObj(m_omStrVersion);
+                if ( S_OK == pouBaseLogObj->nSetConfigData(pNodeSet->nodeTab[i]))
+                {
+                    vAddLogFile(m_omLogListTmp, pouBaseLogObj);
+                    //m_omLogListTmp.Add(pouBaseLogObj);
+                }
+            }
+        }
+
+    }
+    return S_OK;
+}
+void CFrameProcessor_Common::vAddLogFile( CLogObjArray& omLogListTmp, CBaseLogObject*& pouBaseLogObj)
+{
+    int nCount = omLogListTmp.GetSize();
+    BOOL bDuplicate = FALSE;
+    if(nCount == 0)
+    {
+        omLogListTmp.Add(pouBaseLogObj);
+    }
+    else
+    {
+        for(int i = 0; i < nCount; i++)
+        {
+            CBaseLogObject* pBaseObjectSrc = omLogListTmp.GetAt(i);
+            SLOGINFO sLogInfo1, sLogInfo2;
+            pouBaseLogObj->GetLogInfo(sLogInfo1);
+            pBaseObjectSrc->GetLogInfo(sLogInfo2);
+            //TODO::CString Has to be Remodved
+            CString omStr1 = sLogInfo1.m_sLogFileName;
+            CString omStr2 = sLogInfo2.m_sLogFileName;
+            omStr1.TrimLeft(" \n\t");
+            omStr1.TrimRight(" \n\t");
+            omStr2.TrimLeft(" \n\t");
+            omStr2.TrimRight(" \n\t");
+            if(omStr1 == omStr2)
+            {
+                bDuplicate = TRUE;
+            }
+        }
+        if(bDuplicate == FALSE)
+        {
+            omLogListTmp.Add(pouBaseLogObj);
+        }
+    }
+}
+//~MVN
 BOOL CFrameProcessor_Common::IsClientBufferON(void)
 {
     return m_bClientBufferON;
@@ -551,6 +688,7 @@ BOOL CFrameProcessor_Common::IsLoggingON(void)
     return m_bLogEnabled;
 }
 
+// PTV [1.6.4]
 BOOL CFrameProcessor_Common::IsDataLogged(void)
 {
     return m_bIsDataLogged;
@@ -575,6 +713,7 @@ void CFrameProcessor_Common::DisableJ1939DataLogFlag(void)
 {
     m_bIsJ1939DataLogged = FALSE;
 }
+// PTV [1.6.4] END
 BOOL CFrameProcessor_Common::IsFilterON(void)
 {
     return m_bFilterON;

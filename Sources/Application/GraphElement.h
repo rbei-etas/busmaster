@@ -70,6 +70,10 @@ public:
     int nSerialize(CArchive& omArch);
     BYTE* pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
     BYTE* pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion);
+    // PTV XML
+    void pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion);
+    void pbySetConfigData(xmlNodePtr xmlnodeset, xmlDocPtr pDocPtr);
+    // PTV XML
     // Default Constructor & destructor
     CGraphElement();
     virtual ~CGraphElement();

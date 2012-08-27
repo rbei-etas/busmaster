@@ -199,6 +199,18 @@ BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion)
     return pbSStream;
 }
 
+INT CBaseLogObject::nSetConfigData(xmlNodePtr pNode)
+{
+    INT nRetValue = m_sLogInfo.nSetConfigData(pNode->children);
+    if(nRetValue == S_OK)
+    {
+        nRetValue = Der_SetConfigData(pNode->children);
+
+        // The default value of current log file should be the log file name
+        m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
+    }
+    return nRetValue;
+}
 /**
  * Get configuration data
  */
@@ -209,6 +221,15 @@ BYTE* CBaseLogObject::GetConfigData(BYTE* pvDataStream) const
     pbTStream = Der_GetConfigData(pbTStream);
 
     return pbTStream;
+}
+
+BOOL CBaseLogObject::GetConfigData(xmlNodePtr pxmlNodePtr) const
+{
+    //BYTE* pbTStream = pvDataStream;
+    m_sLogInfo.pbGetConfigData(pxmlNodePtr);
+    Der_GetConfigData(pxmlNodePtr);
+
+    return TRUE;
 }
 
 /**
@@ -341,6 +362,14 @@ CString CBaseLogObject::omRemoveGroupCountFromFileName(CString FileName)
     return FileName;
 }
 
+void CBaseLogObject::vCloseLogFile()
+{
+    if(m_pLogFile != NULL)
+    {
+        fclose(m_pLogFile);
+    }
+    m_pLogFile = NULL;
+}
 /**
  * \brief Start logging
  * \req RS_12_23 Start logging
@@ -406,6 +435,25 @@ BOOL CBaseLogObject::bStopLogging()
         m_pLogFile = NULL;
         bResult = TRUE;
         m_bNewSession = FALSE;  // Old session closed
+    }
+
+    return bResult;
+}
+
+BOOL CBaseLogObject::bStopOnlyLogging()
+{
+    BOOL bResult = FALSE;
+
+    if ((m_pLogFile != NULL) && (m_sLogInfo.m_bEnabled))
+    {
+        //m_CurrTriggerType = NONE;
+        CString omFooter = "";
+        vFormatFooter(omFooter);
+        _ftprintf(m_pLogFile,  "%s\n", omFooter.GetBuffer(MAX_PATH));
+        fclose(m_pLogFile);
+        m_pLogFile = NULL;
+        //bResult = TRUE;
+        //m_bNewSession = FALSE;  // Old session closed
     }
 
     return bResult;

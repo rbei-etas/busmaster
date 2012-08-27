@@ -28,6 +28,8 @@
 #include "TSEditorGUI_SettingsDlg.h"
 #include "Include\Utils_macro.h"
 #include "TSEditorGUI_MDIChildBase.h"
+#include "include/XMLDefines.h"
+#include "Utility/XMLUtils.h"
 #include <htmlhelp.h>
 
 #define def_STR_SIGNAL_FORMAT   "%-50s %8d %8d %8d\r\n"
@@ -508,6 +510,7 @@ LRESULT CTSEditorChildFrame::OnSelectionChanging(WPARAM /*pTreeView*/, LPARAM /*
         }
         else
         {
+            m_bQueryConfirm = FALSE;
             INT nSelection = MessageBox("Current List is Modified\nDo You Want to save the Changes?", "Modified", MB_YESNOCANCEL|MB_ICONQUESTION);
             switch(nSelection)
             {
@@ -2166,14 +2169,20 @@ INT CTSEditorChildFrame::nDeleteItem(DWORD dwId, DWORD dwParentId)
     //CTreeCtrl &omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
     CBaseEntityTA* pouDelEntity, *pouParentItem;
     m_ouTSEntity.SearchEntityObject(dwId, &pouDelEntity);
-    if(pouDelEntity->GetEntityType() != TEST_CASE)
+    if (NULL != pouDelEntity)
     {
-        m_ouTSEntity.SearchEntityObject(dwParentId, &pouParentItem);
-        pouParentItem->DeleteSubEntry(pouDelEntity);
-    }
-    else if(pouDelEntity->GetEntityType() == TEST_CASE)
-    {
-        m_ouTSEntity.DeleteSubEntry(pouDelEntity);
+        if(pouDelEntity->GetEntityType() != TEST_CASE)
+        {
+            m_ouTSEntity.SearchEntityObject(dwParentId, &pouParentItem);
+            if (NULL != pouParentItem)
+            {
+                pouParentItem->DeleteSubEntry(pouDelEntity);
+            }
+        }
+        else if(pouDelEntity->GetEntityType() == TEST_CASE)
+        {
+            m_ouTSEntity.DeleteSubEntry(pouDelEntity);
+        }
     }
     return 0;
 }
@@ -2697,12 +2706,35 @@ void CTSEditorChildFrame::OnEditCut()
 {
     OnEditCopy();
     CTreeCtrl& omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
-    HTREEITEM hParentItem = omTempTreeCtrl.GetParentItem(m_hCurrentTreeItem);
-    DWORD dwParentId = (DWORD)omTempTreeCtrl.GetItemData(hParentItem);
-    nDeleteItem(m_pCurrentEntity->GetID(), dwParentId);
+
+    HTREEITEM hParentItem = NULL;
+
+    if(m_hCurrentTreeItem != NULL)
+    {
+        hParentItem = omTempTreeCtrl.GetParentItem(m_hCurrentTreeItem);
+    }
+
+    if(hParentItem != NULL)
+    {
+        DWORD dwParentId = (DWORD)omTempTreeCtrl.GetItemData(hParentItem);
+
+        if(m_pCurrentEntity != NULL)
+        {
+            nDeleteItem(m_pCurrentEntity->GetID(), dwParentId);
+        }
+    }
+
     m_pCurrentEntity = NULL;
-    m_odPropertyView->m_omPropertyList.DeleteAllItems();
-    omTempTreeCtrl.DeleteItem(m_hCurrentTreeItem);
+
+    if(m_odPropertyView != NULL)
+    {
+        m_odPropertyView->m_omPropertyList.DeleteAllItems();
+    }
+
+    if(m_hCurrentTreeItem != NULL)
+    {
+        omTempTreeCtrl.DeleteItem(m_hCurrentTreeItem);
+    }
 }
 
 /******************************************************************************
@@ -2868,8 +2900,16 @@ BOOL CTSEditorChildFrame::PreTranslateMessage(MSG* pMsg)
                     return TRUE;
                 case 'V':
                 case 'v':
-                    OnEditPaste();
-                    return TRUE;
+                    // If F7 is not down
+                    if(!(GetKeyState(VK_F7) < 0))
+                    {
+                        OnEditPaste();
+                        return TRUE;
+                    }
+                    else
+                    {
+                        return FALSE;
+                    }
                 case 'X':
                 case 'x':
                     OnEditCut();
@@ -2884,8 +2924,16 @@ BOOL CTSEditorChildFrame::PreTranslateMessage(MSG* pMsg)
                     return TRUE;
                 case 'S':
                 case 's':
-                    OnFileSave();
-                    return TRUE;
+                    // If F4 is not down
+                    if(!(GetKeyState(VK_F4) < 0))
+                    {
+                        OnFileSave();
+                        return TRUE;
+                    }
+                    else
+                    {
+                        return FALSE;
+                    }
                 default:
                     break;
             }
@@ -2936,6 +2984,69 @@ HRESULT CTSEditorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuff
     COPY_DATA(pTemp, &nCxMin, sizeof(INT));
     return S_OK;
 }
+bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr pxmlNodePtr)
+{
+    const char* omcVarChar ;
+
+    //<Tree_Bkg_Color>ff0000</Tree_Bkg_Color>
+    COLORREF omCol1, omCol2;
+    m_odTreeView->vGetTreeCtrlColor(omCol1, omCol2);
+    CString csClor;
+    csClor.Format("%x", omCol1);
+    omcVarChar = csClor;
+    xmlNodePtr pClr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TREE_BKG_CLR,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pClr);
+
+    //<Tree_Text_Color>ff0000</Tree_Text_Color>
+    csClor.Format("%x", omCol2);
+    omcVarChar = csClor;
+    pClr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TREE_TXT_COLOR,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pClr);
+
+    //<List_Row1_Color>ff0000</List_Row1_Color>
+    m_odPropertyView->m_omPropertyList.vGetRowColors(omCol1, omCol2);
+    csClor.Format("%x", omCol1);
+    omcVarChar = csClor;
+    pClr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LST_ROW1_CLR,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pClr);
+
+    //<List_Row2_Color>ff0000</List_Row2_Color>
+    csClor.Format("%x", omCol2);
+    omcVarChar = csClor;
+    pClr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LST_ROW2_CLR,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pClr);
+
+    //Window position
+    WINDOWPLACEMENT wndPlacement;
+    GetWindowPlacement(&wndPlacement);
+
+    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlAddChild(pxmlNodePtr, pNodeWndPos);
+    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,wndPlacement);
+
+    //TreeView Window Position
+    INT nCxCur, nCxMin;
+    m_omSplitterWnd.GetColumnInfo(0, nCxCur, nCxMin);
+
+    xmlNodePtr pNodeSW = xmlNewNode(NULL, BAD_CAST DEF_SPLITTER_WINDOW);
+    xmlAddChild(pxmlNodePtr, pNodeSW);
+
+    //<CxIdeal />
+    CString  csCxIdeal;
+    csCxIdeal.Format("%d", nCxCur);
+    omcVarChar = csCxIdeal;
+    xmlNodePtr pCxIdeal = xmlNewChild(pNodeSW, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSW, pCxIdeal);
+
+    // <CxMin />
+    CString  csCxMin;
+    csCxMin.Format("%d",nCxMin);
+    omcVarChar = csCxMin;
+    xmlNodePtr pcsCxMin = xmlNewChild(pNodeSW, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSW, pcsCxMin);
+
+    return true;
+}
 /******************************************************************************
 Function Name  :  SetConfigurationData
 Input(s)       :  BYTE*& pDesBuffer - Confiduration data
@@ -2985,6 +3096,137 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffS
         SetWindowPlacement(&m_sTSDefPlacement);
         m_bQueryConfirm = TRUE;
     }
+    return S_OK;
+}
+
+HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
+{
+    m_odTreeView->vSetDefaultColors();
+    m_odPropertyView->m_omPropertyList.vSetDefaultColors();
+    SetWindowPlacement(&m_sTSDefPlacement);
+    m_bQueryConfirm = TRUE;
+
+
+    xmlXPathObjectPtr pTempNode = NULL;
+
+    BOOL bWindowPos = FALSE;
+
+    if( NULL != pXmlNode)
+    {
+        COLORREF omCol1, omCol2;
+        //Get Default Tree Colors
+        m_odTreeView->vGetTreeCtrlColor(omCol1, omCol2);
+
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "Tree_Bkg_Color");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0]->children;
+            if(pNode != NULL)
+            {
+                xmlChar* pText = xmlNodeListGetString(pNode->doc, pNode, 1);
+                int nVal = strtol((char*)pText, NULL, 16);
+                omCol1 = (COLORREF)nVal;
+            }
+        }
+
+        pTempNode = NULL;
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "Tree_Text_Color");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0]->children;
+            if(pNode != NULL)
+            {
+                xmlChar* pText = xmlNodeListGetString(pNode->doc, pNode, 1);
+                int nVal = strtol((char*)pText, NULL, 16);
+                omCol2 = (COLORREF)nVal;
+            }
+        }
+        m_odTreeView->vSetTreeCtrlColor(omCol1, omCol2);
+
+        //GetDefault List Control Color
+        m_odPropertyView->m_omPropertyList.vGetRowColors(omCol1, omCol2);
+        pTempNode = NULL;
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "List_Row1_Color");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0]->children;
+            if(pNode != NULL)
+            {
+                xmlChar* pText = xmlNodeListGetString(pNode->doc, pNode, 1);
+                int nVal = strtol((char*)pText, NULL, 16);
+                omCol1 = (COLORREF)nVal;
+            }
+
+        }
+
+        pTempNode = NULL;
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "List_Row2_Color");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0]->children;
+            if(pNode != NULL)
+            {
+                xmlChar* pText = xmlNodeListGetString(pNode->doc, pNode, 1);
+                int nVal = strtol((char*)pText, NULL, 16);
+                omCol2 = (COLORREF)nVal;
+            }
+        }
+        m_odPropertyView->m_omPropertyList.vSetRowColors(omCol1, omCol2);
+
+        //AutoSave
+        pTempNode = NULL;
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "EnableAutoSave");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0]->children;
+            m_bQueryConfirm = xmlUtils::bGetBooleanValue((char*)xmlNodeListGetString(pNode->doc, pNode, 1));
+        }
+
+        //Window PlaceMent
+        pTempNode = NULL;
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "Window_Position");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0];
+            WINDOWPLACEMENT wndPlacement;
+            if( S_OK == xmlUtils::ParseWindowsPlacement(pNode, wndPlacement))
+            {
+                bWindowPos = TRUE;
+                SetWindowPlacement(&wndPlacement);
+            }
+        }
+
+        //Splitter Window
+        pTempNode = NULL;
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "Splitter_Window");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0];
+            int nCxCur, nCxMax;
+            if( S_OK == xmlUtils::ParseSplitterWindow(pNode, nCxCur, nCxMax))
+            {
+                m_omSplitterWnd.SetColumnInfo(0, nCxCur, nCxMax);
+                m_omSplitterWnd.RecalcLayout();
+            }
+        }
+
+    }
+    else
+    {
+
+    }
+
+    if(bWindowPos == FALSE)
+    {
+        WINDOWPLACEMENT wndPlacement;
+        wndPlacement.rcNormalPosition.top = 55;
+        wndPlacement.rcNormalPosition.bottom = 629;
+        wndPlacement.rcNormalPosition.left = 581;
+        wndPlacement.rcNormalPosition.right = 1468;
+        wndPlacement.showCmd = SW_NORMAL;
+        SetWindowPlacement(&wndPlacement);
+    }
+
     return S_OK;
 }
 /******************************************************************************
@@ -3125,6 +3367,8 @@ void CTSEditorChildFrame::OnHelpTesteditorhelp()
 void CTSEditorChildFrame::OnClose()
 {
     // TODO: Add your message handler code here and/or call default
-    OnFileClose();
-    CMDIChildWnd::OnClose();
+    /*OnFileClose();
+    CMDIChildWnd::OnClose();*/
+    AfxGetMainWnd()->SetMenu(m_pMainMenu);
+    ShowWindow(SW_HIDE);
 }

@@ -388,10 +388,10 @@ Codetag        :  CS006
 ******************************************************************************/
 HRESULT CTestSetupEntity::SaveFileAs(CString omFilePath)
 {
-	if(omFilePath.IsEmpty() == TRUE)
-	{
-		 return S_FALSE;
-	}
+    if(omFilePath.IsEmpty() == TRUE)
+    {
+        return S_FALSE;
+    }
 
     MSXML2::IXMLDOMDocumentPtr pIDOMDoc;
 

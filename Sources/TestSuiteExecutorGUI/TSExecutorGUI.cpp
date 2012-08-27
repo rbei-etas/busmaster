@@ -33,6 +33,8 @@ CTSExecutorBase* g_podTSExecutor = NULL;
 BYTE* m_pbyConfigData = NULL;
 UINT m_unConfigSize = 0;
 
+xmlNodePtr m_pXmlConfigNode = NULL;
+BOOL m_bByXmlConfig = TRUE;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
@@ -71,6 +73,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         {
             delete[] m_pbyConfigData;
         }
+        if( NULL != m_pXmlConfigNode )
+        {
+            xmlFreeNode(m_pXmlConfigNode);
+        }
         // Terminate the library before destructors are called
         AfxTermExtensionModule(TestSuiteExecutor);
     }
@@ -104,7 +110,14 @@ USAGEMODE HRESULT TS_vShowTSExecutorWindow(void* pParentWnd)
                                                     WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
                                                     omRect, ((CMDIFrameWnd*)pParentWnd)) == TRUE )
             {
-                g_pomTSExecutorChildWindow->SetConfigurationData(m_pbyConfigData, m_unConfigSize);
+                if( TRUE == m_bByXmlConfig )
+                {
+                    g_pomTSExecutorChildWindow->SetConfigurationData(m_pXmlConfigNode);
+                }
+                else
+                {
+                    g_pomTSExecutorChildWindow->SetConfigurationData(m_pbyConfigData, m_unConfigSize);
+                }
                 // Show window and set focus
                 g_pomTSExecutorChildWindow->ShowWindow( SW_SHOW);
                 g_pomTSExecutorChildWindow->SetFocus();
@@ -158,19 +171,20 @@ USAGEMODE HRESULT TS_hTSEexecutorWindowShown()
         return S_FALSE;
     }
 }
-USAGEMODE HRESULT TS_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
+//USAGEMODE HRESULT TS_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
+USAGEMODE HRESULT TS_hGetConfigurationData(xmlNodePtr pxmlNodePtr)
 {
     if(g_pomTSExecutorChildWindow != NULL)
     {
-        return g_pomTSExecutorChildWindow->GetConfigurationData(pDesBuffer, nBuffSize);
+        return g_pomTSExecutorChildWindow->GetConfigurationData(pxmlNodePtr);
     }
-    else
+    /*else
     {
         nBuffSize  = m_unConfigSize;
         pDesBuffer = new BYTE[m_unConfigSize];
         memcpy(pDesBuffer, m_pbyConfigData, m_unConfigSize);
         return S_FALSE;
-    }
+    }*/
 }
 USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
@@ -179,6 +193,7 @@ USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
         delete []m_pbyConfigData;
         m_pbyConfigData = NULL;
     }
+    m_bByXmlConfig = FALSE;
     m_unConfigSize = unBuffSize;
     m_pbyConfigData = new BYTE[m_unConfigSize];
     memcpy(m_pbyConfigData, pSrcBuffer, m_unConfigSize);
@@ -189,6 +204,30 @@ USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
     return S_OK;
 }
 
+USAGEMODE HRESULT TS_hSetXMLConfigurationData(xmlDocPtr pDoc)
+{
+    m_bByXmlConfig = TRUE;
+    if ( NULL != m_pXmlConfigNode )
+    {
+        xmlFreeNode(m_pXmlConfigNode);
+        m_pXmlConfigNode == NULL;
+    }
+    xmlXPathObjectPtr pTempPathNode = xmlUtils::pGetNodes(pDoc, (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_TS_Executor");
+    if( NULL == pTempPathNode )
+    {
+        return S_FALSE;
+    }
+
+    m_pXmlConfigNode = xmlCopyNode(pTempPathNode->nodesetval->nodeTab[0], 1);
+
+    if(g_pomTSExecutorChildWindow != NULL)
+    {
+        g_pomTSExecutorChildWindow->SetConfigurationData(m_pXmlConfigNode);
+    }
+
+
+    return S_OK;
+}
 USAGEMODE HRESULT TS_DoInitialization(ETYPE_BUS /*eBus*/)
 {
     //Place this code at the beginning of the export function.

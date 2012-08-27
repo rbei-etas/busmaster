@@ -24,6 +24,8 @@
 #include "TSExecutorGUI_resource.h"
 #include "TestSetupEditorGUI\TSEditorGUI_Definitions.h"
 #include ".\tsexecutorgui_childframe.h"
+#include "include/XMLDefines.h"
+#include "Utility/XMLUtils.h"
 
 //TODO::Move To definitions
 #define def_INDEX_TESTSUITEIMAGE    0
@@ -482,6 +484,42 @@ HRESULT CTSExecutorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& unB
     return S_OK;
 }
 
+BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr pxmlNodePtr)
+{
+    const char* omcVarChar ;
+
+    m_ouTSExecutor.GetConfigurationData(pxmlNodePtr);
+
+    //Window position
+    WINDOWPLACEMENT wndPlacement;
+    GetWindowPlacement(&wndPlacement);
+
+    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlAddChild(pxmlNodePtr, pNodeWndPos);
+    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,wndPlacement);
+
+    //splitter position-------------------------
+    INT nCxCur, nCxMin;
+    m_omSplitterWnd.GetColumnInfo(0, nCxCur, nCxMin);
+
+    xmlNodePtr pNodeSplitterWnd = xmlNewNode(NULL, BAD_CAST DEF_SPLITTER_WINDOW);
+    xmlAddChild(pxmlNodePtr, pNodeSplitterWnd);
+
+    //<CxIdeal />
+    CString  csCxIdeal;
+    csCxIdeal.Format("%d", nCxCur );
+    omcVarChar = csCxIdeal;
+    xmlNodePtr pCxIdeal = xmlNewChild(pNodeSplitterWnd, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSplitterWnd, pCxIdeal);
+
+    // <CxMin />
+    CString  csCxMin;
+    csCxMin.Format("%d",nCxMin );
+    omcVarChar = csCxMin;
+    xmlNodePtr pcsCxMin = xmlNewChild(pNodeSplitterWnd, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlAddChild(pNodeSplitterWnd, pcsCxMin);
+    return true;
+}
 /******************************************************************************
 Function Name  :  SetConfigurationData
 Input(s)       :  BYTE* pSrcBuffer, UINT unBuffSize
@@ -528,6 +566,73 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuf
         vInitialise();
         SetWindowPlacement(&m_sTSDefPlacement);
     }
+    return S_OK;
+}
+
+HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
+{
+    int nRetValue = S_OK;
+    BOOL bWindowPlacement = FALSE;
+
+    if( NULL != pXmlNode )
+    {
+        vInitialise();
+        xmlNodePtr pTempNode = NULL;
+        xmlXPathObjectPtr pObjectPtr = NULL;
+
+        //Test Suite Window Position
+        WINDOWPLACEMENT wndPlacement;
+        pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Window_Position");
+        if( NULL != pObjectPtr)
+        {
+            pTempNode = pObjectPtr->nodesetval->nodeTab[0];
+            if( S_FALSE == xmlUtils::ParseWindowsPlacement(pTempNode, wndPlacement) )
+            {
+                bWindowPlacement = TRUE;
+                wndPlacement = m_sTSDefPlacement;
+            }
+            xmlXPathFreeObject(pObjectPtr);
+            pObjectPtr = NULL;
+        }
+        SetWindowPlacement(&wndPlacement);
+
+        //Splitter Position
+        pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Splitter_Window");
+        int nCxCur = 0;
+        int nCxMin = 0;
+        if( NULL != pObjectPtr)
+        {
+            pTempNode = pObjectPtr->nodesetval->nodeTab[0];
+            if ( S_OK == xmlUtils::ParseSplitterWindow(pTempNode, nCxCur, nCxMin) )
+            {
+                m_omSplitterWnd.SetColumnInfo(0, nCxCur, nCxMin);
+            }
+        }
+
+        //Test Suite Executor ConfigData
+        m_ouTSExecutor.SetConfigurationData(pXmlNode);
+
+        m_odTreeView->GetTreeCtrl().SetCheck(m_hParentTreeItem, m_ouTSExecutor.m_bTestSuiteStatus);
+
+        CString omStrName;
+        m_ouTSExecutor.GetTestsuiteName(omStrName);
+        m_odTreeView->GetTreeCtrl().SetItemText(m_hParentTreeItem, omStrName);
+
+        //Parse The Tree Control;
+        INT nCount;
+        m_ouTSExecutor.GetTestSetupCount(nCount);
+        for(int i = 0; i < nCount; i++)
+        {
+            bParseTestSetup(i);
+        }
+
+    }
+    if( NULL == pXmlNode || FALSE == bWindowPlacement )
+    {
+        //vInitialise();
+        SetWindowPlacement(&m_sTSDefPlacement);
+    }
+
     return S_OK;
 }
 

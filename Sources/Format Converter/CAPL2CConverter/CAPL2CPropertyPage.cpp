@@ -16,20 +16,24 @@
 /**
  * \file      ConverterDlg.cpp
  * \brief     Implementation file for CCAPL2CPropertyPage class
- * \authors   Amit Ranjan
+ * \author    Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CCAPL2CPropertyPage class
  */
 
-/* C include */
-#include <stdlib.h>
-
-/* Project includes */
+// keyoptionDlg.cpp : implementation file
+#include "CAPL2CConverter_stdafx.h"
 #include "CAPL2CPropertyPage.h"
+
+#include "LexerHandlers.hpp"
 #include "ConstString.h"
-#include "Functions.hpp"
-#include "List.h"
+#include "stdlib.h"
+#include "EnvVarHandlerDlg.h"
+#include "CAPL2CConverter_Resource.h"
+#include "../../Utility/WaitIndicator.h"
+/////////////////////////////////////////////////////////////////////////////
+// CAboutDlg dialog used for App About
 
 class CAboutDlg : public CDialog
 {
@@ -79,10 +83,13 @@ END_MESSAGE_MAP()
 
 CCAPL2CPropertyPage::CCAPL2CPropertyPage(CWnd* pParent /*=NULL*/)
     : CPropertyPage(CCAPL2CPropertyPage::IDD)
+    , m_bConvertDbc2Dbf(FALSE)
 {
     //{{AFX_DATA_INIT(CCAPL2CPropertyPage)
-    m_check = FALSE;
     m_savedb = FALSE;
+    m_pfGetConverter = NULL;
+    m_hDLLModule = NULL;
+    m_pouDBC2DBFConverter = NULL;
     //}}AFX_DATA_INIT
     // Note that LoadIcon does not require a subsequent DestroyIcon in Win32
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -92,9 +99,11 @@ void CCAPL2CPropertyPage::DoDataExchange(CDataExchange* pDX)
 {
     CPropertyPage::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CCAPL2CPropertyPage)
-    DDX_Check(pDX, IDC_CHKB_OPTN, m_check);
-    DDX_Check(pDX, IDC_CHKB_SAVEDB, m_savedb);
+    //DDX_Check(pDX, IDC_CHKB_OPTN, m_check);
+    //DDX_Check(pDX, IDC_CHKB_SAVEDB, m_savedb);
     //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_LIST_DBC_FILES, m_omDBCList);
+    DDX_Check(pDX, IDC_CHKB_SAVEDB, m_bConvertDbc2Dbf);
 }
 
 BEGIN_MESSAGE_MAP(CCAPL2CPropertyPage, CPropertyPage)
@@ -107,12 +116,16 @@ BEGIN_MESSAGE_MAP(CCAPL2CPropertyPage, CPropertyPage)
     ON_BN_CLICKED(IDC_CBTN_LOG, OnShowLog)
     ON_BN_CLICKED(IDC_CBTN_CNVRT, OnConvert)
     ON_EN_CHANGE(IDC_EDIT_INPUT, OnChangeEditInput)
-    ON_BN_CLICKED(IDC_CHKB_OPTN, OnChkbOptn)
+    //ON_BN_CLICKED(IDC_CHKB_OPTN, OnChkbOptn)
     ON_BN_CLICKED(IDC_CBTN_BCANOEDB, OnBrowseCANoeDb)
     ON_BN_CLICKED(IDC_CBTN_BBUSMASTERDB, OnBrowseBUSMASTERDb)
     ON_BN_CLICKED(IDC_CBTN_CANCEL, OnCancel)
     ON_BN_CLICKED(IDC_CHKB_SAVEDB, OnChkbSavedb)
     //}}AFX_MSG_MAP
+    ON_BN_CLICKED(IDC_CBTN_BCANOEDB_DEL, OnBnCanoedbDel)
+    ON_NOTIFY(NM_CLICK, IDC_LIST_DBC_FILES, OnNMClickListDbcFiles)
+    ON_NOTIFY(LVN_ITEMACTIVATE, IDC_LIST_DBC_FILES, OnLvnItemActivateListDbcFiles)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_DBC_FILES, OnLvnItemchangedListDbcFiles)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -121,17 +134,18 @@ END_MESSAGE_MAP()
 BOOL CCAPL2CPropertyPage::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
+
     // Add "About..." menu item to system menu.
+
     // IDM_ABOUTBOX must be in the system command range.
     ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
     ASSERT(IDM_ABOUTBOX < 0xF000);
-    CMenu* pSysMenu = GetSystemMenu(FALSE);
 
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
     if (pSysMenu != NULL)
     {
         CString strAboutMenu;
         strAboutMenu.LoadString(IDS_ABOUTBOX);
-
         if (!strAboutMenu.IsEmpty())
         {
             pSysMenu->AppendMenu(MF_SEPARATOR);
@@ -143,7 +157,16 @@ BOOL CCAPL2CPropertyPage::OnInitDialog()
     //  when the application's main window is not a dialog
     SetIcon(m_hIcon, TRUE);         // Set big icon
     SetIcon(m_hIcon, FALSE);        // Set small icon
+
     // TODO: Add extra initialization here
+    CRect omRect;
+    m_omDBCList.SetExtendedStyle(m_omDBCList.GetExtendedStyle() | LVS_EX_GRIDLINES|LVS_EX_FULLROWSELECT);
+    m_omDBCList.InsertColumn(0, _T("DBC File Path"));
+    m_omDBCList.InsertColumn(1, _T("DBF File Path"));
+    m_omDBCList.GetWindowRect( &omRect );
+    m_omDBCList.SetColumnWidth( 0, omRect.Width()/2 );
+    m_omDBCList.SetColumnWidth( 1, omRect.Width()/2 );
+
     return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -169,7 +192,9 @@ void CCAPL2CPropertyPage::OnPaint()
     if (IsIconic())
     {
         CPaintDC dc(this); // device context for painting
+
         SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+
         // Center icon in client rectangle
         int cxIcon = GetSystemMetrics(SM_CXICON);
         int cyIcon = GetSystemMetrics(SM_CYICON);
@@ -177,6 +202,7 @@ void CCAPL2CPropertyPage::OnPaint()
         GetClientRect(&rect);
         int x = (rect.Width() - cxIcon + 1) / 2;
         int y = (rect.Height() - cyIcon + 1) / 2;
+
         // Draw the icon
         dc.DrawIcon(x, y, m_hIcon);
     }
@@ -193,229 +219,7 @@ HCURSOR CCAPL2CPropertyPage::OnQueryDragIcon()
     return (HCURSOR) m_hIcon;
 }
 
-/*******************************************************************************
- Function Name    : OnInitDialog
- Input(s)         :     -
- Output           :     -
- Functionality    : This will populate the first list box with unsupported
-                    keys and environment handlers and the second list box
-                    with available keys.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 22.04.2004
- Modifications    :
-*******************************************************************************/
-BOOL List::OnInitDialog()
-{
-    try
-    {
-        int Flag = 0;
-        int m = 0;
-        char allkey[]= {'a','b','c','d','e','f','g','h','i','j','k','l','m','n',
-                        'o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E',
-                        'F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V',
-                        'W','X','Y','Z','0','1','2','3','4','5','6','7','8','9',0
-                       };
-        CDialog::OnInitDialog();
 
-        for(m = 0; m < ouUnSptdKey.nGetSize(); m++)
-        {
-            m_UnSupKeys.AddString( ouUnSptdKey.omGetAt(m) );
-        }
-
-        for( m = 0; m < defINT_SizeofacAltKeyArray ; m++ )
-        {
-            Flag = 0;
-
-            for( int p = 0; p <= cIndex2-1; p++)
-            {
-                if(allkey[m] == acSptdKey[p])
-                {
-                    Flag = 1;
-                    break;
-                }
-            }
-
-            if( Flag == 0)
-            {
-                m_AltKeys.AddString( CString( allkey[m] ) );
-            }
-        }
-
-        m_UnSupKeys.SetCurSel(0);
-        m_AltKeys.SetCurSel(0);
-
-        if( m_AltKeys.GetCount() == 0)
-        {
-            //if no key is available
-            GetDlgItem( IDC_CBTN_ADD )->EnableWindow(FALSE);
-            ShowWindow(SW_SHOW);
-            MessageBox("No Key is avilable",NULL,MB_OK);
-        }
-    }
-    catch(...)
-    {
-        CString cs;
-        cs.Format(ExceptionFormat,"\"OnInitDialog\"",__FILE__,__LINE__);
-        MessageBox(cs);
-        exit(0);
-    }
-
-    return TRUE;
-}
-/*******************************************************************************
- Function Name    : OnAdd
- Input(s)         :     -
- Output           :     -
- Functionality    : This will take selected element from first two list and add
-                    it to the third one.The element selected from the second
-                    list will be added to acAltKey array at the place where the
-                    first list element is stored in acUnSptdKey array.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 23.04.2004
- Modifications    :
-*******************************************************************************/
-void List::OnAdd()
-{
-    int m = 0;
-    CString uns,alt,uns1;
-    m = m_UnSupKeys.GetCurSel();
-    m_UnSupKeys.GetText( m,uns );//store selected element from first list
-    m_UnSupKeys.GetText( m,uns1 );
-    m_UnSupKeys.DeleteString( m );//delete it
-    m = m_AltKeys.GetCurSel();
-    m_AltKeys.GetText( m,alt );//store selected element from second list
-    m_AltKeys.DeleteString( m );
-    uns = uns+" --->  ";
-    uns = uns + alt;
-    m_EquiKeys.AddString( uns );//add both to third list
-    acAltKey[ouUnSptdKey.nFind(uns1)] = alt[0];//add the key to acAltKeylist
-    m_UnSupKeys.SetCurSel(0);//set first item selected
-    m_AltKeys.SetCurSel(0);
-    m_EquiKeys.SetCurSel(0);
-
-    if(m_UnSupKeys.GetCount() == 0 || m_AltKeys.GetCount() == 0 )
-    {
-        GetDlgItem( IDC_CBTN_ADD )->EnableWindow(FALSE);
-    }
-    else
-    {
-        GetDlgItem( IDC_CBTN_ADD )->EnableWindow(TRUE);
-    }
-
-    GetDlgItem( IDC_CBTN_RMV )->EnableWindow(TRUE);
-}
-/*******************************************************************************
- Function Name    : OnRemove
- Input(s)         :     -
- Output           :     -
- Functionality    : This will will remove the selected item from the third list
-                    and will put the first element in the first list and second
-                    element in the second list.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 23.04.2004
- Modifications    :
-*******************************************************************************/
-void List::OnRemove()
-{
-    CString ekey;
-
-    if((m = m_EquiKeys.GetCurSel()) != LB_ERR)
-    {
-        GetDlgItem( IDC_CBTN_ADD )->EnableWindow(TRUE);
-        m_EquiKeys.GetText( m,ekey );
-        int k = ekey.Find(' ',0);
-
-        if( k != -1)
-        {
-            m_UnSupKeys.AddString(ekey.Left(k));
-            m_AltKeys.AddString(ekey.Right(1));
-        }
-
-        acAltKey [ ouUnSptdKey.nFind( ekey.Left( k)) ] = -1;
-        m_EquiKeys.DeleteString(m);
-        m_UnSupKeys.SetCurSel(0);
-        m_AltKeys.SetCurSel(0);
-        m_EquiKeys.SetCurSel(0);
-    }
-
-    if(m_EquiKeys.GetCount()==0)
-    {
-        GetDlgItem(IDC_CBTN_RMV)->EnableWindow(FALSE);
-    }
-}
-/*******************************************************************************
- Function Name    : OnTerminate
- Input(s)         :     -
- Output           :     -
- Functionality    : This will take first item from list one and first item from
-                    list two to make the default selection of available keys for
-                    the unsupported keys.This will write the user intervention
-                    for the alternate keys in the log file also.
- Member of        :     -
- Friend of        :     -
- Author(s)        : Amit Ranjan
- Date Created     : 27.04.2004
- Modifications    :
-*******************************************************************************/
-void List::OnTerminate()
-{
-    CString buffer;
-    CString uns,alt,uns1;
-
-    if(m_UnSupKeys.GetCount()>0)
-    {
-        if ( m_AltKeys.GetCount() > 0 )
-        {
-            MessageBox(defSTR_Warning6,MB_OK);
-        }
-
-        while(m_UnSupKeys.GetCount()!=0)
-        {
-            if(m_AltKeys.GetCount()>0)
-            {
-                m_UnSupKeys.GetText(0,uns);
-                m_UnSupKeys.GetText(0,uns1);
-                m_UnSupKeys.DeleteString(0);
-                m_AltKeys.GetText(0,alt);
-                m_AltKeys.DeleteString(0);
-                uns = uns+" --->  ";
-                uns = uns + alt;
-                m_EquiKeys.AddString(uns);
-                acAltKey[ ouUnSptdKey.nFind(uns1) ] = alt[0];
-            }
-            else
-            {
-                m_UnSupKeys.DeleteString(0);
-            }
-        }
-    }
-
-    if( m_EquiKeys.GetCount() > 0 )
-    {
-        fprintf(logfile,"---***********************************---");
-        fprintf(logfile,"\n---*****List Of User Intervention*****---");
-        fprintf(logfile,"\n---***********************************---");
-        fprintf(logfile,"\n Unsupported Key -->Equivalent Key");
-        fprintf(logfile,"\n ---------------    ---------------\n");
-    }
-
-    for(int m = 0; m <= m_EquiKeys.GetCount()-1; m++ )
-    {
-        m_EquiKeys.GetText( m,buffer );
-        fprintf(logfile,"\t%s\n",buffer);
-    }
-
-    m_UnSupKeys.ResetContent();
-    m_EquiKeys.ResetContent();
-    m_AltKeys.ResetContent();
-    List::OnOK();
-}
 
 /*******************************************************************************
  Function Name    : OnBrowseSource
@@ -434,18 +238,19 @@ void CCAPL2CPropertyPage::OnBrowseSource()
 {
     CString omStrPath;
     int nIndex = -1;
-    CFileDialog cfd(TRUE,"can",NULL,OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
-                    OFN_PATHMUSTEXIST,"CAN Files(*.can)|*.can||",this);
-    cfd.m_ofn.lpstrTitle = "Select CAN File";
+    CFileDialog cfd(TRUE,"can","*can",OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
+                    OFN_PATHMUSTEXIST|OFN_EXTENSIONDIFFERENT,"CAPL Files(*.can)|*.can||",this);
+
+    cfd.m_ofn.lpstrTitle = "Select CAPL (.can) File";
+
+
     GetDlgItemText( IDC_EDIT_INPUT,omStrPath );
     omStrPath.TrimLeft();
     omStrPath.TrimRight();
-
     if(omStrPath.IsEmpty())
     {
         omStrPath = AfxGetApp()->GetProfileString("Files","CAPL file","");
     }
-
     if( (nIndex = omStrPath.ReverseFind('\\') )!= -1)
     {
         omStrPath = omStrPath.Left(nIndex);
@@ -456,8 +261,18 @@ void CCAPL2CPropertyPage::OnBrowseSource()
     if(cfd.DoModal()==IDOK)
     {
         omStrPath = cfd.GetPathName();
+        INT nIndex = omStrPath.ReverseFind('.');
+        if ( nIndex >= 0)
+        {
+            CString omStrOutputFile = omStrPath.Left(nIndex);
+            omStrOutputFile += ".cpp";
+            SetDlgItemText(IDC_EDIT_OUTPUT,omStrOutputFile);
+        }
+
         SetDlgItemText(IDC_EDIT_INPUT, omStrPath );
+        SetDlgItemText(IDC_STAT_RESULT2, "");
     }
+
 }
 /*******************************************************************************
  Function Name    : OnBrowseDest
@@ -473,20 +288,21 @@ void CCAPL2CPropertyPage::OnBrowseSource()
 *******************************************************************************/
 void CCAPL2CPropertyPage::OnBrowseDest()
 {
-    CFileDialog cfd(TRUE,"c",NULL,OFN_OVERWRITEPROMPT|
-                    OFN_HIDEREADONLY,"BUSMASTER  Files(*.c)|*.c||",this);
+    CFileDialog cfd(TRUE,"cpp",NULL,OFN_OVERWRITEPROMPT|
+                    OFN_HIDEREADONLY,"BUSMASTER  Files(*.cpp)|*.cpp||",this);
+
     cfd.m_ofn.lpstrTitle = "Select BUSMASTER File";
+
     CString omStrPath;
     int nIndex;
+
     GetDlgItemText( IDC_EDIT_OUTPUT,omStrPath );
     omStrPath.TrimLeft();
     omStrPath.TrimRight();
-
     if(omStrPath.IsEmpty())
     {
         omStrPath = AfxGetApp()->GetProfileString("Files","CAPL file","");
     }
-
     if( (nIndex = omStrPath.ReverseFind('\\') )!= -1)
     {
         omStrPath = omStrPath.Left(nIndex);
@@ -498,6 +314,7 @@ void CCAPL2CPropertyPage::OnBrowseDest()
     {
         omStrPath = cfd.GetPathName();
         SetDlgItemText(IDC_EDIT_OUTPUT,omStrPath);
+        SetDlgItemText(IDC_STAT_RESULT2, "");
     }
 }
 /*******************************************************************************
@@ -514,8 +331,10 @@ void CCAPL2CPropertyPage::OnBrowseDest()
 void CCAPL2CPropertyPage::OnShowLog()
 {
     CString cs ;
+
     cs = getenv("windir");
-    cs = cs + "\\notepad.exe " + dest1;
+
+    cs = cs + "\\notepad.exe " + m_omLogFile;
     WinExec(cs,SW_SHOW);
 }
 
@@ -539,13 +358,13 @@ void CCAPL2CPropertyPage::OnChangeEditInput()
     {
         GetDlgItem( IDC_CBTN_CNVRT )->EnableWindow(FALSE);
     }
+
 }
 
-void CCAPL2CPropertyPage::OnChkbOptn()
+/*void CCAPL2CPropertyPage::OnChkbOptn()
 {
     //this will activate if check box is checked
     UpdateData();
-
     if( m_check )
     {
         cFlagH = 1;
@@ -556,6 +375,7 @@ void CCAPL2CPropertyPage::OnChkbOptn()
     else
     {
         cFlagH = 0;
+
         SetDlgItemText(IDC_EDIT_CANOEDB," " );
         SetDlgItemText(IDC_EDIT_BUSMASTERDB," " );
         //m_savedb = FALSE;
@@ -564,9 +384,10 @@ void CCAPL2CPropertyPage::OnChkbOptn()
         GetDlgItem( IDC_CHKB_SAVEDB )->EnableWindow(FALSE);
         GetDlgItem( IDC_EDIT_BUSMASTERDB )->EnableWindow(FALSE);
         GetDlgItem( IDC_CBTN_BBUSMASTERDB )->EnableWindow(FALSE);
+
     }
 }
-
+*/
 /*******************************************************************************
  Function Name    : OnBrowseCANoeDb
  Input(s)         :     -
@@ -581,25 +402,41 @@ void CCAPL2CPropertyPage::OnChkbOptn()
 *******************************************************************************/
 void CCAPL2CPropertyPage::OnBrowseCANoeDb()
 {
-    CString omStrPath;
-    CFileDialog cfd(TRUE,"dbc",NULL,OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
-                    OFN_PATHMUSTEXIST,"CANoe Database Files(*.dbc)|*.dbc||",this);
-    cfd.m_ofn.lpstrTitle = "Select CANoe Database File";
-    GetDlgItemText( IDC_EDIT_CANOEDB,omStrPath );
-    omStrPath.TrimLeft();
-    omStrPath.TrimRight();
+    CFileDialog omDBCFileBrowser(TRUE,"dbc",NULL,OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
+                                 OFN_PATHMUSTEXIST|OFN_ALLOWMULTISELECT,"CANoe Database Files(*.dbc)|*.dbc||",this);
 
-    if( omStrPath.Find(".dbc",0) != -1)
+    omDBCFileBrowser.m_ofn.lpstrTitle = "Select CANoe Database File";
+
+    CString omStrDBFFile;
+    if(omDBCFileBrowser.DoModal()==IDOK)
     {
-        omStrPath = omStrPath.Left( omStrPath.GetLength() - 4);
-    }
+        POSITION pos = omDBCFileBrowser.GetStartPosition();
+        while(pos != NULL)
+        {
 
-    cfd.m_ofn.lpstrInitialDir = omStrPath;
+            CString omstrDBCFile = omDBCFileBrowser.GetNextPathName(pos);
+            int nIndex = m_omDBCList.GetItemCount();
+            // Insert at the end
+            m_omDBCList.InsertItem( nIndex, omstrDBCFile);
 
-    if(cfd.DoModal()==IDOK)
-    {
-        omStrPath = cfd.GetPathName();
-        SetDlgItemText(IDC_EDIT_CANOEDB, omStrPath );
+            if( omstrDBCFile.Find(".dbc",0) != -1)
+            {
+                omStrDBFFile = omstrDBCFile.Left( omstrDBCFile.GetLength() - 4);
+                omStrDBFFile += _T(".dbf");
+                m_omDBCList.SetItemText(nIndex, 1, omStrDBFFile);
+            }
+            else if( omstrDBCFile.Find(".DBC",0) != -1)
+            {
+                omStrDBFFile = omstrDBCFile.Left( omstrDBCFile.GetLength() - 4);
+                omStrDBFFile += _T(".dbf");
+                m_omDBCList.SetItemText(nIndex, 1, omStrDBFFile);
+            }
+            else
+            {
+                MessageBox("Invalid CANoe Database File", "Error", MB_OK|MB_ICONERROR);
+                m_omDBCList.DeleteItem(nIndex);
+            }
+        }
     }
 }
 
@@ -618,45 +455,50 @@ void CCAPL2CPropertyPage::OnBrowseCANoeDb()
 
 void CCAPL2CPropertyPage::OnBrowseBUSMASTERDb()
 {
-    CString omStrPath;
-    CFileDialog cfd( TRUE,"dbf",NULL,OFN_OVERWRITEPROMPT|
-                     OFN_PATHMUSTEXIST,"BUSMASTER Database Files(*.dbf)|*.dbf||",this);
-    cfd.m_ofn.lpstrTitle = "Select BUSMASTER Database File";
-    GetDlgItemText( IDC_EDIT_BUSMASTERDB,omStrPath );
+    CFileDialog  omStrDBFFileDialog( TRUE,"dbf",NULL,OFN_OVERWRITEPROMPT|
+                                     OFN_PATHMUSTEXIST,"BUSMASTER Database Files(*.dbf)|*.dbf||",this);
+
+    omStrDBFFileDialog.m_ofn.lpstrTitle = "Select BUSMASTER Database File";
+
+    POSITION pos = m_omDBCList.GetFirstSelectedItemPosition();
+    int nItem = m_omDBCList.GetNextSelectedItem(pos);
+
+    CString omStrPath = m_omDBCList.GetItemText(nItem, 1);
     omStrPath.TrimLeft();
     omStrPath.TrimRight();
-
-    if( omStrPath.Find(".dbc",0) != -1)
+    CString omStrFileName = _T("");
+    if( omStrPath.Find(".dbf",0) != -1)
     {
+        INT nIndex = omStrPath.ReverseFind('\\');
+
+        if(nIndex >= 0)
+        {
+            omStrFileName = omStrPath.Right(omStrPath.GetLength() - nIndex - 1);
+            strcpy(omStrDBFFileDialog.m_ofn.lpstrFile, omStrFileName.GetBuffer(MAX_PATH));
+        }
+
         omStrPath = omStrPath.Left( omStrPath.GetLength() - 4);
-    }
-
-    cfd.m_ofn.lpstrInitialDir = omStrPath;
-
-    if(cfd.DoModal()==IDOK)
-    {
-        omStrPath = cfd.GetPathName();
-        SetDlgItemText(IDC_EDIT_BUSMASTERDB, omStrPath );
+        omStrDBFFileDialog.m_ofn.lpstrInitialDir = omStrPath;
+        if(omStrDBFFileDialog.DoModal()==IDOK)
+        {
+            omStrPath = omStrDBFFileDialog.GetPathName();
+            m_omDBCList.SetItemText(nItem, 1, omStrPath);
+        }
     }
 }
 
 void CCAPL2CPropertyPage::OnChkbSavedb()
 {
     UpdateData();
-
     if( m_savedb )
     {
         cFlagLog = 2;//to check whether to save converted database or not
-        GetDlgItem( IDC_EDIT_BUSMASTERDB )->EnableWindow(TRUE);
-        GetDlgItem( IDC_CBTN_BBUSMASTERDB )->EnableWindow(TRUE);
     }
     else
     {
         cFlagLog = 0;
-        SetDlgItemText(IDC_EDIT_BUSMASTERDB," " );
-        GetDlgItem( IDC_EDIT_BUSMASTERDB )->EnableWindow(FALSE);
-        GetDlgItem( IDC_CBTN_BBUSMASTERDB )->EnableWindow(FALSE);
     }
+
 }
 
 void CCAPL2CPropertyPage::SaveSettings()
@@ -664,6 +506,7 @@ void CCAPL2CPropertyPage::SaveSettings()
     //this function will save the settings in the registry.
     CString strSection       = "Files";
     CString strStringItem    = "CAPL File";
+
     CWinApp* pApp = AfxGetApp();
     CString omStrCAPLName;
     CWnd* pCAPL = GetDlgItem(IDC_EDIT_INPUT);
@@ -671,13 +514,227 @@ void CCAPL2CPropertyPage::SaveSettings()
     pApp->WriteProfileString(strSection, strStringItem,omStrCAPLName);
 }
 
-void List::OnCancel()
+
+
+void CCAPL2CPropertyPage::OnBnCanoedbDel()
 {
-    List::OnTerminate();
+    // TODO: Add your control notification handler code here
+    POSITION pos = m_omDBCList.GetFirstSelectedItemPosition();
+    if(pos != NULL)
+    {
+        int nItem = m_omDBCList.GetNextSelectedItem(pos);
+        m_omDBCList.DeleteItem(nItem);
+    }
 }
 
-void List::OnClose()
+
+
+void CCAPL2CPropertyPage::OnConvert()
 {
-    OnTerminate();
-    CDialog::OnClose();
+    CString omStrCFileName , omStrCAPLFileName ;    //to store the destination file and source file
+    CFile omCAPLFile, omCFile, omLogFile;           //to check files
+    CString omExtension;                                   //to store the extension
+
+    BOOL bValidInputs = TRUE;
+
+    for( int m = 0; m < 254; m++)
+    {
+        //initialize array with -1.
+        acAltKey[m]= -1;
+    }
+
+    GetDlgItem(IDC_CBTN_LOG)->EnableWindow(FALSE);
+    GetDlgItemText( IDC_EDIT_INPUT,omStrCAPLFileName );//omStrCAPLFileName will have input file path
+    GetDlgItemText( IDC_EDIT_OUTPUT,omStrCFileName );//omStrCFileName will have output file path
+
+    omStrCAPLFileName.TrimRight();
+    omExtension = omStrCAPLFileName.Right(4);
+    omExtension.MakeLower();
+
+    if( omExtension != ".can" )
+    {
+        //if file doesn't exist or in write mode
+        MessageBox( defSTR_Warning5,MB_ICONWARNING|MB_OK );
+        SetDlgItemText( IDC_EDIT_INPUT,"" );
+        GetDlgItem( IDC_EDIT_INPUT)->SetFocus();
+        bValidInputs = FALSE;//to avoid conversion
+    }
+
+    else if( omCAPLFile.Open( omStrCAPLFileName,CFile::modeRead ) == NULL )
+    {
+        //if file doesn't exist or in write mode
+        MessageBox( defSTR_Warning2,MB_ICONWARNING|MB_OK );
+        SetDlgItemText( IDC_EDIT_INPUT,"" );
+        GetDlgItem( IDC_EDIT_INPUT)->SetFocus();
+        bValidInputs = FALSE;//to avoid conversion
+    }
+    else
+    {
+        //close omCAPLFile file
+        omCAPLFile.Close();
+    }
+
+    if(omStrCFileName == "")
+    {
+        //for default output file name
+        omStrCFileName = omStrCAPLFileName.Left( omStrCAPLFileName.GetLength() - 4 );
+        omStrCFileName += ".cpp";
+    }
+    else
+    {
+        omStrCFileName.TrimRight();
+        int nIndex = omStrCFileName.ReverseFind('.');
+        omExtension = omStrCFileName.Right(omStrCFileName.GetLength()-nIndex);
+        omExtension.MakeLower();
+
+        if ( omExtension != ".cpp")
+        {
+            MessageBox(defSTR_Warning1,MB_ICONWARNING|MB_OK );
+            SetDlgItemText( IDC_EDIT_OUTPUT,"" );
+            GetDlgItem( IDC_EDIT_OUTPUT)->SetFocus();
+            bValidInputs = FALSE;//to avoid conversion
+        }
+    }
+
+    if(omCFile.Open(omStrCFileName,CFile::modeCreate|CFile::modeWrite)==NULL)
+    {
+        //if output file is in read mode
+        MessageBox( defSTR_Warning3,MB_ICONWARNING|MB_OK );
+        SetDlgItemText( IDC_EDIT_OUTPUT,"" );
+        GetDlgItem( IDC_EDIT_OUTPUT)->SetFocus();
+        bValidInputs = FALSE;//to avoid conversion
+    }
+    else
+    {
+        //close omCFile file
+        omCFile.Close();
+
+    }
+
+    m_omLogFile = omStrCFileName;
+    m_omLogFile = omStrCFileName.Left( omStrCFileName.GetLength() -  4 );
+    m_omLogFile +=  defSTR_LogName;//default output file name
+    if(omLogFile.Open(m_omLogFile,CFile::modeCreate|CFile::modeWrite)== NULL)
+    {
+        MessageBox( defSTR_Warning4,MB_ICONWARNING|MB_OK );
+        bValidInputs = FALSE;//to avoid conversion
+    }
+    else
+    {
+        omLogFile.Close();
+    }
+    CWaitIndicator ouWaitIndicator;
+
+    if( TRUE == bValidInputs )
+    {
+        //means all the files are correct
+        float value;
+
+        //LOad DBC Files
+        m_hDLLModule = LoadLibrary("DBC2DBFConverterLibrary.dll");
+        m_pfGetConverter = (GETCONVERTER)GetProcAddress(m_hDLLModule, "GetDBCConverter");
+        if( NULL != m_pfGetConverter)
+        {
+            m_pfGetConverter(m_pouDBC2DBFConverter, CAN);
+            if( NULL == m_pouDBC2DBFConverter )
+            {
+                MessageBox(defSTR_Warning8, MB_OK|MB_ICONWARNING);
+            }
+        }
+        ouWaitIndicator.DisplayWindow ("Loading The CANoe Database Files... Please Wait", this);
+        INT_PTR nCount = m_omDBCList.GetItemCount();
+        CStringArray omStrDbcFileArray;
+        if( 0 == nCount )
+        {
+            INT nChoice = MessageBox(defSTR_Warning9, MB_YESNO|MB_ICONWARNING);
+            if( IDNO == nChoice )
+            {
+                return;
+            }
+        }
+        else
+        {
+            for( int i = 0; i < nCount; i++)
+            {
+                string omStrDBCFile = m_omDBCList.GetItemText(i, 0).GetBuffer(MAX_PATH);
+                omStrDbcFileArray.Add(m_omDBCList.GetItemText(i, 0));
+                m_pouDBC2DBFConverter->LoadDBCFile(omStrDBCFile);
+            }
+        }
+        ////
+
+        ouWaitIndicator.SetWindowText(_T("CAPL Conversion is Going on... Please Wait"));
+        CString omStrResult;
+        nConvert(omStrCAPLFileName , omStrCFileName ,m_omLogFile, omStrDbcFileArray, m_pouDBC2DBFConverter, omStrResult) ;
+
+        UpdateData();
+        if(m_bConvertDbc2Dbf == TRUE)
+        {
+            INT_PTR nCount = m_omDBCList.GetItemCount();
+            ouWaitIndicator.SetWindowText("Database Conversion is Going on... Please Wait");
+            for( int i = 0; i < nCount; i++)
+            {
+                string omStrDBCFile = m_omDBCList.GetItemText(i, 0).GetBuffer(MAX_PATH);
+                m_pouDBC2DBFConverter->ClearMsgList();
+                m_pouDBC2DBFConverter->LoadDBCFile(omStrDBCFile);
+                m_pouDBC2DBFConverter->ConvertFile(m_omDBCList.GetItemText(i, 1).GetBuffer(MAX_PATH));
+            }
+        }
+        ouWaitIndicator.SetWindowText("Conversion Completed");
+        Sleep(520);
+        ouWaitIndicator.CloseWindow();
+
+        CWnd* pResultWnd = GetDlgItem(IDC_STAT_RESULT2);
+        if( pResultWnd)
+        {
+            //to display the result
+            pResultWnd->SetWindowText(omStrResult);
+            SaveSettings();
+        }
+        ouUnSptdKey.vClearArray();
+        GetDlgItem( IDC_CBTN_LOG )->EnableWindow(TRUE);
+        if(m_pouDBC2DBFConverter != NULL)
+        {
+            delete m_pouDBC2DBFConverter;
+        }
+    }
+}
+void CCAPL2CPropertyPage::OnNMClickListDbcFiles(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    // TODO: Add your control notification handler code here
+
+    *pResult = 0;
+}
+
+void CCAPL2CPropertyPage::OnLvnItemActivateListDbcFiles(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    LPNMITEMACTIVATE pNMIA = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+    // TODO: Add your control notification handler code here
+
+    *pResult = 0;
+}
+
+void CCAPL2CPropertyPage::OnLvnItemchangedListDbcFiles(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    LPNMLISTVIEW pNMListView = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+
+    if (pNMListView->uChanged != LVIF_TEXT)
+    {
+        // Selected & Focused
+        if (pNMListView->uNewState == (LVIS_FOCUSED | LVIS_SELECTED))
+        {
+            // Update selection
+            //m_nLogIndexSel = pNMListView->iItem;
+            // Update selected Log file details
+            GetDlgItem(IDC_CBTN_BCANOEDB_DEL)->EnableWindow(TRUE);
+            GetDlgItem(IDC_CBTN_BBUSMASTERDB)->EnableWindow(TRUE);
+        }
+        else
+        {
+            GetDlgItem(IDC_CBTN_BCANOEDB_DEL)->EnableWindow(FALSE);
+            GetDlgItem(IDC_CBTN_BBUSMASTERDB)->EnableWindow(FALSE);
+        }
+    }
+
+    *pResult = 0;
 }

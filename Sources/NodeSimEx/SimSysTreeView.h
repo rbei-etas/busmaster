@@ -108,6 +108,7 @@ protected:
     afx_msg void OnSimsysAllKeyhandlers();
     afx_msg void OnSimsysAllMsghandlers();
     afx_msg void OnSimsysAllTimerhandlers();
+    afx_msg void OnSimsysAllEventhandlers();
     afx_msg void OnSimsysBuildall();
     afx_msg void OnDeleteAllNodes();
     afx_msg void OnDeleteSimulatedsystem();

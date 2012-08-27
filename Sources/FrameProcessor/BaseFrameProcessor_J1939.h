@@ -74,11 +74,16 @@ public:
     // Query function - current logging status (OFF/ON).
     virtual BOOL FPJ1_IsLoggingON(void) = 0;
 
+    // PTV [1.6.4]
     virtual BOOL FPJ1_IsJ1939DataLogged(void) = 0;
 
     virtual void FPJ1_DisableJ1939DataLogFlag(void) = 0;
 
     virtual BOOL FPJ1_IsJ1939ThreadBlocked(void) = 0;
+
+    virtual void FPJ1_vCloseLogFile(void) = 0;
+
+    // PTV [1.6.4]
     // Query function - current filtering status
     virtual BOOL FPJ1_IsFilterON(void) = 0;
 
@@ -115,8 +120,10 @@ public:
     // Getter for the logging configuration data
     virtual HRESULT FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
 
+	virtual HRESULT FPJ1_GetConfigData(xmlNodePtr pNodePtr) = 0;
     // Setter for the logging configuration data
     virtual HRESULT FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion) = 0;
+	virtual HRESULT FPJ1_SetConfigData(xmlDocPtr pDoc) = 0;
 
     // To reset or revoke the modifications made
     virtual HRESULT FPJ1_Reset(void) = 0;

@@ -25,7 +25,7 @@
 #define defTX_MSG_WND_BOTTOM_MARGIN     0.14
 #define defTX_MSG_WND_RIGHT_MARGIN      0.17
 //#define defTX_MSG_WND_VERSION         0x01 // Initial version
-#define defTX_MSG_WND_VERSION           0x02 // Added auto save option
+#define defTX_MSG_WND_VERSION           0x03 // Added auto save option
 
 // Tx window spilitter details
 struct tagTxMsgSplitterData
@@ -52,10 +52,14 @@ typedef sTXCANMSGDETAILS* PSTXCANMSGDETAILS;
 
 struct sTXCANMSGLIST
 {
+    bool        m_bModified;
+    UINT        m_unIndex;
     STXCANMSGDETAILS m_sTxMsgDetails;
     struct sTXCANMSGLIST* m_psNextMsgDetails;
     sTXCANMSGLIST()
     {
+        m_bModified         = false;
+        m_unIndex           = 0;
         m_psNextMsgDetails = NULL;
     }
 };
@@ -89,17 +93,20 @@ struct sMSGBLOCKLIST
 {
     char m_acStrBlockName[defBLOCKNAME_SIZE];
     unsigned char m_ucTrigger;
+    bool    m_bModified;
     BOOL m_bType;
     BOOL m_bActive;
     BOOL m_bTxAllFrame;
     UCHAR m_ucKeyValue;
     UINT m_unTimeInterval;
     UINT m_unMsgCount;
+    UINT m_unIndex;
     PSTXCANMSGLIST m_psTxCANMsgList;
     sMSGBLOCKLIST* m_psNextMsgBlocksList;
 
     sMSGBLOCKLIST()
     {
+        m_bModified           = false;
         m_psNextMsgBlocksList = NULL;
         m_unMsgCount          = 0;
         m_bActive             = TRUE;
@@ -108,7 +115,9 @@ struct sMSGBLOCKLIST
         m_ucTrigger           = defTIME_TRIGGER;
         m_psTxCANMsgList      = NULL;
         m_ucKeyValue          = 0;
+        m_unIndex             = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
+        m_psTxCANMsgList      = NULL;
         strcpy_s(m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
     }
 };
@@ -128,12 +137,15 @@ typedef sTHREAD_INFO* PTHREADINFO;
 
 struct sTXMSGINFO
 {
+    bool m_bMonoShotDone;
     UINT m_unTimeInterval;
+    UINT m_unIndex;
     STHREADINFO m_sTimerThreadInfo;
     STHREADINFO m_sKeyThreadInfo;
     CEvent m_omTxBlockTimerEvent;
     CEvent m_omTxBlockKeyEvent;
     CEvent m_omKeyEvent;
+    CEvent m_omTxBlockAutoUpdateEvent;// to set event from UI on auto update of Msg blocks
     BOOL m_bType;
     BOOL m_bSendAllMessages;
     //CRITICAL_SECTION m_sMsgBlocksCriticalSection;
@@ -157,6 +169,7 @@ public:
 public:
     sTXMSGINFO()
     {
+        m_bMonoShotDone = false;
         m_sTimerThreadInfo.m_hThread = NULL;
         m_sTimerThreadInfo.m_pvThread = NULL;
         m_sKeyThreadInfo.m_hThread = NULL;
@@ -164,6 +177,7 @@ public:
         m_hSemaphore = NULL;
         m_psTxCANMsgList = NULL;
         m_psNextTxMsgInfo = NULL;
+        m_unIndex             = 0;
     }
     int nGetConfigSize()
     {
@@ -236,6 +250,19 @@ public:
 typedef  sTXMSGINFO   STXMSG;
 typedef  sTXMSGINFO*  PSTXMSG;
 
+struct sCOMPLETEMSGINFO
+{
+    PSMSGBLOCKLIST      m_psMsgBlockList;
+    PSTXMSG             m_psTxMsg;
+public:
+    sCOMPLETEMSGINFO()
+    {
+        m_psMsgBlockList = NULL;
+        m_psTxMsg        = NULL;
+    }
+};
+typedef sCOMPLETEMSGINFO    SCOMPLETEMSGINFO;
+typedef sCOMPLETEMSGINFO*   PSCOMPLETEMSGINFO;
 struct sTXMSGDATA
 {
     UINT  m_unCount;              // Total array element in the point m_psTxMsg

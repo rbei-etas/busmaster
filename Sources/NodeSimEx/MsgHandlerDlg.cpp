@@ -220,6 +220,7 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
                                     omStrParamtype ); // Parameter type
 
             pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
+            pDoc->bAddFunctionPrototype(omSelectedText, TRUE);
 
             CString omStrPrototype = omSelectedText;
             // Add to tree view
@@ -334,7 +335,9 @@ void CMsgHandlerDlg::OnRbtnMsgName()
     m_odEditMsgID.EnableWindow(FALSE);
     m_omButtonApply.EnableWindow(FALSE);
     m_omButtonOK.EnableWindow(FALSE);
-    m_omButtonApply.EnableWindow(TRUE);
+    m_omButtonApply.EnableWindow(FALSE);
+
+    m_omListMsgName.SetCurSel(-1);
 }
 /******************************************************************************/
 /*  Function Name    :  OnRbtnMsgRange                                        */
@@ -414,7 +417,8 @@ BOOL CMsgHandlerDlg::OnInitDialog()
     m_odEditMsgID.EnableWindow(TRUE);
     m_omButtonApply.EnableWindow(FALSE);
     m_omButtonOK.EnableWindow(FALSE);
-    m_odEditMsgID.vSetSigned(FALSE);
+    //VENKATNARAYANA
+    //    m_odEditMsgID.vSetSigned(FALSE);
 
     m_odEditMsgIDTo.vSetSigned(FALSE);
     m_odEditMsgIDFrom.vSetSigned(FALSE);
@@ -429,13 +433,17 @@ BOOL CMsgHandlerDlg::OnInitDialog()
     }
     if(pomStrArray != NULL )
     {
-        POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetHeadPosition();
+        POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
         //UINT unNoOfMessages = ouGetMsgSignal().unGetNumerOfMessages();
         while (pos != NULL)
         {
-            SMSG_NAME_CODE& sMsgNameCode = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.
-                                           GetNext(pos);
-            bAddMessageNameInListBox(pomStrArray, sMsgNameCode.m_omMsgName);
+            SDB_NAME_MSG&  oDbNameMsg = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetNext(pos);
+            POSITION posMess = oDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
+            while (posMess != NULL)
+            {
+                SMSG_NAME_CODE& sMsgNameCode = oDbNameMsg.m_oMsgNameMsgCodeList.GetNext(posMess);
+                bAddMessageNameInListBox(pomStrArray, sMsgNameCode.m_omMsgName);
+            }
         }
     }
 
@@ -516,7 +524,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
     BOOL bButtonChecked       = FALSE;
     CString omStrMsgNameForID = "";
     CString omStrMsgIDForName = "";
-
+    CList<UINT, UINT&> omMsgList;
     if(pDoc != NULL )
     {
         CString omStrText = "";
@@ -552,18 +560,63 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
             bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_ID);
             if(bButtonChecked != 0)
             {
-                UINT unMsgID = 0;
-                unMsgID = (UINT)m_odEditMsgID.lGetValue();
+                //VENKATNARAYANA
+                //unMsgID = (UINT)m_odEditMsgID.lGetValue();
                 // Get the corresponding message name from the database
                 /*omStrMsgNameForID = CMsgSignal::ouGetMsgSignal().
                             omStrGetMessageNameFromSlotID(unMsgID);
                 bReturn = bValidateMessageNameAndID( pMsgArray,
                                                      defMSG_ID_HANDLER,
                                                      omStrMsgNameForID);*/
-                m_omStrSelectedItemText = defMSG_ID_HANDLER;
-                m_omStrSelectedItemText += m_omStrMsgID;
-                omStrText = "\""+ m_omStrMsgID + "\"";
-                omStrHandlerType = defMSG_ID_TEXT;
+
+                //TODO::Venkatanarayana
+                CString omStrTempId = "";
+                CString omStrTemp;
+                int nCurPos= 0;
+
+                /*omStrTemp= m_omStrMsgID.Tokenize(",",nCurPos);*/
+                vTokenize(m_omStrMsgID, ",", omStrTemp, nCurPos);
+                while (omStrTemp != "")
+                {
+                    CHAR* pchTemp;
+                    UINT unMsgId = strtoul(omStrTemp, &pchTemp, 16);
+                    /*omStrTemp = m_omStrMsgID.Tokenize(",",nCurPos);*/
+                    vTokenize(m_omStrMsgID, ",", omStrTemp, nCurPos);
+                    omMsgList.AddTail(unMsgId);
+                };
+
+                UINT unMsgCount = omMsgList.GetCount();
+                if( unMsgCount == 1 )
+                {
+                    m_omStrSelectedItemText = defMSG_ID_HANDLER;
+                    POSITION pos = omMsgList.FindIndex(0);
+                    if(pos != NULL)
+                    {
+                        UINT unVal = omMsgList.GetAt(pos);
+                        m_omStrMsgID.Format("%x", unVal);
+                        omStrText = _T("\"")+ m_omStrMsgID + _T("\"");
+                    }
+                    m_omStrSelectedItemText += m_omStrMsgID;
+                    omStrText = "\""+ m_omStrMsgID + "\"";
+                    omStrHandlerType = defMSG_ID_TEXT;
+                }
+                else if(unMsgCount > 1)
+                {
+                    m_omStrSelectedItemText = defMSG_IDLIST_HANDLER;
+
+                    for(UINT i = 0; i < unMsgCount; i++)
+                    {
+                        POSITION pos = omMsgList.FindIndex(i);
+                        UINT unVal = omMsgList.GetAt(pos);
+                        m_omStrMsgID.Format("%x_", unVal);
+                        omStrText  += m_omStrMsgID;
+
+                    }
+                    omStrText.TrimRight("_");
+                    m_omStrSelectedItemText += omStrText;
+                    omStrText = _T("\"")+ omStrText + _T("\"");
+                    omStrHandlerType = defMSG_IDLIST_TEXT;
+                }
             }
             else
             {
@@ -623,7 +676,46 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     omStrMsgPro = omStrMsgPro.Left( omStrMsgPro.Find("(") );
                     omStrMsgPro.TrimLeft();
                     omStrMsgPro.TrimRight();
-                    if (omStrMsgPro.Compare(m_omStrSelectedItemText) == 0)
+                    if(omStrHandlerType == defMSG_IDLIST_TEXT )
+                    {
+                        if (omStrMsgPro.Find(defMSG_IDLIST_HANDLER) >= 0 )
+                        {
+                            omStrMsgPro = omStrMsgPro.Right(omStrMsgPro.GetLength()
+                                                            - omStrMsgPro.Find(defMSG_IDLIST_HANDLER) - strlen(defMSG_IDLIST_HANDLER));
+
+                            CString omStrTemp;
+                            int nCurPos= 0;
+                            /*omStrTemp= omStrMsgPro.Tokenize("_",nCurPos);*/
+                            vTokenize(omStrMsgPro, "_", omStrTemp, nCurPos);
+                            while (omStrTemp != "")
+                            {
+                                CHAR* pchTemp;
+                                UINT unMsgId = strtoul(omStrTemp, &pchTemp, 16);
+                                if (omMsgList.Find(unMsgId, 0) != NULL)
+                                {
+                                    omStrMsgPro = defMSG_DUPL_MSG_HANDLER;
+                                    omStrMsgPro.Replace( _T("TYPE"),
+                                                         omStrHandlerType );
+                                    omStrMsgPro.Replace( _T("MESSAGENAME"),
+                                                         omStrText );
+
+                                    omStrMsgPro += _T("In\"") + pMsgArray->GetAt( nCount ) +_T("\" Handler");
+                                    // Duplicate message hanlder, shout
+                                    AfxMessageBox( omStrMsgPro,
+                                                   MB_OK|MB_ICONINFORMATION );
+                                    nCount = (COMMANINT)pMsgArray->GetSize();
+                                    bReturn = FALSE;
+                                    break;
+                                }
+                                /*omStrTemp = omStrMsgPro.Tokenize("_",nCurPos);*/
+                                vTokenize(omStrMsgPro, "_", omStrTemp, nCurPos);
+                                //omMsgList.AddTail(unMsgID);
+                            };
+                            //break;
+                        }
+                    }
+                    ///////////////////////////////////////////
+                    else if (omStrMsgPro.Compare(m_omStrSelectedItemText) == 0)
                     {
                         // Form the message to be dispalyed
                         omStrMsgPro = defMSG_DUPL_MSG_HANDLER;
@@ -649,7 +741,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                         {
                             m_odEditMsgIDFrom.SetFocus();
                         }
-
+                        break;
                     }
                 }
             }
@@ -893,4 +985,35 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
         bReturn = FALSE;
     }
     return bReturn ;
+}
+
+/**
+* \brief         This function finds the next token in the target string
+
+* \param[in]     None Takes input from yytext
+* \return        Void
+* \authors       Saravanan K S
+* \date
+*/
+void CMsgHandlerDlg::vTokenize(CString strInput, CString strToken, CString& strOutput, int& nStart)
+{
+    int nIdx = strInput.Find(strToken, nStart);
+    int nCount = 0;
+    strOutput.Empty();
+
+    if (nIdx != -1)
+    {
+        nCount = nIdx - nStart; // Calculate the number of characters to extract
+        strOutput = strInput.Mid(nStart, nCount); //Extract the charatcers
+    }
+    else if( nStart < strInput.GetLength() )
+    {
+        strOutput = strInput.Right(strInput.GetLength() - nStart);
+        nIdx = strInput.GetLength()-1;
+    }
+    else
+    {
+        strOutput.Empty();
+    }
+    nStart = nIdx + 1;
 }

@@ -37,6 +37,7 @@
 #include "DIL_Interface/BaseDIL_J1939.h"
 
 #include "BaseSignalWatch_J1939.h"
+#include "Utility/XMLUtils.h"
 
 class CSignalWatch_J1939 : CBaseSignalWatch_J1939
 {
@@ -62,7 +63,13 @@ public:
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
     HRESULT SW_GetConfigData(void* pbyConfigData);
+	// PTV XML
+	HRESULT SW_GetConfigData(xmlNodePtr pNodePtr);
+	// PTV XML
     HRESULT SW_SetConfigData(const void* pbyConfigData);
+	//MVN
+	HRESULT SW_SetConfigData(xmlNodePtr pNode);
+	//~MVN
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);

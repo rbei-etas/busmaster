@@ -18,7 +18,7 @@
     <p><b>Format Converters:</b></p>
     <p>Currently Five external tools are integrated with BUSMASTER. </p>
     <p><ul>
-        <li>CAPL To C Converter: Converts CAPL (*.can) file into BUSMASTER C (*.c) file.</li>
+        <li>CAPL To CPP Converter: Converts CAPL (*.can) file into BUSMASTER CPP (*.cpp) file.</li>
         <li>DBC To DBF Converter: Converts DBC (*.dbc) file into BUSMASTER database (*.dbf) file.</li>
         <li>DBF To DBC Converter: Converts BUSMASTER database (*.dbf) file into DBC (*.dbc) file.</li>
         <li>ASC TO LOG Converter: Converts CANoe log file (*.asc) to BUSMASTER log file(*.log)</li>
@@ -31,12 +31,34 @@
       </ul>  </p>
     <image href="../images/External_Tools.bmp"/>
     <p><ul>
-        <li>A Dialog box as shown in the following figure will be displayed.</li>
+        <li>A window is displayed with 3 tabs in it which caters to various conversions.</li>
       </ul></p>
-    <image href="../images/Format Converters.bmp"/>
-    <ul>
-      <li>Select the Required converter from the combo box.Give the Input and output file path and click on Convert Button.</li>
-      <li>To use the CAPL to C converter select the CAPL_2_C Converter Tab in the same dialog.</li>
-    </ul>
+    <section>
+      <title>CAPL to CPP Conversion</title>
+      <p>CAPL to CPP Converter is used to convert the CAPL file (.can) to CPP (.cpp) files to be used with BUSMASTER. Once the CAPL file is selected for conversion, the entry for output file name will be automatically filled with input file name but with the extension of .cpp</p>
+      <p>Any database associated with the CAPL file has to be added using the Add DBC file option. The DBC file will be converted to DBF file and will be used for conversion. The converted DBF file will saved in the same path by default.</p>
+      <p>Select the convert button to convert the file</p>
+      <image href="../images/CAPLtoCConverter.bmp"/>
+    </section>
+    <section>
+      <title>Log To Excel Converter</title>
+      <p>Log to Excel Converter is used to convert the log file (.log) in to an .xls file. The messages recorded by BUSMASTER using the logging feature can be neatly updated in a .xls file  using this conversion.</p>
+      <p>Once the input file is selected the output file is filled automatically in the same path  of input file with input file&apos;s name with the extension of .xls. Either specific fields or all the fields can be used for conversion. Only the selected fields data will be converted.</p>
+      <p>Select the Export button to convert the file</p>
+      <image href="../images/LogToExcelConverter.bmp"/>
+    </section>
+    <section>
+      <title>Other Converters</title>
+      <p>This supports the following conversion:</p>
+      <ul>
+        <li>ASC to LOG - Converts log files in ASC format to BUSMASTER format files (.log)</li>
+        <li>DBC to DBF - Converts database files in DBC format to BUSMASTER format files (.dbf)</li>
+        <li>DBF to DBC - Converts BUSMASTER database files to DBC format files (.dbc)</li>
+        <li>J1939 DBC to DBF - Converts J1939 database files in DBC format to BUSMASTER format files (.dbf)</li>
+        <li>LOG to ASC - Converts BUSMASTER log files to ASC format files (.asc)</li>
+      </ul>
+      <p>Select the convert button to convert the files</p>
+      <image href="../images/Format Converters.bmp"/>
+    </section>
   </body>
 </topic>

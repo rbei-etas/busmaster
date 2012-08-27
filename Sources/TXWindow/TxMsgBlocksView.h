@@ -38,10 +38,12 @@ class CTxMsgBlocksView : public CFormView
 public:
     //{{AFX_DATA(CTxMsgBlocksView)
     enum { IDD = IDD_DLG_TX_MSG_BLOCKS };
+    bool        m_bNewBlock;    //used to check whether its new block is added or not
     CFFListCtrl   m_omLctrMsgBlockName;
     CString m_omStrMsgBlockName;
     CString m_omStrTimeIntervalVal;
     CString m_omStrKeyVal;
+	CString	m_omDelayBtnBlocks;
     //BOOL    m_bIsMonoshot;
     //BOOL    m_bTriggerType;
     CEdit   m_omEditMsgBlockName;
@@ -53,6 +55,8 @@ public:
     CButton m_omButtonAddMsgBlock;
     //CButton m_omButtonTxAllFrame;
     CButton m_omButtonDeleteMsgBlock;
+    CButton m_omDelayBtwnBlocks;
+    CRadixEdit   m_omTimeDelayBtwnBlocks;
     //BOOL    m_bTXAllFrame;
     //}}AFX_DATA
 
@@ -156,6 +160,8 @@ public:
     afx_msg void OnBnClickedRadiocyclic();
     CComboBox m_omComboAllMsgs;
     afx_msg void OnCbnSelchangeComboMsgs();
-public:
     afx_msg void AutoUpdateChanges();
+public:
+    afx_msg void OnBnClickedCheckMsgBlockDelay();
+    afx_msg void OnEnUpdateEditBlockTrgTimerVal();
 };

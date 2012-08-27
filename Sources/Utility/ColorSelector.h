@@ -11,6 +11,8 @@ class CColorSelector : public CButton
 {
     //DECLARE_DYNAMIC(CColorSelector)
     COLORREF m_omColorBkg;
+	INT m_nSelIndex;
+
 public:
     CColorSelector();
     virtual ~CColorSelector();
@@ -19,6 +21,13 @@ public:
         return m_omColorBkg;
     };
     void SetColour(COLORREF omColor);
+
+	void SetSelectedIndex(INT nIndex);
+
+	CMap<UINT,UINT, COLORREF, COLORREF> m_MapMsgIdToClr;
+	
+	COLORREF GetColourForSelectedIndex(INT nSelectedIndex);
+
 protected:
     DECLARE_MESSAGE_MAP()
     virtual void PreSubclassWindow();

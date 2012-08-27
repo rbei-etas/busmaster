@@ -76,6 +76,7 @@ CFunctionEditorDoc::CFunctionEditorDoc()
     m_omFunctionNameArray.RemoveAll();
     m_omErrorHandlerArray.RemoveAll();
     m_omDLLHandlerArray.RemoveAll();
+    m_omBusEventsHandlerArray.RemoveAll();
     m_nMaxLineLength = 0;
     m_lCurrentWarningLineNum = 0;
 }
@@ -382,13 +383,28 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                         m_nMaxLineLength = nLineLength;
                     }
 
-                    m_omSourceCodeTextList.AddTail(omTextLine);
-                    m_dwSourceCodeLineNo++;
+
 
                     if ( omTextLine.Find( defHASHINCLUDE ) != -1 )
                     {
+                        //Back word compatiability of Old BUSMASTER C Files
+                        INT nIndex = omTextLine.Find("<struct.h>");
+                        if( nIndex >= 0 )
+                        {
+                            omTextLine.Replace("<struct.h>", "\"CANIncludes.h\"");
+                        }
+                        else
+                        {
+                            nIndex = omTextLine.Find("<Struct_J1939.h>");
+                            if( nIndex >= 0 )
+                            {
+                                omTextLine.Replace("<Struct_J1939.h>", "\"J1939Includes.h\"");
+                            }
+                        }
                         m_omIncludeFileArray.Add( omTextLine );
                     }
+                    m_omSourceCodeTextList.AddTail(omTextLine);
+                    m_dwSourceCodeLineNo++;
 
                     BOOL bInsideLoop = TRUE;
                     CString omTemp = BUS_VAR_HDR;
@@ -491,6 +507,10 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                         else if( omTextLineTemp.Find(defDLL_HANDLER_FN) != -1)
                         {
                             m_omDLLHandlerArray.Add(omTextLine);
+                        }
+                        else if(omTextLineTemp.Find(defBUSEVE_HANDLER_FN) != -1)
+                        {
+                            m_omBusEventsHandlerArray.Add(omTextLine);
                         }
                         else
                         {
@@ -830,13 +850,23 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
             omStrExtractFunctionNameFromPrototype(
                 m_omDLLHandlerArray.GetAt( unCount )));
     }
-    // 7. Utility function
-    for ( unCount = 0; unCount < m_omUtilityFuncArray.GetSize(); unCount++)
+    //Venkatanarayana Bus Events Added at 7
+    // 7. Bus Event functions
+    for ( unCount = 0; unCount < m_omBusEventsHandlerArray.GetSize(); unCount++)
+    {
+        m_omFunctionNameArray.Add(
+            omStrExtractFunctionNameFromPrototype(
+                m_omBusEventsHandlerArray.GetAt( unCount )));
+    }
+    // ~Venkatanarayana
+
+    // 8. Utility function
+    /*for ( unCount = 0; unCount < m_omUtilityFuncArray.GetSize(); unCount++)
     {
         m_omFunctionNameArray.Add(
             omStrExtractFunctionNameFromPrototype(
                 m_omUtilityFuncArray.GetAt( unCount )));
-    }
+    }*/
     // 8. Global variable
     for ( unCount = 0; unCount < m_omGlobalVariableArray.GetSize(); unCount++)
     {
@@ -889,7 +919,12 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
     {
         omStrFileName.MakeUpper();
         // replace ".c" with ".def"
-        omStrFileName.Replace( defDOT_C, defDOT_DEF );
+        INT nIndex = omStrFileName.Find(defDOT_C);
+        if( nIndex >= 0 )
+        {
+            omStrFileName = omStrFileName.Left(nIndex) + defDOT_DEF ;
+        }
+        //omStrFileName.Replace( defDOT_C, defDOT_DEF );
 
         // CStdioFile object for .DEF file
         CStdioFile o_DEF_File;
@@ -922,6 +957,28 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
                 CString omProgVer = _T(defNAME_FUNC_GET_PRG_VER);
                 o_DEF_File.WriteString(omProgVer);
                 o_DEF_File.WriteString(NEW_LINE);
+
+                if (CAN == m_sBusSpecInfo.m_eBus)
+                {
+                    omProgVer = _T(NAME_FUNC_KEYPRESSED);
+                    o_DEF_File.WriteString(omProgVer);
+                    o_DEF_File.WriteString(NEW_LINE);
+
+                    CString omGetMessName = _T(NAME_FUNC_GETMESSAGENAME);
+                    o_DEF_File.WriteString(omGetMessName);
+                    o_DEF_File.WriteString(NEW_LINE);
+
+                    CString omTimeNow = _T(NAME_FUNC_TIMENOW);
+                    o_DEF_File.WriteString(omTimeNow);
+                    o_DEF_File.WriteString(NEW_LINE);
+
+                    CString omGetFirstCANdbName = _T(NAME_FUNC_GETFIRSTCANDBNAME);
+                    o_DEF_File.WriteString(omGetFirstCANdbName);
+                    o_DEF_File.WriteString(NEW_LINE);
+                }
+
+
+
                 // Write all function names into the DEF file
                 for (UINT unCount = 0;
                         unCount < (UINT)m_omFunctionNameArray.GetSize();
@@ -997,7 +1054,8 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
         // initialise default values atleast
         m_sBusSpecInfo.m_omBusName = "BUSMASTER";
         m_sBusSpecInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_omMsgStructFile;
-    }    
+    }
+    /* PTV[1.6.4] */
     else
     {
         /* Adding Protocol and Application version information */
@@ -1037,7 +1095,7 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
             m_omSourceCodeTextList.AddHead(omstrCopyWriteInformation);
         }
     }
-    
+    /* PTV[1.6.4] */
     omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", m_sBusSpecInfo.m_omBusName);
     POSITION posStartGvar = m_omSourceCodeTextList.Find( omTemp  );
 
@@ -1270,7 +1328,23 @@ CStringArray* CFunctionEditorDoc::pomStrGetDLLHandlerPrototypes()
 {
     return (&m_omDLLHandlerArray);
 }
-
+/******************************************************************************/
+/*  Function Name    :  pomStrGetBusEventHandlerPrototypes                    */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :  CStringArray*                                         */
+/*  Functionality    :  Returns pointer to Bus Event header file array        */
+/*  Member of        :  CFunctionEditorDoc                                    */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Venkatanarayana Makam                                 */
+/*  Date Created     :  09.01.2012                                            */
+/*  Modifications    :                                                        */
+/******************************************************************************/
+CStringArray* CFunctionEditorDoc::pomStrGetBusEventHandlerPrototypes()
+{
+    return (&m_omBusEventsHandlerArray);
+}
 /******************************************************************************/
 /*  Function Name    :  omStrGetInitialisedMessage                            */
 /*                                                                            */
@@ -1308,12 +1382,24 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
     if( bInitByUser == FALSE)
     {
         sMsgNameCode.m_dwMsgCode = unMsgID;
-        pos = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeList.Find(sMsgNameCode);
+        POSITION        MainPos;
+        MainPos =  CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
+        while(MainPos != NULL)
+        {
+            SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).
+                                        m_odMsgNameMsgCodeListDb.GetNext(MainPos);
+            pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgNameCode);
+            if(pos != NULL)         //if present stop searching
+            {
+                sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos);
+                break;
+            }
+        }
     }
     // If message found
     if(pos != NULL)
     {
-        sMsgNameCode = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeList.GetAt(pos);
+        //sMsgNameCode = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeList.GetAt(pos);
         CString omStrTemp;
         vInitialiseBusSpecStructure(omStrTemp, ucChannelId, sMsgNameCode, bInitData);
         omStrResult.Format(defFNS_INIT_FORMAT, omStrMsgName, omStrVarName,
@@ -1410,8 +1496,17 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
                              sMsgNameCode.m_unMsgLen); //MSG LEN
 
             // Init data bytes if requested
-            if(bInitData == TRUE && sMsgNameCode.m_unMsgLen > 0)
+            omStrTemp += defCLOSE_PARENTHESIS;
+            omStrTemp += SEMI_COLON;
+            omStrTemp += "\n";
+            CString omStrTemp2;
+            omStrTemp2.Format("sMsgStruct.m_sWhichBit = (%s_*)malloc(sizeof(%s_));\n", sMsgNameCode.m_omMsgName, sMsgNameCode.m_omMsgName);
+            omStrTemp += omStrTemp2;
+            omStrTemp2.Format("//Move the following line to the end of the function\nfree(sMsgStruct.m_sWhichBit);\n");
+            omStrTemp += omStrTemp2;
+            /*if(bInitData == TRUE && sMsgNameCode.m_unMsgLen > 0)
             {
+
                 omStrTemp += defOPEN_PARENTHESIS;
                 // Init to 0xFF
                 omStrTemp += "{0xFF}";
@@ -1428,9 +1523,8 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
 
                 //        }
                 omStrTemp += defCLOSE_PARENTHESIS;
-            }
-            omStrTemp += defCLOSE_PARENTHESIS;
-            omStrTemp += SEMI_COLON;
+            }*/
+
         }
         break;
     }
@@ -1461,4 +1555,52 @@ CString CFunctionEditorDoc::GetApplicationVersion()
     strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 
     return strVersion;
+}
+BOOL CFunctionEditorDoc::bAddFunctionPrototype(CString omStrFuntion, BOOL bGCCExport)
+{
+    omStrFuntion.TrimLeft(" ");
+    omStrFuntion.TrimRight(" ");
+
+    if( bGCCExport == TRUE);
+    {
+        bAddGCCExportPrototype(omStrFuntion);
+    }
+
+    CString omSelectedText = BUS_FN_HDR;
+
+    if ( !omSelectedText.IsEmpty() )
+    {
+        //Add prototype to the prototype part of the doc
+        SBUS_SPECIFIC_INFO sBusSpecInfo;
+        bGetBusSpecificInfo(sBusSpecInfo);
+        CString omTemp = BUS_FN_PROTOTYPE_FOOTER;
+        omTemp.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+        POSITION pos = m_omSourceCodeTextList.Find( omTemp );
+
+        if ( pos != NULL )
+        {
+            CString omStrReplace = _T("");
+            omStrReplace  = omStrFuntion;
+            omStrReplace += SEMI_COLON;
+            m_omSourceCodeTextList.InsertBefore(pos,omStrReplace );
+        }
+    }
+    return TRUE;
+}
+BOOL CFunctionEditorDoc::bAddGCCExportPrototype(CString& omStrFunction)
+{
+    INT nIndex = -1;
+    nIndex = omStrFunction.Find(" ");
+    if(nIndex >= 0)
+    {
+        omStrFunction.Insert(nIndex, " ");
+        omStrFunction.Insert(nIndex+1, defGCC_EXPORT);
+        omStrFunction = " " + omStrFunction;
+        omStrFunction = defGCC_EXTERN + omStrFunction;
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }

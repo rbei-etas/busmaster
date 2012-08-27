@@ -38,6 +38,7 @@ enum
 
 //USER_DLL MESSAGES
 #define WM_FROM_USER_DLL            (WM_USER + 40)
+#define WM_GET_ABSOLUTE_TIME		 WM_USER + 52
 // enumeration for all flags
 typedef enum eSIMSYSFLAG
 {
@@ -102,6 +103,29 @@ typedef struct tagMsgNameMsgCode
 } SMSG_NAME_CODE;
 
 typedef CList<SMSG_NAME_CODE, SMSG_NAME_CODE&> CMsgNameMsgCodeList;
+typedef CList<SMSG_NAME_CODE, SMSG_NAME_CODE&> CMsgNameMsgCodeList;
+//CAPL_DB_NAME_CHANGE
+typedef struct tagDbNameMsg
+{
+	bool						m_bAssociated;
+	CString						m_omDbName;
+	CMsgNameMsgCodeList			m_oMsgNameMsgCodeList;
+	tagDbNameMsg()
+	{
+		m_omDbName = "";
+		m_bAssociated = true;
+	}
+	tagDbNameMsg& operator=(tagDbNameMsg& RefObj)
+    {
+		m_omDbName = RefObj.m_omDbName;
+		m_oMsgNameMsgCodeList.AddTail(&RefObj.m_oMsgNameMsgCodeList); 
+        return *this;
+    }
+
+
+}SDB_NAME_MSG;
+
+typedef CList<SDB_NAME_MSG, SDB_NAME_MSG&> CMsgNameMsgCodeListDataBase;
 
 class CBaseAppServices;
 typedef struct
@@ -117,7 +141,7 @@ typedef struct
     CString             m_omAppDirectory;
     CStringArray        m_omDefinedMsgHeaders; // _unions.h
     CStringArray        m_omErrorHandlerList;
-    CMsgNameMsgCodeList m_odMsgNameMsgCodeList;
+    CMsgNameMsgCodeListDataBase m_odMsgNameMsgCodeListDB;	//CAPL_DB_NAME_CHANGE
     CBaseAppServices*   m_pouITraceWndPtr;
     CMapStringToPtr*    m_podNodeToDllMap;
     //CKeyPanelEntryList* m_podKeyPanelEntryList;

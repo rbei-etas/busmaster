@@ -185,6 +185,7 @@ public:
     // Return message name from code
     CString omStrGetMessageNameFromMsgCode( UINT unMsgCode);
 
+    CString omStrGetMessageLengthFromMsgCode( UINT unMsgCode);
     // Return message name from code when called from Inactive Database
     CString omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode);
 

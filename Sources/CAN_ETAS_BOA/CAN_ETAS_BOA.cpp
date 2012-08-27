@@ -866,6 +866,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.addCANBusEventFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_EventFilter), 1);
+
             if (ErrCode != OCI_SUCCESS)
             {
                 hResult = S_FALSE;
@@ -1809,11 +1810,19 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd, vBlinkHw);
-    HwList.DoModal();
+    CHardwareListing HwList(psInterfaces, nCount, pnSelList, &objMainWnd);
+    INT nRet = HwList.DoModal();
     objMainWnd.Detach();
-    nCount = HwList.nGetSelectedList(pnSelList);
-    return 0;
+
+    if ( nRet == IDOK)
+    {
+        nCount = HwList.nGetSelectedList(pnSelList);
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /**
@@ -1838,9 +1847,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         {
             INTERFACE_HW psHWInterface[defNO_OF_CHANNELS];
             //set the current number of channels
-            sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
+            nCount = min(nCount, defNO_OF_CHANNELS);
 
-            for (UINT i = 0; i < sg_nNoOfChannels; i++)
+            for (UINT i = 0; i < nCount; i++)
             {
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;
@@ -1849,11 +1858,13 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                 psHWInterface[i].m_acDescription = acURI[i];
             }
 
-            if (sg_nNoOfChannels > 1)// List hw interface if there are more than one hw
+            if (nCount > 1)// List hw interface if there are more than one hw
             {
-                ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount);
-                /* return value is not necessary as the OUT parameter sg_anSelectedItems is unaltered
-                   if user has not selected anything */
+                if ( ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                {
+                    /* return if user cancels hardware selection */
+                    return HW_INTERFACE_NO_SEL;
+                }
             }
 
             sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);

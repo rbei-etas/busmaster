@@ -22,6 +22,8 @@
 #include "TSExecutorLIB.h"
 #include "TSExecutorGUI_Extern.h"
 #include "TSExecutorBase.h"
+#include "include/XMLDefines.h"
+#include "Utility/XMLUtils.h"
 //TODO::Move to Definition File
 #define def_ID_TESTSUITE            -1
 #define def_STR_TESTSUITENAME       "Unnamed Test Suite"
@@ -694,6 +696,71 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
     return S_OK;
 }
 
+HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
+{
+    const char* omcVarChar ;
+
+    //<Test_Suite_Name />
+    omcVarChar = m_omstrTestSuiteName;
+    xmlNodePtr pTSName = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TS_NAME, BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pTSName);
+
+    // <IsEnable />
+    CString csIsEnabled;
+    csIsEnabled.Format("%d", m_bTestSuiteStatus);
+    omcVarChar = csIsEnabled;
+    xmlNodePtr pIsEnabled = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_ENABLE, BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pIsEnabled);
+
+    INT nFileCount = (INT)m_ouTestSetupEntityList.GetCount();
+
+    for(int iCnt = 0; iCnt < nFileCount; iCnt++)
+    {
+        //<TEST_SUITE>
+        xmlNodePtr pTestSuite = xmlNewNode(NULL, BAD_CAST DEF_TEST_SUITE);
+        xmlAddChild(pxmlNodePtr, pTestSuite);
+
+        //<Test_Suite_Name />
+        POSITION pos = m_ouTestSetupEntityList.FindIndex(iCnt);
+        CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
+
+        omcVarChar = ouTestSetupEntity.m_omstrCurrentTSFile;
+        xmlNodePtr pFilePath = xmlNewChild(pTestSuite, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST omcVarChar);
+        xmlAddChild(pTestSuite, pFilePath);
+
+        //<IsEnable />
+        CString csIsEnabled;
+        csIsEnabled.Format("%d", ouTestSetupEntity.bGetEnableStatus());
+        omcVarChar = csIsEnabled;
+        xmlNodePtr pIsEnabled = xmlNewChild(pTestSuite, NULL, BAD_CAST DEF_IS_ENABLE, BAD_CAST omcVarChar);
+        xmlAddChild(pTestSuite, pIsEnabled);
+
+        //<Testcases_Selected>
+        xmlNodePtr pTestCasesSel = xmlNewNode(NULL, BAD_CAST DEF_TEST_CASES_SEL);
+        xmlAddChild(pTestSuite, pTestCasesSel);
+
+        // <Index>1</Index>
+        CString csIndex;
+        bool    bStatus;
+        UINT    unCount;
+        ouTestSetupEntity.GetSubEntryCount(unCount);
+        for(UINT j=0; j<unCount; j++)
+        {
+            CBaseEntityTA* pTCEntity;
+            ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
+            bStatus = FALSE;
+            if(pTCEntity != NULL)
+            {
+                bStatus = pTCEntity->bGetEnableStatus();
+            }
+            csIndex.Format("%d", bStatus);
+            omcVarChar = csIndex;
+            xmlNodePtr pIndex = xmlNewChild(pTestCasesSel, NULL, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
+            xmlAddChild(pTestCasesSel, pIndex);
+        }
+    }
+    return true;
+}
 /******************************************************************************
 Function Name  :  SetConfigurationData
 Input(s)       :  BYTE*& pDesBuffer, UINT& unBuffSize
@@ -783,6 +850,154 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
     return S_OK;
 }
 
+HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
+{
+    xmlXPathObjectPtr pObjectPtr = NULL;
+    xmlNodePtr pTempNode;
+    //Test Suite Name
+    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
+
+    pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Test_Suite_Name");
+    if( NULL != pObjectPtr)
+    {
+        pTempNode = pObjectPtr->nodesetval->nodeTab[0];
+        m_omstrTestSuiteName = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
+        xmlXPathFreeObject(pObjectPtr);
+        pObjectPtr = NULL;
+    }
+    //Test Suite Enable
+    pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"IsEnable");
+    m_bTestSuiteStatus = TRUE;
+    if( NULL != pObjectPtr)
+    {
+        pTempNode = pObjectPtr->nodesetval->nodeTab[0];
+        char* pchKey = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
+        if(pchKey != NULL)
+        {
+            m_bTestSuiteStatus = xmlUtils::bGetBooleanValue(pchKey);
+            xmlFree(pchKey);
+        }
+        xmlXPathFreeObject(pObjectPtr);
+        pObjectPtr = NULL;
+    }
+
+    //Test Suite FileCount
+    int nFileCount = 0;
+    pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"TEST_SUITE");
+
+    if( NULL != pObjectPtr)
+    {
+        nFileCount = pObjectPtr->nodesetval->nodeNr;
+        INT nFileIndex = 0;
+        for( int i = 0; i < nFileCount; i++ )
+        {
+            sTestSuiteConfigInfo sConfigInfo;
+            if ( S_OK == nParseTestSuite(pObjectPtr->nodesetval->nodeTab[i], sConfigInfo) )
+            {
+                DWORD dwID;
+                UINT unCount, unConfigCount;
+                if(AddTestSetup(sConfigInfo.m_strFileName.c_str(), dwID) == S_OK)
+                {
+                    //Selection Status
+                    BOOL bStatus;
+                    POSITION pos = m_ouTestSetupEntityList.FindIndex(nFileIndex++);
+                    if(pos != NULL)
+                    {
+                        CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
+                        ouTestSetupEntity.vEnableEntity(sConfigInfo.m_bEnable);
+
+                        //TestCase Count
+                        unConfigCount = sConfigInfo.m_nListSelctedCases.size();
+                        ouTestSetupEntity.GetSubEntryCount(unCount);
+
+                        if( unConfigCount == 0)
+                        {
+                            for(UINT j=0; j<unCount; j++)
+                            {
+                                CBaseEntityTA* pTCEntity;
+                                ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
+                                if(pTCEntity != NULL)
+                                {
+                                    pTCEntity->vEnableEntity(FALSE);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //TestCase Selection Status
+                            list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
+
+                            for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
+                                    listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
+                            {
+                                CBaseEntityTA* pTCEntity;
+                                int nIndex = *listIterator;
+                                ouTestSetupEntity.GetSubEntityObj(nIndex, &pTCEntity);
+                                if(pTCEntity != NULL)
+                                {
+                                    pTCEntity->vEnableEntity(TRUE);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return S_OK;
+}
+
+int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& sConfigInfo)
+{
+    xmlXPathObjectPtr pObjectPtr = NULL;
+    xmlNodePtr pTempNode;
+    int nRetValue = S_OK;
+
+    //Test Setup File Path
+    pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"File_Path");
+    if( NULL != pObjectPtr)
+    {
+        pTempNode = pObjectPtr->nodesetval->nodeTab[0];
+        sConfigInfo.m_strFileName = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
+        xmlXPathFreeObject(pObjectPtr);
+        pObjectPtr = NULL;
+    }
+    else
+    {
+        nRetValue = S_FALSE;
+    }
+
+    //Test Setup File Enable
+    if( S_OK == nRetValue )
+    {
+        pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"IsEnable");
+        sConfigInfo.m_bEnable = TRUE;
+        if( NULL != pObjectPtr)
+        {
+            pTempNode = pObjectPtr->nodesetval->nodeTab[0];
+            sConfigInfo.m_bEnable = xmlUtils::bGetBooleanValue((char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1));
+            xmlXPathFreeObject(pObjectPtr);
+            pObjectPtr = NULL;
+        }
+
+        pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Testcases_Selected/Index");
+        if( NULL != pObjectPtr)
+        {
+            int nSelectedCount = pObjectPtr->nodesetval->nodeNr;
+            for( int i =0; i < nSelectedCount; i++ )
+            {
+                char* pchKey = (char*)xmlNodeListGetString( pXmlNode->doc, pObjectPtr->nodesetval->nodeTab[i]->children, 1);
+                int nValue = strtol(pchKey, NULL, 10);
+                xmlFree(pchKey);
+                sConfigInfo.m_nListSelctedCases.push_back(nValue);
+            }
+            xmlXPathFreeObject(pObjectPtr);
+            pObjectPtr = NULL;
+        }
+
+    }
+    return nRetValue;
+}
 /******************************************************************************
 Function Name  :  EnableItem
 Input(s)       :  DWORD dwID, BOOL& bEnable

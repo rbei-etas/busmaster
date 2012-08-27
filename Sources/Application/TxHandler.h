@@ -47,7 +47,9 @@ public:
     void vDeleteTxBlockMemory();
     void vStopTransmission(UINT unMaxWaitTime);
     void vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
+	void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
     void vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
+	void vSetTxWndConfigData(xmlDocPtr pDoc);
     HRESULT hIsTxWndConfigChanged();
     UINT unGetTxBlockCount(void);
     void vSetTxStopFlag(BOOL bStartStop);

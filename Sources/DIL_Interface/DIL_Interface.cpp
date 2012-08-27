@@ -107,7 +107,7 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
             }
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouDIL_CAN; /* Doesn't matter even
-                                        if sg_pouFP_CAN is null */
+                                if sg_pouFP_CAN is null */
         }
         break;
         case MCNET:
@@ -128,7 +128,7 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
             }
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouDILI_J1939; /* Doesn't matter even
-                                        if sg_pouFP_CAN is null */
+                                if sg_pouFP_CAN is null */
         }
         break;
         default:

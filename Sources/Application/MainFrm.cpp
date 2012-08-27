@@ -26,6 +26,9 @@
 #include "Include/CAN_Error_Defs.h"
 #include "BUSMASTER.h"        // App class definition file
 
+// PTV XML
+#include "include/XMLDefines.h"
+// PTV XML
 //#include "MsgMDIChildWnd.h"     // Message window class defintion file
 #include "MainFrm.h"            // Main frame class defintion file
 //#include "FunctionEditorDoc.h"  // Document class defintion file
@@ -79,6 +82,7 @@
 #include "SigGrphConfigDlg.h"
 #include <DataTypes/SigGrphWnd_Datatypes.h>
 #include "J1939TimeOutCfg.h"
+#include "include/XMLDefines.h"
 
 // For bus statistics information
 extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
@@ -143,8 +147,10 @@ SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = NULL;
 #define defDLGFLAGS             OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST
 #define defDEFAULTDLLFILENAME   ("*.dll")
 #define TIMER_REFRESH_MAINGUI   0x100
+// PTV [1.6.4]
 #define TIMER_REFRESH_LOG_STATUS 0x101
 #define TIMER_REFRESH_J1939_LOG_STATUS 0x102
+// PTV [1.6.4] END
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define STSBAR_REFRESH_TIME_PERIOD_LOG  1000  // in milliseconds
 #define PROFILE_CAN_MONITOR                   _T("RBEI_ECF2_CAN_Monitor")
@@ -406,6 +412,9 @@ const int INDEX_CAN_LOG_ICON = 0x2;
 
 CAppServices_Impl sg_ouAppServiceObj;
 
+
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame construction/destruction
 /*******************************************************************************
@@ -454,10 +463,12 @@ CMainFrame::CMainFrame()
 
     m_bIsNewDatabase                = FALSE;
     m_hModuleHandle                 = NULL;
+    // PTV [1.6.4]
     m_bIconSetFlag = 0;
     m_bJ1939IconSetFlag = 0;
     m_nSendMsgLogCnt = 0;
     m_nSendMsgJ1939LogCnt = 0;
+    // PTV [1.6.4]
 
     INITIALISE_ARRAY(m_psSignalWatchList);
     m_unReplayTimeDelay             = 50;
@@ -496,6 +507,7 @@ CMainFrame::CMainFrame()
     m_unWarningLimit  = 96;
     m_podUIThread = NULL;
     m_omStrSavedConfigFile = STR_EMPTY;
+    // PTV [1.6.4]
     m_unTimerSBLog = NULL;
     m_unJ1939TimerSBLog = NULL;
 
@@ -564,6 +576,12 @@ CMainFrame::CMainFrame()
     //venkat
     m_objTSEditorHandler.vLoadTSEditor_DLL();
     m_objTSExecutorHandler.vLoadTSExecutor_DLL();
+
+
+    //MVN
+    m_xmlConfigFiledoc = NULL;
+    m_bIsXmlConfig = TRUE;
+    //~MVN
 }
 /*******************************************************************************
  Function Name    : ~CMainFrame
@@ -823,19 +841,23 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
                                 SBPS_NOBORDERS, 320);
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
 
+    // PTV [1.6.4]
     // For Can Logging status
     m_wndStatusBar.SetPaneInfo( INDEX_CAN_LOG_ICON, ID_LOG_RECORD_CAN_ICON,
                                 SBPS_NOBORDERS, 100);
 
+    // PTV [1.6.4]
     // For J1939 Logging status
     m_wndStatusBar.SetPaneInfo( INDEX_J1939_LOG_ICON, ID_LOG_RECORD_J1939_ICON,
                                 SBPS_NOBORDERS, 110);
 
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
+    // PTV [1.6.4]
 
     m_wndStatusBar.SetPaneInfo( INDEX_DB_NAME, ID_ACTIVE_DATABASE_NAME,
                                 SBPS_STRETCH, 50);
 
+    // PTV [1.6.4]
     m_hLogIcon1 = (HICON)::LoadImage(AfxGetInstanceHandle(),
                                      MAKEINTRESOURCE(IDI_ICON_LOG_ON),
                                      IMAGE_ICON, 16, 16, LR_SHARED);
@@ -852,6 +874,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_bJ1939IconSetFlag = 1;
     m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
     m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
+    // PTV [1.6.4] END
     // Set number of channels supported
     CString omStrChannels;
     omStrChannels.Format( defSTR_CHANNELS_SUPPORTED,
@@ -1558,9 +1581,9 @@ DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
             //Update in NodeSimEx
             GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
             //Update Msg Name<-->Msg Code List
-            vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList);
+            vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeListDB);
             //Update in NodeSimEx
-            GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+            GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939].m_odMsgNameMsgCodeListDB), UPDATE_DATABASE_MSGS);
 
             dReturn = S_OK;
             // Create Unions.h in local directory
@@ -1648,9 +1671,9 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
                 //Update in NodeSimEx
                 GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
                 //Update Msg Name<-->Msg Code List
-                vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
+                vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeListDB);
                 //Update in NodeSimEx
-                GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+                GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeListDB), UPDATE_DATABASE_MSGS);
 
                 // User can open the active DB
                 theApp.pouGetFlagsPtr()->vSetFlagStatus(SELECTDATABASEFILE, TRUE );
@@ -1842,13 +1865,10 @@ void CMainFrame::OnConfigBaudrate()
 void CMainFrame::OnConfigChannelSelection()
 {
     INT nCount = CHANNEL_ALLOWED;
-    HRESULT hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
+    HRESULT hResult = S_FALSE;
 
-    // If the deselection of interfaces is not appropriate the dont proceed further
-    if (S_OK != hResult)
-    {
-        return;
-    }
+    /* Deselect hardware interfaces if selected */
+    hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
 
     if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
     {
@@ -1864,6 +1884,11 @@ void CMainFrame::OnConfigChannelSelection()
             //Update NW statistics window channel information
             vUpdateChannelInfo();
         }
+    }
+    else
+    {
+        /* Select previously available channels */
+        g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
     }
 }
 
@@ -3224,6 +3249,29 @@ void CMainFrame::OnLogFilter()
         // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
     }
 }
+
+void CMainFrame::ApplyLogFilter()
+{
+    CFlags* pouFlags = NULL;
+    BOOL bLogFilterStatus = FALSE;
+
+    pouFlags = theApp.pouGetFlagsPtr();
+    if(pouFlags != NULL )
+    {
+        bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER);
+        //bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
+        pouFlags->vSetFlagStatus(LOGFILTER, bLogFilterStatus);
+        if (sg_pouFrameProcCAN != NULL)
+        {
+            INT Count = sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
+            for (INT i = 0; i < Count; i++)
+            {
+                sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
+            }
+        }
+        // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
+    }
+}
 /******************************************************************************
     Function Name    :  OnAboutApplication
     Input(s)         :  void
@@ -3376,6 +3424,7 @@ void CMainFrame::OnLogEnable()
     }
     bLogON = bLogON ? FALSE : TRUE;
 
+    // PTV [1.6.4]
     if(bLogON == FALSE)
     {
         if (NULL != sg_pouFrameProcCAN)
@@ -3383,9 +3432,12 @@ void CMainFrame::OnLogEnable()
             sg_pouFrameProcCAN->FPC_DisableDataLogFlag();
         }
     }
+    // PTV [1.6.4]
 
     // Set the status of logging
+    // PTV[1.6.4]
     BOOL bIsConnected = FALSE;
+    // PTV[1.6.4]
     CFlags* pouFlags = NULL;
     pouFlags = theApp.pouGetFlagsPtr();
     if (NULL != pouFlags)
@@ -3394,6 +3446,7 @@ void CMainFrame::OnLogEnable()
         bIsConnected = pouFlags->nGetFlagStatus(CONNECTED);
     }
 
+    // PTV[1.6.5]
     // If Connected and Log is enabled
     if(bLogON == TRUE && bIsConnected == TRUE)
     {
@@ -3409,6 +3462,7 @@ void CMainFrame::OnLogEnable()
             }
         }
     }
+    // PTV[1.6.5]
     // If not connected or log is disabled
     else
     {
@@ -3503,6 +3557,7 @@ void CMainFrame::OnSendMessage()
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESG, FALSE );
         // ReSet the tool bar button to pressed state
         omRefToolBarCtrl.PressButton(IDR_TOOL_SENDMSG, FALSE);
+        // PTV [1.6.4]
         // Disabling Data logging Flag
         if (NULL != sg_pouFrameProcCAN)
         {
@@ -4358,6 +4413,7 @@ void CMainFrame::OnClose()
     }
 
     // Writing in to Registry
+    // PTV [1.6.4] 6
     theApp.WriteProfileString(SECTION,
                               defCONFIGFILENAME,
                               oCfgFilename);
@@ -4375,6 +4431,7 @@ void CMainFrame::OnClose()
     {
         ::KillTimer(NULL, m_unTimerSB);
     }
+    // PTV [1.6.4]
     if(m_unTimerSBLog != 0)
     {
         ::KillTimer(NULL, m_unTimerSBLog);
@@ -4391,6 +4448,7 @@ void CMainFrame::OnClose()
         //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
         m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
     }
+    // PTV [1.6.4]
     if(m_podUIThread != NULL)
     {
         m_podUIThread->PostThreadMessage(WM_QUIT,0,0);
@@ -4439,6 +4497,12 @@ void CMainFrame::OnClose()
     vCloseFormatconverters();
 
     SaveBarState(PROFILE_CAN_MONITOR);
+
+    if( NULL != m_pCopyBusStsticsNode )
+    {
+        xmlFreeNode(m_pCopyBusStsticsNode);
+        m_pCopyBusStsticsNode = NULL;
+    }
 
     CMDIFrameWnd::OnClose();
 }
@@ -4885,6 +4949,25 @@ void CMainFrame::OnMessageFilterButton()
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
     }
 }
+
+void CMainFrame::ApplyMessageFilterButton()
+{
+    CFlags* pouFlags = NULL;
+    BOOL bMessageFilterStatus = FALSE;
+
+    pouFlags = theApp.pouGetFlagsPtr();
+    if(pouFlags != NULL )
+    {
+        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERON);
+        //bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
+        pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
+
+        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+    }
+}
+
+
+
 /******************************************************************************
     Function Name    :  OnUpdateMessageFilterButton
 
@@ -6418,7 +6501,7 @@ void CMainFrame::OnFileConnect()
                 }
             }
         }
-
+        CBaseNodeSim* pNodeSim = NULL;
         if( bConnected == TRUE)
         {
             //Inform J1939TxWindow about connect change
@@ -6454,9 +6537,20 @@ void CMainFrame::OnFileConnect()
                                                   _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
             }
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
+
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+
+            //send time to nodesim for calculation
+            if (NS_GetInterface(CAN, (void**) &pNodeSim) == S_OK)
+            {
+                pNodeSim->NS_nOnBusConnected(TRUE);
+            }
+
         }
         else
         {
+            // PTV [1.6.4]
             if (NULL != sg_pouFrameProcCAN)
             {
                 sg_pouFrameProcCAN->FPC_DisableDataLogFlag();
@@ -6465,10 +6559,22 @@ void CMainFrame::OnFileConnect()
             {
                 sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
             }
+            // PTV [1.6.4]
             //Stop Graph Interpret Thread
             bStopGraphReadThread();
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                           eWINID_STOP_READ, 0);
+
+
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+            //m_n64TimeElapsedSinceConnection =0;
+
+            //send time to nodesim for calculation
+            if (NS_GetInterface(CAN, (void**) &pNodeSim) == S_OK)
+            {
+                pNodeSim->NS_nOnBusConnected(FALSE);
+            }
         }
         // Use HI layer function to Connect/Disconnect
         if (bConnected == TRUE)
@@ -6488,7 +6594,8 @@ void CMainFrame::OnFileConnect()
                     theApp.bWriteIntoTraceWnd("Failed to start the hardware");
                 }
             }
-            Sleep (200);
+            // Commented to avoid Timedelay in log file
+            //Sleep (200);
             ouWaitIndicator.CloseWindow();
         }
         else
@@ -6500,11 +6607,25 @@ void CMainFrame::OnFileConnect()
         }
         if(bReturn == TRUE )
         {
+            BOOL bLogIsON = FALSE, bJ1939LogON = FALSE;
+
+            CFlags* pFlagLog = theApp.pouGetFlagsPtr();
+            if(pFlagLog != NULL)
+            {
+                bLogIsON = pFlagLog->nGetFlagStatus(LOGTOFILE);
+            }
+
             //Handle start/stop logging
             if (m_abLogOnConnect[CAN] == TRUE)
             {
                 vStartStopLogging(bConnected);
             }
+            // PTV [1.6.6]
+            else if(bLogIsON == TRUE && bConnected == TRUE)
+            {
+                vStartStopLogging(bLogIsON);
+            }
+
             if (m_abLogOnConnect[J1939] == TRUE)
             {
                 // Enable Logging or stop logging
@@ -6519,12 +6640,25 @@ void CMainFrame::OnFileConnect()
                 }
 
             }
+            else
+            {
+                // PTV [1.6.6]
+                if (NULL != sg_pouIJ1939Logger)
+                {
+                    if(sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+                    {
+                        bJ1939LogON = TRUE;
+                        sg_pouIJ1939Logger->FPJ1_EnableLogging(TRUE);
+                    }
+                }
+            }
             //SGW Code commented by Arun 21-10-2010
             pouFlags->vSetFlagStatus(CONNECTED, bConnected);
 
             // Post Connect Activities
             if( bConnected == TRUE )
             {
+                // PTV[1.6.4]
                 // If Connect and Log both are enabled
 
                 BOOL bLogON = FALSE;
@@ -6534,7 +6668,7 @@ void CMainFrame::OnFileConnect()
                     bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
                 }
 
-                if (/*bLogON == TRUE || */m_abLogOnConnect[CAN] == TRUE)
+                if (bLogON == TRUE || m_abLogOnConnect[CAN] == TRUE)
                 {
                     //if(theApp.m_pouMsgSignal != NULL)
                     {
@@ -6548,14 +6682,16 @@ void CMainFrame::OnFileConnect()
                         }
                     }
                 }
-                if(m_abLogOnConnect[J1939] == TRUE)
+                if(bJ1939LogON == TRUE || m_abLogOnConnect[J1939] == TRUE)
                 {
                     m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
                 }
+                // PTV[1.6.4]
 
                 vREP_HandleConnectionStatusChange( TRUE );
             }
             // On Disconnect Kill the timer
+            // PTV[1.6.4]
             else
             {
                 if(m_unTimerSBLog != NULL)
@@ -6576,6 +6712,7 @@ void CMainFrame::OnFileConnect()
                 //  m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogIcon1);
                 //}
             }
+            // PTV[1.6.4]
 
             // Enable / disable signal transmission block
             m_ouWaveTransmitter.bUpdateBlock(bConnected);
@@ -6638,7 +6775,19 @@ void CMainFrame::OnFileConnect()
                 {
                     if(sg_pouFrameProcCAN->FPC_IsLoggingON())//if logging is on
                     {
-                        SendMessage(WM_COMMAND, IDM_LOG_ON_OFF,0);
+                        sg_pouFrameProcCAN->FPC_vCloseLogFile();
+                    }
+                }
+            }
+
+            if(NULL != sg_pouIJ1939Logger)
+            {
+                //USHORT ushCount =   sg_pouFrameProcCAN->FPJ1_GetLoggingBlockCount();
+                //if(ushCount>0)//check for log file count
+                {
+                    if(sg_pouIJ1939Logger->FPJ1_IsLoggingON())//if logging is on
+                    {
+                        sg_pouIJ1939Logger->FPJ1_vCloseLogFile();
                     }
                 }
             }
@@ -6868,7 +7017,9 @@ void CMainFrame::OnNewConfigFile()
 
     if(oCfgFileDlg.DoModal() == IDOK)
     {
+        // PTV [1.6.5] 23
         CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
+        // PTV [1.6.5] 23
 
         // get the name of the selected file
         CString oCfgFilename = oCfgFileDlg.GetPathName();
@@ -6876,7 +7027,13 @@ void CMainFrame::OnNewConfigFile()
         vSetCurrProjInfo((FLOAT)BUSMASTER_APPN_VERSION_LATEST);
         CConfigData::ouGetConfigDetailsObject().vSaveConfigFile();
         CConfigData::ouGetConfigDetailsObject().vReadConfigFile();
-        LoadConfiguration();
+
+        for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+        {
+            vSetCurrentSessionData(eSecId, NULL, 0);
+            eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+        }
+        SaveConfiguration();
     }
 }
 //{
@@ -7011,6 +7168,7 @@ void CMainFrame::OnSaveConfigFile()
     // been specified until now..
     CString omStrCfgFilename;
     vGetLoadedCfgFileName(omStrCfgFilename);
+
     if(omStrCfgFilename.IsEmpty() == TRUE && bIsConfigurationModified())
     {
         CFileDialog oCfgFileDlg(FALSE,      // Open dialog as Save as File dlg
@@ -7045,10 +7203,12 @@ void CMainFrame::OnSaveConfigFile()
         {
             vPushConfigFilenameDown(omStrCfgFilename);
 
+            // PTV [1.6.4] 6
             theApp.WriteProfileString(SECTION,
                                       defCONFIGFILENAME,
                                       omStrCfgFilename);
             m_omStrSavedConfigFile = omStrCfgFilename;
+            // PTV [1.6.4] 6
         }
     }
 }
@@ -8062,6 +8222,8 @@ void CMainFrame::OnNetworkStatisticsWnd()
             {
                 // Update the statistics dialog creation status
                 m_bIsStatWndCreated = TRUE;
+
+
             }
             else
             {
@@ -8079,8 +8241,13 @@ void CMainFrame::OnNetworkStatisticsWnd()
         // Toggle window visiblity
         if(!m_podBusStatistics->IsWindowVisible() )
         {
+
+            //m_podBusStatistics->vLoadDataFromStore();
+            if(m_pCopyBusStsticsNode != NULL)
+            {
+                m_podBusStatistics->vLoadDataFromStore(m_pCopyBusStsticsNode);
+            }
             m_podBusStatistics->ShowWindow(SW_SHOW);
-            m_podBusStatistics->vLoadDataFromStore();
         }
         else
         {
@@ -10321,9 +10488,9 @@ void CMainFrame::OnDissociateDatabase()
     //Update in NodeSimEx
     GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_omDefinedMsgHeaders), UPDATE_UNIONS_HEADER_FILES);
     //Update Msg Name<-->Msg Code List
-    vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
+    vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeListDB);
     //Update in NodeSimEx
-    GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList), UPDATE_DATABASE_MSGS);
+    GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN].m_odMsgNameMsgCodeListDB), UPDATE_DATABASE_MSGS);
 }
 
 /******************************************************************************
@@ -10372,7 +10539,7 @@ void CMainFrame::OnFileConverter()
     try
     {
         // If window is already created and displayed then just bring it to front
-        m_hProcess = NULL; 
+        m_hProcess = NULL; //KSS
         CWnd* pWndCreated = IsWindowCreated();
         if (NULL != pWndCreated && pWndCreated->GetSafeHwnd())
         {
@@ -10416,7 +10583,7 @@ void CMainFrame::OnFileConverter()
 }
 CWnd* CMainFrame::IsWindowCreated()
 {
-    if (NULL == m_hProcess) 
+    if (NULL == m_hProcess) //KSS
     {
         return NULL;
     }
@@ -10486,7 +10653,7 @@ void CMainFrame::vCloseFormatconverters()
         CWnd* pWnd = NULL;
         DWORD dwExitCode = 0;
 
-        if (NULL != m_hProcess) 
+        if (NULL != m_hProcess) //KSS
         {
             pWnd = FindWindow(NULL, "BUSMASTER Format Conversions");
             if (NULL != pWnd)
@@ -10630,15 +10797,15 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
 HRESULT CMainFrame::IntializeDIL(void)
 {
     HRESULT hResult = S_OK;
-	m_bNoHardwareFound = true;
+    m_bNoHardwareFound = true;
     if (g_pouDIL_CAN_Interface == NULL)
     {
         hResult = DIL_GetInterface(CAN, (void**)&g_pouDIL_CAN_Interface);
     }
     else
     {
-        g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
-        DeselectJ1939Interfaces();
+        //g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
+        //DeselectJ1939Interfaces();
     }
     if (hResult == S_OK)
     {
@@ -10646,20 +10813,17 @@ HRESULT CMainFrame::IntializeDIL(void)
         {
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
             INT nCount = defNO_OF_CHANNELS;
-            if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
+            if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
             {
+                DeselectJ1939Interfaces();
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
                     hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {
-						m_bNoHardwareFound = false;
+                        m_bNoHardwareFound = false;
                         g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails, nCount);
-                        //venkat
-                        /*g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
-                                                            sizeof(SCONTROLLER_DETAILS) * nCount);
-                        */
                         bInitFrameProcCAN(); // Initialize logger module
                         vReRegisterAllCANNodes();//Reinitialize node simulation
                         if (sg_pouSWInterface[CAN] == NULL)//Signal watch
@@ -10693,27 +10857,34 @@ HRESULT CMainFrame::IntializeDIL(void)
                         vUpdateHWStatusInfo();
                     }
                     else
-                    {						
+                    {
                         theApp.bWriteIntoTraceWnd("registering client failed");
-						m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
-						IntializeDIL();
+                        m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                        IntializeDIL();
                     }
                 }
                 else
                 {
                     theApp.bWriteIntoTraceWnd("Selecting hardware interface failed");
-					m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
-					IntializeDIL();
+                    m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                    IntializeDIL();
                 }
             }
             else
             {
-                theApp.bWriteIntoTraceWnd("Listing hardware interfaces failed");
-                //select the simulation as default
-                //g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
-                m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
-                IntializeDIL();
-
+                if ( hResult == HW_INTERFACE_NO_SEL )
+                {
+                    theApp.bWriteIntoTraceWnd("hardware selection Cancelled. Retaining previous hardware settings..");
+                    /* Retain previous DIL selection */
+                    m_dwDriverId = g_pouDIL_CAN_Interface->DILC_GetSelectedDriver();
+                    m_bNoHardwareFound = false;
+                }
+                else
+                {
+                    theApp.bWriteIntoTraceWnd("Listing hardware interfaces failed");
+                    m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                    IntializeDIL();
+                }
             }
         }
         else
@@ -10721,7 +10892,7 @@ HRESULT CMainFrame::IntializeDIL(void)
             if ( hResult!=DAL_ALREADY_SELECTED )
             {
                 theApp.bWriteIntoTraceWnd("Driver selection failed");
-				m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
                 IntializeDIL();
 
             }
@@ -10790,6 +10961,7 @@ void CMainFrame::vUpdateHWStatusInfo(void)
             {
                 m_asControllerDetails->m_omStrBaudrate = "500";
             }
+            // PTV
             // Added Shortcut key for the hardwared device, Removing '&'
             //venkat
             CString strDriverName = m_ouList[i].m_acName.c_str();
@@ -11004,7 +11176,7 @@ void CMainFrame::vInitCFileFunctPtrs()
         m_sExFuncPtr[CAN].m_omDefinedMsgHeaders.Add(omHeaderPath);
     }
 
-    vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeList);
+    vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[CAN].m_odMsgNameMsgCodeListDB);
     // Send KeyPanel list pointer
     //m_sExFuncPtr.m_podNodeToDllMap = &g_odNodeToDllMap;
     //m_sExFuncPtr.m_podKeyPanelEntryList = &g_odKeyPanelEntryList;
@@ -11041,14 +11213,17 @@ void CMainFrame::NS_InitJ1939SpecInfo()
 
     m_sExFuncPtr[J1939].m_omDefinedMsgHeaders.RemoveAll();
     CStringArray omDatabaseNames;
-    m_pouMsgSigJ1939->vGetDataBaseNames(&omDatabaseNames);
+    if( NULL != m_pouMsgSigJ1939)
+    {
+        m_pouMsgSigJ1939->vGetDataBaseNames(&omDatabaseNames);
+    }
     for (int i = 0; i < omDatabaseNames.GetSize(); i++)
     {
         CString omHeaderPath = omStrGetUnionFilePath(omDatabaseNames.GetAt(i));
         m_sExFuncPtr[J1939].m_omDefinedMsgHeaders.Add(omHeaderPath);
     }
 
-    vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeList);
+    vUpdateMsgNameCodeList(m_pouMsgSigJ1939, m_sExFuncPtr[J1939].m_odMsgNameMsgCodeListDB);
     // Send KeyPanel list pointer
     //m_sExFuncPtr.m_podNodeToDllMap = &g_odNodeToDllMap;
     //m_sExFuncPtr.m_podKeyPanelEntryList = &g_odKeyPanelEntryList;
@@ -11065,42 +11240,45 @@ void CMainFrame::NS_InitJ1939SpecInfo()
     //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
 
 }
-void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList& odMsgNameMsgCodeList)
+void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB)
 {
-    odMsgNameMsgCodeList.RemoveAll();
-    int nDefMsgCount = 0;
-    if (pMsgSig != NULL)
+    if(pMsgSig != NULL)
     {
-        nDefMsgCount = pMsgSig->unGetNumerOfMessages();
+        pMsgSig->bFillDbStructure(odMsgNameMsgCodeListDB);
     }
-    if (nDefMsgCount > 0)
-    {
-        CStringList omDefMsgs;
-        pMsgSig->omStrListGetMessageNames(omDefMsgs);
-        POSITION pos = omDefMsgs.GetHeadPosition();
-        // Insert every message name into the message list box
-        CString omStrMsgName = "";
-
-        while ( pos != NULL )
-        {
-            SMSG_NAME_CODE sMsgNameCode;
-            omStrMsgName = omDefMsgs.GetNext(pos);
-            sMsgNameCode.m_omMsgName = omStrMsgName;
-            sMESSAGE* psDBMsg =  pMsgSig->psGetMessagePointer(omStrMsgName);
-            if (psDBMsg != NULL)
-            {
-                sMsgNameCode.m_dwMsgCode = psDBMsg->m_unMessageCode;
-                sMsgNameCode.m_unMsgLen  = psDBMsg->m_unMessageLength;
-                sSIGNALS* psSignal = psDBMsg->m_psSignals;
-                while (psSignal != NULL)
-                {
-                    sMsgNameCode.m_omSignalNames.AddTail(psSignal->m_omStrSignalName);
-                    psSignal = psSignal->m_psNextSignalList;
-                }
-            }
-            odMsgNameMsgCodeList.AddTail(sMsgNameCode);
-        }
-    }
+    //odMsgNameMsgCodeList.RemoveAll();
+    //int nDefMsgCount = 0;
+    //if (pMsgSig != NULL)
+    //{
+    //    nDefMsgCount = pMsgSig->unGetNumerOfMessages();
+    //}
+    //if (nDefMsgCount > 0)
+    //{
+    //    CStringList omDefMsgs;
+    //    pMsgSig->omStrListGetMessageNames(omDefMsgs);
+    //    POSITION pos = omDefMsgs.GetHeadPosition();
+    //    // Insert every message name into the message list box
+    //    CString omStrMsgName = _T("");
+    //    while ( pos != NULL )
+    //    {
+    //        SMSG_NAME_CODE sMsgNameCode;
+    //        omStrMsgName = omDefMsgs.GetNext(pos);
+    //        sMsgNameCode.m_omMsgName = omStrMsgName;
+    //        sMESSAGE* psDBMsg =  pMsgSig->psGetMessagePointer(omStrMsgName);
+    //        if (psDBMsg != NULL)
+    //        {
+    //            sMsgNameCode.m_dwMsgCode = psDBMsg->m_unMessageCode;
+    //            sMsgNameCode.m_unMsgLen  = psDBMsg->m_unMessageLength;
+    //            sSIGNALS* psSignal = psDBMsg->m_psSignals;
+    //            while (psSignal != NULL)
+    //            {
+    //                sMsgNameCode.m_omSignalNames.AddTail(psSignal->m_omStrSignalName);
+    //                psSignal = psSignal->m_psNextSignalList;
+    //            }
+    //        }
+    //        odMsgNameMsgCodeList.AddTail(sMsgNameCode);
+    //    }
+    //}
 }
 
 void CMainFrame::ToggleView(CToolBar& omToolbar)
@@ -11179,33 +11357,66 @@ void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 
 INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
 {
+    m_bIsXmlConfig = TRUE;
+    int nRetValue = S_OK;
     if (!omConfigFileName.IsEmpty())
     {
         CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
         vSetFileStorageInfo(omConfigFileName);
-        CConfigAdapter ouConfigAdapter;
-        INT nError = ouConfigAdapter.nLoadConfigFile(omConfigFileName);
-        if (nError == defCONFIG_FILE_SUCCESS)
+        //MVN
+        string strCfxFile = (LPCSTR)omConfigFileName;
+        nRetValue = nLoadXMLConfiguration(strCfxFile);
+        if (nRetValue == S_OK )         //1. Try to Load as a XML file
         {
-            vSetCurrProjInfo(BUSMASTER_APPN_VERSION_6_0);
-            for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-            {
-                BYTE* pbyConfigData = NULL;
-                INT nSize = 0;
-                if (ouConfigAdapter.bGetConfigData(pbyConfigData, nSize, eSecId))
-                {
-                    CConfigData::ouGetConfigDetailsObject().bSetData(pbyConfigData, nSize, SectionName[eSecId]);
-                    delete[] pbyConfigData;
-                }
-                eSecId = static_cast<eSECTION_ID>( eSecId + 1);
-            }
+            m_bIsXmlConfig = TRUE;
+            ApplyLogFilter();
+            ApplyMessageFilterButton();
+            nRetValue = S_OK;
         }
-        else
+        //~MVN
+        else                            //2. Load as a Binary File
         {
-            CConfigData::ouGetConfigDetailsObject().vReadConfigFile();
+            CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
+            vSetFileStorageInfo(omConfigFileName);
+            CConfigAdapter ouConfigAdapter;
+            INT nError = ouConfigAdapter.nLoadConfigFile(omConfigFileName);
+            if (nError == defCONFIG_FILE_SUCCESS)
+            {
+                vSetCurrProjInfo(BUSMASTER_APPN_VERSION_6_0);
+                for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+                {
+                    BYTE* pbyConfigData = NULL;
+                    INT nSize = 0;
+                    if (ouConfigAdapter.bGetConfigData(pbyConfigData, nSize, eSecId))
+                    {
+                        CConfigData::ouGetConfigDetailsObject().bSetData(pbyConfigData, nSize, SectionName[eSecId]);
+                        delete[] pbyConfigData;
+                    }
+                    eSecId = static_cast<eSECTION_ID>( eSecId + 1);
+                }
+            }
+            else
+            {
+                CConfigData::ouGetConfigDetailsObject().vReadConfigFile();
+            }
+            nRetValue = LoadConfiguration();
+
+            ApplyLogFilter();
+            ApplyMessageFilterButton();
         }
     }
-    return LoadConfiguration();
+    else            //If Default Configuration
+    {
+        for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+        {
+            //TODO:: this has to bo moved to xml config
+            /* call with NULL to load the default configuration*/
+            vSetCurrentSessionData(eSecId, NULL, 0);
+            eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+        }
+        bCreateTraceWindow();
+    }
+    return nRetValue;
 }
 
 
@@ -11238,6 +11449,2698 @@ INT CMainFrame::LoadConfiguration(void)
     bCreateTraceWindow();
     return nReturn;
 }
+
+//MVN
+int CMainFrame::nLoadXMLConfiguration(string& m_strCfxFile)
+{
+    int nRetValue = S_FALSE;
+
+    m_xmlConfigFiledoc = xmlParseFile(m_strCfxFile.c_str());
+
+    if ( NULL != m_xmlConfigFiledoc )           //1. Try to Load as a XML file
+    {
+        nRetValue = nLoadXMLConfiguration();
+        xmlFreeDoc(m_xmlConfigFiledoc);
+        m_xmlConfigFiledoc = NULL;
+    }
+    return nRetValue;
+}
+
+INT CMainFrame::vSaveXMLConfiguration(const char* filename)
+{
+
+    xmlDocPtr pXMLDocPtr = NULL;       /* document pointer */
+    xmlNodePtr pRtNodePtr = NULL;
+    xmlDtdPtr dtd = NULL;       /* DTD pointer */
+
+    xmlKeepBlanksDefault(0);
+
+    // Create the document with version 1.0
+    pXMLDocPtr = xmlNewDoc(BAD_CAST "1.0");
+
+    // Creating the Root node "BUSMAST
+    pRtNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUSMASTER_CONFIGURATION);
+
+    xmlDocSetRootElement(pXMLDocPtr, pRtNodePtr);
+
+    // GLOBAL Configuration
+    xmlNodePtr pGblCnfgPtr = xmlNewNode(NULL, BAD_CAST DEF_GLOBAL_CONFIGURATION);
+    xmlAddChild(pRtNodePtr, pGblCnfgPtr);
+
+    // MODULE Configuration
+    xmlNodePtr pModConfigNdPtr = xmlNewNode(NULL, BAD_CAST DEF_MODULE_CONFIGURATION);
+    xmlAddChild(pRtNodePtr, pModConfigNdPtr);
+
+    int nRetValue = S_OK;
+
+    for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+    {
+        BYTE* pbyConfigData = NULL;
+        UINT nSize = 0;
+
+        if(eSecId == MAINFRAME_SECTION_ID)
+        {
+            vGetCurrentSessionData(eSecId, pbyConfigData, nSize, pGblCnfgPtr);
+        }
+        else
+        {
+            vGetCurrentSessionData(eSecId, pbyConfigData, nSize, pModConfigNdPtr);
+        }
+
+        if (pbyConfigData != NULL)
+        {
+            // CConfigData::ouGetConfigDetailsObject().bSetData((void*)pbyConfigData, nSize, SectionName[eSecId]);
+            //All done now release the memory
+            delete[] pbyConfigData;
+            pbyConfigData = NULL;
+        }
+
+        eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+    }
+
+    xmlIndentTreeOutput = 1;
+    xmlThrDefIndentTreeOutput(TRUE);
+
+    if(pXMLDocPtr != NULL)
+    {
+        xmlSaveFormatFileEnc(filename, pXMLDocPtr, "UTF-8", 1);
+
+        xmlFreeDoc(pXMLDocPtr);
+    }
+
+    xmlCleanupParser();
+
+    return nRetValue;
+}
+
+
+void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize, xmlNodePtr pNodePtr)
+{
+    switch (eSecId)
+    {
+        case MAINFRAME_SECTION_ID:
+        {
+            //nSize += sizeof(BYTE); //Configuration version
+            //nSize += (sizeof(char) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
+            //pbyConfigData = new BYTE[nSize];
+
+            //if (pbyConfigData != NULL)
+            {
+                //BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0x2;
+                //COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+                char acName[MAX_PATH] = {_T('\0')};
+                strcpy_s(acName, MAX_PATH, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
+                //COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+
+
+                theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
+
+                // Writing IsMsgFilterEnabled in to xml
+                CString strIsMsgFilterEnabled = "";
+                if(m_sToolBarInfo.m_byMsgFilter == TRUE)
+                {
+                    strIsMsgFilterEnabled = "TRUE";
+                }
+                else if(m_sToolBarInfo.m_byMsgFilter == FALSE)
+                {
+                    strIsMsgFilterEnabled = "FALSE";
+                }
+
+                xmlNodePtr pMsgFilterEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsMsgFilterEnabled
+                                             , BAD_CAST strIsMsgFilterEnabled.GetBuffer(strIsMsgFilterEnabled.GetLength()));
+                xmlAddChild(pNodePtr, pMsgFilterEnbld);
+
+                // Writing IsLogFilterEnabled in to xml
+                CString strIsLogFilterEnabled = "";
+                if(m_sToolBarInfo.m_byLogFilter == TRUE)
+                {
+                    strIsLogFilterEnabled = "TRUE";
+                }
+                else if(m_sToolBarInfo.m_byLogFilter == FALSE)
+                {
+                    strIsLogFilterEnabled = "FALSE";
+                }
+
+                xmlNodePtr pLogFilterEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsLogFilterEnabled
+                                             , BAD_CAST strIsLogFilterEnabled.GetBuffer(strIsLogFilterEnabled.GetLength()));
+                xmlAddChild(pNodePtr, pLogFilterEnbld);
+
+                // Writing IsLoggingEnabled in to xml
+                CString strIsLoggingEnabled = "";
+                if(m_sToolBarInfo.m_byLogging == TRUE)
+                {
+                    strIsLoggingEnabled = "TRUE";
+                }
+                else if(m_sToolBarInfo.m_byLogging == FALSE)
+                {
+                    strIsLoggingEnabled = "FALSE";
+                }
+
+                xmlNodePtr pLoggingEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsLoggingEnabled
+                                                       , BAD_CAST strIsLoggingEnabled.GetBuffer(strIsLoggingEnabled.GetLength()));
+                xmlAddChild(pNodePtr, pLoggingEnbld);
+
+                // Writing IsMsgIntepretationEnabled in to xml
+                CString strIsMsgIntepretationEnabled = "";
+                if(m_sToolBarInfo.m_byMsgInterpret == TRUE)
+                {
+                    strIsMsgIntepretationEnabled = "TRUE";
+                }
+                else if(m_sToolBarInfo.m_byMsgInterpret == FALSE)
+                {
+                    strIsMsgIntepretationEnabled = "FALSE";
+                }
+
+                xmlNodePtr pMsgIntrEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsMsgIntepretationEnabled
+                                                       , BAD_CAST strIsMsgIntepretationEnabled.GetBuffer(strIsMsgIntepretationEnabled.GetLength()));
+                xmlAddChild(pNodePtr, pMsgIntrEnbld);
+
+                // Writing IsOverWriteEnabled in to xml
+                CString strIsOverWriteEnabled = "";
+                if(m_sToolBarInfo.m_byOverwrite == TRUE)
+                {
+                    strIsOverWriteEnabled = "TRUE";
+                }
+                else if(m_sToolBarInfo.m_byOverwrite == FALSE)
+                {
+                    strIsOverWriteEnabled = "FALSE";
+                }
+
+                xmlNodePtr pOverwriteEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsOverWriteEnabled
+                                             , BAD_CAST strIsOverWriteEnabled.GetBuffer(strIsOverWriteEnabled.GetLength()));
+                xmlAddChild(pNodePtr, pOverwriteEnbld);
+
+                // Writing DisplayTimeMode in to xml
+                CString strDisplayTimeMode = "";
+                if(m_sToolBarInfo.m_byDisplayTimeMode == eSYSTEM_MODE)
+                {
+                    strDisplayTimeMode = "SYSTEM";
+                }
+                else if(m_sToolBarInfo.m_byDisplayTimeMode == eABSOLUTE_MODE)
+                {
+                    strDisplayTimeMode = "ABSOLUTE";
+                }
+                else if(m_sToolBarInfo.m_byDisplayTimeMode == eRELATIVE_MODE)
+                {
+                    strDisplayTimeMode = "RELATIVE";
+                }
+
+                xmlNodePtr pDisplayTimeMode = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_DisplayTimeMode
+                                              , BAD_CAST strDisplayTimeMode.GetBuffer(strDisplayTimeMode.GetLength()));
+                xmlAddChild(pNodePtr, pDisplayTimeMode);
+
+                // Writing DisplayNumericMode in to xml
+                CString strDisplayNumericMode = "";
+                if(m_sToolBarInfo.m_byDisplayHexON == TRUE)
+                {
+                    strDisplayNumericMode = "FALSE";
+                }
+                else if(m_sToolBarInfo.m_byDisplayHexON == FALSE)
+                {
+                    strDisplayNumericMode = "TRUE";
+                }
+
+                xmlNodePtr pDisplayNumericMode = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_DisplayNumericMode
+                                                 , BAD_CAST strDisplayNumericMode.GetBuffer(strDisplayNumericMode.GetLength()));
+                xmlAddChild(pNodePtr, pDisplayNumericMode);
+
+                // Writing LogOnConnect in to xml
+                CString strLogOnConnectCAN = "";
+                if(m_abLogOnConnect[CAN] == TRUE)
+                {
+                    strLogOnConnectCAN = "TRUE";
+                }
+                else if(m_abLogOnConnect[CAN] == FALSE)
+                {
+                    strLogOnConnectCAN = "FALSE";
+                }
+
+                xmlNodePtr pLogOnConnectCAN = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_LogOnConnect_For_CAN
+                                              , BAD_CAST strLogOnConnectCAN.GetBuffer(strLogOnConnectCAN.GetLength()));
+                xmlAddChild(pNodePtr, pLogOnConnectCAN);
+
+                // Writing LogOnConnect in to xml
+                CString strLogOnConnectJ1939 = "";
+                if(m_abLogOnConnect[J1939] == TRUE)
+                {
+                    strLogOnConnectJ1939 = "TRUE";
+                }
+                else if(m_abLogOnConnect[J1939] == FALSE)
+                {
+                    strLogOnConnectJ1939 = "FALSE";
+                }
+
+                xmlNodePtr pLogOnConnectJ1939 = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_LogOnConnect_For_J1939
+                                                , BAD_CAST strLogOnConnectJ1939.GetBuffer(strLogOnConnectJ1939.GetLength()));
+                xmlAddChild(pNodePtr, pLogOnConnectJ1939);
+
+                //COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
+
+                if (m_podUIThread != NULL)
+                {
+                    m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, FALSE);
+                }
+
+                CString strVisibility = xmlUtils::nSetWindowVisibility( m_sNotificWndPlacement.showCmd );
+                CString strWndPlacement = xmlUtils::nSetWindowVisibility( m_sNotificWndPlacement.flags );
+                CString strTop = "", strBottom = "", strLeft = "", strRight = "";
+
+                strTop.Format("%d", m_sNotificWndPlacement.rcNormalPosition.top);
+                strBottom.Format("%d", m_sNotificWndPlacement.rcNormalPosition.bottom);
+                strLeft.Format("%d", m_sNotificWndPlacement.rcNormalPosition.left);
+                strRight.Format("%d", m_sNotificWndPlacement.rcNormalPosition.right);
+
+                // Writing Window Position in to xml
+                xmlNodePtr pWndPosition = xmlNewNode(NULL, BAD_CAST DEF_WINDOW_POSITION);
+                xmlAddChild(pNodePtr, pWndPosition);
+
+                // Writing Visibility in to xml
+                xmlNodePtr pVisibility = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_VISIBILITY, BAD_CAST strVisibility.GetBuffer(strVisibility.GetLength()));
+                xmlAddChild(pWndPosition, pVisibility);
+
+                // Writing window placement in to xml
+                xmlNodePtr pWndPlcmnt = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_WINDOW_PLACEMENT, BAD_CAST strWndPlacement.GetBuffer(strWndPlacement.GetLength()));
+                xmlAddChild(pWndPosition, pWndPlcmnt);
+
+                // Writing Top bottom left and right position in to xml
+                xmlNodePtr pTopPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_TOP, BAD_CAST strTop.GetBuffer(strTop.GetLength()));
+                xmlAddChild(pWndPosition, pTopPtr);
+
+                xmlNodePtr pLeftPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_Left, BAD_CAST strLeft.GetBuffer(strLeft.GetLength()));
+                xmlAddChild(pWndPosition, pLeftPtr);
+
+                xmlNodePtr pBottomPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_Bottom, BAD_CAST strBottom.GetBuffer(strBottom.GetLength()));
+                xmlAddChild(pWndPosition, pBottomPtr);
+
+                xmlNodePtr pRightPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_Right, BAD_CAST strRight.GetBuffer(strRight.GetLength()));
+                xmlAddChild(pWndPosition, pRightPtr);
+
+                //COPY_DATA(pbyTemp, &m_sNotificWndPlacement, sizeof(WINDOWPLACEMENT));
+                //COPY_DATA(pbyTemp, m_abLogOnConnect, sizeof (BOOL) * BUS_TOTAL)
+            }
+
+        }
+        break;
+        case LOG_SECTION_J1939_ID:
+        {
+            /*if (GetIJ1939Logger() != NULL)
+            {
+                GetIJ1939Logger()->FPJ1_GetConfigData(&pbyConfigData, nSize);
+            }*/
+            if (GetIJ1939Logger() != NULL)
+            {
+                xmlNodePtr pJ1939LogPtr = xmlNewNode(NULL, BAD_CAST DEF_J1939_LOG);
+                xmlAddChild(pNodePtr, pJ1939LogPtr);
+
+                GetIJ1939Logger()->FPJ1_GetConfigData(pJ1939LogPtr);
+            }
+        }
+        break;
+        case LOG_SECTION_ID:
+        {
+            /* if (sg_pouFrameProcCAN != NULL)
+             {
+                 sg_pouFrameProcCAN->FPC_GetConfigData(&pbyConfigData, nSize);
+             }*/
+
+            if (sg_pouFrameProcCAN != NULL)
+            {
+                xmlNodePtr pCanLogPtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_LOG);
+                xmlAddChild(pNodePtr, pCanLogPtr);
+
+                sg_pouFrameProcCAN->FPC_GetConfigData(pCanLogPtr);
+            }
+        }
+        break;
+        case SIMSYS_SECTION_ID:
+        {
+            xmlNodePtr pCanSimSys = xmlNewNode(NULL, BAD_CAST DEF_CAN_SIM_SYS);
+            xmlAddChild(pNodePtr, pCanSimSys);
+            GetICANNodeSim()->NS_GetSimSysConfigData(pCanSimSys);
+        }
+        break;
+        case SIMSYS_SECTION_J1939_ID:
+        {
+            xmlNodePtr pJ1939SimSys = xmlNewNode(NULL, BAD_CAST DEF_J1939_SIM_SYS);
+            xmlAddChild(pNodePtr, pJ1939SimSys);
+            GetIJ1939NodeSim()->NS_GetSimSysConfigData(pJ1939SimSys);
+        }
+        break;
+        case REPLAY_SECTION_ID:
+        {
+
+            xmlNodePtr pCANReplay = xmlNewNode(NULL, BAD_CAST DEF_CAN_REPLAY);
+            xmlAddChild(pNodePtr, pCANReplay);
+            vREP_GetReplayConfigData(pCANReplay);
+        }
+        break;
+        case MSGWND_SECTION_ID:
+        {
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
+            CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
+            UINT nCount = sMsgAttrib.m_usMsgCount;
+            SFILTERAPPLIED_CAN sMsgWndFilter;
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+
+            xmlNodePtr pCANMsgWindow = xmlNewNode(NULL, BAD_CAST DEF_MSG_WINDOW);
+            xmlAddChild(pNodePtr, pCANMsgWindow);
+
+            INT nAppndBuffrSize = m_anMsgBuffSize[defAPPEND_DATA_INDEX];
+            INT nOverwritBffrSize = m_anMsgBuffSize[defOVERWRITE_DATE_INDEX];
+            INT nDisplayUpdateTime = m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX];
+
+            CString strAppndBffrSize = "";
+            strAppndBffrSize.Format("%d", nAppndBuffrSize);
+
+            CString strOverwritBffrSize = "";
+            strOverwritBffrSize.Format("%d", nOverwritBffrSize);
+
+            CString strDisplayUpdateTime = "";
+            strDisplayUpdateTime.Format("%d", nDisplayUpdateTime);
+
+            xmlNodePtr pAppndBffrPtr = xmlNewChild(pCANMsgWindow, NULL, BAD_CAST DEF_APPEND_BUFFER_SIZE, BAD_CAST strAppndBffrSize.GetBuffer(strAppndBffrSize.GetLength()));
+            xmlAddChild(pCANMsgWindow, pAppndBffrPtr);
+
+            xmlNodePtr pOvrwriteBffrPtr = xmlNewChild(pCANMsgWindow, NULL, BAD_CAST DEF_OVERWRITE_BUFFER_SIZE, BAD_CAST strOverwritBffrSize.GetBuffer(strOverwritBffrSize.GetLength()));
+            xmlAddChild(pCANMsgWindow, pOvrwriteBffrPtr);
+
+            xmlNodePtr pDispBffrPtr = xmlNewChild(pCANMsgWindow, NULL, BAD_CAST DEF_DISPLAY_UPDATE_TIME, BAD_CAST strDisplayUpdateTime.GetBuffer(strDisplayUpdateTime.GetLength()));
+            xmlAddChild(pCANMsgWindow, pDispBffrPtr);
+
+            const char* omcVarChar ;
+
+            for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+            {
+                xmlNodePtr pCANMsgAttribute = xmlNewNode(NULL, BAD_CAST DEF_MSG_ATTRIBUTE);
+                xmlAddChild(pCANMsgWindow, pCANMsgAttribute);
+
+                omcVarChar = sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname;
+                xmlNodePtr pMsgName = xmlNewChild(pCANMsgAttribute, NULL, BAD_CAST DEF_NAME,BAD_CAST omcVarChar);
+                xmlAddChild(pCANMsgAttribute, pMsgName);
+
+                CString     csMsgID;
+                csMsgID.Format("%u",sMsgAttrib.m_psMsgAttribDetails[i].unMsgID);
+                omcVarChar = csMsgID;
+                xmlNodePtr pMsgID = xmlNewChild(pCANMsgAttribute, NULL, BAD_CAST DEF_MSG_ID,BAD_CAST omcVarChar);
+                xmlAddChild(pCANMsgAttribute, pMsgID);
+
+                CString csColor;
+                int nR, nB, nG;
+                nR = GetRValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                nG = GetGValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                nB = GetBValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                //csColor.Format("%x%x%x",nR,nG,nB);
+
+                char ch[10];
+
+                sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+
+
+                omcVarChar = csColor;
+                xmlNodePtr pMsgColor = xmlNewChild(pCANMsgAttribute, NULL, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
+                xmlAddChild(pCANMsgAttribute, pMsgColor);
+            }
+
+            CString     csFilter;
+            for(int iCnt=0; iCnt < sMsgWndFilter.m_ushTotal; iCnt++)
+            {
+                csFilter.Format("%s",((sMsgWndFilter.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
+                omcVarChar = csFilter;
+                xmlNodePtr pFilter = xmlNewChild(pCANMsgWindow, NULL, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
+                xmlAddChild(pCANMsgWindow, pFilter);
+            }
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                          WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_MSG_WND_GET_CONFIG_DATA,
+                          (LPARAM)pCANMsgWindow);
+
+            DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+        }
+        break;
+        case MSGWND_SECTION_J1939_ID:
+        {
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
+            CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
+            UINT nCount = sMsgAttrib.m_usMsgCount;
+            UINT unMsgFrmtWndCfgSize = 0;
+            ASSERT(m_podMsgWndThread != NULL);
+
+            if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+            {
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                              WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+            }
+            //CALC SIZE ENDS
+            xmlNodePtr pJ1939MsgWindow = xmlNewNode(NULL, BAD_CAST DEF_J1939_MESS_WINDOW);
+            xmlAddChild(pNodePtr, pJ1939MsgWindow);
+
+            const char* omcVarChar ;
+
+            for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+            {
+                xmlNodePtr pJ1939MsgAttribute = xmlNewNode(NULL, BAD_CAST DEF_MSG_ATTRIBUTE);
+                xmlAddChild(pJ1939MsgWindow, pJ1939MsgAttribute);
+
+                omcVarChar = sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH);
+                xmlNodePtr pMsgName = xmlNewChild(pJ1939MsgAttribute, NULL, BAD_CAST DEF_NAME,BAD_CAST omcVarChar);
+                xmlAddChild(pJ1939MsgAttribute, pMsgName);
+
+                CString     csMsgID;
+                csMsgID.Format("%u",sMsgAttrib.m_psMsgAttribDetails[i].unMsgID);
+                omcVarChar = csMsgID.GetBuffer(MAX_PATH);
+                xmlNodePtr pMsgID = xmlNewChild(pJ1939MsgAttribute, NULL, BAD_CAST DEF_MSG_ID,BAD_CAST omcVarChar);
+                xmlAddChild(pJ1939MsgAttribute, pMsgID);
+
+                CString     csColor;
+                int nR, nB, nG;
+                nR = GetRValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                nG = GetGValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                nB = GetBValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                //csColor.Format("%2x%2x%2x",nR,nG,nB);
+
+                char ch[7] = {0};
+
+                sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+
+                omcVarChar = csColor.GetBuffer(MAX_PATH);
+                xmlNodePtr pMsgColor = xmlNewChild(pJ1939MsgAttribute, NULL, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
+                xmlAddChild(pJ1939MsgAttribute, pMsgColor);
+            }
+
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                          WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_MSG_WND_GET_CONFIG_DATA,
+                          (LPARAM)pJ1939MsgWindow);
+        }
+        break;
+        case SIGWATCH_SECTION_J1939_ID:
+        {
+            CMainEntryList odMainEntryList;
+            vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+
+            ////CALCULATE SIZE REQUIRED
+            //nSize += sizeof(BYTE); //Configuration version
+
+            POSITION pos = odMainEntryList.GetHeadPosition();
+
+            pos = odMainEntryList.GetHeadPosition();
+            UINT nMainCount = odMainEntryList.GetCount();
+
+            xmlNodePtr pNodeSigWtchPtr = xmlNewNode(NULL, BAD_CAST DEF_J1939_SIGNAL_WATCH);
+            xmlAddChild(pNodePtr, pNodeSigWtchPtr);
+
+            //COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
+
+            while (pos)
+            {
+                // Adding Message
+
+
+                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+                //COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
+
+                //COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+                UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
+                //MVN only if any signal is selected
+                if( unSelCount > 0 )
+                {
+                    char acName[MAX_PATH] = {_T('\0')};
+                    strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
+
+                    xmlNodePtr pMsgTagPtr = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE);
+                    xmlAddChild(pNodeSigWtchPtr, pMsgTagPtr);
+
+                    CString strMessageId = "";
+                    strMessageId.Format("%d", sMainEntry.m_unMainEntryID);
+                    /* Generating Message names */
+                    xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_MSGID
+                                                     , BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
+
+                    xmlAddChild(pMsgTagPtr, pMsgPtr);
+
+                    //COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
+                    POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+                    while (SelPos != NULL)
+                    {
+                        SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
+                        //COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
+                        strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
+                        //COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+
+                        /* Generating signals in the Message */
+                        xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_SIGNAL
+                                                            , BAD_CAST sSubEntry.m_omSubEntryName.GetBufferSetLength(sSubEntry.m_omSubEntryName.GetLength()));
+                        xmlAddChild(pMsgTagPtr, pSignalPtr);
+                    }
+                }
+            }
+
+            if (sg_pouSWInterface[J1939] != NULL)
+            {
+                UINT nSWSize = 0;
+                sg_pouSWInterface[J1939]->SW_GetConfigData(pNodeSigWtchPtr);
+                //pbyTemp += nSWSize;
+            }
+        }
+        break;
+        case SIGWATCH_SECTION_ID:
+        {
+            CMainEntryList odMainEntryList;
+            vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
+
+            //CALCULATE SIZE REQUIRED
+            //nSize += sizeof(BYTE); //Configuration version
+
+            POSITION pos = odMainEntryList.GetHeadPosition();
+            //nSize += sizeof (UINT); //To store the count of main entry
+            //while (pos)
+            //{
+            //    nSize += sizeof (UINT);
+            //    nSize += (sizeof (char) * MAX_PATH);
+            //    SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+            //    nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
+
+            //    for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
+            //    {
+            //        nSize += sizeof (UINT);
+            //        nSize += (sizeof (char) * MAX_PATH);
+            //    }
+            //}
+            //BYTE* pbySWWndPlacement = NULL;
+            //UINT unSWSize = 0;
+            //nSize += sg_pouSWInterface[CAN]->SW_GetConfigSize();
+            ////ALLOCATE MEMORY
+            //pbyConfigData = new BYTE[nSize];
+            //BYTE* pbyTemp = pbyConfigData;
+
+            ////UPDATE THE DATA NOW
+            //BYTE byVersion = 0x1;
+            //COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            pos = odMainEntryList.GetHeadPosition();
+            UINT nMainCount = odMainEntryList.GetCount();
+
+            //COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
+
+            xmlNodePtr pNodeSigWtchPtr = xmlNewNode(NULL, BAD_CAST DEF_SIGNAL_WATCH);
+            xmlAddChild(pNodePtr, pNodeSigWtchPtr);
+
+            while (pos)
+            {
+                char acName[MAX_PATH] = {_T('\0')};
+
+                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+
+                UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
+                //MVN only if any signal is selected
+                if( unSelCount > 0)
+                {
+                    // Adding Message
+                    xmlNodePtr pMsgTagPtr = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE);
+                    xmlAddChild(pNodeSigWtchPtr, pMsgTagPtr);
+
+                    CString strMessageId = "";
+                    strMessageId.Format("%d", sMainEntry.m_unMainEntryID);
+                    /* Generating Message names */
+                    xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_MSGID
+                                                     , BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
+
+                    xmlAddChild(pMsgTagPtr, pMsgPtr);
+
+                    POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+
+                    while (SelPos != NULL)
+                    {
+                        SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
+
+                        /* Generating signals in the Message */
+                        xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_SIGNAL
+                                                            , BAD_CAST sSubEntry.m_omSubEntryName.GetBufferSetLength(sSubEntry.m_omSubEntryName.GetLength()));
+                        xmlAddChild(pMsgTagPtr, pSignalPtr);
+                    }
+                }
+            }
+
+            if (sg_pouSWInterface[CAN] != NULL)
+            {
+                UINT nSWSize = 0;
+                sg_pouSWInterface[CAN]->SW_GetConfigData(pNodeSigWtchPtr);
+                //sg_pouSWInterface[CAN]->SW_GetConfigData((void*)pbyTemp);
+                //pbyTemp += nSWSize;
+            }
+        }
+        break;
+        case DIL_SECTION_ID:
+        {
+            //nSize = sizeof(BYTE);//configuration version
+            //nSize += sizeof(DWORD);// Driver Id
+            //nSize += sizeof(BYTE); // Controller mode
+
+            ////nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
+            //for(int i = 0; i < CHANNEL_ALLOWED; i++)
+            //{
+            //    int nTemp = 0;
+            //    m_asControllerDetails[i].GetControllerConfigSize(nTemp);
+            //    nSize += nTemp;
+            //}
+
+
+            //pbyConfigData = new BYTE[nSize];
+
+            //if (pbyConfigData != NULL)
+            {
+                //BYTE* pbyTemp = pbyConfigData;
+
+                //BYTE byVersion = DIL_CFX_CURRENT_VERSION;
+                //COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+                //COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
+                //COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
+                //COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
+
+                if(pNodePtr != NULL)
+                {
+                    xmlNodePtr pNodeDBFilePtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_DIL_SECTION);
+                    xmlAddChild(pNodePtr, pNodeDBFilePtr);
+
+                    // Above lines have to be changed.
+                    CString omstrDriverName = vGetControllerName(m_dwDriverId);
+
+                    if(pNodeDBFilePtr != NULL)
+                    {
+                        // Get the selected driver Name
+                        //CString omstrDriverName = m_ouList[nDriverId].m_acName.c_str();
+
+                        //omstrDriverName.Replace("&", "");
+                        const char* strDriverName = omstrDriverName;
+
+                        const char* strControllerMode = "";
+
+                        if(m_byControllerMode == defCONTROLLER_ACTIVE)
+                        {
+                            strControllerMode = defSTR_ACTIVE_STATE;
+                        }
+                        else if(m_byControllerMode == defCONTROLLER_PASSIVE)
+                        {
+                            strControllerMode = defSTR_PASSIVE_STATE;
+                        }
+                        else if(m_byControllerMode == defCONTROLLER_BUSOFF)
+                        {
+                            strControllerMode = defSTR_BUSOFF_STATE;
+                        }
+                        else
+                        {
+                            strControllerMode = defSTR_UNKNOWN_STATE;
+                        }
+
+                        xmlNodePtr pDNPtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_DRIVER_NAME, BAD_CAST strDriverName);
+                        xmlAddChild(pNodeDBFilePtr, pDNPtr);
+
+                        xmlNodePtr pCntrlModePtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_CONTROLLER_MODE, BAD_CAST strControllerMode);
+                        xmlAddChild(pNodeDBFilePtr, pCntrlModePtr);
+
+                        xmlNodePtr pCntrlSettngsPtr = xmlNewNode(NULL, BAD_CAST DEF_CONTROLLER_SETTINGS);
+                        xmlAddChild(pNodeDBFilePtr, pCntrlSettngsPtr);
+
+                        INT nNumOfChannelsSel = 0;
+
+                        if(pCntrlSettngsPtr != NULL)
+                        {
+                            INT nCount = 0;
+                            HRESULT hResult;
+
+                            LONG lParam = 0;
+
+                            if(g_pouDIL_CAN_Interface != NULL)
+                            {
+                                if(g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+                                {
+                                    nNumOfChannelsSel = (UINT)lParam;
+                                }
+                            }
+
+                            for(int nChnlIndex = 0; nChnlIndex < nNumOfChannelsSel; nChnlIndex++)
+                            {
+                                //xmlNodePtr pChnlPtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST "");
+                                xmlNodePtr pChnlPtr = xmlNewNode(NULL, (xmlChar*)DEF_CHANNEL);
+                                xmlAddChild(pCntrlSettngsPtr, pChnlPtr);
+
+                                m_asControllerDetails[nChnlIndex].SaveConfigDataToXML(pChnlPtr);
+                            }
+                            //xmlNewChild(pCntrlSettngsPtr, NULL, BAD_CAST DEF_DRIVER_NAME, BAD_CAST strDriverName);
+                        }
+
+                        //xmlTextWriterSetIndent(pNodeDBFilePtr, 1);
+                    }
+                }
+                /*for(int i = 0; i < CHANNEL_ALLOWED; i++)
+                {
+                    INT nsize = 0;
+                    m_asControllerDetails[i].GetControllerConfigData(pbyTemp, nsize);
+                }*/
+            }
+        }
+        break;
+        case GRAPH_SECTION_ID:
+        {
+            // Generating Signal Graph in to xml
+            xmlNodePtr pCanSigGrphPtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_SIGNAL_GRAPH);
+            xmlAddChild(pNodePtr, pCanSigGrphPtr);
+
+            BYTE byVersion = 0x2;
+
+            // CAN PROTOCOL
+            int nBUSID=0;
+            m_odGraphList[nBUSID].pbyGetConfigData(pCanSigGrphPtr, byVersion);
+
+            m_objSigGrphHandler.GetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                    m_sGraphSplitterPos[nBUSID]);
+
+            CString strVisibility = xmlUtils::nSetWindowVisibility( m_sGraphWndPlacement[nBUSID].showCmd );
+            CString strWndPlacement = xmlUtils::nSetWindowVisibility( m_sGraphWndPlacement[nBUSID].flags );
+            CString strTop = "", strBottom = "", strLeft = "", strRight = "";
+
+            strTop.Format("%d", m_sGraphWndPlacement[nBUSID].rcNormalPosition.top);
+            strBottom.Format("%d", m_sGraphWndPlacement[nBUSID].rcNormalPosition.bottom);
+            strLeft.Format("%d", m_sGraphWndPlacement[nBUSID].rcNormalPosition.left);
+            strRight.Format("%d", m_sGraphWndPlacement[nBUSID].rcNormalPosition.right);
+
+            // Writing Window Position in to xml
+            xmlNodePtr pWndPosition = xmlNewNode(NULL, BAD_CAST DEF_WINDOW_POSITION);
+            xmlAddChild(pCanSigGrphPtr, pWndPosition);
+
+            // Writing Visibility in to xml
+            xmlNodePtr pVisibility = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_VISIBILITY, BAD_CAST strVisibility.GetBuffer(strVisibility.GetLength()));
+            xmlAddChild(pWndPosition, pVisibility);
+
+            // Writing window placement in to xml
+            xmlNodePtr pWndPlcmnt = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_WINDOW_POSITION, BAD_CAST strWndPlacement.GetBuffer(strWndPlacement.GetLength()));
+            xmlAddChild(pWndPosition, pWndPlcmnt);
+
+            // Writing Top bottom left and right position in to xml
+            xmlNodePtr pTopPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_TOP, BAD_CAST strTop.GetBuffer(strTop.GetLength()));
+            xmlAddChild(pWndPosition, pTopPtr);
+
+            xmlNodePtr pLeftPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_Left, BAD_CAST strLeft.GetBuffer(strLeft.GetLength()));
+            xmlAddChild(pWndPosition, pLeftPtr);
+
+            xmlNodePtr pBottomPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_Bottom, BAD_CAST strBottom.GetBuffer(strBottom.GetLength()));
+            xmlAddChild(pWndPosition, pBottomPtr);
+
+            xmlNodePtr pRightPtr = xmlNewChild(pWndPosition, NULL, BAD_CAST DEF_Right, BAD_CAST strRight.GetBuffer(strRight.GetLength()));
+            xmlAddChild(pWndPosition, pRightPtr);
+
+            // Writing splitter details in to xml
+            // Writing Column 0 details
+            INT nColumnzeroCXIdeal = m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0];
+            INT nColumnzeroCXMin = m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][1];
+
+            CString strColZeroCxIdeal = "", strColZeroCxMin = "";
+            strColZeroCxIdeal.Format("%d", nColumnzeroCXIdeal);
+            strColZeroCxMin.Format("%d", nColumnzeroCXMin);
+
+            // Writing Column 1 details
+            INT nColumnOneCXIdeal = m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[1][0];
+            INT nColumnOneCXMin = m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[1][1];
+
+            CString strColOneCxIdeal = "", strColOneCxMin = "";
+            strColOneCxIdeal.Format("%d", nColumnOneCXIdeal);
+            strColOneCxMin.Format("%d", nColumnOneCXMin);
+
+            // Writing Row 0 details
+            INT nRowzeroCyIdeal = m_sGraphSplitterPos[nBUSID].m_nRightViewSplitterData[0][0];
+            INT nRowzeroCyMin = m_sGraphSplitterPos[nBUSID].m_nRightViewSplitterData[0][1];
+
+            CString strRowZeroCyIdeal = "", strRowZeroCyMin = "";
+            strRowZeroCyIdeal.Format("%d", nRowzeroCyIdeal);
+            strRowZeroCyMin.Format("%d", nRowzeroCyMin);
+
+            // Writing Row 1 details
+            INT nRowOneCyIdeal = m_sGraphSplitterPos[nBUSID].m_nRightViewSplitterData[1][0];
+            INT nRowOneCyMin = m_sGraphSplitterPos[nBUSID].m_nRightViewSplitterData[1][1];
+
+            CString strRowOneCyIdeal = "", strRowOneCyMin = "";
+            strRowOneCyIdeal.Format("%d", nRowOneCyIdeal);
+            strRowOneCyMin.Format("%d", nRowOneCyMin);
+
+            // Column zero
+            xmlNodePtr pColZero = xmlNewNode(NULL, BAD_CAST DEF_Splitter_Window_Col_0);
+            xmlAddChild(pCanSigGrphPtr, pColZero);
+
+            xmlNodePtr pColZeroCxIdeal = xmlNewChild(pColZero, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST strColZeroCxIdeal.GetBuffer(strColZeroCxIdeal.GetLength()));
+            xmlAddChild(pColZero, pColZeroCxIdeal);
+
+            xmlNodePtr pColZeroCxMin = xmlNewChild(pColZero, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST strColZeroCxMin.GetBuffer(strColZeroCxMin.GetLength()));
+            xmlAddChild(pColZero, pColZeroCxMin);
+
+            // Column One
+            xmlNodePtr pColOne = xmlNewNode(NULL, BAD_CAST DEF_Splitter_Window_Col_1);
+            xmlAddChild(pCanSigGrphPtr, pColOne);
+
+            xmlNodePtr pColOneCxIdeal = xmlNewChild(pColOne, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST strColOneCxIdeal.GetBuffer(strColOneCxIdeal.GetLength()));
+            xmlAddChild(pColOne, pColOneCxIdeal);
+
+            xmlNodePtr pColOneCxMin = xmlNewChild(pColOne, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST strColOneCxMin.GetBuffer(strColOneCxMin.GetLength()));
+            xmlAddChild(pColOne, pColOneCxMin);
+
+            // Row zero
+            xmlNodePtr pRowZero = xmlNewNode(NULL, BAD_CAST DEF_Splitter_Window_Row_0);
+            xmlAddChild(pCanSigGrphPtr, pRowZero);
+
+            xmlNodePtr pRowZeroCxIdeal = xmlNewChild(pRowZero, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST strRowZeroCyIdeal.GetBuffer(strRowZeroCyIdeal.GetLength()));
+            xmlAddChild(pRowZero, pRowZeroCxIdeal);
+
+            xmlNodePtr pRowZeroCxMin = xmlNewChild(pRowZero, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST strRowZeroCyMin.GetBuffer(strRowZeroCyMin.GetLength()));
+            xmlAddChild(pRowZero, pRowZeroCxMin);
+
+            // Row One
+            xmlNodePtr pRowOne = xmlNewNode(NULL, BAD_CAST DEF_Splitter_Window_Row_1);
+            xmlAddChild(pCanSigGrphPtr, pRowOne);
+
+            xmlNodePtr pRowOneCxIdeal = xmlNewChild(pRowOne, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST strRowOneCyIdeal.GetBuffer(strRowOneCyIdeal.GetLength()));
+            xmlAddChild(pRowOne, pRowOneCxIdeal);
+
+            xmlNodePtr pRowOneCxMin = xmlNewChild(pRowOne, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST strRowOneCyMin.GetBuffer(strRowOneCyMin.GetLength()));
+            xmlAddChild(pRowOne, pRowOneCxMin);
+        }
+        break;
+        case TXWND_SECTION_ID:
+        {
+            //changes done for XML configuration
+            xmlNodePtr pCANTxPtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_TX_WINDOW);
+            xmlAddChild(pNodePtr, pCANTxPtr);
+            m_objTxHandler.vGetTxWndConfigData(pCANTxPtr);
+        }
+        break;
+        case FILTER_SECTION_ID:
+        {
+            nSize = m_sFilterAppliedCAN.unGetSize();
+
+            if(pNodePtr != NULL)
+            {
+                m_sFilterAppliedCAN.pbGetConfigData(pNodePtr);
+            }
+
+            //        pbyConfigData = new BYTE[nSize];
+
+            //        if (pbyConfigData != NULL)
+            //        {
+            //            BYTE* pbyTemp = pbyConfigData;
+            //            //bool bResult = false;
+            //            pbyTemp = m_sFilterAppliedCAN.pbGetConfigData(pbyTemp);
+
+            ////m_sFilterAppliedCAN.pbGetConfigDataForXML();
+            //        }
+
+            //pbyConfigData = new BYTE[nSize];
+
+            /*if (pbyConfigData != NULL)
+            {*/
+            //BYTE* pbyTemp = pbyConfigData;
+            //bool bResult = false;
+
+
+
+            //m_sFilterAppliedCAN.pbGetConfigDataForXML();
+            //}
+        }
+        break;
+        case DATABASE_SECTION_J1939_ID:
+        {
+            nSize += sizeof(BYTE);//configuration version
+
+            CStringArray omDbNames;
+            if (m_pouMsgSigJ1939 != NULL)
+            {
+                m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
+            }
+
+            if(pNodePtr != NULL)
+            {
+                xmlNodePtr pNodeDBFilePtr = xmlNewNode(NULL, BAD_CAST DEF_J1939_DATABASE_FILES);
+                xmlAddChild(pNodePtr, pNodeDBFilePtr);
+
+                if(pNodeDBFilePtr != NULL)
+                {
+                    for(INT nDbFileIndex = 0; nDbFileIndex < omDbNames.GetSize(); nDbFileIndex++)
+                    {
+                        const char* strFilePath = omDbNames[nDbFileIndex];
+                        xmlChar* pDBFFilePath = (xmlChar*)strFilePath;
+
+                        xmlNodePtr pFPPtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST pDBFFilePath);
+                        xmlAddChild(pNodeDBFilePtr, pFPPtr);
+                    }
+
+                    //xmlTextWriterSetIndent(pNodeDBFilePtr, 1);
+                }
+            }
+
+            //nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
+            //pbyConfigData = new BYTE[nSize];
+
+            //if (pbyConfigData != NULL)
+            //{
+            //    BYTE* pbyTemp = pbyConfigData;
+
+            //    BYTE byVersion = 0x1;
+            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+            //    //CAN DB NAMES
+            //    UINT unCount = omDbNames.GetSize();
+            //    COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+            //    for (UINT i = 0; i < unCount; i++)
+            //    {
+            //        CString omDbName = omDbNames.GetAt(i);
+            //        char acName[MAX_PATH] = {_T('\0')};
+            //        strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_CHAR));
+            //        COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
+            //    }
+            //}
+        }
+        break;
+        case DATABASE_SECTION_ID:
+        {
+            nSize += sizeof(BYTE);//configuration version
+
+            CStringArray omDbNames;
+            if (theApp.m_pouMsgSignal != NULL)
+            {
+                theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
+            }
+
+            if(pNodePtr != NULL)
+            {
+                //xmlNodePtr pNodeDBFilePtr = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_CAN_DATABASE_FILES, BAD_CAST "");
+
+                xmlNodePtr pNodeDBFilePtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_DATABASE_FILES);
+
+                xmlAddChild(pNodePtr, pNodeDBFilePtr);
+
+                if(pNodeDBFilePtr != NULL)
+                {
+                    for(INT nDbFileIndex = 0; nDbFileIndex < omDbNames.GetSize(); nDbFileIndex++)
+                    {
+                        const char* strFilePath = omDbNames[nDbFileIndex];
+                        xmlChar* pDBFFilePath = (xmlChar*)strFilePath;
+
+                        xmlNodePtr pNewChildPtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST pDBFFilePath);
+                        xmlAddChild(pNodeDBFilePtr, pNewChildPtr);
+                    }
+                }
+            }
+
+            //nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
+            //pbyConfigData = new BYTE[nSize];
+
+            //if (pbyConfigData != NULL)
+            //{
+            //    BYTE* pbyTemp = pbyConfigData;
+
+            //    BYTE byVersion = 0x1;
+            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+            //    //CAN DB NAMES
+            //    UINT unCount = omDbNames.GetSize();
+            //    COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+            //    for (UINT i = 0; i < unCount; i++)
+            //    {
+            //        CString omDbName = omDbNames.GetAt(i);
+            //        char acName[MAX_PATH] = {_T('\0')};
+            //        strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_PATH));
+            //        COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
+            //    }
+            //}
+        }
+        break;
+        case WAVEFORMDATA_SECTION_ID:
+        {
+            xmlNodePtr pNodeWaveFormGen = xmlNewNode(NULL, BAD_CAST DEF_WF_GENERATOR);
+            xmlAddChild(pNodePtr, pNodeWaveFormGen);
+            m_objWaveformDataHandler.GetConfigData(pNodeWaveFormGen);
+        }
+        break;
+        case BUS_STATISTICS_SECTION_ID:
+        {
+            if(m_bIsStatWndCreated)
+            {
+                xmlNodePtr pNodeWaveFormGen = xmlNewNode(NULL, BAD_CAST DEF_CAN_BUS_STATS);
+                xmlAddChild(pNodePtr, pNodeWaveFormGen);
+
+                m_podBusStatistics->GetConfigData(pNodeWaveFormGen);
+            }
+            else
+            {
+                if( m_pCopyBusStsticsNode != NULL )
+                {
+                    xmlNode* pTempNodePtr = xmlCopyNode(m_pCopyBusStsticsNode, 1);
+                    xmlAddChild(pNodePtr, pTempNodePtr);
+                }
+                else //Store Default or Binary Config
+                {
+                    xmlNodePtr pNodeWaveFormGen = xmlNewNode(NULL, BAD_CAST DEF_CAN_BUS_STATS);
+                    xmlAddChild(pNodePtr, pNodeWaveFormGen);
+                    CBusStatisticsDlg::vGetDataFromStore(pNodeWaveFormGen);
+                }
+            }
+
+        }
+        break;
+        //venkat
+        case TEST_SETUP_EDITOR_SECTION_ID:
+        {
+
+            xmlNodePtr pNodeTSEditor = xmlNewNode(NULL, BAD_CAST DEF_TS_EDITOR);
+            xmlAddChild(pNodePtr, pNodeTSEditor);
+            m_objTSEditorHandler.vGetConfigurationData(pNodeTSEditor);
+        }
+        break;
+        case TEST_SUITE_EXECUTOR_SECTION_ID:
+        {
+            xmlNodePtr pNodeExecutor = xmlNewNode(NULL, BAD_CAST DEF_TS_EXECUTOR);
+            xmlAddChild(pNodePtr, pNodeExecutor);
+            m_objTSExecutorHandler.vGetConfigurationData(pNodeExecutor);
+        }
+        break;
+        default:
+        {
+            ASSERT(FALSE);
+        }
+        break;
+    }
+}
+
+INT CMainFrame::vSaveXMLConfiguration()
+{
+    CString filename;
+    vGetLoadedCfgFileName(filename);
+
+    vSaveXMLConfiguration(filename);
+    return S_OK;
+}
+
+void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
+{
+    pNodePtr = pNodePtr->xmlChildrenNode;
+
+    while(pNodePtr != NULL)
+    {
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsMsgFilterEnabled")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strMsgFilter = ptext;
+
+                if(strMsgFilter == "FALSE")
+                {
+                    m_sToolBarInfo.m_byMsgFilter = FALSE;
+                }
+                else if(strMsgFilter == "TRUE")
+                {
+                    m_sToolBarInfo.m_byMsgFilter = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsLogFilterEnabled")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strLogFilter = ptext;
+
+                if(strLogFilter == "FALSE")
+                {
+                    m_sToolBarInfo.m_byLogFilter = FALSE;
+                }
+                else if(strLogFilter == "TRUE")
+                {
+                    m_sToolBarInfo.m_byLogFilter = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsLoggingEnabled")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strLogging = ptext;
+
+                if(strLogging == "FALSE")
+                {
+                    m_sToolBarInfo.m_byLogging = FALSE;
+                }
+                else if(strLogging == "TRUE")
+                {
+                    m_sToolBarInfo.m_byLogging = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsMsgIntepretationEnabled")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strMsgInterpret = ptext;
+
+                if(strMsgInterpret == "FALSE")
+                {
+                    m_sToolBarInfo.m_byMsgInterpret = FALSE;
+                }
+                else if(strMsgInterpret == "TRUE")
+                {
+                    m_sToolBarInfo.m_byMsgInterpret = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsOverWriteEnabled")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strOverwrite = ptext;
+
+                if(strOverwrite == "FALSE")
+                {
+                    m_sToolBarInfo.m_byOverwrite = FALSE;
+                }
+                else if(strOverwrite == "TRUE")
+                {
+                    m_sToolBarInfo.m_byOverwrite = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"DisplayTimeMode")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strDisplayTimeMode = ptext;
+
+                if(strDisplayTimeMode == "SYSTEM")
+                {
+                    m_sToolBarInfo.m_byDisplayTimeMode = eSYSTEM_MODE;
+                }
+                else if(strDisplayTimeMode == "ABSOLUTE")
+                {
+                    m_sToolBarInfo.m_byDisplayTimeMode = eABSOLUTE_MODE;
+                }
+                else if(strDisplayTimeMode == "RELATIVE")
+                {
+                    m_sToolBarInfo.m_byDisplayTimeMode = eRELATIVE_MODE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"DisplayNumericMode")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strDisplayNumericON = ptext;
+
+                if(strDisplayNumericON == "TRUE")
+                {
+                    m_sToolBarInfo.m_byDisplayHexON = FALSE;
+                }
+                else if(strDisplayNumericON == "FALSE")
+                {
+                    m_sToolBarInfo.m_byDisplayHexON = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"LogOnConnect_CAN")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strLogOnConnect = ptext;
+
+                if(strLogOnConnect == "TRUE")
+                {
+                    m_abLogOnConnect[CAN] = TRUE;
+                }
+                else if(strLogOnConnect == "FALSE")
+                {
+                    m_abLogOnConnect[CAN] = FALSE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"LogOnConnect_J1939")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strLogOnConnect = ptext;
+                if(strLogOnConnect == "TRUE")
+                {
+                    m_abLogOnConnect[J1939] = TRUE;
+                }
+                else if(strLogOnConnect == "FALSE")
+                {
+                    m_abLogOnConnect[J1939] = FALSE;
+                }
+                xmlFree(ptext);
+            }
+        }
+        pNodePtr = pNodePtr->next;
+    }
+}
+
+void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr)
+{
+    pNodePtr = pNodePtr->xmlChildrenNode;
+
+    while(pNodePtr != NULL)
+    {
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                m_sGraphWndPlacement[CAN].showCmd = xmlUtils::nGetWindowVisibility((char*)ptext);
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                m_sGraphWndPlacement[CAN].flags = xmlUtils::nGetWindowVisibility((char*)ptext);
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strTop = ptext;
+                m_sGraphWndPlacement[CAN].rcNormalPosition.top = atoi(strTop);
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strBottom = ptext;
+                m_sGraphWndPlacement[CAN].rcNormalPosition.bottom = atoi(strBottom);
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strLeft = ptext;
+                m_sGraphWndPlacement[CAN].rcNormalPosition.left = atoi(strLeft);
+                xmlFree(ptext);
+            }
+        }
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strRight = ptext;
+                m_sGraphWndPlacement[CAN].rcNormalPosition.right = atoi(strRight);
+                xmlFree(ptext);
+            }
+        }
+
+        pNodePtr = pNodePtr->next;
+    }
+}
+
+int CMainFrame::nLoadXMLConfiguration()
+{
+    int nRetValue = S_OK;
+    xmlNodeSetPtr pNodeSet;
+    xmlXPathObjectPtr pPathObject;
+
+    for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+    {
+        switch(eSecId)
+        {
+            case MAINFRAME_SECTION_ID:
+            {
+                BYTE byVersion = 0;
+
+                // Updating Global configuration parameters in to xml
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Global_Configuration";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    INT nCount = pNodeSet->nodeNr;
+                    for(int i = 0; i < nCount; i++)
+                    {
+                        vSetGlobalConfiguration(pNodeSet->nodeTab[i]);
+                    }
+                }
+
+                theApp.pouGetFlagsPtr()->vSetToolbarButtonStatus(&m_sToolBarInfo);
+
+                // Updating Toolbar Window position in to xml
+                xmlChar* pchWndPosPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Global_Configuration/Window_Position";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchWndPosPath);
+                if( NULL != pPathObject && pPathObject->nodesetval != NULL )
+                {
+                    if ( S_OK != xmlUtils::ParseWindowsPlacement(pPathObject->nodesetval->nodeTab[0], m_sNotificWndPlacement) )
+                    {
+                        m_sNotificWndPlacement.rcNormalPosition.top  = 459;
+                        m_sNotificWndPlacement.rcNormalPosition.left = 0;
+                        m_sNotificWndPlacement.rcNormalPosition.right = 1089;
+                        m_sNotificWndPlacement.rcNormalPosition.bottom = 612;
+                        m_sNotificWndPlacement.showCmd = SW_NORMAL;
+                    }
+                    if (m_podUIThread != NULL)
+                    {
+                        m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
+                    }
+                }
+            }
+            case DATABASE_SECTION_ID:
+            {
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Database_Files/FilePath";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            if (  NULL != pNodeSet->nodeTab[i]->xmlChildrenNode )
+                            {
+                                xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+                                if ( ( NULL != ptext ) && ( theApp.m_pouMsgSignal != NULL ) )
+                                {
+                                    dLoadDataBaseFile(ptext, TRUE);
+                                    xmlFree(ptext);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        nRetValue = S_OK;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+                else
+                {
+                    nRetValue = S_OK;
+                }
+            }
+            break;
+            case DATABASE_SECTION_J1939_ID:
+            {
+                //Clear all databases
+                if (m_pouMsgSigJ1939 == NULL)
+                {
+                    m_pouMsgSigJ1939 = new CMsgSignal(sg_asDbParams[J1939], FALSE);
+                }
+
+                vClearDbInfo(J1939);
+
+                CStringArray omDBNames;
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Database_Files/FilePath";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            if (NULL != pNodeSet->nodeTab[i]->xmlChildrenNode )
+                            {
+                                xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+                                if ( NULL != ptext )
+                                {
+                                    omDBNames.Add(ptext);
+                                    nRetValue = S_OK;
+                                    xmlFree(ptext);
+                                }
+                            }
+                        }
+                        xmlXPathFreeObject (pPathObject);
+                    }
+                    else
+                    {
+                        nRetValue = S_OK ;
+                    }
+                }
+                else
+                {
+                    nRetValue = S_OK;
+                }
+                if ( ( nRetValue == S_OK ) && ( m_pouMsgSigJ1939  != NULL ) )
+                {
+                    m_pouMsgSigJ1939->vSetDataBaseNames(&omDBNames);
+                    for (INT i = 0; i < omDBNames.GetSize(); i++)
+                    {
+                        //No need to check return value. Error message will be displayed
+                        // in trace window
+                        dLoadJ1939DBFile(omDBNames.GetAt(i), TRUE);
+                    }
+                    SMSGENTRY* psMsgEntry = NULL;
+                    vPopulateMsgEntryFromDB(psMsgEntry, m_pouMsgSigJ1939);
+                    if (m_pouTxMsgWndJ1939 != NULL)
+                    {
+                        m_pouTxMsgWndJ1939->vSetDatabaseInfo(psMsgEntry);
+                    }
+                    else
+                    {
+                        m_pouTxMsgWndJ1939->vUpdateDataStore(psMsgEntry);
+                    }
+                }
+            }
+            break;
+
+            case DIL_SECTION_ID:
+            {
+
+                xmlChar* pchPathChannel = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_DIL_Section/ControllerSettings/Channel";
+                xmlChar* pchPathDriver = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_DIL_Section/DriverName";
+                xmlChar* pchPathControllerMode = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_DIL_Section/ControllerMode";
+                BOOL bProper = TRUE;
+
+                UINT unChannelCount = CHANNEL_ALLOWED;
+
+                //COPY_DATA_2(&m_dwDriverId, pbyTemp, sizeof(DWORD));
+                if(m_xmlConfigFiledoc != NULL)
+                {
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPathDriver);
+                    if( NULL != pPathObject )
+                    {
+                        nRetValue = S_FALSE;
+                        pNodeSet = pPathObject->nodesetval;
+                        if ( pNodeSet != NULL &&  pNodeSet->nodeTab[0] != NULL && pNodeSet->nodeTab[0]->xmlChildrenNode != NULL )
+                            //Tight Checking
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[0]->xmlChildrenNode, 1);
+                            if ( NULL != ptext)
+                            {
+                                m_dwDriverId = nGetControllerID((char*)ptext);
+                                //cleaning
+                                xmlFree(ptext);
+                            }
+                        }
+                        else
+                        {
+                            m_dwDriverId = DIL_CAN_STUB;
+                        }
+                        xmlXPathFreeObject (pPathObject);
+                    }
+                    else
+                    {
+                        m_dwDriverId = DIL_CAN_STUB;
+                    }
+
+                    //COPY_DATA_2(&m_byControllerMode, pbyTemp, sizeof(BYTE));
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPathControllerMode);
+                    if( NULL != pPathObject )
+                    {
+                        pNodeSet = pPathObject->nodesetval;
+                        if ( pNodeSet != NULL &&  pNodeSet->nodeTab[0] != NULL && pNodeSet->nodeTab[0]->xmlChildrenNode != NULL )
+                            //Tight Checking
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[0]->xmlChildrenNode, 1);
+                            if ( NULL != ptext)
+                            {
+                                m_byControllerMode = 0;//we are not using
+                                xmlFree(ptext);
+                            }
+                        }
+                        else
+                        {
+                            m_byControllerMode = 0;
+                        }
+                        xmlXPathFreeObject (pPathObject);
+                    }
+                    else
+                    {
+                        m_byControllerMode = 0;
+                    }
+
+                    //COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLLER_DETAILS) * unChannelCount));
+                    for(int i = unChannelCount; i < defNO_OF_CHANNELS; i++)
+                    {
+                        m_asControllerDetails[i].vInitialize();
+                    }
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPathChannel);
+                    if( NULL != pPathObject )
+                    {
+                        pNodeSet = pPathObject->nodesetval;
+                        if ( pNodeSet != NULL )
+                            //Tight Checking
+                        {
+                            unChannelCount = pNodeSet->nodeNr;
+                            for(int i = 0; i < unChannelCount; i++)
+                            {
+                                LoadControllerConfigData(m_asControllerDetails[i], pNodeSet->nodeTab[i]);
+                            }
+                        }
+                        xmlXPathFreeObject (pPathObject);
+                    }
+
+
+                    IntializeDIL();
+                    ASSERT(g_pouDIL_CAN_Interface != NULL);
+                    g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
+                            defNO_OF_CHANNELS);
+                }
+
+                if ((NULL == m_xmlConfigFiledoc) || ( bProper ==  FALSE))
+                {
+                    m_dwDriverId = DRIVER_CAN_STUB;
+                    m_byControllerMode = defMODE_SIMULATE;
+                    IntializeDIL();
+                    for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
+                    {
+                        m_asControllerDetails[i].vInitialize();
+                    }
+
+                    g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
+                            sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                }
+            }
+            break;
+            case FILTER_SECTION_ID:
+            {
+                nRetValue = m_sFilterAppliedCAN.nSetXMLConfigData(m_xmlConfigFiledoc);
+            }
+            break;
+
+            case SIMSYS_SECTION_ID:
+            {
+                if (GetICANNodeSim() != NULL)
+                {
+                    GetICANNodeSim()->NS_SetSimSysConfigData(m_xmlConfigFiledoc);
+                }
+            }
+            break;
+
+            case SIMSYS_SECTION_J1939_ID:
+            {
+                if (GetIJ1939NodeSim() != NULL)
+                {
+                    GetIJ1939NodeSim()->NS_SetSimSysConfigData(m_xmlConfigFiledoc);
+                }
+            }
+            break;
+            case REPLAY_SECTION_ID:
+            {
+                vREP_SetXMLReplayConfigData(m_xmlConfigFiledoc);
+            }
+            break;
+            case MSGWND_SECTION_ID:
+            {
+                //if (pbyConfigData != NULL)
+                {
+                    //BYTE* pbyTemp = pbyConfigData;
+
+                    BYTE byVersion = 0;
+                    //COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+                    //Msg Attributes
+                    SMESSAGE_ATTRIB sMsgAttrib;
+                    sMsgAttrib.m_psMsgAttribDetails = NULL;
+                    sMsgAttrib.m_usMsgCount = 0;
+
+                    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Message_Attribute";
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                    if( NULL != pPathObject )
+                    {
+                        pNodeSet = pPathObject->nodesetval;
+                        if(NULL != pNodeSet)
+                        {
+                            // Get the Message Count from xml
+                            sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;
+                            //COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
+                            PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                            for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                            {
+                                xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                                while(pNodePtr != NULL)
+                                {
+                                    if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Name")))
+                                    {
+                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != ptext)
+                                        {
+                                            pMessageAtt[i].omStrMsgname = ((CString)ptext);
+                                            xmlFree(ptext);
+                                        }
+                                    }
+                                    else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_ID")))
+                                    {
+                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != ptext)
+                                        {
+                                            pMessageAtt[i].unMsgID = atoi(((CString)ptext));
+                                            xmlFree(ptext);
+                                        }
+                                    }
+                                    else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Color")))
+                                    {
+                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != ptext)
+                                        {
+                                            CString strColor = ptext;
+                                            DWORD dwColor = strtoul(strColor, NULL, 16);
+
+                                            //CString strColor = ptext;
+                                            //DWORD dColor = (DWORD) strColor.GetBuffer(strColor.GetLength());
+
+                                            COLORREF rgbTreeItem = RGB(GetBValue(dwColor),GetGValue(dwColor),GetRValue(dwColor));
+                                            //DWORD rgb = (DWORD)ptext;
+
+                                            //COLORREF rgbTreeItem = RGB(GetRValue((DWORD)ptext),GetGValue((DWORD)ptext),GetBValue((DWORD)ptext)) ;
+
+                                            //COLORREF rgbTreeItem = RGB(128,128, 255) ;
+
+                                            pMessageAtt[i].sColor = rgbTreeItem;
+                                            xmlFree(ptext);
+                                        }
+                                    }
+
+                                    pNodePtr = pNodePtr->next;
+                                }
+
+                                //char acName[MAX_PATH] = {_T('\0')};
+                                ////COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
+                                //pMessageAtt[i].omStrMsgname.Format("%s", acName);
+
+                                //COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
+                                //COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
+                            }
+                            sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                            CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
+                            theApp.vPopulateCANIDList();
+
+                            // Copying Message Buffer Details
+                            xmlChar* pchAppBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Append_Buffer_Size";
+
+                            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchAppBuffSizePath);
+                            if( NULL != pPathObject )
+                            {
+                                pNodeSet = pPathObject->nodesetval;
+
+                                if(NULL != pNodeSet)
+                                {
+                                    for(int i=0; i < pNodeSet->nodeNr; i++)
+                                    {
+                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                                        if ( ( NULL != ptext ))
+                                        {
+                                            CString strAppndBufferSize = ptext;
+                                            m_anMsgBuffSize[defAPPEND_DATA_INDEX] = atoi(strAppndBufferSize);
+                                            xmlFree(ptext);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                                }
+                                xmlXPathFreeObject (pPathObject);
+                            }
+
+                            xmlChar* pchOvrBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Overwrite_Buffer_Size";
+
+                            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchOvrBuffSizePath);
+                            if( NULL != pPathObject )
+                            {
+                                pNodeSet = pPathObject->nodesetval;
+
+                                if(NULL != pNodeSet)
+                                {
+                                    for(int i=0; i < pNodeSet->nodeNr; i++)
+                                    {
+                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                                        if ( ( NULL != ptext ))
+                                        {
+                                            CString strOvrwriteBufferSize = ptext;
+                                            m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = atoi(strOvrwriteBufferSize);
+                                            xmlFree(ptext);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                                }
+                                xmlXPathFreeObject (pPathObject);
+                            }
+
+                            xmlChar* pchDispUpTimePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Display_Update_Time";
+
+                            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchDispUpTimePath);
+                            if( NULL != pPathObject )
+                            {
+                                pNodeSet = pPathObject->nodesetval;
+
+                                if(NULL != pNodeSet)
+                                {
+                                    for(int i=0; i < pNodeSet->nodeNr; i++)
+                                    {
+                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                                        if ( ( NULL != ptext ))
+                                        {
+                                            CString strDispUpdTimeSize = ptext;
+                                            m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = atoi(strDispUpdTimeSize);
+                                            xmlFree(ptext);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+                                }
+                                xmlXPathFreeObject (pPathObject);
+                            }
+                            //Msg buffer size
+                            //COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
+                        }
+                    }
+
+
+                    //Msg Filter
+                    bool bResult = false;
+                    SFILTERAPPLIED_CAN sMsgWndFilter;
+                    //pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
+
+                    // Get the Filter data from xml
+                    pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Filter";
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                    if( NULL != pPathObject )
+                    {
+                        pNodeSet = pPathObject->nodesetval;
+                        if(NULL != pNodeSet)
+                        {
+                            //for(INT nIndex =0; nIndex < pNodeSet->nodeNr; nIndex++)
+                            {
+                                sMsgWndFilter.pbSetConfigData(m_sFilterAppliedCAN, pNodeSet, m_xmlConfigFiledoc, bResult);
+                                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                              WM_SET_FILTER_DETAILS, (WPARAM)&m_sFilterAppliedCAN, NULL);
+                            }
+                        }
+                    }
+
+                    /*pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window";
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                    if( NULL != pPathObject )
+                    {
+                        pNodeSet = pPathObject->nodesetval;*/
+                    if(NULL != m_xmlConfigFiledoc)
+                    {
+                        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                      WM_NOTIFICATION_FROM_OTHER,
+                                      eWINID_MSG_WND_SET_CONFIG_DATA_XML,
+                                      (LPARAM)m_xmlConfigFiledoc);
+
+
+                        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                      WM_NOTIFICATION_FROM_OTHER,
+                                      eLOAD_DATABASE,
+                                      (LPARAM)&(theApp.m_pouMsgSignal));
+                    }
+                    //}
+
+                    if(sMsgAttrib.m_usMsgCount > 0)
+                    {
+                        //clear msg attributes
+                        DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                        sMsgAttrib.m_usMsgCount = 0;
+                    }
+
+
+
+                    //::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                    //              WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+                    ////Msg FormatWnd Details
+
+                    //if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                    //{
+                    //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                    //                  WM_NOTIFICATION_FROM_OTHER,
+                    //                  eWINID_MSG_WND_SET_CONFIG_DATA,
+                    //                  (LPARAM)pbyTemp);
+                    //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                    //                  WM_NOTIFICATION_FROM_OTHER,
+                    //                  eLOAD_DATABASE,
+                    //                  (LPARAM)&(theApp.m_pouMsgSignal));
+                    //}
+                    ////clear msg attributes
+                    //DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                    //sMsgAttrib.m_usMsgCount = 0;
+                }
+                /* else
+                 {
+                     CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(NULL);
+                     m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                     m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                     m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+
+                     SFILTERAPPLIED_CAN sMsgWndFilter;
+                     sMsgWndFilter.vClear();
+                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                   WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+
+                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                   WM_NOTIFICATION_FROM_OTHER,
+                                   eWINID_MSG_WND_SET_CONFIG_DATA,
+                                   NULL);
+                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                   WM_NOTIFICATION_FROM_OTHER,
+                                   eLOAD_DATABASE,
+                                   (LPARAM)&(theApp.m_pouMsgSignal));
+                 }*/
+                //if (pbyConfigData != NULL)
+                //{
+                //    BYTE* pbyTemp = pbyConfigData;
+
+                //    BYTE byVersion = 0;
+                //    COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+                //    //Msg Attributes
+                //    SMESSAGE_ATTRIB sMsgAttrib;
+                //    sMsgAttrib.m_psMsgAttribDetails = NULL;
+                //    sMsgAttrib.m_usMsgCount = 0;
+                //    COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
+                //    PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                //    for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                //    {
+                //        char acName[MAX_PATH] = {_T('\0')};
+                //        COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
+                //        pMessageAtt[i].omStrMsgname.Format("%s", acName);
+
+                //        COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
+                //        COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
+                //    }
+                //    sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                //    CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
+                //    theApp.vPopulateCANIDList();
+                //    //Msg buffer size
+                //    COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
+
+                //    //Msg Filter
+                //    bool bResult = false;
+                //    SFILTERAPPLIED_CAN sMsgWndFilter;
+                //    pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
+
+                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                //                  WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+                //    //Msg FormatWnd Details
+
+                //    if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                //    {
+                //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                //                      WM_NOTIFICATION_FROM_OTHER,
+                //                      eWINID_MSG_WND_SET_CONFIG_DATA,
+                //                      (LPARAM)pbyTemp);
+                //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                //                      WM_NOTIFICATION_FROM_OTHER,
+                //                      eLOAD_DATABASE,
+                //                      (LPARAM)&(theApp.m_pouMsgSignal));
+                //    }
+                //    //clear msg attributes
+                //    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                //    sMsgAttrib.m_usMsgCount = 0;
+                //}
+                //else
+                //{
+                //    CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(NULL);
+                //    m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                //    m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                //    m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+
+                //    SFILTERAPPLIED_CAN sMsgWndFilter;
+                //    sMsgWndFilter.vClear();
+                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                //                  WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+
+                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                //                  WM_NOTIFICATION_FROM_OTHER,
+                //                  eWINID_MSG_WND_SET_CONFIG_DATA,
+                //                  NULL);
+                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                //                  WM_NOTIFICATION_FROM_OTHER,
+                //                  eLOAD_DATABASE,
+                //                  (LPARAM)&(theApp.m_pouMsgSignal));
+                //}
+            }
+            break;
+            case LOG_SECTION_ID:
+            {
+                INT nRetVal = S_OK;
+                if (m_xmlConfigFiledoc != NULL)
+                {
+                    if (sg_pouFrameProcCAN != NULL)
+                    {
+                        sg_pouFrameProcCAN->FPC_StartEditingSession();
+                        nRetVal = sg_pouFrameProcCAN->FPC_SetConfigData(m_xmlConfigFiledoc);
+                        sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
+                    }
+                    //Start logging if toolbar status is enabled.
+                    BOOL bLogON = FALSE;
+                    CFlags* pFlag = theApp.pouGetFlagsPtr();
+                    if(pFlag != NULL)
+                    {
+                        bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
+                        BOOL bFilterON = FALSE;
+                        bFilterON = pFlag->nGetFlagStatus(LOGFILTER);
+                        vStartStopLogging( bLogON );
+                    }
+                }
+                else if ( (m_xmlConfigFiledoc != NULL) || (nRetVal == S_FALSE) )
+                {
+                    sg_pouFrameProcCAN = GetICANLogger();
+                    sg_pouFrameProcCAN->FPC_StartEditingSession();
+                    sg_pouFrameProcCAN->FPC_ClearLoggingBlockList();
+                    sg_pouFrameProcCAN->FPC_StopEditingSession(TRUE);
+                }
+            }
+            break;
+            case LOG_SECTION_J1939_ID:
+            {
+                if (m_xmlConfigFiledoc != NULL)
+                {
+                    if (GetIJ1939Logger() != NULL)
+                    {
+                        GetIJ1939Logger()->FPJ1_StartEditingSession();
+                        GetIJ1939Logger()->FPJ1_SetConfigData(m_xmlConfigFiledoc);
+                        GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                    }
+                }
+                else
+                {
+                    if (GetIJ1939Logger() != NULL)
+                    {
+                        GetIJ1939Logger()->FPJ1_StartEditingSession();
+                        GetIJ1939Logger()->FPJ1_ClearLoggingBlockList();
+                        GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                    }
+                }
+            }
+            break;
+            case SIGWATCH_SECTION_ID:
+            {
+
+                if (sg_pouSWInterface[CAN] == NULL)
+                {
+                    if (SW_GetInterface(CAN, (void**)&sg_pouSWInterface[CAN]) == S_OK)
+                    {
+                        sg_pouSWInterface[CAN]->SW_DoInitialization();
+                    }
+                }
+
+
+                CMainEntryList odMainEntryList;
+                BOOL bProper = bParseSignalWatchXMLconfig(CAN, odMainEntryList);
+                if(bProper == TRUE)
+                {
+                    vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
+                    m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
+                    sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
+
+                    xmlXPathObjectPtr pOjectPath = NULL;
+                    xmlNodePtr pNodePtr = NULL;
+
+                    xmlChar* pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Watch";
+                    pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                    if(pOjectPath != NULL)
+                    {
+                        xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                        if(pNodeSet != NULL)
+                        {
+                            pNodePtr = pNodeSet->nodeTab[0];
+                            if(pNodePtr != NULL)
+                            {
+                                sg_pouSWInterface[CAN]->SW_SetConfigData((xmlNodePtr)(pNodePtr->children));
+                            }
+                        }
+                        xmlXPathFreeObject(pOjectPath);
+                        //bProper = FALSE;
+                    }
+
+                }
+                if (bProper == FALSE)
+                {
+                    //Set default settings
+                    vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
+
+                    m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
+                    sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
+                    sg_pouSWInterface[CAN]->SW_SetConfigData((void*)NULL);
+                }
+                bProper = FALSE;
+            }
+            break;
+            case SIGWATCH_SECTION_J1939_ID:
+            {
+                if (sg_pouSWInterface[J1939] == NULL)
+                {
+                    if (SW_GetInterface(J1939, (void**)&sg_pouSWInterface[J1939]) == S_OK)
+                    {
+                        sg_pouSWInterface[J1939]->SW_DoInitialization();
+                    }
+                }
+
+                CMainEntryList odMainEntryList;
+                BOOL bProper = bParseSignalWatchXMLconfig(J1939, odMainEntryList);
+                if(bProper == TRUE && sg_pouSWInterface[J1939] != NULL)
+                {
+                    vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+                    m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
+                    sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
+
+                    xmlXPathObjectPtr pOjectPath = NULL;
+                    xmlNodePtr pNodePtr = NULL;
+
+                    xmlChar* pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Signal_Watch";
+                    pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                    if(pOjectPath != NULL)
+                    {
+                        xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                        if(pNodeSet != NULL)
+                        {
+                            pNodePtr = pNodeSet->nodeTab[0];
+                            if(pNodePtr != NULL)
+                            {
+                                sg_pouSWInterface[J1939]->SW_SetConfigData((xmlNodePtr)(pNodePtr->children));
+                            }
+                        }
+                        xmlXPathFreeObject(pOjectPath);
+                        //bProper = FALSE;
+                    }
+                }
+                if (bProper == FALSE && sg_pouSWInterface[J1939] != NULL)
+                {
+                    //Set default settings
+                    vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
+
+                    m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
+                    sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
+                    sg_pouSWInterface[J1939]->SW_SetConfigData((void*)NULL);
+                }
+                bProper = FALSE;
+            }
+            break;
+            case WAVEFORMDATA_SECTION_ID:
+            {
+                m_objWaveformDataHandler.SetConfigData((xmlDocPtr)m_xmlConfigFiledoc);
+            }
+            break;
+            case BUS_STATISTICS_SECTION_ID:
+            {
+                if(m_pCopyBusStsticsNode != NULL)
+                {
+                    xmlFreeNode(m_pCopyBusStsticsNode);
+                    m_pCopyBusStsticsNode = NULL;
+                }
+                xmlXPathObjectPtr pTempNode = xmlUtils::pGetNodes(m_xmlConfigFiledoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Bus_Statistics"));
+
+                if(pTempNode != NULL && pTempNode->nodesetval != NULL && pTempNode->nodesetval->nodeTab[0] != NULL)
+                {
+                    m_pCopyBusStsticsNode = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
+                }
+                else
+                {
+                    m_pCopyBusStsticsNode = NULL;
+                }
+
+                int nRetVal = S_OK;
+                if(m_bIsStatWndCreated)
+                {
+                    if ( NULL != pTempNode )
+                    {
+                        nRetVal = m_podBusStatistics->SetConfigData(m_pCopyBusStsticsNode);
+                    }
+                    else
+                    {
+                        CBusStatisticsDlg::vSetDefaultsToStore();
+                        m_podBusStatistics->vLoadDataFromStore();
+                    }
+                }
+                else
+                {
+                    if (m_pCopyBusStsticsNode != NULL)
+                    {
+                        //BYTE* pbyTemp = pbyConfigData;
+                        CBusStatisticsDlg::vSaveDataToStore();
+                    }
+                    else
+                    {
+                        CBusStatisticsDlg::vSetDefaultsToStore();
+                    }
+                }
+            }
+            break;
+            case TXWND_SECTION_ID:
+            {
+                m_objTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
+            }
+            break;
+            case MSGWND_SECTION_J1939_ID:
+            {
+                xmlNodePtr pNode = NULL;
+                xmlNodePtr pMsgAttibNode = NULL;
+                xmlNodePtr pChildNode = NULL;
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
+
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Message_Attribute";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        // Get the Message Count from xml
+                        sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;
+                        //COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
+                        PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                        {
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
+                            {
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Name")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        pMessageAtt[i].omStrMsgname = ((CString)ptext);
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_ID")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        pMessageAtt[i].unMsgID = atoi(((CString)ptext));
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Color")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strColor = ptext;
+                                        DWORD dwColor = strtoul(strColor, NULL, 16);
+
+                                        COLORREF rgbTreeItem = RGB(GetBValue(dwColor),GetGValue(dwColor),GetRValue(dwColor));
+
+                                        pMessageAtt[i].sColor = rgbTreeItem;
+                                        xmlFree(ptext);
+                                    }
+                                }
+
+                                pNodePtr = pNodePtr->next;
+                            }
+                        }
+                        sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                        CMessageAttrib::ouGetHandle(J1939).vSetMessageAttribData(&sMsgAttrib);
+                        vPopulateJ1939PGNList();
+                    }
+                }
+
+                if(m_xmlConfigFiledoc != NULL)
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA_J1939_XML,
+                                  (LPARAM)m_xmlConfigFiledoc);
+                }
+            }
+            break;
+            case TEST_SETUP_EDITOR_SECTION_ID:
+            {
+                m_objTSEditorHandler.vSetConfigurationData(m_xmlConfigFiledoc);
+            }
+            break;
+            case TEST_SUITE_EXECUTOR_SECTION_ID:
+            {
+                m_objTSExecutorHandler.vSetConfigurationData(m_xmlConfigFiledoc);
+            }
+            break;
+            case GRAPH_SECTION_ID:
+            {
+                xmlXPathObjectPtr pOjectPath = NULL;
+                xmlChar* pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/GRAPH_PARAMETERS";
+                pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                if(pOjectPath != NULL)
+                {
+                    xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                    if(pNodeSet != NULL)
+                    {
+                        INT nCount = pNodeSet->nodeNr;
+                        for(int i = 0; i < nCount; i++)
+                        {
+                            m_odGraphList[CAN].pbySetConfigData(pNodeSet->nodeTab[i], m_xmlConfigFiledoc);
+                        }
+                    }
+                }
+
+
+                pOjectPath = NULL;
+                pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/Window_Position";
+                pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                if(pOjectPath != NULL)
+                {
+                    xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                    if(pNodeSet != NULL)
+                    {
+                        INT nCount = pNodeSet->nodeNr;
+                        for(int i = 0; i < nCount; i++)
+                        {
+                            vSetWindowPositionForGraph(pNodeSet->nodeTab[i], m_xmlConfigFiledoc);
+                        }
+                    }
+                }
+
+                pOjectPath = NULL;
+                pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/Splitter_Window_Col_0";
+                pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                if(pOjectPath != NULL)
+                {
+                    xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                    if(pNodeSet != NULL)
+                    {
+                        INT nCount = pNodeSet->nodeNr;
+                        for(int i = 0; i < nCount; i++)
+                        {
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
+                            {
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CxIdeal")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxIdeal = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRootSplitterData[0][0] = atoi(strCxIdeal);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CxMin")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxMin = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRootSplitterData[0][1] = atoi(strCxMin);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                pNodePtr = pNodePtr->next;
+                            }
+                        }
+                    }
+                }
+
+                pOjectPath = NULL;
+                pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/Splitter_Window_Col_1";
+                pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                if(pOjectPath != NULL)
+                {
+                    xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                    if(pNodeSet != NULL)
+                    {
+                        INT nCount = pNodeSet->nodeNr;
+                        for(int i = 0; i < nCount; i++)
+                        {
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
+                            {
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CxIdeal")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxIdeal = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRootSplitterData[1][0] = atoi(strCxIdeal);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CxMin")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxMin = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRootSplitterData[1][1] = atoi(strCxMin);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                pNodePtr = pNodePtr->next;
+                            }
+                        }
+                    }
+                }
+
+                pOjectPath = NULL;
+                pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/Splitter_Window_Row_0";
+                pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                if(pOjectPath != NULL)
+                {
+                    xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                    if(pNodeSet != NULL)
+                    {
+                        INT nCount = pNodeSet->nodeNr;
+                        for(int i = 0; i < nCount; i++)
+                        {
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
+                            {
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CyIdeal")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxIdeal = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRightViewSplitterData[0][0] = atoi(strCxIdeal);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CyMin")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxMin = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRightViewSplitterData[0][1] = atoi(strCxMin);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                pNodePtr = pNodePtr->next;
+                            }
+                        }
+                    }
+                }
+
+                pOjectPath = NULL;
+                pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/Splitter_Window_Row_1";
+                pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+                if(pOjectPath != NULL)
+                {
+                    xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+                    if(pNodeSet != NULL)
+                    {
+                        INT nCount = pNodeSet->nodeNr;
+                        for(int i = 0; i < nCount; i++)
+                        {
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
+                            {
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CyIdeal")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxIdeal = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRightViewSplitterData[1][0] = atoi(strCxIdeal);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CyMin")))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strCxMin = ptext;
+                                        m_sGraphSplitterPos[CAN].m_nRightViewSplitterData[1][1] = atoi(strCxMin);
+
+                                        xmlFree(ptext);
+                                    }
+                                }
+
+                                pNodePtr = pNodePtr->next;
+                            }
+                        }
+                    }
+                }
+
+                m_objSigGrphHandler.SetSignalListDetails((SHORT)CAN, &m_odGraphList[CAN]);
+
+
+                ////if (pbyConfigData != NULL)
+                //{
+                //  for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                //  {
+                //      BYTE*  pbyTemp = m_odGraphList[nBUSID].pbySetConfigData(pbyTemp, byVersion);
+
+                //      COPY_DATA_2(&m_sGraphWndPlacement[nBUSID], pbyTemp, sizeof(WINDOWPLACEMENT));
+                //      COPY_DATA_2(&m_sGraphSplitterPos[nBUSID], pbyTemp, sizeof(SGRAPHSPLITTERDATA));
+                //      m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                //          m_sGraphSplitterPos[nBUSID]);
+                //m_objSigGrphHandler.SetSignalListDetails((SHORT)nBUSID, &m_odGraphList[nBUSID]);
+                //  }
+                //}
+                //else
+                //{
+                //  for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                //  {
+                //      m_odGraphList[nBUSID].m_odGraphParameters.vInitialize();
+                //      if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
+                //      {
+                //          m_odGraphList[nBUSID].m_omElementList.RemoveAll();
+                //      }
+
+                //      m_sGraphWndPlacement[nBUSID].length = 0;
+                //      m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
+                //      m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
+                //      m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                //          m_sGraphSplitterPos[nBUSID]);
+                //  }
+                //}
+
+                /*if (pbyConfigData != NULL)
+                {
+                for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                {
+                BYTE*  pbyTemp = m_odGraphList[nBUSID].pbySetConfigData(pbyTemp, byVersion);
+
+                COPY_DATA_2(&m_sGraphWndPlacement[nBUSID], pbyTemp, sizeof(WINDOWPLACEMENT));
+                COPY_DATA_2(&m_sGraphSplitterPos[nBUSID], pbyTemp, sizeof(SGRAPHSPLITTERDATA));
+                m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                m_sGraphSplitterPos[nBUSID]);
+                m_objSigGrphHandler.SetSignalListDetails((SHORT)nBUSID, &m_odGraphList[nBUSID]);
+                }
+                }
+                else
+                {
+                for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+                {
+                m_odGraphList[nBUSID].m_odGraphParameters.vInitialize();
+                if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
+                {
+                m_odGraphList[nBUSID].m_omElementList.RemoveAll();
+                }
+
+                m_sGraphWndPlacement[nBUSID].length = 0;
+                m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
+                m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
+                m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+                m_sGraphSplitterPos[nBUSID]);
+                }
+                }*/
+            }
+        } //switch(eSecId)
+        eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+    }//for
+    nRetValue = S_OK;
+    return nRetValue;
+}
+void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlNodePtr& pNodePtr)
+{
+    sController.vInitialize();
+    if ( pNodePtr == NULL )
+    {
+        return;
+    }
+
+    pNodePtr = pNodePtr->xmlChildrenNode;
+    UINT unTemp = 0;
+    while (pNodePtr != NULL)
+    {
+        if ( NULL != pNodePtr->xmlChildrenNode )
+        {
+            if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"BaudRate")))
+            {
+                xmlChar* key = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    unTemp = strtoul((char*)key, NULL, 10);
+                    if( unTemp != 0 && unTemp <= 1000 )
+                    {
+                        sController.m_omStrBaudrate = (char*)key;
+                    }
+                    xmlFree(key);
+                }
+            }
+            if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CNF1")))
+            {
+                xmlChar* key = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    unTemp = strtoul((char*)key, NULL, 10);
+                    if (unTemp > 0 )
+                    {
+                        sController.m_omStrCNF1 = (char*)key;
+                    }
+                    xmlFree(key);
+                }
+            }
+            if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CNF2")))
+            {
+                xmlChar* key = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    unTemp = strtoul((char*)key, NULL, 10);
+                    if (unTemp > 0 )
+                    {
+                        sController.m_omStrCNF2 = (char*)key;
+                    }
+                    xmlFree(key);
+                }
+            }
+            if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"CNF3")))
+            {
+                xmlChar* key = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    unTemp = strtoul((char*)key, NULL, 10);
+                    if (unTemp > 0 )
+                    {
+                        sController.m_omStrCNF3 = (char*)key;
+                    }
+                    xmlFree(key);
+                }
+            }
+        }
+        pNodePtr = pNodePtr->next;
+    }
+}
+INT CMainFrame::nGetControllerID(string strDriverName)
+{
+    INT nDriverID = -1;
+    if(strDriverName == "ETAS_BOA")
+    {
+        nDriverID = DRIVER_CAN_ETAS_BOA;
+    }
+    else if (strDriverName == "Vector XL" )
+    {
+        nDriverID = DRIVER_CAN_VECTOR_XL;
+    }
+    else if(strDriverName == "ETAS ES581")
+    {
+        nDriverID = DRIVER_CAN_ETAS_ES581;
+    }
+    else if(strDriverName == "IntrepidCS neoVI")
+    {
+        nDriverID = DRIVER_CAN_ICS_NEOVI;
+    }
+    else if(strDriverName == "IXXAT VCI")
+    {
+        nDriverID = DRIVER_CAN_IXXAT;
+    }
+    else if(strDriverName == "Kvaser CAN")
+    {
+        nDriverID = DRIVER_CAN_KVASER_CAN;
+    }
+    else if(strDriverName == "MHS Tiny-CAN")
+    {
+        nDriverID = DRIVER_CAN_MHS;
+    }
+    else if(strDriverName == "PEAK USB")
+    {
+        nDriverID = DRIVER_CAN_PEAK_USB;
+    }
+    else
+    {
+        nDriverID = DRIVER_CAN_STUB;
+    }
+    return nDriverID;
+}
+//~MVN
+
+CString CMainFrame::vGetControllerName(UINT nDriverId)
+{
+    for (int i = 0 ; i < m_nDILCount ; i++)
+    {
+        if ( m_dwDriverId == m_ouList[i].m_dwDriverID )
+        {
+            if ( m_asControllerDetails->m_omStrBaudrate== "" )
+            {
+                m_asControllerDetails->m_omStrBaudrate = "500";
+            }
+            // PTV
+            // Added Shortcut key for the hardwared device, Removing '&'
+            //venkat
+            CString strDriverName = m_ouList[i].m_acName.c_str();
+            strDriverName.Replace("&", "");
+
+            return strDriverName;
+        }
+    }
+}
+
 void CMainFrame::vSetFileStorageInfo(CString oCfgFilename)
 {
     USES_CONVERSION;
@@ -11266,27 +14169,32 @@ INT CMainFrame::SaveConfiguration(void)
     INT nReturn = defCONFIG_FILE_SUCCESS;
     vSetCurrProjInfo((FLOAT)BUSMASTER_APPN_VERSION_LATEST);
 
-    for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-    {
-        BYTE* pbyConfigData = NULL;
-        UINT nSize = 0;
-        vGetCurrentSessionData(eSecId, pbyConfigData, nSize);
+    vSaveXMLConfiguration();
+    //for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+    //{
+    //    BYTE* pbyConfigData = NULL;
+    //    UINT nSize = 0;
+    //    vGetCurrentSessionData(eSecId, pbyConfigData, nSize);
 
-        if (pbyConfigData != NULL)
-        {
-            CConfigData::ouGetConfigDetailsObject().bSetData((void*)pbyConfigData, nSize, SectionName[eSecId]);
-            //All done now release the memory
-            delete[] pbyConfigData;
-            pbyConfigData = NULL;
-        }
+    //    if (pbyConfigData != NULL)
+    //    {
+    //        CConfigData::ouGetConfigDetailsObject().bSetData((void*)pbyConfigData, nSize, SectionName[eSecId]);
+    //All done now release the memory
+    //        delete[] pbyConfigData;
+    //        pbyConfigData = NULL;
+    //    }
 
-        eSecId = static_cast<eSECTION_ID>(eSecId + 1);
-    }
+    //    eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+    //}
 
-    CConfigData::ouGetConfigDetailsObject().vSaveConfigFile();
+    //CConfigData::ouGetConfigDetailsObject().vSaveConfigFile();
 
     return nReturn;
 }
+
+
+
+
 void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
 {
     switch (eBus)
@@ -11332,41 +14240,157 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
         break;
     }
 }
+
+BOOL CMainFrame::CompareFile(CString FirstFile,CString SecFile)
+{
+    int nSizeF, nSizeS;
+    CStdioFile InFile, InFile2;
+    CString strTemp;
+    BOOL bAllFine = TRUE;
+    CStringArray ArrFFile, ArrSFile, ArrDisC;
+    //reads First XML file data\
+
+    InFile.Open(FirstFile,CFile::modeRead);
+    InFile2.Open(SecFile,CFile::modeRead);
+    if( NULL == InFile.m_hFile || NULL == InFile2.m_hFile )
+    {
+        return FALSE;
+    }
+    else
+    {
+        if(InFile.m_pStream == NULL)
+        {
+            return TRUE;
+        }
+
+        while(InFile.ReadString(strTemp))
+        {
+            strTemp.TrimLeft();
+            strTemp.TrimRight();
+            ArrFFile.Add(strTemp);
+        }
+        InFile.Close();
+
+
+        if(InFile2.m_pStream == NULL)
+        {
+            return TRUE;
+        }
+
+        while(InFile2.ReadString(strTemp))
+        {
+            strTemp.TrimLeft();
+            strTemp.TrimRight();
+            ArrSFile.Add(strTemp);
+        }
+        InFile2.Close();
+
+        //Gets the total number of tags in firstfile
+        nSizeF = (int)ArrFFile.GetSize();
+        //Gets the total number of tags in secondfile
+        nSizeS = (int)ArrSFile.GetSize();
+
+        INT m_nMaxSize = 0;
+
+        if(nSizeF != nSizeS)
+        {
+            return TRUE;
+        }
+
+        int nSizeT;
+        if(nSizeF < nSizeS)
+        {
+            nSizeT = nSizeF;
+            m_nMaxSize = nSizeS;
+        }
+        else
+        {
+            nSizeT = nSizeS;
+            m_nMaxSize = nSizeF;
+        }
+        for(int ni=0; ni<nSizeT; ni++)
+        {
+            CString SideF, SideS;
+            SideF = ArrFFile.GetAt(ni);
+            SideS = ArrSFile.GetAt(ni);
+            if(SideF!=SideS)
+            {
+                strTemp.Format(_T("%d"),ni);
+                //Adds unmatching tags in an array
+                ArrDisC.Add(strTemp);
+                return TRUE;
+                break;
+            }
+        }
+
+        return FALSE;
+    }
+    /* for(int ni=nSizeT;ni<m_nMaxSize;ni++)
+     {
+         strTemp.Format(_T("%d"),ni);
+         ArrDisC.Add(strTemp);
+     }*/
+}
+
 BOOL CMainFrame::bIsConfigurationModified(void)
 {
-    BOOL bResult = FALSE;
-    for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-    {
-        BYTE* pbyCurrData   = NULL;
-        UINT  nCurrSize     = 0;
-        BYTE* pbyConfigData = NULL;
-        INT  nCfgSize      = 0;
+    BOOL bResult = TRUE;
+    CString oCfgFilename;
+    vGetLoadedCfgFileName(oCfgFilename);
 
-        //Get current data
-        vGetCurrentSessionData(eSecId, pbyCurrData, nCurrSize);
-        // Get Config data
-        CConfigData::ouGetConfigDetailsObject().bGetData((void*&)pbyConfigData, nCfgSize, SectionName[eSecId]);
-        //comparison part
-        bResult = !(nCurrSize == (UINT)nCfgSize);
-        if (!bResult) // If config is still same compare the whole memory
+    if ( oCfgFilename.IsEmpty() == FALSE)
+    {
+        INT nRevPos = oCfgFilename.ReverseFind('\\');
+
+        CString strTempPath = "";
+
+        if(nRevPos != -1)
         {
-            bResult = !(memcmp(pbyCurrData, pbyConfigData, nCfgSize) == 0);
+            strTempPath = oCfgFilename.Left(nRevPos);
         }
-        if (pbyCurrData != NULL)
-        {
-            delete[] pbyCurrData;
-        }
-        if (pbyConfigData != NULL)
-        {
-            delete[] pbyConfigData;
-        }
-        if (bResult == TRUE)
-        {
-            break;
-        }
-        eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+        char chTempPath[MAX_PATH+1] = {0};
+        GetTempPath(MAX_PATH+1, chTempPath);
+        strTempPath = chTempPath;
+        strTempPath +=  "\\busmaster.tempcfx";
+        vSaveXMLConfiguration(strTempPath);
+        bResult = CompareFile(strTempPath, oCfgFilename);
     }
+
     return bResult;
+
+
+    //for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
+    //{
+    //    BYTE* pbyCurrData   = NULL;
+    //    UINT  nCurrSize     = 0;
+    //    BYTE* pbyConfigData = NULL;
+    //    INT  nCfgSize      = 0;
+
+    //    //Get current data
+    //    vGetCurrentSessionData(eSecId, pbyCurrData, nCurrSize);
+    //    // Get Config data
+    //    CConfigData::ouGetConfigDetailsObject().bGetData((void*&)pbyConfigData, nCfgSize, SectionName[eSecId]);
+    //    //comparison part
+    //    bResult = !(nCurrSize == (UINT)nCfgSize);
+    //    if (!bResult) // If config is still same compare the whole memory
+    //    {
+    //        bResult = !(memcmp(pbyCurrData, pbyConfigData, nCfgSize) == 0);
+    //    }
+    //    if (pbyCurrData != NULL)
+    //    {
+    //        delete[] pbyCurrData;
+    //    }
+    //    if (pbyConfigData != NULL)
+    //    {
+    //        delete[] pbyConfigData;
+    //    }
+    //    if (bResult == TRUE)
+    //    {
+    //        break;
+    //    }
+    //    eSecId = static_cast<eSECTION_ID>(eSecId + 1);
+    //}
+    //return bResult;
 }
 void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize)
 {
@@ -11678,7 +14702,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 }
                 m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
                 sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
-                sg_pouSWInterface[CAN]->SW_SetConfigData(NULL);
+                sg_pouSWInterface[CAN]->SW_SetConfigData((void*)NULL);
             }
         }
         break;
@@ -11739,7 +14763,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 }
                 m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                 sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
-                sg_pouSWInterface[J1939]->SW_SetConfigData(NULL);
+                sg_pouSWInterface[J1939]->SW_SetConfigData((void*)NULL);
             }
         }
         break;
@@ -11846,7 +14870,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         break;
         case TXWND_SECTION_ID:
         {
-            m_objTxHandler.vSetTxWndConfigData(pbyConfigData, nSize);
+            m_objTxHandler.vSetTxWndConfigData(NULL);
         }
         break;
         case FILTER_SECTION_ID:
@@ -11984,6 +15008,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 else
                 {
                     CBusStatisticsDlg::vSetDefaultsToStore();
+                    CBusStatisticsDlg::vSaveDataToStore(NULL);
                 }
             }
         }
@@ -12011,528 +15036,528 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 {
     switch (eSecId)
     {
-        case MAINFRAME_SECTION_ID:
-        {
-            nSize += sizeof(BYTE); //Configuration version
-            nSize += (sizeof(char) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
-            pbyConfigData = new BYTE[nSize];
-
-
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                BYTE byVersion = 0x2;
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-                char acName[MAX_PATH] = {_T('\0')};
-                strcpy_s(acName, MAX_PATH, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-
-
-                theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
-                COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
-
-                if (m_podUIThread != NULL)
-                {
-                    m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, FALSE);
-                }
-
-                COPY_DATA(pbyTemp, &m_sNotificWndPlacement, sizeof(WINDOWPLACEMENT));
-                COPY_DATA(pbyTemp, m_abLogOnConnect, sizeof (BOOL) * BUS_TOTAL)
-            }
-
-        }
-        break;
-        case LOG_SECTION_J1939_ID:
-        {
-            if (GetIJ1939Logger() != NULL)
-            {
-                GetIJ1939Logger()->FPJ1_GetConfigData(&pbyConfigData, nSize);
-            }
-        }
-        break;
-        case LOG_SECTION_ID:
-        {
-            if (sg_pouFrameProcCAN != NULL)
-            {
-                sg_pouFrameProcCAN->FPC_GetConfigData(&pbyConfigData, nSize);
-            }
-        }
-        break;
-        case SIMSYS_SECTION_ID:
-        {
-            int nConfigSize = 0;
-            GetICANNodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
-            nSize = nConfigSize;
-        }
-        break;
-        case SIMSYS_SECTION_J1939_ID:
-        {
-            int nConfigSize = 0;
-            GetIJ1939NodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
-            nSize = nConfigSize;
-        }
-        break;
-        case REPLAY_SECTION_ID:
-        {
-            int nCfgSize = 0;
-            vREP_GetReplayConfigData(pbyConfigData, nCfgSize);
-            nSize = nCfgSize;
-        }
-        break;
-        case MSGWND_SECTION_ID:
-        {
-            //FIRST CALC SIZE
-            nSize += sizeof(BYTE); // Configuration version
-
-            nSize += sizeof (UINT);// To store count of MsgAttribs
-            SMESSAGE_ATTRIB sMsgAttrib;
-            sMsgAttrib.m_psMsgAttribDetails = NULL;
-            sMsgAttrib.m_usMsgCount = 0;
-            CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
-            UINT nCount = sMsgAttrib.m_usMsgCount;
-            //Count             To store Msg Name         MsgId        Msg Color
-            nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
-            //Msg Buffer size
-            nSize += (sizeof (INT) * defDISPLAY_CONFIG_PARAM);
-            //Msg Filter size
-            SFILTERAPPLIED_CAN sMsgWndFilter;
-            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-            nSize += sMsgWndFilter.unGetSize();
-            //MsgFormat window config data
-
-            UINT unMsgFrmtWndCfgSize = 0;
-            ASSERT(m_podMsgWndThread != NULL);
-
-            if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
-            {
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                              WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
-                nSize += unMsgFrmtWndCfgSize;
-            }
-            //CALC SIZE ENDS
-
-            pbyConfigData = new BYTE[nSize];
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                BYTE byVersion = 0x1;
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-                //Msg Attributes
-                UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
-                COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
-                for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
-                {
-                    char acName[MAX_PATH] = {_T('\0')};
-
-                    strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-
-                    COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
-                    COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
-                }
-
-                //Msg buffer size
-                COPY_DATA(pbyTemp, m_anMsgBuffSize, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
-
-                //Msg Filter
-                //bool bResult = false;
-                pbyTemp = sMsgWndFilter.pbGetConfigData(pbyTemp);
-
-                if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
-                {
-                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                  WM_NOTIFICATION_FROM_OTHER,
-                                  eWINID_MSG_WND_GET_CONFIG_DATA,
-                                  (LPARAM)pbyTemp);
-                }
-            }
-            DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-        }
-        break;
-        case MSGWND_SECTION_J1939_ID:
-        {
-            //FIRST CALC SIZE
-            nSize += sizeof(BYTE); // Configuration version
-
-            nSize += sizeof (UINT);// To store count of MsgAttribs
-            SMESSAGE_ATTRIB sMsgAttrib;
-            sMsgAttrib.m_psMsgAttribDetails = NULL;
-            sMsgAttrib.m_usMsgCount = 0;
-            CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
-            UINT nCount = sMsgAttrib.m_usMsgCount;
-            //Count             To store Msg Name         MsgId        Msg Color
-            nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
-            //MsgFormat window config data
-            UINT unMsgFrmtWndCfgSize = 0;
-            ASSERT(m_podMsgWndThread != NULL);
-
-            if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
-            {
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
-                              WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
-                nSize += unMsgFrmtWndCfgSize;
-            }
-            //CALC SIZE ENDS
-
-            pbyConfigData = new BYTE[nSize];
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                //Version
-                BYTE byVersion = 0x1;
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-                //Msg Attributes
-                UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
-                COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
-
-                for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
-                {
-                    char acName[MAX_PATH] = {_T('\0')};
-
-                    strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-                    COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
-                    COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
-                }
-
-                //Msg Format Data
-                if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
-                {
-                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
-                                  WM_NOTIFICATION_FROM_OTHER,
-                                  eWINID_MSG_WND_GET_CONFIG_DATA,
-                                  (LPARAM)pbyTemp);
-                }
-            }
-            DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-        }
-        break;
-        case SIGWATCH_SECTION_J1939_ID:
-        {
-            CMainEntryList odMainEntryList;
-            vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
-
-            //CALCULATE SIZE REQUIRED
-            nSize += sizeof(BYTE); //Configuration version
-
-            POSITION pos = odMainEntryList.GetHeadPosition();
-            nSize += sizeof (UINT); //To store the count of main entry
-            while (pos)
-            {
-                nSize += sizeof (UINT);
-                nSize += (sizeof (char) * MAX_PATH);
-                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-                nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
-
-                for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
-                {
-                    nSize += sizeof (UINT);
-                    nSize += (sizeof (char) * MAX_PATH);
-                }
-            }
-            //BYTE* pbySWWndPlacement = NULL;
-            //UINT unSWSize = 0;
-            nSize += sg_pouSWInterface[J1939]->SW_GetConfigSize();
-            //ALLOCATE MEMORY
-            pbyConfigData = new BYTE[nSize];
-            BYTE* pbyTemp = pbyConfigData;
-
-            //UPDATE THE DATA NOW
-            BYTE byVersion = 0x1;
-            COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            pos = odMainEntryList.GetHeadPosition();
-            UINT nMainCount = odMainEntryList.GetCount();
-
-            COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
-
-            while (pos)
-            {
-                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-                COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-                char acName[MAX_PATH] = {_T('\0')};
-                strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
-                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-                UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
-                COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
-                POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-                while (SelPos != NULL)
-                {
-                    SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
-                    COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-                    strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-                }
-            }
-
-            if (sg_pouSWInterface[J1939] != NULL)
-            {
-                UINT nSWSize = 0;
-                sg_pouSWInterface[J1939]->SW_GetConfigData((void*)pbyTemp);
-                pbyTemp += nSWSize;
-            }
-        }
-        break;
-        case SIGWATCH_SECTION_ID:
-        {
-            CMainEntryList odMainEntryList;
-            vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
-
-            //CALCULATE SIZE REQUIRED
-            nSize += sizeof(BYTE); //Configuration version
-
-            POSITION pos = odMainEntryList.GetHeadPosition();
-            nSize += sizeof (UINT); //To store the count of main entry
-            while (pos)
-            {
-                nSize += sizeof (UINT);
-                nSize += (sizeof (char) * MAX_PATH);
-                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-                nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
-
-                for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
-                {
-                    nSize += sizeof (UINT);
-                    nSize += (sizeof (char) * MAX_PATH);
-                }
-            }
-            //BYTE* pbySWWndPlacement = NULL;
-            //UINT unSWSize = 0;
-            nSize += sg_pouSWInterface[CAN]->SW_GetConfigSize();
-            //ALLOCATE MEMORY
-            pbyConfigData = new BYTE[nSize];
-            BYTE* pbyTemp = pbyConfigData;
-
-            //UPDATE THE DATA NOW
-            BYTE byVersion = 0x1;
-            COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            pos = odMainEntryList.GetHeadPosition();
-            UINT nMainCount = odMainEntryList.GetCount();
-
-            COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
-
-            while (pos)
-            {
-                SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-                COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-                char acName[MAX_PATH] = {_T('\0')};
-                strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
-                COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-
-                UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
-                COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
-                POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-                while (SelPos != NULL)
-                {
-                    SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
-                    COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-                    strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-                }
-            }
-
-            if (sg_pouSWInterface[CAN] != NULL)
-            {
-                UINT nSWSize = 0;
-                sg_pouSWInterface[CAN]->SW_GetConfigData((void*)pbyTemp);
-                pbyTemp += nSWSize;
-            }
-        }
-        break;
-        case DIL_SECTION_ID:
-        {
-            nSize = sizeof(BYTE);//configuration version
-            nSize += sizeof(DWORD);// Driver Id
-            nSize += sizeof(BYTE); // Controller mode
-
-            //nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
-            for(int i = 0; i < CHANNEL_ALLOWED; i++)
-            {
-                int nTemp = 0;
-                m_asControllerDetails[i].GetControllerConfigSize(nTemp);
-                nSize += nTemp;
-            }
-
-            pbyConfigData = new BYTE[nSize];
-
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                BYTE byVersion = DIL_CFX_CURRENT_VERSION;
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-                COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
-                COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
-                //COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
-                for(int i = 0; i < CHANNEL_ALLOWED; i++)
-                {
-                    INT nsize = 0;
-                    m_asControllerDetails[i].GetControllerConfigData(pbyTemp, nsize);
-                }
-            }
-        }
-        break;
-        case GRAPH_SECTION_ID:
-        {
-            BYTE byVersion = 0x2;
-            nSize = sizeof(BYTE);//configuration version
-
-            for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
-            {
-                nSize += m_odGraphList[nBUSID].unGetConfigSize(byVersion);
-                nSize += sizeof(WINDOWPLACEMENT)+ sizeof(SGRAPHSPLITTERDATA);
-            }
-
-            pbyConfigData = new BYTE[nSize];
-
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-                for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
-                {
-                    pbyTemp = m_odGraphList[nBUSID].pbyGetConfigData(pbyTemp, byVersion);
-                    m_objSigGrphHandler.GetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
-                            m_sGraphSplitterPos[nBUSID]);
-                    COPY_DATA(pbyTemp, &m_sGraphWndPlacement[nBUSID], sizeof(WINDOWPLACEMENT));
-                    COPY_DATA(pbyTemp, &m_sGraphSplitterPos[nBUSID], sizeof(SGRAPHSPLITTERDATA));
-                }
-            }
-        }
-        break;
-        case TXWND_SECTION_ID:
-        {
-            int nCfgSize = 0;
-            m_objTxHandler.vGetTxWndConfigData(pbyConfigData, nCfgSize);
-            nSize = nCfgSize;
-        }
-        break;
-        case FILTER_SECTION_ID:
-        {
-            nSize = m_sFilterAppliedCAN.unGetSize();
-            pbyConfigData = new BYTE[nSize];
-
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-                //bool bResult = false;
-                pbyTemp = m_sFilterAppliedCAN.pbGetConfigData(pbyTemp);
-            }
-        }
-        break;
-        case DATABASE_SECTION_J1939_ID:
-        {
-            nSize += sizeof(BYTE);//configuration version
-
-            CStringArray omDbNames;
-            if (m_pouMsgSigJ1939 != NULL)
-            {
-                m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
-            }
-
-            nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
-            pbyConfigData = new BYTE[nSize];
-
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                BYTE byVersion = 0x1;
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-                //CAN DB NAMES
-                UINT unCount = omDbNames.GetSize();
-                COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
-                for (UINT i = 0; i < unCount; i++)
-                {
-                    CString omDbName = omDbNames.GetAt(i);
-                    char acName[MAX_PATH] = {_T('\0')};
-                    strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_CHAR));
-                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
-                }
-            }
-        }
-        break;
-        case DATABASE_SECTION_ID:
-        {
-            nSize += sizeof(BYTE);//configuration version
-
-            CStringArray omDbNames;
-            if (theApp.m_pouMsgSignal != NULL)
-            {
-                theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
-            }
-
-            nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
-            pbyConfigData = new BYTE[nSize];
-
-            if (pbyConfigData != NULL)
-            {
-                BYTE* pbyTemp = pbyConfigData;
-
-                BYTE byVersion = 0x1;
-                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-                //CAN DB NAMES
-                UINT unCount = omDbNames.GetSize();
-                COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
-                for (UINT i = 0; i < unCount; i++)
-                {
-                    CString omDbName = omDbNames.GetAt(i);
-                    char acName[MAX_PATH] = {_T('\0')};
-                    strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_PATH));
-                    COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
-                }
-            }
-        }
-        break;
-        case WAVEFORMDATA_SECTION_ID:
-        {
-            m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
-        }
-        break;
-        case BUS_STATISTICS_SECTION_ID:
-        {
-            if(m_bIsStatWndCreated)
-            {
-                nSize += m_podBusStatistics->nGetBusStatsDlgConfigSize();
-                pbyConfigData = new BYTE[nSize];
-
-                if (pbyConfigData != NULL)
-                {
-                    BYTE* pbyTemp = pbyConfigData;
-                    m_podBusStatistics->GetConfigData(pbyTemp);
-                }
-            }
-            else
-            {
-                CBusStatisticsDlg::vGetDataFromStore(&pbyConfigData, nSize);
-            }
-        }
-        break;
-        //venkat
-        case TEST_SETUP_EDITOR_SECTION_ID:
-        {
-            m_objTSEditorHandler.vGetConfigurationData(pbyConfigData, nSize);
-        }
-        break;
-        case TEST_SUITE_EXECUTOR_SECTION_ID:
-        {
-            m_objTSExecutorHandler.vGetConfigurationData(pbyConfigData, nSize);
-        }
-        break;
-        default:
-        {
-            ASSERT(FALSE);
-        }
-        break;
+            //case MAINFRAME_SECTION_ID:
+            //{
+            //    nSize += sizeof(BYTE); //Configuration version
+            //    nSize += (sizeof(char) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
+            //    pbyConfigData = new BYTE[nSize];
+
+
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        BYTE byVersion = 0x2;
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            //        char acName[MAX_PATH] = {_T('\0')};
+            //        strcpy_s(acName, MAX_PATH, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
+            //        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+
+
+            //        theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
+            //        COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
+
+            //        if (m_podUIThread != NULL)
+            //        {
+            //            m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, FALSE);
+            //        }
+
+            //        COPY_DATA(pbyTemp, &m_sNotificWndPlacement, sizeof(WINDOWPLACEMENT));
+            //        COPY_DATA(pbyTemp, m_abLogOnConnect, sizeof (BOOL) * BUS_TOTAL)
+            //    }
+
+            //}
+            //break;
+            //case LOG_SECTION_J1939_ID:
+            //{
+            //    if (GetIJ1939Logger() != NULL)
+            //    {
+            //        GetIJ1939Logger()->FPJ1_GetConfigData(&pbyConfigData, nSize);
+            //    }
+            //}
+            //break;
+            //case LOG_SECTION_ID:
+            //{
+            //    if (sg_pouFrameProcCAN != NULL)
+            //    {
+            //        sg_pouFrameProcCAN->FPC_GetConfigData(&pbyConfigData, nSize);
+            //    }
+            //}
+            //break;
+            //case SIMSYS_SECTION_ID:
+            //{
+            //    int nConfigSize = 0;
+            //    GetICANNodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
+            //    nSize = nConfigSize;
+            //}
+            //break;
+            //case SIMSYS_SECTION_J1939_ID:
+            //{
+            //    int nConfigSize = 0;
+            //    GetIJ1939NodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
+            //    nSize = nConfigSize;
+            //}
+            //break;
+            //case REPLAY_SECTION_ID:
+            //{
+            //    int nCfgSize = 0;
+            //   // vREP_GetReplayConfigData(pbyConfigData, nCfgSize);
+            //    nSize = nCfgSize;
+            //}
+            //break;
+            //case MSGWND_SECTION_ID:
+            //{
+            //    //FIRST CALC SIZE
+            //    nSize += sizeof(BYTE); // Configuration version
+
+            //    nSize += sizeof (UINT);// To store count of MsgAttribs
+            //    SMESSAGE_ATTRIB sMsgAttrib;
+            //    sMsgAttrib.m_psMsgAttribDetails = NULL;
+            //    sMsgAttrib.m_usMsgCount = 0;
+            //    CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
+            //    UINT nCount = sMsgAttrib.m_usMsgCount;
+            //    //Count             To store Msg Name         MsgId        Msg Color
+            //    nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+            //    //Msg Buffer size
+            //    nSize += (sizeof (INT) * defDISPLAY_CONFIG_PARAM);
+            //    //Msg Filter size
+            //    SFILTERAPPLIED_CAN sMsgWndFilter;
+            //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+            //    nSize += sMsgWndFilter.unGetSize();
+            //    //MsgFormat window config data
+
+            //    UINT unMsgFrmtWndCfgSize = 0;
+            //    ASSERT(m_podMsgWndThread != NULL);
+
+            //    if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
+            //    {
+            //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+            //                      WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+            //        nSize += unMsgFrmtWndCfgSize;
+            //    }
+            //    //CALC SIZE ENDS
+
+            //    pbyConfigData = new BYTE[nSize];
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        BYTE byVersion = 0x1;
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            //        //Msg Attributes
+            //        UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
+            //        COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
+            //        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+            //        {
+            //            char acName[MAX_PATH] = {_T('\0')};
+
+            //            strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
+            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+
+            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
+            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
+            //        }
+
+            //        //Msg buffer size
+            //        COPY_DATA(pbyTemp, m_anMsgBuffSize, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
+
+            //        //Msg Filter
+            //        //bool bResult = false;
+            //        pbyTemp = sMsgWndFilter.pbGetConfigData(pbyTemp);
+
+            //        if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
+            //        {
+            //            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+            //                          WM_NOTIFICATION_FROM_OTHER,
+            //                          eWINID_MSG_WND_GET_CONFIG_DATA,
+            //                          (LPARAM)pbyTemp);
+            //        }
+            //    }
+            //    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+            //}
+            //break;
+            //case MSGWND_SECTION_J1939_ID:
+            //{
+            //    //FIRST CALC SIZE
+            //    nSize += sizeof(BYTE); // Configuration version
+
+            //    nSize += sizeof (UINT);// To store count of MsgAttribs
+            //    SMESSAGE_ATTRIB sMsgAttrib;
+            //    sMsgAttrib.m_psMsgAttribDetails = NULL;
+            //    sMsgAttrib.m_usMsgCount = 0;
+            //    CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
+            //    UINT nCount = sMsgAttrib.m_usMsgCount;
+            //    //Count             To store Msg Name         MsgId        Msg Color
+            //    nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
+            //    //MsgFormat window config data
+            //    UINT unMsgFrmtWndCfgSize = 0;
+            //    ASSERT(m_podMsgWndThread != NULL);
+
+            //    if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+            //    {
+            //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+            //                      WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+            //        nSize += unMsgFrmtWndCfgSize;
+            //    }
+            //    //CALC SIZE ENDS
+
+            //    pbyConfigData = new BYTE[nSize];
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        //Version
+            //        BYTE byVersion = 0x1;
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            //        //Msg Attributes
+            //        UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
+            //        COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
+
+            //        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+            //        {
+            //            char acName[MAX_PATH] = {_T('\0')};
+
+            //            strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
+            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
+            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
+            //        }
+
+            //        //Msg Format Data
+            //        if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
+            //        {
+            //            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
+            //                          WM_NOTIFICATION_FROM_OTHER,
+            //                          eWINID_MSG_WND_GET_CONFIG_DATA,
+            //                          (LPARAM)pbyTemp);
+            //        }
+            //    }
+            //    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+            //}
+            //break;
+            //case SIGWATCH_SECTION_J1939_ID:
+            //{
+            //    CMainEntryList odMainEntryList;
+            //    vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
+
+            //    //CALCULATE SIZE REQUIRED
+            //    nSize += sizeof(BYTE); //Configuration version
+
+            //    POSITION pos = odMainEntryList.GetHeadPosition();
+            //    nSize += sizeof (UINT); //To store the count of main entry
+            //    while (pos)
+            //    {
+            //        nSize += sizeof (UINT);
+            //        nSize += (sizeof (char) * MAX_PATH);
+            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+            //        nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
+
+            //        for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
+            //        {
+            //            nSize += sizeof (UINT);
+            //            nSize += (sizeof (char) * MAX_PATH);
+            //        }
+            //    }
+            //    //BYTE* pbySWWndPlacement = NULL;
+            //    //UINT unSWSize = 0;
+            //    nSize += sg_pouSWInterface[J1939]->SW_GetConfigSize();
+            //    //ALLOCATE MEMORY
+            //    pbyConfigData = new BYTE[nSize];
+            //    BYTE* pbyTemp = pbyConfigData;
+
+            //    //UPDATE THE DATA NOW
+            //    BYTE byVersion = 0x1;
+            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            //    pos = odMainEntryList.GetHeadPosition();
+            //    UINT nMainCount = odMainEntryList.GetCount();
+
+            //    COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
+
+            //    while (pos)
+            //    {
+            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+            //        COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
+            //        char acName[MAX_PATH] = {_T('\0')};
+            //        strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
+            //        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+            //        UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
+            //        COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
+            //        POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+            //        while (SelPos != NULL)
+            //        {
+            //            SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
+            //            COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
+            //            strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
+            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+            //        }
+            //    }
+
+            //    if (sg_pouSWInterface[J1939] != NULL)
+            //    {
+            //        UINT nSWSize = 0;
+            //        sg_pouSWInterface[J1939]->SW_GetConfigData((void*)pbyTemp);
+            //        pbyTemp += nSWSize;
+            //    }
+            //}
+            //break;
+            //case SIGWATCH_SECTION_ID:
+            //{
+            //    CMainEntryList odMainEntryList;
+            //    vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
+
+            //    //CALCULATE SIZE REQUIRED
+            //    nSize += sizeof(BYTE); //Configuration version
+
+            //    POSITION pos = odMainEntryList.GetHeadPosition();
+            //    nSize += sizeof (UINT); //To store the count of main entry
+            //    while (pos)
+            //    {
+            //        nSize += sizeof (UINT);
+            //        nSize += (sizeof (char) * MAX_PATH);
+            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+            //        nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
+
+            //        for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
+            //        {
+            //            nSize += sizeof (UINT);
+            //            nSize += (sizeof (char) * MAX_PATH);
+            //        }
+            //    }
+            //    //BYTE* pbySWWndPlacement = NULL;
+            //    //UINT unSWSize = 0;
+            //    nSize += sg_pouSWInterface[CAN]->SW_GetConfigSize();
+            //    //ALLOCATE MEMORY
+            //    pbyConfigData = new BYTE[nSize];
+            //    BYTE* pbyTemp = pbyConfigData;
+
+            //    //UPDATE THE DATA NOW
+            //    BYTE byVersion = 0x1;
+            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            //    pos = odMainEntryList.GetHeadPosition();
+            //    UINT nMainCount = odMainEntryList.GetCount();
+
+            //    COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
+
+            //    while (pos)
+            //    {
+            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
+            //        COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
+            //        char acName[MAX_PATH] = {_T('\0')};
+            //        strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
+            //        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+
+            //        UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
+            //        COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
+            //        POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+            //        while (SelPos != NULL)
+            //        {
+            //            SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
+            //            COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
+            //            strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
+            //        }
+            //    }
+
+            //    if (sg_pouSWInterface[CAN] != NULL)
+            //    {
+            //        UINT nSWSize = 0;
+            //        sg_pouSWInterface[CAN]->SW_GetConfigData((void*)pbyTemp);
+            //        pbyTemp += nSWSize;
+            //    }
+            //}
+            //break;
+            //case DIL_SECTION_ID:
+            //{
+            //    nSize = sizeof(BYTE);//configuration version
+            //    nSize += sizeof(DWORD);// Driver Id
+            //    nSize += sizeof(BYTE); // Controller mode
+
+            //    //nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
+            //    for(int i = 0; i < CHANNEL_ALLOWED; i++)
+            //    {
+            //        int nTemp = 0;
+            //        m_asControllerDetails[i].GetControllerConfigSize(nTemp);
+            //        nSize += nTemp;
+            //    }
+
+            //    pbyConfigData = new BYTE[nSize];
+
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        BYTE byVersion = DIL_CFX_CURRENT_VERSION;
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+            //        COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
+            //        COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
+            //        //COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
+            //        for(int i = 0; i < CHANNEL_ALLOWED; i++)
+            //        {
+            //            INT nsize = 0;
+            //            m_asControllerDetails[i].GetControllerConfigData(pbyTemp, nsize);
+            //        }
+            //    }
+            //}
+            //break;
+            //case GRAPH_SECTION_ID:
+            //{
+            //    BYTE byVersion = 0x2;
+            //    nSize = sizeof(BYTE);//configuration version
+
+            //    for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+            //    {
+            //        nSize += m_odGraphList[nBUSID].unGetConfigSize(byVersion);
+            //        nSize += sizeof(WINDOWPLACEMENT)+ sizeof(SGRAPHSPLITTERDATA);
+            //    }
+
+            //    pbyConfigData = new BYTE[nSize];
+
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+            //        for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
+            //        {
+            //            pbyTemp = m_odGraphList[nBUSID].pbyGetConfigData(pbyTemp, byVersion);
+            //            m_objSigGrphHandler.GetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
+            //                    m_sGraphSplitterPos[nBUSID]);
+            //            COPY_DATA(pbyTemp, &m_sGraphWndPlacement[nBUSID], sizeof(WINDOWPLACEMENT));
+            //            COPY_DATA(pbyTemp, &m_sGraphSplitterPos[nBUSID], sizeof(SGRAPHSPLITTERDATA));
+            //        }
+            //    }
+            //}
+            //break;
+            //case TXWND_SECTION_ID:
+            //{
+            //    int nCfgSize = 0;
+            //    m_objTxHandler.vGetTxWndConfigData(pbyConfigData, nCfgSize);
+            //    nSize = nCfgSize;
+            //}
+            //break;
+            //case FILTER_SECTION_ID:
+            //{
+            //    nSize = m_sFilterAppliedCAN.unGetSize();
+            //    pbyConfigData = new BYTE[nSize];
+
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+            //        //bool bResult = false;
+            //        pbyTemp = m_sFilterAppliedCAN.pbGetConfigData(pbyTemp);
+            //    }
+            //}
+            //break;
+            //case DATABASE_SECTION_J1939_ID:
+            //{
+            //    nSize += sizeof(BYTE);//configuration version
+
+            //    CStringArray omDbNames;
+            //    if (m_pouMsgSigJ1939 != NULL)
+            //    {
+            //        m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
+            //    }
+
+            //    nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
+            //    pbyConfigData = new BYTE[nSize];
+
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        BYTE byVersion = 0x1;
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+            //        //CAN DB NAMES
+            //        UINT unCount = omDbNames.GetSize();
+            //        COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+            //        for (UINT i = 0; i < unCount; i++)
+            //        {
+            //            CString omDbName = omDbNames.GetAt(i);
+            //            char acName[MAX_PATH] = {_T('\0')};
+            //            strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_CHAR));
+            //            COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
+            //        }
+            //    }
+            //}
+            //break;
+            //case DATABASE_SECTION_ID:
+            //{
+            //    nSize += sizeof(BYTE);//configuration version
+
+            //    CStringArray omDbNames;
+            //    if (theApp.m_pouMsgSignal != NULL)
+            //    {
+            //        theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
+            //    }
+
+            //    nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
+            //    pbyConfigData = new BYTE[nSize];
+
+            //    if (pbyConfigData != NULL)
+            //    {
+            //        BYTE* pbyTemp = pbyConfigData;
+
+            //        BYTE byVersion = 0x1;
+            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+            //        //CAN DB NAMES
+            //        UINT unCount = omDbNames.GetSize();
+            //        COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
+            //        for (UINT i = 0; i < unCount; i++)
+            //        {
+            //            CString omDbName = omDbNames.GetAt(i);
+            //            char acName[MAX_PATH] = {_T('\0')};
+            //            strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_PATH));
+            //            COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
+            //        }
+            //    }
+            //}
+            //break;
+            //case WAVEFORMDATA_SECTION_ID:
+            //{
+            //    m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
+            //}
+            //break;
+            //case BUS_STATISTICS_SECTION_ID:
+            //{
+            //    if(m_bIsStatWndCreated)
+            //    {
+            //        nSize += m_podBusStatistics->nGetBusStatsDlgConfigSize();
+            //        pbyConfigData = new BYTE[nSize];
+
+            //        if (pbyConfigData != NULL)
+            //        {
+            //            BYTE* pbyTemp = pbyConfigData;
+            //            m_podBusStatistics->GetConfigData(pbyTemp);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        CBusStatisticsDlg::vGetDataFromStore(&pbyConfigData, nSize);
+            //    }
+            //}
+            //break;
+            ////venkat
+            //case TEST_SETUP_EDITOR_SECTION_ID:
+            //{
+            //    m_objTSEditorHandler.vGetConfigurationData(pbyConfigData, nSize);
+            //}
+            //break;
+            //case TEST_SUITE_EXECUTOR_SECTION_ID:
+            //{
+            //    m_objTSExecutorHandler.vGetConfigurationData(pbyConfigData, nSize);
+            //}
+            //break;
+            //default:
+            //{
+            //    ASSERT(FALSE);
+            //}
+            //break;
     }
 }
 
@@ -12545,13 +15570,20 @@ void CMainFrame::OnSelectDriver(UINT nID)
     {
         m_dwDriverId =  psCurrDIL->m_dwDriverID;
 
-        //Retain default values for all channels
-        for (int i = 0; i < defNO_OF_CHANNELS; i++)
-        {
-            m_asControllerDetails[i].vInitialize();
-        }
+        HRESULT hResult = IntializeDIL();
 
-        IntializeDIL();
+        /* Check if user intentionally not cancelled hardware selection */
+        if ( hResult != HW_INTERFACE_NO_SEL )
+        {
+            //Retain default values for all channels
+            for (int i = 0; i < defNO_OF_CHANNELS; i++)
+            {
+                m_asControllerDetails[i].vInitialize();
+            }
+        }
+        /*Update hardware info in status bar*/
+        vUpdateHWStatusInfo();
+
         if(m_bNoHardwareFound == true)
         {
             m_dwDriverId = 0;  //resetting to simulation
@@ -12633,6 +15665,7 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
         {
             theApp.bWriteIntoTraceWnd("GetSubMenu(\"&Configure\") failed");
         }
+        /*  PTV[1.6.4] */
         // Added shortcut key
         pConfigMenu->InsertMenu(3, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _T("&Hardware Interface"));
     }
@@ -12752,6 +15785,7 @@ void CMainFrame::OnStartSignalTransmission(void)
         m_ouWaveTransmitter.vStopSignalTransmission();
         // update flag.
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
+        // PTV [1.6.4]
         // Disabling Data logging Flag
         if (NULL != sg_pouFrameProcCAN)
         {
@@ -13060,6 +16094,7 @@ void CMainFrame::OnActionJ1939Online()
         {
             theApp.bWriteIntoTraceWnd("DIL.J1939 network stopped...");
         }
+        // PTV [1.6.4]
         if(NULL != sg_pouIJ1939Logger)
         {
             sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
@@ -13121,6 +16156,7 @@ void CMainFrame::vJ1939StartStopLogging()
         {
             vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
             vSetBaudRateInfo(J1939);                // Update the baud rate details
+            // PTV [1.6.4]
             m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
         }
         sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
@@ -13297,9 +16333,11 @@ HRESULT CMainFrame::DeselectJ1939Interfaces(void)
             }
         }
         theApp.bWriteIntoTraceWnd("Uninitialising DIL.J1939...");
+        /* PTV[1.6.4] */
         // On Disassociate of J1939 Unload all the Simulated systems
         CStringArray omStrBuildFiles;
         GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+        /* PTV[1.6.4] */
         if (sg_pouIJ1939DIL->DILIJ_Uninitialise() != S_OK)
         {
             theApp.bWriteIntoTraceWnd("Uninitialising DIL.J1939 failed...");
@@ -13636,7 +16674,7 @@ void CMainFrame::OnJ1939DBAssociate()
 {
     CStringArray strFilePathArray;
     // Display a open file dialog
-    char szFilters[] = _T("All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||");
+    char szFilters[] = _T("BUSMASTER J1939 Database File(s)(*.dbf)|*.dbf||");
     CFileDialog fileDlg( TRUE,      // Open File dialog
                          "dbf",     // Default Extension,
                          NULL,
@@ -13971,13 +17009,16 @@ void CMainFrame::OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI)
 {
     if(pCmdUI != NULL )
     {
-        if (sg_pouSWInterface[J1939]->SW_IsWindowVisible() == TRUE)
+        if(sg_pouSWInterface[J1939] != NULL)
         {
-            pCmdUI->SetCheck(TRUE);
-        }
-        else
-        {
-            pCmdUI->SetCheck(FALSE);
+            if (sg_pouSWInterface[J1939]->SW_IsWindowVisible() == TRUE)
+            {
+                pCmdUI->SetCheck(TRUE);
+            }
+            else
+            {
+                pCmdUI->SetCheck(FALSE);
+            }
         }
     }
 }
@@ -14079,18 +17120,89 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
     {
         // Check for key a-z or A-Z, if any of these are press
         // call member function of CExecuteFunc class for key handler
-        if( ( pMsg->wParam >= 'A' && pMsg->wParam<='Z' )||
-                ( pMsg->wParam >= 'a' && pMsg->wParam<='z' )||
-                ( pMsg->wParam >= '0' && pMsg->wParam<='9' ) )
+        if( pMsg->wParam >= 0x20 && pMsg->wParam<= 0x7E )
         {
 
             // Execute key hanlder only if execution is selected by user
             GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
             GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
-            PostMessage(WM_KEY_PRESSED_MSG_WND, pMsg->wParam, 0);
-        }
-    }
+            PostMessage(WM_KEY_PRESSED_MSG_WND,
+                        pMsg->wParam, 0);
 
+        }
+
+    }
+    if (pMsg->message == WM_KEYUP)
+    {
+        // Check for key a-z or A-Z, if any of these are press
+        // call member function of CExecuteFunc class for key handler
+        UINT unKey;
+        if(GetKeyState(VK_CONTROL) & 0x8000)
+        {
+        }
+        else
+        {
+            switch(pMsg->wParam)
+            {
+                case VK_TAB:
+                    unKey = BMKEY_TAB;
+                    break;
+                case VK_RETURN:
+                    unKey = BMKEY_RETURN;
+                    break;
+                case VK_BACK:
+                    unKey = BMKEY_BACK;
+                    break;
+                case VK_PRIOR:
+                    unKey = BMKEY_PAGEUP;
+                    break;
+                case VK_NEXT:
+                    unKey = BMKEY_PAGEDOWN;
+                    break;
+                case VK_END:
+                    unKey = BMKEY_END;
+                    break;
+                case VK_HOME:
+                    unKey = BMKEY_HOME;
+                    break;
+                case VK_LEFT:
+                    unKey = BMKEY_LEFTARROW;
+                    break;
+                case VK_UP:
+                    unKey = BMKEY_UPARROW;
+                    break;
+                case VK_RIGHT:
+                    unKey = BMKEY_RIGHTARROW;
+                    break;
+                case VK_DOWN:
+                    unKey = BMKEY_DOWNARROW;
+                    break;
+                case VK_INSERT:
+                    unKey = BMKEY_INSERT;
+                    break;
+                case VK_DELETE:
+                    unKey = BMKEY_DELETE;
+                    break;
+                default:
+                    if(pMsg->wParam >= VK_F1 && pMsg->wParam <= VK_F12)
+                    {
+                        unKey = (pMsg->wParam - VK_F1) + BMKEY_F1;
+                    }
+                    else
+                    {
+                        unKey = 0xFF;
+                    }
+                    break;
+            }
+            if(unKey != 0xFF)
+            {
+                GetICANNodeSim()->NS_ManageOnKeyHandler(unKey);
+            }
+
+        }
+        // Execute key hanlder only if execution is selected by user
+
+    }
     if (pMsg->message == WM_KEYDOWN)
     {
         CFlags* pouFlag = NULL;
@@ -14144,4 +17256,94 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
             }//else if (pMsg->wParam == VK_ESCAPE)
         }
     }
+}
+BOOL CMainFrame::bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList)
+{
+    BOOL bProper = TRUE;
+    if (m_xmlConfigFiledoc != NULL)
+    {
+        UINT nMainCount = 0;
+        xmlXPathObjectPtr pOjectPath = NULL;
+        xmlNodePtr pNodePtr = NULL;
+        CMsgSignal* pMsgSignal = NULL;
+        if(eBus == J1939)
+        {
+            xmlChar* pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Signal_Watch/Message";
+            pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+            pMsgSignal = m_pouMsgSigJ1939;
+        }
+        else
+        {
+            xmlChar* pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Watch/Message";
+            pOjectPath = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pXmlPath);
+            pMsgSignal = theApp.m_pouMsgSignal;
+        }
+
+        if(pOjectPath != NULL)
+        {
+            xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+            if(pNodeSet != NULL)
+            {
+                nMainCount = pNodeSet->nodeNr;
+                for (UINT i = 0; i < nMainCount; i++)
+                {
+                    pNodePtr = pNodeSet->nodeTab[i];
+                    if(pNodePtr != NULL)
+                    {
+                        SMAINENTRY sMainEntry;
+                        pNodePtr = pNodePtr->children;
+                        BOOL bNameFound = FALSE;
+                        while(pNodePtr != NULL)
+                        {
+                            if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Id")) && bNameFound == FALSE)
+                            {
+                                xmlChar* key = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                if(NULL != key)
+                                {
+                                    sMainEntry.m_unMainEntryID = atoi((char*)key);
+                                    if ( NULL != pMsgSignal && ( TRUE == pMsgSignal->bMessageNameFromMsgCode(sMainEntry.m_unMainEntryID, sMainEntry.m_omMainEntryName)))
+                                    {
+                                        bNameFound = TRUE;
+                                    }
+                                    xmlFree(key);
+
+                                }
+                            }
+                            if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Signal"))&& bNameFound == TRUE)
+                            {
+                                xmlChar* key = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                if(NULL != key)
+                                {
+                                    SSUBENTRY sSelEntry;
+                                    sSelEntry.m_omSubEntryName = (char*)key;
+                                    sMainEntry.m_odSelEntryList.AddTail(sSelEntry);
+                                    xmlFree(key);
+                                }
+                            }
+
+                            pNodePtr = pNodePtr->next;
+                        }
+                        if(bNameFound == TRUE)
+                        {
+                            odMainEntryList.AddTail(sMainEntry);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                bProper = FALSE;
+            }
+            xmlXPathFreeObject(pOjectPath);
+        }
+        else
+        {
+            bProper = FALSE;
+        }
+    }
+    else
+    {
+        bProper = FALSE;
+    }
+    return bProper;
 }

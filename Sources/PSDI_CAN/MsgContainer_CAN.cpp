@@ -666,6 +666,13 @@ void CMsgContainerCAN::vSetCurrMsgName(CString strMsgNameOrCode)
             sizeof(m_sOutFormattedData.m_acMsgDesc));
 }
 
+void CMsgContainerCAN::vSetMsgLength(CString strsgLength)
+{
+    CMsgContainerBase::bCopyStringTocharArr (m_sOutFormattedData.m_acDataLen, strsgLength,
+            sizeof(m_sOutFormattedData.m_acDataLen));
+
+    m_sOutFormattedData.m_byDataLength = atoi(strsgLength);
+}
 /*******************************************************************************
   Function Name  : usProcessCurrErrorEntry
   Input(s)       : SERROR_INFO&

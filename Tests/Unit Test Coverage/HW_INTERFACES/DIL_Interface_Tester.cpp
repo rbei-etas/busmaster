@@ -324,7 +324,11 @@ BOOST_AUTO_TEST_CASE( CAN_Initializations_simulation )
 	g_pouDIL_CAN_Interface->DILC_SetConfigData(g_asControllerDetails, nLength);
 	g_pouDIL_CAN_Interface->DILC_SetControllerParams(defMODE_PASSIVE, HW_MODE);
 
-	s_STATUSMSG objMsg;	
+	s_STATUSMSG objMsg;
+	FILTER_TYPE FilterType;	
+	UINT* punMsgIds;
+	
+	g_pouDIL_CAN_DUMMY->CAN_FilterFrames(FilterType, CHANNEL_CAN_MIN, punMsgIds, 0);
 	g_pouDIL_CAN_DUMMY->CAN_GetCurrStatus(objMsg);
 	g_pouDIL_CAN_DUMMY->CAN_LoadDriverLibrary();
 	g_pouDIL_CAN_DUMMY->CAN_SelectHwInterface(g_asINTERFACE_HW, nCount);

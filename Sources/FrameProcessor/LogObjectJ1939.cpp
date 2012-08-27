@@ -82,7 +82,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
     SFRAMEINFO_BASIC_J1939 J1939Info_Basic =
     {
         sDataJ1939.m_dwPGN,
-        _atoi64(sDataJ1939.m_acChannel) 
+        _atoi64(sDataJ1939.m_acChannel) //KSS
     };
 
     // Assign appropriate values to FrameInfo_Basic
@@ -308,6 +308,10 @@ BYTE* CLogObjectJ1939::Der_GetConfigData(BYTE* pvDataStream) const
     return pbTStream;
 }
 
+void CLogObjectJ1939::Der_GetConfigData(xmlNodePtr pNodePtr) const
+{
+    m_sFilterApplied.pbGetConfigFilterData(pNodePtr);
+}
 UINT CLogObjectJ1939::Der_unGetBufSize(void) const
 {
     return m_sFilterApplied.unGetSize();

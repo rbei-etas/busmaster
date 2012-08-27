@@ -298,9 +298,9 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 
                 /*kadoor*/
                 omStrGccMakeFile = omTempGccFile;
-                omStrGccMakeFile += "\\MinGW\\bin";
-                omStrGCCPath      = omStrGccMakeFile;
-                omStrGccMakeFile += "\\make.exe";
+                /*omStrGccMakeFile += "\\MinGW\\bin";
+                omStrGCCPath      = omStrGccMakeFile;*/
+                omStrGccMakeFile = "mingw32-make.exe";
                 omStrGccParamter  =  "--silent --file=";
                 omStrGccParamter += acStrShortPath;
 
@@ -310,10 +310,13 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                                             omStrGccParamter.GetLength());
                 char* pucGCCPath      = (TCHAR*)omStrGCCPath.GetBuffer(
                                             omStrGCCPath.GetLength());
-                INT nSuccess = CreateProcess( pucGccMakeFile, pucGccParameter,
+                CString omStrCommandParam = pucGccMakeFile ;
+                omStrCommandParam += " ";
+                omStrCommandParam += pucGccParameter;
+                INT nSuccess = CreateProcess( NULL, omStrCommandParam.GetBuffer(MAX_PATH),
                                               NULL, NULL,
                                               true, CREATE_NO_WINDOW,
-                                              NULL, pucGCCPath,
+                                              NULL, NULL,
                                               &sStartInfo, &sProcessInfo);
 
                 // check if process is not created successfully else
@@ -633,6 +636,17 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
                     omTemp = omTemp.Left(omTemp.ReverseFind('.'));
                     //omTemp.Replace(".c","");
                     omStrFile.Replace("<FILENAME>",omTemp);
+                    omTemp = acStrShortPath;
+                    omTemp = omTemp.Right( omTemp.GetLength() - omTemp.ReverseFind('.') - 1);
+                    omStrFile.Replace("<EXT>", omTemp );
+                    if( omTemp.CompareNoCase("cpp") == 0)
+                    {
+                        omStrFile.Replace("<LANGUAGE>", "c++" );
+                    }
+                    else if( omTemp.CompareNoCase("c") == 0)
+                    {
+                        omStrFile.Replace("<LANGUAGE>", "c" );
+                    }
                     bReturn = TRUE;
                 }
             }

@@ -151,6 +151,8 @@ static HWND sg_hOwnerWnd = NULL;
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static struct TMhsCanCfg sg_MhsCanCfg;
 
+static SYSTEMTIME sg_CurrSysTime;
+
 /* CDIL_MHS class definition */
 class CDIL_CAN_MHS : public CBaseDIL_CAN_Controller
 {
@@ -174,9 +176,9 @@ public:
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    
+    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    
+    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
     // Specific function set
@@ -222,7 +224,7 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
     hResult = S_OK;
     if (!g_pouDIL_CAN_MHS)
     {
-        // g_pouDIL_CAN_MHS = new CDIL_CAN_MHS;
+        g_pouDIL_CAN_MHS = new CDIL_CAN_MHS;
         if (!(g_pouDIL_CAN_MHS))
         {
             hResult = S_FALSE;
@@ -525,10 +527,10 @@ HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
     (void)CurrSysTime;
     (void)TimeStamp;
     (void)QueryTickCount;
-    /*CurrSysTime = sg_CurrSysTime;
-    TimeStamp   = sg_TimeStamp;
+    CurrSysTime = sg_CurrSysTime;
+    /*TimeStamp   = sg_TimeStamp;
     if(QueryTickCount != NULL)
-      *QueryTickCount = sg_QueryTickCount; */
+      *QueryTickCount = sg_QueryTickCount;*/
     return(S_OK);
 }
 
@@ -543,12 +545,24 @@ HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
 {
     USES_CONVERSION;
 
-    nCount = 1;
-    //set the current number of channels
-    sg_nNoOfChannels = 1;
-    asSelHwInterface[0].m_dwIdInterface = 0;
-    asSelHwInterface[0].m_acDescription = "0";
-    sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+    char str[2];
+    str[0] = '\0';
+    if (!CanDeviceOpen(0, str))
+    {
+        (void)CanDeviceClose(0);
+
+        nCount = 1;
+        //set the current number of channels
+        sg_nNoOfChannels = 1;
+        asSelHwInterface[0].m_dwIdInterface = 0;
+        asSelHwInterface[0].m_acDescription = "0";
+        sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+    }
+    else
+    {
+        nCount = 0;
+        return (S_FALSE);
+    }
     return(S_OK);
 }
 
@@ -829,6 +843,8 @@ HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
         if (CanSetMode(0, OP_CAN_START, CAN_CMD_FIFOS_ERROR_CLEAR) >= 0)
         {
             hResult = S_OK;
+            /* Get connection time */
+            GetLocalTime(&sg_CurrSysTime);
         }
         else
         {

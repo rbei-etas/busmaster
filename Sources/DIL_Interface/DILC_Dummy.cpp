@@ -139,12 +139,12 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetControllerParams(LONG& /*lParam*/, UINT /*nChanne
 {
     return WARN_DUMMY_API;
 }
-
+//MVN
 HRESULT CDIL_CAN_DUMMY::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {
     return WARN_DUMMY_API;
 }
-
+//~MVN
 HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     return WARN_DUMMY_API;

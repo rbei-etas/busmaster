@@ -235,13 +235,23 @@ USAGEMODE HRESULT TX_vStopTransmission(UINT unMaxWaitTime)
     return S_OK;
 }
 
-USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+//USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+//{
+//    if(g_pomTxMsgChildWindow)
+//    {
+//        g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
+//    }
+//    CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
+//    return S_OK;
+//}
+USAGEMODE HRESULT TX_vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
 {
     if(g_pomTxMsgChildWindow)
     {
         g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
     }
-    CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
+    //CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
+    CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pxmlNodePtr);
     return S_OK;
 }
 
@@ -251,6 +261,11 @@ USAGEMODE HRESULT TX_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
     return S_OK;
 }
 
+USAGEMODE HRESULT TX_vSetTxWndConfigData(xmlDocPtr pDoc)
+{
+    CTxMsgManager::s_podGetTxMsgManager()->vSetTxWndConfigData(pDoc);
+    return S_OK;
+}
 /*USAGEMODE HRESULT TX_bIsTxWndConfigChanged()
 {
     if(CTxMsgManager::s_podGetTxMsgManager()->bIsTxWndConfigChanged())

@@ -362,7 +362,7 @@ BOOL CValueDescriptionDlg::PreTranslateMessage(MSG* pMsg)
 
     return bSkip;
 }
-
+//KSS
 BOOL CValueDescriptionDlg::bIsDataModified()
 {
     BOOL bDataChanged = FALSE;
@@ -373,3 +373,4 @@ BOOL CValueDescriptionDlg::bIsDataModified()
     }
     return bDataChanged;
 }
+//KSS

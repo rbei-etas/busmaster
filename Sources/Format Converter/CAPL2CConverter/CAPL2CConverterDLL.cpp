@@ -1,18 +1,9 @@
 // CAPL2CConverter.cpp : Defines the initialization routines for the DLL.
 //
 
-#define VC_EXTRALEAN        /* Exclude rarely-used stuff from Windows headers */
-#include <afxwin.h>         /* MFC core and standard components */
-#include <afxext.h>         /* MFC extensions */
-#include <afxdisp.h>        /* MFC Automation classes */
-#include <afxdtctl.h>       /* MFC support for Internet Explorer 4 Common Controls */
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>         /* MFC support for Windows Common Controls */
-#endif /* _AFX_NO_AFXCMN_SUPPORT */
-#include <afxdlgs.h>
+#include "CAPL2CConverter_stdafx.h"
 #include <afxdllx.h>
 #include "CAPL2CConverter.h"
-
 #ifdef _MANAGED
 #error Please read instructions in CAPL2CConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
@@ -28,7 +19,7 @@
 #endif
 
 
-static AFX_EXTENSION_MODULE CAPL2CConverterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE CAPL2CConvereterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -45,7 +36,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         TRACE0("CAPL2CConverter.DLL Initializing!\n");
 
         // Extension DLL one-time initialization
-        if (!AfxInitExtensionModule(CAPL2CConverterDLL, hInstance))
+        if (!AfxInitExtensionModule(CAPL2CConvereterDLL, hInstance))
         {
             return 0;
         }
@@ -61,15 +52,17 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  the CDynLinkLibrary object will not be attached to the
         //  Regular DLL's resource chain, and serious problems will
         //  result.
-        new CDynLinkLibrary(CAPL2CConverterDLL);
+
+        new CDynLinkLibrary(CAPL2CConvereterDLL);
+
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
         TRACE0("CAPL2CConverter.DLL Terminating!\n");
-        // Terminate the library before destructors are called
-        AfxTermExtensionModule(CAPL2CConverterDLL);
-    }
 
+        // Terminate the library before destructors are called
+        AfxTermExtensionModule(CAPL2CConvereterDLL);
+    }
     return 1;   // ok
 }
 
@@ -81,6 +74,6 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
 extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouConverter)
 {
-    pouConverter = new CCAPL2CConverter();
+    pouConverter = new CCAPL2CConvereter();
     return S_OK;
 }

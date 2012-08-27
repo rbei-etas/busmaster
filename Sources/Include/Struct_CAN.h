@@ -23,7 +23,12 @@
  */
 
 #pragma once
-
+//MVN
+//libxml file includes
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+//~MVN
 /* C++ includes */
 #include <string>
 
@@ -215,10 +220,12 @@ public:
         m_omStrAccMaskByte3[0] = "FF";
         m_omStrAccMaskByte4[0] = "FF";
         m_omStrAccMaskByte1[1] = "FF";
-        
+
+        // PTV [1.6.5] 20
         m_omStrAccMaskByte2[1] = "F";
         m_omStrAccMaskByte3[1] = "F";
-        m_omStrAccMaskByte4[1] = "F";        
+        m_omStrAccMaskByte4[1] = "F";
+        // PTV [1.6.5] 20
 
         m_omHardwareDesc = "";
         m_bAccFilterMode = FALSE;
@@ -227,6 +234,11 @@ public:
         m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
         m_bSelfReception = TRUE;
     }
+	//MVN
+	void LoadControllerConfigData(xmlNodePtr& pNodePtr)
+	{
+	}
+	//~MVN
     void LoadControllerConfigData(BYTE*& pbyTemp)
     {
         COPY_DATA_2(&m_nItemUnderFocus, pbyTemp, sizeof(INT));
@@ -420,6 +432,19 @@ public:
         nSize += m_omStrAccMaskByte4[1].length();;
         nSize += m_omHardwareDesc.length();;
     }
+
+	void SaveConfigDataToXML(xmlNodePtr pNodePtr)
+	{
+		const char * strBaudRate = m_omStrBaudrate.c_str();
+		const char *strCNF1 = m_omStrCNF1.c_str();
+		const char *strCNF2 = m_omStrCNF2.c_str();
+		const char *strCNF3 = m_omStrCNF3.c_str();
+
+		xmlNewChild(pNodePtr, NULL, BAD_CAST "BaudRate", BAD_CAST strBaudRate);
+		xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF1", BAD_CAST strCNF1);
+		xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF2", BAD_CAST strCNF2);
+		xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF3", BAD_CAST strCNF3);
+	}
     void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
     {
         INT nIntSize = sizeof(INT);

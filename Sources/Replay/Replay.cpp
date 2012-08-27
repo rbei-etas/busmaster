@@ -122,11 +122,19 @@ USAGEMODE void vREP_GetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
     CReplayManager::ouGetReplayManager().vGetReplayConfigData(pDesBuffer, nBuffSize);
 }
 
+USAGEMODE void vREP_GetReplayConfigData(xmlNodePtr pxmlNodePtr)
+{
+    CReplayManager::ouGetReplayManager().vGetReplayConfigData(pxmlNodePtr);
+}
 USAGEMODE void vREP_SetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
     CReplayManager::ouGetReplayManager().vSetReplayConfigData(pSrcBuffer, nBuffSize);
 }
 
+USAGEMODE void vREP_SetXMLReplayConfigData(xmlDocPtr pDoc)
+{
+    CReplayManager::ouGetReplayManager().vSetReplayConfigData(pDoc);
+}
 USAGEMODE void vREP_InitReplay(PVOID pvObjects, eREPLAY_INIT eUpdateType)
 {
     if (pvObjects != NULL)

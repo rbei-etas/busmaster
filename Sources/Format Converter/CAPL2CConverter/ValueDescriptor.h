@@ -16,29 +16,33 @@
 /**
  * \file      ValueDescriptor.h
  * \brief     Interface file for CValueDescriptor class
- * \authors   Amit Ranjan
+ * \author    Amit Ranjan
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CValueDescriptor class
  */
 
+// ValueDescriptor.h: interface for the CValueDescriptor class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#if !defined(AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)
+#define AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_
+
+#if _MSC_VER > 1000
 #pragma once
+#endif // _MSC_VER > 1000
 
-/* C++ includes */
-#include <string>
-
-using namespace std;
-
+#define	defVDES_MAX_DESC_LEN 50 // hopefully nobody puts value descriptor strings
 // more than this
-typedef union _SIG_VALUE
-{
+typedef union _SIG_VALUE {
     int iValue;
     unsigned int uiValue;
     float fValue;
-    double  dValue;
-    long long int i64Value;
-    unsigned long long int ui64Value;
-}   SIG_VALUE;
+    double	dValue;
+    LONGLONG i64Value;
+    ULONGLONG ui64Value;
+}	SIG_VALUE;
 
 class CValueDescriptor
 {
@@ -46,7 +50,9 @@ public:
     CValueDescriptor();
     virtual ~CValueDescriptor();
 
-    // data members
-    string      m_acDescriptor;
-    SIG_VALUE   m_value;
+// data members
+    char		m_acDescriptor[defVDES_MAX_DESC_LEN];
+    SIG_VALUE	m_value;
 };
+
+#endif // !defined(AFX_VALUEDESCRIPTOR_H__3051F3F4_2978_4987_B1DF_BA4CAD29981A__INCLUDED_)

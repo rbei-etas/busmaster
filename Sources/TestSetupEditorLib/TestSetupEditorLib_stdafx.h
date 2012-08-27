@@ -45,7 +45,7 @@
 #include <stdlib.h>         // standard library definitions
 #include <shlwapi.h>
 #include <atlcomcli.h>
-#import <msxml4.dll>
+#import <msxml6.dll>
 
 #ifndef _CONVERT_BSTR_TO_CSTRING
 #define _CONVERT_BSTR_TO_CSTRING

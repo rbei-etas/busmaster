@@ -262,19 +262,22 @@ void CTxMsgDetailsView::vUpdateChannelIDInfo()
     m_omComboChannelID.ResetContent();
 
     LONG lParam = 0;
-    if(((CBaseDIL_CAN*)CTxMsgManager::pGetDILInterfacePtr())
-            ->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+    if(((CBaseDIL_CAN*)CTxMsgManager::pGetDILInterfacePtr()) != NULL)
     {
-        UINT nHardware = (UINT)lParam;
-
-        for( int nIndex = 0; (UINT)nIndex < nHardware; nIndex++)
+        if(((CBaseDIL_CAN*)CTxMsgManager::pGetDILInterfacePtr())
+                ->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
         {
-            CString omStr;
-            // Format Channel ID String Say 1,2,...
-            omStr.Format( defFORMAT_MSGID_DECIMAL,
-                          nIndex + 1 );
-            // Add Channel ID
-            m_omComboChannelID.AddString( omStr );
+            UINT nHardware = (UINT)lParam;
+
+            for( int nIndex = 0; (UINT)nIndex < nHardware; nIndex++)
+            {
+                CString omStr;
+                // Format Channel ID String Say 1,2,...
+                omStr.Format( defFORMAT_MSGID_DECIMAL,
+                              nIndex + 1 );
+                // Add Channel ID
+                m_omComboChannelID.AddString( omStr );
+            }
         }
     }
     m_omComboChannelID.SetCurSel(0);
@@ -1334,12 +1337,24 @@ void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray& romSigInfo)
                         // Max Val
                         if ( IS_FLOAT_ENABLED( sNumInfo.m_byFlag) )
                         {
-                            sNumInfo.m_uMaxVal.m_dValue = n64Val *
-                                                          psSignal->m_fSignalFactor +
-                                                          psSignal->m_fSignalOffset;
-                            // Step value = Factor value
-                            sNumInfo.m_uDelta.m_dValue =
-                                psSignal->m_fSignalFactor;
+                            if(psSignal->m_bySignalType == CHAR_INT)
+                            {
+                                sNumInfo.m_uMaxVal.m_dValue = psSignal->m_SignalMaxValue.n64Value *
+                                                              psSignal->m_fSignalFactor +
+                                                              psSignal->m_fSignalOffset;
+                                // Step value = Factor value
+                                sNumInfo.m_uDelta.m_dValue =
+                                    psSignal->m_fSignalFactor;
+                            }
+                            else
+                            {
+                                sNumInfo.m_uMaxVal.m_dValue = psSignal->m_SignalMaxValue.un64Value *
+                                                              psSignal->m_fSignalFactor +
+                                                              psSignal->m_fSignalOffset;
+                                // Step value = Factor value
+                                sNumInfo.m_uDelta.m_dValue =
+                                    psSignal->m_fSignalFactor;
+                            }
                         }
                         else
                         {
@@ -2350,6 +2365,20 @@ void CTxMsgDetailsView::OnButtonAddMsg()
         }
         //Update the global message store
         vCallApplyChanges();
+        if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))
+        {
+            PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+            CTxMsgBlocksView* pomBlockView = NULL;
+            pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+            psMsgCurrentBlock =  pomBlockView->psGetMsgBlockPointer(
+                                     pomBlockView->m_nSelectedMsgBlockIndex,
+                                     pomBlockView->m_psMsgBlockList );
+            if((psMsgCurrentBlock->m_unMsgCount == 1)&& !CTxMsgManager::s_bDelayBetweenBlocksOnly)      //jus now a msg was added
+            {
+                //if delay btwn msg block is enabled den doont create a new thread
+                CTxMsgManager::s_podGetTxMsgManager()->vStartTransmission(0);
+            }
+        }
     }
     vUpdateStateDataBytes();
 }
@@ -2408,6 +2437,8 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
                     // if transmission is off.
                     pomListView->m_omButtonDeleteAllMsg.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
                 }
+                psTxMsgList->m_unIndex = psMsgCurrentBlock->m_unMsgCount;
+                psTxMsgList->m_bModified = true;
                 (psMsgCurrentBlock->m_unMsgCount)++;
                 psTxMsgList->m_psNextMsgDetails = NULL;
                 psTxMsgList->m_sTxMsgDetails.m_bIsMsgDirty = m_bIsMsgDirty;
@@ -2496,7 +2527,40 @@ void CTxMsgDetailsView::OnItemchangedLstcSigDetails( NMHDR* pNMHDR,
 
     *pResult = 0;
 }
+void CTxMsgDetailsView::vUpdateAllBlocksFrmDB()
+{
+    CMsgSignal* pDBptr = NULL;
+    CTxMsgBlocksView* pomBlockView = NULL;
+    PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
 
+    pomBlockView = ( CTxMsgBlocksView* )pomGetBlocksViewPointer();
+    pDBptr =  m_pouDBPtr;
+    for(int nMsgCnt =0; nMsgCnt < pDBptr->unGetNumerOfMessages(); nMsgCnt++)
+    {
+        psMsgCurrentBlock =  pomBlockView->m_psMsgBlockList ;
+        while(psMsgCurrentBlock != NULL)
+        {
+            PSTXCANMSGLIST psTxMsgList = NULL;
+            psTxMsgList = psMsgCurrentBlock->m_psTxCANMsgList;
+            while(psTxMsgList != NULL)
+            {
+                if(psMsgCurrentBlock->m_unMsgCount >0)
+                {
+                    UINT    unMsgID = psTxMsgList->m_sTxMsgDetails.m_sTxMsg.m_unMsgID;
+                    sMESSAGE*  psMsg = pDBptr->psGetMessagePointer(unMsgID);
+                    if(psMsg != NULL)
+                    {
+                        CString csMsgLen = pDBptr->omStrGetMessageLengthFromMsgCode(unMsgID);
+                        psTxMsgList->m_sTxMsgDetails.m_sTxMsg.m_ucDataLen =  atoi(csMsgLen);
+                        psMsgCurrentBlock->m_bModified = true;
+                    }
+                }
+                psTxMsgList = psTxMsgList->m_psNextMsgDetails;
+            }
+            psMsgCurrentBlock = psMsgCurrentBlock->m_psNextMsgBlocksList ;
+        }
+    }
+}
 /*******************************************************************************
  Function Name    : vUpdateSignalMatrix
  Input(s)         : nSelectedIndex      -  Selected Signal index
@@ -2521,7 +2585,8 @@ void CTxMsgDetailsView::vUpdateSignalMatrix(int nSelectedIndex)
         // Calculate the Signal mask
         BYTE abySigMask[DATA_LENGTH_MAX] = {0};
         CMsgSignal::bCalcBitMaskForSig( abySigMask,
-                                        DATA_LENGTH_MAX,                                        
+                                        DATA_LENGTH_MAX,
+                                        // PTV [1.6.4] 59
                                         psSignal->m_unStartByte,
                                         psSignal->m_byStartBit,
                                         psSignal->m_unSignalLength,
@@ -2956,9 +3021,18 @@ void CTxMsgDetailsView::vUpdateFromPhysicalValue(int nItem, int nSubItem)
                 }
                 if( bFloat == TRUE )
                 {
-                    dSignVal = n64SigVal * psSignal->m_fSignalFactor +
-                               psSignal->m_fSignalOffset;
-                    omstrDefault.Format(defSTR_FORMAT_PHY_VALUE, dSignVal);
+                    if( psSignal->m_bySignalType == CHAR_INT )
+                    {
+                        dSignVal = n64SigVal * psSignal->m_fSignalFactor +
+                                   psSignal->m_fSignalOffset;
+                        omstrDefault.Format(defSTR_FORMAT_PHY_VALUE, dSignVal);
+                    }
+                    else
+                    {
+                        dSignVal = un64SigVal * psSignal->m_fSignalFactor +
+                                   psSignal->m_fSignalOffset;
+                        omstrDefault.Format(defSTR_FORMAT_PHY_VALUE, dSignVal);
+                    }
                 }
                 else
                 {
@@ -3150,11 +3224,20 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
             omStrFormatData = defFORMAT_DATA_DECIMAL;
         }
         UINT unMsgID = psTxMsg->m_sTxMsg.m_unMsgID;
+        CString omStrMsgLength = "";
         // Get the message name from the database
         CMsgSignal* pDBptr =  m_pouDBPtr;
         if (NULL != pDBptr)
         {
             omStr =  pDBptr->omStrGetMessageNameFromMsgCode(unMsgID);
+            // PTV [1.6.6]
+            omStrMsgLength = pDBptr->omStrGetMessageLengthFromMsgCode(unMsgID);
+        }
+
+        if(omStrMsgLength != "")
+        {
+            psTxMsg->m_sTxMsg.m_ucDataLen = atoi(omStrMsgLength);
+
         }
         // If it is not a DB message then use the numeric value
         if( omStr.IsEmpty() == TRUE)
@@ -3420,6 +3503,32 @@ BOOL CTxMsgDetailsView::PreTranslateMessage(MSG* pMsg)
 *******************************************************************************/
 void CTxMsgDetailsView::vCallApplyChanges()
 {
+    //update the global list for storing the changed data******************
+    int             nCurrentIndex = -1;
+    CTxMsgBlocksView* pomBlockView = NULL;
+    CTxMsgListView* pomListView = NULL;
+    pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+    pomListView = (CTxMsgListView* )pomGetListViewPointer();
+
+    PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+    // Get current block pointer
+    psMsgCurrentBlock =
+        pomBlockView->psGetMsgBlockPointer(
+            pomBlockView->m_nSelectedMsgBlockIndex,
+            pomBlockView->m_psMsgBlockList );
+
+    if(psMsgCurrentBlock != NULL)
+    {
+        PSTXCANMSGLIST pCanMsgList = psMsgCurrentBlock->m_psTxCANMsgList;
+
+        pCanMsgList =  pomListView->psGetMsgDetailPointer(
+                           pomListView->m_nSelectedMsgIndex, psMsgCurrentBlock);
+        if(pCanMsgList != NULL)
+        {
+            pCanMsgList->m_bModified = true;
+        }
+    }
+    //***********************************************************************
     CTxFunctionsView* pView =
         ( CTxFunctionsView* )pomGetFunctionsViewPointer();
     if( pView != NULL )
@@ -3427,6 +3536,9 @@ void CTxMsgDetailsView::vCallApplyChanges()
         if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
         {
             pView->vAccessButtonApply();
+
+            CString strMsgIdName = "";
+            GetDlgItemTextA(IDC_COMB_MSG_ID_NAME, strMsgIdName);
         }
     }
 }

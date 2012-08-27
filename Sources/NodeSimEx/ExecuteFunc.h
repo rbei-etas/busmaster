@@ -54,12 +54,13 @@ public:
     // Execute key handlers
     VOID vExecuteOnKeyHandler(UCHAR ucKey);
     // Execute message handlers
-    VOID vExecuteOnMessageHandlerCAN(STCAN_MSG sRxMsgInfo);
+    VOID vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo);
     VOID vExecuteOnPGNHandler(void* pRxMsg);
     VOID vExecuteOnErrorHandler(eERROR_STATE eErrorCode, SCAN_ERR sErrorVal );
     VOID vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess);
     VOID vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress);
     VOID vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler);
+    VOID vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler);
 
     // Initialise all structure
     BOOL bInitStruct(CStringArray& omErrorArray);
@@ -86,8 +87,8 @@ public:
     STHREADINFO m_asUtilThread[defEVENT_EXFUNC_TOTAL];
     CEvent  m_aomState[defEVENT_EXFUNC_TOTAL];
     //associated to handler thread
-    void vWriteInQMsg(STCAN_MSG sRxMsgInfo);
-    STCAN_MSG sReadFromQMsg();
+	void vWriteInQMsg(STCAN_TIME_MSG sRxMsgInfo);  
+	STCAN_TIME_MSG sReadFromQMsg();
     CEvent m_omReadFromQEvent;       //event set after writing into buffer,for reading
     CRITICAL_SECTION m_CritSectForFuncBuf; //critical section for buffer
     UINT unGetBufferMsgCnt(); //called from read buffer thread
@@ -121,12 +122,16 @@ private:
     PFKEY_HANDLER m_pFGenericKeyHandler;
     PFMSG_HANDLER_CAN pFSearchMsgIdRangeHandlerCAN(UINT unMsgID);
     PFMSG_HANDLER pFSearchMsgIdRangeHandler(UINT unMsgId);
+    PFMSG_HANDLER_CAN pFSearchMsgIdListHandlerCAN(UINT unMsgId);
     BOOL bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
                                     CStringArray& omErrorArray);
+    BOOL bInitMsgListHandleStruct(UINT  unMsgIDandNameCount, 
+                                      CStringArray &omErrorArray);
     BOOL bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                                       CStringArray& omErrorArray);
     // Allocate memory for handler info structure
     BOOL bAllocateMemory(UINT unMsgRangeCount );
+    BOOL bAllocateMemoryForMsgListHandler(UINT unMsgListCount );
     void vCatagoriseMsgHandlers(const CString& omStrFuncName);
     // Initialise timer structure
     BOOL bInitTimerStruct(CStringArray& omErrorArray);
@@ -136,8 +141,10 @@ private:
     BOOL bInitMSGStruct(CStringArray& omErrorArray);
     // Initialise DLL structure
     BOOL bInitDLLStruct(CStringArray& omErrorArray);
+    BOOL bInitBusEventStruct(CStringArray &omErrorArray);
     // Read .Def File and add function name.
     BOOL bReadDefFile(CStringArray& omErrorArray);
+	void vTokenize(CString strInput, CString strToken, CString& strOutput, int& nStart);
 
     void vInitialiseInterfaceFnPtrsJ1939(HMODULE);
     void vInitialiseInterfaceFnPtrsCAN(HMODULE);
@@ -148,6 +155,7 @@ private:
     CStringArray m_omStrArrayErrorHandlers;
     CStringArray m_omStrArrayEventHandlers;
     CStringArray m_omStrArrayDLLHandlers;
+    CStringArray m_omStrArrayBusEventHandler;
 
     PSKEYHANDLER  m_psOnKeyHandlers;
 
@@ -157,9 +165,11 @@ private:
     CMap<int,int, SMSGHANDLERDATA, SMSGHANDLERDATA> m_omMsgHandlerMap;
     PSMSGID_RANGE_HANDLER_CAN m_psOnMsgIDRangeHandlersCAN;
     PSMSGID_RANGE_HANDLER m_psOnMsgIDRangeHandlers;
+    PSMSGID_LIST_HANDLER_CAN m_psOnMsgIDListHandlersCAN;
     PFMSG_HANDLER_CAN m_pFGenericMsgHandlerCAN;
     PFMSG_HANDLER m_pFGenericMsgHandler;
     PSDLLHANDLER   m_psOnDLLHandlers ;
+    PSBUSEVHANDLER m_psOnBusEventHandlers; 
     PSEVENTHANDLER m_psOnEventHandlers;
     PSERRORHANDLER m_psOnErrorHandlers;
     CString m_omStrDllFileName;
@@ -168,14 +178,14 @@ private:
     CString m_omStrGenericHandlerName;
     CStringArray m_omStrArrayMsgRange;
     CStringArray m_omStrArrayMsgIDandName;
-
+    CStringArray m_omStrArrayMsgList;
 
     BOOL m_bIsStatWndCreated;
 
 
     sNODEINFO m_sNodeInfo;
     UINT m_unQMsgCount;
-    STCAN_MSG m_asQMsg[ defMAX_FUNC_MSG ];      //for message handler msg array
+	STCAN_TIME_MSG m_asQMsg[ defMAX_FUNC_MSG ];		//for message handler msg array	
     UINT m_unReadQMsgIndex;         // index from which the message to be read
     UINT m_unWriteQMsgIndex;        //index at which message is to be written
 

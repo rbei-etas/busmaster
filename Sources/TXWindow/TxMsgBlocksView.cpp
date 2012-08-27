@@ -71,6 +71,7 @@ CTxMsgBlocksView::CTxMsgBlocksView()
     m_bInitDlg = FALSE;
     m_nRBTNTriggerType = 0;
     m_bModified = FALSE;
+    m_bNewBlock = false;
 }
 
 /*******************************************************************************
@@ -119,6 +120,8 @@ void CTxMsgBlocksView::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_CBTN_ADD_MSG_BLOCK, m_omButtonAddMsgBlock);
     //DDX_Control(pDX, IDC_CHKB_TX_ALL_FRAME, m_omButtonTxAllFrame);
     DDX_Control(pDX, IDC_CBTN_DELETE_MSG_BLOCK, m_omButtonDeleteMsgBlock);
+    DDX_Control(pDX, IDC_CHECK_MSG_BLOCK_DELAY, m_omDelayBtwnBlocks);
+    DDX_Control(pDX, IDC_EDIT_BLOCK_TRG_TIMER_VAL, m_omTimeDelayBtwnBlocks);
     //DDX_Check(pDX, IDC_CHKB_TX_ALL_FRAME, m_bTXAllFrame);
     //DDX_Check(pDX, IDC_CHK_MONO, m_bIsMonoshot);
     //DDX_Check(pDX, IDC_CHKB_TRIGGER_TYPE, m_bTriggerType);
@@ -146,6 +149,8 @@ BEGIN_MESSAGE_MAP(CTxMsgBlocksView, CFormView)
     ON_BN_CLICKED(IDC_RADIOMONOSHOT, OnBnClickedRadiomonoshot)
     ON_BN_CLICKED(IDC_RADIOCYCLIC, OnBnClickedRadiocyclic)
     ON_CBN_SELCHANGE(IDC_COMBO_MSGS, OnCbnSelchangeComboMsgs)
+    ON_BN_CLICKED(IDC_CHECK_MSG_BLOCK_DELAY, OnBnClickedCheckMsgBlockDelay)
+    ON_EN_UPDATE(IDC_EDIT_BLOCK_TRG_TIMER_VAL, OnEnUpdateEditBlockTrgTimerVal)
     ON_EN_KILLFOCUS(IDC_EDIT_MSG_BLOCK_NAME, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
     ON_EN_KILLFOCUS(IDC_EDIT_TRG_TIME_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
     ON_EN_KILLFOCUS(IDC_EDIT_TRG_KEY_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
@@ -349,6 +354,30 @@ void CTxMsgBlocksView::OnInitialUpdate()
     m_omComboAllMsgs.AddString("All");
     m_omComboAllMsgs.SelectString(0, "Single");
     m_omComboAllMsgs.EnableWindow(FALSE);*/
+    // AUC - changes for delay between blocks **************************************
+    CString         csData;
+    csData.Format("%ld", CTxMsgManager::s_unTimeDelayBtnMsgBlocks);
+    m_omTimeDelayBtwnBlocks.SetWindowTextA(csData);
+    if(CTxMsgManager::s_bDelayBetweenBlocksOnly == true)
+    {
+        m_omDelayBtwnBlocks.SetCheck(BST_CHECKED);
+
+        OnBnClickedCheckMsgBlockDelay();
+    }
+    else
+    {
+        m_omDelayBtwnBlocks.SetCheck(BST_UNCHECKED);
+        m_omTimeDelayBtwnBlocks.EnableWindow(FALSE);
+    }
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE)
+    {
+        m_omButtonAddMsgBlock.EnableWindow(false);
+        m_omDelayBtwnBlocks.EnableWindow(false);
+        m_omTimeDelayBtwnBlocks.EnableWindow(false);
+        m_omEditMsgBlockName.EnableWindow(false);
+    }
+    //(GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->EnableWindow(FALSE);
+    //******************************************************************************
 }
 
 /**
@@ -387,6 +416,9 @@ void CTxMsgBlocksView::OnAddMsgBlock()
         m_unMsgBlockCount++;
 
         INT nTotalCount = m_omLctrMsgBlockName.GetItemCount();
+        psCurrentMsgBlock->m_unIndex = nTotalCount;
+        psCurrentMsgBlock->m_bModified = true;
+        m_bNewBlock = true;
         m_bInitDlg = TRUE;
         // Insert the new Item
         m_omLctrMsgBlockName.InsertItem(nTotalCount,
@@ -409,6 +441,14 @@ void CTxMsgBlocksView::OnAddMsgBlock()
         omStr.Format( defSTR_TIMER_VAL_FMT_SPECIFIER,
                       psCurrentMsgBlock->m_unTimeInterval );
         omStr += defMESSAGE_TRIG_MS;
+        if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+        {
+            if(m_omButtonAddMsgBlock.IsWindowEnabled() == TRUE)
+            {
+                m_omTimeDelayBtwnBlocks.EnableWindow(TRUE);
+            }
+            omStr = "";    //don't display if delay between block is checked
+        }
         m_omLctrMsgBlockName.SetItemText(nTotalCount,
                                          defSUBITEM_MSGBLOCK_TRG_VAL,
                                          omStr);
@@ -767,7 +807,7 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
             if(unCurrentState != FALSE)
             {
                 //update the global list for storing the changed data
-                UpdateList(pNMListView);
+                UpdateList(pNMListView);                //AUC
 
                 m_nSelectedMsgBlockIndex = pNMListView->iItem;
                 psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
@@ -823,6 +863,14 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
                         }
                         m_omButtonTimeTrigger.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
                         m_omButtonKeyTrigger.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
+                        //AUC
+                        if(m_omDelayBtwnBlocks.GetCheck() == BST_CHECKED)
+                        {
+                            m_omButtonTimeTrigger.SetCheck(BST_UNCHECKED);
+                            m_omEditTrgTimeIntervalVal.EnableWindow(FALSE);
+                            //OnChkbOnTimeTrigger();
+                            m_omButtonTimeTrigger.EnableWindow(FALSE);
+                        }
                         //update monoshot and cyclic radio button
                         CButton* pMonoRadioButton = (CButton*)GetDlgItem(IDC_RADIOMONOSHOT);
                         if (pMonoRadioButton != NULL)
@@ -859,6 +907,12 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
                 }
 
                 //update the global list for storing the changed data
+                psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
+                                                  m_psMsgBlockList);
+                if(psMsgBlock)
+                {
+                    psMsgBlock->m_bModified = true;
+                }
                 AutoUpdateChanges();
 
                 // Update Modified Flag
@@ -895,7 +949,8 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
 }
 
 void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* pNMListView)
-{    
+{
+    //AUC
     PSMSGBLOCKLIST psMsgBlock = NULL ;
     //int nRowNum = m_omLctrMsgBlockName.GetSelectionMark();
     for(int nItem =0 ; nItem < m_omLctrMsgBlockName.GetItemCount(); nItem++)
@@ -965,14 +1020,20 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
             m_omComboAllMsgs.SelectString(0, "Single");
         }
         /*m_omButtonTxAllFrame.SetCheck(psMsgBlock->m_bTxAllFrame);*/
-        m_nRBTNTriggerType = psMsgBlock->m_ucTrigger;
+        if(m_omDelayBtwnBlocks.GetCheck() == BST_UNCHECKED) //AUC
+        {
+            m_nRBTNTriggerType = psMsgBlock->m_ucTrigger;
+        }
         // Update Time Trigger Values
-        if(IS_TIME_TRIGGERED( m_nRBTNTriggerType ))
+        if(IS_TIME_TRIGGERED( psMsgBlock->m_ucTrigger ))
         {
             CButton* pomOnTime = (CButton*)GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER);
             if( pomOnTime != NULL )
             {
-                pomOnTime->SetCheck( TRUE );
+                if( !CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+                {
+                    pomOnTime->SetCheck( TRUE );
+                }
             }
             // Assign only if it is valid
             if( psMsgBlock->m_unTimeInterval != 0 )
@@ -990,12 +1051,15 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
             {
                 pomOnTime->SetCheck( FALSE );
             }
-            m_omEditTrgTimeIntervalVal.SetWindowText(defDEFAULT_TIME_INTERVAL);
+            if(m_omDelayBtwnBlocks.GetCheck() == BST_UNCHECKED) //AUC
+            {
+                m_omEditTrgTimeIntervalVal.SetWindowText(defDEFAULT_TIME_INTERVAL);
+            }
             m_omEditTrgTimeIntervalVal.EnableWindow( FALSE );
         }
 
         // Update Key Trigger Values
-        if( IS_KEY_TRIGGERED( m_nRBTNTriggerType ) )
+        if( IS_KEY_TRIGGERED( psMsgBlock->m_ucTrigger ) )
         {
             CButton* pomOnTime = (CButton*)GetDlgItem(IDC_CHKB_ON_KEY_TRIGGER);
             if( pomOnTime != NULL )
@@ -1119,7 +1183,10 @@ VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
         }
 
         psCurrentMsgBlock->m_bType = !bMonoshot;//!m_bTriggerType;
-        psCurrentMsgBlock->m_ucTrigger = m_nRBTNTriggerType;
+        if(m_omDelayBtwnBlocks.GetCheck() == BST_UNCHECKED) //AUC
+        {
+            psCurrentMsgBlock->m_ucTrigger = m_nRBTNTriggerType;
+        }
 
         // if the trigger type is on time else it is on key
         if( IS_TIME_TRIGGERED (psCurrentMsgBlock->m_ucTrigger) )
@@ -1335,7 +1402,10 @@ void CTxMsgBlocksView::OnChkbOnTimeTrigger()
     {
         m_bModified = TRUE;
     }
-
+    if(psMsgCurrentBlock)
+    {
+        psMsgCurrentBlock->m_bModified = true;
+    }
     //update the global list for storing the changed data
     AutoUpdateChanges();
 }
@@ -1362,46 +1432,50 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
     PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
     psMsgCurrentBlock =
         psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+    psMsgCurrentBlock->m_ucTrigger ^= defKEY_TRIGGER;
     // If Timer is also enabled then add Time value in to list item text
-    if( IS_TIME_TRIGGERED ( m_nRBTNTriggerType ) )
+    if( IS_TIME_TRIGGERED ( /*m_nRBTNTriggerType*/ psMsgCurrentBlock->m_ucTrigger) )
     {
-        omStrCurrent = m_omStrTimeIntervalVal + defMESSAGE_TRIG_MS;
-        // Add "|" only if key is enabled
-        // This check we cannot prevent!!
-        /*if (psMsgCurrentBlock != NULL)
+        if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
         {
-            psMsgCurrentBlock->m_ucTrigger |= defTIME_TRIGGER;
-        }*/
-        if( IS_KEY_TRIGGERED( m_nRBTNTriggerType ) )
+            omStrCurrent = "";    //don't display if delay between block is checked
+        }
+        else
         {
-            omStrCurrent += defSTR_MSG_BLOCK_TRIGGER_SEPRATOR;
+            omStrCurrent = m_omStrTimeIntervalVal + defMESSAGE_TRIG_MS;
+            // Add "|" only if key is enabled
+            // This check we cannot prevent!!
             /*if (psMsgCurrentBlock != NULL)
             {
-                psMsgCurrentBlock->m_ucTrigger |= defKEY_TRIGGER;
+                psMsgCurrentBlock->m_ucTrigger |= defTIME_TRIGGER;
             }*/
+            if( IS_KEY_TRIGGERED( /*m_nRBTNTriggerType*/ psMsgCurrentBlock->m_ucTrigger) )
+            {
+                omStrCurrent += defSTR_MSG_BLOCK_TRIGGER_SEPRATOR;
+            }
         }
     }
 
-    if( IS_KEY_TRIGGERED( m_nRBTNTriggerType ))
+    if( IS_KEY_TRIGGERED( /*m_nRBTNTriggerType*/ psMsgCurrentBlock->m_ucTrigger))
     {
         m_omComboAllMsgs.EnableWindow();
         /*m_omButtonTxAllFrame.EnableWindow();*/
         m_omEditTrgKeyVal.EnableWindow();
         omStrCurrent += m_omStrKeyVal;
-        if (psMsgCurrentBlock != NULL)
+        /*if (psMsgCurrentBlock != NULL)
         {
             psMsgCurrentBlock->m_ucTrigger |= defKEY_TRIGGER;
-        }
+        }*/
     }
     else
     {
         /*m_omButtonTxAllFrame.EnableWindow( FALSE );*/
         m_omComboAllMsgs.EnableWindow(FALSE);
         m_omEditTrgKeyVal.EnableWindow( FALSE );
-        if (psMsgCurrentBlock != NULL)
-        {
-            psMsgCurrentBlock->m_ucTrigger &= MASK_DISABLE_KEY_TRIGGER;
-        }
+        /* if (psMsgCurrentBlock != NULL)
+         {
+             psMsgCurrentBlock->m_ucTrigger &= MASK_DISABLE_KEY_TRIGGER;
+         }*/
     }
     // update the value in list control for message block having current
     // selection
@@ -1420,12 +1494,20 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
 
     // Update Modified Flag
 
-    if( psMsgCurrentBlock->m_bActive == TRUE )
+    if( psMsgCurrentBlock != NULL && psMsgCurrentBlock->m_bActive == TRUE )
     {
         m_bModified = TRUE;
     }
 
+    if (psMsgCurrentBlock != NULL)
+    {
+        psMsgCurrentBlock ->m_bModified = true;
+    }
     //update the global list for storing the changed data
+    if(psMsgCurrentBlock)
+    {
+        psMsgCurrentBlock->m_bModified = true;
+    }
     AutoUpdateChanges();
 }
 
@@ -1475,10 +1557,10 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
         // Check whether it is enabled and then
         // Add Unit to the time value
         omStrCurrent = STR_EMPTY;
-        if( IS_TIME_TRIGGERED ( m_nRBTNTriggerType ) )
+        if( IS_TIME_TRIGGERED ( psMsgCurrentBlock->m_ucTrigger ) )
         {
             omStrCurrent = m_omStrTimeIntervalVal + defMESSAGE_TRIG_MS;
-            if( IS_KEY_TRIGGERED ( m_nRBTNTriggerType ) )
+            if( IS_KEY_TRIGGERED (  psMsgCurrentBlock->m_ucTrigger ) )
             {
                 omStrCurrent += defSTR_MSG_BLOCK_TRIGGER_SEPRATOR;
             }
@@ -1495,9 +1577,23 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
             }
         }
         // If Key is also enabled the nadd key part
-        if( IS_KEY_TRIGGERED ( m_nRBTNTriggerType )  )
+        if( IS_KEY_TRIGGERED ( psMsgCurrentBlock->m_ucTrigger  )  )
         {
-            omStrCurrent += m_omStrKeyVal;
+            //omStrCurrent += m_omStrKeyVal;
+            // PTV
+            if(psMsgCurrentBlock != NULL)
+            {
+                m_omStrKeyVal.Format( defSTR_KEY_VAL_FMT_SPECIFIER,
+                                      psMsgCurrentBlock->m_ucKeyValue );
+            }
+            if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+            {
+                omStrCurrent = m_omStrKeyVal;    //don't display if delay between block is checked
+            }
+            else
+            {
+                omStrCurrent += m_omStrKeyVal;
+            }
         }
         // update the value in list control for message block having current
         // selection
@@ -1527,7 +1623,17 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
         m_omEditTrgTimeIntervalVal.SetSel( 0,
                                            m_omStrTimeIntervalVal.GetLength() );
     }
-    AutoUpdateChanges();
+    if(psMsgCurrentBlock)
+    {
+        psMsgCurrentBlock->m_bModified = true;
+    }
+    int nCurrSel = m_omLctrMsgBlockName.GetSelectionMark();
+    if(!m_bNewBlock && !CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))        //call update only for editing and not while adding a new block
+    {
+        //if Tx is on dont save
+        AutoUpdateChanges();
+    }
+    m_bNewBlock = false;
 }
 
 /******************************************************************************/
@@ -1556,6 +1662,8 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
     // If it is valid
     if(unTextLength  == 1 )
     {
+        PSMSGBLOCKLIST psMsgBlock = psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,
+                                    m_psMsgBlockList);
         // Update the value and enable Apply Button
         m_omStrKeyVal = omStrCurrent;
         // Enable Apply Button
@@ -1572,21 +1680,34 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
         // Check whether it is enabled and then
         // Add Unit to the time value
         omStrCurrent = STR_EMPTY;
-        if( IS_TIME_TRIGGERED ( m_nRBTNTriggerType ) )
+        if( IS_TIME_TRIGGERED ( psMsgBlock->m_ucTrigger ) )
         {
-            omStrCurrent = m_omStrTimeIntervalVal + defMESSAGE_TRIG_MS;
-            if( IS_KEY_TRIGGERED ( m_nRBTNTriggerType ) )
+            if(CTxMsgManager::s_bDelayBetweenBlocksOnly)
+            {
+                omStrCurrent = "";
+            }
+            else
+            {
+                omStrCurrent = m_omStrTimeIntervalVal + defMESSAGE_TRIG_MS;
+            }
+            if( IS_KEY_TRIGGERED (  psMsgBlock->m_ucTrigger ) )
             {
                 omStrCurrent += defSTR_MSG_BLOCK_TRIGGER_SEPRATOR;
             }
         }
         // If Key is also enab7led the nadd key part
-        if( IS_KEY_TRIGGERED ( m_nRBTNTriggerType )  )
+        if( IS_KEY_TRIGGERED ( psMsgBlock->m_ucTrigger  )  )
         {
-            PSMSGBLOCKLIST psMsgBlock = psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,
-                                        m_psMsgBlockList);
+
             psMsgBlock->m_ucKeyValue = m_omStrKeyVal.GetAt(0);
-            omStrCurrent += m_omStrKeyVal;
+            if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+            {
+                omStrCurrent = m_omStrKeyVal;    //don't display if delay between block is checked
+            }
+            else
+            {
+                omStrCurrent += m_omStrKeyVal;
+            }
         }
         // update the value in list control for message block having current
         // selection
@@ -1603,10 +1724,10 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
         if( pomWnd != NULL &&
                 pomWnd->m_hWnd == m_omEditTrgTimeIntervalVal.m_hWnd)
         {
-            PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-            psMsgCurrentBlock =
-                psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
-            if( psMsgCurrentBlock->m_bActive == TRUE )
+            //PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+            //psMsgCurrentBlock =
+            //    psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+            if( psMsgBlock->m_bActive == TRUE )
             {
                 m_bModified = TRUE;
             }
@@ -1666,6 +1787,10 @@ void CTxMsgBlocksView::OnChkbTxAllFrame()
         {
             m_bModified = TRUE;
         }
+        if(psMsgCurrentBlock)
+        {
+            psMsgCurrentBlock->m_bModified = true;
+        }
         AutoUpdateChanges();
     }
 
@@ -1707,18 +1832,27 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
     {
         m_omEditTrgTimeIntervalVal.EnableWindow( FALSE );
     }
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE)
+    {
+        m_omEditTrgTimeIntervalVal.EnableWindow( FALSE );
+    }
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == FALSE)
+    {
+        m_omDelayBtwnBlocks.EnableWindow(bEnable);
+    }
     // Key edit box
     // Check whether Key is enabled or not
-    if( m_omButtonKeyTrigger.GetCheck() )
-    {
-        m_omEditTrgKeyVal.EnableWindow( bEnable );
-        m_omComboAllMsgs.EnableWindow(bEnable);
-    }
-    else
-    {
-        m_omEditTrgKeyVal.EnableWindow( FALSE );
-        m_omComboAllMsgs.EnableWindow(FALSE);
-    }
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == FALSE)
+        if( m_omButtonKeyTrigger.GetCheck() )
+        {
+            m_omEditTrgKeyVal.EnableWindow( bEnable );
+            m_omComboAllMsgs.EnableWindow(bEnable);
+        }
+        else
+        {
+            m_omEditTrgKeyVal.EnableWindow( FALSE );
+            m_omComboAllMsgs.EnableWindow(FALSE);
+        }
 
     // Update Details View Control
     CTxMsgDetailsView* pomDetailsView = ( CTxMsgDetailsView* )
@@ -1774,8 +1908,16 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
 
     // Timer checkbox
     m_omButtonTimeTrigger.EnableWindow(bEnable);
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE)
+    {
+        m_omButtonTimeTrigger.EnableWindow(FALSE);
+    }
     // Key Checkbox
     m_omButtonKeyTrigger.EnableWindow(bEnable);
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE)
+    {
+        m_omButtonKeyTrigger.EnableWindow(FALSE);
+    }
     // All Messages Check box
     // Check whether Key is enabled or not
 
@@ -1788,11 +1930,11 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
             bChkEnable = TRUE;
         }
     }
-    m_omComboAllMsgs.EnableWindow( bChkEnable );
 
     if(bEnable == TRUE && CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == FALSE )
     {
         m_omButtonDeleteMsgBlock.EnableWindow(TRUE);
+        m_omComboAllMsgs.EnableWindow( bChkEnable );
     }
     else
     {
@@ -1803,14 +1945,25 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
     if (pMonoRadioButton != NULL)
     {
         pMonoRadioButton->EnableWindow(bEnable);
+        if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE)
+        {
+            pMonoRadioButton->EnableWindow(FALSE);
+        }
     }
     CButton* pRadioCyclic = (CButton*)GetDlgItem(IDC_RADIOCYCLIC);
     if (pRadioCyclic != NULL)
     {
         pRadioCyclic->EnableWindow(bEnable);
+        if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == TRUE)
+        {
+            pRadioCyclic->EnableWindow(FALSE);
+        }
     }
     //m_omButtonTriggerType.EnableWindow(bEnable);
-    m_omEditMsgBlockName.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
+    if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) == FALSE)
+    {
+        m_omEditMsgBlockName.EnableWindow(bEnable);
+    }
     // Include Standard/Extended radion and RTR checkbox
     // Standard Radio Button
     pomWnd = GetDlgItem(IDC_RBTN_MSGTYPE_STD);
@@ -2085,6 +2238,13 @@ void CTxMsgBlocksView::OnBnClickedRadiomonoshot()
     SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Monoshot) on event");
     OnChkbTriggerType();
     //update the global list for storing the changed data
+    PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+    psMsgCurrentBlock =
+        psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+    if(psMsgCurrentBlock)
+    {
+        psMsgCurrentBlock->m_bModified = true;
+    }
     AutoUpdateChanges();
 }
 
@@ -2093,6 +2253,13 @@ void CTxMsgBlocksView::OnBnClickedRadiocyclic()
     SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Cyclic) on event");
     OnChkbTriggerType();
     //update the global list for storing the changed data
+    PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+    psMsgCurrentBlock =
+        psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+    if(psMsgCurrentBlock)
+    {
+        psMsgCurrentBlock->m_bModified = true;
+    }
     AutoUpdateChanges();
 }
 
@@ -2160,6 +2327,10 @@ void CTxMsgBlocksView::vSaveCurrentBlockFirst()
                 psCurrentMsgBlock->m_ucKeyValue = defDEFAULT_KEY_VAL;
             }
         }
+        if(psCurrentMsgBlock)
+        {
+            psCurrentMsgBlock->m_bModified = true;
+        }
     }
 
     //update the global list for storing the changed data
@@ -2189,6 +2360,173 @@ void CTxMsgBlocksView::AutoUpdateChanges()
         if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
         {
             pomFunctionView->vAccessButtonApply();
+        }
+
+        //this->SetFocus();
+        CWnd* pWnd = GetFocus();
+        if (NULL != pWnd)
+        {
+            pWnd->SetFocus();
+        }
+    }
+}
+void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
+{
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                        pomGetFunctionsViewPointer();
+    int nCurrentSel = m_omLctrMsgBlockName.GetSelectionMark();
+    if(m_omDelayBtwnBlocks.GetCheck() == BST_CHECKED)
+    {
+        CString                 omStrKeyVal;
+        PSMSGBLOCKLIST          psMsgBlock = NULL;
+
+        ((CButton*)GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER))->SetCheck(BST_UNCHECKED);
+        (GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER))->EnableWindow(FALSE);
+        (GetDlgItem(IDC_EDIT_TRG_TIME_VAL))->EnableWindow(FALSE);
+        m_omTimeDelayBtwnBlocks.EnableWindow(TRUE);
+        if(m_omDelayBtwnBlocks.IsWindowEnabled() == FALSE)
+        {
+            m_omTimeDelayBtwnBlocks.EnableWindow(FALSE);
+        }
+        CString csData;
+        m_omTimeDelayBtwnBlocks.GetWindowTextA(csData);
+        if(csData == "")
+        {
+            m_omTimeDelayBtwnBlocks.SetWindowTextA("100");
+        }
+
+        if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
+        {
+            UINT                    unTimerVal;
+            CString                 csTimerVal;
+            GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
+            unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
+            CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;  //update the global variable
+            CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+            CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
+            CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
+        }
+        for(int nCnt =0; nCnt < m_omLctrMsgBlockName.GetItemCount(); nCnt++)
+        {
+            psMsgBlock = psGetMsgBlockPointer(nCnt, m_psMsgBlockList);
+            if( IS_KEY_TRIGGERED(psMsgBlock->m_ucTrigger) )             //if key triggered then display the key else NULL
+            {
+                omStrKeyVal.Format( defSTR_KEY_VAL_FMT_SPECIFIER,
+                                    psMsgBlock->m_ucKeyValue );
+            }
+            else
+            {
+                omStrKeyVal = "";
+            }
+            m_omLctrMsgBlockName.SetItemText(nCnt,defSUBITEM_MSGBLOCK_TRG_VAL,
+                                             omStrKeyVal);
+        }
+        psMsgBlock = psGetMsgBlockPointer(m_nSelectedMsgBlockIndex, m_psMsgBlockList);
+        if(psMsgBlock != NULL)
+        {
+            if( IS_TIME_TRIGGERED(psMsgBlock->m_ucTrigger) )
+            {
+                m_nRBTNTriggerType &= MASK_DISABLE_TIME_TRIGGER;
+            }
+        }
+    }
+    else if(m_omDelayBtwnBlocks.GetCheck() == BST_UNCHECKED)
+    {
+        CString                 omStr;
+        PSMSGBLOCKLIST          psMsgBlock;
+
+        m_omTimeDelayBtwnBlocks.EnableWindow(FALSE);
+        (GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER))->EnableWindow(TRUE);
+        if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
+        {
+            //update the global variable
+            CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+            CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+        }
+        for(int nCnt = 0; nCnt < m_omLctrMsgBlockName.GetItemCount(); nCnt++)
+        {
+            psMsgBlock = psGetMsgBlockPointer(nCnt, m_psMsgBlockList);
+            if(psMsgBlock == NULL)
+            {
+                break;
+            }
+            if( IS_TIME_TRIGGERED(psMsgBlock->m_ucTrigger) )
+            {
+                omStr.Format( defSTR_TIMER_VAL_FMT_SPECIFIER,
+                              psMsgBlock->m_unTimeInterval );
+                omStr += defMESSAGE_TRIG_MS;
+                (GetDlgItem(IDC_EDIT_TRG_TIME_VAL))->EnableWindow(TRUE);
+                if( IS_KEY_TRIGGERED(psMsgBlock->m_ucTrigger) )
+                {
+                    omStr += defSTR_MSG_BLOCK_TRIGGER_SEPRATOR;
+                }
+            }
+            else
+            {
+                omStr = "";
+            }
+            if( IS_KEY_TRIGGERED(psMsgBlock->m_ucTrigger) )
+            {
+                CString omStrKeyVal;
+                omStrKeyVal.Format( defSTR_KEY_VAL_FMT_SPECIFIER,
+                                    psMsgBlock->m_ucKeyValue );
+                omStr += omStrKeyVal;
+            }
+            m_omLctrMsgBlockName.SetItemText(nCnt,defSUBITEM_MSGBLOCK_TRG_VAL,
+                                             omStr);
+        }
+        psMsgBlock = psGetMsgBlockPointer(m_nSelectedMsgBlockIndex, m_psMsgBlockList);
+        if(psMsgBlock != NULL)
+        {
+            if( IS_TIME_TRIGGERED(psMsgBlock->m_ucTrigger) )
+            {
+                ((CButton*)GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER))->SetCheck(BST_CHECKED);
+                m_nRBTNTriggerType |= defTIME_TRIGGER;    //set this to status of surrent clicked block
+            }
+        }
+    }
+
+    if(pomFunctionView != NULL)
+    {
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+        }
+    }
+}
+void CTxMsgBlocksView::OnEnUpdateEditBlockTrgTimerVal()
+{
+    UINT                    unTimerVal;
+    CString                 csTimerVal;
+    GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
+    unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
+
+    CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
+                                        pomGetFunctionsViewPointer();
+    if(unTimerVal <=0)
+    {
+        unTimerVal = atoi(m_omStrTimeIntervalVal.GetBuffer(0));
+        if(unTimerVal == 0)
+        {
+            unTimerVal = 0;
+            m_omStrTimeIntervalVal = "100";
+        }
+        SetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, m_omStrTimeIntervalVal);
+        m_omTimeDelayBtwnBlocks.SetSel( 0,m_omStrTimeIntervalVal.GetLength() );
+    }
+    if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
+    {
+        CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
+        CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
+        AutoUpdateChanges();
+    }
+    m_omStrTimeIntervalVal.Format("%u", unTimerVal);
+
+    if(pomFunctionView != NULL)
+    {
+        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        {
+            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
         }
     }
 }

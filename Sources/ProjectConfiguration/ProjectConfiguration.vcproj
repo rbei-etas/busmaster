@@ -164,7 +164,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				ModuleDefinitionFile=""
-				GenerateDebugInformation="false"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/ProjectConfiguration.pdb"
 				SubSystem="0"
 				OptimizeReferences="0"

@@ -40,3 +40,4 @@ using namespace std;
 #include "include/Utils_macro.h"
 #include "Utility/Utility_Thread.h"
 #include "include/ModuleID.h"
+#include "Utility/XMLUtils.h"

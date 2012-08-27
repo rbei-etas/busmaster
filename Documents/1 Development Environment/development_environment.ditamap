@@ -16,6 +16,7 @@
   <topichead navtitle="Build">
     <topicref href="topics/msbuild.dita" type="topic"/>
     <topicref href="topics/vc.dita" type="topic"/>
+    <topicref href="topics/Installation_Of_Additional_Libraries.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Documentation">
     <topicref href="topics/dita-ot.dita" type="topic"/>

@@ -23,6 +23,12 @@
  */
 
 #pragma once
+//MVN
+//libxml file includes
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+//~MVN
 
 #include "Flags.h"                  // Definition of CFlags class
 #include "SectionNames.h"           // Different section names and section ID
@@ -74,6 +80,7 @@
 //venkat
 #include "TSExecutorHandler.h"
 #include "TSEditorHandler.h"
+#include "Utility/XMLUtils.h"
 
 #define WM_SAVE_DBJ1939        (WM_USER + 108)
 
@@ -152,6 +159,8 @@ public:
     CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
     SJ1939CLIENTPARAM m_sJ1939ClientParam;
 
+	BOOL CompareFile(CString FirstFile,CString SecFile);
+
     int             m_nNumChannels;
     // Overrides
     // ClassWizard generated virtual function overrides
@@ -165,6 +174,7 @@ protected:
     // Implementation
 public:
 
+    // PTV [1.6.4]
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
     BOOL m_bIconSetFlag;
     BOOL m_bJ1939IconSetFlag;
@@ -295,6 +305,9 @@ public:
     CWnd* IsWindowCreated();
     void vCloseFormatconverters();
     void vProcessKeyPress(MSG* pMsg);
+	//MVN
+	BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
+	//~MVN
 
 #ifdef _DEBUG
     virtual void AssertValid() const;
@@ -359,6 +372,7 @@ protected:
     //afx_msg void OnLogFilterButton();
     //afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnMessageFilterButton();
+	void ApplyMessageFilterButton();
     afx_msg void OnUpdateMessageFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI);
     afx_msg void OnDisplayMessagewindowOverwrite();
@@ -470,6 +484,7 @@ public:
     void vClearSignalInfoList(void);
     void vUpdateChannelInfo(void);
     void vUpdateHWStatusInfo(void);
+	BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase &odMsgNameMsgCodeListDB);
 
 private:
     PROJECTDATA m_sProjData;
@@ -545,6 +560,7 @@ private:
     eERROR_STATE m_eCurrErrorState[ defNO_OF_CHANNELS ];
     // Timer to update status bar
     UINT_PTR m_unTimerSB;
+    // PTV [1.6.4]
     UINT_PTR m_unTimerSBLog;
     UINT_PTR m_unJ1939TimerSBLog;
     // Transmission and reception error counters
@@ -587,9 +603,25 @@ private:
     void vGetLoadedCfgFileName(CString& omFileName);
     BOOL bIsConfigurationModified(void);
     void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfig, UINT& nSize);
+	void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize, xmlNodePtr pNodePtr);
     void vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize);
     INT LoadConfiguration(void);
     INT SaveConfiguration(void);
+	//MVN
+	int nLoadXMLConfiguration(string& m_strCfxFile);
+	int nLoadXMLConfiguration();
+
+	void vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
+
+	INT vSaveXMLConfiguration();
+	INT vSaveXMLConfiguration(const char *filename);
+
+	INT nGetControllerID(string ptext);
+	void LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlNodePtr& pNodePtr);
+	//~MVN
+
+	// PTV
+	CString vGetControllerName(UINT nDriverId);
 
     void vSetFileStorageInfo(CString omCfgFileName);
     void vSetCurrProjInfo(float fAppVersion);
@@ -608,6 +640,11 @@ private:
     CMsgSignal* m_pouMsgSigJ1939;
     CMsgSignal* m_pouActiveDbJ1939;
     BOOL m_abLogOnConnect[BUS_TOTAL];
+
+	xmlNodePtr m_pCopyBusStsticsNode;
+	// PTV XML
+	void vSetGlobalConfiguration(xmlNodePtr& pNodePtr);
+	// PTV XML
 public:
     void vPopulateJ1939PGNList();
     INT ReadGraphDataBuffer(BOOL bCalcTime);
@@ -626,7 +663,7 @@ public:
     CString omStrGetUnionFilePath(CString omStrTemp);
     void vInitCFileFunctPtrs();
     void NS_InitJ1939SpecInfo();
-    void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList& odMsgNameMsgCodeList);
+    void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
     void vPushConfigFilenameDown ( CString omStrConfigFilename );
     void vUpdateMainEntryListInWaveDataHandler();
     void vUpdateAllMsgWndInterpretStatus(BOOL bAssociate);
@@ -716,9 +753,17 @@ public:
     afx_msg void OnJ1939SignalwatchShow();
     afx_msg void OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI);
     afx_msg void OnConfigureMessagedisplayJ1939();
+    afx_msg void OnJ1939Exportlog();
     afx_msg void OnShowHideMessageWindow(UINT nID);
     afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
     afx_msg void OnToolbarCandatabase();
     afx_msg void OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI);
+	afx_msg LRESULT OnMessageFromUserDllGetAbsoluteTime(WPARAM wParam, LPARAM lParam);
     afx_msg void OnFileConverter();
+
+	void ApplyLogFilter();
+//MVN
+	xmlDocPtr m_xmlConfigFiledoc;
+	BOOL m_bIsXmlConfig;
+//~MVN
 };

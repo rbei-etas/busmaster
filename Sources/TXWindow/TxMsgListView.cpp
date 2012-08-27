@@ -314,6 +314,7 @@ void CTxMsgListView::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult
                     if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                     {
                         pView->vAccessButtonApply();
+                        this->SetFocus();
                     }
                 }
             }
@@ -359,6 +360,7 @@ void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
             psCurrentMsgBlock = pomBlocksView->psGetMsgBlockPointer(
                                     pomBlocksView->m_nSelectedMsgBlockIndex,
                                     pomBlocksView->m_psMsgBlockList );
+            psCurrentMsgBlock->m_bModified = true;
             // Get the message list
             PSTXCANMSGLIST psMsgList = psCurrentMsgBlock->m_psTxCANMsgList;
             int nIndex = 0;
@@ -373,6 +375,7 @@ void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
                 {
                     // Update message list
                     psMsgList->m_sTxMsgDetails.m_bEnabled = bCheck;
+                    psMsgList->m_bModified = true;
                     // Update UI Control
                     m_omLctrMsgList.SetCheck( nIndex, bCheck );
                     // Update Modified flag
@@ -487,6 +490,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                         pView->vEnableAddButton( TRUE );
                         // Clear error message if any
                         pView->bSetStatusText(STR_EMPTY);
+                        psMsgBlock->m_bModified = true;
                     }
                 }
             }
@@ -545,11 +549,13 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                             psTxMsgList->m_sTxMsgDetails.m_bEnabled )
                     {
                         psTxMsgList->m_sTxMsgDetails.m_bEnabled = nCurrentState;
+                        psTxMsgList->m_bModified = true;
                         // Enable Update Button
                         if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
                         {
                             pView->m_omButtonApply.EnableWindow();
                         }
+                        psMsgBlock->m_bModified = true;
                     }
                 }
                 else
@@ -563,6 +569,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                     if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                     {
                         pView->vAccessButtonApply();
+                        this->SetFocus();
                     }
                 }
             }
@@ -930,6 +937,8 @@ void CTxMsgListView::OnDeleteSelectedMsg()
                             if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                             {
                                 pView->vAccessButtonApply();
+                                /*this->SetFocus();*/
+                                m_omLctrMsgList.SetFocus();
                             }
                         }
 
@@ -1107,6 +1116,7 @@ void CTxMsgListView::OnDeleteAllMsg()
                         if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                         {
                             pView->vAccessButtonApply();
+                            this->SetFocus();
                         }
                     }
                 }
@@ -1210,12 +1220,14 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     {
         pDBptr =  pomDetailsView->m_pouDBPtr;
     }
+    CString omStrUpdatedMsgLength = "";
     // See if the msg ID is in the database
     // If yes load appropriate image
     if (NULL != pDBptr)
     {
         omStrMsgName =
             pDBptr->omStrGetMessageNameFromMsgCode(sMsgDetail.m_sTxMsg.m_unMsgID);
+        omStrUpdatedMsgLength = pDBptr->omStrGetMessageLengthFromMsgCode(sMsgDetail.m_sTxMsg.m_unMsgID);
     }
     if ( omStrMsgName.IsEmpty() == FALSE )
     {
@@ -1228,6 +1240,13 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     else
     {
         unImageID = 2;// Non-Database image
+    }
+    // PTV [1.6.6]
+    if(omStrUpdatedMsgLength != "")
+    {
+        sMsgDetail.m_sTxMsg.m_ucDataLen = atoi( omStrUpdatedMsgLength );
+
+
     }
     // Format channel ID
     omStrChannel.Format("%d", sMsgDetail.m_sTxMsg.m_ucChannel );

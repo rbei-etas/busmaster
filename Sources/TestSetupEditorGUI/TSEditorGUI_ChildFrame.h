@@ -77,7 +77,9 @@ public:
     INT nChangeEntityTitle(CBaseEntityTA* pEntity, CString& omstrName);
     INT nDeleteItem(DWORD dwId, DWORD dwParentId);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
+	bool GetConfigurationData(xmlNodePtr pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
+	HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
 private:
     INT nPromptForSaveFile();
     void vSetCurrentFile(CString& omNewFilePath);

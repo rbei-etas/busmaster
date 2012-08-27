@@ -26,6 +26,22 @@ if WinExists("BUSMASTER") then
 	ControlClick("BUSMASTER","",1122)  							; Click Add message button
 	Controlsettext("BUSMASTER","",1001,100)						; Add '100' to 'Name/ID' edit box
 	ControlClick("BUSMASTER","",1122)  							; Click Add message button
+	$sigDetHWD=ControlGetHandle("BUSMASTER","","[CLASS:SysListView32; INSTANCE:1]")	; Get handle of Signal details list view control
+	_GUICtrlListView_ClickItem($sigDetHWD,0,"Left","",2)							; Click on the first item
+	sleep(1000)
+	if winexists("Signal Details") Then
+		ControlClick("Signal Details","",2)											; Click Close button
+	EndIf
+	$hWnd = ControlGetHandle("BUSMASTER","",1232)
+	$sigDetPos=_GUICtrlListView_GetItemPosition($hWnd, 0)							; Get position of Signal details list view control
+	ControlClick("BUSMASTER","",1232,"Left",2,$sigDetPos[0]+100,$sigDetPos[1])		; Double click on the raw value
+	sleep(500)
+	send("{DOWN}")
+	sleep(500)
+	ControlClick("BUSMASTER","",1232,"Left",2,$sigDetPos[0]+200,$sigDetPos[1])		; Double click on the physical value
+	sleep(500)
+	send("{DOWN}")
+	send("{ENTER}")
 	$cntToolhWd=ControlGetHandle("BUSMASTER","",128)
 	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)							;connect
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Normal Blocks")	;transmit

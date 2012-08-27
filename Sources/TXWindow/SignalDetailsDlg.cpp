@@ -690,11 +690,18 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
 
         if ( pCancelButton1 != pCancelButton2 )
         {
+            CString omstrFactorValue = "";
+
+            m_odScale.GetWindowText(omstrFactorValue);
+
             // Get max and min values
             m_odMaxValue.GetWindowText( m_omStrMaxVal );
             m_odMinValue.GetWindowText( m_omStrMinVal );
             UINT unMaxLength = m_omStrMaxVal.GetLength();
             UINT unMinLength = m_omStrMinVal.GetLength();
+
+            UINT unFactorValue = omstrFactorValue.GetLength();
+
             //check for the empty string
             if(unMinLength == 0)
             {
@@ -716,6 +723,14 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             {
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MAX)->SetFocus();
+                bRetVal = FALSE;
+            }
+            else if(unFactorValue == 0)
+            {
+                AfxMessageBox( "Factor value field can't be empty!",
+                               MB_OK|MB_ICONINFORMATION);
+                UpdateData(FALSE);
+                GetDlgItem(IDC_EDIT_FACTOR)->SetFocus();
                 bRetVal = FALSE;
             }
             else

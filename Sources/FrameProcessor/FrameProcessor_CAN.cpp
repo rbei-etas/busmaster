@@ -137,6 +137,7 @@ void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
                     CLogObjectCAN* pouLogObjCon = static_cast<CLogObjectCAN*> (pouLogObjBase);
                     BOOL bIsDataLog = pouLogObjCon->bLogData(CurrDataCAN);
 
+                    // PTV [1.6.4]
                     if(bIsDataLog == TRUE)
                     {
                         //m_bIsThreadBlocked = FALSE;
@@ -295,6 +296,23 @@ HRESULT CFrameProcessor_CAN::FPC_EnableLogging(BOOL bEnable)
     return EnableLogging(bEnable, CAN);
 }
 
+void CFrameProcessor_CAN::FPC_vCloseLogFile()
+{
+    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+
+    CBaseLogObject* pouCurrLogObj  = NULL;
+    for (USHORT i = 0; i < ushBlocks; i++)
+    {
+        pouCurrLogObj = m_omLogObjectArray.GetAt(i);
+
+        if (pouCurrLogObj != NULL)
+        {
+            pouCurrLogObj->bStopOnlyLogging();
+            //pouCurrLogObj->vCloseLogFile();
+        }
+    }
+}
+
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
 HRESULT CFrameProcessor_CAN::FPC_EnableFilter(USHORT ushBlk, BOOL bEnable)
@@ -314,6 +332,7 @@ BOOL CFrameProcessor_CAN::FPC_IsLoggingON(void)
     return IsLoggingON();
 }
 
+// PTV [1.6.4]
 BOOL CFrameProcessor_CAN::FPC_IsDataLogged(void)
 {
     return IsDataLogged();
@@ -328,6 +347,7 @@ void CFrameProcessor_CAN::FPC_DisableDataLogFlag(void)
 {
     DisableDataLogFlag();
 }
+// PTV [1.6.4] END
 // Query function - current filtering status
 BOOL CFrameProcessor_CAN::FPC_IsFilterON(void)
 {
@@ -407,12 +427,20 @@ HRESULT CFrameProcessor_CAN::FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLen
     return GetConfigData(ppvConfigData, unLength);
 }
 
+// Getter for the logging configuration data
+HRESULT CFrameProcessor_CAN::FPC_GetConfigData(xmlNodePtr pxmlNodePtr)
+{
+    return GetConfigData(pxmlNodePtr);
+}
 // Setter for the logging configuration data
 HRESULT CFrameProcessor_CAN::FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
     return SetConfigData(pvDataStream, omStrVersion);
 }
-
+HRESULT CFrameProcessor_CAN::FPC_SetConfigData(xmlDocPtr pDoc)
+{
+    return SetConfigData(pDoc, CAN);
+}
 // Empty log object
 void CFrameProcessor_CAN::vEmptyLogObjArray(CLogObjArray& omLogObjArray)
 {

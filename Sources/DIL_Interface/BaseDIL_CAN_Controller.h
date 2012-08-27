@@ -43,9 +43,9 @@ public:
     virtual HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;
     virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;
     virtual HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
-    
+    //MVN
     virtual HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam) = 0;
-    
+    //~MVN
     virtual HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
 
     // Specific function set

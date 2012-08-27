@@ -30,5 +30,7 @@ void gvResetController_CAN(BOOL);
 BOOL gvSetControllerMode_CAN(BOOL);
 // To connect/diaconnect with the Hardware
 BOOL gbStartStopHardware_CAN(BOOL) ;
+//to get first connected database name
+DWORD gdGetFirstCANdbName(char* , DWORD );
 
 #endif // APPSERVICESCAN_H__INCLUDED_
