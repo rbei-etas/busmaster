@@ -14870,7 +14870,14 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         break;
         case TXWND_SECTION_ID:
         {
+			if (pbyConfigData != NULL)
+			{
+				m_objTxHandler.vSetTxWndConfigData(pbyConfigData, nSize);
+			}
+			else
+			{
             m_objTxHandler.vSetTxWndConfigData(NULL);
+			}
         }
         break;
         case FILTER_SECTION_ID:

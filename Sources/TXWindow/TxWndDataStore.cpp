@@ -490,12 +490,12 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         {
             COPY_DATA_2(&m_bAutoSavedEnabled, pbyTemp,  sizeof(bool));
             bSetTxData(TX_AUTO_UPDATE_ENABLE, &m_bAutoSavedEnabled);        //save the status of auto save
-            COPY_DATA_2(&m_bDelayBetweenMsgBlocks, pbyTemp,  sizeof(bool));
-            bSetTxData(TX_DELAY_BTWN_MSG_BLCK_BOOL, &m_bDelayBetweenMsgBlocks);     //save the delay between msg
-            COPY_DATA_2(&m_unTimeDelayBtwnMsgBlocks, pbyTemp,  sizeof(UINT));
-            bSetTxData(TX_DELAY_BTWN_MSG_BLCK_UINT, &m_unTimeDelayBtwnMsgBlocks);       //save the delay between msg
-            CTxMsgManager::s_bDelayBetweenBlocksOnly = m_bDelayBetweenMsgBlocks;
-            CTxMsgManager::s_unTimeDelayBtnMsgBlocks = m_unTimeDelayBtwnMsgBlocks;
+            //COPY_DATA_2(&m_bDelayBetweenMsgBlocks, pbyTemp,  sizeof(bool));
+            //bSetTxData(TX_DELAY_BTWN_MSG_BLCK_BOOL, &m_bDelayBetweenMsgBlocks);     //save the delay between msg
+            //COPY_DATA_2(&m_unTimeDelayBtwnMsgBlocks, pbyTemp,  sizeof(UINT));
+            //bSetTxData(TX_DELAY_BTWN_MSG_BLCK_UINT, &m_unTimeDelayBtwnMsgBlocks);       //save the delay between msg
+            //CTxMsgManager::s_bDelayBetweenBlocksOnly = m_bDelayBetweenMsgBlocks;
+            //CTxMsgManager::s_unTimeDelayBtnMsgBlocks = m_unTimeDelayBtwnMsgBlocks;
         }
     }
     return pbyTemp;
