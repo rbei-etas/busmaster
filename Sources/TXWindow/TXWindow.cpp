@@ -261,7 +261,7 @@ USAGEMODE HRESULT TX_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
     return S_OK;
 }
 
-USAGEMODE HRESULT TX_vSetTxWndConfigData(xmlDocPtr pDoc)
+USAGEMODE HRESULT TX_vSetTxWndConfigDataXML(xmlDocPtr pDoc)
 {
     CTxMsgManager::s_podGetTxMsgManager()->vSetTxWndConfigData(pDoc);
     return S_OK;
