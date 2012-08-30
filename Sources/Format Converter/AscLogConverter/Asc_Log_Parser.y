@@ -226,7 +226,7 @@ Log_Creation_Time:
 		
 		// PTV[1.6.4]
 		// Added required headers at the start of the file
-		 fprintf(yyout, "***BUSMASTER Ver 1.6.6***\n");
+		 fprintf(yyout, "***BUSMASTER Ver 1.6.7***\n");
 		 fprintf(yyout, "***PROTOCOL CAN***\n");
          fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
          fprintf(yyout, "***[START LOGGING SESSION]***\n");
