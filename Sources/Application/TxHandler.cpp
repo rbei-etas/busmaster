@@ -35,8 +35,8 @@ typedef HRESULT (*DELETETXBLOCKMEMORY)();
 typedef HRESULT (*STOPTRANSMISSION)(UINT unMaxWaitTime);
 typedef HRESULT (*GETTXWNDCONFIGDATA)(BYTE*& pDesBuffer, int& nBuffSize);
 typedef HRESULT (*GETTXWNDCONFIGDATAXML)(xmlNodePtr pxmlNodePtr);
-//typedef HRESULT (*SETTXWNDCONFIGDATA)(BYTE* pSrcBuffer, int nBuffSize);
-typedef HRESULT (*SETTXWNDCONFIGDATA)(xmlDocPtr pDoc);
+typedef HRESULT (*SETTXWNDCONFIGDATA)(BYTE* pSrcBuffer, int nBuffSize);
+typedef HRESULT (*SETTXWNDCONFIGDATAXML)(xmlDocPtr pDoc);
 //typedef HRESULT (*ISTXWNDCONFIGCHANGED)();
 typedef UINT    (*GETTXBLOCKCOUNT)(void);
 typedef HRESULT (*SETTXSTOPFLAG)(BOOL bStartStop);
@@ -55,6 +55,7 @@ DELETETXBLOCKMEMORY         pfDeleteTxBlockMemory;
 STOPTRANSMISSION            pfStopTransmission;
 GETTXWNDCONFIGDATAXML       pfGetTxWndConfigData;
 SETTXWNDCONFIGDATA          pfSetTxWndConfigData;
+SETTXWNDCONFIGDATAXML		pfSetTxWndConfigDataXML;
 //ISTXWNDCONFIGCHANGED      pfIsTxWndConfigChanged;
 GETTXBLOCKCOUNT             pfGetTxBlockCount;
 SETTXSTOPFLAG               pfSetTxStopFlag;
@@ -150,6 +151,7 @@ void CTxHandler::vloadFuncPtrAddress()
     pfStopTransmission                  = (STOPTRANSMISSION)GetProcAddress(m_hTxHandle, "TX_vStopTransmission");
     pfGetTxWndConfigData                = (GETTXWNDCONFIGDATAXML)GetProcAddress(m_hTxHandle, "TX_vGetTxWndConfigData");
     pfSetTxWndConfigData                = (SETTXWNDCONFIGDATA)GetProcAddress(m_hTxHandle, "TX_vSetTxWndConfigData");
+	pfSetTxWndConfigDataXML             = (SETTXWNDCONFIGDATAXML)GetProcAddress(m_hTxHandle, "TX_vSetTxWndConfigDataXML");
     //pfIsTxWndConfigChanged                = (ISTXWNDCONFIGCHANGED)GetProcAddress(m_hTxHandle, "TX_bIsTxWndConfigChanged");
     pfSetTxStopFlag                     = (SETTXSTOPFLAG)GetProcAddress(m_hTxHandle, "TX_vSetTxStopFlag");
     pfGetTxStopFlag                     = (GETTXSTOPFLAG)GetProcAddress(m_hTxHandle, "TX_bGetTxStopFlag");
@@ -409,12 +411,16 @@ void CTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
 *******************************************************************************/
 void CTxHandler::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
+	if(pfSetTxWndConfigData != NULL)
+    {
+        pfSetTxWndConfigData(pSrcBuffer,nBuffSize);
+    }
 }
 void CTxHandler::vSetTxWndConfigData(xmlDocPtr pDoc)
 {
-    if(pfSetTxWndConfigData != NULL)
+    if(pfSetTxWndConfigDataXML != NULL)
     {
-        pfSetTxWndConfigData(pDoc);
+        pfSetTxWndConfigDataXML(pDoc);
     }
 }
 
