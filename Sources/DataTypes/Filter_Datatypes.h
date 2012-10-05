@@ -83,16 +83,16 @@ typedef struct tagFilterName
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-	// XML PTV
-	void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
-	void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
-	// XML PTV
+    // XML PTV
+    void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
+    void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
+    // XML PTV
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
 
-	INT nSetXMLConfigData(xmlNodePtr pFilter);
-	BOOL nFilterType(string strFilteType);
+    INT nSetXMLConfigData(xmlNodePtr pFilter);
+    BOOL nFilterType(string strFilteType);
 
 } SFILTERNAME, *PSFILTERNAME;
 
@@ -123,15 +123,15 @@ typedef struct tagSFILTER
     // Called to get the filter object's data into a stream buffer.
     virtual BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-	// PTV XML
-	virtual void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
-	// PTV XML
+    // PTV XML
+    virtual void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
+    // PTV XML
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     virtual BYTE* pbSetConfigData(BYTE* pbTarget);
 
-	INT nSetXMLConfigData(xmlNodePtr pNodePtr);
-	eDirection eGetMsgDirection(string strDirection);
+    INT nSetXMLConfigData(xmlNodePtr pNodePtr);
+    eDirection eGetMsgDirection(string strDirection);
 } SFILTER, *PSFILTER;
 
 struct SFILTER_CAN : public SFILTER
@@ -159,18 +159,18 @@ struct SFILTER_CAN : public SFILTER
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-	// PTV XML
-	void pbGetConfigData(xmlNodePtr pNodePtr) const;
-	void pbSetConfigData(xmlNodePtr pNodePtr);
-	// PTV XML
+    // PTV XML
+    void pbGetConfigData(xmlNodePtr pNodePtr) const;
+    void pbSetConfigData(xmlNodePtr pNodePtr);
+    // PTV XML
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
-	//MVN
-	INT nSetXMLConfigData(xmlNodePtr pNodePtr);
-	INT nGetIDType(string strIDType);
-	INT nGetMsgType(string strMsgType);
-	//~MVN
+    //MVN
+    INT nSetXMLConfigData(xmlNodePtr pNodePtr);
+    INT nGetIDType(string strIDType);
+    INT nGetMsgType(string strMsgType);
+    //~MVN
 };
 typedef SFILTER_CAN* PSFILTER_CAN;
 
@@ -197,9 +197,9 @@ struct SFILTER_FLEXRAY : public SFILTER
 
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
-	// XML PTV
-	void pbGetConfigData(xmlNodePtr pNodePtr) const;
-	// XML PTV
+    // XML PTV
+    void pbGetConfigData(xmlNodePtr pNodePtr) const;
+    // XML PTV
 
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
@@ -229,9 +229,9 @@ struct SFILTER_MCNET : public SFILTER
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-	// PTV XML
-	void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
-	// PTV XML
+    // PTV XML
+    void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
+    // PTV XML
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
@@ -259,9 +259,9 @@ struct SFILTER_J1939 : public SFILTER
 
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
-	// PTV XML
-	void pbGetConfigData(xmlNodePtr pNodePtr) const;
-	// PTV XML
+    // PTV XML
+    void pbGetConfigData(xmlNodePtr pNodePtr) const;
+    // PTV XML
 
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
@@ -293,15 +293,15 @@ typedef struct tagFilterSet
     // Called to get the filter block set's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-	// XML PTV
-	void pbGetConfigData(xmlNodePtr pNodePtr) const;
+    // XML PTV
+    void pbGetConfigData(xmlNodePtr pNodePtr) const;
 
-	void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr, bool& Result);
-	// XML PTV
+    void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr, bool& Result);
+    // XML PTV
     // Called to retrieve a filter block set's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget, bool& Result);
-	int nSetXMLConfigData( ETYPE_BUS eBus, xmlNodePtr pFilter);
+    int nSetXMLConfigData( ETYPE_BUS eBus, xmlNodePtr pFilter);
 
     static tagFilterSet* psGetFilterSetPointer(tagFilterSet* psSet, UINT Count, char* acFilterName);
 
@@ -334,25 +334,25 @@ struct SFILTERAPPLIED
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-	// PTV XML
-	void pbGetConfigData(xmlNodePtr pNodePtr) const;
-	void pbGetConfigFilterData(xmlNodePtr pNodePtr) const;
-	// PTV XML
+    // PTV XML
+    void pbGetConfigData(xmlNodePtr pNodePtr) const;
+    void pbGetConfigFilterData(xmlNodePtr pNodePtr) const;
+    // PTV XML
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget, bool& Result);
 
-	// PTV XML
-	void pbSetConfigData(SFILTERAPPLIED &pFilterAppliedCAN, xmlNodeSetPtr pNodeSet,xmlDocPtr pdocptr, bool& Result);
-	// PTV XML
+    // PTV XML
+    void pbSetConfigData(SFILTERAPPLIED& pFilterAppliedCAN, xmlNodeSetPtr pNodeSet,xmlDocPtr pdocptr, bool& Result);
+    // PTV XML
 
-	int nGetFiltersFromName(PSFILTERSET& sFilterDest, CStringArray& omStrNames);
+    int nGetFiltersFromName(PSFILTERSET& sFilterDest, CStringArray& omStrNames);
 
-	//MVN
-	int nSetXMLConfigData(xmlDocPtr& pDocPtr);
-	int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, CStringArray& omStrNames);
-	int GetFilterNameIndex(string strName);
-	//~MVN
+    //MVN
+    int nSetXMLConfigData(xmlDocPtr& pDocPtr);
+    int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, CStringArray& omStrNames);
+    int GetFilterNameIndex(string strName);
+    //~MVN
 };
 
 /******************************************************************************
@@ -598,13 +598,13 @@ template <typename SFRAMEINFO_BASIC_BUS>
 void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigFilterData(xmlNodePtr pNodePtr) const
 {
     BYTE byVersion = 0x1;
-    
+
     for (USHORT i = 0; i < m_ushTotal; i++)
     {
         CString strFilterName = m_psFilters[i].m_sFilterName.m_acFilterName;
 
-		xmlNodePtr pFilterPtr = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_FILTER, BAD_CAST strFilterName.GetBufferSetLength(strFilterName.GetLength()));
-		xmlAddChild(pNodePtr, pFilterPtr);
+        xmlNodePtr pFilterPtr = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_FILTER, BAD_CAST strFilterName.GetBufferSetLength(strFilterName.GetLength()));
+        xmlAddChild(pNodePtr, pFilterPtr);
     }
 
     //return pbTStream;
@@ -613,16 +613,87 @@ template <typename SFRAMEINFO_BASIC_BUS>
 void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) const
 {
     BYTE byVersion = 0x1;
-    
+
+    xmlNodePtr pFilterTag;
+
+    xmlNodePtr pNodeCanFilterPtr = NULL;
+    xmlNodePtr pNodeMCNEtFilterPtr = NULL;
+    xmlNodePtr pNodeJ1939FilterPtr = NULL;
+    xmlNodePtr pNodeFLEXRAYFilterPtr = NULL;
+    xmlNodePtr pNodeLINFilterPtr = NULL;
+    xmlNodePtr pNodeMOSTFilterPtr = NULL;
+
     for (USHORT i = 0; i < m_ushTotal; i++)
     {
-		//// Adding Filter to the xml
-		//xmlNodePtr pNodeFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FILTER);
-		//xmlAddChild(pNodePtr, pNodeFilterPtr);
+        //// Adding Filter to the xml
+        //xmlNodePtr pNodeFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FILTER);
+        //xmlAddChild(pNodePtr, pNodeFilterPtr);
 
+        if(m_psFilters[i].m_eCurrBus == MCNET)
+        {
+            if(pNodeMCNEtFilterPtr == NULL)
+            {
+                pNodeMCNEtFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MCNETFILTERS);
+                xmlAddChild(pNodePtr, pNodeMCNEtFilterPtr);
+            }
 
+            m_psFilters[i].pbGetConfigData(pNodeMCNEtFilterPtr);
+        }
 
-        m_psFilters[i].pbGetConfigData(pNodePtr);		
+        if(m_psFilters[i].m_eCurrBus == J1939)
+        {
+            if(pNodeJ1939FilterPtr == NULL)
+            {
+                pNodeJ1939FilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_J1939FILTERS);
+                xmlAddChild(pNodePtr, pNodeJ1939FilterPtr);
+            }
+
+            m_psFilters[i].pbGetConfigData(pNodeJ1939FilterPtr);
+        }
+
+        if(m_psFilters[i].m_eCurrBus == FLEXRAY)
+        {
+            if(pNodeFLEXRAYFilterPtr == NULL)
+            {
+                pNodeFLEXRAYFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FLEXRAYFILTERS);
+                xmlAddChild(pNodePtr, pNodeFLEXRAYFilterPtr);
+            }
+
+            m_psFilters[i].pbGetConfigData(pNodeFLEXRAYFilterPtr);
+        }
+
+        if(m_psFilters[i].m_eCurrBus == LIN)
+        {
+            if(pNodeLINFilterPtr == NULL)
+            {
+                pNodeLINFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_LINFILTERS);
+                xmlAddChild(pNodePtr, pNodeLINFilterPtr);
+            }
+
+            m_psFilters[i].pbGetConfigData(pNodeLINFilterPtr);
+        }
+
+        if(m_psFilters[i].m_eCurrBus == MOST)
+        {
+            if(pNodeMOSTFilterPtr == NULL)
+            {
+                pNodeMOSTFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MOSTFILTERS);
+                xmlAddChild(pNodePtr, pNodeMOSTFilterPtr);
+            }
+
+            m_psFilters[i].pbGetConfigData(pNodeMOSTFilterPtr);
+        }
+
+        if(m_psFilters[i].m_eCurrBus == CAN)
+        {
+            if(pNodeCanFilterPtr == NULL)
+            {
+                pNodeCanFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_CANFILTERS);
+                xmlAddChild(pNodePtr, pNodeCanFilterPtr);
+            }
+
+            m_psFilters[i].pbGetConfigData(pNodeCanFilterPtr);
+        }
     }
 
     //return pbTStream;
@@ -682,7 +753,7 @@ BYTE* SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(BYTE* pbSource, bool
 
 // PTV XML
 template <typename SFRAMEINFO_BASIC_BUS>
-void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED &pFilterAppliedCAN, xmlNodeSetPtr pNodeSetPtr,xmlDocPtr pdocptr, bool& Result)
+void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilterAppliedCAN, xmlNodeSetPtr pNodeSetPtr,xmlDocPtr pdocptr, bool& Result)
 {
     vClear();
 
@@ -693,44 +764,44 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED &pFilt
     //COPY_DATA_2(&m_bEnabled, pbSStream, sizeof(m_bEnabled));
     //COPY_DATA_2(&m_ushTotal, pbSStream, sizeof(m_ushTotal));
 
-	m_ushTotal = pNodeSetPtr->nodeNr;
-	CStringArray omStrFilters;
+    m_ushTotal = pNodeSetPtr->nodeNr;
+    CStringArray omStrFilters;
 
 
-	for(INT nIndex = 0; nIndex < m_ushTotal; nIndex++)
-	{
-		xmlNodePtr pNodePtr = pNodeSetPtr->nodeTab[nIndex];		
+    for(INT nIndex = 0; nIndex < m_ushTotal; nIndex++)
+    {
+        xmlNodePtr pNodePtr = pNodeSetPtr->nodeTab[nIndex];
 
-		if ((!xmlStrcmp(pNodePtr->name, (const xmlChar *)"Filter"))) 
-		{
-			xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-			if(NULL != key)
-			{
-				omStrFilters.Add((char*)key);
-				xmlFree(key);
-			}
-		}
-	}
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                omStrFilters.Add((char*)key);
+                xmlFree(key);
+            }
+        }
+    }
 
-	if( omStrFilters.GetSize() > 0 && pdocptr != NULL)
-	{
-		SFILTERAPPLIED_CAN sFilterApplied;
-		if( sFilterApplied.nSetXMLConfigData(pdocptr) == S_OK)
-		{
-			/*for(INT nI = 0; nI < omStrFilters.GetSize(); nI++)
-			{
-				CString strFilterName = m_psFilters[nI].m_sFilterName.m_acFilterName;
+    if( omStrFilters.GetSize() > 0 && pdocptr != NULL)
+    {
+        SFILTERAPPLIED_CAN sFilterApplied;
+        if( sFilterApplied.nSetXMLConfigData(pdocptr) == S_OK)
+        {
+            /*for(INT nI = 0; nI < omStrFilters.GetSize(); nI++)
+            {
+                CString strFilterName = m_psFilters[nI].m_sFilterName.m_acFilterName;
 
-				for(INT nIFilterInfo = 0; nIFilterInfo < m_psFilters[nI].m_psFilterInfo->unGetSize(); nIFilterInfo++)
-				{
-					m_psFilters[nI].m_psFilterInfo[nIFilterInfo].m_dwMsgIDFrom;
-				}
-			}*/
-			sFilterApplied.nGetFiltersFromName(pFilterAppliedCAN, omStrFilters);
-		}
-	}
+                for(INT nIFilterInfo = 0; nIFilterInfo < m_psFilters[nI].m_psFilterInfo->unGetSize(); nIFilterInfo++)
+                {
+                    m_psFilters[nI].m_psFilterInfo[nIFilterInfo].m_dwMsgIDFrom;
+                }
+            }*/
+            sFilterApplied.nGetFiltersFromName(pFilterAppliedCAN, omStrFilters);
+        }
+    }
 
-	/*m_ushTotal = pNodeSetPtr->nodeNr;
+    /*m_ushTotal = pNodeSetPtr->nodeNr;
 
     if (m_ushTotal > 0)
     {
@@ -757,99 +828,99 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED &pFilt
 template <typename SFRAMEINFO_BASIC_BUS>
 int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, CStringArray& omStrFilters)
 {
-	int nRealFilters = 0;
-	for(int i = 0; i < omStrFilters.GetSize(); i++)
-	{
-		int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i));
-		if(nIndex >= 0)
-		{
-			nRealFilters++;
-		}
-		else
-		{
-			omStrFilters.RemoveAt(i);
-		}
-	}
-	sFilterDest.m_bEnabled = m_bEnabled;
-	sFilterDest.m_ushTotal = omStrFilters.GetSize();
-	sFilterDest.m_psFilters = new SFILTERSET[sFilterDest.m_ushTotal];
-	
-	for(int i = 0; i < omStrFilters.GetSize(); i++)
-	{
-		int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i));
-		if(nIndex >= 0)
-		{
-			sFilterDest.m_psFilters[i].bClone(m_psFilters[nIndex]);
-		}
-	}
-	return S_OK;
+    int nRealFilters = 0;
+    for(int i = 0; i < omStrFilters.GetSize(); i++)
+    {
+        int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i));
+        if(nIndex >= 0)
+        {
+            nRealFilters++;
+        }
+        else
+        {
+            omStrFilters.RemoveAt(i);
+        }
+    }
+    sFilterDest.m_bEnabled = m_bEnabled;
+    sFilterDest.m_ushTotal = omStrFilters.GetSize();
+    sFilterDest.m_psFilters = new SFILTERSET[sFilterDest.m_ushTotal];
+
+    for(int i = 0; i < omStrFilters.GetSize(); i++)
+    {
+        int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i));
+        if(nIndex >= 0)
+        {
+            sFilterDest.m_psFilters[i].bClone(m_psFilters[nIndex]);
+        }
+    }
+    return S_OK;
 }
 template <typename SFRAMEINFO_BASIC_BUS>
 int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::GetFilterNameIndex(string strName)
 {
-	int nIndex = -1;
-	for(int i =0 ; i < m_ushTotal; i++)
-	{
-		if(strName == m_psFilters[i].m_sFilterName.m_acFilterName)
-		{			
-			nIndex = i;
-			break;
-		}
-	}
-	return nIndex;
+    int nIndex = -1;
+    for(int i =0 ; i < m_ushTotal; i++)
+    {
+        if(strName == m_psFilters[i].m_sFilterName.m_acFilterName)
+        {
+            nIndex = i;
+            break;
+        }
+    }
+    return nIndex;
 }
 
 template <typename SFRAMEINFO_BASIC_BUS>
 int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(xmlDocPtr& pDocPtr)
 {
-	int nRetval = S_OK;
-	vClear();
-	//BYTE* pbSStream = pbSource;
+    int nRetval = S_OK;
+    vClear();
+    //BYTE* pbSStream = pbSource;
     //BYTE byVersion = 0;
     //COPY_DATA_2(&byVersion, pbSStream, sizeof(BYTE));
     //COPY_DATA_2(&m_bEnabled, pbSStream, sizeof(m_bEnabled));
     //COPY_DATA_2(&m_ushTotal, pbSStream, sizeof(m_ushTotal));
-	
 
-	xmlNodeSetPtr pNodeSet;
-	xmlXPathObjectPtr pPathObject;
 
-	xmlChar *pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Filters/Filter";
-	pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
-	if( NULL != pPathObject )
-	{
-		pNodeSet = pPathObject->nodesetval;
-		if(NULL != pNodeSet) 
-		{
-			m_ushTotal = pNodeSet->nodeNr;
-			if (m_ushTotal > 0)
-			{
-				m_psFilters = new SFILTERSET[m_ushTotal];
-				if (NULL != m_psFilters)
-				{
-					for (USHORT i = 0; i < m_ushTotal; i++)
-					{
-						m_psFilters[i].nSetXMLConfigData(CAN, pNodeSet->nodeTab[i]);
-					}
-				}
-				else
-				{
-					nRetval = S_FALSE;
-				}
-			}
-		}
-		else
-		{
-			nRetval = S_FALSE;
-		}
-		xmlXPathFreeObject (pPathObject);
-	}
-	else
-	{
-		nRetval = S_FALSE;
-	}
+    xmlNodeSetPtr pNodeSet;
+    xmlXPathObjectPtr pPathObject;
 
-    
+    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Filters/Filter";
+    pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
+    if( NULL != pPathObject )
+    {
+        pNodeSet = pPathObject->nodesetval;
+        if(NULL != pNodeSet)
+        {
+            m_ushTotal = pNodeSet->nodeNr;
+            if (m_ushTotal > 0)
+            {
+                m_psFilters = new SFILTERSET[m_ushTotal];
+                if (NULL != m_psFilters)
+                {
+                    for (USHORT i = 0; i < m_ushTotal; i++)
+                    {
+                        m_psFilters[i].nSetXMLConfigData(CAN, pNodeSet->nodeTab[i]);
+                    }
+                }
+                else
+                {
+                    nRetval = S_FALSE;
+                }
+            }
+        }
+        else
+        {
+            nRetval = S_FALSE;
+        }
+        xmlXPathFreeObject (pPathObject);
+    }
+    else
+    {
+        nRetval = S_FALSE;
+    }
+
+
 
     if (S_FALSE == nRetval)
     {

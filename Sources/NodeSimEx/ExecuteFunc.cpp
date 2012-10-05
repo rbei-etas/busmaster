@@ -245,12 +245,12 @@ CExecuteFunc::~CExecuteFunc()
     // Delete DLL Handlers array of structure.
     if(m_psOnDLLHandlers != NULL )
     {
-        delete m_psOnDLLHandlers;
+        delete []m_psOnDLLHandlers;
         m_psOnDLLHandlers = NULL;
     }
     if(m_psOnBusEventHandlers != NULL)
     {
-        delete m_psOnBusEventHandlers;
+        delete []m_psOnBusEventHandlers;
         m_psOnBusEventHandlers = NULL;
     }
     // Free Cirical Section Resource
@@ -2018,7 +2018,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                 {
                     SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_eBus).
                                                 m_odMsgNameMsgCodeListDb.GetNext(MainPos);
-					sMsgCode.m_dwMsgCode = -1;
+                    sMsgCode.m_dwMsgCode = -1;
                     pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgCode);
                     if(pos != NULL)         //if present stop searching
                     {

@@ -61,6 +61,7 @@ public:
     CComboBox   m_omComboSgType;
     SHORT    m_shByteIndex;
     UINT    m_unSgLen;
+    UINT m_unMinVal;
     CString m_omStrSignalName;
     BYTE    m_byStartBit;
     CString m_omStrUnit;
@@ -79,7 +80,7 @@ protected:
 public:
     bool IsRangeChanged();
 
-	BOOL ValidateSignalShortName(CString omStrSignalShortName);
+    BOOL ValidateSignalShortName(CString omStrSignalShortName);
     // Implementation
 protected:
 
@@ -115,7 +116,7 @@ private:
     BOOL bIsMinimumValueValid();
     BOOL bIsDataModified(); //KSS
     void vSetInitialData(); //KSS
-	void SaveSigLength();   //added to save length and calculate range of data
+    BOOL SaveSigLength();   //added to save length and calculate range of data
 
     CString m_omStrSgType;
     int m_nDataFormat;

@@ -144,6 +144,9 @@
 #define defDEFAULT_XRANGE_MAX   10
 #define defDEFAULT_XRANGE_MIN   0
 
+#define defDEFAULT_YRANGE_MAX   100
+#define defDEFAULT_YRANGE_MIN   0
+
 #define defSTR_Y_AXIS_FORMAT        _T("%0.4f")
 #define defSTR_X_AXIS_FORMAT        _T("%0.3fS")
 

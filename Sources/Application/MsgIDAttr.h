@@ -33,6 +33,7 @@ public:
     bool m_bForEdit;
     BOOL m_bDBMessage;
     UINT m_nID;
+    UINT m_nPreviousID;
     COLORREF m_sColour;
     CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent = NULL);   // standard constructor
 

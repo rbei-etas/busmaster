@@ -34,6 +34,7 @@
 static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };
 WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
 SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
+CRect g_rcParent;
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
@@ -71,6 +72,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
             m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
             m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
         }
+        g_rcParent.top = -1;
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
@@ -121,18 +123,17 @@ USAGEMODE HRESULT SG_CreateGraphWindow( CMDIFrameWnd* pParentWnd,  short eBusTyp
         {
             if( pParentWnd != NULL )
             {
+                // Get Main Frame Size
+                ::GetWindowRect(pParentWnd->m_hWnd, &g_rcParent);
                 // Get size from configuration module
                 if( m_sGraphWndPlacement[eBusType].rcNormalPosition.top == -1 )
                 {
-                    CRect rcParent;
-                    // Get Main Frame Size
-                    ::GetWindowRect(pParentWnd->m_hWnd, &rcParent);
                     m_sGraphWndPlacement[eBusType].rcNormalPosition.top = 0;
                     m_sGraphWndPlacement[eBusType].rcNormalPosition.left = 0;
                     m_sGraphWndPlacement[eBusType].rcNormalPosition.right =
-                        rcParent.right-10;
+                        g_rcParent.right-10;
                     m_sGraphWndPlacement[eBusType].rcNormalPosition.bottom =
-                        rcParent.bottom- (rcParent.bottom/4);
+                        g_rcParent.bottom- (g_rcParent.bottom/4);
                 }
                 // Create Child Window
                 if( m_pomGraphWindows[eBusType]->Create( strMDIClass, defSTR_GRAPH_WINDOW_NAME,
@@ -292,7 +293,15 @@ USAGEMODE HRESULT SG_SetWindowSplitterPos( short eBusType,
         WINDOWPLACEMENT& sWndPlacement,
         SGRAPHWNDSPLITTERDATA& sGraphSplitter)
 {
-
+    /* If window position requires default values */
+    if( sWndPlacement.rcNormalPosition.top == -1 && g_rcParent.top != -1 )
+    {
+        /*  g_rcParent holds main frame rect co-ordinates */
+        sWndPlacement.rcNormalPosition.top    = 0;
+        sWndPlacement.rcNormalPosition.left   = 0;
+        sWndPlacement.rcNormalPosition.right  = g_rcParent.right-10;
+        sWndPlacement.rcNormalPosition.bottom = g_rcParent.bottom- (g_rcParent.bottom/4);
+    }
     if(m_pomGraphWindows[eBusType])
     {
         m_pomGraphWindows[eBusType]->SetWindowPlacement(&sWndPlacement);

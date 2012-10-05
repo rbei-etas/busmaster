@@ -1,15 +1,15 @@
 /*******************************************************************************
-  Project       :  CAN-Monitor                                      
-  FileName      :  Wrapper_J1939.c                                         
-  Description   :  
-                   
+  Project       :  CAN-Monitor
+  FileName      :  Wrapper_J1939.c
+  Description   :
+
   $Log:   Y:/EMC2/Projects/CAN_Monitor_Maintenance/Archives/Source/Misc/GCC/Wrapper_J1939.c_v  $
- * 
+ *
  *    Rev 1.0   02 Mar 2011 17:37:12   rac2kor
- *  
+ *
 
   Author(s)     :  Amarnath Shastry
-  Date Created  :  20/03/2002                                             
+  Date Created  :  20/03/2002
   Modified By   :  Ravikumar Patil  on 04.03.03
 *******************************************************************************/
 #include <WINDOWS.h>
@@ -23,13 +23,13 @@ static APPSENDPROC_J sg_SendMsgFunc = NULL;
     Function Name    :  vSetSendMsgProcAddress
     Input(s)         :  APPFUNCPROC which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amarnath Shastry
     Date Created     :  20-Feb-2002
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetSendMsgProcAddress(APPSENDPROC_J pAppFunc)
 {
@@ -40,7 +40,7 @@ void vSetSendMsgProcAddress(APPSENDPROC_J pAppFunc)
     Function Name    :  SendMsg
     Input(s)         :  message ID, data length, Data
     Output           :  Returns 1->success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to send a message to CAN bus
     Member of        :  None (Global function)
     Friend of        :  None
@@ -66,13 +66,13 @@ static LOGENABLE sg_EnableLoggingFunc = NULL;
     Function Name    :  vSetEnableLoggingProcAddress
     Input(s)         :  LOGENABLE which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  20-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetEnableLoggingProcAddress(LOGENABLE pEnableLoggingFunc)
 {
@@ -84,13 +84,13 @@ static LOGENABLE sg_DisableLoggingFunc = NULL;
     Function Name    :  vSetDisableLoggingProcAddress
     Input(s)         :  LOGENABLE which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  20-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetDisableLoggingProcAddress(LOGENABLE pDisableLoggingFunc)
 {
@@ -101,13 +101,13 @@ void vSetDisableLoggingProcAddress(LOGENABLE pDisableLoggingFunc)
     Function Name    :  EnableLogging
     Input(s)         :  None
     Output           :  Returns 1->success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to Start\Enable logging
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  20-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 UINT EnableLogging()
 {
@@ -125,13 +125,13 @@ UINT EnableLogging()
     Function Name    :  DisableLogging
     Input(s)         :  None
     Output           :  Returns 1->success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to Stop\Disable logging
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  20-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 UINT DisableLogging()
 {
@@ -152,13 +152,13 @@ static WRITETOLOGFILE sg_WriteToLogFile = NULL;
     Function Name    :  vSetWriteToLogFileProcAddress
     Input(s)         :  WRITETOLOGFILE which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  21-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetWriteToLogFileProcAddress(WRITETOLOGFILE pLogFileFunc)
 {
@@ -169,13 +169,13 @@ void vSetWriteToLogFileProcAddress(WRITETOLOGFILE pLogFileFunc)
     Function Name    :  WriteToLogFile
     Input(s)         :  Formatted string to be Logged to file
     Output           :  Returns 1->success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to log a string to file
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  21-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 UINT WriteToLogFile(char* OutStr)
 {
@@ -197,13 +197,13 @@ static WRITETOTRACE sg_WriteToTrace = NULL;
     Function Name    :  vSetTraceProcAddress
     Input(s)         :  WRITETOTRACE which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  24-Feb-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetTraceProcAddress(WRITETOTRACE pTraceFunc)
 {
@@ -215,7 +215,7 @@ void vSetTraceProcAddress(WRITETOTRACE pTraceFunc)
     Function Name    :  Trace
     Input(s)         :  Formatted string to be Logged to file
     Output           :  Returns 1->success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to write a formatted string to Trace window
     Member of        :  None (Global function)
     Friend of        :  None
@@ -223,20 +223,20 @@ void vSetTraceProcAddress(WRITETOTRACE pTraceFunc)
     Date Created     :  24-Feb-2003
     Modifications    :  Amitesh Bharti,
                         31.10.2003, Review comment incorporated.
-						Arun Bellatti
-						02-06-2005,Take variable arguments
+                        Arun Bellatti
+                        02-06-2005,Take variable arguments
 ******************************************************************************/
 UINT Trace(char* OutStr,...)
 {
-	int ibufflength ;
-	UINT nResult ;
-	char ucbuffer[1024] ;
-	va_list arglist ;
-	
-	va_start(arglist,OutStr);
-	vsprintf(ucbuffer, OutStr,arglist);
+    int ibufflength ;
+    UINT nResult ;
+    char ucbuffer[1024] ;
+    va_list arglist ;
 
-	nResult = ERR_INVALID_ADDRESS;
+    va_start(arglist,OutStr);
+    vsprintf(ucbuffer, OutStr,arglist);
+
+    nResult = ERR_INVALID_ADDRESS;
 
     if (sg_WriteToTrace != NULL && OutStr != NULL)
     {
@@ -252,13 +252,13 @@ static APPONLINEOFFLINE_J sg_GoOffline = NULL;
     Function Name    :  vSetGoOfflineProcAddress
     Input(s)         :  GOONLINEOFFLINE which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  05-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetGoOfflineProcAddress(APPONLINEOFFLINE_J pGoOffline)
 {
@@ -270,13 +270,13 @@ static APPONLINEOFFLINE_J sg_GoOnline = NULL;
     Function Name    :  vSetGoOnlineProcAddress
     Input(s)         :  GOONLINEOFFLINE which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  05-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetGoOnlineProcAddress(APPONLINEOFFLINE_J pGoOnline)
 {
@@ -287,13 +287,13 @@ void vSetGoOnlineProcAddress(APPONLINEOFFLINE_J pGoOnline)
     Function Name    :  GoOnline
     Input(s)         :  None
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to Activate Handlers
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  05-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 UINT GoOnline()
 {
@@ -311,13 +311,13 @@ UINT GoOnline()
     Function Name    :  GoOffline
     Input(s)         :  None
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to Deactivate Handlers
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  05-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 UINT GoOffline()
 {
@@ -336,13 +336,13 @@ static STARTSTOPTIMER sg_StopTimer = NULL;
     Function Name    :  vSetStopTimerProcAddress
     Input(s)         :  STARTSTOPTIMER which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  10-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetStopTimerProcAddress(STARTSTOPTIMER pStopTimer)
 {
@@ -354,13 +354,13 @@ static STARTSTOPTIMER sg_StartTimer = NULL;
     Function Name    :  vSetStartTimerProcAddress
     Input(s)         :  STARTSTOPTIMER which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Ravikumar Patil
     Date Created     :  10-Mar-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetStartTimerProcAddress(STARTSTOPTIMER pStartTimer)
 {
@@ -370,7 +370,7 @@ void vSetStartTimerProcAddress(STARTSTOPTIMER pStartTimer)
     Function Name    :  StartTimer
     Input(s)         :  Timer name and type
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to Start a timer
     Member of        :  None (Global function)
     Friend of        :  None
@@ -399,7 +399,7 @@ UINT StartTimer(char* TimerName, UINT type)
     Function Name    :  StopTimer
     Input(s)         :  Timer name
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
+    Functionality    :  This is a interface\wrapper function and user can
                         call this function to Start a timer
     Member of        :  None (Global function)
     Friend of        :  None
@@ -425,17 +425,17 @@ static SETTIMERVAL sg_SetTimerVal = NULL;
     Function Name    :  vSetTimerValProcAddress
     Input(s)         :  SETTIMERVAL which is a pointer to a global function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  28-10-2003
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal)
 {
-     sg_SetTimerVal = pSetTimerVal ;
+    sg_SetTimerVal = pSetTimerVal ;
 }
 
 
@@ -443,8 +443,8 @@ void vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal)
     Function Name    :  SetTimerVal
     Input(s)         :  Timer name, Timer Value
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function and user can 
-                        call this function to Change the timer value and Start 
+    Functionality    :  This is a interface\wrapper function and user can
+                        call this function to Change the timer value and Start
                         it in monoshot mode.
     Member of        :  None (Global function)
     Friend of        :  None
@@ -469,20 +469,20 @@ static ENABLEDISABLEALLHANDLERS sg_AllHandler = NULL;
 
 /******************************************************************************
     Function Name    :  vSetEnableMsgHandlersProcAddress
-    Input(s)         :  ENABLEDISABLEMSGHANDLER which is a pointer to a global 
+    Input(s)         :  ENABLEDISABLEMSGHANDLER which is a pointer to a global
                         function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetEnableAllHandlersProcAddress(ENABLEDISABLEALLHANDLERS pAllHandlers)
 {
-     sg_AllHandler = pAllHandlers ;
+    sg_AllHandler = pAllHandlers ;
 }
 
 
@@ -490,14 +490,14 @@ void vSetEnableAllHandlersProcAddress(ENABLEDISABLEALLHANDLERS pAllHandlers)
     Function Name    :  EnableAllHandlers
     Input(s)         :  BOOL : TRUE or FALSE
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function. User can 
-                        call this function to enable or disable All handlers 
+    Functionality    :  This is a interface\wrapper function. User can
+                        call this function to enable or disable All handlers
                         execution.
     Member of        :  None (Global function)
     Friend of        :  None
-    Author(s)        :  
-    Date Created     :  
-    Modifications    :  
+    Author(s)        :
+    Date Created     :
+    Modifications    :
 ******************************************************************************/
 BOOL EnableAllHandlers(BOOL Enable)
 {
@@ -513,20 +513,20 @@ static ENABLEDISABLEMSGHANDLERS sg_MsgHandler = NULL;
 
 /******************************************************************************
     Function Name    :  vSetEnableMsgHandlersProcAddress
-    Input(s)         :  ENABLEDISABLEMSGHANDLER which is a pointer to a global 
+    Input(s)         :  ENABLEDISABLEMSGHANDLER which is a pointer to a global
                         function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers)
 {
-     sg_MsgHandler = pMsgHandlers ;
+    sg_MsgHandler = pMsgHandlers ;
 }
 
 
@@ -534,14 +534,14 @@ void vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers)
     Function Name    :  EnableMsgHandlers
     Input(s)         :  BOOL : TRUE or FALSE
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function. User can 
-                        call this function to enable or disable message handlers 
+    Functionality    :  This is a interface\wrapper function. User can
+                        call this function to enable or disable message handlers
                         execution.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL EnableMsgHandlers(BOOL Enable)
 {
@@ -556,20 +556,20 @@ static ENABLEDISABLEKEYHANDLERS sg_KeyHandler = NULL;
 
 /******************************************************************************
     Function Name    :  vSetEnableKeyHandlersProcAddress
-    Input(s)         :  ENABLEDISABLEKEYHANDLER which is a pointer to a global 
+    Input(s)         :  ENABLEDISABLEKEYHANDLER which is a pointer to a global
                         function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers)
 {
-     sg_KeyHandler = pKeyHandlers ;
+    sg_KeyHandler = pKeyHandlers ;
 }
 
 
@@ -577,14 +577,14 @@ void vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers)
     Function Name    :  EnableKeyHandlers
     Input(s)         :  BOOL : TRUE or FALSE
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function. User can 
-                        call this function to enable or disable key handlers 
+    Functionality    :  This is a interface\wrapper function. User can
+                        call this function to enable or disable key handlers
                         execution.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL EnableKeyHandlers(BOOL Enable)
 {
@@ -600,20 +600,20 @@ static ENABLEDISABLEERRORHANDLERS sg_ErrorHandler = NULL;
 
 /******************************************************************************
     Function Name    :  vSetEnableErrorHandlersProcAddress
-    Input(s)         :  ENABLEDISABLEERRORHANDLER which is a pointer to a global 
+    Input(s)         :  ENABLEDISABLEERRORHANDLER which is a pointer to a global
                         function
     Output           :  None
-    Functionality    :  This function is used to pass a pointer to a global 
+    Functionality    :  This function is used to pass a pointer to a global
                         function which is called by the wrapper function.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetEnableErrorHandlersProcAddress(ENABLEDISABLEERRORHANDLERS pErrorHandlers)
 {
-     sg_ErrorHandler = pErrorHandlers ;
+    sg_ErrorHandler = pErrorHandlers ;
 }
 
 
@@ -621,14 +621,14 @@ void vSetEnableErrorHandlersProcAddress(ENABLEDISABLEERRORHANDLERS pErrorHandler
     Function Name    :  EnableErrorHandlers
     Input(s)         :  BOOL : TRUE or FALSE
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This is a interface\wrapper function. User can 
-                        call this function to enable or disable error handlers 
+    Functionality    :  This is a interface\wrapper function. User can
+                        call this function to enable or disable error handlers
                         execution.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Amitesh Bharti
     Date Created     :  14-07-2004
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL EnableErrorHandlers(BOOL Enable)
 {
@@ -645,26 +645,28 @@ BOOL EnableErrorHandlers(BOOL Enable)
     Function Name    :  GetProgramVersion
     Input(s)         :  BOOL : TRUE or FALSE
     Output           :  returns 1->Success, 0->Failure
-    Functionality    :  This function is used to get the version number. 
-						Both Major and Minor version Numbers.
+    Functionality    :  This function is used to get the version number.
+                        Both Major and Minor version Numbers.
     Member of        :  None (Global function)
     Friend of        :  None
     Author(s)        :  Arun Bellatti
     Date Created     :  01-06-2005
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 BOOL bGetProgramVersion(int* pnMajorVersion, int* pnMinorVersion,
-						HMODULE hModuleHandle )
+                        HMODULE hModuleHandle )
 {
-	g_hModuleHandle=hModuleHandle;
-	if(pnMajorVersion == NULL && pnMinorVersion == NULL )
-		return FALSE ;
-	else
-	{
-		*pnMajorVersion = 1 ;
-		*pnMinorVersion = 0 ;
-		return TRUE ;
-	}
+    g_hModuleHandle=hModuleHandle;
+    if(pnMajorVersion == NULL && pnMinorVersion == NULL )
+    {
+        return FALSE ;
+    }
+    else
+    {
+        *pnMajorVersion = 1 ;
+        *pnMinorVersion = 0 ;
+        return TRUE ;
+    }
 
 }
 
@@ -673,14 +675,14 @@ static MSGTXONOFF sg_OnOffTxMsg = NULL;
 
 /******************************************************************************
     Function Name    :  vSetEnableDisableMsgTxProcAddress
-    Input(s)         : 
-    Output           :  
-    Functionality    :  
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Anish
     Date Created     :  05/01/06
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetEnableDisableMsgTxProcAddress(MSGTXONOFF pMsgTxFunc)
 {
@@ -690,14 +692,14 @@ void vSetEnableDisableMsgTxProcAddress(MSGTXONOFF pMsgTxFunc)
 
 /******************************************************************************
     Function Name    :  EnableDisableMsgTx
-    Input(s)         : 
-    Output           :  
-    Functionality    :  
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Anish
     Date Created     :  05/01/06
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 BOOL EnableDisableMsgTx(BOOL Enable)
 {
@@ -713,15 +715,15 @@ BOOL EnableDisableMsgTx(BOOL Enable)
 static GETNODEHANDLER sg_GetNodeHandler = NULL;
 /******************************************************************************
     Function Name    :  vSetGetDllHandleProcAddress
-    Input(s)         : 
-    Output           :  
-    Functionality    : This function is used to pass a pointer to a global 
-                       function which is called by the wrapper function. 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    : This function is used to pass a pointer to a global
+                       function which is called by the wrapper function.
+    Member of        :
+    Friend of        :
     Author(s)        :  Anish
     Date Created     :  20/12/06
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void vSetGetDllHandleProcAddress(GETNODEHANDLER pGetNodeHandler)
 {
@@ -730,14 +732,14 @@ void vSetGetDllHandleProcAddress(GETNODEHANDLER pGetNodeHandler)
 
 /******************************************************************************
     Function Name    :  GetDllHandle
-    Input(s)         : 
-    Output           :  
-    Functionality    : Provide handle of the node's Dll  
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    : Provide handle of the node's Dll
+    Member of        :
+    Friend of        :
     Author(s)        :  Anish
     Date Created     :  20/12/06
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 HMODULE GetDllHandle(char* Node)
 {
@@ -745,7 +747,7 @@ HMODULE GetDllHandle(char* Node)
 
     if (sg_GetNodeHandler != NULL && Node != NULL)
     {
-         h_NodeModule = (*sg_GetNodeHandler)(Node) ;
+        h_NodeModule = (*sg_GetNodeHandler)(Node) ;
     }
 
     return h_NodeModule;
@@ -759,14 +761,14 @@ void vSetRequestPGNProcAddress(APPREQUESTPGN_J pRequestPGN)
 }
 /******************************************************************************
     Function Name    :  RequestPGN
-    Input(s)         : 
-    Output           :  
-    Functionality    : 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Pradeep Kadoor
     Date Created     :  24/01/2011
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 UINT RequestPGN(UINT PGN, BYTE DestAdres, UINT Channel)
 {
@@ -788,14 +790,14 @@ void vSetSendAckMsgProcAddress(APPACKMSG_J pSendAckMsg)
 }
 /******************************************************************************
     Function Name    :  SendAckMsg
-    Input(s)         : 
-    Output           :  
-    Functionality    : 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Pradeep Kadoor
     Date Created     :  24/01/2011
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 
 UINT SendAckMsg(UINT PGN, BYTE AckType, BYTE DestAdres, UINT Channel)
@@ -816,14 +818,14 @@ void vSetClaimAddressProcAddress(APPCLAIMADDRESS_J pClaimAddress)
 }
 /******************************************************************************
     Function Name    :  ClaimAddress
-    Input(s)         : 
-    Output           :  
-    Functionality    : 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Pradeep Kadoor
     Date Created     :  24/01/2011
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 
 UINT ClaimAddress(BYTE Address, UINT Channel)
@@ -844,14 +846,14 @@ void vSetRequestAddressProcAddress(APPRQSTADDRESS_J pRequestAddress)
 }
 /******************************************************************************
     Function Name    :  RequestAddress
-    Input(s)         : 
-    Output           :  
-    Functionality    : 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Pradeep Kadoor
     Date Created     :  24/01/2011
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 
 UINT RequestAddress(UINT Channel)
@@ -872,14 +874,14 @@ void vSetCommandAddressProcAddress(APPCMDADDRESS_J pCommandAddress)
 }
 /******************************************************************************
     Function Name    :  CommandAddress
-    Input(s)         : 
-    Output           :  
-    Functionality    : 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Pradeep Kadoor
     Date Created     :  24/01/2011
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 
 UINT CommandAddress(UINT64 EcuName, BYTE NewAdres, UINT Channel)
@@ -900,14 +902,14 @@ void vSetSetTimeoutProcAddress(APPSETTIMEOUT_J pSetTimeout)
 }
 /******************************************************************************
     Function Name    :  SetTimeout
-    Input(s)         : 
-    Output           :  
-    Functionality    : 
-    Member of        :  
-    Friend of        : 
+    Input(s)         :
+    Output           :
+    Functionality    :
+    Member of        :
+    Friend of        :
     Author(s)        :  Pradeep Kadoor
     Date Created     :  24/01/2011
-    Modifications    :    
+    Modifications    :
 ******************************************************************************/
 
 UINT SetTimeout(BYTE TimeoutType, UINT TimeoutValue)

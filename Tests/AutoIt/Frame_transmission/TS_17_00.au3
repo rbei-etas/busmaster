@@ -6,9 +6,11 @@
 ; Test Data:		-
 ; === Test Procedure ===
 #Include <Excel.au3>
-#include<globalFunc_J1939.au3>
-Global $oExcel
-Global $crashRes
+;~ #include<globalFunc_J1939.au3>
+#include <globalFunc.au3>
+#Include <GuiListView.au3>
+#Include <GuiToolBar.au3>
+#include <GuiTreeView.au3>
 
 #include "TS_17_001.au3"
 #include "TS_17_002.au3"
@@ -36,3 +38,7 @@ Global $crashRes
 #include "TS_17_029.au3"
 #include "TS_17_030.au3"
 #include "TS_17_031.au3"
+#include "TS_17_032.au3"
+#include "TS_17_034.au3"
+#include "TS_17_033.au3"
+

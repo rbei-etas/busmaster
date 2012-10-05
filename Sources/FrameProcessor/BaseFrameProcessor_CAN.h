@@ -128,12 +128,12 @@ public:
     // Getter for the logging configuration data
     virtual HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
 
-	// PTV XML
-	virtual HRESULT FPC_GetConfigData(xmlNodePtr pNodePtr) = 0;
-	// PTV XML
+    // PTV XML
+    virtual HRESULT FPC_GetConfigData(xmlNodePtr pNodePtr) = 0;
+    // PTV XML
     // Setter for the logging configuration data
     virtual HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion) = 0;
-	virtual HRESULT FPC_SetConfigData(xmlDocPtr pDoc) = 0;
+    virtual HRESULT FPC_SetConfigData(xmlDocPtr pDoc) = 0;
 
     // To reset or revoke the modifications made
     virtual HRESULT FPC_Reset(void) = 0;

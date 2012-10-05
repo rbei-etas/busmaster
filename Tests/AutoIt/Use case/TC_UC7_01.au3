@@ -23,11 +23,6 @@ if WinExists("BUSMASTER") then
 		_writeCrashRes(35,10)
 	Endif
 EndIf
-if $funcRes=1 Then												; write the result to excel sheet
-	_ExcelWriteCell($oExcel, "Pass", 35, 10)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 35, 10)
-EndIf
 ConsoleWrite("****End : TC_UC7_01.au3****"&@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)

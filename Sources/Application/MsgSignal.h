@@ -31,7 +31,7 @@
 #include "Datatypes/MsgSignal_Datatypes.h"
 #include "UIThread.h"
 
-#include "NodeSimEx/NodeSimEx_Struct.h"		//CAPL_DB_NAME_CHANGE
+#include "NodeSimEx/NodeSimEx_Struct.h"     //CAPL_DB_NAME_CHANGE
 
 
 class CMsgSignal
@@ -223,6 +223,9 @@ public:
     BOOL bDeAllocateMemoryInactive();
     // Return the array of DB file
     void vGetDataBaseNames(CStringArray* pastrDBnames);
+    //MVN
+    void vGetRelativeDataBaseNames(string& omStrBasePath, CStringArray* pastrDBnames);
+    //~MVN
     void vSetDataBaseNames(const CStringArray* pastrDBnames);
     void bAddDbNameEntry(const CString& omDbFileName);
     // Validate dupliacte start bit value
@@ -250,9 +253,9 @@ public:
     static BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
                                 UINT nLength, EFORMAT_DATA bDataFormat);
 
-	//CAPL_DB_NAME_CHANGE
-	//fill database list
-	BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase &odMsgNameMsgCodeListDB);
+    //CAPL_DB_NAME_CHANGE
+    //fill database list
+    BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
 
 
 private:

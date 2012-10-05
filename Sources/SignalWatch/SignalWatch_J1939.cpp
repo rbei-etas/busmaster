@@ -310,6 +310,11 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
             m_pouSigWnd->m_omSignalList.SetColumnWidth(3, (int)(0.2 * ClientWidth));
             m_pouSigWnd->m_omSignalList.MoveWindow(&sClientRect);
         }
+
+        if(pbyConfigData == NULL)
+        {
+            m_pouSigWnd->ShowWindow(SW_HIDE);
+        }
     }
     return S_OK;
 }

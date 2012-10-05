@@ -142,7 +142,7 @@ if winexists("BUSMASTER") Then
 	ControlClick("Configure Timeouts","Apply",1,"left")		; Click 'Apply' button
 
 	Sleep(500)
-	ControlClick("Configure Timeouts","Cancel",2,"left")		; Click 'Cancel' button	
+	ControlClick("Configure Timeouts","Close",2,"left")		; Click 'Close' button	
 EndIf
 Sleep(500)
 

@@ -10,10 +10,11 @@
 ConsoleWrite("****Start : TC_UC2_02.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
-	_loadConfig("UseCase1")
+	_loadConfig("UseCase2.cfx")
 EndIf
 _loadDatabase("AutoitTest")
-
+sleep(500)
+send("!FDC")								; Close the database
 _associateDB("&File","AutoitTest.dbf")
 sleep(1000)
 

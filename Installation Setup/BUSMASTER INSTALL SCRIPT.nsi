@@ -32,7 +32,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.6.7.exe"
+Outfile "BUSMASTER_Installer_Ver_1.6.8.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -509,14 +509,6 @@ Section "Vector XL"
     SectionIn 1 2
     SetOutPath $INSTDIR
     File ..\Sources\BIN\Release\vxlapi.dll
-SectionEnd
-SectionGroupEnd
-SectionGroup "Node Simulation"
-Section "MinGW"
-    SectionIn 2
-    SetOutPath $INSTDIR
-    ; MinGW
-    File /r ..\EXTERNAL_SOURCE\MinGW
 SectionEnd
 SectionGroupEnd
 SectionGroup "Registry Cleanup"

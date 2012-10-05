@@ -1,15 +1,15 @@
 /*******************************************************************************
-  Project       :  Auto-SAT_Tools                                      
-  FileName      :  Wrapper_J1939.h                                          
-  Description   :  
-                   
+  Project       :  Auto-SAT_Tools
+  FileName      :  Wrapper_J1939.h
+  Description   :
+
   $Log:   Y:/EMC2/Projects/CAN_Monitor_Maintenance/Archives/Source/Misc/GCC/Wrapper_J1939.h_v  $
- * 
+ *
  *    Rev 1.0   02 Mar 2011 17:37:12   rac2kor
- *  
-  
+ *
+
   Author(s)     :  Amarnath Shastry
-  Date Created  :  20/03/2002                                             
+  Date Created  :  20/03/2002
   Modified By   :  Ravikumar Patil  on 04.03.03
 *******************************************************************************/
 #ifndef _WRAPPER_J1939_H_
@@ -53,7 +53,7 @@ typedef struct tagSECU_NAME
 
 /* J1939 PGN structure */
 typedef struct tagSTRUCT_PGN
-{   
+{
     BYTE m_byPDU_Specific   : 8; /* PDU Specific (PS), Destination address if 0 <= PF <= 239.
                                                        Group Extension (GE)if 240 <= PF <= 255. */
     BYTE m_byPDU_Format     : 8; // PDU Format (PF), Indicates Peer_2_peer or Broadcast.
@@ -74,7 +74,7 @@ typedef union tagUPGN
 typedef struct tagSTRUCT_29_BIT_ID
 {
     BYTE        m_bySrcAddress     : 8; // Sender node address.
-    UNION_PGN   m_uPGN;                 // Parameter group number(PGN). SAE lists various PGNS and its SPNS.    
+    UNION_PGN   m_uPGN;                 // Parameter group number(PGN). SAE lists various PGNS and its SPNS.
 } STRUCT_29_BIT_ID;
 
 typedef union tag29BitID
@@ -98,7 +98,7 @@ enum EJ1939_MSG_TYPE
     MSG_TYPE_NM_ACL,
     MSG_TYPE_NM_RQST_ACL,
     MSG_TYPE_NM_CMD_ADDRESS,
-    MSG_TYPE_NM_TPCM_BAM, 
+    MSG_TYPE_NM_TPCM_BAM,
     MSG_TYPE_NM_TPCM_RTS,
     MSG_TYPE_NM_TPCM_CTS,
     MSG_TYPE_NM_TPCM_EOM_ACK,
@@ -118,7 +118,7 @@ typedef struct tagSTJ1939_MSG_PROPERTIES
 {
     UINT64                  m_un64TimeStamp; // Timestamp.
     BYTE                    m_byChannel;     // Channel number.
-    enum EJ1939_MSG_TYPE    m_eType;         
+    enum EJ1939_MSG_TYPE    m_eType;
     enum EDIRECTION         m_eDirection;    // DIR_TX, DIR_RX
     UNION_29_BIT_ID         m_uExtendedID;   // 29 bit extended ID
 
@@ -126,7 +126,7 @@ typedef struct tagSTJ1939_MSG_PROPERTIES
 
 typedef struct tagSTJ1939_MSG
 {
-    STJ1939_MSG_PROPERTIES  m_sMsgProperties;   /* J1939 message properties. (29 bit Extended ID, Timestamp, 
+    STJ1939_MSG_PROPERTIES  m_sMsgProperties;   /* J1939 message properties. (29 bit Extended ID, Timestamp,
                                                    Channel, Type, Direction) */
     UINT                    m_unDLC;            // Data length. 0 <= m_unDLC <= 1785 bytes.
     BYTE*                   m_pbyData;          // J1939 message data.
@@ -188,7 +188,7 @@ GCC_EXTERN void GCC_EXPORT vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal);
 GCC_EXTERN void GCC_EXPORT vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers);
 GCC_EXTERN void GCC_EXPORT vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers);
 GCC_EXTERN void GCC_EXPORT vSetEnableDisableMsgTxProcAddress(MSGTXONOFF pMsgTxFunc);
-GCC_EXTERN void GCC_EXPORT vSetGetDllHandleProcAddress(GETNODEHANDLER pGetNodeHandler); 
+GCC_EXTERN void GCC_EXPORT vSetGetDllHandleProcAddress(GETNODEHANDLER pGetNodeHandler);
 //J1939 specific functions
 GCC_EXTERN void GCC_EXPORT vSetEnableAllHandlersProcAddress(ENABLEDISABLEALLHANDLERS pAllHandlers);
 GCC_EXTERN void GCC_EXPORT vSetClaimAddressProcAddress(APPCLAIMADDRESS_J pClaimAddress);

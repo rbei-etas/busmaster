@@ -340,9 +340,11 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                     );
 
                     omStrErrorMsg.Format("%s: %s",
-                                         "Invoking compiler Failed",
+                                         "Invoking MinGW gcc compiler Failed",
                                          pcMessageBuffer);
                     LocalFree(pcMessageBuffer);
+                    m_omStrArray.Add(omStrErrorMsg);
+                    omStrErrorMsg = "Refer \"MinGW Installation\" Section in BUSMASTER Help File for Further Information";
                     m_omStrArray.Add(omStrErrorMsg);
                     // Add string to list box attached to output window after
                     // displaying it if not displayed already.
@@ -590,7 +592,8 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
             CString omTemp = "";
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
-            pcBuff = (CHAR*) new char[dwSize];
+            pcBuff = (char*) new char[dwSize];
+            memset(pcBuff, 0, dwSize);
             if(pcBuff!=NULL)
             {
                 // Read the whole file and put the content to pcBuff;
@@ -600,7 +603,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
                 // copy the content to CString object;
                 omStrFile = pcBuff;
                 // Delete the buffer and initialise it to NULL
-                delete [] pcBuff;
+                delete []pcBuff;
                 pcBuff = NULL;
 
                 char acStrShortPath[1000] ;

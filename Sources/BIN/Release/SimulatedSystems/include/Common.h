@@ -3,11 +3,11 @@
 
 
 #ifdef __cplusplus
-#define GCC_EXTERN 	extern "C" __cdecl
-#define GCC_EXPORT 	__declspec(dllexport)
+#define GCC_EXTERN  extern "C" __cdecl
+#define GCC_EXPORT  __declspec(dllexport)
 #else
-#define GCC_EXTERN 	
-#define GCC_EXPORT 	
+#define GCC_EXTERN
+#define GCC_EXPORT
 #endif
 
 const UINT MAX_SEND_TIME = 3; // Millisecond

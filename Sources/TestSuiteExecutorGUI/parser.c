@@ -1,27 +1,29 @@
 
-/*  A Bison parser, made from d:\build for testing\busmaster oss\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
+/*  A Bison parser, made from d:\project\busmaster\busmaster_svn\trunk\busmaster oss\1.6.8\1.6.8_github\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
   */
 
 #define YYBISON 1  /* Identify Bison output.  */
 
 #define	NUMBER	258
-#define	ADD	259
-#define	SUB	260
-#define	DIV	261
-#define	MUL	262
-#define	RPA	263
-#define	LPA	264
-#define	GT	265
-#define	LT	266
-#define	LE	267
-#define	GE	268
-#define	EQ	269
+#define	EQ	259
+#define	ADD	260
+#define	SUB	261
+#define	DIV	262
+#define	MUL	263
+#define	RPA	264
+#define	LPA	265
+#define	GT	266
+#define	LT	267
+#define	LE	268
+#define	GE	269
 #define	NE	270
 #define	OR	271
 #define	AND	272
 #define	NL	273
 #define	POW	274
-#define	NEGATIVE	275
+#define	ERROR	275
+#define	WSPACE	276
+#define	NEGATIVE	277
 
 
    #define YYSTYPE double
@@ -30,7 +32,7 @@
    #include <malloc.h>
    extern FILE *yyin, *yyout;
    int yylex (void);
-   
+   int nPareseError = 0;
  
 #ifndef YYLTYPE
 typedef
@@ -61,11 +63,11 @@ typedef
 
 
 
-#define	YYFINAL		39
+#define	YYFINAL		41
 #define	YYFLAG		-32768
-#define	YYNTBASE	21
+#define	YYNTBASE	23
 
-#define YYTRANSLATE(x) ((unsigned)(x) <= 275 ? yytranslate[x] : 24)
+#define YYTRANSLATE(x) ((unsigned)(x) <= 277 ? yytranslate[x] : 26)
 
 static const char yytranslate[] = {     0,
      2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -95,65 +97,72 @@ static const char yytranslate[] = {     0,
      2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
      2,     2,     2,     2,     2,     1,     2,     3,     4,     5,
      6,     7,     8,     9,    10,    11,    12,    13,    14,    15,
-    16,    17,    18,    19,    20
+    16,    17,    18,    19,    20,    21,    22
 };
 
 #if YYDEBUG != 0
 static const short yyprhs[] = {     0,
      0,     1,     4,     6,     9,    11,    15,    19,    23,    27,
-    30,    34,    38,    42,    46,    50,    54,    58,    62,    66
+    30,    34,    38,    42,    46,    50,    54,    58,    62,    66,
+    70,    72
 };
 
 static const short yyrhs[] = {    -1,
-    21,    22,     0,    18,     0,    23,    18,     0,     3,     0,
-    23,     4,    23,     0,    23,     5,    23,     0,    23,     7,
-    23,     0,    23,     6,    23,     0,     5,    23,     0,    23,
-    19,    23,     0,    23,    10,    23,     0,    23,    11,    23,
-     0,     8,    23,     9,     0,    23,    12,    23,     0,    23,
-    13,    23,     0,    23,    14,    23,     0,    23,    15,    23,
-     0,    23,    16,    23,     0,    23,    17,    23,     0
+    23,    24,     0,    18,     0,    25,    18,     0,     3,     0,
+    25,     5,    25,     0,    25,     6,    25,     0,    25,     8,
+    25,     0,    25,     7,    25,     0,     6,    25,     0,    25,
+    19,    25,     0,    25,    11,    25,     0,    25,    12,    25,
+     0,     9,    25,    10,     0,    25,    13,    25,     0,    25,
+    14,    25,     0,    25,     4,    25,     0,    25,    15,    25,
+     0,    25,    16,    25,     0,    25,    17,    25,     0,    20,
+     0,    21,     0
 };
 
 #endif
 
 #if YYDEBUG != 0
 static const short yyrline[] = { 0,
-    18,    19,    22,    23,    26,    27,    28,    29,    30,    31,
-    32,    33,    34,    35,    36,    37,    38,    39,    40,    41
+    23,    24,    27,    28,    31,    32,    33,    34,    35,    36,
+    37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
+    47,    48
 };
 
 static const char * const yytname[] = {   "$","error","$undefined.","NUMBER",
-"ADD","SUB","DIV","MUL","RPA","LPA","GT","LT","LE","GE","EQ","NE","OR","AND",
-"NL","POW","NEGATIVE","START","INFIX","Expression",""
+"EQ","ADD","SUB","DIV","MUL","RPA","LPA","GT","LT","LE","GE","NE","OR","AND",
+"NL","POW","ERROR","WSPACE","NEGATIVE","START","INFIX","Expression",""
 };
 #endif
 
 static const short yyr1[] = {     0,
-    21,    21,    22,    22,    23,    23,    23,    23,    23,    23,
-    23,    23,    23,    23,    23,    23,    23,    23,    23,    23
+    23,    23,    24,    24,    25,    25,    25,    25,    25,    25,
+    25,    25,    25,    25,    25,    25,    25,    25,    25,    25,
+    25,    25
 };
 
 static const short yyr2[] = {     0,
      0,     2,     1,     2,     1,     3,     3,     3,     3,     2,
-     3,     3,     3,     3,     3,     3,     3,     3,     3,     3
+     3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+     1,     1
 };
 
 static const short yydefact[] = {     1,
-     0,     5,     0,     0,     3,     2,     0,    10,     0,     0,
+     0,     5,     0,     0,     3,    21,    22,     2,     0,    10,
      0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     0,     4,     0,    14,     6,     7,     9,     8,    12,    13,
-    15,    16,    17,    18,    19,    20,    11,     0,     0
+     0,     0,     0,     4,     0,    14,    17,     6,     7,     9,
+     8,    12,    13,    15,    16,    18,    19,    20,    11,     0,
+     0
 };
 
 static const short yydefgoto[] = {     1,
-     6,     7
+     8,     9
 };
 
 static const short yypact[] = {-32768,
-    19,-32768,    18,    18,-32768,-32768,    28,   -17,    44,    18,
-    18,    18,    18,    18,    18,    18,    18,    18,    18,    18,
-    18,-32768,    18,-32768,    58,    58,   -17,   -17,   -17,   -17,
-   -17,   -17,   -17,   -17,   -17,   -17,   -17,     3,-32768
+    21,-32768,    23,    23,-32768,-32768,-32768,-32768,    41,   -17,
+    57,    23,    23,    23,    23,    23,    23,    23,    23,    23,
+    23,    23,    23,-32768,    23,-32768,   104,   106,   106,   -17,
+   -17,   114,   114,   114,   114,   104,    73,    89,   -17,     3,
+-32768
 };
 
 static const short yypgoto[] = {-32768,
@@ -161,29 +170,41 @@ static const short yypgoto[] = {-32768,
 };
 
 
-#define	YYLAST		77
+#define	YYLAST		133
 
 
-static const short yytable[] = {     8,
-     9,    23,    39,     0,     0,     0,    25,    26,    27,    28,
-    29,    30,    31,    32,    33,    34,    35,    36,    38,    37,
-     2,     2,     3,     3,     0,     4,     4,     0,     0,     0,
-     0,    10,    11,    12,    13,     0,     5,    14,    15,    16,
-    17,    18,    19,    20,    21,    22,    23,    10,    11,    12,
-    13,     0,    24,    14,    15,    16,    17,    18,    19,    20,
-    21,     0,    23,    12,    13,     0,     0,    14,    15,    16,
-    17,    18,    19,    20,    21,     0,    23
+static const short yytable[] = {    10,
+    11,    25,    41,     0,     0,     0,     0,     0,    27,    28,
+    29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
+    40,    39,     0,     2,     0,     2,     3,     0,     3,     4,
+     0,     4,     0,     0,     0,     0,     0,     0,     5,     0,
+     6,     7,     6,     7,    12,    13,    14,    15,    16,     0,
+     0,    17,    18,    19,    20,    21,    22,    23,    24,    25,
+    12,    13,    14,    15,    16,     0,    26,    17,    18,    19,
+    20,    21,    22,    23,     0,    25,    12,    13,    14,    15,
+    16,     0,     0,    17,    18,    19,    20,    21,     0,    23,
+     0,    25,    12,    13,    14,    15,    16,     0,     0,    17,
+    18,    19,    20,    21,     0,     0,     0,    25,    13,    14,
+    15,    16,    15,    16,    17,    18,    19,    20,    13,    14,
+    15,    16,    25,     0,    25,     0,     0,     0,     0,     0,
+     0,     0,    25
 };
 
 static const short yycheck[] = {     3,
-     4,    19,     0,    -1,    -1,    -1,    10,    11,    12,    13,
-    14,    15,    16,    17,    18,    19,    20,    21,     0,    23,
-     3,     3,     5,     5,    -1,     8,     8,    -1,    -1,    -1,
-    -1,     4,     5,     6,     7,    -1,    18,    10,    11,    12,
-    13,    14,    15,    16,    17,    18,    19,     4,     5,     6,
-     7,    -1,     9,    10,    11,    12,    13,    14,    15,    16,
-    17,    -1,    19,     6,     7,    -1,    -1,    10,    11,    12,
-    13,    14,    15,    16,    17,    -1,    19
+     4,    19,     0,    -1,    -1,    -1,    -1,    -1,    12,    13,
+    14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
+     0,    25,    -1,     3,    -1,     3,     6,    -1,     6,     9,
+    -1,     9,    -1,    -1,    -1,    -1,    -1,    -1,    18,    -1,
+    20,    21,    20,    21,     4,     5,     6,     7,     8,    -1,
+    -1,    11,    12,    13,    14,    15,    16,    17,    18,    19,
+     4,     5,     6,     7,     8,    -1,    10,    11,    12,    13,
+    14,    15,    16,    17,    -1,    19,     4,     5,     6,     7,
+     8,    -1,    -1,    11,    12,    13,    14,    15,    -1,    17,
+    -1,    19,     4,     5,     6,     7,     8,    -1,    -1,    11,
+    12,    13,    14,    15,    -1,    -1,    -1,    19,     5,     6,
+     7,     8,     7,     8,    11,    12,    13,    14,     5,     6,
+     7,     8,    19,    -1,    19,    -1,    -1,    -1,    -1,    -1,
+    -1,    -1,    19
 };
 /* -*-C-*-  Note some compilers choke on comments on `#line' lines.  */
 
@@ -678,10 +699,10 @@ yyreduce:
   switch (yyn) {
 
 case 4:
-{fprintf(yyout, "in Result %lf", yyvsp[-1]); return yyvsp[-1]; /*printf ("\t%.10g\n", $1);*/ ;
+{return yyvsp[-1]; ;
     break;}
 case 5:
-{ fprintf(yyout, "\nin Number %lf", yyvsp[0]);yyval = yyvsp[0];         ;
+{ yyval = yyvsp[0];         ;
     break;}
 case 6:
 { yyval = yyvsp[-2] + yyvsp[0];    ;
@@ -693,7 +714,7 @@ case 8:
 { yyval = yyvsp[-2] * yyvsp[0];    ;
     break;}
 case 9:
-{ yyval = yyvsp[-2] / yyvsp[0];    ;
+{ if(yyvsp[0] == 0){return 0;} yyval = yyvsp[-2] / yyvsp[0];    ;
     break;}
 case 10:
 { yyval = -yyvsp[0];        ;
@@ -717,16 +738,22 @@ case 16:
 { yyval = (yyvsp[-2] >= yyvsp[0])?1:0; ;
     break;}
 case 17:
-{ fprintf(yyout, "\nin EE %lf %lf", yyvsp[-2], yyvsp[0]);yyval = (yyvsp[-2] == yyvsp[0])?1:0; ;
+{ yyval = (yyvsp[-2] == yyvsp[0])?1:0; ;
     break;}
 case 18:
 { yyval = (yyvsp[-2] != yyvsp[0])?1:0; ;
     break;}
 case 19:
-{ yyval = (int)yyvsp[-2] || (int)yyvsp[0]; ;
+{ yyval = (int)yyvsp[-2] | (int)yyvsp[0]; ;
     break;}
 case 20:
 { yyval = (int)yyvsp[-2] && (int)yyvsp[0]; ;
+    break;}
+case 21:
+{ return 0;;
+    break;}
+case 22:
+{;
     break;}
 }
    /* the action file gets copied in in place of this dollarsign */
@@ -930,34 +957,21 @@ yyerrhandle:
 int yyerror(char *s)        /* called by yyparse on error */
 {
     printf("%s\n",s);
-    return(-1);
+	nPareseError = 1;
+    //return(-999);
 }
 
 int bGetExpressionResult(char *pchExpression)
 {
 	float nVal = 0;
-	char tstr[] = "-12.4-3+4+5\n\0\0";
 	yyin = NULL;
-	yyout = fopen("hi1result.txt", "w+");
-	/*yyin = fopen("hi1.txt", "r");
-	yyout = fopen("hi1result.txt", "w+");
-	if(yyin == NULL)
-		nVal = -1;
-	else*/
+	yyout = NULL;
 	yy_scan_string(pchExpression);
+	nPareseError = 0;
 	nVal = yyparse();
-	//fclose(yyin);
-	fclose(yyout);
+	if( nPareseError == 1 )
+	{
+		nVal = 0;
+	}
 	return (nVal);
 }
-/*
-int main(void)
-{
-	char tstr[] = "-12.4-3+4+5\n\0\0";
-	// note yy_scan_buffer is is looking for a double null string
-	//yy_scan_buffer(tstr, sizeof(tstr));
-    
-    printf("Result =%.10g\n", nval);
-    exit(0);
-}
-*/

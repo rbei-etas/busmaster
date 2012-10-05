@@ -6,10 +6,15 @@
 ; Test Data:		-
 ; === Test Procedure ===
 #include<globalFunc.au3>
+#Include <GuiToolBar.au3>
+
+WinActivate("BUSMASTER",3)
 if WinExists("BUSMASTER") then
-	_loadConfig("UseCase1.cfx")
-	_loadDatabase("AutoitTest")
-	_associateDB("&File","AutoitTest.dbf")
+	_loadConfig("configLog.cfx")
+	_loadDatabase("dblog")
+	sleep(2000)
+	send("!FDC")
+	_associateDB("&File","dblog.dbf")
 	sleep(1000)
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Hardware Interface","&Kvaser CAN")
 	sleep(1000)
@@ -26,27 +31,36 @@ if WinExists("BUSMASTER") then
 	$Count=2
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Tx Messages")
 	sleep(1000)
-	_txMSG("Cyclic",$Count)
-	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:23]","left")
-	sleep(1000)
-	if winexists("BUSMASTER","Do you want to save changes?") Then
-		ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:2]","left")
+	; check if 'Autoupdate' check box is enabled
+	if (ControlCommand("BUSMASTER","",17000,"IsChecked")=0) Then
+		ControlCommand("BUSMASTER","",17000,"Check")
 	EndIf
+	_txMSG("Cyclic",$Count)
+	ControlClick("BUSMASTER","",1015,"left")					; Click on close button
 	WinMenuSelectItem("BUSMASTER","","&Configure","L&og")
 	if winexists("Configure Logging for CAN") Then
-		ControlClick("Configure Logging for CAN","&Add","")
+		ControlClick("Configure Logging for CAN","&Add",1303)
 		sleep(1000)
-		ControlCommand("Configure Logging for CAN","",1092,"Check")
+		ControlCommand("Configure Logging for CAN","",1092,"Check")			; Check Enable/Disable Logging during tool Connect/Disconnect
+		sleep(1000)
+		ControlClick("Configure Logging for CAN","&Add",1303)
 		sleep(1000)
 		ControlCommand("Configure Logging for CAN","",1101,"SelectString","Relative")
 		sleep(1000)
+		ControlCommand("Configure Logging for CAN","",1081,"Check")				; select decimal mode
+		sleep(2000)
+		ControlCommand("Configure Logging for CAN","",1351,"Check")				; select overwrite
+		sleep(2000)
+		ControlClick("Configure Logging for CAN","&Add",1303)
+		sleep(1000)
 		ControlCommand("Configure Logging for CAN","",1101,"SelectString","Absolute")
 		sleep(1000)
-		ControlCommand("Configure Logging for CAN","",1081,"Check")
+		ControlCommand("Configure Logging for CAN","",1116,"Check")
 		sleep(1000)
-		ControlCommand("Configure Logging for CAN","",1082,"Check")
-		sleep(1000)
-		ControlCommand("Configure Logging for CAN","",1351,"Check")
+		ControlSetText("Configure Logging for CAN","",1095,32)
+		ControlCommand("Configure Logging for CAN","",1117,"Check")
+		sleep(500)
+		ControlSetText("Configure Logging for CAN","",1096,37)
 		sleep(1000)
 		ControlCommand("Configure Logging for CAN","",1350,"Check")
 		sleep(1000)
@@ -65,9 +79,10 @@ if WinExists("BUSMASTER") then
 		ControlClick("Configure Logging for CAN","&OK","[CLASS:Button; INSTANCE:14]")
 	EndIf
 	sleep(500)
-	WinMenuSelectItem("BUSMASTER","","F&unctions","&Connect")
+	$cntToolhWd=ControlGetHandle("BUSMASTER","",128)												; Get handle of tollbar
+	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)														; Click on 'Connect' icon
 	sleep(500)
 	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Normal Blocks")
-	sleep(300000)
-	WinMenuSelectItem("BUSMASTER","","F&unctions","D&isconnect	ESC")
+	sleep(10000)
+	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)
 EndIf

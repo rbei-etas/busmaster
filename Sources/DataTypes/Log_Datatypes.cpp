@@ -27,7 +27,10 @@
 #include "include/Utils_macro.h"
 #include "Log_Datatypes.h"
 #include "include/XMLDefines.h"
+#include <Shlwapi.h>
+#include "Utility\UtilFunctions.h"
 
+#define MSG_GET_CONFIGPATH  10000
 
 /* tagLogInfo --- STARTS */
 
@@ -247,7 +250,13 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     xmlNodePtr pChnlPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST omChannel);
     xmlAddChild(pxmlNodePtr, pChnlPtr);
 
-    xmlNodePtr pLogFilePtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST m_sLogFileName);
+    string omPath;
+    char configPath[MAX_PATH];
+    string omStrConfigFolder;
+    AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+    CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+    CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_sLogFileName, omPath);
+    xmlNodePtr pLogFilePtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST omPath.c_str());
     xmlAddChild(pxmlNodePtr, pLogFilePtr);
 
     xmlNodePtr pStrtIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TRGR_STRT_ID, BAD_CAST omcStartId);
@@ -403,7 +412,21 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
                 if(NULL != key)
                 {
-                    strcpy_s(m_sLogFileName, _MAX_PATH, (char*)key);
+                    if(PathIsRelative((char*)key) == TRUE)
+                    {
+                        string omStrConfigFolder;
+                        string omPath;
+                        char configPath[MAX_PATH];
+                        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                        char chAbsPath[MAX_PATH];
+                        PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
+                        strcpy_s(m_sLogFileName, MAX_PATH, chAbsPath);
+                    }
+                    else
+                    {
+                        strcpy_s(m_sLogFileName, _MAX_PATH, (char*)key);
+                    }
                     xmlFree(key);
                     nRetValue = S_OK;
                 }

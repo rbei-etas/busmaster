@@ -60,9 +60,9 @@ public:
 public:
     CTSExecutorChildFrame(void);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
-	BOOL GetConfigurationData(xmlNodePtr pxmlNodePtr);
+    BOOL GetConfigurationData(xmlNodePtr& pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
-	HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
+    HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
     VOID vEnableItem(DWORD dwID, BOOL& bEnable);
     VOID vSetBusStatus(BOOL bConnected);
     VOID vSetBUSMASTERVersionInfo(CString strVersion);

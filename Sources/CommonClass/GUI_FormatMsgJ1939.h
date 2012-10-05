@@ -26,7 +26,7 @@
 class CFormatMsgJ1939 : public CFormatMsgCommon
 {
 private:
-    void vFormatTime(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
+    void vFormatTime(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,  __int64 nDeltime,
                      PSFORMATTEDATA_J1939 psJ1939FData);
     void vFormatDataAndId(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
                           PSFORMATTEDATA_J1939 psJ1939FData);
@@ -35,7 +35,7 @@ private:
 public:
     CFormatMsgJ1939(void);
     ~CFormatMsgJ1939(void);
-    void vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
+    void vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData, __int64 nDeltime,
                              SFORMATTEDATA_J1939* CurrDataJ1939,
                              BYTE bExprnFlag_Log);
 };

@@ -1129,7 +1129,10 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int 
         ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc = sg_aodChannels[nCount].m_strName;
     }
 
-    memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
+    for ( int i =0; i < Length; i++)
+    {
+        sg_ControllerDetails[i] = ConfigFile[i];
+    }
 
     return S_OK;
 }

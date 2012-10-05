@@ -41,7 +41,7 @@ Modifications  :
 CBaseEntityTA::CBaseEntityTA(void)
 {
     m_dwID = GetUniqueID();
-    m_bEnable = FALSE;
+    m_bEnable = /*FALSE*/TRUE;
 }
 
 /******************************************************************************

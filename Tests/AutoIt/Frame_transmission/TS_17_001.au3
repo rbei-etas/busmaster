@@ -10,6 +10,7 @@
 ;#include <IsAppCrash.au3>										; call 'IsAppCrash' function to check for application crash
 ;#Include <Excel.au3>
 global $crashRes, $oExcel
+WinActivate("BUSMASTER",3)
 WinWait("BUSMASTER","",2)
 if WinActive("MCNet") Then
 	ControlClick("MCNet","","[CLASS:Button; INSTANCE:1]")

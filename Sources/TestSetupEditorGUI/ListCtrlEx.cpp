@@ -1135,13 +1135,5 @@ VOID CListCtrlEx::vSetDefaultColors(void)
 
 BOOL CListCtrlEx::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO: Add your specialized code here and/or call the base class
-    if(pMsg->message == WM_KEYDOWN)
-    {
-        if(GetKeyState(VK_TAB)<0)
-        {
-            AfxTrace("I got the message\n");
-        }
-    }
     return CFFListCtrl::PreTranslateMessage(pMsg);
 }

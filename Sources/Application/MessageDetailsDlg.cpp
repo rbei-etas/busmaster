@@ -491,6 +491,7 @@ BOOL CMessageDetailsDlg::ValidateMessageName(CString omStrMessageName)
     {
         nChar = buffer[0];
 
+        // Check if the first character in the name is a digit
         if((nChar >= '0' && nChar<= '9'))
         {
             bValid = FALSE;
@@ -498,6 +499,18 @@ BOOL CMessageDetailsDlg::ValidateMessageName(CString omStrMessageName)
         else
         {
             bValid = TRUE;
+        }
+
+        if(bValid == TRUE)
+        {
+            // Check if the first character in the name is not in between [a-z][A-Z] and _
+            if(!((nChar >= 'A' && nChar <= 'Z') ||
+                    (nChar >= 'a' && nChar<= 'z') ||
+                    (nChar >= '0' && nChar<= '9') ||
+                    (nChar == '_')))
+            {
+                bValid = FALSE;
+            }
         }
     }
 
@@ -513,6 +526,11 @@ BOOL CMessageDetailsDlg::ValidateMessageName(CString omStrMessageName)
                     (nChar == '_')))
             {
                 bValid = TRUE;
+            }
+            else
+            {
+                bValid = FALSE;
+                break;
             }
         }
     }

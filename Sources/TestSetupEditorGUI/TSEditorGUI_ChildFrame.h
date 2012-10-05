@@ -66,6 +66,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 public:
     void vLoadTestSetupFile(CString omFilePath, BOOL bEmptyFile = FALSE);
+    void vLoadTestSetupFileTemp(CString omFilePath, BOOL bEmptyFile = FALSE);
     void vSetModifiedFlag(BOOL isModified);
     void vSetFileSavedFlag(BOOL isModified);
     void vListCtrlItemChanged(LPNMLISTVIEW pNMLV);
@@ -77,9 +78,9 @@ public:
     INT nChangeEntityTitle(CBaseEntityTA* pEntity, CString& omstrName);
     INT nDeleteItem(DWORD dwId, DWORD dwParentId);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
-	bool GetConfigurationData(xmlNodePtr pxmlNodePtr);
+    bool GetConfigurationData(xmlNodePtr& pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
-	HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
+    HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
 private:
     INT nPromptForSaveFile();
     void vSetCurrentFile(CString& omNewFilePath);
@@ -87,6 +88,7 @@ private:
     INT nDisplayEntity(DWORD dwEntityID);
     INT nDisplayEntity(CBaseEntityTA* pEntity);
     void vInitialise();
+    void vUpdateMessages();
     void vShowHelpInfo(eTYPE_ENTITY eEntityType);
 
     void parseSendEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem);
@@ -124,6 +126,8 @@ private:
     BOOL bEnablePase();
     BOOL bEnableCopy();
 
+
+
     void vCopyTreeItem(CBaseEntityTA** podCopyEntity, CBaseEntityTA* pCurrentEntity);
     void vDisplaySignalInfo(CString& omStrMsg);
     void vSetDefaultWndPlacement(void);
@@ -159,4 +163,6 @@ public:
     afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
     afx_msg void OnHelpTesteditorhelp();
     afx_msg void OnClose();
+
+    void SetTSEditorMenu();
 };

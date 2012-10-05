@@ -732,6 +732,31 @@ void CTxMsgWndJ1939::vInitializeTpfFields(void)
     UpdateData(TRUE);
 
 }
+
+/**
+* \brief         Updates channel information
+* \param         void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          27.09.2012 Created
+*/
+void CTxMsgWndJ1939::vUpdateChannelIDInfo()
+{
+    /* Clear existing channel info */
+    m_omComboChannel.ResetContent();
+
+    /* Update with latest channel info */
+    LPARAM lParam;
+    GetICANDIL()->DILC_GetControllerParams(lParam, 0, NUMBER_HW);
+    for (INT_PTR i = 0; i < lParam; i++)
+    {
+        CString omChannel;
+        omChannel.Format("%d", i + 1);
+        m_omComboChannel.InsertString(i, omChannel);
+    }
+    m_omComboChannel.SetCurSel(0);
+}
+
 void CTxMsgWndJ1939::vInitializeNmFields(void)
 {
     //Set the properties of the field first

@@ -75,7 +75,7 @@ BEGIN
             VALUE "FileDescription", "MHS-Elektronik Tiny-CAN Driver for Busmaster\0"
             VALUE "FileVersion", "1, 0, 0, 0\0"
             VALUE "InternalName", "CAN_MHS\0"
-            VALUE "LegalCopyright", "Copyright © 2011 MHS-Elektronik\0"
+            VALUE "LegalCopyright", "Copyright (c) 2011, Robert Bosch Engineering and Business Solutions\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "CAN_MHS.dll\0"
             VALUE "PrivateBuild", "\0"

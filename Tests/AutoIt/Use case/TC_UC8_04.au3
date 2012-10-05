@@ -52,7 +52,7 @@ if winexists("BUSMASTER") Then
 	sleep(1000)
 	;ControlClick("J1939 Transmit Message Window","",101,"left")
 EndIf
-$ACL=StringSplit($row1,"|")
+
 
 ConsoleWrite("****End : TC_UC8_04.au3****"&@CRLF)
 ConsoleWrite("***********UseCase 8 Script Execution Started************"&@CRLF)

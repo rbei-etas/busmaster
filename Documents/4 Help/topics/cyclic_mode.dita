@@ -24,7 +24,7 @@
           <li>Select <menucascade>
               <uicontrol>Replay</uicontrol>
               <uicontrol>Go</uicontrol>
-            </menucascade> or tool bar button Go (shown in figure below ) to start sending message cyclically one by one starting with first one in message block. Message replay window will be freezed.</li>
+            </menucascade> or tool bar button Go (shown in figure below ) to start sending message cyclically one by one starting with first one in message block. Message replay window will be freezed. If mode is <b>Cyclic</b> then the selected messages from <b>Replay window</b> will be sent. By default only the first message will be selected. After sending all the selected messages it waits for the delay mentioned in <b>Delay between replay cycles</b>. Then the cycle will be repeated.</li>
           <li> Select <menucascade>
               <uicontrol>Replay</uicontrol>
               <uicontrol>Stop</uicontrol>

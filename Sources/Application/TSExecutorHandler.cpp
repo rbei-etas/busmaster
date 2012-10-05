@@ -24,7 +24,7 @@
 typedef HRESULT (*SHOWTSEXECUTORWINDOW)(void* pParentWnd);
 typedef HRESULT (*TSEXECUTORWINDOWSHOWN)();
 //typedef HRESULT (*TSEXECUTORGETCONFIGDATA)(BYTE*& pDesBuffer, UINT& nBuffSize);
-typedef HRESULT (*TSEXECUTORGETCONFIGDATA)(xmlNodePtr pxmlNodePtr);
+typedef HRESULT (*TSEXECUTORGETCONFIGDATA)(xmlNodePtr* pxmlNodePtr);
 typedef HRESULT (*TSEXECUTORSETCONFIGDATA)(BYTE* pSrcBuffer, UINT nBuffSize);
 typedef HRESULT (*TSEXECUTORSETXMLCONFIGDATA)(xmlDocPtr);
 typedef HRESULT (*PFTSSTARTSTOPREADTHREAD)(ETYPE_BUS eBus, BOOL bStart);
@@ -105,11 +105,11 @@ void TSExecutorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSiz
     }
 }
 
-void TSExecutorHandler::vGetConfigurationData(xmlNodePtr pxmlNodePtr)
+void TSExecutorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
-    if(pfShowTSExecutorwindow != NULL)
+    if(pfTSExecutorGetConfigdata != NULL)
     {
-        pfTSExecutorGetConfigdata(pxmlNodePtr);
+        pfTSExecutorGetConfigdata(&pxmlNodePtr);
     }
 }
 

@@ -1801,13 +1801,13 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
             sHdrCtrlPos.m_byDataPos     = 7;
 
             //Set the col string
-            somArrColTitle[sHdrCtrlPos.m_byTimePos]     = "Time              ";
-            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = "Tx/Rx          ";
-            somArrColTitle[sHdrCtrlPos.m_byChannel]     = "Channel        ";
+            somArrColTitle[sHdrCtrlPos.m_byTimePos]     = "Time          ";
+            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = "Tx/Rx  ";
+            somArrColTitle[sHdrCtrlPos.m_byChannel]     = "Channel";
             somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = "Type";
-            somArrColTitle[sHdrCtrlPos.m_byIDPos]       = "ID            ";
-            somArrColTitle[sHdrCtrlPos.m_byCodeNamePos] = "Message       ";
-            somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = "Msg Type";
+            somArrColTitle[sHdrCtrlPos.m_byIDPos]       = "ID  ";
+            somArrColTitle[sHdrCtrlPos.m_byCodeNamePos] = "Message  ";
+            somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = "Msg Type  ";
             somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = "DLC ";
             somArrColTitle[sHdrCtrlPos.m_byDataPos]     = "Data Byte(s)                                     ";
 
@@ -3652,7 +3652,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         if ( NULL != ptext )
                         {
                             CString strIsHex = ptext;
-                            if(strIsHex == "TRUE")
+                            if(strIsHex == "TRUE" || strIsHex == "1")
                             {
                                 bHexDec = true;
                             }
@@ -3699,7 +3699,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         if ( NULL != ptext )
                         {
                             CString strIsAppend = ptext;
-                            if(strIsAppend == "TRUE")
+                            if(strIsAppend == "TRUE" || strIsAppend == "1")
                             {
                                 bOvrwAppend = true;
                             }
@@ -4306,7 +4306,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         if ( NULL != ptext )
                         {
                             CString strIsAppend = ptext;
-                            if(strIsAppend == "TRUE")
+                            if(strIsAppend == "TRUE" || strIsAppend == "1")
                             {
                                 bOvrwAppend = true;
                             }
@@ -4833,7 +4833,7 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
         CString csVisible;
         csVisible.Format("%d", m_lstMsg.IsColumnVisible(i));
         omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_VISIBLE,BAD_CAST omcVarChar);
+        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pVisisble);
 
         //<IsVisible>bool</IsVisible>
@@ -5154,7 +5154,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
             {
                 pnOrder[nIndividualCol] = (bool)atoi(strVar.c_str());
             }
-            if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_COL_VISIBLE,strVar))
+            if (xmlUtils::GetDataFrmNode(pChildNode,DEF_IS_VISIBLE,strVar))
             {
                 if(strVar == "TRUE")
                 {

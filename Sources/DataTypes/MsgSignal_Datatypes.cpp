@@ -344,7 +344,7 @@ sMESSAGE* tagSMSGENTRY::psCopyMsgVal(sMESSAGE* psMsg)
         Result->m_unMessageLength       = psMsg->m_unMessageLength;
         Result->m_bMessageFrameFormat   = psMsg->m_bMessageFrameFormat;
         Result->m_psSignals             = NULL;
-        memcpy(Result->m_bySignalMatrix, psMsg->m_bySignalMatrix, 8);
+        memcpy(Result->m_bySignalMatrix, psMsg->m_bySignalMatrix, 1785);
         Result->m_nMsgDataFormat        = psMsg->m_nMsgDataFormat;
     }
     else

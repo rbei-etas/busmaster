@@ -340,8 +340,17 @@ void CNodeSim::NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize)
     memcpy (pDesBuffer, CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, nBuffSize);
 }
 
-bool CNodeSim::NS_GetSimSysConfigData(xmlNodePtr pNodePtr)
+bool CNodeSim::NS_GetSimSysConfigData(xmlNodePtr& pNodePtr)
 {
+    if( m_eBus == J1939 )
+    {
+        pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_J1939_SIM_SYS);
+    }
+    else
+    {
+        pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_SIM_SYS);
+    }
+
     CSimSysManager::ouGetSimSysManager(m_eBus).bGetConfigData(pNodePtr);
     return true;
 }
@@ -360,6 +369,13 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
     }
     //Update Internal Data
     CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig();
+    if(pSrcBuffer == NULL)
+    {
+        if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
+        {
+            CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_HIDE );
+        }
+    }
 }
 
 void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
@@ -377,6 +393,25 @@ void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
         CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig(pXmlDoc, m_eBus);
     }
     //Update Internal Data
+
+}
+
+void CNodeSim::NS_SetSimSysConfigData(xmlNodePtr pXmlNode)
+{
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    {
+        delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
+        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
+    }
+    if (pXmlNode != NULL)
+    {
+        /*CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = new BYTE[nBuffSize];
+        memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
+        CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize = nBuffSize;*/
+        CSimSysManager::ouGetSimSysManager(m_eBus).vSetConfigData(pXmlNode);
+    }
+    //Update Internal Data
+
 
 }
 int  CNodeSim::NS_nOnBusConnected(bool bConnected)

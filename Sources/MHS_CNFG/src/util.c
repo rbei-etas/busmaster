@@ -2,8 +2,8 @@
                            util.c  -  description
                              -------------------
     begin             : 01.11.2010
-    copyright         : (C) 2010 by MHS-Elektronik GmbH & Co. KG, Germany
-    autho             : Klaus Demlehner, klaus@mhs-elektronik.de
+    copyright         : Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+    author            : Saravanan
  ***************************************************************************/
 
 /***************************************************************************

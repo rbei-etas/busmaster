@@ -6,7 +6,7 @@ class CJ1939DBC2DBFConverter : public CBaseConverter
     CString m_omstrConversionStatus;
     HRESULT m_hResult;
     HMODULE m_hDLLModule;
-    CDBCConverterBase *m_pouDBC2DBFConverter;
+    CDBCConverterBase* m_pouDBC2DBFConverter;
     GETCONVERTER m_pfGetConverter;
 public:
     CJ1939DBC2DBFConverter(void);

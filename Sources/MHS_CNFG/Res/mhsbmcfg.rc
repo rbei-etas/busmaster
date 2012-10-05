@@ -105,7 +105,7 @@ BEGIN
     CTEXT           "MHS-Elektronik GmbH und Co. KG\nFuchsöd 4\nD-94149 Kößlarn\n\n Internet: www.mhs-elektronik.de",
                     IDC_STATIC,24,54,131,44
     LTEXT           "Version 1.00",IDC_STATIC,36,18,51,12
-    LTEXT           "Copyright (c) 2011 MHS-Elektronik GmbH u. Co. KG",
+    LTEXT           "Copyright (c) 2011, Robert Bosch Engineering and Business Solutions",
                     IDC_STATIC,4,38,173,12
 END
 

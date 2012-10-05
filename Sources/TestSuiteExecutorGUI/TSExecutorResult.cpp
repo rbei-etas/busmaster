@@ -270,11 +270,15 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
         for(INT nVerifyIndex = 0; nVerifyIndex <nVerifyCount; nVerifyIndex++)
         {
             CString omStrVerify;
-            omStrVerify.Format("\n\tVerify - %d", nVerifyIndex+1);
-            omReportFile.WriteString(omStrVerify);
+            CString omStrTemp;
             POSITION pos = ouResultTc.m_ouVerifyList.FindIndex(nVerifyIndex);
             CResultVerify& ouVerify = ouResultTc.m_ouVerifyList.GetAt(pos);
             INT nMsgCount = (INT)ouVerify.m_MessageResultList.GetCount();
+
+            vGetVerifySeverity(ouVerify.m_eResult, omStrTemp);
+            omStrVerify.Format("\n\tVerify - %d (Severity - %s)", nVerifyIndex+1, omStrTemp);
+            omReportFile.WriteString(omStrVerify);
+
             if(nMsgCount == 0)
             {
                 CString omStrTemp("No Message is Verified");
@@ -305,6 +309,26 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
         omReportFile.WriteString("\n");
     }
     return 0;
+}
+void CResultGenerator::vGetVerifySeverity(eERROR_ATTRIBUTE eError, CString& omStrError)
+{
+    switch(eError)
+    {
+        case SUCCESS:
+            omStrError = "SUCCESS";
+            break;
+        case WARNING:
+            omStrError = "WARNING";
+            break;
+        case ERRORS:
+            omStrError = "ERRORS";
+            break;
+        default:
+        case FATAL:
+            omStrError = "FATAL";
+            break;
+    }
+
 }
 
 /******************************************************************************

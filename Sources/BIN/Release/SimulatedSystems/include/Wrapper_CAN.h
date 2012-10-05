@@ -1,46 +1,46 @@
 /*******************************************************************************
-  Project       :  CAN-Monitor                                      
-  FileName      :  wrapper.c                                          
-  Description   :  
-                   
+  Project       :  CAN-Monitor
+  FileName      :  wrapper.c
+  Description   :
+
   $Log:   Y:/EMC2/Projects/CAN_Monitor_Maintenance/Archives/Source/Misc/GCC/Wrapper.h_v  $
- * 
+ *
  *    Rev 1.8   15 Sep 2010 17:26:42   rac2kor
- *  
- * 
+ *
+ *
  *    Rev 1.7   27 Dec 2006 16:12:14   amb2kor
  * Changes for Global variable support: Multiple database support.
- * 
+ *
  *    Rev 1.6   02 Feb 2006 19:55:38   amb2kor
  * Changes due to CRH0031 ( Multinode Support )
- * 
+ *
  *    Rev 1.5   21 Jul 2005 19:05:24   amb2kor
  * changes due to Multi Channel concept. Trace is modified and
  * New API to get version information is added.
- * 
+ *
  *    Rev 1.4   Aug 07 2004 07:48:08   amb2kor
  * Changes due to CRH0026: After UT.
- * 
+ *
  *    Rev 1.3   30 Oct 2003 11:01:32   amb2kor
- *  
- * 
+ *
+ *
  *    Rev 1.2   02 May 2003 11:55:44   amb2kor
  * Removed parameter name sTxMsg from SendMsg function.
- * 
+ *
  *    Rev 1.1   24 Apr 2003 09:50:22   amb2kor
  * For system testing
- * 
+ *
  *    Rev 1.0.1.1   03 Apr 2003 12:20:48   amb2kor
  * prototype of SendMsg function is changed to accept single structure.
- * 
+ *
  *    Rev 1.0   14 Feb 2003 14:34:36   amb2kor
  * Base Version : Latest version From CAN-Monitor2.x project
  * Version Label in CAN-Monitor2.x : CAN-Monitor2.0 EVAL/CMRL
- * 
- * 
-  
+ *
+ *
+
   Author(s)     :  Amarnath Shastry
-  Date Created  :  20/03/2002                                             
+  Date Created  :  20/03/2002
   Modified By   :  Ravikumar Patil  on 04.03.03
 *******************************************************************************/
 #ifndef _WRAPPER_H_
@@ -53,44 +53,44 @@
 //Structures
 typedef struct sTCAN_MSG
 {
-	unsigned int m_unMsgID;     // 11/29 Bit-
+    unsigned int m_unMsgID;     // 11/29 Bit-
     unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
     unsigned char m_ucRTR;      // true, for remote request
     unsigned char m_ucDLC;  // Data len (0..8)
-	unsigned char m_ucChannel;
-	union
-	{
-		unsigned char      m_aucData[8];
-		unsigned short int m_auwData[4];
-		unsigned long  int m_aulData[2];
-	}m_sWhichBit;
-	unsigned long m_ulTimeStamp;
-	/*STCAN_MSG(UINT unMsgID=0, UCHAR ucExt=0, UCHAR ucRtr=0, UCHAR ucDLC=8, UCHAR ucChannel=1, 
-			UCHAR b0=0,UCHAR b1=0,UCHAR b2=0,UCHAR b3=0,UCHAR b4=0,UCHAR b5=0,UCHAR b6=0,UCHAR b7=0)
-	{
-		m_unMsgID = unMsgID;
-		m_ucDLC=ucDLC;
-		m_ucEXTENDED=ucExt;
-		m_ucRTR=ucRtr;
-		m_ucChannel=ucChannel;
-		m_sWhichBit.m_aucData[0]=b0;
-		m_sWhichBit.m_aucData[1]=b1;
-		m_sWhichBit.m_aucData[2]=b2;
-		m_sWhichBit.m_aucData[3]=b3;
-		m_sWhichBit.m_aucData[4]=b4;
-		m_sWhichBit.m_aucData[5]=b5;
-		m_sWhichBit.m_aucData[6]=b6;
-		m_sWhichBit.m_aucData[7]=b7;
-	}*/
-}STCAN_MSG;
+    unsigned char m_ucChannel;
+    union
+    {
+        unsigned char      m_aucData[8];
+        unsigned short int m_auwData[4];
+        unsigned long  int m_aulData[2];
+    } m_sWhichBit;
+    unsigned long m_ulTimeStamp;
+    /*STCAN_MSG(UINT unMsgID=0, UCHAR ucExt=0, UCHAR ucRtr=0, UCHAR ucDLC=8, UCHAR ucChannel=1,
+            UCHAR b0=0,UCHAR b1=0,UCHAR b2=0,UCHAR b3=0,UCHAR b4=0,UCHAR b5=0,UCHAR b6=0,UCHAR b7=0)
+    {
+        m_unMsgID = unMsgID;
+        m_ucDLC=ucDLC;
+        m_ucEXTENDED=ucExt;
+        m_ucRTR=ucRtr;
+        m_ucChannel=ucChannel;
+        m_sWhichBit.m_aucData[0]=b0;
+        m_sWhichBit.m_aucData[1]=b1;
+        m_sWhichBit.m_aucData[2]=b2;
+        m_sWhichBit.m_aucData[3]=b3;
+        m_sWhichBit.m_aucData[4]=b4;
+        m_sWhichBit.m_aucData[5]=b5;
+        m_sWhichBit.m_aucData[6]=b6;
+        m_sWhichBit.m_aucData[7]=b7;
+    }*/
+} STCAN_MSG;
 
 //This structure holds the error and the channel number
 typedef struct sCAN_ERR
 {
-	unsigned char m_ucTxError ;
-	unsigned char m_ucRxError ;
-	unsigned char m_ucChannel ;
-}SCAN_ERR;
+    unsigned char m_ucTxError ;
+    unsigned char m_ucRxError ;
+    unsigned char m_ucChannel ;
+} SCAN_ERR;
 
 //typedef
 typedef UINT (*APPFUNCPROC) (void*,HMODULE);

@@ -10,9 +10,10 @@
 ConsoleWrite("****Start : TC_UC3_02.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
-	_loadConfig("UseCase1")
+	_loadConfig("UseCase3")
 EndIf
 _loadDatabase("AutoitTest")
+send("!FDC")  		; Close the database
 _associateDB("&File","AutoitTest.dbf")
 ConsoleWrite("$lDb : "&$lDb&@CRLF)
 ConsoleWrite("$msgCount : "&$msgCount&@CRLF)

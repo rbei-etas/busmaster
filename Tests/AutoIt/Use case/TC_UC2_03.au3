@@ -10,7 +10,7 @@
 ConsoleWrite("****Start : TC_UC2_03.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
-	_loadConfig("UseCase1")
+	_loadConfig("UseCase2.cfx")
 EndIf
 if winexists("BUSMASTER") Then
 	sleep(1000)

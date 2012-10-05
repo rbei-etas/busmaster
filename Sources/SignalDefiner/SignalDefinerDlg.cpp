@@ -7,6 +7,7 @@
 #include "SignalDefiner_Extern.h"
 
 #define M_PI       3.14159265358979323846
+#define MAX_SAMPLING_TIME_PERIOD 32767
 const float SINE_COEFF = (8 / (M_PI* M_PI));
 
 // CSignalDefinerDlg dialog
@@ -36,6 +37,7 @@ void CSignalDefinerDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_SIGNAL_AMPLITUDE, m_fAmplitude);
     DDX_Text(pDX, IDC_EDIT_SIGNAL_FREQUENCY, m_fFrequency);
     DDX_Text(pDX, IDC_EDIT_SIGNAL_SAMPLING_TIME, m_dblSamplingTimePeriod);
+    DDV_MinMaxDouble(pDX, m_dblSamplingTimePeriod, 0, MAX_SAMPLING_TIME_PERIOD);
     DDX_CBIndex(pDX, IDC_COMBO_CYCLES, m_nSelCycle);
     DDX_Control(pDX, IDC_COMBO_SIGNAL_TYPE, m_ctrSignalType);
     DDX_Control(pDX, IDC_COMBO_CYCLES, m_ctrNoOfCycles);

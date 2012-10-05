@@ -409,11 +409,14 @@ HRESULT CTSExecutionCAN::TSX_VerifyMessage(CBaseEntityTA* pEntity, CResultVerify
     CVerify_MessageData ouVerifyData;
     CString omResult;
     sMESSAGE sMsg;
+    CVerifyData ouVerify;
     CSignalInfoArray ouSignalInfo;
 
     pEntity->GetSubEntryCount(unVerifyCount);
     ouVerifyResult.m_MessageResultList.RemoveAll();
 
+    pEntity->GetEntityData(VERIFY, &ouVerify);
+    ouVerifyResult.m_eResult = ouVerify.m_eAttributeError;
     //Loop For all Messages
     for(UINT j=0; j<unVerifyCount; j++)
     {
@@ -452,6 +455,10 @@ HRESULT CTSExecutionCAN::TSX_VerifyMessage(CBaseEntityTA* pEntity, CResultVerify
         ouVerifyResult.m_MessageResultList.AddTail(ouMsgResult);
         TSX_DisplayResult(omResult);
         delete []pucData;
+    }
+    if( S_FALSE != hResult )
+    {
+        ouVerifyResult.m_eResult = SUCCESS;
     }
     return hResult;
 }
@@ -496,7 +503,7 @@ BOOL CTSExecutionCAN::bVerifyCanMessage(CVerify_MessageData& ouVerifyData, CSign
                 ouSignalResult.m_omSignalValue.Format("%f", ouSignal.m_dPhyValue);
                 bRetVal = m_ouExpressionEWxecutor.bGetExpressionValue(omStrCondition, (float)ouSignal.m_dPhyValue);
             }
-            if(bRetVal == FALSE)
+            if(bRetVal != TRUE)
             {
                 ouSignalResult.m_omResult = "FAIL";
                 //if One signal failed total message and total Testcase will be failed
@@ -570,14 +577,34 @@ BOOL CTSExecutionCAN::bMakeCanMessage(sMESSAGE*& pMsg, CSend_MessageData& ouSend
         tagUSIGNALVALUE sSignalValue;
         if(ouSendData.m_eSignalUnitType == ENG)
         {
-            float fTempVal;
-            fTempVal  = (ouSignalData.m_uValue.m_fValue - psCurrSignal->m_fSignalOffset);
-            fTempVal = (fTempVal / psCurrSignal->m_fSignalFactor);
-            sSignalValue.m_u64Value = (UINT64)(fTempVal+0.5);
-            if(sSignalValue.m_u64Value < (UINT64)psCurrSignal->m_SignalMinValue.n64Value)
+            if( psCurrSignal->m_bySignalType == CHAR_INT )
             {
-                sSignalValue.m_u64Value = (UINT64)psCurrSignal->m_SignalMinValue.n64Value;
+                __int64 n64Value = static_cast<__int64>(
+                                       ( ouSignalData.m_uValue.m_fValue - psCurrSignal->m_fSignalOffset) /
+                                       psCurrSignal->m_fSignalFactor );
+                sSignalValue.m_u64Value = n64Value;
+                if(n64Value < (INT64)psCurrSignal->m_SignalMinValue.n64Value)
+                {
+                    sSignalValue.m_u64Value = (UINT64)psCurrSignal->m_SignalMinValue.n64Value;
+                }
             }
+            else
+            {
+                // Apply factor & offset
+                sSignalValue.m_u64Value = static_cast<UINT64>(
+                                              ( ouSignalData.m_uValue.m_fValue - psCurrSignal->m_fSignalOffset) /
+                                              psCurrSignal->m_fSignalFactor );
+
+                if(sSignalValue.m_u64Value < (UINT64)psCurrSignal->m_SignalMinValue.n64Value)
+                {
+                    sSignalValue.m_u64Value = (UINT64)psCurrSignal->m_SignalMinValue.n64Value;
+                }
+            }
+            /* float fTempVal;
+             fTempVal  = (ouSignalData.m_uValue.m_fValue - psCurrSignal->m_fSignalOffset);
+             fTempVal = (fTempVal / psCurrSignal->m_fSignalFactor);
+             sSignalValue.m_u64Value = (UINT64)(fTempVal+0.5);*/
+
         }
         else
         {

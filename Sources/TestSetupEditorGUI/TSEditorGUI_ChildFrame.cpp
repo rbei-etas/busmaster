@@ -30,8 +30,9 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
+#include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
-
+#define MSG_GET_CONFIGPATH  10000
 #define def_STR_SIGNAL_FORMAT   "%-50s %8d %8d %8d\r\n"
 #define def_STR_SIGNAL_HEADING  "%-50s %8s %8s %8s\r\n\r\n"
 #define CHECKENTITY(pEntity) if( pEntity == NULL){return;}
@@ -218,7 +219,44 @@ void CTSEditorChildFrame::vLoadTestSetupFile(CString omFilePath, BOOL bEmptyFile
     vSetCurrentFile(omFilePath);
     nUpdateTreeView();
 }
+void CTSEditorChildFrame::vLoadTestSetupFileTemp(CString omFilePath, BOOL bEmptyFile)
+{
+    vInitialise();
+    if(m_odTreeView != NULL )
+    {
+        m_odTreeView->GetTreeCtrl().DeleteAllItems();
+    }
+    if(m_odPropertyView != NULL)
+    {
+        m_odPropertyView->m_omPropertyList.DeleteAllItems();
+    }
+    m_ouTSEntity.vInitialise();
 
+    if(bEmptyFile == FALSE)
+    {
+        if( m_ouTSEntity.LoadFile(omFilePath) != S_OK)  //if S_OK Then Upadate The Tree
+        {
+            MessageBox("Invalid Test Setup File", "Error", MB_OK|MB_ICONERROR);
+            vInitialise();
+            if(m_odTreeView != NULL )
+            {
+                m_odTreeView->GetTreeCtrl().DeleteAllItems();
+            }
+            if(m_odPropertyView != NULL)
+            {
+                m_odPropertyView->m_omPropertyList.DeleteAllItems();
+            }
+            m_ouTSEntity.vInitialise();
+            CString omStrTemp = def_EMPTYFILENAME;
+            vSetCurrentFile(omStrTemp);
+            return;
+        }
+        m_bFileSaved = TRUE;
+    }
+
+    vSetCurrentFile(omFilePath);
+    nUpdateTreeView();
+}
 /******************************************************************************
 Function Name  :  nUpdateTreeView
 Input(s)       :  -
@@ -444,7 +482,7 @@ void CTSEditorChildFrame::OnFileOpen()
 
     if(IDOK == omFileOpenDlg.DoModal())
     {
-        vLoadTestSetupFile(omFileOpenDlg.GetPathName());
+        vLoadTestSetupFileTemp(omFileOpenDlg.GetPathName());
     }
 }
 
@@ -886,9 +924,9 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     omTempListCtrl.vSetColumnInfo(def_VERIFY_ROWNUM_MSGCNT, def_COLUMN_VALUE, sListInfo);
 
     sListInfo.m_eType = eComboItem;
-    CVerifyData odVerifyData;
+    CVerifyResponseData odVerifyData;
     pEntity->GetEntityData(pEntity->GetEntityType(), &odVerifyData);
-    switch(odVerifyData.m_eAttributeError)
+    switch(odVerifyData.m_VerifyData.m_eAttributeError)
     {
         case WARNING:
             omstrTemp = "WARNING";
@@ -995,7 +1033,7 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA* pEntity)
     omTempListCtrl.vSetColumnInfo(def_WAIT_ROWNUM_PURPOSE, def_COLUMN_VALUE, sListInfo);
 
     sListInfo.m_eType = eNumber;
-    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_DELAY, "Delay");
+    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_DELAY, "Delay (in msec)");
     omstrTemp.Format("%d", odData.m_ushDuration);
     omTempListCtrl.SetItemText(def_WAIT_ROWNUM_DELAY, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetNumericInfo(def_WAIT_ROWNUM_DELAY, def_COLUMN_VALUE, sNumInfo);
@@ -1246,7 +1284,8 @@ INT CTSEditorChildFrame::nConfirmCurrentChanges()
         default:
             return 0;
     }
-    vSetModifiedFlag(FALSE);
+
+    vSetModifiedFlag(TRUE);
     return 0;
 }
 
@@ -1732,11 +1771,13 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         {
             if(omstrDatabaseName != ouHeaderInfo.m_omDatabasePath)
             {
-                int nRetVal = MessageBox("Database Path Is Changed\nDo You want to Delete all Existing messages", "Database Path",MB_YESNO);
-                if(nRetVal == IDYES)
+                int nRetVal = MessageBox("Database Path Is Changed.All Old messages of Test Setup File will be Deleted.\nDo you Want To Continue", "Database Path Changed",MB_YESNO||MB_ICONWARNING);
+                if(nRetVal == IDOK)
                 {
                     ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
                     m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName);
+                    m_ouTSEntity.vDeleteAllSubMessages();
+                    OnDisplayReset();
                 }
                 else
                 {
@@ -2055,6 +2096,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
     m_ouTSEntity.SearchEntityObject(dwId, &pParentEntity);
     CString omStrNewItem;
     UINT unImageIndex;
+    BOOL bFileModified = FALSE;
     switch(eEntityType)
     {
         case TEST_CASE:
@@ -2065,6 +2107,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             m_ouTSEntity.GetSubEntityObj(m_ouTSEntity.GetSubEntryCount()-1, &pouTestCaseEntity);
             omTempTreeCtrl.InsertTreeItem(m_hParentTreeItem, "Untitled TestCase", NULL, 0, 0, pouTestCaseEntity->GetID());
             omTempTreeCtrl.RedrawWindow();
+            vSetModifiedFlag(TRUE);
             return S_OK;
         }
         case SEND:
@@ -2072,6 +2115,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             pNewEntity = new CSendEntity();
             omStrNewItem = "Send";
             unImageIndex = def_INDEX_SEND_IMAGE;
+            vSetModifiedFlag(TRUE);
             break;
         }
         case VERIFY:
@@ -2079,6 +2123,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             pNewEntity = new CVerifyEntity();
             omStrNewItem = "Verify";
             unImageIndex = def_INDEX_VERIFY_IMAGE;
+            vSetModifiedFlag(TRUE);
             break;
         }
         case WAIT:
@@ -2086,6 +2131,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             pNewEntity = new CWaitEntity();
             omStrNewItem = "Wait";
             unImageIndex = def_INDEX_WAIT_IMAGE;
+            vSetModifiedFlag(TRUE);
             break;
         }
         case REPLAY:
@@ -2093,6 +2139,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             pNewEntity = new CReplayEntity();
             omStrNewItem = "Replay";
             unImageIndex = def_INDEX_REPLAY_IMGAE;
+            vSetModifiedFlag(TRUE);
             break;
         }
         case VERIFYRESPONSE:
@@ -2101,6 +2148,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             ((CVerifyResponse*)pNewEntity)->m_ushDuration = 0;
             omStrNewItem = "VerfiyResponse";
             unImageIndex = def_INDEX_VERIFY_IMAGE;
+            vSetModifiedFlag(TRUE);
             break;
         }
         default:
@@ -2201,10 +2249,12 @@ Modifications  :
 void CTSEditorChildFrame::OnFileSave()
 {
     //OnSelectionChanging(0, 0);
+    nConfirmCurrentChanges();
     if(m_omCurrentTSFile != def_EMPTYFILENAME)      //We have a path
     {
         m_ouTSEntity.SaveFileAs(m_omCurrentTSFile);
         m_bFileSaved = TRUE;
+        m_bModified = FALSE;
     }
 }
 
@@ -2252,7 +2302,12 @@ void CTSEditorChildFrame::OnFileNew()
     if(m_odPropertyView != NULL)
     {
         m_odPropertyView->m_omPropertyList.DeleteAllItems();
+        m_odTreeView->GetTreeCtrl().DeleteAllItems();
     }
+
+    CString omstrFileName(def_EMPTYFILENAME);
+    vSetCurrentFile(omstrFileName);
+
 
     CFileDialog omFileOpenDlg(FALSE, ".xml", 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
     omFileOpenDlg.m_ofn.lpstrTitle = "New TestSetup File";
@@ -2573,19 +2628,23 @@ void CTSEditorChildFrame::OnEditPaste()
         case VERIFYRESPONSE:
             m_pCurrentEntity->AddSubEntry(podCopyEntity);
             parseTestCaseEntiy(m_pCurrentEntity, m_hCurrentTreeItem);
+            nDisplayEntity(m_pCurrentEntity);
             break;
         case SEND_MESSAGE:
             m_pCurrentEntity->AddSubEntry(podCopyEntity);
             parseSendEntity(m_pCurrentEntity, m_hCurrentTreeItem);
+            nDisplayEntity(m_pCurrentEntity);
             break;
         case VERIFY_MESSAGE:
             m_pCurrentEntity->AddSubEntry(podCopyEntity);
             parseVerifyEntity(m_pCurrentEntity, m_hCurrentTreeItem);
+            nDisplayEntity(m_pCurrentEntity);
             break;
         default:
             break;
     }
     m_bPasted = TRUE;
+    vSetModifiedFlag(TRUE);
 }
 
 /******************************************************************************
@@ -2735,6 +2794,7 @@ void CTSEditorChildFrame::OnEditCut()
     {
         omTempTreeCtrl.DeleteItem(m_hCurrentTreeItem);
     }
+    vSetModifiedFlag(TRUE);
 }
 
 /******************************************************************************
@@ -2984,10 +3044,25 @@ HRESULT CTSEditorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuff
     COPY_DATA(pTemp, &nCxMin, sizeof(INT));
     return S_OK;
 }
-bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr pxmlNodePtr)
+bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
     const char* omcVarChar ;
 
+    pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_TS_EDITOR);
+
+    if(m_omCurrentTSFile.IsEmpty() == FALSE && m_omCurrentTSFile != def_EMPTYFILENAME)
+    {
+
+        string omPath, omStrConfigFolder;
+        char configPath[MAX_PATH];
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+        CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_omCurrentTSFile.GetBuffer(MAX_PATH), omPath);
+        omcVarChar = omPath.c_str();
+
+        xmlNodePtr pFilePath = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TS_XML_FILE_PATH, BAD_CAST omcVarChar);
+        xmlAddChild(pxmlNodePtr, pFilePath);
+    }
     //<Tree_Bkg_Color>ff0000</Tree_Bkg_Color>
     COLORREF omCol1, omCol2;
     m_odTreeView->vGetTreeCtrlColor(omCol1, omCol2);
@@ -3022,6 +3097,12 @@ bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr pxmlNodePtr)
 
     xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeWndPos);
+
+    if(IsWindowVisible() == FALSE)
+    {
+        wndPlacement.showCmd = SW_HIDE;
+    }
+
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,wndPlacement);
 
     //TreeView Window Position
@@ -3061,6 +3142,8 @@ Modifications  :
 ******************************************************************************/
 HRESULT CTSEditorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
+    // On New config creation close the file
+    OnFileClose();
     if(unBuffSize != 0)
     {
         COLORREF omCol1, omCol2;
@@ -3091,9 +3174,12 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffS
     }
     else
     {
+
         m_odTreeView->vSetDefaultColors();
         m_odPropertyView->m_omPropertyList.vSetDefaultColors();
-        SetWindowPlacement(&m_sTSDefPlacement);
+        WINDOWPLACEMENT omTempWnd = m_sTSDefPlacement;
+        omTempWnd.showCmd = SW_HIDE;
+        SetWindowPlacement(&omTempWnd);
         m_bQueryConfirm = TRUE;
     }
     return S_OK;
@@ -3101,6 +3187,8 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffS
 
 HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
 {
+    OnFileClose();
+
     m_odTreeView->vSetDefaultColors();
     m_odPropertyView->m_omPropertyList.vSetDefaultColors();
     SetWindowPlacement(&m_sTSDefPlacement);
@@ -3110,13 +3198,51 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
     xmlXPathObjectPtr pTempNode = NULL;
 
     BOOL bWindowPos = FALSE;
+    BOOL bIsFileFound = FALSE;
 
     if( NULL != pXmlNode)
     {
         COLORREF omCol1, omCol2;
         //Get Default Tree Colors
         m_odTreeView->vGetTreeCtrlColor(omCol1, omCol2);
+        CString strxmlFilePath = "";
 
+        pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "XML_File_Path");
+        if( NULL != pTempNode )
+        {
+            xmlNodePtr pNode = pTempNode->nodesetval->nodeTab[0]->children;
+            if(pNode != NULL)
+            {
+                xmlChar* pText = xmlNodeListGetString(pNode->doc, pNode, 1);
+
+                if( NULL != pText)
+                {
+                    if(PathIsRelative((char*)pText) == TRUE)
+                    {
+                        string omStrConfigFolder;
+                        string omPath;
+                        char configPath[MAX_PATH];
+                        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                        char chAbsPath[MAX_PATH];
+                        PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)pText);
+                        strxmlFilePath = chAbsPath;
+                    }
+                    else
+                    {
+                        strxmlFilePath = (char*)pText;
+                    }
+                    xmlFree(pText);
+                }
+                if(strxmlFilePath.IsEmpty() == FALSE)
+                {
+                    vSetCurrentFile(strxmlFilePath);
+                    bIsFileFound = TRUE;
+                }
+            }
+        }
+
+        pTempNode = NULL;
         pTempNode = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*) "Tree_Bkg_Color");
         if( NULL != pTempNode )
         {
@@ -3227,6 +3353,14 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
         SetWindowPlacement(&wndPlacement);
     }
 
+    if(bIsFileFound == TRUE)
+    {
+        if(m_omCurrentTSFile.IsEmpty() == FALSE)
+        {
+            vLoadTestSetupFile(m_omCurrentTSFile);
+        }
+    }
+
     return S_OK;
 }
 /******************************************************************************
@@ -3306,6 +3440,36 @@ void CTSEditorChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd
 }
 
 /******************************************************************************
+Function Name  :  SetTSEditorMenu
+Input(s)       :
+Output         :  void
+Functionality  :
+Member of      :  CTSEditorChildFrame
+Friend of      :  -
+Author(s)      :  Prathiba
+Date Created   :  11/09/2012
+Modifications  :
+Code Tag       :
+******************************************************************************/
+void CTSEditorChildFrame::SetTSEditorMenu()
+{
+    if(m_omMenu != NULL)
+    {
+        AfxGetMainWnd()->SetMenu(&m_omMenu);
+        CString strTestSetupfile = m_omCurrentTSFile;
+        m_bModified = FALSE;
+        m_bFileSaved = TRUE;
+        OnFileClose();
+
+        if(strTestSetupfile.IsEmpty() == FALSE && strTestSetupfile != def_EMPTYFILENAME)
+        {
+            m_omCurrentTSFile = strTestSetupfile;
+            vLoadTestSetupFile(strTestSetupfile);
+        }
+    }
+}
+
+/******************************************************************************
 Function Name  :  vSetDefaultWndPlacement
 Input(s)       :
 Output         :  void
@@ -3369,6 +3533,10 @@ void CTSEditorChildFrame::OnClose()
     // TODO: Add your message handler code here and/or call default
     /*OnFileClose();
     CMDIChildWnd::OnClose();*/
-    AfxGetMainWnd()->SetMenu(m_pMainMenu);
+
+    INT nRetVal = nPromptForSaveFile();
+    CHECKEQ(nRetVal, IDCANCEL);
+
     ShowWindow(SW_HIDE);
+    AfxGetMainWnd()->SetMenu(m_pMainMenu);
 }

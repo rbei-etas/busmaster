@@ -39,7 +39,7 @@ if winexists("BUSMASTER") Then
 		$b1Msgs=ControlListView("BUSMASTER","","SysListView323","GetItemCount")
 		$msgCount=$msgCount+1
 	Next
-	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:23]","left")
+	ControlClick("BUSMASTER","",1015,"left")   ;close the Tx window
 	sleep(1000)
 
 	if winexists("BUSMASTER","Do you want to save changes?") Then

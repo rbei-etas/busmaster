@@ -102,14 +102,14 @@ public:
     HRESULT SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObject);
     HRESULT GetConfigData(BYTE** ppvConfigData, UINT& unLength);
     HRESULT SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
-	//MVN
-	HRESULT SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus);
-	void vAddLogFile( CLogObjArray& omLogListTmp, CBaseLogObject*& pouBaseLogObj);
-	//~MVN
+    //MVN
+    HRESULT SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus);
+    void vAddLogFile( CLogObjArray& omLogListTmp, CBaseLogObject*& pouBaseLogObj);
+    //~MVN
 
-	// PTV XML
-	HRESULT GetConfigData(xmlNodePtr pxmlNodePtr);
-	// PTV XML
+    // PTV XML
+    HRESULT GetConfigData(xmlNodePtr pxmlNodePtr);
+    // PTV XML
     HRESULT Reset(void);
     HRESULT Confirm(void);
     HRESULT StartEditingSession(void);

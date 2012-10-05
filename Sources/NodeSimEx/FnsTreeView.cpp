@@ -807,9 +807,9 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                             }
 
                         }
-                        if( omStrText != ERROR_HANDLERS &&
-                                omStrText != DLL_HANDLERS &&
-                                omStrText != BUSEVENT_HANDLERS )
+                        /* if( omStrText != ERROR_HANDLERS &&
+                                 omStrText != DLL_HANDLERS &&
+                                 omStrText != BUSEVENT_HANDLERS )*/
                         {
                             pomSubMenu->EnableMenuItem(IDM_DEL_HAND,
                                                        MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
@@ -1564,6 +1564,16 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
                 omStrFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 omStrHdrOld.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 omStrFooterOld.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+
+
+                CString omStrOldFuncDecl = omStrFuncPrototypeOld;
+                pDoc->bAddGCCExportPrototype(omStrOldFuncDecl);
+
+                CString omStrNewFuncDecl = omStrFuncPrototype;
+                pDoc->bAddGCCExportPrototype(omStrNewFuncDecl);
+
+
+
                 //Find the previous header and replace it
                 POSITION pos = pDoc->m_omSourceCodeTextList.Find(omStrHdrOld );
                 if( pos != NULL )
@@ -1583,6 +1593,14 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
                     // Add footer
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrFooter );
                 }
+                omStrOldFuncDecl += ";";
+                pos = pDoc->m_omSourceCodeTextList.Find(omStrOldFuncDecl );
+                if( pos != NULL )
+                {
+                    omStrNewFuncDecl += ";";
+                    pDoc->m_omSourceCodeTextList.SetAt( pos,omStrNewFuncDecl );
+                }
+
                 // Insert the prototype into the tree under
                 // timer handler header
                 // Add the prototype to the tree view

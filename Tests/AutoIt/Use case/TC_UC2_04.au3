@@ -10,7 +10,7 @@
 ConsoleWrite("****Start : TC_UC2_04.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
-	_loadConfig("UseCase1")
+	_loadConfig("UseCase2.cfx")
 	_associateDB("&File","AutoitTest.dbf")
 	if winexists("BUSMASTER") Then
 	sleep(500)
@@ -39,7 +39,7 @@ if winexists("BUSMASTER") Then
 		$b1Msgs=ControlListView("BUSMASTER","","SysListView323","GetItemCount")
 		$msgCount=$msgCount+1
 	Next
-	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:23]","left")
+	ControlClick("BUSMASTER","",1015,"left")
 	sleep(1000)
 	if winexists("BUSMASTER","Do you want to save changes?") Then
 		ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:2]","left")

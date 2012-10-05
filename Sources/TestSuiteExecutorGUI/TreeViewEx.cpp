@@ -663,7 +663,8 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         if(omTempTreeCtrl.GetItemData(hItem) == def_ID_TESTSUITE)
         {
             VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_ADD, "Add..."));
-            if(GetExecutorWindow()->bGetBusStatus() == TRUE)
+            BOOL bCheck = bIsItemChecked(hItem);
+            if(GetExecutorWindow()->bGetBusStatus() == TRUE && bCheck == TRUE )
             {
                 VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_EXECUTE, "Execute"));
             }

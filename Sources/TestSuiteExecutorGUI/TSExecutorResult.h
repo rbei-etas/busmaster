@@ -132,4 +132,5 @@ private:
     CString SysTimeToString(SYSTEMTIME& systime);
     INT nGenerateTextReport(CStdioFile& omReportFile);
     INT nGenerateHtmlReport(CStdioFile& omReportFile);
+    void vGetVerifySeverity(eERROR_ATTRIBUTE eError, CString& omStrError);
 };

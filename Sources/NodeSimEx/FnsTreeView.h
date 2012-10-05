@@ -104,7 +104,7 @@ private:
     void vOnNewDLLHandler();
     //  venkatanaryana Add new BUS Event handler
     void vOnNewBusEventHandler();
-    //  ~venkatanaryana 
+    //  ~venkatanaryana
     // Delete a line from the code with the search string & header string
     BOOL bDeleteALineFromHeader(CString omStrHeader,CString);
     // Dlete selected handler
