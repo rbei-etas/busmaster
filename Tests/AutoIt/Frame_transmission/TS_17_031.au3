@@ -56,6 +56,8 @@ if WinExists("BUSMASTER") then
 	send("+b")
 	_GUICtrlListView_ClickItem($txMsgListHWD,4,"Right")
 	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)							; disconnect
+	; Close the Tx Window
+	ControlClick("BUSMASTER","",1015)
 EndIf
 
 

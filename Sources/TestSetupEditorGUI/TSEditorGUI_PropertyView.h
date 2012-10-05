@@ -55,7 +55,7 @@ public:
     afx_msg void OnBnClickedCancel();
     afx_msg void OnBnClickedConfirm();
     afx_msg void OnLvnItemchanged(NMHDR* pNMHDR, LRESULT* pResult);
-
+    HRESULT onMsg(LPARAM,WPARAM);
 protected:
     CPropertyView();           // protected constructor used by dynamic creation
     virtual ~CPropertyView();

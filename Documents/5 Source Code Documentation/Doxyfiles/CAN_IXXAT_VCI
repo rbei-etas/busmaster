@@ -1,7 +1,0 @@
-@INCLUDE               = Doxyfile
-PROJECT_NAME           = CAN_IXXAT_VCI
-PROJECT_BRIEF          = CAN_IXXAT_VCI 
-OUTPUT_DIRECTORY       = out/CAN_IXXAT_VCI
-STRIP_FROM_PATH        = ../../Sources/CAN_IXXAT_VCI
-INPUT                  = ../../Sources/CAN_IXXAT_VCI
-EXCLUDE                = ../../Sources/CAN_IXXAT_VCI/EXTERNAL_INCLUDE

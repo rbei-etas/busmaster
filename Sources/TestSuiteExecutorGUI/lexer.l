@@ -8,8 +8,9 @@
 extern YYSTYPE yylval;
 %}
 %option noyywrap
-SPACE { \t}+
+WSP  [ \t]
 %%
+[A-Za-z] {return ERROR;}
 [0-9]*\.?[0-9]+|[0-9]+\.[0-9]* { sscanf(yytext, "%lf", &yylval); return NUMBER;}
 "+" { return ADD; }
 "-" { return SUB; }
@@ -26,5 +27,7 @@ SPACE { \t}+
 "||" { return OR; }
 "&&" { return AND; }
 "^" { return POW;}
-"\n" { return NL; }
-SPACE { }
+";" { return NL; }
+{WSP}+ ;
+.	{ return ERROR;};
+%%

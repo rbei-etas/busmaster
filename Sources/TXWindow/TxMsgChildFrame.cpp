@@ -102,6 +102,7 @@ BEGIN_MESSAGE_MAP(CTxMsgChildFrame, CMDIChildBase)
     //{{AFX_MSG_MAP(CTxMsgChildFrame)
     ON_WM_ERASEBKGND()
     ON_WM_DESTROY()
+    ON_WM_CLOSE()
     //}}AFX_MSG_MAP
     ON_MESSAGE(WM_USER_CMD,vUserCommand)
     ON_WM_SIZE()
@@ -214,6 +215,15 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         }
     }
     return bReturn;
+}
+
+void CTxMsgChildFrame::OnClose()
+{
+    if(NULL != m_pomFunctionsView)
+    {
+        m_pomFunctionsView->OnInvokeClose();
+        CMDIChildBase::OnClose();
+    }
 }
 
 /*******************************************************************************
@@ -538,6 +548,13 @@ const
     return pomWnd;
 }
 
+void CTxMsgChildFrame::vCallAutoUpdate()
+{
+    if(m_pomTxMsgBlocksView != NULL)
+    {
+        m_pomTxMsgBlocksView->AutoUpdateChanges();
+    }
+}
 /******************************************************************************/
 /*  Function Name    :  vUserCommand                                          */
 /*  Input(s)         :  WPARAM wParam : enumerator eUSERSELCTION              */

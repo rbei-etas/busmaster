@@ -58,6 +58,7 @@ SCONTROLLER_DETAILS g_asControllerDetails[defNO_OF_CHANNELS];
 CBaseDIL_CAN_Controller* g_pBaseDILCAN_Controller = NULL;
 CCANBufFSE g_ouCanBuf;
 string g_acErrStr = "";
+CString g_strPath;
 
 typedef HRESULT (__stdcall *GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
@@ -93,8 +94,17 @@ BOOST_AUTO_TEST_CASE( DIL_Initial_Operations)
 }
 
 BOOST_AUTO_TEST_CASE( DIL_List_Interfaces)
-{
-	/* List hardware interfaces available */	
+{	
+    char* pstrExePath = g_strPath.GetBuffer (MAX_PATH);
+    ::GetModuleFileName (0, pstrExePath, MAX_PATH);
+    g_strPath.ReleaseBuffer ();
+    g_strPath = g_strPath.Left(g_strPath.ReverseFind(92));
+	CString omCurrExe;
+    omCurrExe.Format("%s\\HW Sel - Select Channels.exe", g_strPath);
+	
+	HINSTANCE hIns = ShellExecute(NULL, "open", omCurrExe, "", "", SW_SHOWNORMAL);
+
+	/* List hardware interfaces available */
 	BOOST_REQUIRE ( g_pBaseDILCAN_Controller->CAN_ListHwInterfaces(g_asINTERFACE_HW, g_nCount) == S_OK );
 }
 
@@ -131,7 +141,12 @@ BOOST_AUTO_TEST_CASE( DIL_Get_Cntrlr_Status)
 }
 
 BOOST_AUTO_TEST_CASE( DIL_Display_Controller_Config_Dlg)
-{	
+{
+	CString omCurrExe;
+    omCurrExe.Format("%s\\Vector Controller Configuration.exe", g_strPath);
+	
+	HINSTANCE hIns = ShellExecute(NULL, "open", omCurrExe, "", "", SW_SHOWNORMAL);
+
 	/* Display controller configuration dialog */
 	int nSize = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
 	g_pBaseDILCAN_Controller->CAN_DisplayConfigDlg(g_asControllerDetails, nSize);	
@@ -142,6 +157,11 @@ BOOST_AUTO_TEST_CASE( DIL_Show_Hardware_Selection_Dlg)
 	/* Show hardware selection dialog */
 	INT nCount = CHANNEL_ALLOWED;
 	HRESULT hResult = g_pBaseDILCAN_Controller->CAN_DeselectHwInterface();
+
+	CString omCurrExe;
+    omCurrExe.Format("%s\\HW Sel - Click OK.exe", g_strPath);
+	
+	HINSTANCE hIns = ShellExecute(NULL, "open", omCurrExe, "", "", SW_SHOWNORMAL);
 
     // If the deselection of interfaces is not appropriate
     BOOST_REQUIRE (S_OK == hResult );            

@@ -52,5 +52,5 @@ public:
     char            m_cDataFormat;
     char            m_cFrameFormat;
     list<CSignal>   m_listSignals;
-	bool writeMessageToFile(fstream& fileOutput, list<CMessage>& m_listMessages, bool writeErr, eBUS_TYPE protocol);
+    bool writeMessageToFile(fstream& fileOutput, list<CMessage>& m_listMessages, bool writeErr, eBUS_TYPE protocol);
 };

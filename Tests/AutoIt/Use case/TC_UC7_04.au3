@@ -36,10 +36,7 @@ if winexists("BUSMASTER") Then
 		sleep(1000)
 	EndIf
 EndIf
-ConsoleWrite("$logMenu : "&$logMenu&@CRLF)
-ConsoleWrite("$addBtn : "&$addBtn&@CRLF)
-ConsoleWrite("$enableLog : "&$enableLog&@CRLF)
-ConsoleWrite("$oK : "&$oK&@CRLF)
+
 
 
 ConsoleWrite("****End : TC_UC7_04.au3****"&@CRLF)

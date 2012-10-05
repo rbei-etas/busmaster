@@ -146,6 +146,7 @@ struct sTXMSGINFO
     CEvent m_omTxBlockKeyEvent;
     CEvent m_omKeyEvent;
     CEvent m_omTxBlockAutoUpdateEvent;// to set event from UI on auto update of Msg blocks
+    CEvent m_omTxBlockAutoUpdateEventForKey;
     BOOL m_bType;
     BOOL m_bSendAllMessages;
     //CRITICAL_SECTION m_sMsgBlocksCriticalSection;

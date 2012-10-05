@@ -75,6 +75,7 @@ void CValueDescriptionDlg::DoDataExchange(CDataExchange* pDX)
     //{{AFX_DATA_MAP(CValueDescriptionDlg)
     DDX_Text(pDX, IDC_EDIT_VALUE_DESC, m_omStrDescriptor);
     DDX_Text(pDX, IDC_EDIT_VAL, m_omStrValue);
+    DDX_Control(pDX, IDC_EDIT_VAL, m_ounSigValue);
     DDV_MaxChars(pDX, m_omStrValue, 20);
     //}}AFX_DATA_MAP
 }
@@ -284,6 +285,7 @@ void CValueDescriptionDlg::OnCancel()
 BOOL CValueDescriptionDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
+    m_ounSigValue.vSetBase(BASE_DECIMAL);
     // Get appropriate msg structure ptr
     CMsgSignal* pTempMsgSg = NULL;
     pTempMsgSg = *((CMsgSignal**)(m_sDbParams.m_ppvActiveDB));

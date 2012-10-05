@@ -17,4 +17,8 @@ if $app=0 Then
 EndIf
 if WinExists("BUSMASTER","Configure Transmission Messages") then
 $clickclose=ControlClick("BUSMASTER","Configure Transmission Messages", 1015) 	;1015 is the ID for 'Close' button in 'Configure Transmission Messages' Dialog.
+sleep(2000)
+if winexists("BUSMASTER") Then
+	ControlClick("BUSMASTER","",6)
 EndIf
+endif

@@ -1227,7 +1227,7 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     {
         omStrMsgName =
             pDBptr->omStrGetMessageNameFromMsgCode(sMsgDetail.m_sTxMsg.m_unMsgID);
-        omStrUpdatedMsgLength = pDBptr->omStrGetMessageLengthFromMsgCode(sMsgDetail.m_sTxMsg.m_unMsgID);
+        //omStrUpdatedMsgLength = pDBptr->omStrGetMessageLengthFromMsgCode(sMsgDetail.m_sTxMsg.m_unMsgID);
     }
     if ( omStrMsgName.IsEmpty() == FALSE )
     {
@@ -1241,13 +1241,12 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     {
         unImageID = 2;// Non-Database image
     }
-    // PTV [1.6.6]
-    if(omStrUpdatedMsgLength != "")
+
+    /*if(omStrUpdatedMsgLength != "")
     {
         sMsgDetail.m_sTxMsg.m_ucDataLen = atoi( omStrUpdatedMsgLength );
+    }*/
 
-
-    }
     // Format channel ID
     omStrChannel.Format("%d", sMsgDetail.m_sTxMsg.m_ucChannel );
 
@@ -1406,6 +1405,12 @@ BOOL CTxMsgListView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
                                              MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
                     pSubMenu->EnableMenuItem(IDM_DELETE_SEL_MSG,
                                              MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+
+                    if(TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))
+                    {
+                        pSubMenu->EnableMenuItem( IDM_DELETE_ALL_MSG,
+                                                  MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+                    }
                 }
                 else
                 {

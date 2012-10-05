@@ -45,7 +45,7 @@ UINT unGetMsgIDFromName(CString omMsgName)
     CString omStrMsgID;
     UINT unMsgID = (UINT)-1;
     CHAR* pcStopStr = NULL;
-    int nIndex = omMsgName.ReverseFind(defMSGID_EXTENDED);
+    int nIndex = omMsgName.Find(defMSGID_EXTENDED);
     if(nIndex != -1)
     {
         int nLength = omMsgName.GetLength();
@@ -1087,6 +1087,18 @@ void CFilterConfigDlg::OnRadioMessageId()
                     omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
                                         psFilter->m_dwMsgIDFrom );
                 }
+                else
+                {
+                    if( omStrIDFrom != STR_EMPTY )
+                    {
+                        CString omIdWithMsg = "";
+                        omIdWithMsg.Format(defSTR_MSG_ID_IN_HEX, psFilter->m_dwMsgIDFrom);
+                        ostringstream oss;
+                        oss << hex << omIdWithMsg << omStrIDFrom;
+
+                        omStrIDFrom = (CString)oss.str().c_str();
+                    }
+                }
                 // Apply the text
                 m_omMsgIDFrom.SetWindowText( omStrIDFrom );
             }
@@ -1210,8 +1222,19 @@ void CFilterConfigDlg::OnEditChangeMsgIDCombo()
             {
                 // Update Message Type Combobox and the struct
                 m_omMsgIDType.SetCurSel( pMessage->m_bMessageFrameFormat );
-                sFilter.m_byMsgType =
-                    static_cast<UCHAR>( pMessage->m_bMessageFrameFormat );
+
+                // Updating the Id type (Standard or Extended)
+                if(pMessage->m_bMessageFrameFormat == FALSE)
+                {
+                    sFilter.m_byIDType = TYPE_ID_CAN_STANDARD;
+                }
+                else if(pMessage->m_bMessageFrameFormat == TRUE)
+                {
+                    sFilter.m_byIDType = TYPE_ID_CAN_EXTENDED;
+                }
+
+                /*sFilter.m_byMsgType =
+                    static_cast<UCHAR>( pMessage->m_bMessageFrameFormat );*/
             }
         }
         // Check for selection in the filter list
@@ -1448,7 +1471,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
         if( bDataValid == TRUE && unMsgIDFrom >= unMsgIDTo )
         {
             bDataValid = FALSE;
-            vSetStatusText("Start Range ID is greater than End Range");
+            vSetStatusText("Start Range ID is greater than or equal to End Range ID");
         }
         // Copy data if data is valid
         if( bDataValid == TRUE )

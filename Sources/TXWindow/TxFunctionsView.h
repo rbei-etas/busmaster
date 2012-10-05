@@ -54,6 +54,8 @@ public:
     //{{AFX_VIRTUAL(CTxFunctionsView)
 public:
     virtual void OnInitialUpdate();
+    void OnInvokeClose();
+
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
@@ -65,6 +67,8 @@ protected:
     // Implementation
 protected:
     virtual ~CTxFunctionsView();
+
+
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;

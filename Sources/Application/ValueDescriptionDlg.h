@@ -27,6 +27,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // CValueDescriptionDlg dialog
 
+#include "Utility/RadixEdit.h"
+
 class CValueDescriptionDlg : public CDialog
 {
     // Construction
@@ -43,6 +45,7 @@ public:
     enum { IDD = IDD_DLG_VALUE_DESCRIPTOR };
     CString m_omStrDescriptor;
     CString m_omStrValue;
+    CRadixEdit m_ounSigValue;
     //}}AFX_DATA
 
     CString bSignalType;

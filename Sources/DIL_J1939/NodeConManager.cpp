@@ -987,7 +987,7 @@ void CNodeConManager::vProcessLongData(const STCANDATA& sCanData)
             BYTE abyCanData[MAX_FRAME_DATA_SIZE] = {0xFF};
             //Prepare Clear 2 send msg
             PrepareClear_2_Send(abyCanData, m_pConDet->m_byMaxPacketWOC2S,
-                                m_pConDet->m_byRxSeqNo, m_pConDet->m_unPGN);
+                                m_pConDet->m_byRxSeqNo+1, m_pConDet->m_unPGN);
             //prepare id
             UINT unExtId = Prepare_P2P_Id(PDU_FORMAT_TPCM, m_byNodeAddress,
                                           m_pConDet->m_byDestAddress, DEFAULT_PRIORITY);
@@ -1581,7 +1581,7 @@ void CNodeConManager::vSendConAckMsg(BYTE byDestAdres, BYTE byTotalPackets, UINT
 {
     //Create CA message
     BYTE byCANMsg[MAX_FRAME_DATA_SIZE] = {0xFF};
-    PrepareClear_2_Send(byCANMsg, byTotalPackets, 0, unPGN);
+    PrepareClear_2_Send(byCANMsg, byTotalPackets, 1, unPGN);
     UINT32 unID = Prepare_P2P_Id(PDU_FORMAT_TPCM, m_byNodeAddress, byDestAdres, DEFAULT_PRIORITY);
     //Send clear to send
     vSendFrame(MAX_FRAME_DATA_SIZE, byCANMsg, unID, unChannel);

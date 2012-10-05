@@ -63,7 +63,7 @@ void s_vExtendSignBit( __int64& n64Val, int nSize);
 // To conver string to __int64. The string value could be in Hex or dec
 BOOL bConvertStringToInt64( CString omStrHexNo,    // String
                             __int64& n64Value,     // Value
-                            int nBase);       
+                            int nBase);
 //Physical to value
 unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal);
 int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, long long int& nMaxVal, long long int& nMinVal);

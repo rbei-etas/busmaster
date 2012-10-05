@@ -28,7 +28,7 @@ typedef HRESULT (*TSEDITORWINDOWSHOWN)();
 typedef HRESULT (*TSEDITORLOADTESTSETUPFILE)(CString omFilePath);
 typedef HWND (*TSEDITORHWND)();
 //typedef HRESULT (*TSEDITORGETCONFIGDATA)(BYTE*& pDesBuffer, UINT& nBuffSize);
-typedef HRESULT (*TSEDITORGETCONFIGDATA)(xmlNodePtr pxmlNodePtr);
+typedef HRESULT (*TSEDITORGETCONFIGDATA)(xmlNodePtr* pxmlNodePtr);
 typedef HRESULT (*TSEDITORSETCONFIGDATA)(BYTE* pSrcBuffer, UINT nBuffSize);
 typedef HRESULT (*TSEDITORSETXMLCONFIGDATA)(xmlDocPtr pDoc);
 
@@ -124,11 +124,11 @@ void TSEditorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize)
         // pfTSEditorGetConfigdata(pDesBuffer, unBuffSize);
     }
 }
-void TSEditorHandler::vGetConfigurationData(xmlNodePtr pxmlNodePtr)
+void TSEditorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
     if(pfTSEditorLoadTestSetupFile != NULL)
     {
-        pfTSEditorGetConfigdata(pxmlNodePtr);
+        pfTSEditorGetConfigdata(&pxmlNodePtr);
     }
 }
 

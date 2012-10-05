@@ -11,7 +11,7 @@ class CColorSelector : public CButton
 {
     //DECLARE_DYNAMIC(CColorSelector)
     COLORREF m_omColorBkg;
-	INT m_nSelIndex;
+    INT m_nSelIndex;
 
 public:
     CColorSelector();
@@ -22,11 +22,11 @@ public:
     };
     void SetColour(COLORREF omColor);
 
-	void SetSelectedIndex(INT nIndex);
+    void SetSelectedIndex(INT nIndex);
 
-	CMap<UINT,UINT, COLORREF, COLORREF> m_MapMsgIdToClr;
-	
-	COLORREF GetColourForSelectedIndex(INT nSelectedIndex);
+    CMap<UINT,UINT, COLORREF, COLORREF> m_MapMsgIdToClr;
+
+    COLORREF GetColourForSelectedIndex(INT nSelectedIndex);
 
 protected:
     DECLARE_MESSAGE_MAP()

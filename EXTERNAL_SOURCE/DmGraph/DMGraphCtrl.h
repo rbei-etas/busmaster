@@ -126,6 +126,7 @@ BEGIN_MSG_MAP(CDMGraphCtrl)
 	MESSAGE_HANDLER(WM_MOUSEMOVE, OnMouseMove)
 	MESSAGE_HANDLER(WM_RBUTTONDOWN, OnRButtonDown)
 	MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBackground)
+	MESSAGE_HANDLER(WM_KILLFOCUS, OnKillFocus)
 	DEFAULT_REFLECTION_HANDLER()
 END_MSG_MAP()
 // Handler prototypes:
@@ -139,6 +140,7 @@ END_MSG_MAP()
 	LRESULT OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnRButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+	LRESULT OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 	LRESULT OnEraseBackground(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 	{
 		return TRUE; //prevent system default erasing (avoid flickering)
@@ -237,7 +239,9 @@ public:
 
 
 	TrackModeState		m_eTrackMode;
-	VARIANT_BOOL		m_bElementIdentify;
+	VARIANT_BOOL		m_bElementIdentify,
+						m_bIsGrpahWndActive;
+
 
 	CComPtr<IPicture>	m_spControlFramePicture,
 						m_spPlotAreaPicture,

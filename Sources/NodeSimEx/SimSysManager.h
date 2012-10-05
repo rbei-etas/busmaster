@@ -66,7 +66,7 @@ public:
     // Get pointer to CSimSysConfigDetails class
     CSimSysConfigDetails* pomGetSimSysConfig();
 
-	xmlNodePtr m_pTEXmlNode;
+    xmlNodePtr m_pTEXmlNode;
 
     //Set the SimSysTreeView object
     void podSetSimSysTreeView(CSimSysTreeView* );
@@ -80,17 +80,18 @@ public:
     UINT unGetStoreSIMFBufferSize();
     void SaveSIMDataIntoBuffer(BYTE* DesBuffer);
     void vSaveSimSysWndConfig();
-	bool bGetConfigData(xmlNodePtr pNodePtr);
+    bool bGetConfigData(xmlNodePtr pNodePtr);
     void vLoadSimSysWndConfig();
     void CopySIMDataFromBuffer(BYTE* SrcBuffer);
     //MVN
-	void vLoadSimSysWndConfig(xmlDocPtr, ETYPE_BUS eBus);
-	void CopySIMDataFromBuffer(xmlDocPtr, ETYPE_BUS eBus);
+    void vLoadSimSysWndConfig(xmlDocPtr, ETYPE_BUS eBus);
+    void CopySIMDataFromBuffer(xmlDocPtr, ETYPE_BUS eBus);
 
-	void CopySIMDataFromBuffer(xmlNodePtr, ETYPE_BUS eBus);
+    void CopySIMDataFromBuffer(xmlNodePtr, ETYPE_BUS eBus);
 
-	xmlNodePtr m_CopyJ1939SimNode;
-	//~MVN
+    void vSetConfigData(xmlNodePtr pNode);
+    xmlNodePtr m_CopyJ1939SimNode;
+    //~MVN
     BOOL bIsConfigChanged();
 
     void vApplicationClosing();

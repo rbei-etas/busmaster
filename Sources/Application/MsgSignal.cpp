@@ -26,6 +26,7 @@
 #include "Struct.h"
 #include "Flags.h"
 #include "Utility/Utility.h"
+#include "Utility/UtilFunctions.h"
 #include "MsgSignal.h"      // Class defintion file
 #include "MessageAttrib.h"   //Saving contents on dissocation of database
 #include "BUSMASTER.h"
@@ -579,7 +580,7 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
 
                 // initialise all the matrix elements
                 // to zero for this message
-                for ( int nCount = 0; nCount < 8; nCount++ )
+                for ( int nCount = 0; nCount < 1785; nCount++ )
                 {
                     m_psMessages[unCount - 1].m_bySignalMatrix[nCount] = 0x00;
                 }
@@ -815,6 +816,8 @@ BOOL CMsgSignal::bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList)
 ******************************************************************************/
 BOOL CMsgSignal::bDeAllocateMemoryInactive()
 {
+    // Clearing the Map on close database
+    m_omMsgDetailsIDMap.RemoveAll();
     for ( UINT nMsgIndex = 0; nMsgIndex < m_unMessageCount; nMsgIndex++ )
     {
         if ( &m_psMessages[nMsgIndex] != NULL )
@@ -947,6 +950,20 @@ void CMsgSignal::vGetDataBaseNames(CStringArray* pastrDBnames)
     {
         pastrDBnames->RemoveAll();
         pastrDBnames->Append(m_omDatabaseNames);
+    }
+}
+void CMsgSignal::vGetRelativeDataBaseNames(string& omStrBasePath, CStringArray* pastrDBnames)
+{
+    if(pastrDBnames != NULL)
+    {
+        pastrDBnames->RemoveAll();
+        for ( int i = 0, n = m_omDatabaseNames.GetSize(); i < n; i++)
+        {
+            CString omStrTemp = m_omDatabaseNames.GetAt(i);
+            string omStrRelativePath;
+            CUtilFunctions::MakeRelativePath(omStrBasePath.c_str(), omStrTemp.GetBuffer(MAX_PATH), omStrRelativePath);
+            pastrDBnames->Add(omStrRelativePath.c_str());
+        }
     }
 }
 void CMsgSignal::vSetDataBaseNames(const CStringArray* pastrDBnames)
@@ -1473,7 +1490,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                             {
                                 // initialise all the matrix elements
                                 // to zero for this message
-                                for ( UINT nCount = 0; nCount < 8; nCount++ )
+                                for ( UINT nCount = 0; nCount < 1785; nCount++ )
                                 {
                                     m_psMessages[unMsgCount].m_bySignalMatrix[nCount] = 0x00;
                                 }
@@ -3724,7 +3741,7 @@ sMESSAGE* CMsgSignal::psGetMessagePointer( CString strMsgName)
     while (pos != NULL )
     {
         m_omMsgDetailsIDMap.GetNextAssoc( pos, unKey,psMsgStruct );
-        if( !(psMsgStruct->m_omStrMessageName.Compare(strMsgName)) )
+        if((NULL != psMsgStruct) && (!(psMsgStruct->m_omStrMessageName.Compare(strMsgName))))
         {
             return psMsgStruct;
         }

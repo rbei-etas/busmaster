@@ -52,7 +52,7 @@ protected:
     BYTE* Der_SetConfigData(BYTE* pvDataStream);
     // Get configuration data - concrete class specific logics
     BYTE* Der_GetConfigData(BYTE* pvDataStream) const;
-	void Der_GetConfigData(xmlNodePtr pNodePtr) const;
+    void Der_GetConfigData(xmlNodePtr pNodePtr) const;
     // To get the total buffer size - concrete class specific logics
     UINT Der_unGetBufSize(void) const;
 
@@ -80,7 +80,10 @@ public:
     void Der_GetDatabaseFiles(CStringArray& omList);
     // Set the list of database files associated
     void Der_SetDatabaseFiles(const CStringArray& omList);
-	int Der_SetConfigData(xmlNodePtr){return S_OK;}
+    int Der_SetConfigData(xmlNodePtr)
+    {
+        return S_OK;
+    }
     // Set the baud rate details for each channel
     void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
                                        int nNumChannels);

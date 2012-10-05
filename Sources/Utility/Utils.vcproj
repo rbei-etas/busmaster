@@ -196,7 +196,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="libxml2.lib&#x0D;&#x0A;iconv.lib"
 				OutputFile="$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib"
 			/>
 			<Tool

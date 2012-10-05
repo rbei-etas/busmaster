@@ -539,7 +539,33 @@ void CTestSetupEntity::SetHeaderData(const CTestSetupHeader& ouHeaderTS)
 {
     m_ouTestSetupHeader = ouHeaderTS;
 }
+void CTestSetupEntity::vDeleteAllSubMessages()
+{
+    INT lCount = (INT)m_odTestCaseEntityList.GetCount();
+    for(int i=0; i<lCount; i++)
+    {
+        POSITION pos = m_odTestCaseEntityList.FindIndex(i);
+        CTestCaseEntity& odTestCaseEntity = m_odTestCaseEntityList.GetAt(pos);
 
+        UINT nSubCount = 0;
+        odTestCaseEntity.GetSubEntryCount(nSubCount);
+
+        for( int j = 0; j < nSubCount; j++ )
+        {
+            CBaseEntityTA* pEntity;
+            odTestCaseEntity.GetSubEntityObj(j, &pEntity);
+            if( NULL != pEntity )
+            {
+                UINT nSubChildCount = 0;
+                pEntity->GetSubEntryCount(nSubChildCount);
+                for ( int k = 0; k < nSubChildCount; k++ )
+                {
+                    pEntity->DeleteSubEntry(0);
+                }
+            }
+        }
+    }
+}
 /******************************************************************************
 Function Name  :  GetEntityData
 Input(s)       :  eTYPE_ENTITY eCurrEntityType

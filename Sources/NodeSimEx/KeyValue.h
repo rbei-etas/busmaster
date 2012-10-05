@@ -72,7 +72,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
     char* m_pcKeyVal;
-	bool m_bDataSaved;
+    bool m_bDataSaved;
     BOOL bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc);
 
 };

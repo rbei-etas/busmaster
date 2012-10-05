@@ -264,18 +264,17 @@ void CMsgContainerJ1939::vProcessNewData(STJ1939_MSG& sJ1939Msg)
         if (m_sJ1939ReadMsgSpl.m_sMsgProperties.m_un64TimeStamp != 0) // be 0 and will
         {
             // retain such value.
-            m_sJ1939ReadMsgSpl.m_nDeltime = sJ1939Msg.m_sMsgProperties.m_un64TimeStamp -
-                                            m_sJ1939ReadMsgSpl.m_sMsgProperties.m_un64TimeStamp;
+            m_sJ1939ReadMsgSpl.m_nDeltime = _abs64( sJ1939Msg.m_sMsgProperties.m_un64TimeStamp -
+                                                    m_sJ1939ReadMsgSpl.m_sMsgProperties.m_un64TimeStamp);
         }
         static BYTE arrBuf[MAX_MSG_LEN_J1939 + sizeof(__int64)];
 
         if (!bTobeBlocked(sJ1939Msg))
         {
-            //m_ouAppendJ1939Buf.WriteIntoBuffer(&m_sJ1939ReadMsgSpl, );
             sJ1939Msg.vGetDataStream(arrBuf);
             m_sJ1939ReadMsgSpl.vSetDataStream(arrBuf);
             m_sJ1939ReadMsgSpl.vGetDataStream(arrBuf);
-            m_ouAppendJ1939Buf.WriteIntoBuffer(J1939, arrBuf, m_sJ1939ReadMsgSpl.nGetSize());
+            m_ouAppendJ1939Buf.WriteIntoBuffer(J1939, (BYTE*)&m_sJ1939ReadMsgSpl, m_sJ1939ReadMsgSpl.nGetSize());
 
             if (NULL != m_pRxMsgCallBack)
             {
@@ -409,6 +408,7 @@ void CMsgContainerJ1939::vEditClearAll()
 {
     m_ouOWJ1939Buf.vClearMessageBuffer();
     m_ouAppendJ1939Buf.vClearMessageBuffer();
+    memset(&m_sJ1939ReadMsgSpl, 0, sizeof(m_sJ1939ReadMsgSpl));
 }
 
 /******************************************************************************
@@ -640,14 +640,8 @@ HRESULT CMsgContainerJ1939::hUpdateFormattedMsgStruct(int nListIndex,
         INT nType = 0;
         nSize = MAX_MSG_LEN_J1939 + sizeof(__int64);
         //In append mode providing interpret state is not required
-        hResult = m_ouAppendJ1939Buf.ReadEntry(nType, m_pbyJ1939Data, nSize,
+        hResult = m_ouAppendJ1939Buf.ReadEntry(nType, (BYTE*)&m_sJ1939ReadMsgSpl, nSize,
                                                nListIndex, FALSE);
-        if (hResult == S_OK)
-        {
-            // Save it into the McNet message structure
-            //m_ouDispMcNet.pbCopyMcNetDataFrom(m_pbDispMcNet, nSize);
-            m_sJ1939ReadMsgSpl.vSetDataStream(m_pbyJ1939Data);
-        }
     }
     else
     {
@@ -666,7 +660,7 @@ HRESULT CMsgContainerJ1939::hUpdateFormattedMsgStruct(int nListIndex,
     if (hResult == S_OK)
     {
         m_ouFormatJ1939.vFormatJ1939DataMsg(
-            (PSTJ1939_MSG) &(m_sJ1939ReadMsgSpl),
+            (PSTJ1939_MSG) &(m_sJ1939ReadMsgSpl), m_sJ1939ReadMsgSpl.m_nDeltime,
             &m_sOutFormattedData, bExprnFlag_Disp);
         //Now add the name of message if present in database else show the code
         if (NULL != m_sJ1939ReadMsgSpl.m_pbyData)

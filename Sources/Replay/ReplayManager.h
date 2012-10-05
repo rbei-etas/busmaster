@@ -77,12 +77,12 @@ public:
 
 public:
     void vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize);
-	void vGetReplayConfigData(xmlNodePtr pxmlNodePtr);
+    void vGetReplayConfigData(xmlNodePtr pxmlNodePtr);
     void vSetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize);
-	//MVN
-	void vSetReplayConfigData(xmlDocPtr pDoc);
-	void vAddReplayFile(CReplayFile& ouFile);
-	//~MVN
+    //MVN
+    void vSetReplayConfigData(xmlDocPtr pDoc);
+    void vAddReplayFile(CReplayFile& ouFile);
+    //~MVN
     //BOOL bIsReplayConfigChanged();
     void vSetTraceObjPtr( PVOID pvObj);
     void vSendToTrace(char* pcString);

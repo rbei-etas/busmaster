@@ -263,6 +263,21 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                     default:
                         hResult = ERR_LOAD_DRIVER;
                         pILog->vLogAMessage(A2T(__FILE__), __LINE__, "Load library failed...");
+                        /* New Code */
+                        /* Get rid of current DIL library */
+                        if ( m_pBaseDILCAN_Controller )
+                        {
+                            m_pBaseDILCAN_Controller->CAN_PerformClosureOperations();
+                            m_pBaseDILCAN_Controller->CAN_UnloadDriverLibrary();
+                        }
+                        FreeLibrary(m_hDll);
+                        if ( m_hOldDll )
+                        {
+                            m_hDll = m_hOldDll;
+                            m_pBaseDILCAN_Controller = m_pOldBaseDILCAN_Controller;
+                            m_dwDriverID =  m_dwOldDriverID;
+                        }
+                        /* New Code */
                         break;
                 }
             }

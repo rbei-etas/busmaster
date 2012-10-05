@@ -21,10 +21,10 @@
 
 #pragma once
 
-#define STRUCT_FILE                    _T("struct.h")
+#define STRUCT_FILE                    _T("CANIncludes.h")
 #define MSG_STRUCT_NAME                _T("STCAN_MSG");
 #define WRAPPER_NAME                   _T("Wrapper.o");
-#define STRUCT_FILE_J1939              _T("Struct_J1939.h")
+#define STRUCT_FILE_J1939              _T("J1939Includes.h")
 #define MSG_STRUCT_NAME_J1939          _T("STJ1939_MSG");
 #define WRAPPER_NAME_J1939             _T("Wrapper_J1939.o");
 #define TOTAL_API_COUNT                18

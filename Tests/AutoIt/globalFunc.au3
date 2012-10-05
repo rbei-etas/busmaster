@@ -177,7 +177,7 @@ sleep(1000)
 	EndIf
 sleep(150)
 if winexists("Select BUSMASTER Database Filename...") Then
-	
+
 	$DBFolderPath = _SetOneFolderUp()
 	ControlSend("Select BUSMASTER Database Filename...","","[CLASS:Edit; INSTANCE:1]",$DBFolderPath&"\"&$dbFName)			;load dbf file
 	$lDb=ControlClick("Select BUSMASTER Database Filename...","","[CLASS:Button; INSTANCE:2]","left")
@@ -414,6 +414,9 @@ EndFunc
 
 Func _txMSG($txMode,$blckCount)
 if winexists("BUSMASTER") Then
+	if (ControlCommand("BUSMASTER","",17000,"IsChecked")=0) Then
+		ControlCommand("BUSMASTER","",17000,"Check")											; check 'Autoupdate' check box is enabled
+	EndIf
 	sleep(1000)
 	for $i=1 to $blckCount
 		ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:14]","left")
@@ -511,23 +514,26 @@ Func _J1939tMsgWin($msgType)
 		WinMenuSelectItem("BUSMASTER","","&J1939","&View","&Transmit Window")
 		ControlCommand("J1939 Transmit Message Window","",1013,"Check")
 		if $msgType="Request PGN" then
+			ControlCommand("J1939 Transmit Message Window","",1346,"SelectString","[0x0]TSCee1")
 			ControlCommand("J1939 Transmit Message Window","",1058,"SelectString",$msgType)
 			ControlSetText("J1939 Transmit Message Window","",1348,6)
 		Elseif $msgType="Data" then
+		ControlCommand("J1939 Transmit Message Window","",1346,"SelectString","[0x0]TSCee1")
 			ControlCommand("J1939 Transmit Message Window","",1058,"SelectString",$msgType)
 			ControlSetText("J1939 Transmit Message Window","",1125,8)
 			ControlSetText("J1939 Transmit Message Window","",1016,"100000000000000000000000")
 			ControlSetText("J1939 Transmit Message Window","",1348,7)
 		Else
+			ControlCommand("J1939 Transmit Message Window","",1346,"SelectString","[0xfefe]AWPP")
 			ControlCommand("J1939 Transmit Message Window","",1058,"SelectString",$msgType)
 			ControlSetText("J1939 Transmit Message Window","",1333,0)
-			ControlSetText("J1939 Transmit Message Window","",1181,"FF")
+			ControlSetText("J1939 Transmit Message Window","",1181,"FF00")
 			ControlSetText("J1939 Transmit Message Window","",1125,21)
 			ControlSetText("J1939 Transmit Message Window","",1016,"100000000000000000000000100000000000000000000000100000000000000000000000")
 			ControlSetText("J1939 Transmit Message Window","",1348,7)
 		EndIf
 		_overWriteMode()														; Call _overWriteMode function to disable overWriteMode
-		WinMenuSelectItem("BUSMASTER","","F&unctions","&Connect")
+;~ 		WinMenuSelectItem("BUSMASTER","","F&unctions","&Connect")
 		sleep(1000)
 		ControlClick("J1939 Transmit Message Window","",1011,"left")
 		sleep(3000)
@@ -628,13 +634,13 @@ Func _CANConfigSignalWatch($Confirm)
 	; Click Add All button
 	Send("!l");
 	Sleep(500)
-	
+
 	if $Confirm = "OK" Then
 		ControlClick("Signal Watch List","OK",1,"left")		; Click 'OK' button
 	Else
 		ControlClick("Signal Watch List","Cancel",2,"left")		; Click 'Cancel' button
 	EndIf
-EndFunc	
+EndFunc
 
 
 

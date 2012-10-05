@@ -88,7 +88,7 @@ CFormatMsgJ1939::~CFormatMsgJ1939(void)
   Modifications  :
 *******************************************************************************/
 void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
-                                  PSTJ1939_MSG psJ1939BData,
+                                  PSTJ1939_MSG psJ1939BData, __int64 nDeltime,
                                   PSFORMATTEDATA_J1939 psJ1939FData)
 {
     BYTE bTmpExprnFlag = bExprnFlag;
@@ -104,7 +104,7 @@ void CFormatMsgJ1939::vFormatTime(BYTE bExprnFlag,
     {
         CLEAR_EXPR_TM_BITS(bTmpExprnFlag);
         SET_TM_REL(bTmpExprnFlag);
-        vCalculateAndFormatTM(bTmpExprnFlag, psJ1939BData->m_sMsgProperties.m_un64TimeStamp,
+        vCalculateAndFormatTM(bTmpExprnFlag, nDeltime,
                               psJ1939FData->m_acTimeRel);
     }
 
@@ -234,7 +234,7 @@ char* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
   Date Created   : 27.01.2011
   Modifications  :
 *******************************************************************************/
-void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
+void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData, __int64 nDeltime,
         PSFORMATTEDATA_J1939 psJ1939FData,
         BYTE bExprnFlag_Log)
 {
@@ -276,6 +276,6 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
     }
 
     _itoa_s(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, LEN_STR_DLC_J1939, 10);
-    vFormatTime(bExprnFlag_Log, psJ1939BData, psJ1939FData);
+    vFormatTime(bExprnFlag_Log, psJ1939BData, nDeltime, psJ1939FData);
     vFormatDataAndId(bExprnFlag_Log, psJ1939BData, psJ1939FData);
 }

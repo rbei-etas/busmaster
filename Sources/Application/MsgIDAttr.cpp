@@ -144,6 +144,21 @@ void CMsgIDAttr::OnOK()
             }
         }
     }
+    else        //if the id is changed then validication is required
+    {
+        if(m_nID != m_nPreviousID)      //if the id is not changed then skip
+        {
+            if (nResult == 0)
+            {
+                nResult = CMessageAttrib::ouGetHandle(m_eBusType).nValidateNewID(m_nID);
+                if (nResult < 0)
+                {
+                    AfxMessageBox("Duplicate Message ID");
+                    GotoDlgCtrl(GetDlgItem(IDC_EDIT_CANID_VAL));
+                }
+            }
+        }
+    }
     if (nResult >= 0) // valid CanID
     {
         if (m_omStrMsg.IsEmpty()) //invalid string
@@ -203,7 +218,10 @@ BOOL CMsgIDAttr::OnInitDialog()
     if (m_bForEdit == true)
     {
         m_odCanIDVal.vSetValue(m_nID);
-        m_odCanIDVal.SetReadOnly(TRUE);
+        if (m_bDBMessage == TRUE)
+        {
+            m_odCanIDVal.SetReadOnly(TRUE);
+        }
     }
 
     if (m_bForEdit == false)

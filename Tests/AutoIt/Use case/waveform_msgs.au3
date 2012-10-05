@@ -11,11 +11,12 @@
 #Include <GuiListView.au3>
 
 
-sleep(2000)
+WinActivate("BUSMASTER", 3)
 if WinExists("BUSMASTER") then
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Hardware Interface","&Simulation")
 	_loadConfig("SigDesc")					;load cfx file
 	_loadDatabase("DBSigDesc")				;load dbf file
+	send("!fdc")
 	; Add signal desc
 	sleep(2000)
 	ControlListView("BUSMASTER","","[CLASS:SysHeader32; INSTANCE:1]","Select",0,0)		;select the 1st item in signal list view
@@ -131,7 +132,7 @@ if WinExists("BUSMASTER") then
 			sleep(500)
 			ControlCommand("Signal Definer Dialog","",1000,"HideDropDown")
 			sleep(500)
-			ControlCommand("Signal Definer Dialog","",1000,"SelectString","Triangular Wave") ;select Triangular Wave 			
+			ControlCommand("Signal Definer Dialog","",1000,"SelectString","Triangular Wave") ;select Triangular Wave
 			sleep(500)
 			controlsettext("Signal Definer Dialog","",1001,20)
 			controlsettext("Signal Definer Dialog","",1004,150)
@@ -142,11 +143,14 @@ if WinExists("BUSMASTER") then
 	EndIf
 	sleep(1000)
 	$cntToolhWd=ControlGetHandle("BUSMASTER","",128)
-	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)
-	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Waveforms")
+	_GUICtrlToolbar_ClickIndex($cntToolhWd,4)		; Connect
 	sleep(2000)
+	WinMenuSelectItem("BUSMASTER","","F&unctions","&Transmit","&Waveforms")
+	sleep(6000)
+	send("!VG")
 send("{ESC}")
-send("!fdc")
+sleep(2000)
+send("!VG")
 if WinExists("BUSMASTER") Then
 	ControlClick("BUSMASTER","",7)
 EndIf

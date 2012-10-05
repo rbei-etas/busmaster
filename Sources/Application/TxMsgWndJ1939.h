@@ -110,6 +110,7 @@ public:
     void vSetDatabaseInfo(const SMSGENTRY* psMsgEntry);
     static void vUpdateDataStore(const SMSGENTRY* psMsgEntry);
     static void vClearDataStore(void);
+    void vUpdateChannelIDInfo();
 private:
     static SMSGENTRY* m_psMsgRoot;
 

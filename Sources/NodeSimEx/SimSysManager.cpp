@@ -25,6 +25,10 @@
 #include "simsysmanager.h"
 #include "GlobalObj.h"
 #include "include/XMLDefines.h"
+#include <Shlwapi.h>
+#include "Utility\UtilFunctions.h"
+
+#define MSG_GET_CONFIGPATH  10000
 
 #define SIM_WND_CONFIG_SECTION_NAME "SimWndConfigSection"
 #define SIMSYS_CONFIG_SECTION_NAME      "SimSysConfig"
@@ -199,7 +203,15 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
     for (UINT i = 0; (i < unCount) && (pSimSysInfo != NULL); i++)
     {
         CString omTmp = pSimSysInfo->m_omStrSimSysName;
-        omcVarChar = omTmp;
+
+        string omPath, omStrConfigFolder;
+        char configPath[MAX_PATH];
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+        CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)omTmp.GetBuffer(MAX_PATH), omPath);
+
+
+        omcVarChar = omPath.c_str();
         xmlNodePtr pColName = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_SYS_PATH,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pColName);
 
@@ -217,6 +229,10 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
     {
         CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->GetWindowPlacement(&sWndPlacement);
         xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos,sWndPlacement);
+    }
+    else if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd == NULL)
+    {
+        xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos,CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
     }
 
     ////visibility
@@ -420,7 +436,23 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
                     if(NULL != key)
                     {
-                        vLoadSimInfoFromConfiguration((char*)key);
+                        CString omStrFileName;
+                        if(PathIsRelative((char*)key) == TRUE)
+                        {
+                            string omStrConfigFolder;
+                            string omPath;
+                            char configPath[MAX_PATH];
+                            AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                            CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                            char chAbsPath[MAX_PATH];
+                            PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
+                            omStrFileName = chAbsPath;
+                        }
+                        else
+                        {
+                            omStrFileName = (char*)key;
+                        }
+                        vLoadSimInfoFromConfiguration(omStrFileName.GetBuffer(MAX_PATH));
                         xmlFree(key);
                     }
                 }
@@ -479,9 +511,8 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
 
     xmlNodePtr pNode = NULL;
 
-    INT nWndPos = S_FALSE;
 
-    BOOL bWndPosition = FALSE;
+
     if( NULL != pObjectPath )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
@@ -489,43 +520,68 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
         {
             pNode = pNodeSet->nodeTab[0];       //Take First One only
         }
-        if( NULL != pNode )
-        {
-            pNode = pNode->xmlChildrenNode;
-
-            while (pNode != NULL)
-            {
-                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
-                {
-                    nWndPos =  xmlUtils::ParseWindowsPlacement(pNode, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
-                }
-                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
-                {
-                    xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
-                    {
-                        vLoadSimInfoFromConfiguration((char*)key);
-                        xmlFree(key);
-                    }
-                }
-                pNode = pNode->next;
-            }
-            if(bWndPosition == FALSE)
-            {
-                CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
-            }
-        }
+        vSetConfigData(pNode);
         xmlXPathFreeObject(pObjectPath);
     }
+}
 
+void CSimSysManager::vSetConfigData(xmlNodePtr pNode)
+{
+    INT nWndPos = S_FALSE;
+    vInitailizeSimSysInfo();
+    if( NULL != pNode )
+    {
+        pNode = pNode->xmlChildrenNode;
+
+        while (pNode != NULL)
+        {
+            if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
+            {
+                nWndPos =  xmlUtils::ParseWindowsPlacement(pNode, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+            }
+            if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    CString omStrFileName;
+                    if(PathIsRelative((char*)key) == TRUE)
+                    {
+                        string omStrConfigFolder;
+                        string omPath;
+                        char configPath[MAX_PATH];
+                        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                        char chAbsPath[MAX_PATH];
+                        PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
+                        omStrFileName = chAbsPath;
+                    }
+                    else
+                    {
+                        omStrFileName = (char*)key;
+                    }
+                    vLoadSimInfoFromConfiguration((char*)omStrFileName.GetBuffer(MAX_PATH));
+                    xmlFree(key);
+                }
+            }
+            pNode = pNode->next;
+        }
+    }
     if(nWndPos == S_FALSE)
     {
-        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top  = 160;
+        /*CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.top  = 160;
         CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.left = 520;
         CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.right = 1458;
         CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition.bottom = 686;
-        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.showCmd = SW_NORMAL;
-        //CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+        CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.showCmd = SW_NORMAL;*/
+        CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
+    }
+    if (m_pomSimSysTreeView != NULL)
+    {
+        if (m_pomSimSysTreeView->IsWindowVisible())
+        {
+            m_pomSimSysTreeView->bPopulateTree();
+        }
     }
 }
 //~MVN

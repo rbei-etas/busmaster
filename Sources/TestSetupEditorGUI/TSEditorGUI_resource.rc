@@ -138,7 +138,7 @@ IDC_POINTER             CURSOR                  "res\\arrow.cur"
 
 IDR_TSEDITORMENU MENU 
 BEGIN
-    POPUP "File"
+    POPUP "&File"
     BEGIN
         MENUITEM "&New\tCtrl + N",              IDM_FILE_NEW
         MENUITEM "&Open\tCtrl + O",             IDM_FILE_OPEN
@@ -151,18 +151,18 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       IDM_FILE_EXIT
     END
-    POPUP "Edit"
+    POPUP "&Edit"
     BEGIN
         MENUITEM "Cu&t\tCtrl + X",              IDM_EDIT_CUT
         MENUITEM "&Copy\tCtrl + C",             IDM_EDIT_COPY
         MENUITEM "&Paste\tCtrl + V",            IDM_EDIT_PASTE
     END
-    POPUP "Display"
+    POPUP "&Display"
     BEGIN
         MENUITEM "&Reset",                      IDM_DISPLAY_RESET
         MENUITEM "Se&ttings",                    ID_DISPLAY_SETTINGS
     END
-    POPUP "Help"
+    POPUP "&Help"
     BEGIN
         MENUITEM "Test Setup Editor &Help\tF1",  IDM_HELP_TESTEDITORHELP
         MENUITEM "About Test Setup Ed&itor",     IDM_HELP_ABOUTTESTSETUPEDITOR

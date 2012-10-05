@@ -663,15 +663,15 @@ VOID vHandleFunctionCall()
 	}
     else if ( omFunName.CompareNoCase("output") == 0 )
 	{
-		fprintf(yyout, "output_CAPL(&");
+		fprintf(yyout, "\noutput_CAPL(&");
 	}
     else if ( omFunName.CompareNoCase("resetCan") == 0 )
 	{
-		fprintf(yyout, "ResetController(1");
+		fprintf(yyout, "\nResetController(1");
 	}
      else if ( omFunName.CompareNoCase("elCount") == 0 )
 	{
-		fprintf(yyout, "sizeof(");
+		fprintf(yyout, "\nsizeof(");
 	}
     else if (GetUtilityFunctionPrototype(omFunName, ouFunType) == S_OK)
     {
@@ -683,13 +683,13 @@ VOID vHandleFunctionCall()
 		    CString omStrFunction;
 			vReadFunctionCall(omStrFunction);
             nFormBMFunctionCall(omStrFunction, omStrBMFunction);
-		    fprintf(yyout, " %s", omStrBMFunction.GetBuffer(MAX_PATH));     
+		    fprintf(yyout, "\n %s", omStrBMFunction.GetBuffer(MAX_PATH));     
         }
         else
         {
             omStrBMFunction = defSTR_Utils; 
             omStrBMFunction += omFunName + "(";
-            fprintf(yyout, " %s", omStrBMFunction.GetBuffer(MAX_PATH));
+            fprintf(yyout, "\n %s", omStrBMFunction.GetBuffer(MAX_PATH));
         }
     }
     

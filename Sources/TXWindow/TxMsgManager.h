@@ -53,9 +53,9 @@ public:
     //Return the database pointer
     VOID vStopTransmission(UINT unMaxWaitTime);
     void vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
-	void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
+    void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
     void vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
-	void vSetTxWndConfigData(xmlDocPtr pDoc);
+    void vSetTxWndConfigData(xmlDocPtr pDoc);
     //BOOL bIsTxWndConfigChanged();
     void vSetTxStopFlag(BOOL bStartStop);
     BOOL bGetTxStopFlag();

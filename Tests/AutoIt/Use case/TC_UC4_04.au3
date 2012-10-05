@@ -16,45 +16,11 @@ if $app=0 Then
 	_associateDB("&J1939","J1939Test.dbf")
 EndIf
 _J1939tMsgWin("Request PGN")
-if winexists("BUSMASTER") Then
-	sleep(2000)
-	$hWnd=ControlGetHandle ("BUSMASTER","","SysListView321")
-	$rCount=_GUICtrlListView_GetItemCount($hWnd)
-	ConsoleWrite("$rCount : "&$rCount & @CRLF)
-	if $rCount=2 then
-		$row1=_GUICtrlListView_GetItemTextString($hWnd,0)
-		$row2=_GUICtrlListView_GetItemTextString($hWnd,1)
-		ConsoleWrite("$row1 : "&$row1 & @CRLF)
-		ConsoleWrite("$row2 : "&$row2 & @CRLF)
-		$Tx=StringSplit($row1,"|")
-		ConsoleWrite("$Tx[2] : "&$Tx[2] & @CRLF)
-		ConsoleWrite("$Tx[3] : "&$Tx[3] & @CRLF)
-		ConsoleWrite("$Tx[5] : "&$Tx[5] & @CRLF)
-		ConsoleWrite("$Tx[6] : "&$Tx[6] & @CRLF)
-		ConsoleWrite("$Tx[7] : "&$Tx[7] & @CRLF)
-		ConsoleWrite("$Tx[10] : "&$Tx[10] & @CRLF)
-		ConsoleWrite("$Tx[11] : "&$Tx[11] & @CRLF)
-		ConsoleWrite("$Tx[12] : "&$Tx[12] & @CRLF)
-		$Rx=StringSplit($row2,"|")
-		ConsoleWrite("$Rx[2] : "&$Rx[2] & @CRLF)
-		ConsoleWrite("$Rx[3] : "&$Rx[3] & @CRLF)
-		ConsoleWrite("$Rx[5] : "&$Rx[5] & @CRLF)
-		ConsoleWrite("$Rx[6] : "&$Rx[6] & @CRLF)
-		ConsoleWrite("$Rx[7] : "&$Rx[7] & @CRLF)
-		ConsoleWrite("$Rx[10] : "&$Rx[10] & @CRLF)
-		ConsoleWrite("$Rx[11] : "&$Rx[11] & @CRLF)
-		ConsoleWrite("$Rx[12] : "&$Rx[12] & @CRLF)
-		if ($Tx[5] and $Rx[5]=059904) and ($Tx[7] and $Rx[7]="RQST") and ($Tx[10] and $Rx[10]=006) and ($Tx[12] and $Rx[12]=3) Then
-			$match=1
-		Else
-			$match=0
-		EndIf
-	Else
-		$test="Fail"
-	EndIf
-EndIf
+_J1939tMsgWin("Data")
+_J1939tMsgWin("Broadcast")
+;~ send("!jt")								; J1939 Deactivate
 $hWd=ControlGetHandle("BUSMASTER","",128)
-_GUICtrlToolbar_ClickIndex($hWd,4,"left")
+_GUICtrlToolbar_ClickIndex($hWd,4,"left")	; Disconnect
 sleep(1000)
 
 ConsoleWrite("****End : TC_UC4_04.au3****"&@CRLF)

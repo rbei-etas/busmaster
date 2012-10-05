@@ -24,6 +24,11 @@
 
 #include "Replay_stdafx.h"             // For standard Include
 #include "ReplayFile.h"         // For replay file class declaration
+#include <Shlwapi.h>
+#include "Utility\UtilFunctions.h"
+
+
+#define MSG_GET_CONFIGPATH  10000
 
 /*******************************************************************************
   Function Name  : CReplayFile
@@ -208,7 +213,18 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
     const char* omcVarChar ;
 
     //<Log_File_Path>path</Log_File_Path>
-    omcVarChar = m_omStrFileName;
+
+    string omPath, omStrConfigFolder;
+    char configPath[MAX_PATH];
+    AfxGetMainWnd()->SendMessage(10000, (WPARAM)configPath, 0);
+    CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+    CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_omStrFileName.GetBuffer(MAX_PATH), omPath);
+
+
+    omcVarChar = omPath.c_str();
+
+
+
     xmlNodePtr pPath = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOG_PATH,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pPath);
 
@@ -342,7 +358,21 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
             if(NULL != key)
             {
-                m_omStrFileName = (char*)key;
+                if(PathIsRelative((char*)key) == TRUE)
+                {
+                    string omStrConfigFolder;
+                    string omPath;
+                    char configPath[MAX_PATH];
+                    AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                    CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                    char chAbsPath[MAX_PATH];
+                    PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
+                    m_omStrFileName = chAbsPath;
+                }
+                else
+                {
+                    m_omStrFileName = (char*)key;
+                }
                 xmlFree(key);
             }
         }

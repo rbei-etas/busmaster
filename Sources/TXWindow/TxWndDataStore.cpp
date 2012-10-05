@@ -261,7 +261,7 @@ bool CTxWndDataStore::bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList )
             }
             else
             {
-                if(psMsgBlockList ->m_bModified)
+                //if(psMsgBlockList ->m_bModified)
                 {
                     bCopyBlockData(psGlobalBlockList, psMsgBlockList);
                 }

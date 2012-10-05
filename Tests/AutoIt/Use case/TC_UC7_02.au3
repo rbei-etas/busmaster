@@ -13,11 +13,8 @@ if $app=0 Then
 	_loadConfig("UseCase4")
 EndIf
 _loadJ1939Database("J1939Test",25,10,8)
+send("!JDC")			; Close the database
 _associateDB("&J1939","J1939Test.dbf")
-
-ConsoleWrite("$msgCount : "&$msgCount&@CRLF)
-ConsoleWrite("$msg1SigCount : "&$msg1SigCount&@CRLF)
-ConsoleWrite("$flag : "&$flag&@CRLF)
 
 ConsoleWrite("****End : TC_UC7_02.au3****"&@CRLF)
 ConsoleWrite(@CRLF)

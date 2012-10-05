@@ -55,7 +55,7 @@ void tagSTRUCT_29_BIT_ID::vSetPGN(UINT32 unPGN)
 {
     UNION_PGN uPGN;
     uPGN.m_unPGN = unPGN & 0x3FFFF; //Mask unecessary bits.
-    m_uPGN.m_unPGN = m_uPGN.m_unPGN & 0xFFFC00FF;   //Mask PGN bits
+    m_uPGN.m_unPGN = m_uPGN.m_unPGN & 0xFFFC0000;   //Mask PGN bits
 
     BYTE byPduFormat = (BYTE)(unPGN >> 8);
     if  (byPduFormat < 240)

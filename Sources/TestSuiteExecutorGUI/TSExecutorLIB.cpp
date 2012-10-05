@@ -24,6 +24,11 @@
 #include "TSExecutorBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
+#include <Shlwapi.h>
+#include "Utility\UtilFunctions.h"
+
+#define MSG_GET_CONFIGPATH  10000
+
 //TODO::Move to Definition File
 #define def_ID_TESTSUITE            -1
 #define def_STR_TESTSUITENAME       "Unnamed Test Suite"
@@ -701,7 +706,9 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
     const char* omcVarChar ;
 
     //<Test_Suite_Name />
-    omcVarChar = m_omstrTestSuiteName;
+
+    omcVarChar = m_omstrTestSuiteName.GetBuffer(MAX_PATH);
+
     xmlNodePtr pTSName = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TS_NAME, BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pTSName);
 
@@ -724,7 +731,13 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
         POSITION pos = m_ouTestSetupEntityList.FindIndex(iCnt);
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
 
-        omcVarChar = ouTestSetupEntity.m_omstrCurrentTSFile;
+        string omPath, omStrConfigFolder;
+        char configPath[MAX_PATH];
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+        CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH), omPath);
+        omcVarChar = omPath.c_str();
+
         xmlNodePtr pFilePath = xmlNewChild(pTestSuite, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST omcVarChar);
         xmlAddChild(pTestSuite, pFilePath);
 
@@ -753,10 +766,13 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
             {
                 bStatus = pTCEntity->bGetEnableStatus();
             }
-            csIndex.Format("%d", bStatus);
-            omcVarChar = csIndex;
-            xmlNodePtr pIndex = xmlNewChild(pTestCasesSel, NULL, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
-            xmlAddChild(pTestCasesSel, pIndex);
+            if( bStatus == true )
+            {
+                csIndex.Format("%d", j);
+                omcVarChar = csIndex;
+                xmlNodePtr pIndex = xmlNewChild(pTestCasesSel, NULL, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
+                xmlAddChild(pTestCasesSel, pIndex);
+            }
         }
     }
     return true;
@@ -862,6 +878,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
     {
         pTempNode = pObjectPtr->nodesetval->nodeTab[0];
         m_omstrTestSuiteName = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
+
         xmlXPathFreeObject(pObjectPtr);
         pObjectPtr = NULL;
     }
@@ -895,7 +912,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
             if ( S_OK == nParseTestSuite(pObjectPtr->nodesetval->nodeTab[i], sConfigInfo) )
             {
                 DWORD dwID;
-                UINT unCount, unConfigCount;
+                UINT unCount;
                 if(AddTestSetup(sConfigInfo.m_strFileName.c_str(), dwID) == S_OK)
                 {
                     //Selection Status
@@ -907,37 +924,34 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                         ouTestSetupEntity.vEnableEntity(sConfigInfo.m_bEnable);
 
                         //TestCase Count
-                        unConfigCount = sConfigInfo.m_nListSelctedCases.size();
                         ouTestSetupEntity.GetSubEntryCount(unCount);
 
-                        if( unConfigCount == 0)
+                        for(UINT j=0; j<unCount; j++)
                         {
-                            for(UINT j=0; j<unCount; j++)
+                            CBaseEntityTA* pTCEntity;
+                            ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
+                            if(pTCEntity != NULL)
                             {
-                                CBaseEntityTA* pTCEntity;
-                                ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
-                                if(pTCEntity != NULL)
-                                {
-                                    pTCEntity->vEnableEntity(FALSE);
-                                }
+                                pTCEntity->vEnableEntity(FALSE);
                             }
                         }
-                        else
-                        {
-                            //TestCase Selection Status
-                            list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
 
-                            for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
-                                    listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
+                        //TestCase Selection Status
+
+                        list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
+
+                        for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
+                                listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
+                        {
+                            //MVN::Crash Issue
+                            CBaseEntityTA* pTCEntity = NULL;
+                            int nIndex = *listIterator;
+                            HRESULT hValue = ouTestSetupEntity.GetSubEntityObj(nIndex, &pTCEntity);
+                            if(pTCEntity != NULL && hValue == S_OK)
                             {
-                                CBaseEntityTA* pTCEntity;
-                                int nIndex = *listIterator;
-                                ouTestSetupEntity.GetSubEntityObj(nIndex, &pTCEntity);
-                                if(pTCEntity != NULL)
-                                {
-                                    pTCEntity->vEnableEntity(TRUE);
-                                }
+                                pTCEntity->vEnableEntity(TRUE);
                             }
+                            //~MVN::Crash Issue
                         }
                     }
                 }
@@ -958,7 +972,28 @@ int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& s
     if( NULL != pObjectPtr)
     {
         pTempNode = pObjectPtr->nodesetval->nodeTab[0];
-        sConfigInfo.m_strFileName = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
+        char* key = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
+
+        if( NULL != key)
+        {
+            if(PathIsRelative((char*)key) == TRUE)
+            {
+                string omStrConfigFolder;
+                string omPath;
+                char configPath[MAX_PATH];
+                AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                char chAbsPath[MAX_PATH];
+                PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
+                sConfigInfo.m_strFileName = chAbsPath;
+            }
+            else
+            {
+                sConfigInfo.m_strFileName = (char*)key;
+            }
+            xmlFree(key);
+        }
+
         xmlXPathFreeObject(pObjectPtr);
         pObjectPtr = NULL;
     }
@@ -1113,7 +1148,7 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
     ouTestSetupEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(m_ouResult.m_ouHeaderInfo.m_omDatabasePath);
     m_ouResult.m_omStrTestSetupFile = ouTestSetupEntity.m_omstrTestSetupTitle;
     m_ouResult.m_odTcResultList.RemoveAll();
-    for(UINT nTCIndex=0; nTCIndex<unTCCount; nTCIndex++)
+    for(UINT nTCIndex=0; nTCIndex<unTCCount; ++nTCIndex)
     {
 
         ouTestSetupEntity.GetSubEntityObj(nTCIndex, &pouTestCase);
@@ -1204,7 +1239,7 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
                 CString omStrTemp;
                 CWaitEntityData ouWaitData;
                 pEntity->GetEntityData(WAIT, &ouWaitData);
-                omStrTemp.Format("Waiting %d sec for %s", ouWaitData.m_ushDuration, ouWaitData.m_omPurpose);
+                omStrTemp.Format("Waiting %d msec for %s", ouWaitData.m_ushDuration, ouWaitData.m_omPurpose);
                 m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, omStrTemp);
                 Sleep(ouWaitData.m_ushDuration);
             }

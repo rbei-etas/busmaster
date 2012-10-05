@@ -47,6 +47,8 @@ public:
     CTxMsgChildFrame();
     // Standard destructor
     virtual ~CTxMsgChildFrame();
+
+    afx_msg void OnClose();
     // To Set View Pointers
     void vSetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity, CWnd* pomWnd);
     // To get View pointers
@@ -104,4 +106,5 @@ public:
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
+    void vCallAutoUpdate();
 };

@@ -90,8 +90,8 @@
 #define START_TXVAL_TAG      T_STRAT_BRAC"START_PARAM_NODE_TX_MSG_VAL"T_END_BRAC
 #define END_TXVAL_TAG        T_STRAT_BRAC"END_PARAM_NODE_TX_MSG_VAL"T_END_BRAC
 
-
-
+#define SIGNAL_LONG_NAME    "SystemSignalLongSymbol"
+#define MESSAGE_LONG_NAME   "SystemMessageLongSymbol"
 //Converter.cpp
 #define defCON_MAX_LINE_LEN 6000  //Maximum no of char in one line
 #define defCON_TEMP_LEN 250
@@ -105,10 +105,10 @@
 
 enum eBUS_TYPE
 {
-	NONE,
-	CAN,
-	J1939,
-	MCNET
+    NONE,
+    CAN,
+    J1939,
+    MCNET
 };
 
 typedef union _SIG_VALUE

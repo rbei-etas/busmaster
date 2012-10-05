@@ -22,7 +22,7 @@ EndFunc
 
 if WinExists("BUSMASTER") Then
 	sleep(2000)
-	WinMenuSelectItem("BUSMASTER","","&Configure","&Simulated Systems")   ;select Configure->Simulated Systems
+;~ 	WinMenuSelectItem("BUSMASTER","","&Configure","&Simulated Systems")   ;select Configure->Simulated Systems
 	$pos=ControlGetPos("BUSMASTER","","[CLASS:SysTreeView32; INSTANCE:1]")
 	MouseClick("right",$pos[0]+30,$pos[1]+55)							 ; select new sim
 	send("n")

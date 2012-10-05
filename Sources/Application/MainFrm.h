@@ -159,7 +159,7 @@ public:
     CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
     SJ1939CLIENTPARAM m_sJ1939ClientParam;
 
-	BOOL CompareFile(CString FirstFile,CString SecFile);
+    BOOL CompareFile(CString FirstFile,CString SecFile);
 
     int             m_nNumChannels;
     // Overrides
@@ -220,6 +220,9 @@ public:
     VOID vSetMessageData(BYTE*  pbMessageData);
     // Creates message window
     BOOL bCreateMsgWindow(void);
+    //Create toolbar nodes
+    //BOOL CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, string strData);
+    //BOOL CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, int nData);
     // Returns reference to CByteArray
     CByteArray& pomGetMsgByteArrayReference();
     // Fills the tool bar combo box with message names
@@ -305,9 +308,9 @@ public:
     CWnd* IsWindowCreated();
     void vCloseFormatconverters();
     void vProcessKeyPress(MSG* pMsg);
-	//MVN
-	BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
-	//~MVN
+    //MVN
+    BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
+    //~MVN
 
 #ifdef _DEBUG
     virtual void AssertValid() const;
@@ -372,10 +375,11 @@ protected:
     //afx_msg void OnLogFilterButton();
     //afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnMessageFilterButton();
-	void ApplyMessageFilterButton();
+    void ApplyMessageFilterButton();
     afx_msg void OnUpdateMessageFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI);
     afx_msg void OnDisplayMessagewindowOverwrite();
+    void ApplyMessagewindowOverwrite();
     afx_msg void OnClearMsgWindow();
     afx_msg void OnUpdateDllBuildAll(CCmdUI* pCmdUI);
     afx_msg void OnUpdateDllBuildloadAll(CCmdUI* pCmdUI);
@@ -455,6 +459,7 @@ protected:
 
     afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT onGetConfigPath(WPARAM wParam, LPARAM lParam);
 
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
@@ -484,7 +489,7 @@ public:
     void vClearSignalInfoList(void);
     void vUpdateChannelInfo(void);
     void vUpdateHWStatusInfo(void);
-	BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase &odMsgNameMsgCodeListDB);
+    BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
 
 private:
     PROJECTDATA m_sProjData;
@@ -534,6 +539,8 @@ private:
     // Returns the position of the menu item asked for
     INT nFindMenuItem(CMenu* Menu, LPCTSTR MenuString);
     // Shuffles MRU filenames
+    //gets the toolbar style of a toolbar in terms of TOP, BOTTOM, LEFT, RIGHT
+    //string GetToolBarStyle(CToolBar& wndToolbar);
 
     BOOL m_bIsSendingMsg;
     // Holds Previously loaded DLL name
@@ -574,6 +581,7 @@ private:
     // Set window status
     void vSaveWinStatus(WINDOWPLACEMENT);
 
+    bool bSetDefaultToolbarPosition();
     BOOL bDestroyMsgWindow(void);
     // Change status of tool bar button
     BOOL bSetPressStatus(int, eCANMONITORFLAG);
@@ -603,25 +611,41 @@ private:
     void vGetLoadedCfgFileName(CString& omFileName);
     BOOL bIsConfigurationModified(void);
     void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfig, UINT& nSize);
-	void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize, xmlNodePtr pNodePtr);
+    void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize, xmlNodePtr pNodePtr);
     void vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize);
     INT LoadConfiguration(void);
     INT SaveConfiguration(void);
-	//MVN
-	int nLoadXMLConfiguration(string& m_strCfxFile);
-	int nLoadXMLConfiguration();
+    //MVN
+    int nLoadXMLConfiguration(string& m_strCfxFile);
+    int nLoadXMLConfiguration();
 
-	void vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
+    //Gets the data of a toolbar from XML file node and creates toolbar
+    //int nGetToolBarNodes(xmlNodePtr pNode, CToolBar& omToolbar, UINT unID,
+    // CString omTitle);
+    //Creates toolbar of given size
+    //int nCreateToolbarFrmXML(CToolBar& omToolbar, UINT unID,CRect rRect,
+    // CString omTitle);
+    //It will read a section (Default or user defined) and createss the toolbar
+    //int nGetToolBarNodeFrmDocSection(xmlXPathObjectPtr pObjectPath);
 
-	INT vSaveXMLConfiguration();
-	INT vSaveXMLConfiguration(const char *filename);
+    //clear the user defined nodes
+    //bool ClearUserDefinedNodes(string& strPath);
 
-	INT nGetControllerID(string ptext);
-	void LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlNodePtr& pNodePtr);
-	//~MVN
+    //Will create a section (Default or user defined) and createss the toolbar
+    //BOOL CreateToolBarPosInGlobalFile(xmlNodePtr pNodePtr);
 
-	// PTV
-	CString vGetControllerName(UINT nDriverId);
+    void vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
+
+    INT vSaveXMLConfiguration();
+    INT vSaveXMLConfiguration(const char* filename);
+
+    INT nGetControllerID(string ptext);
+    void LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlNodePtr& pNodePtr);
+    string m_omStrCurrentConfigFile;
+    //~MVN
+
+    // PTV
+    CString vGetControllerName(UINT nDriverId);
 
     void vSetFileStorageInfo(CString omCfgFileName);
     void vSetCurrProjInfo(float fAppVersion);
@@ -641,10 +665,10 @@ private:
     CMsgSignal* m_pouActiveDbJ1939;
     BOOL m_abLogOnConnect[BUS_TOTAL];
 
-	xmlNodePtr m_pCopyBusStsticsNode;
-	// PTV XML
-	void vSetGlobalConfiguration(xmlNodePtr& pNodePtr);
-	// PTV XML
+    xmlNodePtr m_pCopyBusStsticsNode;
+    // PTV XML
+    void vSetGlobalConfiguration(xmlNodePtr& pNodePtr);
+    // PTV XML
 public:
     void vPopulateJ1939PGNList();
     INT ReadGraphDataBuffer(BOOL bCalcTime);
@@ -758,12 +782,12 @@ public:
     afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
     afx_msg void OnToolbarCandatabase();
     afx_msg void OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI);
-	afx_msg LRESULT OnMessageFromUserDllGetAbsoluteTime(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnMessageFromUserDllGetAbsoluteTime(WPARAM wParam, LPARAM lParam);
     afx_msg void OnFileConverter();
 
-	void ApplyLogFilter();
-//MVN
-	xmlDocPtr m_xmlConfigFiledoc;
-	BOOL m_bIsXmlConfig;
-//~MVN
+    void ApplyLogFilter();
+    //MVN
+    xmlDocPtr m_xmlConfigFiledoc;
+    BOOL m_bIsXmlConfig;
+    //~MVN
 };

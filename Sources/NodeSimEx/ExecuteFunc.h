@@ -87,8 +87,8 @@ public:
     STHREADINFO m_asUtilThread[defEVENT_EXFUNC_TOTAL];
     CEvent  m_aomState[defEVENT_EXFUNC_TOTAL];
     //associated to handler thread
-	void vWriteInQMsg(STCAN_TIME_MSG sRxMsgInfo);  
-	STCAN_TIME_MSG sReadFromQMsg();
+    void vWriteInQMsg(STCAN_TIME_MSG sRxMsgInfo);
+    STCAN_TIME_MSG sReadFromQMsg();
     CEvent m_omReadFromQEvent;       //event set after writing into buffer,for reading
     CRITICAL_SECTION m_CritSectForFuncBuf; //critical section for buffer
     UINT unGetBufferMsgCnt(); //called from read buffer thread
@@ -125,8 +125,8 @@ private:
     PFMSG_HANDLER_CAN pFSearchMsgIdListHandlerCAN(UINT unMsgId);
     BOOL bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
                                     CStringArray& omErrorArray);
-    BOOL bInitMsgListHandleStruct(UINT  unMsgIDandNameCount, 
-                                      CStringArray &omErrorArray);
+    BOOL bInitMsgListHandleStruct(UINT  unMsgIDandNameCount,
+                                  CStringArray& omErrorArray);
     BOOL bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                                       CStringArray& omErrorArray);
     // Allocate memory for handler info structure
@@ -141,10 +141,10 @@ private:
     BOOL bInitMSGStruct(CStringArray& omErrorArray);
     // Initialise DLL structure
     BOOL bInitDLLStruct(CStringArray& omErrorArray);
-    BOOL bInitBusEventStruct(CStringArray &omErrorArray);
+    BOOL bInitBusEventStruct(CStringArray& omErrorArray);
     // Read .Def File and add function name.
     BOOL bReadDefFile(CStringArray& omErrorArray);
-	void vTokenize(CString strInput, CString strToken, CString& strOutput, int& nStart);
+    void vTokenize(CString strInput, CString strToken, CString& strOutput, int& nStart);
 
     void vInitialiseInterfaceFnPtrsJ1939(HMODULE);
     void vInitialiseInterfaceFnPtrsCAN(HMODULE);
@@ -169,7 +169,7 @@ private:
     PFMSG_HANDLER_CAN m_pFGenericMsgHandlerCAN;
     PFMSG_HANDLER m_pFGenericMsgHandler;
     PSDLLHANDLER   m_psOnDLLHandlers ;
-    PSBUSEVHANDLER m_psOnBusEventHandlers; 
+    PSBUSEVHANDLER m_psOnBusEventHandlers;
     PSEVENTHANDLER m_psOnEventHandlers;
     PSERRORHANDLER m_psOnErrorHandlers;
     CString m_omStrDllFileName;
@@ -185,7 +185,7 @@ private:
 
     sNODEINFO m_sNodeInfo;
     UINT m_unQMsgCount;
-	STCAN_TIME_MSG m_asQMsg[ defMAX_FUNC_MSG ];		//for message handler msg array	
+    STCAN_TIME_MSG m_asQMsg[ defMAX_FUNC_MSG ];     //for message handler msg array
     UINT m_unReadQMsgIndex;         // index from which the message to be read
     UINT m_unWriteQMsgIndex;        //index at which message is to be written
 

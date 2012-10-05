@@ -201,7 +201,14 @@ USAGEMODE HRESULT TX_hConfigWindowShown()
 
 USAGEMODE HRESULT TX_vStartTransmission(UCHAR ucKeyVal)
 {
-    CTxMsgManager::s_podGetTxMsgManager()->vStartTransmission(ucKeyVal);
+    if(g_pomTxMsgChildWindow != NULL)
+    {
+        g_pomTxMsgChildWindow->vCallAutoUpdate();
+    }
+    if(CTxMsgManager::s_podGetTxMsgManager() != NULL)
+    {
+        CTxMsgManager::s_podGetTxMsgManager()->vStartTransmission(ucKeyVal);
+    }
     return S_OK;
 }
 

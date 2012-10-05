@@ -90,32 +90,18 @@ protected:
     // Generated message map functions
     //{{AFX_MSG(CSignalDetailsDlg)
     virtual BOOL OnInitDialog();
-    afx_msg void OnKillfocusEditSgname();
-    afx_msg void OnKillfocusEditByindex();
-    afx_msg void OnKillfocusEditFactor();
-    afx_msg void OnKillfocusEditOffset();
-    afx_msg void OnKillfocusEditSglen();
-    afx_msg void OnKillfocusEditStbit();
-    afx_msg void OnKillfocusEditUnit();
-    afx_msg void OnSelchangeCombSgtype();
+
     virtual void OnCancel();
     virtual void OnOK();
-    afx_msg void OnChangeEditSglen();
-    afx_msg void OnChangeEditSgname();
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+
 private:
     BOOL m_bLenChanged;
     CString m_omStrFirstSignalName;
     BOOL m_bDupliacateFound;
-    // rajesh : 04.03.2003 : changed arguments
-    void vCalculateMaxMinValues(SIG_VALUE& rMinVal, SIG_VALUE& rMaxVal);
     // void vCalculateMaxMinValues(long &minVal, long &maxVal);
     //  krishnaswamy B.N 28.08.2003
     //  Validation of minimum and maximum values in OnOk function
-    BOOL bIsEditMinMaxValueValid();
-    BOOL bIsMaximumValueValid();
-    BOOL bIsMinimumValueValid();
+
 
     CString m_omStrSgType;
     int m_nDataFormat;
@@ -131,6 +117,5 @@ private:
     CString m_omStrOffset;
     CString m_omStrScale;
     BOOL m_bNameChanged;
-    afx_msg void OnBnClickedRadioIntel();
-    afx_msg void OnBnClickedRadioMotorola();
+
 };

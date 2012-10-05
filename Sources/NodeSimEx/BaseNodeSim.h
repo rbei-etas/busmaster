@@ -60,13 +60,14 @@ public:
     virtual BOOL NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag) = 0;
     //Load and save the Simsys config details in terms of bytes
     virtual void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize) = 0;
-	virtual bool NS_GetSimSysConfigData(xmlNodePtr pNodePtr) = 0;
+    virtual bool NS_GetSimSysConfigData(xmlNodePtr& pNodePtr) = 0;
     virtual void NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize) = 0;
-	//MVN
-	virtual void NS_SetSimSysConfigData(xmlDocPtr pXmlDoc) = 0;
-	//~MVN
+    //MVN
+    virtual void NS_SetSimSysConfigData(xmlDocPtr pXmlDoc) = 0;
+    virtual void NS_SetSimSysConfigData(xmlNodePtr pXmlNodePtr) = 0;
+    //~MVN
     virtual BOOL NS_IsSimSysConfigChanged() = 0;
-	virtual int NS_nOnBusConnected(bool bConnected) = 0;
+    virtual int NS_nOnBusConnected(bool bConnected) = 0;
     //INTERFACE FUNCTIONS ENDS
 };
 #endif //BASENODESIM_H__INCLUDED_

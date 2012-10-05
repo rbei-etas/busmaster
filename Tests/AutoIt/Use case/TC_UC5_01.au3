@@ -15,7 +15,7 @@ _launchApp()													; invoke the application and run the Process
 
 sleep(1000)
 if WinExists("BUSMASTER") then
-	_loadConfig("UseCase4.cfx")									; load cfx file
+	_loadConfig("UseCase5.cfx")									; load cfx file
 	ConsoleWrite("isAppCrash value="&$crashRes&@CRLF)
 EndIf
 ConsoleWrite("****End : TC_UC5_01.au3****"&@CRLF)

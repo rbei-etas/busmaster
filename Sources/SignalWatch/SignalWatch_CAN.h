@@ -61,13 +61,13 @@ public:
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
     HRESULT SW_GetConfigData(void* pbyConfigData);
-	// PTV XML
-	HRESULT SW_GetConfigData(xmlNodePtr pNodePtr);
-	// PTV XML
+    // PTV XML
+    HRESULT SW_GetConfigData(xmlNodePtr pNodePtr);
+    // PTV XML
     HRESULT SW_SetConfigData(const void* pbyConfigData);
-	//MVN	
-	HRESULT SW_SetConfigData(xmlNodePtr pNode);
-	//~MVN
+    //MVN
+    HRESULT SW_SetConfigData(xmlNodePtr pNode);
+    //~MVN
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
@@ -76,6 +76,6 @@ public:
 
 private:
     BOOL bStartSigWatchReadThread(void);
-	INT nParseXMLColumn(xmlNodePtr pNode);
+    INT nParseXMLColumn(xmlNodePtr pNode);
 
 };
