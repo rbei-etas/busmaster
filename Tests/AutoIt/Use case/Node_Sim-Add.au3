@@ -149,6 +149,33 @@ if WinExists("BUSMASTER") Then
 			send("{ENTER}")																; Click Yes
 		EndIf
 	Next
+
+	$item1HWD=_GUICtrlTreeView_GetNext($nodeHWD,"")									; Get handle of First item
+	$item2HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item1HWD)					; Get handle of second item
+	$item3HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item2HWD)					; Get handle of third item
+	$item4HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item3HWD)					; Get handle of Fourth item
+	$item5HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item4HWD)					; Get handle of Fifth item
+	$item6HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item5HWD)					; Get handle of Sixth item
+	$item7HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item6HWD)
+	$item8HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item7HWD)
+	$utilhwdnewchildcount=_GUICtrlTreeView_GetChildCount($nodeHWD,$item8HWD)
+	for $i=0 to $utilhwdnewchildcount-1
+		$item1HWD=_GUICtrlTreeView_GetNext($nodeHWD,"")									; Get handle of First item
+		$item2HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item1HWD)					; Get handle of second item
+		$item3HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item2HWD)					; Get handle of third item
+		$item4HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item3HWD)					; Get handle of Fourth item
+		$item5HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item4HWD)					; Get handle of Fifth item
+		$item6HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item5HWD)					; Get handle of Sixth item
+		$item7HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item6HWD)					; Get handle of Seventh item
+		$item8HWD=_GUICtrlTreeView_GetNextSibling($nodeHWD,$item7HWD)
+		$util1HWD=_GUICtrlTreeView_GetFirstChild($nodeHWD,$item8HWD)
+		_GUICtrlTreeView_ClickItem($nodeHWD,$util1HWD,"Right")							; Right Click on the First Child item
+		send("d")																		; Delete the First Child item
+		sleep(1000)
+		if winexists("BUSMASTER") Then
+			send("{ENTER}")																; Click Yes
+		EndIf
+	Next
 	send("^s")
 	if winexists("BUSMASTER") Then
 			send("{ENTER}")																; Click Yes

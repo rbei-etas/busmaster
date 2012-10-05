@@ -484,18 +484,26 @@ HRESULT CTSExecutorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& unB
     return S_OK;
 }
 
-BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr pxmlNodePtr)
+BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
-    const char* omcVarChar ;
-
-    m_ouTSExecutor.GetConfigurationData(pxmlNodePtr);
-
-    //Window position
     WINDOWPLACEMENT wndPlacement;
     GetWindowPlacement(&wndPlacement);
 
+    const char* omcVarChar ;
+    pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_TS_EXECUTOR);
+    m_ouTSExecutor.GetConfigurationData(pxmlNodePtr);
+
+    //Window position
+
+
     xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeWndPos);
+
+    if(IsWindowVisible() == FALSE)
+    {
+        wndPlacement.showCmd = SW_HIDE;
+    }
+
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,wndPlacement);
 
     //splitter position-------------------------
@@ -564,7 +572,9 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuf
     else
     {
         vInitialise();
-        SetWindowPlacement(&m_sTSDefPlacement);
+        WINDOWPLACEMENT omTempWnd = m_sTSDefPlacement;
+        omTempWnd.showCmd = SW_HIDE;
+        SetWindowPlacement(&omTempWnd);
     }
     return S_OK;
 }
@@ -572,7 +582,9 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(BYTE* pSrcBuffer, UINT unBuf
 HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
 {
     int nRetValue = S_OK;
-    BOOL bWindowPlacement = FALSE;
+    //Test Suite Window Position
+    WINDOWPLACEMENT wndPlacement;
+    wndPlacement = m_sTSDefPlacement;
 
     if( NULL != pXmlNode )
     {
@@ -580,21 +592,17 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
         xmlNodePtr pTempNode = NULL;
         xmlXPathObjectPtr pObjectPtr = NULL;
 
-        //Test Suite Window Position
-        WINDOWPLACEMENT wndPlacement;
         pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Window_Position");
         if( NULL != pObjectPtr)
         {
             pTempNode = pObjectPtr->nodesetval->nodeTab[0];
             if( S_FALSE == xmlUtils::ParseWindowsPlacement(pTempNode, wndPlacement) )
             {
-                bWindowPlacement = TRUE;
                 wndPlacement = m_sTSDefPlacement;
             }
             xmlXPathFreeObject(pObjectPtr);
             pObjectPtr = NULL;
         }
-        SetWindowPlacement(&wndPlacement);
 
         //Splitter Position
         pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Splitter_Window");
@@ -606,6 +614,8 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
             if ( S_OK == xmlUtils::ParseSplitterWindow(pTempNode, nCxCur, nCxMin) )
             {
                 m_omSplitterWnd.SetColumnInfo(0, nCxCur, nCxMin);
+                //Arun
+                m_omSplitterWnd.RecalcLayout();
             }
         }
 
@@ -627,11 +637,11 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
         }
 
     }
-    if( NULL == pXmlNode || FALSE == bWindowPlacement )
+    if( NULL == pXmlNode )
     {
-        //vInitialise();
-        SetWindowPlacement(&m_sTSDefPlacement);
+        vInitialise();
     }
+    SetWindowPlacement(&wndPlacement);
 
     return S_OK;
 }
@@ -757,6 +767,7 @@ VOID CTSExecutorChildFrame::vUpdateTreeView(void)
     INT nCount;
     CString omStrTestSuiteName;
     m_ouTSExecutor.GetTestsuiteName(omStrTestSuiteName);
+    BOOL bCheck = m_odTreeView->bIsItemChecked(m_hParentTreeItem);
     m_odTreeView->GetTreeCtrl().DeleteAllItems();
     m_hParentTreeItem = m_odTreeView->InsertTreeItem(NULL, omStrTestSuiteName, NULL, 0, 0, def_ID_TESTSUITE);
     m_ouTSExecutor.GetTestSetupCount(nCount);
@@ -765,6 +776,8 @@ VOID CTSExecutorChildFrame::vUpdateTreeView(void)
         bParseTestSetup(i);
     }
     m_odTreeView->GetTreeCtrl().Expand(m_hParentTreeItem, TVE_EXPAND);
+
+    m_odTreeView->GetTreeCtrl().SetCheck(m_hParentTreeItem, bCheck);
 }
 /******************************************************************************
 Function Name  :  OnClose
@@ -781,4 +794,12 @@ Code Tag       :
 void CTSExecutorChildFrame::OnClose()
 {
     ShowWindow(SW_HIDE);
+
+    WINDOWPLACEMENT wndPlcmnt;
+
+    GetWindowPlacement(&wndPlcmnt);
+
+    wndPlcmnt.showCmd = SW_HIDE;
+
+    SetWindowPlacement(&wndPlcmnt);
 }

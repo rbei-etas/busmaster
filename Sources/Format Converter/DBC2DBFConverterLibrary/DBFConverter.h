@@ -39,10 +39,10 @@ using namespace std;
 
 class CDBFConverter:public CDBCConverterBase
 {
-	eBUS_TYPE m_eBus;
+    eBUS_TYPE m_eBus;
 public:
-	CDBFConverter(eBUS_TYPE eBus);
-    
+    CDBFConverter(eBUS_TYPE eBus);
+
     HRESULT LoadDBCFile(string strDBCFile);
     HRESULT GenerateImportList(/* sMESSAGE*& */);
     HRESULT ConvertFile(string strDBFFile);
@@ -51,22 +51,26 @@ public:
     HRESULT FindSignalAlias(string& strMsgName, string& strSignalName, string& strSignalAlias);
     HRESULT GetResultString(char*);
     HRESULT ClearMsgList();
-	HRESULT GetMessageNameList(std::list<string>& meassageList);
+    HRESULT GetMessageNameList(std::list<string>& meassageList);
     virtual ~CDBFConverter();
-    
+
     static unsigned char ucMsg_DLC;
 private:
     string strDBCFileName;
     //static const char m_accHeader[];
     unsigned int m_uiResultCode;
-    static const char *m_pacResultStrings[];
+    static const char* m_pacResultStrings[];
     unsigned int Convert(string sCanoeFile, string sCanMonFile);
     bool bGetSignalAlias(CMessage& ouMsg, string& strSignalName, string& strSignalAlias);
     void CreateLogFile(fstream& fileLog);
     bool WriteToOutputFile(fstream& fileOutput);
     void GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
-    void EncryptData(list<string> &m_notProcessed);
+
+    void vUpdateSignalNameFromParam(CParameterValues& uParamVal);
+    void vUpdateMessageNameFromParam(CParameterValues& uParamVal);
+
+    void EncryptData(list<string>& m_notProcessed);
     enum {CON_RC_NOERROR,CON_RC_COMPLETED_WITH_ERROR,CON_RC_FILEOPEN_ERROR_INFILE,
           CON_RC_FILEOPEN_ERROR_OUTFILE,CON_RC_FORMAT_ERROR_INFILE,CON_RC_FILEOPEN_ERROR_LOGFILE
          };
@@ -83,7 +87,7 @@ private:
     BOOL bHeaderSection;
     static bool valid_msg;
     string m_omLogFilePath;
-    void create_Node_List(char *);
+    void create_Node_List(char*);
     list<string> m_listNode;
     list<string> m_notProcessed;
     list<CParameter> m_listParameters;

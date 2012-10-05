@@ -783,7 +783,7 @@ Modifications  :
 ******************************************************************************/
 CWaitEntityData::CWaitEntityData(VOID)
 {
-    m_omPurpose = "Waiting for";
+    m_omPurpose = "";
     m_ushDuration = 100;
 }
 

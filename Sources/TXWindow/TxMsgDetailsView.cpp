@@ -2270,6 +2270,11 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
     {
         STCAN_MSG sCanInfo;
         bUpdateMessageDetail(&sCanInfo);
+        INT nMsgCode = nGetValidMessageID();
+        if ( nMsgCode == -1 )       //AUC, signal matrix gets enabled for invalid signal
+        {
+            sCanInfo.m_ucDataLen = 0;
+        }
         bUpdateSignalList(sCanInfo);
         m_odSignalMatrix.vSetMessageLength(sCanInfo.m_ucDataLen);
     }
@@ -2835,6 +2840,7 @@ void CTxMsgDetailsView::vUpdateFromPhysicalValue(int nItem, int nSubItem)
                 {
                     //                    n64SigVal = psDesc->m_n64SignalVal;
                     n64SigVal = psDesc->m_DescValue.n64Value;
+                    un64SigVal = psDesc->m_DescValue.un64Value;
                     bFound = TRUE;
                 }
                 else
@@ -3230,15 +3236,15 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
         if (NULL != pDBptr)
         {
             omStr =  pDBptr->omStrGetMessageNameFromMsgCode(unMsgID);
-            // PTV [1.6.6]
-            omStrMsgLength = pDBptr->omStrGetMessageLengthFromMsgCode(unMsgID);
+
+            //omStrMsgLength = pDBptr->omStrGetMessageLengthFromMsgCode(unMsgID);
         }
 
-        if(omStrMsgLength != "")
-        {
-            psTxMsg->m_sTxMsg.m_ucDataLen = atoi(omStrMsgLength);
+        /* if(omStrMsgLength != "")
+         {
+             psTxMsg->m_sTxMsg.m_ucDataLen = atoi(omStrMsgLength);
+         }*/
 
-        }
         // If it is not a DB message then use the numeric value
         if( omStr.IsEmpty() == TRUE)
         {

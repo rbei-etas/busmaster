@@ -239,17 +239,22 @@ void CTxFunctionsView::OnButtonApply()
     CString                 csTimerVal;
     CTxMsgBlocksView* pomBlockView = NULL;
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-    pomBlockView->GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
+    if(pomBlockView)
+    {
+        pomBlockView->GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
 
-    if(((CButton*) pomBlockView->GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->GetCheck() == BST_CHECKED)
-    {
-        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;
-        CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
-    }
-    else
-    {
-        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
-        CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+        if(((CButton*) pomBlockView->GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->GetCheck() == BST_CHECKED)
+        {
+            CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;
+            CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+            pomBlockView->m_bDelayBtnBlocks = true;
+        }
+        else
+        {
+            CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+            CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+            pomBlockView->m_bDelayBtnBlocks = false;
+        }
     }
 
     unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
@@ -257,7 +262,29 @@ void CTxFunctionsView::OnButtonApply()
     CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
     CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
     this->SetFocus();
+
+    // The following block of code can be enabled if message to be transmitted in following scenario :
+    // Message transmission is ON, Empty block is present. Added a message to the
+    // empty block and Update button is selected
+    /*if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))
+    {
+        CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+        PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+        if (NULL != pomBlockView)
+        {
+            psMsgCurrentBlock =  pomBlockView->psGetMsgBlockPointer(
+                pomBlockView->m_nSelectedMsgBlockIndex,
+                pomBlockView->m_psMsgBlockList );
+            // If no msg is present at the start of msg transmission and if the
+            // user adds a one or more msg and selects the update button, then send the new msg
+            if(psMsgCurrentBlock->m_unMsgCount >= 1)
+            {
+                CTxMsgManager::s_podGetTxMsgManager()->vStartTransmission(0);
+            }
+        }
+    }*/
 }
+
 void CTxFunctionsView::SetUpdateBtnChanges()
 {
     // Apply changed to global Tx Block
@@ -270,18 +297,25 @@ void CTxFunctionsView::SetUpdateBtnChanges()
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
     if( pomBlockView != NULL )
     {
-        //the below commented should be enabled if any control is enabled in blocksview
-
-        //if( (pomBlockView->m_bModified == TRUE) && (TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG)) )
-        //{
-        //    if(AfxMessageBox( defSTR_RELOAD_CONFIRMATION,
-        //                      MB_YESNO | MB_DEFBUTTON2) == IDYES )
-        //    {
-        //        // Reload the data from Configuration
-        //        vReloadData();
-        //    }
-        //}
-        //else
+        // Message deletion is not allowed runtime from any block. This is only for Update button Scenario
+        if((m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED))
+        {
+            if( (pomBlockView->m_bModified == TRUE) && (TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG)) )
+            {
+                if(AfxMessageBox( defSTR_RELOAD_CONFIRMATION,
+                                  MB_YESNO | MB_DEFBUTTON2) == IDYES )
+                {
+                    // Reload the data from Configuration
+                    vReloadData();
+                }
+            }
+            else
+            {
+                vApplyChanges();
+                m_omButtonApply.EnableWindow(FALSE);
+            }
+        }
+        else
         {
             vApplyChanges();
             // Disable the button
@@ -622,6 +656,28 @@ void CTxFunctionsView::vReloadData()
     }
 }
 
+void CTxFunctionsView::OnInvokeClose()
+{
+    if( m_omButtonApply.IsWindowEnabled() == TRUE )
+    {
+        if( AfxMessageBox( defSTR_TX_SAVE_CONFIRMATION,
+                           MB_YESNO | MB_ICONQUESTION ) == IDYES )
+        {
+            // Save Changes
+            OnButtonApply();
+        }
+        else
+        {
+            CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+            if(pBlocksView != NULL)
+            {
+                CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = pBlocksView->m_bDelayBtnBlocks;
+                CTxMsgManager::s_bDelayBetweenBlocksOnly = pBlocksView->m_bDelayBtnBlocks;
+            }
+        }
+    }
+}
+
 /*******************************************************************************
   Function Name  : OnBtnClose
   Input(s)       : -
@@ -636,24 +692,13 @@ void CTxFunctionsView::vReloadData()
 *******************************************************************************/
 void CTxFunctionsView::OnBtnClose()
 {
-    // Check for Modifications
-    if( m_omButtonApply.IsWindowEnabled() == TRUE )
-    {
-        if( AfxMessageBox( defSTR_TX_SAVE_CONFIRMATION,
-                           MB_YESNO | MB_ICONQUESTION ) == IDYES )
-        {
-            // Save Changes
-            /*OnButtonApply();*/
-            OnButtonApply();
-        }
-    }
-
     // Get Child Frame Pointer
     CWnd* pWnd = NULL;
     pWnd = pomGetParentWindow();
     // Post close message
     if( pWnd != NULL )
     {
+        // This will invoked the InvokeClose function
         ((CTxMsgChildFrame*)pWnd)->PostMessage( WM_CLOSE );
     }
 }
@@ -706,11 +751,13 @@ void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
             {
                 CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
                 CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;
+                pBlocksView->m_bDelayBtnBlocks = true;
             }
             else
             {
                 CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
                 CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+                pBlocksView->m_bDelayBtnBlocks = false;
             }
         }
     }
@@ -723,7 +770,6 @@ void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
 
 void CTxFunctionsView::vAccessButtonApply()
 {
-    /*OnButtonApply();*/
     SetUpdateBtnChanges();
 }
 

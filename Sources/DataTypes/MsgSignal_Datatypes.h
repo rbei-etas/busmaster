@@ -180,7 +180,7 @@ struct sMESSAGE
     UINT m_unMessageLength;     // Message Length
     BOOL m_bMessageFrameFormat; // Message Frame Format
     sSIGNALS* m_psSignals;      // Signal associated with Message
-    BYTE m_bySignalMatrix[8];   // Matrix to validate overlapping signals
+    BYTE m_bySignalMatrix[1785];   // Matrix to validate overlapping signals
     int m_nMsgDataFormat;       // 1-Intel, 0-Motorola
 };
 

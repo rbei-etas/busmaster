@@ -148,16 +148,10 @@ BOOL CKeyValue::PreTranslateMessage(MSG* pMsg)
         {
             *m_pcKeyVal = static_cast <CHAR> (pMsg->wParam);
             SetDlgItemText(IDC_STAT_KEY, omStrKey);
-
             // Amarnath S , 27.03.2002
             // Enable the Ok button if disabled
-            if (!(GetDlgItem( IDOK )->IsWindowEnabled()) &&
-                    !(GetDlgItem( IDC_CBTN_KEY_APPLY )->IsWindowEnabled()))
-            {
-                GetDlgItem( IDOK )->EnableWindow(TRUE);
-                GetDlgItem( IDC_CBTN_KEY_APPLY )->EnableWindow(TRUE);
-                SetDefID( IDOK );
-            }
+            GetDlgItem( IDOK )->EnableWindow(TRUE);
+            GetDlgItem( IDC_CBTN_KEY_APPLY )->EnableWindow(TRUE);
         }
     }
     return CDialog::PreTranslateMessage(pMsg);
@@ -203,7 +197,7 @@ void CKeyValue::OnOK()
     // Check for duplicate selection
     // Get key handler array from the document
     // Check for valid pointer
-    if (m_pDoc != NULL && m_bDataSaved == false)
+    if ( m_pDoc != NULL )
     {
         CStringArray* pKeyArray = m_pDoc->omStrGetKeyHandlerPrototypes();
 
@@ -243,21 +237,13 @@ void CKeyValue::OnOK()
         }
     }
 
-    if ( bRetVal == TRUE && m_bDataSaved == false)
+    if ( bRetVal == TRUE )
     {
         CDialog::OnOK();
     }
     else
     {
-        if ( m_bDataSaved == true)
-        {
-            m_bDataSaved = false;
-            CDialog::OnCancel();
-        }
-        else
-        {
-            CDialog::OnOK();
-        }
+        CDialog::OnCancel();
     }
 }
 /******************************************************************************/
@@ -315,7 +301,7 @@ BOOL CKeyValue::OnInitDialog()
 void CKeyValue::OnCbtnKeyApply()
 {
     BOOL bValidateSelection = TRUE;
-    m_bDataSaved = false;
+    //m_bDataSaved = false;
     if(m_pDoc != NULL )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
@@ -381,11 +367,14 @@ void CKeyValue::OnCbtnKeyApply()
                 if ( pKeyArray != NULL )
                 {
                     pKeyArray->Add( omStrPrototype );
+                    m_pDoc->bAddFunctionPrototype( omStrPrototype , TRUE );
                 }
                 m_pDoc->UpdateAllViews( NULL );
                 m_pDoc->SetModifiedFlag( TRUE );
                 GetDlgItem(IDC_CBTN_KEY_APPLY)->EnableWindow(FALSE);
-                m_bDataSaved = true;
+                GetDlgItem(IDOK)->EnableWindow(FALSE);
+                GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+                SetFocus();
             }
         }
     }

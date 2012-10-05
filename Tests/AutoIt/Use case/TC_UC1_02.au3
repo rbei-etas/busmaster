@@ -13,7 +13,9 @@ if $app=0 Then
 	_loadConfig("UseCase1")
 EndIf
 _loadDatabase("AutoitTest")
-
+send("!FDS")								;Save database
+sleep(500)
+send("!FDC")								;Close database
 _associateDB("&File","AutoitTest.dbf")
 
 ConsoleWrite("$lDb : "&$lDb&@CRLF)

@@ -159,7 +159,10 @@ Modifications  :
 HRESULT CVerifyEntity::DeleteSubEntry(INT index)
 {
     POSITION pos = m_ouData.m_odVerify_MessageEntityList.FindIndex(index);
-    m_ouData.m_odVerify_MessageEntityList.RemoveAt(pos);
+    if( NULL != pos )
+    {
+        m_ouData.m_odVerify_MessageEntityList.RemoveAt(pos);
+    }
     return S_OK;
 }
 
@@ -291,7 +294,7 @@ HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     {
         m_ouData.m_eAttributeError = WARNING;
     }
-    else if(strTemp == "ERROR")
+    else if(strTemp == "ERRORS")
     {
         m_ouData.m_eAttributeError = ERRORS;
     }

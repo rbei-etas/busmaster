@@ -68,6 +68,7 @@ public:
     VOID vInitialise(void);
     BOOL FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CString& omstrFilePath);
     VOID SetHeaderData(const CTestSetupHeader& ouHeaderTS);
+    void vDeleteAllSubMessages();
     virtual ~CTestSetupEntity(void);
 protected:
     eTYPE_ENTITY GetEntityType(void);

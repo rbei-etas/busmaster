@@ -1895,7 +1895,6 @@ static int nGetNoOfConnectedHardware(void)
         // ------------------------------------
         // select the wanted channels
         // ------------------------------------
-        g_xlChannelMask = 0;
         for (UINT i=0; i < g_xlDrvConfig.channelCount; i++)
         {
             // we take all hardware we found and

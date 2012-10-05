@@ -286,13 +286,25 @@ void CPPageMessage::OnButtonEdit()
         odMsgDlg.m_omStrMsg = m_sNewItem.omCANIDName;
         odMsgDlg.m_bForEdit = true;
         odMsgDlg.m_bDBMessage = m_bForDBMsg;
-
+        odMsgDlg.m_nPreviousID = m_sNewItem.nCANID;
         if (odMsgDlg.DoModal() == IDOK)
         {
             m_sNewItem.omCANIDName = odMsgDlg.m_omStrMsg;
+            m_sNewItem.nCANID = odMsgDlg.m_nID;
             m_sNewItem.Colour = odMsgDlg.m_sColour;
 
-            ouMsg.nModifyAttrib(m_sNewItem);
+            if(odMsgDlg.m_nPreviousID == m_sNewItem.nCANID) //if ID is not changed then just modify the current one
+            {
+                ouMsg.nModifyAttrib(m_sNewItem);
+            }
+            else    //if the ID has changed then first remove the structure with old ID and then save the new ID
+            {
+                int nResult = ouMsg.nRemoveAttrib(odMsgDlg.m_nPreviousID);
+                if (nResult == 0)
+                {
+                    ouMsg.nAddNewAttrib(m_sNewItem);
+                }
+            }
 
             m_odMsgList.DeleteItem(nCurrSel);
             nEnterMessageAttrib(m_sNewItem, nCurrSel);

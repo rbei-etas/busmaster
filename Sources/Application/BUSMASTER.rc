@@ -16,6 +16,7 @@
 
 
 
+
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -99,6 +100,7 @@ BEGIN
     "E",            IDM_CONFIGURE_DATABASE_SAVE, VIRTKEY, CONTROL, NOINVERT
     "L",            IDM_DLL_BUILDLOAD_ALL,  VIRTKEY, CONTROL, NOINVERT
     "M",            IDM_FILE_IMPORT_DATABASE, VIRTKEY, CONTROL, NOINVERT
+    "T",            IDM_DATABASE_DISSOCIATE_DB, VIRTKEY, CONTROL, NOINVERT
     "I",            IDM_SAVE_IMPORT,        VIRTKEY, CONTROL, NOINVERT
     VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
     "C",            IDM_CLEAR_MSG_WINDOW,   VIRTKEY, CONTROL, ALT, NOINVERT
@@ -125,19 +127,12 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON "OK",IDOK,186,6,50,14
-    ICON IDR_MAINFRAME,IDC_STATIC,7,11,20,20
-    LTEXT "",IDC_STATIC_VERSION,38,14,138,8
-    LTEXT "Copyright 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
-    LTEXT "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
-#ifdef FOR_ETIN
-    LTEXT "Entitlement ID",IDC_STATIC,38,60,45,8
-    EDITTEXT IDC_EDIT1,85,57,119,14,ES_AUTOHSCROLL | ES_READONLY
-    LTEXT "_________________________________________________________________",IDC_STAT_LINE3,7,69,229,9,WS_DISABLED
-    CONTROL 184,IDC_STATIC,"Static",SS_BITMAP,38,84,167,36
-#else
-    LTEXT "This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.",IDC_STATIC,38,60,167,50
-#endif
+    DEFPUSHBUTTON   "OK",IDOK,186,6,50,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
+    LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
+    LTEXT           "Copyright 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
+    LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
+    LTEXT           "This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.",IDC_STATIC,38,60,167,50
 END
 
 IDD_DLG_VALUE_DESCRIPTOR DIALOGEX 0, 0, 215, 103
@@ -252,7 +247,7 @@ FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_MSG_NAME,85,39,145,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_NAME
     EDITTEXT        IDC_EDIT_MSGCODE,94,58,87,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSGCODE
-    EDITTEXT        IDC_EDIT_MSG_LENGTH,384,36,24,12,ES_RIGHT | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_LENGTH
+    EDITTEXT        IDC_EDIT_MSG_LENGTH,395,36,20,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_LENGTH
     CONTROL         "List1",IDC_LSTC_SIGNAL_DETAILS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,23,115,433,104,0,HIDC_LSTC_SIGNAL_DETAILS
     PUSHBUTTON      "New Signal...",IDC_BUTTON_NEWSIGNAL,78,228,51,15
     PUSHBUTTON      "Edit Signal...",IDC_BUTTON_EDITSIGNAL,133,228,51,15
@@ -262,7 +257,7 @@ BEGIN
     LTEXT           "Message &ID :",IDC_STAT_MSG_CODE,26,58,58,8
     LTEXT           "Message Length :",IDC_STATIC_MSGLEN,327,36,58,8
     LTEXT           "Number of Signals :",IDC_STAT_NOOFSGS,327,57,62,8,0,0,HIDC_STAT_NOOFSGS
-    EDITTEXT        IDC_EDIT_NOOFSGS,390,57,22,14,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_NOOFSGS
+    EDITTEXT        IDC_EDIT_NOOFSGS,395,57,22,14,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_NOOFSGS
     GROUPBOX        "Message Details",IDC_STAT_MSGGRP,16,19,449,79
     GROUPBOX        "Signal Details",IDC_STAT_SGGROUP,15,101,449,232
     LTEXT           "Signal Description",IDC_STAT_DESC,23,255,58,8
@@ -270,12 +265,12 @@ BEGIN
     LTEXT           "&Frame Format :",IDC_STATIC_FRAMEFORMAT,26,80,48,8
     LTEXT           "&Data Format :",IDC_STATIC_DATA_FORMAT,327,78,44,8
     LTEXT           "",IDC_STATIC_FF,85,80,52,8
-    LTEXT           "",IDC_STATIC_DF,390,78,53,8
+    LTEXT           "",IDC_STATIC_DF,395,78,53,8
     GROUPBOX        "Message and Signal Information",IDC_STAT_MSG_DETAILS,7,7,468,336,BS_CENTER
     PUSHBUTTON      "New Desc...",IDC_CBTN_ADD_DESC,243,228,51,15
     PUSHBUTTON      "Edit Desc...",IDC_CBTN_EDIT_DESC,298,228,51,15
     PUSHBUTTON      "Delete Desc",IDC_CBTN_DEL_DESC,353,228,51,15
-    LTEXT           "Byte(s)",IDC_STAT_MSGBYTES,411,36,22,8
+    LTEXT           "Byte(s)",IDC_STAT_MSGBYTES,420,36,22,8
     RTEXT           "0x",IDC_STAT_MSG_CODE_HEX,84,58,8,8
 END
 
@@ -691,13 +686,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.6.7"
+            VALUE "FileVersion", "Ver 1.6.8"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.6.7"
+            VALUE "ProductVersion", "Ver 1.6.8"
         END
     END
     BLOCK "VarFileInfo"
@@ -947,12 +942,12 @@ BEGIN
             MENUITEM "&Close",                      32849,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
             MENUITEM MFT_SEPARATOR
             MENUITEM "&Associate...             Ctrl+M", 32860,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "&Disassociate...",            33001,MFT_STRING,MFS_ENABLED
+            MENUITEM "&Disassociate...         Ctrl+T", 33001,MFT_STRING,MFS_ENABLED
         END
         MENUITEM MFT_SEPARATOR
-        POPUP "&Utilities",                      65535,MFT_STRING,MFS_ENABLED
+        POPUP "&Utilities",                     65535,MFT_STRING,MFS_ENABLED
         BEGIN
-            MENUITEM "&Format Converters",           32959,MFT_STRING,MFS_ENABLED
+            MENUITEM "&Format Converters",          32959,MFT_STRING,MFS_ENABLED
         END
         MENUITEM "&Properties",                 62455,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
@@ -983,7 +978,7 @@ BEGIN
     END
     POPUP "&Configure",                     65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "Hardware Se&lection",          ID_CONFIGURE_CHANNELSELECTION,MFT_STRING,MFS_ENABLED
+        MENUITEM "Hardware Se&lection",         ID_CONFIGURE_CHANNELSELECTION,MFT_STRING,MFS_ENABLED
         MENUITEM "&Controller",                 32811,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         MENUITEM "&Message Display",            32809,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         MENUITEM "L&og",                        32956,MFT_STRING,MFS_ENABLED
@@ -999,7 +994,7 @@ BEGIN
     BEGIN
         MENUITEM "&Connect           F2",       62454,MFT_STRING,MFS_ENABLED
         MENUITEM "Start &Logging",              32806,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-	MENUITEM "&Hex",                        32839, MFT_STRING,MFS_CHECKED
+        MENUITEM "&Hex",                        32839,MFT_STRING,MFS_CHECKED
         POPUP "&Transmit",                      65535,MFT_STRING,MFS_ENABLED
         BEGIN
             MENUITEM "&Normal Blocks",              32873,MFT_STRING,MFS_CHECKED
@@ -1034,8 +1029,8 @@ BEGIN
         END
         POPUP "C&ontroller",                    65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         BEGIN
-            MENUITEM "Set All Channels to &Active",                32921,MFT_STRING,MFS_CHECKED
-            MENUITEM "Set All Channels to &Passive",               32920,MFT_STRING,MFS_CHECKED
+            MENUITEM "Set All Channels to &Active", 32921,MFT_STRING,MFS_CHECKED
+            MENUITEM "Set All Channels to &Passive", 32920,MFT_STRING,MFS_CHECKED
             MENUITEM "&Test Interface",             32925,MFT_STRING,MFS_ENABLED
             MENUITEM "&Reset Hardware",             32930,MFT_STRING,MFS_ENABLED
         END
@@ -1058,7 +1053,7 @@ BEGIN
         MENUITEM "All &Error Handler(s)",       32910,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
         MENUITEM "&All Handler(s)",             32909,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
     END
-    POPUP "&J1939",                          65535,MFT_STRING,MFS_ENABLED
+    POPUP "&J1939",                         65535,MFT_STRING,MFS_ENABLED
     BEGIN
         MENUITEM "&Activate",                   33056,MFT_STRING,MFS_ENABLED
         POPUP "&Database",                      65535,MFT_STRING,MFS_ENABLED
@@ -1072,7 +1067,7 @@ BEGIN
             MENUITEM "&Associate",                  33082,MFT_STRING,MFS_ENABLED
             MENUITEM "&Dissociate",                 33083,MFT_STRING,MFS_ENABLED
         END
-        POPUP "&View",                           65535,MFT_STRING,MFS_ENABLED
+        POPUP "&View",                          65535,MFT_STRING,MFS_ENABLED
         BEGIN
             MENUITEM "&Message Window",             33106,MFT_STRING,MFS_CHECKED
             MENUITEM "&Transmit Window",            33064,MFT_STRING,MFS_ENABLED
@@ -1114,7 +1109,7 @@ BEGIN
     END
     POPUP "&Help",                          65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "&Help Topics",                57667,MFT_STRING,MFS_ENABLED
+        MENUITEM "&Help Topics			F1",    57667,MFT_STRING,MFS_ENABLED
         MENUITEM "&What's This?",               57669,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
         MENUITEM "&About BUSMASTER...",         32869,MFT_STRING,MFS_ENABLED
@@ -1267,7 +1262,7 @@ IDI_ICON_CASCADE        ICON                    "Res\\cascade.ico"
 IDI_ICON_TILE           ICON                    "Res\\Tile.ico"
 IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
-IDI_ICON_LOG_ONLIGHT    ICON					"res\\LoggingONLIGHT.ico"
+IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1594,7 +1589,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.6.7"
+    IDS_VERSION             "Ver 1.6.8"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1778,8 +1773,17 @@ BEGIN
     IDS_HIDE                "&Hide"
     IDS_PPAGE_TITLE_BUFFER  "Buffer"
     IDS_CHANNELS            "Channels"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PPAGE_TITLE_MSG_FILTER "Filter"
+    IDS_ERR_BSTR2CHAR       "Error in conversion from BSTR to CHAR"
+    IDS_ERR_ERRLOGGER_EVENT "ErrorLogger: Unable to open the event"
+    IDS_ERR_ERRLOGGER_REGISTER 
+                            "ErrorLogger: Failure in registering the client"
     ID_LOG_RECORD_STATUS    "CAN"
-    ID_LOG_RECORD_CAN_ICON   "CAN Recording..."
+    ID_LOG_RECORD_CAN_ICON  "CAN Recording..."
     ID_LOG_RECORD_J1939_ICON "J1939 Recording..."
 END
 
@@ -1804,15 +1808,6 @@ BEGIN
     32955                   "Configure Replay\nConfigure Replay"
     32956                   "Configure Log\nConfigure Log"
     32958                   "Provides options for exporting log file\nProvides options for exporting log file"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PPAGE_TITLE_MSG_FILTER "Filter"
-    IDS_ERR_BSTR2CHAR       "Error in conversion from BSTR to CHAR"
-    IDS_ERR_ERRLOGGER_EVENT "ErrorLogger: Unable to open the event"
-    IDS_ERR_ERRLOGGER_REGISTER 
-                            "ErrorLogger: Failure in registering the client"
 END
 
 STRINGTABLE 

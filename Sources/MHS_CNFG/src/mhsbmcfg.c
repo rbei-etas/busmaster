@@ -2,8 +2,8 @@
                           mhsbmcfg.c  -  description
                              -------------------
     begin             : 24.12.2011
-    copyright         : (C) 2011 by MHS-Elektronik GmbH & Co. KG, Germany
-    autho             : Klaus Demlehner, klaus@mhs-elektronik.de
+    copyright         : Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+    author            : Saravanan
  ***************************************************************************/
 
 /***************************************************************************

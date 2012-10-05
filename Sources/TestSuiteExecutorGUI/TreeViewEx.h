@@ -62,7 +62,7 @@ protected:
     virtual ~CTreeViewEx();
 
 
-    BOOL bIsItemChecked(HTREEITEM hItem);
+
     BOOL bAnscestor(HTREEITEM hItem, HTREEITEM hCheck);
     BOOL bSuccessor(HTREEITEM hItem, HTREEITEM hCheck);
 
@@ -100,7 +100,7 @@ public:
     virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
     virtual void OnInitialUpdate();
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-
+    BOOL bIsItemChecked(HTREEITEM hItem);
     //Message Handlers
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnTvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult);

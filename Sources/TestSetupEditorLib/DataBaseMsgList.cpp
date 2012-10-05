@@ -179,7 +179,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                             {
                                 // initialise all the matrix elements
                                 // to zero for this message
-                                for ( UINT nCount = 0; nCount < 8; nCount++ )
+                                for ( UINT nCount = 0; nCount < 1785/*8*/; nCount++ )
                                 {
                                     m_psMessages[unMsgCount].m_bySignalMatrix[nCount] = 0x00;
                                 }

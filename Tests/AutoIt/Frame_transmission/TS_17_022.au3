@@ -50,7 +50,7 @@ send("{TAB}")
 send("5")			;Message Length
 ControlClick("Message Details","","OK")
 ControlClick("BUSMASTER - [DatabaseEditor - CAN]", "New Signal...", 1075) ;1075 is the ID for New Signal button in message and signal information
-WinWaitActive("Signal Details","",5)
+sleep(3000)
 send("SIG1")
 send("{TAB}")
 send("i")
@@ -60,14 +60,15 @@ send("{TAB}")
 send("5")
 ControlClick("Signal Details","","OK")
 sleep(1000)
-controlclick("BUSMASTER - [DatabaseEditor - CAN]","",1089)					; Click on 'New Desc' button
-sleep(1000)
-controlsettext("Enter Value Descriptor and Value","",1010,"Desc1")			; Enter description name
-controlsettext("Enter Value Descriptor and Value","",1011,10)				; Enter description Value
-ControlClick("Enter Value Descriptor and Value","",1042)					; Click 'OK'
+;~ controlclick("BUSMASTER - [DatabaseEditor - CAN]","",1089)					; Click on 'New Desc' button
+;~ sleep(1000)
+;~ controlsettext("Enter Value Descriptor and Value","",1010,"Desc1")			; Enter description name
+;~ controlsettext("Enter Value Descriptor and Value","",1011,10)				; Enter description Value
+;~ ControlClick("Enter Value Descriptor and Value","",1042)					; Click 'OK'
 EndIf
 EndIf
 send("!fds")
+send("!fdc")
 sleep(50)
 send("!fda")     ;Associate DB
 WinWaitActive("Select Active Database Filename...","",5)

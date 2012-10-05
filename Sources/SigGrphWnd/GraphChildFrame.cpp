@@ -405,6 +405,7 @@ void CGraphChildFrame::vHandleConnectChange(BOOL bConnect)
 *******************************************************************************/
 void CGraphChildFrame::vHandleConFigChange()
 {
+    //ShowWindow(SW_HIDE);
     // Get Left View Pointer
     CGraphLeftView* pLeftView = ( CGraphLeftView*)
                                 pomGetLeftViewPointer();

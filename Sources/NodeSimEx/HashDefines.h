@@ -301,16 +301,16 @@ typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
     ULONG m_ulTimeStamp;
 };
 typedef sTCAN_TIME_MSG STCAN_TIME_MSG;
-typedef sTCAN_TIME_MSG *PSTCAN_TIME_MSG;
+typedef sTCAN_TIME_MSG* PSTCAN_TIME_MSG;
 // All function prototype is used in function editor.
-typedef VOID (__cdecl *PFMSG_HANDLER_CAN)(STCAN_TIME_MSG Rx_Msg); 
+typedef VOID (__cdecl* PFMSG_HANDLER_CAN)(STCAN_TIME_MSG Rx_Msg);
 typedef VOID (__cdecl* PFMSG_HANDLER)(void* pRxMsg);
 typedef VOID (__cdecl* PFTIMER_HANDLER)();
 typedef VOID (__cdecl* PFKEY_HANDLER)(UCHAR ucKeyVal);
 typedef VOID (__cdecl* PFEVENT_HANDLER)(...);
 typedef VOID (__cdecl* PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
 typedef VOID (__cdecl* PFDLL_HANDLER)();
-typedef VOID (__cdecl *PFBUSEV_HANDLER)();
+typedef VOID (__cdecl* PFBUSEV_HANDLER)();
 typedef BOOL (__cdecl* PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
 typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
@@ -717,7 +717,7 @@ typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
 struct sEXECUTE_BUSEVENT_HANDLER
 {
     PFBUSEV_HANDLER pFBusEventHandler;
-	CExecuteFunc* m_pCExecuteFunc;
+    CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_BUSEVENT_HANDLER SEXECUTE_BUSEVENT_HANDLER;
 typedef sEXECUTE_BUSEVENT_HANDLER* PSEXECUTE_BUSEVENT_HANDLER;

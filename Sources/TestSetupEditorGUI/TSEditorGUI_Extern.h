@@ -42,9 +42,9 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath);
     USAGEMODE HWND hGetHwnd();
     //USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
-	USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr pxmlNodePtr);
+    USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr* pxmlNodePtr);
     USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT nBuffSize);
-	USAGEMODE HRESULT TSE_hSetXmlConfigurationData(xmlDocPtr pXmlDoc);
+    USAGEMODE HRESULT TSE_hSetXmlConfigurationData(xmlDocPtr pXmlDoc);
 #ifdef __cplusplus
 }
 #endif

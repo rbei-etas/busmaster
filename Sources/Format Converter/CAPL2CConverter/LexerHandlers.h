@@ -65,7 +65,7 @@ typedef struct _MsgVariables
         m_omStrMsgName = RefObj.m_omStrMsgName;
         m_omStrMsgType = RefObj.m_omStrMsgType;
     }
-}MsgVariables;
+} MsgVariables;
 
 
 
@@ -81,7 +81,7 @@ char cFlagLog = 1;              //to differentiate "write" and "writetolog" func
 int m = 0 ;                     //neccessary
 BOOL bPreStart = FALSE;         //flag for prestart
 int linenumber = 0;
-FILE *pFileLog;                 //for log file
+FILE* pFileLog;                 //for log file
 //CString dest1;                //to store the path of log file (needed)
 CString canoedb , BUSMASTERdb;  //to store the name of canoe and BUSMASTER database
 
@@ -125,9 +125,9 @@ enum caplEventHandleState
     CAPL_EVENT_STOP,
     CAPL_EVENT_TIMER,
     CAPL_UTILITY_HANDLER,
-    /*Don't change the following sequence*/ 
-    CAPL_EVENT_BUSOFF,                  
-    CAPL_EVENT_ERRORACTIVE,             
+    /*Don't change the following sequence*/
+    CAPL_EVENT_BUSOFF,
+    CAPL_EVENT_ERRORACTIVE,
     CAPL_EVENT_ERRORPASSIVE,
     CAPL_EVENT_WARNINGLIMIT,
     CAPL_EVENT_ERRORFRAME
@@ -144,7 +144,7 @@ typedef struct _SupportedFunctions
         m_omStrBMFunName = RefObj.m_omStrBMFunName;
         return *this;
     }
-}sSupportedFunctions;
+} sSupportedFunctions;
 typedef CArray<caplArgType, caplArgType&> listArgType;
 
 
@@ -154,27 +154,27 @@ typedef struct _FunctionPrototype
     caplArgType m_ouRetType;
     listArgType m_ouArgList;
     CStringArray m_omStrFunNameArray;
-	BOOL m_bMsgArgPresent;
+    BOOL m_bMsgArgPresent;
     _FunctionPrototype& operator= (const _FunctionPrototype& ouObj)
     {
         m_omStrFunName = ouObj.m_omStrFunName;
         m_ouRetType = ouObj.m_ouRetType;
         m_ouArgList.RemoveAll();
         m_ouArgList.Append(ouObj.m_ouArgList);
-		m_omStrFunNameArray.RemoveAll();
+        m_omStrFunNameArray.RemoveAll();
         m_omStrFunNameArray.Append(ouObj.m_omStrFunNameArray);
-		m_bMsgArgPresent = ouObj.m_bMsgArgPresent;
+        m_bMsgArgPresent = ouObj.m_bMsgArgPresent;
         return *this;
     }
-	_FunctionPrototype::_FunctionPrototype()
-	{
-		m_omStrFunName = " ";
-		m_ouRetType = CAPL_VOID;
-		m_ouArgList.RemoveAll();
-		m_omStrFunNameArray.RemoveAll();
-		m_bMsgArgPresent = FALSE;
-	}
-}FunctionPrototype;
+    _FunctionPrototype::_FunctionPrototype()
+    {
+        m_omStrFunName = " ";
+        m_ouRetType = CAPL_VOID;
+        m_ouArgList.RemoveAll();
+        m_omStrFunNameArray.RemoveAll();
+        m_bMsgArgPresent = FALSE;
+    }
+} FunctionPrototype;
 
 
 
@@ -201,17 +201,17 @@ public:
     CStringArray g_omStrFunCalls;
     //Last Function Handled used for comments
     CString omStrLastEvent;
-    
+
     CArray<MsgVariables, MsgVariables&> g_ouGlobalMsgVariables;
 
     CArray<MsgVariables, MsgVariables&> g_ouLocalMsgVariables;
-    
+
     set<string> g_ouWarningStrings;
     set<string> g_ouErrorStrings;
 
-	CStringList g_omStrRepeatedMsg;
+    CStringList g_omStrRepeatedMsg;
 
-	BOOL m_bChannelSpecMsg;
+    BOOL m_bChannelSpecMsg;
 
 private:
 
@@ -224,16 +224,16 @@ public:
         g_ouGlobalMsgVariables.RemoveAll();
         g_ouLocalMsgVariables.RemoveAll();
         g_oucaplEventHandleState = WRONG_HANDLER;
-        nFunCalls = 0;        
+        nFunCalls = 0;
         g_nGlobalMsgCount = 0;
         g_omStrMsTimers.RemoveAll();
         g_omStrFunCalls.RemoveAll();
         g_omStrMsTimers.RemoveAll();
-	    omStrLastEvent.Empty();
+        omStrLastEvent.Empty();
         g_ouWarningStrings.clear();
         g_ouErrorStrings.clear();
-		g_omStrRepeatedMsg.RemoveAll();
-		m_bChannelSpecMsg = FALSE;
+        g_omStrRepeatedMsg.RemoveAll();
+        m_bChannelSpecMsg = FALSE;
     }
 };
 
@@ -295,7 +295,7 @@ void vTokenize(CString strInput, CString strToken, CString& strOutput, int& nSta
 void vKeyStoreHeader();
 void vHandleTimerDeclaration(CString&);
 void vCnvrtThis();
-void vCnvrtThisData();  
+void vCnvrtThisData();
 void vHandleMessageMembers();
 
 void vResetCan();

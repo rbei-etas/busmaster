@@ -1826,69 +1826,50 @@ void tagFilterSet::pbGetConfigData(xmlNodePtr pNodePtr) const
 {
     //BYTE* pbTStream = pbTarget;
 
-    xmlNodePtr pNodeCanFilterPtr;
-    xmlNodePtr pNodeMCNEtFilterPtr;
-    xmlNodePtr pNodeJ1939FilterPtr;
-    xmlNodePtr pNodeFLEXRAYFilterPtr;
-    xmlNodePtr pNodeLINFilterPtr;
-    xmlNodePtr pNodeMOSTFilterPtr;
-
     xmlNodePtr pFilterTag;
 
 
     if(m_eCurrBus == MCNET)
     {
         // Adding Filter to the xml
-        pNodeMCNEtFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MCNETFILTERS);
-        xmlAddChild(pNodePtr, pNodeMCNEtFilterPtr);
 
         pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
-        xmlAddChild(pNodeMCNEtFilterPtr, pFilterTag);
+        xmlAddChild(pNodePtr, pFilterTag);
     }
     else if(m_eCurrBus == J1939)
     {
         // Adding Filter to the xml
-        pNodeJ1939FilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_J1939FILTERS);
-        xmlAddChild(pNodePtr, pNodeJ1939FilterPtr);
 
         pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
-        xmlAddChild(pNodeJ1939FilterPtr, pFilterTag);
+        xmlAddChild(pNodePtr, pFilterTag);
     }
     else if(m_eCurrBus == FLEXRAY)
     {
         // Adding Filter to the xml
-        pNodeFLEXRAYFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FLEXRAYFILTERS);
-        xmlAddChild(pNodePtr, pNodeFLEXRAYFilterPtr);
 
         pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
-        xmlAddChild(pNodeFLEXRAYFilterPtr, pFilterTag);
+        xmlAddChild(pNodePtr, pFilterTag);
     }
     else if(m_eCurrBus == LIN)
     {
         // Adding Filter to the xml
-        pNodeLINFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_LINFILTERS);
-        xmlAddChild(pNodePtr, pNodeLINFilterPtr);
 
         pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
-        xmlAddChild(pNodeLINFilterPtr, pFilterTag);
+        xmlAddChild(pNodePtr, pFilterTag);
     }
     else if(m_eCurrBus == MOST)
     {
         // Adding Filter to the xml
-        pNodeMOSTFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MOSTFILTERS);
-        xmlAddChild(pNodePtr, pNodeMOSTFilterPtr);
 
         pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
-        xmlAddChild(pNodeMOSTFilterPtr, pFilterTag);
+        xmlAddChild(pNodePtr, pFilterTag);
     }
     else
     {
         // Adding Filter to the xml
-        pNodeCanFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_CANFILTERS);
-        xmlAddChild(pNodePtr, pNodeCanFilterPtr);
 
         pFilterTag = xmlNewNode(NULL, BAD_CAST DEF_FILTER);
-        xmlAddChild(pNodeCanFilterPtr, pFilterTag);
+        xmlAddChild(pNodePtr, pFilterTag);
     }
     m_sFilterName.pbGetConfigData(pFilterTag);
 

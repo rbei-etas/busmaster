@@ -41,7 +41,7 @@ public:
     CString m_omStrMessageCode;
     UINT    m_unMessageLength;
     int     m_nFrameFormat;
-	BOOL ValidateMessageName(CString );
+    BOOL ValidateMessageName(CString );
     //}}AFX_DATA
 
 

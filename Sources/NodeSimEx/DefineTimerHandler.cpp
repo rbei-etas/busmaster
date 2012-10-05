@@ -234,6 +234,10 @@ void CDefineTimerHandler::OnOK()
         {
             // If the edit control is empty, don't close the dialog.
             bNoMoreTimer = TRUE;
+            if( omStrTimerHandlerName.IsEmpty() == TRUE )
+            {
+                MessageBox("Timer Name Should Not Be Empty", "Invalid Timer Name", MB_OK|MB_ICONERROR);
+            }
             // For any invalid input, beep
             MessageBeep( (UINT)-1 );
         }

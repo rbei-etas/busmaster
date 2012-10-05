@@ -1092,7 +1092,7 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
             BOOL bClientExists = bGetClientObj(ClientId, Index);
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                //Tx for monitor nodes and sender node
+                //Tx for sender node
                 if ((i == CAN_MONITOR_NODE_INDEX)  || (bClientExists && (i == Index)))
                 {
                     for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
@@ -2052,8 +2052,9 @@ int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
         sController[i] = pControllerDetails[i];
     }
 
-    CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(NULL, sController, nCount);
+    CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(NULL, pControllerDetails, nCount);
     ouChangeRegister.DoModal();
+
     nResult = ouChangeRegister.nGetInitStatus();
 
     return nResult;

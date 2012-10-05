@@ -39,11 +39,15 @@ public:
     //{{AFX_DATA(CTxMsgBlocksView)
     enum { IDD = IDD_DLG_TX_MSG_BLOCKS };
     bool        m_bNewBlock;    //used to check whether its new block is added or not
+    bool        m_bDelayBtnBlocks;      //this will store the value of delay between blocks locally,
+    //this is needed to keep a back up of the value in case when
+    //user doesnt want to save the data, this should not be used anywhere
+    //other than to restore the value to global variables on selection of close and not saving
     CFFListCtrl   m_omLctrMsgBlockName;
     CString m_omStrMsgBlockName;
     CString m_omStrTimeIntervalVal;
     CString m_omStrKeyVal;
-	CString	m_omDelayBtnBlocks;
+    CString m_omDelayBtnBlocks;
     //BOOL    m_bIsMonoshot;
     //BOOL    m_bTriggerType;
     CEdit   m_omEditMsgBlockName;

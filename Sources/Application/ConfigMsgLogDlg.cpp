@@ -352,6 +352,7 @@ CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
 {
     CString omStrFullPath = "";
     char acPathBuffer[MAX_PATH] = {L'\0'};      // Get current working
+    char acFilePath[MAX_PATH] = {L'\0'};      // Get current working
     GetCurrentDirectory(MAX_PATH, acPathBuffer); // directory
     BOOL bFound = TRUE; // Means - "found unique name"
 
@@ -368,8 +369,11 @@ CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
         {
             omNewLogFileName.Format(BUSMASTER_J1939_LOGFILENAME, Count);
         }
-        omStrFullPath = acPathBuffer; // Full Path
-        omStrFullPath = omStrFullPath + "\\" + omNewLogFileName;
+
+        PathCombine(acFilePath, acPathBuffer, omNewLogFileName.GetBuffer(MAX_PATH));
+        omStrFullPath = acFilePath;
+
+
         // We have two different strings to compare. The first one is the bare
         // log file name and the second one is the full path.
 

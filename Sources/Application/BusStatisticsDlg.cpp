@@ -75,6 +75,7 @@ void sBUSSTATTISTICSDATA::vLoadDefaults()
         m_arrnColWidth[i] = defVALUE_COL_WIDTH;
     }
     m_sBusStatsDlgCoOrd = m_sDefaultBusStatsDlgCoOrd;
+    m_sBusStatsDlgCoOrd.showCmd = SW_HIDE;
 }
 
 /******************************************************************************/
@@ -732,8 +733,11 @@ HRESULT CBusStatisticsDlg::GetConfigData(xmlNodePtr pxmlNodePtr)
 
     for(INT nIndex = 0; nIndex < nColumnCount; nIndex++)
     {
-        INT nColumn = pnOrder[nIndex];
-        pnOrderTemp[nColumn] = nIndex;
+        if(pnOrder != NULL)
+        {
+            INT nColumn = pnOrder[nIndex];
+            pnOrderTemp[nColumn] = nIndex;
+        }
     }
 
     LVCOLUMN    oCol;
@@ -776,7 +780,7 @@ HRESULT CBusStatisticsDlg::GetConfigData(xmlNodePtr pxmlNodePtr)
         CString csVisible;
         csVisible.Format("%d", m_omStatList.IsColumnShown(iItr));
         omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_VISIBLE,BAD_CAST omcVarChar);
+        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pVisisble);
     }
 
@@ -1284,7 +1288,7 @@ void CBusStatisticsDlg::vGetDataFromStore(xmlNodePtr pxmlNodePtr)
         CString csVisible;
         csVisible.Format("%d",sm_sBusSerializationData.m_arrbColumnVisible[iItr]);
         omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_VISIBLE,BAD_CAST omcVarChar);
+        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pVisisble);
     }
 

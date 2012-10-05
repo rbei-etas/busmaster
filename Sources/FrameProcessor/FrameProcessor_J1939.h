@@ -137,13 +137,13 @@ public:
     // Getter for the logging configuration data
     HRESULT FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& unLength);
 
-	// PTV XML
-	HRESULT FPJ1_GetConfigData(xmlNodePtr pNodePtr);
-	// PTV XML
+    // PTV XML
+    HRESULT FPJ1_GetConfigData(xmlNodePtr pNodePtr);
+    // PTV XML
     // Setter for the logging configuration data
     HRESULT FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
 
-	HRESULT FPJ1_SetConfigData(xmlDocPtr pDoc);
+    HRESULT FPJ1_SetConfigData(xmlDocPtr pDoc);
     // To update the associated database list to logger
     HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList);
 

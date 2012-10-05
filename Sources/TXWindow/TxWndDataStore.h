@@ -62,10 +62,10 @@ public:
     //copy MsgList from local to global
     bool bCopyMsgList(PSTXCANMSGLIST&  ppsDestTxCANMsgList , PSTXCANMSGLIST*  ppsSrcTxCANMsgList);
     BYTE* pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize);
-		bool pbySetConfigData(xmlDocPtr pDoc);
-	BOOL pbyGetConfigData(xmlNodePtr pxmlNodePtr);
-	bool bSplitterConfig(xmlNodePtr pxmlNodePtr);
-	bool bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr);
+    bool pbySetConfigData(xmlDocPtr pDoc);
+    BOOL pbyGetConfigData(xmlNodePtr pxmlNodePtr);
+    bool bSplitterConfig(xmlNodePtr pxmlNodePtr);
+    bool bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr);
 private:
 
     UINT               m_unNumberOfMsgBlockCount;

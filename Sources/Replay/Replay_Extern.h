@@ -44,11 +44,11 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE void vREP_CmdSkip();
     //Load and save the Replay config details in terms of bytes
     //USAGEMODE void vREP_GetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize);
-	USAGEMODE void vREP_GetReplayConfigData(xmlNodePtr pxmlNodePtr);
+    USAGEMODE void vREP_GetReplayConfigData(xmlNodePtr pxmlNodePtr);
     USAGEMODE void vREP_SetReplayConfigData(BYTE* pSrcBuffer, int nBuffSize);
-	//MVN
-	USAGEMODE void vREP_SetXMLReplayConfigData(xmlDocPtr pDoc);
-	//~MVN
+    //MVN
+    USAGEMODE void vREP_SetXMLReplayConfigData(xmlDocPtr pDoc);
+    //~MVN
     //Set value for different objects in the module
     USAGEMODE void vREP_InitReplay(PVOID pvObjects, eREPLAY_INIT eUpdateType);
 

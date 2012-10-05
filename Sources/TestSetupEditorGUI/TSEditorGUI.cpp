@@ -138,6 +138,9 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
         g_pomTSEditorChildWindow->ShowWindow( SW_RESTORE );
         g_pomTSEditorChildWindow->MDIActivate();
         g_pomTSEditorChildWindow->SetActiveWindow();
+
+        // Set the TSEditor menu
+        g_pomTSEditorChildWindow->SetTSEditorMenu();
     }
     //Place this at the end of the export function.
     //switch back to previous resource handle.
@@ -203,11 +206,15 @@ USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath)
 //    }
 //}
 
-USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr pxmlNodePtr)
+USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
 {
     if(g_pomTSEditorChildWindow != NULL)
     {
-        return g_pomTSEditorChildWindow->GetConfigurationData(pxmlNodePtr);
+        return g_pomTSEditorChildWindow->GetConfigurationData(*pxmlNodePtr);
+    }
+    else
+    {
+        *pxmlNodePtr = xmlCopyNode(m_pTEXmlNode, 1);
     }
 }
 USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)

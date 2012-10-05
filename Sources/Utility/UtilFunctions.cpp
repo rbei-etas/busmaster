@@ -28,6 +28,9 @@
 #include "Utility_Structs.h"
 #include "UtilFunctions.h"
 
+#define MAX_LEN 512
+#define ABS_START 3
+#define SLASH '\\'
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -122,4 +125,103 @@ void CUtilFunctions::s_vExtendSignBit( __int64& n64Val, int nSize)
             n64Val |= nVal;
         }
     }
+}
+INT CUtilFunctions::nGetBaseFolder(const char* omConfigFileName, string& omStrConfigFolder)
+{
+    char pchFilePath[MAX_PATH];
+    char* pchTemp = pchFilePath;
+    strcpy(pchFilePath, omConfigFileName);
+
+    if ( PathRemoveFileSpec(pchTemp) == TRUE )
+    {
+        omStrConfigFolder = pchTemp;
+        omStrConfigFolder += "\\";
+    }
+    else
+    {
+        int nChars = GetCurrentDirectory(0, NULL);
+        char* pchFilePath = new char [nChars];
+        GetCurrentDirectory(nChars, pchFilePath);
+        omStrConfigFolder = pchFilePath;
+        delete []pchFilePath;
+    }
+
+
+    return S_OK;
+}
+
+void CUtilFunctions::MakeRelativePath(const char* pchCurrentDir, char* pchAbsFileName, string& omStrRelativeParh)
+{
+    int nCurrentDirectoryLength = strlen(pchCurrentDir);
+    int nAbsoluteFileLen = strlen(pchAbsFileName);
+
+    if( nCurrentDirectoryLength > MAX_LEN || nCurrentDirectoryLength < ABS_START+1 ||
+            nAbsoluteFileLen > MAX_LEN || nAbsoluteFileLen < ABS_START+1)
+    {
+
+        omStrRelativeParh = "";
+        return ;
+    }
+
+    CString strDirectory = pchCurrentDir[0];
+    CString strDirectory2 = pchAbsFileName[0];
+    char chRelativeFile[MAX_LEN+1];
+    if(strDirectory.CompareNoCase(strDirectory2) != 0)
+    {
+        strcpy_s(chRelativeFile, MAX_LEN+1, pchAbsFileName );
+        omStrRelativeParh = chRelativeFile;
+        return;
+    }
+    int nCount = ABS_START;
+    while(nCount < nAbsoluteFileLen && nCount < nCurrentDirectoryLength && pchCurrentDir[nCount] == pchAbsFileName[nCount] )
+    {
+        nCount++;
+    }
+    if(nCount == nCurrentDirectoryLength && (pchAbsFileName[nCount] == '\\' || pchAbsFileName[nCount-1] == '\\'))
+    {
+        if(pchAbsFileName[nCount] == '\\')
+        {
+            nCount++;
+        }
+        strcpy(chRelativeFile, &pchAbsFileName[nCount]);
+        omStrRelativeParh = chRelativeFile;
+        return;
+    }
+    int nForword = nCount;
+    int nStages = 1;
+    while(nCount < nCurrentDirectoryLength)
+    {
+        nCount++;
+        if(pchCurrentDir[nCount] == '\\')
+        {
+            nCount++;
+            if(pchCurrentDir[nCount] != '\0')
+            {
+                nStages++;
+            }
+        }
+    }
+    while(nForword > 0 && pchAbsFileName[nForword-1] != '\\')
+    {
+        nForword--;
+    }
+    if(nStages * 3 + nAbsoluteFileLen - nForword > MAX_LEN)
+    {
+        omStrRelativeParh = "";
+        return ;
+    }
+
+    int nReverse = 0;
+    for(nCount = 0; nCount < nStages; nCount++)
+    {
+        chRelativeFile[nReverse] = '.';
+        nReverse++;
+        chRelativeFile[nReverse] = '.';
+        nReverse++;
+        chRelativeFile[nReverse] = '\\';
+        nReverse++;
+    }
+    strcpy(&chRelativeFile[nReverse], &pchAbsFileName[nForword]);
+    omStrRelativeParh = chRelativeFile;
+    return;
 }

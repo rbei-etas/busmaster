@@ -36,20 +36,20 @@
 
 class CEnvVarHandlerDlg : public CDialog
 {
-// Construction
+    // Construction
 public:
     CEnvVarHandlerDlg(CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CEnvVarHandlerDlg)
     enum { IDD = IDD_DLG_USER_INTER };
-    CListBox	m_UnSupKeys;
+    CListBox    m_UnSupKeys;
     CListBox    m_AltKeys;
     CListBox    m_EquiKeys;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CEnvVarHandlerDlg)
 protected:
@@ -57,7 +57,7 @@ protected:
     virtual void OnCancel();
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
 
     // Generated message map functions

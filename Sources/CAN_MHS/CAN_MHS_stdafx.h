@@ -16,7 +16,7 @@
 /**
  * \file      CAN_MHS_stdafx.h
  * \author    Klaus Demlehner
- * \copyright Copyright (c) 2011, MHS-Elektronik GmbH & Co. KG
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions
  *
  */
 

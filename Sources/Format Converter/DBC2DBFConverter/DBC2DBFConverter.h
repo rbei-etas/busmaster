@@ -6,7 +6,7 @@ class CDBC2DBFConverter : public CBaseConverter
     CString m_omstrConversionStatus;
     HRESULT m_hResult;
     HMODULE m_hDLLModule;
-    CDBCConverterBase *m_pouDBC2DBFConverter;
+    CDBCConverterBase* m_pouDBC2DBFConverter;
     GETCONVERTER m_pfGetConverter;
 public:
     CDBC2DBFConverter(void);

@@ -857,11 +857,10 @@ void CGraphBottomView::vInitGraphControl()
                 // Set Format String
                 spAxisX->put_Format( CComBSTR(defSTR_X_AXIS_FORMAT) );
                 spAxisY->put_Format( CComBSTR(defSTR_Y_AXIS_FORMAT) );
-                // Set X,Y Range
-                double dXMin,dXMax, dYMin, dYMax;
-                m_pDMGraphCtrl->GetRange(&dXMin, &dXMax, &dYMin, &dYMax);
-                dYMax = 100.0;
-                m_pDMGraphCtrl->SetRange(defDEFAULT_XRANGE_MIN, defDEFAULT_XRANGE_MAX, dYMin, dYMax);
+
+                /* Set default RANGE */
+                m_pDMGraphCtrl->SetRange(   defDEFAULT_XRANGE_MIN, defDEFAULT_XRANGE_MAX,
+                                            defDEFAULT_YRANGE_MIN, defDEFAULT_YRANGE_MAX    );
 
                 //Set the caption
                 BSTR bstrCaption(L"Graph Display - CAN");

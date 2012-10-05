@@ -6,33 +6,33 @@
 
 class CDefConverterPage : public CPropertyPage
 {
-	DECLARE_DYNAMIC(CDefConverterPage)
+    DECLARE_DYNAMIC(CDefConverterPage)
     CPluginManagerBase* m_pouPluginManager;
     INT m_nTabPosition;
 public:
     CDefConverterPage(INT nTabPosition);
-    HRESULT SetPluginManager(CPluginManagerBase *m_pouPluginManager);
-    
+    HRESULT SetPluginManager(CPluginManagerBase* m_pouPluginManager);
+
 
     virtual ~CDefConverterPage();
 
-// Dialog Data
-	enum { IDD = IDD_PROPPAGE_DEF_CONVERTER };
+    // Dialog Data
+    enum { IDD = IDD_PROPPAGE_DEF_CONVERTER };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 private:
     CComboBox m_omComboConverterNames;
     HRESULT LoadConverters();
     INT GetConverterPos();
-	void vAdjustWidthMessageComboBox();
+    void vAdjustWidthMessageComboBox();
 
 public:
     virtual BOOL OnInitDialog();
-	HRESULT ValidateFileExtensions(CString& m_omStrInputFilePath, 
-		CString& m_omStrOutputFilePath, CBaseConverter*& m_pouConverter);
+    HRESULT ValidateFileExtensions(CString& m_omStrInputFilePath,
+                                   CString& m_omStrOutputFilePath, CBaseConverter*& m_pouConverter);
     CEdit m_omEditInputPath;
     CEdit m_omEditOutputPath;
     afx_msg void OnBnClickedBtnInput();

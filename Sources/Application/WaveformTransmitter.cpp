@@ -382,7 +382,17 @@ void CWaveformTransmitter::vStartSignalTransmission(DWORD dwClientID)
 {
     m_dwClientID = dwClientID;
     m_pWaveDataHandler->GetSigGenerationInfoList(m_omSigGenList);
-    m_nIterLimit = 1000 / m_pWaveDataHandler->shGetSamplingTimePeriod()-1;
+    short shWvfrm = 0;
+    shWvfrm = m_pWaveDataHandler->shGetSamplingTimePeriod();
+    if(shWvfrm > 0)
+    {
+        m_nIterLimit = 1000 / shWvfrm - 1;
+    }
+    else
+    {
+        shWvfrm = 125;
+        m_nIterLimit = 1000 / shWvfrm - 1;
+    }
 
     if (FALSE == m_bTxON)
     {

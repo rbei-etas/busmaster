@@ -67,14 +67,14 @@ typedef struct tagLogInfo
     void vClear(void);               // To clear the logging information
     UINT unGetSize(void) const;      // To get the size of the block in bytes
     BYTE* pbGetConfigData(BYTE* pbTarget) const; // To get configuration data
-	// PTV XML
-	BOOL pbGetConfigData(xmlNodePtr pxmlNodePtr) const; // To get configuration data
-	// PTV XML
+    // PTV XML
+    BOOL pbGetConfigData(xmlNodePtr pxmlNodePtr) const; // To get configuration data
+    // PTV XML
 
     BYTE* pbSetConfigData(BYTE* pbTarget, BYTE bytLogVersion); // To set configuration data
-	//MVN
-	INT nSetConfigData(xmlNodePtr pNode);
-	//~MVN
+    //MVN
+    INT nSetConfigData(xmlNodePtr pNode);
+    //~MVN
 
 } SLOGINFO,*PSLOGINFO;
 

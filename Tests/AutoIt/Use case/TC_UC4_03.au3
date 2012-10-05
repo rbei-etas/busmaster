@@ -17,6 +17,8 @@ EndIf
 if winexists("BUSMASTER") Then
 	_hdWareSelect()
 	ConsoleWrite("$channelCount : "&$channelCount&@CRLF)
+	$hWd=ControlGetHandle("BUSMASTER","",128)
+	_GUICtrlToolbar_ClickIndex($hWd,4,"left")			; Connect
 	_act_dctJ1939("&Activate")
 	ConsoleWrite("$sel : "&$sel&@CRLF)
 	_goOnline()

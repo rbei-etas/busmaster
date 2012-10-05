@@ -62,7 +62,7 @@ BOOL CExpressionExecutor::bGetExpressionValue(CString omFormula, float fValue)
     SubstituteX(omFormula, fValue);
     char chBuffer[1024] = {'\n'};
     strcpy(chBuffer, omFormula.GetBuffer(MAX_PATH));
-    chBuffer[omFormula.GetLength()-1] = '\n';
+    chBuffer[omFormula.GetLength()-1] = ';';
     int val = bGetExpressionResult(chBuffer);
     return val;
 }

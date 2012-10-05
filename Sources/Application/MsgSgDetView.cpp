@@ -387,15 +387,38 @@ void CMsgSgDetView::vDisplayMsgSgInformation(sMESSAGE* pMsg)
                 sItem.iSubItem  = 0;
                 m_omListCtrlSignal.SetItem(&sItem );
             }
-            if(nCheckTotalBitsUsed(pMsg->m_psSignals)  >= defMAX_BITS)//check for total  Bits used
+            if(m_sDbParams.m_eBus == CAN)
             {
-                // Disable "New Signal" button
-                GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+
+                if(nMaxBits >= defMAX_BITS)
+                {
+                    nMaxBits = defMAX_BITS;
+                }
+                if(nCheckTotalBitsUsed(pMsg->m_psSignals)  >= nMaxBits)//check for total  Bits used
+                {
+                    // Disable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                }
+                else
+                {
+                    // Enable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                }
             }
-            else
+            else if(m_sDbParams.m_eBus == J1939)
             {
-                // Enable "New Signal" button
-                GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                {
+                    // Disable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                }
+                else
+                {
+                    // Enable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                }
             }
         }
         else
@@ -517,6 +540,60 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
                                        MF_BYCOMMAND | MF_ENABLED );
         }
 
+
+        // Added to Enable/Disable New Signal menu item accordingly
+
+        if(m_omStrMessageName.IsEmpty() == FALSE)
+        {
+            sMESSAGE* pMsg =
+                pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
+            if(pMsg != NULL)
+            {
+                m_unNoOfSgs = pMsg->m_unNumberOfSignals;
+            }
+
+            UpdateData(FALSE);
+
+            if(m_sDbParams.m_eBus == CAN)
+            {
+                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+
+                if(nMaxBits >= defMAX_BITS)
+                {
+                    nMaxBits = defMAX_BITS;
+                }
+                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                {
+                    // Disable "New Signal" button
+                    pomSubMenu->EnableMenuItem(IDM_NEW_SIGNAL,
+                                               MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+                }
+                else
+                {
+                    // Enable "New Signal" button
+                    pomSubMenu->EnableMenuItem(IDM_NEW_SIGNAL,
+                                               MF_BYCOMMAND | MF_ENABLED );
+                }
+            }
+            else if(m_sDbParams.m_eBus == J1939)
+            {
+                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                {
+                    // Disable "New Signal" button
+                    pomSubMenu->EnableMenuItem(IDM_NEW_SIGNAL,
+                                               MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+                }
+                else
+                {
+                    // Enable "New Signal" button
+                    pomSubMenu->EnableMenuItem(IDM_NEW_SIGNAL,
+                                               MF_BYCOMMAND | MF_ENABLED );
+                }
+            }
+        }
+
+
         pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN |TPM_RIGHTBUTTON,
                                     point.x,
                                     point.y,
@@ -609,15 +686,38 @@ void CMsgSgDetView::OnDeleteSignal()
 
                     UpdateData(FALSE);
 
-                    if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= defMAX_BITS)//check for total  Bits used
+                    if(m_sDbParams.m_eBus == CAN)
                     {
-                        // Disable "New Signal" button
-                        GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                        INT nMaxBits = (pMsg->m_unMessageLength * 8);
+
+                        if(nMaxBits >= defMAX_BITS)
+                        {
+                            nMaxBits = defMAX_BITS;
+                        }
+                        if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                        {
+                            // Disable "New Signal" button
+                            GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                        }
+                        else
+                        {
+                            // Enable "New Signal" button
+                            GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                        }
                     }
-                    else
+                    else if(m_sDbParams.m_eBus == J1939)
                     {
-                        // Enable "New Signal" button
-                        GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                        INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                        if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                        {
+                            // Disable "New Signal" button
+                            GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                        }
+                        else
+                        {
+                            // Enable "New Signal" button
+                            GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                        }
                     }
 
                     // Set message name in the tree view to bold
@@ -1202,15 +1302,38 @@ void CMsgSgDetView::OnSignalNew()
                     pSg = pSg->m_psNextSignalList;
                 }
             }
-            if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= defMAX_BITS)//check for total  Bits used
+            if(m_sDbParams.m_eBus == CAN)
             {
-                // Disable "New Signal" button
-                GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+
+                if(nMaxBits >= defMAX_BITS)
+                {
+                    nMaxBits = defMAX_BITS;
+                }
+                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                {
+                    // Disable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                }
+                else
+                {
+                    // Enable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                }
             }
-            else
+            else if(m_sDbParams.m_eBus == J1939)
             {
-                // Enable "New Signal" button
-                GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                {
+                    // Disable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                }
+                else
+                {
+                    // Enable "New Signal" button
+                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                }
             }
 
         }
@@ -1461,15 +1584,38 @@ Do you want to continue?", MB_YESNO);
                         pSg = pSg->m_psNextSignalList;
                     }
                 }
-                if(nCheckTotalBitsUsed(pMsg->m_psSignals)>= defMAX_BITS)//check for total Bits used
+                if(m_sDbParams.m_eBus == CAN)
                 {
-                    // Disable "New Signal" button
-                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                    INT nMaxBits = (pMsg->m_unMessageLength * 8);
+
+                    if(nMaxBits >= defMAX_BITS)
+                    {
+                        nMaxBits = defMAX_BITS;
+                    }
+                    if(nCheckTotalBitsUsed(pMsg->m_psSignals)>= nMaxBits)//check for total Bits used
+                    {
+                        // Disable "New Signal" button
+                        GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                    }
+                    else
+                    {
+                        // Enable "New Signal" button
+                        GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                    }
                 }
-                else
+                else if(m_sDbParams.m_eBus == J1939)
                 {
-                    // Enable "New Signal" button
-                    GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                    INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                    if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                    {
+                        // Disable "New Signal" button
+                        GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(FALSE);
+                    }
+                    else
+                    {
+                        // Enable "New Signal" button
+                        GetDlgItem(IDC_BUTTON_NEWSIGNAL)->EnableWindow(TRUE);
+                    }
                 }
             }
         }

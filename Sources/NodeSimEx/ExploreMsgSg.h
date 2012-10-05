@@ -81,7 +81,7 @@ protected:
 
 private:
     CFunctionEditorDoc* m_pDoc;
-	CMsgNameMsgCodeListDataBase& m_odMsgNameCodeListDb;			//CAPL_DB_NAME_CHANGE
+    CMsgNameMsgCodeListDataBase& m_odMsgNameCodeListDb;         //CAPL_DB_NAME_CHANGE
     //CMsgNameMsgCodeList& m_odMsgNameCodeList;
     // Dialog class may be called by any window
     eMESSAGEFROM m_eWindow;

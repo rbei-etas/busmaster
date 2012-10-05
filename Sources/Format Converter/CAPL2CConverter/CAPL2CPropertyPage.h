@@ -41,25 +41,25 @@ class CCAPL2CPropertyPage : public CPropertyPage
     GETCONVERTER m_pfGetConverter;
     CDBCConverterBase* m_pouDBC2DBFConverter;
     CString m_omLogFile;
-// Construction
+    // Construction
 public:
     void SaveSettings();
-    CCAPL2CPropertyPage(CWnd* pParent = NULL);	// standard constructor
-    
-// Dialog Data
+    CCAPL2CPropertyPage(CWnd* pParent = NULL);  // standard constructor
+
+    // Dialog Data
     //{{AFX_DATA(CCAPL2CPropertyPage)
     enum { IDD = IDD_DLG_LANG_CNVRTR };
-    //BOOL	m_check;
-    BOOL	m_savedb;
+    //BOOL  m_check;
+    BOOL    m_savedb;
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CCAPL2CPropertyPage)
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     HICON m_hIcon;
 
@@ -86,9 +86,9 @@ public:
     CListCtrl m_omDBFList;
     afx_msg void OnBnCanoedbDel();
     BOOL m_bConvertDbc2Dbf;
-    afx_msg void OnNMClickListDbcFiles(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnLvnItemActivateListDbcFiles(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnLvnItemchangedListDbcFiles(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMClickListDbcFiles(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLvnItemActivateListDbcFiles(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLvnItemchangedListDbcFiles(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 //{{AFX_INSERT_LOCATION}}

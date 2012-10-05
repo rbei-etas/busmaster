@@ -631,10 +631,26 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
                 msg.Format(pcLine + strlen(pcToken)+1);
 
                 // add the new message to the list
-                if((msg.m_acName != "VECTOR__INDEPENDENT_SIG_MSG") && !(msg.m_uiMsgID == 3221225472))
+                if((msg.m_acName != "VECTOR__INDEPENDENT_SIG_MSG") && !(msg.m_uiMsgID == 3221225472) )
                 {
-                    CDBFConverter::valid_msg = true;
-                    m_listMessages.push_back(msg);
+                    if( CAN == m_eBus )
+                    {
+                        if( msg.m_ucLength <= 8 )
+                        {
+                            CDBFConverter::valid_msg = true;
+                            m_listMessages.push_back(msg);
+                        }
+                        else
+                        {
+                            CDBFConverter::valid_msg = false;
+                            m_unsupList.push_back(msg);
+                        }
+                    }
+                    else
+                    {
+                        CDBFConverter::valid_msg = true;
+                        m_listMessages.push_back(msg);
+                    }
                 }
                 else
                 {
@@ -1071,6 +1087,19 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
                     {
                         rParam->FormatParamValue(pcLine + strlen(acTemp) + 3); // to get next token
                         pcTemp=acTemp;
+                        if(rParam->m_ParamName == SIGNAL_LONG_NAME)
+                        {
+                            CParameterValues uParamVal = rParam->m_listParamValues[3].back();
+                            vUpdateSignalNameFromParam(uParamVal);
+                            int i = 0;
+                        }
+                        else if(rParam->m_ParamName == MESSAGE_LONG_NAME)
+                        {
+                            CParameterValues uParamVal = rParam->m_listParamValues[2].back();
+                            vUpdateMessageNameFromParam(uParamVal);
+                            int i = 0;
+                        }
+
                         break;
                     }
                 }
@@ -1081,6 +1110,50 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
                 string str = local_copy;
                 m_notProcessed.push_back(str);
                 continue;
+            }
+        }
+    }
+}
+
+/**
+ * Updates the Short Message Name with Long Name (more than 32 characters)
+ */
+void CDBFConverter::vUpdateMessageNameFromParam(CParameterValues& uParamVal)
+{
+    list<CMessage>::iterator msg;
+
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
+    {
+        if( uParamVal.m_MsgId == msg->m_uiMsgID )
+        {
+            if( uParamVal.m_ParamVal.cValue.length() > 0 )
+            {
+                msg->m_acName = uParamVal.m_ParamVal.cValue;
+            }
+        }
+    }
+}
+/**
+ * Updates the Short Signal Name with Long Name (more than 32 characters)
+ */
+void CDBFConverter::vUpdateSignalNameFromParam(CParameterValues& uParamVal)
+{
+    list<CMessage>::iterator msg;
+
+    for(msg=m_listMessages.begin(); msg!=m_listMessages.end(); ++msg)
+    {
+        if( uParamVal.m_MsgId == msg->m_uiMsgID )
+        {
+            list<CSignal>::iterator signal;
+            for(signal = msg->m_listSignals.begin(); signal!= msg->m_listSignals.end(); ++signal)
+            {
+                if( signal->m_acName == uParamVal.m_SignalName )
+                {
+                    if( uParamVal.m_ParamVal.cValue.length() > 0 )
+                    {
+                        signal->m_acName = uParamVal.m_ParamVal.cValue;
+                    }
+                }
             }
         }
     }
@@ -1114,7 +1187,7 @@ bool CDBFConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //For easy replacement of version Info #define is not added
-    fileOutput<< "[BUSMASTER_VERSION] [1.6.7]"<<endl;
+    fileOutput<< "[BUSMASTER_VERSION] [1.6.8]"<<endl;
 
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;

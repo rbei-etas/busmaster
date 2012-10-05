@@ -105,6 +105,8 @@ CDMGraphCtrl::CDMGraphCtrl()
 
 	m_nCursorCount = 0;	
 	m_nZoomLevel = 1; // Initialize the zoom level as 1 ie., no zoom //KSS
+
+	m_bIsGrpahWndActive = FALSE; //Indicates if the graph control is clicked and is active
 }
 
 HRESULT CDMGraphCtrl::FinalConstruct()
@@ -2339,7 +2341,7 @@ void CDMGraphCtrl::DoZoom(UINT nFlags, const LPPOINT point)
         
 		SetRange(xmin,xmax,ymin,ymax);
 		// Increase the zoom level
-		m_nZoomLevel += 1; //KSS
+		m_nZoomLevel += 1;
     }
 }
 
@@ -2351,36 +2353,41 @@ LRESULT CDMGraphCtrl::OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 		
 		if (wParam == MK_LBUTTON) 
 		{
-    		switch (m_eTrackMode)
+			// Check if the graph control is active
+			if (m_bIsGrpahWndActive == TRUE)
 			{
-				case TrackCursor:
-				case TrackElement:					
-					UpdateToolTip(&point, wParam);
-					break;
-				case PanXY:
-					DoPan(&point, PanXY);
-					break;
-				case PanX:
-					DoPan(&point, PanX);
-					break;
-				case PanY:
-					DoPan(&point, PanY);
-					break;
-				default:					
-					
-					CursorPosition(&point);	
-					vUpdateCursorSelectionOnMove(point);
-					break;
+    			switch (m_eTrackMode)
+				{
+					case TrackCursor:
+					case TrackElement:					
+						UpdateToolTip(&point, wParam);
+						break;
+					case PanXY:
+						DoPan(&point, PanXY);
+						break;
+					case PanX:
+						DoPan(&point, PanX);
+						break;
+					case PanY:
+						DoPan(&point, PanY);
+						break;
+					default:					
+						
+						CursorPosition(&point);	
+						vUpdateCursorSelectionOnMove(point);
+						break;
+				}
 			}				
 		}
 	} 
 
-	bHandled = FALSE;
+	bHandled = FALSE;	
 	return 0;
 }
 
 LRESULT CDMGraphCtrl::OnLButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	m_bIsGrpahWndActive = TRUE;
 	POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };
 
 	if (PtInRect (&m_axisRect, point)) 
@@ -2406,6 +2413,7 @@ LRESULT CDMGraphCtrl::OnLButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
 LRESULT CDMGraphCtrl::OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	m_bIsGrpahWndActive = TRUE;
 	POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };
 	if (PtInRect (&m_axisRect, point)) 
 	{
@@ -2418,6 +2426,7 @@ LRESULT CDMGraphCtrl::OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 
 LRESULT CDMGraphCtrl::OnRButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	m_bIsGrpahWndActive = TRUE;
 	POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };
 	if(m_eTrackMode == Zoom || m_eTrackMode == ZoomX || m_eTrackMode == ZoomY)
 	{
@@ -2439,11 +2448,18 @@ LRESULT CDMGraphCtrl::OnRButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 	return 0;
 }
 
+LRESULT CDMGraphCtrl::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+	m_bIsGrpahWndActive = FALSE;
+	return 0;
+}
+
 ////////////////////////////////////////////////////////
 // display the property pages of the control at runtime. 
 //
 LRESULT CDMGraphCtrl::OnLButtonDblClk(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
+	m_bIsGrpahWndActive = TRUE;
 	//DoVerbProperties(NULL, GetParent());
 	POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };		
 	if (PtInRect (&m_axisRect, point)) 
@@ -3749,6 +3765,7 @@ void CDMGraphCtrl::UpdateToolTip(const LPPOINT pt, WPARAM wParam)
 
 LRESULT CDMGraphCtrl::OnRButtonDblClk(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
 {
+	m_bIsGrpahWndActive = TRUE;
 	POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };
 
 	if (PtInRect (&m_axisRect, point)) 

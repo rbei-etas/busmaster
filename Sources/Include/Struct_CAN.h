@@ -31,6 +31,7 @@
 //~MVN
 /* C++ includes */
 #include <string>
+#include <sstream>
 
 using namespace std;
 const int MAX_STRING = 256;
@@ -179,7 +180,7 @@ public:
 
     sCONTROLLERDETAILS()
     {
-        vInitialize();
+        vInitialize(TRUE);
     }
     sCONTROLLERDETAILS(const sCONTROLLERDETAILS& objRef)
     {
@@ -190,7 +191,7 @@ public:
         vCopyMembers(objRef);
         return *this;
     }
-    void vInitialize()
+    void vInitialize(BOOL bUpdateHWDesc)
     {
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
@@ -220,25 +221,25 @@ public:
         m_omStrAccMaskByte3[0] = "FF";
         m_omStrAccMaskByte4[0] = "FF";
         m_omStrAccMaskByte1[1] = "FF";
+        m_omStrAccMaskByte2[1] = "FF";
+        m_omStrAccMaskByte3[1] = "FF";
+        m_omStrAccMaskByte4[1] = "FF";
 
-        // PTV [1.6.5] 20
-        m_omStrAccMaskByte2[1] = "F";
-        m_omStrAccMaskByte3[1] = "F";
-        m_omStrAccMaskByte4[1] = "F";
-        // PTV [1.6.5] 20
-
-        m_omHardwareDesc = "";
+        if ( bUpdateHWDesc )
+        {
+            m_omHardwareDesc = "";
+        }
         m_bAccFilterMode = FALSE;
         m_ucControllerMode = 0x1;
         m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
         m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
         m_bSelfReception = TRUE;
     }
-	//MVN
-	void LoadControllerConfigData(xmlNodePtr& pNodePtr)
-	{
-	}
-	//~MVN
+    //MVN
+    void LoadControllerConfigData(xmlNodePtr& pNodePtr)
+    {
+    }
+    //~MVN
     void LoadControllerConfigData(BYTE*& pbyTemp)
     {
         COPY_DATA_2(&m_nItemUnderFocus, pbyTemp, sizeof(INT));
@@ -433,18 +434,139 @@ public:
         nSize += m_omHardwareDesc.length();;
     }
 
-	void SaveConfigDataToXML(xmlNodePtr pNodePtr)
-	{
-		const char * strBaudRate = m_omStrBaudrate.c_str();
-		const char *strCNF1 = m_omStrCNF1.c_str();
-		const char *strCNF2 = m_omStrCNF2.c_str();
-		const char *strCNF3 = m_omStrCNF3.c_str();
+    void SaveConfigDataToXML(xmlNodePtr pNodePtr)
+    {
+        const char* strBaudRate = m_omStrBaudrate.c_str();
+        const char* strCNF1 = m_omStrCNF1.c_str();
+        const char* strCNF2 = m_omStrCNF2.c_str();
+        const char* strCNF3 = m_omStrCNF3.c_str();
+        const char* strVar;
 
-		xmlNewChild(pNodePtr, NULL, BAD_CAST "BaudRate", BAD_CAST strBaudRate);
-		xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF1", BAD_CAST strCNF1);
-		xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF2", BAD_CAST strCNF2);
-		xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF3", BAD_CAST strCNF3);
-	}
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "BaudRate", BAD_CAST strBaudRate);
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF1", BAD_CAST strCNF1);
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF2", BAD_CAST strCNF2);
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF3", BAD_CAST strCNF3);
+
+        strVar = m_omStrBTR0.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "BTR0", BAD_CAST strVar);
+
+        strVar = m_omStrBTR1.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "BTR1", BAD_CAST strVar);
+
+        strVar = m_omStrClock.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "Clock", BAD_CAST strVar);
+
+        strVar = m_omStrSamplePercentage.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "SamplePerc", BAD_CAST strVar);
+
+        strVar = m_omStrSampling.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "Sampling", BAD_CAST strVar);
+
+        strVar = m_omStrWarningLimit.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "Warning_Limit", BAD_CAST strVar);
+
+        strVar = m_omStrPropagationDelay.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "Propagation_Delay", BAD_CAST strVar);
+
+        strVar = m_omStrSjw.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "SJW", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte1[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte1_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte1[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte1_1", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte2[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte2_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte2[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte2_1", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte3[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte3_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte3[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte3_1", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte4[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte4_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccCodeByte4[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccCodeByte4_1", BAD_CAST strVar);
+
+        //------------------------
+        strVar = m_omStrAccMaskByte1[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte1_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte1[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte1_1", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte2[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte2_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte2[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte2_1", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte3[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte3_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte3[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte3_1", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte4[0].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte4_0", BAD_CAST strVar);
+
+        strVar = m_omStrAccMaskByte4[1].c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccMaskByte4_1", BAD_CAST strVar);
+
+        strVar = m_omHardwareDesc.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "HardwareDesc", BAD_CAST strVar);
+
+        stringstream stream;
+        stream << m_nItemUnderFocus;
+        string          strData;
+        strData = stream.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "ItemUnderFocus", BAD_CAST strVar);
+
+        stringstream stream1;
+        stream1 << m_nBTR0BTR1;
+        strData = stream1.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "BTR0BTR1", BAD_CAST strVar);
+
+        stringstream stream2;
+        stream2 << m_bAccFilterMode;
+        strData = stream2.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "AccFilterMode", BAD_CAST strVar);
+
+        stringstream stream3;
+        stream3 << m_ucControllerMode;
+        strData = stream3.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "ControllerMode", BAD_CAST strVar);
+
+        stringstream stream4;
+        stream4 << m_bSelfReception;
+        strData = stream4.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "SelfReception", BAD_CAST strVar);
+
+        stringstream stream5;
+        stream5 << (int)m_enmHWFilterType[0];
+        strData = stream5.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_0", BAD_CAST strVar);
+
+        stringstream stream6;
+        stream6 << (int)m_enmHWFilterType[1];
+        strData = stream6.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_1", BAD_CAST strVar);
+
+    }
     void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
     {
         INT nIntSize = sizeof(INT);

@@ -9,7 +9,7 @@
 ConsoleWrite("****Start : TC_UC3_05.au3****"&@CRLF)
 _launchApp()
 if $app=0 Then
-	_loadConfig("UseCase1")
+	_loadConfig("UseCase3")
 	_associateDB("&File","AutoitTest.dbf")
 	sleep(1000)
 	if winexists("BUSMASTER") Then
@@ -28,7 +28,7 @@ if $app=0 Then
 	EndIf
 	WinMenuSelectItem("BUSMASTER","","&Configure","&Tx Messages")
 	_txMSG("Cyclic",$Count)
-	ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:23]","left")
+	ControlClick("BUSMASTER","",1015,"left")
 	if winexists("BUSMASTER","Do you want to save changes?") Then
 		ControlClick("BUSMASTER","","[CLASS:Button; INSTANCE:2]","left")
 	EndIf

@@ -172,19 +172,17 @@ USAGEMODE HRESULT TS_hTSEexecutorWindowShown()
     }
 }
 //USAGEMODE HRESULT TS_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
-USAGEMODE HRESULT TS_hGetConfigurationData(xmlNodePtr pxmlNodePtr)
+USAGEMODE HRESULT TS_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
 {
     if(g_pomTSExecutorChildWindow != NULL)
     {
-        return g_pomTSExecutorChildWindow->GetConfigurationData(pxmlNodePtr);
+        return g_pomTSExecutorChildWindow->GetConfigurationData(*pxmlNodePtr);
     }
-    /*else
+    else
     {
-        nBuffSize  = m_unConfigSize;
-        pDesBuffer = new BYTE[m_unConfigSize];
-        memcpy(pDesBuffer, m_pbyConfigData, m_unConfigSize);
-        return S_FALSE;
-    }*/
+        *pxmlNodePtr = xmlCopyNode(m_pXmlConfigNode, 1);
+        return S_OK;
+    }
 }
 USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
