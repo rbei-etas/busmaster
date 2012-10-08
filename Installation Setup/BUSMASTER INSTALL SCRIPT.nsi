@@ -78,7 +78,7 @@ nsDialogs::Create 1018
 	
 	${NSD_OnClick} $Label onClickMinGWLink  
 	
-	${NSD_CreateLabel} 0 100 100% 40 "and then use it to download the actual MinGW and copy the MinGW folder to primary drive.For example C: drive. $\nSet the environment variable path for the same.For example: ‘C:\MinGW\bin’."	
+	${NSD_CreateLabel} 0 100 100% 40 "and then use it to download the actual MinGW and copy the MinGW folder to primary drive.For example C: drive. $\nSet the environment variable path."
 	Pop $Label
 	
 	nsDialogs::Show
