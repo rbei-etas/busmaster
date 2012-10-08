@@ -21,6 +21,9 @@
  *
  * Source script for BUSMASTER installer.
  */
+ 
+!include nsDialogs.nsh
+!include LogicLib.nsh
 
 ; Show gradient background
 BGGradient 8080C0 0000FF FFFFFF
@@ -56,13 +59,44 @@ InstallDirRegKey HKLM "SOFTWARE\BUSMASTER" "Install_Dir"
 ; Folder selection prompt
 DirText "Please select an installation folder."
 
+Var LABEL
+
+Function onClickMinGWLink
+  ExecShell "open" "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/"
+FunctionEnd
+
+Function information
+
+nsDialogs::Create 1018	
+	
+	
+	${NSD_CreateLabel} 0 20 100% 40 "-> The following steps should be followed to install MinGW folder for Node simulation. $\n Download latest mingw executable from the following link:"	
+	Pop $Label
+
+	${NSD_CreateLink} 0 75 100% 12 "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/"
+	Pop $Label
+	
+	${NSD_OnClick} $Label onClickMinGWLink  
+	
+	${NSD_CreateLabel} 0 100 100% 40 "and then use it to download the actual MinGW and copy the MinGW folder to primary drive.For example C: drive. $\nSet the environment variable path for the same.For example: ‘C:\MinGW\bin’."	
+	Pop $Label
+	
+	nsDialogs::Show
+
+	
+FunctionEnd
+
+
 ; Pages
 Page license
 Page components
 Page directory
 Page instfiles
+Page Custom information
 UninstPage uninstConfirm
 UninstPage instfiles
+
+
 
 ; Installation Types
 InstType "Typical"
