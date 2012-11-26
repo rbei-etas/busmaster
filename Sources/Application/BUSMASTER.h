@@ -29,7 +29,7 @@
 #include "Flags.h"      // For CFlags
 #include "Struct.h" // Added by ClassView
 #include "ConfigDetails.h"  // Added by ClassView, reqd for CConfigDetails obj
-
+#include "GettextBusmaster.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CCANMonitorApp:

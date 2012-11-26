@@ -21,7 +21,6 @@
  *
  * Source script for BUSMASTER installer.
  */
- 
 !include nsDialogs.nsh
 !include LogicLib.nsh
 
@@ -35,7 +34,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.6.8.exe"
+Outfile "BUSMASTER_Installer_Ver_1.7.0.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -60,33 +59,20 @@ InstallDirRegKey HKLM "SOFTWARE\BUSMASTER" "Install_Dir"
 DirText "Please select an installation folder."
 
 Var LABEL
-
 Function onClickMinGWLink
   ExecShell "open" "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/"
 FunctionEnd
-
 Function information
-
 nsDialogs::Create 1018	
-	
-	
 	${NSD_CreateLabel} 0 20 100% 40 "-> The following steps should be followed to install MinGW folder for Node simulation. $\n Download latest mingw executable from the following link:"	
 	Pop $Label
-
 	${NSD_CreateLink} 0 75 100% 12 "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/"
 	Pop $Label
-	
 	${NSD_OnClick} $Label onClickMinGWLink  
-	
 	${NSD_CreateLabel} 0 100 100% 40 "and then use it to download the actual MinGW and copy the MinGW folder to primary drive.For example C: drive. $\nSet the environment variable path."
 	Pop $Label
-	
 	nsDialogs::Show
-
-	
 FunctionEnd
-
-
 ; Pages
 Page license
 Page components
@@ -95,8 +81,6 @@ Page instfiles
 Page Custom information
 UninstPage uninstConfirm
 UninstPage instfiles
-
-
 
 ; Installation Types
 InstType "Typical"
@@ -178,6 +162,10 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\CAN_IXXAT_VCI.dll bCanIXXATbExists
 	bCanIXXATbExists:
 			Delete "$INSTDIR\CAN_IXXAT_VCI.dll"			
+	; Deleting If CAN_VSCOM.dll exists
+	IfFileExists $INSTDIR\CAN_VSCOM.dll bCanVSCOMbExists
+	bCanVSCOMbExists:
+			Delete "$INSTDIR\CAN_VSCOM.dll"			
 			
 	; Deleting If Changelog.txt exists
 	IfFileExists $INSTDIR\Changelog.txt bChngLogbExists
@@ -390,7 +378,108 @@ Section "BUSMASTER"
 	bzlibExists:
 			Delete "$INSTDIR\zlib1.dll"
 			
-	; Deleting If MinGW exists
+	; Deleting If intl.dll exists
+	IfFileExists $INSTDIR\intl.dll bintlExists
+	bintlExists:
+			Delete "$INSTDIR\intl.dll"
+	
+	; Deleting files within JPN
+	; Deleting If TXWindowJPN.dll exists
+	IfFileExists $INSTDIR\JPN\TXWindowJPN.dll bJPNTxWinbExists
+	bJPNTxWinbExists:
+			Delete "$INSTDIR\JPN\TXWindowJPN.dll"
+	
+	; Deleting If TestSuiteExecutorGUIJPN.dll exists
+	IfFileExists $INSTDIR\JPN\TestSuiteExecutorGUIJPN.dll bJPNTestStbExists
+	bJPNTestStbExists:
+			Delete "$INSTDIR\JPN\TestSuiteExecutorGUIJPN.dll"
+	
+	; Deleting If TestSetupEditorGUIJPN.dll exists
+	IfFileExists $INSTDIR\JPN\TestSetupEditorGUIJPN.dll bJPNTestStupbExists
+	bJPNTestStupbExists:
+			Delete "$INSTDIR\JPN\TestSetupEditorGUIJPN.dll"
+			
+	; Deleting If SignalWatchJPN.dll exists
+	IfFileExists $INSTDIR\JPN\SignalWatchJPN.dll bJPNSigWatchbExists
+	bJPNSigWatchbExists:
+			Delete "$INSTDIR\JPN\SignalWatchJPN.dll"
+			
+	; Deleting If SignalDefinerJPN.dll exists
+	IfFileExists $INSTDIR\JPN\SignalDefinerJPN.dll bJPNSigDefbExists
+	bJPNSigDefbExists:
+			Delete "$INSTDIR\JPN\SignalDefinerJPN.dll"
+			
+	; Deleting If SigGrphWndJPN.dll exists
+	IfFileExists $INSTDIR\JPN\SigGrphWndJPN.dll bJPNSigGrpbExists
+	bJPNSigGrpbExists:
+			Delete "$INSTDIR\JPN\SigGrphWndJPN.dll"
+			
+	; Deleting If NodeSimExJPN.dll exists
+	IfFileExists $INSTDIR\JPN\NodeSimExJPN.dll bJPNNdSimbExists
+	bJPNNdSimbExists:
+			Delete "$INSTDIR\JPN\NodeSimExJPN.dll"
+			
+	; Deleting If mhsbmcfgJPN.dll exists
+	IfFileExists $INSTDIR\JPN\mhsbmcfgJPN.dll bJPNmhsbExists
+	bJPNmhsbExists:
+			Delete "$INSTDIR\JPN\mhsbmcfgJPN.dll"
+			
+	; Deleting If FilterJPN.dll exists
+	IfFileExists $INSTDIR\JPN\FilterJPN.dll bJPNFilterbExists
+	bJPNFilterbExists:
+			Delete "$INSTDIR\JPN\FilterJPN.dll"
+			
+	; Deleting If DMGraphJPN.dll exists
+	IfFileExists $INSTDIR\JPN\DMGraphJPN.dll bJPNDMGraphbExists
+	bJPNDMGraphbExists:
+			Delete "$INSTDIR\JPN\DMGraphJPN.dll"
+			
+	; Deleting If CAN_Vector_XLJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_Vector_XLJPN.dll bJPNCANVectorXLbExists
+	bJPNCANVectorXLbExists:
+			Delete "$INSTDIR\JPN\CAN_Vector_XLJPN.dll"
+			
+	; Deleting If CAN_MHSJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_MHSJPN.dll bJPNCANMHSJPNbExists
+	bJPNCANMHSJPNbExists:
+			Delete "$INSTDIR\JPN\CAN_MHSJPN.dll"
+			
+	; Deleting If CAN_Kvaser_CANJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_Kvaser_CANJPN.dll bJPNKvsrbExists
+	bJPNKvsrbExists:
+			Delete "$INSTDIR\JPN\CAN_Kvaser_CANJPN.dll"
+			
+	; Deleting If SignalDefinerJPN.dll exists
+	IfFileExists $INSTDIR\JPN\ReplayJPN.dll bJPNReplaybExists
+	bJPNReplaybExists:
+			Delete "$INSTDIR\JPN\ReplayJPN.dll"
+			
+	; Deleting If CAN_IXXAT_VCIJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_IXXAT_VCIJPN.dll bJPNIXXATbExists
+	bJPNIXXATbExists:
+			Delete "$INSTDIR\JPN\CAN_IXXAT_VCIJPN.dll"
+			
+	; Deleting If CAN_ICS_neoVIJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_ICS_neoVIJPN.dll bJPNNEObExists
+	bJPNNEObExists:
+			Delete "$INSTDIR\JPN\CAN_ICS_neoVIJPN.dll"
+			
+	; Deleting If CAN_ETAS_BOAJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_ETAS_BOAJPN.dll bJPNBOAbExists
+	bJPNBOAbExists:
+			Delete "$INSTDIR\JPN\CAN_ETAS_BOAJPN.dll"
+			
+	; Deleting If BUSMASTERJPN.dll exists
+	IfFileExists $INSTDIR\JPN\BUSMASTERJPN.dll bJPNBUSMASTERbExists
+	bJPNBUSMASTERbExists:
+			Delete "$INSTDIR\JPN\BUSMASTERJPN.dll"
+			
+	; Deleting If FormatConverterJPN.dll exists
+	IfFileExists $INSTDIR\JPN\FormatConverterJPN.dll bJPNFormatConvExists
+	bJPNFormatConvExists:
+			Delete "$INSTDIR\JPN\FormatConverterJPN.dll"
+
+			; Deleting If MinGW exists
 	IfFileExists $INSTDIR\MinGW bMinGWExists
 	bMinGWExists:
 			RMDir /r "$INSTDIR\MinGW"
@@ -413,14 +502,7 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\BUSMASTER.tlb
     File ..\Sources\Application\BUSMASTER_Interface.c
     File ..\Sources\Application\BUSMASTER_Interface.h
-    File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll
-    File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
-    File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
-    File ..\Sources\BIN\Release\CAN_MHS.dll
-    File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
-    File ..\Sources\BIN\Release\CAN_STUB.dll
-    File ..\Sources\BIN\Release\CAN_Vector_XL.dll
-	File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
+    File ..\Sources\BIN\Release\CAN_STUB.dll	
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\DIL_Interface.dll
     File ..\Sources\BIN\Release\DIL_J1939.dll
@@ -443,9 +525,16 @@ Section "BUSMASTER"
 	File ..\Sources\BIN\Release\iconv.dll
 	File ..\Sources\BIN\Release\libxml2.dll
 	File ..\Sources\BIN\Release\zlib1.dll
+	File ..\Sources\BIN\Release\intl.dll
 
     ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
+	
+	; Japanese lib files
+	File /r ..\Sources\BIN\Release\JPN
+	
+	; Japanese Localization folder
+	File /r ..\Sources\Localization
 	
     ; Help
     File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
@@ -513,37 +602,60 @@ Section "DMGraph"
     ExecWait 'regsvr32 DMGraph.dll /s'
 SectionEnd
 SectionGroupEnd
-SectionGroup "Hardware Libraries"
+SectionGroup "Hardware Interfaces"
 Section "ETAS ES581"
     SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\ETASneo40.dll
+    SetOutPath $INSTDIR    
+    File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll    
+	File ..\Sources\BIN\Release\ETASneo40.dll
+SectionEnd
+Section "ETAS BOA"
+    SectionIn 1 2
+    SetOutPath $INSTDIR    
+    File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll	
 SectionEnd
 Section "Intrepid neoVI"
     SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\icsneo40.dll
+    SetOutPath $INSTDIR     
+    File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
+	File ..\Sources\BIN\Release\icsneo40.dll 
 SectionEnd
 Section "Kvaser CAN"
     SectionIn 1 2
     SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\canlib32.dll
+    File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
+	File ..\Sources\BIN\Release\canlib32.dll
 SectionEnd
 Section "MHS-Elektronik Tiny-CAN"
     SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\mhstcan.dll
+    SetOutPath $INSTDIR    
+    File ..\Sources\BIN\Release\CAN_MHS.dll
+	File ..\Sources\BIN\Release\mhstcan.dll
 SectionEnd
 Section "Peak USB"
     SectionIn 1 2
     SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\CanApi2.dll
+    File ..\Sources\BIN\Release\CAN_PEAK_USB.dll
+	File ..\Sources\BIN\Release\CanApi2.dll
 SectionEnd
 Section "Vector XL"
     SectionIn 1 2
-    SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\vxlapi.dll
+    SetOutPath $INSTDIR    
+    File ..\Sources\BIN\Release\CAN_Vector_XL.dll
+	File ..\Sources\BIN\Release\vxlapi.dll	
 SectionEnd
+Section "IXXAT VCI"
+    SectionIn 1 2
+    SetOutPath $INSTDIR    
+    File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
+SectionEnd
+Section "Vision Systems GmbH VSCAN API"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\CAN_VSCOM.dll
+    File ..\Sources\BIN\Release\vs_can_api.dll
+SectionEnd
+
 SectionGroupEnd
 SectionGroup "Registry Cleanup"
 Section "BUSMASTER Reg Cleanup"

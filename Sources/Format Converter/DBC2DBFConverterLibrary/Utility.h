@@ -23,7 +23,8 @@
  */
 
 #pragma once
-
+#include <iostream>
+using namespace std;
 //Physical to value
 unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScaleFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal);
 int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScaleFactor, long long int& nMaxVal, long long int& nMinVal);
@@ -34,3 +35,9 @@ int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, 
 
 //Helper function
 unsigned long long int unRoundOffdoubleValue(double dValue);
+
+//Trim the strSub From the Right of str
+void strTrimRight(string& str, string strSub);
+
+//Trim the strSub From the Left of str
+void strTrimLeft(string& str, string strSub);

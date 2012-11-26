@@ -238,6 +238,7 @@ public:
     {
         HRESULT hResult = E_POINTER;
         CBaseDIL_CAN* pDIL_CAN = GetICANDIL();
+        CMainFrame* pMainFrm = GetIMainFrame();
 
         if ((NULL != pDIL_CAN) && (NULL != psMsg))
         {
@@ -253,8 +254,9 @@ public:
             {
                 sTempMsg.m_ucData[i] = psMsg->m_ucData[i];
             }
-
-            hResult = pDIL_CAN->DILC_SendMsg(0, sTempMsg);
+            /* Client ID should be set to CAN_MONITOR_NODE ID */
+            hResult = pDIL_CAN->DILC_SendMsg(pMainFrm->dwGetMonitorNodeClientID()
+                                             , sTempMsg);
         }
 
         return hResult;

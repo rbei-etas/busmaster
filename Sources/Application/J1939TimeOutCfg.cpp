@@ -230,37 +230,37 @@ void CJ1939TimeOutCfg::OnBnClickedCheckT4()
 
 void CJ1939TimeOutCfg::OnEnChangeEditBroadcast()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_BROADCAST_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_BROADCAST_TO));
 }
 
 void CJ1939TimeOutCfg::OnEnChangeEditResponse()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_RESPONSE_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_RESPONSE_TO));
 }
 
 void CJ1939TimeOutCfg::OnEnChangeEditHolding()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_HOLDING_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_HOLDING_TO));
 }
 
 void CJ1939TimeOutCfg::OnEnChangeEditT1()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_T1_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_T1_TO));
 }
 
 void CJ1939TimeOutCfg::OnEnChangeEditT2()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_T2_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_T2_TO));
 }
 
 void CJ1939TimeOutCfg::OnEnChangeEditT3()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_T3_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_T3_TO));
 }
 
 void CJ1939TimeOutCfg::OnEnChangeEditT4()
 {
-    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_T4_TO);
+    GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_T4_TO));
 }
 
 
@@ -268,7 +268,7 @@ BOOL CJ1939TimeOutCfg::bVerifyTimeoutValue(UINT nValue)
 {
     if ( nValue < 1 )
     {
-        GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(TEXT_BOUNDS_ERROR);
+        GetDlgItem(IDC_STATIC_DESCRIPTION)->SetWindowText(_(TEXT_BOUNDS_ERROR));
         return FALSE;
     }
     return TRUE;

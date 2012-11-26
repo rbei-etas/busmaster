@@ -35,6 +35,7 @@
 #include "TxMsgListView.h"      // For Tx msg List view class declaration
 #include "TxMsgChildFrame.h"    // For Parent window class declaration
 #include "TxWindow_resource.h"
+#include "../Application/GettextBusmaster.h"
 
 // Global App object declaration
 //extern CCANMonitorApp theApp;
@@ -223,15 +224,15 @@ void CTxMsgBlocksView::OnInitialUpdate()
     for(i=0; i<defMESSAGE_BLOCK_COLUMN; i++)
     {
         nTotalStrLengthPixel +=
-            m_omLctrMsgBlockName.GetStringWidth(caColumnName[i]) ;
+            m_omLctrMsgBlockName.GetStringWidth(_(caColumnName[i])) ;
     }
     //Insert each column name after calculating the size for the same.
     for(i=0; i<defMESSAGE_BLOCK_COLUMN; i++)
     {
-        nColumnSize  = m_omLctrMsgBlockName.GetStringWidth(caColumnName[i]) ;
+        nColumnSize  = m_omLctrMsgBlockName.GetStringWidth(_(caColumnName[i])) ;
         nColumnSize +=
             (nTotalColunmSize-nTotalStrLengthPixel)/defMESSAGE_BLOCK_COLUMN;
-        m_omLctrMsgBlockName.InsertColumn(i,caColumnName[i],
+        m_omLctrMsgBlockName.InsertColumn(i,_(caColumnName[i]),
                                           LVCFMT_CENTER, nColumnSize);
     }
     m_omLctrMsgBlockName.SetExtendedStyle(
@@ -278,9 +279,9 @@ void CTxMsgBlocksView::OnInitialUpdate()
     // This will be updated in the function vDisplayMsgBlockDetails
     // Disabling it here will avoid enabling the control when no blocks or
     // messages are present
-    m_omComboAllMsgs.InsertString(0, "All");
-    m_omComboAllMsgs.InsertString(1, "Single");
-    m_omComboAllMsgs.SelectString(0, "Single");
+    m_omComboAllMsgs.InsertString(0, _("All"));
+    m_omComboAllMsgs.InsertString(1, _("Single"));
+    m_omComboAllMsgs.SelectString(0, _("Single"));
     m_omComboAllMsgs.EnableWindow( FALSE );
     /*m_omButtonTxAllFrame.EnableWindow( FALSE );*/
 
@@ -293,12 +294,12 @@ void CTxMsgBlocksView::OnInitialUpdate()
             if(psCurrentMsgBlock->m_bType == TRUE)
             {
                 m_omLctrMsgBlockName.SetItemText( i,defSUBITEM_MSGBLOCK_TYPE,
-                                                  defMSG_CYCLIC);
+                                                  _(defMSG_CYCLIC));
             }
             else
             {
                 m_omLctrMsgBlockName.SetItemText( i,defSUBITEM_MSGBLOCK_TYPE,
-                                                  defMSG_MONOSHOT);
+                                                  _(defMSG_MONOSHOT));
             }
             // Clear the previous content
             omStr.Empty();
@@ -427,7 +428,7 @@ void CTxMsgBlocksView::OnAddMsgBlock()
                                         psCurrentMsgBlock->m_acStrBlockName);
         m_omLctrMsgBlockName.SetItemText(nTotalCount,
                                          defSUBITEM_MSGBLOCK_TYPE,
-                                         defMSG_CYCLIC);
+                                         _(defMSG_CYCLIC));
         // Update Checkbox status
         m_omLctrMsgBlockName.SetCheck( nTotalCount,
                                        psCurrentMsgBlock->m_bActive );
@@ -566,7 +567,7 @@ void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
         psMsgBlockList->m_psTxCANMsgList      = NULL;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
+        strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, _(defDEFAULT_MSG_BLOCK_NAME));
     }
 }
 
@@ -583,7 +584,7 @@ void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
 void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
 {
     BOOL bReturn = FALSE;
-    if ( AfxMessageBox( defDEL_MSG_BLOCK,
+    if ( AfxMessageBox( _(defDEL_MSG_BLOCK),
                         MB_YESNO|MB_ICONQUESTION) == IDYES)
     {
         if(m_nSelectedMsgBlockIndex != -1 )
@@ -1008,21 +1009,21 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
         }
         if (psMsgBlock->m_bType == TRUE)
         {
-            SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Cyclic) on event");
+            SetDlgItemText(IDC_GROUPBOX_TRIGGER, _("Trigger (Cyclic) on event"));
         }
         else
         {
-            SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Monoshot) on event");
+            SetDlgItemText(IDC_GROUPBOX_TRIGGER, _("Trigger (Monoshot) on event"));
         }
         //m_omButtonTriggerType.SetCheck(!psMsgBlock->m_bType);
 
         if (psMsgBlock->m_bTxAllFrame)
         {
-            m_omComboAllMsgs.SelectString(0, "All");
+            m_omComboAllMsgs.SelectString(0, _("All"));
         }
         else
         {
-            m_omComboAllMsgs.SelectString(0, "Single");
+            m_omComboAllMsgs.SelectString(0, _("Single"));
         }
         /*m_omButtonTxAllFrame.SetCheck(psMsgBlock->m_bTxAllFrame);*/
         if(m_omDelayBtwnBlocks.GetCheck() == BST_UNCHECKED) //AUC
@@ -1098,7 +1099,7 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
             {
                 pomOnTime->SetCheck( FALSE );
             }
-            m_omComboAllMsgs.SelectString(0, "Single");
+            m_omComboAllMsgs.SelectString(0, _("Single"));
             m_omComboAllMsgs.EnableWindow(FALSE);
             /*m_omButtonTxAllFrame.SetCheck( FALSE );
             /*m_omButtonTxAllFrame.EnableWindow( FALSE );*/
@@ -1181,7 +1182,7 @@ VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
         int nCurSel = m_omComboAllMsgs.GetCurSel();
         CString omSelString;
         m_omComboAllMsgs.GetLBText(nCurSel, omSelString);
-        if (omSelString == "All")
+        if (omSelString == _("All"))
         {
             psCurrentMsgBlock->m_bTxAllFrame = TRUE;
         }
@@ -1309,7 +1310,7 @@ void CTxMsgBlocksView::OnChkbTriggerType()
         {
             m_omLctrMsgBlockName.SetItemText(m_nSelectedMsgBlockIndex,
                                              defSUBITEM_MSGBLOCK_TYPE,
-                                             defMSG_CYCLIC);
+                                             _(defMSG_CYCLIC));
         }
         else
         {
@@ -1802,7 +1803,7 @@ void CTxMsgBlocksView::OnChkbTxAllFrame()
         int nCutSel = m_omComboAllMsgs.GetCurSel();
         CString omSelString;
         m_omComboAllMsgs.GetLBText(nCutSel, omSelString);
-        if (omSelString == "All")
+        if (omSelString == _("All"))
         {
             psMsgCurrentBlock->m_bTxAllFrame = TRUE;
         }
@@ -2262,7 +2263,7 @@ BOOL CTxMsgBlocksView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
 }
 void CTxMsgBlocksView::OnBnClickedRadiomonoshot()
 {
-    SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Monoshot) on event");
+    SetDlgItemText(IDC_GROUPBOX_TRIGGER, _("Trigger (Monoshot) on event"));
     OnChkbTriggerType();
     //update the global list for storing the changed data
     PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
@@ -2277,7 +2278,7 @@ void CTxMsgBlocksView::OnBnClickedRadiomonoshot()
 
 void CTxMsgBlocksView::OnBnClickedRadiocyclic()
 {
-    SetDlgItemText(IDC_GROUPBOX_TRIGGER, "Trigger (Cyclic) on event");
+    SetDlgItemText(IDC_GROUPBOX_TRIGGER, _("Trigger (Cyclic) on event"));
     OnChkbTriggerType();
     //update the global list for storing the changed data
     PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
@@ -2492,8 +2493,8 @@ void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
             else
             {
                 omStr = "";
-                omStr.Format( defSTR_TIMER_VAL_FMT_SPECIFIER,
-                              psMsgBlock->m_unTimeInterval );
+                /*omStr.Format( defSTR_TIMER_VAL_FMT_SPECIFIER,
+                              psMsgBlock->m_unTimeInterval );*/
                 // Disable the time trigger value edit control if the check box is unchecked
                 (GetDlgItem(IDC_EDIT_TRG_TIME_VAL))->EnableWindow(FALSE);
 

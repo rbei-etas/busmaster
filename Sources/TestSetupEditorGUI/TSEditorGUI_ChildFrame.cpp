@@ -30,6 +30,7 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
+#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
 #define MSG_GET_CONFIGPATH  10000
@@ -209,7 +210,7 @@ void CTSEditorChildFrame::vLoadTestSetupFile(CString omFilePath, BOOL bEmptyFile
     {
         if( m_ouTSEntity.LoadFile(omFilePath) != S_OK)  //if S_OK Then Upadate The Tree
         {
-            MessageBox("Invalid Test Setup File", "Error", MB_OK|MB_ICONERROR);
+            MessageBox(_("Invalid Test Setup File"), _("Error"), MB_OK|MB_ICONERROR);
             vInitialise();
             return;
         }
@@ -236,7 +237,7 @@ void CTSEditorChildFrame::vLoadTestSetupFileTemp(CString omFilePath, BOOL bEmpty
     {
         if( m_ouTSEntity.LoadFile(omFilePath) != S_OK)  //if S_OK Then Upadate The Tree
         {
-            MessageBox("Invalid Test Setup File", "Error", MB_OK|MB_ICONERROR);
+            MessageBox(_("Invalid Test Setup File"), _("Error"), MB_OK|MB_ICONERROR);
             vInitialise();
             if(m_odTreeView != NULL )
             {
@@ -324,15 +325,15 @@ void CTSEditorChildFrame::parseTestCaseEntiy(CBaseEntityTA* pTCEntity, HTREEITEM
 
         if(eEntityType == SEND)
         {
-            HTREEITEM hSubParent = m_odTreeView->InsertTreeItem(hTCTreeitem, def_NAME_SEND, NULL, def_INDEX_SEND_IMAGE, def_INDEX_SEND_IMAGE, pEntity->GetID());
+            HTREEITEM hSubParent = m_odTreeView->InsertTreeItem(hTCTreeitem, _(def_NAME_SEND), NULL, def_INDEX_SEND_IMAGE, def_INDEX_SEND_IMAGE, pEntity->GetID());
             parseSendEntity(pEntity, hSubParent);
         }
         else if(eEntityType == VERIFY || eEntityType == VERIFYRESPONSE)
         {
-            CString omStrTreeName = def_NAME_VERIFY;
+            CString omStrTreeName = _(def_NAME_VERIFY);
             if(eEntityType == VERIFYRESPONSE)
             {
-                omStrTreeName = def_NAME_VERIFYRESPONSE;
+                omStrTreeName = _(def_NAME_VERIFYRESPONSE);
             }
             HTREEITEM hSubParent = m_odTreeView->InsertTreeItem(hTCTreeitem, omStrTreeName, NULL, def_INDEX_VERIFY_IMAGE, def_INDEX_VERIFY_IMAGE, pEntity->GetID());
             parseVerifyEntity(pEntity, hSubParent);
@@ -423,7 +424,7 @@ void CTSEditorChildFrame::parseWaitEntity(CBaseEntityTA* pEntity, HTREEITEM hTCT
     CHECKENTITY(pEntity);
     CWaitEntityData odData;
     pEntity->GetEntityData(WAIT, &odData);
-    m_odTreeView->InsertTreeItem(hTCTreeitem, "Wait", NULL, def_INDEX_WAIT_IMAGE, def_INDEX_WAIT_IMAGE, pEntity->GetID());
+    m_odTreeView->InsertTreeItem(hTCTreeitem, _("Wait"), NULL, def_INDEX_WAIT_IMAGE, def_INDEX_WAIT_IMAGE, pEntity->GetID());
 }
 
 /******************************************************************************
@@ -440,7 +441,7 @@ Modifications  :
 void CTSEditorChildFrame::parseReplayEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem)
 {
     CHECKENTITY(pEntity);
-    CString omstrTemp = "Replay";
+    CString omstrTemp = _("Replay");
     m_odTreeView->InsertTreeItem(hTCTreeitem, omstrTemp, NULL, def_INDEX_REPLAY_IMGAE, def_INDEX_REPLAY_IMGAE, pEntity->GetID());
 }
 
@@ -478,7 +479,7 @@ void CTSEditorChildFrame::OnFileOpen()
     INT nRetVal = nPromptForSaveFile();
     CHECKEQ(nRetVal, IDCANCEL);
     CFileDialog omFileOpenDlg(TRUE, ".xml", 0, OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, szFilter, this);
-    omFileOpenDlg.m_ofn.lpstrTitle = "Select A TestSetup File";
+    omFileOpenDlg.m_ofn.lpstrTitle = _("Select A TestSetup File");
 
     if(IDOK == omFileOpenDlg.DoModal())
     {
@@ -501,7 +502,7 @@ void CTSEditorChildFrame::OnHelpAbouttestsetupeditor()
 {
     CString omStrVersion;
     omStrVersion.LoadString(IDS_TSEDITOR_ABOUT);
-    CString omStrLicence =  omStrVersion + "\n\nCopyright© 2011, Robert Bosch Engineering and\nBusiness Solutions Ltd.\nAll rights reserved.";
+    CString omStrLicence =  omStrVersion + _("\n\nCopyright© 2011, Robert Bosch Engineering and\nBusiness Solutions Ltd.\nAll rights reserved.");
     MessageBox(omStrLicence, NULL, MB_OK|MB_ICONINFORMATION);
 }
 
@@ -549,7 +550,7 @@ LRESULT CTSEditorChildFrame::OnSelectionChanging(WPARAM /*pTreeView*/, LPARAM /*
         else
         {
             m_bQueryConfirm = FALSE;
-            INT nSelection = MessageBox("Current List is Modified\nDo You Want to save the Changes?", "Modified", MB_YESNOCANCEL|MB_ICONQUESTION);
+            INT nSelection = MessageBox(_("Current List is Modified\nDo You Want to save the Changes?"), _("Modified"), MB_YESNOCANCEL|MB_ICONQUESTION);
             switch(nSelection)
             {
                 case IDYES:
@@ -670,12 +671,12 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     sListInfo.m_eType = eText;
 
     //Title  - ROW0
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_TITLE, "Title");
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_TITLE, _("Title"));
     omTempListCtrl.SetItemText(def_TS_ROWNUM_TITLE, def_COLUMN_VALUE, m_ouTSEntity.m_omstrTestSetupTitle);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_TITLE, def_COLUMN_VALUE, sListInfo);
 
     //Description - ROW1
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_DESCRIPTION, "Description");
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_DESCRIPTION, _("Description"));
     omTempListCtrl.SetItemText(def_TS_ROWNUM_DESCRIPTION, def_COLUMN_VALUE, m_ouTSEntity.m_omstrDescription);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_DESCRIPTION, def_COLUMN_VALUE, sListInfo);
 
@@ -687,7 +688,7 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     //Bustype - ROW3
     sListInfo.m_eType = eComboItem;
     sListInfo.m_omEntries.Add("CAN");
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_BUSTYPE, "Bus Type");
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_BUSTYPE, _("Bus Type"));
     switch(ouHeaderInfo.m_eBus)
     {
         case CAN:
@@ -719,8 +720,8 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     sListInfo.m_eType = eBrowser;
     sListInfo.m_omEntries.RemoveAll();
     sListInfo.m_omEntries.Add("*.dbf");
-    sListInfo.m_omEntries.Add("DataBase File (*.dbf)|*.dbf||");
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_DATABASE, "DataBase Path");
+    sListInfo.m_omEntries.Add(_("DataBase File (*.dbf)|*.dbf||"));
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_DATABASE, _("DataBase Path"));
     omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, ouHeaderInfo.m_omDatabasePath);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, sListInfo);
 
@@ -731,13 +732,13 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     CString omStrFilter;
 
     omStrDefExt = "*.txt";
-    omStrFilter = "Text Files (*.txt)|*.txt|Html Files (*html)|*.html||";
+    omStrFilter = _("Text Files (*.txt)|*.txt|Html Files (*html)|*.html||");
 
     sListInfo.m_eType = eBrowser;
     sListInfo.m_omEntries.RemoveAll();
     sListInfo.m_omEntries.Add(omStrDefExt);
     sListInfo.m_omEntries.Add(omStrFilter);
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_REPORT, "Report File Path");
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_REPORT, _("Report File Path"));
 
 
     omTempListCtrl.SetItemText(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, ouHeaderInfo.m_sReportFile.m_omPath);
@@ -747,17 +748,17 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     //Time Mode - ROW9
     sListInfo.m_eType = eComboItem;
     sListInfo.m_omEntries.RemoveAll();
-    sListInfo.m_omEntries.Add("ABSOLUTE");
-    sListInfo.m_omEntries.Add("RELATIVE");
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_TIMEMODE, "Time Mode");
+    sListInfo.m_omEntries.Add(_("ABSOLUTE"));
+    sListInfo.m_omEntries.Add(_("RELATIVE"));
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_TIMEMODE, _("Time Mode"));
     switch(ouHeaderInfo.m_sReportFile.m_eTimeMode)
     {
         case REL:
-            omStrTemp = "RELATIVE";
+            omStrTemp = _("RELATIVE");
             break;
         case ABS:
         default:
-            omStrTemp = "ABSOLUTE";
+            omStrTemp = _("ABSOLUTE");
             break;
     }
     omTempListCtrl.SetItemText(def_TS_ROWNUM_TIMEMODE, def_COLUMN_VALUE, omStrTemp);
@@ -812,29 +813,29 @@ void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA* pTCEntity)
     CString omstrTemp;
 
     //Display Title on first row
-    omTempListCtrl.InsertItem(def_TC_ROWNUM_TCID, "Test Case ID");
+    omTempListCtrl.InsertItem(def_TC_ROWNUM_TCID, _("Test Case ID"));
     omTempListCtrl.SetItemText(def_TC_ROWNUM_TCID, def_COLUMN_VALUE, odData.m_omID);
     omTempListCtrl.vSetColumnInfo(def_TC_ROWNUM_TCID, def_COLUMN_VALUE, sListInfo);
 
     //Display TestCase Name
-    omTempListCtrl.InsertItem(def_TC_ROWNUM_TCNAME, "Test Case Name");
+    omTempListCtrl.InsertItem(def_TC_ROWNUM_TCNAME, _("Test Case Name"));
     omTempListCtrl.SetItemText(def_TC_ROWNUM_TCNAME, def_COLUMN_VALUE, odData.m_omTitle);
     omTempListCtrl.vSetColumnInfo(def_TC_ROWNUM_TCNAME, def_COLUMN_VALUE, sListInfo);
 
     //Display Exception Handler;
     sListInfo.m_eType = eComboItem;
-    sListInfo.m_omEntries.Add("CONTINUE");
-    sListInfo.m_omEntries.Add("EXIT");
+    sListInfo.m_omEntries.Add(_("CONTINUE"));
+    sListInfo.m_omEntries.Add(_("EXIT"));
 
-    omTempListCtrl.InsertItem(def_TC_ROWNUM_TCEXP, "Exception Handler");
+    omTempListCtrl.InsertItem(def_TC_ROWNUM_TCEXP, _("Exception Handler"));
     switch(odData.m_eExcpAction)
     {
         case EXIT:
-            omstrTemp = "EXIT";
+            omstrTemp = _("EXIT");
             break;
         case CONTINUE:
         default:
-            omstrTemp = "CONTINUE";
+            omstrTemp = _("CONTINUE");
     }
     omTempListCtrl.SetItemText(def_TC_ROWNUM_TCEXP, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetColumnInfo( def_TC_ROWNUM_TCEXP, def_COLUMN_VALUE, sListInfo);
@@ -870,7 +871,7 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
 
     SLISTINFO sListInfo;
     sListInfo.m_eType = eNoControl;
-    omTempListCtrl.InsertItem(def_SEND_ROWNUM_MSGCNT, "Message Count");
+    omTempListCtrl.InsertItem(def_SEND_ROWNUM_MSGCNT, _("Message Count"));
     omTempListCtrl.SetItemText(def_SEND_ROWNUM_MSGCNT, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetColumnInfo(def_SEND_ROWNUM_MSGCNT, def_COLUMN_VALUE, sListInfo);
 
@@ -887,7 +888,7 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
         omTempListCtrl.vSetColumnInfo(i+1, 1, sListInfo);
     }
     omTempListCtrl.InsertItem(i+1, "");
-    omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, "[Add Message]"); //Extra Line
+    omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, _("[Add Message]")); //Extra Line
     omTempListCtrl.vSetColumnInfo(i+1, def_COLUMN_VALUE, sListInfo);
 }
 
@@ -919,7 +920,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     SLISTINFO sListInfo;
 
     sListInfo.m_eType = eNoControl;
-    omTempListCtrl.InsertItem(def_VERIFY_ROWNUM_MSGCNT, "Message Count");
+    omTempListCtrl.InsertItem(def_VERIFY_ROWNUM_MSGCNT, _("Message Count"));
     omTempListCtrl.SetItemText(def_VERIFY_ROWNUM_MSGCNT, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetColumnInfo(def_VERIFY_ROWNUM_MSGCNT, def_COLUMN_VALUE, sListInfo);
 
@@ -929,21 +930,21 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     switch(odVerifyData.m_VerifyData.m_eAttributeError)
     {
         case WARNING:
-            omstrTemp = "WARNING";
+            omstrTemp = _("WARNING");
             break;
         case ERRORS:
-            omstrTemp = "ERROR";
+            omstrTemp = _("ERROR");
             break;
         case FATAL:
         default:
-            omstrTemp = "FATAL";
+            omstrTemp = _("FATAL");
             break;
     }
-    omTempListCtrl.InsertItem(def_VERIFY_ROWNUM_FAILURE, "Failure Classification");
+    omTempListCtrl.InsertItem(def_VERIFY_ROWNUM_FAILURE, _("Failure Classification"));
     omTempListCtrl.SetItemText(def_VERIFY_ROWNUM_FAILURE, def_COLUMN_VALUE, omstrTemp);
-    sListInfo.m_omEntries.Add("WARNING");
-    sListInfo.m_omEntries.Add("ERROR");
-    sListInfo.m_omEntries.Add("FATAL");
+    sListInfo.m_omEntries.Add(_("WARNING"));
+    sListInfo.m_omEntries.Add(_("ERROR"));
+    sListInfo.m_omEntries.Add(_("FATAL"));
     omTempListCtrl.vSetColumnInfo(def_VERIFY_ROWNUM_FAILURE, def_COLUMN_VALUE, sListInfo);
 
     sListInfo.m_eType = eComboItem;
@@ -969,7 +970,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
         omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
     }
     omTempListCtrl.InsertItem(i+nVerifyRowIndex, "");
-    omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, "[Add Message]");
+    omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, _("[Add Message]"));
     omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
 }
 /******************************************************************************
@@ -990,7 +991,7 @@ void CTSEditorChildFrame::vDisplayVerifyResponseInfo(CBaseEntityTA* pEntity)
 
     SLISTINFO sListInfo;
     sListInfo.m_eType = eText;
-    omTempListCtrl.InsertItem(def_ROWNNUM_WAITFOR, "Wait Until");
+    omTempListCtrl.InsertItem(def_ROWNNUM_WAITFOR, _("Wait Until"));
 
 
     //Wait Period
@@ -1028,12 +1029,12 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA* pEntity)
     sNumericInfo sNumInfo;
 
     sListInfo.m_eType = eText;
-    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_PURPOSE, "Purpose");
+    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_PURPOSE, _("Purpose"));
     omTempListCtrl.SetItemText(def_WAIT_ROWNUM_PURPOSE, def_COLUMN_VALUE, odData.m_omPurpose);
     omTempListCtrl.vSetColumnInfo(def_WAIT_ROWNUM_PURPOSE, def_COLUMN_VALUE, sListInfo);
 
     sListInfo.m_eType = eNumber;
-    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_DELAY, "Delay (in msec)");
+    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_DELAY, _("Delay (in msec))"));
     omstrTemp.Format("%d", odData.m_ushDuration);
     omTempListCtrl.SetItemText(def_WAIT_ROWNUM_DELAY, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetNumericInfo(def_WAIT_ROWNUM_DELAY, def_COLUMN_VALUE, sNumInfo);
@@ -1062,7 +1063,7 @@ void CTSEditorChildFrame::vDisplayReplayInfo(CBaseEntityTA* pEntity)
 
     SLISTINFO sListInfo;
     sListInfo.m_eType = eBrowser;
-    omTempListCtrl.InsertItem(def_REPLAY_ROWNUM_FILEPATH, "File Path");
+    omTempListCtrl.InsertItem(def_REPLAY_ROWNUM_FILEPATH, _("File Path"));
     omTempListCtrl.SetItemText(def_REPLAY_ROWNUM_FILEPATH, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetColumnInfo(def_REPLAY_ROWNUM_FILEPATH, def_COLUMN_VALUE, sListInfo);
 }
@@ -1100,19 +1101,19 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA* pBaseEntity)
 
     if(pSubEntity.m_eSignalUnitType == RAW)
     {
-        omstrTemp = "RAW";
+        omstrTemp = _("RAW");
     }
     else if(pSubEntity.m_eSignalUnitType == ENG)
     {
-        omstrTemp = "ENG";
+        omstrTemp = _("ENG");
     }
 
     //Failure ClassiFication Information
-    omTempListCtrl.InsertItem(def_SMSG_ROWNUM_SUINT, "Signal Unit Type");
+    omTempListCtrl.InsertItem(def_SMSG_ROWNUM_SUINT, _("Signal Unit Type"));
     omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE, omstrTemp);
     sListInfo.m_eType = eComboItem;
-    sListInfo.m_omEntries.Add("RAW");
-    sListInfo.m_omEntries.Add("ENG");
+    sListInfo.m_omEntries.Add(_("RAW"));
+    sListInfo.m_omEntries.Add(_("ENG"));
     omTempListCtrl.vSetColumnInfo(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE, sListInfo);
 
     //Signal Default Value - Hidden Not Required
@@ -1192,19 +1193,19 @@ void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA* pBaseEntity)
 
     if(pSubEntity.m_eSignalUnitType == RAW)
     {
-        omstrTemp = "RAW";
+        omstrTemp = _("RAW");
     }
     else if(pSubEntity.m_eSignalUnitType == ENG)
     {
-        omstrTemp = "ENG";
+        omstrTemp = _("ENG");
     }
 
     //Failure ClassiFication Information
-    omTempListCtrl.InsertItem(def_VMSG_ROWNUM_SUINT, "Signal Unit Type");
+    omTempListCtrl.InsertItem(def_VMSG_ROWNUM_SUINT, _("Signal Unit Type"));
     omTempListCtrl.SetItemText(def_VMSG_ROWNUM_SUINT, def_COLUMN_VALUE, omstrTemp);
     sListInfo.m_eType = eComboItem;
-    sListInfo.m_omEntries.Add("RAW");
-    sListInfo.m_omEntries.Add("ENG");
+    sListInfo.m_omEntries.Add(_("RAW"));
+    sListInfo.m_omEntries.Add(_("ENG"));
     omTempListCtrl.vSetColumnInfo(def_VMSG_ROWNUM_SUINT, def_COLUMN_VALUE, sListInfo);
 
     nSignalCount = (INT)pSubEntity.m_odSignalConditionList.GetCount();
@@ -1345,7 +1346,7 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
 
     //Time Mode
     omStrTemp = omTempListCtrl.GetItemText(def_TS_ROWNUM_TIMEMODE, 1);
-    if(omStrTemp == "RELATIVE")
+    if(omStrTemp == _("RELATIVE"))
     {
         ouHeaderInfo.m_sReportFile.m_eTimeMode = REL;
     }
@@ -1400,7 +1401,7 @@ void CTSEditorChildFrame::vSaveTestcaseInfo(CBaseEntityTA* pEntity)
 
     //Exception Handler in Third Row
     omstrTemp= omTempListCtrl.GetItemText(def_TC_ROWNUM_TCEXP, def_COLUMN_VALUE);
-    if(omstrTemp == "EXIT")
+    if(omstrTemp == _("EXIT"))
     {
         odData.m_eExcpAction = EXIT;
     }
@@ -1469,11 +1470,11 @@ void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA* pEntity)
     m_ouVerifyEntity.GetEntityData(VERIFY, &odVerifyData);
 
 
-    if(omstrTemp == "WARNING")
+    if(omstrTemp == _("WARNING"))
     {
         odVerifyData.m_eAttributeError = WARNING;
     }
-    else if(omstrTemp == "ERROR")
+    else if(omstrTemp == _("ERROR"))
     {
         odVerifyData.m_eAttributeError = ERRORS;
     }
@@ -1502,11 +1503,11 @@ void CTSEditorChildFrame::vSaveVerfiyReponseInfo(CBaseEntityTA* pEntity)
     CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, def_COLUMN_VALUE);
 
 
-    if(omstrTemp == "WARNING")
+    if(omstrTemp == _("WARNING"))
     {
         ouVerifyResponseData.m_VerifyData.m_eAttributeError = WARNING;
     }
-    else if(omstrTemp == "ERROR")
+    else if(omstrTemp == _("ERROR"))
     {
         ouVerifyResponseData.m_VerifyData.m_eAttributeError = ERRORS;
     }
@@ -1543,7 +1544,7 @@ void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA* pEntity)
 
     omstrTemp = omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE);
 
-    if(omstrTemp == "ENG")
+    if(omstrTemp == _("ENG"))
     {
         ouSendMsgEntity.m_eSignalUnitType = ENG;
     }
@@ -1610,7 +1611,7 @@ void CTSEditorChildFrame::vSaveVerifyMessageInfo(CBaseEntityTA* pEntity)
     //Failure Classification Information
     omstrTemp = omTempListCtrl.GetItemText(def_VMSG_ROWNUM_SUINT, def_COLUMN_VALUE);
 
-    if(omstrTemp == "ENG")
+    if(omstrTemp == _("ENG"))
     {
         odVerifyMsgEntity.m_eSignalUnitType = ENG;
     }
@@ -1771,7 +1772,7 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         {
             if(omstrDatabaseName != ouHeaderInfo.m_omDatabasePath)
             {
-                int nRetVal = MessageBox("Database Path Is Changed.All Old messages of Test Setup File will be Deleted.\nDo you Want To Continue", "Database Path Changed",MB_YESNO||MB_ICONWARNING);
+                int nRetVal = MessageBox(_("Database Path Is Changed.All Old messages of Test Setup File will be Deleted.\nDo you Want To Continue"), _("Database Path Changed"),MB_YESNO||MB_ICONWARNING);
                 if(nRetVal == IDOK)
                 {
                     ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
@@ -1816,7 +1817,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
         if(item >= defLIST_SEND_ST_ROW)      //item is with in message list
         {
             omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
-            if(omstrTemp == defDELETE_MSG_SYMBOL)
+            if(omstrTemp == _(defDELETE_MSG_SYMBOL))
             {
                 if(item != omTempListCtrl.GetItemCount()-1) // Last Item Check.Still This
                 {
@@ -1826,7 +1827,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                 }
                 else
                 {
-                    omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, "[Add Message]");
+                    omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, _("[Add Message]"));
                 }
             }
             else
@@ -1844,7 +1845,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     m_omSendEntity.AddSubEntry((CBaseEntityTA*)&odNewSendEnity);
 
                     omTempListCtrl.InsertItem(item+1, "");
-                    omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, "[Add Message]");
+                    omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                     omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
                 }
                 else
@@ -1896,7 +1897,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
     if(item >= def_VERIFY_ROWNUM_MSGLIST)      //item is with in message list
     {
         omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
-        if(omstrTemp == defDELETE_MSG_SYMBOL)
+        if(omstrTemp == _(defDELETE_MSG_SYMBOL))
         {
             if(item != omTempListCtrl.GetItemCount()-1) // Lase Item Check.Still This
             {
@@ -1906,7 +1907,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
             }
             else
             {
-                omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, "[Add Message]");
+                omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, _("[Add Message]"));
             }
         }
         else
@@ -1925,7 +1926,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
 
                 omTempListCtrl.InsertItem(item+1, "");
-                omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, "[Add Message]");
+                omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                 omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
             }
             else
@@ -1978,7 +1979,7 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
     if(item >= def_VERIFYRES_ROWNUM_MSGLIST)      //item is with in message list
     {
         omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
-        if(omstrTemp == defDELETE_MSG_SYMBOL)
+        if(omstrTemp == _(defDELETE_MSG_SYMBOL))
         {
             if(item != omTempListCtrl.GetItemCount()-1) // Lase Item Check.Still This
             {
@@ -1988,7 +1989,7 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
             }
             else
             {
-                omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, "[Add Message]");
+                omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, _("[Add Message]"));
             }
         }
         else
@@ -2007,7 +2008,7 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
 
                 omTempListCtrl.InsertItem(item+1, "");
-                omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, "[Add Message]");
+                omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                 omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
             }
             else
@@ -2105,7 +2106,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
             m_ouTSEntity.AddSubEntry(&ouTestCaseEntity);
             CBaseEntityTA* pouTestCaseEntity;
             m_ouTSEntity.GetSubEntityObj(m_ouTSEntity.GetSubEntryCount()-1, &pouTestCaseEntity);
-            omTempTreeCtrl.InsertTreeItem(m_hParentTreeItem, "Untitled TestCase", NULL, 0, 0, pouTestCaseEntity->GetID());
+            omTempTreeCtrl.InsertTreeItem(m_hParentTreeItem, _("Untitled TestCase"), NULL, 0, 0, pouTestCaseEntity->GetID());
             omTempTreeCtrl.RedrawWindow();
             vSetModifiedFlag(TRUE);
             return S_OK;
@@ -2113,7 +2114,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         case SEND:
         {
             pNewEntity = new CSendEntity();
-            omStrNewItem = "Send";
+            omStrNewItem = _("Send");
             unImageIndex = def_INDEX_SEND_IMAGE;
             vSetModifiedFlag(TRUE);
             break;
@@ -2121,7 +2122,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         case VERIFY:
         {
             pNewEntity = new CVerifyEntity();
-            omStrNewItem = "Verify";
+            omStrNewItem = _("Verify");
             unImageIndex = def_INDEX_VERIFY_IMAGE;
             vSetModifiedFlag(TRUE);
             break;
@@ -2129,7 +2130,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         case WAIT:
         {
             pNewEntity = new CWaitEntity();
-            omStrNewItem = "Wait";
+            omStrNewItem = _("Wait");
             unImageIndex = def_INDEX_WAIT_IMAGE;
             vSetModifiedFlag(TRUE);
             break;
@@ -2137,7 +2138,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         case REPLAY:
         {
             pNewEntity = new CReplayEntity();
-            omStrNewItem = "Replay";
+            omStrNewItem = _("Replay");
             unImageIndex = def_INDEX_REPLAY_IMGAE;
             vSetModifiedFlag(TRUE);
             break;
@@ -2146,7 +2147,7 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         {
             pNewEntity = new CVerifyResponse();
             ((CVerifyResponse*)pNewEntity)->m_ushDuration = 0;
-            omStrNewItem = "VerfiyResponse";
+            omStrNewItem = _("VerfiyResponse");
             unImageIndex = def_INDEX_VERIFY_IMAGE;
             vSetModifiedFlag(TRUE);
             break;
@@ -2250,7 +2251,7 @@ void CTSEditorChildFrame::OnFileSave()
 {
     //OnSelectionChanging(0, 0);
     nConfirmCurrentChanges();
-    if(m_omCurrentTSFile != def_EMPTYFILENAME)      //We have a path
+    if(m_omCurrentTSFile != _(def_EMPTYFILENAME))      //We have a path
     {
         m_ouTSEntity.SaveFileAs(m_omCurrentTSFile);
         m_bFileSaved = TRUE;
@@ -2343,8 +2344,8 @@ INT CTSEditorChildFrame::nPromptForSaveFile()
     if(m_bFileSaved == FALSE)
     {
         CString omstrMsg;
-        omstrMsg.Format("The file '%s' has been modified\nDo you Want to save?", m_omCurrentTSFile.GetBuffer(MAX_PATH));
-        nRetVal = MessageBox(omstrMsg, "BUSMASTER TestSetup Editor", MB_YESNOCANCEL|MB_ICONQUESTION);
+        omstrMsg.Format(_("The file '%s' has been modified\nDo you Want to save?"), m_omCurrentTSFile.GetBuffer(MAX_PATH));
+        nRetVal = MessageBox(omstrMsg, _("BUSMASTER TestSetup Editor"), MB_YESNOCANCEL|MB_ICONQUESTION);
 
         if(nRetVal == IDYES)
         {
@@ -2396,7 +2397,7 @@ void CTSEditorChildFrame::OnFileClose()
     {
         m_odPropertyView->m_omPropertyList.DeleteAllItems();
     }
-    CString omstrFileName(def_EMPTYFILENAME);
+    CString omstrFileName(_(def_EMPTYFILENAME));
     vSetCurrentFile(omstrFileName);
     CHECKENTITY(m_odTreeView);
     m_odTreeView->GetTreeCtrl().DeleteAllItems();
@@ -2415,7 +2416,7 @@ Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::OnUpdateFileSaveas(CCmdUI* pCmdUI)
 {
-    if(m_omCurrentTSFile == def_EMPTYFILENAME || m_omCurrentTSFile == "")
+    if(m_omCurrentTSFile == _(def_EMPTYFILENAME) || m_omCurrentTSFile == "")
     {
         pCmdUI->Enable(FALSE);
     }
@@ -2439,13 +2440,13 @@ Modifications  :
 void CTSEditorChildFrame::vSetCurrentFile(CString& omNewFilePath)
 {
     m_omCurrentTSFile = omNewFilePath;
-    if(omNewFilePath == def_EMPTYFILENAME || m_omCurrentTSFile.IsEmpty())
+    if(omNewFilePath == _(def_EMPTYFILENAME) || m_omCurrentTSFile.IsEmpty())
     {
-        SetWindowText("Test Automation Editor");
+        SetWindowText(_("Test Automation Editor"));
     }
     else
     {
-        SetWindowText("Test Automation Editor:: " + m_omCurrentTSFile);
+        SetWindowText(_("Test Automation Editor:: ") + m_omCurrentTSFile);
     }
 }
 
@@ -2606,7 +2607,7 @@ void CTSEditorChildFrame::OnEditPaste()
     //CTreeViewEx &omTempTreeCtrl = (CTreeViewEx&)m_odTreeView->GetTreeCtrl();
     if(bEnablePase() == FALSE)
     {
-        MessageBox("Wrong Item Selected");
+        MessageBox(_("Wrong Item Selected"));
         return;
     }
 
@@ -2928,11 +2929,11 @@ void CTSEditorChildFrame::OnFileValidate()
     m_odPropertyView->vShowHelpInfo(omStrResult);
     if(hResult != ERR_VALID_SUCCESS)
     {
-        MessageBox("Found Some Errors\\Warnings", "Validation Failed", MB_OK|MB_ICONERROR);
+        MessageBox(_("Found Some Errors\\Warnings"), _("Validation Failed"), MB_OK|MB_ICONERROR);
     }
     else
     {
-        MessageBox("No Errors\\Warnings are Found", "Validation Success", MB_OK|MB_ICONINFORMATION);
+        MessageBox(_("No Errors\\Warnings are Found"), _("Validation Success"), MB_OK|MB_ICONINFORMATION);
     }
 }
 /******************************************************************************
@@ -3382,7 +3383,7 @@ void CTSEditorChildFrame::vDisplaySignalInfo(CString& omStrMsg)
     {
         sSIGNALS* sSignalInfo = sMsg.m_psSignals;
         CString omStrText;
-        omStrText.Format(def_STR_SIGNAL_HEADING, "Signal", "Byte", "StartBit", "Length");
+        omStrText.Format(def_STR_SIGNAL_HEADING, _("Signal"), _("Byte"), _("StartBit"), _("Length"));
         while(sSignalInfo != NULL)
         {
             CString omStrSignal;

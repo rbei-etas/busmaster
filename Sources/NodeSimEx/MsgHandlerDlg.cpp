@@ -26,6 +26,7 @@
 #include "MsgHandlerDlg.h"
 #include "GlobalObj.h"
 #include "MsgHandlerDlg.h"
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -553,7 +554,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
             m_omStrSelectedItemText = defMSG_NAME_HANDLER;
             m_omStrSelectedItemText += omStrMsgName;
             omStrText = "\""+ omStrMsgName + "\"";
-            omStrHandlerType = defMSG_NAME_TEXT;
+            omStrHandlerType = _(defMSG_NAME_TEXT);
         }
         else
         {
@@ -598,7 +599,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     }
                     m_omStrSelectedItemText += m_omStrMsgID;
                     omStrText = "\""+ m_omStrMsgID + "\"";
-                    omStrHandlerType = defMSG_ID_TEXT;
+                    omStrHandlerType = _(defMSG_ID_TEXT);
                 }
                 else if(unMsgCount > 1)
                 {
@@ -615,7 +616,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     omStrText.TrimRight("_");
                     m_omStrSelectedItemText += omStrText;
                     omStrText = _T("\"")+ omStrText + _T("\"");
-                    omStrHandlerType = defMSG_IDLIST_TEXT;
+                    omStrHandlerType = _(defMSG_IDLIST_TEXT);
                 }
             }
             else
@@ -637,12 +638,12 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                         omStrText += "-";
                         omStrText += m_omStrMsgIDTo;
                         omStrText += "\"";
-                        omStrHandlerType = defMSG_IDRANGE_TEXT;
+                        omStrHandlerType = _(defMSG_IDRANGE_TEXT);
                     }
                     else
                     {
                         bReturn = FALSE;
-                        AfxMessageBox(defSTRMSG_RANGE_INVALID);
+                        AfxMessageBox(_(defSTRMSG_RANGE_INVALID));
                         m_odEditMsgIDFrom.SetFocus();
                     }
                 }
@@ -652,8 +653,8 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     if(bButtonChecked != 0)
                     {
                         m_omStrSelectedItemText = defMSG_ALL;
-                        omStrHandlerType = defMSG_ALL_TEXT;
-                        omStrText = "message";
+                        omStrHandlerType = _(defMSG_ALL_TEXT);
+                        omStrText = _("message");
                     }
                 }
             }
@@ -676,7 +677,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     omStrMsgPro = omStrMsgPro.Left( omStrMsgPro.Find("(") );
                     omStrMsgPro.TrimLeft();
                     omStrMsgPro.TrimRight();
-                    if(omStrHandlerType == defMSG_IDLIST_TEXT )
+                    if(omStrHandlerType == _(defMSG_IDLIST_TEXT) )
                     {
                         if (omStrMsgPro.Find(defMSG_IDLIST_HANDLER) >= 0 )
                         {
@@ -693,10 +694,10 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                                 UINT unMsgId = strtoul(omStrTemp, &pchTemp, 16);
                                 if (omMsgList.Find(unMsgId, 0) != NULL)
                                 {
-                                    omStrMsgPro = defMSG_DUPL_MSG_HANDLER;
-                                    omStrMsgPro.Replace( _T("TYPE"),
+                                    omStrMsgPro = _(defMSG_DUPL_MSG_HANDLER);
+                                    omStrMsgPro.Replace( _T(_("TYPE")),
                                                          omStrHandlerType );
-                                    omStrMsgPro.Replace( _T("MESSAGENAME"),
+                                    omStrMsgPro.Replace( _T(_("MESSAGENAME")),
                                                          omStrText );
 
                                     omStrMsgPro += _T("In\"") + pMsgArray->GetAt( nCount ) +_T("\" Handler");
@@ -960,15 +961,15 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
             if (omStrMsgPro.Compare(omStrMakeHandler) == 0)
             {
                 // Form the message to be dispalyed
-                omStrMsgPro = defDUPL_CORR_MSG_HANDLER;
+                omStrMsgPro = _(defDUPL_CORR_MSG_HANDLER);
                 if(omStrHandlerType.Compare(defMSG_ID_HANDLER) == 0)
                 {
-                    omStrMsgPro.Replace( "TYPE", defMSG_NAME_TEXT);
+                    omStrMsgPro.Replace( "TYPE", _(defMSG_NAME_TEXT));
                     m_odEditMsgID.SetFocus();
                 }
                 else if(omStrHandlerType.Compare(defMSG_NAME_HANDLER) == 0)
                 {
-                    omStrMsgPro.Replace( "TYPE", defMSG_ID_TEXT);
+                    omStrMsgPro.Replace( "TYPE", _(defMSG_ID_TEXT));
                     omStrMessageNameOrID.Insert(0,"0x");
                     m_omListMsgName.SetFocus();
                 }

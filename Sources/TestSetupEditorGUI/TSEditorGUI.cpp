@@ -20,6 +20,8 @@
  */
 #include "TSEditorGUI_stdafx.h"
 #include <afxdllx.h>
+#include "../Application/MultiLanguage.h"
+#include "../Application/GettextBusmaster.h"
 #define USAGE_EXPORT
 
 #include "TSEditorGUI_Extern.h"
@@ -36,6 +38,9 @@ CTSEditorChildFrame* g_pomTSEditorChildWindow = NULL;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
+
+    static HINSTANCE shLangInst=NULL;
+
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
 
@@ -61,11 +66,40 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  Regular DLL's resource chain, and serious problems will
         //  result.
 
+        // Begin of Multiple Language support
+        if ( CMultiLanguage::m_nLocales <= 0 )  // Not detected yet
+        {
+            CMultiLanguage::DetectLangID();     // Detect language as user locale
+            CMultiLanguage::DetectUILanguage(); // Detect language in MUI OS
+        }
+        TCHAR szModuleFileName[MAX_PATH];       // Get Module File Name and path
+        int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
+        if ( ret == 0 || ret == MAX_PATH )
+        {
+            ASSERT(FALSE);
+        }
+        // Load resource-only language DLL. It will use the languages
+        // detected above, take first available language,
+        // or you can specify another language as second parameter to
+        // LoadLangResourceDLL. And try that first.
+        shLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+        if (shLangInst)
+        {
+            TestSetupEditor.hResource = shLangInst;
+        }
+        // End of Multiple Language support
+
+
         new CDynLinkLibrary(TestSetupEditor);
 
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
+        if (shLangInst)
+        {
+            FreeLibrary(shLangInst);
+        }
+
         TRACE0("TestSetupEditor.DLL Terminating!\n");
         if(m_pbyTEConfigData != NULL)
         {
@@ -107,7 +141,7 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
             // Create Tx Message Configuration window
             //TODO::defSTR_TX_WINDOW_TITLE
             if( g_pomTSEditorChildWindow->Create( strMDIClass,
-                                                  "Test Setup Editor",
+                                                  _("Test Setup Editor"),
                                                   WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
                                                   omRect, ((CMDIFrameWnd*)pParentWnd)) == TRUE )
             {

@@ -193,7 +193,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         if(pMainFrame->m_psSignalWatchList != NULL)
         {
             if(theApp.m_bFromAutomation == FALSE)
-                bUserOption = AfxMessageBox(defIMPORT_WARNING,
+                bUserOption = AfxMessageBox(_(defIMPORT_WARNING),
                                             MB_YESNO | MB_DEFBUTTON1 | MB_ICONQUESTION) ==
                               IDYES;
             // If user wants to clear
@@ -221,7 +221,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
             {
                 // Get the delete confirmation from the user
                 if(theApp.m_bFromAutomation == FALSE)
-                    bUserOption = AfxMessageBox(defIMPORT_WARNING_GRAPH,
+                    bUserOption = AfxMessageBox(_(defIMPORT_WARNING_GRAPH),
                                                 MB_YESNO | MB_DEFBUTTON1 | MB_ICONQUESTION) ==
                                   IDYES;
 

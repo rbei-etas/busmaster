@@ -25,6 +25,7 @@
 
 #include "TestSetupEditorLib_stdafx.h"
 #include "Send_MessageEntity.h"
+#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************
 Function Name  :  CSend_MessageEntity
@@ -118,17 +119,21 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     //Retriving Message ID
     bstrNodeName = def_STR_TCATTRIB_ID;
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
-    pIDOMChildNode->get_nodeTypedValue(&NodeValue);
-    omstrTemp = strCopyBSTRToCString(NodeValue);
-    m_ouData.m_dwMessageID = atoi((LPCSTR)omstrTemp);
-    pIDOMChildNode->Release();
+    if (NULL != pIDOMChildNode)
+    {
+        pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+        omstrTemp = strCopyBSTRToCString(NodeValue);
+        m_ouData.m_dwMessageID = atoi((LPCSTR)omstrTemp);
+        pIDOMChildNode->Release();
+    }
+
     if(m_ouDataBaseManager.bIsValidMessageID(m_ouData.m_dwMessageID)== FALSE)
     {
         //TODO::INVALID MSG POSSIBLE ONLY WHEN THE FILE IS EDITED WITH NOTEPAD.
         return -1;
     }
     //Retriving Message UNIT
-    bstrNodeName = def_STR_TCATTRIB_UNIT;
+    bstrNodeName = _(def_STR_TCATTRIB_UNIT);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
     omstrTemp = strCopyBSTRToCString(NodeValue);
@@ -142,7 +147,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     }
     pIDOMChildNode->Release();
     //Retriving Default Value of a signal
-    bstrNodeName = def_STR_ATTRIIB_DEFAULT;
+    bstrNodeName = _(def_STR_ATTRIIB_DEFAULT);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
     omstrTemp = strCopyBSTRToCString(NodeValue);
@@ -166,7 +171,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     IXMLDOMNodeListPtr pIDOMSignalList;
     IXMLDOMNode* pIDOMSChildSignal;
 
-    bstrNodeName = def_STR_SIGNAL_NODE;
+    bstrNodeName = _(def_STR_SIGNAL_NODE);
     pIDOMSignalList = pIDomNode->selectNodes((_bstr_t)bstrNodeName);
     pIDOMSignalList->get_length(&lCount);
 
@@ -221,7 +226,7 @@ Modifications  :
 ******************************************************************************/
 void CSend_MessageEntity::vRetriveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal)
 {
-    CComBSTR bstrNodeName = def_NAME_NODE;
+    CComBSTR bstrNodeName = _(def_NAME_NODE);
     CComVariant NodeValue;
     CString strTemp;
     IXMLDOMNamedNodeMap* pIDOMAttributes;
@@ -310,7 +315,7 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
 
     if (pIDOMDoc != NULL)
     {
-        pChildElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_SENDMSG_NODE));
+        pChildElement   =  pIDOMDoc->createElement(_bstr_t(_(def_STR_SENDMSG_NODE)));
 
         MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_ID);
         if(pIDomTSAtrrib!= NULL)
@@ -319,7 +324,7 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
 
-        pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_UNIT);
+        pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_TCATTRIB_UNIT));
         if(pIDomTSAtrrib!= NULL)
         {
             switch(m_ouData.m_eSignalUnitType)
@@ -336,7 +341,7 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
             pIDomTSAtrrib->value = _bstr_t(omstrTemp);
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
-        pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_ATTRIIB_DEFAULT);
+        pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_ATTRIIB_DEFAULT));
         if(pIDomTSAtrrib!= NULL)
         {
             switch(m_ouData.m_eSignalUnitType)
@@ -357,8 +362,8 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
         {
             POSITION pos = m_ouData.m_odSignalDataList.FindIndex(i);
             CSignalData& ouSignalData = m_ouData.m_odSignalDataList.GetAt(pos);
-            pSubElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_SIGNAL_NODE));
-            pIDomTSAtrrib = pIDOMDoc->createAttribute(def_NAME_NODE);
+            pSubElement   =  pIDOMDoc->createElement(_bstr_t(_(def_STR_SIGNAL_NODE)));
+            pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_NAME_NODE));
             pIDomTSAtrrib->value = _bstr_t(ouSignalData.m_omSigName);
             pSubElement->setAttributeNode(pIDomTSAtrrib);
 

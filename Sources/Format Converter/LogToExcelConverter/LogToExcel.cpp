@@ -248,7 +248,7 @@ HRESULT CLogToExcel::bConvert()
     if(m_bFilesOpened == TRUE)
     {
         m_pExcelFile << "<HTML><HEAD></HEAD><BODY>" << endl;
-        m_pExcelFile << "<FONT COLOR =\"GREEN\"><CENTER><B>BUSMASTER - Exported Log File Report</B></CENTER>";
+        m_pExcelFile << _("<FONT COLOR =\"GREEN\"><CENTER><B>BUSMASTER - Exported Log File Report</B></CENTER>");
         m_pExcelFile << "<BR><BR>";
         m_pExcelFile << "<TABLE BORDER COLOR=\"BLACK\"><TR>";
 
@@ -293,31 +293,31 @@ void CLogToExcel::GetErrorString(HRESULT hResult, string& omStrErrorString)
     switch(hResult)
     {
         case ERR_EXPORTTOEXCEL_SYNTAXERROR:
-            omStrErrorString = EXPORTTOEXCEL_SYNTAXERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_SYNTAXERROR);
             break;
         case ERR_EXPORTTOEXCEL_FILESNOTOPEN:
             omStrErrorString = EXPORTTOEXCEL_FILESNOTOPEN;
             break;
         case ERR_EXPORTTOEXCEL_FIELDSELECTIONERROR:
-            omStrErrorString = EXPORTTOEXCEL_FIELDSELECTIONERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_FIELDSELECTIONERROR);
             break;
         case ERR_EXPORTTOEXCEL_LOGFILEERROR:
-            omStrErrorString = EXPORTTOEXCEL_LOGFILEERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_LOGFILEERROR);
             break;
         case ERR_EXPORTTOEXCEL_CSVFILEERROR:
-            omStrErrorString = EXPORTTOEXCEL_CSVFILEERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_CSVFILEERROR);
             break;
         case ERR_EXPORTTOEXCEL_FILEERROR:
-            omStrErrorString = EXPORTTOEXCEL_FILEERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_FILEERROR);
             break;
         case ERR_EXPORTTOEXCEL_LOGFILEOPENERROR:
-            omStrErrorString = EXPORTTOEXCEL_LOGFILEOPENERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_LOGFILEOPENERROR);
             break;
         case ERR_EXPORTTOEXCEL_CSVFILEOPENERROR:
-            omStrErrorString = EXPORTTOEXCEL_CSVFILEOPENERROR;
+            omStrErrorString = _(EXPORTTOEXCEL_CSVFILEOPENERROR);
             break;
         default:
-            omStrErrorString = "Invalid Error";
+            omStrErrorString = _("Invalid Error");
             break;
     }
 }

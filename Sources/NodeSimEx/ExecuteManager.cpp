@@ -687,7 +687,7 @@ void CExecuteManager::vManageBusEventHandler(eBUSEVEHANDLER eBusEvent)
     Author(s)        :  Anish kumar
     Date Created     :  19.12.05
 ***************************************************************************************/
-void CExecuteManager::vManageOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo, DWORD dwClientId)
+void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DWORD& dwClientId)
 {
     EnterCriticalSection(&m_CritSectPsNodeObject);
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
@@ -700,7 +700,7 @@ void CExecuteManager::vManageOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo, DWOR
             psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
             if (sNodeInfo.m_dwClientId == dwClientId)
             {
-                psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(sRxMsgInfo);
+                psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*sRxMsgInfo);
             }
         }
         psTempNodeObject = psTempNodeObject->m_psNextNode;

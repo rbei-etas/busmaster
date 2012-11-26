@@ -24,7 +24,7 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "SendEntity.h"
-
+#include "../Application/GettextBusmaster.h"
 
 
 /******************************************************************************
@@ -215,7 +215,7 @@ HRESULT CSendEntity::ValidateEntity(CString& omStrResult)
     GetSubEntryCount(unSendMessageCount);
     if(unSendMessageCount <= 0)
     {
-        omStrResult += ("Warning: Has No Send Messages\r\n");
+        omStrResult += (_("Warning: Has No Send Messages\r\n"));
         return ERR_VALID_WARNING;               //CS026
     }
     return ERR_VALID_SUCCESS;
@@ -310,7 +310,7 @@ Modifications  :
 HRESULT CSendEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     MSXML2::IXMLDOMNodeListPtr pIDOMSendList;
-    _bstr_t bstrNodeName = def_STR_SENDMSG_NODE;
+    _bstr_t bstrNodeName = _(def_STR_SENDMSG_NODE);
     long lCount;
 
     pIDOMSendList = pIDomNode->selectNodes(bstrNodeName);
@@ -348,7 +348,7 @@ HRESULT CSendEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
     pIDOMDoc.CreateInstance(L"Msxml2.DOMDocument");
 
     INT nCount = (INT)m_ouData.m_odSend_MessageDataList.GetCount();
-    MSXML2::IXMLDOMElementPtr pIDomSendNode =  pIDOMDoc->createElement(_bstr_t(def_STR_SEND_NODE));
+    MSXML2::IXMLDOMElementPtr pIDomSendNode =  pIDOMDoc->createElement(_bstr_t(_(def_STR_SEND_NODE)));
     for(INT i=0; i<nCount; i++)
     {
         POSITION pos = m_ouData.m_odSend_MessageDataList.FindIndex(i);

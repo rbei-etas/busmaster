@@ -28,6 +28,7 @@
 //accessin manager class object
 #include "ExecuteManager.h"
 #include "SimSysManager.h"
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -187,7 +188,7 @@ BOOL CSetResetTimer::OnInitDialog()
     }
     // Set the style and insert column.
     m_omTimerList.SetExtendedStyle(LVS_EX_CHECKBOXES);
-    m_omTimerList.InsertColumn(0,defTIMER_HEADER_NAME,LVCFMT_CENTER,-1,-1);
+    m_omTimerList.InsertColumn(0,_(defTIMER_HEADER_NAME),LVCFMT_CENTER,-1,-1);
     if(m_psSelectedNodeTimerListPtr==NULL&&m_psFirstNodeTimerList!=NULL)
     {
         CString omNodeName;

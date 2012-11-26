@@ -71,5 +71,5 @@ const float PI = (float) 3.14159265358979323846;
 #include "include/Error.h"
 
 const BYTE VERSION_MAJOR    = 1;
-const BYTE VERSION_MINOR    = 6;
-const BYTE VERSION_BUILD    = 8;
+const BYTE VERSION_MINOR    = 7;
+const BYTE VERSION_BUILD    = 0;

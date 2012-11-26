@@ -95,7 +95,7 @@ BEGIN
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
-    "W",            IDM_CONFIGURE_DATABASE_NEW, VIRTKEY, CONTROL, NOINVERT
+    "B",            IDM_CONFIGURE_DATABASE_NEW, VIRTKEY, CONTROL, NOINVERT
     "D",            IDM_CONFIGURE_DATABASE_OPENACTIVE, VIRTKEY, CONTROL, NOINVERT
     "E",            IDM_CONFIGURE_DATABASE_SAVE, VIRTKEY, CONTROL, NOINVERT
     "L",            IDM_DLL_BUILDLOAD_ALL,  VIRTKEY, CONTROL, NOINVERT
@@ -247,7 +247,7 @@ FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_MSG_NAME,85,39,145,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_NAME
     EDITTEXT        IDC_EDIT_MSGCODE,94,58,87,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSGCODE
-    EDITTEXT        IDC_EDIT_MSG_LENGTH,395,36,20,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_LENGTH
+    EDITTEXT        IDC_EDIT_MSG_LENGTH,418,37,30,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_LENGTH
     CONTROL         "List1",IDC_LSTC_SIGNAL_DETAILS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,23,115,433,104,0,HIDC_LSTC_SIGNAL_DETAILS
     PUSHBUTTON      "New Signal...",IDC_BUTTON_NEWSIGNAL,78,228,51,15
     PUSHBUTTON      "Edit Signal...",IDC_BUTTON_EDITSIGNAL,133,228,51,15
@@ -255,22 +255,22 @@ BEGIN
     CONTROL         "List2",IDC_LSTC_SGIDVAL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,23,267,433,59
     LTEXT           "Message &Name :",IDC_STAT_MSG_NAME,26,38,53,8
     LTEXT           "Message &ID :",IDC_STAT_MSG_CODE,26,58,58,8
-    LTEXT           "Message Length :",IDC_STATIC_MSGLEN,327,36,58,8
+    LTEXT           "Message Length(in Bytes) :",IDC_STATIC_MSGLEN,327,36,86,8
     LTEXT           "Number of Signals :",IDC_STAT_NOOFSGS,327,57,62,8,0,0,HIDC_STAT_NOOFSGS
-    EDITTEXT        IDC_EDIT_NOOFSGS,395,57,22,14,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_NOOFSGS
+    EDITTEXT        IDC_EDIT_NOOFSGS,418,57,22,14,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_NOOFSGS
     GROUPBOX        "Message Details",IDC_STAT_MSGGRP,16,19,449,79
     GROUPBOX        "Signal Details",IDC_STAT_SGGROUP,15,101,449,232
     LTEXT           "Signal Description",IDC_STAT_DESC,23,255,58,8
     LTEXT           "Signal Value",IDC_STAT_SIGNAL_VAL,304,255,40,8
     LTEXT           "&Frame Format :",IDC_STATIC_FRAMEFORMAT,26,80,48,8
     LTEXT           "&Data Format :",IDC_STATIC_DATA_FORMAT,327,78,44,8
-    LTEXT           "",IDC_STATIC_FF,85,80,52,8
+    LTEXT           "",IDC_STATIC_FF,84,80,52,8
     LTEXT           "",IDC_STATIC_DF,395,78,53,8
     GROUPBOX        "Message and Signal Information",IDC_STAT_MSG_DETAILS,7,7,468,336,BS_CENTER
     PUSHBUTTON      "New Desc...",IDC_CBTN_ADD_DESC,243,228,51,15
     PUSHBUTTON      "Edit Desc...",IDC_CBTN_EDIT_DESC,298,228,51,15
     PUSHBUTTON      "Delete Desc",IDC_CBTN_DEL_DESC,353,228,51,15
-    LTEXT           "Byte(s)",IDC_STAT_MSGBYTES,420,36,22,8
+    LTEXT           "",IDC_STAT_MSGBYTES,440,79,22,8,NOT WS_VISIBLE
     RTEXT           "0x",IDC_STAT_MSG_CODE_HEX,84,58,8,8
 END
 
@@ -686,13 +686,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.6.8"
+            VALUE "FileVersion", "Ver 1.7.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.6.8"
+            VALUE "ProductVersion", "Ver 1.7.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -932,7 +932,7 @@ BEGIN
         END
         POPUP "&Database",                      65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
         BEGIN
-            MENUITEM "&New                          Ctrl+W", 32815,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
+            MENUITEM "&New                          Ctrl+B", 32815,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
             MENUITEM "&Open...                    Ctrl+D", 32817,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
             MENUITEM MFT_SEPARATOR
             MENUITEM "&Save                         Ctrl+E", 32864,MFT_STRING,MFS_ENABLED
@@ -1589,7 +1589,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.6.8"
+    IDS_VERSION             "Ver 1.7.0"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"

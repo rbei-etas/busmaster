@@ -24,6 +24,7 @@
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "MsgContainer_J1939.h"
+#include "../Application/GettextBusmaster.h"
 
 const int nBitsIn4Bytes          = 32;
 const int nBitsIn5Bytes          = 40;
@@ -190,13 +191,13 @@ void CMsgContainerJ1939::vRetrieveDataFromBuffer()
         if (Result == ERR_READ_MEMORY_SHORT)
         {
             CString omBuf;
-            omBuf.Format("J1939 PSDI - ERR_READ_MEMORY_SHORT  nSize: %d", nSize);
+            omBuf.Format(_("J1939 PSDI - ERR_READ_MEMORY_SHORT  nSize: %d"), nSize);
             ASSERT(!AfxMessageBox(omBuf));
         }
         else if (Result == EMPTY_APP_BUFFER)
         {
             CString omBuf;
-            omBuf.Format("J1939 PSDI - EMPTY_APP_BUFFER");
+            omBuf.Format(_("J1939 PSDI - EMPTY_APP_BUFFER"));
             ASSERT(!AfxMessageBox(omBuf));
         }
         if (Result == CALL_SUCCESS)
@@ -274,7 +275,7 @@ void CMsgContainerJ1939::vProcessNewData(STJ1939_MSG& sJ1939Msg)
             sJ1939Msg.vGetDataStream(arrBuf);
             m_sJ1939ReadMsgSpl.vSetDataStream(arrBuf);
             m_sJ1939ReadMsgSpl.vGetDataStream(arrBuf);
-            m_ouAppendJ1939Buf.WriteIntoBuffer(J1939, (BYTE*)&m_sJ1939ReadMsgSpl, m_sJ1939ReadMsgSpl.nGetSize());
+            m_ouAppendJ1939Buf.WriteIntoBuffer(J1939, arrBuf/*(BYTE*)&m_sJ1939ReadMsgSpl*/, m_sJ1939ReadMsgSpl.nGetSize());
 
             if (NULL != m_pRxMsgCallBack)
             {
@@ -639,9 +640,21 @@ HRESULT CMsgContainerJ1939::hUpdateFormattedMsgStruct(int nListIndex,
     {
         INT nType = 0;
         nSize = MAX_MSG_LEN_J1939 + sizeof(__int64);
+
         //In append mode providing interpret state is not required
-        hResult = m_ouAppendJ1939Buf.ReadEntry(nType, (BYTE*)&m_sJ1939ReadMsgSpl, nSize,
+        hResult = m_ouAppendJ1939Buf.ReadEntry(nType, m_pbyJ1939Data, nSize,
                                                nListIndex, FALSE);
+
+        if (hResult == S_OK)
+        {
+            // Save it into J1939 message structure
+            m_sJ1939ReadMsgSpl.vSetDataStream(m_pbyJ1939Data);
+
+            // Copy delta time
+            BYTE* pBytTemp = m_pbyJ1939Data;
+            pBytTemp += /*m_sJ1939Data.unGetSize()*/nSize - sizeof(__int64);
+            memcpy(&m_sJ1939ReadMsgSpl.m_nDeltime, pBytTemp, sizeof(__int64));
+        }
     }
     else
     {

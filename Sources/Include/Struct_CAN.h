@@ -46,9 +46,11 @@ struct sTCAN_MSG
     unsigned char m_ucDataLen;  // Data len (0..8)
     unsigned char m_ucChannel;  // Message Length
     unsigned char m_ucData[8];  // Databytes 0..7
+    unsigned char* m_ucCANFDData;   // Databytes 0..63
 };
 typedef sTCAN_MSG STCAN_MSG;
 typedef sTCAN_MSG* PSTCAN_MSG;
+
 
 // This structure holds the error and the channel number
 typedef struct sCAN_ERR
@@ -144,6 +146,21 @@ private:
         m_bAccFilterMode    = objRef.m_bAccFilterMode;
         m_ucControllerMode  = objRef.m_ucControllerMode;
         m_bSelfReception    = objRef.m_bSelfReception;
+
+        /* CAN FD related parameters */
+        m_unDataBitRate                 = objRef.m_unDataBitRate;
+        m_unDataSamplePoint             = objRef.m_unDataSamplePoint;
+        m_unDataBTL_Cycles              = objRef.m_unDataBTL_Cycles;
+        m_unDataSJW                     = objRef.m_unDataSJW;
+        m_bTxDelayCompensationON        = objRef.m_bTxDelayCompensationON;
+        m_unTxDelayCompensationQuanta   = objRef.m_unTxDelayCompensationQuanta;
+        m_bytRxCompatibility            = objRef.m_bytRxCompatibility;
+        m_bytTxCompatibility            = objRef.m_bytTxCompatibility;
+
+        m_bDebug            = objRef.m_bDebug;
+        m_bPassiveMode      = objRef.m_bPassiveMode;
+        m_omStrLocation     = objRef.m_omStrLocation;
+        m_bHWTimestamps     = objRef.m_bHWTimestamps;
     }
 public:
     int     m_nItemUnderFocus;                   // item number under focus
@@ -175,6 +192,21 @@ public:
     int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
     int     m_bSelfReception;
 
+    /* CAN FD related parameters */
+    UINT32  m_unDataBitRate;
+    UINT32  m_unDataSamplePoint;
+    UINT32  m_unDataBTL_Cycles;
+    UINT32  m_unDataSJW;
+    bool    m_bTxDelayCompensationON;
+    UINT32  m_unTxDelayCompensationQuanta;
+    BYTE    m_bytRxCompatibility;
+    BYTE    m_bytTxCompatibility;
+
+    int     m_bDebug;                            // debug mode for channel driver
+    int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)
+    string  m_omStrLocation;                     // location (serial port, ip-address, ...)
+    int     m_bHWTimestamps;                     // timestamps from the controllers hardware
+
     //Filter type: 1. Accept All 2. Reject All 3. Manual setting
     eHW_FILTER_TYPES m_enmHWFilterType[CAN_MSG_IDS];
 
@@ -201,7 +233,7 @@ public:
         m_omStrCNF3 = "5";
         m_omStrBTR0 = "C0";
         m_omStrBTR1 = "3A";
-        m_omStrBaudrate = "500";
+        m_omStrBaudrate = "500000";
         m_omStrClock = "16";
         m_omStrSamplePercentage = "75";
         m_omStrSampling = "1";
@@ -234,6 +266,16 @@ public:
         m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
         m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
         m_bSelfReception = TRUE;
+
+        /* CAN FD related parameters */
+        m_unDataBitRate                 = 2000000;
+        m_unDataSamplePoint             = 70;
+        m_unDataBTL_Cycles              = 10;
+        m_unDataSJW                     = 04;
+        m_bTxDelayCompensationON        = 0;    //OCI_CANFD_TX_DELAY_COMPENSATION_OFF
+        m_unTxDelayCompensationQuanta   = 0;
+        m_bytRxCompatibility            = 3;    //OCI_CANFD_RX_USE_RXFD_MESSAGE_PADDING
+        m_bytTxCompatibility            = 1;    //OCI_CANFD_TX_USE_DBR
     }
     //MVN
     void LoadControllerConfigData(xmlNodePtr& pNodePtr)
@@ -282,6 +324,11 @@ public:
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
         chTemp[nSize] = '\0';
         m_omStrBaudrate = chTemp;
+        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        fBaudRate *=  1000;   //convert from Kbps to bps
+        std::stringstream ss;
+        ss << fBaudRate;
+        m_omStrBaudrate = ss.str();
 
         COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
@@ -436,11 +483,20 @@ public:
 
     void SaveConfigDataToXML(xmlNodePtr pNodePtr)
     {
-        const char* strBaudRate = m_omStrBaudrate.c_str();
+        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
+        {
+            fBaudRate = fBaudRate/1000;    //convert to Kbps before saving to XML
+        }
+        std::stringstream ss;
+        ss << fBaudRate;
+        string omStrBaudrate = ss.str();
+        const char* strBaudRate = omStrBaudrate.c_str();
         const char* strCNF1 = m_omStrCNF1.c_str();
         const char* strCNF2 = m_omStrCNF2.c_str();
         const char* strCNF3 = m_omStrCNF3.c_str();
         const char* strVar;
+        const char* strLocation = m_omStrLocation.c_str();
 
         xmlNewChild(pNodePtr, NULL, BAD_CAST "BaudRate", BAD_CAST strBaudRate);
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CNF1", BAD_CAST strCNF1);
@@ -566,6 +622,25 @@ public:
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_1", BAD_CAST strVar);
 
+        stringstream stream7;
+        stream7 << m_bDebug;
+        strData = stream7.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "Debug", BAD_CAST strVar);
+
+        stringstream stream8;
+        stream8 << m_bPassiveMode;
+        strData = stream8.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "PassiveMode", BAD_CAST strVar);
+
+        stringstream stream9;
+        stream9 << m_bHWTimestamps;
+        strData = stream9.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "HWTimestamps", BAD_CAST strVar);
+
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "Location", BAD_CAST strLocation);
     }
     void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
     {
@@ -584,6 +659,12 @@ public:
         nSize += sizeof(eHW_FILTER_TYPES);
         COPY_DATA(pbyTemp, &m_enmHWFilterType[1],  sizeof(eHW_FILTER_TYPES));
         nSize += sizeof(eHW_FILTER_TYPES);
+        COPY_DATA(pbyTemp, &m_bDebug,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_bPassiveMode,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_bHWTimestamps,  sizeof(INT));
+        nSize += nIntSize;
 
         int nStrSize;
 
@@ -760,6 +841,12 @@ public:
         nSize += nIntSize;
         COPY_DATA(pbyTemp, m_omHardwareDesc.c_str(),  sizeof(char)*nStrSize);
         nSize += nStrSize;
+
+        nStrSize = m_omStrLocation.length();
+        COPY_DATA(pbyTemp, &nStrSize,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, m_omStrLocation.c_str(),  sizeof(char)*nStrSize);
+        nSize += nStrSize;
     }
     /*void vGetControllerSize()
     {
@@ -906,6 +993,7 @@ private:
     static int  m_nMFactor;     // Multiplication factor
 
 public:
+    bool m_bCANFDMsg;
     unsigned char    m_ucDataType;  //Type of the message
     LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
     //QueryPerf..Counter()

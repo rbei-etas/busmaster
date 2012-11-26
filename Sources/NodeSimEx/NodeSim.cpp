@@ -188,7 +188,8 @@ void CNodeSim::NS_ManageBusEventHandler(eBUSEVEHANDLER eBusEvent)
 void CNodeSim::NS_ManageOnMessageHandler(void* psRxMsgInfo)
 {
     STCAN_TIME_MSG* psRxMsg = (STCAN_TIME_MSG*)psRxMsgInfo;
-    CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnMessageHandlerCAN(*psRxMsg, CAN_MONITOR_CLIENT_ID);
+    DWORD ix = CAN_MONITOR_CLIENT_ID;
+    CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnMessageHandlerCAN_(psRxMsg, ix);
 }
 
 void CNodeSim::NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal)
@@ -279,6 +280,10 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
     }
 }
 
+void CNodeSim::NS_SetJ1939ActivationStatus(bool bActivated)
+{
+    CGlobalObj::ouGetObj(m_eBus).bJ1939Activated  = bActivated;
+}
 BOOL CNodeSim::NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag)
 {
     BOOL bReturn = FALSE;

@@ -138,7 +138,7 @@ BOOL CEnvVarHandlerDlg::OnInitDialog()
             //if no key is available
             GetDlgItem( IDC_CBTN_ADD )->EnableWindow(FALSE);
             ShowWindow(SW_SHOW);
-            MessageBox("No Key is avilable",NULL,MB_OK);
+            MessageBox(_("No Key is avilable"),NULL,MB_OK);
 
         }
     }

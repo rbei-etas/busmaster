@@ -173,31 +173,31 @@ void CConverter::GetResultString(string& str)
     switch(m_uiResultCode)
     {
         case 0:
-            str = "Conversion completed.";
+            str = _("Conversion completed.");
             break;
 
         case 1:
-            str = "Conversion completed with warnings. See log file.";
+            str = _("Conversion completed with warnings.");
             break;
 
         case 2:
-            str = "Conversion aborted. Error opening input file.";
+            str = _("Conversion aborted. Error opening input file.");
             break;
 
         case 3:
-            str = "Conversion aborted. Error creating output file.";
+            str = _("Conversion aborted. Error creating output file.");
             break;
 
         case 4:
-            str = "Conversion aborted. Error with input file format.";
+            str = _("Conversion aborted. Error with input file format.");
             break;
 
         case 5:
-            str = "Conversion aborted. Error creating log file.";
+            str = _("Conversion aborted. Error creating log file.");
             break;
 
         default:
-            str = "Unknown";
+            str = _("Unknown");
             break;
     }
 }
@@ -508,7 +508,7 @@ bool CConverter::WriteToOutputFile(fstream& fileOutput)
     bool bResult = true;
     // write to the output file
     // write header
-    fileOutput << "VERSION \"\"" << endl;
+    fileOutput << _("VERSION \"\"") << endl;
     fileOutput << endl;
     fileOutput << endl;
     fileOutput << "BS_:" << endl;
@@ -716,7 +716,7 @@ void CConverter::CreateLogFile(fstream& fileLog)
 {
     // write to the output file
     bool first_sig = true;
-    fileLog << "Conversion Error Log" << endl;
+    fileLog << _("Conversion Error Log") << endl;
     fileLog << endl;
     list<CMessage>::iterator msg;
 
@@ -742,8 +742,8 @@ void CConverter::CreateLogFile(fstream& fileLog)
                 }
 
                 sig->GetErrorString(str);
-                fileLog << "\tSignal Discarded SIG_NAME: " << sig->m_sName.c_str();
-                fileLog << ", Reason: " << str.c_str() << endl;
+                fileLog << _("\tSignal Discarded SIG_NAME: ") << sig->m_sName.c_str();
+                fileLog << _(", Reason: ") << str.c_str() << endl;
             }
         }
     }

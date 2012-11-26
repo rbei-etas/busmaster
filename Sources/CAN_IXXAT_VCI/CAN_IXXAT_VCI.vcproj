@@ -43,11 +43,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories=".; &quot;$(SolutionDir)&quot;; $(IXXAT_VCI_SDK)\inc; ..\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="CAN_IXXAT_VCI_stdAfx.h"
@@ -68,6 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
@@ -127,6 +129,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories=".; &quot;$(SolutionDir)&quot;; $(IXXAT_VCI_SDK)\inc; ..\include"
@@ -152,6 +155,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
@@ -213,6 +217,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="0"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories=".; &quot;$(SolutionDir)&quot;; $(IXXAT_VCI_SDK)\inc; ..\include"
@@ -238,6 +243,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
@@ -345,6 +351,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\Application\MultiLanguage.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\vcinpldynl.cpp"
 				>
 			</File>
@@ -396,6 +406,10 @@
 			</File>
 			<File
 				RelativePath=".\IxxatCanChannel.h"
+				>
+			</File>
+			<File
+				RelativePath="..\Application\MultiLanguage.h"
 				>
 			</File>
 			<File

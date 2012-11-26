@@ -27,6 +27,7 @@
 #include "Utility/Utility.h"      // For Utility Functions
 #include "Utility/Utility_Structs.h"
 #include "include/Basedefs.h"
+#include "../Application/GettextBusmaster.h"
 
 enum eMODES
 {
@@ -391,7 +392,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         pomCancelButton = (CButton*)GetDlgItem(IDCANCEL);
         if( pomCancelButton != NULL )
         {
-            pomCancelButton->SetWindowText(defSTR_CLOSE_MENU_TEXT);
+            pomCancelButton->SetWindowText(_(defSTR_CLOSE_MENU_TEXT));
             // Get the rect before centering
             CRect omRect1, omRect2;
             pomCancelButton->GetWindowRect(&omRect1);
@@ -513,7 +514,7 @@ void CSignalDetailsDlg::OnOK()
         UpdateData(TRUE);
         if ( m_omStrSignalName.IsEmpty() )
         {
-            AfxMessageBox( defSTR_SIGNAL_NAME_INVALID,
+            AfxMessageBox( _(defSTR_SIGNAL_NAME_INVALID),
                            MB_OK | MB_ICONINFORMATION );
             GetDlgItem(IDC_EDIT_SGNAME)->SetFocus();
             bReturnFlag = FALSE;
@@ -535,7 +536,7 @@ void CSignalDetailsDlg::OnOK()
                         (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
                                 m_omStrSignalName)) && bReturnFlag == TRUE)
                 {
-                    AfxMessageBox( MSG_DUPLICATE_SG_NAME, MB_OK|MB_ICONINFORMATION);
+                    AfxMessageBox( _(MSG_DUPLICATE_SG_NAME), MB_OK|MB_ICONINFORMATION);
                     m_omStrSignalName.Empty();
                     UpdateData(FALSE);
                     GetDlgItem( IDC_EDIT_SGNAME )->SetFocus();
@@ -548,7 +549,7 @@ void CSignalDetailsDlg::OnOK()
                                              m_nDataFormat)) &&
                     (bReturnFlag == TRUE))
             {
-                AfxMessageBox( defSTR_SIGNAL_END_BIT_INVALID,
+                AfxMessageBox( _(defSTR_SIGNAL_END_BIT_INVALID),
                                MB_OK | MB_ICONINFORMATION );
                 GetDlgItem( IDC_EDIT_SGLEN )->SetFocus();
                 bReturnFlag = FALSE;
@@ -558,7 +559,7 @@ void CSignalDetailsDlg::OnOK()
                     m_byByteIndex, m_unSgLen, m_byStartBit, m_nDataFormat )
                     && bReturnFlag == TRUE)
             {
-                AfxMessageBox( defSTR_SIGNAL_DUP_START_BIT,
+                AfxMessageBox( _(defSTR_SIGNAL_DUP_START_BIT),
                                MB_OK | MB_ICONINFORMATION );
                 GetDlgItem( IDC_EDIT_STBIT )->SetFocus();
                 bReturnFlag = FALSE;
@@ -645,7 +646,7 @@ void CSignalDetailsDlg::OnOK()
                 }
                 else
                 {
-                    AfxMessageBox(_T("Insufficient Memory available"), MB_OK|MB_ICONINFORMATION);
+                    AfxMessageBox(_T(_("Insufficient Memory available")), MB_OK|MB_ICONINFORMATION);
                 }
             }
         }

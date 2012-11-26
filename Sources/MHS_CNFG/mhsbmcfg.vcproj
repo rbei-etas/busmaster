@@ -48,6 +48,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\Res;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
@@ -77,6 +78,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/mhsbmcfg.dll"
 				LinkIncremental="1"
@@ -147,11 +149,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories=".\Res;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MHSBMCFG_EXPORTS"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\Debug/mhsbmcfg.pch"
 				AssemblerListingLocation=".\Debug/"
@@ -175,6 +178,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/mhsbmcfg.dll"
 				LinkIncremental="2"
@@ -245,6 +249,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories=".\Res;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
@@ -274,6 +279,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/mhsbmcfg.dll"
 				LinkIncremental="1"

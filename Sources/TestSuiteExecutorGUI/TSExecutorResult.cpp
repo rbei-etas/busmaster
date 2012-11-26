@@ -21,6 +21,8 @@
 #include "TSExecutorGUI_stdafx.h"
 #include "TSExecutorResult.h"
 #include "TSExecutorGUI_resource.h"
+#include "../Application/GettextBusmaster.h"
+
 #define defMAX_CHAR_PER_LINE        80
 
 /******************************************************************************
@@ -228,23 +230,23 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
 {
 
     //BUSMASTER Version
-    omReportFile.WriteString("\n\t\t\t\tBUSMASTER Version:: BUSMASTER " + m_omStrVersion);
-    omReportFile.WriteString("\n\t\t\t\tReport File For:: ");
+    omReportFile.WriteString(_("\n\t\t\t\tBUSMASTER Version:: BUSMASTER ") + m_omStrVersion);
+    omReportFile.WriteString(_("\n\t\t\t\tReport File For:: "));
     omReportFile.WriteString(m_omStrTestSetupFile);
 
-    omReportFile.WriteString("\n\nTestSetup File Information:");
+    omReportFile.WriteString(_("\n\nTestSetup File Information:"));
     omReportFile.WriteString("\n---------------------------\n\t");
-    omReportFile.WriteString("\n\tTitle: "+ m_omStrTestSetupFile);
-    omReportFile.WriteString("\n\tModule Name:"+m_ouHeaderInfo.m_sModuleName.m_omValue);
-    omReportFile.WriteString("\n\tVersion: "+m_ouHeaderInfo.m_sVersion.m_omValue);
-    omReportFile.WriteString("\n\tDatabase Information:"+m_ouHeaderInfo.m_omDatabasePath);
+    omReportFile.WriteString(_("\n\tTitle: ")+ m_omStrTestSetupFile);
+    omReportFile.WriteString(_("\n\tModule Name:")+m_ouHeaderInfo.m_sModuleName.m_omValue);
+    omReportFile.WriteString(_("\n\tVersion: ")+m_ouHeaderInfo.m_sVersion.m_omValue);
+    omReportFile.WriteString(_("\n\tDatabase Information:")+m_ouHeaderInfo.m_omDatabasePath);
     omReportFile.WriteString("\n\n");
 
-    omReportFile.WriteString("Engineer Info:");
+    omReportFile.WriteString(_("Engineer Info:"));
     omReportFile.WriteString("\n--------------");
-    omReportFile.WriteString("\n\tName: "+m_ouHeaderInfo.m_sEngineerInfo1.m_omValue);
-    omReportFile.WriteString("\n\tDesignation: "+m_ouHeaderInfo.m_sEngineerInfo2.m_omValue);
-    omReportFile.WriteString("\nResults:");
+    omReportFile.WriteString(_("\n\tName: ")+m_ouHeaderInfo.m_sEngineerInfo1.m_omValue);
+    omReportFile.WriteString(_("\n\tDesignation: ")+m_ouHeaderInfo.m_sEngineerInfo2.m_omValue);
+    omReportFile.WriteString(_("\nResults:"));
     omReportFile.WriteString("\n-------");
     omReportFile.WriteString("\n");
 
@@ -253,18 +255,18 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
     {
         POSITION pos = m_odTcResultList.FindIndex(nTcIndex);
         CResultTc& ouResultTc = m_odTcResultList.GetAt(pos);
-        omReportFile.WriteString("\nTestCase:  "+ouResultTc.m_omTestCase);
+        omReportFile.WriteString(_("\nTestCase:  ")+ouResultTc.m_omTestCase);
 
         if(ouResultTc.m_eResult == ERRORS)
         {
-            omReportFile.WriteString("\nResult:\tFAILED");
+            omReportFile.WriteString(_("\nResult:\tFAILED"));
         }
         else
         {
-            omReportFile.WriteString("\nResult:\tSUCCESS");
+            omReportFile.WriteString(_("\nResult:\tSUCCESS"));
         }
-        omReportFile.WriteString("\nStratTime:"+SysTimeToString(ouResultTc.m_sStartTime));
-        omReportFile.WriteString("\nEndTime:"+SysTimeToString(ouResultTc.m_sEndTime));
+        omReportFile.WriteString(_("\nStratTime:")+SysTimeToString(ouResultTc.m_sStartTime));
+        omReportFile.WriteString(_("\nEndTime:")+SysTimeToString(ouResultTc.m_sEndTime));
         //omReportFile.WriteString("\n");
         INT nVerifyCount = (INT)ouResultTc.m_ouVerifyList.GetCount();
         for(INT nVerifyIndex = 0; nVerifyIndex <nVerifyCount; nVerifyIndex++)
@@ -276,12 +278,12 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
             INT nMsgCount = (INT)ouVerify.m_MessageResultList.GetCount();
 
             vGetVerifySeverity(ouVerify.m_eResult, omStrTemp);
-            omStrVerify.Format("\n\tVerify - %d (Severity - %s)", nVerifyIndex+1, omStrTemp);
+            omStrVerify.Format(_("\n\tVerify - %d (Severity - %s)"), nVerifyIndex+1, omStrTemp);
             omReportFile.WriteString(omStrVerify);
 
             if(nMsgCount == 0)
             {
-                CString omStrTemp("No Message is Verified");
+                CString omStrTemp(_("No Message is Verified"));
                 omReportFile.WriteString("\n\t\t" + omStrTemp);
             }
             else
@@ -352,31 +354,31 @@ CString CResultGenerator::SysTimeToString(SYSTEMTIME& systime)
     switch (systime.wDayOfWeek)
     {
         case 0:
-            day = "Sunday";
+            day = _("Sunday");
             break;
 
         case 1:
-            day = "Monday";
+            day = _("Monday");
             break;
 
         case 2:
-            day = "Tuesday";
+            day = _("Tuesday");
             break;
 
         case 3:
-            day = "Wednesday";
+            day = _("Wednesday");
             break;
 
         case 4:
-            day = "Thursday";
+            day = _("Thursday");
             break;
 
         case 5:
-            day = "Friday";
+            day = _("Friday");
             break;
 
         case 6:
-            day = "Saturday";
+            day = _("Saturday");
             break;
     }
 

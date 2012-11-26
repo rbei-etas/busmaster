@@ -133,3 +133,20 @@ unsigned long long int unRoundOffdoubleValue(double dValue)
 
     return unVal;
 }
+void strTrimRight(string& str, string strSub)
+{
+    size_t endpos = str.find_last_not_of(strSub);
+    if( string::npos != endpos )
+    {
+        str = str.substr( 0, endpos+1 );
+    }
+}
+void strTrimLeft(string& str, string strSub)
+{
+    // trim leading spaces
+    size_t startpos = str.find_first_not_of(strSub);
+    if( string::npos != startpos )
+    {
+        str = str.substr( startpos );
+    }
+}

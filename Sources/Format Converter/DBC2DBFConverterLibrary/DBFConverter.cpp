@@ -25,7 +25,7 @@
 #include "DBFConverter.h"
 #include "DBFSignal.h"
 #include "DBFTagDefinitions.h"
-
+#include "Utility.h"
 using namespace std;
 
 bool CDBFConverter::valid_msg = true;
@@ -130,6 +130,9 @@ HRESULT CDBFConverter::GenerateImportList(/* sMESSAGE*& */)
 }
 HRESULT CDBFConverter::ConvertFile(string strDBFFile)
 {
+    /* Reset to default value*/
+    SetResultCode(CON_RC_NOERROR);
+
     fstream fileOutput;
     fileOutput.open(strDBFFile.c_str(), fstream::out);
     if(!fileOutput.is_open())
@@ -351,7 +354,7 @@ unsigned int CDBFConverter::Convert(string sCanoeFile, string sCanMonFile)
 const char* CDBFConverter::m_pacResultStrings[] =
 {
     "Conversion completed.",
-    "Conversion completed with errors. See log file.",
+    "Conversion completed with warnings.",
     "Conversion aborted. Error opening input file.",
     "Conversion aborted. Error creating output file.",
     "Conversion aborted. Error with input file format.",
@@ -366,7 +369,7 @@ HRESULT CDBFConverter::GetResultString(char* pchResult)
 {
     if( NULL != pchResult )
     {
-        strcpy(pchResult, m_pacResultStrings[m_uiResultCode]);
+        strcpy(pchResult, _(m_pacResultStrings[m_uiResultCode]));
         return S_OK;
     }
     return S_FALSE;
@@ -1014,7 +1017,7 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
                     errString += acTemp;
                     errString += "\" ";
                     errString += pcToken;
-                    errString += " : Match not Found in Param List\n";
+                    errString += _(" : Match not Found in Param List\n");
                     defList.push_back(errString);
                 }
             }
@@ -1053,7 +1056,7 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
                     errString += acTemp;
                     errString += "\" ";
                     errString += pcToken;
-                    errString += " : Match not Found in Param List\n";
+                    errString += _(" : Match not Found in Param List\n");
                     defList.push_back(errString);
                 }
             }
@@ -1129,6 +1132,8 @@ void CDBFConverter::vUpdateMessageNameFromParam(CParameterValues& uParamVal)
             if( uParamVal.m_ParamVal.cValue.length() > 0 )
             {
                 msg->m_acName = uParamVal.m_ParamVal.cValue;
+                strTrimLeft(msg->m_acName, "\" ");
+                strTrimRight(msg->m_acName, "\" ");
             }
         }
     }
@@ -1152,6 +1157,8 @@ void CDBFConverter::vUpdateSignalNameFromParam(CParameterValues& uParamVal)
                     if( uParamVal.m_ParamVal.cValue.length() > 0 )
                     {
                         signal->m_acName = uParamVal.m_ParamVal.cValue;
+                        strTrimLeft(signal->m_acName, "\" ");
+                        strTrimRight(signal->m_acName, "\" ");
                     }
                 }
             }
@@ -1187,7 +1194,7 @@ bool CDBFConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //For easy replacement of version Info #define is not added
-    fileOutput<< "[BUSMASTER_VERSION] [1.6.8]"<<endl;
+    fileOutput<< "[BUSMASTER_VERSION] [1.7.0]"<<endl;
 
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;
@@ -1399,7 +1406,7 @@ void CDBFConverter::CreateLogFile(fstream& fileLog)
 {
     char first_msg = 1;
     // write to the output file
-    fileLog << "Conversion Error Log" << endl;
+    fileLog << "Conversion Warnings Log" << endl;
     fileLog << endl;
     list<CMessage>::iterator msg;
 
@@ -1478,16 +1485,16 @@ void CDBFConverter::CreateLogFile(fstream& fileLog)
         {
             fileLog << "OBJECT ID : " << rParam->m_ObjectId.c_str();
             fileLog << "\tPARAM_NAME :\"" << rParam->m_ParamName.c_str() << "\"" << endl;
-            fileLog << "\tDescription:Default Value tag(BA_DEF_DEF_) doesn;t exist ";
-            fileLog << "\t Action Taken : Reset to default value" << endl;
+            fileLog << _("\tDescription:Default Value tag(BA_DEF_DEF_) doesn;t exist ");
+            fileLog << _("\t Action Taken : Reset to default value") << endl;
         }
 
         if(rParam->m_RangeError)
         {
             fileLog << "OBJECT ID : " << rParam->m_ObjectId.c_str();
             fileLog << "\tPARAM_NAME :\"" << rParam->m_ParamName.c_str() << "\"" << endl;
-            fileLog << "\tDescription: Invalid Data Ranges";
-            fileLog << "\t Action Taken : Reset to default value" << endl;
+            fileLog << _("\tDescription: Invalid Data Ranges");
+            fileLog << _("\t Action Taken : Reset to default value") << endl;
         }
     }
 }

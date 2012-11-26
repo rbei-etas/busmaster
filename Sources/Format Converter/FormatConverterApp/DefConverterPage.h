@@ -38,9 +38,11 @@ public:
     afx_msg void OnBnClickedBtnInput();
     afx_msg void OnBnClickedBtnOutput();
     afx_msg void OnBnClickedBtnConvert();
+    afx_msg void OnBnClickedViewLog();
     CString m_omStrInputFilePath;
     CString m_omStrOutputFilePath;
     afx_msg void OnCbnSelchangeComboConversions();
     CString m_omstrConversionComment;
     CString m_omstrEditHelp;
+    CString m_omstrLogFilePath;
 };

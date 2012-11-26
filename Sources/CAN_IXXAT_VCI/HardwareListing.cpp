@@ -27,7 +27,7 @@
 
 #include "HardwareListing.h"
 #include ".\hardwarelisting.h"
-
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -172,11 +172,11 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
 
     // Create selelected list columns
     m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
-                                     defSTR_CHANNEL_NAME );
+                                     _(defSTR_CHANNEL_NAME) );
     m_omSelectedHwList.SetColumnWidth( defCHANNEL_COL,
                                        defSTR_CHANNEL_COL_WIDTH );
     m_omSelectedHwList.InsertColumn( defHARDWARE_COL,
-                                     defSTR_HARDWARE_COL_NAME );
+                                     _(defSTR_HARDWARE_COL_NAME) );
     m_omSelectedHwList.SetColumnWidth( defHARDWARE_COL,
                                        defSTR_HARDWARE_COL_WIDTH );
 
@@ -399,7 +399,7 @@ void CHardwareListing::OnButtonSelect()
     // Get the data
     // Format channel information
     omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                         defSTR_CHANNEL_NAME,
+                         _(defSTR_CHANNEL_NAME),
                          nItem + 1 );
     // Get the Hardware name
     omStrHardware = m_omHardwareList.GetItemText( nSelected, 0 );
@@ -483,7 +483,7 @@ void CHardwareListing::OnButtonRemove()
             {
                 // Update format string
                 omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                                     defSTR_CHANNEL_NAME,
+                                     _(defSTR_CHANNEL_NAME),
                                      nSelectedItem + nIndex + 1 );
                 // Update Text
                 m_omSelectedHwList.SetItemText( nSelectedItem + nIndex,
@@ -514,7 +514,7 @@ void CHardwareListing::OnOK()
     m_nNoOfHwSelected = m_omSelectedHwList.GetItemCount();
     if (m_nNoOfHwSelected < 1)
     {
-        AfxMessageBox(_T("Please select atleast one hardware"));
+        AfxMessageBox(_T(_("Please select atleast one hardware")));
         return;
     }
     // Number of hardware will be used
@@ -555,7 +555,7 @@ void CHardwareListing::OnOK()
     else
     {
         CString omErr;
-        omErr.Format(_T("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
+        omErr.Format(_T(_("Please select atmost %d hardwares")),  CHANNEL_ALLOWED);
         AfxMessageBox(omErr);
         return;
     }
@@ -754,7 +754,7 @@ void CHardwareListing::vSetSelectedList()
         nItem = m_omSelectedHwList.GetItemCount();
         // Format channel information
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                             defSTR_CHANNEL_NAME,
+                             _(defSTR_CHANNEL_NAME),
                              nItem + 1 );
         // Get the Hardware name
         omStrHardware.Format( defSTR_HW_DISPLAY_FORMAT, m_pnSelList[i] + 1);

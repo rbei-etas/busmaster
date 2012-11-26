@@ -24,6 +24,7 @@
 #include "TSEditorGUI_resource.h"
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_Definitions.h"
+#include "../Application/GettextBusmaster.h"
 
 IMPLEMENT_DYNCREATE(CTreeViewEx, CTreeView)
 
@@ -995,23 +996,23 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         VERIFY(omContextMenu.CreatePopupMenu());
         if(eEnityType == TEST_SETUP)
         {
-            VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_ADD_TESTCASE, "New Test Case"));
+            VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_ADD_TESTCASE, _("New Test Case")));
         }
         else if(eEnityType == TEST_CASE)
         {
             CMenu omSubMenu;
             omSubMenu.CreatePopupMenu();
-            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_SEND, "Send");
-            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFY, "Verify");
-            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_WAIT, "Wait");
-            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFYRESPONSE, "verfiyResponse");
+            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_SEND, _("Send"));
+            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFY, _("Verify"));
+            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_WAIT, _("Wait"));
+            omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFYRESPONSE, _("verfiyResponse"));
             //omSubMenu.AppendMenu(MF_STRING, IDM_ADD_REPLAY, _T("Replay"));
-            omContextMenu.AppendMenu(MF_POPUP, (UINT_PTR)omSubMenu.m_hMenu, "New");
-            omContextMenu.AppendMenu(MF_STRING, IDM_DELETE, "Delete");
+            omContextMenu.AppendMenu(MF_POPUP, (UINT_PTR)omSubMenu.m_hMenu, _("New"));
+            omContextMenu.AppendMenu(MF_STRING, IDM_DELETE, _("Delete"));
         }
         else
         {
-            omContextMenu.AppendMenu(MF_STRING, IDM_DELETE, "Delete");
+            omContextMenu.AppendMenu(MF_STRING, IDM_DELETE, _("Delete"));
         }
 
         if(omContextMenu.GetMenuItemCount() > 0)
@@ -1025,10 +1026,10 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     {
         CMenu omContextMenu;
         VERIFY(omContextMenu.CreatePopupMenu());
-        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_COLLAPSE_ALL, "Collapse All"));
-        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_EXPAND_ALL, "Expand All"));
+        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_COLLAPSE_ALL, _("Collapse All")));
+        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_EXPAND_ALL, _("Expand All")));
         VERIFY(omContextMenu.AppendMenu(MF_SEPARATOR));
-        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_SETTINGS_CLR, "Background Color"));
+        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_SETTINGS_CLR, _("Background Color")));
         omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
         *pResult = 0;
     }

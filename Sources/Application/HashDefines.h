@@ -209,6 +209,8 @@ typedef CList<int,int>      defomIntegerList;
 #define defDATATYPE_EXTD        "\tunsigned char m_ucEXTENDED    ;\n"
 #define defDATATYPE_RTR         "\tunsigned char m_ucRTR         ;\n"
 #define defDATATYPE_CHANNEL_NUM "\tunsigned char m_ucChannel	;\n"
+#define defDATATYPE_TIMESTAMP   "\n\tUINT m_ulTimeStamp;\n"
+#define defDATATYPE_CANFD       "\n\tUCHAR *m_aucCANFDData;\n"
 #define defDATATYPE_MSG_DATA    "\t%-12s  %s     ;\n"
 #define defSTART_OF_STRUCT_DEF  "\n\tstruct\n\t{\n"
 #define defEND_OF_STRUCT_DEF    "\n} %s;\n"
@@ -318,6 +320,8 @@ typedef CList<int,int>      defomIntegerList;
 #define DATABASE_HEADER         "//******************************BUSMASTER Messages and signals Database Ver1.0******************************//"
 #define DATABASE_HEADER_NEW     "//******************************BUSMASTER Messages and signals Database ******************************//"
 #define DATABASE_HEADER_ALL     "//******************************BUSMASTER Messages and signals Database Ver1.0******************************//\n\n// Message Format: MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT\n// Signal Format: SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT\n// Value Description Format: DESCRIPTOR,VALUE\n//************************************************************************************************************//\n"
+#define DATABASE_PROTOCOL_VER   "[PROTOCOL] J1939"
+#define DATABASE_INV_SELECT     "J1939 Database files are not supported."
 
 #define defREPLY_IN_PROGRESS    "Replay is in progress!!\nPlease stop it for next session."
 #define MSG_MEMORY_CONSTRAINT   "Insufficient Memory available"

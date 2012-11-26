@@ -36,7 +36,7 @@
 #include "Export_UserDllJ1939.h"
 //accessin manager class object
 #include "SimSysManager.h"
-
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -400,7 +400,7 @@ VOID CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
         {
             char acError[256];
             sprintf( acError,
-                     defSTR_ERROR_IN_PGN_PROG,
+                     _(defSTR_ERROR_IN_PGN_PROG),
                      psJ1939Msg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN() );
             // Display the error information in the Trace window
             gbSendStrToTrace(acError);
@@ -497,7 +497,7 @@ VOID CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo)
         {
             char acError[256];
             sprintf( acError,
-                     defSTR_ERROR_IN_MSG_PROG,
+                     _(defSTR_ERROR_IN_MSG_PROG),
                      sExecuteMsgHandler.m_sRxMsg.m_unMsgID );
             // Display the error information in the Trace window
             gbSendStrToTrace(acError);
@@ -939,7 +939,7 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
             if (!omInTextFile.good())
             {
                 // Info file open error notification
-                omStrErrorMessage  =_T("Input file open error : ");
+                omStrErrorMessage  =_T(_("Input file open error : "));
                 omStrErrorMessage +=omStrDefFileName;
                 /*AfxMessageBox(omStrErrorMessage ,
                                   MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,nZERO);*/
@@ -1136,8 +1136,8 @@ BOOL CExecuteFunc::bInitMSGStruct(CStringArray& omErrorArray)
                             // Get the exception error message
                             pomException->GetErrorMessage(acErrorMsg,
                                                           sizeof(acErrorMsg));
-                            omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
-                                                      defSTR_MESSAGE_HANDLER,
+                            omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
+                                                      _(defSTR_MESSAGE_HANDLER),
                                                       acErrorMsg);
                             //Display the error
                             /*AfxMessageBox( omStrErrorMessage ,
@@ -1269,8 +1269,8 @@ BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray& omErrorArray)
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
-                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
-                                                  defSTR_KEY_HANDLER,
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
+                                                  _(defSTR_KEY_HANDLER),
                                                   acErrorMsg );
                         //Display the error
                         /*AfxMessageBox( omStrErrorMessage ,
@@ -1388,8 +1388,8 @@ BOOL CExecuteFunc::bInitTimerStruct(CStringArray& omErrorArray)
                         // Get the exception error message
                         pomException->GetErrorMessage(
                             acErrorMsg,sizeof(acErrorMsg));
-                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
-                                                  defSTR_TIMER_HANDLER,
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
+                                                  _(defSTR_TIMER_HANDLER),
                                                   acErrorMsg );
                         //Display the error
                         /*AfxMessageBox(omStrErrorMessage ,
@@ -1492,8 +1492,8 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray& omErrorArray)
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
-                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
-                                                  defSTR_ERROR_HANDLER,
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
+                                                  _(defSTR_ERROR_HANDLER),
                                                   acErrorMsg );
                         //Display the error
                         /*AfxMessageBox( omStrErrorMessage ,
@@ -1582,8 +1582,8 @@ BOOL CExecuteFunc::bInitEventStructJ1939(CStringArray& omErrorArray)
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
-                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
-                                                  defSTR_EVENT_HANDLER,
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
+                                                  _(defSTR_EVENT_HANDLER),
                                                   acErrorMsg );
                         //Display the error
                         /*AfxMessageBox( omStrErrorMessage ,
@@ -1672,7 +1672,7 @@ BOOL CExecuteFunc::bInitDLLStruct(CStringArray& omErrorArray)
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
-                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
                                                   defSTR_DLL_HANDLER,
                                                   acErrorMsg );
                         //Display the error
@@ -1747,7 +1747,7 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
-                        omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
                                                   defSTR_DLL_HANDLER,
                                                   acErrorMsg );
                         //Display the error
@@ -2081,7 +2081,7 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
                                                   sizeof(acErrorMsg));
-                    omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
+                    omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
                                               omStrFuncName,
                                               acErrorMsg );
                     omErrorArray.Add(omStrErrorMessage);
@@ -2187,7 +2187,7 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
                                                   sizeof(acErrorMsg));
-                    omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
+                    omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
                                               omStrFuncName,
                                               acErrorMsg );
                     omErrorArray.Add(omStrErrorMessage);
@@ -2262,7 +2262,7 @@ BOOL CExecuteFunc::bInitMsgListHandleStruct(UINT  unMsgListCount, CStringArray& 
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
                                                   sizeof(acErrorMsg));
-                    omStrErrorMessage.Format( defSTR_ERROR_LOADING_HANDLER,
+                    omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
                                               m_omStrArrayMsgList.GetAt(i),
                                               acErrorMsg );
                     omErrorArray.Add(omStrErrorMessage);

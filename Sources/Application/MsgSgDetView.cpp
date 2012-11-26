@@ -185,10 +185,10 @@ void CMsgSgDetView::OnInitialUpdate()
     LF.lfHeight = 10;
     LF.lfWeight = FW_HEAVY;
     LF.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-    lstrcpy(LF.lfFaceName, "Ms Sans Serif");
+    lstrcpy(LF.lfFaceName, _("Ms Sans Serif"));
     if (!om_tFont.CreateFontIndirect(&LF))
     {
-        TRACE("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n");
+        TRACE(_("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n"));
     }
 
     // Insert column header in the signal details list control
@@ -203,67 +203,67 @@ void CMsgSgDetView::OnInitialUpdate()
 
     // Insert column to signal list control
     m_omListCtrlSignal.InsertColumn( 0,
-                                     "Name",
+                                     _("Name"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      0);
 
     m_omListCtrlSignal.InsertColumn( 1,
-                                     "Byte Index",
+                                     _("Byte Index"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      1);
 
 
     m_omListCtrlSignal.InsertColumn( 2,
-                                     "Bit No",
+                                     _("Bit No"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      2);
 
     m_omListCtrlSignal.InsertColumn( 3,
-                                     "Length",
+                                     _("Length"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      3);
 
     m_omListCtrlSignal.InsertColumn( 4,
-                                     "Type",
+                                     _("Type"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      4);
 
     m_omListCtrlSignal.InsertColumn( 5,
-                                     "Max Val",
+                                     _("Max Val"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      5);
 
     m_omListCtrlSignal.InsertColumn( 6,
-                                     "Min Val",
+                                     _("Min Val"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      6);
 
     m_omListCtrlSignal.InsertColumn( 7,
-                                     "Offset",
+                                     _("Offset"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      7);
 
     m_omListCtrlSignal.InsertColumn( 8,
-                                     "Scale Fac",
+                                     _("Scale Fac"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      8);
 
     m_omListCtrlSignal.InsertColumn( 9,
-                                     "Unit",
+                                     _("Unit"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      9);
     m_omListCtrlSignal.InsertColumn( 10,
-                                     "Byte Order",
+                                     _("Byte Order"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      10);
@@ -274,13 +274,13 @@ void CMsgSgDetView::OnInitialUpdate()
     ScreenToClient(&rRect);
 
     m_omListCtrlSgIdVal.InsertColumn( 0,
-                                      "Signal Description",
+                                      _("Signal Description"),
                                       LVCFMT_CENTER,
                                       rRect.right/2,
                                       0);
 
     m_omListCtrlSgIdVal.InsertColumn( 1,
-                                      "Signal Value",
+                                      _("Signal Value"),
                                       LVCFMT_CENTER,
                                       rRect.right/2 - 75,
                                       1);
@@ -337,11 +337,11 @@ void CMsgSgDetView::vDisplayMsgSgInformation(sMESSAGE* pMsg)
 
         if (pMsg->m_bMessageFrameFormat)
         {
-            GetDlgItem(IDC_STATIC_FF)->SetWindowText("Extended");
+            GetDlgItem(IDC_STATIC_FF)->SetWindowText(_("Extended"));
         }
         else
         {
-            GetDlgItem(IDC_STATIC_FF)->SetWindowText("Standard");
+            GetDlgItem(IDC_STATIC_FF)->SetWindowText(_("Standard"));
         }
 
         if (pMsg->m_nMsgDataFormat)
@@ -614,7 +614,7 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
     }
     else
     {
-        AfxMessageBox( defNO_SG_MINUP, MB_OK|MB_ICONINFORMATION);
+        AfxMessageBox( _(defNO_SG_MINUP), MB_OK|MB_ICONINFORMATION);
     }
 
     *pResult = 0;
@@ -655,7 +655,7 @@ void CMsgSgDetView::OnDeleteSignal()
 
     if ( nSelectedItem != -1 )
     {
-        if ( AfxMessageBox( SG_DELETE_CONFMN,
+        if ( AfxMessageBox( _(SG_DELETE_CONFMN),
                             MB_YESNO|MB_ICONQUESTION) == IDYES)
         {
             // Get the signal name from the list
@@ -668,7 +668,7 @@ void CMsgSgDetView::OnDeleteSignal()
                                                         m_omStrMessageName,
                                                         omStrSignalName))
                 {
-                    AfxMessageBox( SG_DELETE_FAILED, MB_OK|MB_ICONINFORMATION);
+                    AfxMessageBox( _(SG_DELETE_FAILED), MB_OK|MB_ICONINFORMATION);
                 }
                 else
                 {
@@ -825,7 +825,7 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
                         if ( pTempMsgSg->bIsDuplicateMessageName(
                                     nMsgId, m_omStrMessageName ))
                         {
-                            AfxMessageBox("Duplicate message name!",
+                            AfxMessageBox(_("Duplicate message name!"),
                                           MB_OK|MB_ICONINFORMATION);
                             // Set focus back to message name edit control
                             GetDlgItem( IDC_EDIT_MSG_NAME )->SetFocus();
@@ -843,7 +843,7 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
                             if ( !pTempMsgSg->bUpdateMsg( MSG_NAME,
                                                           omStrPrevMsgName,
                                                           pMsg ))
-                                AfxMessageBox("Could not update the changes..!",
+                                AfxMessageBox(_("Could not update the changes..!"),
                                               MB_OK|MB_ICONERROR );
                             else
                             {
@@ -962,7 +962,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                 if ( pTempMsgSg->bIsDuplicateMessageCode( m_omStrMessageName,
                         (UINT)nMsgCode ))
                 {
-                    AfxMessageBox("Duplicate message id!",
+                    AfxMessageBox(_("Duplicate message id!"),
                                   MB_OK|MB_ICONINFORMATION);
                     // Set focus back to message name edit control
                     GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
@@ -983,7 +983,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                         if ( !((tChar >= 'A') && ( tChar <= 'F' ) ||
                                 (tChar >= '0' && tChar <= '9') ) )
                         {
-                            AfxMessageBox("Invalid Hexadecimal Number!",
+                            AfxMessageBox(_("Invalid Hexadecimal Number!"),
                                           MB_OK|MB_ICONERROR );
                             m_omStrMessageCode.Empty();
                             GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
@@ -998,7 +998,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                     if ( !pTempMsgSg->bUpdateMsg( MSG_CODE,
                                                   m_omStrMessageName, pMsg ))
                     {
-                        AfxMessageBox("Could not update the changes..!",
+                        AfxMessageBox(_("Could not update the changes..!"),
                                       MB_OK|MB_ICONERROR );
                     }
                     else
@@ -1067,7 +1067,7 @@ void CMsgSgDetView::OnKillfocusEditMsgLength()
             if ( !pTempMsgSg->bUpdateMsg( MSG_LENGTH,
                                           m_omStrMessageName,
                                           pMsg ))
-                AfxMessageBox("Could not update the changes..!",
+                AfxMessageBox(_("Could not update the changes..!"),
                               MB_OK|MB_ICONERROR );
 
             delete pMsg;
@@ -1508,8 +1508,8 @@ void CMsgSgDetView::OnSignalEdit()
                                 // for invalid descriptor value
                                 // Get the delete confirmation from the user
                                 nRetVal = AfxMessageBox(
-                                              "Changing Signal Range will delete invalid signal description(s)\n\
-Do you want to continue?", MB_YESNO);
+                                              _("Changing Signal Range will delete invalid signal description(s)\n\
+Do you want to continue?"), MB_YESNO);
                                 if(nRetVal == IDYES)
                                 {
                                     for(int nIndex = 0; nIndex < iCount; nIndex++)
@@ -1645,8 +1645,8 @@ Do you want to continue?", MB_YESNO);
     {
         m_omListCtrlSignal.SetItemState(nItemCount - 1,
                                         LVIS_SELECTED ,LVIS_SELECTED );
-        AfxMessageBox( "Double click on the list item to select the signal \
-details dialog", MB_OK|MB_ICONINFORMATION);
+        AfxMessageBox( _("Double click on the list item to select the signal \
+details dialog"), MB_OK|MB_ICONINFORMATION);
     }
 
 }
@@ -1953,7 +1953,7 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
     if ( nSelectedItem != -1 )
     {
         if ( IDYES ==
-                AfxMessageBox( MSG_DELETE_DESC_CONMN,MB_YESNO|MB_ICONQUESTION))
+                AfxMessageBox( _(MSG_DELETE_DESC_CONMN),MB_YESNO|MB_ICONQUESTION))
         {
             // Get index of the selected signal item
             // from the signal list
@@ -1983,7 +1983,7 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
 
                 {
                     // Delete failed
-                    AfxMessageBox(MSG_DEL_FAIL, MB_OK|MB_ICONINFORMATION);
+                    AfxMessageBox(_(MSG_DEL_FAIL), MB_OK|MB_ICONINFORMATION);
                 }
                 else
                 {
@@ -2017,7 +2017,7 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
     }
     else
     {
-        AfxMessageBox( MSG_SELECT_SIGNAL, MB_OK|MB_ICONINFORMATION );
+        AfxMessageBox( _(MSG_SELECT_SIGNAL), MB_OK|MB_ICONINFORMATION );
     }
 }
 /******************************************************************************/
@@ -2139,13 +2139,13 @@ void CMsgSgDetView::OnSignal_Desc_Edit()
         }
         else
         {
-            AfxMessageBox( "No signal description selected!",
+            AfxMessageBox( _("No signal description selected!"),
                            MB_OK|MB_ICONINFORMATION );
         }
     }
     else
     {
-        AfxMessageBox( MSG_SELECT_SIGNAL, MB_OK|MB_ICONINFORMATION );
+        AfxMessageBox( _(MSG_SELECT_SIGNAL), MB_OK|MB_ICONINFORMATION );
     }
 
 
@@ -2241,7 +2241,7 @@ void CMsgSgDetView::OnSignal_Desc_New()
     }
     else
     {
-        AfxMessageBox( MSG_SELECT_SIGNAL, MB_OK|MB_ICONINFORMATION );
+        AfxMessageBox( _(MSG_SELECT_SIGNAL), MB_OK|MB_ICONINFORMATION );
     }
 }
 
@@ -2347,7 +2347,7 @@ void CMsgSgDetView::OnChangeEditMsgLength()
         pMsg->m_unMessageLength = m_unMessageLength;
         if ( !pTempMsgSg->bUpdateMsg( MSG_LENGTH, m_omStrMessageName, pMsg ))
         {
-            AfxMessageBox("Could not update the changes..!", MB_OK|MB_ICONERROR );
+            AfxMessageBox(_("Could not update the changes..!"), MB_OK|MB_ICONERROR );
         }
 
         delete pMsg;

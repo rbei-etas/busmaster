@@ -45,6 +45,14 @@ CAscLogConverter::~CAscLogConverter(void)
 {
 }
 
+HRESULT CAscLogConverter::GettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+    return S_OK;
+}
+
 /**
  * \brief      Get help text
  * \param[out] pchHelpText Help Text
@@ -54,7 +62,7 @@ CAscLogConverter::~CAscLogConverter(void)
  */
 HRESULT CAscLogConverter::GetHelpText(string& pchHelpText)
 {
-    pchHelpText = "Converts the CANoe CAN log file(.asc) to BUSMASTER CAN log file(.log)";
+    pchHelpText = _("Converts the CANoe CAN log file(.asc) to BUSMASTER CAN log file(.log)");
     return S_OK;
 }
 
@@ -67,7 +75,7 @@ HRESULT CAscLogConverter::GetHelpText(string& pchHelpText)
  */
 HRESULT CAscLogConverter::GetConverterName(string& strConverterName)
 {
-    strConverterName = "ASC TO LOG Conversion";
+    strConverterName = _("ASC TO LOG Conversion");
     return S_OK;
 }
 
@@ -84,15 +92,15 @@ HRESULT CAscLogConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
     switch( hResult )
     {
         case S_OK:
-            m_omstrConversionStatus = "Conversion success";
+            m_omstrConversionStatus = _("Conversion success");
             break;
 
         case S_FALSE:
-            m_omstrConversionStatus = "Conversion failed";
+            m_omstrConversionStatus = _("Conversion failed");
             break;
 
         default:
-            m_omstrConversionStatus = "Unknown";
+            m_omstrConversionStatus = _("Unknown");
             break;
     }
 
@@ -111,7 +119,7 @@ HRESULT CAscLogConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 HRESULT CAscLogConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
     pchInputDefFilters = "asc";
-    pchInputFilters = "CANoe Log File(s) (*.asc)|*.asc||";
+    pchInputFilters = _("CANoe Log File(s) (*.asc)|*.asc||");
     return S_OK;
 }
 
@@ -142,7 +150,7 @@ HRESULT CAscLogConverter::GetLastConversionStatus(HRESULT& hResult, string& omst
 HRESULT CAscLogConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
     pchOutputDefFilters = "log";
-    pchOutputFilters = "BUSMASTER Log File(s) (*.log)|*.log||";
+    pchOutputFilters = _("BUSMASTER Log File(s) (*.log)|*.log||");
     return S_OK;
 }
 
@@ -176,19 +184,19 @@ HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
              fprintf(fpOutputFile, "***START DATE AND TIME ");*/
             // PTV[1.6.4]
             nConvertFile(fpInputFile, fpOutputFile);
-            m_omstrConversionStatus = "Conversion Completed Successfully";
+            m_omstrConversionStatus = _("Conversion Completed Successfully");
             fclose(fpInputFile);
             fclose(fpOutputFile);
         }
         else
         {
-            m_omstrConversionStatus = "Output File path is not found";
+            m_omstrConversionStatus = _("Output File path is not found");
             hResult = ERR_OUTPUT_FILE_NOTFOUND;
         }
     }
     else
     {
-        m_omstrConversionStatus = "Input File path is not found";
+        m_omstrConversionStatus = _("Input File path is not found");
         hResult = ERR_INPUT_FILE_NOTFOUND;
     }
 

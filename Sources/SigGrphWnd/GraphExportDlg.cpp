@@ -18,7 +18,7 @@
 // For Export dialog declaration
 #include "GraphExportDlg.h"
 #include "SigGrphWnd_Defines.h"
-
+#include "../Application/GettextBusmaster.h"
 /*******************************************************************************
   Function Name  : CGraphExportDlg
   Description    : Standard default constructor
@@ -127,7 +127,7 @@ void CGraphExportDlg::OnBtnSaveCsv()
     }
     else
     {
-        AfxMessageBox( defSTR_CSV_FILE_PATH_EMPTY );
+        AfxMessageBox( _(defSTR_CSV_FILE_PATH_EMPTY) );
     }
 }
 
@@ -148,10 +148,10 @@ void CGraphExportDlg::OnBtnBrowseHtml()
                              defSTR_HTML_FORMAT,     // Default Extension,
                              NULL,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                             defSTR_HTML_FORMAT_SPECIFIER,
+                             _(defSTR_HTML_FORMAT_SPECIFIER),
                              NULL );
     // Set Title to Export
-    omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_REPORT_DIALOG_CAPTION;
+    omSaveAsDlg.m_ofn.lpstrTitle  = _(defSTR_REPORT_DIALOG_CAPTION);
     // Show the dialog and save the path on OK
     if ( omSaveAsDlg.DoModal() == IDOK )
     {
@@ -285,10 +285,10 @@ void CGraphExportDlg::OnBtnBrowseBmp()
                              defSTR_BMP_FORMAT,     // Default Extension,
                              NULL,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                             defSTR_BMP_FORMAT_SPECIFIER,
+                             _(defSTR_BMP_FORMAT_SPECIFIER),
                              NULL );
     // Set Title
-    omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_BITMAP_DIALOG_CAPTION;
+    omSaveAsDlg.m_ofn.lpstrTitle  = _(defSTR_BITMAP_DIALOG_CAPTION);
     // Show the dialog and save on OK
     if ( omSaveAsDlg.DoModal() == IDOK )
     {
@@ -325,7 +325,7 @@ void CGraphExportDlg::OnBtnSaveImage()
     }
     else
     {
-        AfxMessageBox(defSTR_bmp_FILE_PATH_EMPTY);
+        AfxMessageBox(_(defSTR_bmp_FILE_PATH_EMPTY));
     }
 }
 

@@ -3,9 +3,23 @@
 #include "CAPL2CConverter_Definitions.h"
 //#include "Converter.h"
 #include "CAPL2CPropertyPage.h"
+
+
 CCAPL2CConvereter::CCAPL2CConvereter(void)
 {
+
+
 }
+
+HRESULT CCAPL2CConvereter::GettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+    return S_OK;
+}
+
+
 HRESULT CCAPL2CConvereter::GetHelpText(string& pchHelpText)
 {
     /*if(pchHelpText != NULL)

@@ -1,0 +1,29 @@
+LIBRARY intl.dll
+EXPORTS
+_nl_msg_cat_cntr DATA
+bind_textdomain_codeset
+bindtextdomain
+dcgettext
+dcngettext
+dgettext
+dngettext
+gettext
+libintl_bind_textdomain_codeset
+libintl_bindtextdomain
+libintl_dcgettext
+libintl_dcngettext
+libintl_dgettext
+libintl_dngettext
+libintl_fprintf
+libintl_gettext
+libintl_ngettext
+libintl_printf
+libintl_set_relocation_prefix
+libintl_snprintf
+libintl_sprintf
+libintl_textdomain
+libintl_vfprintf
+libintl_vprintf
+libintl_vsprintf
+ngettext
+textdomain

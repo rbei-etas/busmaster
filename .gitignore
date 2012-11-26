@@ -1,13 +1,6 @@
 # Generic files
 *~
 *.orig
-*.svn
-*.db
-*.tmp
-*.temp
-*.csmes
-*.csexe
-
 
 # Visual Studio intermediate files
 *.aps

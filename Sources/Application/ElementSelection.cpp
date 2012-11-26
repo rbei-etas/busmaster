@@ -198,12 +198,12 @@ BOOL CElementSelection::OnInitDialog()
         m_omTreeEntries.SetImageList(&m_omImageList, TVSIL_NORMAL);
 
         // Create Message Root
-        m_hMessageRoot = m_omTreeEntries.InsertItem( defSTR_DB_MSG_NAME,
+        m_hMessageRoot = m_omTreeEntries.InsertItem( _(defSTR_DB_MSG_NAME),
                          defDBC_IMG_INDEX, defDBC_IMG_INDEX );
         m_omTreeEntries.SetItemData( m_hMessageRoot, eROOT );
 
         // Create Statistics Root
-        m_hStatRoot = m_omTreeEntries.InsertItem( defSTR_STATISTICS_NAME,
+        m_hStatRoot = m_omTreeEntries.InsertItem( _(defSTR_STATISTICS_NAME),
                       defSTAT_IMG_INDEX, defSTAT_IMG_INDEX);
         m_omTreeEntries.SetItemData( m_hStatRoot, eROOT );
 
@@ -228,19 +228,19 @@ BOOL CElementSelection::OnInitDialog()
 
             // Insert category column ( For Message Names and Stat type)
             m_omElementList.InsertColumn(
-                defCOL_CATOGORY_INDEX, defSTR_LIST_HEADING_CATOGORY );
+                defCOL_CATOGORY_INDEX, _(defSTR_LIST_HEADING_CATOGORY) );
             m_omElementList.SetColumnWidth(
                 defCOL_CATOGORY_INDEX, defELEMENT_SELECTION_CATOGORY_WIDTH);
 
             // Insert Section column ( For Signal Names and Stat Param Names)
             m_omElementList.InsertColumn(
-                defCOL_ELEMENT_INDEX, defSTR_LIST_HEADING_ELEMENT );
+                defCOL_ELEMENT_INDEX, _(defSTR_LIST_HEADING_ELEMENT) );
             m_omElementList.SetColumnWidth(
                 defCOL_ELEMENT_INDEX, defELEMENT_SELECTION_ELEMENT_WIDTH);
 
             // Insert Type Column ( Only For Raw or Phy type)
             m_omElementList.InsertColumn(
-                defCOL_TYPE_INDEX, defSTR_LIST_HEADING_TYPE );
+                defCOL_TYPE_INDEX, _(defSTR_LIST_HEADING_TYPE) );
             m_omElementList.SetColumnWidth(
                 defCOL_TYPE_INDEX, defELEMENT_SELECTION_TYPE_WIDTH);
 
@@ -378,7 +378,7 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
                         // Insert Raw & Phy Entries
                         if( nEliminate != eRAW_VALUE )
                         {
-                            HTREEITEM hRawVal = omTree.InsertItem( defSTR_RAW_VALUE,
+                            HTREEITEM hRawVal = omTree.InsertItem( _(defSTR_RAW_VALUE),
                                                                    nRawImgIndex,
                                                                    nRawImgIndex,
                                                                    hSignal, TVI_SORT );
@@ -386,7 +386,7 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
                         }
                         if( nEliminate != ePHY_VALUE )
                         {
-                            HTREEITEM hPhyVal = omTree.InsertItem( defSTR_PHY_VALUE,
+                            HTREEITEM hPhyVal = omTree.InsertItem( _(defSTR_PHY_VALUE),
                                                                    nPhyImgIndex,
                                                                    nPhyImgIndex,
                                                                    hSignal, TVI_SORT );
@@ -497,15 +497,15 @@ void CElementSelection::vPopulateElementList(
             {
                 // Insert Catogory
                 omListCtrl.InsertItem( nIndex,
-                                       defSTR_STATISTICS_NAME,
+                                       _(defSTR_STATISTICS_NAME),
                                        nStatImageIndex );
                 // Insert Parameter Name
                 omListCtrl.SetItemText( nIndex, 1,
                                         acStatParams[ odTemp.m_nMsgID ] );
                 // Insert Channel String
                 CString omStrChannel;
-                omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                                     defSTR_CHANNEL_NAME,
+                omStrChannel.Format( _(defSTR_CHANNEL_NAME_FORMAT),
+                                     _(defSTR_CHANNEL_NAME),
                                      odTemp.m_nFrameFormat );
                 omListCtrl.SetItemText( nIndex, 2, omStrChannel );
                 // Set Entry Type
@@ -531,11 +531,11 @@ void CElementSelection::vPopulateElementList(
                 // Insert Value Type
                 if( odTemp.m_nValueType == eRAW_VALUE )
                 {
-                    omListCtrl.SetItemText( nIndex, 2, defSTR_RAW_VALUE );
+                    omListCtrl.SetItemText( nIndex, 2, _(defSTR_RAW_VALUE) );
                 }
                 else
                 {
-                    omListCtrl.SetItemText( nIndex, 2, defSTR_PHY_VALUE );
+                    omListCtrl.SetItemText( nIndex, 2, _(defSTR_PHY_VALUE) );
                 }
                 // Set Item type
                 omListCtrl.SetItemData( nIndex, odTemp.m_nValueType );
@@ -663,7 +663,7 @@ void CElementSelection::vAddSelectedItem()
                 else
                 {
                     // Show exelemt exceed the maximun allowed count message
-                    AfxMessageBox( defSTR_MAX_ELEMENTS_EXCEEDED_MSG );
+                    AfxMessageBox( _(defSTR_MAX_ELEMENTS_EXCEEDED_MSG) );
                 }
             }
             break;
@@ -709,7 +709,7 @@ void CElementSelection::vAddSelectedItem()
                 else
                 {
                     // Show exelemt exceed the maximun allowed count message
-                    AfxMessageBox( defSTR_MAX_ELEMENTS_EXCEEDED_MSG );
+                    AfxMessageBox( _(defSTR_MAX_ELEMENTS_EXCEEDED_MSG) );
                 }
             }
             break;
@@ -753,7 +753,7 @@ void CElementSelection::vAddSelectedItem()
                 else
                 {
                     // Show exelemt exceed the maximun allowed count message
-                    AfxMessageBox( defSTR_MAX_ELEMENTS_EXCEEDED_MSG );
+                    AfxMessageBox( _(defSTR_MAX_ELEMENTS_EXCEEDED_MSG) );
                 }
             }
             break;
@@ -947,7 +947,7 @@ void CElementSelection::OnBtnDelete()
                 {
                     // The channel is not found in the tree
                     // Alert the user about this
-                    if ( AfxMessageBox( defSTR_INVALID_CHANNEL, MB_YESNO )
+                    if ( AfxMessageBox( _(defSTR_INVALID_CHANNEL), MB_YESNO )
                             != IDYES )
                     {
                         // User wants to delete this item
@@ -991,7 +991,7 @@ void CElementSelection::OnBtnDelete()
                 {
                     // Now Insert the new item in to the stat tree
                     HTREEITEM hRawVal = m_omTreeEntries.InsertItem(
-                                            defSTR_RAW_VALUE, defRAW_IMG_INDEX,
+                                            _(defSTR_RAW_VALUE), defRAW_IMG_INDEX,
                                             defRAW_IMG_INDEX, hSignal, TVI_SORT );
                     // Set the item property
                     m_omTreeEntries.SetItemData( hRawVal, eVAL_TYPE_RAW );
@@ -1002,7 +1002,7 @@ void CElementSelection::OnBtnDelete()
                 {
                     // Display dead signal message. User has to remove
                     // this entry from the list
-                    AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP );
+                    AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP );
                 }
             }
             break;
@@ -1032,7 +1032,7 @@ void CElementSelection::OnBtnDelete()
                 {
                     // Now Insert the new item in to the stat tree
                     HTREEITEM hPhyVal = m_omTreeEntries.InsertItem(
-                                            defSTR_PHY_VALUE, defPHY_IMG_INDEX,
+                                            _(defSTR_PHY_VALUE), defPHY_IMG_INDEX,
                                             defPHY_IMG_INDEX, hSignal, TVI_SORT );
                     // Set the item property
                     m_omTreeEntries.SetItemData( hPhyVal, eVAL_TYPE_PHY );
@@ -1043,7 +1043,7 @@ void CElementSelection::OnBtnDelete()
                 {
                     // Show dead signal message. User has to remove this
                     // dead message/signal fromthe list
-                    AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP );
+                    AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP );
                 }
             }
             break;
@@ -1149,12 +1149,12 @@ void CElementSelection::OnBtnDeleteAll()
     m_omTreeEntries.DeleteItem( m_hStatRoot );
     // Populate Tree View
     // Create Message Root
-    m_hMessageRoot = m_omTreeEntries.InsertItem( defSTR_DB_MSG_NAME,
+    m_hMessageRoot = m_omTreeEntries.InsertItem( _(defSTR_DB_MSG_NAME),
                      defDBC_IMG_INDEX, defDBC_IMG_INDEX );
     m_omTreeEntries.SetItemData( m_hMessageRoot, eROOT );
 
     // Create Statistics Root
-    m_hStatRoot = m_omTreeEntries.InsertItem( defSTR_STATISTICS_NAME,
+    m_hStatRoot = m_omTreeEntries.InsertItem( _(defSTR_STATISTICS_NAME),
                   defSTAT_IMG_INDEX, defSTAT_IMG_INDEX);
     m_omTreeEntries.SetItemData( m_hStatRoot, eROOT );
 
@@ -1399,8 +1399,8 @@ void CElementSelection::vCreateChannelTree(HTREEITEM hStatRoot)
     for( int nIndex = 0; nIndex < nChannels; nIndex++ )
     {
         CString omStrChannel;
-        omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                             defSTR_CHANNEL_NAME,
+        omStrChannel.Format( _(defSTR_CHANNEL_NAME_FORMAT),
+                             _(defSTR_CHANNEL_NAME),
                              nIndex + 1);
         // Insert Channel Root
         HTREEITEM hChannel = m_omTreeEntries.InsertItem( omStrChannel,

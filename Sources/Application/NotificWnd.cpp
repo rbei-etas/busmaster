@@ -114,7 +114,7 @@ VOID CNotificWnd::vSetWindowFont()
     LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
     LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
     LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
-    strcpy_s(LF.lfFaceName, LF_FACESIZE, "Tahoma");
+    strcpy_s(LF.lfFaceName, LF_FACESIZE, _("Tahoma"));
     LF.lfWeight = FW_NORMAL;
 
     if (m_omNewFont.CreateFontIndirect(&LF) == TRUE)
@@ -124,7 +124,7 @@ VOID CNotificWnd::vSetWindowFont()
     }
     else
     {
-        AfxMessageBox("Font creation unsuccessful");
+        AfxMessageBox(_("Font creation unsuccessful"));
     }
 }
 
@@ -253,7 +253,7 @@ BOOL CNotificWnd::bCreateNotificWindow(CMDIFrameWnd* pomParentWnd)
     sWinCurrStatus.rcNormalPosition.right = sWinCurrStatus.rcNormalPosition.left + 810;
     sWinCurrStatus.rcNormalPosition.bottom = sWinCurrStatus.rcNormalPosition.top + 191;
 
-    bResult = CMDIChildBase::Create(strMDIClass, "Trace Window",
+    bResult = CMDIChildBase::Create(strMDIClass, _("Trace Window"),
                                     WS_CHILD /*| WS_VISIBLE*/ | WS_OVERLAPPEDWINDOW,
                                     sWinCurrStatus.rcNormalPosition, pomParentWnd);
 

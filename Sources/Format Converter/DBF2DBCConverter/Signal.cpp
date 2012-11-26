@@ -373,15 +373,15 @@ void CSignal::GetErrorString(string& str)
     switch(m_uiError)
     {
         case 0:
-            str = "No error";
+            str = _("No error");
             break;
 
         case 1:
-            str = "Invalid signal length";
+            str = _("Invalid signal length");
             break;
 
         case 2:
-            str = "Invalid start bit";
+            str = _("Invalid start bit");
             break;
     }
 }

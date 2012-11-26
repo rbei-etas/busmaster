@@ -47,7 +47,8 @@
 #include "Include/DIL_CommonDefs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
-
+#include "../Application/MultiLanguage.h"
+#include "../Application/GettextBusmaster.h"
 #define DYNAMIC_XLDRIVER_DLL
 #include "EXTERNAL_INCLUDE/vxlapi.h"
 
@@ -78,8 +79,33 @@ CCAN_Vector_XL theApp;
 /**
  * CCAN_Vector_XL initialization
  */
+
+static HINSTANCE ghLangInst=NULL;
+
 BOOL CCAN_Vector_XL::InitInstance()
 {
+    // Begin of Multiple Language support
+    if ( CMultiLanguage::m_nLocales <= 0 )    // Not detected yet
+    {
+        CMultiLanguage::DetectLangID(); // Detect language as user locale
+        CMultiLanguage::DetectUILanguage();    // Detect language in MUI OS
+    }
+    TCHAR szModuleFileName[MAX_PATH];        // Get Module File Name and path
+    int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
+    if ( ret == 0 || ret == MAX_PATH )
+    {
+        ASSERT(FALSE);
+    }
+    // Load resource-only language DLL. It will use the languages
+    // detected above, take first available language,
+    // or you can specify another language as second parameter to
+    // LoadLangResourceDLL. And try that first.
+    ghLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+    if (ghLangInst)
+    {
+        AfxSetResourceHandle( ghLangInst );
+    }
+    // End of Multiple Language support
     CWinApp::InitInstance();
 
     return TRUE;
@@ -640,7 +666,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
 
     if (hxlDll != NULL)
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("vxlapi.dll already loaded"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll already loaded")));
         hResult = DLL_ALREADY_LOADED;
     }
 
@@ -649,7 +675,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
         hxlDll = LoadLibrary("vxlapi.dll");
         if (hxlDll == NULL)
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("vxlapi.dll loading failed"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll loading failed")));
             hResult = ERR_LOAD_DRIVER;
         }
         else
@@ -724,7 +750,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
             {
                 FreeLibrary(hxlDll);
                 sg_pIlog->vLogAMessage(A2T(__FILE__),
-                                       __LINE__, _T("Getting Process address of the APIs failed"));
+                                       __LINE__, _T(_("Getting Process address of the APIs failed")));
                 hResult = ERR_LOAD_DRIVER;
             }
         }
@@ -762,6 +788,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_PerformInitOperations(void)
     {
         sg_anSelectedItems[i] = -1;
     }
+    /*Set CAN FD field to false*/
+    sg_asCANMsg.m_bCANFDMsg = false;
 
     return hResult;
 }
@@ -868,7 +896,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     }
     else
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Error connecting to driver")));
     }
     return hResult;
 }
@@ -1318,7 +1346,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
     }
     else
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Could not start the read thread" ));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Could not start the read thread") ));
     }
 
     return hResult;
@@ -1914,13 +1942,13 @@ static int nGetNoOfConnectedHardware(void)
         }
         if (!nResult)
         {
-            _tcscpy(sg_omErrStr, _T("No available channels found! (e.g. no CANcabs...)\r\n"));
+            _tcscpy(sg_omErrStr, _T(_("No available channels found! (e.g. no CANcabs...)\r\n")));
             xlStatus = XL_ERROR;
         }
     }
     else
     {
-        _tcscpy(sg_omErrStr, _T("Problem Finding Device!"));
+        _tcscpy(sg_omErrStr, _T(_("Problem Finding Device!")));
         nResult = -1;
     }
     /* Return the operation result */
@@ -2068,7 +2096,7 @@ static int nInitHwNetwork()
      * Take action based on number of Hardware Available
      */
     char acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T("Number of Vector hardwares Available: %d"), nChannelCount);
+    _stprintf(acNo_Of_Hw, _T(_("Number of Vector hardwares Available: %d")), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )

@@ -22,6 +22,7 @@
 #include "HandlerFunc.h"
 #include "ExecuteManager.h"
 #include "AppServicesCAN.h"
+#include "../Application/GettextBusmaster.h"
 
 CRITICAL_SECTION g_omDllMsgCritiSec;
 
@@ -62,7 +63,7 @@ UINT unKeyHandlerProc(LPVOID pParam)
         {
             CHAR acError[256];
             sprintf( acError,
-                     defSTR_ERROR_IN_KEY_PROG,
+                     _(defSTR_ERROR_IN_KEY_PROG),
                      psExecuteKeyHandler->m_ucKeyValue );
             // Display the error information in the Trace window
             gbSendStrToTrace(acError);
@@ -114,7 +115,7 @@ UINT unErrorHandlerProc(LPVOID pParam)
         catch(...)
         {
             // Display the error information in the Trace window
-            gbSendStrToTrace(defSTR_ERROR_IN_ERR_PROG);
+            gbSendStrToTrace(_(defSTR_ERROR_IN_ERR_PROG));
         }
         // Reinitialise the Thread handle before terminating it.
         pErrorHandler->m_pCExecuteFunc->
@@ -166,7 +167,7 @@ UINT unEventHandlerProc(LPVOID pParam)
         catch(...)
         {
             // Display the error information in the Trace window
-            gbSendStrToTrace(defSTR_ERROR_IN_EVENT_PROG);
+            gbSendStrToTrace(_(defSTR_ERROR_IN_EVENT_PROG));
         }
         // Reinitialise the Thread handle before terminating it.
         pEventHandler->m_pCExecuteFunc->
@@ -207,7 +208,7 @@ UINT unDLLUnloadHandlerProc(LPVOID pParam)
             catch(...)
             {
                 // Display the error information in the Trace window
-                gbSendStrToTrace(defSTR_ERROR_IN_DLL_UNLOAD);
+                gbSendStrToTrace(_(defSTR_ERROR_IN_DLL_UNLOAD));
             }
             // There is no memory allocation is this thread. So initialise it to NULL
             psExecuteUnLoadHandler->m_pCExecuteFunc->
@@ -260,7 +261,7 @@ UINT unDLLloadHandlerProc(LPVOID pParam)
             catch(...)
             {
                 // Display the error information in the Trace window
-                gbSendStrToTrace(defSTR_ERROR_IN_DLL_LOAD);
+                gbSendStrToTrace(_(defSTR_ERROR_IN_DLL_LOAD));
             }
             // There is no memory allocation is this thread. So initialise it to NULL
             psExecuteLoadHandler->m_pCExecuteFunc->
@@ -295,7 +296,7 @@ UINT unBusConnectHandlerProc(LPVOID pParam)
             catch(...)
             {
                 // Display the error information in the Trace window
-                gbSendStrToTrace(defSTR_ERROR_IN_BUS_DISCONNECT);
+                gbSendStrToTrace(_(defSTR_ERROR_IN_BUS_DISCONNECT));
             }
             // There is no memory allocation is this thread. So initialise it to NULL
             psExecuteBusEventHandler->m_pCExecuteFunc->
@@ -331,7 +332,7 @@ UINT unBusDisConnectHandlerProc(LPVOID pParam)
             catch(...)
             {
                 // Display the error information in the Trace window
-                gbSendStrToTrace(defSTR_ERROR_IN_BUS_CONNECT);
+                gbSendStrToTrace(_(defSTR_ERROR_IN_BUS_CONNECT));
             }
             // There is no memory allocation is this thread. So initialise it to NULL
             psExecuteBusEventHandler->m_pCExecuteFunc->
@@ -467,7 +468,7 @@ UINT unTimerHandlerProc(LPVOID pParam)
                     {
                         CHAR acError[256];
                         sprintf( acError,
-                                 defSTR_ERROR_IN_TIMER_PROG,
+                                 _(defSTR_ERROR_IN_TIMER_PROG),
                                  psTimerStruct->omStrTimerHandlerName );
                         // Display the error information in the Trace window
                         gbSendStrToTrace(acError);

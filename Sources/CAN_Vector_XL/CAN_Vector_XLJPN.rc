@@ -1,0 +1,155 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "CAN_Vector_XL_Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource1.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LIST_HW_INTRS DIALOGEX 0, 0, 291, 199
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "リストからハードウェアインタフェースを選択"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+	DEFPUSHBUTTON	"はい", IDOK, 173, 178, 50, 14
+	PUSHBUTTON	"キャンセル", IDCANCEL, 234, 178, 50, 14
+	LISTBOX	IDC_LIST1, 7, 97, 123, 77, LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+	EDITTEXT	IDC_NAME, 37, 12, 93, 14, ES_AUTOHSCROLL | ES_READONLY
+	EDITTEXT	IDC_VENDOR, 37, 43, 93, 14, ES_AUTOHSCROLL | ES_READONLY
+	EDITTEXT	IDC_DESC, 143, 29, 141, 145, ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY
+	LTEXT	"FlexCardの選択", IDC_STATIC, 9, 78, 51, 8
+	LTEXT	"名:", IDC_STATIC, 9, 15, 22, 8
+	LTEXT	"供給元:", IDC_STATIC, 9, 46, 26, 8
+	LTEXT	"詳細:", IDC_STATIC, 143, 15, 39, 8
+END
+
+IDD_DLG_HW_LISTING DIALOGEX 0, 0, 376, 151
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "ハードウェアの選択"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+	CONTROL	"List1", IDC_LSTC_HW_LIST, "SysListView32", LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP, 8, 17, 189, 37
+	PUSHBUTTON	"点滅", IDC_BUT_BLINK, 14, 111, 39, 11, WS_DISABLED
+	DEFPUSHBUTTON	"&選択", IDC_BUT_SELECT, 204, 46, 44, 14
+	CONTROL	"List1", IDC_LSTC_SELECTED_HW_LIST, "SysListView32", LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP, 255, 17, 113, 96
+	DEFPUSHBUTTON	"&削除", IDC_BUT_REMOVE, 204, 72, 44, 14
+	DEFPUSHBUTTON	"&はい", IDOK, 133, 134, 50, 14
+	PUSHBUTTON	"&キャンセル", IDCANCEL, 192, 134, 50, 14
+	LTEXT	"可能なCANハードウェア", IDC_STATIC, 8, 5, 96, 9
+	GROUPBOX	"ハードウェア詳細", IDC_STATIC, 8, 60, 189, 64
+	LTEXT	"ドライバID :", IDC_STATIC, 13, 73, 34, 9
+	LTEXT	"ファームウェア:", IDC_STATIC, 13, 86, 32, 9
+	LTEXT	"詳細 : ", IDC_STATIC, 13, 99, 40, 11
+	EDITTEXT	IDC_EDIT_DRIVER_ID, 47, 73, 52, 12, ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+	EDITTEXT	IDC_EDIT_NET_NAME, 56, 99, 135, 12, ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+	EDITTEXT	IDC_EDIT_FIRMWARE, 49, 86, 45, 12, ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+	LTEXT	"設定されたCANハードウェア", IDC_STATIC, 257, 5, 105, 9
+	CONTROL	"______________________________________________________________________________________________", IDC_STAT_LINE3,
+	 "Static", SS_LEFTNOWORDWRAP | WS_DISABLED | WS_GROUP, 7, 124, 377, 8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_NET BITMAP "res\\bmp_net.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_LIST_HW_INTRS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 284
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 192
+    END
+    IDD_DLG_HW_LISTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 369
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 148
+    END
+END
+#endif    // APSTUDIO_INVOKED
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE 0x11, 0x01
+#pragma code_page(932)
+#include "..\Localization\l.jpn\afxres.rc"     // Standard components
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
