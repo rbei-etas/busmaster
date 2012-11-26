@@ -298,6 +298,7 @@ typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
     UCHAR m_ucDataLen;  // Data len (0..8)
     UCHAR m_ucChannel;
     UCHAR m_ucData[8];  // Databytes 0..7
+    UCHAR m_ucCANFDData[64];  // Databytes 0..63
     ULONG m_ulTimeStamp;
 };
 typedef sTCAN_TIME_MSG STCAN_TIME_MSG;

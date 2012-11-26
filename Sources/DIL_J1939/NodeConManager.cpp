@@ -1301,7 +1301,7 @@ void CNodeConManager::vTransmitMessage(STJ1939_MSG* psMsg)
             {
                 HRESULT hResult = TransmitRequestToSend(byDestAddress, byPriorirty,
                                                         psMsg->m_unDLC, unPGN, psMsg->m_sMsgProperties.m_byChannel);
-                TRACE("SENT REQUEST TO SEND\n");
+                TRACE(_("SENT REQUEST TO SEND\n"));
                 if ((hResult == DATA_CLEAR_2_SEND) || (hResult == DATA_DELAY_2_SEND))
                 {
                     m_pConDet->vSetConStatus(T_CONNECTED);

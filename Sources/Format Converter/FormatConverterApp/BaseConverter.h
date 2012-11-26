@@ -1,5 +1,8 @@
 #pragma once
 #include "FormatConverter_stdafx.h"
+#include "GettextBusmaster.h"
+
+
 class CBaseConverter
 {
 public:
@@ -12,5 +15,6 @@ public:
     virtual HRESULT GetHelpText(string& pchHelpText)=0;
     virtual BOOL bHaveOwnWindow() = 0;
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage ) = 0;
+    virtual HRESULT GettextBusmaster() = 0;
     virtual ~CBaseConverter() {};
 };

@@ -15,6 +15,7 @@ CDefConverterPage::CDefConverterPage(INT nTabPosition)
     , m_omStrOutputFilePath(_T(""))
     , m_omstrConversionComment(_T(""))
     , m_omstrEditHelp(_T(""))
+    , m_omstrLogFilePath(_T(""))
 {
     m_nTabPosition = nTabPosition;
 }
@@ -41,6 +42,7 @@ BEGIN_MESSAGE_MAP(CDefConverterPage, CPropertyPage)
     ON_BN_CLICKED(IDC_BTN_INPUT, CDefConverterPage::OnBnClickedBtnInput)
     ON_BN_CLICKED(IDC_BTN_OUTPUT, CDefConverterPage::OnBnClickedBtnOutput)
     ON_BN_CLICKED(IDC_BTN_CONVERT, CDefConverterPage::OnBnClickedBtnConvert)
+    ON_BN_CLICKED(IDC_BUTTON_VIEW_LOG, CDefConverterPage::OnBnClickedViewLog)
     ON_CBN_SELCHANGE(IDC_COMBO_CONVERSIONS, CDefConverterPage::OnCbnSelchangeComboConversions)
 END_MESSAGE_MAP()
 
@@ -64,6 +66,7 @@ HRESULT CDefConverterPage::LoadConverters()
             ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
             if(ouConverterInfo.m_pouConverter->bHaveOwnWindow() == FALSE)
             {
+                ouConverterInfo.m_pouConverter->GettextBusmaster();
                 ouConverterInfo.m_pouConverter->GetConverterName(strConverterName);
                 INT nItem = m_omComboConverterNames.AddString(strConverterName.c_str());
                 if(nItem >= 0)
@@ -122,6 +125,8 @@ BOOL CDefConverterPage::OnInitDialog()
     LoadConverters();
     m_omComboConverterNames.SetCurSel(0);
     OnCbnSelchangeComboConversions();
+
+    GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow(FALSE);
     return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -137,6 +142,7 @@ void CDefConverterPage::OnBnClickedBtnInput()
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
         if( ouConverterInfo.m_pouConverter != NULL)
         {
+            ouConverterInfo.m_pouConverter->GettextBusmaster();
             ouConverterInfo.m_pouConverter->GetInputFileFilters(strFileExt, strFileFilters);
         }
         CFileDialog fileDlg( TRUE,     // Open File dialog
@@ -161,6 +167,7 @@ void CDefConverterPage::OnBnClickedBtnInput()
                 m_omEditOutputPath.SetWindowText(omStrOutputFile);
             }
             GetDlgItem(IDC_EDIT_COMMENT)->SetWindowText("");
+            GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow(FALSE);
         }
     }
 
@@ -177,6 +184,7 @@ void CDefConverterPage::OnBnClickedBtnOutput()
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
         if( ouConverterInfo.m_pouConverter != NULL)
         {
+            ouConverterInfo.m_pouConverter->GettextBusmaster();
             ouConverterInfo.m_pouConverter->GetOutputFileFilters(strFileExt, strFileFilters);
         }
     }
@@ -192,6 +200,22 @@ void CDefConverterPage::OnBnClickedBtnOutput()
     {
         m_omEditOutputPath.SetWindowText(fileDlg.GetPathName());
         GetDlgItem(IDC_EDIT_COMMENT)->SetWindowText("");
+        GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow(FALSE);
+    }
+}
+
+void CDefConverterPage::OnBnClickedViewLog()
+{
+    //Open a .txt file with it's default editor
+    if ( !m_omstrLogFilePath.IsEmpty() )
+    {
+        //ShellExecute(NULL, "open", m_omStrOutputFilePath, NULL, NULL, SW_SHOWNORMAL);
+        HINSTANCE hInst = ShellExecute( 0,
+                                        "open",                                  // Operation to perform
+                                        "notepad.exe",                           // Application name
+                                        m_omstrLogFilePath.GetBuffer(MAX_PATH),  // Additional parameters
+                                        0,                                       // Default directory
+                                        SW_SHOW);
     }
 }
 
@@ -199,6 +223,7 @@ void CDefConverterPage::OnBnClickedBtnConvert()
 {
     // TODO: Add your control notification handler code here
     INT nSelected = GetConverterPos();
+    m_omstrLogFilePath.Empty();
 
     if( (nSelected >= 0 ) && (nSelected < m_pouPluginManager->m_ConverterList.GetCount()))
     {
@@ -210,6 +235,8 @@ void CDefConverterPage::OnBnClickedBtnConvert()
             string strInputFilePath  = (LPCTSTR) m_omStrInputFilePath;
             string strOutputFilePath = (LPCTSTR) m_omStrOutputFilePath;
 
+            ouConverterInfo.m_pouConverter->GettextBusmaster();
+
             //StringCbCopy(strInputFilePath, sizeof(strInputFilePath), m_omStrInputFilePath);
             //StringCbCopy(strOutputFilePath, sizeof(strOutputFilePath), m_omStrOutputFilePath);
             if( S_OK == ValidateFileExtensions(m_omStrInputFilePath, m_omStrOutputFilePath, ouConverterInfo.m_pouConverter))
@@ -218,11 +245,26 @@ void CDefConverterPage::OnBnClickedBtnConvert()
                 string conversionComment;
                 ouConverterInfo.m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
                 m_omstrConversionComment = conversionComment.c_str();
+
+                /* If a log file is created */
+                if ( m_omstrConversionComment.Compare(_T("Conversion completed with warnings.")) == 0 )
+                {
+                    m_omstrLogFilePath = m_omStrOutputFilePath;
+
+                    m_omstrLogFilePath.Replace(_T(".dbf"), _T(".log"));
+
+                    GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow();
+                }
+                else
+                {
+                    GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow(FALSE);
+                }
+
                 UpdateData(FALSE);
             }
             else
             {
-                MessageBox("Invalid Input/Output Files", "Error", MB_OK|MB_ICONERROR);
+                MessageBox(_("Invalid Input/Output Files"), _("Error"), MB_OK|MB_ICONERROR);
             }
         }
     }
@@ -237,12 +279,15 @@ void CDefConverterPage::OnCbnSelchangeComboConversions()
     string m_omstrConversionName;
     INT nSelectedItemIndex = GetConverterPos();
 
+    GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow(FALSE);
+
     if( nSelectedItemIndex >= 0 )
     {
         string chHelpText;
         string chConversionName;
         POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelectedItemIndex);
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
+        ouConverterInfo.m_pouConverter->GettextBusmaster();
         ouConverterInfo.m_pouConverter->GetHelpText(chHelpText);
 
         m_omstrEditHelp = chHelpText.c_str();

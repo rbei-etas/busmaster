@@ -140,7 +140,7 @@ BOOL CMsgFilterConfigPage::OnInitDialog()
     // Populate Filter List
     vInitFilterUIList();
     // Update Title
-    SetWindowText( defSTR_WINDOW_TITLE );
+    SetWindowText( _(defSTR_WINDOW_TITLE) );
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -184,7 +184,7 @@ BOOL CMsgFilterConfigPage::bCreateImageList()
 VOID CMsgFilterConfigPage::vCreateFilterUIList()
 {
     // Create One Colunm "Filter Name"
-    m_omLstcFilterList.InsertColumn(0, defSTR_FILTER_NAME_COLUMN );
+    m_omLstcFilterList.InsertColumn(0, _(defSTR_FILTER_NAME_COLUMN) );
     // Set Image List if list is valid
     if(m_omImageList.m_hImageList != NULL )
     {

@@ -23,6 +23,7 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "Verify_MessageEntity.h"
+#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************
 Function Name  :  CVerify_MessageEntity
@@ -92,7 +93,7 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     pIDOMChildNode->Release();
 
     //Retriving Message UNIT
-    bstrNodeName = def_STR_TCATTRIB_UNIT;
+    bstrNodeName = _(def_STR_TCATTRIB_UNIT);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
     omstrTemp = strCopyBSTRToCString(NodeValue);
@@ -113,7 +114,7 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     IXMLDOMNodeListPtr pIDOMSignalList;
     IXMLDOMNode* pIDOMSChildSignal;
 
-    bstrNodeName = def_STR_SIGNAL_NODE;
+    bstrNodeName = _(def_STR_SIGNAL_NODE);
     pIDOMSignalList = pIDomNode->selectNodes((_bstr_t)bstrNodeName);
     pIDOMSignalList->get_length(&lCount);
 
@@ -251,7 +252,7 @@ HRESULT CVerify_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomVerifyNod
 
     if (pIDOMDoc != NULL)
     {
-        pChildElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_VERIFYMSG_NODE));
+        pChildElement   =  pIDOMDoc->createElement(_bstr_t(_(def_STR_VERIFYMSG_NODE)));
 
         MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_ID);
         if(pIDomTSAtrrib!= NULL)
@@ -260,7 +261,7 @@ HRESULT CVerify_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomVerifyNod
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
 
-        pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_UNIT);
+        pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_TCATTRIB_UNIT));
         if(pIDomTSAtrrib!= NULL)
         {
             switch(m_ouData.m_eSignalUnitType)
@@ -281,8 +282,8 @@ HRESULT CVerify_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomVerifyNod
         {
             POSITION pos = m_ouData.m_odSignalConditionList.FindIndex(i);
             CSignalCondition& ouSignalData = m_ouData.m_odSignalConditionList.GetAt(pos);
-            pSubElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_SIGNAL_NODE));
-            pIDomTSAtrrib = pIDOMDoc->createAttribute(def_NAME_NODE);
+            pSubElement   =  pIDOMDoc->createElement(_bstr_t(_(def_STR_SIGNAL_NODE)));
+            pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_NAME_NODE));
             pIDomTSAtrrib->value = _bstr_t(ouSignalData.m_omSigName);
             pSubElement->setAttributeNode(pIDomTSAtrrib);
             pSubElement->Puttext(_bstr_t(ouSignalData.m_omCondition));

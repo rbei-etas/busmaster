@@ -25,6 +25,7 @@
 
 #include "TestSetupEditorLib_stdafx.h"
 #include "VerifyResponse.h"
+#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************
 Function Name  :  CVerifyResponse
@@ -327,7 +328,7 @@ HRESULT CVerifyResponse::ValidateEntity(CString& omStrResult)
     GetSubEntryCount(unVerifyMessageCount);
     if(unVerifyMessageCount <= 0)
     {
-        omStrResult += "Error: Has No Verify Messages\r\n";
+        omStrResult += _("Error: Has No Verify Messages\r\n");
         return ERR_VALID_ERROR;
     }
     return ERR_VALID_SUCCESS;

@@ -161,8 +161,8 @@ BOOL CCAPL2CPropertyPage::OnInitDialog()
     // TODO: Add extra initialization here
     CRect omRect;
     m_omDBCList.SetExtendedStyle(m_omDBCList.GetExtendedStyle() | LVS_EX_GRIDLINES|LVS_EX_FULLROWSELECT);
-    m_omDBCList.InsertColumn(0, _T("DBC File Path"));
-    m_omDBCList.InsertColumn(1, _T("DBF File Path"));
+    m_omDBCList.InsertColumn(0, _T(_("DBC File Path")));
+    m_omDBCList.InsertColumn(1, _T(_("DBF File Path")));
     m_omDBCList.GetWindowRect( &omRect );
     m_omDBCList.SetColumnWidth( 0, omRect.Width()/2 );
     m_omDBCList.SetColumnWidth( 1, omRect.Width()/2 );
@@ -239,9 +239,9 @@ void CCAPL2CPropertyPage::OnBrowseSource()
     CString omStrPath;
     int nIndex = -1;
     CFileDialog cfd(TRUE,"can","*can",OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
-                    OFN_PATHMUSTEXIST|OFN_EXTENSIONDIFFERENT,"CAPL Files(*.can)|*.can||",this);
+                    OFN_PATHMUSTEXIST|OFN_EXTENSIONDIFFERENT,_("CAPL Files(*.can)|*.can||"),this);
 
-    cfd.m_ofn.lpstrTitle = "Select CAPL (.can) File";
+    cfd.m_ofn.lpstrTitle = _("Select CAPL (.can) File");
 
 
     GetDlgItemText( IDC_EDIT_INPUT,omStrPath );
@@ -249,7 +249,7 @@ void CCAPL2CPropertyPage::OnBrowseSource()
     omStrPath.TrimRight();
     if(omStrPath.IsEmpty())
     {
-        omStrPath = AfxGetApp()->GetProfileString("Files","CAPL file","");
+        omStrPath = AfxGetApp()->GetProfileString(_("Files"),_("CAPL file"),"");
     }
     if( (nIndex = omStrPath.ReverseFind('\\') )!= -1)
     {
@@ -289,9 +289,9 @@ void CCAPL2CPropertyPage::OnBrowseSource()
 void CCAPL2CPropertyPage::OnBrowseDest()
 {
     CFileDialog cfd(TRUE,"cpp",NULL,OFN_OVERWRITEPROMPT|
-                    OFN_HIDEREADONLY,"BUSMASTER  Files(*.cpp)|*.cpp||",this);
+                    OFN_HIDEREADONLY,_("BUSMASTER  Files(*.cpp)|*.cpp||"),this);
 
-    cfd.m_ofn.lpstrTitle = "Select BUSMASTER File";
+    cfd.m_ofn.lpstrTitle = _("Select BUSMASTER File");
 
     CString omStrPath;
     int nIndex;
@@ -301,7 +301,7 @@ void CCAPL2CPropertyPage::OnBrowseDest()
     omStrPath.TrimRight();
     if(omStrPath.IsEmpty())
     {
-        omStrPath = AfxGetApp()->GetProfileString("Files","CAPL file","");
+        omStrPath = AfxGetApp()->GetProfileString(_("Files"),_("CAPL file"),"");
     }
     if( (nIndex = omStrPath.ReverseFind('\\') )!= -1)
     {
@@ -403,9 +403,9 @@ void CCAPL2CPropertyPage::OnChangeEditInput()
 void CCAPL2CPropertyPage::OnBrowseCANoeDb()
 {
     CFileDialog omDBCFileBrowser(TRUE,"dbc",NULL,OFN_OVERWRITEPROMPT|OFN_FILEMUSTEXIST|
-                                 OFN_PATHMUSTEXIST|OFN_ALLOWMULTISELECT,"CANoe Database Files(*.dbc)|*.dbc||",this);
+                                 OFN_PATHMUSTEXIST|OFN_ALLOWMULTISELECT,_("CANoe Database Files(*.dbc)|*.dbc||"),this);
 
-    omDBCFileBrowser.m_ofn.lpstrTitle = "Select CANoe Database File";
+    omDBCFileBrowser.m_ofn.lpstrTitle = _("Select CANoe Database File");
 
     CString omStrDBFFile;
     if(omDBCFileBrowser.DoModal()==IDOK)
@@ -433,7 +433,7 @@ void CCAPL2CPropertyPage::OnBrowseCANoeDb()
             }
             else
             {
-                MessageBox("Invalid CANoe Database File", "Error", MB_OK|MB_ICONERROR);
+                MessageBox(_("Invalid CANoe Database File"), _("Error"), MB_OK|MB_ICONERROR);
                 m_omDBCList.DeleteItem(nIndex);
             }
         }
@@ -456,9 +456,9 @@ void CCAPL2CPropertyPage::OnBrowseCANoeDb()
 void CCAPL2CPropertyPage::OnBrowseBUSMASTERDb()
 {
     CFileDialog  omStrDBFFileDialog( TRUE,"dbf",NULL,OFN_OVERWRITEPROMPT|
-                                     OFN_PATHMUSTEXIST,"BUSMASTER Database Files(*.dbf)|*.dbf||",this);
+                                     OFN_PATHMUSTEXIST,_("BUSMASTER Database Files(*.dbf)|*.dbf||"),this);
 
-    omStrDBFFileDialog.m_ofn.lpstrTitle = "Select BUSMASTER Database File";
+    omStrDBFFileDialog.m_ofn.lpstrTitle = _("Select BUSMASTER Database File");
 
     POSITION pos = m_omDBCList.GetFirstSelectedItemPosition();
     int nItem = m_omDBCList.GetNextSelectedItem(pos);
@@ -504,8 +504,8 @@ void CCAPL2CPropertyPage::OnChkbSavedb()
 void CCAPL2CPropertyPage::SaveSettings()
 {
     //this function will save the settings in the registry.
-    CString strSection       = "Files";
-    CString strStringItem    = "CAPL File";
+    CString strSection       = _("Files");
+    CString strStringItem    = _("CAPL File");
 
     CWinApp* pApp = AfxGetApp();
     CString omStrCAPLName;
@@ -641,7 +641,7 @@ void CCAPL2CPropertyPage::OnConvert()
                 MessageBox(defSTR_Warning8, MB_OK|MB_ICONWARNING);
             }
         }
-        ouWaitIndicator.DisplayWindow ("Loading The CANoe Database Files... Please Wait", this);
+        ouWaitIndicator.DisplayWindow (_("Loading The CANoe Database Files... Please Wait"), this);
         INT_PTR nCount = m_omDBCList.GetItemCount();
         CStringArray omStrDbcFileArray;
         if( 0 == nCount )
@@ -663,7 +663,7 @@ void CCAPL2CPropertyPage::OnConvert()
         }
         ////
 
-        ouWaitIndicator.SetWindowText(_T("CAPL Conversion is Going on... Please Wait"));
+        ouWaitIndicator.SetWindowText(_T(_("CAPL Conversion is Going on... Please Wait")));
         CString omStrResult;
         nConvert(omStrCAPLFileName , omStrCFileName ,m_omLogFile, omStrDbcFileArray, m_pouDBC2DBFConverter, omStrResult) ;
 
@@ -671,7 +671,7 @@ void CCAPL2CPropertyPage::OnConvert()
         if(m_bConvertDbc2Dbf == TRUE)
         {
             INT_PTR nCount = m_omDBCList.GetItemCount();
-            ouWaitIndicator.SetWindowText("Database Conversion is Going on... Please Wait");
+            ouWaitIndicator.SetWindowText(_("Database Conversion is Going on... Please Wait"));
             for( int i = 0; i < nCount; i++)
             {
                 string omStrDBCFile = m_omDBCList.GetItemText(i, 0).GetBuffer(MAX_PATH);
@@ -680,7 +680,7 @@ void CCAPL2CPropertyPage::OnConvert()
                 m_pouDBC2DBFConverter->ConvertFile(m_omDBCList.GetItemText(i, 1).GetBuffer(MAX_PATH));
             }
         }
-        ouWaitIndicator.SetWindowText("Conversion Completed");
+        ouWaitIndicator.SetWindowText(_("Conversion Completed"));
         Sleep(520);
         ouWaitIndicator.CloseWindow();
 

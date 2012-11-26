@@ -21,6 +21,7 @@ public:
     virtual BOOL Create(CWnd* pParentWnd = NULL, DWORD dwStyle = (DWORD)-1, DWORD dwExStyle = 0);
 protected:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+    void vGettextBusmaster();
 };
 
 

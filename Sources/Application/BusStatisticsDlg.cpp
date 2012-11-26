@@ -322,22 +322,22 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
             {
                 case defCONTROLLER_ACTIVE:
                 {
-                    omDispText = defSTR_ACTIVE_STATE;
+                    omDispText = _(defSTR_ACTIVE_STATE);
                 }
                 break;
                 case defCONTROLLER_PASSIVE:
                 {
-                    omDispText = defSTR_PASSIVE_STATE;
+                    omDispText = _(defSTR_PASSIVE_STATE);
                 }
                 break;
                 case defCONTROLLER_BUSOFF:
                 {
-                    omDispText = defSTR_BUSOFF_STATE;
+                    omDispText = _(defSTR_BUSOFF_STATE);
                 }
                 break;
                 default:
                 {
-                    omDispText = defSTR_UNKNOWN_STATE;
+                    omDispText = _(defSTR_UNKNOWN_STATE);
                 }
             }
             // Set controller state
@@ -395,7 +395,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
 
     // Insert Columns
     m_omStatList.SetExtendedStyle( LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP );
-    m_omStatList.InsertColumn( 0, defSTR_COL_PARAMETER );
+    m_omStatList.InsertColumn( 0, _(defSTR_COL_PARAMETER) );
     m_omStatList.SetColumnWidth( 0, defPARAMETER_COL_WIDTH );
 
     for( nIndex = 0; nIndex < m_nChannelCount; nIndex++)
@@ -434,172 +434,172 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     nIndex = 0;
 
     // Total Message count
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_MSG_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_MSG_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Message Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_MSG_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_MSG_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Errors
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_ERR_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_ERR_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Error Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_ERR_RATE);
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_ERR_RATE));
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Network Load
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_LOAD );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_LOAD) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Peak network load
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_PEAK_LOAD );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_PEAK_LOAD) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Insert Avarage Bus Load
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_AVG_LOAD );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_AVG_LOAD) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // "Transmitted' heading
-    m_omStatList.InsertItem(nIndex, defSTR_TX_HEADING );
+    m_omStatList.InsertItem(nIndex, _(defSTR_TX_HEADING) );
     m_omStatList.SetItemData(nIndex, nHeadingColor);
     nIndex++;
     // Total Tx Message
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Tx Std Message
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_STD_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_STD_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Tx Std Message Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_STD_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_STD_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Tx Extended Message
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_EXD_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_EXD_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Tx Extended Message Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_EXD_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_EXD_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Tx stanard RTR Message
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_STD_RTR );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_STD_RTR) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Tx Extended RTR Message
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_EXD_RTR );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_EXD_RTR) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Tx Errors Total
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_ERR_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_ERR_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Tx Error Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_ERR_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_ERR_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // "Received" Heading
-    m_omStatList.InsertItem(nIndex, defSTR_RX_HEADING);
+    m_omStatList.InsertItem(nIndex, _(defSTR_RX_HEADING));
     m_omStatList.SetItemData(nIndex, nHeadingColor);
     nIndex++;
     // Total Rx Messages
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Rx Standard Messages
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_STD_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_STD_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Rx Standard Message Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_STD_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_STD_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Rx Extended Messages
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_EXD_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_EXD_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Rx Extended Message Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_EXD_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_EXD_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Rx Standard RTR Messages
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_STD_RTR );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_STD_RTR) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Rx Extended RTR Messages
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_EXD_RTR );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_EXD_RTR) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Total Rx Errors
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_ERR_TOTAL );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_ERR_TOTAL) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
     // Rx Error Rate
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_ERR_RATE );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_ERR_RATE) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // Insert Controller Status Heading
-    m_omStatList.InsertItem(nIndex, defSTR_STATUS_HEADING );
+    m_omStatList.InsertItem(nIndex, _(defSTR_STATUS_HEADING) );
     m_omStatList.SetItemData(nIndex, nHeadingColor);
     nIndex++;
 
     // Insert Controller status
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_CONTROLLER_STATUS );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_CONTROLLER_STATUS) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // Insert Tx Error Counter
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_TX_ERROR_COUNT );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_ERROR_COUNT) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // Insert Peak Tx Error Counter
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_PEAK_TX_ERROR_COUNT );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_PEAK_TX_ERROR_COUNT) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // Insert Rx Error counter
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_RX_ERROR_COUNT );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_RX_ERROR_COUNT) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
     // Insert Peak Rx Error Counter
-    m_omStatList.InsertItem(nIndex, defSTR_PARAMETER_PEAK_RX_ERROR_COUNT );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_PEAK_RX_ERROR_COUNT) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
@@ -1136,7 +1136,7 @@ void CBusStatisticsDlg::vUpdateChannelCountInfo(int nChannelCount)
             for(int i = m_nChannelCount+1; i <= nChannelCount; i++)
             {
                 CString cs;
-                cs.Format( defSTR_CHANNEL_NAME_FORMAT, defSTR_CHANNEL_NAME, i);
+                cs.Format( defSTR_CHANNEL_NAME_FORMAT, _(defSTR_CHANNEL_NAME), i);
                 m_omStatList.InsertColumn( i , cs, LVCFMT_CENTER );
                 m_omStatList.SetColumnWidth( i , defVALUE_COL_WIDTH );
             }

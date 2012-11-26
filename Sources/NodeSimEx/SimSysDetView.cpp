@@ -27,6 +27,7 @@
 #include "ExecuteManager.h"
 #include "FunctionEditorDoc.h"
 #include "GlobalObj.h"
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -157,17 +158,15 @@ void CSimSysDetView::Dump(CDumpContext& dc) const
 /*****************************************************************************/
 void CSimSysDetView::OnButtonBuild()
 {
-    BOOL bSuccess = FALSE;
-
-    // PTV CPP
-    if(m_psNodeInfo != NULL)
+    if(m_eBus == J1939)
     {
-        if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
+        if(CGlobalObj::ouGetObj(m_eBus).bJ1939Activated == false)
         {
-            AfxMessageBox("Unload the dll and try again!!");
+            AfxMessageBox("J1939 is not Activated, activate it and then try.");
             return;
         }
     }
+    BOOL bSuccess = FALSE;
 
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     if( m_psNodeInfo != NULL )
@@ -232,12 +231,15 @@ void CSimSysDetView::vUpdateNodeDetailsAndView()
 /*****************************************************************************/
 void CSimSysDetView::OnButtonBuildandload()
 {
-    BOOL bSuccess = FALSE;
-    if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
+    if(m_eBus == J1939)
     {
-        AfxMessageBox("Unload the dll and try again!!");
-        return;
+        if(CGlobalObj::ouGetObj(m_eBus).bJ1939Activated == false)
+        {
+            AfxMessageBox("J1939 is not Activated, activate it and then try.");
+            return;
+        }
     }
+    BOOL bSuccess = FALSE;
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
     if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrFileName != STR_EMPTY ))
 
@@ -291,6 +293,14 @@ void CSimSysDetView::OnButtonBuildandload()
 /*****************************************************************************/
 void CSimSysDetView::OnButtonLoadUnload()
 {
+    if(m_eBus == J1939)
+    {
+        if(CGlobalObj::ouGetObj(m_eBus).bJ1939Activated == false)
+        {
+            AfxMessageBox("J1939 is not Activated, activate it and then try.");
+            return;
+        }
+    }
     int nReturnVal = IDNO;
     CString omStrButtonText = STR_EMPTY;
     CString omStrFileName = STR_EMPTY;
@@ -450,6 +460,14 @@ void CSimSysDetView::OnButtonLoadUnload()
 /*****************************************************************************/
 void CSimSysDetView::OnButtonEditfile()
 {
+    if(m_eBus == J1939)
+    {
+        if(CGlobalObj::ouGetObj(m_eBus).bJ1939Activated == false)
+        {
+            AfxMessageBox("J1939 is not Activated, activate it and then try.");
+            return;
+        }
+    }
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_omStrCFile);
     if (pDoc != NULL)
     {
@@ -549,6 +567,14 @@ void CSimSysDetView::OnButtonEnableDisablehandler()
 /*****************************************************************************/
 void CSimSysDetView::OnButtonOpenfile()
 {
+    if(m_eBus == J1939)
+    {
+        if(CGlobalObj::ouGetObj(m_eBus).bJ1939Activated == false)
+        {
+            AfxMessageBox("J1939 is not Activated, activate it and then try.");
+            return;
+        }
+    }
     int nReturnVal = IDYES;
     if( m_psNodeInfo->m_bIsDllLoaded)
     {
@@ -994,10 +1020,10 @@ void CSimSysDetView::OnInitialUpdate()
     LF.lfHeight = 10;
     LF.lfWeight = FW_HEAVY;
     LF.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-    _tcscpy(LF.lfFaceName, "Ms Sans Serif");
+    _tcscpy(LF.lfFaceName, _("Ms Sans Serif"));
     if (!om_tFont.CreateFontIndirect(&LF))
     {
-        TRACE("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n");
+        TRACE(_("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n"));
     }
 
     // Insert column header in the signal details list control
@@ -1012,20 +1038,20 @@ void CSimSysDetView::OnInitialUpdate()
 
     // Insert column to handler details list control
     m_omListCtrlHanDet.InsertColumn( 0,
-                                     "Name",
+                                     _("Name"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      0);
 
     m_omListCtrlHanDet.InsertColumn( 1,
-                                     "Handler Count",
+                                     _("Handler Count"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      1);
 
 
     m_omListCtrlHanDet.InsertColumn( 2,
-                                     "Status",
+                                     _("Status"),
                                      LVCFMT_CENTER,
                                      om_Coor.cx,
                                      2);
@@ -1078,7 +1104,7 @@ void CSimSysDetView::OnInitialUpdate()
     ScreenToClient(&rRect);
 
     m_omListCtrlHanVal.InsertColumn( 0,
-                                     "Handler Description",
+                                     _("Handler Description"),
                                      LVCFMT_CENTER,
                                      rRect.right/2,
                                      0);

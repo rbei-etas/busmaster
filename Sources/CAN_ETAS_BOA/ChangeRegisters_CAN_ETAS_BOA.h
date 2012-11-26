@@ -73,6 +73,15 @@ protected:
     //}}AFX_DATA
     DOUBLE  m_dEditBaudRate;
     UINT    m_unCombClock;
+    /*CAN FD Parameters */
+    CString m_omstrDataBitRate;
+    CString m_omstrDataSamplePoint;
+    CString m_omstrDataBTL_Cycles;
+    CString m_omstrDataSJW;
+    CString m_omstrTxDelayCompensationON;
+    CString m_omstrTxDelayCompensationQuanta;
+    CString m_omstrRxCompatibility;
+    CString m_omstrTxCompatibility;
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CChangeRegisters_CAN_ETAS_BOA)
@@ -128,8 +137,10 @@ private:
     int GetSelectedEntryIndex(void);
     BOOL bUpdateControllerDataMembers(void);
 
+    void vEnableFDParameters(BOOL bEnable);
 public:
     afx_msg void OnCbnSelchangeCombSjw();
+    afx_msg void OnCbnSelchangeCombDelayCompensation();
     afx_msg void OnCbnSelchangeCombPropdelay();
     CComboBox m_omCtrlSamplePoint;
     CComboBox m_omCtrlSJW;

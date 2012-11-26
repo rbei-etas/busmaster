@@ -64,6 +64,7 @@ typedef struct sTCAN_MSG
         unsigned short int m_auwData[4];
         unsigned long  int m_aulData[2];
     } m_sWhichBit;
+    unsigned char*      m_aucCANFDData;
     unsigned long m_ulTimeStamp;
     /*STCAN_MSG(UINT unMsgID=0, UCHAR ucExt=0, UCHAR ucRtr=0, UCHAR ucDLC=8, UCHAR ucChannel=1,
             UCHAR b0=0,UCHAR b1=0,UCHAR b2=0,UCHAR b3=0,UCHAR b4=0,UCHAR b5=0,UCHAR b6=0,UCHAR b7=0)

@@ -27,7 +27,7 @@
 // CDefineTimerHandler class definition
 #include "DefineTimerHandler.h"
 #include "GlobalObj.h"
-
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -236,7 +236,7 @@ void CDefineTimerHandler::OnOK()
             bNoMoreTimer = TRUE;
             if( omStrTimerHandlerName.IsEmpty() == TRUE )
             {
-                MessageBox("Timer Name Should Not Be Empty", "Invalid Timer Name", MB_OK|MB_ICONERROR);
+                MessageBox(_("Timer Name Should Not Be Empty"), _("Invalid Timer Name"), MB_OK|MB_ICONERROR);
             }
             // For any invalid input, beep
             MessageBeep( (UINT)-1 );

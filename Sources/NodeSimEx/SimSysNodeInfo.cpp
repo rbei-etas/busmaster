@@ -144,7 +144,8 @@ void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)
         }
     }
 }
-
+PSTCAN_TIME_MSG sCanTimeData=NULL;
+STCANDATA sCanData;//=NULL;
 int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
 {
     ASSERT(psNodeInfo != NULL);
@@ -158,7 +159,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
             {
                 while (psNodeInfo->m_ouCanBufFSE.GetMsgCount() > 0)
                 {
-                    static STCANDATA sCanData;
+                    sCanData.m_ucDataType = RX_FLAG;
 
                     // PTV CPP
                     if(psNodeInfo != NULL)
@@ -175,15 +176,23 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         // Give the msg to NodeSimx for simulation
                         if (sCanData.m_ucDataType == RX_FLAG)
                         {
-                            static STCAN_TIME_MSG sCanTimeData;
-                            sCanTimeData.m_ucChannel    = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
-                            memcpy(sCanTimeData.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sizeof(sCanTimeData.m_ucData));
-                            sCanTimeData.m_ucDataLen    = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
-                            sCanTimeData.m_ucEXTENDED   = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
-                            sCanTimeData.m_ucRTR        = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
-                            sCanTimeData.m_ulTimeStamp  = (ULONG)sCanData.m_lTickCount.QuadPart;
-                            sCanTimeData.m_unMsgID      = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
-                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerCAN(sCanTimeData, psNodeInfo->m_dwClientId);
+                            if ( sCanTimeData == NULL )
+                            {
+                                sCanTimeData = new STCAN_TIME_MSG();
+                            }
+                            sCanTimeData->m_ucChannel    = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
+                            memcpy(sCanTimeData->m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sizeof(sCanTimeData->m_ucData));
+                            if (sCanData.m_bCANFDMsg)
+                            {
+                                memcpy(sCanTimeData->m_ucCANFDData, sCanData.m_uDataInfo.m_sCANMsg.m_ucCANFDData,
+                                       /*sizeof(sCanTimeData->m_ucCANFDData)*/sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen);
+                            }
+                            sCanTimeData->m_ucDataLen    = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
+                            sCanTimeData->m_ucEXTENDED   = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
+                            sCanTimeData->m_ucRTR        = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
+                            sCanTimeData->m_ulTimeStamp  = (ULONG)sCanData.m_lTickCount.QuadPart;
+                            sCanTimeData->m_unMsgID      = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
+                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerCAN_(sCanTimeData, psNodeInfo->m_dwClientId);
                         }
                         else if (sCanData.m_ucDataType == ERR_FLAG)
                         {
@@ -232,6 +241,11 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
             break;
         }
     }
+    if (NULL != sCanTimeData)
+    {
+        delete sCanTimeData;
+        sCanTimeData = NULL;
+    }
     return 0;
 }
 
@@ -256,7 +270,48 @@ DWORD WINAPI NodeDataReadThreadProc(LPVOID pVoid)
         {
             case INVOKE_FUNCTION:
             {
-                ReadNodeDataBuffer(psNodeInfo); // Retrieve message from the driver
+                __try
+                {
+                    ReadNodeDataBuffer(psNodeInfo); // Retrieve message from the driver
+                }
+                __except(EXCEPTION_EXECUTE_HANDLER)
+                {
+                    LPBYTE lpPage;
+                    static SYSTEM_INFO si;
+                    static MEMORY_BASIC_INFORMATION mi;
+                    static DWORD dwOldProtect;
+
+                    // Get page size of system
+                    GetSystemInfo(&si);
+
+                    // Find SP address
+                    _asm mov lpPage, esp;
+
+                    // Get allocation base of stack
+                    VirtualQuery(lpPage, &mi, sizeof(mi));
+
+                    // Go to page beyond current page
+                    lpPage = (LPBYTE)(mi.BaseAddress)-si.dwPageSize;
+
+                    // Free portion of stack just abandoned
+                    if (!VirtualFree(mi.AllocationBase,
+                                     (LPBYTE)lpPage - (LPBYTE)mi.AllocationBase,
+                                     MEM_DECOMMIT))
+                    {
+                        // If we get here, exit
+                        exit(1);
+                    }
+
+                    // Reintroduce the guard page
+                    if (!VirtualProtect(lpPage, si.dwPageSize,
+                                        PAGE_GUARD | PAGE_READWRITE,
+                                        &dwOldProtect))
+                    {
+                        exit(1);
+                    }
+                    printf("Exception handler %lX\n", _exception_code());
+                    //Sleep(2000);
+                }
             }
             break;
             case EXIT_THREAD:

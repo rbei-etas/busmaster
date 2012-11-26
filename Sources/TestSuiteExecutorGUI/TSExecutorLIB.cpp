@@ -24,6 +24,7 @@
 #include "TSExecutorBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
+#include "../Application/GettextBusmaster.h"
 #include <Shlwapi.h>
 #include "Utility\UtilFunctions.h"
 
@@ -49,7 +50,7 @@ Code Tag       :
 ******************************************************************************/
 CTSExecutorLIB::CTSExecutorLIB(void)
 {
-    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
+    m_omstrTestSuiteName = _(def_STR_TESTSUITENAME);
     m_ouTestSetupEntityList.RemoveAll();
     m_bTestSuiteStatus = FALSE;
     m_ompResultDisplayWnd = NULL;
@@ -871,7 +872,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
     xmlXPathObjectPtr pObjectPtr = NULL;
     xmlNodePtr pTempNode;
     //Test Suite Name
-    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
+    m_omstrTestSuiteName = _(def_STR_TESTSUITENAME);
 
     pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Test_Suite_Name");
     if( NULL != pObjectPtr)
@@ -912,7 +913,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
             if ( S_OK == nParseTestSuite(pObjectPtr->nodesetval->nodeTab[i], sConfigInfo) )
             {
                 DWORD dwID;
-                UINT unCount;
+                UINT unCount, unConfigCount;
                 if(AddTestSetup(sConfigInfo.m_strFileName.c_str(), dwID) == S_OK)
                 {
                     //Selection Status
@@ -924,34 +925,37 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                         ouTestSetupEntity.vEnableEntity(sConfigInfo.m_bEnable);
 
                         //TestCase Count
+                        unConfigCount = sConfigInfo.m_nListSelctedCases.size();
                         ouTestSetupEntity.GetSubEntryCount(unCount);
 
-                        for(UINT j=0; j<unCount; j++)
+                        if( unConfigCount == 0)
                         {
-                            CBaseEntityTA* pTCEntity;
-                            ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
-                            if(pTCEntity != NULL)
+                            for(UINT j=0; j<unCount; j++)
                             {
-                                pTCEntity->vEnableEntity(FALSE);
+                                CBaseEntityTA* pTCEntity;
+                                ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
+                                if(pTCEntity != NULL)
+                                {
+                                    pTCEntity->vEnableEntity(FALSE);
+                                }
                             }
                         }
-
-                        //TestCase Selection Status
-
-                        list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
-
-                        for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
-                                listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
+                        else
                         {
-                            //MVN::Crash Issue
-                            CBaseEntityTA* pTCEntity = NULL;
-                            int nIndex = *listIterator;
-                            HRESULT hValue = ouTestSetupEntity.GetSubEntityObj(nIndex, &pTCEntity);
-                            if(pTCEntity != NULL && hValue == S_OK)
+                            //TestCase Selection Status
+                            list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
+
+                            for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
+                                    listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
                             {
-                                pTCEntity->vEnableEntity(TRUE);
+                                CBaseEntityTA* pTCEntity = NULL;
+                                int nIndex = *listIterator;
+                                HRESULT hValue = ouTestSetupEntity.GetSubEntityObj(nIndex, &pTCEntity);
+                                if(pTCEntity != NULL && hValue == S_OK)
+                                {
+                                    pTCEntity->vEnableEntity(TRUE);
+                                }
                             }
-                            //~MVN::Crash Issue
                         }
                     }
                 }
@@ -1085,7 +1089,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::RemoveAllItems(void)
 {
-    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
+    m_omstrTestSuiteName = _(def_STR_TESTSUITENAME);
     INT nCount;
     nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i=0; i<nCount; i++)
@@ -1219,13 +1223,13 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
         {
             case SEND:
             {
-                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "Sending Messages Started");
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, _("Sending Messages Started"));
                 g_podTSExecutor->TSX_SendMessage(pEntity);
             }
             break;
             case VERIFY:
             {
-                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "Verifying Started");
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, _("Verifying Started"));
                 CResultVerify ouVerifyResult;
                 if(g_podTSExecutor->TSX_VerifyMessage(pEntity, ouVerifyResult) == S_FALSE)
                 {
@@ -1239,14 +1243,14 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
                 CString omStrTemp;
                 CWaitEntityData ouWaitData;
                 pEntity->GetEntityData(WAIT, &ouWaitData);
-                omStrTemp.Format("Waiting %d msec for %s", ouWaitData.m_ushDuration, ouWaitData.m_omPurpose);
+                omStrTemp.Format(_("Waiting %d msec for %s"), ouWaitData.m_ushDuration, ouWaitData.m_omPurpose);
                 m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, omStrTemp);
                 Sleep(ouWaitData.m_ushDuration);
             }
             break;
             case VERIFYRESPONSE:
             {
-                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, "VerifyRequest Started");
+                m_ompResultDisplayWnd->SetItemText(nCurrentRow, 1, _("VerifyRequest Started"));
                 CResultVerify ouVerifyResult;
                 if(g_podTSExecutor->TSX_VerifyResponse(pEntity, ouVerifyResult) == S_FALSE)
                 {

@@ -34,9 +34,10 @@
 #include "Include/CanUsbDefs.h"
 #include "Include/DIL_CommonDefs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
-
+#include "../Application/MultiLanguage.h"
 #include "mhstcan.h"
 #include "mhsbmcfg.h"
+#include "../Application/GettextBusmaster.h"
 
 #define USAGE_EXPORT
 #include "CAN_MHS_Extern.h"
@@ -67,8 +68,33 @@ CCAN_MHS theApp;
 /**
  * CCAN_MHS initialization
  */
+static HINSTANCE ghLangInst=NULL;
+
 BOOL CCAN_MHS::InitInstance()
 {
+    // Begin of Multiple Language support
+    if ( CMultiLanguage::m_nLocales <= 0 )    // Not detected yet
+    {
+        CMultiLanguage::DetectLangID(); // Detect language as user locale
+        CMultiLanguage::DetectUILanguage();    // Detect language in MUI OS
+    }
+    TCHAR szModuleFileName[MAX_PATH];        // Get Module File Name and path
+    int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
+    if ( ret == 0 || ret == MAX_PATH )
+    {
+        ASSERT(FALSE);
+    }
+    // Load resource-only language DLL. It will use the languages
+    // detected above, take first available language,
+    // or you can specify another language as second parameter to
+    // LoadLangResourceDLL. And try that first.
+    ghLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+    if (ghLangInst)
+    {
+        AfxSetResourceHandle( ghLangInst );
+    }
+    // End of Multiple Language support
+
     CWinApp::InitInstance();
 
     return(TRUE);
@@ -464,21 +490,23 @@ HRESULT CDIL_CAN_MHS::CAN_PerformInitOperations(void)
     InitializeCriticalSection(&sg_DIL_CriticalSection);
     /* Register Monitor client */
     dwClientID = 0;
-    CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
-    // ------------------------------------
-    // Init Driver
-    // ------------------------------------
-    if (CanInitDriver(CanInitStr) >= 0)
+    if ( CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE) == S_OK )
     {
-        // **** AutoConnect auf 1
-        //CanSetOptions("AutoConnect=1;AutoReopen=0");
-        // **** Event Funktionen setzen
-        CanSetPnPEventCallback(&CanPnPEvent);
-        CanSetStatusEventCallback(&CanStatusEvent);
-        CanSetRxEventCallback(&CanRxEvent);
-        // **** Alle Events freigeben
-        CanSetEvents(EVENT_ENABLE_ALL);
-        hResult = S_OK;
+        // ------------------------------------
+        // Init Driver
+        // ------------------------------------
+        if (CanInitDriver(CanInitStr) >= 0)
+        {
+            // **** AutoConnect auf 1
+            //CanSetOptions("AutoConnect=1;AutoReopen=0");
+            // **** Event Funktionen setzen
+            CanSetPnPEventCallback(&CanPnPEvent);
+            CanSetStatusEventCallback(&CanStatusEvent);
+            CanSetRxEventCallback(&CanRxEvent);
+            // **** Alle Events freigeben
+            CanSetEvents(EVENT_ENABLE_ALL);
+            hResult = S_OK;
+        }
     }
     return(hResult);
 }
@@ -506,7 +534,11 @@ HRESULT CDIL_CAN_MHS::CAN_PerformClosureOperations(void)
     }
     /* Delete the critical section */
     DeleteCriticalSection(&sg_DIL_CriticalSection);
-    sg_bCurrState = STATE_DRIVER_SELECTED;
+
+    if (hResult == S_OK)
+    {
+        sg_bCurrState = STATE_DRIVER_SELECTED;
+    }
     return(hResult);
 }
 
@@ -545,7 +577,7 @@ HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
 
     char str[2];
     str[0] = '\0';
-    if (!CanDeviceOpen(0, str))
+    if (CanDeviceOpen(0, str) == CAN_STATUS_OK)
     {
         (void)CanDeviceClose(0);
 
@@ -847,14 +879,14 @@ HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
         else
         {
             hResult = S_FALSE;
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not start the controller in running mode"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("could not start the controller in running mode")));
         }
         sg_bCurrState = STATE_CONNECTED;
     }
     else
     {
         //log the error for open port failure
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("error opening \"Tiny-CAN\" interface"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("error opening \"Tiny-CAN\" interface")));
         hResult = ERR_LOAD_HW_INTERFACE;
     }
     return(hResult);
@@ -953,7 +985,7 @@ HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
             else
             {
                 hResult = S_FALSE;
-                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not write can data into bus"));
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("could not write can data into bus")));
             }
         }
         else

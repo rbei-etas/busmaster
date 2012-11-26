@@ -357,7 +357,11 @@ BOOL gbGetProgramVersion(int* /*pnMajorVersion*/, int* /*pnMinorVersion*/)
 ******************************************************************************/
 BOOL gbSendStrToTrace(char* pcOutStrTrace)
 {
-    return CGlobalObj::sm_pouITraceWndPtr->bWriteToTrace(pcOutStrTrace);
+    if (NULL != CGlobalObj::sm_pouITraceWndPtr)
+    {
+        return CGlobalObj::sm_pouITraceWndPtr->bWriteToTrace(pcOutStrTrace);
+    }
+    return TRUE;
 }
 /******************************************************************************
     Function Name    :  sg_KeyPressed

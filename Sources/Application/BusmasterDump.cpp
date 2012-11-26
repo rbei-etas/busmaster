@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "BusmasterDump.h"
+#include "GettextBusmaster.h"
 
 string CBusmasterDump::m_strAppName;
 
@@ -61,7 +62,7 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
             strDumpPath += ".dmp";
 
             // Prompt the user for saving the busmaster dump file
-            if (::MessageBox( NULL, "Unhandled exception in BUSMASTER. Would you like to save a dump file?",
+            if (::MessageBox( NULL, _("Unhandled exception in BUSMASTER. Would you like to save a dump file?"),
                               m_strAppName.c_str(), MB_YESNO ) == IDYES)
             {
                 // Create the dump file as per path given
@@ -80,12 +81,12 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
                     BOOL bRetValue = pDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL );
                     if (bRetValue)
                     {
-                        strDumpMsg = "Saved dump file to " + strDumpPath;
+                        strDumpMsg = _("Saved dump file to ") + strDumpPath;
                         lRetval = EXCEPTION_EXECUTE_HANDLER;
                     }
                     else
                     {
-                        strDumpMsg = "Failed to save dump file to " + strDumpPath;
+                        strDumpMsg = _("Failed to save dump file to ") + strDumpPath;
                     }
 
                     strResult = strDumpMsg;
@@ -93,7 +94,7 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
                 }
                 else
                 {
-                    strDumpMsg = "Failed to create dump file " + strDumpPath;
+                    strDumpMsg = _("Failed to create dump file ") + strDumpPath;
                     strResult = strDumpMsg;
                 }
             }

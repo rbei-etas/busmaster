@@ -20,7 +20,7 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "TestSetupEntity.h"
-
+#include "../Application/GettextBusmaster.h"
 /******************************************************************************
 Function Name  :  CTestSetupEntity
 Input(s)       :
@@ -369,7 +369,7 @@ void CTestSetupEntity::vInitialise(void)
 {
     m_omstrCurrentTSFile = def_EMPTYFILENAME;
     m_omstrDescription = "";
-    m_omstrTestSetupTitle = "<New Test SetUp>";
+    m_omstrTestSetupTitle = _("<New Test SetUp>");
     vDeleteAllEntities();
     nCreateNewTestSetup();
 }
@@ -503,7 +503,7 @@ HRESULT CTestSetupEntity::ValidateEntity(CString& omStrResult)
 
     if(unCount <=0 )
     {
-        omStrResult += "No TestCases Are Defined\r\n";
+        omStrResult += _("No TestCases Are Defined\r\n");
         hResult = ERR_VALID_ERROR;
     }
     else
@@ -721,7 +721,7 @@ INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
 
     if ( FAILED(hr) )
     {
-        throw "Unable to create XML parser object";
+        throw _("Unable to create XML parser object");
     }
     if(PathFileExists(omstrTSFile) == FALSE)
     {

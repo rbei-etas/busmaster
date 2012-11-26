@@ -118,7 +118,7 @@ BOOL CMsgSgTreeView::bPopulateTree()
     {
         bReturnValue = FALSE;
 
-        AfxMessageBox(MSG_DB_NOT_FOUND, MB_OK);
+        AfxMessageBox(_(MSG_DB_NOT_FOUND), MB_OK);
     }
     else
     {
@@ -550,7 +550,7 @@ void CMsgSgTreeView::OnDeleteMessage()
 
     if ( hItem != NULL )
     {
-        int nReturnVal = AfxMessageBox(MSG_DELETE_CONFMN, MB_YESNO|MB_ICONQUESTION);
+        int nReturnVal = AfxMessageBox(_(MSG_DELETE_CONFMN), MB_YESNO|MB_ICONQUESTION);
 
         if ( nReturnVal == IDYES )
         {
@@ -567,7 +567,7 @@ void CMsgSgTreeView::OnDeleteMessage()
             // delete
             if ( !pTempMsgSg->bDeleteMsg( omStrSelecetedText ))
             {
-                AfxMessageBox("Could not delete seleceted message!", MB_OK|MB_ICONINFORMATION);
+                AfxMessageBox(_("Could not delete seleceted message!"), MB_OK|MB_ICONINFORMATION);
             }
             else
             {

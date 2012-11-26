@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TestSetupEditorLib"
 	ProjectGUID="{9305EC2D-F775-402D-915B-9E0F397D2675}"
 	RootNamespace="TestSetupEditorLib"
@@ -44,11 +44,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;WINVER=0x0500"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
@@ -117,14 +118,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
+				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -187,6 +189,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"

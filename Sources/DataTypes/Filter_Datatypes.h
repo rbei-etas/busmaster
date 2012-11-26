@@ -62,6 +62,7 @@ typedef struct tagSFRAMEINFO_BASIC_J1939
 {
     DWORD m_dwPGN;
     TYPE_CHANNEL m_eChannel; //KSS
+    EDIRECTION   m_eDrctn;
 } SFRAMEINFO_BASIC_J1939;
 
 const int LENGTH_FILTERNAME = 128;

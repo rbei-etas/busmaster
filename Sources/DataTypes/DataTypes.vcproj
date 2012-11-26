@@ -42,11 +42,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;WINVER=0x0500"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="1"
@@ -67,6 +68,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 			/>
@@ -112,6 +114,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
@@ -134,6 +137,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 			/>
@@ -179,6 +183,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
@@ -201,6 +206,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 			/>

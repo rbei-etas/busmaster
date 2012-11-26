@@ -1,5 +1,5 @@
 
-/*  A Bison parser, made from d:\project\busmaster\busmaster_svn\trunk\busmaster oss\1.6.8\1.6.8_github\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
+/*  A Bison parser, made from d:\svn\trunk\busmaster oss\sources\testsuiteexecutorgui\parser.y with Bison version GNU Bison version 1.24
   */
 
 #define YYBISON 1  /* Identify Bison output.  */

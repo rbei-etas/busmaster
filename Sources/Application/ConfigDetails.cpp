@@ -1275,7 +1275,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
     {
         if (theApp.m_bFromAutomation == FALSE)
         {
-            AfxMessageBox("Error while updating data", MB_OK);
+            AfxMessageBox(_("Error while updating data"), MB_OK);
         }
     }
     return bRetVal;
@@ -1505,7 +1505,7 @@ INT  CConfigDetails::nSaveConfiguration(CString& omStrCfgFilename)
             {
                 if (theApp.m_bFromAutomation == FALSE)
                 {
-                    AfxMessageBox(defSAVECONFIGERRSTR, MB_OK);
+                    AfxMessageBox(_(defSAVECONFIGERRSTR), MB_OK);
                 }
                 if (m_omstrTempFilename.IsEmpty() == FALSE)
                 {
@@ -4537,7 +4537,7 @@ VOID CConfigDetails::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
         psMsgBlockList->m_bType               = TRUE;
         psMsgBlockList->m_bTxAllFrame         = FALSE;
         psMsgBlockList->m_ucTrigger           = defTIME_TRIGGER;
-        psMsgBlockList->m_omStrBlockName      = defDEFAULT_MSG_BLOCK_NAME;
+        psMsgBlockList->m_omStrBlockName      = _(defDEFAULT_MSG_BLOCK_NAME);
         psMsgBlockList->m_psTxCANMsgList      = NULL;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
@@ -4627,7 +4627,7 @@ BOOL CConfigDetails::bLoadStoreSignalWatchList(CArchive& roCfgArchive)
                 // Exception occuered
                 if (theApp.m_bFromAutomation == FALSE)
                 {
-                    AfxMessageBox("Error while loading Signal Watch List!!",
+                    AfxMessageBox(_("Error while loading Signal Watch List!!"),
                                   MB_ICONSTOP);
                 }
                 bSuccess = FALSE;
@@ -4744,7 +4744,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
             // Exception occuered
             if (theApp.m_bFromAutomation == FALSE)
             {
-                AfxMessageBox("Error while saving Simulated system List!!",MB_ICONSTOP);
+                AfxMessageBox(_("Error while saving Simulated system List!!"),MB_ICONSTOP);
             }
             bSuccess = FALSE;
         }
@@ -4794,7 +4794,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                     // Exception occuered
                     if (theApp.m_bFromAutomation == FALSE)
                     {
-                        AfxMessageBox("Error while loading Simulated system List!!",
+                        AfxMessageBox(_("Error while loading Simulated system List!!"),
                                       MB_ICONSTOP);
                     }
                     bSuccess = FALSE;

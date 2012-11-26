@@ -55,7 +55,7 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define BUS_LOG_DATABASE_END    "***END DATABASE FILES (DBF/DBC)***"
 #define BUS_LOG_BAUDRATE_START  "***START CHANNEL BAUD RATE***"
 #define BUS_LOG_BAUDRATR_END    "***END CHANNEL BAUD RATE***"
-#define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s Kbps***"
+#define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s bps***"
 
 #define PROTOCOL "***PROTOCOL";
 

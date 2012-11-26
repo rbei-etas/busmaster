@@ -35,6 +35,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogToExcelConverter", "LogT
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "J1939DBC2DBFConverter", "J1939DBC2DBFConverter\J1939DBC2DBFConverter.vcproj", "{7E2B0708-38A6-4994-A605-B3DC935F7797}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAPL2CConverterJPN", "CAPL2CConverterJPN\CAPL2CConverterJPN.vcproj", "{9C895A56-E1EA-4319-BAF7-EFBABFF699D8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FormatConverterJPN", "FormatConverterJPN\FormatConverterJPN.vcproj", "{C291DB5F-41A2-49BE-83A1-954D8D3F7C4E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogToExcelConverterJPN", "LogToExcelConverterJPN\LogToExcelConverterJPN.vcproj", "{217B07EE-5C6B-43E4-ABC3-81A955059572}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -75,6 +81,19 @@ Global
 		{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}.Release|Win32.Build.0 = Release|Win32
 		{7E2B0708-38A6-4994-A605-B3DC935F7797}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7E2B0708-38A6-4994-A605-B3DC935F7797}.Release|Win32.ActiveCfg = Release|Win32
+		{7E2B0708-38A6-4994-A605-B3DC935F7797}.Release|Win32.Build.0 = Release|Win32
+		{9C895A56-E1EA-4319-BAF7-EFBABFF699D8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9C895A56-E1EA-4319-BAF7-EFBABFF699D8}.Debug|Win32.Build.0 = Debug|Win32
+		{9C895A56-E1EA-4319-BAF7-EFBABFF699D8}.Release|Win32.ActiveCfg = Release|Win32
+		{9C895A56-E1EA-4319-BAF7-EFBABFF699D8}.Release|Win32.Build.0 = Release|Win32
+		{C291DB5F-41A2-49BE-83A1-954D8D3F7C4E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C291DB5F-41A2-49BE-83A1-954D8D3F7C4E}.Debug|Win32.Build.0 = Debug|Win32
+		{C291DB5F-41A2-49BE-83A1-954D8D3F7C4E}.Release|Win32.ActiveCfg = Release|Win32
+		{C291DB5F-41A2-49BE-83A1-954D8D3F7C4E}.Release|Win32.Build.0 = Release|Win32
+		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Debug|Win32.ActiveCfg = Debug|Win32
+		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Debug|Win32.Build.0 = Debug|Win32
+		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Release|Win32.ActiveCfg = Release|Win32
+		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

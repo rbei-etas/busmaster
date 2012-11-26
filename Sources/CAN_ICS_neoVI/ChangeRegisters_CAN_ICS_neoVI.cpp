@@ -26,6 +26,7 @@
 #include "ContrConfigPeakUsbDefs.h"
 #include "CAN_ICS_neoVI_Resource.h"
 #include "ChangeRegisters_CAN_ICS_neoVI.h"
+#include "../Application/GettextBusmaster.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -475,7 +476,7 @@ void CChangeRegisters_CAN_ICS_neoVI:: vDisplayListBox(INT nEntries, INT nItemFoc
             // Initialize the text of the subitems.
             if (m_omListCtrlBitTime.SetItemText(i, j, cStrText) == 0)
             {
-                AfxMessageBox(defERRORMSG_INSERT);
+                AfxMessageBox(_(defERRORMSG_INSERT));
             }
         }
     }
@@ -528,7 +529,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombBaudRate()
                 }
                 m_omCombBaudRate.SetCurSel(nIndex);
                 /*m_omCombBaudRate.SetWindowText(m_omStrcombBaudRate);*/
-                AfxMessageBox(defVALIDATION_MSG_BAUD_RATE);
+                AfxMessageBox(_(defVALIDATION_MSG_BAUD_RATE));
                 m_omCombBaudRate.SetFocus();
             }
             else
@@ -739,7 +740,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
     //m_omCombClock.GetWindowText(omStrClockFreq);
     //unClockFreq          = _tstoi(omStrClockFreq);
 
-    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/dBaudRate)/2.0 *
+    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
                           (defFACT_FREQUENCY / defFACT_BAUD_RATE);
     unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
 
@@ -788,10 +789,14 @@ void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
         dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
                              ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
 
-        FLOAT  fTempBaudRate;
-        fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-        fTempBaudRate = fTempBaudRate/100000;
-        omStrBaudRate.Format("%.3f",fTempBaudRate);
+        /*FLOAT  fTempBaudRate;
+         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
+         fTempBaudRate = fTempBaudRate/100000;*/
+        if(dBaudRate < 5000)
+        {
+            dBaudRate = 5000;
+        }
+        omStrBaudRate.Format(_T("%ld"),/*fTempBaudRate*/(long)dBaudRate);
 
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
         omStrPrvBaudRate = m_omStrcombBaudRate;
@@ -1276,7 +1281,9 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bSetBaudRateFromCom(int nChannel,BYTE bBTR0
 
     // TO BE FIXED LATER
     double dBaudRate = dCalculateBaudRateFromBTRs(omStrBtr0,omStrBtr1, omStrBtr1);
-    omStrBaudRate.Format("%f",dBaudRate);
+    dBaudRate *= 1000;      //converting to bps
+    omStrBaudRate.Format("%ld",dBaudRate);
+    dBaudRate /= 1000;
     m_usBTR0BTR1 = static_cast <USHORT>(((bBTR0 << 8)| bBTR1) & 0xffff);
     //Save the changes for the channels
     unClock       = (UINT)_tstoi(m_pControllerDetails[ nChannel-1 ].m_omStrClock.c_str());

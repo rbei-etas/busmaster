@@ -26,6 +26,7 @@
 #include "NodeSimEx_resource.h"
 #include "FunctionEditorDoc.h"  // Document defintion file
 #include "ExploreMsgSg.h"       // Class defintion file
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -385,7 +386,7 @@ BOOL CExploreMsgSg::OnInitDialog()
                     pWnd->MoveWindow( nDialogWidth, omBRect.top,
                                       omBRect.Width(), omBRect.Height());
                     // Remove the text "Signal" from the caption
-                    SetWindowText(defSTR_INSERT_GLOBAL_DLG_CAPTION);
+                    SetWindowText(_(defSTR_INSERT_GLOBAL_DLG_CAPTION));
                 }
             }
         }

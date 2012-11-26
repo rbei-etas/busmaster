@@ -173,7 +173,7 @@ BOOL CMsgSignalDBWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
                                         om_Size,                        //CSize( 350,100 ),                 // Sizeof Pane
                                         pContext);
     }
-    CString omTitle = "DatabaseEditor - ";
+    CString omTitle = _("DatabaseEditor - ");
     omTitle += m_sDbParams.m_omBusName;
     SetWindowText(omTitle.GetBuffer(MAX_PATH));
     if (m_sDbParams.m_eBus == J1939)
@@ -251,7 +251,7 @@ void CMsgSignalDBWnd::OnClose()
 
         if ((*ppTempMsgSg)->bGetModifiedFlag() == FALSE)
         {
-            UINT bRetVal =  AfxMessageBox(ASK_SAVE_PROMPT,
+            UINT bRetVal =  AfxMessageBox(_(ASK_SAVE_PROMPT),
                                           MB_YESNOCANCEL|MB_ICONQUESTION);
             if ( bRetVal == IDYES )
             {
@@ -371,8 +371,8 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
                     omImportedDBNames.GetAt(nDBCount))
             {
                 CString omText;
-                omText.Format( "File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?",
-                               m_sDbParams.m_omDBPath);
+                omText.Format(_( "File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
+                              m_sDbParams.m_omDBPath);
                 if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
                 {
                     switch (m_sDbParams.m_eBus)

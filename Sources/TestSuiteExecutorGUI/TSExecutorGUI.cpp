@@ -23,6 +23,8 @@
 #include "TSExecutorGUI_ChildFrame.h"
 #include "TSExecutorGUI_Extern.h"
 #include "TSExecutionCAN.h"
+#include "../Application/MultiLanguage.h"
+#include "../Application/GettextBusmaster.h"
 
 #include <afxdllx.h>
 static AFX_EXTENSION_MODULE TestSuiteExecutor = { NULL, NULL };
@@ -38,6 +40,10 @@ BOOL m_bByXmlConfig = TRUE;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
+
+    static HINSTANCE shLangInst=NULL;
+
+
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
 
@@ -63,11 +69,39 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  Regular DLL's resource chain, and serious problems will
         //  result.
 
+        // Begin of Multiple Language support
+        if ( CMultiLanguage::m_nLocales <= 0 )  // Not detected yet
+        {
+            CMultiLanguage::DetectLangID();     // Detect language as user locale
+            CMultiLanguage::DetectUILanguage(); // Detect language in MUI OS
+        }
+        TCHAR szModuleFileName[MAX_PATH];       // Get Module File Name and path
+        int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
+        if ( ret == 0 || ret == MAX_PATH )
+        {
+            ASSERT(FALSE);
+        }
+        // Load resource-only language DLL. It will use the languages
+        // detected above, take first available language,
+        // or you can specify another language as second parameter to
+        // LoadLangResourceDLL. And try that first.
+        shLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+        if (shLangInst)
+        {
+            TestSuiteExecutor.hResource = shLangInst;
+        }
+        // End of Multiple Language support
+
         new CDynLinkLibrary(TestSuiteExecutor);
 
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
+        if (shLangInst)
+        {
+            FreeLibrary(shLangInst);
+        }
+
         TRACE0("TestSuiteExecutor.DLL Terminating!\n");
         if(m_pbyConfigData != NULL)
         {
@@ -106,7 +140,7 @@ USAGEMODE HRESULT TS_vShowTSExecutorWindow(void* pParentWnd)
 
             CRect omRect(63, 913, 4, 596);
             if( g_pomTSExecutorChildWindow->Create( strMDIClass,
-                                                    "Test Suite Executor",
+                                                    _("Test Suite Executor"),
                                                     WS_CHILD | WS_OVERLAPPEDWINDOW|WS_THICKFRAME,
                                                     omRect, ((CMDIFrameWnd*)pParentWnd)) == TRUE )
             {
@@ -208,7 +242,7 @@ USAGEMODE HRESULT TS_hSetXMLConfigurationData(xmlDocPtr pDoc)
     if ( NULL != m_pXmlConfigNode )
     {
         xmlFreeNode(m_pXmlConfigNode);
-        m_pXmlConfigNode == NULL;
+        m_pXmlConfigNode = NULL;
     }
     xmlXPathObjectPtr pTempPathNode = xmlUtils::pGetNodes(pDoc, (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_TS_Executor");
     if( NULL == pTempPathNode )

@@ -68,6 +68,10 @@ private:
     UINT m_unBitsStdMsg[9];
     UINT m_unBitsExdMsg[9];
 
+    UINT m_unBitsFDMsgCRC15[2][9];
+    UINT m_unBitsFDMsgCRC17[2][2];
+    UINT m_unBitsFDMsgCRC21[2][5];
+
 public:
     CCANBufFSE m_ouCanBufFSE;
 

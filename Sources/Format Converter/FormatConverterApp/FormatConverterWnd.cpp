@@ -33,6 +33,12 @@ CFormatConverterWnd::~CFormatConverterWnd()
     }
 }
 
+void CFormatConverterWnd::vGettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+}
 
 BEGIN_MESSAGE_MAP(CFormatConverterWnd, CPropertySheet)
     ON_WM_CREATE()
@@ -49,6 +55,9 @@ BOOL CFormatConverterWnd::OnInitDialog()
     ModifyStyle(0, WS_MINIMIZEBOX);
     CButton* omBtn;
     WINDOWPLACEMENT omWndPlace;
+
+    vGettextBusmaster();
+
     omBtn = reinterpret_cast<CButton*>(GetDlgItem(ID_APPLY_NOW));
     omBtn->ShowWindow(SW_HIDE);
     omBtn->GetWindowPlacement(&omWndPlace);
@@ -59,7 +68,7 @@ BOOL CFormatConverterWnd::OnInitDialog()
 
 
     omBtn = reinterpret_cast<CButton*>(GetDlgItem(IDCANCEL));
-    omBtn->SetWindowText("Close");
+    omBtn->SetWindowText(_("Close"));
     omBtn->SetWindowPlacement(&omWndPlace);
     return bResult;
 }

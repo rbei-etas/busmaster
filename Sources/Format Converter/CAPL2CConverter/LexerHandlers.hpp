@@ -31,6 +31,8 @@
 #include "ConstString.h"
 //#include "SelectDatabaseDlg.h"
 #include "EnvVarHandlerDlg.h"
+#undef fprintf
+
 
 /**
 * \brief         Validates the given number is a valid alpha and numeric character

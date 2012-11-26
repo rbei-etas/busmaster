@@ -42,11 +42,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;WINVER=0x0500"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="3"
 				StructMemberAlignment="0"
 				TreatWChar_tAsBuiltInType="true"
@@ -109,6 +110,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;WINVER=0x0500"
@@ -196,6 +198,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalOptions="libxml2.lib&#x0D;&#x0A;iconv.lib"
 				OutputFile="$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib"
 			/>
 			<Tool

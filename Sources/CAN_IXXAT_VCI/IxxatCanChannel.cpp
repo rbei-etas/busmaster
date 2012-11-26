@@ -756,6 +756,8 @@ void CIxxatCanChannel::ConvertIxxatCanToBusmasterMsg(CANMSG* pCanMsg, STCANDATA*
         pStCanData->m_ucDataType = RX_FLAG;
     }
 
+    /*Set CAN FD to false*/
+    pStCanData->m_bCANFDMsg = false;
     pStCanData->m_uDataInfo.m_sCANMsg.m_ucChannel = m_byChannelNumber;
 
     pStCanData->m_lTickCount.QuadPart = pCanMsg->dwTime + m_qwTimerOverruns;

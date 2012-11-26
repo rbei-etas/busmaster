@@ -26,6 +26,7 @@
 #include "TxWindow_resource.h"
 #include "Utility/SignalMatrix.h"  // For Signal Matrix declaration
 #include "TxMsgChildFrame.h"       // For CTxMsgChildFrame class defintions
+#include "../Application/GettextBusmaster.h"
 
 extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
 
@@ -107,6 +108,7 @@ BEGIN_MESSAGE_MAP(CTxMsgChildFrame, CMDIChildBase)
     ON_MESSAGE(WM_USER_CMD,vUserCommand)
     ON_WM_SIZE()
     ON_WM_MDIACTIVATE()
+    ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 /*******************************************************************************
@@ -643,7 +645,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                     m_pomTxMsgListView->m_nSelectedMsgIndex = -1;
                     // Set Lable to indicate Mode
                     CString omStrText = CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX) ?
-                                        defSTR_HEX_MODE : defSTR_DEC_MODE;
+                                        _(defSTR_HEX_MODE) : _(defSTR_DEC_MODE);
                     CWnd* pomLabel =
                         m_pomTxMsgDetailsView->GetDlgItem(IDC_STAT_HEADER2);
                     if( pomLabel != NULL )
@@ -854,6 +856,24 @@ void CTxMsgChildFrame::OnSize(UINT nType, int cx, int cy)
         //CTxWndDataStore::ouGetTxWndDataStoreObj().
         //bGetDefaultTXSplitterPostion( omWndSize.rcNormalPosition, (void **)&psData );
         //vSetSplitterPostion();
+        CRect cr;
+        GetWindowRect(&cr);
+        if ( nType != SIZE_MINIMIZED )
+        {
+
+
+            m_omRootSplitter.SetRowInfo( 0, cr.Height()*5.75/7, 0);
+
+            m_omRootSplitter.SetRowInfo( 1, cr.Height()/7, 50 );
+
+
+            m_omLeftViewSplitter.SetColumnInfo(0, cr.Width()/3.75, 0);
+            m_omLeftViewSplitter.SetColumnInfo(1, cr.Width()/2, 0);
+
+            m_omRightViewSplitter.SetRowInfo(0,cr.Height()/3, 0);
+            m_omRightViewSplitter.SetRowInfo(1,cr.Height()/3, 0);
+            m_omRootSplitter.RecalcLayout();
+        }
     }
     else
     {
@@ -869,4 +889,17 @@ void CTxMsgChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* p
         this->SetFocus();
     }
     CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
+}
+
+void CTxMsgChildFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+    // TODO: Add your message handler code here and/or call default
+
+    if(!m_bInit)
+    {
+        lpMMI->ptMinTrackSize.x = 850;
+        lpMMI->ptMinTrackSize.y = 675;
+    }
+
+    CWnd::OnGetMinMaxInfo(lpMMI);
 }

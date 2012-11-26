@@ -42,9 +42,14 @@ static AFX_EXTENSION_MODULE LogToExcelConverterDLL = { NULL, NULL };
 #pragma managed(push, off)
 #endif
 
+#include "..\FormatConverterApp\MultiLanguage.h"
+
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
+    static HINSTANCE shLangInst=NULL;
+
+
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
 
@@ -69,6 +74,34 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  the CDynLinkLibrary object will not be attached to the
         //  Regular DLL's resource chain, and serious problems will
         //  result.
+
+
+
+        // Begin of Multiple Language support
+        if ( CMultiLanguage::m_nLocales <= 0 )
+            // Not detected yet
+        {
+            CMultiLanguage::DetectLangID(); // Detect language as user locale
+            CMultiLanguage::DetectUILanguage(); // Detect language in MUI OS
+        }
+        TCHAR szModuleFileName[MAX_PATH]; // Get Module File Name and path
+        int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
+        if ( ret == 0 || ret == MAX_PATH )
+        {
+            ASSERT(FALSE);
+        }
+        // Load resource-only language DLL. It will use the languages
+        // detected above, take first available language,
+        // or you can specify another language as second parameter to
+        // LoadLangResourceDLL. And try that first.
+        shLangInst =  CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+        if (shLangInst)
+        {
+            LogToExcelConverterDLL.hResource = shLangInst;
+        }
+        // End of Multiple Language support
+
+
         new CDynLinkLibrary(LogToExcelConverterDLL);
     }
     else if (dwReason == DLL_PROCESS_DETACH)
@@ -132,6 +165,16 @@ BOOL CLogToExcelConverter::bHaveOwnWindow()
 {
     return TRUE;
 }
+
+
+HRESULT CLogToExcelConverter::GettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+    return S_OK;
+}
+
 
 HRESULT CLogToExcelConverter::GetPropertyPage(CPropertyPage*& pPage)
 {

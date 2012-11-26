@@ -474,7 +474,7 @@ void CTxMsgWndJ1939::OnBnClickedSend()
             if (m_unDataLength > MAX_DATA_LEN_J1939)
             {
                 CString omInvDLCMsg;
-                omInvDLCMsg.Format("Invalid DLC value: %d, Please enter a value between 0 and %d",
+                omInvDLCMsg.Format(_("Invalid DLC value: %d, Please enter a value between 0 and %d"),
                                    m_unDataLength,  MAX_DATA_LEN_J1939);
                 vSetStatusBarText(omInvDLCMsg);
                 return;
@@ -510,7 +510,7 @@ void CTxMsgWndJ1939::OnBnClickedSend()
             if (m_sMsgToBeSent.m_unPGN > MAX_LMT_FOR_PGN)
             {
                 CString omPGN;
-                omPGN.Format("Invalid PGN value: %x, Please enter a value between 0 and 0x%x",
+                omPGN.Format(_("Invalid PGN value: %x, Please enter a value between 0 and 0x%x"),
                              m_sMsgToBeSent.m_unPGN,  MAX_LMT_FOR_PGN);
                 vSetStatusBarText(omPGN);
                 return;
@@ -800,10 +800,10 @@ void CTxMsgWndJ1939::OnClose()
 void CTxMsgWndJ1939::OnBnClickedClaimAddress()
 {
     CWnd* pWnd = (CWnd*)GetDlgItem(IDC_STATIC_CA);
-    pWnd->SetWindowText("Address 0x");
+    pWnd->SetWindowText(_("Address 0x"));
     m_omCurAddress.SetReadOnly(FALSE);
     pWnd = (CWnd*)GetDlgItem(IDC_STATIC_ECU_NAME);
-    pWnd->SetWindowText("ECU NAME 0x");
+    pWnd->SetWindowText(_("ECU NAME 0x"));
     m_omEcuName.vSetValue(m_sClientParams.m_unEcuName);
     m_omEcuName.SetReadOnly(TRUE);
 }
@@ -811,10 +811,10 @@ void CTxMsgWndJ1939::OnBnClickedClaimAddress()
 void CTxMsgWndJ1939::OnBnClickedRqstAddress()
 {
     CWnd* pWnd = (CWnd*)GetDlgItem(IDC_STATIC_CA);
-    pWnd->SetWindowText(_T("Address 0x"));
+    pWnd->SetWindowText(_T(_("Address 0x")));
     m_omCurAddress.SetReadOnly(TRUE);
     pWnd = (CWnd*)GetDlgItem(IDC_STATIC_ECU_NAME);
-    pWnd->SetWindowText(_T("Destination 0x"));
+    pWnd->SetWindowText(_T(_("Destination 0x")));
     m_omEcuName.SetReadOnly(FALSE);
     m_omEcuName.vSetValue(ADDRESS_ALL);
 }
@@ -822,10 +822,10 @@ void CTxMsgWndJ1939::OnBnClickedRqstAddress()
 void CTxMsgWndJ1939::OnBnClickedCmdAddress()
 {
     CWnd* pWnd = (CWnd*)GetDlgItem(IDC_STATIC_CA);
-    pWnd->SetWindowText(_T("Address 0x"));
+    pWnd->SetWindowText(_T(_("Address 0x")));
     m_omCurAddress.SetReadOnly(FALSE);
     pWnd = (CWnd*)GetDlgItem(IDC_STATIC_ECU_NAME);
-    pWnd->SetWindowText(_T("ECU NAME 0x"));
+    pWnd->SetWindowText(_T(_("ECU NAME 0x")));
     m_omEcuName.vSetValue(m_sClientParams.m_unEcuName);
     m_omEcuName.SetReadOnly(FALSE);
 }
@@ -894,17 +894,17 @@ void CTxMsgWndJ1939::vSetTransState(ESTATE_TRANS eTransState)
     {
         case TRANS_STARTED:
         {
-            vSetStatusBarText(_T("Transmission started..."));
+            vSetStatusBarText(_T(_("Transmission started...")));
         }
         break;
         case TRANS_TO_BE_STOPPED:
         {
-            vSetStatusBarText(_T("Stopping Transmission..."));
+            vSetStatusBarText(_T(_("Stopping Transmission...")));
         }
         break;
         case TRANS_STOPPED:
         {
-            vSetStatusBarText(_T("Transmission stopped..."));
+            vSetStatusBarText(_T(_("Transmission stopped...")));
         }
         break;
     }
@@ -924,7 +924,7 @@ void CTxMsgWndJ1939::vProcessTransmission(BOOL bStart)
     m_CS_CyclicTrans.Lock();
 
 
-    CString omWndText = bStart ? _T("Stop") : _T("Transmit");
+    CString omWndText = bStart ? _T(_("Stop")) : _T(_("Transmit"));
     CButton* pButton = (CButton*)GetDlgItem(IDC_SEND);
     pButton->SetWindowText(omWndText);
     if (bStart == TRUE)
@@ -1109,13 +1109,13 @@ void CTxMsgWndJ1939::vVerifyPDUFormatInPGN(UINT unPGN)
     if ( uPGN.m_sPGN.m_byPDU_Format < 240 )
     {
         sg_asSupportedMsgType[1].m_eType      = sg_asMsgType[1].m_eType;
-        sg_asSupportedMsgType[1].m_omTypeName = sg_asMsgType[1].m_omTypeName;
+        sg_asSupportedMsgType[1].m_omTypeName = _(sg_asMsgType[1].m_omTypeName);
     }
     //If 'PDU2 - Broadcast'  is selected, message type can only be 'Request PGN' or 'Broadcast'
     else if ( uPGN.m_sPGN.m_byPDU_Format >= 240 && uPGN.m_sPGN.m_byPDU_Format <=255)
     {
         sg_asSupportedMsgType[1].m_eType      = sg_asMsgType[2].m_eType;
-        sg_asSupportedMsgType[1].m_omTypeName = sg_asMsgType[2].m_omTypeName;
+        sg_asSupportedMsgType[1].m_omTypeName = _(sg_asMsgType[2].m_omTypeName);
     }
     vPopulateMsgTypeComboBox(sg_asSupportedMsgType, SIZE_TYPE_COMB-1, m_omMsgTypeCombo);
     m_omMsgTypeCombo.SetCurSel(nPrevSel);

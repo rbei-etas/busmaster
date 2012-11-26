@@ -27,7 +27,7 @@
 
 #include "HardwareListing.h"
 #include ".\hardwarelisting.h"
-
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -172,11 +172,11 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
 
     // Create selelected list columns
     m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
-                                     defSTR_CHANNEL_NAME );
+                                     _(defSTR_CHANNEL_NAME) );
     m_omSelectedHwList.SetColumnWidth( defCHANNEL_COL,
                                        defSTR_CHANNEL_COL_WIDTH );
     m_omSelectedHwList.InsertColumn( defHARDWARE_COL,
-                                     defSTR_HARDWARE_COL_NAME );
+                                     _(defSTR_HARDWARE_COL_NAME) );
     m_omSelectedHwList.SetColumnWidth( defHARDWARE_COL,
                                        defSTR_HARDWARE_COL_WIDTH );
 

@@ -39,6 +39,7 @@
 #include "BusmasterDump.h"
 #include "BUSMASTER_Interface.h"
 #include "BUSMASTER_Interface.c"
+#include "../Application/MultiLanguage.h"
 
 //extern DWORD GUI_dwThread_MsgDisp;
 extern BOOL g_bStopSendMultMsg;
@@ -172,9 +173,34 @@ const WORD _wVerMajor = 1;
 const WORD _wVerMinor = 0;
 
 
+static HINSTANCE ghLangInst=NULL;
 
 BOOL CCANMonitorApp::InitInstance()
 {
+    // Begin of Multiple Language support
+    if ( CMultiLanguage::m_nLocales <= 0 )    // Not detected yet
+    {
+        CMultiLanguage::DetectLangID(); // Detect language as user locale
+        CMultiLanguage::DetectUILanguage();    // Detect language in MUI OS
+    }
+    TCHAR szModuleFileName[MAX_PATH];        // Get Module File Name and path
+    int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
+    if ( ret == 0 || ret == MAX_PATH )
+    {
+        ASSERT(FALSE);
+    }
+    // Load resource-only language DLL. It will use the languages
+    // detected above, take first available language,
+    // or you can specify another language as second parameter to
+    // LoadLangResourceDLL. And try that first.
+    ghLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+    if (ghLangInst)
+    {
+        AfxSetResourceHandle( ghLangInst );
+    }
+    // End of Multiple Language support
+
+
     InitCommonControls();
     // START CHANGES MADE FOR AUTOMATION
     CWinApp::InitInstance();
@@ -182,11 +208,11 @@ BOOL CCANMonitorApp::InitInstance()
     // Initialize OLE libraries
     if (!AfxOleInit())
     {
-        AfxMessageBox("Fail to Intilaize OLE");
+        AfxMessageBox(_("Fail to Intilaize OLE"));
         return FALSE;
     }
 
-    CBusmasterDump dump("BUSMASTER");
+    CBusmasterDump dump(_("BUSMASTER"));
     // END CHANGES MADE FOR AUTOMATION
     // Enable OLE/ActiveX objects support
     AfxEnableControlContainer();
@@ -292,8 +318,8 @@ BOOL CCANMonitorApp::InitInstance()
     if(m_pouMsgSgInactive == NULL )
     {
         if(m_bFromAutomation==FALSE)
-            MessageBox(NULL,MSG_MEMORY_CONSTRAINT,
-                       "BUSMASTER", MB_OK|MB_ICONINFORMATION);
+            MessageBox(NULL,_(MSG_MEMORY_CONSTRAINT),
+                       _("BUSMASTER"), MB_OK|MB_ICONINFORMATION);
 
         ::PostQuitMessage(0);
     }
@@ -311,7 +337,7 @@ BOOL CCANMonitorApp::InitInstance()
     if(cmdInfo.m_strFileName.IsEmpty() == TRUE)
     {
         ostrCfgFilename =
-            GetProfileString(SECTION, defCONFIGFILENAME, STR_EMPTY);
+            GetProfileString(_(SECTION), defCONFIGFILENAME, STR_EMPTY);
     }
     else
     {
@@ -355,8 +381,8 @@ BOOL CCANMonitorApp::InitInstance()
             //omDatabaseArray.Add(omSampleDatabasePath);
             //Store in configdetails
             //bSetData(DATABASE_FILE_NAME, &omDatabaseArray);
-            bWriteIntoTraceWnd(MSG_DEFAULT_DATABASE);
-            bWriteIntoTraceWnd(MSG_CREATE_UNLOAD_DATABASE);
+            bWriteIntoTraceWnd(_(MSG_DEFAULT_DATABASE));
+            bWriteIntoTraceWnd(_(MSG_CREATE_UNLOAD_DATABASE));
         }
     }
 
@@ -397,6 +423,12 @@ void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd)
 
 int CCANMonitorApp::ExitInstance()
 {
+    if (ghLangInst)
+    {
+        FreeLibrary( ghLangInst );
+    }
+
+
     if (m_pouMsgSignal != NULL )
     {
         m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
@@ -598,7 +630,7 @@ void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
     stempDataInfo.FSInfo = &FileStoreInfo;
     stempDataInfo.m_Datastore = FILEMODE;
     CConfigData::ouGetConfigDetailsObject().SetConfigDatastorage(&stempDataInfo);
-    CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(DEFAULT_PROJECT_NAME);
+    CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(_(DEFAULT_PROJECT_NAME));
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 
     if (pMainFrame != NULL)
@@ -631,10 +663,10 @@ void CCANMonitorApp::OnFileOpen()
                          "c",       // Default Extension,
                          m_omMRU_C_FileName,
                          OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                         "C File(s)(*.c)|*.c||",
+                         _("C File(s)(*.c)|*.c||"),
                          NULL );
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = "Select BUSMASTER Source Filename...";
+    fileDlg.m_ofn.lpstrTitle  = _("Select BUSMASTER Source Filename...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -679,8 +711,8 @@ void CCANMonitorApp::OnFileOpen()
         }
         else
         {
-            MessageBox(NULL,"Specified filename not found!",
-                       "BUSMASTER",MB_OK|MB_ICONINFORMATION);
+            MessageBox(NULL,_("Specified filename not found!"),
+                       _("BUSMASTER"),MB_OK|MB_ICONINFORMATION);
         }
     }
 }
@@ -698,15 +730,15 @@ void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
 
     if ( bOperation == defCONFIG_FILE_LOADING )
     {
-        omStrSuffixMessage = " while loading.\nOperation unsuccessful.";
+        omStrSuffixMessage = _(" while loading.\nOperation unsuccessful.");
     }
     else if ( bOperation == defCONFIG_FILE_SAVING )
     {
-        omStrSuffixMessage = " while saving.\nOperation unsuccessful.";
+        omStrSuffixMessage = _(" while saving.\nOperation unsuccessful.");
     }
     else
     {
-        omStrSuffixMessage = ".\nOperation unsuccessful.";
+        omStrSuffixMessage = _(".\nOperation unsuccessful.");
     }
 
     // Get actual error message
@@ -714,87 +746,87 @@ void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
     {
         case defCONFIG_FILE_ERROR:
         {
-            m_omConfigErr = "File error occured";
+            m_omConfigErr = _("File error occured");
         }
         break;
 
         case defCONFIG_FILE_NOT_FOUND:
         {
-            m_omConfigErr = "Configuration file not found";
+            m_omConfigErr = _("Configuration file not found");
         }
         break;
 
         case defCONFIG_FILE_OPEN_FAILED:
         {
-            m_omConfigErr = "Unable to open configuration file";
+            m_omConfigErr = _("Unable to open configuration file");
         }
         break;
 
         case defCONFIG_FILE_READ_FAILED:
         {
-            m_omConfigErr = "Unable to read configuration file";
+            m_omConfigErr = _("Unable to read configuration file");
         }
         break;
 
         case defCONFIG_FILE_WRITE_FAILED:
         {
-            m_omConfigErr = "Unable to write into configuration file";
+            m_omConfigErr = _("Unable to write into configuration file");
         }
         break;
 
         case defCONFIG_FILE_CLOSE_FAILED:
         {
-            m_omConfigErr = "Unable to close configuration file successfully";
+            m_omConfigErr = _("Unable to close configuration file successfully");
         }
         break;
 
         case defCONFIG_FILE_INVALID_FILE_EXTN:
         {
-            m_omConfigErr = "Invalid configuration file extension found";
+            m_omConfigErr = _("Invalid configuration file extension found");
         }
         break;
 
         case defCONFIG_PATH_NOT_FOUND:
         {
-            m_omConfigErr = "Configuration file path not found";
+            m_omConfigErr = _("Configuration file path not found");
         }
         break;
 
         case defCONFIG_FILE_ACCESS_DENIED:
         {
-            m_omConfigErr = "Configuration file access was denied";
+            m_omConfigErr = _("Configuration file access was denied");
         }
         break;
 
         case defCONFIG_FILE_HANDLE_INVALID:
         {
-            m_omConfigErr = "Invalid file handle obtained";
+            m_omConfigErr = _("Invalid file handle obtained");
         }
         break;
 
         case defCONFIG_DRIVE_NOT_FOUND:
         {
-            m_omConfigErr = "Specified drive not found";
+            m_omConfigErr = _("Specified drive not found");
         }
         break;
 
         case defCONFIG_FILE_CORRUPT:
         {
-            m_omConfigErr = "An attempt\
+            m_omConfigErr = _("An attempt\
  to edit the file has been made from outside the application.\n\
-Corrupt configuration file found";
+Corrupt configuration file found");
         }
         break;
 
         case defCONFIG_FILE_HDR_CORRUPT:
         {
-            m_omConfigErr = "Corrupt configuration file header found";
+            m_omConfigErr = _("Corrupt configuration file header found");
         }
         break;
 
         default:
         {
-            m_omConfigErr = "Unknown error encountered";
+            m_omConfigErr = _("Unknown error encountered");
         }
         break;
     }
@@ -1113,13 +1145,13 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                         if (_findfirst(omStrDatabase.GetBuffer(MAX_PATH) ,&fileinfo) == -1L)
                         {
-                            CString omStrMsg = "Database File: ";
+                            CString omStrMsg = _("Database File: ");
                             omStrMsg += omStrDatabase;
-                            omStrMsg += " not found!";
+                            omStrMsg += _(" not found!");
 
                             if(bFromCom==FALSE)
                             {
-                                MessageBox(NULL,omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
+                                MessageBox(NULL,omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
                             }
 
                             // Remove the file name from configuration file.
@@ -1180,8 +1212,8 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
             if(bFromCom==FALSE)
                 // Display a message and quit the application
                 MessageBox(NULL,
-                           MSG_MEMORY_CONSTRAINT,
-                           "BUSMASTER",
+                           _(MSG_MEMORY_CONSTRAINT),
+                           _("BUSMASTER"),
                            MB_OK|MB_ICONINFORMATION);
 
             bReturn = FALSE;

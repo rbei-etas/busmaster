@@ -66,7 +66,7 @@ CRxMsgList::CRxMsgList()
                            CLIP_DEFAULT_PRECIS,
                            DEFAULT_QUALITY,
                            FIXED_PITCH | FF_MODERN,
-                           "Courier");
+                           _("Courier"));
 }
 
 /**********************************************************************************
@@ -1101,7 +1101,7 @@ void CRxMsgList::vSetSortableMsgColumns(SMSGWNDHDRCOL& sHdrColStruct, ETYPE_BUS 
     m_pbAscendingOrder = (bool*)malloc(sizeof(bool) * nColCount);
     if( m_pbSortableColumn == NULL || m_pbAscendingOrder == NULL)
     {
-        AfxMessageBox("Failed to create Memory for Sortable Column.");
+        AfxMessageBox(_("Failed to create Memory for Sortable Column."));
         return;
     }
     for(int i=0; i < nColCount; i++)

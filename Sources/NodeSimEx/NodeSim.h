@@ -69,6 +69,7 @@ public:
     //~MVN
     BOOL NS_IsSimSysConfigChanged();
     int NS_nOnBusConnected( bool bConnected);
+    void NS_SetJ1939ActivationStatus(bool bActivated);
     //INTERFACE FUNCTIONS ENDS
 private:
     ETYPE_BUS m_eBus;

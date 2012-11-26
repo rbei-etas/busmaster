@@ -44,6 +44,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;../../Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories=".;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
@@ -69,6 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="&quot;../../Localization/lib/intl.lib&quot;"
 				AdditionalDependencies="shlwapi.lib"
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/$(ProjectName).exe"
 				LinkIncremental="2"
@@ -131,11 +133,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/I &quot;../../Localization/include&quot;"
 				Optimization="2"
 				AdditionalIncludeDirectories=".;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
+				TreatWChar_tAsBuiltInType="true"
+				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="0"
@@ -154,7 +159,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="shlwapi.lib"
+				AdditionalOptions="&quot;../../Localization/lib/intl.lib&quot;"
+				AdditionalDependencies="shlwapi.lib "
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
@@ -211,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MultiLanguage.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PluginManagerBase.cpp"
 				>
 			</File>
@@ -262,6 +272,14 @@
 			</File>
 			<File
 				RelativePath=".\FormatConverterWnd.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GettextBusmaster.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MultiLanguage.h"
 				>
 			</File>
 			<File

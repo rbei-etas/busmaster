@@ -95,7 +95,7 @@ void CExportLogFileDlg::OnBnClickedBtnLogBrowse()
                              defSTR_LOG_FORMAT_SPECIFIER,
                              NULL );
     // Set Title to Export
-    omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_LOG_DIALOG_CAPTION;
+    omSaveAsDlg.m_ofn.lpstrTitle  = _(defSTR_LOG_DIALOG_CAPTION);
 
     // Show file save dialog
     if ( omSaveAsDlg.DoModal() == IDOK )
@@ -128,10 +128,10 @@ void CExportLogFileDlg::OnBnClickedBtnCsvBrowse()
                              defSTR_XLS_FORMAT,     // Default Extension,
                              NULL,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                             defSTR_XLS_FORMAT_SPECIFIER,
+                             _(defSTR_XLS_FORMAT_SPECIFIER),
                              NULL );
     // Set Title to Export
-    omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_CSV_DIALOG_CAPTION;
+    omSaveAsDlg.m_ofn.lpstrTitle  = _(defSTR_CSV_DIALOG_CAPTION);
 
     // Show file save dialog
     if ( omSaveAsDlg.DoModal() == IDOK )
@@ -187,7 +187,7 @@ void CExportLogFileDlg::vPopulateAvailableList()
 
     for( UINT unIndex = 0; unIndex < m_unNoOfFileds; unIndex++)
     {
-        m_omAvailableList.InsertString( unIndex, m_pacFields[unIndex]);
+        m_omAvailableList.InsertString( unIndex, /*_*/(m_pacFields[unIndex]));
         m_omAvailableList.SetItemData( unIndex, unIndex );
     }
 }
@@ -214,7 +214,7 @@ void CExportLogFileDlg::OnBnClickedButtonSelectall()
             // Add it in to the selected list
             int nNewItemIndex = m_omSelectedList.InsertString(
                                     m_omSelectedList.GetCount(),
-                                    m_pacFields[ nFieldIndex ] );
+                                    /*_*/(m_pacFields[ nFieldIndex ]) );
             // Set Field index as item data
             m_omSelectedList.SetItemData( nNewItemIndex, nFieldIndex );
             // Set the selection
@@ -280,22 +280,22 @@ void CExportLogFileDlg::OnBnClickedConvert()
             {
                 string omStrError;
                 oExport.GetErrorString( hResult, omStrError);
-                MessageBox(omStrError.c_str(),APPLICATION_NAME,MB_OK);
+                MessageBox(omStrError.c_str(),_(APPLICATION_NAME),MB_OK);
             }
             else
             {
-                MessageBox(EXPORTTOEXCEL_SUCCESSMSG,APPLICATION_NAME,MB_OK);
+                MessageBox(_(EXPORTTOEXCEL_SUCCESSMSG),_(APPLICATION_NAME),MB_OK);
                 //OnOK();
             }
         }
         else
         {
-            MessageBox(EXPORTTOEXCEL_FIELDSELECTIONERROR,APPLICATION_NAME,MB_OK);
+            MessageBox(_(EXPORTTOEXCEL_FIELDSELECTIONERROR),_(APPLICATION_NAME),MB_OK);
         }
     }
     else
     {
-        MessageBox(EXPORTTOEXCEL_FILEERROR,APPLICATION_NAME,MB_OK);
+        MessageBox(_(EXPORTTOEXCEL_FILEERROR),_(APPLICATION_NAME),MB_OK);
     }
 }
 
@@ -352,7 +352,7 @@ void CExportLogFileDlg::OnBnClickedButtonSelectone()
             // Add it in to the selected list
             int nNewItemIndex = m_omSelectedList.InsertString(
                                     m_omSelectedList.GetCount(),
-                                    m_pacFields[ nFieldIndex ] );
+                                    /*_*/(m_pacFields[ nFieldIndex ]) );
             // Set Field index as item data
             m_omSelectedList.SetItemData( nNewItemIndex, nFieldIndex );
             // Set the selection
@@ -404,12 +404,12 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveone()
         if( nNewItemIndex != -1 )
         {
             m_omAvailableList.InsertString( nNewItemIndex,
-                                            m_pacFields[ nFieldIndex ] );
+                                            /*_*/(m_pacFields[ nFieldIndex ]) );
         }
         else
         {
             nNewItemIndex = m_omAvailableList.AddString(
-                                m_pacFields[ nFieldIndex ] );
+                                /*_*/(m_pacFields[ nFieldIndex ]) );
         }
 
         // Set item data
@@ -459,12 +459,12 @@ void CExportLogFileDlg::OnBnClickedButtonRemoveall()
             if( nNewItemIndex != -1 )
             {
                 m_omAvailableList.InsertString( nNewItemIndex,
-                                                m_pacFields[ nFieldIndex ] );
+                                                /*_*/(m_pacFields[ nFieldIndex ]));
             }
             else
             {
                 nNewItemIndex = m_omAvailableList.AddString(
-                                    m_pacFields[ nFieldIndex ] );
+                                    /*_*/(m_pacFields[ nFieldIndex ]) );
             }
 
             // Set item data
@@ -487,7 +487,7 @@ void CExportLogFileDlg::OnCbnSelchangeComboBustype()
 {
     CString omStrBus;
     m_omBusType.GetWindowText(omStrBus);
-    CString omTitle("Export Log File - ");
+    CString omTitle(_("Export Log File - "));
 
     if( omStrBus == "CAN")
     {

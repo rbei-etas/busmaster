@@ -7,6 +7,8 @@
 #define new DEBUG_NEW
 #endif
 
+//
+#include "MultiLanguage.h"
 
 // CFormatConverterApp
 
@@ -31,6 +33,9 @@ CFormatConverterApp theApp;
 
 // CFormatConverterApp initialization
 
+static HINSTANCE ghLangInst=NULL;
+
+
 BOOL CFormatConverterApp::InitInstance()
 {
     // InitCommonControlsEx() is required on Windows XP if an application
@@ -43,7 +48,33 @@ BOOL CFormatConverterApp::InitInstance()
     InitCtrls.dwICC = ICC_WIN95_CLASSES;
     InitCommonControlsEx(&InitCtrls);
 
+
+    // Begin of Multiple Language support
+    if ( CMultiLanguage::m_nLocales <= 0 )    // Not detected yet
+    {
+        CMultiLanguage::DetectLangID(); // Detect language as user locale
+        CMultiLanguage::DetectUILanguage();    // Detect language in MUI OS
+    }
+    TCHAR szModuleFileName[MAX_PATH];        // Get Module File Name and path
+    int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
+    if ( ret == 0 || ret == MAX_PATH )
+    {
+        ASSERT(FALSE);
+    }
+    // Load resource-only language DLL. It will use the languages
+    // detected above, take first available language,
+    // or you can specify another language as second parameter to
+    // LoadLangResourceDLL. And try that first.
+    ghLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+    if (ghLangInst)
+    {
+        AfxSetResourceHandle( ghLangInst );
+    }
+    // End of Multiple Language support
+
     CWinApp::InitInstance();
+
+
 
     AfxEnableControlContainer();
 
@@ -56,7 +87,7 @@ BOOL CFormatConverterApp::InitInstance()
     // such as the name of your company or organization
     SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-    CFormatConverterWnd dlg(_T("BUSMASTER Format Conversions"));
+    CFormatConverterWnd dlg(_T(_("BUSMASTER Format Conversions")));
     dlg.m_psh.dwFlags &= ~PSH_HASHELP;
     dlg.m_psh.dwFlags &= ~PSH_NOAPPLYNOW;
     dlg.LoadConverters();

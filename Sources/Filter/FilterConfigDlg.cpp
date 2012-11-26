@@ -29,7 +29,7 @@
 /* C++ includes */
 #include <sstream>
 #include <string>
-
+#include "../Application/GettextBusmaster.h"
 /* Project includes */
 #include "Filter_resource.h"
 #include "Include/CanUsbDefs.h"
@@ -222,7 +222,7 @@ BOOL CFilterConfigDlg::bCreateNamedFilterList()
     //Insert each column name after calculating the size for the same.
     for(int i = 0; i < defNAMED_FILTER_LIST_COLUMNS; i++ )
     {
-        m_omLstcFilterList.InsertColumn(i, caColumnName[i],
+        m_omLstcFilterList.InsertColumn(i, _(caColumnName[i]),
                                         nColumnFormat[i], nColSize[i]);
     }
 
@@ -284,7 +284,7 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
     for( int nIndex = 0; nIndex < defFILTER_DETAILS_LIST_COLUMNS; nIndex++ )
     {
         m_omLstcFilterDetails.InsertColumn( nIndex,
-                                            caColumnName[nIndex],
+                                            _(caColumnName[nIndex]),
                                             nColumnFormat[nIndex],
                                             nColSize[nIndex] );
     }
@@ -302,26 +302,26 @@ BOOL CFilterConfigDlg::bCreateFilterComps()
 {
     // Set Message ID Type
     m_omMsgIDType.ResetContent();
-    m_omMsgIDType.AddString( defSTR_MSG_ID_TYPE_STD );
-    m_omMsgIDType.AddString( defSTR_MSG_ID_TYPE_EXTD );
-    m_omMsgIDType.AddString( defSTR_SELECTION_ALL );
+    m_omMsgIDType.AddString( _(defSTR_MSG_ID_TYPE_STD) );
+    m_omMsgIDType.AddString( _(defSTR_MSG_ID_TYPE_EXTD) );
+    m_omMsgIDType.AddString( _(defSTR_SELECTION_ALL) );
 
     // Message Type
     m_omMsgType.ResetContent();
-    m_omMsgType.AddString( defSTR_MSG_TYPE_NON_RTR );
-    m_omMsgType.AddString( defSTR_MSG_TYPE_RTR );
-    m_omMsgType.AddString( defSTR_SELECTION_ALL );
+    m_omMsgType.AddString( _(defSTR_MSG_TYPE_NON_RTR) );
+    m_omMsgType.AddString( _(defSTR_MSG_TYPE_RTR) );
+    m_omMsgType.AddString( _(defSTR_SELECTION_ALL) );
 
     // Direction
     m_omMsgDirection.ResetContent();
-    m_omMsgDirection.AddString( defSTR_MSG_DIR_RX );
-    m_omMsgDirection.AddString( defSTR_MSG_DIR_TX );
-    m_omMsgDirection.AddString( defSTR_SELECTION_ALL );
+    m_omMsgDirection.AddString( _(defSTR_MSG_DIR_RX) );
+    m_omMsgDirection.AddString( _(defSTR_MSG_DIR_TX) );
+    m_omMsgDirection.AddString( _(defSTR_SELECTION_ALL) );
 
     // Channels
     m_omMsgChannel.ResetContent();
     // Add All Channels as first item
-    m_omMsgChannel.AddString(defSTR_SELECTION_ALL);
+    m_omMsgChannel.AddString(_(defSTR_SELECTION_ALL));
     for (UINT Index = 1; Index <= m_nHardware; Index++)
     {
         CString omStr;
@@ -397,8 +397,8 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
             // Update Filter Type
             m_omLstcFilterList.SetItemText( nIndex , 1,
                                             psFilterSet->m_sFilterName.m_bFilterType ?
-                                            defSTR_FILTER_TYPE_PASS :
-                                            defSTR_FILTER_TYPE_STOP );
+                                            _(defSTR_FILTER_TYPE_PASS) :
+                                            _(defSTR_FILTER_TYPE_STOP) );
             // Set edit property
             SLISTINFO sListInfo;
             // Init Signal Name column
@@ -408,8 +408,8 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
             // Init Raw Value column
             // Column 1 : Numeric Edit with Spin Control
             sListInfo.m_eType = eComboItem;
-            sListInfo.m_omEntries.Add( defSTR_FILTER_TYPE_STOP );
-            sListInfo.m_omEntries.Add( defSTR_FILTER_TYPE_PASS );
+            sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_STOP) );
+            sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_PASS) );
             m_omLstcFilterList.vSetColumnInfo( nIndex, 1, sListInfo);
         }
     }
@@ -588,15 +588,15 @@ void CFilterConfigDlg::vFormatDisplayString(
 
     if (sFilter.m_byIDType == TYPE_ID_CAN_EXTENDED)
     {
-        sFilterDisplyInfo.m_omStrMsgIDType = defSTR_MSG_ID_TYPE_EXTD;
+        sFilterDisplyInfo.m_omStrMsgIDType = _(defSTR_MSG_ID_TYPE_EXTD);
     }
     else if (sFilter.m_byIDType == TYPE_ID_CAN_STANDARD)
     {
-        sFilterDisplyInfo.m_omStrMsgIDType = defSTR_MSG_ID_STANDARD;
+        sFilterDisplyInfo.m_omStrMsgIDType = _(defSTR_MSG_ID_STANDARD);
     }
     else if (sFilter.m_byIDType == TYPE_ID_CAN_ALL)
     {
-        sFilterDisplyInfo.m_omStrMsgIDType = defSTR_SELECTION_ALL;
+        sFilterDisplyInfo.m_omStrMsgIDType = _(defSTR_SELECTION_ALL);
     }
     else
     {
@@ -607,15 +607,15 @@ void CFilterConfigDlg::vFormatDisplayString(
     // Message Type
     if (sFilter.m_byMsgType == TYPE_MSG_CAN_RTR)
     {
-        sFilterDisplyInfo.m_omStrMsgType = defSTR_MSG_TYPE_RTR;
+        sFilterDisplyInfo.m_omStrMsgType = _(defSTR_MSG_TYPE_RTR);
     }
     else if (sFilter.m_byMsgType == TYPE_MSG_CAN_NON_RTR)
     {
-        sFilterDisplyInfo.m_omStrMsgType = defSTR_MSG_TYPE_NON_RTR;
+        sFilterDisplyInfo.m_omStrMsgType = _(defSTR_MSG_TYPE_NON_RTR);
     }
     else if (sFilter.m_byMsgType == TYPE_MSG_CAN_ALL)
     {
-        sFilterDisplyInfo.m_omStrMsgType = defSTR_SELECTION_ALL;
+        sFilterDisplyInfo.m_omStrMsgType = _(defSTR_SELECTION_ALL);
     }
     else
     {
@@ -627,13 +627,13 @@ void CFilterConfigDlg::vFormatDisplayString(
     switch( sFilter.m_eDrctn )
     {
         case DIR_ALL : // All Message
-            sFilterDisplyInfo.m_omStrMsgDirection = defSTR_SELECTION_ALL;
+            sFilterDisplyInfo.m_omStrMsgDirection = _(defSTR_SELECTION_ALL);
             break;
         case DIR_TX: // Tx Message
-            sFilterDisplyInfo.m_omStrMsgDirection = defSTR_MSG_DIR_TX;
+            sFilterDisplyInfo.m_omStrMsgDirection = _(defSTR_MSG_DIR_TX);
             break;
         case DIR_RX: // Rx
-            sFilterDisplyInfo.m_omStrMsgDirection = defSTR_MSG_DIR_RX;
+            sFilterDisplyInfo.m_omStrMsgDirection = _(defSTR_MSG_DIR_RX);
             break;
         default:
             ASSERT( FALSE );
@@ -644,7 +644,7 @@ void CFilterConfigDlg::vFormatDisplayString(
     // Channel Number
     if( sFilter.m_eChannel == CAN_CHANNEL_ALL )
     {
-        sFilterDisplyInfo.m_omStrMsgChannel = defSTR_SELECTION_ALL;
+        sFilterDisplyInfo.m_omStrMsgChannel = _(defSTR_SELECTION_ALL);
     }
     else
     {
@@ -752,7 +752,7 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
     CString omStrNewName = m_omLstcFilterList.GetItemText( nItem, nSubItem );
     if( omStrNewName.IsEmpty() )
     {
-        AfxMessageBox("Filter name cannot be empty");
+        AfxMessageBox(_("Filter name cannot be empty"));
         // Restore the old name
         m_bUpdating = TRUE;
         m_omLstcFilterList.SetItemText( nItem, nSubItem,
@@ -768,7 +768,7 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
                                   m_psFilterApplied->m_ushTotal,omStrNewName.GetBuffer(MAX_PATH));
             if(psTemp != NULL)
             {
-                AfxMessageBox("Name already exist");
+                AfxMessageBox(_("Name already exist"));
                 // Restore the name
                 m_bUpdating = TRUE;
                 m_omLstcFilterList.SetItemText( nItem, nSubItem,
@@ -800,7 +800,7 @@ void CFilterConfigDlg::vUpdateFromFilterType(int nItem, int nSubItem)
 
     UCHAR ucFilterType = 0;
     // Compare with Pass
-    if( omStrNewName.Compare(defSTR_FILTER_TYPE_PASS) == 0 )
+    if( omStrNewName.Compare(_(defSTR_FILTER_TYPE_PASS)) == 0 )
     {
         ucFilterType = 1;
     }
@@ -1091,8 +1091,8 @@ void CFilterConfigDlg::OnRadioMessageId()
                 {
                     if( omStrIDFrom != STR_EMPTY )
                     {
-                        CString omIdWithMsg = "";
-                        omIdWithMsg.Format(defSTR_MSG_ID_IN_HEX, psFilter->m_dwMsgIDFrom);
+                        CString omIdWithMsg = _("");
+                        omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
                         ostringstream oss;
                         oss << hex << omIdWithMsg << omStrIDFrom;
 
@@ -1314,7 +1314,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
                 }
                 else
                 {
-                    vSetStatusText("Message ID exceeds extended ID range");
+                    vSetStatusText(_("Message ID exceeds extended ID range"));
                 }
             }
             else
@@ -1325,7 +1325,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
                 }
                 else
                 {
-                    vSetStatusText("Message ID exceeds standard ID range");
+                    vSetStatusText(_("Message ID exceeds standard ID range"));
                 }
             }
 
@@ -1406,7 +1406,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
         }
         else
         {
-            vSetStatusText("Invalid Message ID");
+            vSetStatusText(_("Invalid Message ID"));
         }
     }
     else
@@ -1425,7 +1425,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
             }
             else
             {
-                vSetStatusText("Start range message ID exceeds extended ID range");
+                vSetStatusText(_("Start range message ID exceeds extended ID range"));
             }
         }
         else
@@ -1436,7 +1436,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
             }
             else
             {
-                vSetStatusText("Start range message ID exceeds standard ID range");
+                vSetStatusText(_("Start range message ID exceeds standard ID range"));
             }
         }
 
@@ -1452,7 +1452,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
                 }
                 else
                 {
-                    vSetStatusText("End range message ID exceeds extended ID range");
+                    vSetStatusText(_("End range message ID exceeds extended ID range"));
                 }
             }
             else
@@ -1463,7 +1463,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
                 }
                 else
                 {
-                    vSetStatusText("End range message ID exceeds standard ID range");
+                    vSetStatusText(_("End range message ID exceeds standard ID range"));
                 }
             }
         }
@@ -1471,7 +1471,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
         if( bDataValid == TRUE && unMsgIDFrom >= unMsgIDTo )
         {
             bDataValid = FALSE;
-            vSetStatusText("Start Range ID is greater than or equal to End Range ID");
+            vSetStatusText(_("Start Range ID is greater than or equal to End Range ID"));
         }
         // Copy data if data is valid
         if( bDataValid == TRUE )
@@ -1772,7 +1772,7 @@ void CFilterConfigDlg::vInitFilterComps()
  */
 void CFilterConfigDlg::OnBtnDeleteAllFilter()
 {
-    if ( AfxMessageBox( "Do you want to delete all filters from the list?",
+    if ( AfxMessageBox( _("Do you want to delete all filters from the list?"),
                         MB_YESNO|MB_ICONQUESTION ) == IDYES )
     {
         CString omStrFilterName = m_omLstcFilterList.GetItemText(
@@ -1897,7 +1897,7 @@ void CFilterConfigDlg::OnBtnAdd()
             nCount++ )
     {
         omStrFilterName.Format( defSTR_DEFAULT_FILTER_FORMAT,
-                                defSTR_DEFAULT_FILTER_NAME,
+                                _(defSTR_DEFAULT_FILTER_NAME),
                                 nCount + 1 );
         if( SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters, m_psFilterApplied->m_ushTotal,
                                               omStrFilterName.GetBuffer(MAX_PATH)) == NULL)
@@ -1932,7 +1932,7 @@ void CFilterConfigDlg::OnBtnAdd()
                                            omStrFilterName,
                                            defFILTER_IMAGE_INDEX_FILTER );
             m_omLstcFilterList.SetItemText( nCount, 1,
-                                            defSTR_FILTER_TYPE_STOP );
+                                            _(defSTR_FILTER_TYPE_STOP) );
             // Set edit property
             SLISTINFO sListInfo;
             // Init Signal Name column
@@ -1942,8 +1942,8 @@ void CFilterConfigDlg::OnBtnAdd()
             // Init Raw Value column
             // Column 1 : Numeric Edit with Spin Control
             sListInfo.m_eType = eComboItem;
-            sListInfo.m_omEntries.Add( defSTR_FILTER_TYPE_STOP );
-            sListInfo.m_omEntries.Add( defSTR_FILTER_TYPE_PASS );
+            sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_STOP) );
+            sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_PASS) );
             m_omLstcFilterList.vSetColumnInfo( nCount, 1, sListInfo);
 
             m_bUpdating = FALSE;
@@ -1967,12 +1967,12 @@ void CFilterConfigDlg::OnBtnAdd()
         }
         else
         {
-            AfxMessageBox("Unable to create memory for new Filter");
+            AfxMessageBox(_("Unable to create memory for new Filter"));
         }
     }
     else
     {
-        AfxMessageBox("Unable to find unique name for the filter!!");
+        AfxMessageBox(_("Unable to find unique name for the filter!!"));
     }
 }
 

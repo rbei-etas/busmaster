@@ -44,6 +44,7 @@ public:
 
     ~CGlobalObj(void);
 
+    bool    bJ1939Activated;
     CMultiDocTemplate* m_pEditorDocTemplate;
     CSimSysWnd* m_pomSimSysWnd;           // Simulated system window pointer
     CString m_omStrSourceFilePathName;

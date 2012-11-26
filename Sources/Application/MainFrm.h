@@ -174,6 +174,7 @@ protected:
     // Implementation
 public:
 
+    void vGettextBusmaster();
     // PTV [1.6.4]
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
     BOOL m_bIconSetFlag;
@@ -304,6 +305,7 @@ public:
     CMenu* GetSubMenu(CString MenuName);
 
     BOOL bInitFrameProcCAN(void);
+    DWORD dwGetMonitorNodeClientID();
 
     CWnd* IsWindowCreated();
     void vCloseFormatconverters();

@@ -55,6 +55,7 @@ static void sg_vAddressClaimEventFnJ1939(DWORD dwClient, BYTE byAddress)
 
 CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
 {
+    bJ1939Activated = false;
     m_eBus = eBus;
     m_pEditorDocTemplate = NULL;
     m_pomSimSysWnd = NULL;
