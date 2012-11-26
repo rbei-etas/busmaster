@@ -36,6 +36,8 @@
 #include "ParameterVal.h"
 #include "ValueTable.h"
 
+#include "../FormatConverterApp/GettextBusmaster.h"
+
 using namespace std;
 
 class CConverter

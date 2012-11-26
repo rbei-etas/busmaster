@@ -37,7 +37,7 @@
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
 #include "ChangeRegisters.h"
-
+#include "../Application/MultiLanguage.h"
 #define DYNAMIC_XLDRIVER_DLL
 #include "EXTERNAL_INCLUDE/canlib.h"
 
@@ -67,8 +67,33 @@ CCAN_Kvaser_CAN theApp;
 /**
  * CCAN_Kvaser_CAN initialization
  */
+static HINSTANCE ghLangInst=NULL;
+
 BOOL CCAN_Kvaser_CAN::InitInstance()
 {
+    // Begin of Multiple Language support
+    if ( CMultiLanguage::m_nLocales <= 0 )    // Not detected yet
+    {
+        CMultiLanguage::DetectLangID(); // Detect language as user locale
+        CMultiLanguage::DetectUILanguage();    // Detect language in MUI OS
+    }
+    TCHAR szModuleFileName[MAX_PATH];        // Get Module File Name and path
+    int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
+    if ( ret == 0 || ret == MAX_PATH )
+    {
+        ASSERT(FALSE);
+    }
+    // Load resource-only language DLL. It will use the languages
+    // detected above, take first available language,
+    // or you can specify another language as second parameter to
+    // LoadLangResourceDLL. And try that first.
+    ghLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+    if (ghLangInst)
+    {
+        AfxSetResourceHandle( ghLangInst );
+    }
+    // End of Multiple Language support
+
     CWinApp::InitInstance();
 
     return TRUE;
@@ -1334,6 +1359,8 @@ static void ProcessCANMsg(int nChannelIndex, UINT& nFlags, DWORD& dwTime)
     sg_asCANMsg.m_lTickCount.QuadPart = (LONGLONG)(dwTime * 10);
     /*sg_asCANMsg.m_lTickCount.QuadPart =
                            _abs64(sg_asCANMsg.m_lTickCount.QuadPart - QuadPartRef);*/
+    /*Set CAN FD to false*/
+    sg_asCANMsg.m_bCANFDMsg = false;
 
     if ( !(nFlags & canMSG_ERROR_FRAME) &&
             !(nFlags & canMSG_NERR) &&

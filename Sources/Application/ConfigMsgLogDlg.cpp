@@ -33,6 +33,7 @@
 #include "InterfaceGetter.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include ".\configmsglogdlg.h"
+#include "GettextBusmaster.h"
 
 #define STR_FILTER_DIALOG_FORMAT        "Configure Filter for Log File: %s"
 #define BUSMASTER_LOG_REMOVE            "Do you want to remove selected log file entry?"
@@ -78,18 +79,18 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
         {
             m_pouFProcCAN = static_cast<CBaseFrameProcessor_CAN*> (pouBaseLogger);
             m_psFilterConfigured = (SFILTERAPPLIED_CAN*) (psFilter);
-            m_strCurrWndText ="Configure Logging for CAN";
-            m_omControlParam = "Start on Reception of ID 0x";
-            m_omControlParam2 = "Stop on Reception of ID 0x";
+            m_strCurrWndText =_("Configure Logging for CAN");
+            m_omControlParam = _("Start on Reception of ID 0x");
+            m_omControlParam2 = _("Stop on Reception of ID 0x");
         }
         break;
         case J1939:
         {
             m_pouLoggerJ1939 = (CBaseFrameProcessor_J1939*) pouBaseLogger;
             m_psJ1939Filter = (SFILTERAPPLIED_J1939*) psFilter;
-            m_strCurrWndText ="Configure Logging for J1939";
-            m_omControlParam = "Start on Reception of PGN 0x";
-            m_omControlParam2 = "Stop on Reception of PGN 0x";
+            m_strCurrWndText =_("Configure Logging for J1939");
+            m_omControlParam = _("Start on Reception of PGN 0x");
+            m_omControlParam2 = _("Stop on Reception of PGN 0x");
         }
         break;
 
@@ -448,7 +449,7 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
             }
             else
             {
-                vUpdateControl(IDC_CHKB_STARTTRIGGER, CHECKBOX, CActionFlag::CLEAR_CTRL);
+                vUpdateControl(IDC_CHKB_STARTTRIGGER, CHECKBOX, CActionFlag::ENABLE_CTRL);
                 vUpdateControl(IDC_EDIT_STARTMSGID, EDITCTRL, CActionFlag::CLEAR_CTRL);
             }
             if (sTrigger.m_unTriggerType == STOP) // Stop trigger edit control
@@ -458,7 +459,7 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
             }
             else
             {
-                vUpdateControl(IDC_CHKB_STOPTRIGGER, CHECKBOX, CActionFlag::CLEAR_CTRL);
+                vUpdateControl(IDC_CHKB_STOPTRIGGER, CHECKBOX, CActionFlag::ENABLE_CTRL);
                 vUpdateControl(IDC_EDIT_STOPMSGID, EDITCTRL, CActionFlag::CLEAR_CTRL);
             }
         }
@@ -692,7 +693,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
                           OFN_EXTENSIONDIFFERENT | OFN_OVERWRITEPROMPT,
                           BUSMASTER_LOG_FILTER, NULL);
     // Set the caption
-    omFileDlg.m_ofn.lpstrTitle = BUSMASTER_LOG_SELECTION_TITLE;
+    omFileDlg.m_ofn.lpstrTitle = _(BUSMASTER_LOG_SELECTION_TITLE);
 
     // Show File open dialog
     if (omFileDlg.DoModal() == IDOK)
@@ -705,7 +706,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
             if (_tcsicmp(sLogObject.m_sLogFileName, omStrLogFile.GetBuffer(MAX_PATH)) == 0)
             {
                 CString omBuf;
-                omBuf.Format(BUSMASTER_LOG_ALREADYEXISTS, omStrLogFile);
+                omBuf.Format(_(BUSMASTER_LOG_ALREADYEXISTS), omStrLogFile);
                 AfxMessageBox(omBuf, MB_OK | MB_ICONINFORMATION);
                 return;
             }
@@ -782,7 +783,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         }
     }
 
-    m_omComboChannel.InsertString(0, "ALL");
+    m_omComboChannel.InsertString(0, _("ALL"));
     for (UINT i = 1; i <= m_unChannelCount; i++)
     {
         CString omChannel;
@@ -869,7 +870,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         GetDlgItem(IDC_CBTN_ADDLOG)->EnableWindow(FALSE);
         GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
         GetWindowText(m_strCurrWndText);
-        m_strCurrWndText+=" - Read Only as Logging is ON";
+        m_strCurrWndText+=_(" - Read Only as Logging is ON");
         //SetWindowText(m_strCurrWndText);
         // PTV [1.6.4]
         // If Logging is on

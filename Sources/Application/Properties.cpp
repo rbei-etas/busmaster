@@ -147,7 +147,7 @@ BOOL CProperties::OnInitDialog()
 
         // Create Channel Information
         HTREEITEM hChannels =
-            m_omPropertyTree.InsertItem( defSTR_CHANNEL_HEADING,
+            m_omPropertyTree.InsertItem( _(defSTR_CHANNEL_HEADING),
                                          defCHANNEL_ICON_INDEX,
                                          defCHANNEL_ICON_INDEX,
                                          hRootItem );
@@ -165,7 +165,7 @@ BOOL CProperties::OnInitDialog()
 
         // Create Log File Entries
         HTREEITEM hLogs =
-            m_omPropertyTree.InsertItem( defSTR_LOGS_HEADING,
+            m_omPropertyTree.InsertItem( _(defSTR_LOGS_HEADING),
                                          defLOGFILE_ICON_INDEX,
                                          defLOGFILE_ICON_INDEX,
                                          hRootItem );
@@ -183,7 +183,7 @@ BOOL CProperties::OnInitDialog()
 
         // Create Replay File Entries
         HTREEITEM hReplays =
-            m_omPropertyTree.InsertItem( defSTR_REPLAY_HEADING,
+            m_omPropertyTree.InsertItem( _(defSTR_REPLAY_HEADING),
                                          defREPLAYFILE_ICON_INDEX,
                                          defREPLAYFILE_ICON_INDEX,
                                          hRootItem );
@@ -201,7 +201,7 @@ BOOL CProperties::OnInitDialog()
 
         // Create Database File Entries
         HTREEITEM hDatabases =
-            m_omPropertyTree.InsertItem( defSTR_DATABASE_HEADING,
+            m_omPropertyTree.InsertItem( _(defSTR_DATABASE_HEADING),
                                          defDATABASE_ICON_INDEX,
                                          defDATABASE_ICON_INDEX,
                                          hRootItem );
@@ -219,7 +219,7 @@ BOOL CProperties::OnInitDialog()
 
         // Create DLL File Entries
         HTREEITEM hDLLs =
-            m_omPropertyTree.InsertItem( defSTR_USER_PROG_HEADING,
+            m_omPropertyTree.InsertItem( _(defSTR_USER_PROG_HEADING),
                                          defUSERDLL_ICON_INDEX,
                                          defUSERDLL_ICON_INDEX,
                                          hRootItem );

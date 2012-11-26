@@ -24,6 +24,7 @@
 #include "GraphChildFrame.h"
 #include "GraphBottomView.h"
 #include ".\graphleftview.h"
+#include "../Application/GettextBusmaster.h"
 
 // Local definitions
 #define defFROM_LINE_COLOR        0
@@ -136,15 +137,15 @@ void CGraphLeftView::OnInitialUpdate()
     m_omSignalList.SetExtendedStyle( LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT );
 
     m_omSignalList.InsertColumn( defCOL_CATOGORY_INDEX,
-                                 defSTR_LIST_HEADING_CATOGORY );
+                                 _(defSTR_LIST_HEADING_CATOGORY) );
     m_omSignalList.SetColumnWidth( defCOL_CATOGORY_INDEX,
                                    defCOL_CATOGORY_WIDTH );
     m_omSignalList.InsertColumn(  defCOL_ELEMENT_INDEX,
-                                  defSTR_LIST_HEADING_ELEMENT );
+                                  _(defSTR_LIST_HEADING_ELEMENT) );
     m_omSignalList.SetColumnWidth( defCOL_ELEMENT_INDEX,
                                    defCOL_ELEMENT_WIDTH);
     m_omSignalList.InsertColumn( defCOL_TYPE_INDEX,
-                                 defSTR_LIST_HEADING_TYPE );
+                                 _(defSTR_LIST_HEADING_TYPE) );
     m_omSignalList.SetColumnWidth( defCOL_TYPE_INDEX,
                                    defCOL_TYPE_WIDTH );
 
@@ -234,14 +235,14 @@ void CGraphLeftView::vPopulateElementList()
             if( odTemp.m_nValueType == eSTAT_PARAM )
             {
                 // Insert Category
-                m_omSignalList.InsertItem( nIndex, defSTR_STATISTICS_NAME);
+                m_omSignalList.InsertItem( nIndex, _(defSTR_STATISTICS_NAME));
                 // Insert element name
                 m_omSignalList.SetItemText( nIndex, 1,
                                             odTemp.m_omStrElementName );
                 // Insert Channel String
                 CString omStrChannel;
                 omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                                     defSTR_CHANNEL_NAME,
+                                     _(defSTR_CHANNEL_NAME),
                                      odTemp.m_nFrameFormat );
                 m_omSignalList.SetItemText( nIndex, 2, omStrChannel );
                 // Set Color of the entry
@@ -262,11 +263,11 @@ void CGraphLeftView::vPopulateElementList()
                 // Add Value Type
                 if( odTemp.m_nValueType == eRAW_VALUE )
                 {
-                    m_omSignalList.SetItemText( nIndex, 2, defSTR_RAW_VALUE );
+                    m_omSignalList.SetItemText( nIndex, 2, _(defSTR_RAW_VALUE) );
                 }
                 else
                 {
-                    m_omSignalList.SetItemText( nIndex, 2, defSTR_PHY_VALUE );
+                    m_omSignalList.SetItemText( nIndex, 2, _(defSTR_PHY_VALUE) );
                 }
             }
         }
@@ -321,7 +322,7 @@ void CGraphLeftView::OnItemchangedListSignals(NMHDR* pNMHDR, LRESULT* /*pResult*
                 }
                 else
                 {
-                    AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
+                    AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP);
                 }
             }
             //SGW Code commented by Arun 21-10-2010
@@ -356,20 +357,20 @@ void CGraphLeftView::vSetElementDetails( CGraphElement odElement )
     // Update Visible Property
     if( odElement.m_bVisible == TRUE )
     {
-        m_omBtnVisible.SetWindowText( defSTR_HIDE );
+        m_omBtnVisible.SetWindowText( _(defSTR_HIDE) );
     }
     else
     {
-        m_omBtnVisible.SetWindowText( defSTR_SHOW );
+        m_omBtnVisible.SetWindowText( _(defSTR_SHOW) );
     }
     // Update Enable Property
     if( odElement.m_bEnabled == TRUE )
     {
-        m_omBtnEnable.SetWindowText( defSTR_DISABLE );
+        m_omBtnEnable.SetWindowText( _(defSTR_DISABLE) );
     }
     else
     {
-        m_omBtnEnable.SetWindowText( defSTR_ENABLE );
+        m_omBtnEnable.SetWindowText( _(defSTR_ENABLE) );
     }
     //Set Line display type
     m_nLineDisplay = odElement.m_eDisplayType;
@@ -423,7 +424,7 @@ void CGraphLeftView::OnSelchangeComboType()
             }
             else
             {
-                AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
+                AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP);
             }
         }
     }
@@ -473,7 +474,7 @@ void CGraphLeftView::OnSelchangeComboSymbol()
         }
         else
         {
-            AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
+            AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP);
         }
     }
 }
@@ -527,11 +528,11 @@ void CGraphLeftView::OnBtnEnable()
                 // Update Button Text
                 if( odSelectedElement.m_bEnabled == TRUE )
                 {
-                    m_omBtnEnable.SetWindowText( defSTR_DISABLE );
+                    m_omBtnEnable.SetWindowText( _(defSTR_DISABLE) );
                 }
                 else
                 {
-                    m_omBtnEnable.SetWindowText( defSTR_ENABLE );
+                    m_omBtnEnable.SetWindowText( _(defSTR_ENABLE) );
                 }
                 // Update Graph Control
                 vUpdateGraphControl( defFROM_ENABLE,
@@ -540,7 +541,7 @@ void CGraphLeftView::OnBtnEnable()
             else
             {
                 // Invalid element found
-                AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
+                AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP);
             }
         }
     }
@@ -595,11 +596,11 @@ void CGraphLeftView::OnBtnVisible()
                 // Update Button Text
                 if( odSelectedElement.m_bVisible == TRUE )
                 {
-                    m_omBtnVisible.SetWindowText( defSTR_HIDE );
+                    m_omBtnVisible.SetWindowText( _(defSTR_HIDE) );
                 }
                 else
                 {
-                    m_omBtnVisible.SetWindowText( defSTR_SHOW );
+                    m_omBtnVisible.SetWindowText( _(defSTR_SHOW) );
                 }
                 // Update Graph Control
                 vUpdateGraphControl( defFROM_VISIBLE,
@@ -608,7 +609,7 @@ void CGraphLeftView::OnBtnVisible()
             else
             {
                 // Invalid Element.
-                AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
+                AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP);
             }
         }
     }
@@ -784,7 +785,7 @@ LRESULT CGraphLeftView::OnColorChange(WPARAM /*wparam*/, LPARAM lparam)
             }
             else
             {
-                AfxMessageBox( defSTR_ELEMENT_NOT_FOUND, MB_ICONSTOP);
+                AfxMessageBox( _(defSTR_ELEMENT_NOT_FOUND), MB_ICONSTOP);
             }
         }
     }
@@ -993,7 +994,7 @@ void CGraphLeftView::vPopulateGraphControl()
                 {
                     CString omStrChannel;
                     omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                                         defSTR_CHANNEL_NAME,
+                                         _(defSTR_CHANNEL_NAME),
                                          odTemp.m_nFrameFormat );
                     // Prefix channel information with the stat
                     // parameter

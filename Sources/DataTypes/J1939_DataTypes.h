@@ -52,7 +52,7 @@
 ******************************************************************************/
 #if !defined STRUCT_J1939_H__INCLUDED_
 #define STRUCT_J1939_H__INCLUDED_
-
+#include "../Application/GettextBusmaster.h"
 
 /* TYPES OF TIMEOUT */
 const BYTE DEFAULT_PRIORITY     = 0x7;

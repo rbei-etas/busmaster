@@ -205,7 +205,7 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
                 }
                 else if ((dwWaitRet >= dwLLError) && (dwWaitRet <= dwULError))
                 {
-                    TRACE(_T("Abandoned... %X %d\n"), dwWaitRet, g_unCount++);
+                    TRACE(_T(_("Abandoned... %X %d\n")), dwWaitRet, g_unCount++);
                 }
                 else if ( dwWaitRet == WAIT_TIMEOUT)
                 {

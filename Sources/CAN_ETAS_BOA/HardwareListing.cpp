@@ -26,7 +26,7 @@
 #include "CAN_ETAS_BOA_stdafx.h"
 
 #include "HardwareListing.h"
-
+#include "../Application/GettextBusmaster.h"
 
 // Macro to find minimum number
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
@@ -466,7 +466,7 @@ void CHardwareListing::OnOK()
     m_nNoOfHwSelected = m_omSelectedHwList.GetItemCount();
     if (m_nNoOfHwSelected < 1)
     {
-        AfxMessageBox("Please select atleast one hardware");
+        AfxMessageBox(_("Please select atleast one hardware"));
         return;
     }
     // Number of hardware will be used
@@ -507,7 +507,7 @@ void CHardwareListing::OnOK()
     else
     {
         CString omErr;
-        omErr.Format("Please select atmost %d hardwares",  CHANNEL_ALLOWED);
+        omErr.Format(_("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
         AfxMessageBox(omErr);
         return;
     }
@@ -713,7 +713,7 @@ void CHardwareListing::vSetSelectedList()
         nItem = m_omSelectedHwList.GetItemCount();
         // Format channel information
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                             defSTR_CHANNEL_NAME,
+                             _(defSTR_CHANNEL_NAME),
                              nItem + 1 );
         // Get the Hardware name
         omStrHardware.Format( defSTR_HW_DISPLAY_FORMAT, m_pnSelList[i] + 1);

@@ -79,10 +79,28 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 {
     // Multiple return statements are used to keep the code precise.
 
+    /* Get Direction */
+    EDIRECTION eDirMsg;
+    if ( strcmp(sDataJ1939.m_acMsgDir, "Tx") == 0 )
+    {
+        eDirMsg = DIR_TX;
+    }
+    else
+    {
+        eDirMsg = DIR_RX;
+    }
+
+    /* Get PGN ID */
+    UNION_29_BIT_ID sPGNId;
+    UINT32 unPGNId;
+    sPGNId.m_unExtID = sDataJ1939.m_dwMsgID;
+    unPGNId = sPGNId.m_s29BitId.unGetPGN();
+
     SFRAMEINFO_BASIC_J1939 J1939Info_Basic =
     {
-        sDataJ1939.m_dwPGN,
-        _atoi64(sDataJ1939.m_acChannel) //KSS
+        unPGNId,
+        _atoi64(sDataJ1939.m_acChannel), //KSS
+        eDirMsg
     };
 
     // Assign appropriate values to FrameInfo_Basic
@@ -249,7 +267,8 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
         break;
         case START:
         {
-            if (m_sLogInfo.m_sLogTrigger.m_unStartID == J1939Info_Basic.m_dwPGN)
+            if ((m_sLogInfo.m_sLogTrigger.m_unStartID == J1939Info_Basic.m_dwPGN)
+                    && (J1939Info_Basic.m_eDrctn  == DIR_RX))
             {
                 m_CurrTriggerType = NONE;
             }
@@ -261,7 +280,8 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
         break;
         case STOP:
         {
-            if (m_sLogInfo.m_sLogTrigger.m_unStopID == J1939Info_Basic.m_dwPGN)
+            if ((m_sLogInfo.m_sLogTrigger.m_unStopID == J1939Info_Basic.m_dwPGN)
+                    && (J1939Info_Basic.m_eDrctn  == DIR_RX))
             {
                 m_CurrTriggerType = STOPPED;
             }
@@ -270,7 +290,8 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
 
         case BOTH:
         {
-            if (m_sLogInfo.m_sLogTrigger.m_unStartID == J1939Info_Basic.m_dwPGN)
+            if ((m_sLogInfo.m_sLogTrigger.m_unStartID == J1939Info_Basic.m_dwPGN)
+                    && (J1939Info_Basic.m_eDrctn  == DIR_RX))
             {
                 m_CurrTriggerType = STOP;
             }

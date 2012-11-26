@@ -32,7 +32,7 @@
 #include "Utility/WaitIndicator.h"
 #include "SignalDefiner/SignalDefiner_Extern.h"
 #include <atlconv.h>
-
+#include "GettextBusmaster.h"
 /////////////////////////////////////////////////////////////////////////////
 // CWaveformSelectionDlg dialog
 
@@ -142,7 +142,7 @@ BOOL CWaveformSelectionDlg::OnInitDialog()
     // Channels
     m_omMsgChannel.ResetContent();
     // Add All Channels as first item
-    m_omMsgChannel.AddString(defSTR_SELECTION_ALL);
+    m_omMsgChannel.AddString(_(defSTR_SELECTION_ALL));
     for (UINT Index = 1; Index <= m_nHardware; Index++)
     {
         CString omStr;

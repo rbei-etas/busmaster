@@ -3,6 +3,8 @@
 #include <windows.h>
 #include "DBFMessage.h"
 #include "../DBC2DBFConverterLibrary/DBFTagDefinitions.h"
+#include "../FormatConverterApp/GettextBusmaster.h"
+
 class CDBCConverterBase
 {
 public:

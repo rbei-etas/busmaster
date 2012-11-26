@@ -29,6 +29,8 @@
 
 /*Maximum possible length of a CAN*/
 #define MAX_DATA_LEN_CAN 8
+/*Maximum possible length of a CAN FD*/
+#define MAX_DATA_LEN_CAN_FD 64
 /*Maximum possible length of a J1939*/
 #define MAX_DATA_LEN_J1939 1785
 /*Maximum possible length of a MCNET*/
@@ -150,16 +152,17 @@ const BYTE TYPE_ID_CAN_ALL         = 0x3;
 const BYTE TYPE_MSG_CAN_NONE        = 0x0;
 const BYTE TYPE_MSG_CAN_RTR         = 0x1;
 const BYTE TYPE_MSG_CAN_NON_RTR     = 0x2;
-const BYTE TYPE_MSG_CAN_ALL         = 0x3;
+const BYTE TYPE_MSG_CAN_FD          = 0x4;
+const BYTE TYPE_MSG_CAN_ALL         = 0x7;
 
 #define LENGTH_STR_TIMESTAMP_CAN        16
-#define LENGTH_STR_DATA_CAN             32
+#define LENGTH_STR_DATA_CAN             256
 #define LENGTH_STR_ID_CAN               16
 #define LENGTH_STR_DESCRIPTION_CAN      256
-#define LENGTH_STR_DLC_CAN              2
+#define LENGTH_STR_DLC_CAN              3
 #define LENGTH_STR_CHANNEL_CAN          4
 #define LENGTH_STR_DIRECTION_CAN        4
-#define LENGTH_STR_TYPE_CAN             4
+#define LENGTH_STR_TYPE_CAN             8
 
 
 typedef struct tagFormattedData_CAN
@@ -169,7 +172,7 @@ typedef struct tagFormattedData_CAN
     EDIRECTION      m_eDirection;                   // Direction (Rx / Tx)
     TYPE_CHANNEL    m_eChannel;                     // Channel
     BYTE            m_byDataLength;                 // Data length count
-    BYTE            m_abData[8];                    // Message data
+    BYTE            m_abData[MAX_DATA_LEN_CAN_FD];  // Message data
     BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
 

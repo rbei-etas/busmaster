@@ -32,7 +32,7 @@
 #include "Utility/FFListctrl.h"             // For Flicker Free List class definition
 #include "Utility/NumEdit.h"                // For Custom Numeric Edit control Impl
 #include "FlexListCtrl.h"           // Interface file for Flex List Control
-
+#include "../Application/GettextBusmaster.h"
 // ID for Combobox
 #define IDC_CONTROL 0x12345
 
@@ -517,7 +517,7 @@ CComboItem* CFlexListCtrl::pomComboItem(int nItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_ITEM);
+        omStrErr.Format(_(defFLC_CREATE_FAILED),defCOMBO_ITEM);
         AfxMessageBox( omStrErr );
     }
     // The return the pointer just for reference
@@ -609,7 +609,7 @@ CComboItem* CFlexListCtrl::pomComboList( int nItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_LIST);
+        omStrErr.Format(_(defFLC_CREATE_FAILED),defCOMBO_LIST);
         AfxMessageBox( omStrErr );
     }
 
@@ -688,7 +688,7 @@ CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     else
     {
         CString omStrErr;
-        omStrErr.Format( defFLC_CREATE_FAILED, defEDIT_ITEM );
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defEDIT_ITEM );
         AfxMessageBox( omStrErr );
     }
     // Retrun the window pointer
@@ -767,7 +767,7 @@ CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format( defFLC_CREATE_FAILED, defNUM_ITEM );
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defNUM_ITEM );
         AfxMessageBox( omStrErr );
     }
     // Return the window pointer

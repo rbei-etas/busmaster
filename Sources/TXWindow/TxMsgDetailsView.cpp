@@ -41,6 +41,7 @@
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
+#include "../Application/GettextBusmaster.h"
 
 // Definition for image indices
 #define defIMAGE_DIRTY 2
@@ -218,7 +219,7 @@ void CTxMsgDetailsView::OnInitialUpdate()
     m_odSignalMatrix.vResetValues();
     m_odSignalMatrix.vSetMessageLength(0);
     // Set Lable to indicate Mode
-    CString omStrText = CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX) ? defSTR_HEX_MODE : defSTR_DEC_MODE;
+    CString omStrText = CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX) ? _(defSTR_HEX_MODE) : _(defSTR_DEC_MODE);
     CWnd* pomLabel = GetDlgItem(IDC_STAT_HEADER2);
     if( pomLabel != NULL )
     {
@@ -406,15 +407,15 @@ void CTxMsgDetailsView::vInitSignalListCtrl()
     for(i=0; i<defSIGNAL_FRAME_COLUMN; i++)
     {
         nTotalStrLengthPixel +=
-            m_omLctrSigList.GetStringWidth(caColumnName[i]) ;
+            m_omLctrSigList.GetStringWidth(_(caColumnName[i])) ;
     }
     //Insert each column name after calculating the size for the same.
     for(i=0; i<defSIGNAL_FRAME_COLUMN; i++)
     {
-        nColumnSize  = m_omLctrSigList.GetStringWidth(caColumnName[i]) ;
+        nColumnSize  = m_omLctrSigList.GetStringWidth(_(caColumnName[i])) ;
         nColumnSize +=
             (nTotalColunmSize-nTotalStrLengthPixel)/defSIGNAL_FRAME_COLUMN;
-        m_omLctrSigList.InsertColumn(i, caColumnName[i],
+        m_omLctrSigList.InsertColumn(i, _(caColumnName[i]),
                                      nColumnFormat[i], nColumnSize - 1);
     }
 
@@ -659,7 +660,7 @@ void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
         // Disable Add Button
         vEnableAddButton( FALSE );
         // Show Error Text
-        bSetStatusText( defSTR_INVALID_MESSAGE_ID );
+        bSetStatusText( _(defSTR_INVALID_MESSAGE_ID) );
         // Disable Signal Matrix
         m_odSignalMatrix.vSetMessageLength(0);
         // For invalid message ID
@@ -1734,7 +1735,7 @@ BOOL CTxMsgDetailsView::bCheckIfValueIsMoreThan255(
             if ( unValue > 255 )
             {
                 CString omErrorStr;
-                omErrorStr.Format( defSTR_INVALID_DATA_BYTES,
+                omErrorStr.Format( _(defSTR_INVALID_DATA_BYTES),
                                    usTempCount + 1 );
                 bSetStatusText( omErrorStr );
                 bResult = TRUE;// Exit loop
@@ -2045,7 +2046,7 @@ void CTxMsgDetailsView::OnUpdateEditDLC()
                 else
                 {
                     // Show Invalid DLC text
-                    bSetStatusText(defSTR_INVALID_DLC);
+                    bSetStatusText(_(defSTR_INVALID_DLC));
                 }
             }
             // Enable/Disable Add Button
@@ -2149,6 +2150,7 @@ void CTxMsgDetailsView::OnUpdateEditDataBytes()
                     SetDirty();
                     // Update global message details
                     bEntryValid = vUpdateSelectedMessageDetails();
+                    vCallApplyChanges(); //call this function to update data in case of AutoUpdate
                 }
             }
 
@@ -2210,14 +2212,14 @@ void CTxMsgDetailsView::OnRbtnMsgtypeStd()
         }
         else
         {
-            bSetStatusText(defSTR_INVALID_DLC);
+            bSetStatusText(_(defSTR_INVALID_DLC));
         }
 
         vCallApplyChanges();
     }
     else
     {
-        bSetStatusText(defSTR_INVALID_MESSAGE_ID);
+        bSetStatusText(_(defSTR_INVALID_MESSAGE_ID));
     }
 
     // Enable/Disable Add Button
@@ -2307,13 +2309,13 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
         }
         else
         {
-            bSetStatusText(defSTR_INVALID_DLC);
+            bSetStatusText(_(defSTR_INVALID_DLC));
         }
         vCallApplyChanges();
     }
     else
     {
-        bSetStatusText(defSTR_INVALID_MESSAGE_ID);
+        bSetStatusText(_(defSTR_INVALID_MESSAGE_ID));
     }
 
     // Enable/Disable Add Button

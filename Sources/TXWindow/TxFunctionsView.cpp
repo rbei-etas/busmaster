@@ -33,6 +33,7 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxFunctionsView.h"    // For Tx Function View class declaration
 #include "TxMsgChildFrame.h"    // For Parent Window class declaration
+#include "../Application/GettextBusmaster.h"
 
 IMPLEMENT_DYNCREATE(CTxFunctionsView, CFormView)
 
@@ -239,6 +240,10 @@ void CTxFunctionsView::OnButtonApply()
     CString                 csTimerVal;
     CTxMsgBlocksView* pomBlockView = NULL;
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+    if(pomBlockView == NULL)
+    {
+        return;
+    }
     if(pomBlockView)
     {
         pomBlockView->GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
@@ -599,13 +604,13 @@ void CTxFunctionsView::vReloadData()
                 {
                     pomBlockView->m_omLctrMsgBlockName.SetItemText( i,
                             defSUBITEM_MSGBLOCK_TYPE,
-                            defMSG_CYCLIC );
+                            _(defMSG_CYCLIC) );
                 }
                 else
                 {
                     pomBlockView->m_omLctrMsgBlockName.SetItemText( i,
                             defSUBITEM_MSGBLOCK_TYPE,
-                            defMSG_MONOSHOT );
+                            _(defMSG_MONOSHOT) );
                 }
 
                 // Use Macros to find the type

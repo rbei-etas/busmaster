@@ -440,7 +440,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         pomCancelButton = (CButton*)GetDlgItem(IDCANCEL);
         if( pomCancelButton != NULL )
         {
-            pomCancelButton->SetWindowText(defSTR_CLOSE_MENU_TEXT);
+            pomCancelButton->SetWindowText(_(defSTR_CLOSE_MENU_TEXT));
             // Get the rect before centering
             CRect omRect1, omRect2;
             pomCancelButton->GetWindowRect(&omRect1);
@@ -723,7 +723,7 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             //check for the empty string
             if(unMinLength == 0)
             {
-                AfxMessageBox( "Minimum value field can't be empty!",
+                AfxMessageBox( _("Minimum value field can't be empty!"),
                                MB_OK|MB_ICONINFORMATION);
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MIN)->SetFocus();
@@ -731,7 +731,7 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             }
             else if(unMaxLength == 0)
             {
-                AfxMessageBox( "Maximum value field can't be empty!",
+                AfxMessageBox( _("Maximum value field can't be empty!"),
                                MB_OK|MB_ICONINFORMATION);
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MAX)->SetFocus();
@@ -745,7 +745,7 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             }
             else if(unFactorValue == 0)
             {
-                AfxMessageBox( "Factor value field can't be empty!",
+                AfxMessageBox( _("Factor value field can't be empty!"),
                                MB_OK|MB_ICONINFORMATION);
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_FACTOR)->SetFocus();
@@ -753,7 +753,7 @@ BOOL CSignalDetailsDlg::bIsEditMinMaxValueValid()
             }
             else if(m_odMaxValue.lGetValue() == m_odMinValue.lGetValue())
             {
-                AfxMessageBox( "Maximum and minimum values cannot be equal",
+                AfxMessageBox( _("Maximum and minimum values cannot be equal"),
                                MB_OK|MB_ICONINFORMATION);
                 UpdateData(FALSE);
                 GetDlgItem(IDC_EDIT_MIN)->SetFocus();
@@ -1275,7 +1275,7 @@ void CSignalDetailsDlg::OnOK()
             bModifiedFlag = TRUE;
             if ( m_omStrSignalName.IsEmpty() )
             {
-                AfxMessageBox( defSTR_SIGNAL_NAME_INVALID,
+                AfxMessageBox( _(defSTR_SIGNAL_NAME_INVALID),
                                MB_OK | MB_ICONINFORMATION );
                 GetDlgItem(IDC_EDIT_SGNAME)->SetFocus();
                 bReturnFlag = FALSE;
@@ -1297,7 +1297,7 @@ void CSignalDetailsDlg::OnOK()
                             (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
                                     m_omStrSignalName)) && bReturnFlag == TRUE)
                     {
-                        AfxMessageBox( MSG_DUPLICATE_SG_NAME, MB_OK|MB_ICONINFORMATION);
+                        AfxMessageBox( _(MSG_DUPLICATE_SG_NAME), MB_OK|MB_ICONINFORMATION);
                         m_omStrSignalName.Empty();
                         UpdateData(FALSE);
                         GetDlgItem( IDC_EDIT_SGNAME )->SetFocus();
@@ -1311,7 +1311,7 @@ void CSignalDetailsDlg::OnOK()
 
                         if(bIsSignalNameValid == FALSE)
                         {
-                            AfxMessageBox( MSG_INVALID_SG_NAME, MB_OK|MB_ICONINFORMATION);
+                            AfxMessageBox( _(MSG_INVALID_SG_NAME), MB_OK|MB_ICONINFORMATION);
                             m_omStrSignalName.Empty();
                             UpdateData(FALSE);
                             GetDlgItem( IDC_EDIT_SGNAME )->SetFocus();
@@ -1325,7 +1325,7 @@ void CSignalDetailsDlg::OnOK()
                                                  (EFORMAT_DATA) m_nDataFormat)) &&
                         (bReturnFlag == TRUE))
                 {
-                    AfxMessageBox( defSTR_SIGNAL_END_BIT_INVALID,
+                    AfxMessageBox( _(defSTR_SIGNAL_END_BIT_INVALID),
                                    MB_OK | MB_ICONINFORMATION );
                     GetDlgItem( IDC_EDIT_SGLEN )->SetFocus();
                     bReturnFlag = FALSE;
@@ -1335,7 +1335,7 @@ void CSignalDetailsDlg::OnOK()
                         m_shByteIndex+1, m_unSgLen, m_byStartBit, m_nDataFormat )
                         && bReturnFlag == TRUE)
                 {
-                    AfxMessageBox( defSTR_SIGNAL_DUP_START_BIT,
+                    AfxMessageBox( _(defSTR_SIGNAL_DUP_START_BIT),
                                    MB_OK | MB_ICONINFORMATION );
                     GetDlgItem( IDC_EDIT_STBIT )->SetFocus();
                     bReturnFlag = FALSE;
@@ -1419,7 +1419,7 @@ void CSignalDetailsDlg::OnOK()
                     }
                     else
                     {
-                        AfxMessageBox(MSG_MEMORY_CONSTRAINT, MB_OK|MB_ICONINFORMATION);
+                        AfxMessageBox(_(MSG_MEMORY_CONSTRAINT), MB_OK|MB_ICONINFORMATION);
                     }
                 }
             }
@@ -1682,7 +1682,7 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
         //      CUtilFunctions::s_vExtendSignBit( n64, m_unSgLen );
         if ( n64MaxVal < n64MinVal )
         {
-            AfxMessageBox(MSG_MAX_VAL_LESS, MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox(_(MSG_MAX_VAL_LESS), MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
         }
         else
@@ -1693,7 +1693,7 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
                 vCalculateMaxMinValues( minVal, maxVal);
                 if ( n64MaxVal > maxVal.n64Value )
                 {
-                    AfxMessageBox( defSTR_MAX_VAL_INVALID,
+                    AfxMessageBox( _(defSTR_MAX_VAL_INVALID),
                                    MB_OK | MB_ICONINFORMATION );
                     m_odMaxValue.vSetValue( maxVal.n64Value );
                     bRetVal = FALSE;
@@ -1725,7 +1725,7 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
         //}
         if ( un64MaxVal < un64MinVal && bRetVal == TRUE)
         {
-            AfxMessageBox(MSG_MAX_VAL_LESS, MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox(_(MSG_MAX_VAL_LESS), MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
         }
         else if(bRetVal == TRUE)
@@ -1736,7 +1736,7 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
                 vCalculateMaxMinValues( minVal, maxVal);
                 if ( un64MaxVal > maxVal.un64Value )
                 {
-                    AfxMessageBox( defSTR_MAX_VAL_INVALID,
+                    AfxMessageBox( _(defSTR_MAX_VAL_INVALID),
                                    MB_OK | MB_ICONINFORMATION );
                     m_odMaxValue.vSetValue(maxVal.un64Value);
                     bRetVal = FALSE;
@@ -1807,7 +1807,7 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
                 //                CUtilFunctions::s_vExtendSignBit( minVal.n64Value, m_unSgLen);
                 if ( n64MinVal < minVal.n64Value)
                 {
-                    AfxMessageBox( defSTR_MIN_VAL_INVALID,
+                    AfxMessageBox( _(defSTR_MIN_VAL_INVALID),
                                    MB_OK | MB_ICONINFORMATION );
                     m_odMinValue.vSetValue(minVal.n64Value);
                     bRetVal = FALSE;
@@ -1834,7 +1834,7 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
         unsigned __int64 un64MaxVal   = m_odMaxValue.lGetUnsignedValue();
         if ( un64MinVal > un64MaxVal )
         {
-            AfxMessageBox(MSG_MIN_VAL_MORE, MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox(_(MSG_MIN_VAL_MORE), MB_OK|MB_ICONINFORMATION);
             bRetVal = FALSE;
         }
         else
@@ -1846,7 +1846,7 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
                 vCalculateMaxMinValues( minVal,maxVal);
                 if ( un64MinVal < minVal.un64Value)
                 {
-                    AfxMessageBox( defSTR_MIN_VAL_INVALID,
+                    AfxMessageBox( _(defSTR_MIN_VAL_INVALID),
                                    MB_OK | MB_ICONINFORMATION );
                     m_odMinValue.vSetValue(minVal.un64Value);
                     bRetVal = FALSE;

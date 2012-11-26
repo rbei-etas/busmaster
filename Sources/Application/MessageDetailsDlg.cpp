@@ -180,7 +180,7 @@ void CMessageDetailsDlg::OnOK()
         if ( m_unMessageLength > m_sDbParams.m_unMaxMsgLen )
         {
             CString omErr;
-            omErr.Format("Please enter integer between 0 and %d", m_sDbParams.m_unMaxMsgLen);
+            omErr.Format(_("Please enter integer between 0 and %d"), m_sDbParams.m_unMaxMsgLen);
             AfxMessageBox(omErr.GetBuffer(MAX_PATH));
             GetDlgItem(IDC_EDIT_MSG_LENGTH)->SetFocus();
             bRetVal = FALSE;
@@ -190,7 +190,7 @@ void CMessageDetailsDlg::OnOK()
     if (bRetVal == TRUE &&
             m_omStrMessageName.IsEmpty())
     {
-        AfxMessageBox("Message Name cannot be empty!",
+        AfxMessageBox(_("Message Name cannot be empty!"),
                       MB_OK|MB_ICONINFORMATION);
         GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
         bRetVal = FALSE;
@@ -202,7 +202,7 @@ void CMessageDetailsDlg::OnOK()
 
         if(bIsMsgValid == FALSE)
         {
-            AfxMessageBox(MSG_INVALID_MSG_NAME,
+            AfxMessageBox(_(MSG_INVALID_MSG_NAME),
                           MB_OK|MB_ICONINFORMATION);
             GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
             bRetVal = FALSE;
@@ -211,7 +211,7 @@ void CMessageDetailsDlg::OnOK()
     if ( bRetVal == TRUE &&
             m_omStrMessageCode.IsEmpty())
     {
-        CString omMsg = " cannot be empty!";
+        CString omMsg = _(" cannot be empty!");
         omMsg = m_sDbParams.m_omIdFieldName + omMsg;
         AfxMessageBox(omMsg.GetBuffer(MAX_PATH),
                       MB_OK|MB_ICONINFORMATION);
@@ -235,7 +235,7 @@ void CMessageDetailsDlg::OnOK()
                 if ( !((tChar >= 'A') && ( tChar <= 'F' ) ||
                         (tChar >= '0' && tChar <= '9') ) )
                 {
-                    AfxMessageBox("Invalid message ID!",
+                    AfxMessageBox(_("Invalid message ID!"),
                                   MB_OK|MB_ICONINFORMATION );
                     m_omStrMessageCode.Empty();
                     GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
@@ -254,7 +254,7 @@ void CMessageDetailsDlg::OnOK()
             {
                 if((m_nFrameFormat == 0) && (unTempMsgCode >= MAX_LMT_FOR_STD_MSG_ID))    // standard frame
                 {
-                    AfxMessageBox("Invalid message ID!",
+                    AfxMessageBox(_("Invalid message ID!"),
                                   MB_OK|MB_ICONINFORMATION );
                     m_omStrMessageCode.Empty();
                     GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
@@ -266,7 +266,7 @@ void CMessageDetailsDlg::OnOK()
             {
                 if (unTempMsgCode > MAX_LMT_FOR_PGN)
                 {
-                    AfxMessageBox("Invalid message ID!",
+                    AfxMessageBox(_("Invalid message ID!"),
                                   MB_OK|MB_ICONINFORMATION );
                     m_omStrMessageCode.Empty();
                     GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
@@ -306,16 +306,16 @@ void CMessageDetailsDlg::OnOK()
                     {
                         // Get the delete confirmation from the user
                         if ( AfxMessageBox(
-                                    "You have signals defined for this message for previous message length.\n\
+                                    _("You have signals defined for this message for previous message length.\n\
 Reducing message length will delete redundent signals and associated description\n\
 defined for this message.Do you want to delete these signals?\n\n\
 Select \"Yes\" to delete the signal(s) and to accept new message length value.\n\
-Select \"No\" to retain the previous message length.", MB_YESNO) == IDYES)
+Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
                         {
                             // Delete redundent signals and update new message length
                             if ( bDeleteRedundentSignals() == FALSE )
                             {
-                                AfxMessageBox("Could not delete the signals...",
+                                AfxMessageBox(_("Could not delete the signals..."),
                                               MB_OK);
                             }
                         }
@@ -345,7 +345,7 @@ Select \"No\" to retain the previous message length.", MB_YESNO) == IDYES)
             // Display message if duplicate is found
             if (bDuplicateFound == TRUE)
             {
-                AfxMessageBox("Duplicate message name found!",
+                AfxMessageBox(_("Duplicate message name found!"),
                               MB_OK|MB_ICONINFORMATION);
                 GetDlgItem(IDC_EDIT_MSG_NAME)->SetFocus();
                 bRetVal = FALSE;
@@ -387,7 +387,7 @@ Select \"No\" to retain the previous message length.", MB_YESNO) == IDYES)
 
                 if (bDuplicateFound == TRUE)
                 {
-                    AfxMessageBox("Duplicate message code found!",
+                    AfxMessageBox(_("Duplicate message code found!"),
                                   MB_OK|MB_ICONINFORMATION);
                     GetDlgItem(IDC_EDIT_MSGCODE)->SetFocus();
                     bRetVal = FALSE;
@@ -462,7 +462,7 @@ Select \"No\" to retain the previous message length.", MB_YESNO) == IDYES)
 
                     if ( !bRetVal )
                     {
-                        AfxMessageBox("Could not update the changes..!",
+                        AfxMessageBox(_("Could not update the changes..!"),
                                       MB_OK|MB_ICONERROR );
                     }
                 }
@@ -570,7 +570,7 @@ void CMessageDetailsDlg::vConvertToExtended()
 {
     CString omStrsgCode = m_omStrMessageCode;
 
-    if ( IDYES == AfxMessageBox(MSG_PROMPT_EXTD, MB_YESNO|MB_ICONINFORMATION))
+    if ( IDYES == AfxMessageBox(_(MSG_PROMPT_EXTD), MB_YESNO|MB_ICONINFORMATION))
     {
         CMsgSignal* pTempMsgSg = NULL;
 
@@ -620,7 +620,7 @@ void CMessageDetailsDlg::vConvertToStandard()
 {
     CString omStrsgCode = m_omStrMessageCode;
 
-    if ( IDYES == AfxMessageBox(MSG_PROMPT_STD, MB_YESNO|MB_ICONINFORMATION))
+    if ( IDYES == AfxMessageBox(_(MSG_PROMPT_STD), MB_YESNO|MB_ICONINFORMATION))
     {
         CMsgSignal* pTempMsgSg = NULL;
 

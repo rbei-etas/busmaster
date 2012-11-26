@@ -30,6 +30,7 @@
 #include <afxtempl.h>
 #include "TSExecutorGUI_resource.h"
 #include "TSExecutorGUI_ChildFrame.h"
+#include "../Application/GettextBusmaster.h"
 //#include "TreeViewEx.h"
 
 
@@ -662,15 +663,15 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         VERIFY(omContextMenu.CreatePopupMenu());
         if(omTempTreeCtrl.GetItemData(hItem) == def_ID_TESTSUITE)
         {
-            VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_ADD, "Add..."));
+            VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_ADD, _("Add...")));
             BOOL bCheck = bIsItemChecked(hItem);
             if(GetExecutorWindow()->bGetBusStatus() == TRUE && bCheck == TRUE )
             {
-                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_EXECUTE, "Execute"));
+                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_EXECUTE, _("Execute")));
             }
             else
             {
-                VERIFY(omContextMenu.AppendMenu(MF_STRING|MF_GRAYED, IDM_TESTSUITE_EXECUTE, "Execute"));
+                VERIFY(omContextMenu.AppendMenu(MF_STRING|MF_GRAYED, IDM_TESTSUITE_EXECUTE, _("Execute")));
             }
         }
         else
@@ -678,8 +679,8 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
             HTREEITEM hParentItem = omTempTreeCtrl.GetParentItem(hItem);
             if(omTempTreeCtrl.GetItemData(hParentItem) == def_ID_TESTSUITE)
             {
-                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_DELETE, "Delete"));
-                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_MODIFY, "Reload File"));
+                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_DELETE, _("Delete")));
+                VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSETUP_MODIFY, _("Reload File")));
             }
         }
         omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
@@ -690,8 +691,8 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     {
         CMenu omContextMenu;
         VERIFY(omContextMenu.CreatePopupMenu());
-        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_COLLAPSE_ALL, "Collapse All"));
-        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_EXPAND_ALL, "Expand All"));
+        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_COLLAPSE_ALL, _("Collapse All")));
+        VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_EXPAND_ALL, _("Expand All")));
         omContextMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
         *pResult = 0;
     }

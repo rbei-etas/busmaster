@@ -23,6 +23,7 @@
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_PropertyView.h"
 #include "TSEditorGUI_Definitions.h"
+#include "../Application/GettextBusmaster.h"
 
 #define def_HEIGHT_PROPERTYVIEW     0.65
 #define def_WINDOW_GAP              18          //Looks Good
@@ -131,8 +132,8 @@ void CPropertyView::OnInitialUpdate()
     //Window is Constructed Now and Size its size is available
     m_bSizeAvailable=TRUE;
     m_omPropertyList.SetExtendedStyle(m_omPropertyList.GetExtendedStyle() | LVS_EX_GRIDLINES|LVS_EX_FULLROWSELECT);
-    m_omPropertyList.InsertColumn(def_COLUMN_CATEGORY, defFIRSTCOLUMN_NAME);
-    m_omPropertyList.InsertColumn(def_COLUMN_VALUE, defSECONDCOLUMN_NAME);
+    m_omPropertyList.InsertColumn(def_COLUMN_CATEGORY, _(defFIRSTCOLUMN_NAME));
+    m_omPropertyList.InsertColumn(def_COLUMN_VALUE, _(defSECONDCOLUMN_NAME));
     //Just To increase the List Item Height
     m_omImageList.Create(def_WIDTH_LISTITEM, def_HEIGHT_LISTITEM, ILC_COLOR24, 4, 1);
     m_omPropertyList.SetImageList(&m_omImageList, LVSIL_SMALL);
@@ -239,7 +240,8 @@ Modifications  :
 ******************************************************************************/
 void CPropertyView::OnBnClickedConfirm()
 {
-    GetEditorWindow()->nConfirmCurrentChanges();
+    GetEditorWindow()->OnFileSave();
+    //GetEditorWindow()->nConfirmCurrentChanges();
 }
 
 /******************************************************************************

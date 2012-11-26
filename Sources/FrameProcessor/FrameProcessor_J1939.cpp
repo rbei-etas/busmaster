@@ -54,6 +54,7 @@
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "FrameProcessor_J1939.h"
 #include "LogObjectJ1939.h"
+#include "../Application/GettextBusmaster.h"
 
 
 USHORT CFrameProcessor_J1939::ushCalculateStrLen(bool bForHex, USHORT ushLength)
@@ -178,7 +179,7 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
         if (Result == ERR_READ_MEMORY_SHORT)
         {
             CString omBuf;
-            omBuf.Format("ERR_READ_MEMORY_SHORT  nSize: %d", nSize);
+            omBuf.Format(_("ERR_READ_MEMORY_SHORT  nSize: %d"), nSize);
             //AfxMessageBox(omBuf);
         }
         else if (Result == EMPTY_APP_BUFFER)

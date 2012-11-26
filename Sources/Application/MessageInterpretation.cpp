@@ -296,13 +296,13 @@ BOOL CMessageInterpretation::OnInitDialog()
     // TODO: Add extra initialization here
     BOOL bRetVal = FALSE;
 
-    if (m_ctrlSignal.InsertColumn(0, defSTR_SIGNAL_NAME, LVCFMT_LEFT, 110) != -1)
+    if (m_ctrlSignal.InsertColumn(0, _(defSTR_SIGNAL_NAME), LVCFMT_LEFT, 110) != -1)
     {
-        if (m_ctrlSignal.InsertColumn(1, defSTR_PHYSICAL_COLUMN, LVCFMT_LEFT, 130) != -1
+        if (m_ctrlSignal.InsertColumn(1, _(defSTR_PHYSICAL_COLUMN), LVCFMT_LEFT, 130) != -1
                 &&
-                m_ctrlSignal.InsertColumn(2, defSTR_RAW_COLUMN, LVCFMT_LEFT,      120) != -1
+                m_ctrlSignal.InsertColumn(2, _(defSTR_RAW_COLUMN), LVCFMT_LEFT,      120) != -1
                 &&
-                m_ctrlSignal.InsertColumn(3, defSTR_UNITS, LVCFMT_LEFT,           120) != -1)
+                m_ctrlSignal.InsertColumn(3, _(defSTR_UNITS), LVCFMT_LEFT,           120) != -1)
         {
             bRetVal = TRUE;
             m_ctrlSignal.SetExtendedStyle(m_ctrlSignal.GetExtendedStyle()

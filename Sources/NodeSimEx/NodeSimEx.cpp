@@ -26,6 +26,7 @@
 #include "NodeSim.h"
 #define USAGE_EXPORT
 #include "NodeSimEx_extern.h"
+#include "../Application/MultiLanguage.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,6 +41,8 @@ static AFX_EXTENSION_MODULE NodeSimExDLL = { NULL, NULL };
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
+    static HINSTANCE shLangInst=NULL;
+
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
 
@@ -65,6 +68,30 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  Regular DLL's resource chain, and serious problems will
         //  result.
 
+        // Begin of Multiple Language support
+        if ( CMultiLanguage::m_nLocales <= 0 )  // Not detected yet
+        {
+            CMultiLanguage::DetectLangID();     // Detect language as user locale
+            CMultiLanguage::DetectUILanguage(); // Detect language in MUI OS
+        }
+        TCHAR szModuleFileName[MAX_PATH];       // Get Module File Name and path
+        int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
+        if ( ret == 0 || ret == MAX_PATH )
+        {
+            ASSERT(FALSE);
+        }
+        // Load resource-only language DLL. It will use the languages
+        // detected above, take first available language,
+        // or you can specify another language as second parameter to
+        // LoadLangResourceDLL. And try that first.
+        shLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+        if (shLangInst)
+        {
+            NodeSimExDLL.hResource = shLangInst;
+        }
+        // End of Multiple Language support
+
+
         sg_pomDynLinkLib = new CDynLinkLibrary(NodeSimExDLL);
 
     }
@@ -87,6 +114,12 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
             delete sg_pomDynLinkLib;
             sg_pomDynLinkLib = NULL;
         }
+
+        if (shLangInst)
+        {
+            FreeLibrary(shLangInst);
+        }
+
 
         // Terminate the library before destructors are called
         AfxTermExtensionModule(NodeSimExDLL);
@@ -122,7 +155,7 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
             }
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouNS_CAN; /* Doesn't matter even
-                        if sg_pouFP_CAN is null */
+                    if sg_pouFP_CAN is null */
         }
         break;
         case J1939:
@@ -141,7 +174,7 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
             }
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouNS_J1939; /* Doesn't matter even
-                        if sg_pouFP_J1939 is null */
+                    if sg_pouFP_J1939 is null */
         }
         break;
         default:

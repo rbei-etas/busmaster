@@ -36,6 +36,7 @@
 #include "EventHandlerDlg.h"    // Dialog class for event handlers
 #include "UtlityDlg.h"          // Dialog class for adding utility func
 #include "FnsTreeView.h"        // Class defintion file
+#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1593,11 +1594,11 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
                     // Add footer
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrFooter );
                 }
-                omStrOldFuncDecl += ";";
+                omStrOldFuncDecl += _(";");
                 pos = pDoc->m_omSourceCodeTextList.Find(omStrOldFuncDecl );
                 if( pos != NULL )
                 {
-                    omStrNewFuncDecl += ";";
+                    omStrNewFuncDecl += _(";");
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrNewFuncDecl );
                 }
 

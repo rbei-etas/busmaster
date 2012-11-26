@@ -30,7 +30,7 @@
 #include "ReplayFileConfigDlg.h"    // For Replay File Configuration dialog
 #include "ReplayProcess.h"          // For Replay Process class declaration
 #include "Filter/Filter_extern.h"
-
+#include "../Application/GettextBusmaster.h"
 
 #define defREPLAY_FILE_IMAGE_INDEX          3
 #define defREPLAY_FILE_COL_WIDTH_PROPOTION  0.95
@@ -152,7 +152,7 @@ BOOL CReplayFileConfigDlg::bCreateImageList()
 VOID CReplayFileConfigDlg::vCreateReplayFileList()
 {
     // Insert Log File Name Column
-    m_omLstcReplayFiles.InsertColumn(0, defSTR_REPLAY_FILE_COL_NAME );
+    m_omLstcReplayFiles.InsertColumn(0, _(defSTR_REPLAY_FILE_COL_NAME) );
     // Set the width to occupy the whole list
     CRect omRect;
     m_omLstcReplayFiles.GetWindowRect( &omRect );
@@ -406,14 +406,14 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
     switch(rouFile.m_ouReplayMsgType)
     {
         case DIR_RX:
-            m_omStrMsgType = defSTR_MSG_DIR_RX;
+            m_omStrMsgType = _(defSTR_MSG_DIR_RX);
             break;
         case DIR_TX:
-            m_omStrMsgType = defSTR_MSG_DIR_TX;
+            m_omStrMsgType = _(defSTR_MSG_DIR_TX);
             break;
         case DIR_ALL:
         default:
-            m_omStrMsgType = defSTR_SELECTION_ALL;
+            m_omStrMsgType = _(defSTR_SELECTION_ALL);
             break;
     }
 
@@ -446,7 +446,7 @@ void CReplayFileConfigDlg::OnBtnBrowse()
                                defLOG_FILTER,
                                NULL );
         //Set the caption
-        omFileDlg.m_ofn.lpstrTitle = defSTR_REPLAY_FILE_SELECTION_TITLE;
+        omFileDlg.m_ofn.lpstrTitle = _(defSTR_REPLAY_FILE_SELECTION_TITLE);
         // Show File open dialog
         if( omFileDlg.DoModal() == IDOK )
         {
@@ -601,7 +601,7 @@ void CReplayFileConfigDlg::OnBtnAddFile()
                            defLOG_FILTER,
                            NULL );
     //Set the caption
-    omFileDlg.m_ofn.lpstrTitle = defSTR_REPLAY_FILE_SELECTION_TITLE;
+    omFileDlg.m_ofn.lpstrTitle = _(defSTR_REPLAY_FILE_SELECTION_TITLE);
     // Show File open dialog
     if( omFileDlg.DoModal() == IDOK )
     {
@@ -647,7 +647,7 @@ void CReplayFileConfigDlg::OnBtnDeleteFile()
             m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
     {
         // Ask user about file delete
-        int nResult = AfxMessageBox( defSTR_DELETE_CONFORMATION,
+        int nResult = AfxMessageBox( _(defSTR_DELETE_CONFORMATION),
                                      MB_YESNO|MB_ICONQUESTION ) ;
         if ( nResult == IDYES )
         {
@@ -821,7 +821,7 @@ void CReplayFileConfigDlg::OnBtnFilter()
         CReplayFile ouReplayFile =
             m_rouManager.m_omReplayFiles[ m_nSelecetedNamedLogIndex ];
         CString omStrTitle;
-        omStrTitle.Format( defSTR_REPALY_FILTER_DLG_TITLE,
+        omStrTitle.Format( _(defSTR_REPALY_FILTER_DLG_TITLE),
                            ouReplayFile.m_omStrFileName );
         CMainEntryList DestList;
         vPopulateMainSubList(DestList, m_psFilterConfigured, &(ouReplayFile.m_sFilterApplied) );
@@ -843,11 +843,11 @@ void CReplayFileConfigDlg::OnComboMsgTypeChanged()
             m_rouManager.m_omReplayFiles[ m_nSelecetedNamedLogIndex ];
 
 
-        if(m_omStrMsgType == defSTR_MSG_DIR_TX)
+        if(m_omStrMsgType == _(defSTR_MSG_DIR_TX))
         {
             ouReplayFile.m_ouReplayMsgType = DIR_TX;
         }
-        else if(m_omStrMsgType == defSTR_MSG_DIR_RX)
+        else if(m_omStrMsgType == _(defSTR_MSG_DIR_RX))
         {
             ouReplayFile.m_ouReplayMsgType = DIR_RX;
         }

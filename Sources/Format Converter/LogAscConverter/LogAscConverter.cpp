@@ -45,6 +45,14 @@ CLogAscConverter::~CLogAscConverter(void)
 {
 }
 
+HRESULT CLogAscConverter::GettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+    return S_OK;
+}
+
 /**
  * \brief      Get help text
  * \param[out] pchHelpText Help Text
@@ -54,7 +62,7 @@ CLogAscConverter::~CLogAscConverter(void)
  */
 HRESULT CLogAscConverter::GetHelpText(string& pchHelpText)
 {
-    pchHelpText = "Converts the BUSMASTER CAN log file(.log) to CANoe CAN log file(.asc)";
+    pchHelpText = _("Converts the BUSMASTER CAN log file(.log) to CANoe CAN log file(.asc)");
     return S_OK;
 }
 
@@ -67,7 +75,7 @@ HRESULT CLogAscConverter::GetHelpText(string& pchHelpText)
  */
 HRESULT CLogAscConverter::GetConverterName(string& strConverterName)
 {
-    strConverterName = "LOG TO ASC Conversion";
+    strConverterName = _("LOG TO ASC Conversion");
     return S_OK;
 }
 
@@ -84,23 +92,23 @@ HRESULT CLogAscConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
     switch( hResult )
     {
         case ERR_OUTPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = "Output File path is not found";
+            m_omstrConversionStatus = _("Output File path is not found");
             break;
 
         case ERR_INPUT_FILE_NOTFOUND:
-            m_omstrConversionStatus = "Input File path is not found";
+            m_omstrConversionStatus = _("Input File path is not found");
             break;
 
         case S_OK:
-            m_omstrConversionStatus = "Conversion success";
+            m_omstrConversionStatus = _("Conversion success");
             break;
 
         case S_FALSE:
-            m_omstrConversionStatus = "Conversion failed";
+            m_omstrConversionStatus = _("Conversion failed");
             break;
 
         default:
-            m_omstrConversionStatus = "Unknown";
+            m_omstrConversionStatus = _("Unknown");
             break;
     }
 
@@ -119,7 +127,7 @@ HRESULT CLogAscConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 HRESULT CLogAscConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
     pchInputDefFilters = "log";
-    pchInputFilters = "BUSMASTER Log File(s) (*.log)|*.log||";
+    pchInputFilters = _("BUSMASTER Log File(s) (*.log)|*.log||");
     return S_OK;
 }
 
@@ -150,7 +158,7 @@ HRESULT CLogAscConverter::GetLastConversionStatus(HRESULT& hResult, string& omst
 HRESULT CLogAscConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
     pchOutputDefFilters = "asc";
-    pchOutputFilters = "CANoe Log File(s) (*.asc)|*.asc||";
+    pchOutputFilters = _("CANoe Log File(s) (*.asc)|*.asc||");
     return S_OK;
 }
 
@@ -178,11 +186,11 @@ HRESULT CLogAscConverter::ConvertFile(string& chInputFile, string& chOutputFile)
             //yydebug = 1;
             if (nConvertFile(fpInputFile, fpOutputFile) == -2)
             {
-                m_omstrConversionStatus = "Conversion May not be work with CANoe since the input file is logged in system mode";
+                m_omstrConversionStatus = _("Conversion May not be work with CANoe since the input file is logged in system mode");
             }
             else
             {
-                m_omstrConversionStatus = "Conversion Completed Successfully";
+                m_omstrConversionStatus = _("Conversion Completed Successfully");
             }
             if(fpInputFile != NULL)
             {
@@ -202,13 +210,13 @@ HRESULT CLogAscConverter::ConvertFile(string& chInputFile, string& chOutputFile)
                 fclose(fpInputFile);
                 fpInputFile = NULL;
             }
-            m_omstrConversionStatus = "Output File path is not found";
+            m_omstrConversionStatus = _("Output File path is not found");
             hResult = ERR_OUTPUT_FILE_NOTFOUND;
         }
     }
     else
     {
-        m_omstrConversionStatus = "Input File path is not found";
+        m_omstrConversionStatus = _("Input File path is not found");
         hResult = ERR_INPUT_FILE_NOTFOUND;
     }
 

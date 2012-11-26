@@ -118,8 +118,8 @@ BOOL CPPageMessage::OnInitDialog()
     RECT Rect;
     m_odMsgList.GetWindowRect(&Rect);
     int nWidth = (Rect.right - Rect.left - 4) / 2;
-    m_odMsgList.InsertColumn(0, "Message ID", LVCFMT_LEFT, nWidth);
-    m_odMsgList.InsertColumn(1, "Message Text", LVCFMT_LEFT, nWidth);
+    m_odMsgList.InsertColumn(0, _("Message ID"), LVCFMT_LEFT, nWidth);
+    m_odMsgList.InsertColumn(1, _("Message Text"), LVCFMT_LEFT, nWidth);
 
 
     UINT* punDBMsgs = NULL;

@@ -12,10 +12,11 @@
 5. Test documents and scripts may be found under 'Test Artifacts' folder.
 
 6. BUSMASTER uses the following opensource tools
-	6.1. MinGW, GCC: The Complete source code can be downloaded from http://sourceforge.net/projects/mingw/files/MinGW/
-	6.2. Bison.exe : The Complete source code can be downloaded from http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-src-setup.exe
-	6.3. Flex.exe  : The Complete source code can be downloaded from http://flex.sourceforge.net/
-	6.4. Libxml2   : The complete source code can be downloaded from ftp://xmlsoft.org/libxml2/win32/
+	6.1. MinGW, GCC		: The Complete source code can be downloaded from http://sourceforge.net/projects/mingw/files/MinGW/
+	6.2. Bison.exe 		: The Complete source code can be downloaded from http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-src-setup.exe
+	6.3. Flex.exe  		: The Complete source code can be downloaded from http://flex.sourceforge.net/
+	6.4. Libxml2   		: The complete source code can be downloaded from ftp://xmlsoft.org/libxml2/win32/
+	6.5. GetText		: The complete source code can be downloaded from http://www.gnu.org/software/gettext/	and http://ftp.gnu.org/gnu/gettext/ and http://gnuwin32.sourceforge.net/packages/gettext.htm
 
 7. BUSMASTER Uses the following opensource code taken from Codeproject and its license can be found at http://www.codeproject.com/info/cpol10.aspx
 	7.1. Dm Graph  		: The Complete source code can be downloaded from  http://www.codeproject.com/Articles/310494/2D-Graph-ActiveX-control-in-Cplusplus-with-ATL-no

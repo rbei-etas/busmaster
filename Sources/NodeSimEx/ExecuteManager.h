@@ -59,7 +59,7 @@ public:
     void vEnableNodeTimerHandler(const PSNODEINFO psNodeInfo,BOOL bState);
     void vManageOnKeyHandler(UCHAR ucKey);
     void vManageBusEventHandler(eBUSEVEHANDLER eBusEvent);
-    void vManageOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo, DWORD dwClientId);
+    void vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DWORD& dwClientId);
     void vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR sErrorVal, DWORD dwClientId);
     void vManageOnDataConfHandlerJ1939(DWORD dwClientId, UINT32 unPGN,
                                        BYTE bySrc, BYTE byDest, BOOL bSuccess);

@@ -24,6 +24,7 @@
 #include "include/XMLDefines.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
+#include "../Application/GettextBusmaster.h"
 
 // Tx Window Splitter Position
 #define defTX_WND_ROOT_SPLITTER_RATIO       0.865
@@ -456,7 +457,8 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
             for (UINT j = 0; j < psTempBlock->m_unMsgCount; j++)
             {
                 PSTXCANMSGLIST psTempCanList = new STXCANMSGLIST;
-                COPY_DATA_2(&(psTempCanList->m_sTxMsgDetails), pbyTemp, sizeof (STXCANMSGDETAILS));
+                int nOldMsgStructSize = sizeof (STXCANMSGDETAILS) - sizeof(psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucCANFDData);
+                COPY_DATA_2(&(psTempCanList->m_sTxMsgDetails), pbyTemp, nOldMsgStructSize);
                 if (psTempBlock->m_psTxCANMsgList == NULL)//For the first time
                 {
                     psTxCanMsgTail = psTempBlock->m_psTxCANMsgList = psTempCanList;
@@ -1652,7 +1654,7 @@ void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
         psMsgBlockList->m_unIndex             = -1;
-        strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
+        strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, _(defDEFAULT_MSG_BLOCK_NAME));
     }
 }
 

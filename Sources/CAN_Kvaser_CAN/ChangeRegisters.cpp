@@ -38,6 +38,8 @@
 #include "ChangeRegisters.h"
 // Definition of CAcceptanceFilterDlg class
 #include "AcceptanceFilterDlg.h"
+#include "../Application/GettextBusmaster.h"
+
 // For HI Layer definition
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -233,7 +235,7 @@ BOOL CChangeRegisters::OnInitDialog()
         CString omStrChannel("");
         // Create Channel String
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                             defSTR_CHANNEL_NAME,
+                             _(defSTR_CHANNEL_NAME),
                              nChannel + 1 );
         // Insert channel item
         m_omChannelList.InsertItem( nChannel, omStrChannel );
@@ -270,15 +272,15 @@ BOOL CChangeRegisters::OnInitDialog()
     for(INT j=0; j<defNUMBER_OF_COLUMNS; j++)
     {
         nTotalStrLengthPixel +=
-            m_omListCtrlBitTime.GetStringWidth(caColumnName[j]);
+            m_omListCtrlBitTime.GetStringWidth(_(caColumnName[j]));
     }
     //Insert each column name after calculating the size for the same.
     for(INT i=0; i<defNUMBER_OF_COLUMNS; i++)
     {
-        nColumnSize  = m_omListCtrlBitTime.GetStringWidth(caColumnName[i]) ;
+        nColumnSize  = m_omListCtrlBitTime.GetStringWidth(_(caColumnName[i])) ;
         nColumnSize +=
             (nTotalColunmSize-nTotalStrLengthPixel)/defNUMBER_OF_COLUMNS;
-        m_omListCtrlBitTime.InsertColumn(i,caColumnName[i],
+        m_omListCtrlBitTime.InsertColumn(i,_(caColumnName[i]),
                                          LVCFMT_CENTER, nColumnSize);
     }
 
@@ -487,7 +489,7 @@ void CChangeRegisters::OnKillfocusEditBaudRate()
         {
             // Validate for empty string and if zero value is entered.
             DOUBLE dBaudRate = (FLOAT) _tstof(omStrBaudRate);
-            if(nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0 )
+            if(nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0 )
             {
                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
                 //if(theApp.m_bFromAutomation == FALSE)
@@ -882,10 +884,12 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
         }
         else
         {
-            FLOAT  fTempBaudRate;
+            /*FLOAT  fTempBaudRate;
             fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
             fTempBaudRate = fTempBaudRate/100000;
-            omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);
+            omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);*/
+            long lBaudRate = (LONG)dBaudRate * 1000;
+            omStrBaudRate.Format(_T("%ld"),lBaudRate);
             m_omEditBaudRate.SetWindowText(omStrBaudRate);
             m_dEditBaudRate     = dBaudRate;
             m_omStrEditBaudRate = omStrBaudRate;
@@ -949,14 +953,14 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
             {
                 m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
                 //              if(theApp.m_bFromAutomation == FALSE)
-                AfxMessageBox(_T("Invalid Configuration"),MB_OK|MB_ICONSTOP);
+                AfxMessageBox(_T(_("Invalid Configuration")),MB_OK|MB_ICONSTOP);
             }
         }
         else
         {
             m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
             //        if(theApp.m_bFromAutomation == FALSE)
-            AfxMessageBox(_T("Invalid Configuration"),MB_OK|MB_ICONSTOP);
+            AfxMessageBox(_T(_("Invalid Configuration")),MB_OK|MB_ICONSTOP);
         }
     }
 }
@@ -1046,14 +1050,16 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
             m_omEditBTR1.SetWindowText(m_omStrEditBTR1);
             m_omEditBTR1.SetSel(0, -1,FALSE);
             //          if(theApp.m_bFromAutomation == FALSE)
-            AfxMessageBox(_T("Invalid Configuration"), MB_OK|MB_ICONSTOP);
+            AfxMessageBox(_T(_("Invalid Configuration")), MB_OK|MB_ICONSTOP);
         }
         else
         {
-            FLOAT  fTempBaudRate;
-            fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-            fTempBaudRate = fTempBaudRate/100000;
-            omStrBaudRate.Format(_T("%.4f"), fTempBaudRate);
+            /*FLOAT  fTempBaudRate;
+             fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
+             fTempBaudRate = fTempBaudRate/100000;
+             omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);*/
+            long lBaudRate = (LONG)dBaudRate * 1000;
+            omStrBaudRate.Format(_T("%ld"),lBaudRate);
             m_omEditBaudRate.SetWindowText(omStrBaudRate);
             m_dEditBaudRate     = dBaudRate;
             m_omStrEditBaudRate = omStrBaudRate;
@@ -1132,7 +1138,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
             {
                 m_omEditBTR1.SetWindowText(m_omStrEditBTR1);
                 //                if(theApp.m_bFromAutomation == FALSE)
-                AfxMessageBox(_T("Invalid Configuration"),MB_OK|MB_ICONSTOP);
+                AfxMessageBox(_T(_("Invalid Configuration")),MB_OK|MB_ICONSTOP);
             }
         }
     }
@@ -1274,7 +1280,7 @@ void CChangeRegisters::vValidateBaudRate()
     m_omCombClock.GetWindowText(omStrClockFreq);
     unClockFreq          = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH));
 
-    dProductNbtNBrp     = (DOUBLE)(unClockFreq/dBaudRate)/2.0 *
+    dProductNbtNBrp     = (DOUBLE)(unClockFreq/(dBaudRate/1000))/2.0 *
                           (defFACT_FREQUENCY / defFACT_BAUD_RATE);
     unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
 
@@ -1323,10 +1329,14 @@ void CChangeRegisters::vValidateBaudRate()
         dBaudRate = (DOUBLE)((unClockFreq/2.0)*
                              ( defFACT_FREQUENCY / defFACT_BAUD_RATE ))/unProductNbtNBrp;
 
-        FLOAT  fTempBaudRate;
+        /*FLOAT  fTempBaudRate;
         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-        fTempBaudRate = fTempBaudRate/100000;
-        omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);
+        fTempBaudRate = fTempBaudRate/100000;*/
+        if(dBaudRate < 5000)
+        {
+            dBaudRate = 5000;
+        }
+        omStrBaudRate.Format(_T("%ld"),/*fTempBaudRate*/(long)dBaudRate);
 
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
         omStrPrvBaudRate = m_omStrEditBaudRate;
@@ -1879,7 +1889,7 @@ void CChangeRegisters::vUpdateControllerDetails()
     {
         // Invalid Warning Limit Error Message
         CString omStrMsg = "";
-        omStrMsg.Format( defWARNINGLIMIT_MSG, m_omStrEditWarningLimit,
+        omStrMsg.Format( _(defWARNINGLIMIT_MSG), m_omStrEditWarningLimit,
                          defWARNING_LIMIT_MIN,
                          defWARNING_LIMIT_MAX );
         //      if(theApp.m_bFromAutomation == FALSE)

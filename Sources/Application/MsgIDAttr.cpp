@@ -127,7 +127,7 @@ void CMsgIDAttr::OnOK()
     int nResult = 0;
     if (m_odCanIDVal.LineLength() == 0)
     {
-        AfxMessageBox("Invalid Message ID");
+        AfxMessageBox(_("Invalid Message ID"));
         GotoDlgCtrl(GetDlgItem(IDC_EDIT_CANID_VAL));
         nResult = -1;
 
@@ -139,7 +139,7 @@ void CMsgIDAttr::OnOK()
             nResult = CMessageAttrib::ouGetHandle(m_eBusType).nValidateNewID(m_nID);
             if (nResult < 0)
             {
-                AfxMessageBox("Duplicate Message ID");
+                AfxMessageBox(_("Duplicate Message ID"));
                 GotoDlgCtrl(GetDlgItem(IDC_EDIT_CANID_VAL));
             }
         }
@@ -163,7 +163,7 @@ void CMsgIDAttr::OnOK()
     {
         if (m_omStrMsg.IsEmpty()) //invalid string
         {
-            AfxMessageBox("Invalid message string");
+            AfxMessageBox(_("Invalid message string"));
             GotoDlgCtrl(GetDlgItem(IDC_EDIT_CANID_STRING));
             nResult = -1;
         }
@@ -226,7 +226,7 @@ BOOL CMsgIDAttr::OnInitDialog()
 
     if (m_bForEdit == false)
     {
-        SetWindowText("Add Message Display Attributes");
+        SetWindowText(_("Add Message Display Attributes"));
     }
 
     return TRUE;  // return TRUE unless you set the focus to a control

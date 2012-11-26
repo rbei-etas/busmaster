@@ -51,6 +51,7 @@
 #include ".\graphbottomview.h"
 #include <math.h>
 #include "GraphRightView.h"
+#include "../Application/GettextBusmaster.h"
 
 IMPLEMENT_DYNCREATE(CGraphBottomView, CFormView)
 
@@ -239,42 +240,42 @@ void CGraphBottomView::vCreateColumns()
     CString omTmpColTitle;
     // add columns
 
-    omTmpColTitle = _T("Category");
+    omTmpColTitle = _T(_("Category"));
     lvcolumn.iSubItem = 0;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(0, &lvcolumn);
 
-    omTmpColTitle = _T("Element");
+    omTmpColTitle = _T(_("Element"));
     lvcolumn.iSubItem = 1;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(1, &lvcolumn);
 
-    omTmpColTitle = _T("Type");
+    omTmpColTitle = _T(_("Type"));
     lvcolumn.iSubItem = 2;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(2, &lvcolumn);
 
-    omTmpColTitle = _T("Cursor1");
+    omTmpColTitle = _T(_("Cursor1"));
     lvcolumn.iSubItem = 3;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(3, &lvcolumn);
 
-    omTmpColTitle = _T("Cursor2");
+    omTmpColTitle = _T(_("Cursor2"));
     lvcolumn.iSubItem = 4;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(4, &lvcolumn);
 
-    omTmpColTitle = _T("Difference");
+    omTmpColTitle = _T(_("Difference"));
     lvcolumn.iSubItem = 5;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
@@ -340,24 +341,24 @@ void CGraphBottomView::vInsertSignalData()
                 // Add Value Type
                 if( odTemp.m_nValueType == eRAW_VALUE )
                 {
-                    m_lstSignalDetails.SetItemText( nIndex, 2, defSTR_RAW_VALUE );
+                    m_lstSignalDetails.SetItemText( nIndex, 2, _(defSTR_RAW_VALUE) );
                 }
                 else
                 {
-                    m_lstSignalDetails.SetItemText( nIndex, 2, defSTR_PHY_VALUE );
+                    m_lstSignalDetails.SetItemText( nIndex, 2, _(defSTR_PHY_VALUE) );
                 }
             }
             else
             {
                 // Insert Category
-                m_lstSignalDetails.InsertItem( nIndex, defSTR_STATISTICS_NAME);
+                m_lstSignalDetails.InsertItem( nIndex, _(defSTR_STATISTICS_NAME));
                 // Insert element name
                 m_lstSignalDetails.SetItemText( nIndex, 1,
                                                 odTemp.m_omStrElementName );
                 // Insert Channel String
                 CString omStrChannel;
                 omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-                                     defSTR_CHANNEL_NAME,
+                                     _(defSTR_CHANNEL_NAME),
                                      odTemp.m_nFrameFormat );
                 m_lstSignalDetails.SetItemText( nIndex, 2, omStrChannel );
                 // Set Color of the entry
@@ -662,7 +663,7 @@ void CGraphBottomView::OnBtnSet()
         else
         {
             // Show error message
-            AfxMessageBox( defSTR_INVALID_RANGE );
+            AfxMessageBox( _(defSTR_INVALID_RANGE) );
         }
     }
 }
@@ -863,8 +864,10 @@ void CGraphBottomView::vInitGraphControl()
                                             defDEFAULT_YRANGE_MIN, defDEFAULT_YRANGE_MAX    );
 
                 //Set the caption
-                BSTR bstrCaption(L"Graph Display - CAN");
-                m_pDMGraphCtrl->put_Caption(bstrCaption);
+                CString CStringCaption = _("Graph Display - CAN");
+                //BSTR bstrCaption(L"Graph Display - CAN");
+                //m_pDMGraphCtrl->put_Caption(bstrCaption);
+                m_pDMGraphCtrl->put_Caption(CStringCaption.AllocSysString());
             }
             // Update Local DDX Variables
             UpdateData( FALSE );
@@ -894,11 +897,11 @@ void CGraphBottomView::vSetShowButtonState(BOOL bShow)
     {
         if( bShow == TRUE )
         {
-            pWnd->SetWindowText( defSTR_HIDE_GRID);
+            pWnd->SetWindowText( _(defSTR_HIDE_GRID));
         }
         else
         {
-            pWnd->SetWindowText( defSTR_SHOW_GRID);
+            pWnd->SetWindowText( _(defSTR_SHOW_GRID));
         }
     }
 }

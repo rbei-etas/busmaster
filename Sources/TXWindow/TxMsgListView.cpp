@@ -34,6 +34,7 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxMsgListView.h"      // For CTxMsgListView class definition
 #include "TxMsgChildFrame.h"    // For Tx Child Window definition
+#include "../Application/GettextBusmaster.h"
 
 // For Glodal Application Object
 //extern CCANMonitorApp theApp;
@@ -178,7 +179,7 @@ void CTxMsgListView::OnInitialUpdate()
     INT nFormat = 0;
     for(i=0; i<defMESSAGE_FRAME_COLUMN; i++)
     {
-        int nColumnSize  = m_omLctrMsgList.GetStringWidth(caColumnName[i]) ;
+        int nColumnSize  = m_omLctrMsgList.GetStringWidth(_(caColumnName[i])) ;
         nColumnSize +=
             (nTotalColunmSize-nTotalStrLengthPixel)/defMESSAGE_FRAME_COLUMN;
         nFormat = LVCFMT_CENTER;
@@ -198,7 +199,7 @@ void CTxMsgListView::OnInitialUpdate()
                 nColumnSize -= static_cast <INT>(1.1*defDATA_BYTES_EXTRA );
         }
         // Insert the column in to the list
-        m_omLctrMsgList.InsertColumn(i,caColumnName[i],
+        m_omLctrMsgList.InsertColumn(i,_(caColumnName[i]),
                                      nFormat, nColumnSize);
     }
     // Set extended property
@@ -891,7 +892,7 @@ void CTxMsgListView::OnDeleteSelectedMsg()
     if( pomBlocksView != NULL && pomDetailsView != NULL &&
             pomFunctionsView != NULL )
     {
-        if ( AfxMessageBox( defDEL_SEL_MSG_FRAME,
+        if ( AfxMessageBox( _(defDEL_SEL_MSG_FRAME),
                             MB_YESNO|MB_ICONQUESTION) == IDYES)
         {
             if(m_nSelectedMsgIndex != -1)
@@ -1073,7 +1074,7 @@ void CTxMsgListView::OnDeleteAllMsg()
             pomFunctionsView != NULL )
     {
         // give a warning message before deleting it.
-        if ( AfxMessageBox( defDEL_ALL_MSG_FRAME,
+        if ( AfxMessageBox( _(defDEL_ALL_MSG_FRAME),
                             MB_YESNO|MB_ICONQUESTION) == IDYES)
         {
             // check for valid message block selection index.

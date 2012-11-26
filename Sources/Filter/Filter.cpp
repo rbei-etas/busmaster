@@ -24,6 +24,9 @@
 #include "Filter_resource.h"
 #include "FilterConfigDlg.h"
 #include "MainSubListDlg.h"
+#include "../Application/GettextBusmaster.h"
+#include "../Application/MultiLanguage.h"
+
 #define USAGE_EXPORT
 #include "Filter_extern.h"
 
@@ -32,6 +35,10 @@ static AFX_EXTENSION_MODULE FilterDLL = { NULL, NULL };
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
+
+    static HINSTANCE shLangInst=NULL;
+
+
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
 
@@ -57,11 +64,41 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  Regular DLL's resource chain, and serious problems will
         //  result.
 
+
+        // Begin of Multiple Language support
+        if ( CMultiLanguage::m_nLocales <= 0 )  // Not detected yet
+        {
+            CMultiLanguage::DetectLangID();     // Detect language as user locale
+            CMultiLanguage::DetectUILanguage(); // Detect language in MUI OS
+        }
+        TCHAR szModuleFileName[MAX_PATH];       // Get Module File Name and path
+        int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
+        if ( ret == 0 || ret == MAX_PATH )
+        {
+            ASSERT(FALSE);
+        }
+        // Load resource-only language DLL. It will use the languages
+        // detected above, take first available language,
+        // or you can specify another language as second parameter to
+        // LoadLangResourceDLL. And try that first.
+        shLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
+        if (shLangInst)
+        {
+            FilterDLL.hResource = shLangInst;
+        }
+        // End of Multiple Language support
+
+
         new CDynLinkLibrary(FilterDLL);
 
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
+        if (shLangInst)
+        {
+            FreeLibrary(shLangInst);
+        }
+
         TRACE0("Filter.DLL Terminating!\n");
 
         // Terminate the library before destructors are called
@@ -121,10 +158,10 @@ USAGEMODE HRESULT Filter_ShowSelDlg(CWnd* pParent, CMainEntryList* podMainSubLis
     /* Update GUI related information */
     /* 1. Title Name, Main entry combo box name,
             Name of the list controls */
-    strcpy_s(sGuiParams.m_acTitleName, MAX_PATH, "Filter Selection Dialog");
-    strcpy_s(sGuiParams.m_acMainListName, MAX_PATH, "Bus");
-    strcpy_s(sGuiParams.m_acUnSelListName, MAX_PATH, "Configured Filters");
-    strcpy_s(sGuiParams.m_acSelListName, MAX_PATH, "Selected Filters");
+    strcpy_s(sGuiParams.m_acTitleName, MAX_PATH, _("Filter Selection Dialog"));
+    strcpy_s(sGuiParams.m_acMainListName, MAX_PATH, _("Bus"));
+    strcpy_s(sGuiParams.m_acUnSelListName, MAX_PATH, _("Configured Filters"));
+    strcpy_s(sGuiParams.m_acSelListName, MAX_PATH, _("Selected Filters"));
     /* Whether to combine main entry Id with sub entry name or not*/
     sGuiParams.m_bCombine = FALSE;
     /* What image to be loaded */

@@ -27,7 +27,7 @@
 #include "DataTypes/MainSubEntry.h"
 #include "FilterWatchDefs.h"
 #include "MainSubListDlg.h"
-
+#include "../Application/GettextBusmaster.h"
 // Critical Section for Signal Watch
 extern UINT unGetMainEntryIDFromName(CString omMsgName);
 /////////////////////////////////////////////////////////////////////////////
@@ -363,7 +363,7 @@ void CMainSubListDlg::vDelSelSubEntries(BOOL bAllEntries)
                 if ( bDeleteSubEntry(unMainEntryID, omMainEntry, omSubEntry) != TRUE)
                 {
                     CString omError;
-                    omError.Format(defSTR_SW_DELETE_SIG_ERROR, omSubEntry ,omMainEntry);
+                    omError.Format(_(defSTR_SW_DELETE_SIG_ERROR), omSubEntry ,omMainEntry);
                     AfxMessageBox(omError);
                 }
             }

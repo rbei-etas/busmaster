@@ -25,6 +25,7 @@
 #include "Replay_stdafx.h"
 #include "Replay_resource.h"
 #include "MsgReplayWnd.h"
+#include "../Application/GettextBusmaster.h"
 // Definition of CSplFileDlg class
 //#include "Utility/SplFileDlg.h"
 // For replay manager class declaration
@@ -265,9 +266,9 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
         {
             // Throw error message
             CString omStrErr;
-            omStrErr.Format( defSTR_REPLAY_ERROR,
+            omStrErr.Format( _(defSTR_REPLAY_ERROR),
                              m_ouReplayDetails.m_ouReplayFile.m_omStrFileName, // File
-                             defSTR_REPLAY_FILE_EMPTY );
+                             _(defSTR_REPLAY_FILE_EMPTY) );
             CReplayManager::ouGetReplayManager().vSendToTrace(omStrErr.GetBuffer(MAX_PATH));
             // Close the window
             DestroyWindow();
@@ -277,7 +278,7 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
     {
         // Show Error message
         CString omStrErr;
-        omStrErr.Format( defSTR_REPLAY_ERROR,
+        omStrErr.Format( _(defSTR_REPLAY_ERROR),
                          m_ouReplayDetails.m_ouReplayFile.m_omStrFileName, // File Name
                          m_ouReplayDetails.m_omStrError );                 // Error Message
         CReplayManager::ouGetReplayManager().vSendToTrace(omStrErr.GetBuffer(MAX_PATH));
@@ -552,7 +553,7 @@ void CMsgReplayWnd::SetWindowFont()
     LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
     LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
     LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
-    lstrcpy(LF.lfFaceName, "Courier");
+    lstrcpy(LF.lfFaceName, _("Courier"));
 
     LF.lfWeight = FW_NORMAL;
     if (m_omNewFont.CreateFontIndirect(&LF) == TRUE)
@@ -562,7 +563,7 @@ void CMsgReplayWnd::SetWindowFont()
     }
     else
     {
-        AfxMessageBox("Font creation unsuccessful");
+        AfxMessageBox(_("Font creation unsuccessful"));
     }
 
 }
@@ -611,7 +612,7 @@ BOOL CMsgReplayWnd::bCreateReplayWindow()
     {
         AfxGetApp()->GetMainWnd()->GetWindowPlacement(&m_sWndPlacement);
     }
-    CString omStrTitle = defSTR_REPLAY_WINDOW_TITLE +
+    CString omStrTitle = _(defSTR_REPLAY_WINDOW_TITLE) +
                          m_ouReplayDetails.m_ouReplayFile.m_omStrFileName;
     nReturn     = Create( NULL,
                           omStrTitle,

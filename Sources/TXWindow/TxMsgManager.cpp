@@ -33,6 +33,7 @@
 #include "include/CAN_Error_Defs.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
+#include "../Application/GettextBusmaster.h"
 
 //CLient Id from the DIL
 static DWORD g_dwClientID = 0;
@@ -895,7 +896,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
             }
             else
             {
-                TRACE(_T("Tx block stopped\n"));
+                TRACE(_T(_("Tx block stopped\n")));
             }
 
             // Select Next Message

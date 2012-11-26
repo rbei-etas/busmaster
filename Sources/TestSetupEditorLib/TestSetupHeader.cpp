@@ -20,7 +20,7 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "TestSetupHeader.h"
-
+#include "../Application/GettextBusmaster.h"
 /******************************************************************************
 Function Name  :  CTestSetupHeader
 Input(s)       :
@@ -66,11 +66,11 @@ HRESULT CTestSetupHeader::InitHeaderToDefault(void)
 {
     m_eBus = CAN;
     m_omDatabasePath = "";
-    m_sEngineerInfo1.vInitialise("Engineer Name");
-    m_sEngineerInfo2.vInitialise("Engineer Role");
-    m_sModuleName.vInitialise("Module Name", "");
+    m_sEngineerInfo1.vInitialise(_("Engineer Name"));
+    m_sEngineerInfo2.vInitialise(_("Engineer Role"));
+    m_sModuleName.vInitialise(_("Module Name"), "");
     m_sReportFile.vInitialise();
-    m_sVersion.vInitialise("version", "1.0");
+    m_sVersion.vInitialise(_("version"), "1.0");
     return S_OK;
 }
 
@@ -93,13 +93,13 @@ HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
     if(m_omDatabasePath == "")
     {
         hResult = ERR_VALID_ERROR;
-        omStrResult.Format("No Database File is Included\r\n");
+        omStrResult.Format(_("No Database File is Included\r\n"));
     }
     else
     {
         if(PathFileExists(m_omDatabasePath) == FALSE)
         {
-            omStrResult.Format("Incorrect Database File path\r\n");
+            omStrResult.Format(_("Incorrect Database File path\r\n"));
             hResult = ERR_VALID_ERROR;
         }
     }

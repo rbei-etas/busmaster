@@ -64,6 +64,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_MHS,        "&MHS Tiny-CAN"     },
     {DRIVER_CAN_PEAK_USB,   "&PEAK USB"         },
     {DRIVER_CAN_VECTOR_XL,  "&Vector XL"        },
+    {DRIVER_CAN_VSCOM,      "VScom &CAN-API"    },
 };
 
 CDIL_CAN::CDIL_CAN()
@@ -222,6 +223,9 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 m_hDll = LoadLibrary("CAN_MHS.dll");
                 break;
 
+            case DRIVER_CAN_VSCOM:
+                m_hDll = LoadLibrary("CAN_VSCOM.dll");
+                break;
             case DAL_NONE:
                 DILC_PerformClosureOperations();
                 vSelectInterface_Dummy();
@@ -237,14 +241,14 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         if (m_hDll == NULL)
         {
             hResult = ERR_LOAD_DRIVER;
-            pILog->vLogAMessage(A2T(__FILE__), __LINE__, "Load library failed...");
+            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Load library failed..."));
         }
         else
         {
             // First select the dummy interface
             //DILC_SelectDriver((DWORD)DAL_NONE, hWndOwner, pILog);
 
-            pILog->vLogAMessage(A2T(__FILE__), __LINE__, "Load library successful...");
+            pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Load library successful..."));
             pfGetIDILCAN_Controller = (GETIDIL_CAN_CONTROLLER)GetProcAddress(m_hDll, "GetIDIL_CAN_Controller");
             pfGetIDILCAN_Controller((void**)&m_pBaseDILCAN_Controller);
             if ( m_pBaseDILCAN_Controller )
@@ -262,7 +266,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 
                     default:
                         hResult = ERR_LOAD_DRIVER;
-                        pILog->vLogAMessage(A2T(__FILE__), __LINE__, "Load library failed...");
+                        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Load library failed..."));
                         /* New Code */
                         /* Get rid of current DIL library */
                         if ( m_pBaseDILCAN_Controller )

@@ -1,0 +1,93 @@
+// This is a part of the Microsoft Foundation Classes C++ library.
+// Copyright (C) Microsoft Corporation
+// All rights reserved.
+//
+// This source code is only intended as a supplement to the
+// Microsoft Foundation Classes Reference and related
+// electronic documentation provided with the library.
+// See these sources for detailed information regarding the
+// Microsoft Foundation Classes product.
+
+#ifndef __AFXPRINT_RC__
+#define __AFXPRINT_RC__
+
+#ifndef __AFXRES_H__
+	#include <afxres.h>
+#endif
+
+#ifdef APSTUDIO_INVOKED
+// This will prevent the VC++ Resource Editor user from saving this file
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+"< 標準 MFC リソースの変更はできません! >\0"
+END
+#endif    // APSTUDIO_INVOKED
+
+#ifndef _AFXDLL
+
+/////////////////////////////////////////////////////////////////////////////
+// Printing Resources
+
+AFX_IDC_MAGNIFY         CURSOR  DISCARDABLE     "res\\magnify.cur"
+
+AFX_IDD_PRINTDLG DIALOG DISCARDABLE  6, 18, 181, 87
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION
+FONT 8, "MS Shell Dlg"
+BEGIN
+    CTEXT           "印刷中",IDC_STATIC,6,7,168,8
+    RTEXT           "ドキュメント :",IDC_STATIC,6,19,65,8
+    LTEXT           "",AFX_IDC_PRINT_DOCNAME,79,19,95,8
+    RTEXT           "ページ :",IDC_STATIC,6,31,65,8
+    LTEXT           "",AFX_IDC_PRINT_PAGENUM,79,31,95,8
+    RTEXT           "プリンタ :",IDC_STATIC,6,43,65,8
+    LTEXT           "",AFX_IDC_PRINT_PRINTERNAME,79,43,95,8
+    RTEXT           "ポート :",IDC_STATIC,6,55,65,8
+    LTEXT           "",AFX_IDC_PRINT_PORTNAME,79,55,95,8
+    PUSHBUTTON      "キャンセル",IDCANCEL,70,67,40,14
+END
+
+// Preview Toolbar Dialog
+AFX_IDD_PREVIEW_TOOLBAR DIALOG PRELOAD DISCARDABLE  0, 0, 330, 16
+STYLE WS_CHILD | 0x04
+FONT 8, "MS Shell Dlg"
+BEGIN
+	PUSHBUTTON      "印刷(&P)...",AFX_ID_PREVIEW_PRINT,2,2,44,12
+	PUSHBUTTON      "次ページ(&N)",AFX_ID_PREVIEW_NEXT,48,2,44,12
+	PUSHBUTTON      "前ページ(&V)",AFX_ID_PREVIEW_PREV,94,2,44,12
+	PUSHBUTTON      "",AFX_ID_PREVIEW_NUMPAGE,140,2,44,12
+	PUSHBUTTON      "拡大(&I)",AFX_ID_PREVIEW_ZOOMIN,186,2,44,12
+	PUSHBUTTON      "縮小(&O)",AFX_ID_PREVIEW_ZOOMOUT,232,2,44,12
+	PUSHBUTTON      "閉じる(&C)",AFX_ID_PREVIEW_CLOSE,278,2,44,12
+END
+
+// Printing strings
+STRINGTABLE DISCARDABLE
+BEGIN
+	// print progress dialog strings
+	AFX_IDS_PRINTONPORT,            "%1 へ出力中"         // for print output
+	AFX_IDS_ONEPAGE,                "1 ページ(&O)"     // for preview button
+	AFX_IDS_TWOPAGE,                "2 ページ(&T)"     // for preview button
+	AFX_IDS_PRINTPAGENUM,           "ページ %u"       // for print output
+	AFX_IDS_PREVIEWPAGEDESC,        "ページ %u\nページ %u-%u\n"
+
+	// print to file dialog strings
+	AFX_IDS_PRINTDEFAULTEXT,        "prn"           // default extension
+	AFX_IDS_PRINTDEFAULT,           "Output.prn"    // default file
+	AFX_IDS_PRINTFILTER,
+		"プリンタ ファイル (*.prn)|*.prn|すべてのファイル (*.*)|*.*||"
+	AFX_IDS_PRINTCAPTION,           "ファイルへ出力" // caption for browse dlg
+	AFX_IDS_PRINTTOFILE,            "%1 へ"         // to file
+END
+
+// Print Preview Accelerator Table
+AFX_IDR_PREVIEW_ACCEL ACCELERATORS LOADONCALL MOVEABLE
+BEGIN
+	VK_NEXT,    AFX_ID_PREVIEW_NEXT,    VIRTKEY, NOINVERT
+	VK_PRIOR,   AFX_ID_PREVIEW_PREV,    VIRTKEY, NOINVERT
+	VK_ESCAPE,  AFX_ID_PREVIEW_CLOSE,   VIRTKEY, NOINVERT
+END
+
+/////////////////////////////////////////////////////////////////////////////
+
+#endif //!_AFXDLL
+#endif //__AFXPRINT_RC__

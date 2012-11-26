@@ -75,9 +75,19 @@ CDBC2DBFConverter::CDBC2DBFConverter(void)
     m_hDLLModule = NULL;
     m_pouDBC2DBFConverter = NULL;
 }
+
+HRESULT CDBC2DBFConverter::GettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+    return S_OK;
+}
+
+
 HRESULT CDBC2DBFConverter::GetHelpText(string& pchHelpText)
 {
-    pchHelpText = "Converts the CANoe Database(.dbc) file to BUSMASTER Database(.dbf) file";
+    pchHelpText = _("Converts the CANoe Database(.dbc) file to BUSMASTER Database(.dbf) file");
     return S_OK;
 }
 
@@ -90,7 +100,7 @@ HRESULT CDBC2DBFConverter::GetHelpText(string& pchHelpText)
  */
 HRESULT CDBC2DBFConverter::GetConverterName(string& strConverterName)
 {
-    strConverterName = "DBC TO DBF Conversion";
+    strConverterName = _("DBC TO DBF Conversion");
     return S_OK;
 }
 
@@ -107,15 +117,15 @@ HRESULT CDBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
     switch( hResult )
     {
         case S_OK:
-            m_omstrConversionStatus = "Conversion success";
+            m_omstrConversionStatus = _("Conversion success");
             break;
 
         case S_FALSE:
-            m_omstrConversionStatus = "Conversion failed";
+            m_omstrConversionStatus = _("Conversion failed");
             break;
 
         default:
-            m_omstrConversionStatus = "Unknown";
+            m_omstrConversionStatus = _("Unknown");
             break;
     }
 
@@ -124,7 +134,7 @@ HRESULT CDBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 HRESULT CDBC2DBFConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
     pchInputDefFilters = "dbc";
-    pchInputFilters = "CANoe Database File(s) (*.dbc)|*.dbc||";
+    pchInputFilters = _("CANoe Database File(s) (*.dbc)|*.dbc||");
     return S_OK;
 }
 HRESULT CDBC2DBFConverter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
@@ -146,7 +156,7 @@ HRESULT CDBC2DBFConverter::GetLastConversionStatus(HRESULT& hResult, string& oms
 HRESULT CDBC2DBFConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
     pchOutputDefFilters = "dbf";
-    pchOutputFilters = "BUSMASTER Database File(s) (*.dbf)|*.dbf||";
+    pchOutputFilters = _("BUSMASTER Database File(s) (*.dbf)|*.dbf||");
     return S_OK;
 }
 

@@ -61,7 +61,7 @@ BOOL CChangeRegisters::nListBoxValues( struct sCOLUMNS* psColListCtrl,
 
     // Calcualte the product NBT * BRP = clock/(2.0 * baudrate ). This product
     // should be an integer multiple.
-    dProductNbtNBrp  = (wClockFreq/dBuadRate)/2.0 *
+    dProductNbtNBrp  = (wClockFreq/(dBuadRate/1000))/2.0 *
                        (defFACT_FREQUENCY/ defFACT_BAUD_RATE) ;
     unProductNbtNBrp = (UINT) (dProductNbtNBrp +0.5);
     //Check if product is integer multiple. Ignore diffrence <= 0.004

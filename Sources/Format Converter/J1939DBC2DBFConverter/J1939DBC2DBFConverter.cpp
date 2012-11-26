@@ -4,6 +4,13 @@
 #include "J1939DBC2DBFConverter_stdafx.h"
 #include <afxdllx.h>
 #include "J1939DBC2DBFConverter.h"
+//#include <locale.h>
+//
+//#include <libintl.h>
+//
+//#define _(string) gettext (string)
+
+
 #ifdef _MANAGED
 #error Please read instructions in DBC2DBFConverter.cpp to compile with /clr
 // If you want to add /clr to your project you must do the following:
@@ -70,6 +77,16 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 #pragma managed(pop)
 #endif
 
+
+HRESULT CJ1939DBC2DBFConverter::GettextBusmaster(void)
+{
+    setlocale(LC_ALL,"");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    textdomain("BUSMASTER");
+    return S_OK;
+}
+
+
 CJ1939DBC2DBFConverter::CJ1939DBC2DBFConverter(void)
 {
     m_hDLLModule = NULL;
@@ -77,7 +94,7 @@ CJ1939DBC2DBFConverter::CJ1939DBC2DBFConverter(void)
 }
 HRESULT CJ1939DBC2DBFConverter::GetHelpText(string& pchHelpText)
 {
-    pchHelpText = "Converts the CANoe J1939 Database(.dbc) file to BUSMASTER J1939 Database(.dbf) file";
+    pchHelpText = _("Converts the CANoe J1939 Database(.dbc) file to BUSMASTER J1939 Database(.dbf) file");
     return S_OK;
 }
 
@@ -90,7 +107,7 @@ HRESULT CJ1939DBC2DBFConverter::GetHelpText(string& pchHelpText)
  */
 HRESULT CJ1939DBC2DBFConverter::GetConverterName(string& strConverterName)
 {
-    strConverterName = "J1939 DBC TO DBF Conversion";
+    strConverterName = _("J1939 DBC TO DBF Conversion");
     return S_OK;
 }
 
@@ -107,15 +124,15 @@ HRESULT CJ1939DBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrSta
     switch( hResult )
     {
         case S_OK:
-            m_omstrConversionStatus = "Conversion success";
+            m_omstrConversionStatus = _("Conversion success");
             break;
 
         case S_FALSE:
-            m_omstrConversionStatus = "Conversion failed";
+            m_omstrConversionStatus = _("Conversion failed");
             break;
 
         default:
-            m_omstrConversionStatus = "Unknown";
+            m_omstrConversionStatus = _("Unknown");
             break;
     }
 
@@ -124,7 +141,7 @@ HRESULT CJ1939DBC2DBFConverter::GetErrorStatus(HRESULT hResult, string& omstrSta
 HRESULT CJ1939DBC2DBFConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
     pchInputDefFilters = "dbc";
-    pchInputFilters = "CANoe Database File(s) (*.dbc)|*.dbc||";
+    pchInputFilters = _("CANoe Database File(s) (*.dbc)|*.dbc||");
     return S_OK;
 }
 HRESULT CJ1939DBC2DBFConverter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
@@ -146,7 +163,7 @@ HRESULT CJ1939DBC2DBFConverter::GetLastConversionStatus(HRESULT& hResult, string
 HRESULT CJ1939DBC2DBFConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
     pchOutputDefFilters = "dbf";
-    pchOutputFilters = "BUSMASTER Database File(s) (*.dbf)|*.dbf||";
+    pchOutputFilters = _("BUSMASTER Database File(s) (*.dbf)|*.dbf||");
     return S_OK;
 }
 

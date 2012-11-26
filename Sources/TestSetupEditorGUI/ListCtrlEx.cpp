@@ -35,7 +35,7 @@
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_Definitions.h"
 #include ".\listctrlex.h"
-
+#include "../Application/GettextBusmaster.h"
 // ID for Combobox
 #define IDC_CONTROL         0x12345
 #define def_HEIGHT_BUTTON       27
@@ -532,7 +532,7 @@ CComboItem* CListCtrlEx::pomComboItem(int nItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_ITEM);
+        omStrErr.Format(_(defFLC_CREATE_FAILED),defCOMBO_ITEM);
         AfxMessageBox( omStrErr );
     }
     // The return the pointer just for reference
@@ -624,7 +624,7 @@ CComboItem* CListCtrlEx::pomComboList( int nItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_LIST);
+        omStrErr.Format(_(defFLC_CREATE_FAILED),defCOMBO_LIST);
         AfxMessageBox( omStrErr );
     }
 
@@ -703,7 +703,7 @@ CEdit* CListCtrlEx::pomEditItem(int nItem, int nSubItem)
     else
     {
         CString omStrErr;
-        omStrErr.Format( defFLC_CREATE_FAILED, defEDIT_ITEM );
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defEDIT_ITEM );
         AfxMessageBox( omStrErr );
     }
     // Retrun the window pointer
@@ -782,7 +782,7 @@ CNumEdit* CListCtrlEx::pomNumItem( int nItem, int nSubItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format( defFLC_CREATE_FAILED, defNUM_ITEM );
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defNUM_ITEM );
         AfxMessageBox( omStrErr );
     }
     // Return the window pointer

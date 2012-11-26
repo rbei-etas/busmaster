@@ -114,7 +114,7 @@ void CValueDescriptionDlg::OnClickedOk()
     // Validate data
     if ( m_omStrDescriptor.IsEmpty() == TRUE )
     {
-        AfxMessageBox("Signal Description cannot be emtpy!",MB_OK);
+        AfxMessageBox(_("Signal Description cannot be emtpy!"),MB_OK);
         GetDlgItem(IDC_EDIT_VALUE_DESC)->SetFocus();
         bRetValue = FALSE;
     }
@@ -123,7 +123,7 @@ void CValueDescriptionDlg::OnClickedOk()
     {
         if ( m_omStrValue.IsEmpty() == TRUE )
         {
-            AfxMessageBox("Signal value cannot be emtpy!",MB_OK);
+            AfxMessageBox(_("Signal value cannot be emtpy!"),MB_OK);
             GetDlgItem(IDC_EDIT_VAL)->SetFocus();
             bRetValue = FALSE;
         }
@@ -146,7 +146,7 @@ void CValueDescriptionDlg::OnClickedOk()
                             m_nIndex,
                             m_bMode))
                     {
-                        AfxMessageBox("Signal Descriptor already exists!",MB_OK);
+                        AfxMessageBox(_("Signal Descriptor already exists!"),MB_OK);
                         GetDlgItem(IDC_EDIT_VALUE_DESC)->SetFocus();
                         bRetValue = FALSE;
                     }
@@ -164,7 +164,7 @@ void CValueDescriptionDlg::OnClickedOk()
                                 m_nIndex,
                                 m_bMode))
                         {
-                            AfxMessageBox("Signal Value already exists!", MB_OK);
+                            AfxMessageBox(_("Signal Value already exists!"), MB_OK);
                             GetDlgItem(IDC_EDIT_VAL )->SetFocus();
                             bRetValue = FALSE;
                         }
@@ -178,7 +178,7 @@ void CValueDescriptionDlg::OnClickedOk()
                             m_omStrSgName,
                             m_omStrValue ))
                     {
-                        AfxMessageBox( MSG_SG_VAL_OUT_OF_RANGE, MB_OK);
+                        AfxMessageBox( _(MSG_SG_VAL_OUT_OF_RANGE), MB_OK);
                         GetDlgItem(IDC_EDIT_VAL )->SetFocus();
                         bRetValue = FALSE;
                     }
@@ -225,7 +225,7 @@ void CValueDescriptionDlg::OnClickedOk()
                                                                 m_omStrPrevDesc,
                                                                 pNew ))
                             {
-                                AfxMessageBox("Could not update...",
+                                AfxMessageBox(_("Could not update..."),
                                               MB_OK|MB_ICONINFORMATION);
                                 bRetValue = FALSE;
                             }
@@ -300,7 +300,7 @@ BOOL CValueDescriptionDlg::OnInitDialog()
 
     }
     CString strRange;
-    strRange.Format("(Decimal range %s To %s)", strMinVal, strMaxVal);
+    strRange.Format(_("(Decimal range %s To %s)"), strMinVal, strMaxVal);
 
     GetDlgItem(IDC_STAT_RANGE)->SetWindowText(strRange);
 

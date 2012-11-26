@@ -791,31 +791,31 @@ void CSignal::GetErrorString(string& str)
     switch(m_uiError)
     {
         case SIG_EC_NO_ERR:
-            str = "No error";
+            str = _("No error");
             break;
 
         case SIG_EC_DATA_FORMAT_ERR:
-            str = "Data format mismatch";
+            str = _("Data format mismatch");
             break;
 
         case SIG_EC_LENGTH_ERR:
-            str = "Invalid signal length";
+            str = _("Invalid signal length");
             break;
 
         case SIG_EC_STARTBIT_ERR:
-            str = "Invalid start bit";
+            str = _("Invalid start bit");
             break;
 
         case SIG_EC_TYPE_ERR:
-            str = "Invalid signal type";
+            str = _("Invalid signal type");
             break;
 
         case SIG_EC_OVERFLOW:
-            str = "Invalid Max or Min value.";
+            str = _("Invalid Max or Min value.");
             break;
 
         default:
-            str = "Unknown";
+            str = _("Unknown");
             break;
     }
 }
@@ -831,11 +831,11 @@ void CSignal::GetErrorAction(string& str)
     switch(m_uiError)
     {
         case SIG_EC_OVERFLOW:
-            str = "Value Set to default";
+            str = _("Value Set to default");
             break;
 
         default:
-            str = "Signal Discarded";
+            str = _("Signal Discarded");
             break;
     }
 }

@@ -129,12 +129,27 @@ CBusStatisticCAN::CBusStatisticCAN(void)
     InitializeCriticalSection(&m_omCritSecBS);
     m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
     m_nTimerHandle = NULL;
-    //Initialise Number of Bits in Standard Message
+    //Initialise Number of Bits in Standard CAN and FD Messages
     UINT unBitsStdMsg[] = {51, 60, 70, 79, 89, 99, 108, 118, 127};
+    UINT unBitsStdFDMsgCRC15[] = {54, 64, 73, 83, 93, 102, 112, 121, 131};
+    UINT unBitsStdFDMsgCRC17[] = {172, 210};     // 12, 16
+    UINT unBitsStdFDMsgCRC21[] = {253, 292, 369, 522, 676}; // 20, 24, 32, 48, 64
+
     memcpy(m_unBitsStdMsg, unBitsStdMsg, 9*sizeof(UINT));
-    //Initialise Number of Bits in Standard Message
-    UINT unBitsEtdMsg[] = {75, 84, 94, 103, 113, 123, 132, 142, 151};
-    memcpy(m_unBitsExdMsg, unBitsEtdMsg, 9*sizeof(UINT));
+    memcpy(&m_unBitsFDMsgCRC15[0], unBitsStdFDMsgCRC15, 9*sizeof(UINT));
+    memcpy(&m_unBitsFDMsgCRC17[0], unBitsStdFDMsgCRC17, 2*sizeof(UINT));
+    memcpy(&m_unBitsFDMsgCRC21[0], unBitsStdFDMsgCRC21, 5*sizeof(UINT));
+
+    //Initialise Number of Bits in Extended CAN and FD Messages
+    UINT unBitsExtMsg[] = {75, 84, 94, 103, 113, 123, 132, 142, 151};
+    UINT unBitsExtFDMsgCRC15[] = {77, 87, 96, 106, 115, 125, 135, 144, 154};
+    UINT unBitsExtFDMsgCRC17[] = {195, 233};    // 12, 16
+    UINT unBitsExtFDMsgCRC21[] = {276, 315, 391, 545, 699}; // 20, 24, 32, 48, 64
+
+    memcpy(m_unBitsExdMsg, unBitsExtMsg, 9*sizeof(UINT));
+    memcpy(&m_unBitsFDMsgCRC15[1], unBitsExtFDMsgCRC15, 9*sizeof(UINT));
+    memcpy(&m_unBitsFDMsgCRC17[1], unBitsExtFDMsgCRC17, 2*sizeof(UINT));
+    memcpy(&m_unBitsFDMsgCRC21[1], unBitsExtFDMsgCRC21, 5*sizeof(UINT));
 }
 
 /**
@@ -871,7 +886,9 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA& sCanData)
 {
     EnterCriticalSection(&m_omCritSecBS);
 
+    // CANFD Frame
     m_sCurrEntry = sCanData.m_uDataInfo.m_sCANMsg;
+
     int nCurrentChannelIndex = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel - 1;
     INT nDLC = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
 
@@ -895,15 +912,70 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA& sCanData)
             m_sSubBusStatistics[nCurrentChannelIndex].m_unTotalTxMsgCount++;
             if (m_sCurrEntry.m_ucRTR == 0) // Non RTR message
             {
-                if (m_sCurrEntry.m_ucEXTENDED == 0)
+                /* Check for CAN FD messages */
+                if ( !sCanData.m_bCANFDMsg )
                 {
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTxSTDMsgCount++;
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsStdMsg[nDLC];
+                    if (m_sCurrEntry.m_ucEXTENDED == 0)
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTxSTDMsgCount++;
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsStdMsg[nDLC];
+                    }
+                    else
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTxEXTDMsgCount++;
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsExdMsg[nDLC];
+                    }
                 }
+                /* Indicates a CAN FD message */
                 else
                 {
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTxEXTDMsgCount++;
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsExdMsg[nDLC];
+                    int nIndex = (m_sCurrEntry.m_ucEXTENDED == 0) ? 0:1;
+                    if ( m_sCurrEntry.m_ucEXTENDED == 0 )
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTxSTDMsgCount++;
+                    }
+                    else
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTxEXTDMsgCount++;
+                    }
+
+                    if ( nDLC <=8 )
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC15[nIndex][nDLC];
+                    }
+                    else if ( nDLC > 8  && nDLC <= 16 )
+                    {
+                        switch ( nDLC )
+                        {
+                            case 12:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC17[nIndex][0];
+                                break;
+                            case 16:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC17[nIndex][1];
+                                break;
+                        }
+                    }
+                    else if ( nDLC > 16 )
+                    {
+                        switch ( nDLC )
+                        {
+                            case 20:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][0];
+                                break;
+                            case 24:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][1];
+                                break;
+                            case 32:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][2];
+                                break;
+                            case 48:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][3];
+                                break;
+                            case 64:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][4];
+                                break;
+                        }
+                    }
                 }
             }
             else // RTR message
@@ -933,16 +1005,71 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA& sCanData)
             m_sSubBusStatistics[nCurrentChannelIndex].m_unTotalRxMsgCount++;
             if (m_sCurrEntry.m_ucRTR == 0) // Non RTR message
             {
-                if (m_sCurrEntry.m_ucEXTENDED == 0)
+                /* Check for CAN FD messages */
+                if ( !sCanData.m_bCANFDMsg )
                 {
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unRxSTDMsgCount++;
-                    //m_sSubBusStatistics[ nCurrentChannelIndex ].m_unSTDMsgBits = nDLC + floor((double)(nDLC / 5 + TYPE_STD_CONST1));
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsStdMsg[nDLC];
+                    if (m_sCurrEntry.m_ucEXTENDED == 0)
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unRxSTDMsgCount++;
+                        //m_sSubBusStatistics[ nCurrentChannelIndex ].m_unSTDMsgBits = nDLC + floor((double)(nDLC / 5 + TYPE_STD_CONST1));
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsStdMsg[nDLC];
+                    }
+                    else
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unRxEXTDMsgCount++;
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsExdMsg[nDLC];
+                    }
                 }
+                /* Indicates a CAN FD message */
                 else
                 {
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unRxEXTDMsgCount++;
-                    m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsExdMsg[nDLC];
+                    int nIndex = (m_sCurrEntry.m_ucEXTENDED == 0) ? 0:1;
+                    if ( m_sCurrEntry.m_ucEXTENDED == 0 )
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unRxSTDMsgCount++;
+                    }
+                    else
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unRxEXTDMsgCount++;
+                    }
+
+                    if ( nDLC <=8 )
+                    {
+                        m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC15[nIndex][nDLC];
+                    }
+                    else if ( nDLC > 8  && nDLC <= 16 )
+                    {
+                        switch ( nDLC )
+                        {
+                            case 12:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC17[nIndex][0];
+                                break;
+                            case 16:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC17[nIndex][1];
+                                break;
+                        }
+                    }
+                    else if ( nDLC > 16 )
+                    {
+                        switch ( nDLC )
+                        {
+                            case 20:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][0];
+                                break;
+                            case 24:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][1];
+                                break;
+                            case 32:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][2];
+                                break;
+                            case 48:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][3];
+                                break;
+                            case 64:
+                                m_sSubBusStatistics[ nCurrentChannelIndex ].m_unTotalBitsperSec += m_unBitsFDMsgCRC21[nIndex][4];
+                                break;
+                        }
+                    }
                 }
             }
             else // RTR message
@@ -1100,7 +1227,7 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
 
         if(dBusLoad != 0)
             dBusLoad = dBusLoad /
-                       ( m_sBusStatistics[ nChannelIndex ].m_dBaudRate * defBITS_KBUAD_RATE );
+                       ( m_sBusStatistics[ nChannelIndex ].m_dBaudRate /** defBITS_KBUAD_RATE */);
 
         // Get the percentage load
         dBusLoad = dBusLoad * defMAX_PERCENTAGE_BUS_LOAD;
