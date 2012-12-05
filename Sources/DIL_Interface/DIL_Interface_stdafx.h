@@ -40,5 +40,6 @@
 #include <atlconv.h>
 #include <wtypes.h>
 #include <afxtempl.h>
+#include <locale.h>
 
 // TODO: reference additional headers your program requires here

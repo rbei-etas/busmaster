@@ -67,5 +67,6 @@
 
 #include "resource.h"
 #include <atlconv.h>
+#include <locale.h>
 #define USAGE_EXPORT
 

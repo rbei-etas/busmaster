@@ -43,3 +43,4 @@
 #include <stdlib.h>         // standard library definitions
 #include "Utility/XMLUtils.h"
 #import <msxml6.dll>
+#include <locale.h>

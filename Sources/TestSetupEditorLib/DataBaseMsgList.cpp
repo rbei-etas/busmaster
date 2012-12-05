@@ -20,7 +20,8 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "DataBaseMsgList.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************
 Function Name  :  CDataBaseMsgList

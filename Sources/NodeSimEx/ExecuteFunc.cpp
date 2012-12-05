@@ -36,7 +36,8 @@
 #include "Export_UserDllJ1939.h"
 //accessin manager class object
 #include "SimSysManager.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

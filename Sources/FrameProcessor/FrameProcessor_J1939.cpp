@@ -54,7 +54,8 @@
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "FrameProcessor_J1939.h"
 #include "LogObjectJ1939.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 
 USHORT CFrameProcessor_J1939::ushCalculateStrLen(bool bForHex, USHORT ushLength)

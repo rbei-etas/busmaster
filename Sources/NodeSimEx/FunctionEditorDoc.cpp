@@ -21,7 +21,7 @@
  *
  * This file contain definition of all function of
  */
-
+#pragma once
 #include "NodeSimEx_stdafx.h"
 #include "GlobalObj.h"
 #include "Application/StdAfx.h"

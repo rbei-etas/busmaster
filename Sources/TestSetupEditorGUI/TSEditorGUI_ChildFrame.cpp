@@ -30,7 +30,8 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
 #define MSG_GET_CONFIGPATH  10000

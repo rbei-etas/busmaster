@@ -26,7 +26,8 @@
 #include "TxWindow_resource.h"
 #include "Utility/SignalMatrix.h"  // For Signal Matrix declaration
 #include "TxMsgChildFrame.h"       // For CTxMsgChildFrame class defintions
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
 

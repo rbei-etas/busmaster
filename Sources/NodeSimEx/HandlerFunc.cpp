@@ -22,7 +22,8 @@
 #include "HandlerFunc.h"
 #include "ExecuteManager.h"
 #include "AppServicesCAN.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 CRITICAL_SECTION g_omDllMsgCritiSec;
 

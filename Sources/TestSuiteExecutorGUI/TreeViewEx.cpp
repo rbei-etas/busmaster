@@ -25,13 +25,14 @@
 
 // TreeViewEx.cpp : implementation file
 //
-
+#pragma once
 #include "TSExecutorGUI_stdafx.h"
 #include <afxtempl.h>
 #include "TSExecutorGUI_resource.h"
 #include "TSExecutorGUI_ChildFrame.h"
-#include "../Application/GettextBusmaster.h"
+//#include "../Application/GettextBusmaster.h"
 //#include "TreeViewEx.h"
+#include "Include\MultiLanguageSupport.h"
 
 
 //TODO::Move to Definition File

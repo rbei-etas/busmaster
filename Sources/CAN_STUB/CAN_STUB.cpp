@@ -42,8 +42,9 @@
 #include "Utility/Utility_Thread.h"
 #include "Utility/Utility.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
-#include "../Application/GettextBusmaster.h"
+//#include "../Application/GettextBusmaster.h"
 
+#include "Include\MultiLanguageSupport.h"
 
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"

@@ -60,6 +60,7 @@ CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=NULL*/,
     m_psNodeStuctPtr = pNode;
     m_bIsNodeModified = FALSE;
     m_eBus = eBus;
+	bEdit = FALSE;
 }
 
 
@@ -148,6 +149,11 @@ BOOL CNodeDetailsDlg::OnInitDialog()
         pWnd->ShowWindow(TRUE);
         m_omPreferedAddress.ShowWindow(TRUE);
         m_omEcuName.ShowWindow(TRUE);
+		if(bEdit == TRUE)
+		{
+			m_omPreferedAddress.EnableWindow(FALSE);
+			m_omEcuName.EnableWindow(FALSE);
+		}
     }
     UpdateData(FALSE);
 

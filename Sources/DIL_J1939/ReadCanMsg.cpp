@@ -22,6 +22,7 @@
 #include "J1939_UtilityFuncs.h"
 #include "ReadCanMsg.h"
 #include "NetworkMgmt.h"
+#include "Include\MultiLanguageSupport.h"
 
 UINT g_unCount = 0;
 

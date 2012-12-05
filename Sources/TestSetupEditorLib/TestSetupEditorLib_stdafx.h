@@ -46,6 +46,7 @@
 #include <shlwapi.h>
 #include <atlcomcli.h>
 #import <msxml6.dll>
+#include <locale.h>
 
 #ifndef _CONVERT_BSTR_TO_CSTRING
 #define _CONVERT_BSTR_TO_CSTRING

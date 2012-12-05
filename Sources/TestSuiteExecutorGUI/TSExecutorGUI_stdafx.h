@@ -44,3 +44,4 @@
 
 #include <Utility/XMLUtils.h>
 #import <msxml6.dll>
+#include <locale.h>

@@ -32,6 +32,7 @@
 #include <afxtempl.h>
 #include <io.h>
 #include <string>
+#include <locale.h>
 
 using namespace std;
 

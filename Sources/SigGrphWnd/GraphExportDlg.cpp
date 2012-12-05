@@ -18,7 +18,8 @@
 // For Export dialog declaration
 #include "GraphExportDlg.h"
 #include "SigGrphWnd_Defines.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 /*******************************************************************************
   Function Name  : CGraphExportDlg
   Description    : Standard default constructor

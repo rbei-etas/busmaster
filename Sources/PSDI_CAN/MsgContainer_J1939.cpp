@@ -24,7 +24,8 @@
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "MsgContainer_J1939.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 const int nBitsIn4Bytes          = 32;
 const int nBitsIn5Bytes          = 40;

@@ -84,6 +84,7 @@
 #include <io.h>
 #include <direct.h>             // for getting curr working directory
 #include <Mmsystem.h>
+#include <locale.h>
 
 //In 32 bit
 #define COMMANINT   INT

@@ -56,6 +56,7 @@
 #include "Application/InterfaceGetter.h"
 #include "TxMsgWndJ1939.h"
 #include ".\txmsgwndj1939.h"
+#include "Include\MultiLanguageSupport.h"
 
 HANDLE sg_hMsgSent = NULL;
 HANDLE sg_hMsgStopped = NULL;
@@ -1109,13 +1110,13 @@ void CTxMsgWndJ1939::vVerifyPDUFormatInPGN(UINT unPGN)
     if ( uPGN.m_sPGN.m_byPDU_Format < 240 )
     {
         sg_asSupportedMsgType[1].m_eType      = sg_asMsgType[1].m_eType;
-        sg_asSupportedMsgType[1].m_omTypeName = _(sg_asMsgType[1].m_omTypeName);
+		sg_asSupportedMsgType[1].m_omTypeName = _(sg_asMsgType[1].m_omTypeName.GetBuffer(0));
     }
     //If 'PDU2 - Broadcast'  is selected, message type can only be 'Request PGN' or 'Broadcast'
     else if ( uPGN.m_sPGN.m_byPDU_Format >= 240 && uPGN.m_sPGN.m_byPDU_Format <=255)
     {
         sg_asSupportedMsgType[1].m_eType      = sg_asMsgType[2].m_eType;
-        sg_asSupportedMsgType[1].m_omTypeName = _(sg_asMsgType[2].m_omTypeName);
+		sg_asSupportedMsgType[1].m_omTypeName = _(sg_asMsgType[2].m_omTypeName.GetBuffer(0));
     }
     vPopulateMsgTypeComboBox(sg_asSupportedMsgType, SIZE_TYPE_COMB-1, m_omMsgTypeCombo);
     m_omMsgTypeCombo.SetCurSel(nPrevSel);
