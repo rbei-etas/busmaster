@@ -26,7 +26,8 @@
 #include "CAN_ICS_neoVI_stdafx.h"
 
 #include "HardwareListing.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -28,7 +28,8 @@
 //accessin manager class object
 #include "ExecuteManager.h"
 #include "SimSysManager.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

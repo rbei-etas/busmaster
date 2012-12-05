@@ -31,7 +31,8 @@
 #include "TimeManager.h"
 #include "Include/BaseDefs.h"
 #include "../Application/MultiLanguage.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };
 WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];

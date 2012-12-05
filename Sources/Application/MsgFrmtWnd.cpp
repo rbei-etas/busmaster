@@ -835,6 +835,11 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
                                                                 IDM_MESSAGE_EXPAND,
                                                                 _(defSTR_COLLAPSE_MENU_TEXT));
                                 }
+								else  if (sTemp.m_eInterpretMode == NON_INTERPRETABLE)
+								{
+									  pomContextMenu->EnableMenuItem(IDM_MESSAGE_EXPAND,
+                                                       MF_DISABLED |MF_GRAYED);
+								}
                             }
                         }
                     }
@@ -5557,7 +5562,7 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
         }
 
         // PTV [1.6.6]
-        m_lstMsg.vShowHideBlankcolumn(FALSE);
+        m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
     }
     m_lstMsg.Invalidate();
     return 0;

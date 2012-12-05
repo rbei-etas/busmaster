@@ -38,3 +38,4 @@
 #include <afxtempl.h>
 #include "DataTypes/Filter_Datatypes.h"
 #include "Filter_defines.h"
+#include <locale.h>

@@ -59,7 +59,7 @@ Usage:
 // MultiLanguage.cpp: implementation of the CMultiLanguage class.
 //
 //////////////////////////////////////////////////////////////////////
-
+#pragma once
 #include "stdAfx.h"
 #include "MultiLanguage.h"
 

@@ -25,7 +25,9 @@
 #include "Replay_stdafx.h"
 #include "Replay_resource.h"
 #include "MsgReplayWnd.h"
-#include "../Application/GettextBusmaster.h"
+#include <locale.h>
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 // Definition of CSplFileDlg class
 //#include "Utility/SplFileDlg.h"
 // For replay manager class declaration

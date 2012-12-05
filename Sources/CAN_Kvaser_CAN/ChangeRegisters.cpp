@@ -38,7 +38,8 @@
 #include "ChangeRegisters.h"
 // Definition of CAcceptanceFilterDlg class
 #include "AcceptanceFilterDlg.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 // For HI Layer definition
 #ifdef _DEBUG

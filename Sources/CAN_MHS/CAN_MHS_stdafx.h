@@ -84,6 +84,7 @@
 #include <list>
 #include <iterator>
 #include <algorithm>
+#include <locale.h>
 /*
 #pragma once
 

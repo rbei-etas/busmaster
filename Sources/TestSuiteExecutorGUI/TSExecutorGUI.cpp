@@ -18,13 +18,14 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+#pragma once
 #include "TSExecutorGUI_stdafx.h"
 #define USAGE_EXPORT
 #include "TSExecutorGUI_ChildFrame.h"
 #include "TSExecutorGUI_Extern.h"
 #include "TSExecutionCAN.h"
 #include "../Application/MultiLanguage.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
 
 #include <afxdllx.h>
 static AFX_EXTENSION_MODULE TestSuiteExecutor = { NULL, NULL };

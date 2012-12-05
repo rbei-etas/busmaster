@@ -47,6 +47,7 @@
 #include <wtypes.h>
 #include <atlconv.h>
 #include <stdio.h>
+#include <locale.h>
 //#include <objbase.h>
 
 // TODO: reference additional headers your program requires here

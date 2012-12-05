@@ -35,7 +35,8 @@
 #include "TxMsgListView.h"      // For Tx msg List view class declaration
 #include "TxMsgChildFrame.h"    // For Parent window class declaration
 #include "TxWindow_resource.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 // Global App object declaration
 //extern CCANMonitorApp theApp;

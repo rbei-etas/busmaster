@@ -49,3 +49,4 @@
 #include "TxWndDataStore.h"
 #include "include/BaseDefs.h"
 #include "DataTypes/MsgSignal_DataTypes.h"
+#include <locale.h>

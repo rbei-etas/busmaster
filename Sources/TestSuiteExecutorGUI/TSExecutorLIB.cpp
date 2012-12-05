@@ -24,9 +24,10 @@
 #include "TSExecutorBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "../Application/GettextBusmaster.h"
+//#include "../Application/GettextBusmaster.h"
 #include <Shlwapi.h>
 #include "Utility\UtilFunctions.h"
+#include "Include\MultiLanguageSupport.h"
 
 #define MSG_GET_CONFIGPATH  10000
 

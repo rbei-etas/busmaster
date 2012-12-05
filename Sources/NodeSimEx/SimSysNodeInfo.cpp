@@ -864,6 +864,7 @@ PSNODEINFO CSimSysNodeInfo::psGetSimSysNodePointer(CString omStrSimsysName,
                     if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                     {
                         psNodeInfo =  &(pTempNode->m_sNodeInfo);
+						bFound = TRUE;
                     }
                     pTempNode = pTempNode->m_psNextNode;
                 }
@@ -2058,6 +2059,10 @@ void CSimSysNodeInfo::vSetEnableNodeTimerHandlers(CString omStrSimSysName ,
                     /*CExecuteManager::ouGetExecuteManager().vSetResetOnTimerHandler(
                                                            omStrNodeList , TRUE );*/
                     pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = bIsEnabled;
+					if(bIsEnabled == TRUE)			// need to start the thread in case of first time enabling
+					{
+						CExecuteManager::ouGetExecuteManager(m_eBus).vManageTimerThreads();
+					}
                     bFound = TRUE;
                 }
 
