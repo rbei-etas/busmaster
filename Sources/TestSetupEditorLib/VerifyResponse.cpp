@@ -25,7 +25,8 @@
 
 #include "TestSetupEditorLib_stdafx.h"
 #include "VerifyResponse.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************
 Function Name  :  CVerifyResponse

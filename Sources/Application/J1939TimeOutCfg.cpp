@@ -29,6 +29,7 @@
 #include "InterfaceGetter.h"
 #include "DIL_Interface/BaseDIL_J1939.h"
 #include "J1939TimeOutCfg.h"
+#include "Include\MultiLanguageSupport.h"
 
 
 #define TEXT_BROADCAST_TO   "Tb: Time interval between two packets in broadcast transmission."

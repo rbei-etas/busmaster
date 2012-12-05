@@ -51,6 +51,7 @@
 #include <iterator>
 #include <algorithm>
 #include <include/struct_CAN.h>
+#include <locale.h>
 // TODO: reference additional headers your program requires here
 const int ERR_INVALID_PROCDIL       = -1;
 const int ERR_INVALID_PARENTHANDLE  = -2;

@@ -29,11 +29,12 @@
 /* C++ includes */
 #include <sstream>
 #include <string>
-#include "../Application/GettextBusmaster.h"
+//#include "../Application/GettextBusmaster.h"
 /* Project includes */
 #include "Filter_resource.h"
 #include "Include/CanUsbDefs.h"
 #include "FilterConfigDlg.h"        // For Filter Configuration Dialog
+#include "Include\MultiLanguageSupport.h"
 
 
 #define defNAMED_FILTER_LIST_COLUMNS            2

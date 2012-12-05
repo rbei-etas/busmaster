@@ -48,7 +48,8 @@
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
 #include "../Application/MultiLanguage.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 #define DYNAMIC_XLDRIVER_DLL
 #include "EXTERNAL_INCLUDE/vxlapi.h"
 
@@ -965,7 +966,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
     {
         sprintf_s(chTemp, "%0.3f", float(
                       g_xlDrvConfig.channel[sg_aodChannels[i].m_pXLChannelInfo->channelIndex].
-                      busParams.data.can.bitRate / 1000.000 ));
+                      busParams.data.can.bitRate /*/ 1000.000 */));
         pCntrlDetails[i].m_omStrBaudrate = chTemp;
     }
 

@@ -24,7 +24,8 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "SendEntity.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 
 /******************************************************************************

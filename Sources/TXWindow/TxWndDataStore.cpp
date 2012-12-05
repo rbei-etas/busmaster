@@ -24,7 +24,8 @@
 #include "include/XMLDefines.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 // Tx Window Splitter Position
 #define defTX_WND_ROOT_SPLITTER_RATIO       0.865

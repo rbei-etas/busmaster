@@ -36,5 +36,6 @@
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
 #include <wtypes.h>
+#include <locale.h>
 
 // TODO: reference additional headers your program requires here

@@ -33,7 +33,8 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxFunctionsView.h"    // For Tx Function View class declaration
 #include "TxMsgChildFrame.h"    // For Parent Window class declaration
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 IMPLEMENT_DYNCREATE(CTxFunctionsView, CFormView)
 

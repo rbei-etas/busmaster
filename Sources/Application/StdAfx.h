@@ -62,6 +62,7 @@
 #include <string>
 #include <list>
 #include <queue>
+#include <locale.h>
 
 using namespace std;
 

@@ -26,7 +26,8 @@
 #include "CAN_ETAS_BOA_stdafx.h"
 
 #include "HardwareListing.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 // Macro to find minimum number
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))

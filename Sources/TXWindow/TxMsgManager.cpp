@@ -33,7 +33,8 @@
 #include "include/CAN_Error_Defs.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 //CLient Id from the DIL
 static DWORD g_dwClientID = 0;

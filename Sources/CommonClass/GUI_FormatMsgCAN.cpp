@@ -27,7 +27,8 @@
 #include "GUI_FormatMsgCAN.h"
 #include "include/Utils_macro.h"
 #include "Include/CAN_Error_Defs.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 struct sERRORMSGINFO
 {

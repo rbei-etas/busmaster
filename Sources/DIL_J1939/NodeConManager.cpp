@@ -60,6 +60,7 @@
 #include "NodeConManager.h"
 #include "NetworkMgmt.h"
 #include "TransferLayer.h"
+#include "Include\MultiLanguageSupport.h"
 
 
 

@@ -24,8 +24,9 @@
 
 // Standard include header
 #include "CAN_Kvaser_CAN_stdafx.h"
-#include "../Application/GettextBusmaster.h"
+//#include "../Application/GettextBusmaster.h"
 #include "HardwareListing.h"
+#include "Include\MultiLanguageSupport.h"
 
 
 #ifdef _DEBUG

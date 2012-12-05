@@ -26,7 +26,8 @@
 #include "MsgHandlerDlg.h"
 #include "GlobalObj.h"
 #include "MsgHandlerDlg.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -20,7 +20,8 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "TestSetupHeader.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 /******************************************************************************
 Function Name  :  CTestSetupHeader
 Input(s)       :

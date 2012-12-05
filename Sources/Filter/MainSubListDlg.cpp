@@ -27,7 +27,8 @@
 #include "DataTypes/MainSubEntry.h"
 #include "FilterWatchDefs.h"
 #include "MainSubListDlg.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include\MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 // Critical Section for Signal Watch
 extern UINT unGetMainEntryIDFromName(CString omMsgName);
 /////////////////////////////////////////////////////////////////////////////

@@ -67,6 +67,7 @@ extern CComModule _Module;
 #include <Commdlg.h>
 #include <stdio.h>
 #include <math.h>
+#include <locale.h>
 
 extern void Message(HRESULT hr, IUnknown* pUnk, LPCOLESTR szFormat, ...);
 #import "..\..\EXTERNAL_SOURCE\DMGraph\DMGraph.tlb" raw_interfaces_only no_namespace named_guids

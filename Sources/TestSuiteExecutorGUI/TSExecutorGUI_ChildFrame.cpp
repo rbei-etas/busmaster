@@ -18,7 +18,7 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
+#pragma once
 #include "TSExecutorGUI_stdafx.h"
 #include "TSExecutorGUI_ChildFrame.h"
 #include "TSExecutorGUI_resource.h"
@@ -26,7 +26,8 @@
 #include ".\tsexecutorgui_childframe.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "../Application/GettextBusmaster.h"
+#include "Include/MultiLanguageSupport.h"
+//#include "../Application/GettextBusmaster.h"
 
 //TODO::Move To definitions
 #define def_INDEX_TESTSUITEIMAGE    0
