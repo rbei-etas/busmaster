@@ -373,7 +373,7 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
                 CString omText;
                 omText.Format(_( "File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
                               m_sDbParams.m_omDBPath);
-                if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
+                if (MessageBox(omText, "BUSMASTER", MB_ICONQUESTION | MB_YESNO) == IDYES)
                 {
                     switch (m_sDbParams.m_eBus)
                     {

@@ -40,6 +40,7 @@
 #include "BUSMASTER_Interface.h"
 #include "BUSMASTER_Interface.c"
 #include "../Application/MultiLanguage.h"
+#include "Include\MultiLanguageSupport.h"
 
 //extern DWORD GUI_dwThread_MsgDisp;
 extern BOOL g_bStopSendMultMsg;
@@ -344,7 +345,20 @@ BOOL CCANMonitorApp::InitInstance()
         ostrCfgFilename = cmdInfo.m_strFileName;
     }
 
-    if(ostrCfgFilename.IsEmpty() == FALSE)
+	BOOL bValidDir = TRUE;
+	CFileFind findFile;
+	if (!ostrCfgFilename.IsEmpty() && !findFile.FindFile(ostrCfgFilename))
+	{
+		DWORD dwErr = GetLastError();
+		CString strMsg = "";
+		if (dwErr == ERROR_PATH_NOT_FOUND)
+		{
+			bValidDir = FALSE;
+			FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwErr, 0, strMsg.GetBuffer(1024), 1024, NULL);
+			AfxMessageBox(strMsg);
+		}
+	}
+    if(ostrCfgFilename.IsEmpty() == FALSE && bValidDir == TRUE)
     {
         bInitialiseConfiguration(m_bFromAutomation);
 
@@ -423,6 +437,10 @@ void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd)
 
 int CCANMonitorApp::ExitInstance()
 {
+	if(g_hLibIntl)					//free the multi language support library, intl.dll
+	{
+		FreeLibrary(g_hLibIntl);
+	}
     if (ghLangInst)
     {
         FreeLibrary( ghLangInst );
