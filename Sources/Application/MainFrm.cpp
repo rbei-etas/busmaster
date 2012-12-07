@@ -828,7 +828,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     }
     vGetWinStatus(m_WinCurrStatus);
     // Update the window placement
-    SetWindowPlacement(&m_WinCurrStatus);
+    //SetWindowPlacement(&m_WinCurrStatus);
 
     // The node simulation toolbar
     CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T(_("Node Simulation")));
@@ -2689,7 +2689,7 @@ void CMainFrame::OnConfigDatabaseSave()
                                 omText.Format( _T(_("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?")),
                                                m_omStrDatabaseName);
 
-                                if (MessageBox(omText, "", MB_ICONQUESTION | MB_YESNO) == IDYES)
+                                if (MessageBox(omText, "BUSMASTER", MB_ICONQUESTION | MB_YESNO) == IDYES)
                                 {
                                     dLoadDataBaseFile(m_omStrDatabaseName, FALSE);
                                 }

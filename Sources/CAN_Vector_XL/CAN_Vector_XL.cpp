@@ -705,9 +705,9 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
             xlPopupHwConfig            = (XLPOPUPHWCONFIG)            GetProcAddress(hxlDll,"xlPopupHwConfig");
             xlDeactivateChannel        = (XLDEACTIVATECHANNEL)        GetProcAddress(hxlDll,"xlDeactivateChannel");
             xlClosePort                = (XLCLOSEPORT)                GetProcAddress(hxlDll,"xlClosePort");
-            xlSetTimerBasedNotify      = (XLSETTIMERBASEDNOTIFY)      GetProcAddress(hxlDll,"xlSetTimerBasedNotify");
-            xlSetTimerRateAndChannel   = (XLSETTIMERRATEANDCHANNEL)   GetProcAddress(hxlDll, "xlSetTimerRateAndChannel");
-            xlGetLicenseInfo           = (XLGETLICENSEINFO)           GetProcAddress(hxlDll, "xlGetLicenseInfo");
+            //xlSetTimerBasedNotify      = (XLSETTIMERBASEDNOTIFY)      GetProcAddress(hxlDll,"xlSetTimerBasedNotify");
+            //xlSetTimerRateAndChannel   = (XLSETTIMERRATEANDCHANNEL)   GetProcAddress(hxlDll, "xlSetTimerRateAndChannel");
+            //xlGetLicenseInfo           = (XLGETLICENSEINFO)           GetProcAddress(hxlDll, "xlGetLicenseInfo");
             xlSetGlobalTimeSync        = (XLSETGLOBALTIMESYNC)        GetProcAddress(hxlDll, "xlSetGlobalTimeSync");
 
 
@@ -739,8 +739,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
                     !xlGetErrorString || !xlGenerateSyncPulse ||
                     !xlGetSyncTime || !xlPopupHwConfig ||
                     !xlDeactivateChannel || !xlClosePort ||
-                    !xlSetTimerBasedNotify || !xlSetTimerRateAndChannel ||
-                    !xlGetLicenseInfo || !xlCanSetChannelOutput ||
+                    /*!xlSetTimerBasedNotify || *//*!xlSetTimerRateAndChannel ||*/
+                    /*!xlGetLicenseInfo || */!xlCanSetChannelOutput ||
                     !xlCanSetChannelMode || !xlCanSetReceiveMode ||
                     !xlCanSetChannelTransceiver || !xlCanSetChannelParams ||
                     !xlCanSetChannelParamsC200 || !xlCanSetChannelBitrate ||
@@ -1341,6 +1341,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
     }
 
     //If everything is ok start the read thread
+	if (hResult == S_OK)
+	{
     if (sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_Vector_XL))
     {
         hResult = S_OK;
@@ -1348,6 +1350,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
     else
     {
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Could not start the read thread") ));
+		}
     }
 
     return hResult;
