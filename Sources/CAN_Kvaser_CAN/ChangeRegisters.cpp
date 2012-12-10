@@ -865,7 +865,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
                           &pcStopStr, defHEXADECIMAL);
 
     // Calculate the NBT and BRP product. and NBT value using BTR0 value
-    unProductNbtNBrp    = (UINT)((unClockFreq/dBaudRate)/2.0*
+    unProductNbtNBrp    = (UINT)((unClockFreq/(dBaudRate/1000))/2.0*
                                  (defFACT_FREQUENCY / defFACT_BAUD_RATE));
     unBrp               = (sBtr0Reg.sBTR0Bit.ucBRPbit+1);
     unNbt               = unProductNbtNBrp/unBrp;
@@ -889,7 +889,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
             fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
             fTempBaudRate = fTempBaudRate/100000;
             omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);*/
-            long lBaudRate = (LONG)dBaudRate * 1000;
+            long lBaudRate = (LONG)dBaudRate;
             omStrBaudRate.Format(_T("%ld"),lBaudRate);
             m_omEditBaudRate.SetWindowText(omStrBaudRate);
             m_dEditBaudRate     = dBaudRate;
@@ -929,6 +929,9 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
                 omStrLocalBtr0 = m_omListCtrlBitTime.GetItemText(nItem,0);
                 omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
             }
+			/* If 0x is found, get rid of it*/
+			omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
+
             if(omStrLocalBtr1.IsEmpty() == FALSE && omStrLocalBtr0 == omStrBtr0)
             {
                 omStrLocalBtr1 = m_omListCtrlBitTime.GetItemText(nItem,
@@ -1015,7 +1018,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
     sBtr1Reg.ucBTR1     = (UCHAR) lFromCString_2_Long(omStrLocalBtr1,
                           &pcStopStr, defHEXADECIMAL);
     // Calculate the NBT and BRP product. and NBT value using BTR0 value
-    usProductNbtNBrp    = (WORD)((unClockFreq/dBaudRate)/2.0*
+    usProductNbtNBrp    = (WORD)((unClockFreq/(dBaudRate/1000))/2.0*
                                  (defFACT_FREQUENCY / defFACT_BAUD_RATE));
     unNbt               = (sBtr1Reg.sBTR1Bit.ucTSEG1bit+1)+
                           (sBtr1Reg.sBTR1Bit.ucTSEG2bit+1)+1;
@@ -1059,7 +1062,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
              fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
              fTempBaudRate = fTempBaudRate/100000;
              omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);*/
-            long lBaudRate = (LONG)dBaudRate * 1000;
+            long lBaudRate = (LONG)dBaudRate;
             omStrBaudRate.Format(_T("%ld"),lBaudRate);
             m_omEditBaudRate.SetWindowText(omStrBaudRate);
             m_dEditBaudRate     = dBaudRate;
@@ -1531,6 +1534,9 @@ DOUBLE CChangeRegisters::dCalculateBaudRateFromBTRs(CString omStrBTR0,
 
     dBaudRate  = (DOUBLE)(_tstoi(defCLOCK)/ ( 2.0 * byBRP * byNBT ));
     dBaudRate  = dBaudRate * (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+
+	/* covert to bps */
+	dBaudRate*=1000;
 
     return dBaudRate;
 }
