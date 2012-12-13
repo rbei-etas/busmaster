@@ -24,7 +24,7 @@
 #include "GraphChildFrame.h"
 #include "GraphBottomView.h"
 #include ".\graphleftview.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 // Local definitions

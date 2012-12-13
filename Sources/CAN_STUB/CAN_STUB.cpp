@@ -44,7 +44,7 @@
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 //#include "../Application/GettextBusmaster.h"
 
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"

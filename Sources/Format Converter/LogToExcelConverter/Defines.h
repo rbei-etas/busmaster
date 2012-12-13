@@ -26,7 +26,8 @@
 
 /* MFC includes */
 #include "afxwin.h"
-#include "../FormatConverterApp/GettextBusmaster.h"
+//#include "../FormatConverterApp/GettextBusmaster.h"
+#include "../../Utility/MultiLanguageSupport.h"
 typedef enum
 {
     LOAD_CONFIG,

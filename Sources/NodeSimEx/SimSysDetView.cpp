@@ -27,7 +27,7 @@
 #include "ExecuteManager.h"
 #include "FunctionEditorDoc.h"
 #include "GlobalObj.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG

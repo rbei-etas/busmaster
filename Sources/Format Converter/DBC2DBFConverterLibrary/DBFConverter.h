@@ -21,7 +21,7 @@
  *
  * Definition of the converter class.
  */
-
+#pragma once
 #ifndef Converter_H
 #define Converter_H
 

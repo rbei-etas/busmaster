@@ -21,7 +21,8 @@
 #include "StdAfx.h"
 #include "ProjectConfiguration/ProjectConfiguration_extern.h"
 #include "ConfigData.h"
-#include "GettextBusmaster.h"
+//#include "GettextBusmaster.h"
+#include "Utility\MultiLanguageSupport.h"
 
 #define DEFAULT_PROJECT_NAME                         "BUSMASTER"
 #define BUSMASTER_UNIQUE_ID                              133146

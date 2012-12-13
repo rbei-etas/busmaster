@@ -25,7 +25,7 @@
 
 #include "TestSetupEditorLib_stdafx.h"
 #include "VerifyResponse.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************

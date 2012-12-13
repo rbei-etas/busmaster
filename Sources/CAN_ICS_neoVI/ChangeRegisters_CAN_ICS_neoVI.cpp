@@ -26,7 +26,7 @@
 #include "ContrConfigPeakUsbDefs.h"
 #include "CAN_ICS_neoVI_Resource.h"
 #include "ChangeRegisters_CAN_ICS_neoVI.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW

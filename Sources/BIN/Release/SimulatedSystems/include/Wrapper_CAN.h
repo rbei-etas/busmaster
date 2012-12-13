@@ -66,23 +66,6 @@ typedef struct sTCAN_MSG
     } m_sWhichBit;
     unsigned char*      m_aucCANFDData;
     unsigned long m_ulTimeStamp;
-    /*STCAN_MSG(UINT unMsgID=0, UCHAR ucExt=0, UCHAR ucRtr=0, UCHAR ucDLC=8, UCHAR ucChannel=1,
-            UCHAR b0=0,UCHAR b1=0,UCHAR b2=0,UCHAR b3=0,UCHAR b4=0,UCHAR b5=0,UCHAR b6=0,UCHAR b7=0)
-    {
-        m_unMsgID = unMsgID;
-        m_ucDLC=ucDLC;
-        m_ucEXTENDED=ucExt;
-        m_ucRTR=ucRtr;
-        m_ucChannel=ucChannel;
-        m_sWhichBit.m_aucData[0]=b0;
-        m_sWhichBit.m_aucData[1]=b1;
-        m_sWhichBit.m_aucData[2]=b2;
-        m_sWhichBit.m_aucData[3]=b3;
-        m_sWhichBit.m_aucData[4]=b4;
-        m_sWhichBit.m_aucData[5]=b5;
-        m_sWhichBit.m_aucData[6]=b6;
-        m_sWhichBit.m_aucData[7]=b7;
-    }*/
 } STCAN_MSG;
 
 //This structure holds the error and the channel number
@@ -181,7 +164,14 @@ int timenow_CAPL();
 int getmessagename_CAPL(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
 int getfirstcandbname_CAPL(char* cBuffer, DWORD size);
 
-
+typedef struct _InternalStructCAN
+{
+_InternalStructCAN()
+{
+	Trace("temporary Structure");
+}
+}InternalStructCAN;
+_InternalStructCAN objcan;
 
 // Prototypes End
 #endif

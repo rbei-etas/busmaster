@@ -167,7 +167,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;Winmm.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib&quot;&#x0D;&#x0A;&quot;Winmm.lib&quot;&#x0D;&#x0A;"
 				OutputFile="$(SolutionDir)/BIN/$(OutDir)/NodeSimEx.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"

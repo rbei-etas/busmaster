@@ -32,7 +32,8 @@
 #include "Utility/WaitIndicator.h"
 #include "SignalDefiner/SignalDefiner_Extern.h"
 #include <atlconv.h>
-#include "GettextBusmaster.h"
+//#include "GettextBusmaster.h"
+#include "Utility\MultiLanguageSupport.h"
 /////////////////////////////////////////////////////////////////////////////
 // CWaveformSelectionDlg dialog
 

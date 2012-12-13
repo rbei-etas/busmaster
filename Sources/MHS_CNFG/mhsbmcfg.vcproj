@@ -78,7 +78,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/mhsbmcfg.dll"
 				LinkIncremental="1"

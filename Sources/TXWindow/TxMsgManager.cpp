@@ -33,7 +33,7 @@
 #include "include/CAN_Error_Defs.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 //CLient Id from the DIL

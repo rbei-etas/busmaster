@@ -27,7 +27,7 @@
 
 #include "HardwareListing.h"
 #include ".\hardwarelisting.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG

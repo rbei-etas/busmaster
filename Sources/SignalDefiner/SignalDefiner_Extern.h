@@ -40,6 +40,7 @@ typedef enum SIGNAL_TYPE
     SINE_WAVE,
     TRIANGULAR_WAVE,
     COS_WAVE,
+	SAWTOOTH_WAVE,
 } SIGNAL_TYPE;
 
 #ifdef __cplusplus

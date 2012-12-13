@@ -28,7 +28,7 @@
 //accessin manager class object
 #include "ExecuteManager.h"
 #include "SimSysManager.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
@@ -1004,6 +1004,7 @@ void CSetResetTimer::vStartTimer()
         CSetResetTimer::sm_eBus = m_eBus;
         m_psCalTimerThreadStruct->m_bThreadStop = FALSE;
         m_psCalTimerThreadStruct->m_omExitThreadEvent.ResetEvent();
+		m_psCalTimerThreadStruct->m_eBus = m_eBus;
         m_psCalTimerThreadStruct->m_pomThreadPtr
             = AfxBeginThread(CalcTimersExecTime,m_psCalTimerThreadStruct);
     }
@@ -1287,7 +1288,7 @@ UINT CalcTimersExecTime(LPVOID pParam)
         omMainTimerEvent.ResetEvent();
         if(!psThreadInfo->m_bThreadStop)
         {
-            CExecuteManager::ouGetExecuteManager(CSetResetTimer::sm_eBus).vManageTimerExecution();
+			CExecuteManager::ouGetExecuteManager(psThreadInfo->m_eBus).vManageTimerExecution(); //Added for issue #356
         }
     }
     psThreadInfo->m_pomThreadPtr = NULL;

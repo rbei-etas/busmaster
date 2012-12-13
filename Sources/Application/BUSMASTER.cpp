@@ -40,7 +40,7 @@
 #include "BUSMASTER_Interface.h"
 #include "BUSMASTER_Interface.c"
 #include "../Application/MultiLanguage.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 //extern DWORD GUI_dwThread_MsgDisp;
 extern BOOL g_bStopSendMultMsg;

@@ -51,7 +51,7 @@
 #include ".\graphbottomview.h"
 #include <math.h>
 #include "GraphRightView.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 IMPLEMENT_DYNCREATE(CGraphBottomView, CFormView)

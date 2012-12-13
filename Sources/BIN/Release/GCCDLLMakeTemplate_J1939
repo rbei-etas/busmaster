@@ -1,7 +1,10 @@
 #Make file for building DLL
-<FILENAME>.dll : <FILENAME>.o 
-	dllwrap -def=<SRCDIR>\<FILENAME>.def \
---dllname=<SRCDIR>\<FILENAME>.dll --driver-name=g++ <SRCDIR>\<FILENAME>.o -L<INSTALLDIR>\SimulatedSystems\OBJ -lwrapper_J1939
 
-<FILENAME>.o : <SRCDIR>\<FILENAME>.<EXT>
-	g++ -x <LANGUAGE> -I<INSTALLDIR>\SimulatedSystems\include -c <SRCDIR>\<FILENAME>.<EXT>   -o <SRCDIR>\<FILENAME>.o -mwindows 
+DllFile.dll : ObjFile.o
+	@mingw32-g++.exe -shared -Wl,--dll  "<INPUTFILE>.o"  -o "<INPUTFILE>.dll"  "<INSTALLDIR>\SimulatedSystems\OBJ\libWrapper_J1939.a"
+
+
+ObjFile.o : <CPPFILE>
+	g++ -x c++ -I"<INSTALLDIR>\SimulatedSystems\include" -c "<INPUTFILE>.cpp"   -o "<INPUTFILE>.o" -mwindows 
+
+

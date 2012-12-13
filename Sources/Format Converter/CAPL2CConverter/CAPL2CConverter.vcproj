@@ -156,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;../bin/$(IntDir)/ConverterPlugins/DBC2DBFConverterLibrary.lib&quot;&#x0D;&#x0A;&quot;../../BIN/Libs/$(IntDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;../../Localization/lib/intl.lib&quot;"
+				AdditionalOptions="&quot;../bin/$(IntDir)/ConverterPlugins/DBC2DBFConverterLibrary.lib&quot;&#x0D;&#x0A;&quot;../../BIN/Libs/$(IntDir)/Utils.lib&quot;&#x0D;&#x0A;"
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/ConverterPlugins/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"

@@ -227,7 +227,7 @@ void CSignalDefinerDlg::vGenerateWave()
 
     SIGNAL_TYPE enSignalType = (SIGNAL_TYPE)(m_ctrSignalType.GetCurSel());
     int nPointCount;
-    double dblFrqStep, dblTimePeriod;
+    double dblFrqStep, dblTimePeriod, dblSamplingPoint;;
 
     /*Setting the Frequency Resolution to nResolution*/
     dblFrqStep = m_dblSamplingTimePeriod;
@@ -279,8 +279,7 @@ void CSignalDefinerDlg::vGenerateWave()
                     dblY = m_fAmplitude +
                            m_fAmplitude * cos( DegreesToRadians(2 * 180 * m_fFrequency * dblCounter) );
                     break;
-                case TRIANGULAR_WAVE:
-                    double dblSamplingPoint;
+                case TRIANGULAR_WAVE:                    
                     dblSamplingPoint = dblCounter;
                     while ( dblSamplingPoint > dblTimePeriod )
                     {
@@ -291,12 +290,29 @@ void CSignalDefinerDlg::vGenerateWave()
                            CalculateYatXForTriangleWave(dblSamplingPoint, m_fAmplitude, dblTimePeriod);
 
                     break;
+                case SAWTOOTH_WAVE:                    
+                    dblSamplingPoint = dblCounter;
+                    while ( dblSamplingPoint > dblTimePeriod )
+                    {
+                        dblSamplingPoint -= dblTimePeriod;
+                    }
+                    dblX = dblCounter*1000;
+                    dblY = m_fAmplitude +	(((2 * m_fAmplitude * dblSamplingPoint)/dblTimePeriod )-  m_fAmplitude);/* Sawtooth :((2A t /T) - A) */                           
+
+                    break;
             }
             HRESULT hr;
             hr = SafeArrayPutElement(varrX.parray, &lngCount, &dblX);
             hr = SafeArrayPutElement(varrY.parray, &lngCount, &dblY);
             lngCount++;
 
+			if ( (dblY >= 2* m_fAmplitude) && enSignalType == SAWTOOTH_WAVE )
+			{
+				dblY = 0;
+				hr = SafeArrayPutElement(varrX.parray, &lngCount, &dblX);
+				hr = SafeArrayPutElement(varrY.parray, &lngCount, &dblY);
+				lngCount++;
+			}
             dblCounter *= 1000;
         }
     }
