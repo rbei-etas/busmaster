@@ -207,6 +207,13 @@ GCC_EXTERN UINT GCC_EXPORT CommandAddress(UINT64, BYTE, UINT);
 GCC_EXTERN UINT GCC_EXPORT SetTimout(BYTE, UINT);
 
 // Prototypes End
-
+typedef struct _InternalStructJ1939
+{
+_InternalStructJ1939()
+{
+	Trace("temporary Structure");
+}
+}InternalStructJ1939;
+_InternalStructJ1939 obj1939;
 
 #endif // _WRAPPER_J1939_H_

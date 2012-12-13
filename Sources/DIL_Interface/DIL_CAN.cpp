@@ -36,7 +36,7 @@
 #include "CAN_Vector_XL/CAN_Vector_XL_Extern.h"
 #include "CAN_Kvaser_CAN/CAN_Kvaser_CAN_Extern.h"
 #include "Dil_CAN.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 typedef HRESULT (__stdcall* GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;

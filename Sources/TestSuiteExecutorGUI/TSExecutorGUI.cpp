@@ -25,7 +25,7 @@
 #include "TSExecutorGUI_Extern.h"
 #include "TSExecutionCAN.h"
 #include "../Application/MultiLanguage.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 #include <afxdllx.h>
 static AFX_EXTENSION_MODULE TestSuiteExecutor = { NULL, NULL };

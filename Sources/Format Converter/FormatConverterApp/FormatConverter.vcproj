@@ -159,7 +159,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;../../Localization/lib/intl.lib&quot;"
+				AdditionalOptions="&quot;../../BIN/Libs/$(IntDir)/Utils.lib&quot;"
 				AdditionalDependencies="shlwapi.lib "
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/$(ProjectName).exe"
 				LinkIncremental="1"

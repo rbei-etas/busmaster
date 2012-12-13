@@ -84,6 +84,8 @@
 #include <DataTypes/SigGrphWnd_Datatypes.h>
 #include "J1939TimeOutCfg.h"
 #include "include/XMLDefines.h"
+#include "Utility\MultiLanguageSupport.h"
+
 #define MSG_GET_CONFIGPATH  10000
 
 // For bus statistics information
@@ -648,7 +650,7 @@ CMainFrame::~CMainFrame()
 
 void CMainFrame::vGettextBusmaster()
 {
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "");	
     bindtextdomain("BUSMASTER", getenv("LOCALDIR"));
     textdomain("BUSMASTER");
 }
@@ -16930,7 +16932,7 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
                 for (int i = 0; (i < m_nDILCount) && bResult; i++)
                 {
                     bResult = m_pDILSubMenu->AppendMenu(MF_STRING,
-                                                        IDC_SELECT_DRIVER + i, _(m_ouList[i].m_acName.c_str()));
+                                                        IDC_SELECT_DRIVER + i, _((char*)m_ouList[i].m_acName.c_str()));
                     if (bResult == TRUE)
                     {
                         m_ouList[i].m_ResourceID = IDC_SELECT_DRIVER + i;

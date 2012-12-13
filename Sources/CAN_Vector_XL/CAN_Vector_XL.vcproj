@@ -156,7 +156,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;"
 				AdditionalDependencies="Advapi32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_Vector_XL.dll"
 				LinkIncremental="1"

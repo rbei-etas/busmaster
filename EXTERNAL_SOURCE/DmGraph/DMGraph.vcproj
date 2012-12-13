@@ -181,7 +181,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;../../Sources/Localization/lib/intl.lib&quot;"
 				AdditionalDependencies="comctl32.lib"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/DMGraph.dll"
 				LinkIncremental="1"

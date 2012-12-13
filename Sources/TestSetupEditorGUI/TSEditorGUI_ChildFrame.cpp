@@ -30,7 +30,7 @@
 #include "TSEditorGUI_MDIChildBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>

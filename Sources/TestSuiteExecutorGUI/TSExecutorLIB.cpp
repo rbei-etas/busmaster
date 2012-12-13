@@ -27,7 +27,7 @@
 //#include "../Application/GettextBusmaster.h"
 #include <Shlwapi.h>
 #include "Utility\UtilFunctions.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 #define MSG_GET_CONFIGPATH  10000
 

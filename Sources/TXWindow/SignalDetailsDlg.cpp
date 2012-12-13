@@ -27,7 +27,7 @@
 #include "Utility/Utility.h"      // For Utility Functions
 #include "Utility/Utility_Structs.h"
 #include "include/Basedefs.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 enum eMODES

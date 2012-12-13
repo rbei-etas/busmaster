@@ -48,7 +48,7 @@
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
 #include "../Application/MultiLanguage.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 #define DYNAMIC_XLDRIVER_DLL
 #include "EXTERNAL_INCLUDE/vxlapi.h"

@@ -151,7 +151,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"

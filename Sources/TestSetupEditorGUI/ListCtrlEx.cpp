@@ -35,7 +35,7 @@
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_Definitions.h"
 #include ".\listctrlex.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 // ID for Combobox
 #define IDC_CONTROL         0x12345

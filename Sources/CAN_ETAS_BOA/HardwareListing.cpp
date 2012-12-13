@@ -26,7 +26,7 @@
 #include "CAN_ETAS_BOA_stdafx.h"
 
 #include "HardwareListing.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 // Macro to find minimum number

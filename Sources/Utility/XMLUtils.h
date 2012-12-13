@@ -607,6 +607,10 @@ public:
         {
             eWaveType = eWave_COS;
         }
+        else if(strName == "SAWTOOTH")
+        {
+            eWaveType = eWave_SAWTOOTH;
+        }
         return eWaveType;
     }
     static int parseColumnNode(xmlNodePtr pNode, columnInfo& Info)

@@ -369,7 +369,7 @@ HRESULT CDBFConverter::GetResultString(char* pchResult)
 {
     if( NULL != pchResult )
     {
-        strcpy(pchResult, _(m_pacResultStrings[m_uiResultCode]));
+        strcpy(pchResult, _((char*)m_pacResultStrings[m_uiResultCode]));
         return S_OK;
     }
     return S_FALSE;
@@ -1194,7 +1194,7 @@ bool CDBFConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //For easy replacement of version Info #define is not added
-    fileOutput<< "[BUSMASTER_VERSION] [1.7.0]"<<endl;
+    fileOutput<< "[BUSMASTER_VERSION] [1.7.1]"<<endl;
 
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;

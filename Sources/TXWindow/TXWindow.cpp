@@ -29,7 +29,7 @@
 #include "TxWnd_Extern.h"
 #include "TxMsgManager.h"
 #include "TxMsgChildFrame.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 static AFX_EXTENSION_MODULE TXWindowDLL = { NULL, NULL };
 

@@ -176,7 +176,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE 0x11, 0x01
 #pragma code_page(932)
-#include "l.jpn\afxres.rc"       // printing/print preview resources
+#include "..\..\Localization\l.jpn\afxres.rc"       // printing/print preview resources
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
