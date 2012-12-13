@@ -24,7 +24,7 @@
 #include "TSEditorGUI_resource.h"
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_Definitions.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 IMPLEMENT_DYNCREATE(CTreeViewEx, CTreeView)

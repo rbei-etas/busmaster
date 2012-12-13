@@ -23,7 +23,7 @@
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_PropertyView.h"
 #include "TSEditorGUI_Definitions.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #define def_HEIGHT_PROPERTYVIEW     0.65

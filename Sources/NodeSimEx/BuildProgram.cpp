@@ -613,44 +613,31 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
                 omTemp = acStrShortPath;
                 INT nIndex = 0;
                 // Get the path of make file temptate in temp object
-                nIndex = omTemp.ReverseFind('\\');
+                nIndex = omStrMakeFileTemplateName.ReverseFind('\\');
                 if(nIndex>=0)
                 {
-                    omTemp = omTemp.Left(nIndex);
+                    omTemp = omStrMakeFileTemplateName.Left(nIndex);
                     // Replace all occurrence of "<INSTALLDIR>" string with template path
                     omStrFile.Replace("<INSTALLDIR>",omTemp);
                 }
                 // Replace all occurence of <SRCDIR> and <FILENAME> with source
                 // directory and file name respectively.
 
-                // Convert long name to short name for GCC compiler
-                dwConvertShortPathName(m_omStrSourceFilename,acStrShortPath);
-                omTemp = acStrShortPath;
-                // ReverseFind() returns a zero based index of last matched
-                // charactor.
                 nIndex = omTemp.ReverseFind('\\');
                 if(nIndex>=0)
                 {
-                    omTemp = omTemp.Left(nIndex);
-                    omStrFile.Replace("<SRCDIR>",omTemp);
-                    omTemp = acStrShortPath;
-                    // Right() takes zero based index and so -1
-                    omTemp = omTemp.Right(omTemp.GetLength() - nIndex -1);
-                    omTemp = omTemp.Left(omTemp.ReverseFind('.'));
-                    //omTemp.Replace(".c","");
-                    omStrFile.Replace("<FILENAME>",omTemp);
-                    omTemp = acStrShortPath;
-                    omTemp = omTemp.Right( omTemp.GetLength() - omTemp.ReverseFind('.') - 1);
-                    omStrFile.Replace("<EXT>", omTemp );
-                    if( omTemp.CompareNoCase("cpp") == 0)
-                    {
-                        omStrFile.Replace("<LANGUAGE>", "c++" );
-                    }
-                    else if( omTemp.CompareNoCase("c") == 0)
-                    {
-                        omStrFile.Replace("<LANGUAGE>", "c" );
-                    }
-                    bReturn = TRUE;
+                    nIndex = m_omStrSourceFilename.ReverseFind('.');
+					if(nIndex>=0)
+					{
+					    omTemp = m_omStrSourceFilename.Left(nIndex);
+					    // Replace all occurrence of "<INSTALLDIR>" string with template path
+					    omStrFile.Replace("<INPUTFILE>",omTemp);
+					}
+					omTemp = m_omStrSourceFilename;
+					omTemp.Replace('\\', '/');
+					omTemp.Replace(" ", "\\ ");
+					omStrFile.Replace("<CPPFILE>", omTemp);
+					bReturn = TRUE;
                 }
             }
             omStdiofile.Close();

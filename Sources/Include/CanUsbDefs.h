@@ -37,6 +37,7 @@
 
 #define defSTR_PEAK_USB_DEVICE              _T("pcan_usb")
 #define defSTR_PEAK_USB_DEVICE_NAME         _T("PCAN-USB") /*_T("PEAK USB-CAN")*/
+#define defSTR_PEAK_USB_PRO_DEVICE_NAME     _T("PCAN-USB PRO")
 #define defSTR_PEAK_NPNP_DEVICE             _T("PeakCan")
 //// Maximum name length is 20
 #define defSTR_PEAK_USB_HW_NET_NAME                _T("BUSMASTER USB Net")

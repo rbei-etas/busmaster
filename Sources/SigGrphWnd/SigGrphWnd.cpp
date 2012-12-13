@@ -31,7 +31,7 @@
 #include "TimeManager.h"
 #include "Include/BaseDefs.h"
 #include "../Application/MultiLanguage.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };

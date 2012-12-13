@@ -95,6 +95,20 @@ UINT64 CWaveformTransmitter::u64GetCurrAmplitude(int CurrItr,
             Result *= ouCurrSig.m_fAmplitude;
         }
         break;
+        case eWave_SAWTOOTH:
+        {
+			UINT unStep = ( 1 / (ouCurrSig.m_fGranularity/(2 * PI )) );
+			if ( unStep == 1 )
+			{
+				CurrItr = 1;
+			}
+			else
+			{
+				CurrItr= (CurrItr) % unStep;
+			}			
+			Result = ( ( 2 * ouCurrSig.m_fAmplitude * CurrItr * (ouCurrSig.m_fGranularity/(2 * PI))) -  ouCurrSig.m_fAmplitude);/* Sawtooth :((2A t /T) - A) */			
+        }
+        break;
         default:
             ASSERT(FALSE);
     }
@@ -177,6 +191,8 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr)
             psCurrSignal = psCurrMsg->m_psSignals;  // Master list of the signals which is expected to exist
         }
 
+		bool bSawtoothExists = false;
+
         while (NULL != psCurrSignal)
         {
             // Search if it occurs in the waveform list.
@@ -184,21 +200,58 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr)
             if (bGetSignalEntry(psCurrSignal->m_omStrSignalName,
                                 &(ouCurrEntry.m_omSigWaveMapList), ouCurrSig))
             {
-                //
-                UINT64 Amplitude = u64GetCurrAmplitude(CurrItr, ouCurrSig.sWaveInfo);
-                sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData,
-                                          Amplitude);
+				UINT unStep = ( 1 / (ouCurrSig.sWaveInfo.m_fGranularity/(2 * PI )) );
+
+				if ( ouCurrSig.sWaveInfo.m_eSignalWaveType == eWave_SAWTOOTH && ( (CurrItr == 0x00) || (CurrItr % unStep) == 0) )
+				{
+					sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData, (UINT64) ouCurrSig.sWaveInfo.m_fAmplitude * 2 );
+					 bSawtoothExists = true;
+				}
+				else
+				{					
+					UINT64 Amplitude = u64GetCurrAmplitude(CurrItr, ouCurrSig.sWaveInfo);
+					sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData,
+											  Amplitude);
+				}
             }
             else
             {
                 sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData,
                                           (UINT64) ouCurrEntry.m_fDefaultAmplitude);
             }
-
             psCurrSignal = psCurrSignal->m_psNextSignalList; // Iterate
-        }
+        }				
         // End of processing. Now transmit the CAN frame.
         m_pouDIL_CAN_Interface->DILC_SendMsg(m_dwClientID, sCurrFrame);
+
+		/* If sawtooth signals are present */
+		if ( bSawtoothExists == true)
+		{
+			/* Reloop for sending Sawtooth signals with value 0 */
+			psCurrSignal = psCurrMsg->m_psSignals;
+			while (NULL != psCurrSignal)
+			{
+				// Search if it occurs in the waveform list.
+				sSigWaveMap ouCurrSig;
+				if (bGetSignalEntry(psCurrSignal->m_omStrSignalName,
+									&(ouCurrEntry.m_omSigWaveMapList), ouCurrSig))
+				{
+					UINT unStep = ( 1 / (ouCurrSig.sWaveInfo.m_fGranularity/(2 * PI )) );
+					if ( ouCurrSig.sWaveInfo.m_eSignalWaveType == eWave_SAWTOOTH && ( (CurrItr == 0x00) || (CurrItr % unStep) == 0) )
+					{
+						sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData, 0 );						 
+					}
+				}
+				else
+				{
+					sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData,
+											  (UINT64) ouCurrEntry.m_fDefaultAmplitude);
+				}
+				psCurrSignal = psCurrSignal->m_psNextSignalList; // Iterate
+			}				
+			// End of processing. Now transmit the CAN frame.
+			m_pouDIL_CAN_Interface->DILC_SendMsg(m_dwClientID, sCurrFrame);
+		}
     }
 }
 

@@ -34,7 +34,7 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxMsgListView.h"      // For CTxMsgListView class definition
 #include "TxMsgChildFrame.h"    // For Tx Child Window definition
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 // For Glodal Application Object

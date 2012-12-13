@@ -32,7 +32,7 @@
 #include "TSExecutorGUI_ChildFrame.h"
 //#include "../Application/GettextBusmaster.h"
 //#include "TreeViewEx.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 
 //TODO::Move to Definition File

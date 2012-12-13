@@ -780,6 +780,10 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
             {
                 csWaveType = "COS";
             }
+            else if(objSigMap.sWaveInfo.m_eSignalWaveType == eWave_SAWTOOTH)
+            {
+                csWaveType = "SAWTOOTH";
+            }
             omcVarChar = csWaveType;
             xmlNodePtr pWaveType= xmlNewChild(pSignals, NULL, BAD_CAST DEF_WAVE_TYPE, BAD_CAST omcVarChar);
             xmlAddChild(pSignals, pWaveType);

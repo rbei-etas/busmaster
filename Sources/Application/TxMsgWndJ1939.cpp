@@ -56,7 +56,7 @@
 #include "Application/InterfaceGetter.h"
 #include "TxMsgWndJ1939.h"
 #include ".\txmsgwndj1939.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 HANDLE sg_hMsgSent = NULL;
 HANDLE sg_hMsgStopped = NULL;

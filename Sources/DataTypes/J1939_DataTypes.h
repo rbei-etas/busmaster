@@ -53,6 +53,7 @@
 #if !defined STRUCT_J1939_H__INCLUDED_
 #define STRUCT_J1939_H__INCLUDED_
 //#include "../Application/GettextBusmaster.h"
+#include "Utility\MultiLanguageSupport.h"
 #pragma once
 #include <locale.h>
 

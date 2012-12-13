@@ -20,7 +20,8 @@
  */
 #include "StdAfx.h"
 #include "MsgWndHdrInfo.h"
-#include "GettextBusmaster.h"
+//#include "GettextBusmaster.h"
+#include "Utility\MultiLanguageSupport.h"
 
 const int nInitialColCount = 7;
 
@@ -67,7 +68,7 @@ void CMsgWndHdrInfo::vGetHdrColNames(CString omArrColTitle[MAX_MSG_WND_COL_CNT],
 {
     for (int i = 0; i < m_nColCount; i++)
     {
-        omArrColTitle[i] = _(m_somArrColTitle[i]);
+		omArrColTitle[i] = _(m_somArrColTitle[i].GetBuffer(MAX_PATH));
     }
     NameCount = m_nColCount;
 }

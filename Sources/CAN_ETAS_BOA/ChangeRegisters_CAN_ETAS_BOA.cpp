@@ -32,7 +32,7 @@
 #include "ContrConfigETASBOADefs.h"
 #include "CAN_ETAS_BOA_Resource.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 #ifdef BOA_FD_VERSION
 #include "EXTERNAL_INCLUDE/OCI/ocicanfd.h"

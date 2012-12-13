@@ -1,7 +1,8 @@
 
 #include "stdafx.h"
 #include "BusmasterDump.h"
-#include "GettextBusmaster.h"
+//#include "GettextBusmaster.h"
+#include "Utility\MultiLanguageSupport.h"
 
 string CBusmasterDump::m_strAppName;
 

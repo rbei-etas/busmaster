@@ -36,7 +36,7 @@
 #include "EventHandlerDlg.h"    // Dialog class for event handlers
 #include "UtlityDlg.h"          // Dialog class for adding utility func
 #include "FnsTreeView.h"        // Class defintion file
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG

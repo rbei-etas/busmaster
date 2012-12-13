@@ -112,6 +112,9 @@ CString sWaveformInfo::omGetWaveformName(eWAVEFORMTYPE eWaveform)
         case eWave_COS:
             Result = "Cos wave";
             break;
+        case eWave_SAWTOOTH:
+            Result = "Saw Tooth";
+            break;
     }
 
     return Result;

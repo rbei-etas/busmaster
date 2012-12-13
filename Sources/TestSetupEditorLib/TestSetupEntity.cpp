@@ -20,7 +20,7 @@
  */
 #include "TestSetupEditorLib_stdafx.h"
 #include "TestSetupEntity.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 /******************************************************************************
 Function Name  :  CTestSetupEntity

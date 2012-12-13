@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <afxcoll.h>
 /* C++ includes */
 #include <fstream>
 #include <list>
@@ -36,7 +37,8 @@
 #include "ParameterVal.h"
 #include "ValueTable.h"
 
-#include "../FormatConverterApp/GettextBusmaster.h"
+//#include "../FormatConverterApp/GettextBusmaster.h"
+#include "../../Utility/MultiLanguageSupport.h"
 
 using namespace std;
 

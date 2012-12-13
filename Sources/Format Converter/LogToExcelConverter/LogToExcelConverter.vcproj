@@ -153,7 +153,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;../../Localization/lib/intl.lib&quot;"
+				AdditionalOptions="&quot;../../BIN/Libs/$(IntDir)/Utils.lib&quot;"
 				OutputFile="$(SolutionDir)/bin/$(IntDir)/ConverterPlugins/$(ProjectName).dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"

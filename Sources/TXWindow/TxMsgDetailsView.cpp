@@ -41,7 +41,7 @@
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_Datatypes.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 // Definition for image indices

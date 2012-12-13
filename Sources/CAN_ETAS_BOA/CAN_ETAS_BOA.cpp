@@ -49,7 +49,7 @@
 #include "HardwareListing.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "../Application/MultiLanguage.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #define USAGE_EXPORT

@@ -271,6 +271,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MultiLanguageSupport.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NumEdit.cpp"
 				>
 			</File>
@@ -374,6 +378,10 @@
 			</File>
 			<File
 				RelativePath=".\MsgInterpretation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MultiLanguageSupport.h"
 				>
 			</File>
 			<File

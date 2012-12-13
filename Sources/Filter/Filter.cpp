@@ -26,7 +26,7 @@
 #include "MainSubListDlg.h"
 //#include "../Application/GettextBusmaster.h"
 #include "../Application/MultiLanguage.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 
 #define USAGE_EXPORT
 #include "Filter_extern.h"

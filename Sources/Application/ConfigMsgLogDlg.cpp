@@ -33,7 +33,8 @@
 #include "InterfaceGetter.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include ".\configmsglogdlg.h"
-#include "GettextBusmaster.h"
+//#include "GettextBusmaster.h"
+#include "Utility\MultiLanguageSupport.h"
 
 #define STR_FILTER_DIALOG_FORMAT        "Configure Filter for Log File: %s"
 #define BUSMASTER_LOG_REMOVE            "Do you want to remove selected log file entry?"

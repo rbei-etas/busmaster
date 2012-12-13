@@ -22,7 +22,7 @@
 #include "TSExecutorGUI_stdafx.h"
 #include "TSExecutorResult.h"
 #include "TSExecutorGUI_resource.h"
-#include "Include\MultiLanguageSupport.h"
+#include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
 #define defMAX_CHAR_PER_LINE        80
