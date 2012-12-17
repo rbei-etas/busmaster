@@ -1379,11 +1379,11 @@ static void ProcessCANMsg(int nChannelIndex, UINT& nFlags, DWORD& dwTime)
         if (nFlags & canMSG_RTR)
         {
             sg_asCANMsg.m_ucDataType = RX_FLAG;
-            sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucRTR = TRUE;
+            sg_ReadMsg.m_ucRTR = TRUE;
         }
         else
         {
-            sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucRTR = FALSE;
+            sg_ReadMsg.m_ucRTR = FALSE;
         }
 
         /* Check for Tx/Rx */

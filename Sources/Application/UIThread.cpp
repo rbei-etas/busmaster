@@ -185,6 +185,17 @@ void CUIThread::vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoT
         }
     }
 }
+/**
+* \brief         Clears Trace window contents
+* \param         void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          17.12.2012 Created
+*/
+void CUIThread::vClearTraceContents()
+{
+	m_podTraceWinObj->vClearTraceContents();
+}
 
 BEGIN_MESSAGE_MAP(CUIThread, CWinThread)
     //{{AFX_MSG_MAP(CUIThread)

@@ -192,7 +192,12 @@ void CSimSysDetView::OnButtonBuild()
         }
         else  // if the build is unsuccessfull
         {
-            AfxMessageBox("The file is not properly built");
+			CString strErrMsg = "The file is not properly built.";
+			if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
+			{
+				strErrMsg += " Please unload the dll and try again!!";
+			}			
+            AfxMessageBox(strErrMsg);
         }
     }
 
@@ -979,12 +984,6 @@ void CSimSysDetView::OnClickLstcHandlerDetails(NMHDR* pNMHDR, LRESULT* /*pResult
     UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
     int nItemCount = m_omListCtrlHanDet.GetItemCount();
     int nSel = m_omListCtrlHanDet.GetNextItem(-1, LVNI_SELECTED  );
-    if(nSel == -1)
-    {
-        m_omListCtrlHanDet.SetItemState(nItemCount - 1,
-                                        unItemStateMask ,
-                                        unItemStateMask ) ;
-    }
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
     vUpDownArrowKeySelection(pNMListView->iItem);
 }

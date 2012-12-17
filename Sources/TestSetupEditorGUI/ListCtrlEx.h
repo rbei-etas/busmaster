@@ -29,6 +29,7 @@
 #include "Utility/ComboItem.h"
 #include "Utility/NumEdit.h"
 #include "Utility/FFListctrl.h"             // For Flicker Free List class definition
+#include "Utility/ButtonItem.h"
 /////////////////////////////////////////////////////////////////////////////
 // CListCtrlEx window
 class CListCtrlEx : public CFFListCtrl
@@ -119,6 +120,8 @@ private:
     // This is to store virtual column count
     int             m_nVirtualColumnCount;
 
+	CButtonItem*		m_pomDBRowButton;
+	CBrowseEditItem*	m_pomDBRowEdit;
     // Private Functions
     long lGetMapID(int nRow, int nCol);
 

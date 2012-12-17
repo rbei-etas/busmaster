@@ -270,6 +270,7 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 
 #define defSIMVALIDEXTN        _T(".sim")
 #define defDOT_SMALL_C         _T(".c")
+#define defDOT_SMALL_CPP       _T(".cpp")
 #define defDOT                 _T('.')
 
 //Parameters for the CEvent objects array used in CExecuteFunc

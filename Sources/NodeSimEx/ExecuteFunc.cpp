@@ -665,41 +665,57 @@ void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE by
     UINT unEventHandlerCount   = 0;
     BOOL bEventHandlerExecuted = FALSE;
     UINT unEventCount          = 0;
-
+	CRITICAL_SECTION			csEventHandler;
+	InitializeCriticalSection(&csEventHandler);
     unEventHandlerCount        = (COMMANUINT)m_omStrArrayEventHandlers.GetSize();
 
-    if(m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread == NULL )
-    {
-        while((unEventCount < unEventHandlerCount) && (bEventHandlerExecuted != TRUE))
-        {
-            if(m_psOnEventHandlers[unEventCount].m_byEventType == byType)
-            {
-                if(m_psOnEventHandlers[unEventCount].m_pFEventHandlers!=NULL)
-                {
-                    m_psOnEventHandlers[unEventCount].m_unPGN       = unPGN;
-                    m_psOnEventHandlers[unEventCount].m_bySrc       = bySrc;
-                    m_psOnEventHandlers[unEventCount].m_byDest      = byDest;
-                    m_psOnEventHandlers[unEventCount].m_bSuccess    = bSuccess;
+	CSimSysNodeInfo* pNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+	PSNODEINFO psNodeInfo = NULL;
+	if( pNodeInfo != NULL )
+	{
+		psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+			, m_sNodeInfo.m_omStrNodeName);
+		if(psNodeInfo != NULL)
+		{
+			if(psNodeInfo->m_bEventHandlersEnabled == TRUE)
+			{
+				EnterCriticalSection(&csEventHandler);
+				if(m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread == NULL )
+				{
+					while((unEventCount < unEventHandlerCount) && (bEventHandlerExecuted != TRUE))
+					{
+						if(m_psOnEventHandlers[unEventCount].m_byEventType == byType)
+						{
+							if(m_psOnEventHandlers[unEventCount].m_pFEventHandlers!=NULL)
+							{
+								m_psOnEventHandlers[unEventCount].m_unPGN       = unPGN;
+								m_psOnEventHandlers[unEventCount].m_bySrc       = bySrc;
+								m_psOnEventHandlers[unEventCount].m_byDest      = byDest;
+								m_psOnEventHandlers[unEventCount].m_bSuccess    = bSuccess;
 
-                    //pass the pointer to this object to access thread
-                    m_psOnEventHandlers[unEventCount].m_pCExecuteFunc=this;
-                    // Get handle of thread and assign it to pulic data member
-                    // in app class. This will be used to terminate the thread.
+								//pass the pointer to this object to access thread
+								m_psOnEventHandlers[unEventCount].m_pCExecuteFunc=this;
+								// Get handle of thread and assign it to pulic data member
+								// in app class. This will be used to terminate the thread.
 
-                    CWinThread* pomThread = NULL ;
-                    pomThread = AfxBeginThread(unEventHandlerProc,
-                                               &m_psOnEventHandlers[unEventCount] );
-                    if(pomThread != NULL )
-                    {
-                        m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread
-                            = pomThread->m_hThread;
-                    }
-                }
-                bEventHandlerExecuted = TRUE;
-            }
-            unEventCount++;
-        }
-    }
+								CWinThread* pomThread = NULL ;
+								pomThread = AfxBeginThread(unEventHandlerProc,
+									&m_psOnEventHandlers[unEventCount] );
+								/*if(pomThread != NULL )
+								{
+									m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread
+										= pomThread->m_hThread;
+								}*/
+							}
+							bEventHandlerExecuted = TRUE;
+						}
+						unEventCount++;
+					}	
+				}
+				LeaveCriticalSection(&csEventHandler);
+			}
+		}
+	}
 }
 /* Executes data confirmation event */
 VOID CExecuteFunc::vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)
