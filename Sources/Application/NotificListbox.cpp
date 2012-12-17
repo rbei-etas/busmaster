@@ -118,8 +118,8 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
                 {
                     unEnable = MF_BYCOMMAND | MF_ENABLED;
                 }
-
-                pomSubMenu->EnableMenuItem(IDM_OPRTN_CLEAR, unEnable);
+				/* Clear should be commented as it is not dependent on selected item count */
+                //pomSubMenu->EnableMenuItem(IDM_OPRTN_CLEAR, unEnable);
                 pomSubMenu->EnableMenuItem(IDM_OPRTN_DELETE, unEnable);
 				pomSubMenu->EnableMenuItem(ID_NOTIFICWND_COPYTOCLIPBOARD, unEnable);
 

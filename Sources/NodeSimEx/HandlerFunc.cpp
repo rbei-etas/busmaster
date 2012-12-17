@@ -144,9 +144,12 @@ UINT unErrorHandlerProc(LPVOID pParam)
 ******************************************************************************/
 UINT unEventHandlerProc(LPVOID pParam)
 {
+	PSEVENTHANDLER pEventHandler = (PSEVENTHANDLER) pParam;
+	pEventHandler->m_pCExecuteFunc->
+        m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread = AfxGetThread();
     if (pParam != NULL)
     {
-        PSEVENTHANDLER pEventHandler = (PSEVENTHANDLER) pParam; //ell2kor
+       // PSEVENTHANDLER pEventHandler = (PSEVENTHANDLER) pParam; //ell2kor
         // There is no memory allocation is this thread. So initialise it to NULL
         pEventHandler->m_pCExecuteFunc->
         m_asUtilThread[defEVENT_HANDLER_THREAD].m_pvThread = NULL;
@@ -157,6 +160,7 @@ UINT unEventHandlerProc(LPVOID pParam)
         {
             if (pEventHandler->m_byEventType == 0x0)
             {
+				//call the user written function from the dll
                 pEventHandler->m_pFEventHandlers(pEventHandler->m_unPGN, pEventHandler->m_bySrc,
                                                  pEventHandler->m_byDest, pEventHandler->m_bSuccess);
             }

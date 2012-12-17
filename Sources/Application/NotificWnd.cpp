@@ -453,6 +453,19 @@ LRESULT CNotificWnd::DoConfigOperation(WPARAM WParam, LPARAM LParam)
     return 0;
 }
 
+/**
+* \brief         Clears Trace window contents
+* \param         void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          17.12.2012 Created
+*/
+void CNotificWnd ::vClearTraceContents()
+{
+	/* Clear contents */
+	m_omListBox.ResetContent();
+}
+
 /******************************************************************************
     Function Name    :  vLoadNotificWndConfig
     Input(s)         :  -

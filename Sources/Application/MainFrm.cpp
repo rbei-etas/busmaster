@@ -3852,8 +3852,9 @@ void CMainFrame::OnSelectMessage()
     {
         GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW);
     }
+	
+	HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
 
-    HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
     SMSGENTRY::vClearMsgList(psMsgEntry);
     psMsgEntry = NULL;
 
@@ -3882,8 +3883,22 @@ void CMainFrame::OnSelectMessage()
         {
             SFILTERAPPLIED_CAN sMsgWndFilter;
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-            Filter_ReUpdateAppliedFilter(&sMsgWndFilter, &m_sFilterAppliedCAN, CAN);
-            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+			
+			//store the previous filter
+			SFILTERAPPLIED_CAN		sTempAppliedFilter;
+			sTempAppliedFilter.bClone(sMsgWndFilter);
+			Filter_ReUpdateAppliedFilter(&sMsgWndFilter, &m_sFilterAppliedCAN, CAN);
+
+			//restore the enable flag for all filters
+			for(int nFilterCnt = 0; nFilterCnt < sTempAppliedFilter.m_ushTotal; nFilterCnt++)
+			{
+				if((sTempAppliedFilter.m_psFilters) != NULL)
+				{
+					((sMsgWndFilter.m_psFilters)+ nFilterCnt) ->m_bEnabled 
+									=  ((sTempAppliedFilter.m_psFilters)+ nFilterCnt) ->m_bEnabled;
+				}
+			}
+			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
 
             //if msg filter is enable, disable it and then re-enable it to affect the changes
             if(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
@@ -14020,6 +14035,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     if (m_podUIThread != NULL)
                     {
                         m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
+						m_podUIThread->vClearTraceContents();
                     }
                 }
             }
@@ -14265,344 +14281,201 @@ int CMainFrame::nLoadXMLConfiguration()
             break;
             case MSGWND_SECTION_ID:
             {
-                //if (pbyConfigData != NULL)
+                BYTE byVersion = 0;                    
+
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
+
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Message_Attribute";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
                 {
-                    //BYTE* pbyTemp = pbyConfigData;
-
-                    BYTE byVersion = 0;
-                    //COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-
-                    //Msg Attributes
-                    SMESSAGE_ATTRIB sMsgAttrib;
-                    sMsgAttrib.m_psMsgAttribDetails = NULL;
-                    sMsgAttrib.m_usMsgCount = 0;
-
-                    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Message_Attribute";
-                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-                    if( NULL != pPathObject )
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
                     {
-                        pNodeSet = pPathObject->nodesetval;
-                        if(NULL != pNodeSet)
+                        // Get the Message Count from xml
+                        sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;                        
+                        PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                         {
-                            // Get the Message Count from xml
-                            sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;
-                            //COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
-                            PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
-                            for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
                             {
-                                xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
-
-                                while(pNodePtr != NULL)
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Name"))))
                                 {
-                                    if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Name"))))
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
                                     {
-                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                                        if(NULL != ptext)
-                                        {
-                                            pMessageAtt[i].omStrMsgname = ((CString)ptext);
-                                            xmlFree(ptext);
-                                        }
-                                    }
-                                    else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Message_ID"))))
-                                    {
-                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                                        if(NULL != ptext)
-                                        {
-                                            pMessageAtt[i].unMsgID = atoi(((CString)ptext));
-                                            xmlFree(ptext);
-                                        }
-                                    }
-                                    else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Color"))))
-                                    {
-                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                                        if(NULL != ptext)
-                                        {
-                                            CString strColor = ptext;
-                                            DWORD dwColor = strtoul(strColor, NULL, 16);
-
-                                            //CString strColor = ptext;
-                                            //DWORD dColor = (DWORD) strColor.GetBuffer(strColor.GetLength());
-
-                                            COLORREF rgbTreeItem = RGB(GetBValue(dwColor),GetGValue(dwColor),GetRValue(dwColor));
-                                            //DWORD rgb = (DWORD)ptext;
-
-                                            //COLORREF rgbTreeItem = RGB(GetRValue((DWORD)ptext),GetGValue((DWORD)ptext),GetBValue((DWORD)ptext)) ;
-
-                                            //COLORREF rgbTreeItem = RGB(128,128, 255) ;
-
-                                            pMessageAtt[i].sColor = rgbTreeItem;
-                                            xmlFree(ptext);
-                                        }
-                                    }
-
-                                    pNodePtr = pNodePtr->next;
-                                }
-
-                                //char acName[MAX_PATH] = {_T('\0')};
-                                ////COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
-                                //pMessageAtt[i].omStrMsgname.Format("%s", acName);
-
-                                //COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
-                                //COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
-                            }
-                            sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
-                            CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
-                            theApp.vPopulateCANIDList();
-
-                            // Copying Message Buffer Details
-                            xmlChar* pchAppBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Append_Buffer_Size";
-
-                            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchAppBuffSizePath);
-                            if( NULL != pPathObject )
-                            {
-                                pNodeSet = pPathObject->nodesetval;
-
-                                if(NULL != pNodeSet)
-                                {
-                                    for(int i=0; i < pNodeSet->nodeNr; i++)
-                                    {
-                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
-
-                                        if ( ( NULL != ptext ))
-                                        {
-                                            CString strAppndBufferSize = ptext;
-                                            m_anMsgBuffSize[defAPPEND_DATA_INDEX] = atoi(strAppndBufferSize);
-                                            xmlFree(ptext);
-                                        }
+                                        pMessageAtt[i].omStrMsgname = ((CString)ptext);
+                                        xmlFree(ptext);
                                     }
                                 }
-                                else
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Message_ID"))))
                                 {
-                                    m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
-                                }
-                                xmlXPathFreeObject (pPathObject);
-                            }
-
-                            xmlChar* pchOvrBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Overwrite_Buffer_Size";
-
-                            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchOvrBuffSizePath);
-                            if( NULL != pPathObject )
-                            {
-                                pNodeSet = pPathObject->nodesetval;
-
-                                if(NULL != pNodeSet)
-                                {
-                                    for(int i=0; i < pNodeSet->nodeNr; i++)
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
                                     {
-                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
-
-                                        if ( ( NULL != ptext ))
-                                        {
-                                            CString strOvrwriteBufferSize = ptext;
-                                            m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = atoi(strOvrwriteBufferSize);
-                                            xmlFree(ptext);
-                                        }
+                                        pMessageAtt[i].unMsgID = atoi(((CString)ptext));
+                                        xmlFree(ptext);
                                     }
                                 }
-                                else
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Color"))))
                                 {
-                                    m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
-                                }
-                                xmlXPathFreeObject (pPathObject);
-                            }
-
-                            xmlChar* pchDispUpTimePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Display_Update_Time";
-
-                            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchDispUpTimePath);
-                            if( NULL != pPathObject )
-                            {
-                                pNodeSet = pPathObject->nodesetval;
-
-                                if(NULL != pNodeSet)
-                                {
-                                    for(int i=0; i < pNodeSet->nodeNr; i++)
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
                                     {
-                                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+                                        CString strColor = ptext;
+                                        DWORD dwColor = strtoul(strColor, NULL, 16);
 
-                                        if ( ( NULL != ptext ))
-                                        {
-                                            CString strDispUpdTimeSize = ptext;
-                                            m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = atoi(strDispUpdTimeSize);
-                                            xmlFree(ptext);
-                                        }
+                                        COLORREF rgbTreeItem = RGB(GetBValue(dwColor),GetGValue(dwColor),GetRValue(dwColor));
+
+										pMessageAtt[i].sColor = rgbTreeItem;
+                                        xmlFree(ptext);
                                     }
                                 }
-                                else
-                                {
-                                    m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
-                                }
-                                xmlXPathFreeObject (pPathObject);
-                            }
-                            //Msg buffer size
-                            //COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
-                        }
-                    }
 
-
-                    //Msg Filter
-                    bool bResult = false;
-                    SFILTERAPPLIED_CAN sMsgWndFilter;
-                    //pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
-
-                    // Get the Filter data from xml
-                    pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Filter";
-                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-                    if( NULL != pPathObject )
-                    {
-                        pNodeSet = pPathObject->nodesetval;
-                        if(NULL != pNodeSet)
-                        {
-                            //for(INT nIndex =0; nIndex < pNodeSet->nodeNr; nIndex++)
-                            {
-                                sMsgWndFilter.pbSetConfigData(m_sFilterAppliedCAN, pNodeSet, m_xmlConfigFiledoc, bResult);
-                                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                              WM_SET_FILTER_DETAILS, (WPARAM)&m_sFilterAppliedCAN, NULL);
+                                pNodePtr = pNodePtr->next;
                             }
                         }
+                        sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                        CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
+                        theApp.vPopulateCANIDList();
                     }
-
-                    /*pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window";
-                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-                    if( NULL != pPathObject )
-                    {
-                        pNodeSet = pPathObject->nodesetval;*/
-                    if(NULL != m_xmlConfigFiledoc)
-                    {
-                        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                      WM_NOTIFICATION_FROM_OTHER,
-                                      eWINID_MSG_WND_SET_CONFIG_DATA_XML,
-                                      (LPARAM)m_xmlConfigFiledoc);
-
-
-                        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                      WM_NOTIFICATION_FROM_OTHER,
-                                      eLOAD_DATABASE,
-                                      (LPARAM)&(theApp.m_pouMsgSignal));
-                    }
-                    //}
-
-                    if(sMsgAttrib.m_usMsgCount > 0)
-                    {
-                        //clear msg attributes
-                        DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-                        sMsgAttrib.m_usMsgCount = 0;
-                    }
-
-
-
-                    //::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                    //              WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-                    ////Msg FormatWnd Details
-
-                    //if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
-                    //{
-                    //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                    //                  WM_NOTIFICATION_FROM_OTHER,
-                    //                  eWINID_MSG_WND_SET_CONFIG_DATA,
-                    //                  (LPARAM)pbyTemp);
-                    //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                    //                  WM_NOTIFICATION_FROM_OTHER,
-                    //                  eLOAD_DATABASE,
-                    //                  (LPARAM)&(theApp.m_pouMsgSignal));
-                    //}
-                    ////clear msg attributes
-                    //DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-                    //sMsgAttrib.m_usMsgCount = 0;
                 }
-                /* else
-                 {
-                     CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(NULL);
-                     m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
-                     m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
-                     m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
 
-                     SFILTERAPPLIED_CAN sMsgWndFilter;
-                     sMsgWndFilter.vClear();
-                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                   WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+                // Copying Message Buffer Details
+				/* Append buffer size */
+                xmlChar* pchAppBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Append_Buffer_Size";
 
-                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                   WM_NOTIFICATION_FROM_OTHER,
-                                   eWINID_MSG_WND_SET_CONFIG_DATA,
-                                   NULL);
-                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                                   WM_NOTIFICATION_FROM_OTHER,
-                                   eLOAD_DATABASE,
-                                   (LPARAM)&(theApp.m_pouMsgSignal));
-                 }*/
-                //if (pbyConfigData != NULL)
-                //{
-                //    BYTE* pbyTemp = pbyConfigData;
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchAppBuffSizePath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
 
-                //    BYTE byVersion = 0;
-                //    COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
 
-                //    //Msg Attributes
-                //    SMESSAGE_ATTRIB sMsgAttrib;
-                //    sMsgAttrib.m_psMsgAttribDetails = NULL;
-                //    sMsgAttrib.m_usMsgCount = 0;
-                //    COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
-                //    PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
-                //    for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
-                //    {
-                //        char acName[MAX_PATH] = {_T('\0')};
-                //        COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
-                //        pMessageAtt[i].omStrMsgname.Format("%s", acName);
+                            if ( ( NULL != ptext ))
+                            {
+                                CString strAppndBufferSize = ptext;
+                                m_anMsgBuffSize[defAPPEND_DATA_INDEX] = atoi(strAppndBufferSize);
+                                xmlFree(ptext);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
 
-                //        COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
-                //        COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
-                //    }
-                //    sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
-                //    CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
-                //    theApp.vPopulateCANIDList();
-                //    //Msg buffer size
-                //    COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
+				/* Overwrite buffer size */
+                xmlChar* pchOvrBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Overwrite_Buffer_Size";
 
-                //    //Msg Filter
-                //    bool bResult = false;
-                //    SFILTERAPPLIED_CAN sMsgWndFilter;
-                //    pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchOvrBuffSizePath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
 
-                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                //                  WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-                //    //Msg FormatWnd Details
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
 
-                //    if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
-                //    {
-                //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                //                      WM_NOTIFICATION_FROM_OTHER,
-                //                      eWINID_MSG_WND_SET_CONFIG_DATA,
-                //                      (LPARAM)pbyTemp);
-                //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                //                      WM_NOTIFICATION_FROM_OTHER,
-                //                      eLOAD_DATABASE,
-                //                      (LPARAM)&(theApp.m_pouMsgSignal));
-                //    }
-                //    //clear msg attributes
-                //    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-                //    sMsgAttrib.m_usMsgCount = 0;
-                //}
-                //else
-                //{
-                //    CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(NULL);
-                //    m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
-                //    m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
-                //    m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+                            if ( ( NULL != ptext ))
+                            {
+                                CString strOvrwriteBufferSize = ptext;
+                                m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = atoi(strOvrwriteBufferSize);
+                                xmlFree(ptext);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
 
-                //    SFILTERAPPLIED_CAN sMsgWndFilter;
-                //    sMsgWndFilter.vClear();
-                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                //                  WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+				/* Display update time */
+                xmlChar* pchDispUpTimePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Display_Update_Time";
 
-                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                //                  WM_NOTIFICATION_FROM_OTHER,
-                //                  eWINID_MSG_WND_SET_CONFIG_DATA,
-                //                  NULL);
-                //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-                //                  WM_NOTIFICATION_FROM_OTHER,
-                //                  eLOAD_DATABASE,
-                //                  (LPARAM)&(theApp.m_pouMsgSignal));
-                //}
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchDispUpTimePath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                            if ( ( NULL != ptext ))
+                            {
+                                CString strDispUpdTimeSize = ptext;
+                                m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = atoi(strDispUpdTimeSize);
+                                xmlFree(ptext);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+
+                //Msg Filter
+                bool bResult = false;
+                SFILTERAPPLIED_CAN sMsgWndFilter;
+                //pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
+
+                // Get the Filter data from xml
+                pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Filter";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        //for(INT nIndex =0; nIndex < pNodeSet->nodeNr; nIndex++)
+                        {
+                            sMsgWndFilter.pbSetConfigData(m_sFilterAppliedCAN, pNodeSet, m_xmlConfigFiledoc, bResult);
+                            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                          WM_SET_FILTER_DETAILS, (WPARAM)&m_sFilterAppliedCAN, NULL);
+                        }
+                    }
+                }
+
+                if(NULL != m_xmlConfigFiledoc)
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA_XML,
+                                  (LPARAM)m_xmlConfigFiledoc);
+
+
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eLOAD_DATABASE,
+                                  (LPARAM)&(theApp.m_pouMsgSignal));
+                }                
+
+                if(sMsgAttrib.m_usMsgCount > 0)
+                {
+                    //clear msg attributes
+                    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                    sMsgAttrib.m_usMsgCount = 0;
+                }                
             }
             break;
             case LOG_SECTION_ID:
@@ -15703,6 +15576,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if (m_podUIThread != NULL)
                 {
                     m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
+					m_podUIThread->vClearTraceContents();
                 }
                 if (byVersion == 0x2)//LogOnConnet option is introduced
                 {
@@ -15717,6 +15591,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if (m_podUIThread != NULL)
                 {
                     m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
+					m_podUIThread->vClearTraceContents();
                 }
                 //Set default settings
             }
