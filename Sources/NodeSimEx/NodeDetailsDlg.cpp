@@ -116,21 +116,6 @@ BOOL CNodeDetailsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-
-    // If Not NULL, mode is Edit,
-    // Fill the dialog with the node details
-    if (m_psNodeStuctPtr != NULL)
-    {
-        m_omStrNodeName  = m_psNodeStuctPtr->m_omStrNodeName;
-        m_omStrDllPath   = m_psNodeStuctPtr->m_omStrDllName;
-        m_omPreferedAddress.vSetValue(m_psNodeStuctPtr->m_byPrefAddress);
-        m_omEcuName.vSetValue(m_psNodeStuctPtr->m_unEcuName);
-    }
-
-    if(!m_omStrDllPath.IsEmpty())
-    {
-        vEnableClearButton(TRUE);
-    }
     if (m_eBus == J1939)
     {
         m_omPreferedAddress.vSetBase(BASE_HEXADECIMAL);
@@ -155,6 +140,22 @@ BOOL CNodeDetailsDlg::OnInitDialog()
 			m_omEcuName.EnableWindow(FALSE);
 		}
     }
+
+    // If Not NULL, mode is Edit,
+    // Fill the dialog with the node details
+    if (m_psNodeStuctPtr != NULL && bEdit )
+    {
+        m_omStrNodeName  = m_psNodeStuctPtr->m_omStrNodeName;
+        m_omStrDllPath   = m_psNodeStuctPtr->m_omStrDllName;
+        m_omPreferedAddress.vSetValue(m_psNodeStuctPtr->m_byPrefAddress);
+        m_omEcuName.vSetValue(m_psNodeStuctPtr->m_unEcuName);
+    }
+
+    if(!m_omStrDllPath.IsEmpty())
+    {
+        vEnableClearButton(TRUE);
+    }
+
     UpdateData(FALSE);
 
     return TRUE;
@@ -255,7 +256,7 @@ void CNodeDetailsDlg::OnOK()
             m_bIsNodeModified = TRUE;
             m_psNodeStuctPtr->m_omStrNodeName = m_omStrNodeName;
         }
-        if (m_psNodeStuctPtr->m_omStrDllName  != m_omStrDllPath)
+		if ((m_psNodeStuctPtr->m_omStrDllName  != m_omStrDllPath) || (m_omStrDllPath.IsEmpty() == TRUE))
         {
             //If dll is changed
             m_bIsNodeModified = TRUE;
@@ -271,6 +272,21 @@ void CNodeDetailsDlg::OnOK()
             {
                 m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
             }
+			else // If "C" file is not found then search for "C++" file
+			{
+				omStrFilename = m_psNodeStuctPtr->m_omStrDllName;
+				omStrFilename.Replace(defDOT_DLL ,defDOT_SMALL_CPP);
+				if (_tfindfirst( omStrFilename.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+				{
+					m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
+				}
+				// If the file name is empty
+				else if(omStrFilename.IsEmpty() == TRUE)
+				{
+					// If the file name is empty
+					m_psNodeStuctPtr->m_omStrFileName = omStrFilename;								
+				}
+			}
         }
         if (m_psNodeStuctPtr->m_byPrefAddress !=
                 (BYTE)(m_omPreferedAddress.lGetValue()))

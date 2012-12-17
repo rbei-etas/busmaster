@@ -72,6 +72,11 @@ CListCtrlEx::CListCtrlEx() : m_bSingleClickActivate(FALSE)
 
     m_colRow2 =     def_COLOR_SECONDROW;
     m_colRow1 =     def_COLOR_FIRSTROW;
+
+	m_pomDBRowButton = NULL;
+
+	m_pomDBRowEdit = NULL;
+
 }
 
 /******************************************************************************
@@ -86,6 +91,7 @@ CListCtrlEx::CListCtrlEx() : m_bSingleClickActivate(FALSE)
 ******************************************************************************/
 CListCtrlEx::~CListCtrlEx()
 {
+	
 }
 
 
@@ -980,25 +986,48 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     omButtonRect.left = omRect.right - def_WIDTH_BUTTON;
     omEditRect.right = omRect.right - def_HEIGHT_BUTTON;
 
+	//delete the previous pointers
+	/*if(m_pomDBRowButton != NULL)
+	{
+		if(m_pomDBRowButton->m_pomEditItem != NULL)
+		{
+			delete m_pomDBRowButton->m_pomEditItem;
+			m_pomDBRowButton->m_pomEditItem = NULL;
+		}
+	  delete m_pomDBRowButton;
+	  m_pomDBRowButton = NULL;
+	}*/
+	if(m_pomDBRowEdit != NULL)
+	{
+		if(m_pomDBRowEdit->m_pomButton!= NULL)
+		{
+			delete m_pomDBRowEdit->m_pomButton;
+			m_pomDBRowEdit->m_pomButton = NULL;
+		}
+	  delete m_pomDBRowEdit;
+	  m_pomDBRowEdit = NULL;
+	}
+	
     if(omList.GetSize() >=2)
     {
-        CButtonItem* pomButton  = new CButtonItem(omList.GetAt(0), omList.GetAt(1));
-        CBrowseEditItem* pomEdit = new CBrowseEditItem(nItem, nSubItem, omStrText, pomButton);
-        pomButton->vSetEditItem(pomEdit);
+        m_pomDBRowButton  = new CButtonItem(omList.GetAt(0), omList.GetAt(1));
+        m_pomDBRowEdit = new CBrowseEditItem(nItem, nSubItem, omStrText, m_pomDBRowButton);
+        m_pomDBRowButton->vSetEditItem(m_pomDBRowEdit);
 
-        if( pomEdit != NULL )
+        if( m_pomDBRowEdit != NULL )
         {
-            pomEdit->Create(dwStyle, omEditRect, this, IDC_CONTROL);
+            m_pomDBRowEdit->Create(dwStyle, omEditRect, this, IDC_CONTROL);
         }
-        if(pomButton != NULL)
+        if(m_pomDBRowButton != NULL)
         {
             dwStyle = WS_CHILD|WS_VISIBLE|BS_TEXT|BS_BOTTOM;
             //ID is not required
-            pomButton->Create("...", dwStyle, omButtonRect, this, 0);
+            m_pomDBRowButton->Create("...", dwStyle, omButtonRect, this, 0);
         }
         //Edit box will have the focus first
-        pomEdit->SetFocus();
+        m_pomDBRowEdit->SetFocus();
     }
+
     return NULL;
 }
 /******************************************************************************

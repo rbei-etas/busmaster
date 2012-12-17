@@ -1773,7 +1773,13 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         {
             if(omstrDatabaseName != ouHeaderInfo.m_omDatabasePath)
             {
-                int nRetVal = MessageBox(_("Database Path Is Changed.All Old messages of Test Setup File will be Deleted.\nDo you Want To Continue"), _("Database Path Changed"),MB_YESNO||MB_ICONWARNING);
+				if(omstrDatabaseName == "")
+				{
+					m_ouTSEntity.vDeleteAllSubMessages();
+					OnDisplayReset();
+					return;
+				}
+				int nRetVal = MessageBox(_("Database Path Is Changed.All Old messages of Test Setup File will be Deleted.\nDo you Want To Continue"), _("Database Path Changed"),MB_YESNO||MB_ICONWARNING);
                 if(nRetVal == IDOK)
                 {
                     ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;

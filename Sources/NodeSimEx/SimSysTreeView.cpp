@@ -1571,6 +1571,15 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
                             omTree.InsertItem(pNode->m_omStrDllName, hSelItem);
                         }
                     }
+					else
+					{
+						// If dll is not found, deleting the dll from the node
+						HTREEITEM hChildDll  = omTree.GetChildItem(hSelItem);
+                        if (hChildDll != NULL)
+                        {
+							omTree.DeleteItem(hChildDll);
+                        }
+					}
                     //Update det view
 
                     CSimSysDetView* pSimSysDetView =
@@ -2690,6 +2699,9 @@ void CSimSysTreeView::OnSimsysSaveAs()
             BOOL bReturn = pSimSysNodeInfo->bIsSimSysPresent( oCfgFilename );
             if(! bReturn )
             {
+				/* Save current simulated system */
+				CSimSysManager::ouGetSimSysManager(m_eBus).vSaveSimSys(omStrPathName);
+
                 if(oCfgFilename.IsEmpty() == FALSE)
                 {
                     COPYFILE(omStrPathName, oCfgFilename);
