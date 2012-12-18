@@ -274,15 +274,12 @@ void CExportLogFileDlg::OnBnClickedConvert()
             //set the selected fields
             oExport.fnSetSelectedFields( &(this->m_omSelectedList) );
 
+			/* Set the bus type */
+			oExport.vSetBUSType(m_eBus);
+
             //convert log file to excel file
             HRESULT hResult = oExport.bConvert();
-            if( S_OK != hResult )
-            {
-                string omStrError;
-                oExport.GetErrorString( hResult, omStrError);
-                MessageBox(omStrError.c_str(),_(APPLICATION_NAME),MB_OK);
-            }
-            else
+            if( S_OK == hResult )
             {
                 MessageBox(_(EXPORTTOEXCEL_SUCCESSMSG),_(APPLICATION_NAME),MB_OK);
                 //OnOK();

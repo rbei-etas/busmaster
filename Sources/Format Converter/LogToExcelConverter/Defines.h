@@ -137,6 +137,7 @@ enum
 #define RULE_FILTER              _T("*.xml|*.xml||")
 #define RULE_SELECTION_TITLE     _T("Select Rule File")
 #define EXPORTTOEXCEL_SUCCESSMSG            _T("Successfully converted text file to Excel File!")
+#define EXPORTTOEXCEL_FAILUREMSG            _T("The log file selected doesn't match the BUS type selection. Please check.")
 
 #define EXPORTTOEXCEL_SYNTAXERROR           _T("Could not convert!")
 #define EXPORTTOEXCEL_FILESNOTOPEN          _T("Error in Opening Input Files");
