@@ -76,7 +76,7 @@ private:
     PSNODEINFO m_psNodeStuctPtr;
     void vEnableClearButton(BOOL bEnable);
 public:
-	bool	bEdit;
+	bool		m_bEdit;
     CRadixEdit m_omPreferedAddress;
     CRadixEdit m_omEcuName;
 };

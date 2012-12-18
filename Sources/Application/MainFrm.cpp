@@ -15046,7 +15046,7 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
                     fBaudRate *= 1000;
                 }
                 std::stringstream ss;
-                ss << fBaudRate;
+                ss << (UINT)fBaudRate;
                 sController.m_omStrBaudrate  =  ss.str();
             }
         }
