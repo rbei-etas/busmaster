@@ -484,7 +484,7 @@ public:
     void SaveConfigDataToXML(xmlNodePtr pNodePtr)
     {
         float fBaudRate = atof(m_omStrBaudrate.c_str());
-        if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
+       // if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
         {
             fBaudRate = fBaudRate/1000;    //convert to Kbps before saving to XML
         }
