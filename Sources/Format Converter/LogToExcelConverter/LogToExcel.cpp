@@ -68,6 +68,29 @@ void CLogToExcel::fnSetSelectedFields(CListBox* omSelectedList)
 }
 
 /**
+ * \brief Sets the bus type currently selected
+ *
+ * Sets the bus type currently selected
+ */
+void CLogToExcel::vSetBUSType(ETYPE_BUS eBus)
+{
+	m_eBus = eBus;
+
+	if ( m_eBus == CAN )
+	{
+		m_strBUSNameInLog = "***PROTOCOL CAN***";
+	}
+	else if ( m_eBus == J1939 )
+	{
+		m_strBUSNameInLog = "***PROTOCOL J1939***";
+	}
+	else
+	{
+		m_strBUSNameInLog = "***PROTOCOL DEFAULT***";
+	}
+}
+
+/**
  * \brief opens the log file for reading and excel file for writing
  *
  * opens the log file for reading and excel file for writing
@@ -261,10 +284,31 @@ HRESULT CLogToExcel::bConvert()
 
         m_pExcelFile << "</TR>";
 
+		size_t found;
+
         // write each column
         while(!unGetLine())
         {
-            vPrintFields();
+			found = 0;
+			if ( m_strBuffer.find("***PROTOCOL") !=  string::npos )
+			{
+				found = m_strBuffer.find( m_strBUSNameInLog );
+			}
+
+			/* If the current BUS type and log file selected matches, then perform conversion */
+			if (found!=string::npos)
+			{
+				vPrintFields();
+			}
+			else
+			{
+				MessageBox(NULL,_(EXPORTTOEXCEL_FAILUREMSG),_(APPLICATION_NAME),MB_OK);
+				//close file
+				m_pExcelFile.close();
+				m_pLogFile.close();
+				::DeleteFile(m_strExcelFileName.c_str());
+				return S_FALSE;
+			}
             m_strBuffer.clear();
         }
 
