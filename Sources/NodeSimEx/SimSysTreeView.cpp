@@ -1547,7 +1547,7 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
             if (pNode != NULL)
             {
                 CNodeDetailsDlg odNodeDlg(m_eBus, pNode , NULL);
-				odNodeDlg.bEdit = TRUE;
+				odNodeDlg.m_bEdit = TRUE;
                 odNodeDlg.DoModal();
                 if (odNodeDlg.m_bIsNodeModified == TRUE)
                 {

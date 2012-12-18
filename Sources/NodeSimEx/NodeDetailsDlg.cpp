@@ -60,7 +60,7 @@ CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=NULL*/,
     m_psNodeStuctPtr = pNode;
     m_bIsNodeModified = FALSE;
     m_eBus = eBus;
-	bEdit = FALSE;
+	m_bEdit = FALSE;
 }
 
 
@@ -134,7 +134,7 @@ BOOL CNodeDetailsDlg::OnInitDialog()
         pWnd->ShowWindow(TRUE);
         m_omPreferedAddress.ShowWindow(TRUE);
         m_omEcuName.ShowWindow(TRUE);
-		if(bEdit == TRUE)
+		if(m_bEdit == TRUE)
 		{
 			m_omPreferedAddress.EnableWindow(FALSE);
 			m_omEcuName.EnableWindow(FALSE);
@@ -143,7 +143,7 @@ BOOL CNodeDetailsDlg::OnInitDialog()
 
     // If Not NULL, mode is Edit,
     // Fill the dialog with the node details
-    if (m_psNodeStuctPtr != NULL && bEdit )
+    if (m_psNodeStuctPtr != NULL && m_bEdit )
     {
         m_omStrNodeName  = m_psNodeStuctPtr->m_omStrNodeName;
         m_omStrDllPath   = m_psNodeStuctPtr->m_omStrDllName;
