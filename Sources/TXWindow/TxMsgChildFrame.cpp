@@ -108,6 +108,7 @@ BEGIN_MESSAGE_MAP(CTxMsgChildFrame, CMDIChildBase)
     //}}AFX_MSG_MAP
     ON_MESSAGE(WM_USER_CMD,vUserCommand)
     ON_WM_SIZE()
+	ON_WM_SIZING() 
     ON_WM_MDIACTIVATE()
     ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
@@ -216,6 +217,7 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
             // Set Splitter postion
             vSetSplitterPostion();
         }
+		m_bInit = FALSE;
     }
     return bReturn;
 }
@@ -857,9 +859,19 @@ void CTxMsgChildFrame::OnSize(UINT nType, int cx, int cy)
         //CTxWndDataStore::ouGetTxWndDataStoreObj().
         //bGetDefaultTXSplitterPostion( omWndSize.rcNormalPosition, (void **)&psData );
         //vSetSplitterPostion();
+    }
+    else
+    {
+    }
+}
+void CTxMsgChildFrame::OnSizing(UINT fwSide, LPRECT pRect)
+{
+	 CMDIChildBase::OnSizing( fwSide,  pRect);
+	 if ( !m_bInit )
+	 {
         CRect cr;
         GetWindowRect(&cr);
-        if ( nType != SIZE_MINIMIZED )
+        //if ( nType != SIZE_MINIMIZED )
         {
 
 
@@ -878,7 +890,7 @@ void CTxMsgChildFrame::OnSize(UINT nType, int cx, int cy)
     }
     else
     {
-        m_bInit = FALSE;
+      //  m_bInit = FALSE;
     }
     // TODO: Add your message handler code here
 }

@@ -593,9 +593,10 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             pcBuff = (char*) new char[dwSize];
-            memset(pcBuff, 0, dwSize);
+            
             if(pcBuff!=NULL)
             {
+				memset(pcBuff, 0, dwSize);
                 // Read the whole file and put the content to pcBuff;
                 dwRead = omStdiofile.Read(pcBuff,dwSize);
                 // Add end of string;
