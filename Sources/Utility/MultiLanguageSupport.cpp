@@ -20,66 +20,66 @@
 //Getting the function pointer for multilanguage support
 char* chGetText(char* __msgid)
 {
-	if(g_pfGetText == NULL)
-	{
-		
-		//hLibIntl = GetModuleHandle("intl.dll");
-		if (NULL == g_hLibIntl)
-		{
-			g_hLibIntl = LoadLibrary("intl.dll");
-		}
-		g_pfGetText = (PSGETTEXT)GetProcAddress(g_hLibIntl, "gettext");
-	}
-	if(g_pfGetText != NULL)
-	{
-		char* pReturn = g_pfGetText(__msgid);
-		int a = 0;
-		return pReturn;
-	}
-	else
-	{
-		return __msgid;
-	}
+    if(g_pfGetText == NULL)
+    {
+
+        //hLibIntl = GetModuleHandle("intl.dll");
+        if (NULL == g_hLibIntl)
+        {
+            g_hLibIntl = LoadLibrary("intl.dll");
+        }
+        g_pfGetText = (PSGETTEXT)GetProcAddress(g_hLibIntl, "gettext");
+    }
+    if(g_pfGetText != NULL)
+    {
+        char* pReturn = g_pfGetText(__msgid);
+        int a = 0;
+        return pReturn;
+    }
+    else
+    {
+        return __msgid;
+    }
 }
 
 char* textdomain(const char* __domainname)
 {
-	if(g_pfTextDomain == NULL)
-	{		
-		if (NULL == g_hLibIntl)
-		{
-			g_hLibIntl = LoadLibrary("intl.dll");
-		}
-		g_pfTextDomain = (PSTEXTDOMAIN)GetProcAddress(g_hLibIntl, "textdomain");
-	}
-	if(g_pfTextDomain != NULL)
-	{
-		char* pReturn = g_pfTextDomain(__domainname);
-		return pReturn;
-	}
-	else
-	{
-		return (char*) __domainname;
-	}
+    if(g_pfTextDomain == NULL)
+    {
+        if (NULL == g_hLibIntl)
+        {
+            g_hLibIntl = LoadLibrary("intl.dll");
+        }
+        g_pfTextDomain = (PSTEXTDOMAIN)GetProcAddress(g_hLibIntl, "textdomain");
+    }
+    if(g_pfTextDomain != NULL)
+    {
+        char* pReturn = g_pfTextDomain(__domainname);
+        return pReturn;
+    }
+    else
+    {
+        return (char*) __domainname;
+    }
 }
 
 char* bindtextdomain(const char* __domainname, const char* __dirname)
 {
-	if(g_pfBindTextDomain == NULL)
-	{		
-		if (NULL == g_hLibIntl)
-		{
-			g_hLibIntl = LoadLibrary("intl.dll");
-		}
-		g_pfBindTextDomain = (PSBINDTEXTDOMAIN)GetProcAddress(g_hLibIntl, "bindtextdomain");
-	}
-	if(g_pfBindTextDomain != NULL)
-	{
-		char* pReturn = g_pfBindTextDomain(__domainname, __dirname);
-		return pReturn;
-	}
-	else
-	{
-		return (char*) __domainname;
-	}
+    if(g_pfBindTextDomain == NULL)
+    {
+        if (NULL == g_hLibIntl)
+        {
+            g_hLibIntl = LoadLibrary("intl.dll");
+        }
+        g_pfBindTextDomain = (PSBINDTEXTDOMAIN)GetProcAddress(g_hLibIntl, "bindtextdomain");
+    }
+    if(g_pfBindTextDomain != NULL)
+    {
+        char* pReturn = g_pfBindTextDomain(__domainname, __dirname);
+        return pReturn;
+    }
+    else
+    {
+        return (char*) __domainname;
+    }
 }

@@ -650,7 +650,7 @@ CMainFrame::~CMainFrame()
 
 void CMainFrame::vGettextBusmaster()
 {
-    setlocale(LC_ALL, "");	
+    setlocale(LC_ALL, "");
     bindtextdomain("BUSMASTER", getenv("LOCALDIR"));
     textdomain("BUSMASTER");
 }
@@ -3852,8 +3852,8 @@ void CMainFrame::OnSelectMessage()
     {
         GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW);
     }
-	
-	HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
+
+    HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
 
     SMSGENTRY::vClearMsgList(psMsgEntry);
     psMsgEntry = NULL;
@@ -3883,22 +3883,22 @@ void CMainFrame::OnSelectMessage()
         {
             SFILTERAPPLIED_CAN sMsgWndFilter;
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-			
-			//store the previous filter
-			SFILTERAPPLIED_CAN		sTempAppliedFilter;
-			sTempAppliedFilter.bClone(sMsgWndFilter);
-			Filter_ReUpdateAppliedFilter(&sMsgWndFilter, &m_sFilterAppliedCAN, CAN);
 
-			//restore the enable flag for all filters
-			for(int nFilterCnt = 0; nFilterCnt < sTempAppliedFilter.m_ushTotal; nFilterCnt++)
-			{
-				if((sTempAppliedFilter.m_psFilters) != NULL)
-				{
-					((sMsgWndFilter.m_psFilters)+ nFilterCnt) ->m_bEnabled 
-									=  ((sTempAppliedFilter.m_psFilters)+ nFilterCnt) ->m_bEnabled;
-				}
-			}
-			::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+            //store the previous filter
+            SFILTERAPPLIED_CAN      sTempAppliedFilter;
+            sTempAppliedFilter.bClone(sMsgWndFilter);
+            Filter_ReUpdateAppliedFilter(&sMsgWndFilter, &m_sFilterAppliedCAN, CAN);
+
+            //restore the enable flag for all filters
+            for(int nFilterCnt = 0; nFilterCnt < sTempAppliedFilter.m_ushTotal; nFilterCnt++)
+            {
+                if((sTempAppliedFilter.m_psFilters) != NULL)
+                {
+                    ((sMsgWndFilter.m_psFilters)+ nFilterCnt) ->m_bEnabled
+                        =  ((sTempAppliedFilter.m_psFilters)+ nFilterCnt) ->m_bEnabled;
+                }
+            }
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
 
             //if msg filter is enable, disable it and then re-enable it to affect the changes
             if(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
@@ -14035,7 +14035,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     if (m_podUIThread != NULL)
                     {
                         m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
-						m_podUIThread->vClearTraceContents();
+                        m_podUIThread->vClearTraceContents();
                     }
                 }
             }
@@ -14281,7 +14281,7 @@ int CMainFrame::nLoadXMLConfiguration()
             break;
             case MSGWND_SECTION_ID:
             {
-                BYTE byVersion = 0;                    
+                BYTE byVersion = 0;
 
                 //Msg Attributes
                 SMESSAGE_ATTRIB sMsgAttrib;
@@ -14296,7 +14296,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     if(NULL != pNodeSet)
                     {
                         // Get the Message Count from xml
-                        sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;                        
+                        sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;
                         PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                         for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                         {
@@ -14332,7 +14332,7 @@ int CMainFrame::nLoadXMLConfiguration()
 
                                         COLORREF rgbTreeItem = RGB(GetBValue(dwColor),GetGValue(dwColor),GetRValue(dwColor));
 
-										pMessageAtt[i].sColor = rgbTreeItem;
+                                        pMessageAtt[i].sColor = rgbTreeItem;
                                         xmlFree(ptext);
                                     }
                                 }
@@ -14347,7 +14347,7 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
 
                 // Copying Message Buffer Details
-				/* Append buffer size */
+                /* Append buffer size */
                 xmlChar* pchAppBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Append_Buffer_Size";
 
                 pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchAppBuffSizePath);
@@ -14376,7 +14376,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     xmlXPathFreeObject (pPathObject);
                 }
 
-				/* Overwrite buffer size */
+                /* Overwrite buffer size */
                 xmlChar* pchOvrBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Overwrite_Buffer_Size";
 
                 pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchOvrBuffSizePath);
@@ -14405,7 +14405,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     xmlXPathFreeObject (pPathObject);
                 }
 
-				/* Display update time */
+                /* Display update time */
                 xmlChar* pchDispUpTimePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Display_Update_Time";
 
                 pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchDispUpTimePath);
@@ -14468,14 +14468,14 @@ int CMainFrame::nLoadXMLConfiguration()
                                   WM_NOTIFICATION_FROM_OTHER,
                                   eLOAD_DATABASE,
                                   (LPARAM)&(theApp.m_pouMsgSignal));
-                }                
+                }
 
                 if(sMsgAttrib.m_usMsgCount > 0)
                 {
                     //clear msg attributes
                     DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
                     sMsgAttrib.m_usMsgCount = 0;
-                }                
+                }
             }
             break;
             case LOG_SECTION_ID:
@@ -15576,7 +15576,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if (m_podUIThread != NULL)
                 {
                     m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
-					m_podUIThread->vClearTraceContents();
+                    m_podUIThread->vClearTraceContents();
                 }
                 if (byVersion == 0x2)//LogOnConnet option is introduced
                 {
@@ -15591,7 +15591,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if (m_podUIThread != NULL)
                 {
                     m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
-					m_podUIThread->vClearTraceContents();
+                    m_podUIThread->vClearTraceContents();
                 }
                 //Set default settings
             }

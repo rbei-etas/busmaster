@@ -2870,20 +2870,20 @@ void CTxMsgDetailsView::vUpdateFromPhysicalValue(int nItem, int nSubItem)
                 /*n64SigVal = static_cast<UINT64>(
                                 ( dSignVal - psSignal->m_fSignalOffset) /
                                 psSignal->m_fSignalFactor );*/
-				
-				// To handle the float data type precision values which is not zero
-				// (For Ex: 0.3000 is displayed as 0.300000001)
-				float f64SigVal = ( dSignVal - psSignal->m_fSignalOffset) / 
-												psSignal->m_fSignalFactor;
-				n64SigVal = static_cast<INT64>(f64SigVal);				
-				if (f64SigVal - (INT64)(f64SigVal) > 0.99990000)
-				{
-					n64SigVal = static_cast<INT64>(ceil(f64SigVal));
-				}
-				else if (f64SigVal - (INT64)(f64SigVal) < 0.99990000)
-				{
-					n64SigVal = static_cast<INT64>(floor(f64SigVal));
-				}
+
+                // To handle the float data type precision values which is not zero
+                // (For Ex: 0.3000 is displayed as 0.300000001)
+                float f64SigVal = ( dSignVal - psSignal->m_fSignalOffset) /
+                                  psSignal->m_fSignalFactor;
+                n64SigVal = static_cast<INT64>(f64SigVal);
+                if (f64SigVal - (INT64)(f64SigVal) > 0.99990000)
+                {
+                    n64SigVal = static_cast<INT64>(ceil(f64SigVal));
+                }
+                else if (f64SigVal - (INT64)(f64SigVal) < 0.99990000)
+                {
+                    n64SigVal = static_cast<INT64>(floor(f64SigVal));
+                }
             }
             else
             {
@@ -2891,16 +2891,16 @@ void CTxMsgDetailsView::vUpdateFromPhysicalValue(int nItem, int nSubItem)
                 /*un64SigVal = static_cast<UINT64>(
                                  ( dSignVal - psSignal->m_fSignalOffset) /
                                  psSignal->m_fSignalFactor );*/
-				 
-				// To handle the float data type precision values which is not zero
-				// (For Ex: 0.3000 is displayed as 0.300000001)
-				float f64SigVal = ( dSignVal - psSignal->m_fSignalOffset) / 
-												psSignal->m_fSignalFactor;
-				un64SigVal = static_cast<UINT64>(f64SigVal);
-				if (f64SigVal - (UINT64)(f64SigVal) > 0.99990000)
-				{
-					un64SigVal = static_cast<UINT64>(ceil(f64SigVal));
-				}
+
+                // To handle the float data type precision values which is not zero
+                // (For Ex: 0.3000 is displayed as 0.300000001)
+                float f64SigVal = ( dSignVal - psSignal->m_fSignalOffset) /
+                                  psSignal->m_fSignalFactor;
+                un64SigVal = static_cast<UINT64>(f64SigVal);
+                if (f64SigVal - (UINT64)(f64SigVal) > 0.99990000)
+                {
+                    un64SigVal = static_cast<UINT64>(ceil(f64SigVal));
+                }
             }
             // Check for Min-Max Limit
             // If signed extend the sign bit

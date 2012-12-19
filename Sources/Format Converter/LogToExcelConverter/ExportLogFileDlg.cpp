@@ -274,8 +274,8 @@ void CExportLogFileDlg::OnBnClickedConvert()
             //set the selected fields
             oExport.fnSetSelectedFields( &(this->m_omSelectedList) );
 
-			/* Set the bus type */
-			oExport.vSetBUSType(m_eBus);
+            /* Set the bus type */
+            oExport.vSetBUSType(m_eBus);
 
             //convert log file to excel file
             HRESULT hResult = oExport.bConvert();

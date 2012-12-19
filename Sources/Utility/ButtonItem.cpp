@@ -82,9 +82,9 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
             m_pomButton->SendMessage(WM_KILLFOCUS, 0, 0);
         }
         //DestroyWindow();
-		ShowWindow(SW_HIDE);
+        ShowWindow(SW_HIDE);
     }
-	//m_FocusKilled.SetEvent();
+    //m_FocusKilled.SetEvent();
 }
 
 CButtonItem::CButtonItem(CString omStrDefExt, CString omStrFilter)
@@ -130,7 +130,7 @@ void CButtonItem::OnKillFocus(CWnd* pNewWnd)
 
         }
         //DestroyWindow();
-		ShowWindow(SW_HIDE);
+        ShowWindow(SW_HIDE);
     }
 }
 

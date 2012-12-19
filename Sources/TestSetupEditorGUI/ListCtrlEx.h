@@ -120,8 +120,8 @@ private:
     // This is to store virtual column count
     int             m_nVirtualColumnCount;
 
-	CButtonItem*		m_pomDBRowButton;
-	CBrowseEditItem*	m_pomDBRowEdit;
+    CButtonItem*        m_pomDBRowButton;
+    CBrowseEditItem*    m_pomDBRowEdit;
     // Private Functions
     long lGetMapID(int nRow, int nCol);
 

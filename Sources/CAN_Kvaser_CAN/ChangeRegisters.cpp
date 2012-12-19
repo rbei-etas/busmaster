@@ -929,8 +929,8 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
                 omStrLocalBtr0 = m_omListCtrlBitTime.GetItemText(nItem,0);
                 omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
             }
-			/* If 0x is found, get rid of it*/
-			omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
+            /* If 0x is found, get rid of it*/
+            omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
 
             if(omStrLocalBtr1.IsEmpty() == FALSE && omStrLocalBtr0 == omStrBtr0)
             {
@@ -1535,8 +1535,8 @@ DOUBLE CChangeRegisters::dCalculateBaudRateFromBTRs(CString omStrBTR0,
     dBaudRate  = (DOUBLE)(_tstoi(defCLOCK)/ ( 2.0 * byBRP * byNBT ));
     dBaudRate  = dBaudRate * (defFACT_FREQUENCY / defFACT_BAUD_RATE);
 
-	/* covert to bps */
-	dBaudRate*=1000;
+    /* covert to bps */
+    dBaudRate*=1000;
 
     return dBaudRate;
 }

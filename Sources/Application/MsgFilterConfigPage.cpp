@@ -328,8 +328,8 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
     const SMAINENTRY& sMainEntry = SrcList.GetHead();
     int nCount  = sMainEntry.m_odSelEntryList.GetCount();
 
-	SFILTERAPPLIED_CAN    sTempAppliedFilter;
-	sTempAppliedFilter.bClone(sFilterApplied);
+    SFILTERAPPLIED_CAN    sTempAppliedFilter;
+    sTempAppliedFilter.bClone(sFilterApplied);
     sFilterApplied.vClear();
     sFilterApplied.m_psFilters = new SFILTERSET[nCount];
 
@@ -344,21 +344,21 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
         sFilterApplied.m_ushTotal++;
     }
 
-	//restore the enable flag for all filters
-	for(int nAppFilterCnt = 0; nAppFilterCnt < sFilterApplied.m_ushTotal; nAppFilterCnt++)
-	{
-		for(int nTempFilCnt = 0; nTempFilCnt < sTempAppliedFilter.m_ushTotal; nTempFilCnt++ )
-		{
-			if((&sTempAppliedFilter.m_psFilters[nTempFilCnt]) != NULL)
-			{
-				if(strcmp(sFilterApplied.m_psFilters[nAppFilterCnt].m_sFilterName.m_acFilterName,sTempAppliedFilter.m_psFilters[nTempFilCnt].m_sFilterName.m_acFilterName) == 0)
-				{
-					((sFilterApplied.m_psFilters)+ nAppFilterCnt) ->m_bEnabled 
-						=  ((sTempAppliedFilter.m_psFilters)+ nTempFilCnt) ->m_bEnabled;
-				}
-			}
-		}
-	}
+    //restore the enable flag for all filters
+    for(int nAppFilterCnt = 0; nAppFilterCnt < sFilterApplied.m_ushTotal; nAppFilterCnt++)
+    {
+        for(int nTempFilCnt = 0; nTempFilCnt < sTempAppliedFilter.m_ushTotal; nTempFilCnt++ )
+        {
+            if((&sTempAppliedFilter.m_psFilters[nTempFilCnt]) != NULL)
+            {
+                if(strcmp(sFilterApplied.m_psFilters[nAppFilterCnt].m_sFilterName.m_acFilterName,sTempAppliedFilter.m_psFilters[nTempFilCnt].m_sFilterName.m_acFilterName) == 0)
+                {
+                    ((sFilterApplied.m_psFilters)+ nAppFilterCnt) ->m_bEnabled
+                        =  ((sTempAppliedFilter.m_psFilters)+ nTempFilCnt) ->m_bEnabled;
+                }
+            }
+        }
+    }
 }
 /*******************************************************************************
   Function Name  : OnBtnConfigure

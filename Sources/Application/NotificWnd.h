@@ -54,7 +54,7 @@ public:
     BOOL bCreateNotificWindow(CMDIFrameWnd* pomParentWnd);
     // To display a string into trace window
     void vDisplayString(const CString& omStr);
-	void vClearTraceContents();
+    void vClearTraceContents();
 
     // Overrides
     // ClassWizard generated virtual function overrides
