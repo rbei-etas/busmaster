@@ -60,7 +60,7 @@ CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=NULL*/,
     m_psNodeStuctPtr = pNode;
     m_bIsNodeModified = FALSE;
     m_eBus = eBus;
-	m_bEdit = FALSE;
+    m_bEdit = FALSE;
 }
 
 
@@ -134,11 +134,11 @@ BOOL CNodeDetailsDlg::OnInitDialog()
         pWnd->ShowWindow(TRUE);
         m_omPreferedAddress.ShowWindow(TRUE);
         m_omEcuName.ShowWindow(TRUE);
-		if(m_bEdit == TRUE)
-		{
-			m_omPreferedAddress.EnableWindow(FALSE);
-			m_omEcuName.EnableWindow(FALSE);
-		}
+        if(m_bEdit == TRUE)
+        {
+            m_omPreferedAddress.EnableWindow(FALSE);
+            m_omEcuName.EnableWindow(FALSE);
+        }
     }
 
     // If Not NULL, mode is Edit,
@@ -256,7 +256,7 @@ void CNodeDetailsDlg::OnOK()
             m_bIsNodeModified = TRUE;
             m_psNodeStuctPtr->m_omStrNodeName = m_omStrNodeName;
         }
-		if ((m_psNodeStuctPtr->m_omStrDllName  != m_omStrDllPath) || (m_omStrDllPath.IsEmpty() == TRUE))
+        if ((m_psNodeStuctPtr->m_omStrDllName  != m_omStrDllPath) || (m_omStrDllPath.IsEmpty() == TRUE))
         {
             //If dll is changed
             m_bIsNodeModified = TRUE;
@@ -272,21 +272,21 @@ void CNodeDetailsDlg::OnOK()
             {
                 m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
             }
-			else // If "C" file is not found then search for "C++" file
-			{
-				omStrFilename = m_psNodeStuctPtr->m_omStrDllName;
-				omStrFilename.Replace(defDOT_DLL ,defDOT_SMALL_CPP);
-				if (_tfindfirst( omStrFilename.GetBuffer(MAX_PATH), &fileinfo) != -1L)
-				{
-					m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
-				}
-				// If the file name is empty
-				else if(omStrFilename.IsEmpty() == TRUE)
-				{
-					// If the file name is empty
-					m_psNodeStuctPtr->m_omStrFileName = omStrFilename;								
-				}
-			}
+            else // If "C" file is not found then search for "C++" file
+            {
+                omStrFilename = m_psNodeStuctPtr->m_omStrDllName;
+                omStrFilename.Replace(defDOT_DLL ,defDOT_SMALL_CPP);
+                if (_tfindfirst( omStrFilename.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+                {
+                    m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
+                }
+                // If the file name is empty
+                else if(omStrFilename.IsEmpty() == TRUE)
+                {
+                    // If the file name is empty
+                    m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
+                }
+            }
         }
         if (m_psNodeStuctPtr->m_byPrefAddress !=
                 (BYTE)(m_omPreferedAddress.lGetValue()))

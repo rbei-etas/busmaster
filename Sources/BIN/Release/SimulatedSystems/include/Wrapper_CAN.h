@@ -166,11 +166,11 @@ int getfirstcandbname_CAPL(char* cBuffer, DWORD size);
 
 typedef struct _InternalStructCAN
 {
-_InternalStructCAN()
-{
-	Trace("temporary Structure");
-}
-}InternalStructCAN;
+    _InternalStructCAN()
+    {
+        Trace("temporary Structure");
+    }
+} InternalStructCAN;
 _InternalStructCAN objcan;
 
 // Prototypes End

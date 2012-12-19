@@ -345,19 +345,19 @@ BOOL CCANMonitorApp::InitInstance()
         ostrCfgFilename = cmdInfo.m_strFileName;
     }
 
-	BOOL bValidDir = TRUE;
-	CFileFind findFile;
-	if (!ostrCfgFilename.IsEmpty() && !findFile.FindFile(ostrCfgFilename))
-	{
-		DWORD dwErr = GetLastError();
-		CString strMsg = "";
-		if (dwErr == ERROR_PATH_NOT_FOUND)
-		{
-			bValidDir = FALSE;
-			FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwErr, 0, strMsg.GetBuffer(1024), 1024, NULL);
-			AfxMessageBox(strMsg);
-		}
-	}
+    BOOL bValidDir = TRUE;
+    CFileFind findFile;
+    if (!ostrCfgFilename.IsEmpty() && !findFile.FindFile(ostrCfgFilename))
+    {
+        DWORD dwErr = GetLastError();
+        CString strMsg = "";
+        if (dwErr == ERROR_PATH_NOT_FOUND)
+        {
+            bValidDir = FALSE;
+            FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwErr, 0, strMsg.GetBuffer(1024), 1024, NULL);
+            AfxMessageBox(strMsg);
+        }
+    }
     if(ostrCfgFilename.IsEmpty() == FALSE && bValidDir == TRUE)
     {
         bInitialiseConfiguration(m_bFromAutomation);
@@ -437,10 +437,10 @@ void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd)
 
 int CCANMonitorApp::ExitInstance()
 {
-	if(g_hLibIntl)					//free the multi language support library, intl.dll
-	{
-		FreeLibrary(g_hLibIntl);
-	}
+    if(g_hLibIntl)                  //free the multi language support library, intl.dll
+    {
+        FreeLibrary(g_hLibIntl);
+    }
     if (ghLangInst)
     {
         FreeLibrary( ghLangInst );

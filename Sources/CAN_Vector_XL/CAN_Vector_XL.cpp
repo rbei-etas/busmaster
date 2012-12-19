@@ -1341,16 +1341,16 @@ HRESULT CDIL_CAN_VectorXL::CAN_StartHardware(void)
     }
 
     //If everything is ok start the read thread
-	if (hResult == S_OK)
-	{
-    if (sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_Vector_XL))
+    if (hResult == S_OK)
     {
-        hResult = S_OK;
-    }
-    else
-    {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Could not start the read thread") ));
-		}
+        if (sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_Vector_XL))
+        {
+            hResult = S_OK;
+        }
+        else
+        {
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Could not start the read thread") ));
+        }
     }
 
     return hResult;

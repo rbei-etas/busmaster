@@ -1127,9 +1127,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
             if(eNumFormat == HEXADECIMAL)
             {
-				UINT64 unDiv = 0xFFFFFFFFFFFFFFFF;
-				unDiv = unDiv >> (64-unSigLen);
-				n64SigVal &= unDiv;
+                UINT64 unDiv = 0xFFFFFFFFFFFFFFFF;
+                unDiv = unDiv >> (64-unSigLen);
+                n64SigVal &= unDiv;
                 sSigInfoTmp.m_omRawValue.Format("0x%I64X", n64SigVal);
             }
             else

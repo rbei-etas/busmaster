@@ -821,7 +821,7 @@ void CSimSysTreeView::vDisplayNodeMenu()
     }
     else
     {
-       // m_pomSubMenu->EnableMenuItem(IDM_EDIT_NODE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
+        // m_pomSubMenu->EnableMenuItem(IDM_EDIT_NODE, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
     }
     m_pomSubMenu->EnableMenuItem(IDM_DELETE_NODE, MF_BYCOMMAND | MF_ENABLED );
 
@@ -1547,7 +1547,7 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
             if (pNode != NULL)
             {
                 CNodeDetailsDlg odNodeDlg(m_eBus, pNode , NULL);
-				odNodeDlg.m_bEdit = TRUE;
+                odNodeDlg.m_bEdit = TRUE;
                 odNodeDlg.DoModal();
                 if (odNodeDlg.m_bIsNodeModified == TRUE)
                 {
@@ -1571,15 +1571,15 @@ void CSimSysTreeView::vAddEditNode(BOOL bMode)
                             omTree.InsertItem(pNode->m_omStrDllName, hSelItem);
                         }
                     }
-					else
-					{
-						// If dll is not found, deleting the dll from the node
-						HTREEITEM hChildDll  = omTree.GetChildItem(hSelItem);
+                    else
+                    {
+                        // If dll is not found, deleting the dll from the node
+                        HTREEITEM hChildDll  = omTree.GetChildItem(hSelItem);
                         if (hChildDll != NULL)
                         {
-							omTree.DeleteItem(hChildDll);
+                            omTree.DeleteItem(hChildDll);
                         }
-					}
+                    }
                     //Update det view
 
                     CSimSysDetView* pSimSysDetView =
@@ -2699,8 +2699,8 @@ void CSimSysTreeView::OnSimsysSaveAs()
             BOOL bReturn = pSimSysNodeInfo->bIsSimSysPresent( oCfgFilename );
             if(! bReturn )
             {
-				/* Save current simulated system */
-				CSimSysManager::ouGetSimSysManager(m_eBus).vSaveSimSys(omStrPathName);
+                /* Save current simulated system */
+                CSimSysManager::ouGetSimSysManager(m_eBus).vSaveSimSys(omStrPathName);
 
                 if(oCfgFilename.IsEmpty() == FALSE)
                 {

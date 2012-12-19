@@ -97,7 +97,7 @@ public:
     void vApplicationClosing();
     void vSaveAllSimSys();
     void vInitailizeSimSysInfo();
-	void vSaveSimSys(CString omStrSimSysName);
+    void vSaveSimSys(CString omStrSimSysName);
 
     //Patch up for loading the simsys configuration
     CStringArray m_omSimsysInConfigFile;

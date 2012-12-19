@@ -88,11 +88,11 @@ public:
     void fnSetSelectedFields(CListBox*);
     void GetErrorString(HRESULT hResult, string& omStrErrorString);
     void fnSetFields();
-	void vSetBUSType(ETYPE_BUS eBus);
+    void vSetBUSType(ETYPE_BUS eBus);
 
 private:
-	ETYPE_BUS m_eBus;
-	string m_strBUSNameInLog;
+    ETYPE_BUS m_eBus;
+    string m_strBUSNameInLog;
     CHAR_ARRAY_20* m_pacFields;
     map<string, DWORD> pFieldMapTbl;
     map<string, DWORD> :: const_iterator pMapValue;

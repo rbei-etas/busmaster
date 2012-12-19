@@ -38,14 +38,14 @@ typedef struct tagSCALCEXECTIMETHREAD
     CWinThread*     m_pomThreadPtr;
     CEvent          m_omExitThreadEvent;
     CTransmitMsg*   m_pTransmitMsg;
-	ETYPE_BUS		m_eBus; //Added for issue #356
+    ETYPE_BUS       m_eBus; //Added for issue #356
 
     tagSCALCEXECTIMETHREAD()
     {
         m_bThreadStop  = FALSE;
         m_pomThreadPtr = NULL;
         m_pTransmitMsg = NULL;
-		m_eBus = CAN;
+        m_eBus = CAN;
     }
 
 } SCALCEXECTIMETHREAD,*PSCALCEXECTIMETHREAD;
