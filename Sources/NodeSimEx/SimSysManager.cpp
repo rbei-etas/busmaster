@@ -80,11 +80,11 @@ void CSimSysManager::vSaveSimSys(CString omStrSimSysName)
     PSSIMSYSINFO psSimSys = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
     while (psSimSys != NULL)
     {
-		if ( omStrSimSysName.Compare(psSimSys->m_omStrSimSysName) == 0 )
-		{
-			m_omSimSysConfig.nSaveConfiguration(psSimSys->m_omStrSimSysName,
-												psSimSys );
-		}
+        if ( omStrSimSysName.Compare(psSimSys->m_omStrSimSysName) == 0 )
+        {
+            m_omSimSysConfig.nSaveConfiguration(psSimSys->m_omStrSimSysName,
+                                                psSimSys );
+        }
         psSimSys = psSimSys->m_psSimsysNext;
     }
 }

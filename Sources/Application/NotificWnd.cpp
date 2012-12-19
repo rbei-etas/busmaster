@@ -462,8 +462,8 @@ LRESULT CNotificWnd::DoConfigOperation(WPARAM WParam, LPARAM LParam)
 */
 void CNotificWnd ::vClearTraceContents()
 {
-	/* Clear contents */
-	m_omListBox.ResetContent();
+    /* Clear contents */
+    m_omListBox.ResetContent();
 }
 
 /******************************************************************************

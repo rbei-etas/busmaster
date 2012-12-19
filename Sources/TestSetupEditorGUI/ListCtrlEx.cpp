@@ -73,9 +73,9 @@ CListCtrlEx::CListCtrlEx() : m_bSingleClickActivate(FALSE)
     m_colRow2 =     def_COLOR_SECONDROW;
     m_colRow1 =     def_COLOR_FIRSTROW;
 
-	m_pomDBRowButton = NULL;
+    m_pomDBRowButton = NULL;
 
-	m_pomDBRowEdit = NULL;
+    m_pomDBRowEdit = NULL;
 
 }
 
@@ -91,7 +91,7 @@ CListCtrlEx::CListCtrlEx() : m_bSingleClickActivate(FALSE)
 ******************************************************************************/
 CListCtrlEx::~CListCtrlEx()
 {
-	
+
 }
 
 
@@ -986,28 +986,28 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     omButtonRect.left = omRect.right - def_WIDTH_BUTTON;
     omEditRect.right = omRect.right - def_HEIGHT_BUTTON;
 
-	//delete the previous pointers
-	/*if(m_pomDBRowButton != NULL)
-	{
-		if(m_pomDBRowButton->m_pomEditItem != NULL)
-		{
-			delete m_pomDBRowButton->m_pomEditItem;
-			m_pomDBRowButton->m_pomEditItem = NULL;
-		}
-	  delete m_pomDBRowButton;
-	  m_pomDBRowButton = NULL;
-	}*/
-	if(m_pomDBRowEdit != NULL)
-	{
-		if(m_pomDBRowEdit->m_pomButton!= NULL)
-		{
-			delete m_pomDBRowEdit->m_pomButton;
-			m_pomDBRowEdit->m_pomButton = NULL;
-		}
-	  delete m_pomDBRowEdit;
-	  m_pomDBRowEdit = NULL;
-	}
-	
+    //delete the previous pointers
+    /*if(m_pomDBRowButton != NULL)
+    {
+        if(m_pomDBRowButton->m_pomEditItem != NULL)
+        {
+            delete m_pomDBRowButton->m_pomEditItem;
+            m_pomDBRowButton->m_pomEditItem = NULL;
+        }
+      delete m_pomDBRowButton;
+      m_pomDBRowButton = NULL;
+    }*/
+    if(m_pomDBRowEdit != NULL)
+    {
+        if(m_pomDBRowEdit->m_pomButton!= NULL)
+        {
+            delete m_pomDBRowEdit->m_pomButton;
+            m_pomDBRowEdit->m_pomButton = NULL;
+        }
+        delete m_pomDBRowEdit;
+        m_pomDBRowEdit = NULL;
+    }
+
     if(omList.GetSize() >=2)
     {
         m_pomDBRowButton  = new CButtonItem(omList.GetAt(0), omList.GetAt(1));

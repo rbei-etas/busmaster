@@ -598,8 +598,8 @@ bool CTxWndDataStore::pbySetConfigData(xmlDocPtr pDoc)
 
     if(pDoc == NULL)
     {
-		m_sTxWndPlacement.rcNormalPosition.top = -1;
-		m_sTxWndPlacement.length = 0;
+        m_sTxWndPlacement.rcNormalPosition.top = -1;
+        m_sTxWndPlacement.length = 0;
         return false;
     }
     xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Tx_Window";
@@ -800,109 +800,109 @@ bool CTxWndDataStore::bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr)
 {
     xmlNodePtr pChildNode = NULL;
     string   strVar;
-	{
-    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_0))
     {
-        pChildNode = pxmlNodePtr->children;
-			while(pChildNode != NULL)
-			{
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_0))
         {
-            m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = atoi(strVar.c_str());
+            pChildNode = pxmlNodePtr->children;
+            while(pChildNode != NULL)
+            {
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = atoi(strVar.c_str());
+                }
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1] = atoi(strVar.c_str());
+                }
+                pChildNode = pChildNode->next;
+            }
         }
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
-        {
-            m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][1] = atoi(strVar.c_str());
-        }
-				pChildNode = pChildNode->next;
-    }
-		}
 
-    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_1))
-    {
-        pChildNode = pxmlNodePtr->children;
-			while(pChildNode != NULL)
-			{
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_1))
         {
-            m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0] = atoi(strVar.c_str());
+            pChildNode = pxmlNodePtr->children;
+            while(pChildNode != NULL)
+            {
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][0] = atoi(strVar.c_str());
+                }
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1] = atoi(strVar.c_str());
+                }
+                pChildNode = pChildNode->next;
+            }
         }
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
-        {
-            m_sTxMsgWndSplitterPos.m_nRootSplitterData[1][1] = atoi(strVar.c_str());
-        }
-				pChildNode = pChildNode->next;
-    }
-		}
 
-    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_LEFT_0))
-    {
-        pChildNode = pxmlNodePtr->children;
-			while(pChildNode != NULL)
-			{
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_LEFT_0))
         {
-            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0] = atoi(strVar.c_str());
+            pChildNode = pxmlNodePtr->children;
+            while(pChildNode != NULL)
+            {
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][0] = atoi(strVar.c_str());
+                }
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1] = atoi(strVar.c_str());
+                }
+                pChildNode = pChildNode->next;
+            }
         }
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
-        {
-            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[0][1] = atoi(strVar.c_str());
-        }
-				pChildNode = pChildNode->next;
-    }
-		}
 
-    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_LEFT_1))
-    {
-        pChildNode = pxmlNodePtr->children;
-			while(pChildNode != NULL)
-			{
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_LEFT_1))
         {
-            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0] = atoi(strVar.c_str());
+            pChildNode = pxmlNodePtr->children;
+            while(pChildNode != NULL)
+            {
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][0] = atoi(strVar.c_str());
+                }
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1] = atoi(strVar.c_str());
+                }
+                pChildNode = pChildNode->next;
+            }
         }
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
-        {
-            m_sTxMsgWndSplitterPos.m_nLeftViewSplitterData[1][1] = atoi(strVar.c_str());
-        }
-				pChildNode = pChildNode->next;
-    }
-		}
 
-    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_RIGHT_0))
-    {
-        pChildNode = pxmlNodePtr->children;
-			while(pChildNode != NULL)
-			{
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_RIGHT_0))
         {
-            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0] = atoi(strVar.c_str());
+            pChildNode = pxmlNodePtr->children;
+            while(pChildNode != NULL)
+            {
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][0] = atoi(strVar.c_str());
+                }
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1] = atoi(strVar.c_str());
+                }
+                pChildNode = pChildNode->next;
+            }
         }
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
-        {
-            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[0][1] = atoi(strVar.c_str());
-        }
-				pChildNode = pChildNode->next;
-    }
-		}
 
-    if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_RIGHT_1))
-    {
-        pChildNode = pxmlNodePtr->children;
-			while(pChildNode != NULL)
-			{
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+        if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_RIGHT_1))
         {
-            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][0] = atoi(strVar.c_str());
+            pChildNode = pxmlNodePtr->children;
+            while(pChildNode != NULL)
+            {
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_IDEAL,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][0] = atoi(strVar.c_str());
+                }
+                if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
+                {
+                    m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][1] = atoi(strVar.c_str());
+                }
+                pChildNode = pChildNode->next;
+            }
         }
-        if(xmlUtils::GetDataFrmNode(pChildNode,DEF_CX_MIN,strVar))
-        {
-            m_sTxMsgWndSplitterPos.m_nRightViewSplitterData[1][1] = atoi(strVar.c_str());
-        }
-				pChildNode = pChildNode->next;
-			}
-		}
-		pxmlNodePtr = pxmlNodePtr->next;
+        pxmlNodePtr = pxmlNodePtr->next;
     }
     return true;
 }

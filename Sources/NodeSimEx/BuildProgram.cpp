@@ -593,10 +593,10 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             pcBuff = (char*) new char[dwSize];
-            
+
             if(pcBuff!=NULL)
             {
-				memset(pcBuff, 0, dwSize);
+                memset(pcBuff, 0, dwSize);
                 // Read the whole file and put the content to pcBuff;
                 dwRead = omStdiofile.Read(pcBuff,dwSize);
                 // Add end of string;
@@ -628,17 +628,17 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
                 if(nIndex>=0)
                 {
                     nIndex = m_omStrSourceFilename.ReverseFind('.');
-					if(nIndex>=0)
-					{
-					    omTemp = m_omStrSourceFilename.Left(nIndex);
-					    // Replace all occurrence of "<INSTALLDIR>" string with template path
-					    omStrFile.Replace("<INPUTFILE>",omTemp);
-					}
-					omTemp = m_omStrSourceFilename;
-					omTemp.Replace('\\', '/');
-					omTemp.Replace(" ", "\\ ");
-					omStrFile.Replace("<CPPFILE>", omTemp);
-					bReturn = TRUE;
+                    if(nIndex>=0)
+                    {
+                        omTemp = m_omStrSourceFilename.Left(nIndex);
+                        // Replace all occurrence of "<INSTALLDIR>" string with template path
+                        omStrFile.Replace("<INPUTFILE>",omTemp);
+                    }
+                    omTemp = m_omStrSourceFilename;
+                    omTemp.Replace('\\', '/');
+                    omTemp.Replace(" ", "\\ ");
+                    omStrFile.Replace("<CPPFILE>", omTemp);
+                    bReturn = TRUE;
                 }
             }
             omStdiofile.Close();

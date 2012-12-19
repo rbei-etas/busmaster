@@ -40,7 +40,7 @@ private:
 public:
     BOOL bCreateTraceWindow(CMDIFrameWnd*);
     void vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoTrace);
-	void vClearTraceContents();
+    void vClearTraceContents();
     // To display texts on the trace window
     void vAddString(CString omStr);
     // To know if the trace window is visible

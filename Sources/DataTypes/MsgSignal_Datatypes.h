@@ -54,7 +54,7 @@ enum eWAVEFORMTYPE
     eWave_SINE,
     eWave_TRIANGLE,
     eWave_COS,
-	eWave_SAWTOOTH
+    eWave_SAWTOOTH
 };
 
 struct sINTERPRETSIGNALINFO

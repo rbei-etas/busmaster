@@ -194,7 +194,7 @@ void CUIThread::vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoT
 */
 void CUIThread::vClearTraceContents()
 {
-	m_podTraceWinObj->vClearTraceContents();
+    m_podTraceWinObj->vClearTraceContents();
 }
 
 BEGIN_MESSAGE_MAP(CUIThread, CWinThread)

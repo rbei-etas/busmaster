@@ -192,11 +192,11 @@ void CSimSysDetView::OnButtonBuild()
         }
         else  // if the build is unsuccessfull
         {
-			CString strErrMsg = "The file is not properly built.";
-			if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
-			{
-				strErrMsg += " Please unload the dll and try again!!";
-			}			
+            CString strErrMsg = "The file is not properly built.";
+            if (m_psNodeInfo->m_bIsDllLoaded == TRUE)
+            {
+                strErrMsg += " Please unload the dll and try again!!";
+            }
             AfxMessageBox(strErrMsg);
         }
     }

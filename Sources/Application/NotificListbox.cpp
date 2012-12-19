@@ -110,7 +110,7 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
                 UINT unEnable;
                 /* If no item is selected, make "Clear" and "Delete" menu
                 items disabled */
-				if (GetSelCount() <= 0)
+                if (GetSelCount() <= 0)
                 {
                     unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
                 }
@@ -118,10 +118,10 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
                 {
                     unEnable = MF_BYCOMMAND | MF_ENABLED;
                 }
-				/* Clear should be commented as it is not dependent on selected item count */
+                /* Clear should be commented as it is not dependent on selected item count */
                 //pomSubMenu->EnableMenuItem(IDM_OPRTN_CLEAR, unEnable);
                 pomSubMenu->EnableMenuItem(IDM_OPRTN_DELETE, unEnable);
-				pomSubMenu->EnableMenuItem(ID_NOTIFICWND_COPYTOCLIPBOARD, unEnable);
+                pomSubMenu->EnableMenuItem(ID_NOTIFICWND_COPYTOCLIPBOARD, unEnable);
 
                 pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
                                            omSrcPt.x, omSrcPt.y, this, NULL);
