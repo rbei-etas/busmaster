@@ -174,11 +174,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "J1939", "DIL_J1939\J1939.vc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Include", "Include\Include.vcproj", "{4890AE40-CF77-41F3-BBC6-066AE26DF77C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DMGraph", "..\EXTERNAL_SOURCE\DmGraph\DMGraph.vcproj", "{9D8AF453-01BC-44C9-9753-568BCEA38D4E}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_IXXAT_VCI", "CAN_IXXAT_VCI\CAN_IXXAT_VCI.vcproj", "{F920F538-A4B0-4EB6-81FC-6011E9C1806F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_VSCOM", "CAN_VSCOM\CAN_VSCOM.vcproj", "{0C047CC0-42B6-4386-A2F0-1DCCE9A2AEFE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DMGraph", "..\EXTERNAL_SOURCE\DmGraph\DMGraph.vcproj", "{9D8AF453-01BC-44C9-9753-568BCEA38D4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -512,18 +512,6 @@ Global
 		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
 		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
 		{4890AE40-CF77-41F3-BBC6-066AE26DF77C}.Unicode Release|Win32.ActiveCfg = Release|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Debug|Win32.ActiveCfg = Unicode Debug|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Debug|Win32.Build.0 = Unicode Debug|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Release|Win32.ActiveCfg = Unicode Release MinSize|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Release|Win32.Build.0 = Unicode Release MinSize|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release MinSize|Win32.ActiveCfg = Unicode Release MinSize|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release MinSize|Win32.Build.0 = Unicode Release MinSize|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release|Win32.ActiveCfg = Unicode Release MinSize|Win32
-		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release|Win32.Build.0 = Unicode Release MinSize|Win32
 		{F920F538-A4B0-4EB6-81FC-6011E9C1806F}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
 		{F920F538-A4B0-4EB6-81FC-6011E9C1806F}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
 		{F920F538-A4B0-4EB6-81FC-6011E9C1806F}.Debug|Win32.ActiveCfg = Debug|Win32
@@ -544,6 +532,18 @@ Global
 		{0C047CC0-42B6-4386-A2F0-1DCCE9A2AEFE}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{0C047CC0-42B6-4386-A2F0-1DCCE9A2AEFE}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{0C047CC0-42B6-4386-A2F0-1DCCE9A2AEFE}.Unicode Release|Win32.Build.0 = Release|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.busmaster_debug|Win32.ActiveCfg = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.busmaster_debug|Win32.Build.0 = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Debug|Win32.Build.0 = Unicode Debug|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Release|Win32.ActiveCfg = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Release|Win32.Build.0 = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Debug|Win32.ActiveCfg = Unicode Debug|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Debug|Win32.Build.0 = Unicode Debug|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release MinSize|Win32.ActiveCfg = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release MinSize|Win32.Build.0 = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release|Win32.ActiveCfg = Unicode Release MinSize|Win32
+		{9D8AF453-01BC-44C9-9753-568BCEA38D4E}.Unicode Release|Win32.Build.0 = Unicode Release MinSize|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
