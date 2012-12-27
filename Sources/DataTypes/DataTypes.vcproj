@@ -206,7 +206,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
 				OutputFile="$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 			/>
