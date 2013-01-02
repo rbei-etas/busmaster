@@ -1767,7 +1767,13 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         if(ouHeaderInfo.m_omDatabasePath == "")
         {
             ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
-            m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName);
+            if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
+			{
+				// Remove the entry from the list box
+				ouHeaderInfo.m_omDatabasePath = "";
+				m_ouTSEntity.SetHeaderData(ouHeaderInfo);
+				vDisplayHeaderInfo(0);
+			}
         }
         else
         {
@@ -1783,7 +1789,13 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
                 if(nRetVal == IDOK)
                 {
                     ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
-                    m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName);
+                    if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
+					{
+						// Remove the entry from the list box
+						ouHeaderInfo.m_omDatabasePath = "";
+						m_ouTSEntity.SetHeaderData(ouHeaderInfo);
+						vDisplayHeaderInfo(0);
+					}
                     m_ouTSEntity.vDeleteAllSubMessages();
                     OnDisplayReset();
                 }

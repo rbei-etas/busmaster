@@ -21,7 +21,7 @@
 #include "..\FormatConverterApp\MultiLanguage.h"
 
 
-static AFX_EXTENSION_MODULE CAPL2CConvereterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE CAPL2CConverterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -42,7 +42,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         TRACE0("CAPL2CConverter.DLL Initializing!\n");
 
         // Extension DLL one-time initialization
-        if (!AfxInitExtensionModule(CAPL2CConvereterDLL, hInstance))
+        if (!AfxInitExtensionModule(CAPL2CConverterDLL, hInstance))
         {
             return 0;
         }
@@ -80,11 +80,11 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         shLangInst =  CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
         if (shLangInst)
         {
-            CAPL2CConvereterDLL.hResource = shLangInst;
+            CAPL2CConverterDLL.hResource = shLangInst;
         }
         // End of Multiple Language support
 
-        new CDynLinkLibrary(CAPL2CConvereterDLL);
+        new CDynLinkLibrary(CAPL2CConverterDLL);
 
     }
     else if (dwReason == DLL_PROCESS_DETACH)
@@ -92,7 +92,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         TRACE0("CAPL2CConverter.DLL Terminating!\n");
 
         // Terminate the library before destructors are called
-        AfxTermExtensionModule(CAPL2CConvereterDLL);
+        AfxTermExtensionModule(CAPL2CConverterDLL);
     }
     return 1;   // ok
 }
@@ -105,6 +105,6 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
 extern "C" __declspec(dllexport) HRESULT GetBaseConverter(CBaseConverter*& pouConverter)
 {
-    pouConverter = new CCAPL2CConvereter();
+    pouConverter = new CCAPL2CConverter();
     return S_OK;
 }

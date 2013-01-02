@@ -235,8 +235,13 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             omStrHeaderString.MakeUpper();
             CString omStrTemp;
             omStrTemp.Format(H_FILE_HEADER_START,omStrHeaderString,omStrHeaderString);
+			
             // Add Header "ifndef..."
             omHeaderFile.WriteString(omStrTemp);
+
+			// Add Pragma Pack
+			/*omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
+			omHeaderFile.WriteString(omStrTemp);*/
 
             CString omStrDLC = STR_EMPTY;
             UINT aunSigStartBit[defMAX_SIGNALS] ;
