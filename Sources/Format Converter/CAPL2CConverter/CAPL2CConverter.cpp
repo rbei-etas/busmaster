@@ -5,13 +5,13 @@
 #include "CAPL2CPropertyPage.h"
 
 
-CCAPL2CConvereter::CCAPL2CConvereter(void)
+CCAPL2CConverter::CCAPL2CConverter(void)
 {
 
 
 }
 
-HRESULT CCAPL2CConvereter::GettextBusmaster(void)
+HRESULT CCAPL2CConverter::GettextBusmaster(void)
 {
     setlocale(LC_ALL,"");
     bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
@@ -20,7 +20,7 @@ HRESULT CCAPL2CConvereter::GettextBusmaster(void)
 }
 
 
-HRESULT CCAPL2CConvereter::GetHelpText(string& pchHelpText)
+HRESULT CCAPL2CConverter::GetHelpText(string& pchHelpText)
 {
     /*if(pchHelpText != NULL)
     {
@@ -29,7 +29,7 @@ HRESULT CCAPL2CConvereter::GetHelpText(string& pchHelpText)
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetConverterName(string& strConverterName)
+HRESULT CCAPL2CConverter::GetConverterName(string& strConverterName)
 {
     /*if(strConverterName != NULL)
     {
@@ -37,7 +37,7 @@ HRESULT CCAPL2CConvereter::GetConverterName(string& strConverterName)
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
+HRESULT CCAPL2CConverter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
 {
     /*switch( hResult )
     {
@@ -59,7 +59,7 @@ HRESULT CCAPL2CConvereter::GetErrorStatus(HRESULT hResult, string& omstrStatus)
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
+HRESULT CCAPL2CConverter::GetInputFileFilters(string& pchInputDefFilters, string& pchInputFilters)
 {
     /*HRESULT hResult = S_FALSE;
     if(NULL != pchInputDefFilters)
@@ -78,14 +78,14 @@ HRESULT CCAPL2CConvereter::GetInputFileFilters(string& pchInputDefFilters, strin
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
+HRESULT CCAPL2CConverter::GetLastConversionStatus(HRESULT& hResult, string& omstrStatus)
 {
     /*hResult = m_hResult;
     omstrStatus = m_omstrConversionStatus;*/
     return S_FALSE;
 }
 
-HRESULT CCAPL2CConvereter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
+HRESULT CCAPL2CConverter::GetOutputFileFilters(string& pchOutputDefFilters, string& pchOutputFilters)
 {
     /*HRESULT hResult = S_FALSE;
     if(NULL != pchOutputDefFilters)
@@ -104,19 +104,19 @@ HRESULT CCAPL2CConvereter::GetOutputFileFilters(string& pchOutputDefFilters, str
     }*/
     return S_FALSE;
 }
-HRESULT CCAPL2CConvereter::ConvertFile(string& chInputFile, string& chOutputFile)
+HRESULT CCAPL2CConverter::ConvertFile(string& chInputFile, string& chOutputFile)
 {
     return S_FALSE;
 }
-BOOL CCAPL2CConvereter::bHaveOwnWindow()
+BOOL CCAPL2CConverter::bHaveOwnWindow()
 {
     return TRUE;
 }
-CCAPL2CConvereter::~CCAPL2CConvereter(void)
+CCAPL2CConverter::~CCAPL2CConverter(void)
 {
 };
 
-HRESULT CCAPL2CConvereter::GetPropertyPage(CPropertyPage*& pPage)
+HRESULT CCAPL2CConverter::GetPropertyPage(CPropertyPage*& pPage)
 {
     pPage = new CCAPL2CPropertyPage();
     return S_FALSE;

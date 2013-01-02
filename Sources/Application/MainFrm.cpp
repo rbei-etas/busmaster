@@ -11681,46 +11681,29 @@ void CMainFrame::OnFileConverter()
         }
 
         // Get the working directory
-        CString strPath;
-        char* pstrExePath = strPath.GetBuffer (MAX_PATH);
-        ::GetModuleFileName (0, pstrExePath, MAX_PATH);
-        strPath.ReleaseBuffer ();
-        strPath = strPath.Left(strPath.ReverseFind(92));
+		char acPath[MAX_PATH] = "";
+		GetModuleFileName( NULL, acPath, MAX_PATH );
+		PathRemoveFileSpec(acPath);
+		CString strPath = acPath;
+        strPath += "\\FormatConverter.exe";
 
-        //CString strSlash = _("\\");
+		if(PathFileExists(strPath) == TRUE)
+		{
+			// Launch the converter utility
+			PROCESS_INFORMATION sProcessInfo;
+			STARTUPINFO sStartInfo;
 
-        //strPath = strPath.Left(strPath.ReverseFind((TCHAR)strSlash.GetBuffer(strSlash.GetLength())));
+			memset(&sProcessInfo, 0, sizeof(PROCESS_INFORMATION));
+			memset(&sStartInfo, 0, sizeof(STARTUPINFO));
 
-        // Launch the converter utility
-        CString omCurrExe;
-        omCurrExe.Format("%s\\FormatConverter.exe", strPath);
-
-        PROCESS_INFORMATION sProcessInfo;
-        STARTUPINFO sStartInfo;
-        SECURITY_ATTRIBUTES sSecurityAttr;
-
-        INT nSuccess = CreateProcess(   omCurrExe.GetBuffer(MAX_PATH), "", NULL, NULL,
-                                        true, CREATE_NO_WINDOW, NULL, NULL,
-                                        &sStartInfo, &sProcessInfo);
-        m_hProcess = sProcessInfo.hProcess;
-        /*SHELLEXECUTEINFO sei;
-        sei.cbSize = sizeof(SHELLEXECUTEINFO);
-        sei.fMask = SEE_MASK_NOCLOSEPROCESS;
-        sei.hwnd = NULL;
-        sei.lpVerb = _T(_("open"));
-        sei.lpParameters = NULL;
-        sei.lpFile = omCurrExe;
-        sei.nShow = SW_SHOWNORMAL;
-        sei.hInstApp = NULL;
-        sei.lpIDList = NULL;
-        sei.lpClass = NULL;
-        sei.hkeyClass = NULL;
-        sei.dwHotKey = NULL;
-        sei.hIcon = NULL;
-        sei.hProcess = NULL;
-        sei.lpDirectory = NULL;
-        ::ShellExecuteEx(&sei);
-        m_hProcess = sei.hProcess;*/
+			INT nSuccess = CreateProcess(   strPath.GetBuffer(MAX_PATH), "", NULL, NULL,
+											true, CREATE_NO_WINDOW, NULL, NULL,
+											&sStartInfo, &sProcessInfo);
+			if (nSuccess != 0)
+			{
+				m_hProcess = sProcessInfo.hProcess;
+			}
+		}
     }
     catch(...)
     {

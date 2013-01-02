@@ -2412,6 +2412,7 @@ void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
         (GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER))->EnableWindow(FALSE);
         (GetDlgItem(IDC_EDIT_TRG_TIME_VAL))->EnableWindow(FALSE);
         m_omTimeDelayBtwnBlocks.EnableWindow(TRUE);
+		m_bDelayBtnBlocks = true;
         if(m_omDelayBtwnBlocks.IsWindowEnabled() == FALSE)
         {
             m_omTimeDelayBtwnBlocks.EnableWindow(FALSE);
@@ -2422,17 +2423,17 @@ void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
         {
             m_omTimeDelayBtwnBlocks.SetWindowTextA("100");
         }
-        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;  //update the global variable
-        CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+
         if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
         {
             UINT                    unTimerVal;
             CString                 csTimerVal;
             GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
             unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
-            m_bDelayBtnBlocks = true;
             CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
             CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
+			CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;  //update the global variable
+			CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
         }
         for(int nCnt =0; nCnt < m_omLctrMsgBlockName.GetItemCount(); nCnt++)
         {
@@ -2465,14 +2466,13 @@ void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
 
         m_omTimeDelayBtwnBlocks.EnableWindow(FALSE);
         (GetDlgItem(IDC_CHKB_ON_TIME_TRIGGER))->EnableWindow(TRUE);
-
-        if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
-        {
-            m_bDelayBtnBlocks = false;
-        }
-        CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
-        CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
-
+		m_bDelayBtnBlocks = false;
+       
+		if(CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled)
+		{
+			CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+			CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+		}
         for(int nCnt = 0; nCnt < m_omLctrMsgBlockName.GetItemCount(); nCnt++)
         {
             psMsgBlock = psGetMsgBlockPointer(nCnt, m_psMsgBlockList);
