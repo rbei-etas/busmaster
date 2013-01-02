@@ -231,7 +231,7 @@ typedef CList<int,int>      defomIntegerList;
 
 #define H_FILE_HEADER_START "#pragma once"
 //#define H_FILE_HEADER_START     "#ifndef %s_UNIONS_H_\n#define %s_UNIONS_H_\n#pragma pack(push,8)\n"
-//#define H_FILE_HEADER_END       "\n\n#pragma pack(pop,8)\n#endif"
+#define H_FILE_HEADER_PRAGMA_PACK "\n#pragma pack(pop,8)"
 #define GLOBALS                 "Global Variable(s)"
 
 // for creating new fonts

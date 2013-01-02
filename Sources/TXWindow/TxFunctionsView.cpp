@@ -393,6 +393,24 @@ void CTxFunctionsView::vApplyChanges()
             pTxWnd->vUpdateWndCo_Ords();
 
         }
+		if(pomBlockView->m_omDelayBtwnBlocks.GetCheck() == BST_CHECKED)
+		{
+			CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = true;  //update the global variable
+			CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
+
+			 UINT                    unTimerVal;
+            CString                 csTimerVal;
+            pomBlockView->GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, csTimerVal);
+            unTimerVal = (UINT)atol(csTimerVal.GetBuffer(0));
+
+			CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks = unTimerVal;
+            CTxMsgManager::s_unTimeDelayBtnMsgBlocks = unTimerVal;
+		}
+		else
+		{
+			CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = false;
+			CTxMsgManager::s_bDelayBetweenBlocksOnly = false;
+		}
         /* CString                     csTimeDelay;
          ((CEdit*)pomBlockView->GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->GetWindowTextA(csTimeDelay);
          CTxMsgManager::s_unTimeDelayBtnMsgBlocks = atol(csTimeDelay.GetBuffer(0));*/
@@ -664,7 +682,27 @@ void CTxFunctionsView::vReloadData()
 
 void CTxFunctionsView::OnInvokeClose()
 {
-    if( m_omButtonApply.IsWindowEnabled() == TRUE )
+	CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+
+	if(pBlocksView != NULL)
+	{
+		bool		bUnChanged = true;
+		PSMSGBLOCKLIST psMsgBlock = NULL;
+		psMsgBlock = pBlocksView->psGetMsgBlockPointer(
+										0,
+										pBlocksView->m_psMsgBlockList );
+	
+		bUnChanged = CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock);
+		if(pBlocksView->m_bDelayBtnBlocks != CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+		{
+			bUnChanged = false;
+		}
+		if(bUnChanged == true)
+		{
+			return;
+		}
+	}
+	if( m_omButtonApply.IsWindowEnabled() == TRUE )
     {
         if( AfxMessageBox( defSTR_TX_SAVE_CONFIRMATION,
                            MB_YESNO | MB_ICONQUESTION ) == IDYES )
@@ -674,11 +712,11 @@ void CTxFunctionsView::OnInvokeClose()
         }
         else
         {
-            CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+           
             if(pBlocksView != NULL)
             {
-                CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = pBlocksView->m_bDelayBtnBlocks;
-                CTxMsgManager::s_bDelayBetweenBlocksOnly = pBlocksView->m_bDelayBtnBlocks;
+               // CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = pBlocksView->m_bDelayBtnBlocks;
+               // CTxMsgManager::s_bDelayBetweenBlocksOnly = pBlocksView->m_bDelayBtnBlocks;
             }
         }
     }
