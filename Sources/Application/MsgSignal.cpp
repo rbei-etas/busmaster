@@ -1316,6 +1316,10 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
     bReturnValue = bValidateDatabaseFile(strFileName);
     if ( bReturnValue )
     {
+		char* charArray = NULL;
+		char szSep;
+		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+
         // For File I/O
         CStdioFile o_File;
         FLOAT fDBVerNum = 0;
@@ -1933,6 +1937,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         if (  nIndex != -1 )
                                                         {
                                                             CString sTmp = sMsgDet.Left(nIndex);
+															charArray = T2A(sTmp.GetBuffer(MAX_PATH));
+															vReplaceChar(charArray,'.', szSep);
 
                                                             sTempSg->m_fSignalOffset = (float)atof(sTmp);
 
@@ -1957,6 +1963,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         if (  nIndex != -1 )
                                                         {
                                                             CString sTmp = sMsgDet.Left(nIndex);
+															charArray = T2A(sTmp.GetBuffer(MAX_PATH));
+															vReplaceChar(charArray,'.', szSep);
 
                                                             sTempSg->m_fSignalFactor = (float)atof(sTmp);
 
@@ -2236,6 +2244,26 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
 
     return (bReturnValue);
 }
+
+/**
+* \brief         Replaces first occurance of a character in a char array with a new character
+* \param[out]    Char array to be used
+* \param[in]     character to be replaced
+* \param[in]     new character used for replacement
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          03.01.2013 Created
+*/
+void vReplaceChar(char str[], char chOld, char chNew)
+{
+	char* ptrOccured = NULL;
+	ptrOccured = strchr(str, chOld);
+	if ( ptrOccured != 0)
+	{
+		*ptrOccured = chNew;
+	}
+}
+
 /******************************************************************************
   Function Name    :  bWriteIntoDatabaseFileFromDataStructure
   Input(s)         :  CString strFileName
@@ -2473,12 +2501,22 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
 
                         // Signal offset value
                         sprintf_s( temp, "%f", pTempSg->m_fSignalOffset );
+
+						char szSep;
+						GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+
+						/* Make sure we use default dot(.) as decimal symbol for floating values */
+						vReplaceChar(temp, szSep,'.');
+
                         sSgDetails += temp;
 
                         sSgDetails += ",";
 
                         // Signal factor value
                         sprintf_s( temp, "%f", pTempSg->m_fSignalFactor );
+						/* Make sure we use default dot(.) as decimal symbol for floating values */
+						vReplaceChar(temp, szSep,'.');
+
                         sSgDetails += temp;
 
                         sSgDetails += ",";
