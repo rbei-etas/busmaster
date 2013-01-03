@@ -302,6 +302,9 @@ private:
 	//Helper funtion to get the Y value for element at a Given X
 	double DetermineY(CElementPoint point1, CElementPoint point2, double XValue);
 
+	LONG DetermineX(POINT point1, POINT point2, LONG YValue);
+	LONG DetermineY(POINT point1, POINT point2, LONG XValue);
+
 
 	RECT	m_rcBounds,                   // Bounding rectangle for drawing
 			m_ctlRect,
