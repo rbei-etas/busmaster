@@ -1221,6 +1221,7 @@ void CSignalDetailsDlg::OnCancel()
 
     CDialog::OnCancel();
 }
+
 /******************************************************************************/
 /*  Function Name    :  OnOk                                                  */
 /*                                                                            */
@@ -1368,7 +1369,15 @@ void CSignalDetailsDlg::OnOK()
                         {
                             pSg->m_bySignalType = CHAR_INT;
                         }
-                        pSg->m_fSignalFactor            = m_odScale.fGetValue();
+
+						CString strTemp;
+						GetDlgItem(IDC_EDIT_FACTOR)->GetWindowText(strTemp);
+						char* charArray = T2A(strTemp.GetBuffer(MAX_PATH));
+						char szSep;
+						GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+						vReplaceChar(charArray,'.', szSep);
+
+						pSg->m_fSignalFactor = atof( strTemp );
 
                         if(pSg->m_bySignalType == CHAR_INT)
                         {
@@ -1396,7 +1405,11 @@ void CSignalDetailsDlg::OnOK()
                                 (unsigned __int64)m_odMinValue.lGetUnsignedValue();
                         }
 
-                        pSg->m_fSignalOffset            = m_odOffset.fGetValue();
+						GetDlgItem(IDC_EDIT_OFFSET)->GetWindowText(strTemp);
+						charArray = T2A(strTemp.GetBuffer(MAX_PATH));						
+						vReplaceChar(charArray,'.', szSep);
+
+						pSg->m_fSignalOffset            = atof( strTemp );
                         pSg->m_omStrSignalName          = m_omStrSignalName;
                         pSg->m_omStrSignalUnit          = m_omStrUnit;
                         pSg->m_unSignalLength           = m_unSgLen;

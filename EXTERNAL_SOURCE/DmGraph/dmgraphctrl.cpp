@@ -1944,18 +1944,11 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
 		if(bYLog)
 			pt.y = log10(pt.y);
 
-
 		// calculate the corrdinate of ploting point.
 		point;
 		Corrdinate(pt, &point);
-
-		// Clip the ploting area if it exceed ranged .
-		if (point.x < BoundingRect.left) point.x = BoundingRect.left;
-		if (point.y < BoundingRect.top) point.y = BoundingRect.top;
-		if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
 	   				
-		MoveToEx (hDC, point.x, point.y, NULL);		
-		oldpt;
+		MoveToEx (hDC, point.x, point.y, NULL);			
 		memcpy(&oldpt, &point, sizeof(POINT));
 	}
 
@@ -1974,14 +1967,77 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
 
 		Corrdinate(pt, &point);
 
-		POINT p;
+		POINT p , ptTemp;
         RECT rect;
+		LONG lngTempX, lngTempY;
+		lngTempX = lngTempY = 0;
+		ptTemp = point;
 
-        // Clip the ploting area if it exceed ranged .
-		if (point.x>BoundingRect.right) point.x=BoundingRect.right;
-		if (point.x<BoundingRect.left) point.x=BoundingRect.left;
-		if (point.y<BoundingRect.top) point.y=BoundingRect.top;
-		if (point.y>BoundingRect.bottom) point.y=BoundingRect.bottom;
+		/* If both old and current points are outside ploting area, just move to current point */
+		if ( ( point.x>BoundingRect.right || point.x<BoundingRect.left || point.y<BoundingRect.top   || point.y>BoundingRect.bottom ) && 
+			 ( oldpt.x>BoundingRect.right || oldpt.x<BoundingRect.left || oldpt.y<BoundingRect.top   || oldpt.y>BoundingRect.bottom )   )
+		{
+			oldpt = point;
+			MoveToEx (hDC, oldpt.x, oldpt.y, NULL);	
+			continue;
+		}
+
+        // Clip the ploting area if it exceed ranged.
+		if (point.x>BoundingRect.right)
+		{
+			//Calculate Y using linear equation : y = mx + c
+			lngTempY = point.y;
+			point.y = DetermineY(oldpt, point, BoundingRect.right);
+			point.x=BoundingRect.right;
+		}
+		else if (point.x<BoundingRect.left)
+		{
+			//Calculate Y using linear equation : y = mx + c
+			lngTempY = point.y;
+			point.y = DetermineY(oldpt, point, BoundingRect.left);			
+			point.x=BoundingRect.left;
+		}
+
+		if (oldpt.x>BoundingRect.right)
+		{
+			//Calculate Y using linear equation : y = mx + c			
+			oldpt.y = DetermineY(oldpt, point, BoundingRect.right);
+			oldpt.x=BoundingRect.right;
+		}
+		else if (oldpt.x<BoundingRect.left)
+		{
+			//Calculate Y using linear equation : y = mx + c			
+			oldpt.y = DetermineY(oldpt, point, BoundingRect.left);			
+			oldpt.x=BoundingRect.left;
+		}
+
+		if (point.y<BoundingRect.top)
+		{
+			//Calculate X using linear equation : x= y - c / m;
+			lngTempX = point.x;
+			point.x = DetermineX(oldpt, point, BoundingRect.top);
+			point.y=BoundingRect.top;
+		}
+		else if (point.y>BoundingRect.bottom)
+		{			
+			//Calculate X using linear equation : x= y - c / m;
+			lngTempX = point.x;
+			point.x = DetermineX(oldpt, point, BoundingRect.bottom);		
+			point.y=BoundingRect.bottom;
+		}
+		if (oldpt.y<BoundingRect.top)
+		{
+			//Calculate X using linear equation : x= y - c / m;			
+			oldpt.x = DetermineX(oldpt, point, BoundingRect.top);
+			oldpt.y=BoundingRect.top;
+		}
+		else if (oldpt.y>BoundingRect.bottom)
+		{			
+			//Calculate X using linear equation : x= y - c / m;			
+			oldpt.x = DetermineX(oldpt, point, BoundingRect.bottom);		
+			oldpt.y=BoundingRect.bottom;
+		}
+		MoveToEx (hDC, oldpt.x, oldpt.y, NULL);	
 
 		if(
 			(oldpt.x==BoundingRect.right && point.x==BoundingRect.right) ||
@@ -2059,8 +2115,13 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
 			LineTo(hDC, point.x, point.y );
             break;
 		}
-					
-		oldpt = point;			
+
+		if ( lngTempX != 0 || lngTempY != 0 )
+		{			
+			point = ptTemp;
+			MoveToEx (hDC, point.x, point.y, NULL);
+		}		
+		oldpt = point;
 
 	} 
 	// Unlock the plot access
@@ -2154,10 +2215,10 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
 		Corrdinate(pt, &point);
 
 		// Clip the ploting area if it exceed ranged .
-		if (point.x > BoundingRect.right) point.x = BoundingRect.right;
-		if (point.x < BoundingRect.left) point.x = BoundingRect.left;
-		if (point.y < BoundingRect.top) point.y = BoundingRect.top;
-		if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
+		//if (point.x > BoundingRect.right) point.x = BoundingRect.right;
+		//if (point.x < BoundingRect.left) point.x = BoundingRect.left;
+		//if (point.y < BoundingRect.top) point.y = BoundingRect.top;
+		//if (point.y > BoundingRect.bottom) point.y = BoundingRect.bottom;
 
 		if(
 			(oldpt.x == BoundingRect.right	&& point.x == BoundingRect.right ) ||
@@ -2179,22 +2240,26 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
 		if (pElement->m_bSolid == FALSE)
 			SelectObject(hDC, hBrushSave);
 
-		if (pElement->m_nSymbol == Dots)	// Draw dots.
-			Ellipse(hDC, rect.left, rect.top, rect.right, rect.bottom);
-		if (pElement->m_nSymbol == Rectangles)	// Draw rectangles.
-           	Rectangle(hDC, rect.left, rect.top, rect.right, rect.bottom);
-		if (pElement->m_nSymbol == Diamonds) // Draw Diamonds
-		    DrawDiamond(hDC, &point, symsz);
-		if (pElement->m_nSymbol == Asterisk) // Draw Asterisks
-		    DrawAsterisk(hDC, &point, symsz);
-		if (pElement->m_nSymbol == DownTriangles) // Draw Down Triangles
-			DrawDownTriangle(hDC, &point, symsz);
-		if (pElement->m_nSymbol == RightTriangles) // Draw Right Triangles
-			DrawRightTriangle(hDC, &point, symsz);
-		if (pElement->m_nSymbol == UpTriangles) // Draw Up Triangles
-			DrawUpTriangle(hDC, &point, symsz);
-		if (pElement->m_nSymbol == LeftTriangles) // Draw Left Triangles
-            DrawLeftTriangle(hDC, &point, symsz);
+		/* If the point lies within the ploting area */
+		if ( !( point.x>BoundingRect.right || point.x<BoundingRect.left || point.y<BoundingRect.top   || point.y>BoundingRect.bottom ) )
+		{
+			if (pElement->m_nSymbol == Dots)	// Draw dots.
+				Ellipse(hDC, rect.left, rect.top, rect.right, rect.bottom);
+			if (pElement->m_nSymbol == Rectangles)	// Draw rectangles.
+           		Rectangle(hDC, rect.left, rect.top, rect.right, rect.bottom);
+			if (pElement->m_nSymbol == Diamonds) // Draw Diamonds
+				DrawDiamond(hDC, &point, symsz);
+			if (pElement->m_nSymbol == Asterisk) // Draw Asterisks
+				DrawAsterisk(hDC, &point, symsz);
+			if (pElement->m_nSymbol == DownTriangles) // Draw Down Triangles
+				DrawDownTriangle(hDC, &point, symsz);
+			if (pElement->m_nSymbol == RightTriangles) // Draw Right Triangles
+				DrawRightTriangle(hDC, &point, symsz);
+			if (pElement->m_nSymbol == UpTriangles) // Draw Up Triangles
+				DrawUpTriangle(hDC, &point, symsz);
+			if (pElement->m_nSymbol == LeftTriangles) // Draw Left Triangles
+				DrawLeftTriangle(hDC, &point, symsz);
+		}
 
 		oldpt = point;
 
@@ -2879,6 +2944,36 @@ double CDMGraphCtrl::DetermineY(CElementPoint point1, CElementPoint point2, doub
 
 	//calculate C intercept value
 	dblC = point1.y - (dblSlope*point1.x);
+
+	//return new Y value
+	return ((dblSlope*XValue)+dblC);
+}
+
+//Linear equation calculations x = (y - c) / M
+LONG CDMGraphCtrl::DetermineX(POINT point1, POINT point2, LONG YValue)
+{
+	double dblSlope = 0, dblC = 0;
+	
+	//Calculate slope
+	dblSlope = (double)(point2.y - point1.y)/(point2.x - point1.x);
+
+	//calculate C intercept value
+	dblC = (double)point1.y - (dblSlope*point1.x);
+
+	//return new X value
+	return ((YValue-dblC) / dblSlope);
+}
+
+//Linear equation calculations y = Mx + C
+LONG CDMGraphCtrl::DetermineY(POINT point1, POINT point2, LONG XValue)
+{
+	double dblSlope = 0, dblC = 0;
+	
+	//Calculate slope
+	dblSlope = (double)(point2.y - point1.y)/(point2.x - point1.x);
+
+	//calculate C intercept value
+	dblC = (double)point1.y - (dblSlope*point1.x);
 
 	//return new Y value
 	return ((dblSlope*XValue)+dblC);

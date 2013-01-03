@@ -281,3 +281,5 @@ private:
                                     CStringArray& omStrArraySigName,
                                     const INT nIndex );
 };
+
+void vReplaceChar(char str[], char chOld, char chNew);
