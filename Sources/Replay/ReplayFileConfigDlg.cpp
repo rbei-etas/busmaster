@@ -831,7 +831,7 @@ void CReplayFileConfigDlg::OnBtnFilter()
         if (Filter_ShowSelDlg(this, &DestList) == IDOK)
         {
             vPopulateFilterApplied(m_psFilterConfigured, ouReplayFile.m_sFilterApplied, DestList);
-            ouReplayFile.m_sFilterApplied.m_bEnabled = 1;
+            ouReplayFile.m_sFilterApplied.m_bEnabled = 0;
             m_rouManager.m_omReplayFiles[ m_nSelecetedNamedLogIndex ] = ouReplayFile;
         }
     }

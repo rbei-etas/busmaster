@@ -68,6 +68,7 @@ typedef enum eCANMONITORFLAG
     eLOGREPLAYMSGTYPE,
     SEND_SIGNAL_MSG,
     ACTIVATED_J1939,
+	REPLAYFILTER,
 };
 
 class CFlags
@@ -91,6 +92,7 @@ private:
     BOOL m_bDisplayFilterOn;
     BOOL m_bTranslationMode;
     BOOL m_bMsgFilterButton;
+	BOOL m_bReplayFilter;
     BOOL m_bFilterUndefinedMsgs;
     BOOL m_bRxMsg;
     BOOL m_bSelectDatabaseFile;

@@ -68,6 +68,8 @@ public:
     // Friend classes of CMsgReplayWnd class
     friend class CReplayProcess;
     friend class CLogFileCSVExport;
+	// Replay process information
+    CReplayProcess  m_ouReplayDetails;
 
     // Overrides
     // ClassWizard generated virtual function overrides
@@ -105,8 +107,7 @@ private:
     CImageList m_omImageList;
     // Reply flag
     eReplayStates m_eReplayState;
-    // Replay process information
-    CReplayProcess  m_ouReplayDetails;
+
     //Window placement
     WINDOWPLACEMENT m_sWndPlacement;
 };
