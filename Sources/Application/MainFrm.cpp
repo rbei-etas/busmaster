@@ -191,6 +191,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilterButton)
+	ON_COMMAND(IDM_FILTER_REPLAYFILTEROFF, OnReplayFilter)
     ON_COMMAND(IDM_FILTER_LOGFILTEROFF, OnLogFilter)
     ON_COMMAND(IDM_FILTER_MESSAGE_SELECTMESSAGES, OnSelectMessage)
     ON_COMMAND(IDM_APP_ABOUT, OnAboutApplication)
@@ -207,6 +208,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnUpdateMessageInterpret)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS, OnUpdateExecuteMessagehandlers)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
+	ON_UPDATE_COMMAND_UI(IDM_FILTER_REPLAYFILTEROFF, OnUpdateReplayFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnUpdateExecuteMessagehandlersButton)
     ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnExecuteMessagehandlersButton)
@@ -5919,6 +5921,13 @@ void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( LOGFILTER ) );
 }
+void CMainFrame::OnUpdateReplayFilter(CCmdUI* pCmdUI)
+{
+	 // Check or uncheck replay filter
+    // menu item
+    pCmdUI->SetCheck(
+        theApp.pouGetFlagsPtr()->nGetFlagStatus( REPLAYFILTER ) );
+}
 /******************************************************************************
     Function Name    :  OnUpdateMessageFilter
 
@@ -6048,6 +6057,34 @@ void CMainFrame::OnMessageFilterButton()
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+    }
+}
+
+/******************************************************************************
+    Function Name    :  OnReplayFilter
+    Input(s)         :      -
+    Output           :      -
+    Functionality    :  To handle(enable/disable) filter for replay when user
+						selects from the main menu
+    Member of        :  CMainFrame
+    Friend of        :      -
+    Author(s)        :  Ashwin R Uchil
+    Date Created     :  3.1.2013
+******************************************************************************/
+void CMainFrame::OnReplayFilter()
+{
+	CFlags* pouFlags = NULL;
+    BOOL bReplayFilterStatus = FALSE;
+
+    pouFlags = theApp.pouGetFlagsPtr();
+    if(pouFlags != NULL )
+    {
+        bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+        bReplayFilterStatus = bReplayFilterStatus ? FALSE : TRUE;
+        pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
+
+		vREP_EnableFilters(bReplayFilterStatus);
+        //::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
     }
 }
 
@@ -7800,6 +7837,10 @@ void CMainFrame::OnFileConnect()
                 // PTV[1.6.4]
 
                 vREP_HandleConnectionStatusChange( TRUE );
+				//send connection statud to replay window
+				BOOL bReplayFilterStatus = FALSE;
+				bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+				vREP_EnableFilters(bReplayFilterStatus);
             }
             // On Disconnect Kill the timer
             // PTV[1.6.4]
