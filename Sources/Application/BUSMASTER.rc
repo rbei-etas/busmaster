@@ -1004,6 +1004,7 @@ BEGIN
         BEGIN
             MENUITEM "&Log",                        32824,MFT_STRING,MFS_CHECKED
             MENUITEM "&Display",                    32826,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
+            MENUITEM "&Replay",                     32827,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
         END
         POPUP "&Replay",                        65535,MFT_STRING,MFS_ENABLED
         BEGIN
@@ -1383,6 +1384,7 @@ BEGIN
     SEPARATOR
     BUTTON      IDM_FILTER_LOGFILTEROFF
     BUTTON      IDM_FILTER_MESSAGEFILTEROFF
+    BUTTON      IDM_FILTER_REPLAYFILTEROFF
     SEPARATOR
     BUTTON      IDR_TOOL_SENDMSG
     BUTTON      33052

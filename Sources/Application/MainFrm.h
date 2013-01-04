@@ -370,6 +370,7 @@ protected:
     afx_msg void OnUpdateMessageInterpret(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilter(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
     //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI);
     afx_msg void OnExecuteMessagehandlersButton();
@@ -377,6 +378,7 @@ protected:
     //afx_msg void OnLogFilterButton();
     //afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnMessageFilterButton();
+	afx_msg void OnReplayFilter();
     void ApplyMessageFilterButton();
     afx_msg void OnUpdateMessageFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI);

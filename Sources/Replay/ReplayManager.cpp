@@ -338,6 +338,38 @@ VOID CReplayManager::vCmdSkip()
         m_pomActiveWindow->vCmdSkip();
     }
 }
+/*******************************************************************************
+  Function Name  : vCmdSkip
+  Input(s)       : -
+  Output         : -
+  Functionality  : Replay Skip Command handler
+  Member of      : CReplayManager
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 3.1.2013
+  Modifications  :
+*******************************************************************************/
+VOID CReplayManager::vEnableFilters(BOOL bEnabled)
+{
+	UINT nCount = (UINT)m_omReplayProcess.GetSize();
+
+	for(int nCnt = 0; nCnt < nCount; nCnt++)
+	{
+		CReplayProcess *pReplayProcess = m_omReplayProcess.GetAt(nCnt);
+		EnterCriticalSection(&pReplayProcess->m_omCritSecFilter);
+		pReplayProcess->m_ouReplayFile.m_sFilterApplied.m_bEnabled = bEnabled;
+		LeaveCriticalSection(&pReplayProcess->m_omCritSecFilter);
+	}
+
+	nCount = (UINT)m_omReplayWindowArray.GetSize();
+
+	for(int nCnt = 0; nCnt < nCount; nCnt++)
+	{
+		CMsgReplayWnd *pReplayWnd = m_omReplayWindowArray.GetAt(nCnt);
+		EnterCriticalSection(&pReplayWnd->m_ouReplayDetails.m_omCritSecFilter);
+		pReplayWnd->m_ouReplayDetails.m_ouReplayFile.m_sFilterApplied.m_bEnabled = bEnabled;
+		LeaveCriticalSection(&pReplayWnd->m_ouReplayDetails.m_omCritSecFilter);
+	}
+}
 
 /*******************************************************************************
   Function Name  : vCmdGo

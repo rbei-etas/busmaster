@@ -480,8 +480,8 @@ CConnectionDet* CMonitorNode::pGetConDet(BYTE bySrc, BYTE byDest)
         {
             if (NULL != m_pMonNodeConDetArr[i])
             {
-                if ((bySrc == m_pMonNodeConDetArr[i]->m_bySrcAddress) ||
-                        (byDest == m_pMonNodeConDetArr[i]->m_byDestAddress) )
+				/* Create a new connection if source address is new */
+                if ( bySrc == m_pMonNodeConDetArr[i]->m_bySrcAddress )
                 {
                     pConDet = m_pMonNodeConDetArr[i];
                 }

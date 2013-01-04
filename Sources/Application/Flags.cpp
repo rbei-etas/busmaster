@@ -454,6 +454,9 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bActivatedJ1939 = (BOOL) nValue;
             break;
 
+		case REPLAYFILTER:
+			m_bReplayFilter = nValue;
+			break;
         default:
             ASSERT(FALSE); // Invalid flag enum value
     }
@@ -614,6 +617,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case ACTIVATED_J1939:
             nRetValue = (int) m_bActivatedJ1939;
+            break;
+		case REPLAYFILTER:
+			nRetValue = (int) m_bReplayFilter;
             break;
         default:
             // Invalid flag enum value
