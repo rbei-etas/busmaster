@@ -662,9 +662,9 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
     {
         if (lError & SPY_STATUS_CRC_ERROR)
         {
-            ucReturn = BIT_ERROR_TX;
+            ucReturn = CRC_ERROR_TX;
         }
-        if (lError & SPY_STATUS_INCOMPLETE_FRAME )
+        else if (lError & SPY_STATUS_INCOMPLETE_FRAME )
         {
             ucReturn = FORM_ERROR_TX;
         }
@@ -678,9 +678,9 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
     {
         if (lError & SPY_STATUS_CRC_ERROR)
         {
-            ucReturn = BIT_ERROR_RX;
+            ucReturn = CRC_ERROR_RX;
         }
-        if (lError & SPY_STATUS_INCOMPLETE_FRAME)
+        else if (lError & SPY_STATUS_INCOMPLETE_FRAME)
         {
             ucReturn = FORM_ERROR_RX;
         }

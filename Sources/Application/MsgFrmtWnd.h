@@ -125,6 +125,7 @@ private:
     void vExpandContractMsg(int nIndex,eTreeItemStates eTreeItemState = TREESTATE_TOGGLE);
     void vArrangeAllTreeWnd();
     void vRemoveAllMsgTree();
+	void vFitListCtrlToWindow();
     // To update global statistics data
     void vUpdateStatistics( char cTxMode );
     USHORT usProcessCurrErrorEntry(void);

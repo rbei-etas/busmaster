@@ -25,7 +25,7 @@
 
 IMPLEMENT_DYNCREATE(CApplication, CCmdTarget)
 
-BEGIN_MESSAGE_MAP(CApplication, CCmdTarget)
+BEGIN_MESSAGE_MAP(CApplication, CCmdTarget)	
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CApplication, CCmdTarget)
@@ -89,7 +89,12 @@ END_DISPATCH_MAP()
 
 BEGIN_INTERFACE_MAP(CApplication, CCmdTarget)
 INTERFACE_PART(CApplication, IID_IApplication, LocalClass)
+INTERFACE_PART(CApplication, IID_IConnectionPointContainer, ConnPtContainer)
 END_INTERFACE_MAP()
+
+BEGIN_CONNECTION_MAP(CApplication, CCmdTarget)
+    CONNECTION_PART(CApplication, IID__IAppEvents, AppEvents)
+END_CONNECTION_MAP()
 
 IMPLEMENT_OLECREATE(CApplication, "CAN_MonitorApp.Application", 0x92d435c1, 0xa552, 0x4435,  0xad, 0x1e, 0x46, 0x8b, 0x4c, 0x17, 0xbd, 0xc7)
 
@@ -97,11 +102,132 @@ CApplication::CApplication(void)
 {
     EnableAutomation();
     ::AfxOleLockApp();
+    // enable this object for connection points
+    EnableConnections();
+
+    g_ouCOMReadThread.m_hActionEvent = NULL;
+    g_ouCOMReadThread.m_unActionCode = IDLE;
+
+	vInitializeCOMReadBuffer();
+	bStartCOMReadThread();
+}
+
+/* Read thread function for distributing Rx messages to COM clients */
+DWORD WINAPI COMReadThreadProc(LPVOID pVoid)
+{	
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+    if (pThreadParam == NULL)
+    {
+        return (DWORD)-1;
+    }
+
+    CApplication* pouApp = static_cast<CApplication*> (pThreadParam->m_pBuffer);
+
+    if (pouApp == NULL)
+    {
+        return (DWORD)-1;
+    }
+
+    pThreadParam->m_unActionCode = CREATE_TIME_MAP;
+    bool bLoopON = true;
+
+    while (bLoopON)
+    {
+        WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
+        switch (pThreadParam->m_unActionCode)
+        {
+            case INVOKE_FUNCTION:
+            {
+                pouApp->ReadCOMDataBuffer(); // Retrieve message from the driver
+            }
+            break;
+            case EXIT_THREAD:
+            {
+                bLoopON = false;
+            }
+            break;
+            case CREATE_TIME_MAP:
+            {
+                pThreadParam->m_unActionCode = INVOKE_FUNCTION;
+				pouApp->ReadCOMDataBuffer();
+                SetEvent(pThreadParam->m_hActionEvent);
+            }
+            break;
+            default:
+            case INACTION:
+            {
+                // nothing right at this moment
+            }
+            break;
+        }
+    }
+    SetEvent(pThreadParam->hGetExitNotifyEvent());	
+    return 0;
+}
+
+/* routine to read the data from buffer */
+void CApplication::ReadCOMDataBuffer()
+{
+    static STCANDATA sCanData;
+
+    while (g_ouCanBufForCOM.GetMsgCount())
+    {
+        if (g_ouCanBufForCOM.ReadFromBuffer(&sCanData) == CALL_SUCCESS)
+        {			
+			static CAN_MSGS sMsg;
+			sMsg.m_bEXTENDED = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
+			sMsg.m_bRTR = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
+			sMsg.m_ucChannel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
+			memcpy(sMsg.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sMsg.m_ucDataLen); 			 
+			sMsg.m_ucDataLen = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
+			sMsg.m_unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
+
+            vSendCANMsgToClients(sMsg);
+        }
+    }
+}
+
+/* Function to start Msg read thread to distribute CAN Rx messages to COM clients */
+BOOL CApplication::bStartCOMReadThread()
+{
+    BOOL bReturn = FALSE;
+    //First stop the thread if running
+    bStopCOMReadThread();
+    g_ouCOMReadThread.m_pBuffer = this;
+    g_ouCOMReadThread.m_hActionEvent = g_ouCanBufForCOM.hGetNotifyingEvent();
+    bReturn = g_ouCOMReadThread.bStartThread(COMReadThreadProc);
+
+    return bReturn;
+}
+
+/* Function to stop msg read thread of COM */
+BOOL CApplication::bStopCOMReadThread()
+{
+    BOOL bReturn = FALSE;
+    bReturn = g_ouCOMReadThread.bTerminateThread();
+    g_ouCOMReadThread.m_hActionEvent = NULL;
+    g_ouCOMReadThread.m_unActionCode = IDLE;
+    return bReturn;
+}
+
+void CApplication::vInitializeCOMReadBuffer()
+{
+	CBaseDIL_CAN* pDIL_CAN = GetICANDIL();
+    if (pDIL_CAN != NULL)
+    {
+        DWORD dwClientId = 0;
+        pDIL_CAN->DILC_RegisterClient(TRUE, dwClientId, CAN_MONITOR_NODE);
+        if (pDIL_CAN->DILC_ManageMsgBuf(MSGBUF_ADD, dwClientId, &g_ouCanBufForCOM) != S_OK)
+        {
+            TRACE(_("The function vInitializeCOMReadBuffer() failed."));
+        }
+    }
 }
 
 CApplication::~CApplication(void)
 {
     ::AfxOleUnlockApp();
+	bStopCOMReadThread();
 }
 
 STDMETHODIMP_(ULONG) CApplication::XLocalClass::AddRef()

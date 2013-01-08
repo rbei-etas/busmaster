@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by mhsbmcfg.rc
 //
 #define IDC_DIALOG                      101
@@ -57,6 +57,9 @@
 #define IDC_MUX_CHECK                   1045
 #define IDC_MUX_INDEX                   1046
 #define IDC_ADD_MUX                     1047
+#define IDC_RADIOBTN_BITRATE            1048
+#define IDC_RADIO2                      1049
+#define IDC_RADIOBTN_BTR                1049
 #define IDC_OSVERSIONINFO               1065
 #define IDC_DESC_STR                    1081
 #define IDC_VALUE_EDIT                  1082
@@ -65,12 +68,12 @@
 #define IDC_LAST_ITEM                   40005
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        119
 #define _APS_NEXT_COMMAND_VALUE         40006
-#define _APS_NEXT_CONTROL_VALUE         1048
+#define _APS_NEXT_CONTROL_VALUE         1050
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

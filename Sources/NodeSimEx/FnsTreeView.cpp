@@ -88,7 +88,8 @@ CFnsTreeView::~CFnsTreeView()
 BEGIN_MESSAGE_MAP(CFnsTreeView, CTreeView)
     //{{AFX_MSG_MAP(CFnsTreeView)
     ON_WM_CREATE()
-    ON_NOTIFY_REFLECT(NM_DBLCLK, OnTreeItemDoubleClick)
+    //ON_NOTIFY_REFLECT(NM_DBLCLK, OnTreeItemDoubleClick)
+	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelectionChanged)
     ON_NOTIFY_REFLECT(NM_CLICK, OnItemLeftClick)
     ON_WM_LBUTTONDOWN()
     ON_NOTIFY_REFLECT(NM_RCLICK, OnTreeViewRightclick)
@@ -470,10 +471,15 @@ BOOL CFnsTreeView::PreCreateWindow(CREATESTRUCT& cs)
 
     return CTreeView::PreCreateWindow(cs);
 }
+
+void CFnsTreeView::OnTreeItemSelectionChanged(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+{
+	vEditSelectedFunction();
+}
+
 /******************************************************************************/
-/*  Function Name    :  OnTreeItemDoubleClick                                 */
+/*  Function Name    :  vEditSelectedFunction								  */
 /*                                                                            */
-/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
 /*  Output           :                                                        */
 /*  Functionality    :  Displays the body of the selected function in the
                         CFunctionView class
@@ -485,7 +491,7 @@ BOOL CFnsTreeView::PreCreateWindow(CREATESTRUCT& cs)
 /*  Modifications    :  Raja N on 12.05.2004                                  */
 /*                   :  Added checks for Global Variable selection            */
 /******************************************************************************/
-void CFnsTreeView::OnTreeItemDoubleClick(NMHDR* /*pNMHDR*/, LRESULT* /*pResult*/)
+void CFnsTreeView::vEditSelectedFunction()
 {
     CTreeCtrl& omTree = GetTreeCtrl();
 
@@ -1161,7 +1167,7 @@ void CFnsTreeView::OnAddHandle()
         vOnNewBusEventHandler();
     }
     omTree.Expand( hSelItem, TVE_EXPAND );
-    OnTreeItemDoubleClick(NULL, NULL);
+    vEditSelectedFunction();
 
 }
 /******************************************************************************/

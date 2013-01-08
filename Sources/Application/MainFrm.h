@@ -313,7 +313,7 @@ public:
     //MVN
     BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
     //~MVN
-
+	void OnHex_DecButon();
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
@@ -359,7 +359,6 @@ protected:
     afx_msg void OnLogFilter();
     afx_msg void OnSelectMessage();
     afx_msg void OnAboutApplication();
-    afx_msg void OnHex_DecButon();
     afx_msg void OnButtonMsgDispButton();
     afx_msg void OnButtonSignalWatchButton();
     afx_msg void OnUpdateConfigureDatabaseClose(CCmdUI* pCmdUI);
