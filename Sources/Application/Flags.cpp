@@ -181,7 +181,7 @@ void CFlags::vInitializeFlags()
     m_bLogFilterOn          = FALSE;
     m_bLogEnable            = FALSE;
     m_bTranslationMode      = FALSE;
-    m_bDisplayHexON         = FALSE;
+    m_bDisplayHexON         = TRUE;
     m_bOverwriteEnable      = TRUE;
     m_wDisplayTimeMode      = eSYSTEM_MODE;
     m_bLogToWindow          = TRUE;

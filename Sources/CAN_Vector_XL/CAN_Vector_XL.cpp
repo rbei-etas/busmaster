@@ -1052,7 +1052,7 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
         {
             ucReturn = BIT_ERROR_TX;
         }
-        if (lError & XL_CAN_MSG_FLAG_NERR )
+        else if (lError & XL_CAN_MSG_FLAG_NERR )
         {
             ucReturn = FORM_ERROR_TX;
         }
@@ -1068,7 +1068,7 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
         {
             ucReturn = BIT_ERROR_RX;
         }
-        if (lError & XL_CAN_MSG_FLAG_NERR)
+        else if (lError & XL_CAN_MSG_FLAG_NERR)
         {
             ucReturn = FORM_ERROR_RX;
         }

@@ -240,8 +240,8 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             omHeaderFile.WriteString(omStrTemp);
 
 			// Add Pragma Pack
-			/*omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
-			omHeaderFile.WriteString(omStrTemp);*/
+			omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
+			omHeaderFile.WriteString(omStrTemp);
 
             CString omStrDLC = STR_EMPTY;
             UINT aunSigStartBit[defMAX_SIGNALS] ;

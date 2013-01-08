@@ -704,7 +704,7 @@ USHORT CMsgContainerCAN::usProcessCurrErrorEntry(SERROR_INFO& sErrInfo)
     // Accordingly notify the modules by sending/posting message
     if (sErrInfo.m_ucErrType == ERROR_BUS)
     {
-        usErrorID = sErrInfo.m_ucReg_ErrCap & 0xE0;
+        usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
     }
     else if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
     {

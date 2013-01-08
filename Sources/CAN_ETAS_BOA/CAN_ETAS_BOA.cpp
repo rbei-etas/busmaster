@@ -1393,8 +1393,19 @@ void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* 
             }
         }
         break;
+		case OCI_CAN_ERR_TYPE_CRC:
+			{
+				if (bIsTx)
+				{
+					DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_TX;
+				}
+				else
+				{
+					DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_RX;
+				}
+			}
+			break;
         case OCI_CAN_ERR_TYPE_OVERLOAD:
-        case OCI_CAN_ERR_TYPE_CRC:
         case OCI_CAN_ERR_TYPE_BIT_DOMINANT_BUT_RECSV:
         case OCI_CAN_ERR_TYPE_ACK:
         case OCI_CAN_ERR_TYPE_BIT_RECSV_BUT_DOMINANT:

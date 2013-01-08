@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,15 +13,14 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (USA) resources
+// English (U.S.) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -44,18 +43,15 @@ BEGIN
     BEGIN
         BLOCK "040704b0"
         BEGIN
-            VALUE "Comments", "Tiny-CAN Config Dialog\0"
-            VALUE "CompanyName", " MHS-Elektronik GmbH & Co. KG\0"
-            VALUE "FileDescription", "Tiny-CAN Config Dialog\0"
-            VALUE "FileVersion", "1, 0, 0, 0\0"
-            VALUE "InternalName", "plabcan\0"
-            VALUE "LegalCopyright", "Copyright © 2011 MHS Elektronik\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "plabcan.dll\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "plabcan\0"
-            VALUE "ProductVersion", "1, 0, 0, 0\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "Comments", "Tiny-CAN Config Dialog"
+            VALUE "CompanyName", " MHS-Elektronik GmbH & Co. KG"
+            VALUE "FileDescription", "Tiny-CAN Config Dialog"
+            VALUE "FileVersion", "1, 0, 0, 0"
+            VALUE "InternalName", "plabcan"
+            VALUE "LegalCopyright", "Copyright © 2011 MHS Elektronik"
+            VALUE "OriginalFilename", "plabcan.dll"
+            VALUE "ProductName", "plabcan"
+            VALUE "ProductVersion", "1, 0, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -63,8 +59,6 @@ BEGIN
         VALUE "Translation", 0x407, 1200
     END
 END
-
-#endif    // !_MAC
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -74,60 +68,42 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON_CAN            ICON    DISCARDABLE     "can_green.ico"
-#endif    // English (USA) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////////////////////////////////////////////////
-// English (USA) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
+IDI_ICON_CAN            ICON                    "can_green.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-IDD_ABOUT DIALOG DISCARDABLE  0, 0, 179, 122
-STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE |
-    WS_CAPTION | WS_SYSMENU
+IDD_ABOUT DIALOG  0, 0, 179, 122
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "Close",IDOK,64,103,50,14
     ICON            IDI_ICON_CAN,IDI_ICON,9,6,21,20
     LTEXT           "Tiny-CAN Config Dialog",IDC_STATIC,36,5,86,12
-    CTEXT           "MHS-Elektronik GmbH und Co. KG\nFuchsöd 4\nD-94149 Kößlarn\n\n Internet: www.mhs-elektronik.de",
-                    IDC_STATIC,24,54,131,44
+    CTEXT           "MHS-Elektronik GmbH und Co. KG\nFuchsöd 4\nD-94149 Kößlarn\n\n Internet: www.mhs-elektronik.de",IDC_STATIC,24,54,131,44
     LTEXT           "Version 1.00",IDC_STATIC,36,18,51,12
-    LTEXT           "Copyright (c) 2011, Robert Bosch Engineering and Business Solutions",
-                    IDC_STATIC,4,38,173,12
+    LTEXT           "Copyright (c) 2011, Robert Bosch Engineering and Business Solutions",IDC_STATIC,4,38,173,12
 END
 
-IDD_CAN_SETUP DIALOG DISCARDABLE  0, 0, 257, 97
-STYLE DS_SYSMODAL | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE |
-    WS_CAPTION | WS_SYSMENU
+IDD_CAN_SETUP DIALOGEX 0, 0, 293, 140
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "CAN - Setup"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_SNR_EDIT,178,49,72,14,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,141,76,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,200,76,50,14
-    RTEXT           "CAN baudrate:",IDC_STATIC,7,7,179,12,
-                    SS_CENTERIMAGE
-    RTEXT           "CAN baudrate BTR value:",IDC_STATIC,7,
-                    26,182,14,SS_CENTERIMAGE
-    RTEXT           "Tiny-CAN serial number:",IDC_STATIC,7,49,168,14,
-                    SS_CENTERIMAGE
-    COMBOBOX        IDC_CAN_SPEED,188,7,62,123,CBS_DROPDOWNLIST | WS_VSCROLL |
-                    WS_TABSTOP
-    EDITTEXT        IDC_BTR_EDIT,202,26,48,14,ES_AUTOHSCROLL
-    LTEXT           "0x",IDC_STATIC,193,32,8,8
+    EDITTEXT        IDC_SNR_EDIT,145,89,72,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,134,119,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,229,119,50,14
+    RTEXT           "CAN baudrate:",IDC_STATIC,43,24,76,12,SS_CENTERIMAGE
+    RTEXT           "CAN baudrate BTR value:",IDC_STATIC,6,59,113,14,SS_CENTERIMAGE
+    RTEXT           "Tiny-CAN serial number:",IDC_STATIC,16,89,104,14,SS_CENTERIMAGE
+    COMBOBOX        IDC_CAN_SPEED,145,24,62,123,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_BTR_EDIT,145,59,72,14,ES_AUTOHSCROLL
+    LTEXT           "0x",IDC_STATIC,128,62,8,8
+    CONTROL         "Bit Rate",IDC_RADIOBTN_BITRATE,"Button",BS_AUTORADIOBUTTON,15,12,41,10
+    CONTROL         "Bit Timing Register",IDC_RADIOBTN_BTR,"Button",BS_AUTORADIOBUTTON,15,46,75,10
 END
 
 
@@ -137,14 +113,14 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE
+GUIDELINES DESIGNINFO 
 BEGIN
     IDD_CAN_SETUP, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 250
+        RIGHTMARGIN, 286
         TOPMARGIN, 7
-        BOTTOMMARGIN, 90
+        BOTTOMMARGIN, 133
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -156,18 +132,18 @@ END
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE MOVEABLE PURE
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE MOVEABLE PURE
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE MOVEABLE PURE
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -184,11 +160,11 @@ END
 IDD_CAN_SETUP DLGINIT
 BEGIN
     IDC_CAN_SPEED, 0x403, 1, 0
-"\000"
+"\000" 
     0
 END
 
-#endif    // English (USA) resources
+#endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -202,3 +178,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

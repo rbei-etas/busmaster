@@ -4,10 +4,20 @@
 // This is usually the name of your application.
 library CAN_MonitorApp
 {
-
     #include "IdlStructure.h"
 	importlib("stdole32.tlb");
 	importlib("stdole2.tlb");
+
+	[
+		uuid(12324088-748E-4017-BA5A-3B7F61CE8FBF),
+		oleautomation,
+		dual,
+		helpstring("_IAppEvents Interface")
+	]
+	interface _IAppEvents : IUnknown
+	{
+		[id(1), helpstring("method OnMessageReceived")] HRESULT OnMessageReceived(CAN_MSGS RxMsg);
+	};
 
 	[ uuid(B3DBF7E2-93DD-4c0c-A237-0E8E46D354C6),
 	  oleautomation,
@@ -71,12 +81,12 @@ library CAN_MonitorApp
         [id(54), helpstring("method GetLoggingBlockCount")] HRESULT GetLoggingBlockCount([out] USHORT* BlockCount);
         [id(55), helpstring("method ClearLoggingBlockList")] HRESULT ClearLoggingBlockList(void);
         [id(56), helpstring("method GetLoggingBlock")] HRESULT GetLoggingBlock([in] USHORT BlockIndex, [out] SLOGGINGBLOCK_USR* psLoggingBlock);
-    
     };
 
 	[ uuid(92D435C1-A552-4435-AD1E-468B4C17BDC7) ]
 	coclass Application
 	{
 		[default] interface IApplication;
+		[default, source] interface _IAppEvents;		
 	};
 };

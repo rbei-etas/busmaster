@@ -1095,7 +1095,7 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA& sCanData)
         {
             // Update Statistics information
             m_sSubBusStatistics[ nCurrentChannelIndex ].m_unErrorTotalCount++;
-            USHORT usErrorID = sCanData.m_uDataInfo.m_sErrInfo.m_ucReg_ErrCap & 0xE0;
+            USHORT usErrorID = sCanData.m_uDataInfo.m_sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
             // Received message
             if (usErrorID & 0x20)
             {

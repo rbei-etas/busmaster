@@ -207,11 +207,12 @@ BOOL CCANMonitorApp::InitInstance()
     CWinApp::InitInstance();
 
     // Initialize OLE libraries
-    if (!AfxOleInit())
-    {
-        AfxMessageBox(_("Fail to Intilaize OLE"));
-        return FALSE;
-    }
+    //if (!AfxOleInit())
+    //{
+    //    AfxMessageBox(_("Fail to Intilaize OLE"));
+    //    return FALSE;
+    //}
+	CoInitializeEx(NULL, COINIT_MULTITHREADED );
 
     CBusmasterDump dump(_("BUSMASTER"));
     // END CHANGES MADE FOR AUTOMATION
@@ -423,7 +424,7 @@ BOOL CCANMonitorApp::InitInstance()
             //CLogManager::ouGetLogManager().vStartStopLogging( TRUE );
         }
     }
-
+	pMainFrame->OnHex_DecButon();			// setting HEX by default
     //CExecuteManager::ouGetExecuteManager().vStartDllReadThread();
     return TRUE;
 }
@@ -481,6 +482,7 @@ int CCANMonitorApp::ExitInstance()
             break;
     }
 
+	CoUninitialize();
     return CWinApp::ExitInstance();
 }
 
