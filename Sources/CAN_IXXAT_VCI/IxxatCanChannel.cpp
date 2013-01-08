@@ -842,9 +842,21 @@ void CIxxatCanChannel::ConvertIxxatErrorToBusmasterMsg(CANMSG* pCanMsg, STCANDAT
             {
                 pStCanData->m_uDataInfo.m_sErrInfo.m_nSubError = BIT_ERROR_RX;
             }
-            break;
+			break;
+		case CAN_ERROR_CRC:    // CRC error
+			{
+				if (pCanMsg->uMsgInfo.Bits.srr)
+				{
+					pStCanData->m_uDataInfo.m_sErrInfo.m_nSubError = BIT_ERROR_TX;
+				}
+				else
+				{
+					pStCanData->m_uDataInfo.m_sErrInfo.m_nSubError = BIT_ERROR_RX;
+				}
+				break;
+			}
+			break;
         case CAN_ERROR_ACK:    // acknowledgment error
-        case CAN_ERROR_CRC:    // CRC error
         case CAN_ERROR_OTHER:  // other (unspecified) error
             if (pCanMsg->uMsgInfo.Bits.srr)
             {

@@ -37,7 +37,7 @@ const int SIZE_APP_CAN_BUFFER       = 5000;
 /* Error message related definitions and declarations : BEGIN */
 static CString sg_omColmStr;
 const DWORD COLOUR_ERROR_MSG    = RGB(255, 0, 0);
-const int ERRORS_DEFINED = 13;
+const int ERRORS_DEFINED = 15;
 
 const BYTE MSG_FRMT_WND_VERSION = 0x1;
 
@@ -53,12 +53,14 @@ typedef sERRORMSGINFO* PERRORMSGINFO;
 
 static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 {
-    {ERROR_UNKNOWN,       "Unknown Error"},
+   {ERROR_UNKNOWN,       "Unknown Error"},
     {BIT_ERROR_RX,        "Bus Error - Bit Error(Rx)"},
+	{CRC_ERROR_RX,        "Bus Error - CRC Error(Rx)"},
     {FORM_ERROR_RX,       "Bus Error - Form Error(Rx)"},
     {STUFF_ERROR_RX,      "Error Frame - Stuff error(Rx)"},
     {OTHER_ERROR_RX,      "Bus Error - Other Error(Rx)"},
     {BIT_ERROR_TX,        "Bus Error - Bit Error(Tx)"},
+	{CRC_ERROR_TX,        "Bus Error - CRC Error(Tx)"},
     {FORM_ERROR_TX,       "Bus Error - Form Error(Tx)"},
     {STUFF_ERROR_TX,      "Bus Error - Stuff Error(Tx)"},
     {OTHER_ERROR_TX,      "Bus Error - Other Error(Tx)"},
@@ -416,9 +418,54 @@ void CMsgFrmtWnd::OnSize(UINT nType, int cx, int cy)
         GetClientRect(&rctClient);
         m_lstMsg.SetWindowPos(&wndTop, 0, 0, rctClient.Width(),
                               rctClient.Height(), SWP_NOZORDER);
+
+		vFitListCtrlToWindow();
+
         ::SendMessage( m_hWnd, WM_UPDATE_TREE_ITEMS_POS, 0, 0);
     }
 }
+
+void CMsgFrmtWnd::vFitListCtrlToWindow()
+{
+	// If window is visible, the update the column widths accordingly to fill ht ewindow size
+	if (IsWindowVisible())
+	{
+		RECT sClientRect;
+		GetClientRect(&sClientRect);
+		int ClientWidth = abs(sClientRect.left - sClientRect.right);
+
+		if (m_eBusType == CAN)
+		{
+			m_lstMsg.SetColumnWidth(0, (int)(0.03 * ClientWidth));
+			m_lstMsg.SetColumnWidth(1, (int)(0.1 * ClientWidth));
+			m_lstMsg.SetColumnWidth(2, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(3, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(4, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(5, (int)(0.17 * ClientWidth));
+			m_lstMsg.SetColumnWidth(6, (int)(0.2 * ClientWidth));
+			m_lstMsg.SetColumnWidth(7, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(8, (int)(0.33 * ClientWidth));
+		}
+		else if (m_eBusType == J1939)
+		{
+			m_lstMsg.SetColumnWidth(0, (int)(0.03 * ClientWidth));
+			m_lstMsg.SetColumnWidth(1, (int)(0.1 * ClientWidth));
+			m_lstMsg.SetColumnWidth(2, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(3, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(4, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(5, (int)(0.17 * ClientWidth));
+			m_lstMsg.SetColumnWidth(6, (int)(0.2 * ClientWidth));
+			m_lstMsg.SetColumnWidth(7, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(8, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(9, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(10, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(11, (int)(0.05 * ClientWidth));
+			m_lstMsg.SetColumnWidth(12, (int)(0.13 * ClientWidth));
+		}
+		m_lstMsg.MoveWindow(&sClientRect);
+	}
+}
+
 /*******************************************************************************
   Function Name  : GetFilterDetails
   Input(s)       : -
@@ -2209,7 +2256,7 @@ USHORT CMsgFrmtWnd::usProcessCurrErrorEntry(void)
     {
         // Update Statistics information
         g_sBusStatistics[ nChannel ].m_unErrorTotalCount++;
-        usErrorID = m_sErrorInfo.m_ucReg_ErrCap & 0xE0;
+        usErrorID = m_sErrorInfo.m_ucReg_ErrCap /*& 0xE0*/;
         // Received message
         if (usErrorID & 0x20)
         {
@@ -2442,6 +2489,7 @@ LRESULT CMsgFrmtWnd::ModifyMsgWndProperty(WPARAM wParam, LPARAM lParam)
     vUpdatePtrInLstCtrl();
     LeaveCriticalSection(&m_CritSec1);
 
+	vFitListCtrlToWindow();
     return 0L;
 }
 

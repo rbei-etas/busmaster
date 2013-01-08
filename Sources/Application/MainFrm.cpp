@@ -859,177 +859,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         return -1;      // fail to create
     }
     LoadBarState(PROFILE_CAN_MONITOR);
-    //-------------------Getting the status of the toolbar--------------------------------------------- AUC
-    //string                path;
-    //char              cBuffer[_MAX_PATH];
-    //xmlNodePtr            pNode = NULL;
-    //xmlNodePtr            pRtNodePtr;
-    //xmlNodePtr            pChildNode = NULL;
-    //xmlNodePtr            pToolBarPos;
+   
 
-    //// Get the working directory
-    //CString           strPath;
-    //char* pstrExePath = strPath.GetBuffer (MAX_PATH);
-    //::GetModuleFileName (0, pstrExePath, MAX_PATH);
-    //strPath.ReleaseBuffer ();
-    //strPath = strPath.Left(strPath.ReverseFind(92));
 
-    //path = strPath;
-    //path.append("\\BUSMASTER_Init_Config.xml");               //get the global settings file from current working folder
-    //xmlDocPtr xmlToolbarPosDoc = xmlParseFile(path.c_str());
 
-    //if ( NULL != xmlToolbarPosDoc )           // Try to Load as a XML file
-    //{
-    //  xmlChar* pXpath = (xmlChar*)"//Busmaster_Init_Config/Toolbar_Position_User_Defined"; //get the used_defined section
-    //  xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(xmlToolbarPosDoc, pXpath);
-    //  if(pObjectPath != NULL)
-    //  {
-    //      //set the toolbars at respective position
-    //      if(!nGetToolBarNodeFrmDocSection(pObjectPath)) //If any of the configuration node is missing, load the defaults
-    //      {
-    //          bSetDefaultToolbarPosition();
-
-    ////free the pointers
-    //if(xmlToolbarPosDoc != NULL)
-    //{
-    //  xmlFreeDoc(xmlToolbarPosDoc);
-    //}
-    //xmlCleanupParser();
-
-    ////clear the previous user defined section node
-    //ClearUserDefinedNodes(path);
-    //
-    //xmlKeepBlanksDefault(0);
-    ////create new user_defined section
-    //xmlToolbarPosDoc = xmlParseFile(path.c_str());
-    //pXpath = (xmlChar*)"//Busmaster_Init_Config/Toolbar_Position_User_Defined";
-    //pObjectPath = xmlUtils::pGetNodes(xmlToolbarPosDoc, pXpath);
-
-    //if( NULL != pObjectPath )
-    //{
-    //  xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-    //  if( NULL != pNodeSet )
-    //  {
-    //      pToolBarPos = pNodeSet->nodeTab[0];             //Take First One only
-    //  }
-    //}
-    //if(pToolBarPos != NULL)
-    //{
-    //  //store the positions of the toolbars in the file
-    //  CreateToolBarPosInGlobalFile(pToolBarPos);
-    //}
-
-    //xmlIndentTreeOutput = 1;
-    //xmlThrDefIndentTreeOutput(TRUE);
-    //if(xmlToolbarPosDoc != NULL)
-    //{
-    //  xmlSaveFormatFileEnc(path.c_str(), xmlToolbarPosDoc, "UTF-8", 1);
-
-    //  xmlFreeDoc(xmlToolbarPosDoc);
-    //  xmlToolbarPosDoc = NULL;
-    //}
-    //  }
-    //}
-    //else          //If section is not present then load the defaults
-    //{
-    //
-    //  bSetDefaultToolbarPosition();
-
-    ////free the pointers
-    //if(xmlToolbarPosDoc != NULL)
-    //{
-    //  xmlFreeDoc(xmlToolbarPosDoc);
-    //  xmlToolbarPosDoc = NULL;
-    //}
-    //xmlCleanupParser();
-    //
-    //xmlKeepBlanksDefault(0);
-    //xmlToolbarPosDoc = xmlParseFile(path.c_str());
-
-    //xmlChar* pXpath = (xmlChar*)"//Busmaster_Init_Config";
-    //xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(xmlToolbarPosDoc, pXpath);
-
-    //if(pObjectPath == NULL)                   //if root node doean't exist, then create it
-    //{
-    //  // Creating the Root node
-    //  pRtNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUSMASTER_INIT_CONFIG);
-    //  xmlDocSetRootElement(xmlToolbarPosDoc, pRtNodePtr);
-    //}
-    //else      //else get the root node
-    //{
-    //  xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-    //  if( NULL != pNodeSet )
-    //  {
-    //      pRtNodePtr = pNodeSet->nodeTab[0];              //Take First One only
-    //  }
-    //}
-
-    ////create the user defined node
-    //pToolBarPos = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_POS_USER_DEFINED  );
-    //xmlAddChild(pRtNodePtr, pToolBarPos);
-
-    //if(pToolBarPos != NULL)
-    //{
-    //  //store the positions of the toolbars in the file
-    //  CreateToolBarPosInGlobalFile(pToolBarPos);
-    //}
-
-    //xmlIndentTreeOutput = 1;
-    //xmlThrDefIndentTreeOutput(TRUE);
-    //if(xmlToolbarPosDoc != NULL)
-    //{
-    //  xmlSaveFormatFileEnc(path.c_str(), xmlToolbarPosDoc, "UTF-8", 1);
-
-    //  xmlFreeDoc(xmlToolbarPosDoc);
-    //  xmlToolbarPosDoc = NULL;
-    //}
-    //  }
-    //}
-    //else //If file is not present then load the defaults and create the file
-    //{
-    //
-    //  bSetDefaultToolbarPosition();
-
-    ////create new file
-    //xmlKeepBlanksDefault(0);
-
-    //// Create the document with version 1.0
-    //xmlToolbarPosDoc = xmlNewDoc(BAD_CAST "1.0");
-
-    //// Creating the Root node
-    //pRtNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUSMASTER_INIT_CONFIG);
-    //xmlDocSetRootElement(xmlToolbarPosDoc, pRtNodePtr);
-
-    ////creating user define node
-    //pToolBarPos = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_POS_USER_DEFINED  );
-    //xmlAddChild(pRtNodePtr, pToolBarPos);
-
-    //if(pToolBarPos != NULL)
-    //{
-    //  //store the positions of the toolbars in the file
-    //  CreateToolBarPosInGlobalFile(pToolBarPos);
-    //}
-
-    //xmlIndentTreeOutput = 1;
-    //xmlThrDefIndentTreeOutput(TRUE);
-    //if(xmlToolbarPosDoc != NULL)
-    //{
-    //  xmlSaveFormatFileEnc(path.c_str(), xmlToolbarPosDoc, "UTF-8", 1);
-
-    //  xmlFreeDoc(xmlToolbarPosDoc);
-    //  xmlToolbarPosDoc = NULL;
-    //}
-
-    //}
-
-    ////free the pointers
-    //if(xmlToolbarPosDoc != NULL)
-    //{
-    //  xmlFreeDoc(xmlToolbarPosDoc);
-    //}
-    //xmlCleanupParser();
-    //--------------------------------------------------------------------------------------------------
-
+	//CheckDlgButton(IDR_TOOL_HEXDEC,BST_CHECKED);
     if (!m_wndStatusBar.CreateEx(this,SBT_TOOLTIPS) ||
             !m_wndStatusBar.SetIndicators(indicators,
                                           sizeof(indicators)/sizeof(UINT)))
@@ -1159,7 +993,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     // CG: The following line was added by the Splash Screen component.
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
-    Sleep(1500);
+	Sleep(1500);
+
+	theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
+	
+	
+	
 
     return 0;
 }
@@ -12587,7 +12426,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
                 CConfigData::ouGetConfigDetailsObject().vReadConfigFile();
             }
             nRetValue = LoadConfiguration();
-
+			
             ApplyLogFilter();
             ApplyMessageFilterButton();
         }

@@ -110,7 +110,7 @@
     </section>
     <section>
       <title>Message List</title>
-      <p>Message list will show the list of messages belong to a message block. A message block shall be selected from Message Block to see the list of messages it has. Message list will show message frame with its ID, Name if it is a database message, frame type, DLC and data bytes. The icon used for each entry will denote whether it is a database message or non database message. The data bytes will be listed in hex or decimal format as per the tool bar numeric mode. The frame type will show the message is using standard frame type or extended frame type. The RTR messages will be denoted by &apos;r&apos;. With message in the list the following operations shall be performed.</p>
+      <p>Message list will show the list of messages belong to a message block. A message block shall be selected from Message Block to see the list of messages it has. Message list will show message frame with its ID, Name if it is a database message, frame type, DLC and data bytes. The icon used for each entry will denote whether it is a database message or non database message. The data bytes will be listed in hex or decimal format as per the tool bar numeric mode. By default massages will be displayed in hexadecimal mode.The frame type will show the message is using standard frame type or extended frame type. The RTR messages will be denoted by &apos;r&apos;. With message in the list the following operations shall be performed.</p>
     </section>
     <section>
       <title>Send</title>

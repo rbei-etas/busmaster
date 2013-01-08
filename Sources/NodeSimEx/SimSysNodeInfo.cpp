@@ -123,7 +123,7 @@ void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)
         if (sErrInfo.m_ucErrType == ERROR_BUS)
         {
             // Update Statistics information
-            usErrorID = sErrInfo.m_ucReg_ErrCap & 0xE0;
+            usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
             // Create Channel ID & Error code word
         }
         else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)

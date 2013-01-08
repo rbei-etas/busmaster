@@ -35,10 +35,12 @@
 
 
 #define BIT_ERROR_TX                       0x00
+#define CRC_ERROR_TX                       0x10
 #define FORM_ERROR_TX                      0x40
 #define STUFF_ERROR_TX                     0x80
 #define OTHER_ERROR_TX                     0xC0
 #define BIT_ERROR_RX                       0x20
+#define CRC_ERROR_RX                       0xB0
 #define FORM_ERROR_RX                      0x60
 #define STUFF_ERROR_RX                     0xA0
 #define OTHER_ERROR_RX                     0xE0

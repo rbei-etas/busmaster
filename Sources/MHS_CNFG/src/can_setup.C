@@ -43,11 +43,15 @@ static const uint32_t CanSpeedTab[] = {10, 20, 50, 100, 125, 250, 500, 800, 1000
 
 static void InitCanSetupDlg(HWND hdlg, struct TMhsCanCfg *cfg)
 {
-SetDlgItemText(hdlg, IDC_SNR_EDIT, cfg->CanSnrStr);
-SetDlgItemHex(hdlg, IDC_BTR_EDIT, HEX_WORD, cfg->CanBtrValue);
+	SetDlgItemText(hdlg, IDC_SNR_EDIT, cfg->CanSnrStr);
+	SetDlgItemHex(hdlg, IDC_BTR_EDIT, HEX_WORD, cfg->CanBtrValue);
 
-FillComboBox(hdlg, IDC_CAN_SPEED, CanSpeedTabStr, CanSpeedTab,
-             CanSpeedTabSize, cfg->CanSpeed);
+	FillComboBox(hdlg, IDC_CAN_SPEED, CanSpeedTabStr, CanSpeedTab,
+				 CanSpeedTabSize, cfg->CanSpeed);
+
+	// Set default value as bitrate
+	CheckRadioButton(hDlg, IDC_RADIOBTN_BITRATE, IDC_RADIOBTN_BTR, IDC_RADIOBTN_BITRATE);
+	EnableDisableControls(hDlg, IDC_RADIOBTN_BITRATE);
 }
 
 
@@ -58,6 +62,22 @@ cfg->CanBtrValue = GetDlgItemHex(hdlg, IDC_BTR_EDIT);
 cfg->CanSpeed = GetComboBox(hdlg, IDC_CAN_SPEED);
 }
 
+static void EnableDisableControls(HWND hdlg, int nDlgItem)
+{	
+	HWND hWndBitRate = GetDlgItem(hdlg, IDC_RADIOBTN_BITRATE);
+	HWND hWndBTR = GetDlgItem(hdlg, IDC_RADIOBTN_BTR);
+	
+	if (nDlgItem != IDC_RADIOBTN_BITRATE)
+	{
+		EnableWindow(IDC_CAN_SPEED, TRUE);	// Enable the bit rate combo box
+		EnableWindow(IDC_BTR_EDIT, FALSE);	// Disable the BTR edit box
+	}
+	else
+	{
+		EnableWindow(IDC_CAN_SPEED, FALSE);	// Disable the bit rate combo box
+		EnableWindow(IDC_BTR_EDIT, TRUE);	// Enable the BTR edit box
+	}
+}
 
 static BOOL CALLBACK CanSetupDlgProc(HWND hdlg, UINT uMessage, WPARAM wparam, LPARAM lparam)
 {
@@ -79,6 +99,9 @@ switch(uMessage)
                                          EndDialog(hdlg, TRUE);
                                          return(TRUE);
                                          }
+						 case BN_CLICKED: {
+										  EnableDisableControls(hdlg, lparam);
+										  }
                          }
                        break;
                        }
