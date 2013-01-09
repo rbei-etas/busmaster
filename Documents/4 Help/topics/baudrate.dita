@@ -30,5 +30,6 @@
     <image href="../images/Baudrate.bmp" placement="break"/>
     <p>Other fields like BRP, Sampling Point, SJW and NBT are dependent on CNF0, CNF1 and CNF2 values. On clicking the &quot;OK&quot; button the controller will be initialized with the selected baud rate.</p>
     <p>For more details on bit values of CNF0, CNF1 and CNF2 and the calculation of baud rate refer the section Bit Time Calculation.</p>
+    <note>For MH Tiny CAN, either Bit Rate or BTR will be considered. If Bit Rate value is available BTR will be discarded.</note>
   </body>
 </topic>

@@ -15,13 +15,13 @@
     </metadata>
   </prolog>
   <body>
-    <p>Once the program is written it can be built as a DLL and loaded. The GCC compiler is used for this purpose. The GCC compiler is a freeware shipped along with the BUSMASTER tool. You can either build or build and load on the fly. You can also unload any loaded DLL. Once the DLL is loaded, all the handler function can be invoked/revoked selectively. Once the user program is loaded in to the BUSMASTER application handlers are exposed to the application.</p>
+    <p>Once the program is written it can be built as a DLL and loaded. The GCC compiler is used for this purpose.  You can either build or build and load on the fly. You can also unload any loaded DLL. Once the DLL is loaded, all the handler function can be invoked/revoked selectively. Once the user program is loaded in to the BUSMASTER application handlers are exposed to the application.</p>
     <section>
       <title>Build</title>
       <p>To make a build the program file should be associated with a node under a simulated system. (Refer section Simulated Systems) Selecting <uicontrol>Build All</uicontrol> from toolbar or  <menucascade>
           <uicontrol>Node Simulation</uicontrol>
           <uicontrol>Build All</uicontrol>
-        </menucascade> will start building all the C files under all the simulated systems configured in that session. The building status will be displayed in the Output Window. If any errors found in the program, it will be listed with the line number. Double clicking the error line in the output window will open that particular file in Function editor and highlights the code in source window and will select the corresponding line in the Pane 2 (Refer section Function Editor) and makes the same editable in Pane 3. (Refer section Function Editor) If there is no error in the program, the DLLs will be generated and user will be notified of successful creation of DLLs. User can load these DLLs using <menucascade>
+        </menucascade> will start building all the C files under all the simulated systems configured in that session. The building status will be displayed in the Output Window. If any errors found in the program, it will be listed with the line number.  Clicking the error line in the output window will open that particular file in Function editor and highlights the code in source window and will select the corresponding line in the Pane 2 (Refer section Function Editor) and makes the same editable in Pane 3. (Refer section Function Editor) If there is no error in the program, the DLLs will be generated and user will be notified of successful creation of DLLs. User can load these DLLs using <menucascade>
           <uicontrol>Node Simulation</uicontrol>
           <uicontrol>Load All</uicontrol>
         </menucascade> menu.</p>

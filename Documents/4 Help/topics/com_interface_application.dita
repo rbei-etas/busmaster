@@ -43,5 +43,133 @@ if(SUCCEEDED(hr))
 
  
 </p>
+    <p>
+
+</p>
+    <p>
+
+
+To receive CAN messages from Busmaster makes use of the new interface_IAppEvents (connection points).</p>
+    <p>Provide implementation to sink class as shown below.</p>
+    <p><codeblock>Sink Class declaration:
+
+VC++:
+
+class ClientSink : public _IAppEvents
+{
+private:
+DWORD       m_dwRefCount;
+public:
+ClientSink();
+virtual ~ClientSink();
+
+STDMETHODIMP OnMessageReceived(CAN_MSGS RxMsg);
+
+HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void **ppvObject);
+
+ULONG STDMETHODCALLTYPE AddRef();
+
+ULONG STDMETHODCALLTYPE Release();
+};
+
+C#:
+
+class MyEventsSink : _IAppEvents
+{
+    public MyEventsSink() { }
+
+    void _IAppEvents.OnMessageReceived(CAN_MSGS RxMsg)
+    {
+        MessageBox.Show(&quot;Rx Packet Received!&quot;);        
+    }
+}
+
+
+
+Usage:
+
+VC++:
+
+            HRESULT hResult = CoCreateInstance(CLSID_Application, NULL, 
+                   CLSCTX_LOCAL_SERVER, IID_IApplication, (void **) &amp;pICANvas);
+            if ((SUCCEEDED(hResult)) &amp;&amp; (NULL != pICANvas))
+            {
+//check if this interface supports connectible objects
+HRESULT hr = pICANvas-&gt;QueryInterface(IID_IConnectionPointContainer,(void **)&amp;m_pConnPtContainer);
+if ( !SUCCEEDED(hr) )
+{
+return hr;
+}
+
+// find the specific connection point
+hr = m_pConnPtContainer-&gt;FindConnectionPoint(IID__IAppEvents, &amp;m_pCntPoint);
+if ( !SUCCEEDED(hr) )
+{
+return hr;
+}
+
+//we are done with the connection point container interface
+m_pConnPtContainer-&gt;Release();
+
+m_pSink = new ClientSink;
+if ( NULL == m_pSink )
+{
+  return E_FAIL;
+}
+
+//Get the pointer to CSink&apos;s IUnknown pointer
+hr = m_pSink-&gt;QueryInterface (IID_IUnknown,(void **)&amp;m_pSinkUnk);
+if ( !SUCCEEDED(hr) )
+{
+return hr;
+}
+
+// It is assumed that this should call the QueryInterface with _IAppEvents
+// Do not understand why this calls the QueryInterface with IID_IMarshal
+// Later this becomes reason for not getting event at ClientSink::OnMessageReceived
+hr = m_pCntPoint-&gt;Advise(m_pSinkUnk, &amp;m_dwAdvise);
+if ( !SUCCEEDED(hr) )
+{
+return hr;
+}
+
+                UpdateGUI();
+            }
+            else
+            {
+                ASSERT(FALSE);
+            }
+
+
+C#:
+
+            int cookie;
+            MyEventsSink mySink;
+            mySink = new MyEventsSink();
+
+            UCOMIConnectionPointContainer icpc = (UCOMIConnectionPointContainer)canMonitor;
+            UCOMIConnectionPoint icp;
+            Guid IID_IAppEvents = typeof(_IAppEvents).GUID;
+
+            icpc.FindConnectionPoint(ref IID_IAppEvents, out icp);
+            icp.Advise(mySink, out cookie);
+
+            canMonitor.Connect(1);
+            CAN_MonitorApp.CAN_MSGS sMsg = new CAN_MonitorApp.CAN_MSGS();
+            // Initialise message structure
+            sMsg.m_unMsgID = 100;              // Message ID
+            sMsg.m_bEXTENDED = 0;           // Standard Message type
+            sMsg.m_bRTR = 0;                // Not RTR type
+            sMsg.m_ucDataLen = 8;                    // Length is 8 Bytes
+            sMsg.m_ucData = new Byte[8] { 0, 1, 2, 3, 4, 5, 6, 7 };  // Lower 4 Bytes
+            sMsg.m_ucChannel = 1;                // First CAN channel
+
+            // Send the message
+            canMonitor.SendCANMSg(ref sMsg);
+            //canMonitor.
+
+            Thread.Sleep(5000);
+
+            icp.Unadvise(cookie);</codeblock></p>
   </body>
 </topic>
