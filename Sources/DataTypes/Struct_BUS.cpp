@@ -21,6 +21,7 @@
 #include "DataTypes_stdafx.h"
 #include "include/Struct_CAN.h"
 #include "application/hashdefines.h"
+#include "application/Common.h"
 
 int sTCANDATA::m_nSortField = 0;
 int sTCANDATA::m_nMFactor = 1;
@@ -44,10 +45,15 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
 
     switch (m_nSortField)
     {
-        case 3: // Sort by channel
-        {
-            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucChannel - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucChannel);
-            Result *= m_nMFactor;
+        case 6: // Sort by message name
+        {                        			
+			CString str1, str2;
+			AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str1);
+			AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str2);
+			
+			Result = (int) (str1.CompareNoCase(str2));
+			Result *= m_nMFactor;
+
             if (Result != 0)
             {
                 break;
@@ -56,6 +62,15 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
         case 5: // Sort by CAN id
         {
             Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID - pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID);
+            Result *= m_nMFactor;
+            if (Result != 0)
+            {
+                break;
+            }
+        }
+        case 3: // Sort by channel
+        {
+            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucChannel - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucChannel);
             Result *= m_nMFactor;
             if (Result != 0)
             {

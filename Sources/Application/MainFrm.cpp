@@ -317,6 +317,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
+	ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)	
+	ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)	
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
     ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
@@ -12002,6 +12004,22 @@ LRESULT CMainFrame::OnProvideMsgDBPtr(WPARAM wParam, LPARAM /*lParam*/)
 {
     CMsgSignal** pSignal = (CMsgSignal**)wParam;
     *pSignal = theApp.m_pouMsgSignal;
+    return 0;
+}
+
+LRESULT CMainFrame::OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam)
+{
+	CString* strMsgName = (CString*)lParam;
+    theApp.m_pouMsgSignal->bMessageNameFromMsgCode((UINT)wParam, *strMsgName);	
+	
+    return 0;
+}
+
+LRESULT CMainFrame::OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam)
+{
+	CString* strMsgName = (CString*)lParam;
+	m_pouMsgSigJ1939->bMessageNameFromMsgCode((UINT)wParam, *strMsgName);    
+	
     return 0;
 }
 

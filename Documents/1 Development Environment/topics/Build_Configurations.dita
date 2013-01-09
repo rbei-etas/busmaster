@@ -35,5 +35,6 @@
       <p>Unicode Release, Unicode Release MinSize are used with DMGraph project in BUSMASTER solution. Unicode Debug is not supported.</p>
       <image href="../images/Build_Configurations.png"/>
     </section>
+    <note>If build fails, select build solution another time without rebuild.</note>
   </body>
 </topic>
