@@ -36,6 +36,7 @@
 #include "Include/Utils_Macro.h"
 #include "J1939_DataTypes.h"
 #include "application/hashdefines.h"
+#include "application/Common.h"
 
 int STJ1939_MSG::m_nSortField = 0;
 int STJ1939_MSG::m_nMFactor = 1;
@@ -145,7 +146,7 @@ void tagSTJ1939_MSG::vSetSortAscending(bool bAscending)
 
 int tagSTJ1939_MSG::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
 {
-    UINT Result = 0;
+    int Result = 0;
 
     STJ1939_MSG* pJ1939Msg1 = (STJ1939_MSG*) pEntry1;
     STJ1939_MSG* pJ1939Msg2 = (STJ1939_MSG*) pEntry2;
@@ -167,6 +168,20 @@ int tagSTJ1939_MSG::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
             Result = (UINT) (pJ1939Msg1->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress -
                              pJ1939Msg2->m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress);
             Result *= m_nMFactor;
+            if (Result != 0)
+            {
+                break;
+            }
+        }
+        case 5: // Sort by message name
+        {                        			
+			CString str1, str2;
+			AfxGetMainWnd()->SendMessage(WM_GET_PGN_NAME_FROM_CODE, (WPARAM)pJ1939Msg1->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(), (LPARAM)&str1);
+			AfxGetMainWnd()->SendMessage(WM_GET_PGN_NAME_FROM_CODE, (WPARAM)pJ1939Msg2->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(), (LPARAM)&str2);
+			
+			Result = (int) (str1.CompareNoCase(str2));
+			Result *= m_nMFactor;
+
             if (Result != 0)
             {
                 break;

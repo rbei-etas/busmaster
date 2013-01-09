@@ -706,6 +706,8 @@ public:
     afx_msg void OnUpdateSaveImportDatabase(CCmdUI* pCmdUI);
     //To update the Message DB Pointer
     afx_msg LRESULT OnProvideMsgDBPtr(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam);	
     afx_msg LRESULT OnMessageFromUserDll(WPARAM wParam, LPARAM lParam);
     afx_msg void OnConfigureModeActive();
     afx_msg void OnConfigurePassive();
