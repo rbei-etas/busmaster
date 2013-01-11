@@ -207,12 +207,12 @@ BOOL CCANMonitorApp::InitInstance()
     CWinApp::InitInstance();
 
     // Initialize OLE libraries
-    //if (!AfxOleInit())
-    //{
-    //    AfxMessageBox(_("Fail to Intilaize OLE"));
-    //    return FALSE;
-    //}
-	CoInitializeEx(NULL, COINIT_MULTITHREADED );
+    if (!AfxOleInit())
+    {
+        AfxMessageBox(_("Fail to Intilaize OLE"));
+        return FALSE;
+    }
+	//CoInitializeEx(NULL, COINIT_MULTITHREADED );
 
     CBusmasterDump dump(_("BUSMASTER"));
     // END CHANGES MADE FOR AUTOMATION

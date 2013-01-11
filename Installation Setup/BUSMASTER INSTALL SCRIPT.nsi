@@ -34,7 +34,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.7.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.7.2.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -577,7 +577,7 @@ Section "BUSMASTER"
     StrCmp $1 "6.1" 0 lbl ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "WIN98"
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe" "WIN98"
-    WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\FormatConverter.exe" "WIN98"
+    WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\FormatConverter.exe" "WINXP"
     lbl:	
 	
     ; Server registration
@@ -624,7 +624,7 @@ Section "Kvaser CAN"
     SectionIn 1 2
     SetOutPath $INSTDIR
     File ..\Sources\BIN\Release\CAN_Kvaser_CAN.dll
-	File ..\Sources\BIN\Release\canlib32.dll
+;	File ..\Sources\BIN\Release\canlib32.dll
 SectionEnd
 Section "MHS-Elektronik Tiny-CAN"
     SectionIn 1 2

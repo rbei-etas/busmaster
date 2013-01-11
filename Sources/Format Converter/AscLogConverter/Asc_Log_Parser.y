@@ -13,7 +13,7 @@
 // Added new line
 #define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***\r\n"
 
-
+int nAddedHeader = 0;
 int nSize = 0;
 int nLen = 0;
 int nTimeMode = TIME_MODE_UNDEFINED;
@@ -75,6 +75,45 @@ int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile)
 	}
 	return 0;
 }
+int nAddFunctionHeader(char* pchDay, int nMonth, char* pchYear, int nHour, int nMins, int nSec)
+{
+	fprintf(yyout, "***BUSMASTER Ver 1.7.2***\n");
+	fprintf(yyout, "***PROTOCOL CAN***\n");
+    fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
+    fprintf(yyout, "***[START LOGGING SESSION]***\n");
+    fprintf(yyout,"***START DATE AND TIME %s:%d:%s %d:%d:%d:%s%s", pchDay, nMonth, pchYear, nHour, nMins, nSec, "000", "***");
+    nAddedHeader = 1;
+    return 0;
+}
+int GetMonth(char* pchValue)
+{
+	int nMonth = 1;
+	if( strcmp("Jan", pchValue) == 0 )
+			nMonth = 1;
+	else if( strcmp("Feb", pchValue) == 0 )
+		nMonth = 2; 
+	else if( strcmp("Mar", pchValue) == 0 )
+		nMonth = 3; 
+	else if( strcmp("Apr", pchValue) == 0 )
+		nMonth = 4; 
+	else if( strcmp("May", pchValue) == 0 )
+		nMonth = 5; 
+	else if( strcmp("Jun", pchValue) == 0 )
+		nMonth = 6; 
+	else if( strcmp("Jul", pchValue) == 0 )
+		nMonth = 7; 
+	else if( strcmp("Aug", pchValue) == 0 )
+		nMonth = 8; 
+	else if( strcmp("Sep", pchValue) == 0 )
+		nMonth = 9; 
+	else if( strcmp("Oct", pchValue) == 0 )
+		nMonth = 10; 
+	else if( strcmp("Nov", pchValue) == 0 )
+		nMonth = 11; 
+	else if( strcmp("Dec", pchValue) == 0 )
+		nMonth = 12; 
+	return nMonth;
+}
 %}
 
 %token HEXNUMBER NUMBER TOKHEAT STATE TOKTARGET TOKTEMPERATURE DOUBLEVAL MSGDIR DATAMSG LENGTHTOKEN BITCOUNTTOKEN EQUAL EXTID MONTH DAY FULLTIME
@@ -104,6 +143,8 @@ command:
 	Msg_Len
 	|
 	Log_Creation_Time
+	|
+	Log_Creation
 	|
 	Bit_Count
 	|
@@ -188,6 +229,11 @@ RemoteFrame:
 Base_TimeStamps:
 	BASETOKEN BASE  TIMESTAMPSTOKEN TIMEMODE
 	{
+		if( nAddedHeader == 0 )
+		{
+			//Default
+			nAddFunctionHeader("1", 1, "2000", 1, 1, 1);
+		} 
 		if(strcmp("dec", (char*)$2) == 0)
 		{
 			fprintf(yyout,"\n%s", "***DEC***");
@@ -214,10 +260,10 @@ Base_TimeStamps:
 	}
 Log_Creation_Time:
 //date Wed Dec 7 12:23:39 pm 2011
+//The Functionality has to move to single function
 	DATETOKEN DAY MONTH NUMBER FULLTIME AM_PM NUMBER
 	{	
 		/*date Wed Dec 7 12:23:39 pm 2011*/
-		
 		
 		char chSeparators[]   = " :,\t\n";
 		char* chTemp;
@@ -226,35 +272,10 @@ Log_Creation_Time:
 		
 		// PTV[1.6.4]
 		// Added required headers at the start of the file
-		 fprintf(yyout, "***BUSMASTER Ver 1.7.1***\n");
-		 fprintf(yyout, "***PROTOCOL CAN***\n");
-         fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
-         fprintf(yyout, "***[START LOGGING SESSION]***\n");
+		
 	 // PTV[1.6.4]
-		if( strcmp("Jan", (char*)$3) == 0 )
-			nMonth = 1;
-		else if( strcmp("Feb", (char*)$3) == 0 )
-			nMonth = 2; 
-		else if( strcmp("Mar", (char*)$3) == 0 )
-			nMonth = 3; 
-		else if( strcmp("Apr", (char*)$3) == 0 )
-			nMonth = 4; 
-		else if( strcmp("May", (char*)$3) == 0 )
-			nMonth = 5; 
-		else if( strcmp("Jun", (char*)$3) == 0 )
-			nMonth = 6; 
-		else if( strcmp("Jul", (char*)$3) == 0 )
-			nMonth = 7; 
-		else if( strcmp("Aug", (char*)$3) == 0 )
-			nMonth = 8; 
-		else if( strcmp("Sep", (char*)$3) == 0 )
-			nMonth = 9; 
-		else if( strcmp("Oct", (char*)$3) == 0 )
-			nMonth = 10; 
-		else if( strcmp("Nov", (char*)$3) == 0 )
-			nMonth = 11; 
-		else if( strcmp("Dec", (char*)$3) == 0 )
-			nMonth = 12; 
+		nMonth = GetMonth((char*)$3);
+		
 		/*8:12:2011 20:15:28:553****/
 		
 		chTemp = strtok((char*)$5, chSeparators);
@@ -271,7 +292,44 @@ Log_Creation_Time:
 		}
 		// PTV[1.6.4]
 		// Added Start date and Time text
-		fprintf(yyout,"***START DATE AND TIME %s:%d:%s %d:%d:%d:%s%s", $4, nMonth, $7, nHour, nMins, nSec, "000", "***");
+		nAddFunctionHeader((char*)$4, nMonth, (char*)$7, nHour, nMins, nSec);
+		// PTV[1.6.4]
+		/*free($1);
+		free($2);
+		free($3);
+		free($4);
+		free($5);
+		free($6);
+		free($7);*/
+	}
+Log_Creation:
+	//date Wed Dec 7 12:23:39 2011.
+	DATETOKEN DAY MONTH NUMBER FULLTIME NUMBER
+	{	
+		/*date Wed Dec 7 12:23:39 pm 2011*/
+		
+		char chSeparators[]   = " :,\t\n";
+		char* chTemp;
+		int nMonth;
+		int nHour, nMins, nSec;
+		// PTV[1.6.4]
+		// Added required headers at the start of the file
+		 // PTV[1.6.4]
+		nMonth = GetMonth((char*)$3);
+		/*8:12:2011 20:15:28:553****/
+		
+		chTemp = strtok((char*)$5, chSeparators);
+		nHour = atoi(chTemp);
+		chTemp = strtok( NULL, chSeparators ); 
+		nMins = atoi(chTemp);
+		chTemp = strtok( NULL, chSeparators ); 
+		nSec = atoi(chTemp);
+		
+		nHour = nHour;
+	
+		// PTV[1.6.4]
+		// Added Start date and Time text
+		nAddFunctionHeader((char*)$4, nMonth, (char*)$6, nHour, nMins, nSec);
 		// PTV[1.6.4]
 		/*free($1);
 		free($2);
