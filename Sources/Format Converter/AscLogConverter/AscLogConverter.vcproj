@@ -284,6 +284,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"
+						DebugInformationFormat="0"
 					/>
 				</FileConfiguration>
 			</File>

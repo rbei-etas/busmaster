@@ -834,7 +834,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     }
     vGetWinStatus(m_WinCurrStatus);
     // Update the window placement
-    //SetWindowPlacement(&m_WinCurrStatus);
+    SetWindowPlacement(&m_WinCurrStatus);
 
     // The node simulation toolbar
     CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T(_("Node Simulation")));

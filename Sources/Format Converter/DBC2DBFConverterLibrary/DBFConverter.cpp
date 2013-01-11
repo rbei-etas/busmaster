@@ -1194,7 +1194,7 @@ bool CDBFConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //For easy replacement of version Info #define is not added
-    fileOutput<< "[BUSMASTER_VERSION] [1.7.1]"<<endl;
+    fileOutput<< "[BUSMASTER_VERSION] [1.7.2]"<<endl;
 
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;
