@@ -73,4 +73,4 @@ const float PI = (float) 3.14159265358979323846;
 
 const BYTE VERSION_MAJOR    = 1;
 const BYTE VERSION_MINOR    = 7;
-const BYTE VERSION_BUILD    = 1;
+const BYTE VERSION_BUILD    = 2;

@@ -521,7 +521,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombBaudRate()
         {
             // Validate for empty string and if zero value is entered.
             DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
-            if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000.0)
+            if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0)
             {
                 int nIndex = m_omCombBaudRate.FindString(0, m_omStrcombBaudRate);
                 if (nIndex < 0)

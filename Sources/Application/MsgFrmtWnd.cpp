@@ -436,31 +436,23 @@ void CMsgFrmtWnd::vFitListCtrlToWindow()
 
 		if (m_eBusType == CAN)
 		{
-			m_lstMsg.SetColumnWidth(0, (int)(0.03 * ClientWidth));
-			m_lstMsg.SetColumnWidth(1, (int)(0.1 * ClientWidth));
-			m_lstMsg.SetColumnWidth(2, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(3, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(4, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(5, (int)(0.17 * ClientWidth));
-			m_lstMsg.SetColumnWidth(6, (int)(0.2 * ClientWidth));
-			m_lstMsg.SetColumnWidth(7, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(8, (int)(0.33 * ClientWidth));
+			int nTotalWidth = 0;
+			for (int nIdx = 0; nIdx < 8; nIdx++ )
+			{
+				nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
+			}
+			int nLastColWidth = ClientWidth - nTotalWidth;
+			m_lstMsg.SetColumnWidth(8, nLastColWidth);
 		}
 		else if (m_eBusType == J1939)
-		{
-			m_lstMsg.SetColumnWidth(0, (int)(0.03 * ClientWidth));
-			m_lstMsg.SetColumnWidth(1, (int)(0.1 * ClientWidth));
-			m_lstMsg.SetColumnWidth(2, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(3, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(4, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(5, (int)(0.17 * ClientWidth));
-			m_lstMsg.SetColumnWidth(6, (int)(0.2 * ClientWidth));
-			m_lstMsg.SetColumnWidth(7, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(8, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(9, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(10, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(11, (int)(0.05 * ClientWidth));
-			m_lstMsg.SetColumnWidth(12, (int)(0.13 * ClientWidth));
+		{			
+			int nTotalWidth = 0;
+			for (int nIdx = 0; nIdx < 12; nIdx++ )
+			{
+				nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
+			}
+			int nLastColWidth = ClientWidth - nTotalWidth;
+			m_lstMsg.SetColumnWidth(12, nLastColWidth);
 		}
 		m_lstMsg.MoveWindow(&sClientRect);
 	}
