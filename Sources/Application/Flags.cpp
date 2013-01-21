@@ -132,6 +132,7 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
         m_bLogOverWriteON       = psToolBarInfo->m_byLogOverWriteON;
         m_nReplayMsgType        = psToolBarInfo->m_byReplayMsgType;
         m_bScrolling            = psToolBarInfo->m_byEnsureVisible;
+        m_bReplayFilter         = psToolBarInfo->m_byReplayFilter;
     }
 }
 
@@ -454,9 +455,9 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bActivatedJ1939 = (BOOL) nValue;
             break;
 
-		case REPLAYFILTER:
-			m_bReplayFilter = nValue;
-			break;
+        case REPLAYFILTER:
+            m_bReplayFilter = nValue;
+            break;
         default:
             ASSERT(FALSE); // Invalid flag enum value
     }
@@ -618,8 +619,8 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case ACTIVATED_J1939:
             nRetValue = (int) m_bActivatedJ1939;
             break;
-		case REPLAYFILTER:
-			nRetValue = (int) m_bReplayFilter;
+        case REPLAYFILTER:
+            nRetValue = (int) m_bReplayFilter;
             break;
         default:
             // Invalid flag enum value
@@ -665,6 +666,7 @@ void CFlags::vGetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
         psToolBarInfo->m_byLogOverWriteON   = static_cast<BYTE>(m_bLogOverWriteON);
         psToolBarInfo->m_byReplayMsgType    = static_cast<BYTE>(m_nReplayMsgType);
         psToolBarInfo->m_byEnsureVisible    = static_cast<BYTE>(m_bScrolling);
+        psToolBarInfo->m_byReplayFilter        = static_cast<BYTE>(m_bReplayFilter);
     }
 }
 /******************************************************************************/
@@ -705,6 +707,7 @@ void CFlags::vSetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
         m_bLogOverWriteON       = psToolBarInfo->m_byLogOverWriteON;
         m_nReplayMsgType        = psToolBarInfo->m_byReplayMsgType;
         m_bScrolling            = psToolBarInfo->m_byEnsureVisible;
+        m_bReplayFilter         =  psToolBarInfo->m_byReplayFilter;
     }
 }
 

@@ -350,25 +350,35 @@ VOID CReplayManager::vCmdSkip()
 *******************************************************************************/
 VOID CReplayManager::vEnableFilters(BOOL bEnabled)
 {
-	UINT nCount = (UINT)m_omReplayProcess.GetSize();
+    UINT nCount = (UINT)m_omReplayProcess.GetSize();
 
-	for(int nCnt = 0; nCnt < nCount; nCnt++)
-	{
-		CReplayProcess *pReplayProcess = m_omReplayProcess.GetAt(nCnt);
-		EnterCriticalSection(&pReplayProcess->m_omCritSecFilter);
-		pReplayProcess->m_ouReplayFile.m_sFilterApplied.m_bEnabled = bEnabled;
-		LeaveCriticalSection(&pReplayProcess->m_omCritSecFilter);
-	}
+    for(int nCnt = 0; nCnt < nCount; nCnt++)
+    {
+        CReplayProcess* pReplayProcess = NULL;
+        pReplayProcess = m_omReplayProcess.GetAt(nCnt);
+        if(pReplayProcess == NULL)
+        {
+            return;
+        }
+        EnterCriticalSection(&pReplayProcess->m_omCritSecFilter);
+        pReplayProcess->m_ouReplayFile.m_sFilterApplied.m_bEnabled = bEnabled;
+        LeaveCriticalSection(&pReplayProcess->m_omCritSecFilter);
+    }
 
-	nCount = (UINT)m_omReplayWindowArray.GetSize();
+    nCount = (UINT)m_omReplayWindowArray.GetSize();
 
-	for(int nCnt = 0; nCnt < nCount; nCnt++)
-	{
-		CMsgReplayWnd *pReplayWnd = m_omReplayWindowArray.GetAt(nCnt);
-		EnterCriticalSection(&pReplayWnd->m_ouReplayDetails.m_omCritSecFilter);
-		pReplayWnd->m_ouReplayDetails.m_ouReplayFile.m_sFilterApplied.m_bEnabled = bEnabled;
-		LeaveCriticalSection(&pReplayWnd->m_ouReplayDetails.m_omCritSecFilter);
-	}
+    for(int nCnt = 0; nCnt < nCount; nCnt++)
+    {
+        CMsgReplayWnd* pReplayWnd = NULL;
+        pReplayWnd = m_omReplayWindowArray.GetAt(nCnt);
+        if(pReplayWnd == NULL)
+        {
+            return;
+        }
+        EnterCriticalSection(&pReplayWnd->m_ouReplayDetails.m_omCritSecFilter);
+        pReplayWnd->m_ouReplayDetails.m_ouReplayFile.m_sFilterApplied.m_bEnabled = bEnabled;
+        LeaveCriticalSection(&pReplayWnd->m_ouReplayDetails.m_omCritSecFilter);
+    }
 }
 
 /*******************************************************************************

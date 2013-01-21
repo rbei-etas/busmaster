@@ -89,7 +89,7 @@ BEGIN_MESSAGE_MAP(CFnsTreeView, CTreeView)
     //{{AFX_MSG_MAP(CFnsTreeView)
     ON_WM_CREATE()
     //ON_NOTIFY_REFLECT(NM_DBLCLK, OnTreeItemDoubleClick)
-	ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelectionChanged)
+    ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnTreeItemSelectionChanged)
     ON_NOTIFY_REFLECT(NM_CLICK, OnItemLeftClick)
     ON_WM_LBUTTONDOWN()
     ON_NOTIFY_REFLECT(NM_RCLICK, OnTreeViewRightclick)
@@ -474,11 +474,11 @@ BOOL CFnsTreeView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CFnsTreeView::OnTreeItemSelectionChanged(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
-	vEditSelectedFunction();
+    vEditSelectedFunction();
 }
 
 /******************************************************************************/
-/*  Function Name    :  vEditSelectedFunction								  */
+/*  Function Name    :  vEditSelectedFunction                                 */
 /*                                                                            */
 /*  Output           :                                                        */
 /*  Functionality    :  Displays the body of the selected function in the

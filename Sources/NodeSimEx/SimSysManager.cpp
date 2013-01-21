@@ -664,13 +664,15 @@ void CSimSysManager ::vInitailizeSimSysInfo()
         m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
     }
     //Now Populate the tree view if it is present
-    if (m_pomSimSysTreeView != NULL)
+    //SSH + commneted to resolve issue #392 'Duplicate simulated systems'
+    /*if (m_pomSimSysTreeView != NULL)
     {
         if (m_pomSimSysTreeView->IsWindowVisible())
         {
             m_pomSimSysTreeView->bPopulateTree();
         }
-    }
+    }*/
+    //SSH -
 }
 
 /******************************************************************************

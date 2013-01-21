@@ -66,7 +66,7 @@ protected:
     //{{AFX_MSG(CFnsTreeView)
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     //afx_msg void OnTreeItemDoubleClick(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnTreeItemSelectionChanged(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTreeItemSelectionChanged(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnItemLeftClick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnTreeViewRightclick(NMHDR* pNMHDR, LRESULT* pResult);
@@ -87,8 +87,8 @@ private:
     void vEditUtilityFunc(HTREEITEM hItem);
     // Edit selceted utility function
     void vEditTimerHandler(HTREEITEM hItem);
-	// Edit the selected function
-	void vEditSelectedFunction();
+    // Edit the selected function
+    void vEditSelectedFunction();
     // Add new global variable
     void vOnNewGlobalVariable();
     // New utility function

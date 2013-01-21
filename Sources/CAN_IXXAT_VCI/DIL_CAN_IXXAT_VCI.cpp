@@ -1209,11 +1209,11 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
                             //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82C200") );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C200";
                             break;
-                        case CAN_CTRL_81C90:
+                        case CAN_CTRL_82C90:
                             //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82C90") );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C90";
                             break;
-                        case CAN_CTRL_81C92:
+                        case CAN_CTRL_82C92:
                             //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82C92") );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C92";
                             break;

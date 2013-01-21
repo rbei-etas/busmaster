@@ -2092,6 +2092,11 @@ static int nInitHwNetwork()
 
     /* Select Hardware */
     nChannelCount = nGetNoOfConnectedHardware();
+    if(nChannelCount == -1)
+    {
+        nResult = -1;
+        return nResult;
+    }
 
     // Assign the channel count
     sg_ucNoOfHardware = (UCHAR)nChannelCount;

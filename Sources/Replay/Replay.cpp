@@ -149,7 +149,7 @@ USAGEMODE void vREP_CmdSkip()
 
 USAGEMODE void vREP_EnableFilters(BOOL bEnabled)
 {
-	CReplayManager::ouGetReplayManager().vEnableFilters(bEnabled);
+    CReplayManager::ouGetReplayManager().vEnableFilters(bEnabled);
 }
 //Load and save the Replay config details in terms of bytes
 USAGEMODE void vREP_GetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
