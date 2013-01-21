@@ -941,6 +941,7 @@ POPUP "&フィルタの有効化",                 65535,MFT_STRING,MFS_ENABLED
 BEGIN
 MENUITEM "&ログ", 32824,MFT_STRING,MFS_CHECKED
 MENUITEM "表示", 32826,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
+MENUITEM "&Replay",                     32827,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
 END
 POPUP "&再生",                        65535,MFT_STRING,MFS_ENABLED
 BEGIN
@@ -1320,6 +1321,7 @@ BEGIN
     SEPARATOR
     BUTTON      IDM_FILTER_LOGFILTEROFF
     BUTTON      IDM_FILTER_MESSAGEFILTEROFF
+    BUTTON      IDM_FILTER_REPLAYFILTEROFF
     SEPARATOR
     BUTTON      IDR_TOOL_SENDMSG
     BUTTON      33052
@@ -1525,7 +1527,7 @@ BEGIN
 	IDS_INVALID_DB_PROMPT "無効なデータベースファイル名"
 	ID_ACTIVE_DATABASE_NAME " "
 	IDS_MESSAGE_NAME "メッセージ名"
-	IDS_VERSION "Ver 1.7.2"
+	IDS_VERSION "Ver 1.7.2 Beta2"
 	IDS_HEADER "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
 	IDS_FOOTER "***[ロギングセッションの終了]***"
 	IDS_CONNECT "&接続\tF2"
@@ -1589,6 +1591,7 @@ BEGIN
 	IDM_FILTER_MESSAGE_OFF "メッセージ表示フィルタを有効化または無効化\nメッセージ表示フィルタの有効化または無効化"
 	IDM_FILTER_LOGFILTEROFF "ロギングフィルタを有効化または無効化\nロギングフィルタの有効化または無効化"
 	IDM_FILTER_MESSAGEFILTEROFF "メッセージ表示フィルタを有効化または無効化 \nメッセージ表示フィルタの有効化または無効化"
+	IDM_FILTER_REPLAYFILTEROFF	"Enable or Disable Replay Filter \nEnable or Disable Replay Filter"
 	IDM_BUILD_COMPILEANDLINK "現在のファイルをコンパイルしてリンクを行う"
 END
 

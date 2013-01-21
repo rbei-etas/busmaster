@@ -174,13 +174,13 @@ int tagSTJ1939_MSG::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
             }
         }
         case 5: // Sort by message name
-        {                        			
-			CString str1, str2;
-			AfxGetMainWnd()->SendMessage(WM_GET_PGN_NAME_FROM_CODE, (WPARAM)pJ1939Msg1->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(), (LPARAM)&str1);
-			AfxGetMainWnd()->SendMessage(WM_GET_PGN_NAME_FROM_CODE, (WPARAM)pJ1939Msg2->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(), (LPARAM)&str2);
-			
-			Result = (int) (str1.CompareNoCase(str2));
-			Result *= m_nMFactor;
+        {
+            CString str1, str2;
+            AfxGetMainWnd()->SendMessage(WM_GET_PGN_NAME_FROM_CODE, (WPARAM)pJ1939Msg1->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(), (LPARAM)&str1);
+            AfxGetMainWnd()->SendMessage(WM_GET_PGN_NAME_FROM_CODE, (WPARAM)pJ1939Msg2->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(), (LPARAM)&str2);
+
+            Result = (int) (str1.CompareNoCase(str2));
+            Result *= m_nMFactor;
 
             if (Result != 0)
             {

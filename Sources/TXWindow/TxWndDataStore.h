@@ -66,10 +66,10 @@ public:
     BOOL pbyGetConfigData(xmlNodePtr pxmlNodePtr);
     bool bSplitterConfig(xmlNodePtr pxmlNodePtr);
     bool bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr);
-	//To compare 2 BlockLists
-	int nCompareBlockLists(PSMSGBLOCKLIST psMsgBlockSrc);
-	//to compare 2 MsgLists
-	int nCompareMsgList(PSTXCANMSGLIST TxCanMsgListSrc,PSTXCANMSGLIST TxCanMsgListDest);
+    //To compare 2 BlockLists
+    int nCompareBlockLists(PSMSGBLOCKLIST psMsgBlockSrc);
+    //to compare 2 MsgLists
+    int nCompareMsgList(PSTXCANMSGLIST TxCanMsgListSrc,PSTXCANMSGLIST TxCanMsgListDest);
 private:
 
     UINT               m_unNumberOfMsgBlockCount;

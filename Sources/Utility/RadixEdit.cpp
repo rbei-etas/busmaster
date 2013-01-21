@@ -296,14 +296,15 @@ int CRadixEdit::nGetBase()
 void CRadixEdit::OnChange()
 {
     int nBufLength = LineLength() + 1;
-    char* acBuffer = new char[nBufLength];
+    CString     strBuffer;
+    //char* acBuffer= new char[1786];
 
-    if (acBuffer != NULL)
+    // if (strBuffer != "")
     {
-        GetWindowText(acBuffer, nBufLength);
+        GetWindowText(strBuffer);
         if (m_bFloatAllowed)
         {
-            m_fValue = (float) _tstof(acBuffer);
+            m_fValue = (float) _tstof(strBuffer.GetBuffer(0));
         }
         else
         {
@@ -311,12 +312,12 @@ void CRadixEdit::OnChange()
             {
                 if(bIsSigned())
                 {
-                    m_n64Value = _tstoi64(acBuffer);
+                    m_n64Value = _tstoi64(strBuffer.GetBuffer(0));
                     m_un64Value = m_n64Value;
                 }
                 else
                 {
-                    m_un64Value = _strtoui64(acBuffer, NULL, 10);
+                    m_un64Value = _strtoui64(strBuffer.GetBuffer(0), NULL, 10);
                     m_n64Value = m_un64Value;
                 }
             }
@@ -330,23 +331,27 @@ void CRadixEdit::OnChange()
 
                 while(nActualLength > nCurrentPost)
                 {
-                    if(acBuffer[nCurrentPost] >='0'
-                            && acBuffer[nCurrentPost] <='9')
+                    if(strBuffer.GetAt(nCurrentPost) >='0'
+                            && strBuffer.GetAt(nCurrentPost) <='9')
                     {
-                        acBuffer[nCurrentPost] -='0';
+                        char cBuff = strBuffer.GetAt(nCurrentPost);
+                        cBuff -='0';
+                        strBuffer.SetAt(nCurrentPost, cBuff) ;
                     }
-                    else if(acBuffer[nCurrentPost] != '-')
+                    else if(strBuffer.GetAt(nCurrentPost) != '-')
                     {
-                        acBuffer[nCurrentPost] = (char)(tolower(acBuffer[nCurrentPost]));
-                        acBuffer[nCurrentPost] -= 87;
+                        char cBuff = strBuffer.GetAt(nCurrentPost);
+                        cBuff = (char)(tolower(cBuff));
+                        cBuff -= 87;
+                        strBuffer.SetAt(nCurrentPost, cBuff) ;
                     }
                     else
                     {
                         bNegativeNumber = TRUE;
                     }
-                    if(acBuffer[nCurrentPost] != '-')
+                    if(strBuffer.GetAt(nCurrentPost) != '-')
                     {
-                        n64Val = acBuffer[nCurrentPost];
+                        n64Val = strBuffer.GetAt(nCurrentPost);
                         n64Val <<= ((nActualLength - nCurrentPost - 1 )* 4 );
                         m_n64Value |= n64Val;
                     }
@@ -358,8 +363,8 @@ void CRadixEdit::OnChange()
                 }
             }
         }
-        delete []acBuffer;
-        acBuffer = NULL;
+        //delete []acBuffer;
+        //acBuffer = NULL;
     }
 }
 

@@ -310,7 +310,7 @@ bool CTxWndDataStore::bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList )
 /*  Function Name    :  CompareBlockLists                                     */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
-/*  Functionality    :  This function will compare 2 BlockList				  */
+/*  Functionality    :  This function will compare 2 BlockList                */
 /*                                                                            */
 /*  Member of        :  CTxMsgManager                                         */
 /*  Friend of        :      -                                                 */
@@ -319,101 +319,101 @@ bool CTxWndDataStore::bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList )
 /******************************************************************************/
 int CTxWndDataStore::nCompareBlockLists(PSMSGBLOCKLIST psMsgBlockSrc)
 {
-	PSMSGBLOCKLIST psMsgBlockDest = NULL;
-	psMsgBlockDest = m_psMsgBlockList;
+    PSMSGBLOCKLIST psMsgBlockDest = NULL;
+    psMsgBlockDest = m_psMsgBlockList;
 
-	if((psMsgBlockSrc == NULL)&&(psMsgBlockDest == NULL))
-	{
-		return FALSE;
-	}
-	
-	while(psMsgBlockSrc != NULL && psMsgBlockDest != NULL )
-	{
-		if(strcmp(psMsgBlockSrc->m_acStrBlockName,psMsgBlockDest->m_acStrBlockName) != 0)
-		{
-			return false;
-		}
-		if((psMsgBlockSrc->m_bActive != psMsgBlockDest->m_bActive)|| (psMsgBlockSrc->m_bTxAllFrame != psMsgBlockDest->m_bTxAllFrame)||
-				(psMsgBlockSrc->m_bType != psMsgBlockDest->m_bType))
-		{
-			return false;
-		}
-		if((psMsgBlockSrc->m_ucKeyValue != psMsgBlockDest->m_ucKeyValue)|| (psMsgBlockSrc->m_ucTrigger != psMsgBlockDest->m_ucTrigger)||
-				(psMsgBlockSrc->m_unIndex != psMsgBlockDest->m_unIndex)||(psMsgBlockSrc->m_unMsgCount != psMsgBlockDest->m_unMsgCount) ||
-				(psMsgBlockSrc->m_unTimeInterval != psMsgBlockDest->m_unTimeInterval))
-		{
-			return false;
-		}
-		if(nCompareMsgList(psMsgBlockSrc->m_psTxCANMsgList,psMsgBlockDest->m_psTxCANMsgList) == false)
-		{
-			return false;
-		}
+    if((psMsgBlockSrc == NULL)&&(psMsgBlockDest == NULL))
+    {
+        return FALSE;
+    }
 
-		psMsgBlockSrc = psMsgBlockSrc->m_psNextMsgBlocksList;
-		psMsgBlockDest = psMsgBlockDest->m_psNextMsgBlocksList;
-	}
+    while(psMsgBlockSrc != NULL && psMsgBlockDest != NULL )
+    {
+        if(strcmp(psMsgBlockSrc->m_acStrBlockName,psMsgBlockDest->m_acStrBlockName) != 0)
+        {
+            return false;
+        }
+        if((psMsgBlockSrc->m_bActive != psMsgBlockDest->m_bActive)|| (psMsgBlockSrc->m_bTxAllFrame != psMsgBlockDest->m_bTxAllFrame)||
+                (psMsgBlockSrc->m_bType != psMsgBlockDest->m_bType))
+        {
+            return false;
+        }
+        if((psMsgBlockSrc->m_ucKeyValue != psMsgBlockDest->m_ucKeyValue)|| (psMsgBlockSrc->m_ucTrigger != psMsgBlockDest->m_ucTrigger)||
+                (psMsgBlockSrc->m_unIndex != psMsgBlockDest->m_unIndex)||(psMsgBlockSrc->m_unMsgCount != psMsgBlockDest->m_unMsgCount) ||
+                (psMsgBlockSrc->m_unTimeInterval != psMsgBlockDest->m_unTimeInterval))
+        {
+            return false;
+        }
+        if(nCompareMsgList(psMsgBlockSrc->m_psTxCANMsgList,psMsgBlockDest->m_psTxCANMsgList) == false)
+        {
+            return false;
+        }
 
-	if((psMsgBlockSrc != NULL)|| psMsgBlockDest != NULL)
-	{
-		return false;
-	}
+        psMsgBlockSrc = psMsgBlockSrc->m_psNextMsgBlocksList;
+        psMsgBlockDest = psMsgBlockDest->m_psNextMsgBlocksList;
+    }
 
-	return true;
+    if((psMsgBlockSrc != NULL)|| psMsgBlockDest != NULL)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 int CTxWndDataStore::nCompareMsgList(PSTXCANMSGLIST TxCanMsgListSrc,PSTXCANMSGLIST TxCanMsgListDest)
 {
-	if((TxCanMsgListSrc == NULL)|| (TxCanMsgListDest == NULL))
-	{
-		return FALSE;
-	}
-	while(TxCanMsgListSrc != NULL && TxCanMsgListDest != NULL )
-	{
-		/*if(TxCanMsgListSrc->m_unIndex != TxCanMsgListDest->m_unIndex)
-		{
-			return false;
-		}*/
-		if((TxCanMsgListSrc->m_sTxMsgDetails.m_bEnabled != TxCanMsgListDest->m_sTxMsgDetails.m_bEnabled)||
-			(TxCanMsgListSrc->m_sTxMsgDetails.m_bIsMsgDirty != TxCanMsgListDest->m_sTxMsgDetails.m_bIsMsgDirty))
-		{
-			return false;
-		}
-		if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucChannel != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucChannel)
-		{
-			return false;
-		}
-		if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[0] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[0]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[1] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[1]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[2] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[2]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[3] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[3]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[4] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[4]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[5] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[5]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[6] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[6]||
-			TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[7] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[7])
-		{
-			return false;
-		}
-		if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucDataLen != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucDataLen)
-		{
-			return false;
-		}
-		if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucEXTENDED != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucEXTENDED)
-		{
-			return false;
-		}
-		if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucRTR != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucRTR)
-		{
-			return false;
-		}
-		if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_unMsgID != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_unMsgID)
-		{
-			return false;
-		}
+    if((TxCanMsgListSrc == NULL)|| (TxCanMsgListDest == NULL))
+    {
+        return FALSE;
+    }
+    while(TxCanMsgListSrc != NULL && TxCanMsgListDest != NULL )
+    {
+        /*if(TxCanMsgListSrc->m_unIndex != TxCanMsgListDest->m_unIndex)
+        {
+            return false;
+        }*/
+        if((TxCanMsgListSrc->m_sTxMsgDetails.m_bEnabled != TxCanMsgListDest->m_sTxMsgDetails.m_bEnabled)||
+                (TxCanMsgListSrc->m_sTxMsgDetails.m_bIsMsgDirty != TxCanMsgListDest->m_sTxMsgDetails.m_bIsMsgDirty))
+        {
+            return false;
+        }
+        if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucChannel != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucChannel)
+        {
+            return false;
+        }
+        if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[0] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[0]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[1] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[1]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[2] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[2]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[3] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[3]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[4] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[4]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[5] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[5]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[6] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[6]||
+                TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucData[7] != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucData[7])
+        {
+            return false;
+        }
+        if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucDataLen != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucDataLen)
+        {
+            return false;
+        }
+        if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucEXTENDED != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucEXTENDED)
+        {
+            return false;
+        }
+        if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_ucRTR != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_ucRTR)
+        {
+            return false;
+        }
+        if(TxCanMsgListSrc->m_sTxMsgDetails.m_sTxMsg.m_unMsgID != TxCanMsgListDest->m_sTxMsgDetails.m_sTxMsg.m_unMsgID)
+        {
+            return false;
+        }
 
-		TxCanMsgListSrc = TxCanMsgListSrc->m_psNextMsgDetails;
-		TxCanMsgListDest = TxCanMsgListDest->m_psNextMsgDetails;
-	}
-	return true;
+        TxCanMsgListSrc = TxCanMsgListSrc->m_psNextMsgDetails;
+        TxCanMsgListDest = TxCanMsgListDest->m_psNextMsgDetails;
+    }
+    return true;
 }
 
 bool CTxWndDataStore::bDeleteMsgList(PSTXCANMSGLIST& psMsgList)

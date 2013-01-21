@@ -235,13 +235,13 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             omStrHeaderString.MakeUpper();
             CString omStrTemp;
             omStrTemp.Format(H_FILE_HEADER_START,omStrHeaderString,omStrHeaderString);
-			
+
             // Add Header "ifndef..."
             omHeaderFile.WriteString(omStrTemp);
 
-			// Add Pragma Pack
-			omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
-			omHeaderFile.WriteString(omStrTemp);
+            // Add Pragma Pack
+            omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
+            omHeaderFile.WriteString(omStrTemp);
 
             CString omStrDLC = STR_EMPTY;
             UINT aunSigStartBit[defMAX_SIGNALS] ;
@@ -1316,9 +1316,9 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
     bReturnValue = bValidateDatabaseFile(strFileName);
     if ( bReturnValue )
     {
-		char* charArray = NULL;
-		char szSep;
-		GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+        char* charArray = NULL;
+        char szSep;
+        GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
 
         // For File I/O
         CStdioFile o_File;
@@ -1937,8 +1937,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         if (  nIndex != -1 )
                                                         {
                                                             CString sTmp = sMsgDet.Left(nIndex);
-															charArray = T2A(sTmp.GetBuffer(MAX_PATH));
-															vReplaceChar(charArray,'.', szSep);
+                                                            charArray = T2A(sTmp.GetBuffer(MAX_PATH));
+                                                            vReplaceChar(charArray,'.', szSep);
 
                                                             sTempSg->m_fSignalOffset = (float)atof(sTmp);
 
@@ -1963,8 +1963,8 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         if (  nIndex != -1 )
                                                         {
                                                             CString sTmp = sMsgDet.Left(nIndex);
-															charArray = T2A(sTmp.GetBuffer(MAX_PATH));
-															vReplaceChar(charArray,'.', szSep);
+                                                            charArray = T2A(sTmp.GetBuffer(MAX_PATH));
+                                                            vReplaceChar(charArray,'.', szSep);
 
                                                             sTempSg->m_fSignalFactor = (float)atof(sTmp);
 
@@ -2256,12 +2256,12 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
 */
 void vReplaceChar(char str[], char chOld, char chNew)
 {
-	char* ptrOccured = NULL;
-	ptrOccured = strchr(str, chOld);
-	if ( ptrOccured != 0)
-	{
-		*ptrOccured = chNew;
-	}
+    char* ptrOccured = NULL;
+    ptrOccured = strchr(str, chOld);
+    if ( ptrOccured != 0)
+    {
+        *ptrOccured = chNew;
+    }
 }
 
 /******************************************************************************
@@ -2502,11 +2502,11 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
                         // Signal offset value
                         sprintf_s( temp, "%f", pTempSg->m_fSignalOffset );
 
-						char szSep;
-						GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+                        char szSep;
+                        GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
 
-						/* Make sure we use default dot(.) as decimal symbol for floating values */
-						vReplaceChar(temp, szSep,'.');
+                        /* Make sure we use default dot(.) as decimal symbol for floating values */
+                        vReplaceChar(temp, szSep,'.');
 
                         sSgDetails += temp;
 
@@ -2514,8 +2514,8 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
 
                         // Signal factor value
                         sprintf_s( temp, "%f", pTempSg->m_fSignalFactor );
-						/* Make sure we use default dot(.) as decimal symbol for floating values */
-						vReplaceChar(temp, szSep,'.');
+                        /* Make sure we use default dot(.) as decimal symbol for floating values */
+                        vReplaceChar(temp, szSep,'.');
 
                         sSgDetails += temp;
 

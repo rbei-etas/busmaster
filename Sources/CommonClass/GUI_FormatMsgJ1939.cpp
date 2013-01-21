@@ -34,14 +34,14 @@ const int ERRORS_DEFINED = 15;
 
 static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 {
-   {ERROR_UNKNOWN,       "Unknown Error"},
+    {ERROR_UNKNOWN,       "Unknown Error"},
     {BIT_ERROR_RX,        "Bus Error - Bit Error(Rx)"},
-	{CRC_ERROR_RX,        "Bus Error - CRC Error(Rx)"},
+    {CRC_ERROR_RX,        "Bus Error - CRC Error(Rx)"},
     {FORM_ERROR_RX,       "Bus Error - Form Error(Rx)"},
     {STUFF_ERROR_RX,      "Error Frame - Stuff error(Rx)"},
     {OTHER_ERROR_RX,      "Bus Error - Other Error(Rx)"},
     {BIT_ERROR_TX,        "Bus Error - Bit Error(Tx)"},
-	{CRC_ERROR_TX,        "Bus Error - CRC Error(Tx)"},
+    {CRC_ERROR_TX,        "Bus Error - CRC Error(Tx)"},
     {FORM_ERROR_TX,       "Bus Error - Form Error(Tx)"},
     {STUFF_ERROR_TX,      "Bus Error - Stuff Error(Tx)"},
     {OTHER_ERROR_TX,      "Bus Error - Other Error(Tx)"},

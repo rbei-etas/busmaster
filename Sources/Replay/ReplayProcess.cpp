@@ -177,28 +177,24 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
             if ( pReplayDetails->m_omMsgList[ nCurrentIndex].
                     m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
             {
-				HRESULT hRet = 0;
-				SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-				pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
-				BOOL bTobeBlocked = FALSE;
-				if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
-				{
-					EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
-					bTobeBlocked = pReplayDetails->m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);
-					LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
-				}
-				if(bTobeBlocked == FALSE)
-				{
-                // Use HIL Function to send CAN message
-                HRESULT hRet =  s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
-                                pReplayDetails->m_omMsgList[ nCurrentIndex ].
-                                m_uDataInfo.m_sCANMsg );
-				}
-                if (hRet != 0)
+                HRESULT hRet = 0;
+                SFRAMEINFO_BASIC_CAN sBasicCanInfo;
+                pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
+                BOOL bTobeBlocked = FALSE;
+                if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
                 {
-                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
-                    //            ERROR_DRIVER_API_FAIL, nZERO);
+                    EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
+                    bTobeBlocked = pReplayDetails->m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);
+                    LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
                 }
+                if(bTobeBlocked == FALSE)
+                {
+                    // Use HIL Function to send CAN message
+                    HRESULT hRet =  s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
+                                    pReplayDetails->m_omMsgList[ nCurrentIndex ].
+                                    m_uDataInfo.m_sCANMsg );
+                }
+
             }
             // Increment cur sel to set to next sel
             pReplayDetails->m_nCurrentIndex = nCurrentIndex;
@@ -332,30 +328,26 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
             if ( pReplayDetails->m_omMsgList[ nCurrentIndex ].
                     m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
             {
-				HRESULT hRet = 0;
+                HRESULT hRet = 0;
 
-				SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-				pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
-				BOOL bTobeBlocked = FALSE;
+                SFRAMEINFO_BASIC_CAN sBasicCanInfo;
+                pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
+                BOOL bTobeBlocked = FALSE;
 
-				EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
-				if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
-				{
-					bTobeBlocked = pReplayDetails->m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);	
-				}
-				LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
-
-				if(bTobeBlocked == FALSE)
-				{
-					// Use HIL Function to send CAN message
-					HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
-						pReplayDetails->m_omMsgList[ nCurrentIndex ].m_uDataInfo.m_sCANMsg );
-				}
-                if (hRet != 0)
+                EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
+                if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
                 {
-                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
-                    //            ERROR_DRIVER_API_FAIL, nZERO);
+                    bTobeBlocked = pReplayDetails->m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);
                 }
+                LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
+
+                if(bTobeBlocked == FALSE)
+                {
+                    // Use HIL Function to send CAN message
+                    HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
+                                   pReplayDetails->m_omMsgList[ nCurrentIndex ].m_uDataInfo.m_sCANMsg );
+                }
+
             }
             // Update index and wrap up to modula of message list size
             nIndex++;
@@ -404,13 +396,13 @@ void CReplayProcess::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_byIDType = TYPE_ID_CAN_STANDARD;
     }
 
-    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucRTR != 0)
+    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucRTR == 0)
     {
-        CurrDataCAN->m_byMsgType = TYPE_MSG_CAN_RTR;
+        CurrDataCAN->m_byMsgType =  TYPE_MSG_CAN_NON_RTR;
     }
     else
     {
-        CurrDataCAN->m_byMsgType = TYPE_MSG_CAN_NON_RTR;
+        CurrDataCAN->m_byMsgType = TYPE_MSG_CAN_RTR;
     }
 
 
@@ -568,13 +560,13 @@ BOOL CReplayProcess::bOpenReplayFile()
                         // Add it to the list based on filtering result
                         //if( bTobeBlocked == FALSE )
                         //{
-                           // bTobeBlocked = bMessageTobeBlocked( sBasicCanInfo );
-                            //if(bTobeBlocked == FALSE)
-                            {
-                                m_omEntries.Add( omStrLine );
-                                m_omMsgList.Add(sCanMsg );
-                            }
-                       // }
+                        // bTobeBlocked = bMessageTobeBlocked( sBasicCanInfo );
+                        //if(bTobeBlocked == FALSE)
+                        {
+                            m_omEntries.Add( omStrLine );
+                            m_omMsgList.Add(sCanMsg );
+                        }
+                        // }
                     }
                 }
                 else if(! omStrLine.Compare(START_SESSION))
@@ -714,23 +706,23 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
             if ( pReplayDetails->m_omMsgList[ nIndex ].
                     m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
             {
-				HRESULT hRet = 0;
+                HRESULT hRet = 0;
 
-				SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-				pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
-				BOOL bTobeBlocked = FALSE;
-				if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
-				{
-					EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
-					bTobeBlocked = pReplayDetails->m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);
-					LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
-				}
+                SFRAMEINFO_BASIC_CAN sBasicCanInfo;
+                pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
+                BOOL bTobeBlocked = FALSE;
+                if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
+                {
+                    EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
+                    bTobeBlocked = pReplayDetails->m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);
+                    LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
+                }
 
-				if(bTobeBlocked == FALSE)
-				{
-				// Use HIL Function to send CAN message
-					hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
-				}
+                if(bTobeBlocked == FALSE)
+                {
+                    // Use HIL Function to send CAN message
+                    hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
+                }
 
                 if (hRet != 0)
                 {

@@ -191,7 +191,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilterButton)
-	ON_COMMAND(IDM_FILTER_REPLAYFILTEROFF, OnReplayFilter)
+    ON_COMMAND(IDM_FILTER_REPLAYFILTEROFF, OnReplayFilter)
     ON_COMMAND(IDM_FILTER_LOGFILTEROFF, OnLogFilter)
     ON_COMMAND(IDM_FILTER_MESSAGE_SELECTMESSAGES, OnSelectMessage)
     ON_COMMAND(IDM_APP_ABOUT, OnAboutApplication)
@@ -208,7 +208,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnUpdateMessageInterpret)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS, OnUpdateExecuteMessagehandlers)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
-	ON_UPDATE_COMMAND_UI(IDM_FILTER_REPLAYFILTEROFF, OnUpdateReplayFilter)
+    ON_UPDATE_COMMAND_UI(IDM_FILTER_REPLAYFILTEROFF, OnUpdateReplayFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnUpdateExecuteMessagehandlersButton)
     ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnExecuteMessagehandlersButton)
@@ -317,8 +317,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
-	ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)	
-	ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)	
+    ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
+    ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
     ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
@@ -861,11 +861,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         return -1;      // fail to create
     }
     LoadBarState(PROFILE_CAN_MONITOR);
-   
 
 
 
-	//CheckDlgButton(IDR_TOOL_HEXDEC,BST_CHECKED);
+
+    //CheckDlgButton(IDR_TOOL_HEXDEC,BST_CHECKED);
     if (!m_wndStatusBar.CreateEx(this,SBT_TOOLTIPS) ||
             !m_wndStatusBar.SetIndicators(indicators,
                                           sizeof(indicators)/sizeof(UINT)))
@@ -995,12 +995,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     // CG: The following line was added by the Splash Screen component.
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
-	Sleep(1500);
+    Sleep(1500);
 
-	theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
-	
-	
-	
+    theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
+
+
+
 
     return 0;
 }
@@ -5764,7 +5764,7 @@ void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
 }
 void CMainFrame::OnUpdateReplayFilter(CCmdUI* pCmdUI)
 {
-	 // Check or uncheck replay filter
+    // Check or uncheck replay filter
     // menu item
     pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( REPLAYFILTER ) );
@@ -5906,7 +5906,7 @@ void CMainFrame::OnMessageFilterButton()
     Input(s)         :      -
     Output           :      -
     Functionality    :  To handle(enable/disable) filter for replay when user
-						selects from the main menu
+                        selects from the main menu
     Member of        :  CMainFrame
     Friend of        :      -
     Author(s)        :  Ashwin R Uchil
@@ -5914,7 +5914,7 @@ void CMainFrame::OnMessageFilterButton()
 ******************************************************************************/
 void CMainFrame::OnReplayFilter()
 {
-	CFlags* pouFlags = NULL;
+    CFlags* pouFlags = NULL;
     BOOL bReplayFilterStatus = FALSE;
 
     pouFlags = theApp.pouGetFlagsPtr();
@@ -5924,7 +5924,7 @@ void CMainFrame::OnReplayFilter()
         bReplayFilterStatus = bReplayFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
-		vREP_EnableFilters(bReplayFilterStatus);
+        vREP_EnableFilters(bReplayFilterStatus);
         //::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
     }
 }
@@ -7678,10 +7678,10 @@ void CMainFrame::OnFileConnect()
                 // PTV[1.6.4]
 
                 vREP_HandleConnectionStatusChange( TRUE );
-				//send connection statud to replay window
-				BOOL bReplayFilterStatus = FALSE;
-				bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
-				vREP_EnableFilters(bReplayFilterStatus);
+                //send connection statud to replay window
+                BOOL bReplayFilterStatus = FALSE;
+                bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+                vREP_EnableFilters(bReplayFilterStatus);
             }
             // On Disconnect Kill the timer
             // PTV[1.6.4]
@@ -11563,29 +11563,29 @@ void CMainFrame::OnFileConverter()
         }
 
         // Get the working directory
-		char acPath[MAX_PATH] = "";
-		GetModuleFileName( NULL, acPath, MAX_PATH );
-		PathRemoveFileSpec(acPath);
-		CString strPath = acPath;
+        char acPath[MAX_PATH] = "";
+        GetModuleFileName( NULL, acPath, MAX_PATH );
+        PathRemoveFileSpec(acPath);
+        CString strPath = acPath;
         strPath += "\\FormatConverter.exe";
 
-		if(PathFileExists(strPath) == TRUE)
-		{
-			// Launch the converter utility
-			PROCESS_INFORMATION sProcessInfo;
-			STARTUPINFO sStartInfo;
+        if(PathFileExists(strPath) == TRUE)
+        {
+            // Launch the converter utility
+            PROCESS_INFORMATION sProcessInfo;
+            STARTUPINFO sStartInfo;
 
-			memset(&sProcessInfo, 0, sizeof(PROCESS_INFORMATION));
-			memset(&sStartInfo, 0, sizeof(STARTUPINFO));
+            memset(&sProcessInfo, 0, sizeof(PROCESS_INFORMATION));
+            memset(&sStartInfo, 0, sizeof(STARTUPINFO));
 
-			INT nSuccess = CreateProcess(   strPath.GetBuffer(MAX_PATH), "", NULL, NULL,
-											true, CREATE_NO_WINDOW, NULL, NULL,
-											&sStartInfo, &sProcessInfo);
-			if (nSuccess != 0)
-			{
-				m_hProcess = sProcessInfo.hProcess;
-			}
-		}
+            INT nSuccess = CreateProcess(   strPath.GetBuffer(MAX_PATH), "", NULL, NULL,
+                                            true, CREATE_NO_WINDOW, NULL, NULL,
+                                            &sStartInfo, &sProcessInfo);
+            if (nSuccess != 0)
+            {
+                m_hProcess = sProcessInfo.hProcess;
+            }
+        }
     }
     catch(...)
     {
@@ -12009,17 +12009,23 @@ LRESULT CMainFrame::OnProvideMsgDBPtr(WPARAM wParam, LPARAM /*lParam*/)
 
 LRESULT CMainFrame::OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam)
 {
-	CString* strMsgName = (CString*)lParam;
-    theApp.m_pouMsgSignal->bMessageNameFromMsgCode((UINT)wParam, *strMsgName);	
-	
+    CString* strMsgName = (CString*)lParam;
+    if (NULL != theApp.m_pouMsgSignal)
+    {
+        theApp.m_pouMsgSignal->bMessageNameFromMsgCode((UINT)wParam, *strMsgName);
+    }
+
     return 0;
 }
 
 LRESULT CMainFrame::OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam)
 {
-	CString* strMsgName = (CString*)lParam;
-	m_pouMsgSigJ1939->bMessageNameFromMsgCode((UINT)wParam, *strMsgName);    
-	
+    CString* strMsgName = (CString*)lParam;
+    if (NULL != m_pouMsgSigJ1939)
+    {
+        m_pouMsgSigJ1939->bMessageNameFromMsgCode((UINT)wParam, *strMsgName);
+    }
+
     return 0;
 }
 
@@ -12444,7 +12450,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
                 CConfigData::ouGetConfigDetailsObject().vReadConfigFile();
             }
             nRetValue = LoadConfiguration();
-			
+
             ApplyLogFilter();
             ApplyMessageFilterButton();
         }
@@ -12629,6 +12635,18 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                                          , BAD_CAST strIsMsgFilterEnabled.GetBuffer(strIsMsgFilterEnabled.GetLength()));
             xmlAddChild(pNodePtr, pMsgFilterEnbld);
 
+            CString strIsReplayFilterEnabled = "";
+            if(m_sToolBarInfo.m_byReplayFilter == TRUE)
+            {
+                strIsReplayFilterEnabled = _("TRUE");
+            }
+            else if(m_sToolBarInfo.m_byReplayFilter == FALSE)
+            {
+                strIsReplayFilterEnabled = _("FALSE");
+            }
+            xmlNodePtr pReplayFilterEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST "IsReplayFilterEnabled"
+                                            , BAD_CAST strIsReplayFilterEnabled.GetBuffer(strIsReplayFilterEnabled.GetLength()));
+            xmlAddChild(pNodePtr, pReplayFilterEnbld);
             // Writing IsLogFilterEnabled in to xml
             CString strIsLogFilterEnabled = "";
             if(m_sToolBarInfo.m_byLogFilter == TRUE)
@@ -13630,6 +13648,23 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
                 else if(strMsgFilter == _("TRUE"))
                 {
                     m_sToolBarInfo.m_byMsgFilter = TRUE;
+                }
+                xmlFree(ptext);
+            }
+        }
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsReplayFilterEnabled")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strReplayFilter = ptext;
+                if(strReplayFilter == _("FALSE"))
+                {
+                    m_sToolBarInfo.m_byReplayFilter = FALSE;
+                }
+                else if(strReplayFilter == _("TRUE"))
+                {
+                    m_sToolBarInfo.m_byReplayFilter = TRUE;
                 }
                 xmlFree(ptext);
             }

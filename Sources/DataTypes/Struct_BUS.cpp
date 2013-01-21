@@ -46,13 +46,13 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
     switch (m_nSortField)
     {
         case 6: // Sort by message name
-        {                        			
-			CString str1, str2;
-			AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str1);
-			AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str2);
-			
-			Result = (int) (str1.CompareNoCase(str2));
-			Result *= m_nMFactor;
+        {
+            CString str1, str2;
+            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str1);
+            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str2);
+
+            Result = (int) (str1.CompareNoCase(str2));
+            Result *= m_nMFactor;
 
             if (Result != 0)
             {

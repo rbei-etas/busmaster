@@ -313,7 +313,7 @@ public:
     //MVN
     BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
     //~MVN
-	void OnHex_DecButon();
+    void OnHex_DecButon();
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
@@ -369,7 +369,7 @@ protected:
     afx_msg void OnUpdateMessageInterpret(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilter(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
     //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI);
     afx_msg void OnExecuteMessagehandlersButton();
@@ -377,7 +377,7 @@ protected:
     //afx_msg void OnLogFilterButton();
     //afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnMessageFilterButton();
-	afx_msg void OnReplayFilter();
+    afx_msg void OnReplayFilter();
     void ApplyMessageFilterButton();
     afx_msg void OnUpdateMessageFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI);
@@ -706,8 +706,8 @@ public:
     afx_msg void OnUpdateSaveImportDatabase(CCmdUI* pCmdUI);
     //To update the Message DB Pointer
     afx_msg LRESULT OnProvideMsgDBPtr(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam);	
+    afx_msg LRESULT OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnMessageFromUserDll(WPARAM wParam, LPARAM lParam);
     afx_msg void OnConfigureModeActive();
     afx_msg void OnConfigurePassive();

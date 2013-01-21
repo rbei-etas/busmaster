@@ -1089,15 +1089,15 @@ void CTxMsgWndJ1939::OnCbnEditChangeComboPgn()
     UINT unPGN = 0;
     sscanf((LPCTSTR)omPGN, "%04X", &unPGN);
 
-	/* If its a valid PGN */
-	if ( omPGN.GetLength() > 2 )
-	{
-		m_omTOEdit.vSetValue((BYTE)unPGN);
-	}
-	else
-	{
-		m_omTOEdit.vSetValue(0);
-	}
+    /* If its a valid PGN */
+    if ( omPGN.GetLength() > 2 )
+    {
+        m_omTOEdit.vSetValue((BYTE)unPGN);
+    }
+    else
+    {
+        m_omTOEdit.vSetValue(0);
+    }
     /* Verify PGN and update message type accordingly */
     vVerifyPDUFormatInPGN(unPGN);
 }
