@@ -1279,12 +1279,12 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
         {
             ucReturn = BIT_ERROR_TX;
         }
-		
-		else if (lError & canMSGERR_CRC)
+
+        else if (lError & canMSGERR_CRC)
         {
             ucReturn = CRC_ERROR_TX;
         }
-		else if (lError & canMSGERR_STUFF)
+        else if (lError & canMSGERR_STUFF)
         {
             ucReturn = STUFF_ERROR_TX;
         }
@@ -1304,11 +1304,11 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
         {
             ucReturn = BIT_ERROR_RX;
         }
-		else if (lError & canMSGERR_CRC)
+        else if (lError & canMSGERR_CRC)
         {
             ucReturn = CRC_ERROR_RX;
         }
-		else if (lError & canMSGERR_STUFF)
+        else if (lError & canMSGERR_STUFF)
         {
             ucReturn = STUFF_ERROR_RX;
         }

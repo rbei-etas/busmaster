@@ -728,6 +728,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
             unClientIndex = i;
             i = sg_unClientCnt; //break the loop
             bResult = TRUE;
+            break;
         }
     }
     return bResult;
@@ -1393,18 +1394,18 @@ void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* 
             }
         }
         break;
-		case OCI_CAN_ERR_TYPE_CRC:
-			{
-				if (bIsTx)
-				{
-					DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_TX;
-				}
-				else
-				{
-					DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_RX;
-				}
-			}
-			break;
+        case OCI_CAN_ERR_TYPE_CRC:
+        {
+            if (bIsTx)
+            {
+                DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_TX;
+            }
+            else
+            {
+                DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_RX;
+            }
+        }
+        break;
         case OCI_CAN_ERR_TYPE_OVERLOAD:
         case OCI_CAN_ERR_TYPE_BIT_DOMINANT_BUT_RECSV:
         case OCI_CAN_ERR_TYPE_ACK:
@@ -1911,8 +1912,9 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
                 sg_asChannel[i].m_OCI_CANConfig.baudrate =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrBaudrate.c_str(),
                 &pcStopStr, 10));
-                sg_asChannel[i].m_OCI_CANConfig.baudrate
-                = (sg_asChannel[i].m_OCI_CANConfig.baudrate * 1000);
+                //code commented to resolve the BOA message transmission issue (#389)
+                //sg_asChannel[i].m_OCI_CANConfig.baudrate
+                //= (sg_asChannel[i].m_OCI_CANConfig.baudrate * 1000);
                 sg_asChannel[i].m_OCI_CANConfig.samplesPerBit =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSampling.c_str(),
                 &pcStopStr, 10));

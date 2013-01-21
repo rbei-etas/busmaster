@@ -53,14 +53,14 @@ typedef sERRORMSGINFO* PERRORMSGINFO;
 
 static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 {
-   {ERROR_UNKNOWN,       "Unknown Error"},
+    {ERROR_UNKNOWN,       "Unknown Error"},
     {BIT_ERROR_RX,        "Bus Error - Bit Error(Rx)"},
-	{CRC_ERROR_RX,        "Bus Error - CRC Error(Rx)"},
+    {CRC_ERROR_RX,        "Bus Error - CRC Error(Rx)"},
     {FORM_ERROR_RX,       "Bus Error - Form Error(Rx)"},
     {STUFF_ERROR_RX,      "Error Frame - Stuff error(Rx)"},
     {OTHER_ERROR_RX,      "Bus Error - Other Error(Rx)"},
     {BIT_ERROR_TX,        "Bus Error - Bit Error(Tx)"},
-	{CRC_ERROR_TX,        "Bus Error - CRC Error(Tx)"},
+    {CRC_ERROR_TX,        "Bus Error - CRC Error(Tx)"},
     {FORM_ERROR_TX,       "Bus Error - Form Error(Tx)"},
     {STUFF_ERROR_TX,      "Bus Error - Stuff Error(Tx)"},
     {OTHER_ERROR_TX,      "Bus Error - Other Error(Tx)"},
@@ -419,7 +419,7 @@ void CMsgFrmtWnd::OnSize(UINT nType, int cx, int cy)
         m_lstMsg.SetWindowPos(&wndTop, 0, 0, rctClient.Width(),
                               rctClient.Height(), SWP_NOZORDER);
 
-		vFitListCtrlToWindow();
+        vFitListCtrlToWindow();
 
         ::SendMessage( m_hWnd, WM_UPDATE_TREE_ITEMS_POS, 0, 0);
     }
@@ -427,35 +427,35 @@ void CMsgFrmtWnd::OnSize(UINT nType, int cx, int cy)
 
 void CMsgFrmtWnd::vFitListCtrlToWindow()
 {
-	// If window is visible, the update the column widths accordingly to fill ht ewindow size
-	if (IsWindowVisible())
-	{
-		RECT sClientRect;
-		GetClientRect(&sClientRect);
-		int ClientWidth = abs(sClientRect.left - sClientRect.right);
+    // If window is visible, the update the column widths accordingly to fill ht ewindow size
+    if (IsWindowVisible())
+    {
+        RECT sClientRect;
+        GetClientRect(&sClientRect);
+        int ClientWidth = abs(sClientRect.left - sClientRect.right);
 
-		if (m_eBusType == CAN)
-		{
-			int nTotalWidth = 0;
-			for (int nIdx = 0; nIdx < 8; nIdx++ )
-			{
-				nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
-			}
-			int nLastColWidth = ClientWidth - nTotalWidth;
-			m_lstMsg.SetColumnWidth(8, nLastColWidth);
-		}
-		else if (m_eBusType == J1939)
-		{			
-			int nTotalWidth = 0;
-			for (int nIdx = 0; nIdx < 12; nIdx++ )
-			{
-				nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
-			}
-			int nLastColWidth = ClientWidth - nTotalWidth;
-			m_lstMsg.SetColumnWidth(12, nLastColWidth);
-		}
-		m_lstMsg.MoveWindow(&sClientRect);
-	}
+        if (m_eBusType == CAN)
+        {
+            int nTotalWidth = 0;
+            for (int nIdx = 0; nIdx < 8; nIdx++ )
+            {
+                nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
+            }
+            int nLastColWidth = ClientWidth - nTotalWidth;
+            m_lstMsg.SetColumnWidth(8, nLastColWidth);
+        }
+        else if (m_eBusType == J1939)
+        {
+            int nTotalWidth = 0;
+            for (int nIdx = 0; nIdx < 12; nIdx++ )
+            {
+                nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
+            }
+            int nLastColWidth = ClientWidth - nTotalWidth;
+            m_lstMsg.SetColumnWidth(12, nLastColWidth);
+        }
+        m_lstMsg.MoveWindow(&sClientRect);
+    }
 }
 
 /*******************************************************************************
@@ -2481,7 +2481,7 @@ LRESULT CMsgFrmtWnd::ModifyMsgWndProperty(WPARAM wParam, LPARAM lParam)
     vUpdatePtrInLstCtrl();
     LeaveCriticalSection(&m_CritSec1);
 
-	vFitListCtrlToWindow();
+    vFitListCtrlToWindow();
     return 0L;
 }
 

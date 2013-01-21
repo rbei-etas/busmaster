@@ -65,10 +65,10 @@ public:
         CCmdTarget::OnFinalRelease();
     }
 
-	void vInitializeCOMReadBuffer();
-	BOOL bStartCOMReadThread();
-	BOOL bStopCOMReadThread();
-	void ReadCOMDataBuffer();
+    void vInitializeCOMReadBuffer();
+    BOOL bStartCOMReadThread();
+    BOOL bStopCOMReadThread();
+    void ReadCOMDataBuffer();
 
     DECLARE_DYNCREATE(CApplication)
     DECLARE_MESSAGE_MAP()
@@ -77,12 +77,12 @@ public:
     DECLARE_INTERFACE_MAP()
 
 protected:
-	// Connection point for ISMCLink interface
-	BEGIN_CONNECTION_PART(CApplication, AppEvents)
-		CONNECTION_IID(IID__IAppEvents)
-	END_CONNECTION_PART(AppEvents)
+    // Connection point for ISMCLink interface
+    BEGIN_CONNECTION_PART(CApplication, AppEvents)
+    CONNECTION_IID(IID__IAppEvents)
+    END_CONNECTION_PART(AppEvents)
 
-	DECLARE_CONNECTION_MAP()
+    DECLARE_CONNECTION_MAP()
 
 public:
     enum
@@ -250,24 +250,24 @@ public:
         Date Created     :  08.01.2013
         Modifications    :
     ******************************************************************************/
-	void vSendCANMsgToClients(CAN_MSGS sMsg)
-	{
-		const CPtrArray* pConnections = m_xAppEvents.GetConnections ();
-		ASSERT (pConnections != NULL);
-		int nConnections = pConnections->GetSize ();
-		if (nConnections) 
-		{
-			for (int i=0; i<nConnections; i++)
-			{
-				_IAppEvents* pInterface = (_IAppEvents*) (pConnections->GetAt (i));
-				ASSERT (pInterface != NULL);
+    void vSendCANMsgToClients(CAN_MSGS sMsg)
+    {
+        const CPtrArray* pConnections = m_xAppEvents.GetConnections ();
+        ASSERT (pConnections != NULL);
+        int nConnections = pConnections->GetSize ();
+        if (nConnections)
+        {
+            for (int i=0; i<nConnections; i++)
+            {
+                _IAppEvents* pInterface = (_IAppEvents*) (pConnections->GetAt (i));
+                ASSERT (pInterface != NULL);
 
-				// Outgoing!
-				HRESULT hr = pInterface->OnMessageReceived (sMsg);
-				hr = S_OK;
-			}
-		}
-	}
+                // Outgoing!
+                HRESULT hr = pInterface->OnMessageReceived (sMsg);
+                hr = S_OK;
+            }
+        }
+    }
 
     /******************************************************************************
         Function Name    :  SendCANMSg

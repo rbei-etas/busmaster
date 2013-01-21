@@ -68,7 +68,7 @@ public:
     // Friend classes of CMsgReplayWnd class
     friend class CReplayProcess;
     friend class CLogFileCSVExport;
-	// Replay process information
+    // Replay process information
     CReplayProcess  m_ouReplayDetails;
 
     // Overrides

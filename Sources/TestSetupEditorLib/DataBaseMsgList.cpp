@@ -74,7 +74,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
     m_unMessageCount = 0;
     CHAR s_acTraceStr[1024];
     // validate the file
-	bReturnValue = bValidateDatabaseFile(strFileName);
+    bReturnValue = bValidateDatabaseFile(strFileName);
     if ( bReturnValue == TRUE )
     {
         // For File I/O

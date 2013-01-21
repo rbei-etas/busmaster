@@ -42,7 +42,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE void vREP_CmdStop();
     USAGEMODE void vREP_CmdStep();
     USAGEMODE void vREP_CmdSkip();
-	USAGEMODE void vREP_EnableFilters(BOOL bEnabled);
+    USAGEMODE void vREP_EnableFilters(BOOL bEnabled);
     //Load and save the Replay config details in terms of bytes
     //USAGEMODE void vREP_GetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     USAGEMODE void vREP_GetReplayConfigData(xmlNodePtr pxmlNodePtr);

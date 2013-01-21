@@ -63,8 +63,8 @@ public:
     void vGetReplayFileNameList(CStringArray& omList);
     // Declare Dialog class as Friend
     friend class CReplayFileConfigDlg;
-	//Enable/Disable replay filters
-	VOID vEnableFilters(BOOL bEnabled);
+    //Enable/Disable replay filters
+    VOID vEnableFilters(BOOL bEnabled);
 
     // Replay Operations
     VOID vCmdStep();

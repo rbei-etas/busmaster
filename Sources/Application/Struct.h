@@ -378,6 +378,7 @@ struct sTOOLBAR_BUTTON_STATUS
     BYTE    m_byLogOverWriteON; // 1
     BYTE    m_byReplayMsgType;//2
     BYTE    m_byEnsureVisible;
+    BYTE    m_byReplayFilter;
 
 };
 typedef sTOOLBAR_BUTTON_STATUS STOOLBARINFO;

@@ -502,6 +502,8 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                         m_sToolBarButtonStatus.m_byReplayMsgType;
                     pTemp->m_byEnsureVisible  =
                         m_sToolBarButtonStatus.m_byEnsureVisible;
+                    pTemp->m_byReplayFilter  =
+                        m_sToolBarButtonStatus.m_byReplayFilter;
                     *lpData = static_cast<LPVOID>(pTemp);
                 }
                 else
@@ -1012,7 +1014,8 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                         pSrc->m_byReplayMsgType;
                     m_sToolBarButtonStatus.m_byEnsureVisible =
                         pSrc->m_byEnsureVisible;
-
+                    m_sToolBarButtonStatus.m_byReplayFilter=
+                        pSrc->m_byReplayFilter;
                 }
                 break;
 
@@ -1765,6 +1768,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     oCfgArchive >> m_sToolBarButtonStatus.m_byReplayMsgType;
                     // Get Ensure Visible flag status
                     oCfgArchive >> m_sToolBarButtonStatus.m_byEnsureVisible;
+                    oCfgArchive >> m_sToolBarButtonStatus.m_byReplayFilter;
 
                     oCfgArchive >> m_omStrMruCFile;
                     oCfgArchive >> m_omStrLogFilename;
@@ -1812,6 +1816,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                 oCfgArchive << m_sToolBarButtonStatus.m_byReplayMsgType;
                 // Update Ensure Visible Flag
                 oCfgArchive << m_sToolBarButtonStatus.m_byEnsureVisible;
+                oCfgArchive << m_sToolBarButtonStatus.m_byReplayFilter;
                 oCfgArchive << m_omStrMruCFile;
                 oCfgArchive << m_omStrLogFilename;
                 oCfgArchive << m_omStrReplayFilename;
@@ -2345,6 +2350,7 @@ void CConfigDetails::vInitToolbarInfo()
     m_sToolBarButtonStatus.m_byLogOverWriteON = TRUE;
     m_sToolBarButtonStatus.m_byReplayMsgType = eALL_MESSAGE;
     m_sToolBarButtonStatus.m_byEnsureVisible = TRUE;
+    m_sToolBarButtonStatus.m_byReplayFilter = 0;
 }
 
 /******************************************************************************/

@@ -242,44 +242,44 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
             //If the current line matches the Function Header...
             //(means the starting of the function we are looking for)
             if ( omStrLine == omStrFnHeader )
-			{
-				if( bGlobalVar == FALSE)
-				{
-					m_nStartingLine = nLineNumber;
-					//Skip Function name and parameters line
-					omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
-					if (sPos != NULL)
-					{
-						//Get Next line
-						omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
+            {
+                if( bGlobalVar == FALSE)
+                {
+                    m_nStartingLine = nLineNumber;
+                    //Skip Function name and parameters line
+                    omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
+                    if (sPos != NULL)
+                    {
+                        //Get Next line
+                        omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
 
-						if (sPos != NULL)
-						{
-							//Opening brace indicates start of function body
-							if ( omStrLine.Find('{') != -1 )
-							{
-								//Store the start for later use
-								m_sStartPos = sPos;
+                        if (sPos != NULL)
+                        {
+                            //Opening brace indicates start of function body
+                            if ( omStrLine.Find('{') != -1 )
+                            {
+                                //Store the start for later use
+                                m_sStartPos = sPos;
 
-								//Loop through the function body till we encounter
-								//the function footer
-								while ( (sPos != NULL) && ( m_bIsValidFunction != TRUE) )
-								{
-									omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
-									if ( omStrLine.Find(omStrFnFooter) >= 0 )
-									{
-										m_bIsValidFunction = TRUE;
-									}
-									else
-									{
-										omStrFnBody += omStrLine;
-										omStrFnBody += '\n';
-									}
-								}
-							}
-						}
-					}
-				}
+                                //Loop through the function body till we encounter
+                                //the function footer
+                                while ( (sPos != NULL) && ( m_bIsValidFunction != TRUE) )
+                                {
+                                    omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
+                                    if ( omStrLine.Find(omStrFnFooter) >= 0 )
+                                    {
+                                        m_bIsValidFunction = TRUE;
+                                    }
+                                    else
+                                    {
+                                        omStrFnBody += omStrLine;
+                                        omStrFnBody += '\n';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 else
                 {
                     //Store the start for later use

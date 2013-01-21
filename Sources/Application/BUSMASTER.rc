@@ -1664,7 +1664,7 @@ BEGIN
     IDM_FILTER_LOGFILTEROFF "Enable or Disable Loggiing filter\nEnable or Disable  Logging filter"
     IDM_FILTER_MESSAGEFILTEROFF 
                             "Enable or Disable Message Display Filter \nEnable or Disable Message Display Filter"
-    IDM_FILTER_REPLAYFILTEROFF	"Enable or Disable Replay Filter \nEnable or Disable Log Filter"
+    IDM_FILTER_REPLAYFILTEROFF	"Enable or Disable Replay Filter \nEnable or Disable Replay Filter"
     IDM_BUILD_COMPILEANDLINK "Compile and Link the current file"
 END
 
