@@ -238,6 +238,10 @@ void CSignalDefinerDlg::vGenerateWave()
     //Calculate number of points to be plotted
     nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
 
+	if((nPointCount/(dblFrqStep*(m_nSelCycle+1))) < 8)			//the no. of points in a cycle should be more than 8 to plot a proper graph
+	{					
+		AfxMessageBox(_T("Sampling period is too high to plot a proper wave for given frequency.\n Waveform plotted may not be same as intended."));
+	}
     /*For variant packing purpose*/
     CComVariant varrX, varrY;
     varrX.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);

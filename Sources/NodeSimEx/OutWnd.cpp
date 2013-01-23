@@ -405,8 +405,10 @@ void COutWnd::OnDbClick()
                     if(unLineNumber!=0)
                     {
                         CFileView* pFileView = CGlobalObj::ouGetObj(m_eBus).podGetFileViewPtr();
-                        pFileView->vDisplayWarningLineNumber(OUTWND,
-                                                             unLineNumber);
+						if(pFileView != NULL)
+						{
+							pFileView->vDisplayWarningLineNumber(OUTWND,unLineNumber);
+						}
                     }
                 }
                 else

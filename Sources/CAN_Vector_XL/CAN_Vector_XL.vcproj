@@ -294,7 +294,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AcceptanceFilterDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Vector_XL.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CANRegAnalysis.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters.cpp"
 				>
 			</File>
 			<File
@@ -312,6 +324,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\AcceptanceFilterDlg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CAN_Vector_XL.h"
 				>
 			</File>
@@ -325,6 +341,18 @@
 			</File>
 			<File
 				RelativePath=".\CAN_Vector_XL_stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegDefines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ChangeRegisters.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ContrConfigPeakUsbDefs.h"
 				>
 			</File>
 			<File
