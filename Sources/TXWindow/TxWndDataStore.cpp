@@ -344,6 +344,12 @@ int CTxWndDataStore::nCompareBlockLists(PSMSGBLOCKLIST psMsgBlockSrc)
         {
             return false;
         }
+		if((psMsgBlockSrc->m_psTxCANMsgList == NULL) && (psMsgBlockDest->m_psTxCANMsgList == NULL))
+		{
+			psMsgBlockSrc = psMsgBlockSrc->m_psNextMsgBlocksList;
+			psMsgBlockDest = psMsgBlockDest->m_psNextMsgBlocksList;
+			continue;
+		}
         if(nCompareMsgList(psMsgBlockSrc->m_psTxCANMsgList,psMsgBlockDest->m_psTxCANMsgList) == false)
         {
             return false;

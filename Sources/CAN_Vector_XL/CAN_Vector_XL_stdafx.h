@@ -92,6 +92,7 @@
 #include <iterator>
 #include <algorithm>
 #include <locale.h>
+#include <include/struct_CAN.h>
 
 // TODO: reference additional headers your program requires here
 const int ERR_INVALID_PROCDIL       = -1;
@@ -103,3 +104,6 @@ const int WARNING_NOTCONFIRMED      = -3;
 const int ERR_CONFIRMED_CONFIGURED  = -4;
 const int INFO_INIT_DATA_CONFIRMED  = 2;
 const int INFO_CONFIRMED_CONFIGURED = 3;
+
+// First define the callback function type
+typedef BOOL (*DILCALLBACK)(BYTE Argument, PSCONTROLLER_DETAILS pDatStream, int Length);

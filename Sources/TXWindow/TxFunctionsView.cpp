@@ -683,41 +683,45 @@ void CTxFunctionsView::vReloadData()
 void CTxFunctionsView::OnInvokeClose()
 {
     CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
+	bool        bUnChanged = true;
 
+	if(m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)	//setting will already be saved so exit
+	{
+		return;
+	}
     if(pBlocksView != NULL)
     {
-        bool        bUnChanged = true;
+        
         PSMSGBLOCKLIST psMsgBlock = NULL;
         psMsgBlock = pBlocksView->psGetMsgBlockPointer(
                          0,
                          pBlocksView->m_psMsgBlockList );
 
+		if(psMsgBlock != NULL)
+		{
         bUnChanged = CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock);
         if(pBlocksView->m_bDelayBtnBlocks != CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
         {
             bUnChanged = false;
         }
+		}
+		else if(CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer()!= NULL) 
+		{
+			bUnChanged = false;
+		}
         if(bUnChanged == true)
         {
             return;
         }
     }
-    if( m_omButtonApply.IsWindowEnabled() == TRUE )
+
+	if( bUnChanged == false)			//if there are any changes, then save it.
     {
         if( AfxMessageBox( defSTR_TX_SAVE_CONFIRMATION,
                            MB_YESNO | MB_ICONQUESTION ) == IDYES )
         {
             // Save Changes
             OnButtonApply();
-        }
-        else
-        {
-
-            if(pBlocksView != NULL)
-            {
-                // CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks = pBlocksView->m_bDelayBtnBlocks;
-                // CTxMsgManager::s_bDelayBetweenBlocksOnly = pBlocksView->m_bDelayBtnBlocks;
-            }
         }
     }
 }

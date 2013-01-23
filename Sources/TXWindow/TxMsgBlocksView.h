@@ -61,6 +61,7 @@ public:
     CButton m_omButtonDeleteMsgBlock;
     CButton m_omDelayBtwnBlocks;
     CRadixEdit   m_omTimeDelayBtwnBlocks;
+	BOOL	m_bListItemChange;
     //BOOL    m_bTXAllFrame;
     //}}AFX_DATA
 
