@@ -149,6 +149,9 @@ HRESULT CDBFConverter::ConvertFile(string strDBFFile)
 
     if(!bRes)
     {
+		//SSH + Issue# 403 - Log file is not created for DBCtoDBF conversion 
+		strDBCFileName = strDBFFile;
+		//SSH -
         string sLogFile = strDBCFileName.substr(0, strDBCFileName.length()-4);
         sLogFile += ".log";
         m_omLogFilePath = sLogFile;

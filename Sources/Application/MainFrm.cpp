@@ -8640,7 +8640,7 @@ void CMainFrame::OnFilePropeties()
         {
             // Format baud rate information
             float fBaudRate = atof(pBaudDetails[ unIndex ].m_omStrBaudrate.c_str());
-            if( m_dwDriverId != DRIVER_CAN_VECTOR_XL || fBaudRate > 1000)
+            if( fBaudRate > 1000)
             {
                 fBaudRate = fBaudRate/1000;
             }
@@ -11985,7 +11985,7 @@ void CMainFrame::vUpdateHWStatusInfo(void)
             strDriverName.Replace("&", "");
 
             float fBaudRate = atof(m_asControllerDetails->m_omStrBaudrate.c_str());
-            if( m_dwDriverId != DRIVER_CAN_VECTOR_XL ||fBaudRate >1000 )
+            if( fBaudRate >1000 )
             {
                 fBaudRate /= 1000;
             }
@@ -14957,10 +14957,7 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
             fBaudRate = atof(strVar.c_str());
             if( fBaudRate != 0 && fBaudRate <= 1000 )
             {
-                if( m_dwDriverId != DRIVER_CAN_VECTOR_XL)
-                {
-                    fBaudRate *= 1000;
-                }
+                fBaudRate *= 1000;
                 std::stringstream ss;
                 ss << (UINT)fBaudRate;
                 sController.m_omStrBaudrate  =  ss.str();

@@ -74,6 +74,7 @@ CTxMsgBlocksView::CTxMsgBlocksView()
     m_nRBTNTriggerType = 0;
     m_bModified = FALSE;
     m_bNewBlock = false;
+	m_bListItemChange = false;
 }
 
 /*******************************************************************************
@@ -338,7 +339,6 @@ void CTxMsgBlocksView::OnInitialUpdate()
         m_omButtonAddMsgBlock.EnableWindow(FALSE);
     }
     // Set Init flag to false
-    m_bInitDlg = FALSE;
     // Set the focus to the first entry
     m_omLctrMsgBlockName.SetItemState(0,LVIS_SELECTED|LVIS_FOCUSED,
                                       LVIS_SELECTED|LVIS_FOCUSED);
@@ -382,6 +382,8 @@ void CTxMsgBlocksView::OnInitialUpdate()
     }
     //(GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->EnableWindow(FALSE);
     //******************************************************************************
+	  // Set Init flag to false
+    m_bInitDlg = FALSE;
 }
 
 /**
@@ -815,7 +817,7 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
             {
                 //update the global list for storing the changed data
                 UpdateList(pNMListView);                //AUC
-
+				m_bListItemChange = true;
                 m_nSelectedMsgBlockIndex = pNMListView->iItem;
                 psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
                                                   m_psMsgBlockList);
@@ -1269,12 +1271,29 @@ void CTxMsgBlocksView::OnChangeEditMsgBlockName()
                                      m_omStrMsgBlockName);
     CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
                                         pomGetFunctionsViewPointer();
+	if(m_bListItemChange == FALSE && m_bInitDlg == FALSE)			//if the function is not called from list item change only then save the changes
+	{
     if( pomFunctionView != NULL )
     {
         if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
         {
             pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
         }
+		}
+		PSMSGBLOCKLIST psMsgCurrentBlock =
+			psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+		if(psMsgCurrentBlock != NULL)
+		{
+			if(strcmp(psMsgCurrentBlock->m_acStrBlockName,m_omStrMsgBlockName.GetBuffer(0)) != 0)
+			{
+				psMsgCurrentBlock->m_bModified = true;
+				strcpy(psMsgCurrentBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(0));
+			}
+		}
+	}
+	else
+	{
+		m_bListItemChange = false;		//reset the flag to false 
     }
 }
 
@@ -1649,7 +1668,11 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
     }
     if(psMsgCurrentBlock)
     {
+		UINT unCurrTimeInterval = atoi(m_omStrTimeIntervalVal.GetBuffer(0));
+		if(psMsgCurrentBlock->m_unTimeInterval != unCurrTimeInterval)
+		{
         psMsgCurrentBlock->m_bModified = true;
+		}
     }
     int nCurrSel = m_omLctrMsgBlockName.GetSelectionMark();
     //if(!m_bNewBlock && !CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))        //call update only for editing and not while adding a new block

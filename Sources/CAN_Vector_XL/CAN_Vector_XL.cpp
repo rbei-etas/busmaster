@@ -47,6 +47,7 @@
 #include "Include/DIL_CommonDefs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
+#include "ChangeRegisters.h"
 #include "../Application/MultiLanguage.h"
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
@@ -213,6 +214,7 @@ static int nGetNoOfConnectedHardware(void);
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED],
                                 UINT& unCount, CBaseCANBufFSE* BufferToRemove);
 static int nDisconnectFromDriver();
+static int nSetApplyConfiguration();
 
 // state variables
 static BOOL sg_bIsConnected = FALSE;
@@ -361,6 +363,9 @@ struct CChannel
     BYTE    m_bCNF1;
     BYTE    m_bCNF2;
     BYTE    m_bCNF3;
+
+    /* Acceptance Filter information for standard and extended envelopes*/
+    SACC_FILTER_INFO     m_sFilter[2];
 
     /**
      * To store controller state
@@ -945,6 +950,158 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
 }
 
 /**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Copies the controller config values into channel's
+ * controller config structure.
+ */
+static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
+{
+    BOOL bReturn = FALSE;
+    // If successful
+    if (pControllerDetails != NULL)
+    {
+        for( UINT nIndex = 0; nIndex < sg_nNoOfChannels ; nIndex++ )
+        {
+            char* pcStopStr = NULL;
+            CChannel& odChannel = sg_aodChannels[ nIndex ];
+
+            // Baudrate in BTR0BTR1 format
+            odChannel.m_usBaudRate = static_cast <USHORT>(pControllerDetails[ nIndex ].m_nBTR0BTR1);
+            // Baudrate value in decimal
+            odChannel.m_unBaudrate = static_cast <UINT>(
+                                         _tcstol( pControllerDetails[ nIndex ].m_omStrBaudrate.c_str(),
+                                                  &pcStopStr, defBASE_DEC ));
+
+            // Get Warning Limit
+            odChannel.m_ucWarningLimit = static_cast <UCHAR>(
+                                             _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str(),
+                                                     &pcStopStr, defBASE_DEC ));
+
+            for ( int i = 0; i < CAN_MSG_IDS ; i++ )
+            {
+                // Get Acceptance Filter
+                if ( pControllerDetails[ nIndex ].m_enmHWFilterType[i] == HW_FILTER_ACCEPT_ALL )
+                {
+                    odChannel.m_sFilter[i].m_ucACC_Code0 = 0;
+                    odChannel.m_sFilter[i].m_ucACC_Code1 = 0;
+                    odChannel.m_sFilter[i].m_ucACC_Code2 = 0;
+                    odChannel.m_sFilter[i].m_ucACC_Code3 = 0;
+
+                    odChannel.m_sFilter[i].m_ucACC_Mask0 = 0;
+                    odChannel.m_sFilter[i].m_ucACC_Mask1 = 0;
+                    odChannel.m_sFilter[i].m_ucACC_Mask2 = 0;
+                    odChannel.m_sFilter[i].m_ucACC_Mask3 = 0;
+                }
+                else if( pControllerDetails[ nIndex ].m_enmHWFilterType[i] == HW_FILTER_REJECT_ALL )
+                {					
+                    odChannel.m_sFilter[i].m_ucACC_Code0 = 0xFF;
+                    odChannel.m_sFilter[i].m_ucACC_Code1 = 0xFF;
+                    odChannel.m_sFilter[i].m_ucACC_Code2 = 0xFF;
+                    odChannel.m_sFilter[i].m_ucACC_Code3 = 0xFF;
+
+                    odChannel.m_sFilter[i].m_ucACC_Mask0 = 0xFF;
+                    odChannel.m_sFilter[i].m_ucACC_Mask1 = 0xFF;
+                    odChannel.m_sFilter[i].m_ucACC_Mask2 = 0xFF;
+                    odChannel.m_sFilter[i].m_ucACC_Mask3 = 0xFF;
+
+					/* For standard message type */
+					if ( i == 0 )
+					{
+						odChannel.m_sFilter[i].m_ucACC_Code1 = 0x0F;
+						odChannel.m_sFilter[i].m_ucACC_Code2 = 0;
+						odChannel.m_sFilter[i].m_ucACC_Code3 = 0;
+
+						odChannel.m_sFilter[i].m_ucACC_Mask1 = 0x0F;
+						odChannel.m_sFilter[i].m_ucACC_Mask2 = 0;
+						odChannel.m_sFilter[i].m_ucACC_Mask3 = 0;
+					}
+                }
+                else
+                {
+                    odChannel.m_sFilter[i].m_ucACC_Code0 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[i].c_str(),
+                                     &pcStopStr, defBASE_HEX ));
+
+                    odChannel.m_sFilter[i].m_ucACC_Code1 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[i].c_str(),
+                                     &pcStopStr, defBASE_HEX ));
+
+                    odChannel.m_sFilter[i].m_ucACC_Code2 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[i].c_str(),
+                                     &pcStopStr, defBASE_HEX ));
+
+                    odChannel.m_sFilter[i].m_ucACC_Code3 = static_cast <UCHAR>(
+                            _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[i].c_str(),
+                                    &pcStopStr, defBASE_HEX));
+
+                    odChannel.m_sFilter[i].m_ucACC_Mask0 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[i].c_str(),
+                                     &pcStopStr, defBASE_HEX));
+
+                    odChannel.m_sFilter[i].m_ucACC_Mask1 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[i].c_str(),
+                                     &pcStopStr, defBASE_HEX));
+
+                    odChannel.m_sFilter[i].m_ucACC_Mask2 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[i].c_str(),
+                                     &pcStopStr, defBASE_HEX));
+
+                    odChannel.m_sFilter[i].m_ucACC_Mask3 = static_cast <UCHAR>(
+                            _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[i].c_str(),
+                                     &pcStopStr, defBASE_HEX));
+                }
+                odChannel.m_sFilter[i].m_ucACC_Filter_Type = (UCHAR)i ;
+            }
+
+
+            // Get Baud Rate
+            odChannel.m_usBaudRate = static_cast <USHORT>(
+                                         pControllerDetails[ nIndex ].m_nBTR0BTR1 );
+        }
+        // Get Controller Mode
+        // Consider only the first channel mode as controller mode
+        sg_ucControllerMode = pControllerDetails[ 0 ].m_ucControllerMode;
+
+        bReturn = TRUE;
+    }
+    return bReturn;
+}
+
+/**
+* \brief         Callback function for configuration dialog
+* \param[in]     pDatStream, contains SCONTROLLER_DETAILS structure
+* \return        TRUE if CAN_SetConfigData call succeeds, else FALSE
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+BOOL Callback_DILTZM(BYTE /*Argument*/, PSCONTROLLER_DETAILS pDatStream, int /*Length*/)
+{
+    return (g_pouDIL_CAN_VectorXL->CAN_SetConfigData(pDatStream, 0) == S_OK);
+}
+
+/**
+* \brief         Helper function to display configuration dialog
+* \param[in]     pControllerDetails, is SCONTROLLER_DETAILS structure
+* \param[in]     nCount , is the channel count
+* \return        returns configuration confirmation status
+* \authors       Arunkumar Karri
+* \date          22.01.2013 Created
+*/
+int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
+                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
+{
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    int nResult = WARNING_NOTCONFIRMED;
+
+    CChangeRegisters ouChangeRegister(CWnd::FromHandle(hParent), pControllerDetails, nCount);
+    ouChangeRegister.DoModal();
+    nResult = ouChangeRegister.nGetInitStatus();
+
+    return nResult;
+}
+
+/**
 * \brief         Displays the controller configuration dialog.
 * \param[out]    InitData, is SCONTROLLER_DETAILS structure
 * \param[out]    Length , is INT
@@ -954,23 +1111,201 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
 */
 HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
 {
-    xlPopupHwConfig(NULL, INFINITE);
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+    VALIDATE_POINTER_RETURN_VAL(InitData, S_FALSE);
 
-    //Get back the baud rate from controller
-    SCONTROLLER_DETAILS* pCntrlDetails = (SCONTROLLER_DETAILS*)InitData;
-    XLstatus xlStatus;
+    HRESULT Result = S_FALSE;
 
-    xlStatus = xlGetDriverConfig(&g_xlDrvConfig);
-    char chTemp[256];
-    for ( UINT i = 0 ; i < sg_nNoOfChannels ; i++ )
+    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
+    //First initialize with existing hw description
+    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {
-        sprintf_s(chTemp, "%0.3f", float(
-                      g_xlDrvConfig.channel[sg_aodChannels[i].m_pXLChannelInfo->channelIndex].
-                      busParams.data.can.bitRate /*/ 1000.000 */));
-        pCntrlDetails[i].m_omStrBaudrate = chTemp;
+        //pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
+		static char chName[MAX_PATH];
+		_stprintf(chName , _T("Vector - %s, Serial Number- %d"),
+				  sg_aodChannels[i].m_pXLChannelInfo->name,				  
+				  sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
+		pControllerDetails[i].m_omHardwareDesc = chName;
+
+    }
+    if (sg_ucNoOfHardware > 0)
+    {
+        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
+                                              pControllerDetails, sg_ucNoOfHardware);
+        switch (nResult)
+        {
+            case WARNING_NOTCONFIRMED:
+            {
+                Result = WARN_INITDAT_NCONFIRM;
+            }
+            break;
+            case INFO_INIT_DATA_CONFIRMED:
+            {
+                bLoadDataFromContr(pControllerDetails);
+                //memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                for(int i = 0; i < defNO_OF_CHANNELS; i++)
+                {
+                    sg_ControllerDetails[i] = pControllerDetails[i];
+                }
+
+                //memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
+                for(int i = 0; i < defNO_OF_CHANNELS; i++)
+                {
+                    InitData[i] = sg_ControllerDetails[i];
+                }
+
+
+                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
+                Result = S_OK;								
+            }
+            break;
+            case INFO_RETAINED_CONFDATA:
+            {
+                Result = INFO_INITDAT_RETAINED;
+            }
+            break;
+            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
+            case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
+            default:
+            {
+                // Do nothing... default return value is S_FALSE.
+            }
+            break;
+        }
+    }
+    else
+    {
+        Result = S_OK;
     }
 
-    return S_OK;
+    return Result;
+}
+
+/**
+* \brief         Function to set the channel baud rate configured by user
+* \param         void
+* \return        canOK if succeeded, else respective error code
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+static int nSetBaudRate()
+{    
+	XLstatus xlStatus;
+	XLaccess xlChanMaskTx = 0;
+	BYTE BTR0, BTR1;
+    /* Set baud rate to all available hardware */
+    for ( UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
+    {
+		xlStatus = 0;
+        // Get Current channel reference
+        CChannel& odChannel = sg_aodChannels[ unIndex ];   
+				
+        BTR0 = odChannel.m_usBaudRate >> 8;
+        BTR1 = odChannel.m_usBaudRate & 0xFF;
+
+        //Get channel mask
+	    xlChanMaskTx = sg_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
+        // Set the baud rate
+		xlStatus = xlCanSetChannelParamsC200(g_xlPortHandle[0], xlChanMaskTx, BTR0, BTR1);
+
+		if( xlStatus != XL_SUCCESS )
+		{
+			xlStatus = xlCanSetChannelBitrate(g_xlPortHandle[0], xlChanMaskTx, odChannel.m_unBaudrate);		
+
+			// Check for failure
+			if( xlStatus != XL_SUCCESS )
+			{
+				// break the loop
+				unIndex = sg_nNoOfChannels;
+			}
+		}
+    }
+    return xlStatus;
+}
+
+/**
+* \brief         Function to set the channel baud rate configured by user
+* \param         void
+* \return        canOK if succeeded, else respective error code
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+static int nSetFilter()
+{    
+    XLstatus xlStatus = XL_SUCCESS;
+	XLaccess xlChanMaskTx = 0;
+
+    // Set the client filter
+    for ( UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
+    {
+        // Create DWORD Filter
+        ULONG ulCode = 0, ulMask = 0;
+        // To set no. shifts
+        int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
+        // Get the Filter
+        for ( UINT i = 0 ; i < CAN_MSG_IDS ; i++ )
+        {
+            const SACC_FILTER_INFO& sFilter = sg_aodChannels[ unIndex ].m_sFilter[i];
+
+            // Create Code
+            ulCode = ( sFilter.m_ucACC_Code3 << nShift * 3 ) |
+                     ( sFilter.m_ucACC_Code2 << nShift * 2 ) |
+                     ( sFilter.m_ucACC_Code1 << nShift ) |
+                     sFilter.m_ucACC_Code0;
+            // Create Mask
+            ulMask = ( sFilter.m_ucACC_Mask3 << nShift * 3 ) |
+                     ( sFilter.m_ucACC_Mask2 << nShift * 2 ) |
+                     ( sFilter.m_ucACC_Mask1 << nShift ) |
+                     sFilter.m_ucACC_Mask0;
+
+			//Get channel mask
+			xlChanMaskTx = sg_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
+
+            // Set the acceptance filter for all the client handles
+			for (UINT unClientID = 0; unClientID < sg_unClientCnt; unClientID++)
+			{
+				// Id Range 1 = XL_CAN_STD, 2 = XL_CAN_EXT				
+				xlStatus = xlCanSetChannelAcceptance(g_xlPortHandle[unClientID], xlChanMaskTx, ulCode, ulMask, i+1);	
+			}
+        }
+        if( xlStatus != XL_SUCCESS )
+        {
+            vRetrieveAndLog(xlStatus, __FILE__, __LINE__);
+            // Stop the loop as there is an error
+            unIndex = sg_nNoOfChannels;
+        }
+
+    }
+
+    return xlStatus;
+}
+
+/**
+* \brief         Function to apply filters and baud rate to channels
+* \param         void
+* \return        defERR_OK if succeeded, else respective error code
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+static int nSetApplyConfiguration()
+{
+    int nReturn = defERR_OK;
+
+    // Set baud rate only for hardware network
+    if( nReturn == defERR_OK &&
+            sg_ucControllerMode != defUSB_MODE_SIMULATE )
+    {
+        // Set Baud Rate
+        nReturn = nSetBaudRate ();
+    }
+
+    if( nReturn == defERR_OK )
+    {
+        // Set Filter
+        nReturn = nSetFilter ();
+    }
+
+    return nReturn;
 }
 
 /**
@@ -996,6 +1331,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, in
     {
         sg_ControllerDetails[i] = ConfigFile[i];
     }
+	bLoadDataFromContr(sg_ControllerDetails);
 
     return S_OK;
 }
@@ -1376,7 +1712,9 @@ static int nDisconnectFromDriver()
         {
             xlStatus = xlDeactivateChannel( g_xlPortHandle[i], g_xlChannelMask );
             xlStatus = xlClosePort(g_xlPortHandle[i]);
-            g_xlPortHandle[i] = XL_INVALID_PORTHANDLE;
+			//SSH + fix for Issue# 393 - cannot disconnect bus master in some scenarios.
+            //g_xlPortHandle[i] = XL_INVALID_PORTHANDLE;
+			//SSH -
         }
         else
         {
@@ -1419,6 +1757,9 @@ static int nConnect(BOOL bConnect)
 
     if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
+		/* Set the permission mask for all channel access */
+		g_xlPermissionMask = g_xlChannelMask;
+
         for (UINT i = 0; i < sg_unClientCnt; i++)
         {
             // ------------------------------------
@@ -1459,6 +1800,7 @@ static int nConnect(BOOL bConnect)
             if(xlStatus == XL_SUCCESS)
             {
                 nReturn = defERR_OK;
+				nSetApplyConfiguration();
             }
         }
     }
