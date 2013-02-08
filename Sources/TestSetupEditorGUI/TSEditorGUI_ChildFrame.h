@@ -52,6 +52,7 @@ public:
     HTREEITEM m_hParentTreeItem;
     BOOL m_bPasted;
     CMenu m_omMenu;
+	BOOL m_bInit;
     CTSEditorChildFrame();
 
 protected:
@@ -124,7 +125,7 @@ private:
 
     BOOL isParentChild(eTYPE_ENTITY eParent, eTYPE_ENTITY eChild);
     BOOL bEnablePase();
-    BOOL bEnableCopy();
+    BOOL bEnableCopy();	
 
 
 
@@ -146,6 +147,7 @@ public:
     afx_msg void OnFileClose(void);
     afx_msg void OnFileExit(void);
     afx_msg void OnUpdateFileSaveas(CCmdUI* pCmdUI);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 
 protected:
     virtual void OnUpdateFrameTitle(BOOL bAddToTitle);

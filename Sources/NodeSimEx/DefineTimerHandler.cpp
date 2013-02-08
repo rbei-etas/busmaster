@@ -251,7 +251,7 @@ void CDefineTimerHandler::OnOK()
     }
     else
     {
-        MessageBeep((UINT)-1);
+        MessageBox(_("Timer Name Should Not contain spaces/special characters."), _("Invalid Timer Name"), MB_OK|MB_ICONERROR);
     }
 }
 /******************************************************************************/

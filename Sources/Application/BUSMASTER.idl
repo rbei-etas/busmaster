@@ -81,6 +81,8 @@ library CAN_MonitorApp
         [id(54), helpstring("method GetLoggingBlockCount")] HRESULT GetLoggingBlockCount([out] USHORT* BlockCount);
         [id(55), helpstring("method ClearLoggingBlockList")] HRESULT ClearLoggingBlockList(void);
         [id(56), helpstring("method GetLoggingBlock")] HRESULT GetLoggingBlock([in] USHORT BlockIndex, [out] SLOGGINGBLOCK_USR* psLoggingBlock);
+		[id(57), helpstring("method RegisterClientForRx")] HRESULT RegisterClientForRx([in] USHORT usUniqueID, [out] BSTR* pEventName, [out] BSTR* pPIPEName);
+		[id(58), helpstring("method UnRegisterClient")] HRESULT UnRegisterClient([in] USHORT usUniqueID);
     };
 
 	[ uuid(92D435C1-A552-4435-AD1E-468B4C17BDC7) ]

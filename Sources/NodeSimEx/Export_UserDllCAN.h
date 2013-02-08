@@ -23,7 +23,7 @@
  */
 #include "Export_UserDll.h"
 
-typedef int (*APPFUNCPROC) (STCAN_MSG,HMODULE);
+typedef int (*APPFUNCPROC) (STCAN_TIME_MSG,HMODULE);
 // Prototype of the exported function from user-defined DLL
 typedef void (*DLLFUNCPROC)(APPFUNCPROC);
 

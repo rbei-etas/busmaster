@@ -28,6 +28,7 @@
 #include "SimSysConfigDetails.h"// definition of the class CSimSysConfigDetails
 #include "SimSysManager.h"
 #include "Application/StdAfx.h"
+#include "Utility\UtilFunctions.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -394,7 +395,6 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
     return nRetVal;
 }
 
-
 /******************************************************************************/
 /*  Function Name    :  bLoadStoreSimSysInfo                                  */
 /*                                                                            */
@@ -439,6 +439,15 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo.m_omStrDllName;
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo .m_omStrFileName;
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo .m_omStrNodeName;
+
+						/* Get base path based on simulation file location */
+						string omStrBasePath;					
+						CUtilFunctions::nGetBaseFolder(psSimsysInfo->m_omStrSimSysName.GetBuffer(MAX_PATH), omStrBasePath);
+
+						/* Get absolute paths */
+						vGetAbsolutePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrDllName);
+						vGetAbsolutePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrFileName);
+
                         if (m_fSimSysVersion == static_cast<FLOAT>(defSIMSYSVERSION_ALL_BUS))
                         {
                             roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo.m_byPrefAddress;
@@ -470,7 +479,7 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
             }
         }
         // store the data
-        if(roSimCfgArchive.IsStoring())
+        else if(roSimCfgArchive.IsStoring())
         {
             roSimCfgArchive << psSimsysInfo->m_unNumberOfNodesAdded;
             if(psSimsysInfo->m_unNumberOfNodesAdded > 0)
@@ -479,6 +488,15 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
                 psCurrentNodeList  = psSimsysInfo->m_psNodesList;
                 while(psCurrentNodeList != NULL)
                 {
+					/* Get base path based on simulation file location */
+					string omStrBasePath;					
+					CUtilFunctions::nGetBaseFolder(psSimsysInfo->m_omStrSimSysName.GetBuffer(MAX_PATH), omStrBasePath);
+
+					/* Get relative paths */
+					vGetRelativePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrDllName);
+					vGetRelativePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrFileName);
+
+					/* Store */
                     roSimCfgArchive << psCurrentNodeList->m_sNodeInfo.m_omStrDllName;
                     roSimCfgArchive << psCurrentNodeList->m_sNodeInfo.m_omStrFileName;
                     roSimCfgArchive << psCurrentNodeList->m_sNodeInfo.m_omStrNodeName;
@@ -493,6 +511,37 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
 #endif
     return bRetVal;
 }
+
+/**
+* \brief         Function to convert absolute file path to relative file path based on supplied base path
+* \param         Takes base path and absolute file name
+* \return        void
+* \authors       Arunkumar Karri
+* \date          01.02.2013 Created
+*/
+void CSimSysConfigDetails::vGetRelativePath(string& omStrBasePath, CString &strFileName)
+{
+	if ( !strFileName.IsEmpty() )
+	{
+		string omStrRelativePath;
+		CUtilFunctions::MakeRelativePath(omStrBasePath.c_str(), strFileName.GetBuffer(MAX_PATH), omStrRelativePath);
+		strFileName = omStrRelativePath.c_str();
+	}
+}
+
+void CSimSysConfigDetails::vGetAbsolutePath(string& omStrBasePath, CString &strFileName)
+{
+	if ( !strFileName.IsEmpty() )
+	{
+		if (TRUE == PathIsRelative(strFileName))
+		{
+			char chAbsPath[MAX_PATH];
+			PathCombine(chAbsPath, omStrBasePath.c_str(), strFileName.GetBuffer(MAX_PATH));
+			strFileName = chAbsPath;
+		}
+	}
+}
+
 
 /******************************************************************************/
 /*  Function Name    :  nLoadConfiguration                                    */

@@ -2868,6 +2868,10 @@ void vMsgDecl(CString& omStrValue, MsgVariables& ouMsgVariable)
                 sprintf(g_chErrorString, "(Message Not Found) Message : %s not found in database.",ident);
                 g_ouGlobalVariables.g_ouErrorStrings.insert(g_chErrorString);
             }
+
+			ouMsgVariable.m_omStrMsgType = ident;
+            ouMsgVariable.m_omStrMsgName = name;
+
             fprintf(yyout,defSTR_MsgIniFormat,ident,name,
                 msg.m_uiMsgID,msg.m_cFrameFormat == 'S'? 0 : 1,dlc );   
 

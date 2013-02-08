@@ -317,7 +317,8 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
 
     UpdateData(FALSE);	
 
-    return TRUE;  // return TRUE unless you set the focus to a control
+	// return TRUE unless you set the focus to a control
+    return TRUE;  
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 

@@ -40,6 +40,21 @@ public:
     // Dialog Data
     //{{AFX_DATA(CAcceptanceFilterDlg)
     enum { IDD = IDD_DLG_ACCEPTANCE };
+    //}}AFX_DATA
+
+
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CAcceptanceFilterDlg)
+public:
+    virtual void OnOK();
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
+
+    // Implementation
+protected:
+
     CRadixEdit  m_omEditAccMaskByte4;
     CRadixEdit  m_omEditAccMaskByte3;
     CRadixEdit  m_omEditAccMaskByte2;
@@ -65,20 +80,6 @@ public:
     CString m_omStrLocalAccMaskByte2[CAN_MSG_IDS];
     CString m_omStrLocalAccMaskByte3[CAN_MSG_IDS];
     CString m_omStrLocalAccMaskByte4[CAN_MSG_IDS];
-    //}}AFX_DATA
-
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CAcceptanceFilterDlg)
-public:
-    virtual void OnOK();
-protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
-
-    // Implementation
-protected:
 
     // Generated message map functions
     //{{AFX_MSG(CAcceptanceFilterDlg)

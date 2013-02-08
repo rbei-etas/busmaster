@@ -264,6 +264,7 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Release/ProjectConfiguration.pdb"
 				SubSystem="0"
+				StackReserveSize="0"
 				OptimizeReferences="0"
 				EnableCOMDATFolding="0"
 				BaseAddress="0x65000000"

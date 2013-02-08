@@ -612,6 +612,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*un
 HRESULT CDIL_CAN_Kvaser::CAN_PerformInitOperations(void)
 {
     HRESULT hResult = S_FALSE;
+	sg_ReadMsg.m_bCANFD = false;
 
     /* Register Monitor client */
     DWORD dwClientID = 0;
@@ -1377,7 +1378,7 @@ static void ProcessCANMsg(int nChannelIndex, UINT& nFlags, DWORD& dwTime)
     /*sg_asCANMsg.m_lTickCount.QuadPart =
                            _abs64(sg_asCANMsg.m_lTickCount.QuadPart - QuadPartRef);*/
     /*Set CAN FD to false*/
-    sg_asCANMsg.m_bCANFDMsg = false;
+    sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
 
     if ( !(nFlags & canMSG_ERROR_FRAME) &&
             !(nFlags & canMSG_NERR) &&

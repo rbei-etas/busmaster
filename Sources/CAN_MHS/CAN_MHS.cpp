@@ -565,7 +565,6 @@ HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
     return(S_OK);
 }
 
-
 /**
 * \brief         Lists the hardware interface available.
 * \param[out]    asSelHwInterface, is INTERFACE_HW_LIST structure
@@ -644,21 +643,29 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& L
 {
     (void)Length;
     HRESULT result;
-    struct TMhsCanCfg cfg;
+	static struct TMhsCanCfg cfg = {"", 0,0, true};	
     SCONTROLLER_DETAILS* cntrl;
     char* str;
 
     result = WARN_INITDAT_NCONFIRM;
     cntrl = (SCONTROLLER_DETAILS*)InitData;
-    if (cntrl[0].m_omStrBaudrate.length() > 0)
+	if ( cntrl[0].m_nBTR0BTR1 == 0 )
     {
         cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
+		
+		if ( cfg.CanSpeed > 1000 )
+		{
+			cfg.CanSpeed/=1000;
+		}
+
+		cfg.m_bBitRateSelected = TRUE;
         cfg.CanBtrValue = 0;
     }
     else
     {
         cfg.CanSpeed = 0;
         cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
+		cfg.m_bBitRateSelected = FALSE;
     }
     strcpy_s(cfg.CanSnrStr, sizeof(cfg.CanSnrStr), cntrl[0].m_omHardwareDesc.c_str());
     if (ShowCanSetup(sg_hOwnerWnd, &cfg))
@@ -670,12 +677,16 @@ HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& L
             cntrl[0].m_omStrBaudrate = "";
             sprintf_s(chTemp, sizeof(chTemp), "%d", cfg.CanBtrValue);
             cntrl[0].m_omStrBTR0 = chTemp;
+			cntrl[0].m_nBTR0BTR1 = cfg.CanBtrValue;
+			cfg.m_bBitRateSelected = FALSE;			
         }
         else
         {
             sprintf_s(chTemp,  sizeof(chTemp), "%d", cfg.CanSpeed);
-            cntrl[0].m_omStrBaudrate  = chTemp;
+            cntrl[0].m_omStrBaudrate  = chTemp;			
             cntrl[0].m_omStrBTR0 = "";
+			cntrl[0].m_nBTR0BTR1 = cfg.CanBtrValue;
+			cfg.m_bBitRateSelected = TRUE;
         }
         if ((result = CAN_SetConfigData(InitData, 1)) == S_OK)
         {
@@ -812,6 +823,7 @@ static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_
 {
     (void)index;
     static STCANDATA can_data;
+	can_data.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
 
     for (; count; count--)
     {
