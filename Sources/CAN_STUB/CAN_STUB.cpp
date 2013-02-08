@@ -376,7 +376,7 @@ static void ProcessCanMsg(HANDLE hClientHandle, UINT unIndex)
             sCanData.m_lTickCount.QuadPart = sPipeCanMsg.m_unTimeStamp;
             sCanData.m_uDataInfo.m_sCANMsg = sPipeCanMsg.m_sCanMsg;
             /*Set CAN FD field to false*/
-            sCanData.m_bCANFDMsg = false;
+            sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
 
             if (sPipeCanMsg.m_byTxRxFlag == FLAG_TX)
             {

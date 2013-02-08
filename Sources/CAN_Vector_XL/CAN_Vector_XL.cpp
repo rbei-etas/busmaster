@@ -776,6 +776,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
 HRESULT CDIL_CAN_VectorXL::CAN_PerformInitOperations(void)
 {
     HRESULT hResult = S_FALSE;
+	sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
 
     /* Register Monitor client */
     DWORD dwClientID = 0;
@@ -795,7 +796,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_PerformInitOperations(void)
         sg_anSelectedItems[i] = -1;
     }
     /*Set CAN FD field to false*/
-    sg_asCANMsg.m_bCANFDMsg = false;
+    sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
 
     return hResult;
 }
@@ -1164,8 +1165,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
                 Result = INFO_INITDAT_RETAINED;
             }
             break;
-            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
+			// Not to be addressed at present
+            case ERR_CONFIRMED_CONFIGURED: 
+			// Not to be addressed at present
+            case INFO_CONFIRMED_CONFIGURED:
             default:
             {
                 // Do nothing... default return value is S_FALSE.
@@ -1192,7 +1195,7 @@ static int nSetBaudRate()
 {    
 	XLstatus xlStatus;
 	XLaccess xlChanMaskTx = 0;
-	BYTE BTR0, BTR1;
+	BYTE BTR0 = 0xC0, BTR1 = 0x3A;
     /* Set baud rate to all available hardware */
     for ( UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
     {
@@ -1235,13 +1238,13 @@ static int nSetFilter()
     XLstatus xlStatus = XL_SUCCESS;
 	XLaccess xlChanMaskTx = 0;
 
+	// To set no. shifts
+    int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
     // Set the client filter
     for ( UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
     {
         // Create DWORD Filter
         ULONG ulCode = 0, ulMask = 0;
-        // To set no. shifts
-        int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
         // Get the Filter
         for ( UINT i = 0 ; i < CAN_MSG_IDS ; i++ )
         {
@@ -1292,8 +1295,7 @@ static int nSetApplyConfiguration()
     int nReturn = defERR_OK;
 
     // Set baud rate only for hardware network
-    if( nReturn == defERR_OK &&
-            sg_ucControllerMode != defUSB_MODE_SIMULATE )
+    if( sg_ucControllerMode != defUSB_MODE_SIMULATE )
     {
         // Set Baud Rate
         nReturn = nSetBaudRate ();

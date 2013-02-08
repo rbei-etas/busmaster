@@ -297,7 +297,8 @@ BOOL CChangeRegisters::OnInitDialog()
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED );
 
-    return TRUE;  // return TRUE unless you set the focus to a control
+	// return TRUE unless you set the focus to a control
+    return TRUE;  
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
@@ -1339,14 +1340,15 @@ void CChangeRegisters::vValidateBaudRate()
         {
             dBaudRate = 5000;
         }
-        omStrBaudRate.Format(_T("%ld"),/*fTempBaudRate*/(long)dBaudRate);
+        omStrBaudRate.Format(_T("%ld"),(long)dBaudRate);
 
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
         omStrPrvBaudRate = m_omStrEditBaudRate;
 
         // set the baudrate
         m_omEditBaudRate.SetWindowText(omStrBaudRate);
-    }// End if
+    }
+	// End if
     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
     m_dEditBaudRate     = dBaudRate;
     m_omStrEditBaudRate = omStrBaudRate;
@@ -1606,11 +1608,6 @@ BOOL CChangeRegisters::bFillControllerConfig()
 /******************************************************************************/
 CChangeRegisters::~CChangeRegisters()
 {
-    // Clear memory used for getting controller information
-    if( m_pControllerDetails != NULL )
-    {
-        //        theApp.vRelease( CONTROLLER_DETAILS, (VOID**)&m_pControllerDetails);
-    }
 }
 
 /******************************************************************************/
@@ -1765,8 +1762,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     if (pWnd != NULL)
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
-    }
-    char* pcStopStr     = NULL;
+    }    
 
     m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
     m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0.c_str();
@@ -1933,12 +1929,10 @@ void CChangeRegisters::OnCbtnBlink()
 BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
 {
     BOOL bReturn = FALSE;
-    CString omStrBtr0;
-    CString omStrBtr1;
-    CString omStrBaudRate;
-    USHORT m_usBTR0BTR1;
-    //UCHAR  ucBtr0                   = 0;
-    //UCHAR  ucBtr1                   = 0;
+    CString omStrBtr0(_T(""));
+    CString omStrBtr1(_T(""));
+    CString omStrBaudRate(_T(""));
+	USHORT m_usBTR0BTR1 = 0xC03A;
     UINT unIndex                    = 0;
 
     UINT unClock                    = 0;
@@ -2028,17 +2022,17 @@ BOOL CChangeRegisters::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
 BOOL CChangeRegisters::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
         DWORD dEndMsgId)
 {
-    BOOL bReturn = FALSE;
+    BOOL bReturn = TRUE;
     // for getting separate byte
     DWORD dTemp=0XFF;
+    // To set no. shifts
+    int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
+
 
     for( UINT unIndex = 0;
             unIndex < defNO_OF_CHANNELS;
             unIndex++ )
     {
-        // To set no. shifts
-        int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
-
         //to convert all acceptance and mask byets into string
         CString omStrTempByte;
         // Create Code

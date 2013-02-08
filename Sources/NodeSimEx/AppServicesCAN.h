@@ -23,7 +23,7 @@
 
 #include "AppServices.h"
 //Send can message
-UINT gunSendMsg_CAN(STCAN_MSG* psTxMsg, HMODULE hModule);
+UINT gunSendMsg_CAN(STCAN_TIME_MSG* psTxMsg, HMODULE hModule);
 // Global function to reset the controller, software or hardware reset
 void gvResetController_CAN(BOOL);
 // To set the controller mode Passive/Active

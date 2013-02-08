@@ -605,6 +605,12 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     CString strChannelNum = "";
     for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
     {
+		/* if baud rate is in kbps, convert to bps */
+		if ( controllerDetails[nChannelNum - 1].m_omStrBaudrate.size() < 4 ) 
+		{
+			controllerDetails[nChannelNum - 1].m_omStrBaudrate+="000";
+		}
+
         strChannelNum.Format(BUS_LOG_CHANNEL, nChannelNum,
                              controllerDetails[nChannelNum - 1].m_omHardwareDesc.c_str(),
                              controllerDetails[nChannelNum - 1].m_omStrBaudrate.c_str());

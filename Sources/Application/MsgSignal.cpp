@@ -5222,9 +5222,13 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
 
             omHeaderFile.WriteString(omStrcommandLine);
 
-            omHeaderFile.WriteString(defDATATYPE_CANFD);
+            //omHeaderFile.WriteString(defDATATYPE_CANFD);
 
             omHeaderFile.WriteString(defDATATYPE_TIMESTAMP);
+
+			omStrcommandLine = defDATATYPE_FD_FLAG;
+			omHeaderFile.WriteString(omStrcommandLine);
+
             omStrcommandLine.Format(defEND_OF_STRUCT_DEF,
                                     pMsg->m_omStrMessageName );
             omHeaderFile.WriteString(omStrcommandLine);

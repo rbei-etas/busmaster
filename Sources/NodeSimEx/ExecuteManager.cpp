@@ -689,6 +689,7 @@ void CExecuteManager::vManageBusEventHandler(eBUSEVEHANDLER eBusEvent)
 ***************************************************************************************/
 void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DWORD& dwClientId)
 {
+	int i = 0;
     EnterCriticalSection(&m_CritSectPsNodeObject);
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
     while(psTempNodeObject != NULL)
@@ -696,12 +697,13 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
         if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE)
         {
 
-            sNODEINFO sNodeInfo(m_eBus);
-            psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
-            if (sNodeInfo.m_dwClientId == dwClientId)
+            sNODEINFO *sNodeInfo = new sNODEINFO(m_eBus);
+            psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(*sNodeInfo);
+            if (sNodeInfo->m_dwClientId == dwClientId)
             {
                 psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*sRxMsgInfo);
             }
+			delete sNodeInfo;
         }
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }

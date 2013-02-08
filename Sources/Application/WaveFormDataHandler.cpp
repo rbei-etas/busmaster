@@ -36,6 +36,7 @@ CWaveFormDataHandler::CWaveFormDataHandler(void)
     m_sDefaultWaveInfo.m_fAmplitude   = 10;
     m_sDefaultWaveInfo.m_fFrequency   = 1;
     m_shSamplingTP = 125;
+	m_bSignalDefinerAutoCorrect = true;
 }
 
 CWaveFormDataHandler::~CWaveFormDataHandler(void)
@@ -519,6 +520,26 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
             }
             xmlXPathFreeObject(pOjectPath);
         }
+		xmlChar* pXpath3 = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/SignalDefiner_AutoCorrect";
+        pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath3);
+        if(pOjectPath != NULL)
+        {
+            xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
+            if(pNodeSet != NULL)
+            {
+                xmlNodePtr pNode = pNodeSet->nodeTab[0];
+                if(pNode != NULL)
+                {
+                    xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
+                    if(NULL != key)
+                    {
+                        m_bSignalDefinerAutoCorrect = (bool)atoi((char*)key);
+                        xmlFree((char*)key);
+                    }
+                }
+            }
+            xmlXPathFreeObject(pOjectPath);
+        }
     }
     else if( pDoc == NULL || nRetVal == FALSE )   //Assign Default Values
     {
@@ -817,6 +838,11 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
     xmlNodePtr pDefSP= xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_DEF_SAMPLING_PERIOD, BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pDefSP);
 
+    CString csAutoCorrect;
+    csAutoCorrect.Format("%d", m_bSignalDefinerAutoCorrect);
+    omcVarChar = csAutoCorrect;
+    xmlNodePtr pAutoCorrect= xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_SIGDEF_AUTOCORRECT, BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pAutoCorrect);
     return true;
 }
 

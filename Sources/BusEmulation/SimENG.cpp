@@ -333,7 +333,7 @@ void CSimENG::FinalRelease()
  * Call this function to send a message to the virtual bus or other nodes.
  */
 STDMETHODIMP CSimENG::SendMessage(USHORT ClientID, USHORT CurrDataLength,
-                                  BYTE pbCurrDataByte[128])
+                                  BYTE pbCurrDataByte[255])
 {
     HRESULT Result = S_FALSE;
     // First ensure this node is active

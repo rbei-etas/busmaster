@@ -178,15 +178,16 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         {
                             if ( sCanTimeData == NULL )
                             {
-                                sCanTimeData = new STCAN_TIME_MSG();
+                                sCanTimeData = new STCAN_TIME_MSG;
                             }
                             sCanTimeData->m_ucChannel    = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
                             memcpy(sCanTimeData->m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sizeof(sCanTimeData->m_ucData));
-                            if (sCanData.m_bCANFDMsg)
-                            {
-                                memcpy(sCanTimeData->m_ucCANFDData, sCanData.m_uDataInfo.m_sCANMsg.m_ucCANFDData,
-                                       /*sizeof(sCanTimeData->m_ucCANFDData)*/sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen);
-                            }
+							sCanTimeData->m_bCANFD =  sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD ;
+                            //if (sCanData.m_bCANFDMsg)
+                            //{
+                            //    memcpy(sCanTimeData->m_aucCANFDData, sCanData.m_uDataInfo.m_sCANMsg.m_aucCANFDData,
+                            //           /*sizeof(sCanTimeData->m_ucCANFDData)*/sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen);
+                            //}
                             sCanTimeData->m_ucDataLen    = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
                             sCanTimeData->m_ucEXTENDED   = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
                             sCanTimeData->m_ucRTR        = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;

@@ -57,6 +57,7 @@ bool CTxMsgManager::s_bDelayBetweenBlocksOnly;          //stores the current sta
 UINT CTxMsgManager::s_unTimeDelayBtnMsgBlocks;          //stores the delay between blocks interval value
 CRITICAL_SECTION CTxMsgManager::m_csUpdationLock;       //critical section used while copying PSTXCANMSGLIST from global to local
 CEvent g_omInformStopTx = CEvent(FALSE, TRUE, "StopTxEvent"); // Indicates the stop tranmission is invoked
+int CTxMsgManager::m_snThreadCount; 
 //extern CRITICAL_SECTION g_CritSectDllBufferRead;
 // Key Handler proc CMap Hash table size.
 #define defKEY_HANDLER_HASH_TABLE_SIZE      17
@@ -79,6 +80,7 @@ CTxMsgManager::CTxMsgManager()
     s_bDelayBetweenBlocksOnly = false;
     InitializeCriticalSection(&m_csUpdationLock);
     g_omInformStopTx.ResetEvent();
+	m_snThreadCount   = -1; 
 }
 
 /*******************************************************************************
@@ -373,6 +375,7 @@ VOID CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
             dwTimerThreadStatus =
                 WaitForSingleObject( psTxMsg->m_omTxBlockTimerEvent,
                                      unMaxWaitTime );
+			m_snThreadCount--;
         }
         // If key thread is active then wait for key thread termination
         if(psTxMsg->m_sKeyThreadInfo.m_hThread != NULL )
@@ -703,10 +706,10 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
     PSTXMSG psTxMsg  =  static_cast<PSTXMSG> (pParam);
     PSTXCANMSGLIST psIntialTxMsgList = NULL;
 
-    static  int snThreadCount   = -1;           //its incremented as soon as it enters the if condition
+   
     if (psTxMsg != NULL)
     {
-        snThreadCount++;
+        CTxMsgManager::s_podGetTxMsgManager()->m_snThreadCount++;
         UINT unTimeInterval = 0;
         psTxMsg->m_omTxBlockTimerEvent.ResetEvent();
         PSTXCANMSGLIST psTxMsgList = new STXCANMSGLIST;
@@ -730,7 +733,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
         {
             //delay calculated for the first time,
             //thread count * delay betrween blocks
-            unTimeInterval = snThreadCount * s_unTimeDelayBtnMsgBlocks;
+            unTimeInterval = CTxMsgManager::s_podGetTxMsgManager()->m_snThreadCount * s_unTimeDelayBtnMsgBlocks;
             hEventWaitForBlockTx = CreateEvent(NULL, FALSE, FALSE, NULL);
             if(unTimeInterval == 0)
             {
@@ -949,7 +952,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
         {
             CTxWndDataStore::ouGetTxWndDataStoreObj().bDeleteMsgList(psIntialTxMsgList);
         }
-        snThreadCount--; //since the thread has stopped reduce the count
+        //CTxMsgManager::s_podGetTxMsgManager()->m_snThreadCount--; //since the thread has stopped reduce the count
     }
     return 0;
 }

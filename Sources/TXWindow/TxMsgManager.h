@@ -66,6 +66,7 @@ public:
     static void* pGetDILInterfacePtr();
 
 public:
+	static  int			  m_snThreadCount;           //its incremented as soon as it enters the if condition
     static CFlags         s_TxFlags;
     static bool           s_bDelayBetweenBlocksOnly;
     static UINT           s_unTimeDelayBtnMsgBlocks;

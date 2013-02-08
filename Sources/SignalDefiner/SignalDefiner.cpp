@@ -215,6 +215,16 @@ USAGEMODE HRESULT SignalDefiner_SetSamplingTimePeriod(int nSamplingTime)
     return S_OK;
 }
 
+USAGEMODE HRESULT SignalDefiner_GetAutoCorrect(bool* pbChecked)
+{
+	*pbChecked = g_objSignalDefiner.m_bAutoCorrect;
+    return S_OK;
+}
+USAGEMODE HRESULT SignalDefiner_SetAutoCorrect(bool bChecked)
+{
+	g_objSignalDefiner.m_bAutoCorrect = bChecked;
+    return S_OK;
+}
 /**
 * \brief         Getter for signal Sampling TimePeriod
 * \param[out]    Gives back the signal Sampling TimePeriod in int 'pnSamplingTime'

@@ -98,6 +98,7 @@ public:
     //Clear signal list data
     void vClearSignalInfoList(void);
 
+	bool m_bSignalDefinerAutoCorrect;
 private:
     CSigGenerationInfoList m_lstSignalWaveformInfo;
     CSigGenerationInfoList m_lstTempSignalWaveformInfo;

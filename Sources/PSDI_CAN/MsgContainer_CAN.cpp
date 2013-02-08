@@ -168,7 +168,7 @@ static void vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_byIDType = TYPE_ID_CAN_STANDARD;
     }
 
-    if ( pMsgCAN->m_bCANFDMsg )
+    if ( pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD )
     {
         CurrDataCAN->m_byMsgType = TYPE_MSG_CAN_FD;
     }

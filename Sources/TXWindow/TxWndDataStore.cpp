@@ -575,7 +575,7 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
             for (UINT j = 0; j < psTempBlock->m_unMsgCount; j++)
             {
                 PSTXCANMSGLIST psTempCanList = new STXCANMSGLIST;
-                int nOldMsgStructSize = sizeof (STXCANMSGDETAILS) - sizeof(psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_ucCANFDData);
+                int nOldMsgStructSize = sizeof (STXCANMSGDETAILS) /*- sizeof(psTempCanList->m_sTxMsgDetails.m_sTxMsg.m_aucCANFDData)*/;
                 COPY_DATA_2(&(psTempCanList->m_sTxMsgDetails), pbyTemp, nOldMsgStructSize);
                 if (psTempBlock->m_psTxCANMsgList == NULL)//For the first time
                 {

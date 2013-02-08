@@ -4,6 +4,7 @@
 #include "afxwin.h"
 // CSignalDefinerDlg dialog
 
+		
 class CSignalDefinerDlg : public CDialog
 {
     DECLARE_DYNAMIC(CSignalDefinerDlg)
@@ -20,6 +21,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 public:
+	bool	m_bAutoCorrect;
     float m_fAmplitude;
     float m_fFrequency;
     int m_nSelCycle;
@@ -34,11 +36,16 @@ public:
     afx_msg void OnEnChangeEditSignalSamplingTime();
     afx_msg void OnBnClickedOk();
     afx_msg void OnEnUpdateEditSignalSamplingTime();
+	afx_msg void OnBnClickedAutoCorrect();
+	afx_msg void OnClose();
+	afx_msg void OnBnClickedCancel();
+	afx_msg void OnKillFocus(UINT nID);
 
     virtual BOOL OnInitDialog();
 
     CComboBox m_ctrSignalType;
     CComboBox m_ctrNoOfCycles;
+	CButton	  m_btnAutoCorrect;
 
     CWnd* m_poDMGraphCtrl;
     int m_nSignalType;

@@ -336,6 +336,7 @@ void CWaveformSelectionDlg::DefineUpdateWave(CListCtrl* pListCtrl, UINT nMsgID,
         SignalDefiner_SetAmplitude(objWaveInfo.m_fAmplitude);
         SignalDefiner_SetFrequency(objWaveInfo.m_fFrequency);
         SignalDefiner_SetSamplingTimePeriod(m_pWaveDataHandler->shGetSamplingTimePeriod());
+		SignalDefiner_SetAutoCorrect(m_pWaveDataHandler->m_bSignalDefinerAutoCorrect);
 
         if ( SignalDefiner_ShowDlg() == IDOK )
         {
@@ -344,6 +345,7 @@ void CWaveformSelectionDlg::DefineUpdateWave(CListCtrl* pListCtrl, UINT nMsgID,
             objWaveInfo.m_eSignalWaveType = (eWAVEFORMTYPE)enSelSignalType;
             SignalDefiner_GetAmplitude(&objWaveInfo.m_fAmplitude);
             SignalDefiner_GetFrequency(&objWaveInfo.m_fFrequency);
+			SignalDefiner_GetAutoCorrect(&m_pWaveDataHandler->m_bSignalDefinerAutoCorrect);
 
             if(pListCtrl == &m_omListCtrlSignal)
             {
