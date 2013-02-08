@@ -913,7 +913,7 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA& sCanData)
             if (m_sCurrEntry.m_ucRTR == 0) // Non RTR message
             {
                 /* Check for CAN FD messages */
-                if ( !sCanData.m_bCANFDMsg )
+                if ( !sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD )
                 {
                     if (m_sCurrEntry.m_ucEXTENDED == 0)
                     {
@@ -1006,7 +1006,7 @@ void CBusStatisticCAN::vUpdateBusStatistics(STCANDATA& sCanData)
             if (m_sCurrEntry.m_ucRTR == 0) // Non RTR message
             {
                 /* Check for CAN FD messages */
-                if ( !sCanData.m_bCANFDMsg )
+                if ( !sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD )
                 {
                     if (m_sCurrEntry.m_ucEXTENDED == 0)
                     {

@@ -41,6 +41,9 @@
 #define CHECKEQ(ID, CONDITION) if(ID == (CONDITION)){return;}
 #define CHECKEQRET(ID, CONDITION, RETVAL) if(ID == (CONDITION)){return (RETVAL);}
 
+const UINT g_unMinWindowWidth  = 850;
+const UINT g_unMinWindowHeight = 675;
+
 IMPLEMENT_DYNCREATE(CTSEditorChildFrame, CMDIChildWnd)
 extern CTSEditorChildFrame* g_pomTSEditorChildWindow;
 /******************************************************************************
@@ -55,13 +58,14 @@ Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
 CTSEditorChildFrame::CTSEditorChildFrame()
-{
+{	
     m_odTreeView = NULL;
     m_hParentTreeItem = NULL;
     m_omMenu.LoadMenu(IDR_TSEDITORMENU);
     m_hMenuShared = m_omMenu.GetSafeHmenu();
     m_bQueryConfirm = TRUE;
     m_pomImageList = NULL;
+	m_bInit = TRUE;
     vInitialise();
 
     CWnd* pMain = AfxGetMainWnd();
@@ -144,6 +148,7 @@ BEGIN_MESSAGE_MAP(CTSEditorChildFrame, CMDIChildWnd)
     ON_WM_MDIACTIVATE()
     ON_COMMAND(IDM_HELP_TESTEDITORHELP, OnHelpTesteditorhelp)
     ON_WM_CLOSE()
+	ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 /******************************************************************************
@@ -176,13 +181,14 @@ BOOL CTSEditorChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext
     m_pomImageList->SetBkColor(def_COLOR_TREE_BKG);
     CBitmap omBitmap;
 
-    for (int nID = IDI_ICONTESTCASE; nID <= IDI_ICONREPLAY; nID++)  // load bitmaps for dog, bird and fish
+    for (int nID = IDI_ICONTESTCASE; nID <= IDI_ICONREPLAY; nID++)  // load bitmaps
     {
         HICON hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(nID));
         m_pomImageList->Add(hIcon);
     }
 
     m_odTreeView->GetTreeCtrl().SetImageList(m_pomImageList, TVSIL_NORMAL);
+	m_bInit = FALSE;
 
     return TRUE;
 }
@@ -1759,20 +1765,19 @@ Modifications  :
 void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
 {
     if(pNMLV->iItem == def_TS_ROWNUM_DATABASE)
-    {
+    {		
         CString omstrDatabaseName = m_odPropertyView->m_omPropertyList.GetItemText(def_TS_ROWNUM_DATABASE, 1);
         CTestSetupHeader ouHeaderInfo;
         m_ouTSEntity.GetHeaderData(ouHeaderInfo);
 
         if(ouHeaderInfo.m_omDatabasePath == "")
         {
-            ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
+            ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;			
             if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
-            {
+            {				
                 // Remove the entry from the list box
-                ouHeaderInfo.m_omDatabasePath = "";
-                m_ouTSEntity.SetHeaderData(ouHeaderInfo);
-                vDisplayHeaderInfo(0);
+				CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+				omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, "");
             }
         }
         else
@@ -1792,9 +1797,8 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
                     if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
                     {
                         // Remove the entry from the list box
-                        ouHeaderInfo.m_omDatabasePath = "";
-                        m_ouTSEntity.SetHeaderData(ouHeaderInfo);
-                        vDisplayHeaderInfo(0);
+						CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+						omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, "");
                     }
                     m_ouTSEntity.vDeleteAllSubMessages();
                     OnDisplayReset();
@@ -3559,4 +3563,27 @@ void CTSEditorChildFrame::OnClose()
 
     ShowWindow(SW_HIDE);
     AfxGetMainWnd()->SetMenu(m_pMainMenu);
+
+	/* Make the next available MDI window active */
+	CWnd* pActivateWnd =   GetNextWindow();	
+	pActivateWnd->SetForegroundWindow();
+	pActivateWnd->SetFocus();
+}
+
+/**
+* \brief         Handler for GetMinMaxInfo event where default window size is validated.
+* \param         void
+* \return        S_OK if CAN_ResetHardware call is success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          31.01.2013 Created
+*/
+void CTSEditorChildFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+    if(!m_bInit)
+    {
+        lpMMI->ptMinTrackSize.x = g_unMinWindowWidth;
+        lpMMI->ptMinTrackSize.y = g_unMinWindowHeight;
+    }
+
+    CWnd::OnGetMinMaxInfo(lpMMI);
 }

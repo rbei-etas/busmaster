@@ -38,18 +38,18 @@ const int MAX_STRING = 256;
 /**
  * This structure is used for sending/reciving messages to/from the CAN network
  */
-struct sTCAN_MSG
-{
+typedef struct sTCAN_MSG
+{	
     unsigned int  m_unMsgID;    // 11/29 Bit-
     unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
     unsigned char m_ucRTR;      // true, for remote request
     unsigned char m_ucDataLen;  // Data len (0..8)
     unsigned char m_ucChannel;  // Message Length
-    unsigned char m_ucData[8];  // Databytes 0..7
-    unsigned char* m_ucCANFDData;   // Databytes 0..63
-};
-typedef sTCAN_MSG STCAN_MSG;
-typedef sTCAN_MSG* PSTCAN_MSG;
+    unsigned char m_ucData[64];  // Databytes 0..63
+    //unsigned char* m_aucCANFDData;   // Databytes 0..63
+	bool		m_bCANFD;
+} STCAN_MSG, *PSTCAN_MSG;
+//typedef sTCAN_MSG* PSTCAN_MSG;
 
 
 // This structure holds the error and the channel number
@@ -993,7 +993,6 @@ private:
     static int  m_nMFactor;     // Multiplication factor
 
 public:
-    bool m_bCANFDMsg;
     unsigned char    m_ucDataType;  //Type of the message
     LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
     //QueryPerf..Counter()

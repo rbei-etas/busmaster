@@ -1921,7 +1921,9 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
 	RECT BoundingRect; // Object to store bounding rectangle
 	memcpy(&BoundingRect, &m_axisRect, sizeof(RECT)); // Store the bounding rectangle
 	// Decrease the rectangle by the pen width
-	InflateRect(&BoundingRect, -pElement->m_nLineWidth, -pElement->m_nLineWidth);
+	//SSH + Issue# 410
+	//InflateRect(&BoundingRect, -pElement->m_nLineWidth, -pElement->m_nLineWidth);
+	//SSH -
     //BoundingRect.NormalizeRect ();
 
 	// Lock the plot access		

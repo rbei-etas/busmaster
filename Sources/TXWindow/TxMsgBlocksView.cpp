@@ -249,6 +249,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
     if(m_unMsgBlockCount>0)
     {
         CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData(TX_SEND_MULTI_MSGS, (void**)&m_psMsgBlockList);
+		m_nSelectedMsgBlockIndex = 0;
     }
 
     // Diable controls if there is no message blocks
@@ -324,6 +325,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
                 omStrKeyVal.Format( defSTR_KEY_VAL_FMT_SPECIFIER,
                                     psCurrentMsgBlock->m_ucKeyValue );
                 omStr += omStrKeyVal;
+				 m_omComboAllMsgs.EnableWindow();
             }
             m_omLctrMsgBlockName.SetItemText(i,defSUBITEM_MSGBLOCK_TRG_VAL,
                                              omStr);

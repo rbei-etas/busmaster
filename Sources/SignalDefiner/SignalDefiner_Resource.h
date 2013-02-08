@@ -10,6 +10,7 @@
 #define IDC_COMBO_CYCLES                1003
 #define IDC_EDIT_SIGNAL_SAMPLING_TIME   1004
 #define IDC_DMGRAPHCTRL                 1005
+#define IDCB_AUTOCORRECT				1006
 
 // Next default values for new objects
 //
@@ -17,7 +18,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        101
 #define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

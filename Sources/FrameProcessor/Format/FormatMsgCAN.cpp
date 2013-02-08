@@ -100,7 +100,7 @@ void CFormatMsgCAN::vFormatDataAndId(BYTE bExprnFlag,
             j += 4;
             CurrDataCAN->m_acDataDec[j-1] = L' ';
         }
-        CurrDataCAN->m_acDataDec[j-1] = L'\0';
+        CurrDataCAN->m_acDataDec[j] = L'\0';
     }
 }
 

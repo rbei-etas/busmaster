@@ -117,7 +117,7 @@
 
 #define desSTR_INVALID_MAINFRAME_POINTER    _T("Invalid main frame pointer")
 #define MSG_MEMORY_CONSTRAINT   _T("Insufficient Memory available")
-#define defSTR_GRAPH_WINDOW_NAME            _T("Graph Display")
+#define defSTR_GRAPH_WINDOW_NAME            _T("Signal Graph")
 
 #define defSTR_DB_MSG_NAME      "Database Messages"
 #define defSTR_STATISTICS_NAME  "Statistics"

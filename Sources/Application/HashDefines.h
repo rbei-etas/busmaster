@@ -210,7 +210,8 @@ typedef CList<int,int>      defomIntegerList;
 #define defDATATYPE_RTR         "\tunsigned char m_ucRTR         ;\n"
 #define defDATATYPE_CHANNEL_NUM "\tunsigned char m_ucChannel	;\n"
 #define defDATATYPE_TIMESTAMP   "\n\tUINT m_ulTimeStamp;\n"
-#define defDATATYPE_CANFD       "\n\tUCHAR *m_aucCANFDData;\n"
+#define defDATATYPE_FD_FLAG     "\tbool		     m_bCANFD        ;\n"
+//#define defDATATYPE_CANFD       "\n\tUCHAR *m_aucCANFDData;\n"
 #define defDATATYPE_MSG_DATA    "\t%-12s  %s     ;\n"
 #define defSTART_OF_STRUCT_DEF  "\n\tstruct\n\t{\n"
 #define defEND_OF_STRUCT_DEF    "\n} %s;\n"
@@ -225,7 +226,7 @@ typedef CList<int,int>      defomIntegerList;
 #define defUNION_FORMAT_STRING  "\t    %-12s %-16s : %2d ;\n"
 
 #define defDATA_BYTE_ARRAY_J1939   "\tunsigned char      m_aucData[%d];\n"
-#define defDATA_BYTE_ARRAY         "\tunsigned char      m_aucData[8];\n"
+#define defDATA_BYTE_ARRAY         "\tunsigned char      m_aucData[64];\n"
 #define defDATA_WORD_ARRAY         "\tunsigned short int m_auwData[4];\n"
 #define defDATA_LONG_ARRAY         "\tunsigned long  int m_aulData[2];\n"
 
@@ -1339,7 +1340,7 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_FORMAT_UINT_DATA             "%u"
 #define defSTR_FORMAT_FLOAT_DATA            "%.2f"
 // Graph UI Thread
-#define defSTR_GRAPH_WINDOW_NAME            "Graph Display"
+#define defSTR_GRAPH_WINDOW_NAME            "Signal Graph"
 #define defGRAPH_WINDOW_RATIO_X            0.9
 #define defGRAPH_WINDOW_RATIO_Y            0.7
 

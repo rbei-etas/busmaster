@@ -1166,13 +1166,8 @@ void vCopyOCI_CAN_FD_RX_2_DATA(const OCI_CANFD_RxMessage* SrcMsg, STCANDATA* Des
     {
         Channel = 1;//Take appropriate action
     }
-    if( SrcMsg->size > 0 )
-    {
-        DestMsg->m_uDataInfo.m_sCANMsg.m_ucCANFDData = new unsigned char[SrcMsg->size];
-
-    }
     DestMsg->m_lTickCount.QuadPart = (LONGLONG)(SrcMsg->timeStamp * sg_asChannel[Channel - 1].m_fResolution);
-    memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucCANFDData, SrcMsg->data, SrcMsg->size);
+    memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, SrcMsg->size);
 }
 #endif
 
@@ -1276,7 +1271,7 @@ void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
     {
         //sCanData.m_uDataInfo.m_sCANMsg.m_bCANFDMsg = false;
         vCopyOCI_CAN_RX_2_DATA(&(msg->data.rxMessage), &sCanData);
-        sCanData.m_bCANFDMsg = false;
+		sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
     }
 #ifdef BOA_FD_VERSION
     /*Check if its a CAN FD message */
@@ -1284,7 +1279,7 @@ void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
     {
         //sCanData.m_uDataInfo.m_sCANMsg.m_bCANFDMsg = true;
         vCopyOCI_CAN_FD_RX_2_DATA(&(msg->data.canFDRxMessage), &sCanData);
-        sCanData.m_bCANFDMsg = true;
+		sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = true;
     }
 #endif
 
@@ -1949,6 +1944,26 @@ void vCopy_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg)
     memcpy(DestMsg.data, SrcMsg.m_ucData, sizeof(UCHAR) * 8);
 }
 
+
+#ifdef BOA_FD_VERSION
+BOOL vCopy_2_OCI_CANFD_Data(OCI_CANFD_TxMessage& DestMsg, const STCAN_MSG& SrcMsg)
+{
+    DestMsg.res     = 0;
+    DestMsg.frameID = SrcMsg.m_unMsgID;
+    DestMsg.res     = SrcMsg.m_ucDataLen;
+	if(SrcMsg.m_ucDataLen>8 && (SrcMsg.m_ucDataLen != 12)&& (SrcMsg.m_ucDataLen != 16)&&(SrcMsg.m_ucDataLen != 20)&&(SrcMsg.m_ucDataLen != 32)
+		&& (SrcMsg.m_ucDataLen != 48)&& (SrcMsg.m_ucDataLen != 64))
+	{
+		AfxMessageBox("Unsupported Data Length. It should be 0..8, 12, 16, 20, 24, 32, 48 or 64"); 
+		return FALSE;
+	}
+    DestMsg.flags   = SrcMsg.m_ucEXTENDED ? OCI_CAN_MSG_FLAG_EXTENDED : 0;
+    DestMsg.flags   |= SrcMsg.m_ucRTR ? OCI_CAN_MSG_FLAG_REMOTE_FRAME : 0;
+    memcpy(DestMsg.data, SrcMsg.m_ucData, sizeof(UCHAR) * 8);
+	return TRUE;
+}
+#endif
+
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -2562,8 +2577,28 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             sAckMap.m_Channel  = sCanTxMsg.m_ucChannel;
             sAckMap.m_MsgID    = sOciCanMsg.data.txMessage.frameID;
             vMarkEntryIntoMap(sAckMap);
+#ifdef BOA_FD_VERSION
+			if(sCanTxMsg.m_bCANFD == false)
+			{
             BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
                                      (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
+            }
+            else
+            {
+				OCI_CANFD_TxMessage		sCANFDMsg;
+				if(vCopy_2_OCI_CANFD_Data(sCANFDMsg,sCanTxMsg) == FALSE)
+				{
+					return ERR_WRITE_INVALID_SIZE;
+            }
+				sOciCanMsg.type = OCI_CANFD_TX_MESSAGE;
+				memcpy(&(sOciCanMsg.data.txMessage), &(sOciTxCanMsg), sizeof(OCI_CANFD_TxMessage));
+				BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+					(sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
+			}
+#else	
+			BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+					(sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
+#endif
             if (ErrCode == OCI_SUCCESS)
             {
                 hResult = S_OK;

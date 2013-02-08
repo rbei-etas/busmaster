@@ -277,7 +277,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     CurrDataCAN->m_acMsgDir[1] = _T('x');
 
     TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;  // Assuming default CAN msg
-    if (pMsgCAN->m_bCANFDMsg) // Incase of CANFD msg
+    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD) // Incase of CANFD msg
     {
         CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
     }
@@ -299,7 +299,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("s"));
     }
     /* If it is a CAN FD frame */
-    if ( pMsgCAN->m_bCANFDMsg )
+    if ( pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD )
     {
         strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("-fd"));
     }
@@ -310,18 +310,18 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     }
 
     /* If it is a CAN FD frame */
-    if ( pMsgCAN->m_bCANFDMsg )
-    {
-        _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
-        strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
-        CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
-        CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
-        CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
+    //if ( pMsgCAN->m_bCANFDMsg )
+    //{
+    //    _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
+    //    strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
+    //    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
+    //    CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
+    //    CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
 
-        memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucCANFDData,
-               CurrDataCAN->m_byDataLength);
-    }
-    else
+    //    memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_aucCANFDData,
+    //           CurrDataCAN->m_byDataLength);
+    //}
+    //else
     {
         _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
         strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");

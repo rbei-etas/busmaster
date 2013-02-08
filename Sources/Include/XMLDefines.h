@@ -231,6 +231,7 @@
 #define DEF_FREQUENCY               "Frequency"
 #define DEF_GRANULARITY             "Granularity"
 #define DEF_DEF_SAMPLING_PERIOD     "Default_Sampling_Period"
+#define DEF_SIGDEF_AUTOCORRECT      "SignalDefiner_AutoCorrect"
 
 //Bus Statics
 #define DEF_CAN_BUS_STATS           "CAN_Bus_Statistics"

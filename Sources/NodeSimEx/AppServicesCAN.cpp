@@ -24,24 +24,39 @@
 #include "GlobalObj.h"
 #include "AppServicesCAN.h"
 
-UINT gunSendMsg_CAN(STCAN_MSG* psTxMsg, HMODULE hModule)
+UINT gunSendMsg_CAN(STCAN_TIME_MSG* psTxMsg, HMODULE hModule)
 {
     UINT Return = 1;
+
     VALIDATE_POINTER_RETURN_VAL(psTxMsg, Return);
     CExecuteFunc* pmCEexecuteFunc =
         CExecuteManager::ouGetExecuteManager(CAN).pmGetNodeObject(hModule);
+	STCAN_MSG		sMsg  ; 
+	sMsg.m_unMsgID = psTxMsg->m_unMsgID;
+	sMsg.m_ucRTR = psTxMsg->m_ucRTR;
+	sMsg.m_ucEXTENDED = psTxMsg->m_ucEXTENDED;
+	sMsg.m_ucDataLen = psTxMsg->m_ucDataLen;
+	sMsg.m_ucChannel = psTxMsg->m_ucChannel;
+
+	memset(sMsg.m_ucData, NULL, sMsg.m_ucDataLen);
+	for(int i = 0; i < sMsg.m_ucDataLen; i++)
+	{
+		sMsg.m_ucData[i] = psTxMsg->m_ucData[i];
+	}
+	sMsg.m_bCANFD = psTxMsg->m_bCANFD;
 
     if (pmCEexecuteFunc != NULL)
     {
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(CAN);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetICANDIL()->DILC_SendMsg(sNode.m_dwClientId, *psTxMsg) == S_OK)
+            PSNODEINFO psNode = new sNODEINFO(CAN);
+            pmCEexecuteFunc->vGetNodeInfo(*psNode);
+            if (CGlobalObj::GetICANDIL()->DILC_SendMsg(psNode->m_dwClientId, sMsg) == S_OK)
             {
                 Return = 0;
             }
+			delete psNode;
         }
     }
     return Return;

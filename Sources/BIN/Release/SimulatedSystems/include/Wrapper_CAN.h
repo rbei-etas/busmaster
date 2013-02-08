@@ -43,8 +43,8 @@
   Date Created  :  20/03/2002
   Modified By   :  Ravikumar Patil  on 04.03.03
 *******************************************************************************/
-#ifndef _WRAPPER_H_
-#define _WRAPPER_H_
+#pragma once
+
 #include <windows.h>
 #include <stdio.h>
 #include "Common.h"
@@ -52,20 +52,20 @@
 
 //Structures
 typedef struct sTCAN_MSG
-{
-    unsigned int m_unMsgID;     // 11/29 Bit-
+{	
+    unsigned int  m_unMsgID;     // 11/29 Bit-
     unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
     unsigned char m_ucRTR;      // true, for remote request
     unsigned char m_ucDLC;  // Data len (0..8)
-    unsigned char m_ucChannel;
+    unsigned char m_ucChannel;	
     union
     {
-        unsigned char      m_aucData[8];
+        unsigned char      m_aucData[64];
         unsigned short int m_auwData[4];
         unsigned long  int m_aulData[2];
-    } m_sWhichBit;
-    unsigned char*      m_aucCANFDData;
+    } m_sWhichBit;    
     unsigned long m_ulTimeStamp;
+	bool		  m_bCANFD;
 } STCAN_MSG;
 
 //This structure holds the error and the channel number
@@ -112,66 +112,67 @@ typedef void (*DLLGETFIRSTCANDBNAME)(GETFIRSTCANDBNAME);
 
 // Please insert any new wrapper prototype here
 // Prototypes Start
-GCC_EXTERN UINT GCC_EXPORT SendMsg(STCAN_MSG);
-GCC_EXTERN UINT GCC_EXPORT EnableLogging() ;
-GCC_EXTERN UINT GCC_EXPORT DisableLogging() ;
-GCC_EXTERN UINT GCC_EXPORT WriteToLogFile(char*) ;
-GCC_EXTERN UINT GCC_EXPORT Trace(char*,...) ;
-GCC_EXTERN void GCC_EXPORT ResetController(BOOL) ;
-GCC_EXTERN UINT GCC_EXPORT SetPassiveMode() ;
-GCC_EXTERN UINT GCC_EXPORT SetActiveMode() ;
-GCC_EXTERN UINT GCC_EXPORT GoOnline() ;
-GCC_EXTERN UINT GCC_EXPORT GoOffline() ;
-GCC_EXTERN UINT GCC_EXPORT Connect() ;
-GCC_EXTERN UINT GCC_EXPORT Disconnect() ;
-GCC_EXTERN UINT GCC_EXPORT StartTimer(char*,UINT) ;
-GCC_EXTERN UINT GCC_EXPORT StopTimer(char*) ;
-GCC_EXTERN BOOL GCC_EXPORT SetTimerVal(char*,UINT);
-GCC_EXTERN BOOL GCC_EXPORT EnableMsgHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT EnableErrorHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT EnableKeyHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT bGetProgramVersion(int* pnMajorVersion, int* pnMinorVersion,HMODULE hModuleHandle );
-GCC_EXTERN BOOL GCC_EXPORT EnableDisableMsgTx(BOOL);
-GCC_EXTERN HMODULE GCC_EXPORT GetDllHandle(char*);
-GCC_EXTERN void GCC_EXPORT vSetSendMsgProcAddress(APPFUNCPROC pAppFunc);
-GCC_EXTERN void GCC_EXPORT vSetEnableLoggingProcAddress(LOGENABLE pEnableLoggingFunc);
-GCC_EXTERN void GCC_EXPORT vSetDisableLoggingProcAddress(LOGENABLE pDisableLoggingFunc);
-GCC_EXTERN void GCC_EXPORT vSetWriteToLogFileProcAddress(WRITETOLOGFILE pLogFileFunc);
-GCC_EXTERN void GCC_EXPORT vSetTraceProcAddress(WRITETOTRACE pTraceFunc);
-GCC_EXTERN void GCC_EXPORT vSetResetControllerProcAddress(RESETCONTROLLER pResetFunc);
-GCC_EXTERN void GCC_EXPORT vSetSetActiveModeProcAddress(CONTROLLERMODE pActiveModeFunc);
-GCC_EXTERN void GCC_EXPORT vSetSetPassiveModeProcAddress(CONTROLLERMODE pPassiveModeFunc);
-GCC_EXTERN void GCC_EXPORT vSetGoOfflineProcAddress(GOONLINEOFFLINE pGoOffline);
-GCC_EXTERN void GCC_EXPORT vSetGoOnlineProcAddress(GOONLINEOFFLINE pGoOnline);
-GCC_EXTERN void GCC_EXPORT vSetDisconnectProcAddress(DISCONNECT pDisconnect);
-GCC_EXTERN void GCC_EXPORT vSetConnectProcAddress(DISCONNECT pConnect);
-GCC_EXTERN void GCC_EXPORT vSetStopTimerProcAddress(STARTSTOPTIMER pStopTimer);
-GCC_EXTERN void GCC_EXPORT vSetStartTimerProcAddress(STARTSTOPTIMER pStartTimer);
-GCC_EXTERN void GCC_EXPORT vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal);
-GCC_EXTERN void GCC_EXPORT vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers);
-GCC_EXTERN void GCC_EXPORT vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers);
-GCC_EXTERN void GCC_EXPORT vSetEnableErrorHandlersProcAddress(ENABLEDISABLEERRORHANDLERS pErrorHandlers);
-GCC_EXTERN void GCC_EXPORT vSetEnableDisableMsgTxProcAddress(DLLMSGTXONOFF pMsgTxFunc);
-GCC_EXTERN void GCC_EXPORT vSetGetDllHandleProcAddress(DLLGETNODEHANDLER pGetNodeHandler);
-GCC_EXTERN void GCC_EXPORT vSetKeyPressed(KEYPRESSED pKeyPressed);
-GCC_EXTERN void GCC_EXPORT vSetGetMessageName(GETMESSAGENAME pGetMessageName);
-GCC_EXTERN void GCC_EXPORT vSetTimeNow(TIMENOW pTimeNow);
-GCC_EXTERN void GCC_EXPORT vSetGetFirstCANdbName(GETFIRSTCANDBNAME pGetFirstCANdbName);
-GCC_EXTERN HMODULE GCC_EXPORT vSetGetMsgNameProcAddress(GETMESSAGENAME pGetMessageName);
+GCC_EXTERN /*extern "C"*/void GCC_EXPORT OnMsgID_111(STCAN_MSG RxMsg);
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT SendMsg(STCAN_MSG);
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT EnableLogging() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT DisableLogging() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT WriteToLogFile(char*) ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT Trace(char*,...) ;
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT ResetController(BOOL) ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT SetPassiveMode() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT SetActiveMode() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT GoOnline() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT GoOffline() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT Connect() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT Disconnect() ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT StartTimer(char*,UINT) ;
+GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT StopTimer(char*) ;
+GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT SetTimerVal(char*,UINT);
+GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableMsgHandlers(BOOL);
+GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableErrorHandlers(BOOL);
+GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableKeyHandlers(BOOL);
+GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT bGetProgramVersion(int* pnMajorVersion, int* pnMinorVersion,HMODULE hModuleHandle );
+GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableDisableMsgTx(BOOL);
+GCC_EXTERN /*extern "C"*/ HMODULE GCC_EXPORT GetDllHandle(char*);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSendMsgProcAddress(APPFUNCPROC pAppFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableLoggingProcAddress(LOGENABLE pEnableLoggingFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetDisableLoggingProcAddress(LOGENABLE pDisableLoggingFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetWriteToLogFileProcAddress(WRITETOLOGFILE pLogFileFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetTraceProcAddress(WRITETOTRACE pTraceFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetResetControllerProcAddress(RESETCONTROLLER pResetFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSetActiveModeProcAddress(CONTROLLERMODE pActiveModeFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSetPassiveModeProcAddress(CONTROLLERMODE pPassiveModeFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGoOfflineProcAddress(GOONLINEOFFLINE pGoOffline);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGoOnlineProcAddress(GOONLINEOFFLINE pGoOnline);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetDisconnectProcAddress(DISCONNECT pDisconnect);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetConnectProcAddress(DISCONNECT pConnect);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetStopTimerProcAddress(STARTSTOPTIMER pStopTimer);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetStartTimerProcAddress(STARTSTOPTIMER pStartTimer);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableErrorHandlersProcAddress(ENABLEDISABLEERRORHANDLERS pErrorHandlers);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableDisableMsgTxProcAddress(DLLMSGTXONOFF pMsgTxFunc);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGetDllHandleProcAddress(DLLGETNODEHANDLER pGetNodeHandler);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetKeyPressed(KEYPRESSED pKeyPressed);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGetMessageName(GETMESSAGENAME pGetMessageName);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetTimeNow(TIMENOW pTimeNow);
+GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGetFirstCANdbName(GETFIRSTCANDBNAME pGetFirstCANdbName);
+GCC_EXTERN /*extern "C"*/ HMODULE GCC_EXPORT vSetGetMsgNameProcAddress(GETMESSAGENAME pGetMessageName);
 
 int keypressed_CAPL();
 int timenow_CAPL();
 int getmessagename_CAPL(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
 int getfirstcandbname_CAPL(char* cBuffer, DWORD size);
 
-typedef struct _InternalStructCAN
-{
-    _InternalStructCAN()
-    {
-        Trace("temporary Structure");
-    }
-} InternalStructCAN;
-_InternalStructCAN objcan;
+//typedef struct _InternalStructCAN
+//{
+//    _InternalStructCAN()
+//    {
+//        Trace("temporary Structure");
+//    }
+//} InternalStructCAN;
+//_InternalStructCAN objcan;
+
 
 // Prototypes End
-#endif

@@ -51,14 +51,23 @@ extern CCANMonitorApp theApp;
 extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
 CCANBufFSE g_ouCanBufForCOM;
 CPARAM_THREADPROC g_ouCOMReadThread;
+static HANDLE g_hndPIPE[8]		= {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+static HANDLE g_hndEvent[8]		= {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+static SHORT  g_shUniqueID[8]	= {-1,-1,-1,-1,-1,-1,-1,-1};
+static BYTE   g_bytClientCount	= 0;
+static bool   g_bInitCOMThread = false;
 
-
+/* PIPE related declarations */
+#define BASE_PIPENAME   "\\\\.\\Pipe\\"
+#define PIPE_TIMEOUT    500
+#define PIPE_BUFFER_SIZE 131072
+#define PASSTHRUMSG_SIZE sizeof(CAN_MSGS)
 
 class CApplication : public CCmdTarget
 {
 public:
     CApplication(void);
-    ~CApplication(void);
+    ~CApplication(void);	
 
     virtual void OnFinalRelease()
     {
@@ -142,7 +151,9 @@ public:
         dispidRemoveLoggingBlock      = 53L,
         dispidGetLoggingBlockCount    = 54L,
         dispidClearLoggingBlockList   = 55L,
-        dispidGetLoggingBlock         = 56L
+        dispidGetLoggingBlock         = 56L,
+		dispidRegisterClientForRx     = 57L,
+		dispidUnRegisterClient		  = 58L
     };
 
 
@@ -167,6 +178,10 @@ public:
         {
             if ((BOOL) pFlags->nGetFlagStatus(CONNECTED) != bConnect)
             {
+				if ( bConnect )
+				{
+					vInitializeCOMReadBuffer();
+				}
                 pMainFrm->COM_ConnectTool();
                 hResult = S_OK;
             }
@@ -919,6 +934,155 @@ public:
     }
 
     /******************************************************************************
+        Function Name    :  RegisterClientForRx
+
+        Input(s)         :  USHORT usUniqueID, BSTR* pEventName, BSTR* pPIPEName
+        Output           :
+        Functionality    :  Registers a client for receiving Rx data through PIPE and event
+        Member of        :  CApplication
+        Author(s)        :  ArunKumar Karri
+        Date Created     :  01.24.2013
+        Modifications    :
+    ******************************************************************************/
+    HRESULT RegisterClientForRx(USHORT usUniqueID, BSTR* pEventName, BSTR* pPIPEName)
+    {
+        HRESULT hResult = S_OK;	
+
+		/* if not more than 8 clients connected for Rx */
+		if ( g_bytClientCount < 8 )
+		{
+			for ( int i = 0; i < 8 ; i++ )
+			{
+				if ( g_shUniqueID[i] == -1 )
+				{
+					hResult = hCreatePipeAndEventForClient(usUniqueID, g_hndPIPE[i], g_hndEvent[i], pEventName, pPIPEName);
+					g_shUniqueID[i] = usUniqueID;
+
+					g_bytClientCount++;
+					break;
+				}				
+			}			
+		}
+		else
+		{
+			hResult = S_FALSE;
+		}
+
+        return hResult;
+    }
+
+    /******************************************************************************
+        Function Name    :  UnRegisterClient
+
+        Input(s)         :  USHORT usUniqueID
+        Output           :
+        Functionality    :  Unregisters a client for receiving Rx data
+        Member of        :  CApplication
+        Author(s)        :  ArunKumar Karri
+        Date Created     :  01.25.2013
+        Modifications    :
+    ******************************************************************************/
+    HRESULT UnRegisterClient(USHORT usUniqueID)
+    {
+        HRESULT hResult = S_OK;
+		
+		for ( int i = 0; i < 8 ; i++ )
+		{
+			/* if the client ID exists */
+			if ( usUniqueID == g_shUniqueID[i] )
+			{
+				/* Close all communication objects */
+
+				DisconnectNamedPipe(g_hndPIPE[i]);
+				CloseHandle(g_hndPIPE[i]);
+				g_hndPIPE[i] = NULL;
+
+				CloseHandle(g_hndEvent[i]);
+				g_hndEvent[i] = NULL;
+
+				g_shUniqueID[i] = -1;
+				g_bytClientCount--;
+
+				break;
+			}
+			/* if not found */
+			else if ( i == 7 )
+			{
+				hResult = S_FALSE;
+			}
+		}
+
+
+        return hResult;
+    }
+
+	/* Function to create PIPE handle for a client */
+	HRESULT  hCreatePipeAndEventForClient(USHORT usUniqueID, HANDLE& hndPipe, HANDLE& hndEvent, BSTR* pEventName, BSTR* pPIPEName)
+	{
+		char EventName[32] = {'\0'};
+		sprintf_s(EventName, "%X", usUniqueID);
+		// followed by the pipe name
+		char PipeName[64] = BASE_PIPENAME;
+		strcat_s(PipeName, EventName);
+
+		// Pipe name; convert from ASCII string to BSTR
+		BSTR bstrPipe = A2BSTR(PipeName);
+		*pPIPEName = bstrPipe;
+		// Mutex name; convert from ASCII string to BSTR
+		BSTR bstrEvent = A2BSTR(EventName);
+		*pEventName = bstrEvent;
+
+		bool bProceed = ((bstrPipe != NULL) && (bstrEvent != NULL));
+
+		static HANDLE hEvent = NULL;
+
+		if ( bProceed )
+		{
+			/* Create named pipe for client for writing*/
+			hndPipe = CreateNamedPipe(
+								   PipeName,				 // pipe name
+								   PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,     // read/write access
+								   PIPE_TYPE_BYTE |          // message type pipe
+								   PIPE_READMODE_BYTE |      // message-read mode
+								   PIPE_NOWAIT,              // blocking mode
+								   PIPE_UNLIMITED_INSTANCES, // max. instances
+								   PIPE_BUFFER_SIZE,		 // output buffer size
+								   PASSTHRUMSG_SIZE,		 // input buffer size
+								   PIPE_TIMEOUT,             // client time-out
+								   NULL);                    // no security attribute
+
+			/* Set timeouts */
+			COMMTIMEOUTS CommTimeouts;
+			//BOOL   bStatus;
+
+			CommTimeouts.ReadIntervalTimeout         = 0;
+			CommTimeouts.ReadTotalTimeoutMultiplier  = 0; 
+			CommTimeouts.ReadTotalTimeoutConstant    = 1;
+			CommTimeouts.WriteTotalTimeoutMultiplier = 0;
+			CommTimeouts.WriteTotalTimeoutConstant   = 1000;
+
+			//bStatus = SetCommTimeouts(hndPipe,&CommTimeouts);
+
+			/* Create event */
+			BOOL bRet = ConnectNamedPipe(hndPipe, NULL);
+			/*if ( !bRet )
+				return false;*/
+
+			// Generate the communication event
+			bProceed = bProceed && ((hndEvent= CreateEvent(NULL, FALSE, FALSE, EventName)) != NULL);
+
+			if ( !bProceed )
+				return S_FALSE;
+		}
+		else
+		{
+			return S_OK;
+		}
+
+		return S_OK;
+	}
+
+    /******************************************************************************
         Function Name    :  GetLoggingBlockCount
 
         Input(s)         :  -
@@ -1427,5 +1591,7 @@ public:
     STDMETHOD(GetLoggingBlockCount)(USHORT* BlockCount);
     STDMETHOD(ClearLoggingBlockList)(void);
     STDMETHOD(GetLoggingBlock)(USHORT BlockIndex, SLOGGINGBLOCK_USR* psLoggingBlock);
+	STDMETHOD(RegisterClientForRx)( USHORT usUniqueID, BSTR* pEventName, BSTR* pPIPEName );
+	STDMETHOD(UnRegisterClient)(USHORT usUniqueID);
     END_INTERFACE_PART(LocalClass)
 };

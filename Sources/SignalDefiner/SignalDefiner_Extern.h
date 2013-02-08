@@ -58,6 +58,8 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE HRESULT SignalDefiner_SetSamplingTimePeriod(int nSamplingTime);
     USAGEMODE HRESULT SignalDefiner_GetFrequency(float* pfFrequency);
     USAGEMODE HRESULT SignalDefiner_SetFrequency(float fFrequency);
+	USAGEMODE HRESULT SignalDefiner_GetAutoCorrect(bool* pbChecked);
+	USAGEMODE HRESULT SignalDefiner_SetAutoCorrect(bool bChecked);
 
 
 
