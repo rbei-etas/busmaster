@@ -83,22 +83,7 @@ GETCONVERTER pfGetConverter;
 
 extern "C" __declspec(dllexport) HRESULT GetDBCConverter( CDBCConverterBase*& ouDBCConverter, eBUS_TYPE eBusType )
 {
-    HMODULE hModule  = LoadLibrary("CANdbLibDriver.dll");
-    if( NULL != hModule )
-    {
-        pfGetConverter = (GETCONVERTER)GetProcAddress(hModule, "GetConverter");
-        if(pfGetConverter == NULL)
-        {
-            ouDBCConverter = new CDBFConverter(eBusType);
-        }
-        else
-        {
-            pfGetConverter(ouDBCConverter, eBusType);
-        }
-    }
-    else
-    {
-        ouDBCConverter = new CDBFConverter(eBusType);
-    }
+    ouDBCConverter = new CDBFConverter(eBusType);
+    
     return S_OK;
 }
