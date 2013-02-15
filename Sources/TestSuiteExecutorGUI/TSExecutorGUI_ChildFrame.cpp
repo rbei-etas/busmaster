@@ -210,6 +210,7 @@ BOOL CTSExecutorChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateConte
         m_pomImageList->Add(hIcon);
     }
 
+
     m_odTreeView->GetTreeCtrl().SetImageList(m_pomImageList, TVSIL_NORMAL);
     return TRUE;
 }
@@ -242,6 +243,9 @@ int CTSExecutorChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_ouExecutionThread.m_pBuffer = this;
     m_ouExecutionThread.m_hActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     m_ouExecutionThread.bStartThread(ExecuteThread);
+    //SSH + issue#438
+    SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_BUSMASTER), FALSE);
+    //SSH -
     return 0;
 }
 

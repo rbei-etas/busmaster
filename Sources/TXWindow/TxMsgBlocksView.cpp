@@ -74,7 +74,7 @@ CTxMsgBlocksView::CTxMsgBlocksView()
     m_nRBTNTriggerType = 0;
     m_bModified = FALSE;
     m_bNewBlock = false;
-	m_bListItemChange = false;
+    m_bListItemChange = false;
 }
 
 /*******************************************************************************
@@ -249,7 +249,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
     if(m_unMsgBlockCount>0)
     {
         CTxWndDataStore::ouGetTxWndDataStoreObj().bGetTxData(TX_SEND_MULTI_MSGS, (void**)&m_psMsgBlockList);
-		m_nSelectedMsgBlockIndex = 0;
+        m_nSelectedMsgBlockIndex = 0;
     }
 
     // Diable controls if there is no message blocks
@@ -325,7 +325,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
                 omStrKeyVal.Format( defSTR_KEY_VAL_FMT_SPECIFIER,
                                     psCurrentMsgBlock->m_ucKeyValue );
                 omStr += omStrKeyVal;
-				 m_omComboAllMsgs.EnableWindow();
+                m_omComboAllMsgs.EnableWindow();
             }
             m_omLctrMsgBlockName.SetItemText(i,defSUBITEM_MSGBLOCK_TRG_VAL,
                                              omStr);
@@ -384,7 +384,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
     }
     //(GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->EnableWindow(FALSE);
     //******************************************************************************
-	  // Set Init flag to false
+    // Set Init flag to false
     m_bInitDlg = FALSE;
 }
 
@@ -819,7 +819,7 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
             {
                 //update the global list for storing the changed data
                 UpdateList(pNMListView);                //AUC
-				m_bListItemChange = true;
+                m_bListItemChange = true;
                 m_nSelectedMsgBlockIndex = pNMListView->iItem;
                 psMsgBlock = psGetMsgBlockPointer(pNMListView->iItem,
                                                   m_psMsgBlockList);
@@ -1273,29 +1273,29 @@ void CTxMsgBlocksView::OnChangeEditMsgBlockName()
                                      m_omStrMsgBlockName);
     CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
                                         pomGetFunctionsViewPointer();
-	if(m_bListItemChange == FALSE && m_bInitDlg == FALSE)			//if the function is not called from list item change only then save the changes
-	{
-    if( pomFunctionView != NULL )
+    if(m_bListItemChange == FALSE && m_bInitDlg == FALSE)           //if the function is not called from list item change only then save the changes
     {
-        if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+        if( pomFunctionView != NULL )
         {
-            pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+            if(pomFunctionView->m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED)
+            {
+                pomFunctionView->m_omButtonApply.EnableWindow(TRUE);
+            }
         }
-		}
-		PSMSGBLOCKLIST psMsgCurrentBlock =
-			psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
-		if(psMsgCurrentBlock != NULL)
-		{
-			if(strcmp(psMsgCurrentBlock->m_acStrBlockName,m_omStrMsgBlockName.GetBuffer(0)) != 0)
-			{
-				psMsgCurrentBlock->m_bModified = true;
-				strcpy(psMsgCurrentBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(0));
-			}
-		}
-	}
-	else
-	{
-		m_bListItemChange = false;		//reset the flag to false 
+        PSMSGBLOCKLIST psMsgCurrentBlock =
+            psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+        if(psMsgCurrentBlock != NULL)
+        {
+            if(strcmp(psMsgCurrentBlock->m_acStrBlockName,m_omStrMsgBlockName.GetBuffer(0)) != 0)
+            {
+                psMsgCurrentBlock->m_bModified = true;
+                strcpy(psMsgCurrentBlock->m_acStrBlockName, m_omStrMsgBlockName.GetBuffer(0));
+            }
+        }
+    }
+    else
+    {
+        m_bListItemChange = false;      //reset the flag to false
     }
 }
 
@@ -1584,6 +1584,14 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
     // If it is valid
     PSMSGBLOCKLIST psMsgCurrentBlock =
         psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
+    if(unTimeInterVal > defMAX_TIME_DELAY)
+    {
+        AfxMessageBox("Time Interval cannot be greater than 60000 milliseconds");
+        m_omStrTimeIntervalVal = m_omStrTimeIntervalVal.Left(m_omStrTimeIntervalVal.GetLength()-1);
+        m_omEditTrgTimeIntervalVal.SetWindowText(m_omStrTimeIntervalVal);
+        m_omEditTrgTimeIntervalVal.SetSel( 1,m_omStrTimeIntervalVal.GetLength() );
+        return;
+    }
     if(unTimeInterVal > 0 )
     {
         // Update the time valie
@@ -1665,16 +1673,15 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
     {
         // Restore the old value
         m_omEditTrgTimeIntervalVal.SetWindowText(m_omStrTimeIntervalVal);
-        m_omEditTrgTimeIntervalVal.SetSel( 0,
-                                           m_omStrTimeIntervalVal.GetLength() );
+        m_omEditTrgTimeIntervalVal.SetSel( 0,m_omStrTimeIntervalVal.GetLength() );
     }
     if(psMsgCurrentBlock)
     {
-		UINT unCurrTimeInterval = atoi(m_omStrTimeIntervalVal.GetBuffer(0));
-		if(psMsgCurrentBlock->m_unTimeInterval != unCurrTimeInterval)
-		{
-        psMsgCurrentBlock->m_bModified = true;
-		}
+        UINT unCurrTimeInterval = atoi(m_omStrTimeIntervalVal.GetBuffer(0));
+        if(psMsgCurrentBlock->m_unTimeInterval != unCurrTimeInterval)
+        {
+            psMsgCurrentBlock->m_bModified = true;
+        }
     }
     int nCurrSel = m_omLctrMsgBlockName.GetSelectionMark();
     //if(!m_bNewBlock && !CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))        //call update only for editing and not while adding a new block
@@ -2563,6 +2570,15 @@ void CTxMsgBlocksView::OnEnUpdateEditBlockTrgTimerVal()
 
     CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
                                         pomGetFunctionsViewPointer();
+    if(unTimerVal > defMAX_TIME_DELAY)
+    {
+        AfxMessageBox("Block interval cannot be more than 60000 milliseconds");
+        CString omstrTime;
+        omstrTime.Format("%d", CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks/10);
+        SetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, omstrTime);
+        ((CEdit*)GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->SetSel(1,omstrTime.GetLength());
+        return;
+    }
     if(unTimerVal <=0)
     {
         unTimerVal = atoi(m_omStrTimeIntervalVal.GetBuffer(0));

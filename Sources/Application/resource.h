@@ -173,6 +173,7 @@
 #define IDI_ICON_LOG_ONLIGHT            318
 #define IDI_ICON_LOG_ON                 319
 #define IDI_ICON_LOG_OFF                320
+#define IDI_ICON_NETWORKSTAT            3007
 #define IDC_EDIT_SIGNALNAME             1000
 #define IDC_EDIT_BAUD_RATE              1000
 #define IDC_EDIT_SGNAME                 1000

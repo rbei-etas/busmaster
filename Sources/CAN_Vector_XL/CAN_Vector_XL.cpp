@@ -776,7 +776,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
 HRESULT CDIL_CAN_VectorXL::CAN_PerformInitOperations(void)
 {
     HRESULT hResult = S_FALSE;
-	sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
+    sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
 
     /* Register Monitor client */
     DWORD dwClientID = 0;
@@ -995,7 +995,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
                     odChannel.m_sFilter[i].m_ucACC_Mask3 = 0;
                 }
                 else if( pControllerDetails[ nIndex ].m_enmHWFilterType[i] == HW_FILTER_REJECT_ALL )
-                {					
+                {
                     odChannel.m_sFilter[i].m_ucACC_Code0 = 0xFF;
                     odChannel.m_sFilter[i].m_ucACC_Code1 = 0xFF;
                     odChannel.m_sFilter[i].m_ucACC_Code2 = 0xFF;
@@ -1006,17 +1006,17 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
                     odChannel.m_sFilter[i].m_ucACC_Mask2 = 0xFF;
                     odChannel.m_sFilter[i].m_ucACC_Mask3 = 0xFF;
 
-					/* For standard message type */
-					if ( i == 0 )
-					{
-						odChannel.m_sFilter[i].m_ucACC_Code1 = 0x0F;
-						odChannel.m_sFilter[i].m_ucACC_Code2 = 0;
-						odChannel.m_sFilter[i].m_ucACC_Code3 = 0;
+                    /* For standard message type */
+                    if ( i == 0 )
+                    {
+                        odChannel.m_sFilter[i].m_ucACC_Code1 = 0x0F;
+                        odChannel.m_sFilter[i].m_ucACC_Code2 = 0;
+                        odChannel.m_sFilter[i].m_ucACC_Code3 = 0;
 
-						odChannel.m_sFilter[i].m_ucACC_Mask1 = 0x0F;
-						odChannel.m_sFilter[i].m_ucACC_Mask2 = 0;
-						odChannel.m_sFilter[i].m_ucACC_Mask3 = 0;
-					}
+                        odChannel.m_sFilter[i].m_ucACC_Mask1 = 0x0F;
+                        odChannel.m_sFilter[i].m_ucACC_Mask2 = 0;
+                        odChannel.m_sFilter[i].m_ucACC_Mask3 = 0;
+                    }
                 }
                 else
                 {
@@ -1122,11 +1122,11 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
     for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
     {
         //pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
-		static char chName[MAX_PATH];
-		_stprintf(chName , _T("Vector - %s, Serial Number- %d"),
-				  sg_aodChannels[i].m_pXLChannelInfo->name,				  
-				  sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
-		pControllerDetails[i].m_omHardwareDesc = chName;
+        static char chName[MAX_PATH];
+        _stprintf(chName , _T("Vector - %s, Serial Number- %d"),
+                  sg_aodChannels[i].m_pXLChannelInfo->name,
+                  sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
+        pControllerDetails[i].m_omHardwareDesc = chName;
 
     }
     if (sg_ucNoOfHardware > 0)
@@ -1157,7 +1157,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
 
 
                 Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-                Result = S_OK;								
+                Result = S_OK;
             }
             break;
             case INFO_RETAINED_CONFDATA:
@@ -1165,9 +1165,9 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
                 Result = INFO_INITDAT_RETAINED;
             }
             break;
-			// Not to be addressed at present
-            case ERR_CONFIRMED_CONFIGURED: 
-			// Not to be addressed at present
+            // Not to be addressed at present
+            case ERR_CONFIRMED_CONFIGURED:
+                // Not to be addressed at present
             case INFO_CONFIRMED_CONFIGURED:
             default:
             {
@@ -1192,36 +1192,36 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
 * \date          12.10.2011 Created
 */
 static int nSetBaudRate()
-{    
-	XLstatus xlStatus;
-	XLaccess xlChanMaskTx = 0;
-	BYTE BTR0 = 0xC0, BTR1 = 0x3A;
+{
+    XLstatus xlStatus;
+    XLaccess xlChanMaskTx = 0;
+    BYTE BTR0 = 0xC0, BTR1 = 0x3A;
     /* Set baud rate to all available hardware */
     for ( UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
     {
-		xlStatus = 0;
+        xlStatus = 0;
         // Get Current channel reference
-        CChannel& odChannel = sg_aodChannels[ unIndex ];   
-				
+        CChannel& odChannel = sg_aodChannels[ unIndex ];
+
         BTR0 = odChannel.m_usBaudRate >> 8;
         BTR1 = odChannel.m_usBaudRate & 0xFF;
 
         //Get channel mask
-	    xlChanMaskTx = sg_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
+        xlChanMaskTx = sg_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
         // Set the baud rate
-		xlStatus = xlCanSetChannelParamsC200(g_xlPortHandle[0], xlChanMaskTx, BTR0, BTR1);
+        xlStatus = xlCanSetChannelParamsC200(g_xlPortHandle[0], xlChanMaskTx, BTR0, BTR1);
 
-		if( xlStatus != XL_SUCCESS )
-		{
-			xlStatus = xlCanSetChannelBitrate(g_xlPortHandle[0], xlChanMaskTx, odChannel.m_unBaudrate);		
+        if( xlStatus != XL_SUCCESS )
+        {
+            xlStatus = xlCanSetChannelBitrate(g_xlPortHandle[0], xlChanMaskTx, odChannel.m_unBaudrate);
 
-			// Check for failure
-			if( xlStatus != XL_SUCCESS )
-			{
-				// break the loop
-				unIndex = sg_nNoOfChannels;
-			}
-		}
+            // Check for failure
+            if( xlStatus != XL_SUCCESS )
+            {
+                // break the loop
+                unIndex = sg_nNoOfChannels;
+            }
+        }
     }
     return xlStatus;
 }
@@ -1234,11 +1234,11 @@ static int nSetBaudRate()
 * \date          12.10.2011 Created
 */
 static int nSetFilter()
-{    
+{
     XLstatus xlStatus = XL_SUCCESS;
-	XLaccess xlChanMaskTx = 0;
+    XLaccess xlChanMaskTx = 0;
 
-	// To set no. shifts
+    // To set no. shifts
     int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
     // Set the client filter
     for ( UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
@@ -1261,15 +1261,15 @@ static int nSetFilter()
                      ( sFilter.m_ucACC_Mask1 << nShift ) |
                      sFilter.m_ucACC_Mask0;
 
-			//Get channel mask
-			xlChanMaskTx = sg_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
+            //Get channel mask
+            xlChanMaskTx = sg_aodChannels[unIndex].m_pXLChannelInfo->channelMask;
 
             // Set the acceptance filter for all the client handles
-			for (UINT unClientID = 0; unClientID < sg_unClientCnt; unClientID++)
-			{
-				// Id Range 1 = XL_CAN_STD, 2 = XL_CAN_EXT				
-				xlStatus = xlCanSetChannelAcceptance(g_xlPortHandle[unClientID], xlChanMaskTx, ulCode, ulMask, i+1);	
-			}
+            for (UINT unClientID = 0; unClientID < sg_unClientCnt; unClientID++)
+            {
+                // Id Range 1 = XL_CAN_STD, 2 = XL_CAN_EXT
+                xlStatus = xlCanSetChannelAcceptance(g_xlPortHandle[unClientID], xlChanMaskTx, ulCode, ulMask, i+1);
+            }
         }
         if( xlStatus != XL_SUCCESS )
         {
@@ -1333,7 +1333,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, in
     {
         sg_ControllerDetails[i] = ConfigFile[i];
     }
-	bLoadDataFromContr(sg_ControllerDetails);
+    bLoadDataFromContr(sg_ControllerDetails);
 
     return S_OK;
 }
@@ -1714,9 +1714,9 @@ static int nDisconnectFromDriver()
         {
             xlStatus = xlDeactivateChannel( g_xlPortHandle[i], g_xlChannelMask );
             xlStatus = xlClosePort(g_xlPortHandle[i]);
-			//SSH + fix for Issue# 393 - cannot disconnect bus master in some scenarios.
+            //SSH + fix for Issue# 393 - cannot disconnect bus master in some scenarios.
             //g_xlPortHandle[i] = XL_INVALID_PORTHANDLE;
-			//SSH -
+            //SSH -
         }
         else
         {
@@ -1759,8 +1759,8 @@ static int nConnect(BOOL bConnect)
 
     if (!sg_bIsConnected && bConnect) // Disconnected and to be connected
     {
-		/* Set the permission mask for all channel access */
-		g_xlPermissionMask = g_xlChannelMask;
+        /* Set the permission mask for all channel access */
+        g_xlPermissionMask = g_xlChannelMask;
 
         for (UINT i = 0; i < sg_unClientCnt; i++)
         {
@@ -1802,7 +1802,7 @@ static int nConnect(BOOL bConnect)
             if(xlStatus == XL_SUCCESS)
             {
                 nReturn = defERR_OK;
-				nSetApplyConfiguration();
+                nSetApplyConfiguration();
             }
         }
     }

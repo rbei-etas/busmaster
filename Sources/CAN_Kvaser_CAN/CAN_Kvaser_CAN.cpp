@@ -612,7 +612,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*un
 HRESULT CDIL_CAN_Kvaser::CAN_PerformInitOperations(void)
 {
     HRESULT hResult = S_FALSE;
-	sg_ReadMsg.m_bCANFD = false;
+    sg_ReadMsg.m_bCANFD = false;
 
     /* Register Monitor client */
     DWORD dwClientID = 0;

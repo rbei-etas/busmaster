@@ -21,7 +21,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -71,21 +70,16 @@ STYLE DS_SETFONT | WS_CHILD
 EXSTYLE WS_EX_CLIENTEDGE
 FONT 9, "Courier New", 400, 0, 0x0
 BEGIN
-    CONTROL         "",IDC_PROPERTYLIST,"SysListView32",LVS_REPORT | 
-                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,10,9,298,133,
-                    WS_EX_TRANSPARENT | WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_PROPERTYLIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,10,9,298,133,WS_EX_TRANSPARENT | WS_EX_CLIENTEDGE
     PUSHBUTTON      "Confirm",IDC_CONFIRM,201,151,50,14
     PUSHBUTTON      "Cancel",IDC_CANCEL,258,151,50,14
-    EDITTEXT        IDC_EDITHELP,16,188,283,32,ES_MULTILINE | ES_AUTOVSCROLL | 
-                    ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | 
-                    WS_VSCROLL | WS_HSCROLL,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_EDITHELP,16,188,283,32,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | WS_VSCROLL | WS_HSCROLL,WS_EX_TRANSPARENT
     GROUPBOX        "Details:",IDC_STATICDETAILS,4,2,311,169
     GROUPBOX        "Help Text",IDC_STATICHELP,4,172,311,59
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 197, 230
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW
 CAPTION "Settings"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -97,8 +91,7 @@ BEGIN
     LTEXT           "Text Color",IDC_STATIC,34,116,71,8
     PUSHBUTTON      "",IDC_BTN_TXT,114,113,50,14
     GROUPBOX        "Other Settings",IDC_STATIC,13,150,171,40
-    CONTROL         "Save Changes Automatically",IDC_AUTOSAVE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,45,168,107,10
+    CONTROL         "Save Changes Automatically",IDC_AUTOSAVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,45,168,107,10
     PUSHBUTTON      "OK",IDOK,15,202,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,73,202,50,14
     LTEXT           "1st Row Color",IDC_STATIC,34,26,71,8
@@ -116,6 +109,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
+IDI_ICON_BUSMASTER      ICON                    "Res\\BUSMASTER.ico"
 IDI_ICONTESTCASE        ICON                    "res\\TestCase.ico"
 IDI_ICONMSGVERIFY       ICON                    "res\\VerifyMessage.ico"
 IDI_ICONMSGSEND         ICON                    "res\\SendMessage.ico"
@@ -160,13 +154,12 @@ BEGIN
     POPUP "&Display"
     BEGIN
         MENUITEM "&Reset",                      IDM_DISPLAY_RESET
-        MENUITEM "Se&ttings",                    ID_DISPLAY_SETTINGS
+        MENUITEM "Se&ttings",                   ID_DISPLAY_SETTINGS
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "Test Setup Editor &Help\tF1",  IDM_HELP_TESTEDITORHELP
-        MENUITEM "About Test Setup Ed&itor",     IDM_HELP_ABOUTTESTSETUPEDITOR
-
+        MENUITEM "Test Setup Editor &Help\tF1", IDM_HELP_TESTEDITORHELP
+        MENUITEM "About Test Setup Ed&itor",    IDM_HELP_ABOUTTESTSETUPEDITOR
     END
 END
 
@@ -180,9 +173,28 @@ IDR_CTRL_SAVE ACCELERATORS
 BEGIN
     "C",            IDM_EDIT_COPY,          VIRTKEY, CONTROL, NOINVERT
     "V",            IDM_EDIT_PASTE,         VIRTKEY, CONTROL, NOINVERT
-    "I",            IDM_HELP_ABOUTTESTSETUPEDITOR, VIRTKEY, CONTROL, 
-                                                    NOINVERT
+    "I",            IDM_HELP_ABOUTTESTSETUPEDITOR, VIRTKEY, CONTROL, NOINVERT
 END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.\0"
+END
+
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\0"
+END
+
+#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -222,16 +234,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-#define _AFX_NO_SPLITTER_RESOURCES
-#define _AFX_NO_OLE_RESOURCES
-#define _AFX_NO_TRACKER_RESOURCES
-#define _AFX_NO_PROPERTY_RESOURCES
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-LANGUAGE 9, 1
-#pragma code_page(1252)
-#include "afxres.rc"     // Standard components
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

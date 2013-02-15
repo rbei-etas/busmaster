@@ -487,7 +487,7 @@ public:
     // To update graph data with statistics parameters
     void vUpdateGraphStatsData();
     //To send configuration change command to all signal graph windows
-    void vPostConfigChangeCmdToSigGrphWnds();
+    void vPostConfigChangeCmdToSigGrphWnds(BOOL bHideGraphWnd = TRUE);
 
     void vClearSignalInfoList(void);
     void vUpdateChannelInfo(void);

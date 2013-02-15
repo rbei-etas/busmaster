@@ -297,8 +297,8 @@ BOOL CChangeRegisters::OnInitDialog()
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED );
 
-	// return TRUE unless you set the focus to a control
-    return TRUE;  
+    // return TRUE unless you set the focus to a control
+    return TRUE;
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 /******************************************************************************/
@@ -1348,7 +1348,7 @@ void CChangeRegisters::vValidateBaudRate()
         // set the baudrate
         m_omEditBaudRate.SetWindowText(omStrBaudRate);
     }
-	// End if
+    // End if
     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
     m_dEditBaudRate     = dBaudRate;
     m_omStrEditBaudRate = omStrBaudRate;
@@ -1762,7 +1762,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     if (pWnd != NULL)
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
-    }    
+    }
 
     m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
     m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0.c_str();
@@ -1932,7 +1932,7 @@ BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
     CString omStrBtr0(_T(""));
     CString omStrBtr1(_T(""));
     CString omStrBaudRate(_T(""));
-	USHORT m_usBTR0BTR1 = 0xC03A;
+    USHORT m_usBTR0BTR1 = 0xC03A;
     UINT unIndex                    = 0;
 
     UINT unClock                    = 0;

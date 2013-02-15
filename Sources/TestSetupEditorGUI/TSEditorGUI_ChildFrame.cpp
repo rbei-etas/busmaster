@@ -34,6 +34,7 @@
 //#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
+
 #define MSG_GET_CONFIGPATH  10000
 #define def_STR_SIGNAL_FORMAT   "%-50s %8d %8d %8d\r\n"
 #define def_STR_SIGNAL_HEADING  "%-50s %8s %8s %8s\r\n\r\n"
@@ -58,14 +59,15 @@ Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
 CTSEditorChildFrame::CTSEditorChildFrame()
-{	
+{
+
     m_odTreeView = NULL;
     m_hParentTreeItem = NULL;
     m_omMenu.LoadMenu(IDR_TSEDITORMENU);
     m_hMenuShared = m_omMenu.GetSafeHmenu();
     m_bQueryConfirm = TRUE;
     m_pomImageList = NULL;
-	m_bInit = TRUE;
+    m_bInit = TRUE;
     vInitialise();
 
     CWnd* pMain = AfxGetMainWnd();
@@ -148,7 +150,7 @@ BEGIN_MESSAGE_MAP(CTSEditorChildFrame, CMDIChildWnd)
     ON_WM_MDIACTIVATE()
     ON_COMMAND(IDM_HELP_TESTEDITORHELP, OnHelpTesteditorhelp)
     ON_WM_CLOSE()
-	ON_WM_GETMINMAXINFO()
+    ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 /******************************************************************************
@@ -188,10 +190,14 @@ BOOL CTSEditorChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext
     }
 
     m_odTreeView->GetTreeCtrl().SetImageList(m_pomImageList, TVSIL_NORMAL);
-	m_bInit = FALSE;
+    m_bInit = FALSE;
 
+    //SSH + issue #438
+    SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_BUSMASTER), FALSE);
+    //SSH -
     return TRUE;
 }
+
 
 /******************************************************************************
 Function Name  :  vLoadTestSetupFile
@@ -1765,19 +1771,19 @@ Modifications  :
 void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
 {
     if(pNMLV->iItem == def_TS_ROWNUM_DATABASE)
-    {		
+    {
         CString omstrDatabaseName = m_odPropertyView->m_omPropertyList.GetItemText(def_TS_ROWNUM_DATABASE, 1);
         CTestSetupHeader ouHeaderInfo;
         m_ouTSEntity.GetHeaderData(ouHeaderInfo);
 
         if(ouHeaderInfo.m_omDatabasePath == "")
         {
-            ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;			
+            ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
             if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
-            {				
+            {
                 // Remove the entry from the list box
-				CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
-				omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, "");
+                CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+                omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, "");
             }
         }
         else
@@ -1797,8 +1803,8 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
                     if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
                     {
                         // Remove the entry from the list box
-						CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
-						omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, "");
+                        CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
+                        omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, "");
                     }
                     m_ouTSEntity.vDeleteAllSubMessages();
                     OnDisplayReset();
@@ -3564,10 +3570,10 @@ void CTSEditorChildFrame::OnClose()
     ShowWindow(SW_HIDE);
     AfxGetMainWnd()->SetMenu(m_pMainMenu);
 
-	/* Make the next available MDI window active */
-	CWnd* pActivateWnd =   GetNextWindow();	
-	pActivateWnd->SetForegroundWindow();
-	pActivateWnd->SetFocus();
+    /* Make the next available MDI window active */
+    CWnd* pActivateWnd =   GetNextWindow();
+    pActivateWnd->SetForegroundWindow();
+    pActivateWnd->SetFocus();
 }
 
 /**

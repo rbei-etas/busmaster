@@ -986,7 +986,7 @@ int keypressed_CAPL()
     {
         sg_KeyPressed();
     }
-	return 0;
+    return 0;
 }
 
 /******************************************************************************
@@ -1011,7 +1011,7 @@ int getmessagename_CAPL(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
     {
         sg_GetMessageName(dID, dContext, pBuffer,dSize);
     }
-	return 0;
+    return 0;
 }
 
 /******************************************************************************
@@ -1036,7 +1036,7 @@ int timenow_CAPL()
     {
         sg_TimeNow();
     }
-	return 0;
+    return 0;
 }
 
 /******************************************************************************
@@ -1062,5 +1062,5 @@ int getfirstcandbname_CAPL(char* cBuffer, DWORD size)
     {
         gdGetFirstCANdbName(cBuffer, size);
     }
-	return 0;
+    return 0;
 }

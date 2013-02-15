@@ -150,6 +150,13 @@ CBusStatisticCAN::CBusStatisticCAN(void)
     memcpy(&m_unBitsFDMsgCRC15[1], unBitsExtFDMsgCRC15, 9*sizeof(UINT));
     memcpy(&m_unBitsFDMsgCRC17[1], unBitsExtFDMsgCRC17, 2*sizeof(UINT));
     memcpy(&m_unBitsFDMsgCRC21[1], unBitsExtFDMsgCRC21, 5*sizeof(UINT));
+
+    m_nFactorSTDFrame = 0;
+    m_nFactorEXTDFrame = 0;
+    m_nFactorSTDRTRFrame = 0;
+    m_nFactorEXTDRTRFrame = 0;
+    m_nFactorErrorFrame = 0;
+    m_dDiffTime = 0;
 }
 
 /**

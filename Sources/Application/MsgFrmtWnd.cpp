@@ -194,6 +194,14 @@ CMsgFrmtWnd::CMsgFrmtWnd(): m_sCurrEntry(sDummy0002), m_ouMsgAttr(CMessageAttrib
 
 CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgAttr(CMessageAttrib::ouGetHandle(eBusType))
 {
+    //changes done for CCP checker AUC
+    m_ppouIJ1939DIL  = NULL;
+    m_bMsgIntrprtnDlgShown = NULL;
+    m_dwClientID = 0;
+    m_nColCount = 0;
+
+    //------------------------------------
+
     m_pouMsgContainerIntrf = NULL;
     m_bInterPretMsg = FALSE;
     m_hMainWnd =NULL;
@@ -238,6 +246,8 @@ CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgA
     m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
 
     m_nPrevToolCol = m_nPrevToolRow = -1;
+
+
 }
 CMsgFrmtWnd::~CMsgFrmtWnd()
 {

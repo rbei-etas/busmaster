@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DMGraphJPN", "JPN\DMGraphJP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FormatConverterJPN", "JPN\FormatConverterJPN\FormatConverterJPN.vcproj", "{707F3884-BD64-448A-ACBF-8B25553527C4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_PEAK_USBJPN", "JPN\CAN_PEAK_USBJPN\CAN_PEAK_USBJPN.vcproj", "{FF9998D3-1602-4555-90CE-625DC1494CAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -121,6 +123,10 @@ Global
 		{707F3884-BD64-448A-ACBF-8B25553527C4}.Debug|Win32.Build.0 = Debug|Win32
 		{707F3884-BD64-448A-ACBF-8B25553527C4}.Release|Win32.ActiveCfg = Release|Win32
 		{707F3884-BD64-448A-ACBF-8B25553527C4}.Release|Win32.Build.0 = Release|Win32
+		{FF9998D3-1602-4555-90CE-625DC1494CAF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FF9998D3-1602-4555-90CE-625DC1494CAF}.Debug|Win32.Build.0 = Debug|Win32
+		{FF9998D3-1602-4555-90CE-625DC1494CAF}.Release|Win32.ActiveCfg = Release|Win32
+		{FF9998D3-1602-4555-90CE-625DC1494CAF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

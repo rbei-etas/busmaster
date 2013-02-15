@@ -293,14 +293,14 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 
 typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
 {
-	UINT  m_unMsgID;     // 11/29 Bit-
+    UINT  m_unMsgID;     // 11/29 Bit-
     UCHAR m_ucEXTENDED; // true, for (29 Bit) Frame
     UCHAR m_ucRTR;      // true, for remote request
     UCHAR m_ucDataLen;  // Data len (0..64)
     UCHAR m_ucChannel;
-    UCHAR m_ucData[64];  // Databytes 0..63	
+    UCHAR m_ucData[64];  // Databytes 0..63
     ULONG m_ulTimeStamp;
-	bool  m_bCANFD;		// bool indicates CAN FD message or not
+    bool  m_bCANFD;     // bool indicates CAN FD message or not
 };
 typedef sTCAN_TIME_MSG STCAN_TIME_MSG;
 typedef sTCAN_TIME_MSG* PSTCAN_TIME_MSG;

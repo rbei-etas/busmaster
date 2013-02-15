@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by SignalWatch.rc
 //
+#define IDI_ICON_SIGNALWATCH            103
 #define IDM_MENU_SIGNAL_WATCH           130
 #define IDD_DLG_SIGNAL_WATCH            145
 #define IDD_DLG_ADD_DEL_SIGNALS         201

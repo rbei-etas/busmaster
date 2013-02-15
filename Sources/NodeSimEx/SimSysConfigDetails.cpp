@@ -440,13 +440,13 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo .m_omStrFileName;
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo .m_omStrNodeName;
 
-						/* Get base path based on simulation file location */
-						string omStrBasePath;					
-						CUtilFunctions::nGetBaseFolder(psSimsysInfo->m_omStrSimSysName.GetBuffer(MAX_PATH), omStrBasePath);
+                        /* Get base path based on simulation file location */
+                        string omStrBasePath;
+                        CUtilFunctions::nGetBaseFolder(psSimsysInfo->m_omStrSimSysName.GetBuffer(MAX_PATH), omStrBasePath);
 
-						/* Get absolute paths */
-						vGetAbsolutePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrDllName);
-						vGetAbsolutePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrFileName);
+                        /* Get absolute paths */
+                        vGetAbsolutePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrDllName);
+                        vGetAbsolutePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrFileName);
 
                         if (m_fSimSysVersion == static_cast<FLOAT>(defSIMSYSVERSION_ALL_BUS))
                         {
@@ -488,15 +488,15 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
                 psCurrentNodeList  = psSimsysInfo->m_psNodesList;
                 while(psCurrentNodeList != NULL)
                 {
-					/* Get base path based on simulation file location */
-					string omStrBasePath;					
-					CUtilFunctions::nGetBaseFolder(psSimsysInfo->m_omStrSimSysName.GetBuffer(MAX_PATH), omStrBasePath);
+                    /* Get base path based on simulation file location */
+                    string omStrBasePath;
+                    CUtilFunctions::nGetBaseFolder(psSimsysInfo->m_omStrSimSysName.GetBuffer(MAX_PATH), omStrBasePath);
 
-					/* Get relative paths */
-					vGetRelativePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrDllName);
-					vGetRelativePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrFileName);
+                    /* Get relative paths */
+                    vGetRelativePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrDllName);
+                    vGetRelativePath(omStrBasePath, psCurrentNodeList->m_sNodeInfo.m_omStrFileName);
 
-					/* Store */
+                    /* Store */
                     roSimCfgArchive << psCurrentNodeList->m_sNodeInfo.m_omStrDllName;
                     roSimCfgArchive << psCurrentNodeList->m_sNodeInfo.m_omStrFileName;
                     roSimCfgArchive << psCurrentNodeList->m_sNodeInfo.m_omStrNodeName;
@@ -519,27 +519,27 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
 * \authors       Arunkumar Karri
 * \date          01.02.2013 Created
 */
-void CSimSysConfigDetails::vGetRelativePath(string& omStrBasePath, CString &strFileName)
+void CSimSysConfigDetails::vGetRelativePath(string& omStrBasePath, CString& strFileName)
 {
-	if ( !strFileName.IsEmpty() )
-	{
-		string omStrRelativePath;
-		CUtilFunctions::MakeRelativePath(omStrBasePath.c_str(), strFileName.GetBuffer(MAX_PATH), omStrRelativePath);
-		strFileName = omStrRelativePath.c_str();
-	}
+    if ( !strFileName.IsEmpty() )
+    {
+        string omStrRelativePath;
+        CUtilFunctions::MakeRelativePath(omStrBasePath.c_str(), strFileName.GetBuffer(MAX_PATH), omStrRelativePath);
+        strFileName = omStrRelativePath.c_str();
+    }
 }
 
-void CSimSysConfigDetails::vGetAbsolutePath(string& omStrBasePath, CString &strFileName)
+void CSimSysConfigDetails::vGetAbsolutePath(string& omStrBasePath, CString& strFileName)
 {
-	if ( !strFileName.IsEmpty() )
-	{
-		if (TRUE == PathIsRelative(strFileName))
-		{
-			char chAbsPath[MAX_PATH];
-			PathCombine(chAbsPath, omStrBasePath.c_str(), strFileName.GetBuffer(MAX_PATH));
-			strFileName = chAbsPath;
-		}
-	}
+    if ( !strFileName.IsEmpty() )
+    {
+        if (TRUE == PathIsRelative(strFileName))
+        {
+            char chAbsPath[MAX_PATH];
+            PathCombine(chAbsPath, omStrBasePath.c_str(), strFileName.GetBuffer(MAX_PATH));
+            strFileName = chAbsPath;
+        }
+    }
 }
 
 

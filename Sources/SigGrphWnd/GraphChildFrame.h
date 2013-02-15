@@ -60,7 +60,7 @@ public:
     // To save window size and splitter postion before unloading a conf file
     void vUpdateWndCo_Ords();
     // To Handle Configuration File Change Event
-    void vHandleConFigChange();
+    void vHandleConFigChange(BOOL bHide);
     // To Handle Connection state Change Event
     void vHandleConnectChange(BOOL bConnect);
     // To get Left View Pointer

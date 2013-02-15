@@ -98,7 +98,6 @@
           <li>No plug-in support.</li>
           <li>Resource editing is not possible</li>
           <li>Only up to Visual Studio 6.0 MFC libraries are supported by the DDK.</li>
-          <li>The application can be built and run in release mode only. This means debugging the application is not possible.</li>
         </ul>
   </p>
       <p>Project building guidelines:</p>

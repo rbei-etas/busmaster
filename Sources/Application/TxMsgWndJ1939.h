@@ -135,6 +135,7 @@ public:
     afx_msg void OnBnClickedRqstAddress();
     afx_msg void OnBnClickedCmdAddress();
     afx_msg void OnCbnSelchangeComboMsgtype();
+    afx_msg void OnEnChangeEditMilliSec();
     CRadixEdit m_omFromEdit;
     CRadixEdit m_omPriorityEdit;
     CRadixEdit m_omTOEdit;
