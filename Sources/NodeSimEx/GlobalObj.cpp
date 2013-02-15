@@ -24,7 +24,6 @@
 #include "Include/Utils_Macro.h"
 #include "GlobalObj.h"
 #include "ExecuteFunc.h"
-#include "EditFrameWnd.h"
 #include "FunctionEditorStruct.h"
 #include "FunctionEditorBase.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
@@ -41,6 +40,8 @@ CGlobalObj* CGlobalObj::sm_pThis[BUS_TOTAL] = {0};
 HWND CGlobalObj::sm_hWndMDIParentFrame = NULL;
 CBaseAppServices* CGlobalObj::sm_pouITraceWndPtr = NULL;
 CBaseDIL_CAN* CGlobalObj::sm_pouDilCanInterface = NULL;
+static bool g_bReqUserConfirmation;
+static bool g_bQueryConfirm;
 
 static void sg_vDataConfEventFnJ1939(DWORD dwClient, UINT32 unPGN, BYTE bySrc,
                                      BYTE byDest, BOOL bSuccess)
@@ -79,6 +80,7 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_nSimSysDataSize = 0;
     m_omAppDirectory = "";
     memset(&m_wWindowPlacement, 0, sizeof(WINDOWPLACEMENT));
+    m_pEditFrameWnd = NULL;
 }
 
 CGlobalObj::~CGlobalObj(void)
@@ -136,6 +138,87 @@ CFunctionEditorDoc* CGlobalObj::podGetFunctionEditorDoc()
     }
     return pDoc;
 }
+
+/**
+* \brief         Callback function which can be used to close windows during configuration switching
+* \param[in]     HWND hwnd, LPARAM lParam
+* \return        TRUE
+* \authors       Arunkumar Karri
+* \date          14.02.2013 Created
+*/
+BOOL CALLBACK EnumChildProc( HWND hwnd, LPARAM lParam )
+{
+    if ( hwnd )
+    {
+        CWnd* pWnd = CWnd::FromHandle(hwnd);
+        if ( pWnd )
+        {
+            CRuntimeClass* pRunTimeClass = pWnd->GetRuntimeClass();
+
+            if ( pRunTimeClass )
+            {
+                if ( pRunTimeClass == RUNTIME_CLASS(CEditFrameWnd) || pRunTimeClass == RUNTIME_CLASS(COutWnd) )
+                {
+                    /* If any function editor window is open */
+                    if ( pRunTimeClass == RUNTIME_CLASS(CEditFrameWnd) )
+                    {
+                        CEditFrameWnd* pEditWnd = (CEditFrameWnd*)pWnd;
+                        CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)pEditWnd->GetActiveDocument();
+
+                        /* If a function editor window is modified */
+                        if ( pDoc->IsModified() )
+                        {
+                            /* take confirmation from user for the first time only */
+                            if ( g_bReqUserConfirmation )
+                            {
+                                g_bReqUserConfirmation = false;
+                                INT nSelection = ::MessageBox( hwnd, _("Simulation files have been modified. Do You Want to save the Changes?"), _("Modified"), MB_YESNO | MB_ICONQUESTION);
+
+                                switch(nSelection)
+                                {
+                                    case IDYES:
+                                        g_bQueryConfirm = true;
+                                        break;
+                                    case IDNO:
+                                        g_bQueryConfirm = false;
+                                        break;
+                                }
+                            }
+                            /* Based on user response, save the simulation files */
+                            if ( g_bQueryConfirm )
+                            {
+                                if (pDoc != NULL)
+                                {
+                                    pDoc->OnSaveDocument(pDoc->GetPathName());
+                                }
+                            }
+                        }
+                    }
+                    /* Destroy the window */
+                    pWnd->DestroyWindow();
+                }
+            }
+        }
+    }
+    return TRUE;
+}
+
+/**
+* \brief         Closes the function editor frame window if open
+* \param[in]     -
+* \return        true if window is closed and false in other case
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
+bool CGlobalObj::bCloseFunctionEditorFrame()
+{
+    g_bReqUserConfirmation = true;
+    g_bQueryConfirm        = true;
+    EnumChildWindows( sm_hWndMDIParentFrame, EnumChildProc, 0 );
+
+    return true;
+}
+
 CFunctionView* CGlobalObj::podGetFunctionViewPtr()
 {
     CView* pTempView = NULL;
@@ -180,6 +263,7 @@ CFnsTreeView* CGlobalObj::podGetFuncsTreeViewPtr()
     }
     return pFnTreeView;
 }
+
 BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
 {
     BOOL bFileFound = TRUE;
@@ -200,14 +284,14 @@ BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
             //// Now open the selected file
             pDoc->OnOpenDocument(omStrNewCFileName);
             CMultiDocTemplate* pTemplate = m_pEditorDocTemplate;
-            CEditFrameWnd* pNewFrame
-                = (CEditFrameWnd*)(pTemplate->CreateNewFrame(pDoc, NULL));
+            m_pEditFrameWnd = (CEditFrameWnd*)(pTemplate->CreateNewFrame(pDoc, NULL));
+
             //If null is passed as parameter the m_pdoc->GetNextView(pos)  will
             // give null value
-            if (pNewFrame != NULL)
+            if (m_pEditFrameWnd != NULL)
             {
-                ASSERT_KINDOF(CEditFrameWnd, pNewFrame);
-                pTemplate->InitialUpdateFrame(pNewFrame, /*NULL*/pDoc);
+                ASSERT_KINDOF(CEditFrameWnd, m_pEditFrameWnd);
+                pTemplate->InitialUpdateFrame(m_pEditFrameWnd, /*NULL*/pDoc);
             }
         }
     }

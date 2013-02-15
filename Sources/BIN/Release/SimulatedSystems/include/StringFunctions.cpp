@@ -70,7 +70,7 @@ int strncmp_CAPL ( char s1[], char s2[], ... )
     }
     va_end( marker );
     return( sum ? (sum / count) : 0 );*/
-	return 0;
+    return 0;
 }
 
 long strncmp_off_CAPL(char s1[], long s1offset, char s2[], long s2offset, long len)
@@ -152,5 +152,5 @@ int settimer_CAPL(int nTimerType, char* pchTimerName, int nTimerValue, int nNano
         SetTimerVal(pchTimerName, nTimerValue*1);
         StartTimer(pchTimerName, 0);
     }
-	return 0;
+    return 0;
 }

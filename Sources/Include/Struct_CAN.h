@@ -39,7 +39,7 @@ const int MAX_STRING = 256;
  * This structure is used for sending/reciving messages to/from the CAN network
  */
 typedef struct sTCAN_MSG
-{	
+{
     unsigned int  m_unMsgID;    // 11/29 Bit-
     unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
     unsigned char m_ucRTR;      // true, for remote request
@@ -47,7 +47,7 @@ typedef struct sTCAN_MSG
     unsigned char m_ucChannel;  // Message Length
     unsigned char m_ucData[64];  // Databytes 0..63
     //unsigned char* m_aucCANFDData;   // Databytes 0..63
-	bool		m_bCANFD;
+    bool        m_bCANFD;
 } STCAN_MSG, *PSTCAN_MSG;
 //typedef sTCAN_MSG* PSTCAN_MSG;
 
@@ -82,6 +82,7 @@ typedef struct sCAN_ERR
 
 #define defBAUD_RATE_VAL                    500
 #define defBAUD_RATE                        0xC03A // 500 KBPS
+#define defMAX_TIME_DELAY                   60000
 
 /**
  * This enumeration defines current error state

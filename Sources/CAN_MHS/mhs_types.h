@@ -13,7 +13,7 @@ extern "C" {
         char CanSnrStr[MHS_STR_SIZE];
         unsigned int CanSpeed;
         unsigned int CanBtrValue;
-		BOOL m_bBitRateSelected;
+        BOOL m_bBitRateSelected;
     };
 
 

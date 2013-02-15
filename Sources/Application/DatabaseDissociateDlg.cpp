@@ -237,7 +237,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
                     // Send the Message to the Left View to Update List for all buses
                     if( pMainFrame != NULL )
                     {
-                        pMainFrame->vPostConfigChangeCmdToSigGrphWnds();
+                        pMainFrame->vPostConfigChangeCmdToSigGrphWnds(FALSE);
                     }
                 }
                 break;

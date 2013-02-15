@@ -31,19 +31,19 @@ UINT gunSendMsg_CAN(STCAN_TIME_MSG* psTxMsg, HMODULE hModule)
     VALIDATE_POINTER_RETURN_VAL(psTxMsg, Return);
     CExecuteFunc* pmCEexecuteFunc =
         CExecuteManager::ouGetExecuteManager(CAN).pmGetNodeObject(hModule);
-	STCAN_MSG		sMsg  ; 
-	sMsg.m_unMsgID = psTxMsg->m_unMsgID;
-	sMsg.m_ucRTR = psTxMsg->m_ucRTR;
-	sMsg.m_ucEXTENDED = psTxMsg->m_ucEXTENDED;
-	sMsg.m_ucDataLen = psTxMsg->m_ucDataLen;
-	sMsg.m_ucChannel = psTxMsg->m_ucChannel;
+    STCAN_MSG       sMsg  ;
+    sMsg.m_unMsgID = psTxMsg->m_unMsgID;
+    sMsg.m_ucRTR = psTxMsg->m_ucRTR;
+    sMsg.m_ucEXTENDED = psTxMsg->m_ucEXTENDED;
+    sMsg.m_ucDataLen = psTxMsg->m_ucDataLen;
+    sMsg.m_ucChannel = psTxMsg->m_ucChannel;
 
-	memset(sMsg.m_ucData, NULL, sMsg.m_ucDataLen);
-	for(int i = 0; i < sMsg.m_ucDataLen; i++)
-	{
-		sMsg.m_ucData[i] = psTxMsg->m_ucData[i];
-	}
-	sMsg.m_bCANFD = psTxMsg->m_bCANFD;
+    memset(sMsg.m_ucData, NULL, sMsg.m_ucDataLen);
+    for(int i = 0; i < sMsg.m_ucDataLen; i++)
+    {
+        sMsg.m_ucData[i] = psTxMsg->m_ucData[i];
+    }
+    sMsg.m_bCANFD = psTxMsg->m_bCANFD;
 
     if (pmCEexecuteFunc != NULL)
     {
@@ -56,7 +56,7 @@ UINT gunSendMsg_CAN(STCAN_TIME_MSG* psTxMsg, HMODULE hModule)
             {
                 Return = 0;
             }
-			delete psNode;
+            delete psNode;
         }
     }
     return Return;

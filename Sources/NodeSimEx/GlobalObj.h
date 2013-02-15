@@ -26,6 +26,7 @@
 #include "FileView.h"
 #include "SimSysWnd.h"
 #include "FnsTreeView.h"
+#include "EditFrameWnd.h"
 #include "FunctionView.h"
 #include "FunctionEditorDoc.h"
 #include "Include/BaseDefs.h"
@@ -65,6 +66,7 @@ public:
     static CBaseDIL_CAN* GetICANDIL(void);
     static CBaseDILI_J1939* GetIJ1939DIL(void);
     CFunctionEditorDoc* podGetFunctionEditorDoc();
+    bool bCloseFunctionEditorFrame();
     CFunctionView* podGetFunctionViewPtr();
     CFnsTreeView* podGetFuncsTreeViewPtr();
     BOOL bOpenFunctioneditorfile(CString);
@@ -76,6 +78,7 @@ public:
     EN_DIS_ABLE_LOG m_pfEnableDisableLog;
     DISCONNECT_TOOL m_pfDisconnectTool;
     WRITE_TO_LOG m_pfWriteToLog;
+    CEditFrameWnd* m_pEditFrameWnd;
 
     //Store the help text for handler functions of function editor
     CStringArray m_omFnEditHelpText;

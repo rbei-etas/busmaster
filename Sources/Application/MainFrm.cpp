@@ -8044,91 +8044,6 @@ void CMainFrame::OnNewConfigFile()
         vJ1939StartStopLogging();
     }
 }
-//{
-//    // Check for Warnning condition
-//    CFlags* pFlags = NULL;
-//    pFlags = theApp.pouGetFlagsPtr();
-//    if( pFlags != NULL)
-//    {
-//        if(pFlags->nGetFlagStatus(DLLLOADED) == FALSE)
-//        {
-//
-//            // Update Window Postion
-//            // Save window postion before unloding configuration file
-//            vSaveWindowPostion();
-//            // Check if any previous configuration file is loaded
-//            // and changes are being made to it
-//            if ( bIsConfigurationModified() == TRUE )
-//            {
-//                // Yes, there is a loaded config and changes have been made
-//                // to it.
-//                // Hence display save confirmation message dialog
-//                if (AfxMessageBox( defSTR_CONF_SAVE_CONFIRM, MB_YESNO | MB_ICONQUESTION)
-//                    == IDYES )
-//                {
-//                    // Save
-//                    OnSaveConfigFile();
-//                }
-//            }
-//            CFlags* pFlags = theApp.pouGetFlagsPtr();
-//            BOOL bDatabaseOpen = pFlags->nGetFlagStatus(DBOPEN) ;
-//            if( pFlags != NULL && bDatabaseOpen == TRUE)
-//            {
-//                OnCloseDatabase();
-//            }
-//            CSplFileDlg oCfgFileDlg(FALSE,       // Save  as dialog
-//                defFILEEXT,  // default extension
-//                NULL,       // default file name
-//                defDLGFLAGS, // mode
-//                defCONFIGFILTER, // filter
-//                NULL,        // parent wnd
-//                "Open");
-//
-//            oCfgFileDlg.m_ofn.lpstrTitle = _T("New Configuration Filename...");
-//
-//            if(oCfgFileDlg.DoModal() == IDOK)
-//            {
-//                // get the name of the selected file
-//                CString oCfgFilename = oCfgFileDlg.GetPathName();
-//                theApp.nNewConfiguration(oCfgFilename);
-//                m_omStrSavedConfigFile = _T("");
-//
-//                // Set new window postion
-//                vRestoreWindowPostion();
-//
-//                if( m_pomGraphThread != NULL )
-//                {
-//                    ::PostThreadMessage( m_pomGraphThread->m_nThreadID,
-//                        WM_CONFIG_CHANGE, NULL, NULL );
-//                }
-//                //::PostThreadMessage(GUI_dwThread_MsgDisp,TM_SET_FLAG_STATUS,0,0);
-//                BOOL bReturn = FALSE;
-//                // Fill the controller configuration information in static data members
-//                // of CChangeRegisters class.
-//                for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
-//                {
-//                    m_asControllerDetails[i].vIntialize();
-//                }
-//                if (g_pouDIL_CAN_Interface->DILC_SetConfigData((PCHAR)m_asControllerDetails,
-//                                sizeof(SCONTROLLER_DETAILS)) == S_OK)
-//                {
-//                    bReturn = TRUE;
-//                }
-//                if(bReturn == TRUE )
-//                {
-//                    // Init controller parameters
-//                    vSetControllerParameters();
-//                    // Clear UI Components
-//                    vClearOnConfLoad();
-//                }
-//            }
-//        }
-//        else
-//        AfxMessageBox(defIMPORT_DLLLOAD_WARNNING,
-//                MB_OK|MB_ICONINFORMATION);
-//    }
-//
-//}
 void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
 {
     DATASTORAGEINFO sDataStorageInfo;
@@ -17078,12 +16993,12 @@ void CMainFrame::OnUpdateSignalgraphwindowMcnet(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(MCNET));
 }
 
-void CMainFrame::vPostConfigChangeCmdToSigGrphWnds()
+void CMainFrame::vPostConfigChangeCmdToSigGrphWnds(BOOL bHideGraphWnd)
 {
     for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
     {
         m_objSigGrphHandler.vPostMessageToSGWnd((SHORT)nBusID, WM_USER_CMD,
-                                                (WPARAM)eCONFIGCHANGECMD, NULL);
+                                                (WPARAM)eCONFIGCHANGECMD, (LPARAM)bHideGraphWnd);
     }
 }
 

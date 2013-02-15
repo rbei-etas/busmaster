@@ -194,7 +194,11 @@ typedef CList<int,int>      defomIntegerList;
 #define RESET_MONITOR           "Reset( USHORT Baud )"
 #define WRAPPER_HEADER_FILE     "#include \"Wrapper.h\"\n"
 
-#define defHEADER_FILE_NAME        "_Unions.h"
+#define defHEADER_FILE_NAME     "_Unions.h"
+#define defHELP_INFO_IN_UNIONS  "/* This is an ALWAYS automatically generated file based on the database ... */\n/*It is recommended to change the database directly. If you want to prevent overwritten header files, make a copy of it and ensure you include the intended version in your node simulation.*/\n\n"
+#define defMSG_GUARD_CHECK      "#ifndef MESSAGENAME_%s\n"
+#define defMSG_GUARD_DEFINE     "#define MESSAGENAME_%s\n"
+#define defMSG_GUARD_END        "#endif /* MESSAGENAME_%s */\n"
 #define defUNION                "typedef union \n{\n"
 
 /* J1939 structures used in unions.h */

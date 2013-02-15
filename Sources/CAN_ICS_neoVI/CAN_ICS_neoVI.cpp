@@ -2177,10 +2177,10 @@ HRESULT GetICS_neoVI_APIFuncPtrs(void)
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformInitOperations(void)
 {
-	for(int nCnt =0; nCnt < 2000; nCnt++)
-	{
-		sg_asMsgBuffer[nCnt].m_uDataInfo.m_sCANMsg.m_bCANFD = false;
-	}
+    for(int nCnt =0; nCnt < 2000; nCnt++)
+    {
+        sg_asMsgBuffer[nCnt].m_uDataInfo.m_sCANMsg.m_bCANFD = false;
+    }
     //Register Monitor client
     CAN_RegisterClient(TRUE, sg_dwClientID, CAN_MONITOR_NODE);
     sg_podActiveNetwork = &sg_odHardwareNetwork;

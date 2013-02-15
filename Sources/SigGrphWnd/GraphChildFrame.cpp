@@ -253,7 +253,7 @@ LRESULT CGraphChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
             break;
             case eCONFIGCHANGECMD:
             {
-                vHandleConFigChange();
+                vHandleConFigChange((BOOL)lParam);
             }
             break;
         }
@@ -394,7 +394,7 @@ void CGraphChildFrame::vHandleConnectChange(BOOL bConnect)
 
 /*******************************************************************************
   Function Name  : vHandleConFigChange
-  Input(s)       : -
+  Input(s)       : bHide parameter indicates to hide graph window or not
   Output         : -
   Functionality  : This function handles config change event. This will inform
                    all views about the change
@@ -403,9 +403,12 @@ void CGraphChildFrame::vHandleConnectChange(BOOL bConnect)
   Date Created   : 10/12/2004
   Modifications  :
 *******************************************************************************/
-void CGraphChildFrame::vHandleConFigChange()
+void CGraphChildFrame::vHandleConFigChange(BOOL bHide)
 {
-    //ShowWindow(SW_HIDE);
+    if ( bHide )
+    {
+        ShowWindow(SW_HIDE);
+    }
     // Get Left View Pointer
     CGraphLeftView* pLeftView = ( CGraphLeftView*)
                                 pomGetLeftViewPointer();

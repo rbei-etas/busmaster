@@ -217,12 +217,12 @@ USAGEMODE HRESULT SignalDefiner_SetSamplingTimePeriod(int nSamplingTime)
 
 USAGEMODE HRESULT SignalDefiner_GetAutoCorrect(bool* pbChecked)
 {
-	*pbChecked = g_objSignalDefiner.m_bAutoCorrect;
+    *pbChecked = g_objSignalDefiner.m_bAutoCorrect;
     return S_OK;
 }
 USAGEMODE HRESULT SignalDefiner_SetAutoCorrect(bool bChecked)
 {
-	g_objSignalDefiner.m_bAutoCorrect = bChecked;
+    g_objSignalDefiner.m_bAutoCorrect = bChecked;
     return S_OK;
 }
 /**

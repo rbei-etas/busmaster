@@ -8,7 +8,7 @@
 
 #define M_PI       3.14159265358979323846
 #define MAX_SAMPLING_TIME_PERIOD 32767
-#define MAX_FREQUENCY			 125
+#define MAX_FREQUENCY            125
 const float SINE_COEFF = (8 / (M_PI* M_PI));
 
 // CSignalDefinerDlg dialog
@@ -22,7 +22,7 @@ CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=NULL*/)
     , m_dblSamplingTimePeriod(125)
     , m_nSelCycle(3)
     , m_nSignalType(1)
-	,m_bAutoCorrect(true)
+    ,m_bAutoCorrect(true)
 {
     AfxEnableControlContainer();
     m_poDMGraphCtrl = NULL;
@@ -39,12 +39,12 @@ void CSignalDefinerDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_SIGNAL_AMPLITUDE, m_fAmplitude);
     DDX_Text(pDX, IDC_EDIT_SIGNAL_FREQUENCY, m_fFrequency);
     DDX_Text(pDX, IDC_EDIT_SIGNAL_SAMPLING_TIME, m_dblSamplingTimePeriod);
-    DDV_MinMaxDouble(pDX, m_dblSamplingTimePeriod, 1, MAX_SAMPLING_TIME_PERIOD); 
-	DDV_MinMaxFloat(pDX, m_fFrequency,1, MAX_FREQUENCY);
+    DDV_MinMaxDouble(pDX, m_dblSamplingTimePeriod, 1, MAX_SAMPLING_TIME_PERIOD);
+    DDV_MinMaxFloat(pDX, m_fFrequency,1, MAX_FREQUENCY);
     DDX_CBIndex(pDX, IDC_COMBO_CYCLES, m_nSelCycle);
     DDX_Control(pDX, IDC_COMBO_SIGNAL_TYPE, m_ctrSignalType);
     DDX_Control(pDX, IDC_COMBO_CYCLES, m_ctrNoOfCycles);
-	DDX_Control(pDX, IDCB_AUTOCORRECT, m_btnAutoCorrect);
+    DDX_Control(pDX, IDCB_AUTOCORRECT, m_btnAutoCorrect);
     DDX_CBIndex(pDX, IDC_COMBO_SIGNAL_TYPE, m_nSignalType);
 }
 
@@ -57,10 +57,10 @@ BEGIN_MESSAGE_MAP(CSignalDefinerDlg, CDialog)
     ON_EN_CHANGE(IDC_EDIT_SIGNAL_SAMPLING_TIME, OnEnChangeEditSignalSamplingTime)
     ON_EN_UPDATE(IDC_EDIT_SIGNAL_SAMPLING_TIME, OnEnUpdateEditSignalSamplingTime)
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
-	ON_BN_CLICKED(IDCB_AUTOCORRECT, OnBnClickedAutoCorrect)
-	ON_WM_CLOSE()
-	ON_CONTROL_RANGE(EN_KILLFOCUS, IDC_COMBO_SIGNAL_TYPE, IDCB_AUTOCORRECT, OnKillFocus)
+    ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+    ON_BN_CLICKED(IDCB_AUTOCORRECT, OnBnClickedAutoCorrect)
+    ON_WM_CLOSE()
+    ON_CONTROL_RANGE(EN_KILLFOCUS, IDC_COMBO_SIGNAL_TYPE, IDCB_AUTOCORRECT, OnKillFocus)
 END_MESSAGE_MAP()
 
 
@@ -105,14 +105,14 @@ BOOL CSignalDefinerDlg::OnInitDialog()
         CComPtr<IDMGraphAxis> spAxisY;
         pDMGraphCtrl->get_Axis( VerticalY, &spAxisY);
         spAxisY->put_GridNumber(5);
-		if(m_bAutoCorrect == true)
-		{
-			m_btnAutoCorrect.SetCheck(BST_CHECKED);
-		}
-		else
-		{
-			m_btnAutoCorrect.SetCheck(BST_UNCHECKED);
-		}
+        if(m_bAutoCorrect == true)
+        {
+            m_btnAutoCorrect.SetCheck(BST_CHECKED);
+        }
+        else
+        {
+            m_btnAutoCorrect.SetCheck(BST_UNCHECKED);
+        }
 
         if (NULL != pDMGraphCtrl)
         {
@@ -172,10 +172,10 @@ void CSignalDefinerDlg::OnEnUpdateEditSignalSamplingTime()
 
 void CSignalDefinerDlg::OnKillFocus(UINT nID)
 {
-	if ( IDC_EDIT_SIGNAL_SAMPLING_TIME == nID )
-	{		
-		UpdateData(FALSE);
-	}
+    if ( IDC_EDIT_SIGNAL_SAMPLING_TIME == nID )
+    {
+        UpdateData(FALSE);
+    }
 }
 
 void CSignalDefinerDlg::OnBnClickedOk()
@@ -191,20 +191,20 @@ void CSignalDefinerDlg::OnBnClickedOk()
         }
     }
     OnOK();
-	(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+    (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
 }
 
 void CSignalDefinerDlg::OnBnClickedAutoCorrect()
 {
-	if(m_btnAutoCorrect.GetCheck() == BST_UNCHECKED)
-	{
-		m_bAutoCorrect = false;
-	}
-	else
-	{
-		m_bAutoCorrect = true;
-	}
-	vGenerateWave();
+    if(m_btnAutoCorrect.GetCheck() == BST_UNCHECKED)
+    {
+        m_bAutoCorrect = false;
+    }
+    else
+    {
+        m_bAutoCorrect = true;
+    }
+    vGenerateWave();
 }
 /**
 * \brief         Helper to convert degrees to radians
@@ -273,51 +273,54 @@ void CSignalDefinerDlg::vGenerateWave()
     /* Calculate Time period per each cycle */
     dblTimePeriod = 1 / m_fFrequency;
 
-	if(m_fFrequency == 0.0)
-		return;
+    if(m_fFrequency == 0.0)
+    {
+        (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+        return;
+    }
     //Calculate number of points to be plotted
     nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
 
-	if(m_btnAutoCorrect.GetCheck() == BST_CHECKED )
-	{					
-		if((nPointCount/(dblFrqStep*(m_nSelCycle+1))) < 8)			//the no. of points in a cycle should be more than 8 to plot a proper graph
-		{
-			dblFrqStep = nPointCount/(9* (m_nSelCycle+1)); //set the number of required points to 9
-			if(dblFrqStep > MAX_SAMPLING_TIME_PERIOD)
-			{
-				(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
-			return;
-			}
-			if(dblFrqStep < 1)
-			{
-				(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
-				return;
-			}
-			m_dblSamplingTimePeriod = dblFrqStep;			
-			CString omSamplingPeriod;
-			omSamplingPeriod.Format(_T("%d"),(int)m_dblSamplingTimePeriod);
-			SetDlgItemText(IDC_EDIT_SIGNAL_SAMPLING_TIME, omSamplingPeriod);			//This command will call this function continously, hence the above logic.
-			nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
-		}
-	}
-	else if(m_btnAutoCorrect.GetCheck() == BST_UNCHECKED )
-	{
-		if(m_fFrequency > MAX_FREQUENCY)
-		{
-			(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
-			return;
-		}
-		if(dblFrqStep == 0)
-		{
-			(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
-			return;
-		}
-		if(dblFrqStep > MAX_SAMPLING_TIME_PERIOD)
-		{
-			(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
-			return;
-		}
-	}
+    if(m_btnAutoCorrect.GetCheck() == BST_CHECKED )
+    {
+        if((nPointCount/(dblFrqStep*(m_nSelCycle+1))) < 8)          //the no. of points in a cycle should be more than 8 to plot a proper graph
+        {
+            dblFrqStep = nPointCount/(9* (m_nSelCycle+1)); //set the number of required points to 9
+            if(dblFrqStep > MAX_SAMPLING_TIME_PERIOD)
+            {
+                (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+                return;
+            }
+            if(dblFrqStep < 1)
+            {
+                (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+                return;
+            }
+            m_dblSamplingTimePeriod = dblFrqStep;
+            CString omSamplingPeriod;
+            omSamplingPeriod.Format(_T("%d"),(int)m_dblSamplingTimePeriod);
+            SetDlgItemText(IDC_EDIT_SIGNAL_SAMPLING_TIME, omSamplingPeriod);            //This command will call this function continously, hence the above logic.
+            nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
+        }
+    }
+    else if(m_btnAutoCorrect.GetCheck() == BST_UNCHECKED )
+    {
+        if(m_fFrequency > MAX_FREQUENCY)
+        {
+            (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+            return;
+        }
+        if(dblFrqStep == 0)
+        {
+            (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+            return;
+        }
+        if(dblFrqStep > MAX_SAMPLING_TIME_PERIOD)
+        {
+            (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+            return;
+        }
+    }
     /*For variant packing purpose*/
     CComVariant varrX, varrY;
     varrX.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
@@ -484,29 +487,29 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 }
 void CSignalDefinerDlg::OnClose()
 {
-	long lCount = 0;
-	if(spElements != NULL)
-	{
-		spElements->get_Count(&lCount);
-		for (long lIdx = 0; lIdx < lCount; lIdx++)
-		{
-			spElements->Delete(lIdx);
-			spElements = NULL;
-		}
-	}
-	CDialog::OnClose();
+    long lCount = 0;
+    if(spElements != NULL)
+    {
+        spElements->get_Count(&lCount);
+        for (long lIdx = 0; lIdx < lCount; lIdx++)
+        {
+            spElements->Delete(lIdx);
+            spElements = NULL;
+        }
+    }
+    CDialog::OnClose();
 }
 void CSignalDefinerDlg::OnBnClickedCancel()
 {
-	long lCount = 0;
-	if(spElements != NULL)
-	{
-		spElements->get_Count(&lCount);
-		for (long lIdx = 0; lIdx < lCount; lIdx++)
-		{
-			spElements->Delete(lIdx);
-			spElements = NULL;
-		}
-	}
-	CDialog::OnCancel();
+    long lCount = 0;
+    if(spElements != NULL)
+    {
+        spElements->get_Count(&lCount);
+        for (long lIdx = 0; lIdx < lCount; lIdx++)
+        {
+            spElements->Delete(lIdx);
+            spElements = NULL;
+        }
+    }
+    CDialog::OnCancel();
 }

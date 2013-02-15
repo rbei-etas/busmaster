@@ -234,42 +234,42 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
         // Get the acceptance mask and code value with type of filter
         for (int i = 0 ; i < CAN_MSG_IDS ; i++)
         {
-			m_enmHWFilterType[i] = psControllerDetails->m_enmHWFilterType[i];
+            m_enmHWFilterType[i] = psControllerDetails->m_enmHWFilterType[i];
 
-			if ( m_enmHWFilterType[i] == HW_FILTER_ACCEPT_ALL )
-			{
-				psControllerDetails->m_omStrAccCodeByte1[i] = "0";
-				psControllerDetails->m_omStrAccCodeByte2[i] = "0";
-				psControllerDetails->m_omStrAccCodeByte3[i] = "0";
-				psControllerDetails->m_omStrAccCodeByte4[i] = "0";
-				psControllerDetails->m_omStrAccMaskByte1[i] = "0";
-				psControllerDetails->m_omStrAccMaskByte2[i] = "0";
-				psControllerDetails->m_omStrAccMaskByte3[i] = "0";
-				psControllerDetails->m_omStrAccMaskByte4[i] = "0";				
-			}
-			else if ( m_enmHWFilterType[i] == HW_FILTER_REJECT_ALL )
-			{
-				psControllerDetails->m_omStrAccCodeByte1[i] = "FF";
-				psControllerDetails->m_omStrAccCodeByte2[i] = "FF";
-				psControllerDetails->m_omStrAccCodeByte3[i] = "FF";
-				psControllerDetails->m_omStrAccCodeByte4[i] = "FF";
-				psControllerDetails->m_omStrAccMaskByte1[i] = "FF";
-				psControllerDetails->m_omStrAccMaskByte2[i] = "FF";
-				psControllerDetails->m_omStrAccMaskByte3[i] = "FF";
-				psControllerDetails->m_omStrAccMaskByte4[i] = "FF";
+            if ( m_enmHWFilterType[i] == HW_FILTER_ACCEPT_ALL )
+            {
+                psControllerDetails->m_omStrAccCodeByte1[i] = "0";
+                psControllerDetails->m_omStrAccCodeByte2[i] = "0";
+                psControllerDetails->m_omStrAccCodeByte3[i] = "0";
+                psControllerDetails->m_omStrAccCodeByte4[i] = "0";
+                psControllerDetails->m_omStrAccMaskByte1[i] = "0";
+                psControllerDetails->m_omStrAccMaskByte2[i] = "0";
+                psControllerDetails->m_omStrAccMaskByte3[i] = "0";
+                psControllerDetails->m_omStrAccMaskByte4[i] = "0";
+            }
+            else if ( m_enmHWFilterType[i] == HW_FILTER_REJECT_ALL )
+            {
+                psControllerDetails->m_omStrAccCodeByte1[i] = "FF";
+                psControllerDetails->m_omStrAccCodeByte2[i] = "FF";
+                psControllerDetails->m_omStrAccCodeByte3[i] = "FF";
+                psControllerDetails->m_omStrAccCodeByte4[i] = "FF";
+                psControllerDetails->m_omStrAccMaskByte1[i] = "FF";
+                psControllerDetails->m_omStrAccMaskByte2[i] = "FF";
+                psControllerDetails->m_omStrAccMaskByte3[i] = "FF";
+                psControllerDetails->m_omStrAccMaskByte4[i] = "FF";
 
-				/* For standard message types */
-				if ( i == 0 )
-				{
-					psControllerDetails->m_omStrAccCodeByte2[i] = "0F";
-					psControllerDetails->m_omStrAccCodeByte3[i] = "0";
-					psControllerDetails->m_omStrAccCodeByte4[i] = "0";
+                /* For standard message types */
+                if ( i == 0 )
+                {
+                    psControllerDetails->m_omStrAccCodeByte2[i] = "0F";
+                    psControllerDetails->m_omStrAccCodeByte3[i] = "0";
+                    psControllerDetails->m_omStrAccCodeByte4[i] = "0";
 
-					psControllerDetails->m_omStrAccMaskByte2[i] = "0F";
-					psControllerDetails->m_omStrAccMaskByte3[i] = "0";
-					psControllerDetails->m_omStrAccMaskByte4[i] = "0";
-				}
-			}
+                    psControllerDetails->m_omStrAccMaskByte2[i] = "0F";
+                    psControllerDetails->m_omStrAccMaskByte3[i] = "0";
+                    psControllerDetails->m_omStrAccMaskByte4[i] = "0";
+                }
+            }
 
             m_omStrLocalAccCodeByte1[i] = psControllerDetails->m_omStrAccCodeByte1[i].c_str();
             m_omStrLocalAccCodeByte2[i] = psControllerDetails->m_omStrAccCodeByte2[i].c_str();
@@ -278,7 +278,7 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
             m_omStrLocalAccMaskByte1[i] = psControllerDetails->m_omStrAccMaskByte1[i].c_str();
             m_omStrLocalAccMaskByte2[i] = psControllerDetails->m_omStrAccMaskByte2[i].c_str();
             m_omStrLocalAccMaskByte3[i] = psControllerDetails->m_omStrAccMaskByte3[i].c_str();
-            m_omStrLocalAccMaskByte4[i] = psControllerDetails->m_omStrAccMaskByte4[i].c_str();            
+            m_omStrLocalAccMaskByte4[i] = psControllerDetails->m_omStrAccMaskByte4[i].c_str();
         }
         vSetFilterDetails(false);
     }
@@ -315,10 +315,10 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
         pWnd->SetWindowText( defSTR_MSG_ID_EXTENDED );
     }
 
-    UpdateData(FALSE);	
+    UpdateData(FALSE);
 
-	// return TRUE unless you set the focus to a control
-    return TRUE;  
+    // return TRUE unless you set the focus to a control
+    return TRUE;
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -337,7 +337,7 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode1()
 {
-    NextDlgCtrl();	
+    NextDlgCtrl();
 }
 
 /******************************************************************************/
@@ -355,7 +355,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode1()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode2()
 {
-    NextDlgCtrl();	
+    NextDlgCtrl();
 }
 
 /******************************************************************************/
@@ -373,7 +373,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode2()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode3()
 {
-    NextDlgCtrl( );	
+    NextDlgCtrl( );
 }
 
 /******************************************************************************/
@@ -391,7 +391,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode3()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode4()
 {
-    NextDlgCtrl();	
+    NextDlgCtrl();
 }
 
 /******************************************************************************/
@@ -409,7 +409,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceCode4()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask1()
 {
-    NextDlgCtrl();	
+    NextDlgCtrl();
 }
 
 /******************************************************************************/
@@ -427,7 +427,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask1()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask2()
 {
-    NextDlgCtrl();	
+    NextDlgCtrl();
 }
 
 /******************************************************************************/
@@ -445,7 +445,7 @@ void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask2()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnMaxtextEditAcceptanceMask3()
 {
-    NextDlgCtrl();	
+    NextDlgCtrl();
 }
 
 /******************************************************************************/

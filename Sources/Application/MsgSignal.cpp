@@ -236,6 +236,9 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             CString omStrTemp;
             omStrTemp.Format(H_FILE_HEADER_START,omStrHeaderString,omStrHeaderString);
 
+            // Add Header "Help information"
+            omHeaderFile.WriteString(defHELP_INFO_IN_UNIONS);
+
             // Add Header "ifndef..."
             omHeaderFile.WriteString(omStrTemp);
 
@@ -5159,18 +5162,26 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
         CStringArray& omStrArraySigName,
         sMESSAGE* pMsg)
 {
-    omStrcommandLine = defUNION;
     CString omStrSigName     = STR_EMPTY;
     //    INT nIndex           = 0;
     CString omStrdelimiter   = STR_EMPTY;
+
+    /* Add New lines */
+    omHeaderFile.WriteString(NEW_LINE);
+    omHeaderFile.WriteString(NEW_LINE);
+
+    /* Include guards for each message added */
+    omStrcommandLine.Format(defMSG_GUARD_CHECK,  pMsg->m_omStrMessageName );
+    omHeaderFile.WriteString(omStrcommandLine);
+
+    omStrcommandLine.Format(defMSG_GUARD_DEFINE, pMsg->m_omStrMessageName );
+    omHeaderFile.WriteString(omStrcommandLine);
+
     switch (m_sDbParams.m_eBus)
     {
         case CAN:
         {
-            // Add New lines
-            omHeaderFile.WriteString(NEW_LINE);
-            omHeaderFile.WriteString(NEW_LINE);
-
+            omStrcommandLine = defUNION;
             omHeaderFile.WriteString(omStrcommandLine);
 
             omHeaderFile.WriteString(defDATA_BYTE_ARRAY);
@@ -5226,8 +5237,8 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
 
             omHeaderFile.WriteString(defDATATYPE_TIMESTAMP);
 
-			omStrcommandLine = defDATATYPE_FD_FLAG;
-			omHeaderFile.WriteString(omStrcommandLine);
+            omStrcommandLine = defDATATYPE_FD_FLAG;
+            omHeaderFile.WriteString(omStrcommandLine);
 
             omStrcommandLine.Format(defEND_OF_STRUCT_DEF,
                                     pMsg->m_omStrMessageName );
@@ -5236,10 +5247,7 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
         break;
         case J1939:
         {
-            // Add New lines
-            omHeaderFile.WriteString(NEW_LINE);
-            omHeaderFile.WriteString(NEW_LINE);
-
+            omStrcommandLine = defUNION;
             omHeaderFile.WriteString(omStrcommandLine);
 
             CString omDataBytes;
@@ -5286,6 +5294,11 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
         }
         break;
     }
+
+    /* Endif for guards of each message */
+    omStrcommandLine.Format(defMSG_GUARD_END,  pMsg->m_omStrMessageName );
+    omHeaderFile.WriteString(omStrcommandLine);
+
     return TRUE;
 }
 

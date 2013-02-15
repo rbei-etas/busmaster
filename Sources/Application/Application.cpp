@@ -85,8 +85,8 @@ BEGIN_DISPATCH_MAP(CApplication, CCmdTarget)
     DISP_FUNCTION_ID(CApplication, "GetLoggingBlockCount",  dispidGetLoggingBlockCount,     GetLoggingBlockCount,   VT_EMPTY, VTS_PI2)
     DISP_FUNCTION_ID(CApplication, "ClearLoggingBlockList", dispidClearLoggingBlockList,    ClearLoggingBlockList,  VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "GetLoggingBlock",       dispidGetLoggingBlock,          GetLoggingBlock,        VT_EMPTY, VTS_I2 VTS_PVARIANT)
-	DISP_FUNCTION_ID(CApplication, "RegisterClientForRx",   dispidRegisterClientForRx,      RegisterClientForRx,    VT_EMPTY, VTS_I2 VTS_PBSTR VTS_PBSTR)
-	DISP_FUNCTION_ID(CApplication, "UnRegisterClient",      dispidUnRegisterClient,         UnRegisterClient,       VT_EMPTY, VTS_I2)
+    DISP_FUNCTION_ID(CApplication, "RegisterClientForRx",   dispidRegisterClientForRx,      RegisterClientForRx,    VT_EMPTY, VTS_I2 VTS_PBSTR VTS_PBSTR)
+    DISP_FUNCTION_ID(CApplication, "UnRegisterClient",      dispidUnRegisterClient,         UnRegisterClient,       VT_EMPTY, VTS_I2)
 END_DISPATCH_MAP()
 
 BEGIN_INTERFACE_MAP(CApplication, CCmdTarget)
@@ -108,14 +108,14 @@ CApplication::CApplication(void)
     EnableConnections();
 
 
-	if ( !g_bInitCOMThread )
-	{
-		g_ouCOMReadThread.m_hActionEvent = NULL;
-		g_ouCOMReadThread.m_unActionCode = IDLE;
-			
-		bStartCOMReadThread();
-		g_bInitCOMThread = true;
-	}
+    if ( !g_bInitCOMThread )
+    {
+        g_ouCOMReadThread.m_hActionEvent = NULL;
+        g_ouCOMReadThread.m_unActionCode = IDLE;
+
+        bStartCOMReadThread();
+        g_bInitCOMThread = true;
+    }
 }
 
 /* Read thread function for distributing Rx messages to COM clients */
@@ -175,8 +175,8 @@ DWORD WINAPI COMReadThreadProc(LPVOID pVoid)
 void CApplication::ReadCOMDataBuffer()
 {
     static STCANDATA sCanData;
-	BOOL bRet = FALSE;
-	DWORD dwCount = 0;
+    BOOL bRet = FALSE;
+    DWORD dwCount = 0;
 
     while (g_ouCanBufForCOM.GetMsgCount())
     {
@@ -186,22 +186,22 @@ void CApplication::ReadCOMDataBuffer()
             sMsg.m_bEXTENDED = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
             sMsg.m_bRTR = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
             sMsg.m_ucChannel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
-			sMsg.m_ucDataLen = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
-            memcpy(sMsg.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sMsg.m_ucDataLen);            
+            sMsg.m_ucDataLen = sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen;
+            memcpy(sMsg.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sMsg.m_ucDataLen);
             sMsg.m_unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 
-            //vSendCANMsgToClients(sMsg);		
+            //vSendCANMsgToClients(sMsg);
 
-			for ( int i = 0; i < 8 ; i++ )
-			{	
-				if ( g_shUniqueID[i]!= -1 )
-				{
-					bRet = WriteFile(g_hndPIPE[i], (BYTE*)&sMsg, sizeof(sMsg), &dwCount, NULL);     
-					/* Inform clients about data availability */
-					SetEvent(g_hndEvent[i]);
-				}
-			}
-		}
+            for ( int i = 0; i < 8 ; i++ )
+            {
+                if ( g_shUniqueID[i]!= -1 )
+                {
+                    bRet = WriteFile(g_hndPIPE[i], (BYTE*)&sMsg, sizeof(sMsg), &dwCount, NULL);
+                    /* Inform clients about data availability */
+                    SetEvent(g_hndEvent[i]);
+                }
+            }
+        }
     }
 }
 
@@ -246,21 +246,21 @@ CApplication::~CApplication(void)
 {
     ::AfxOleUnlockApp();
 
-	/* Check if no client exists */
-	bool bClientExists = false;
-	for ( int i = 0 ; i < 8 ; i++ )
-	{
-		if ( g_shUniqueID[i] != -1 )
-		{
-			bClientExists = true;
-		}
-	}
+    /* Check if no client exists */
+    bool bClientExists = false;
+    for ( int i = 0 ; i < 8 ; i++ )
+    {
+        if ( g_shUniqueID[i] != -1 )
+        {
+            bClientExists = true;
+        }
+    }
 
-	if ( !bClientExists )
-	{
-		g_bInitCOMThread = false;
-		bStopCOMReadThread();
-	}
+    if ( !bClientExists )
+    {
+        g_bInitCOMThread = false;
+        bStopCOMReadThread();
+    }
 
 }
 
