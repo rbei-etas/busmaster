@@ -1110,7 +1110,7 @@ BEGIN
     END
     POPUP "&Help",                          65535,MFT_STRING,MFS_ENABLED
     BEGIN
-        MENUITEM "&Help Topics			F1",    57667,MFT_STRING,MFS_ENABLED
+        MENUITEM "&Help Topics                  F1", 57667,MFT_STRING,MFS_ENABLED
         MENUITEM "&What's This?",               57669,MFT_STRING,MFS_ENABLED
         MENUITEM MFT_SEPARATOR
         MENUITEM "&About BUSMASTER...",         32869,MFT_STRING,MFS_ENABLED
@@ -1264,6 +1264,7 @@ IDI_ICON_TILE           ICON                    "Res\\Tile.ico"
 IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
+IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1664,7 +1665,8 @@ BEGIN
     IDM_FILTER_LOGFILTEROFF "Enable or Disable Loggiing filter\nEnable or Disable  Logging filter"
     IDM_FILTER_MESSAGEFILTEROFF 
                             "Enable or Disable Message Display Filter \nEnable or Disable Message Display Filter"
-    IDM_FILTER_REPLAYFILTEROFF	"Enable or Disable Replay Filter \nEnable or Disable Replay Filter"
+    IDM_FILTER_REPLAYFILTEROFF 
+                            "Enable or Disable Replay Filter \nEnable or Disable Replay Filter"
     IDM_BUILD_COMPILEANDLINK "Compile and Link the current file"
 END
 

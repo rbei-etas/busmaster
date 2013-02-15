@@ -107,5 +107,5 @@ private:
     void vSetFilterDetails(bool bSave);
     void vSaveFilterDetails(BOOL bAccFilterMode);
     void vEnableDisableCodeMaskFields(bool bEnable);
-    void vSetHWFilterTypeDetails();	
+    void vSetHWFilterTypeDetails();
 };

@@ -913,7 +913,7 @@ static void CopyMsg2CanData(STCANDATA* can_data, VSCAN_MSG* msg, unsigned char f
 static DWORD WINAPI CanRxEvent(LPVOID lpParam)
 {
     static STCANDATA can_data;
-	can_data.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
+    can_data.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
     DWORD dwTemp;
     VSCAN_MSG msg;
 

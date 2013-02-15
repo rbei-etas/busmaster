@@ -4,6 +4,7 @@
 //
 #define IDS_PROJNAME                    100
 #define IDR_WMDMLOGGER                  101
+#define IDI_ICON_BUSMASTER              103
 #define IDS_LOG_SEV_INFO                201
 #define IDC_FILEPATH                    201
 #define IDD_TSBROWSER                   201

@@ -683,39 +683,45 @@ void CTxFunctionsView::vReloadData()
 void CTxFunctionsView::OnInvokeClose()
 {
     CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-	bool        bUnChanged = true;
+    bool        bUnChanged = true;
 
-	if(m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)	//setting will already be saved so exit
-	{
-		return;
-	}
+    if(m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)  //setting will already be saved so exit
+    {
+        return;
+    }
     if(pBlocksView != NULL)
     {
-        
+
         PSMSGBLOCKLIST psMsgBlock = NULL;
         psMsgBlock = pBlocksView->psGetMsgBlockPointer(
                          0,
                          pBlocksView->m_psMsgBlockList );
 
-		if(psMsgBlock != NULL)
-		{
-        bUnChanged = CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock);
-        if(pBlocksView->m_bDelayBtnBlocks != CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+        if(psMsgBlock != NULL)
+        {
+            bUnChanged = CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock);
+            if(pBlocksView->m_bDelayBtnBlocks != CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
+            {
+                bUnChanged = false;
+            }
+            CString  omstrData;
+            pBlocksView->m_omTimeDelayBtwnBlocks.GetWindowTextA(omstrData);
+            if(atoi(omstrData.GetBuffer(0)) != CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks)
+            {
+                bUnChanged = false;
+            }
+        }
+        else if(CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer()!= NULL)
         {
             bUnChanged = false;
         }
-		}
-		else if(CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer()!= NULL) 
-		{
-			bUnChanged = false;
-		}
         if(bUnChanged == true)
         {
             return;
         }
     }
 
-	if( bUnChanged == false)			//if there are any changes, then save it.
+    if( bUnChanged == false)            //if there are any changes, then save it.
     {
         if( AfxMessageBox( defSTR_TX_SAVE_CONFIRMATION,
                            MB_YESNO | MB_ICONQUESTION ) == IDYES )

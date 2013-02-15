@@ -1201,6 +1201,7 @@ IDI_ICON_TILE ICON "Res\\Tile.ico"
 IDI_ICON_LOG_OFF ICON "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON ICON "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT ICON "res\\LoggingONLIGHT.ico"
+IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

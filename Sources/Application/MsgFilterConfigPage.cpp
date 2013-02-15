@@ -75,6 +75,8 @@ CMsgFilterConfigPage::CMsgFilterConfigPage() :
     //{{AFX_DATA_INIT(CMsgFilterConfigPage)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
+    m_hMsgWnd = NULL;
+    m_psFilterConfigured = NULL;
 }
 /*******************************************************************************
   Function Name  : ~CMsgFilterConfigPage

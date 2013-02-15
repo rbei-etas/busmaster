@@ -4,6 +4,7 @@
 //
 #define IDCANCEL2                       3
 #define ID_DEFAULT                      3
+#define IDI_ICON_BUSMASTER              1001
 #define IDC_CURNODROP                   1002
 #define IDI_ICONTESTCASE                1003
 #define IDI_ICONMSGSEND                 1004

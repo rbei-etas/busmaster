@@ -157,6 +157,7 @@ CCANMonitorApp::CCANMonitorApp()
     //m_pDocTemplate = NULL;
     m_bFromAutomation = FALSE;
     GetCurrentDirectory(MAX_PATH, m_acApplicationDirectory);
+    m_bIsConfigFileLoaded = false;
 }
 
 /////////////////////////////////////////////////////////////////////////////

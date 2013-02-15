@@ -9,7 +9,7 @@ INT output_CAPL()
 {
     char pchText[] = "Error Message";
     Trace(pchText);
-	return 0;
+    return 0;
 }
 
 UINT GetCaplKeyValue(UCHAR ucKeyVal)

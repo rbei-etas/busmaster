@@ -363,6 +363,7 @@ BEGIN_MESSAGE_MAP(CTxMsgWndJ1939, CDialog)
     ON_BN_CLICKED(IDC_SEND, OnBnClickedSend)
     ON_BN_CLICKED(IDC_OK, OnBnClickedOk)
     ON_EN_CHANGE(IDC_EDIT_DLC, OnEnChangeEditDlc)
+    ON_EN_UPDATE(IDC_EDIT_MILI_SEC, OnEnChangeEditMilliSec)
     ON_EN_CHANGE(IDC_EDIT_DATA, OnEnChangeEditMsg)
     ON_WM_SHOWWINDOW()
     ON_BN_CLICKED(IDC_RADIO_NM, OnBnClickedRadioNm)
@@ -521,6 +522,11 @@ void CTxMsgWndJ1939::OnBnClickedSend()
             //Check for cyclic transmission
             if (m_omCheckCyclic.GetCheck() == BST_CHECKED)
             {
+                if((UINT)m_omMiliSecs.lGetValue() > defMAX_TIME_DELAY)
+                {
+                    AfxMessageBox("Cyclic delay cannot be more than 60000 milliseconds");
+                    return;
+                }
                 m_sMsgToBeSent.m_unTimerVal = (UINT)m_omMiliSecs.lGetValue();
                 vProcessTransmission(TRUE);
                 if (m_bThreadStarted == FALSE)
@@ -859,6 +865,22 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboMsgtype()
             m_omMsgDataEdit.SetReadOnly(FALSE);
         }
         break;
+    }
+}
+void CTxMsgWndJ1939::OnEnChangeEditMilliSec()
+{
+    if (m_omCheckCyclic.GetCheck() == BST_CHECKED)
+    {
+        if((UINT)m_omMiliSecs.lGetValue() > defMAX_TIME_DELAY)
+        {
+            AfxMessageBox("Cyclic delay cannot be more than 60000 milliseconds");
+            CString     omstrData;
+            omstrData.Format("%d", (UINT)m_omMiliSecs.lGetValue()/10);
+            m_omMiliSecs.SetWindowTextA(omstrData);
+            m_omMiliSecs.SetFocus();
+            m_omMiliSecs.SetSel(0,omstrData.GetLength());
+            return;
+        }
     }
 }
 void CTxMsgWndJ1939::vSetJ1939ClientParam(SJ1939CLIENTPARAM& sClientParam)

@@ -84,6 +84,6 @@ GETCONVERTER pfGetConverter;
 extern "C" __declspec(dllexport) HRESULT GetDBCConverter( CDBCConverterBase*& ouDBCConverter, eBUS_TYPE eBusType )
 {
     ouDBCConverter = new CDBFConverter(eBusType);
-    
+
     return S_OK;
 }

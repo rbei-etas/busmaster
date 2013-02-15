@@ -283,6 +283,7 @@ IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
+IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

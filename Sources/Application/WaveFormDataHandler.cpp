@@ -36,7 +36,7 @@ CWaveFormDataHandler::CWaveFormDataHandler(void)
     m_sDefaultWaveInfo.m_fAmplitude   = 10;
     m_sDefaultWaveInfo.m_fFrequency   = 1;
     m_shSamplingTP = 125;
-	m_bSignalDefinerAutoCorrect = true;
+    m_bSignalDefinerAutoCorrect = true;
 }
 
 CWaveFormDataHandler::~CWaveFormDataHandler(void)
@@ -520,7 +520,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
             }
             xmlXPathFreeObject(pOjectPath);
         }
-		xmlChar* pXpath3 = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/SignalDefiner_AutoCorrect";
+        xmlChar* pXpath3 = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/SignalDefiner_AutoCorrect";
         pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath3);
         if(pOjectPath != NULL)
         {

@@ -379,6 +379,7 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
         if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
         {
             CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_HIDE );
+            CGlobalObj::ouGetObj(m_eBus).bCloseFunctionEditorFrame();
         }
     }
 }
@@ -396,6 +397,9 @@ void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
         memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
         CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize = nBuffSize;*/
         CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig(pXmlDoc, m_eBus);
+
+        /* Close the previosly open function editor view */
+        CGlobalObj::ouGetObj(m_eBus).bCloseFunctionEditorFrame();
     }
     //Update Internal Data
 

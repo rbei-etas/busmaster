@@ -97,6 +97,7 @@
 #define IDC_CHECK_MSG_BLOCK_DELAY       17001
 #define IDC_EDIT_BLOCK_TRG_TIMER_VAL    17002
 #define IDC_STAT_UNIT_MS2               17003
+#define IDI_ICO_TX_WINDOW               17004
 #define IDM_ADD_MSG_BLOCK               32810
 #define IDM_DELETE_SEL_MSG_BLOCK        32816
 #define IDM_DELETE_SEL_MSG              32892

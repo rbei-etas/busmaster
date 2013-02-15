@@ -125,7 +125,7 @@ void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
                     m_ouFormatMsgCAN.m_bResetMsgAbsTime = m_bResetAbsTime;
                     m_ouFormatMsgCAN.m_LogSysTime = m_LogSysTime ;
                     m_bResetAbsTime = FALSE;
-                }				
+                }
                 // Format current frame in the necessary settings
                 m_ouFormatMsgCAN.vFormatCANDataMsg(&CurrMsgCAN, &CurrDataCAN, m_bExprnFlag_Log);
 

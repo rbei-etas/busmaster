@@ -133,6 +133,7 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
     bReturn = m_omRootSplitter.CreateStatic( this,
               defTX_MSG_ROOTSPLITTER_ROWS,
               defTX_MSG_ROOTSPLITTER_COLS );
+
     // Check for success
     if( bReturn == TRUE )
     {
@@ -219,6 +220,12 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         }
         m_bInit = FALSE;
     }
+
+    //SSH + issue #438
+    HICON hIco = AfxGetApp()->LoadIcon(IDI_ICO_TX_WINDOW);
+    SetIcon(hIco, TRUE);
+    //SSH -
+
     return bReturn;
 }
 

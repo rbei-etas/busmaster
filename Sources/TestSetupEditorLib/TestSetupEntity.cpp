@@ -1015,9 +1015,9 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
             omReportPath.Delete(nIndex, 4);
 
             CFile omFile(omStrFilePath,  CFile::modeRead);
-            /*CString omReportName = omFile.GetFileTitle() + "." + omstrTemp;*/			
+            /*CString omReportName = omFile.GetFileTitle() + "." + omstrTemp;*/
             /*omReportPath += omReportName;*/
-			omReportPath = omStrFilePath + "." + omstrTemp;
+            omReportPath = omStrFilePath + "." + omstrTemp;
             m_ouTestSetupHeader.m_sReportFile.m_omPath = omReportPath;
         }
         //Report Path
