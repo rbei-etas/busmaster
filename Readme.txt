@@ -21,4 +21,4 @@
 7. BUSMASTER Uses the following opensource code taken from Codeproject and its license can be found at http://www.codeproject.com/info/cpol10.aspx
 	7.1. Dm Graph  		: The Complete source code can be downloaded from  http://www.codeproject.com/Articles/310494/2D-Graph-ActiveX-control-in-Cplusplus-with-ATL-no
 
-8. Installer file for the latest version v1.7.1 can be downloaded at https://github.com/rbei-etas/busmaster-installers/archive/v1.7.1.zip
+8. Installer file for the latest version v1.7.2 can be downloaded at https://github.com/rbei-etas/busmaster-installers/archive/v1.7.2.zip
