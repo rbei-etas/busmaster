@@ -1,7 +1,7 @@
 @echo off
 
 :JAVA_FIND
-for /d %%i in ("%ProgramFiles%\Java\jdk*") do set JAVA_HOME=%%i
+for /d %%i in ("%ProgramFiles(x86)%\Java\jdk*") do set JAVA_HOME=%%i
 if exist "%JAVA_HOME%\lib\tools.jar" goto SERNA_FIND
 
 :JAVA_NOT_FOUND
@@ -9,7 +9,7 @@ echo Java Development Kit not found. Build failed!
 goto END
 
 :SERNA_FIND
-for /d %%i in ("%ProgramFiles%\Syntext\Serna Free*") do set SERNA_HOME=%%i
+for /d %%i in ("%ProgramFiles(x86)%\Syntext\Serna Free*") do set SERNA_HOME=%%i
 if exist "%SERNA_HOME%" goto DITA_FIND
 
 :SERNA_NOT_FOUND
@@ -62,7 +62,7 @@ set ANT_OPTS=%ANT_OPTS% -Djavax.xml.transform.TransformerFactory=net.sf.saxon.Tr
 goto HTMLHELP_FIND
 
 :HTMLHELP_FIND
-set HTMLHELP_HOME=%ProgramFiles%\HTML Help Workshop
+set HTMLHELP_HOME=%ProgramFiles(x86)%\HTML Help Workshop
 if exist "%HTMLHELP_HOME%" goto BUILD
 
 :HTMLHTLP_NOT_FOUND
