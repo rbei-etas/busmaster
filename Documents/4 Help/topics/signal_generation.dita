@@ -29,8 +29,8 @@
     <p>1. Sine Wave</p>
     <p>2. Cos Wave</p>
     <p>3. Triangular Wave</p>
-    <p>4. Sawtooth Wave</p>
-    <p><lines/><image href="C:/Users/auc3kor/Desktop/SignalDefiner.jpg"/></p>
+    <p>4. Sawtooth Wave</p>
+    <p><lines/><image href="../images/SignalDefiner.jpg"/></p>
     <p>The dialog will be loaded with default waveform settings i.e. a sine wave with amplitude 10, frequency 1 and sampling time period 125. User can make appropriate changes to the wave by choosing signal type, desired amplitude and frequency. “Ok” button click will add the signal to Defined signals list.</p>
     <p>The sampling Time Period which is last modified will be applicable to all the signals. For example, if for first signals you choose the sampling time period as 125 and for the second signal, you choose the sampling time period as 100. Then the sampling time period applicable is 100 for first and second signals.
 </p>
