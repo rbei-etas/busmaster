@@ -221,7 +221,7 @@
 //Waveform generator
 #define DEF_WF_GENERATOR            "CAN_Wave_Form_Genarator"
 #define DEF_WAVE_FORM               "WAVE_FORM"
-#define DEF_MSG_ID                  "Message_ID"
+#define DEF_WF_MSG_ID                  "Message_ID"
 #define DEF_DEFAULT_AMPLITUDE       "Default_Amplitude"
 #define DEF_WAVE_FORM               "WAVE_FORM"
 #define DEF_SIGNALS                 "SIGNALS"

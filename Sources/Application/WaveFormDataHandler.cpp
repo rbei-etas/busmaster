@@ -759,7 +759,7 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
         CString csMsdID;
         csMsdID.Format("%d", objSigGen.m_nMsgID);
         omcVarChar = csMsdID;
-        xmlNodePtr pMsgID= xmlNewChild(pWaveForm, NULL, BAD_CAST DEF_MSG_ID, BAD_CAST omcVarChar);
+        xmlNodePtr pMsgID= xmlNewChild(pWaveForm, NULL, BAD_CAST DEF_WF_MSG_ID, BAD_CAST omcVarChar);
         xmlAddChild(pWaveForm, pMsgID);
 
         //<Default_Amplitude />
