@@ -163,8 +163,8 @@ void CUtilFunctions::MakeRelativePath(const char* pchCurrentDir, char* pchAbsFil
         return ;
     }
 
-    CString strDirectory = pchCurrentDir[0];
-    CString strDirectory2 = pchAbsFileName[0];
+    CString strDirectory(pchCurrentDir[0]);
+    CString strDirectory2(pchAbsFileName[0]);
     char chRelativeFile[MAX_LEN+1];
     if(strDirectory.CompareNoCase(strDirectory2) != 0)
     {
