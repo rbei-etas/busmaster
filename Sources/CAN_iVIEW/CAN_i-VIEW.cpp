@@ -14,15 +14,16 @@
  */
 
 /**
- * \file      CAN_i_VIEW/CAN_i_VIEW.cpp
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file	CAN_i_VIEW/CAN_i_VIEW.cpp
+ * \author	D Southworth
+ * \copyright Copyright (c) 2013, Robert Bosch Automotive Service Solutions.
  *
  * Implementation of Ci_VIEW
  */
 
 /* C++ includes */
 #include <string>
+#include <sstream>
 #include <vector>
 #include <set>
 #include <array>
@@ -67,35 +68,8 @@ BOOL CCAN_i_VIEW_DLL::InitInstance()
 static Base_WrapperErrorLogger*	g_pLog = NULL;
 
 /***********************
- * VCI Rx Class Members
- */
-
-/**
- * VCI Rx Data
- * Process incomming frames.
- */
-T_PDU_ERROR VCIRx::RxData(vci_data_record_with_data* VCIRec)
-{
-	can_record_s* CANRec=(can_record_s*)VCIRec->data;
-	UNUM32 CANId = ntohl( CANRec->address );
-	UNUM16 Len = ntohs( VCIRec->header.data_length ) - VCI_DATA_DATA_SZ;
-
-	LOG_MESSAGE( g_pLog, "RxData" );
-	return PDU_STATUS_NOERROR;
-}
-/**
- * VCI Rx Event
- * Process incomming events
- */
-T_PDU_ERROR VCIRx::RxEvent(vci_event_record_s* /* VCIEvent */)
-{
-	LOG_MESSAGE( g_pLog, "RxEvent" );
-	return PDU_STATUS_NOERROR;
-}
-
-/***********************
  * VCI HW Class Members
- * An instance on this class defines a Channel
+ * An instance of this class defines a Channel
  */
 UNUM32 VCI::m_NextId = 0;
 
@@ -152,7 +126,7 @@ T_PDU_ERROR VCI::Connect()
 	if( m_VCiIF ){
 		Err = m_VCiIF->Connect( (UNUM32)VCI_PROTO_RAW,
 			(UNUM32)VCI_PHYS_ISO11898_2, PinHi, PinLo,
-			(UNUM32)VCI_TERM_NONE, (UNUM32)500000, (UNUM32)0 );
+			(UNUM32)VCI_TERM_NONE, m_Baudrate, (UNUM32)0 );
 		if( Err == PDU_STATUS_NOERROR ){
 			Err = m_VCiIF->IOCtl(VCI_FIOTXNOTIFY, VCI_TX_ECHO);
 		}
@@ -211,10 +185,6 @@ void Client::RemoveClientBuffers()
 	m_ClientBuf.clear();
 }
 
-/***********************
- * CDIL_CAN_i_VIEW Class Members
- */
-
 static CDIL_CAN_i_VIEW* g_DIL_CAN_i_VIEW = NULL;
 
 /**
@@ -233,6 +203,26 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 	}
 	*ppvInterface = (void*)g_DIL_CAN_i_VIEW;
 	return hResult;
+}
+
+/***********************
+ * CDIL_CAN_i_VIEW Class Members
+ */
+
+CDIL_CAN_i_VIEW::CDIL_CAN_i_VIEW() :
+	m_CreateCCommTCP(NULL),
+	m_CreateCVCiViewIF(NULL),
+	m_hDll( NULL ),
+	m_CurrState(STATE_DRIVER_SELECTED),
+	m_hOwnerWnd(NULL),
+	m_nChannels(0)
+{
+	m_Channel.assign(NULL);
+}
+
+~CDIL_CAN_i_VIEW::CDIL_CAN_i_VIEW()
+{
+	CAN_PerformClosureOperations();
 }
 
 void CDIL_CAN_i_VIEW::GetSystemErrorString()
@@ -645,12 +635,15 @@ HRESULT CDIL_CAN_i_VIEW::CAN_SetConfigData(
 	// First disconnect the node
 	CAN_StopHardware();
 
-	for (UINT i = 0; i < m_nChannels; i++)
-	{
-		//First remove all the filters
-		//ManageFilters(FILTER_REMOVE, i);
-		//First remove all the Rx Tx queues
-		//ManageQueue(QUEUE_DESTROY, i);
+	for (UINT i = 0; i < m_nChannels; i++){
+		pVCI_t VCI = m_Channel[i];
+		if (!VCI)
+			continue;
+		std::stringstream	Stream;
+		UNUM32			Baudrate;
+		Stream << InitData->m_omStrBaudrate;
+		Stream >> Baudrate;
+		VCI->Baudrate( Baudrate );
 	}
 
 	return S_OK;
@@ -856,7 +849,6 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ListHwInterfaces(
 		HWIF[i].m_dwIdInterface = Itr->second->Id();
 		HWIF[i].m_bytNetworkID = (unsigned char)Itr->second->CAN();
 		HWIF[i].m_dwVendor = Itr->second->TypeId();
-		HWIF[i].m_acNameInterface = Itr->second->Name();
 		HWIF[i].m_acDeviceName = Itr->second->Firmware();
 		Tmp << Itr->second->Name() << " CAN " << dec << Itr->second->CAN();
 		HWIF[i].m_acDescription = Tmp.str();
@@ -957,7 +949,8 @@ HRESULT CDIL_CAN_i_VIEW::CAN_UnloadDriverLibrary(void)
  * Value stored in lParam.
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_GetControllerParams(
-		LONG& lParam,	UINT /*nChannel*/,
+		LONG&		lParam,
+		UINT		nChannel,
 		ECONTR_PARAM	eContrParam)
 {
 	HRESULT hResult = S_OK;
@@ -976,7 +969,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetControllerParams(
 		break;
 
 	case HW_MODE:
-		lParam = defMODE_SIMULATE;
+		lParam = defCONTROLLER_ACTIVE;
 		break;
 
 	case CON_TEST:
@@ -1034,6 +1027,26 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetErrorCount(
 		ECONTR_PARAM	/*eContrParam*/)
 {
 	memset(&sErrorCnt, 0, sizeof(SERROR_CNT));
+	return S_OK;
+}
+
+/**
+* \brief         Applies FilterType(PASS/STOP) filter for corresponding
+*                channel. Frame ids are supplied by punMsgIds.
+* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
+* \param[in]     Channel, is TYPE_CHANNEL
+* \param[in]     punMsgIds, is UINT*
+* \param[in]     nLength, is UINT
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          07.10.2011 Created
+*/
+HRESULT CDIL_CAN_VectorXL::CAN_FilterFrames(
+		FILTER_TYPE	FilterType,
+		TYPE_CHANNEL	Channel,
+		UINT*		pMsgIds,
+		UINT )
+{
 	return S_OK;
 }
 

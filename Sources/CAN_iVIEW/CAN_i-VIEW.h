@@ -14,9 +14,9 @@
  */
 
 /**
- * \file      CAN_STUB/CAN_STUB.h
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file	CAN_i_VIEW/CAN_i_VIEW.h
+ * \author	D Southworth
+ * \copyright Copyright (c) 2013, Robert Bosch Automotive Service Solutions.
  */
 
 #pragma once
@@ -83,21 +83,6 @@ public:
 };
 
 /**
- * VCI Rx Class
- */
-class VCIRx :
-	public CVCiViewHostIF
-{
-public:
-	VCIRx(){};
-private:
-	T_PDU_ERROR RxData(vci_data_record_with_data* VCIRec);
-	T_PDU_ERROR RxEvent(vci_event_record_s* VCIEvent);
-};
-
-typedef VCIRx* pVCIRx_t;
-
-/**
  * VCI HW (Channel)
  */
 class VCI
@@ -134,6 +119,14 @@ public:
 	{
 		return m_Firmware;
 	}
+	UNUM32 Baudrate()
+	{
+		return m_Baudrate;
+	}
+	void Baudrate( UNUM32 Baudrate )
+	{
+		m_Baudrate = Baudrate;
+	}
 	/** Connect
 	 * \brief Connect to either CAN 0 or CAN 1
 	 * \return T_PDU_ERROR
@@ -150,6 +143,13 @@ private:
 	UNUM32		m_CAN;
 	string		m_Firmware;
 	UNUM32		m_ControllerState;
+	/*
+	 * Configuration
+	 */
+	UNUM32		m_Baudrate;
+	/*
+	 * Stats
+	 */
 	UNUM32		m_TxErrorCounter;
 	UNUM32		m_RxErrorCounter;
 	UNUM32		m_PeakRxErrorCounter;
@@ -206,17 +206,8 @@ class CDIL_CAN_i_VIEW :
 	typedef std::map<UNUM32, pVCI_t>	pVCIMap_t;
 	typedef std::map<DWORD,pClient_t>	pClientMap_t;
 public:
-	CDIL_CAN_i_VIEW() :
-		m_CreateCCommTCP(NULL),
-		m_CreateCVCiViewIF(NULL),
-		m_hDll( NULL ),
-		m_CurrState(STATE_DRIVER_SELECTED),
-		m_hOwnerWnd(NULL),
-		m_nChannels(0)
-		{
-			m_Channel.assign(NULL);
-		};
-	/* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
+	CDIL_CAN_i_VIEW();
+	virtual ~CDIL_CAN_i_VIEW();
 	HRESULT CAN_PerformInitOperations(void);
 	HRESULT CAN_PerformClosureOperations(void);
 	HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
@@ -234,8 +225,7 @@ public:
 	HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 	HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
 	HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-	// Specific function set
+	HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
 	HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
 	HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
 	HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);

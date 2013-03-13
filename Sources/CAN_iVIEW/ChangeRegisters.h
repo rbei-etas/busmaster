@@ -14,12 +14,11 @@
  */
 
 /**
- * \file      ChangeRegisters_CAN_ETAS_BOA.h
- * \brief     This header file contains the defination of class
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file	CAN_i_VIEW/ChangeRegisters.h
+ * \author	Pradeep Kadoor modified for iView by D Southworth
+ * \copyright Copyright (c) 2013, Robert Bosch Automotive Service Solutions.
  *
- * This header file contains the defination of class
+ * This header file contains the defination of class CChangeRegisters_CAN_iVIEW
  */
 
 #pragma once
