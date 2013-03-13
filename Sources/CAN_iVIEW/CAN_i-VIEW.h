@@ -42,7 +42,9 @@
  */
 enum State_e
 {
-	STATE_DRIVER_SELECTED    = 0x0,
+	STATE_DRIVER_UNLOADED	= 0x0,
+	STATE_DRIVER_LOADED,
+	STATE_DRIVER_SELECTED,
 	STATE_HW_INTERFACE_LISTED,
 	STATE_HW_INTERFACE_SELECTED,
 	STATE_CONNECTED
@@ -207,12 +209,14 @@ class CDIL_CAN_i_VIEW :
 	typedef std::map<DWORD,pClient_t>	pClientMap_t;
 public:
 	CDIL_CAN_i_VIEW() :
+		m_CreatemDNS(NULL),
 		m_CreateCCommTCP(NULL),
 		m_CreateCVCiViewIF(NULL),
 		m_hDll( NULL ),
-		m_CurrState(STATE_DRIVER_SELECTED),
+		m_CurrState(STATE_DRIVER_UNLOADED),
 		m_hOwnerWnd(NULL),
-		m_nChannels(0)
+		m_nChannels(0),
+		m_CmDNS(NULL)
 		{
 			m_Channel.assign(NULL);
 		};
