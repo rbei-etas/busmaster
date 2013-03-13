@@ -779,6 +779,9 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetLastErrorString(string& acErrorStr)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_PerformInitOperations(void)
 {
+	VALIDATE_VALUE_RETURN_VAL(m_CurrState,
+		STATE_DRIVER_LOADED, ERR_IMPROPER_STATE);
+
 	InitializeCriticalSection(&m_Mutex);
 	m_CmDNS = m_CreatemDNS( API_MDNS_SERVICE_TYPE, this );
 	m_CmDNS->Start();
@@ -787,6 +790,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformInitOperations(void)
 		m_SelectedVCI[i] = -1;
 	}
 	return S_OK;
+	m_CurrState = STATE_DRIVER_SELECTED;
 }
 
 /**
@@ -806,6 +810,8 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_PerformClosureOperations(void)
 {
+	VALIDATE_VALUE_RETURN_VAL(m_CurrState,
+		STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
 	pClientMap_t Clients = m_Clients;
 	pClientMap_t::iterator CItr = Clients.begin();
 
@@ -814,8 +820,10 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformClosureOperations(void)
 		CAN_RegisterClient(FALSE, Id, NULL);
 	}
 
-	m_CmDNS->Stop();
-	delete m_CmDNS;
+	if (m_CmDNS){
+		m_CmDNS->Stop();
+		delete m_CmDNS;
+	}
 
 	if( m_CurrState == STATE_CONNECTED ){
 		CAN_StopHardware();
@@ -830,7 +838,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformClosureOperations(void)
 	}
 	LeaveCriticalSection(&m_Mutex);
 	DeleteCriticalSection(&m_Mutex);
-	m_CurrState = STATE_DRIVER_SELECTED;
+	m_CurrState = STATE_DRIVER_LOADED;
 	return S_OK;
 }
 
@@ -935,6 +943,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_LoadDriverLibrary(void)
 	m_CreatemDNS = (CreatemDNS_t)GetProcAddress(m_hDll,"CreatemDNS");
 	m_CreateCCommTCP = (CreateCCommTCP_t)GetProcAddress(m_hDll,"CreateCCommTCP");
 	m_CreateCVCiViewIF = (CreateCVCiViewIF_t)GetProcAddress(m_hDll,"CreateCVCiViewIF");
+	m_CurrState = STATE_DRIVER_LOADED;
 	return S_OK;
 }
 
@@ -949,6 +958,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_UnloadDriverLibrary(void)
 		FreeLibrary( m_hDll );
 		m_hDll = NULL;
 	}
+	m_CurrState = STATE_DRIVER_UNLOADED;
 	return S_OK;
 }
 
