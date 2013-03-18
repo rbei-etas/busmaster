@@ -1616,7 +1616,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 1.8.0 Beta 3"
+    IDS_VERSION             "Ver 1.8.0"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
