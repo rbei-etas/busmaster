@@ -15,14 +15,7 @@
     </metadata>
   </prolog>
   <body>
-    <section>
-      <title>Logging</title>
-      <p>User can configure log file setting using <menucascade>
-          <uicontrol>Configure</uicontrol>
-          <uicontrol>Log</uicontrol>
-        </menucascade> menu. This will show log file configuration dialog as shown below.</p>
-      <image href="../images/log_config.bmp" alt="Log File Configuration Dialog" placement="break"/>
-    </section>
+    <section><title>Logging</title>User can configure log file setting using <b>CAN --&gt; Logging --&gt; Configure</b> menu. This will show log file configuration dialog as shown below.<image href="../images/log_config.bmp" alt="Log File Configuration Dialog" placement="break"/></section>
     <section>
       <title>Log Files</title>
       <p>User can add as many as log files in to the list of Log Files. This list will show the log files that are already configured. To add a new Log file select Add button. This will add a log file with default file name. User can change the file name using &quot;...&quot; button in the Log File Details section. The check box associated with the log file will make the log file eligible for logging. If the check box is not checked logging will not happen to that particular file.</p>
@@ -64,10 +57,7 @@
     </example>
     <section>
       <title>Replay</title>
-      <p>User can configure replay file setting using <menucascade>
-          <uicontrol>Configure</uicontrol>
-          <uicontrol>Replay</uicontrol>
-        </menucascade> menu. This will show replay file configuration dialog as shown below.</p>
+      <p>User can configure replay file setting using <b>CAN --&gt; Replay --&gt; Configure</b> menu. This will show replay file configuration dialog as shown below.</p>
       <image href="../images/replay_config.bmp" alt="Replay File Configuration Dialog" placement="break"/>
     </section>
     <section>

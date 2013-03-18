@@ -28,11 +28,7 @@
     </section>
     <section>
       <title>Invoking Test suite Executor</title>
-      <p>To open the test suite editor, in BUSMASTER click on menu Item <menucascade>
-          <uicontrol>Functions</uicontrol>
-          <uicontrol>Test Automation</uicontrol>
-          <uicontrol>Executor</uicontrol>
-        </menucascade>.</p>
+      <p>To open the test suite editor, in BUSMASTER click on menu Item <b>CAN --&gt; Test Automation --&gt; Executor</b>.</p>
       <p>The first look of test suite is shown in the following figure:</p>
       <image href="../images/TestSuiteExecutor.bmp" placement="break"/>
       <p><uicontrol>Master pane</uicontrol>: Using this pane we can add test setup files and select and deselect a test case. All the functionalities described in the following section can be performed using this pane.</p>
