@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="database_editor" xml:lang="en-us">
+  <title>Database Editor</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Database Editor</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>BUSMASTER database consists of information about expected message. You can create a database of messages to be transmitted or received over CAN bus. Each message has a unique ID and name. Each message has upto eight bytes of data. You can define the length of message in bytes. Each message can consist of one or more signals. In a message each signal has start bit and length, no two signals can overlap. Signal can have an offset, a multiplication factor and engineering units. These three information together are used to display signal value received in engineering units. The data received is multiplied by the factor, added to the offset to obtain the engineering value. Also a particular value of the signal can be given a meaningful name by using signal descriptor (e.g. ON = 1, OFF = 0). This information will be used while interpreting the messages.</p>
+    <p>User can create new BUSMASTER database by selecting <b>CAN --&gt; Database --&gt; New</b> menu option. This menu option will be enabled only when no database editor is open.</p>
+    <p>User can also open any BUSMASTER database by selecting <b>CAN --&gt; Database --&gt; Open</b> menu option.</p>
+    <p>This will allow you to specify the database name, which you want to open and edit.</p>
+    <p>There are two panes in the database editor as shown in figure below.</p>
+    <image href="../images/database_editor.bmp" placement="break"/>
+    <section>
+      <title>Left Pane</title>
+      <p>This will have the names of all messages listed in a tree fashion. Will be called Pane 1.</p>
+    </section>
+    <section>
+      <title>Right Pane</title>
+      <p>This pane will display the details of each message that you select from the Pane1. Will be called Pane 2.</p>
+      <p>By default no database is loaded. Once the user imports a database it will be stored across sessions. This is called the active database, which will be used for interpretation and by the function editor.</p>
+    </section>
+    <section>
+      <title>Import Database</title>
+      <p>User can select any number of BUSMASTER generated database and make them as active databases.<ol>
+          <li>Select <b>CAN --&gt; Database --&gt; Associate</b> menu option. An open file dialog will be displayed.</li>
+          <li>Select the databases and click on Open button. </li>
+        </ol></p>
+    </section>
+    <section>
+      <title>Dissociate Database</title>
+      <p>User can Dissociate any number of active database from the application.<ol>
+          <li>Select <b>CAN --&gt; Database --&gt; Dissociate</b> menu option. Following dialog box will be displayed:<image href="../images/DissociateDatabase.bmp" placement="break"/></li>
+          <li>Select the databases and click on Dissociate button.</li>
+        </ol></p>
+    </section>
+    <section>
+      <title>Add Message</title>
+      <p>User can add new messages to the database following the steps given below<ol>
+          <li>Select root item in Pane 1 and right click.</li>
+          <li>A pop-up menu will be displayed.</li>
+          <li>Select New Message menu option.</li>
+          <li>A dialog box will be displayed.</li>
+          <li>Key in all the details and select OK button.</li>
+        </ol></p>
+      <p>The new message name is added as last item in the Pane 1 and the details are displayed in the Pane 2.</p>
+    </section>
+    <section>
+      <title>Edit Message</title>
+      <p>User can edit messages in database by following the steps given below<ol>
+          <li> Select message name to be edited in Pane 1 and right click.</li>
+          <li>A pop-up menu will be displayed.</li>
+          <li>Select Edit Message menu option.</li>
+          <li>A dialog box will be displayed with all the message attributes displayed.</li>
+          <li>Key in all the details and select OK button.</li>
+        </ol></p>
+      <p>The new message name will be added as last item in the Pane 1 and the details are displayed in the Pane 2.</p>
+    </section>
+    <section>
+      <title>Delete Message</title>
+      <p>User can delete messages in database by following the steps given below<ol>
+          <li>Select message name to be deleted in Pane 1 and right click.</li>
+          <li>A pop-up menu will be displayed.</li>
+          <li>Select Delete menu option.</li>
+          <li>A delete confirmation message will be displayed.</li>
+          <li>Select Yes.</li>
+        </ol></p>
+      <p>The message name is deleted from Pane 1 and the details are displayed in the Pane 2.</p>
+    </section>
+    <section>
+      <title>Add Signal</title>
+      <p>Message consists of signals. To define a signal in message follow steps given below<ol>
+          <li>Click the message name for which you want to add the signal from the Pane 1.</li>
+          <li>The details of the message will be displayed in the Pane 2.</li>
+          <li>Right click in the signal details list in Pane 2.</li>
+          <li>A pop-up menu will be displayed.</li>
+          <li>Select New Signal menu option.</li>
+          <li>A signal details dialog box will be displayed.</li>
+          <li>Key in the signal details and click on OK button.</li>
+        </ol></p>
+      <p>The new signal and its attributes are displayed in the signal details list. Selecting New Signal button will do the same.</p>
+    </section>
+    <section>
+      <title>Edit signal attributes</title>
+      <p>User can edit the attribute of a signal define earlier, please follow the steps below to do so<ol>
+          <li>Click the message name for which you want to edit the signal attributes from the Pane 1. The details will be displayed in the Pane 2.</li>
+          <li>Select the signal in the signal details list in Pane 2.</li>
+          <li>Right click. A pop-up menu will be displayed.</li>
+          <li>Select Edit Signal menu option.</li>
+          <li>A signal details dialog box will be displayed.</li>
+          <li>Key in the signal details and click on OK button.</li>
+        </ol></p>
+      <p>The changes are displayed in the signal details list for the selected signal. Selecting the signal details from the list and clicking on Edit Signal button will do the same.</p>
+    </section>
+    <section>
+      <title>Deleting a signal</title>
+      <p>User can edit the attribute of a signal define earlier, please follow the steps below to do so<ol>
+          <li>Click the message name for which you want to delete the signal from the Pane 1.</li>
+          <li>The details will be displayed in the Pane 2.</li>
+          <li>Select the signal in the signal details list in Pane 2.</li>
+          <li>Right click. A pop-up menu will be displayed.</li>
+          <li>Select Delete menu option. A delete confirmation message will be displayed.</li>
+          <li>Select Yes. </li>
+        </ol></p>
+      <p>The signal and its attributes are deleted from signal details list in Pane 2. Selecting the signal details from the list and clicking on Delete Signal button will do the same.</p>
+    </section>
+    <section>
+      <title>Add Signal description</title>
+      <p>User can add the give description for a value of a signal , please follow the steps below to do so<ol>
+          <li>Click the message name for which you want to add description for the signal from the Pane 1. The details will be displayed in the Pane 2.</li>
+          <li>Select the signal in the signal details list in Pane 2.</li>
+          <li>Right click. A pop-up menu will be displayed.</li>
+          <li>Select Add Description menu option. A dialog box will be displayed.</li>
+          <li>Enter description and the signal value and click on OK button.</li>
+        </ol></p>
+      <p>The new signal description and value are displayed in the signal description list. Selecting the signal details from the list and clicking on New Desc  button can do the same.</p>
+    </section>
+    <section>
+      <title>Edit Signal Description and Signal value</title>
+      <p>User can edit the give description for the value of a signal, please follow the steps below to do so<ol>
+          <li>Click the message name for which you want to edit description for the signal from the Pane 1.</li>
+          <li>The details will be displayed in the Pane 2.</li>
+          <li>Select the signal description and value from the signal description list in Pane 2.</li>
+          <li>Right click. A pop-up menu will be displayed.</li>
+          <li>Select Edit Description menu option. A dialog box will be displayed.</li>
+          <li>Enter description and the signal value and click on OK button.</li>
+        </ol></p>
+      <p>The changes in signal description and value are displayed in the signal description list. The same can be done by selecting the signal details from the list and the description to be edited and by clicking on Edit Desc button.</p>
+    </section>
+    <section>
+      <title>Delete</title>
+      <p>User can delete Signal description and Signal value by following the steps given below<ol>
+          <li>Click the message name for which you want to delete description for the signal from the Pane 1. The details will be displayed in the Pane 2.</li>
+          <li>Select the signal description and value from the signal description list in Pane 2.</li>
+          <li>Right click. A pop-up menu will be displayed.</li>
+          <li>Select Delete Description menu option.</li>
+          <li>A delete confirmation message will be displayed.</li>
+          <li>Click on Yes button.</li>
+        </ol></p>
+      <p>The selected signal description and value are deleted from the signal description list. The same can be done by selecting the signal details from the list and the description to be deleted and by clicking on Delete Desc button.</p>
+    </section>
+    <section>
+      <title>Save database</title>
+      <p>User can save the database to a file by selecting <b>CAN --&gt; Database --&gt; Save</b> or by clicking on the tool bar button shown below.<image href="../images/DB_save.bmp" placement="break"/></p>
+      <p>User also have an option to save the file at different folder location with different name. You can do this by following the steps given below.<ol>
+          <li>Select <menucascade>
+              <uicontrol>CAN</uicontrol>
+              <uicontrol>Database</uicontrol>
+              <uicontrol>Save As</uicontrol>
+            </menucascade> menu option.</li>
+          <li>A save as file dialog box will be displayed. Enter the file name. Click on Save button.</li>
+        </ol></p>
+    </section>
+    <section>
+      <title>Closing database editor</title>
+      <p>Select <menucascade>
+          <uicontrol>CAN</uicontrol>
+          <uicontrol>Database</uicontrol>
+          <uicontrol>Close</uicontrol>
+        </menucascade> menu option to close any opened database file. Or click on [X] button at the right upper corner of the database window.</p>
+    </section>
+  </body>
+</topic>

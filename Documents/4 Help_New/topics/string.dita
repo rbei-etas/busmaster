@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="string" xml:lang="en-us">
+  <title>String and Memory Functions</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>String and Memory Functions</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>String and Memory Functions
+
+This chapter describes string-handling functions and functions for managing areas of memory. The corresponding declarations are in `string.h&apos;.</p>
+  </body>
+</topic>

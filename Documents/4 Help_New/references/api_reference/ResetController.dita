@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ResetController" xml:lang="en-us">
+  <title>ResetController : To reset CAN controller</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>void ResetController ( BOOL bResetType)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will reset the controller. If the parameter passed is TRUE, a hardware reset will be given to controller. In case of hardware reset, the buffer of controller will be flushed off and error counter value will be set to zero. If the parameter passed is FALSE, a software reset will be given to controller. Only driver buffer will be cleared. The status of controller error counter will not be effected.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>bResetType - 1 for Hardware reset of CAN controller
+                    0 for Software reset of CAN controller</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>-</p>
+    </section>
+  </refbody>
+</reference>

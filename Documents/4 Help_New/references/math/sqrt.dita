@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="sqrt" xml:lang="en-us">
+  <title>sqrt, sqrtf : positive square root</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double sqrt(double x);
+float  sqrtf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>sqrt computes the positive square root of the argument. You can modify error handling for this function with matherr.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>On success, the square root is returned. If x is real and positive, then the result is positive. If x is real and negative, the global value errno is set to EDOM (domain error).</p>
+    </section>
+  </refbody>
+</reference>

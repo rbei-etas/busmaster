@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fread" xml:lang="en-us">
+  <title>fread : read array elements from a file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+size_t fread(void *buf, size_t size, size_t count, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fread attempts to copy, from the file or stream identified by fp, count elements (each of size size) into memory, starting at buf. fread may copy fewer elements than count if an error, or end of file, intervenes.</p>
+      <p>fread also advances the file position indicator (if any) for fp by the number of characters actually read.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The result of fread is the number of elements it succeeded in reading.</p>
+    </section>
+  </refbody>
+</reference>

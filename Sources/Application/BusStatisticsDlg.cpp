@@ -386,8 +386,21 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
 BOOL CBusStatisticsDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
+    /* Try to load resource DLL for icons*/
+    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+
     //SSH #issue 438+
-    SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
+    if ( hModAdvancedUILib )
+    {
+        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
+        ::FreeLibrary(hModAdvancedUILib);
+        hModAdvancedUILib = NULL;
+    }
+    else
+    {
+        SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
+    }
     //Shailesh -
     // Init Item color and Heading color variables
     int nHeadingColor, nItemColor;

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="log1p" xml:lang="en-us">
+  <title>log1p, log1pf : log of 1 + x</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double log1p(double x);
+float log1pf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>log1p calculates the natural logarithm of 1+x. You can use log1p rather than `log(1+x)&apos; for greater precision when x is very small. log1pf calculates the same thing, but accepts and returns float values rather than double.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>log1p returns a double, the natural log of 1+x. log1pf returns a float, the natural log of 1+x.</p>
+    </section>
+  </refbody>
+</reference>

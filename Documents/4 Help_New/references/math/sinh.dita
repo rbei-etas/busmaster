@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="sinh" xml:lang="en-us">
+  <title>sinh, sinhf : hyperbolic sine</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double sinh(double x);
+float  sinhf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>sinh computes the hyperbolic sine of the argument x. Angles are specified in radians. sinh(x) is defined as sinhf is identical, save that it takes and returns float values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The hyperbolic sine of x is returned.</p>
+      <p>When the correct result is too large to be representable (an overflow), sinh returns HUGE_VAL with the appropriate sign, and sets the global value errno to ERANGE. You can modify error handling for these functions with matherr.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ldexp" xml:lang="en-us">
+  <title>ldexp, ldexpf : load exponent</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double ldexp(double val, int exp);
+float ldexpf(float val, int exp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>ldexp calculates the value ldexpf is identical, save that it takes and returns float rather than double values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>ldexp returns the calculated value. Underflow and overflow both set errno to ERANGE. On underflow, ldexp and ldexpf return 0.0. On overflow, ldexp returns plus or minus HUGE_VAL.</p>
+    </section>
+  </refbody>
+</reference>

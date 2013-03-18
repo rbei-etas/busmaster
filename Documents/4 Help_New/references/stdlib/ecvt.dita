@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ecvt" xml:lang="en-us">
+  <title>ecvt,ecvtf,fcvt,fcvtf : double or float to string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+char *ecvt(double val, int chars, int *decpt, int *sgn);
+char *ecvtf(float val, int chars, int *decpt, int *sgn);
+char *fcvt(double val, int decimals, int *decpt, int *sgn);
+char *fcvtf(float val, int decimals, int *decpt, int *sgn);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>ecvt and fcvt produce (null-terminated) strings of digits representating the double number val. ecvtf and fcvtf produce the corresponding character representations of float numbers. (The stdlib functions ecvtbuf and fcvtbuf are reentrant versions of ecvt and fcvt.)</p>
+      <p>The only difference between ecvt and fcvt is the interpretation of the second argument (chars or decimals). For ecvt, the second argument chars specifies the total number of characters to write (which is also the number of significant digits in the formatted string, since these two functions write only digits). For fcvt, the second argument decimals specifies the number of characters to write after the decimal point; all digits for the integer part of val are always included.</p>
+      <p>Since ecvt and fcvt write only digits in the output string, they record the location of the decimal point in *decpt, and the sign of the number in *sgn. After formatting a number, *decpt contains the number of digits to the left of the decimal point. *sgn contains 0 if the number is positive, and 1 if it is negative.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>All four functions return a pointer to the new string containing a character representation of val.</p>
+    </section>
+  </refbody>
+</reference>

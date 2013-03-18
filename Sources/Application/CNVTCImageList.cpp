@@ -27,11 +27,25 @@
 //Constructor
 CNVTCImageList::CNVTCImageList()
 {
+    m_bUseAdvancedUILib = false;
+    m_hModAdvancedUILib = NULL;
+    m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+
+    /* If the AdvancedUIPlugIn DLL exists, use it */
+    if ( m_hModAdvancedUILib )
+    {
+        m_bUseAdvancedUILib = true;
+    }
 }
 
 //Destructor
 CNVTCImageList::~CNVTCImageList()
 {
+    if ( m_bUseAdvancedUILib && m_hModAdvancedUILib )
+    {
+        ::FreeLibrary(m_hModAdvancedUILib);
+        m_hModAdvancedUILib = NULL;
+    }
 }
 
 BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, int nCX, int nCY)
@@ -49,8 +63,21 @@ BOOL CNVTCImageList::bCreateCNVTC(UINT nTBID, int nCX, int nCY, COLORREF clrMask
     if(CImageList::Create(nCX, nCY,ILC_MASK | ILC_COLOR32,0,0))
     {
         CBitmap bmpRes;
+        BOOL bSuccess = FALSE;
 
-        if(bmpRes.LoadBitmap(nTBID))
+        if ( m_bUseAdvancedUILib )
+        {
+            /* Load the bitmap from AdvancedUIPlugIn DLL */
+            HBITMAP hBMP = ::LoadBitmap(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBID));
+            bSuccess = bmpRes.Attach(hBMP);
+        }
+        else
+        {
+            /* Load from local resource */
+            bSuccess = bmpRes.LoadBitmap(nTBID);
+        }
+
+        if( bSuccess )
         {
             Add(&bmpRes, clrMask);
             return TRUE;

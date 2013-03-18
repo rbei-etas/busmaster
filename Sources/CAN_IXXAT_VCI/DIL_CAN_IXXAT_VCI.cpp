@@ -201,6 +201,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
 #endif
     HRESULT hResult = E_POINTER;
 
+    UINT unDefaultChannelCnt = nCount;
     // default: no IXXAT interface available
     nCount = 0;
     m_iNumberOfCANChannelsTotal = 0;
@@ -240,7 +241,16 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
             }
             else    /* Multiple channels available */
             {
-                if ( ListHardwareInterfaces(m_hOwnerWndHandle, DRIVER_CAN_IXXAT, m_sSelHwInterface, m_anSelectedItems, nHwCount) != 0 )
+                /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+                if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+                {
+                    for (UINT i = 0; i < unDefaultChannelCnt; i++)
+                    {
+                        m_anSelectedItems[i] = i;
+                    }
+                    nHwCount  = unDefaultChannelCnt;
+                }
+                else if ( ListHardwareInterfaces(m_hOwnerWndHandle, DRIVER_CAN_IXXAT, m_sSelHwInterface, m_anSelectedItems, nHwCount) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;

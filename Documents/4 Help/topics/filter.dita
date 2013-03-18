@@ -32,6 +32,10 @@
           <uicontrol>Enable Log Filter</uicontrol>
         </menucascade> or press <uicontrol>Log Filter</uicontrol> toolbar button shown in the fig. The filter will be applied on messages that are received after enabling the filter. To disable select the same menuitem or toolbar button again. Filtering will toggle on each press.</p>
     </section>
+    <section>
+      <title>Replay Filter</title>
+      <p>To enabling filter for replay select <b>Replay --&gt; Enable Replay Filter</b> or press <uicontrol>Replay Filter</uicontrol> toolbar button shown in the fig. To disable select the same menu item or toolbar button again. Filtering will toggle on each press.</p>
+    </section>
     <note>Note<ul>
         <li>Message filter and Log filter will be applied only for the incoming messages after enabling the filter.</li>
         <li>Filters can be Enabled/Disabled irrespective of tool connection status.</li>

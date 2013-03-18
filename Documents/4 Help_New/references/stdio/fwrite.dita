@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fwrite" xml:lang="en-us">
+  <title>fwrite : write array elements</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+size_t fwrite(const void *buf, size_t size, size_t count, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fwrite attempts to copy, starting from the memory location buf, count elements (each of size size) into the file or stream identified by fp. fwrite may copy fewer elements than count if an error intervenes.</p>
+      <p>fwrite also advances the file position indicator (if any) for fp by the number of characters actually written.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If fwrite succeeds in writing all the elements you specify, the result is the same as the argument count. In any event, the result is the number of complete elements that fwrite copied to the file.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableKeyHandlers" xml:lang="en-us">
+  <title>SendAckMsg: To send a acknowlegde message</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT SendAckMsg ( UINT PGN, BYTE AckType, BYTE DestAdres, UINT Channel)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will be used to send a acknowledgement message based on the request.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <lines>PGN - PGN to requested.
+AckType - 0 for positive, 1 for negative acknowledgement.                                   
+DestAdres - Destination node.
+Channel - Channel number.</lines>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>1 on success. 0 on failure.</p>
+    </section>
+  </refbody>
+</reference>

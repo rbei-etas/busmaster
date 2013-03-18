@@ -292,8 +292,8 @@ void CMessageInterpretation::OnShowWindow(BOOL bShow, UINT nStatus)
 BOOL CMessageInterpretation::OnInitDialog()
 {
     CDialog::OnInitDialog();
-	
-	SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_MSGWND), TRUE);
+
+    SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_MSGWND), TRUE);
 
     // TODO: Add extra initialization here
     BOOL bRetVal = FALSE;

@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strerror" xml:lang="en-us">
+  <title>strerror : convert error number to string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strerror(int errnum);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strerror converts the error number errnum into a string. The value of errnum is usually a copy of errno. If errnum is not a known error number, the result points to an empty string.</p>
+      <p>This implementation of strerror prints out the following strings for each of the values defined in `errno.h&apos;:</p>
+      <p>E2BIG
+    Arg list too long</p>
+      <p>EACCES
+    Permission denied</p>
+      <p>EADV
+    Advertise error</p>
+      <p>EAGAIN
+    No more processes</p>
+      <p>EBADF
+    Bad file number</p>
+      <p>EBADMSG
+    Bad message</p>
+      <p>EBUSY
+    Device or resource busy</p>
+      <p>ECHILD
+    No children</p>
+      <p>ECOMM
+    Communication error</p>
+      <p>EDEADLK
+    Deadlock</p>
+      <p>EEXIST
+    File exists</p>
+      <p>EDOM
+    Math argument</p>
+      <p>EFAULT
+    Bad address</p>
+      <p>EFBIG
+    File too large</p>
+      <p>EIDRM
+    Identifier removed</p>
+      <p>EINTR
+    Interrupted system call</p>
+      <p>EINVAL
+    Invalid argument</p>
+      <p>EIO
+    I/O error</p>
+      <p>EISDIR
+    Is a directory</p>
+      <p>ELIBACC
+    Cannot access a needed shared library</p>
+      <p>ELIBBAD
+    Accessing a corrupted shared library</p>
+      <p>ELIBEXEC
+    Cannot exec a shared library directly</p>
+      <p>ELIBMAX
+    Attempting to link in more shared libraries than system limit</p>
+      <p>ELIBSCN
+    .lib section in a.out corrupted</p>
+      <p>EMFILE
+    Too many open files</p>
+      <p>EMLINK
+    Too many links</p>
+      <p>EMULTIHOP
+    Multihop attempted</p>
+      <p>ENAMETOOLONG
+    File or path name too long</p>
+      <p>ENFILE
+    Too many open files in system</p>
+      <p>ENODEV
+    No such device</p>
+      <p>ENOENT
+    No such file or directory</p>
+      <p>ENOEXEC
+    Exec format error</p>
+      <p>ENOLCK
+    No lock</p>
+      <p>ENOLINK
+    Virtual circuit is gone</p>
+      <p>ENOMEM
+    Not enough space</p>
+      <p>ENOMSG
+    No message of desired type</p>
+      <p>ENONET
+    Machine is not on the network</p>
+      <p>ENOPKG
+    No package</p>
+      <p>ENOSPC
+    No space left on device</p>
+      <p>ENOSR
+    No stream resources</p>
+      <p>ENOSTR
+    Not a stream</p>
+      <p>ENOSYS
+    Function not implemented</p>
+      <p>ENOTBLK
+    Block device required</p>
+      <p>ENOTDIR
+    Not a directory</p>
+      <p>ENOTEMPTY
+    Directory not empty</p>
+      <p>ENOTTY
+    Not a character device</p>
+      <p>ENXIO
+    No such device or address</p>
+      <p>EPERM
+    Not owner</p>
+      <p>EPIPE
+    Broken pipe</p>
+      <p>EPROTO
+    Protocol error</p>
+      <p>ERANGE
+    Result too large</p>
+      <p>EREMOTE
+    Resource is remote</p>
+      <p>EROFS
+    Read-only file system</p>
+      <p>ESPIPE
+    Illegal seek</p>
+      <p>ESRCH
+    No such process</p>
+      <p>ESRMNT
+    Srmount error</p>
+      <p>ETIME
+    Stream ioctl timeout</p>
+      <p>ETXTBSY
+    Text file busy</p>
+      <p>EXDEV
+    Cross-device link</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>This function returns a pointer to a string. Your application must not modify that string.</p>
+    </section>
+  </refbody>
+</reference>

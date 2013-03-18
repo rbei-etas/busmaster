@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="va_start" xml:lang="en-us">
+  <title>Initialize variable argument list</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdarg.h&gt;
+void va_start(va_list ap, rightmost);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use va_start to initialize the variable argument list ap, so that va_arg can extract values from it. rightmost is the name of the last explicit argument in the parameter list (the argument immediately preceding the ellipsis `...&apos; that flags variable arguments in an ANSI C function header). You can only use va_start in a function declared using this ellipsis notation (not, for example, in one of its subfunctions).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>va_start does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

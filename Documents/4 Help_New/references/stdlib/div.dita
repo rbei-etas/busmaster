@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="div" xml:lang="en-us">
+  <title>div : divide two integers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+div_t div(int n, int d);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Divide returning quotient and remainder as two integers in a structure div_t.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The result is represented with the structure typedef struct { int quot; int rem; } div_t;</p>
+      <p>where the quot field represents the quotient, and rem the remainder. For nonzero d, if `r = div(n,d);&apos; then n equals `r.rem + d*r.quot&apos;.</p>
+      <p>To divide long rather than int values, use the similar function ldiv.</p>
+    </section>
+  </refbody>
+</reference>

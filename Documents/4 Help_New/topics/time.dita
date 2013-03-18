@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="time" xml:lang="en-us">
+  <title>Time Functions</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Time Functions</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>This chapter groups functions used either for reporting on time (elapsed, current, or compute time) or to perform calculations based on time.</p>
+    <p>The header file &apos;time.h&apos; defines three types. clock_t and time_t are both used for representations of time particularly suitable for arithmetic. (In this implementation, quantities of type clock_t have the highest resolution possible on your machine, and quantities of type time_t resolve to seconds.) size_t is also defined if necessary for quantities representing sizes.
+
+`time.h&apos; also defines the structure tm for the traditional representation of Gregorian calendar time as a series of numbers, with the following fields:<parml>
+        <plentry>
+          <pt>tm_sec</pt>
+          <pd>Seconds.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_min</pt>
+          <pd>Minutes.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_hour</pt>
+          <pd>Hours.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_mday</pt>
+          <pd>Day.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_mon</pt>
+          <pd>Month.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_year</pt>
+          <pd>Year (since 1900).</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_wday</pt>
+          <pd>Day of week: the number of days since Sunday.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_yday</pt>
+          <pd>Number of days elapsed since last January 1.</pd>
+        </plentry>
+        <plentry>
+          <pt>tm_isdst</pt>
+          <pd>Daylight Savings Time flag: positive means DST in effect, zero means DST not in effect, negative means no information about DST is available.</pd>
+        </plentry>
+      </parml></p>
+  </body>
+</topic>

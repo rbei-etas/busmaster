@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="exit" xml:lang="en-us">
+  <title>exit : end program execution</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+void exit(int code);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use exit to return control from a program to the host operating environment. Use the argument code to pass an exit status to the operating environment: two particular values, EXIT_SUCCESS and EXIT_FAILURE, are defined in `stdlib.h&apos; to indicate success or failure in a portable fashion.</p>
+      <p>exit does two kinds of cleanup before ending execution of your program. First, it calls all application-defined cleanup functions you have enrolled with atexit. Second, files and streams are cleaned up: any pending output is delivered to the host system, each open file or stream is closed, and files created by tmpfile are deleted.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>exit does not return to its caller.</p>
+    </section>
+  </refbody>
+</reference>

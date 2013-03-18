@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="filter" xml:lang="en-us">
+  <title>Enable/Disable Filter</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Enable/Disable Filter</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Filter (App Filter) can be enabled/disabled-using tool bar buttons or menu. Filters must have been configured prior to this. (Refer section Configure - App Filter and Display Filter).</p>
+    <section>
+      <title>Display Filter</title>
+      <p>To enable message window filtering select <b>CAN --&gt; Message Window --&gt; Enable Filters</b> or press <b>Display Filter </b>toolbar button shown in figure below.
+</p>
+      <image href="../images/FilterToolBar.bmp" placement="break"/>
+      <p>To disable filtering select the toolbar button again. Filtering will toggle on each press.</p>
+    </section>
+    <section>
+      <title>Log Filter</title>
+      <p>To enabling filter for logging select <b>CAN --&gt; Logging --&gt; Enable Filters</b> or press <uicontrol>Log Filter</uicontrol> toolbar button shown in the fig. The filter will be applied on messages that are received after enabling the filter. To disable select the same menu item or toolbar button again. Filtering will toggle on each press.</p>
+    </section>
+    <section>
+      <title>Replay Filter</title>
+      <p>To enabling filter for replay select <b>CAN --&gt; Replay --&gt; Enable Filters</b> or press <uicontrol>Replay Filter</uicontrol> toolbar button shown in the fig. To disable select the same menu item or toolbar button again. Filtering will toggle on each press.</p>
+    </section>
+    <note>Note<ul>
+        <li>Message filter and Log filter will be applied only for the incoming messages after enabling the filter.</li>
+        <li>Filters can be Enabled/Disabled irrespective of tool connection status.</li>
+      </ul></note>
+  </body>
+</topic>

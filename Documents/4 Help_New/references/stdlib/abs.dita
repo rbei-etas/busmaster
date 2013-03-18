@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="abs" xml:lang="en-us">
+  <title>abs : integer absolute value (magnitude)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+int abs(int i);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>abs returns the absolute value of i (also called the magnitude of i). That is, if i is negative, the result is the opposite of i, but if i is nonnegative the result is i.</p>
+      <p>The similar function labs uses and returns long rather than int values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The result is a nonnegative integer.</p>
+    </section>
+  </refbody>
+</reference>

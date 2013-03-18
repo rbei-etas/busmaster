@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="isascii" xml:lang="en-us">
+  <title>isascii : ASCII character predicate</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ctype.h&gt;
+int isascii(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>isascii is a macro which returns non-zero when c is an ASCII character, and 0 otherwise. It is defined for all integer values.</p>
+      <p>You can use a compiled subroutine instead of the macro definition by undefining the macro using `#undef isascii&apos;.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>isascii returns non-zero if the low order byte of c is in the range 0 to 127 (0x00--0x7F).</p>
+    </section>
+  </refbody>
+</reference>

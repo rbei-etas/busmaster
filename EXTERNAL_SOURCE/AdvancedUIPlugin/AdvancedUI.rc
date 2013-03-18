@@ -1,0 +1,114 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\toolbar_user_prog_Hot.bmp"
+IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_disabled.bmp"
+IDB_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
+IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
+IDB_MSG_WND_DISABLED    BITMAP                  "Res\\MsgWndDisabled.bmp"
+IDB_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
+IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
+IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
+IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
+IDB_CONFIGURE_HOT       BITMAP                  "Res\\Configure_Hot.bmp"
+IDB_CONFIGURE_DISABLED  BITMAP                  "Res\\Configure_Disabled.bmp"
+IDB_CONFIGURE           BITMAP                  "res\\Configure.bmp"
+IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
+IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
+IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
+IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
+IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
+IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_J1939_ACTIVATE ICON                    "res\\J1939Activate.ico"
+IDI_ICON_REPLAY_FILTER  ICON                    "Res\\ReplayFilter.ico"
+IDI_ICON_MSG_FILTER     ICON                    "Res\\MsgFilter.ico"
+IDI_ICON_LOG_FILTER     ICON                    "Res\\LogFilter.ico"
+IDI_ICON_J1939_DEACTIVATE ICON                  "res\\J1939DeActivate.ico"
+IDI_ICON_J1939_LOG_OFF  ICON                    "res\\J1939LogOFF.ico"
+IDI_ICON_J1939_LOG_ON   ICON                    "res\\J1939LogON.ico"
+IDI_ICON_J1939_OFFLINE  ICON                    "res\\J1939Offline.ico"
+IDI_ICON_J1939_ONLINE   ICON                    "res\\J1939Online.ico"
+IDI_ICON_J1939_TRANSMIT_OFF ICON                "res\\J1939TransmitOFF.ico"
+IDI_ICON_J1939_TRANSMIT_ON ICON                 "res\\J1939TransmitON.ico"
+IDI_ICON_J1939_LOG_DISABLED ICON                "res\\J1939LogDisabled.ico"
+IDI_ICON_J1939_ONLINE_DISABLED ICON             "res\\J1939OnlineDisabled.ico"
+IDI_ICON_J1939_TRANSMIT_DISABLED ICON           "res\\J1939TransmitDisabled.ico"
+IDI_ICON_CAN_CONNECT    ICON                    "res\\Connect.ico"
+IDI_ICON_CAN_DISCONNECT ICON                    "res\\Disconnect.ico"
+IDI_ICON_LOG_FILTER_ON  ICON                    "res\\LogFilterON.ico"
+IDI_ICON_MSG_FILTER_ON  ICON                    "res\\MsgFilterON.ico"
+IDI_ICON_REPLAY_FILTER_ON ICON                  "res\\ReplayFilterON.ico"
+IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
+IDI_ICON_SIGNALWATCH    ICON                    "res\\Signal_Watch.ico"
+IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

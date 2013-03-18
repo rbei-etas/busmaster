@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ferror" xml:lang="en-us">
+  <title>ferror : test whether read/write error has occurred</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int ferror(FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The stdio functions maintain an error indicator with each file pointer fp, to record whether any read or write errors have occurred on the associated file or stream. Use ferror to query this indicator.</p>
+      <p>See clearerr to reset the error indicator.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>ferror returns 0 if no errors have occurred; it returns a nonzero value otherwise.</p>
+    </section>
+  </refbody>
+</reference>

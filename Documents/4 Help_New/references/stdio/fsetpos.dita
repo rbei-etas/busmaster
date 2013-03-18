@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fsetpos" xml:lang="en-us">
+  <title>fsetpos : restore position of a stream or file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int fsetpos(FILE *fp, const fpos_t *pos);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Objects of type FILE can have a &quot;position&quot; that records how much of the file your program has already read. Many of the stdio functions depend on this position, and many change it as a side effect.</p>
+      <p>You can use fsetpos to return the file identified by fp to a previous position *pos (after first recording it with fgetpos).</p>
+      <p>See fseek for a similar facility.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>fgetpos returns 0 when successful. If fgetpos fails, the result is 1. The reason for failure is indicated in errno: either ESPIPE (the stream identified by fp doesn&apos;t support repositioning) or EINVAL (invalid file position).</p>
+    </section>
+  </refbody>
+</reference>

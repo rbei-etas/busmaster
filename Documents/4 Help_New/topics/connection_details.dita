@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="connection_details" xml:lang="en-us">
+  <title>Connection Details</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Connection Details</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>The connection to the CAN bus is via the 9 pole SUB-D-plug according to CiA Recommendation DS 102-1. Minimal configurations are the PINs 2 and 7 (CAN-L, CAN-H)</p>
+    <p>Pin Connection<ol>
+        <li>User-defined +12V / +5V / not connected.</li>
+        <li>CAN-L</li>
+        <li>User-defined CAN-GND / not connected.</li>
+        <li>Not Connected.</li>
+        <li>Not Connected.</li>
+        <li>User-defined CAN-GND / not connected.</li>
+        <li>CAN-H</li>
+        <li>Not Connected.</li>
+        <li>User-defined +12V / +5V / not connected.</li>
+      </ol></p>
+    <image href="../images/pin_details.bmp" placement="break"/>
+  </body>
+</topic>

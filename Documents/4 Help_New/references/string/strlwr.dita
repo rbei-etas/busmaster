@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strlwr" xml:lang="en-us">
+  <title>strlwr : force string to lower case</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strlwr(char *a);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strlwr converts each characters in the string at a to lower case.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strlwr returns its argument, a.</p>
+    </section>
+  </refbody>
+</reference>

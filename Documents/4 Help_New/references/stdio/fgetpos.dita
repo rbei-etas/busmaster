@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fgetpos" xml:lang="en-us">
+  <title>fgetpos : record position in a stream or file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int fgetpos(FILE *fp, fpos_t *pos);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Objects of type FILE can have a &quot;position&quot; that records how much of the file your program has already read. Many of the stdio functions depend on this position, and many change it as a side effect.</p>
+      <p>You can use fgetpos to report on the current position for a file identified by fp; fgetpos will write a value representing that position at *pos. Later, you can use this value with fsetpos to return the file to this position.</p>
+      <p>In the current implementation, fgetpos simply uses a character count to represent the file position; this is the same number that would be returned by ftell.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>fgetpos returns 0 when successful. If fgetpos fails, the result is 1. Failure occurs on streams that do not support positioning; the global errno indicates this condition with the value ESPIPE.</p>
+    </section>
+  </refbody>
+</reference>

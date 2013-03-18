@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+  | basedir can be specified to other places base on your need.
+  |
+  | Note: input, output, and temp directories will base on the basedir if 
+  | they are relative paths.
+  * -->
+
+<project name="help" default="all" basedir=".">
+  <property name="args.input" value="help.ditamap"/>
+  <property name="customization.dir" value="${basedir}/../Customization"/>
+
+  <!-- if file is a relative file name, the file name will be resolved 
+       relative to the importing file -->
+  <import file="${dita.dir}${file.separator}integrator.xml"/>
+  
+  <target name="help2htmlhelp" depends="integrate">
+    <ant antfile="${dita.dir}${file.separator}build.xml" target="init">
+      <!-- please refer to the toolkit's document for supported parameters, and 
+           specify them base on your needs -->
+      <property name="transtype" value="htmlhelp"/>
+    </ant>
+  </target>
+
+  <target name="help2odt" depends="integrate">
+    <ant antfile="${dita.dir}${file.separator}build.xml" target="init">
+      <!-- please refer to the toolkit's document for supported parameters, and 
+           specify them base on your needs -->
+      <property name="transtype" value="odt"/>
+    </ant>
+  </target>
+
+  <target name="help2pdf" depends="integrate">
+    <ant antfile="${dita.dir}${file.separator}build.xml" target="init">
+      <!-- please refer to the toolkit's document for supported parameters, and 
+           specify them base on your needs -->
+      <property name="transtype" value="pdf"/>
+    </ant>
+  </target>
+
+  <target name="help2wordrtf" depends="integrate">
+    <ant antfile="${dita.dir}${file.separator}build.xml" target="init">
+      <!-- please refer to the toolkit's document for supported parameters, and 
+           specify them base on your needs -->
+      <property name="transtype" value="wordrtf"/>
+    </ant>
+  </target>
+
+  <target name="help2xhtml" depends="integrate">
+    <ant antfile="${dita.dir}${file.separator}build.xml" target="init">
+      <!-- please refer to the toolkit's document for supported parameters, and 
+           specify them base on your needs -->
+      <property name="transtype" value="xhtml"/>
+    </ant>
+  </target>
+
+  <target name="all" depends="help2htmlhelp, help2pdf, help2xhtml"/>
+</project>

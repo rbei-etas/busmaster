@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="mktemp" xml:lang="en-us">
+  <title>mktemp, mkstemp : generate unused file name</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+char *mktemp(char *path);
+int mkstemp(char *path);
+char *_mktemp_r(void *reent, char *path);
+int *_mkstemp_r(void *reent, char *path);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>mktemp and mkstemp attempt to generate a file name that is not yet in use for any existing file. mkstemp creates the file and opens it for reading and writing; mktemp simply generates the file name.</p>
+      <p>You supply a simple pattern for the generated file name, as the string at path. The pattern should be a valid filename (including path information if you wish) ending with some number of `X&apos; characters. The generated filename will match the leading part of the name you supply, with the trailing `X&apos; characters replaced by some combination of digits and letters.</p>
+      <p>The alternate functions _mktemp_r and _mkstemp_r are reentrant versions. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>mktemp returns the pointer path to the modified string representing an unused filename, unless it could not generate one, or the pattern you provided is not suitable for a filename; in that case, it returns NULL.</p>
+      <p>mkstemp returns a file descriptor to the newly created file, unless it could not generate an unused filename, or the pattern you provided is not suitable for a filename; in that case, it returns -1.</p>
+    </section>
+  </refbody>
+</reference>

@@ -44,7 +44,7 @@
           <li>Select <menucascade>
               <uicontrol>File</uicontrol>
               <uicontrol>Database</uicontrol>
-              <uicontrol>Import Database</uicontrol>
+              <uicontrol>Associate</uicontrol>
             </menucascade> menu option. An open file dialog will be displayed.</li>
           <li>Select the databases and click on Open button. </li>
         </ol></p>
@@ -55,7 +55,7 @@
           <li>Select <menucascade>
               <uicontrol>File</uicontrol>
               <uicontrol>Database</uicontrol>
-              <uicontrol>Dissociate Database</uicontrol>
+              <uicontrol>Dissociate</uicontrol>
             </menucascade> menu option. Following dialog box will be displayed:<image href="../images/DissociateDatabase.bmp" placement="break"/></li>
           <li>Select the databases and click on Dissociate button.</li>
         </ol></p>

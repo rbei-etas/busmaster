@@ -75,6 +75,9 @@ CTxMsgBlocksView::CTxMsgBlocksView()
     m_bModified = FALSE;
     m_bNewBlock = false;
     m_bListItemChange = false;
+
+    // Set the time trigger value as unsigned since time cannot be negative
+    m_omTimeDelayBtwnBlocks.vSetSigned(false);
 }
 
 /*******************************************************************************
@@ -1586,8 +1589,10 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
         psGetMsgBlockPointer(m_nSelectedMsgBlockIndex,m_psMsgBlockList);
     if(unTimeInterVal > defMAX_TIME_DELAY)
     {
-        AfxMessageBox("Time Interval cannot be greater than 60000 milliseconds");
-        m_omStrTimeIntervalVal = m_omStrTimeIntervalVal.Left(m_omStrTimeIntervalVal.GetLength()-1);
+        AfxMessageBox("Time Interval cannot be more than 60000 milliseconds");
+        // Update the repvious valid value
+        //m_omStrTimeIntervalVal = m_omStrTimeIntervalVal.Left(m_omStrTimeIntervalVal.GetLength()-1);
+        m_omStrTimeIntervalVal.Format("%d", m_nTimeDelMsg);
         m_omEditTrgTimeIntervalVal.SetWindowText(m_omStrTimeIntervalVal);
         m_omEditTrgTimeIntervalVal.SetSel( 1,m_omStrTimeIntervalVal.GetLength() );
         return;
@@ -2429,6 +2434,25 @@ void CTxMsgBlocksView::AutoUpdateChanges()
             pWnd->SetFocus();
         }
     }
+
+    // Store the previous valid values of the time delay between messages and blocks
+    // This will be used to set as default values when invalid values are given as input
+    CString omStrCurrent;
+    CHAR* pcChar = NULL;
+    UINT unTimeVal = 0;
+    m_omEditTrgTimeIntervalVal.GetWindowText(omStrCurrent);
+    unTimeVal = static_cast<UINT>(strtol(omStrCurrent,&pcChar,BASE_10));
+    if (unTimeVal <= 60000)
+    {
+        m_nTimeDelMsg = unTimeVal;
+    }
+
+    GetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, omStrCurrent);
+    unTimeVal = (UINT)atol(omStrCurrent.GetBuffer(0));
+    if (unTimeVal <= 60000)
+    {
+        m_nTimeDelBlocks = unTimeVal;
+    }
 }
 void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
 {
@@ -2573,8 +2597,10 @@ void CTxMsgBlocksView::OnEnUpdateEditBlockTrgTimerVal()
     if(unTimerVal > defMAX_TIME_DELAY)
     {
         AfxMessageBox("Block interval cannot be more than 60000 milliseconds");
+        // Update the repvious valid value
         CString omstrTime;
-        omstrTime.Format("%d", CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks/10);
+        omstrTime.Format("%d", m_nTimeDelBlocks);
+        /*omstrTime.Format("%d", CTxWndDataStore::ouGetTxWndDataStoreObj().m_unTimeDelayBtwnMsgBlocks/10);*/
         SetDlgItemText(IDC_EDIT_BLOCK_TRG_TIMER_VAL, omstrTime);
         ((CEdit*)GetDlgItem(IDC_EDIT_BLOCK_TRG_TIMER_VAL))->SetSel(1,omstrTime.GetLength());
         return;

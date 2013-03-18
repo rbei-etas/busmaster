@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="single_run_mode" xml:lang="en-us">
+  <title>Single Run Mode</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Single Run Mode</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Find more details to configure replay in cyclic mode in section Log and Replay.</p>
+    <section>
+      <title>Interactive Replay</title>
+      <p>In interactive replay mode, replay window will be displayed during connect. Follow the steps given below to start replay.<ul>
+          <li>Select a message from Message Replay Window.</li>
+          <li>There are four options to select<ul>
+              <li>
+                <menucascade>
+                  <uicontrol>CAN</uicontrol>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Go</uicontrol>
+                </menucascade>
+              </li>
+              <li>
+                <menucascade>
+                  <uicontrol>CAN</uicontrol>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Step</uicontrol>
+                </menucascade>
+              </li>
+              <li>
+                <menucascade>
+                  <uicontrol>CAN</uicontrol>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Skip</uicontrol>
+                </menucascade>
+              </li>
+              <li>
+                <menucascade>
+                  <uicontrol>CAN</uicontrol>
+                  <uicontrol>Replay</uicontrol>
+                  <uicontrol>Stop</uicontrol>
+                </menucascade>
+              </li>
+            </ul></li>
+        </ul></p>
+      <p>User can use tool bar button shown in figure below for this purpose.
+      <image href="../images/ReplayToolBars.bmp" placement="break"/></p>
+    </section>
+    <section>
+      <title>Step</title>
+      <p>If User selects Step the current highlighted message will be sent over CAN bus and next message will be highlighted. If the current highlighted message is the last message in message replay window, then first message in the replay window will highlighted.</p>
+    </section>
+    <section>
+      <title>Skip</title>
+      <p>If User selects Skip the highlighted message will not be sent and next message will be highlighted. the current highlighted message is the last message in message replay window, then first message in the replay window will highlighted.</p>
+    </section>
+    <section>
+      <title>Go</title>
+      <p>If User selects Go then replay will start and message transmission will happen continuously with configured message delay. Replay message window will be freezed. Once replay finds break point or the last message is already transmitted,  replay will stop. In case of break point, that line will be highlighted. If it is due to the last message transmission, then first message will be highlighted. Once the replay is stopped, replay message window will be activated again.</p>
+    </section>
+    <section>
+      <title>Stop</title>
+      <p>If user selects Stop, the replay of messages will be stopped. If replay is in the middle of message transmission, that message will be completely transmitted and then replay will stop. Once the replay is stopped, replay window will be activated again and next message of last transmitted message will be highlighted.</p>
+    </section>
+    <section>
+      <title>Break Points</title>
+      <p>Inserting break points in the replay messages enables user to transmit a section of messages and then go in to the step mode. Break points shall be inserted by just double clicking the message entry in the replay window. This is a toggling functionality. Double clicking again on the same message entry will disable break point.</p>
+      <p>Replay with Go option will stop at break point. This makes user to analyze the CAN communication better.</p>
+      <p>Note<ul>
+          <li>Break points are available only in interactive single run mode and will be considered in Go option only</li>
+          <li>In case of Step, break points are ignored</li>
+        </ul></p>
+    </section>
+    <section>
+      <title>Non-Interactive Replay</title>
+      <p>In non-interactive replay, message transmission will start from the beginning during tool connect. Message transmission will be stopped during tool disconnect.</p>
+    </section>
+  </body>
+</topic>

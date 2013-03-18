@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="floor" xml:lang="en-us">
+  <title>floor, floorf, ceil, ceilf : floor and ceiling</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double floor(double x);
+float floorf(float x);
+double ceil(double x);
+float ceilf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>floor and floorf find the nearest integer less than or equal to x. ceil and ceilf find the nearest integer greater than or equal to x.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>floor and ceil return the integer result as a double. floorf and ceilf return the integer result as a float.</p>
+    </section>
+  </refbody>
+</reference>

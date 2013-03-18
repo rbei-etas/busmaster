@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableKeyHandlers" xml:lang="en-us">
+  <title>CommandAddress: To command a address for a node</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT CommandAddress (UINT64 EcuName, BYTE NewAddress, UINT Channel)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will command a address to the node having ECU NAME as specified. </p>
+    </section>
+    <section>
+      <title>Inputs</title>
+    </section>
+    <section>
+      <lines>EcuName - ECU NAME of a node for which the address has to be commanded.
+NewAddress - The new address.                                                                        
+Channel - Channel number.</lines>
+      <title>Returns</title>
+      <p>TRUE success. FALSE if the handler is already in the specified state</p>
+    </section>
+  </refbody>
+</reference>

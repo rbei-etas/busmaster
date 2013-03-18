@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="bit_timing" xml:lang="en-us">
+  <title>Bit Timing Calculation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Bit Timing Calculation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Abbreviations used:<ul>
+        <li>tNBT - Nominal CAN Bit time</li>
+        <li>tsyn - Syncronization segment</li>
+        <li>PD - Propagation delay</li>
+        <li>tseg1 - Time segment 1</li>
+        <li>tseg2 - Time segment 2</li>
+        <li>tq - Time quantum</li>
+        <li>BRP - Baud rate prescaler</li>
+        <li>fsys - Controller system clock</li>
+        <li>fclk - Clock Frequency</li>
+        <li>NBT - Number of tq in tNBT</li>
+        <li>tPD - Propagation Delay time</li>
+      </ul></p>
+    <p>The CAN protocol supports bit rates in the range of 1Kbps and 1000Kbps. Each node has its own clock generator and oscillator.</p>
+    <p>Configuring the bit timing parameters for each node can facilitate a common bit rate on the bus.</p>
+    <p>The Nominal CAN Bit Time (NBT) divided into four segments as shown below.</p>
+    <image href="../images/NBT.bmp" placement="break"/>
+    <p>Hence, tNBT = tsyn + tPD + tseg1 + tseg2</p>
+    <p>The Nominal Bit Rate is the number of bits per second.</p>
+    <p>Nominal Bit Rate = 1 / Nominal Bit Time</p>
+    <p>Each segment consists of a specific programmable number of time quantum, which is basic unit of bit time. The synchronization segment is that part of the bit time where the edges of the CAN bus level.</p>
+    <p>Mapping between fsys and tq: The controller needs to regulate its system clock period (1 / fsys) in order to realise the time quantum (tq) desired. The coefficient of regulation is defined as Baud Rate Prescaler (BRP). Hence,</p>
+    <p>tq = 2 * (BRP/ fsys )         (I)</p>
+    <p>fsys = fclk / 2                   (II),  where fclk is Clock Frequency</p>
+    <p>tNBT = 1 / baud rate        (III)</p>
+    <p>NBT = tNBT / tq              (IV)</p>
+    <p>Hence from equation (I), (II) and (III)</p>
+    <p>NBT = ( 1 / baud rate ) / (4 x BRP/ fclk)</p>
+    <p>=&gt; NBT x BRP = fclk / (4 X Baud Rate)</p>
+    <p>The product value NBT x BRP will be an integer value. Appropriate baud rate will be calculated to get an integer value for the above product. This will ensure that Clock Frequency remains same for a particular CAN controller.</p>
+    <p>Additionally,</p>
+    <p>NBT x tq = tNBT = tsyn + tPD + tseg1 + tseg2          (V)</p>
+    <p>Clearly,</p>
+    <p>tsyn = tq                                                             (VI)</p>
+    <p>tseg1 = TSEG1 x tq                                             (VII)</p>
+    <p>tseg2 = TSEG2 x tq                                             (VIII)</p>
+    <p>tPD = PD x tq                                                     (IX)</p>
+    <p>Therefore from equation (VI), (VII) and (VIII).</p>
+    <p>NBT = TSEG1 + TSEG2 + PD + 1.</p>
+    <p>Sampling Point = ((NBT - TSEG2) / NBT) x 100 %.</p>
+    <p>The neoVI hardware consist of three registers namely CNF1, CNF2, CNF3 the details of which are given below:</p>
+    <image href="../images/BTR.bmp" placement="break"/>
+    <p>SAM (Sampling) = 0 or 1 (1 or 3)</p>
+    <p>SJW = 2 x SJW1 + SJW0 + 1</p>
+    <p>BRP = 32 x BRP5 + 16 x BRP4 + 8 x BRP3 + 4 x BRP2 + 2 x BRP1 + BRP0 + 1</p>
+    <p>TSEG1 = 4 x TSEG1.2 + 2 x TSEG1.1 + TSEG1.0 + 1</p>
+    <p>TSEG2 = 4 x TSEG2.2 + 2 x TSEG2.1 + TSEG2.0 + 1</p>
+    <p>FLAG = 0 or 1 ( “TSEG2 Ignored” or “TSEG2 Considered”)</p>
+  </body>
+</topic>

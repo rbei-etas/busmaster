@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="scalbn" xml:lang="en-us">
+  <title>scalbn, scalbnf : scale by integer</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double scalbn(double x, int y);
+float scalbnf(float x, int y);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>scalbn and scalbnf scale x by n, returning x times 2 to the power n. The result is computed by manipulating the exponent, rather than by actually performing an exponentiation or multiplication.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>x times 2 to the power n.</p>
+    </section>
+  </refbody>
+</reference>

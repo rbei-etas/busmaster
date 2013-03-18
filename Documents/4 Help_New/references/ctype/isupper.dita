@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="isupper" xml:lang="en-us">
+  <title>isupper : uppercase character predicate</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ctype.h&gt;
+int isupper(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>isupper is a macro which classifies ASCII integer values by table lookup. It is a predicate returning non-zero for upper-case letters (A--Z), and 0 for other characters. It is defined only when isascii(c) is true or c is EOF.</p>
+      <p>You can use a compiled subroutine instead of the macro definition by undefining the macro using `#undef isupper&apos;.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>isupper returns non-zero if c is a upper case letter (A-Z).</p>
+    </section>
+  </refbody>
+</reference>

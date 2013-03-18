@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strftime" xml:lang="en-us">
+  <title>strftime : flexible calendar time formatter</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;time.h&gt;
+size_t strftime(char *s, size_t maxsize, const char *format, const struct tm *timp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strftime converts a struct tm representation of the time (at timp) into a string, starting at s and occupying no more than maxsize characters.</p>
+      <p>You control the format of the output using the string at format. *format can contain two kinds of specifications: text to be copied literally into the formatted string, and time conversion specifications. Time conversion specifications are two-character sequences beginning with `%&apos; (use `%%&apos; to include a percent sign in the output). Each defined conversion specification selects a field of calendar time data from *timp, and converts it to a string in one of the following ways:</p>
+      <ul>
+        <li>%a An abbreviation for the day of the week.</li>
+        <li>%A The full name for the day of the week.</li>
+        <li>%b An abbreviation for the month name.</li>
+        <li>%B The full name of the month.</li>
+        <li>%c A string representing the complete date and time, in the form Mon Apr 01 13:13:13 1992</li>
+        <li>%d The day of the month, formatted with two digits.</li>
+        <li>%H The hour (on a 24-hour clock), formatted with two digits.</li>
+        <li>%I The hour (on a 12-hour clock), formatted with two digits.</li>
+        <li>%j The count of days in the year, formatted with three digits (from `001&apos; to `366&apos;).</li>
+        <li>%m The month number, formatted with two digits.</li>
+        <li>%M The minute, formatted with two digits.</li>
+        <li>%p Either `AM&apos; or `PM&apos; as appropriate.</li>
+        <li>%S The second, formatted with two digits.</li>
+        <li>%U The week number, formatted with two digits (from `00&apos; to `53&apos;; week number 1 is taken as beginning with the first Sunday in a year). See also %W.</li>
+        <li>%w A single digit representing the day of the week: Sunday is day 0.</li>
+        <li>%W Another version of the week number: like `%U&apos;, but counting week 1 as beginning with the first Monday in a year.</li>
+        <li>%x A string representing the complete date, in a format like Mon Apr 01 1992</li>
+        <li>%X A string representing the full time of day (hours, minutes, and seconds), in a format like 13:13:13</li>
+        <li>%y The last two digits of the year.</li>
+        <li>%Y The full year, formatted with four digits to include the century.</li>
+        <li>%Z Defined by ANSI C as eliciting the time zone if available; it is not available in this implementation (which accepts `%Z&apos; but generates no output for it).</li>
+        <li>%% A single character, `%&apos;.</li>
+      </ul>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>When the formatted time takes up no more than maxsize characters, the result is the length of the formatted string. Otherwise, if the formatting operation was abandoned due to lack of room, the result is 0, and the string starting at s corresponds to just those parts of *format that could be completely filled in within the maxsize limit.</p>
+    </section>
+  </refbody>
+</reference>
