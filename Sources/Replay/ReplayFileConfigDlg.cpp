@@ -510,14 +510,14 @@ void CReplayFileConfigDlg::OnUpdateEditMsgDelay()
             m_rouManager.m_omReplayFiles.ElementAt( m_nSelecetedNamedLogIndex );
         // Get the delay Value
         UINT unValue = static_cast<UINT>( m_omEditMsgDelay.lGetValue() );
-		if(unValue > 60000)
-		{
-			AfxMessageBox("Time delay between messages cannot be more than 60000 milliseconds");
-			CString  omstrDelay;
-			omstrDelay.Format("%d", unValue/10);
-			m_omEditMsgDelay.SetWindowTextA(omstrDelay);
-			m_omEditMsgDelay.SetSel(0,omstrDelay.GetLength());
-		}
+        if(unValue > 60000)
+        {
+            AfxMessageBox("Time delay between messages cannot be more than 60000 milliseconds");
+            CString  omstrDelay;
+            omstrDelay.Format("%d", unValue/10);
+            m_omEditMsgDelay.SetWindowTextA(omstrDelay);
+            m_omEditMsgDelay.SetSel(0,omstrDelay.GetLength());
+        }
         // Update type in the data
         ouFile.m_unMsgTimeDelay = unValue;
     }
@@ -568,14 +568,14 @@ void CReplayFileConfigDlg::OnUpdateEditCycleDelay()
         // Get the delay Value
         UINT unValue = static_cast<UINT>( m_omEditCycleDelay.lGetValue() );
 
-		if(unValue > 60000)
-		{
-			AfxMessageBox("Time delay between cycles cannot be more than 60000 milliseconds");
-			CString  omstrDelay;
-			omstrDelay.Format("%d", unValue/10);
-			m_omEditCycleDelay.SetWindowTextA(omstrDelay);
-			m_omEditCycleDelay.SetSel(0,omstrDelay.GetLength());
-		}
+        if(unValue > 60000)
+        {
+            AfxMessageBox("Time delay between cycles cannot be more than 60000 milliseconds");
+            CString  omstrDelay;
+            omstrDelay.Format("%d", unValue/10);
+            m_omEditCycleDelay.SetWindowTextA(omstrDelay);
+            m_omEditCycleDelay.SetSel(0,omstrDelay.GetLength());
+        }
 
         // Update type in the data
         ouFile.m_unCycleTimeDelay = unValue;

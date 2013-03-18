@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="StopTxMsgBlock" xml:lang="en-us">
+  <title>StopTxMsgBlock : To stop sending messages</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function stop the ongoing message transmission.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>-</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

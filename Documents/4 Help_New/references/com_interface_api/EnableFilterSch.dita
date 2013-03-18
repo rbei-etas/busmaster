@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableFilterSch" xml:lang="en-us">
+  <title>EnableFilterSch : Enables / disables a particular filtering scheme</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>Enables / disables filtering scheme for the particular module passed.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>EFILTERMODULE eModule - Can be one of { Log, Display } 
+
+BOOL bEnable - TRUE to enable, else FALSE.</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

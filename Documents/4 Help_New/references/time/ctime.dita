@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ctime" xml:lang="en-us">
+  <title>ctime : convert time to local and format as string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;time.h&gt;
+char *ctime(time_t clock);
+char *ctime_r(time_t clock, char *buf);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Convert the time value at clock to local time (like localtime) and format it into a string of the form Wed Jun 15 11:38:07 1988 (like asctime).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A pointer to the string containing a formatted timestamp.</p>
+    </section>
+  </refbody>
+</reference>

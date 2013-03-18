@@ -201,7 +201,7 @@ static XLCLOSEDRIVER           xlDllCloseDriver = NULL;
 static XLOPENDRIVER            xlDllOpenDriver = NULL;
 
 /* Forward declarations*/
-static int nInitHwNetwork();
+static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
 static BOOL bClientExist(string pcClientName, INT& Index);
@@ -875,7 +875,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    hResult = nInitHwNetwork();
+    hResult = nInitHwNetwork(nCount);
     if ( hResult == 0)
     {
         nCount = sg_nNoOfChannels;
@@ -2336,12 +2336,12 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 /**
 * \brief         This function will get the hardware selection from the user
 *                and will create essential networks.
-* \param         void
+* \param         unDefaultChannelCnt
 * \return        returns defERR_OK (always)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nCreateMultipleHardwareNetwork()
+static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
@@ -2368,7 +2368,17 @@ static int nCreateMultipleHardwareNetwork()
         }
     }
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
-    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+
+    /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+    if ( unDefaultChannelCnt && nChannels >= unDefaultChannelCnt )
+    {
+        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+        {
+            sg_anSelectedItems[i] = i;
+        }
+        nHwCount = unDefaultChannelCnt;
+    }
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -2424,12 +2434,12 @@ static int nCreateSingleHardwareNetwork()
 * \brief         This function will find number of hardwares connected.
 *                It will create network as per hardware count.
 *                This will popup hardware selection dialog in case there are more hardwares present.
-* \param         void
+* \param         unDefaultChannelCnt
 * \return        Operation Result. 0 incase of no errors. Failure Error codes otherwise.
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nInitHwNetwork()
+static int nInitHwNetwork(UINT unDefaultChannelCnt)
 {
     int nChannelCount = 0;
     int nResult = NO_HW_INTERFACE;
@@ -2465,7 +2475,7 @@ static int nInitHwNetwork()
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nResult = nCreateMultipleHardwareNetwork();
+            nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
         }
         else
         {

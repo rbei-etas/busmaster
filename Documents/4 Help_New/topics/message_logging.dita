@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="message_logging" xml:lang="en-us">
+  <title>Message Logging</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Message Logging</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>User can configure the name of the log file to which the messages will be logged by following the steps given below<ul>
+        <li>Select <menucascade>
+            <uicontrol>Configure</uicontrol>
+            <uicontrol>Log</uicontrol>
+          </menucascade></li>
+        <li>Select log file name. You can also navigate to any folder to select the log file. If an existing file is selected it will be overwritten if Over Write Mode. Otherwise it will append the same log file for each new logging session. If a new file name is entered, you will be prompted to confirm the new file creation.</li>
+        <li>Specify a message ID or select a message name, on reception of which, logging gets triggered</li>
+      </ul></p>
+  </body>
+</topic>

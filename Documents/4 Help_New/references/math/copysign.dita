@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="copysign" xml:lang="en-us">
+  <title>copysign, copysignf : sign of y, magnitude of x</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double copysign (double x, double y);
+float copysignf (float x, float y);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>copysign constructs a number with the magnitude (absolute value) of its first argument, x, and the sign of its second argument, y. copysignf does the same thing; the two functions differ only in the type of their arguments and result.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>copysign returns a double with the magnitude of x and the sign of y. copysignf returns a float with the magnitude of x and the sign of y.</p>
+    </section>
+  </refbody>
+</reference>

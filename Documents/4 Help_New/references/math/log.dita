@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="log" xml:lang="en-us">
+  <title>log, logf : natural logarithms</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double log(double x);
+float logf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Return the natural logarithm of x, that is, its logarithm base e (where e is the base of the natural system of logarithms, 2.71828...). log and logf are identical save for the return and argument types. You can use the (non-ANSI) function matherr to specify error handling for these functions.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Normally, returns the calculated value. When x is zero, the returned value is -HUGE_VAL and errno is set to ERANGE. When x is negative, the returned value is -HUGE_VAL and errno is set to EDOM. You can control the error behavior via matherr.</p>
+    </section>
+  </refbody>
+</reference>

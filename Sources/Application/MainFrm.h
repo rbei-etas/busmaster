@@ -184,6 +184,7 @@ public:
     INT m_nSendMsgJ1939LogCnt;
     CWaveformTransmitter m_ouWaveTransmitter;
     USHORT vCheckValidLogFiles(USHORT iCount);
+    BOOL bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks);
 
     //Get Message Window Thread
     inline CMsgWndThread* pGetMessageWndThread()
@@ -191,7 +192,7 @@ public:
         return m_podMsgWndThread;
     }
     //To initialize DIL
-    HRESULT IntializeDIL(void);
+    HRESULT IntializeDIL(UINT unDefaultChannelCnt = 0);
     // To Create Graph UI thread and graph Window
     BOOL bCreateGraphWindow();
     // Function to club activities needs to be done after conf load.
@@ -314,6 +315,14 @@ public:
     BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
     //~MVN
     void OnHex_DecButon();
+
+    /* API to modify icon for a particular item in toolbar */
+    void vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF);
+    /* API to set icon for a particular item in toolbar */
+    void vSetToolBarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, UINT nTBIDNormal, UINT nTBIDHot, UINT nTBIDDisabled);
+    /* API to set toolbar button size */
+    void vSetToolbarButtonSize(CNVTCToolBar& objToolbar, CSize& objSize);
+
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
@@ -321,7 +330,7 @@ public:
 
 protected:
     // control bar embedded members
-    CStatusBar    m_wndStatusBar; // Status bar
+    CStatusBar      m_wndStatusBar; // Status bar
     CNVTCToolBar    m_wndToolBar;   // Tool bar/*WrapFixed*/
     CNVTCToolBar    m_wndToolbarNodeSimul;
     CNVTCToolBar    m_wndToolbarMsgWnd;
@@ -463,6 +472,7 @@ protected:
     afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT onGetConfigPath(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT onJ1939TxWndClose(WPARAM wParam, LPARAM lParam);
 
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
@@ -495,6 +505,9 @@ public:
     BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
 
 private:
+    HMODULE m_hModAdvancedUILib;
+    bool    m_bUseAdvancedUILib;
+    BYTE    m_bytIconSize;
     PROJECTDATA m_sProjData;
     CMenu* m_pExternalTools; // External Tools menu is dynamically created.
     DILLIST m_ouList;// List of the driver interface layers supported
@@ -791,6 +804,7 @@ public:
     afx_msg void OnFileConverter();
 
     void ApplyLogFilter();
+    void ApplyReplayFilter();
     //MVN
     xmlDocPtr m_xmlConfigFiledoc;
     BOOL m_bIsXmlConfig;

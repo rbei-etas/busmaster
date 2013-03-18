@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fgets" xml:lang="en-us">
+  <title>fgets : get character string from a file or stream</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+char *fgets(char *buf, int n, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Reads at most n-1 characters from fp until a newline is found. The characters including to the newline are stored in buf. The buffer is terminated with a 0.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>fgets returns the buffer passed to it, with the data filled in. If end of file occurs with some data already accumulated, the data is returned with no other indication. If no data are read, NULL is returned instead.</p>
+    </section>
+  </refbody>
+</reference>

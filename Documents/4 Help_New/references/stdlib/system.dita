@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="system" xml:lang="en-us">
+  <title>system : execute command string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+int system(char *s);
+int _system_r(void *reent, char *s);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use system to pass a command string *s to /bin/sh on your system, and wait for it to finish executing.</p>
+      <p>Use `system(NULL)&apos; to test whether your system has /bin/sh available.</p>
+      <p>The alternate function _system_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>system(NULL) returns a non-zero value if /bin/sh is available, and 0 if it is not.</p>
+      <p>With a command argument, the result of system is the exit status returned by /bin/sh.</p>
+    </section>
+  </refbody>
+</reference>

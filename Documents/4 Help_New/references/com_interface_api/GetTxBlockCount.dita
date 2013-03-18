@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="GetTxBlockCount" xml:lang="en-us">
+  <title>GetTxBlockCount : Getter for current transmission block count</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>Getter for current transmission block count.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>USHORT*</p>
+    </section>
+    <section>
+      <title>Result</title>
+      <p>The [out] parameter to receive the result.</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

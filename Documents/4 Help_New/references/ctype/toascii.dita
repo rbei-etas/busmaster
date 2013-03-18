@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="toascii" xml:lang="en-us">
+  <title>toascii : force integers to ASCII range</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ctype.h&gt;
+int toascii(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>toascii is a macro which coerces integers to the ASCII range (0--127) by zeroing any higher-order bits.</p>
+      <p>You can use a compiled subroutine instead of the macro definition by undefining this macro using `#undef toascii&apos;.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>toascii returns integers between 0 and 127. 
+
+tolower : translate characters to lower case</p>
+    </section>
+  </refbody>
+</reference>

@@ -51,7 +51,7 @@ Code Tag       :
 ******************************************************************************/
 CTSExecutorLIB::CTSExecutorLIB(void)
 {
-    m_omstrTestSuiteName = _(def_STR_TESTSUITENAME);
+    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
     m_ouTestSetupEntityList.RemoveAll();
     m_bTestSuiteStatus = FALSE;
     m_ompResultDisplayWnd = NULL;
@@ -873,7 +873,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
     xmlXPathObjectPtr pObjectPtr = NULL;
     xmlNodePtr pTempNode;
     //Test Suite Name
-    m_omstrTestSuiteName = _(def_STR_TESTSUITENAME);
+    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
 
     pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Test_Suite_Name");
     if( NULL != pObjectPtr)
@@ -1090,7 +1090,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::RemoveAllItems(void)
 {
-    m_omstrTestSuiteName = _(def_STR_TESTSUITENAME);
+    m_omstrTestSuiteName = def_STR_TESTSUITENAME;
     INT nCount;
     nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i=0; i<nCount; i++)

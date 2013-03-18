@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="gets" xml:lang="en-us">
+  <title>gets : get character string (obsolete, use fgets instead)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+char *gets(char *buf); char *_gets_r(void *reent, char *buf);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Reads characters from standard input until a newline is found. The characters up to the newline are stored in buf. The newline is discarded, and the buffer is terminated with a 0.</p>
+      <p>This is a dangerous function, as it has no way of checking the amount of space available in buf. One of the attacks used by the Internet Worm of 1988 used this to overrun a buffer allocated on the stack of the finger daemon and overwrite the return address, causing the daemon to execute code downloaded into it over the connection.</p>
+      <p>The alternate function _gets_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>gets returns the buffer passed to it, with the data filled in. If end of file occurs with some data already accumulated, the data is returned with no other indication. If end of file occurs with no data in the buffer, NULL is returned.</p>
+      <p>Supporting OS subroutines required: close, fstat, isatty, lseek, read, sbrk, write.</p>
+    </section>
+  </refbody>
+</reference>

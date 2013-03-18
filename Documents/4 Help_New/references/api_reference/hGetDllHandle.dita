@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="hGetDllHandle" xml:lang="en-us">
+  <title>hGetDllHandle: To get handle of dll attached to a node from the node</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>HANDLE hGetDllHandle ( char* strNodeName)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function returns the handle of the dll attached to a node. The node name will be passed as parameter.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Node name</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Dll handle on success else NULL</p>
+    </section>
+  </refbody>
+</reference>

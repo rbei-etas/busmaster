@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="iprintf" xml:lang="en-us">
+  <title>iprintf : write formatted output (integer only)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int iprintf(const char *format, ...);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>iprintf is a restricted version of printf: it has the same arguments and behavior, save that it cannot perform any floating-point formatting: the f, g, G, e, and F type specifiers are not recognized.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>iprintf returns the number of bytes in the output string, save that the concluding NULL is not counted. iprintf returns when the end of the format string is encountered. If an error occurs, iprintf returns EOF.</p>
+    </section>
+  </refbody>
+</reference>

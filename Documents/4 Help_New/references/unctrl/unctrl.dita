@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="unctrl" xml:lang="en-us">
+  <title>unctrl : translate characters to upper case</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;unctrl.h&gt;
+char *unctrl(int c);
+int unctrllen(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>unctrl is a macro which returns the printable representation of c as a string. unctrllen is a macro which returns the length of the printable representation of c.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>unctrl returns a string of the printable representation of c. unctrllen returns the length of the string which is the printable representation of c.</p>
+    </section>
+  </refbody>
+</reference>

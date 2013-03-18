@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fdopen" xml:lang="en-us">
+  <title>fdopen : turn open file into a stream</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+FILE *fdopen(int fd, const char *mode);
+FILE *_fdopen_r(void *reent, int fd, const char *mode);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fdopen produces a file descriptor of type FILE *, from a descriptor for an already-open file (returned, for example, by the system subroutine open rather than by fopen). The mode argument has the same meanings as in fopen.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>File pointer or NULL, as for fopen.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="time" xml:lang="en-us">
+  <title>time : get current calendar time (as single number)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;time.h&gt;
+time_t time(time_t *t);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>time looks up the best available representation of the current time and returns it, encoded as a time_t. It stores the same value at t unless the argument is NULL.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A -1 result means the current time is not available; otherwise the result represents the current time.</p>
+    </section>
+  </refbody>
+</reference>

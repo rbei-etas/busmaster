@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="SendMsg" xml:lang="en-us">
+  <title>SendMsg : To send a CAN frame</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT SendMsg ( STCAN_MSG )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will put the message on the CAN bus. The message structure STCAN_MSG will be filled with ID, length, frame format and data. Big/Little endian packing will be taken care if it is a database message.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>STCAN_MSG - CAN Message Structure</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Zero on successful transmisstion. Non-zero value on failure.</p>
+    </section>
+  </refbody>
+</reference>

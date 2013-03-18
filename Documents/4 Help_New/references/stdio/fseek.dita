@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fseek" xml:lang="en-us">
+  <title>fseek : set file position</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int fseek(FILE *fp, long offset, int whence);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Objects of type FILE can have a &quot;position&quot; that records how much of the file your program has already read. Many of the stdio functions depend on this position, and many change it as a side effect.</p>
+      <p>You can use fseek to set the position for the file identified by fp. The value of offset determines the new position, in one of three ways selected by the value of whence (defined as macros in `stdio.h&apos;):</p>
+      <p>SEEK_SET : offset is the absolute file position (an offset from the beginning of the file) desired. offset must be positive.</p>
+      <p>SEEK_CUR : offset is relative to the current file position. offset can meaningfully be either positive or negative.</p>
+      <p>SEEK_END : offset is relative to the current end of file. offset can meaningfully be either positive (to increase the size of the file) or negative.</p>
+      <p>See ftell to determine the current file position. 
+
+</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>fseek returns 0 when successful. If fseek fails, the result is EOF. The reason for failure is indicated in errno: either ESPIPE (the stream identified by fp doesn&apos;t support repositioning) or EINVAL (invalid file position).</p>
+    </section>
+  </refbody>
+</reference>

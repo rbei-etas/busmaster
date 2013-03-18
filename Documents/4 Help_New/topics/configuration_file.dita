@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="configuration_file" xml:lang="en-us">
+  <title>Configuration settings in a file</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configuration settings in a file</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>User can save your preferences of the tool into &quot;.cfx&quot; file. The last loaded configuration file will be loaded automatically when the tool is run for the next session. If the configuration file is not found then, the application will load the default configuration settings and the status of the loaded configuration filename will be shown on the status bar.</p>
+    <section>
+      <title>Creating New Configuration file</title>
+      <ol>
+        <li>Select<b> File --&gt; New</b> menu option. This will invoke file Save dialog box.</li>
+        <li>Enter the new configuration file name. And select Save button. The new configuration file will be loaded and the same filename can be seen on the status bar.</li>
+      </ol>
+    </section>
+    <section>
+      <title>Loading a Configuration File </title>
+      <ol>
+        <li>Select <b>File --&gt; Load...</b> menu option. This will invoke file Open dialog box.</li>
+        <li>Select the configuration file name. And select Open button. The selected configuration file will be loaded and the loaded configuration file will be displayed in the status bar. The same configuration file will be displayed on the top of MRU configuration file list (<menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Recent Configuration</uicontrol>
+          </menucascade>).</li>
+        <li>Selecting a configuration file name from the MRU list will also do loading of the configuration file. If load is successful then the same configuration file will be displayed on the top of MRU configuration file list.</li>
+      </ol>
+      <note>
+        <ul>
+          <li>While loading BUSMASTER with parallel port interface created configuration file in to USB interface, checks have been made to find unsupported options. If anything found user will be informed about that and BUSMASTER will changes those values to default internally. These changes will not be saved unless the user selects File Configuration Save. Configuration file created in BUSMASTER with USB interface can be loaded in to BUSMASTER with Parallel port interface.</li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Saving a configuration file</title>
+      <ol>
+        <li>Select <b>File --&gt; Save</b> menu option. This will invoke File Save dialog box.</li>
+        <li>Select the configuration file name. And select Save button.</li>
+        <li>The selected configuration file will be saved. The same configuration file will be displayed on the top of MRU configuration file list (<menucascade>
+            <uicontrol>File</uicontrol>
+            <uicontrol>Recent Configuration</uicontrol>
+          </menucascade>).</li>
+      </ol>
+    </section>
+    <section>
+      <title>Saving a configuration file with new name</title>
+      <ol>
+        <li>Select <b>File --&gt; Save As</b> menu option. This will invoke File Save As dialog box.</li>
+        <li>Enter new configuration file name. And select Save button. The selected configuration file will be saved.</li>
+      </ol>
+    </section>
+    <p>If the loaded configuration file is changed during the usage of the tool, a save confirmation message is displayed to the user before closing the application.</p>
+  </body>
+</topic>

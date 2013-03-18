@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="configure_replay" xml:lang="en-us">
+  <title>Configure Replay</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configure Replay</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Replay can be configured using the three parameters mentioned below<ul>
+        <li>File Name</li>
+        <li>Mode</li>
+        <li>Time Delay</li>
+      </ul></p>
+    <p>There are two modes of Replay<ul>
+        <li>Single Run - The messages in the file will be replayed only once.</li>
+        <li>Cyclic - The messages in the file will be replayed cyclically.</li>
+      </ul></p>
+    <p>The time delay can be set to control the delay between two consecutive messages and between two consecutive replay of the same file.</p>
+    <p>The following field controls delays<ul>
+        <li>Recorded time delay in the log file</li>
+        <li>Time delay between messages.</li>
+        <li>Time delay between cycles – Applicable for only cyclic mode.</li>
+      </ul></p>
+    <p>Time delay 1 and 2 are mutually exclusive irrespective of replay mode. This time delay is the time duration between transmission of two consecutive messages. The minimum time delay (in milliseconds) is one millisecond.</p>
+    <p>On clicking the OK button a Message Replay Window will be displayed. This will contain all messages in the replay file. By default first message in the replay window will be selected. Please see section Replay a File for further details.</p>
+    <p>User can configure to replay all message logged or only transmitted message or only received message by selecting the option from Replay Message Type. It can be done during configuration of replay.</p>
+  </body>
+</topic>

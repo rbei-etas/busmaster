@@ -79,6 +79,7 @@ public:
     virtual BOOL OnInitDialog();
     afx_msg void OnBnClickedSend();
     afx_msg void OnBnClickedOk();
+    afx_msg void OnBnClickedCancel();
     afx_msg void OnEnChangeEditDlc();
     afx_msg void OnEnChangeEditMsg();
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);

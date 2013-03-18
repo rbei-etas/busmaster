@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="bzero" xml:lang="en-us">
+  <title>bzero : initialize memory to zero</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+void bzero(char *b, size_t length);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>bzero initializes length bytes of memory, starting at address b, to zero.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>bzero does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

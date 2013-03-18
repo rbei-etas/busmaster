@@ -402,6 +402,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_KEYBOARD_CHAR, OnReceiveKeyBoardData)
     ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
     ON_MESSAGE(MSG_GET_CONFIGPATH, onGetConfigPath)
+    ON_MESSAGE(WM_J1939_TX_CLOSE_MSG, onJ1939TxWndClose)
 
 END_MESSAGE_MAP()
 
@@ -595,6 +596,18 @@ CMainFrame::CMainFrame()
     // language support
     vGettextBusmaster();
 
+    m_bUseAdvancedUILib = false;
+    m_hModAdvancedUILib = NULL;
+    m_bytIconSize       = 20;
+
+    /* Try to load resource DLL for icons*/
+    m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+    /* If the AdvancedUIPlugIn DLL exists, use it */
+    if ( m_hModAdvancedUILib )
+    {
+        m_bytIconSize       = 32;
+        m_bUseAdvancedUILib = true;
+    }
 }
 /*******************************************************************************
  Function Name    : ~CMainFrame
@@ -639,6 +652,13 @@ CMainFrame::~CMainFrame()
     }
     DELETE_PTR(m_pouTxMsgWndJ1939);
     CTxMsgWndJ1939::vClearDataStore();
+
+    /* Free the resource DLL */
+    if ( m_bUseAdvancedUILib && m_hModAdvancedUILib )
+    {
+        ::FreeLibrary(m_hModAdvancedUILib);
+        m_hModAdvancedUILib = NULL;
+    }
 }
 
 /******************************************************************************
@@ -783,6 +803,7 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
     }
 }
 
+
 /******************************************************************************
  Function Name    : OnCreate
  Input(s)         : LPCREATESTRUCT
@@ -844,11 +865,27 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T(_("J1939")));
     CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T(_("CAN Database")));
 
-    m_wndToolbarNodeSimul.bLoadCNVTCToolBar(20, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
-    m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
-    m_wndToolbarMsgWnd.bLoadCNVTCToolBar(20, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
-    m_wndToolbarConfig.bLoadCNVTCToolBar(20, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
-    m_wndToolbarCANDB.bLoadCNVTCToolBar(20, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
+    /* Set toolbar button size to small to fit default icons*/
+    if ( !m_bUseAdvancedUILib )
+    {
+        CSize objSize;
+        /* 27 pixels is the default size of toolbar icons */
+        objSize.cx = 27;
+        objSize.cy = 27;
+        vSetToolbarButtonSize( m_wndToolBar,            objSize);
+        vSetToolbarButtonSize( m_wndToolbarNodeSimul,   objSize);
+        vSetToolbarButtonSize( m_wndToolbarMsgWnd,      objSize);
+        vSetToolbarButtonSize( m_wndToolbarConfig,      objSize);
+        vSetToolbarButtonSize( m_wndToolbarCANDB,       objSize);
+        vSetToolbarButtonSize( m_wndToolbarJ1939,       objSize);
+    }
+
+    m_wndToolbarNodeSimul.bLoadCNVTCToolBar(m_bytIconSize, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
+    m_wndToolBar.bLoadCNVTCToolBar(m_bytIconSize, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
+    m_wndToolbarMsgWnd.bLoadCNVTCToolBar(m_bytIconSize, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
+    m_wndToolbarConfig.bLoadCNVTCToolBar(m_bytIconSize, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
+    m_wndToolbarCANDB.bLoadCNVTCToolBar(m_bytIconSize, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
+    m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
 
     EnableDocking(CBRS_ALIGN_ANY);
 
@@ -948,7 +985,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     tbi.cbSize = sizeof tbi;
     tbi.dwMask = TBIF_SIZE;
-    tbi.cx = (WORD)30;
+
+    if ( m_bUseAdvancedUILib )
+    {
+        /* As the width of toolbar item is more, the tick mark position for timer button should be moved */
+        tbi.cx = (WORD)42;
+    }
+    else
+    {
+        tbi.cx = (WORD)30;
+    }
     m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
 
     //vGetWinStatus(m_WinCurrStatus);
@@ -3600,7 +3646,28 @@ void CMainFrame::OnLogFilter()
                 sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
-        // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 7;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
+    }
+}
+
+void CMainFrame::ApplyReplayFilter()
+{
+    CFlags* pouFlags = NULL;
+    BOOL bReplayFilterStatus = FALSE;
+
+    pouFlags = theApp.pouGetFlagsPtr();
+    if(pouFlags != NULL )
+    {
+        bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+        pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
+
+        vREP_EnableFilters(bReplayFilterStatus);
+
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 9;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
     }
 }
 
@@ -3623,6 +3690,9 @@ void CMainFrame::ApplyLogFilter()
                 sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 7;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
         // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
     }
 }
@@ -3753,6 +3823,10 @@ void CMainFrame::OnSelectMessage()
                 //re-enable the msg filter, so it will show the modified changes
                 theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, NULL);
+
+                /* Modify filter icon accordingly in Main toolbar*/
+                BYTE bytTbrItemIndex = 8;
+                vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, TRUE, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
             }
         }
     }
@@ -5898,6 +5972,163 @@ void CMainFrame::OnMessageFilterButton()
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 8;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
+    }
+}
+
+/**
+* \brief         Handles the J1939 tx window close notification
+* \param[in]     WPARAM, LPARAM
+* \return        LRESULT
+* \authors       Arunkumar Karri
+* \date          28.02.2013 Created
+*/
+LRESULT CMainFrame::onJ1939TxWndClose(WPARAM wParam, LPARAM lParam)
+{
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    /*BYTE bytTbrItemIndex = 4;
+    vSetToolBarIcon( m_wndToolbarJ1939, bytTbrItemIndex, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_DISABLED );*/
+    return S_OK;
+}
+
+/**
+* \brief         Sets the icon of a particular toolbar item
+* \param[in]     Toolbar object, Item Index, Icon resource IDs for normal, hot and disabled options
+* \param[out]    void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          28.02.2013 Created
+*/
+void CMainFrame::vSetToolBarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, UINT nTBIDNormal, UINT nTBIDHot, UINT nTBIDDisabled)
+{
+    /* Perform this only if resource dll is available */
+    if ( m_hModAdvancedUILib )
+    {
+        /* Get hold of toolbar control */
+        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+        /* Get image list objects */
+        CImageList* pList           = Toolbar.GetImageList();
+        CImageList* pListHot        = Toolbar.GetHotImageList();
+        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
+
+        /* If successfully got all the image list pointers, proceed further */
+        if ( pList && pListHot && pListDisabled )
+        {
+            /* Load the icon based on resource ID */
+            HICON hIconNormal, hIconHot, hIconDisabled;
+
+            hIconNormal     = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDNormal));
+            hIconHot        = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDHot));
+            hIconDisabled   = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDDisabled));
+            /* Replace the respective Icon images if icons are successfully loaded */
+            if ( hIconNormal &&  hIconHot && hIconDisabled )
+            {
+                pList->Replace(bytItemIndex, hIconNormal);
+                pListHot->Replace(bytItemIndex, hIconHot);
+                pListDisabled->Replace(bytItemIndex, hIconDisabled);
+
+                objToolbar.Invalidate();
+            }
+        }
+    }
+}
+
+/**
+* \brief         Modifies the toolbar button size
+* \param[in]     Toolbar object, Size object
+* \return        void
+* \authors       Arunkumar Karri
+* \date          01.03.2013 Created
+*/
+void CMainFrame::vSetToolbarButtonSize(CNVTCToolBar& objToolbar, CSize& objSize)
+{
+    /* Get hold of toolbar control */
+    CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+    /* Set the toolbar button size */
+    Toolbar.SetButtonSize(objSize);
+}
+
+/**
+* \brief         Modifies the icon of a particular toolbar item
+* \param[in]     Toolbar object, Item Index, Icon ON and OFF resource IDs and item ON status
+* \param[out]    void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          28.02.2013 Created
+*/
+void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF)
+{
+    /* Perform this only if resource dll is available */
+    if ( m_hModAdvancedUILib )
+    {
+        /* Get hold of toolbar control */
+        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+        /* Get image list objects */
+        CImageList* pList           = Toolbar.GetImageList();
+        CImageList* pListHot        = Toolbar.GetHotImageList();
+        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
+
+        /* Load the icon based on resource ID */
+        HICON hIcon;
+        if ( bItemON )
+        {
+            hIcon = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDON));
+        }
+        else
+        {
+            hIcon = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDOFF));
+        }
+
+        /* Replace the respective Icon images if icon is successfully loaded */
+        if ( hIcon )
+        {
+            pList->Replace(bytItemIndex, hIcon);
+            pListHot->Replace(bytItemIndex, hIcon);
+            pListDisabled->Replace(bytItemIndex, hIcon);
+
+            objToolbar.Invalidate();
+        }
+    }
+    /* Handle connect icon change for default icons */
+    else if ( nTBIDOFF == IDI_ICON_CAN_CONNECT )
+    {
+        /* Get hold of toolbar control */
+        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+        /* Get image list objects */
+        CImageList* pList           = Toolbar.GetImageList();
+        CImageList* pListHot        = Toolbar.GetHotImageList();
+        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
+
+        /* If successfully got all the image list pointers, proceed further */
+        if ( pList && pListHot && pListDisabled )
+        {
+            /* Load the icon based on resource ID */
+            HICON hIcon;
+            if ( bItemON )
+            {
+                hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_DISCONNECT));
+            }
+            else
+            {
+                hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_CONNECT));
+            }
+
+            /* Replace the respective Icon images if icon is successfully loaded */
+            if ( hIcon )
+            {
+                pList->Replace(bytItemIndex, hIcon);
+                pListHot->Replace(bytItemIndex, hIcon);
+                pListDisabled->Replace(bytItemIndex, hIcon);
+
+                objToolbar.Invalidate();
+            }
+        }
     }
 }
 
@@ -5925,7 +6156,10 @@ void CMainFrame::OnReplayFilter()
         pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
         vREP_EnableFilters(bReplayFilterStatus);
-        //::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 9;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
     }
 }
 
@@ -5942,6 +6176,9 @@ void CMainFrame::ApplyMessageFilterButton()
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 8;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
 }
 
@@ -6272,7 +6509,8 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
         //pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
         USHORT ushCount =  sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
         ushCount = vCheckValidLogFiles(ushCount);
-        if(ushCount>0)//log files found
+        BOOL bEnableLogTB = bIsAtleastOneLoggingBlockEnabled(ushCount);
+        if(bEnableLogTB == TRUE)//log files found and if checked
         {
             pCmdUI->Enable(TRUE);
             pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
@@ -6327,6 +6565,27 @@ USHORT CMainFrame::vCheckValidLogFiles(USHORT LogBlocks)
     }
     return LogBlocks;
 }
+
+BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
+{
+    BOOL bEnabled = FALSE; // Assume no log files are configured or enabled
+
+    if (LogBlocks > 0)
+    {
+        for (USHORT i = 0; i < LogBlocks; i++)
+        {
+            SLOGINFO sLogObject;
+            sg_pouFrameProcCAN->FPC_GetLoggingBlock(i, sLogObject);
+            if (sLogObject.m_bEnabled == TRUE)
+            {
+                bEnabled = TRUE;
+                break;
+            }
+        }
+    }
+    return bEnabled;
+}
+
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
 /*  Input(s)         :                                                        */
@@ -7747,14 +8006,9 @@ void CMainFrame::OnFileConnect()
 
             // Load the required bitmap to
             // show connect/disconnect state
-            if(!bConnected)
-            {
-                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
-            }
-            else
-            {
-                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAMEDSC,IDB_MAINFRAMEDSC_HOT, IDB_MAINFRAMEDSC_DISABLED);
-            }
+            /* Modify connect icon accordingly in Main toolbar*/
+            BYTE bytTbrItemIndex = 3;
+            vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
 
             // Press / Unpress the button if Connected / Disconnected
             omRefToolBarCtrl.PressButton(IDM_FILE_CONNECT, bConnected);
@@ -8042,6 +8296,16 @@ void CMainFrame::OnNewConfigFile()
 
         // On New Configuration Stop Logging if it is enabled for J1939
         vJ1939StartStopLogging();
+
+        /* Update checked state for the filters(Log, Message) */
+        ApplyLogFilter();
+        ApplyMessageFilterButton();
+
+        /* Switch off Replay filter and update*/
+        CFlags* pouFlags = NULL;
+        pouFlags = theApp.pouGetFlagsPtr();
+        pouFlags->vSetFlagStatus(REPLAYFILTER, FALSE);
+        ApplyReplayFilter();
     }
 }
 void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
@@ -11721,7 +11985,7 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
     xmlFreeNode(pJ1939SimSys);
 }
 
-HRESULT CMainFrame::IntializeDIL(void)
+HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 {
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
@@ -11739,7 +12003,7 @@ HRESULT CMainFrame::IntializeDIL(void)
         if ((hResult = g_pouDIL_CAN_Interface->DILC_SelectDriver(m_dwDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
         {
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
-            INT nCount = defNO_OF_CHANNELS;
+            INT nCount = unDefaultChannelCnt;
             if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
             {
                 DeselectJ1939Interfaces();
@@ -12335,6 +12599,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             m_bIsXmlConfig = TRUE;
             ApplyLogFilter();
             ApplyMessageFilterButton();
+            ApplyReplayFilter();
             ApplyMessagewindowOverwrite();
             nRetValue = S_OK;
         }
@@ -12368,6 +12633,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
 
             ApplyLogFilter();
             ApplyMessageFilterButton();
+            ApplyReplayFilter();
         }
     }
     else            //If Default Configuration
@@ -14061,7 +14327,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     }
 
 
-                    IntializeDIL();
+                    IntializeDIL(unChannelCount);
                     ASSERT(g_pouDIL_CAN_Interface != NULL);
                     g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
                             defNO_OF_CHANNELS);
@@ -16656,11 +16922,11 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 
     if (bResult == TRUE)
     {
-        CMenu* pConfigMenu = GetSubMenu(_T(_("&Configure"))); // Get the Menu "&Configure"
+        CMenu* pConfigMenu = GetSubMenu(_T(_("&Hardware"))); // Get the Menu "&Hardware"
         ASSERT(pConfigMenu != NULL);
         if (pConfigMenu == NULL)
         {
-            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&Configure\") failed"));
+            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&Hardware\") failed"));
         }
         /*  PTV[1.6.4] */
         // Added shortcut key
@@ -17006,17 +17272,32 @@ void CMainFrame::vPostConfigChangeCmdToSigGrphWnds(BOOL bHideGraphWnd)
 void CMainFrame::OnActivateJ1939()
 {
     HRESULT Result = S_FALSE;
+    bool bActivateStatus = false;
     if ((NULL == sg_pouIJ1939DIL) && (NULL == sg_pouIJ1939Logger))
     {
         Result = ProcessJ1939Interfaces();
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(true);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
+        bActivateStatus = true;
     }
     else
     {
         Result = DeselectJ1939Interfaces();
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+    }
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    BYTE bytTbrItemIndex = 0;
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );
+
+    /* If J1939 is deactivated, retain the old icon set and hide J1939 Tx window */
+    if ( !bActivateStatus )
+    {
+        if(m_pouTxMsgWndJ1939 != NULL)
+        {
+            m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+        }
+        m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
     }
 
     ASSERT(Result == S_OK);
@@ -17058,10 +17339,12 @@ void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI* pCmdUI)
 
 void CMainFrame::OnActionJ1939Online()
 {
+    bool bOnlineStatus = false;
     if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == FALSE)
     {
         if (sg_pouIJ1939DIL->DILIJ_GoOnline() == S_OK)
         {
+            bOnlineStatus = true;
             theApp.bWriteIntoTraceWnd(_("DIL.J1939 network started..."));
 
             GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
@@ -17103,6 +17386,20 @@ void CMainFrame::OnActionJ1939Online()
             sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
         }
     }
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    BYTE bytTbrItemIndex = 1;
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bOnlineStatus, IDI_ICON_J1939_OFFLINE, IDI_ICON_J1939_ONLINE );
+
+    /* If J1939 goes offline, Switch off J1939 Transmit Item */
+    if ( !bOnlineStatus )
+    {
+        if(m_pouTxMsgWndJ1939 != NULL)
+        {
+            m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+        }
+        /*bytTbrItemIndex = 4;
+        vSetToolBarIcon( m_wndToolbarJ1939, bytTbrItemIndex,  IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_DISABLED);*/
+    }
 }
 
 void CMainFrame::OnUpdateActionJ1939Online(CCmdUI* pCmdUI)
@@ -17132,7 +17429,6 @@ void CMainFrame::OnActionJ1939TxMessage()
         m_pouTxMsgWndJ1939 = new CTxMsgWndJ1939(this, m_sJ1939ClientParam);
         m_pouTxMsgWndJ1939->Create(IDD_DLG_TX);
     }
-
     m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
 }
 
@@ -17170,6 +17466,9 @@ void CMainFrame::vJ1939StartStopLogging()
 void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    BYTE bytTbrItemIndex = 3;
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
 

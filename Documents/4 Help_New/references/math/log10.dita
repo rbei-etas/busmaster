@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="log10" xml:lang="en-us">
+  <title>log10, log10f : base 10 logarithms</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double log10(double x);
+float log10f(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>log10 returns the base 10 logarithm of x. It is implemented as log(x) / log(10). log10f is identical, save that it takes and returns float values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>log10 and log10f return the calculated value. See the description of log for information on errors.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="GoOnline" xml:lang="en-us">
+  <title>GoOnline : To enable all event handlers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT GoOnline ( )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will enable all handlers. The return value of this function will be 0 or 1. This function can return 0 in case handlers are already enabled, i.e. &quot;All Handler&quot; toolbar/menu is already enabled.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>-</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A value zero indicate failure condition while a value 1 indicate a success condition.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="hotkeys" xml:lang="en-us">
+  <title>Hot Keys</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Hot Keys</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Hot keys are available for most frequently used operations. Following are the hot keys implemented.</p>
+    <table>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Hot key</entry>
+            <entry>Operation</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>CTRL + ALT + C</entry>
+            <entry>Clear Message Window</entry>
+          </row>
+          <row>
+            <entry>CTRL + ALT + I</entry>
+            <entry>Toggle between Activate/Deactivate message interpretation mode.</entry>
+          </row>
+          <row>
+            <entry>CTRL + ALT + O</entry>
+            <entry>Toggle between Append/Overwrite display mode.</entry>
+          </row>
+          <row>
+            <entry>CTRL + ALT + R</entry>
+            <entry>Reset Message Window column header positions to default.</entry>
+          </row>
+          <row>
+            <entry>CTRL + ALT + H</entry>
+            <entry>Toggle between Hex/Dec display format.</entry>
+          </row>
+          <row>
+            <entry>CTRL + ALT + S</entry>
+            <entry>Toggle between Start/Stop sending messages cyclically.</entry>
+          </row>
+          <row>
+            <entry>CTRL + ALT + L</entry>
+            <entry>Toggle between Enable/Disable logging of messages.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </body>
+</topic>

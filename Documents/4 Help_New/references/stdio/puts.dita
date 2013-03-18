@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="puts" xml:lang="en-us">
+  <title>puts : write a character string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int puts(const char *s);
+int _puts_r(void *reent, const char *s);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>puts writes the string at s (followed by a newline, instead of the trailing null) to the standard output stream.</p>
+      <p>The alternate function _puts_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If successful, the result is a nonnegative integer; otherwise, the result is EOF.</p>
+    </section>
+  </refbody>
+</reference>

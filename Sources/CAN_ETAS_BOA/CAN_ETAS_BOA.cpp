@@ -2055,6 +2055,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     HRESULT hResult = S_FALSE;
     OCI_URIName acURI[defNO_OF_CHANNELS];
     INT nFound = 0;
+
+    UINT unDefaultChannelCnt = nCount;
+
     if (OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
     {
         nCount = nFound;
@@ -2077,7 +2080,16 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
             if (nCount > 1)// List hw interface if there are more than one hw
             {
-                if ( ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+                if ( unDefaultChannelCnt && nCount >= unDefaultChannelCnt )
+                {
+                    for (UINT i = 0; i < unDefaultChannelCnt; i++)
+                    {
+                        sg_anSelectedItems[i] = i;
+                    }
+                    nCount  = unDefaultChannelCnt;
+                }
+                else if ( ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;

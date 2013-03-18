@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="acosh" xml:lang="en-us">
+  <title>acosh, acoshf : inverse hyperbolic cosine</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double acosh(double x);
+float acoshf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>acosh calculates the inverse hyperbolic cosine of x. acosh is defined as x must be a number greater than or equal to 1. acoshf is identical, other than taking and returning floats.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>acosh and acoshf return the calculated value. If x less than 1, the return value is NaN and errno is set to EDOM. You can change the error-handling behavior with the non-ANSI matherr function.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strxfrm" xml:lang="en-us">
+  <title>strxfrm : transform string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+size_t strxfrm(char *s1, const char *s2, size_t n);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function transforms the string pointed to by s2 and places the resulting string into the array pointed to by s1. The transformation is such that if the strcmp function is applied to the two transformed strings, it returns a value greater than, equal to, or less than zero, correspoinding to the result of a strcoll function applied to the same two original strings.</p>
+      <p>No more than n characters are placed into the resulting array pointed to by s1, including the terminating null character. If n is zero, s1 may be a null pointer. If copying takes place between objects that overlap, the behavior is undefined.</p>
+      <p>With a C locale, this function just copies.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The strxfrm function returns the length of the transformed string (not including the terminating null character). If the value returned is n or more, the contents of the array pointed to by s1 are indeterminate.</p>
+    </section>
+  </refbody>
+</reference>

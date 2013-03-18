@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="atexit" xml:lang="en-us">
+  <title>atexit : request execution of functions at program exit</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+int atexit(void (*function)(void);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>You can use atexit to enroll functions in a list of functions that will be called when your program terminates normally. The argument is a pointer to a user-defined function (which must not require arguments and must not return a result). The functions are kept in a LIFO stack; that is, the last function enrolled by atexit will be the first to execute when your program exits. There is no built-in limit to the number of functions you can enroll in this list; however, after every group of 32 functions is enrolled, atexit will call malloc to get space for the next part of the list. The initial list of 32 functions is statically allocated, so you can always count on at least that many slots available.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>atexit returns 0 if it succeeds in enrolling your function, -1 if it fails (possible only if no space was available for malloc to extend the list of functions).</p>
+    </section>
+  </refbody>
+</reference>

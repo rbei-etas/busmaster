@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="rewind" xml:lang="en-us">
+  <title>rewind : reinitialize a file or stream</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+void rewind(FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>rewind returns the file position indicator (if any) for the file or stream identified by fp to the beginning of the file. It also clears any error indicator and flushes any pending output.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>rewind does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

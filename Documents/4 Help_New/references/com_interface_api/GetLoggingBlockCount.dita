@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="GetLoggingBlockCount" xml:lang="en-us">
+  <title>GetLoggingBlockCount : Getter for total number of logging blocks</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function is a getter of logging blocks defined.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>USHORT* BlockCount = An [out] parameter for the logging block count.</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

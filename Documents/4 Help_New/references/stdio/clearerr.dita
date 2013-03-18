@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="clearerr" xml:lang="en-us">
+  <title>clearerr : clear file or stream error indicator</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+void clearerr(FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The stdio functions maintain an error indicator with each file pointer fp, to record whether any read or write errors have occurred on the associated file or stream. Similarly, it maintains an end-of-file indicator to record whether there is no more data in the file.</p>
+      <p>Use clearerr to reset both of these indicators.</p>
+      <p>See ferror and feof to query the two indicators.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>clearerr does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fopen" xml:lang="en-us">
+  <title>fopen : open a file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+FILE *fopen(const char *file, const char *mode);
+FILE *_fopen_r(void *reent, const char *file, const char *mode);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fopen initializes the data structures needed to read or write a file. Specify the file&apos;s name as the string at file, and the kind of access you need to the file with the string at mode.</p>
+      <p>The alternate function _fopen_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+      <p>Three fundamental kinds of access are available: read, write, and append. *mode must begin with one of the three characters `r&apos;, `w&apos;, or `a&apos;, to select one of these:<dl>
+          <dlentry>
+            <dt>r</dt>
+            <dd>Open the file for reading; the operation will fail if the file does not exist, or if the host system does not permit you to read it.</dd>
+          </dlentry>
+          <dlentry>
+            <dt>w</dt>
+            <dd>Open the file for writing from the beginning of the file: effectively, this always creates a new file. If the file whose name you specified already existed, its old contents are discarded.</dd>
+          </dlentry>
+          <dlentry>
+            <dt>a</dt>
+            <dd>Open the file for appending data, that is writing from the end of file. When you open a file this way, all data always goes to the current end of file; you cannot change this using fseek.</dd>
+          </dlentry>
+        </dl></p>
+      <p>Some host systems distinguish between &quot;binary&quot; and &quot;text&quot; files. Such systems may perform data transformations on data written to, or read from, files opened as &quot;text&quot;. If your system is one of these, then you can append a `b&apos; to any of the three modes above, to specify that you are opening the file as a binary file (the default is to open the file as a text file).</p>
+      <p>`rb&apos;, then, means &quot;read binary&quot;; `wb&apos;, &quot;write binary&quot;; and `ab&apos;, &quot;append binary&quot;.</p>
+      <p>To make C programs more portable, the `b&apos; is accepted on all systems, whether or not it makes a difference.</p>
+      <p>Finally, you might need to both read and write from the same file. You can also append a `+&apos; to any of the three modes, to permit this. (If you want to append both `b&apos; and `+&apos;, you can do it in either order: for example, &quot;rb+&quot; means the same thing as &quot;r+b&quot; when used as a mode string.)</p>
+      <p>Use &quot;r+&quot; (or &quot;rb+&quot;) to permit reading and writing anywhere in an existing file, without discarding any data; &quot;w+&quot; (or &quot;wb+&quot;) to create a new file (or begin by discarding all data from an old one) that permits reading and writing anywhere in it; and &quot;a+&quot; (or &quot;ab+&quot;) to permit reading anywhere in an existing file, but writing only at the end. 
+
+</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>fopen returns a file pointer which you can use for other file operations, unless the file you requested could not be opened; in that situation, the result is NULL. If the reason for failure was an invalid string at mode, errno is set to EINVAL.</p>
+    </section>
+  </refbody>
+</reference>

@@ -516,9 +516,19 @@ int CSigWatchDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CSigWatchDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    //Shailesh +
-    SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_SIGNALWATCH), TRUE);
-    //Shailesh -
+    /* Try to load resource DLL for icons*/
+    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+
+    if ( hModAdvancedUILib )
+    {
+        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_SIGNALWATCH )), TRUE);
+        ::FreeLibrary(hModAdvancedUILib);
+        hModAdvancedUILib = NULL;
+    }
+    else
+    {
+        SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_SIGNALWATCH), TRUE);
+    }
     vInitSignalWatchList();
     m_unTimerId = (UINT)SetTimer(0x123, 50, NULL);
     return TRUE;  // return TRUE unless you set the focus to a control

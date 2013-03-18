@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="transmit_messages" xml:lang="en-us">
+  <title>Transmit Messages</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Transmit Messages</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Messages can be send over CAN-bus by following the steps given below. Select <b>CAN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog as shown is figure below.</p>
+    <section>
+      <title>Getting Started</title>
+      <image href="../images/Tx_Message.bmp" placement="break"/>
+      <ul>
+        <li>Add a message block and select the trigger as “On Key” or “On Time” or both. Select a name of message block and then enter appropriate message details in “Configure Message“.</li>
+        <li>If the field for Message ID/Name has a database message then DLC and frame type will be updated with database information. The Signal List will be enabled with signals defined in the database. Signal Raw or Physical values can be directly entered in this list. After validation the data will be updated.</li>
+        <li>Signal descriptor can be used to enter physical value. Double clicking the physical value cell of a signal that got descriptor will show a list of signal descriptors.</li>
+        <li>If the message ID is not a database message enter DLC, Message bytes. In this case signal list will be disabled.</li>
+        <li>RTR message can be added to by selecting RTR checkbox</li>
+        <li>If there is selection in the message list, changes will update the selected message.</li>
+        <li>Selecting Add Message button will add a new message entry.</li>
+        <li>Database messages can be directly entered by name or ID in the Message ID/ Name combo box or can be selected from the combo box list items.</li>
+        <li>Signal Matrix will show the bit pattern of the data bytes.</li>
+        <li>Instead of using Update button, Auto Update option can be selected to dynamically save the data. </li>
+        <li>Select Update button to save the changes and press the toolbar button shown in the figure below.</li>
+        <li>
+          <image href="../images/sendmessagetoolbar.bmp" placement="break"/>
+        </li>
+      </ul>
+      <note>
+        <ul>
+          <li>Start/Stop Transmission toolbar button will be enabled only if the tool is connected.</li>
+          <li>Message transmission shall be stopped with out tool disconnect. </li>
+        </ul>
+      </note>
+      <p>The messages added in to the Tx message list can also be modified. Follow the steps given below.</p>
+      <ul>
+        <li>Select an entry in the message list. The selected detail will be unpacked and will be displayed in the edit controls below. If it is a database message then the signal details will be listed in the signal list with both physical and raw values.</li>
+        <li>Any modification in Message Name/ID, DLC, Data bytes, signal raw and physical values will directly reflect in the selected message entry in the message list. The signal matrix will also get updated to reflect the changes.</li>
+        <li>Selecting Apply or OK button will reflect message details change in transmission immediately if message transmission is on. </li>
+      </ul>
+      <p>User can delete a message frame entry from the list by following the steps given below.</p>
+      <ul>
+        <li>Select <b>CAN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog box as shown below in figure (a).</li>
+        <li>Select an entry in the message frame list.</li>
+        <li>Select Delete button. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected item will be deleted from the list. Multiple items can be selected to delete multiple items in one shot.</li>
+        <li>Select Delete All button to delete all entries in the message block. A delete all confirmation will be displayed. Select Yes to confirm deletion. This will clear message block entries.</li>
+        <li>The other way of doing delete is Right click mouse button. This will display a pop-up menu Delete and Delete All. Select Delete pop-up menu. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected message frame will be removed from the message frame list.</li>
+      </ul>
+      <p>The added messages can be directly transmitted instantaneously. The steps to do this is listed below</p>
+      <ul>
+        <li>Select a message entry or message entries from the message list.</li>
+        <li>Select Send button to transmit these messages.</li>
+        <li>The other way of doing this is right click on selected message entries. This will show a popup menu with Send option. Select Send to transmit selected messages once. </li>
+      </ul>
+      <note>
+        <ul>
+          <li>To send a message tool should be in connected state.</li>
+          <li>If more then one message are selected to send, all messages will be transmitted one after another without any delay. </li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Transmission Blocks - In Detail</title>
+      <p>The transmission blocks are segregated in to Message Blocks and Message frames that belong to a block.  Message blocks will have logical name and triggering attributes and list of messages. Message block name is logical representation of the block. Message block attributes are triggering type and trigger value.</p>
+    </section>
+    <section>
+      <title>Triggering Type</title>
+      <p>Two types of triggering are supported by BUSMASTER. These are timer and key triggering. In timer triggering messages will be transferred periodically with the time delay mentioned in the trigger value. In case of key triggering the message will be transmitted on press of the trigger character. These options will go along with the repetition mode called Monoshot or Cyclic. In monoshot mode messages belong to a block will be transmitted only once. After completing the cycle of transmission nothing will be transmitted. In cyclic mode message transmission will happen cyclically. After completing one cycle of transmission, first message in the block will be transmitted and so on.</p>
+      <p>In case of key triggering, if the mode is monoshot, messages in the block will be transmitted one after another for each trigger key press. Once all messages are transmitted nothing will be transmitted. If the mode is cyclic after completing one cycle the first message will be transmitted on press on the key again and this cycle will continue. The special attribute All Message is used to generate heavy load condition. This is attribute is applicable only for key triggering. If All Message is checked and the mode is monoshot, on press of the key all messages will be transmitted once without any delay in between. If the mode is cyclic then all messages will be transmitted continuously with out any delay in between. This can be stopped only be stopping the Tx message transmission.</p>
+      <p>Triggering Value</p>
+      <p>For timer triggering the triggering value is in milliseconds. The minimum supported timer value is 1 millisecond. For key triggering the value can be A-Z, a-z, 0-9.</p>
+      <note>
+        <ul>
+          <li>Key trigger character is case sensitive.</li>
+          <li>Same key character shall be used for multiple message blocks.</li>
+          <li>One block shall be configured as both key and time triggering.</li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Time Delay Between blocks</title>
+      <p>Time delay between blocks is used to transmit one block of data at a time. This supersedes time delay between messages. When &quot;Time Delay&quot; for Delay Between Message Blocks is checked the &quot;Time Delay&quot; for Trigger will be disabled and the time will not be considered for message transmission. When the &quot;Transmit Messages&quot; is selected, the messages in the block will be sent immediately. After the given time delay between blocks is elapsed, messages of the second block will be sent and will be continued till all the blocks are sent.</p>
+      <p>When the &quot;Time Delay&quot; for Delay Between Blocks is unchecked the &quot;Time Delay&quot; for Trigger will be enabled and the previous check status will be maintained.</p>
+      <p>If the Tx Mode selected is monoshot then the messages will be transmitted only once. For cyclic mode, messages will be transmitted continuously based on the delay given.</p>
+      <p>If key trigger is selected as Trigger event then messages will be sent on the key press event</p>
+    </section>
+    <section>
+      <title>Adding a Message Block</title>
+      <p>To create a new message block select Add from Message Blocks frame. This will create a new message block with default values and with empty message list. User shall modify attributes of the message block to customize the message block. User shall be able to add maximum of 32 message blocks.</p>
+    </section>
+    <section>
+      <title>Deleting a message Block</title>
+      <p>To delete a message block select the message block from the list and select Delete button. This will prompt delete confirmation dialog. Selecting Ok to this dialog will delete message block from message blocks list. Deleting a message block will remove all messages belong to that message block.</p>
+      <p>Addition and Deletion of message block shall be done by using context sensitive popup menus. This will be displayed if the user right clicks on message block list.</p>
+    </section>
+    <section>
+      <title>Message List</title>
+      <p>Message list will show the list of messages belong to a message block. A message block shall be selected from Message Block to see the list of messages it has. Message list will show message frame with its ID, Name if it is a database message, frame type, DLC and data bytes. The icon used for each entry will denote whether it is a database message or non database message. The data bytes will be listed in hex or decimal format as per the tool bar numeric mode. By default massages will be displayed in hexadecimal mode.The frame type will show the message is using standard frame type or extended frame type. The RTR messages will be denoted by &apos;r&apos;. With message in the list the following operations shall be performed.</p>
+    </section>
+    <section>
+      <title>Send</title>
+      <p>This will send the selected message(s) immediately. To perform this action the tool must be in connected state. The selected messages will be transmitted on CAN bus with out having any delay in between the messages.</p>
+    </section>
+    <section>
+      <title>Delete</title>
+      <p>This will delete the selected message entry from the message block. Multiple selections shall be done to delete more then one messages. A delete confirmation message will be popped up before deletion. On selection of Yes to this confirmation the selected messages will be deleted.</p>
+    </section>
+    <section>
+      <title>Delete All</title>
+      <p>This is to clear the message list. This will show a confirmation message. Selecting Yes to this confirmation will clear all messages in the message block.</p>
+    </section>
+    <section>
+      <title>Configuring Message Details</title>
+      <p>A message details shall be configured in different ways. Message details like ID/Name shall be directly typed in the Message Name/ID combo box. Database message names shall be either directly typed or selected from the drop down list. This list will be populated with the imported database messages. Similarly message ID shall be directed entered here. If corresponding database message found, this will be replaced with the message name.</p>
+      <p>Message length shall be entered or modified using the field DLC. The allowed DLC vales are 1-8. If a database message is entered or selected from the drop down list, the length of that message will be automatically taken from the database and will be filled in this field.</p>
+      <p>Data bytes values shall be directly entered using Data Bytes fields. The message data shall be meaningfully entered using signal values of the message. Only for a database message signal values shall be given. For non database messages the value can be entered only through data bytes fields.</p>
+      <p>Message Type can be configured using Standard/Extended radio button and RTR check box. Message will be validated on change of frame type.</p>
+      <p>Any message can be converted to RTR by checking the checkbox RTR. Signal details of a message will be removed if the message is of type RTR.</p>
+    </section>
+    <section>
+      <title>Signal Details</title>
+      <p>For a database message, all signals belonging to the message will be displayed in the signal list with its physical value with unit and raw value. User shall enter value in terms of physical value of the signal or raw value of the signal. If signal descriptor is defined for a signal then physical value will show list of signal descriptors while entering the signal value. This makes entering value of a signal. Message data bytes, physical and raw values will be updated if there is any modification in these fields. Any modification in physical value of a signal will be updated appropriately the raw value and data bytes packing and same for raw value and data bytes modification.</p>
+      <note>
+        <ul>
+          <li>Changing data bytes may violate signal boundary validation. If the data bytes of a database message are modified directly, the message will be made as dirty. This will be denoted by a * in message list.</li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Signal Matrix</title>
+      <p>Signal matrix will show the packing of the signal values in to the data bytes visually. This matrix has 64 cells and each represents one bit of the message data byte. If message length is lesser then 8 bytes then the invalid bytes will be disabled. While selecting a signal from the signal list, it will be highlighted in the signal matrix. This matrix will be handy to visualize the signal packing in to the data bytes. For a RTR message this matrix will be disabled.</p>
+    </section>
+    <section>
+      <title>Signal Definition</title>
+      <p>To get the definition of a signal just double click the signal name from the signal list. This will pop up the signal definition dialog from data base. The signal Type, Length, Start Bit, Minimum and Maximum value, Offset, Factor and unit information will be displayed.</p>
+    </section>
+    <section>
+      <title>Add Message</title>
+      <p>This button will create new message entry in the selected message block. This will take the valued of message details field and will create a new message frame. This message will be put in to the message list of selected message block.</p>
+    </section>
+    <section>
+      <title>Status</title>
+      <p>A status text will be update for any invalid data entry. This will be cleared of the invalid data got modified to a valid one. This will show appropriate error messages for an invalid data entry. Once valid data got this text will be cleared and consequently the Add Message button will be enabled.</p>
+      <note>
+        <ul>
+          <li>If a message is selected from the message list then all modifications will update the selected message.</li>
+          <li>If none of the message is selected then modifications are local and only Add Message will add this data in to the message list as a new message.</li>
+          <li>A new message shall be added any time by selecting the Add Message button. This button will be enabled only if the data entered in message details field are valid.</li>
+          <li>Maximum of 64 messages shall be added in to a signal message block. Maximum of 32 Message Blocks shall be added.</li>
+        </ul>
+      </note>
+    </section>
+    <section>
+      <title>Apply</title>
+      <p>To make changes to reflect the transmission, select Apply button. This will make changes permanent and the changes will reflect in the transmission if TX is on. The TX dialog will remain open to continue modifications.</p>
+    </section>
+    <section>
+      <title>Ok</title>
+      <p>This will make changes permanent and will close the dialog. The changes will reflect in the transmission if TX is on.</p>
+    </section>
+    <section>
+      <title>Cancel</title>
+      <p>To cancel the changes select Cancel. This will close the dialog with out saving the changes. All changes will be ignored and can not be recalled.</p>
+    </section>
+    <note>
+      <ul>
+        <li>Signal Value shall be modified even if the transmission is on.</li>
+        <li>New Messages shall be added in to the message block even if the transmission is on.</li>
+        <li>If Message Transmission is on message from any block can not be deleted Any active message block (with check box is on in Message Block list) can not be switched off if Tx is on. </li>
+      </ul>
+    </note>
+  </body>
+</topic>

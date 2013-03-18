@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ecvtbuf" xml:lang="en-us">
+  <title>ecvtbuf, fcvtbuf : double or float to string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+char *ecvtbuf(double val, int chars, int *decpt, int *sgn, char *buf);
+char *fcvtbuf(double val, int decimals, int *decpt, int *sgn, char *buf);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>ecvtbuf and fcvtbuf produce (null-terminated) strings of digits representating the double number val.</p>
+      <p>The only difference between ecvtbuf and fcvtbuf is the interpretation of the second argument (chars or decimals). For ecvtbuf, the second argument chars specifies the total number of characters to write (which is also the number of significant digits in the formatted string, since these two functions write only digits). For fcvtbuf, the second argument decimals specifies the number of characters to write after the decimal point; all digits for the integer part of val are always included.</p>
+      <p>Since ecvtbuf and fcvtbuf write only digits in the output string, they record the location of the decimal point in *decpt, and the sign of the number in *sgn. After formatting a number, *decpt contains the number of digits to the left of the decimal point. *sgn contains 0 if the number is positive, and 1 if it is negative. For both functions, you supply a pointer buf to an area of memory to hold the converted string.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Both functions return a pointer to buf, the string containing a character representation of val.</p>
+    </section>
+  </refbody>
+</reference>

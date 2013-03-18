@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="tanh" xml:lang="en-us">
+  <title>tanh, tanhf : hyperbolic tangent</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double tanh(double x);
+float tanhf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>tanh computes the hyperbolic tangent of the argument x. Angles are specified in radians. tanh(x) is defined as</p>
+      <codeblock>sinh(x)/cosh(x)</codeblock>
+      <p>tanhf is identical, save that it takes and returns float values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The hyperbolic tangent of x is returned.</p>
+    </section>
+  </refbody>
+</reference>

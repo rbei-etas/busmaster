@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stdarg" xml:lang="en-us">
+  <title>ANSI-standard macros, `stdarg.h&apos;</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>ANSI-standard macros</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>In ANSI C, a function has a variable number of arguments when its parameter list ends in an ellipsis (...). The parameter list must also include at least one explicitly named argument; that argument is used to initialize the variable list data structure.</p>
+    <p>ANSI C defines three macros (va_start, va_arg, and va_end) to operate on variable argument lists. `stdarg.h&apos; also defines a special type to represent variable argument lists: this type is called va_list.</p>
+  </body>
+</topic>

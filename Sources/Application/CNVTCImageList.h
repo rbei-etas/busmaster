@@ -40,4 +40,7 @@ public:
 public:
     CNVTCImageList();
     virtual ~CNVTCImageList();
+private:
+    HMODULE m_hModAdvancedUILib;
+    bool    m_bUseAdvancedUILib;
 };

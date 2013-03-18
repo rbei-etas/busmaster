@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="infinity" xml:lang="en-us">
+  <title>infinity, infinityf : representation of infinity</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double infinity(void);
+float infinityf(void);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>infinity and infinityf return the special number IEEE infinity in double and single precision arithmetic respectivly.</p>
+    </section>
+  </refbody>
+</reference>

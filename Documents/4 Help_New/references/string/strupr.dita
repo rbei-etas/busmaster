@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strupr" xml:lang="en-us">
+  <title>strupr : force string to uppercase</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strupr(char *a);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strupr converts each characters in the string at a to upper case.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strupr returns its argument, a.</p>
+    </section>
+  </refbody>
+</reference>

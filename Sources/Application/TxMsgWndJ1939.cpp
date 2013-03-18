@@ -362,6 +362,7 @@ void CTxMsgWndJ1939::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTxMsgWndJ1939, CDialog)
     ON_BN_CLICKED(IDC_SEND, OnBnClickedSend)
     ON_BN_CLICKED(IDC_OK, OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_EN_CHANGE(IDC_EDIT_DLC, OnEnChangeEditDlc)
     ON_EN_UPDATE(IDC_EDIT_MILI_SEC, OnEnChangeEditMilliSec)
     ON_EN_CHANGE(IDC_EDIT_DATA, OnEnChangeEditMsg)
@@ -588,8 +589,14 @@ HRESULT CTxMsgWndJ1939::SendSavedMessage(void)
 
 void CTxMsgWndJ1939::OnBnClickedOk()
 {
-    // TODO: Add your control notification handler code here
     ShowWindow(SW_HIDE);
+    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, NULL, NULL);
+}
+
+void CTxMsgWndJ1939::OnBnClickedCancel()
+{
+    ShowWindow(SW_HIDE);
+    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, NULL, NULL);
 }
 
 void CTxMsgWndJ1939::OnEnChangeEditDlc()
@@ -802,6 +809,7 @@ void CTxMsgWndJ1939::vInitializeNmFields(void)
 void CTxMsgWndJ1939::OnClose()
 {
     ShowWindow(SW_HIDE);
+    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, NULL, NULL);
 }
 
 void CTxMsgWndJ1939::OnBnClickedClaimAddress()
