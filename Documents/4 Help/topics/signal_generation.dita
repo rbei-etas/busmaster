@@ -19,7 +19,7 @@
     <p>Each Signal can have different waveform settings allotted like Signal type, Amplitude, Frequency.</p>
     <p>All the signals will be having a standard sampling time at which their amplitude will be calculated depending on the wave type and they will be sent out.</p>
     <p>Currently only two waveforms are supported, Sine Wave and Triangular Wave.</p>
-    <p>To configure signals, go to menu option, Configure  Waveform Messages and user will be shown with the following dialog box.</p>
+    <p>To configure signals, go to menu option, <b>CAN --&gt; Signal Graph --&gt; Configure</b> and user will be shown with the following dialog box.</p>
     <image href="../images/WaveformSelDlg.bmp"/>
     <p>The above shown figure contains the list of all the messages in a combo box, “Message list:” which are present in currently selected database file.</p>
     <p>“Signal List” List control shows the signals in currently selected message in combo box which are not defined with any waveform.</p>
@@ -36,7 +36,7 @@
 </p>
     <p>&quot;AutoCorrect Sampling Points&quot; checkbox when checked, will calculate the sampling time period  for a given frequency such that there will be at least 8 points in the a cycle and the graph does not distort. </p>
     <p>Maximum frequency that can be set is 125 and Sampling Time Period is 32767</p>
-    <p>Now, if user wants to transmit the defined signals, make sure the application is in connected state and use the menu option TxMessage  Start Send  Waveforms.
+    <p>Now, if user wants to transmit the defined signals, make sure the application is in connected state and use the menu option <b>CAN --&gt; Waveform Messages --&gt; Enable</b>.
 
 </p>
     <p>Alternatively user can use the toolbar items shown below for configuring and sending waveform signals.

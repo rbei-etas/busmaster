@@ -18,10 +18,10 @@
     <p>User can connect/disconnect the tool from the CAN-bus by pressing/releasing a toggle toolbar button shown in the figure below.</p>
     <image href="../images/Connect.bmp" placement="break"/>
     <p>The tool can also be connected by selecting <menucascade>
-        <uicontrol>File</uicontrol>
+        <uicontrol>CAN</uicontrol>
         <uicontrol>Connect</uicontrol>
       </menucascade> menu option (available only in disconnected state) or by pressing F2 function key. The same can be disconnected by selecting <menucascade>
-        <uicontrol>File</uicontrol>
+        <uicontrol>CAN</uicontrol>
         <uicontrol>Disconnect</uicontrol>
       </menucascade> menu option (available only in Connected state) or by pressing Esc key. When the tool is in connected state, the menu option will become Disconnect and when the tool is in disconnected state, the menu option will be displayed is Connect.</p>
     <p>Transmission and reception of messages can be done only when the tool is in the connected state.</p>

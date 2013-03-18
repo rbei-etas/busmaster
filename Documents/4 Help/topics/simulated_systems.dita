@@ -15,10 +15,7 @@
     </metadata>
   </prolog>
   <body>
-    <p>Simulated systems can be configured under the CAN-bus by following the steps given below. Select <menucascade>
-        <uicontrol>Configure</uicontrol>
-        <uicontrol>Simulated Systems</uicontrol>
-      </menucascade> menu option. This will display the window as shown is figure below.</p>
+    <p>Simulated systems can be configured under the CAN-bus by following the steps given below. Select <b>CAN --&gt; Node Simulation --&gt; Configure</b> menu option. This will display the window as shown is figure below.</p>
     <p>There are two panes in the <uicontrol>Configure Simulated Systems</uicontrol> window as shown in figure below.</p>
     <image href="../images/SimSys_Wnd.bmp" placement="break"/>
     <section>
@@ -88,7 +85,6 @@
           <li>All the systems under the CAN Bus can be deleted only when all the DLLs under it are not loaded.</li>
           <li>The simulated systems under the CAN Bus can be saved by saving the tool&apos;s configuration by <menucascade>
               <uicontrol>File</uicontrol>
-              <uicontrol>Configuration</uicontrol>
               <uicontrol>Save</uicontrol>
             </menucascade> into its respective &quot;.cfx&quot; file.</li>
         </ul>
@@ -131,7 +127,6 @@
           <li>Simulated System can be deleted only when the DLLs under it are not loaded.</li>
           <li>The simulated systems under the CAN Bus can be saved by saving the tool&apos;s configuration by <menucascade>
               <uicontrol>File</uicontrol>
-              <uicontrol>Configuration</uicontrol>
               <uicontrol>Save</uicontrol>
             </menucascade> into its respective &quot;.cfx&quot; file.</li>
         </ul>

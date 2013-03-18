@@ -24,7 +24,7 @@ BUSMASTER Graph supports plotting graph for signal values and statistics paramet
     <section>
       <title>Starting With Graph </title>
       <image href="../images/Graph_main.bmp"/>
-      <p>To Start with BUSMASTER graph select View --&gt; Signal Graph Window --&gt; CAN menu item. This will show Graph Display with configuration setting option. The left side view will show list of elements added for plotting the graph. Below the element list properties of the selected element will be listed. This includes line type and color, sample point symbol type and color. An element can be hidden from the display and an element can be disabled so that it will not get currently receiving data. To configure element list Configure button is provided. This will show a dialog with database messages and statistics parameters. 
+      <p>To Start with BUSMASTER graph select <b>CAN --&gt; Signal Graph --&gt; Activate</b> menu item. This will show Graph Display with configuration setting option. The left side view will show list of elements added for plotting the graph. Below the element list properties of the selected element will be listed. This includes line type and color, sample point symbol type and color. An element can be hidden from the display and an element can be disabled so that it will not get currently receiving data. To configure element list Configure button is provided. This will show a dialog with database messages and statistics parameters. 
 
 </p>
       <p>The right side view shows graph window. Below that controls are provided that will manipulate plotted graph. These ranges from basic manipulation of graph like moving, zooming and tracking the value. Advanced features like setting scale values automatically, setting all graph elements one below another and setting manual range. For easy navigation directional navigation keys are provided which will move the graph in the selected direction by one grid position.    
@@ -37,8 +37,7 @@ BUSMASTER Graph supports plotting graph for signal values and statistics paramet
     </section>
     <section>
       <title>Configuring Graph </title>
-      <p>
-To configure graph for a particular bus with graph elements or statistics elements select Configure à Signal Graph Window menu item. This will show Configure Signal Graph Window dialog.        
+      <p>To configure graph for a particular bus with graph elements or statistics elements select <b>CAN --&gt; signal Graph --&gt; Configure</b> menu item. This will show Configure Signal Graph Window dialog.        
 
 </p>
       <image href="../images/Configure_SigGrphWnd.bmp"/>

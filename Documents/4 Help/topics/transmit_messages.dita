@@ -15,10 +15,7 @@
     </metadata>
   </prolog>
   <body>
-    <p>Messages can be send over CAN-bus by following the steps given below. Select <menucascade>
-        <uicontrol>Configure</uicontrol>
-        <uicontrol>Tx Messages</uicontrol>
-      </menucascade> menu option. This will display the dialog as shown is figure below.</p>
+    <p>Messages can be send over CAN-bus by following the steps given below. Select <b>CAN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog as shown is figure below.</p>
     <section>
       <title>Getting Started</title>
       <image href="../images/Tx_Message.bmp" placement="break"/>
@@ -52,10 +49,7 @@
       </ul>
       <p>User can delete a message frame entry from the list by following the steps given below.</p>
       <ul>
-        <li>Select <menucascade>
-            <uicontrol>Configure</uicontrol>
-            <uicontrol>Tx Messages</uicontrol>
-          </menucascade> menu option. This will display the dialog box as shown below in figure (a).</li>
+        <li>Select <b>CAN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog box as shown below in figure (a).</li>
         <li>Select an entry in the message frame list.</li>
         <li>Select Delete button. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected item will be deleted from the list. Multiple items can be selected to delete multiple items in one shot.</li>
         <li>Select Delete All button to delete all entries in the message block. A delete all confirmation will be displayed. Select Yes to confirm deletion. This will clear message block entries.</li>
