@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="asin" xml:lang="en-us">
+  <title>asin, asinf : arc sine</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double asin(double x);
+float asinf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>asin computes the inverse sine (arc sine) of the argument x. Arguments to asin must be in the range -1 to 1. asinf is identical to asin, other than taking and returning floats. You can modify error handling for these routines using matherr.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If x is not in the range -1 to 1, asin and asinf return NaN (not a number), set the global variable errno to EDOM, and issue a DOMAIN error message. You can change this error treatment using matherr.</p>
+    </section>
+  </refbody>
+</reference>

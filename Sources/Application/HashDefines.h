@@ -606,6 +606,7 @@ PLACE_HODLER_FOR_FUNCTIONNAME */"
 #define WM_DATABASE_CHANGE          WM_USER + 59 // Database associate/dissociate event
 #define WM_KEYBOARD_CHAR            WM_USER + 60 // Capture char key press event from Signal Watch and NW Statistics
 #define WM_KEYBOARD_KEYDOWN         WM_USER + 61 // Capture key down event to handle connect / disconnect from Signal Watch and NW Statistics
+#define WM_J1939_TX_CLOSE_MSG       WM_USER + 110   // Captures the J1939 window close event
 
 // Errors
 #define defMSG_NOACK                "Message transmission\
@@ -1789,7 +1790,6 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defMINOR_VERSION_POSITION                   0
 //This line is used to separate two files Build,Build&load messages on output window
 #define defSTR_BUILD_TRACE_LINE_MARK               " "
-
 
 //Key Handlers
 #define BMKEY_BACK          0x80

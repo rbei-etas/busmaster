@@ -165,14 +165,14 @@ int timenow_CAPL();
 int getmessagename_CAPL(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
 int getfirstcandbname_CAPL(char* cBuffer, DWORD size);
 
-//typedef struct _InternalStructCAN
-//{
-//    _InternalStructCAN()
-//    {
-//        Trace("temporary Structure");
-//    }
-//} InternalStructCAN;
-//_InternalStructCAN objcan;
+typedef struct _InternalStructCAN
+{
+    _InternalStructCAN()
+    {
+        Trace("temporary Structure");
+    }
+} InternalStructCAN;
+_InternalStructCAN objcan;
 
 
 // Prototypes End

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableKeyHandlers" xml:lang="en-us">
+  <title>EnableKeyHandlers : To enable or Disable key event handlers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>BOOL EnableKeyHandlers ( BOOL bEnable)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will enable or disable key handlers. User can pass parameter as TRUE to enable and FALSE to disable the handlers. Function will return TRUE, if state change was successful otherwise it will return FALSE.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>bEnable     - TRUE to Enable message handler. FALSE to disable</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>TRUE success. FALSE if the handler is already in the specified state</p>
+    </section>
+  </refbody>
+</reference>

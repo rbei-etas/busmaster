@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fputc" xml:lang="en-us">
+  <title>fputc : write a character on a stream or file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int fputc(int ch, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fputc converts the argument ch from an int to an unsigned char, then writes it to the file or stream identified by fp.</p>
+      <p>If the file was opened with append mode (or if the stream cannot support positioning), then the new character goes at the end of the file or stream. Otherwise, the new character is written at the current value of the position indicator, and the position indicator oadvances by one.</p>
+      <p>For a macro version of this function, see putc.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If successful, fputc returns its argument ch. If an error intervenes, the result is EOF. You can use `ferror(fp)&apos; to query for errors.</p>
+    </section>
+  </refbody>
+</reference>

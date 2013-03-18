@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strtok" xml:lang="en-us">
+  <title>strtok : get next token from a string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strtok(char *source, const char *delimiters)
+char *strtok_r(char *source, const char *delimiters, char **lasts)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The strtok function is used to isolate sequential tokens in a null-terminated string, *source. These tokens are delimited in the string by at least one of the characters in *delimiters. The first time that strtok is called, *source should be specified; subsequent calls, wishing to obtain further tokens from the same string, should pass a null pointer instead. The separator string, *delimiters, must be supplied each time, and may change between calls.</p>
+      <p>The strtok function returns a pointer to the beginning of each subsequent token in the string, after replacing the separator character itself with a NUL character. When no more tokens remain, a null pointer is returned.</p>
+      <p>The strtok_r function has the same behavior as strtok, except a pointer to placeholder *[lasts&gt; must be supplied by the caller.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strtok returns a pointer to the next token, or NULL if no more tokens can be found.</p>
+    </section>
+  </refbody>
+</reference>

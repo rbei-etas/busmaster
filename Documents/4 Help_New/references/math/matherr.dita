@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="matherr" xml:lang="en-us">
+  <title>matherr : modifiable math error handler</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+int matherr(struct exception *e);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>matherr is called whenever a math library function generates an error. You can replace matherr by your own subroutine to customize error treatment. The customized matherr must return 0 if it fails to resolve the error, and non-zero if the error is resolved.</p>
+      <p>When matherr returns a nonzero value, no error message is printed and the value of errno is not modified. You can accomplish either or both of these things in your own matherr using the information passed in the structure *e.</p>
+      <p>This is the exception structure (defined in `math.h&apos;):</p>
+      <codeblock>struct exception {
+        int type;
+        char *name;
+        double arg1, arg2, retval;
+        int err;
+};</codeblock>
+      <p>The members of the exception structure have the following meanings:</p>
+      <p>type
+        The type of mathematical error that occured; macros encoding error types are also defined in `math.h&apos;.</p>
+      <p>name
+        a pointer to a null-terminated string holding the name of the math library function where the error occurred.</p>
+      <p>arg1, arg2
+        The arguments which caused the error.</p>
+      <p>retval
+        The error return value (what the calling function will return).</p>
+      <p>err
+        If set to be non-zero, this is the new value assigned to errno.</p>
+      <p>The error types defined in `math.h&apos; represent possible mathematical errors as follows:</p>
+      <p>DOMAIN
+        An argument was not in the domain of the function; e.g. log(-1.0).</p>
+      <p>SING
+        The requested calculation would result in a singularity; e.g. pow(0.0,-2.0)</p>
+      <p>OVERFLOW
+        A calculation would produce a result too large to represent; e.g. exp(1000.0).</p>
+      <p>UNDERFLOW
+        A calculation would produce a result too small to represent; e.g. exp(-1000.0).</p>
+      <p>TLOSS
+        Total loss of precision. The result would have no significant digits; e.g. sin(10e70).</p>
+      <p>PLOSS
+        Partial loss of precision.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The library definition for matherr returns 0 in all cases. You can change the calling function&apos;s result from a customized matherr by modifying e-&gt;retval, which propagates backs to the caller.</p>
+      <p>If matherr returns 0 (indicating that it was not able to resolve the error) the caller sets errno to an appropriate value, and prints an error message.</p>
+    </section>
+  </refbody>
+</reference>

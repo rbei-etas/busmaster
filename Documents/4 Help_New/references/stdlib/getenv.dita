@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="getenv" xml:lang="en-us">
+  <title>getenv : look up environment variable</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+char *getenv(const char *name);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>getenv searches the list of environment variable names and values (using the global pointer `char **environ&apos;) for a variable whose name matches the string at name. If a variable name matches, getenv returns a pointer to the associated value.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A pointer to the (string) value of the environment variable, or NULL if there is no such environment variable.</p>
+    </section>
+  </refbody>
+</reference>

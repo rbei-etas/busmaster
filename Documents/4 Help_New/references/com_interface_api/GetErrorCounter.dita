@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="GetErrorCounter" xml:lang="en-us">
+  <title>GetErrorCounter : Getter for both Rx and Tx error, given the channel number</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function will provide the TX and RX error count of the specified channel from BUSMASTER.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Channel number, pointers to variables for RX and TX error</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

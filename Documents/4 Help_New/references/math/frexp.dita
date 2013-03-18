@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="frexp" xml:lang="en-us">
+  <title>frexp, frexpf : split floating-point number</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double frexp(double val, int *exp);
+float frexpf(float val, int *exp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>All non zero, normal numbers can be described as m * 2**p. frexp represents the double val as a mantissa m and a power of two p. The resulting mantissa will always be greater than or equal to 0.5, and less than 1.0 (as long as val is nonzero). The power of two will be stored in *exp. frexpf is identical, other than taking and returning floats rather than doubles.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>frexp returns the mantissa m. If val is 0, infinity, or Nan, frexp will set *exp to 0 and return val.</p>
+    </section>
+  </refbody>
+</reference>

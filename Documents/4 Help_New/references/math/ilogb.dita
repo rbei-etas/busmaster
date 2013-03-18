@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ilogb" xml:lang="en-us">
+  <title>ilogb, ilogbf : get exponent of floating point number</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+int ilogb(double val);
+int ilogbf(float val);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>All non zero, normal numbers can be described as m * 2**p. ilogb and ilogbf examine the argument val, and return p. The functions frexp and frexpf are similar to ilogb and ilogbf, but also return m.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>ilogb and ilogbf return the power of two used to form the floating point argument. If val is 0, they return - INT_MAX (INT_MAX is defined in limits.h). If val is infinite, or NaN, they return INT_MAX.</p>
+    </section>
+  </refbody>
+</reference>

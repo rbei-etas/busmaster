@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Introduction</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>BUSMASTER Overview</title>
+      <p>BUSMASTER is a user friendly and cost effective testing and development tool for CAN bus systems that runs on Windows 2000, Windows XP and Windows 7. It helps in monitoring, analyzing and simulation of CAN messages the bus. Using its powerful functions and user-programmability one can simulate CAN system of any complexity.</p>
+      <p>Additionally it provides options to analyze data bytes in raw data format or logical/physical data format and signals can be monitored separately. These two functionality is achieved using a message database. An in-built database editor is provided to create message databases.</p>
+      <p>The user can simulate a CAN node’s behavior or enhance the functionality of BUSMASTER. This is done by means of 32 bit windows Dynamic Link Library (DLL). A DLL containing BUSMASTER interface can be loaded dynamically to simulate the node’s behavior. An in-built Function editor is provided to write program in ANSI C and build a DLL. Once DLL is generated, it can be loaded and used dynamically.</p>
+      <p>There are many others features that can be used without any programming. The key such features are<ul>
+          <li>Display of messages,</li>
+          <li>Message information and Interpretation,</li>
+          <li>Filters,</li>
+          <li>Logging,</li>
+          <li>Replaying logged messages,</li>
+          <li>Network statistics,</li>
+          <li>Different time stamping,</li>
+          <li>Interactive transmission of message blocks,</li>
+          <li>Signal watch etc.</li>
+        </ul></p>
+      <p>To facilitate the user programming a comprehensive set of APIs and event handlers are provided.</p>
+    </section>
+    <section>
+      <title>Key Features</title>
+      <ul>
+        <li>Using USB port multiple USB CAN hardware can be connected and monitored with multiple instances of BUSMASTER application.</li>
+        <li>It operates in Active mode. In active mode the tool influences the bus. In passive mode the tool does not have any influence on the bus.</li>
+        <li>It supports CAN 2.0A and 2.0B protocol.</li>
+        <li>The messages can be displayed in decimal or hexadecimal format.</li>
+        <li>There are three different time stampings namely system time, relative time and absolute time mode. The absolute time is the time from when tool is connected to CAN bus. The relative time is time between two consecutive messages if the display is configured in scroll mode. In overwrite mode it is the time difference between two messages of same ID. Time stamping is done at CAN driver level. The system time is PCs real time value.</li>
+        <li>User can log messages to a file and replay the logged file. The time stamping mode can be also be configured in System, Relative and Absolute mode during logging. The replay can be selectively done for transmitted, received and all messages. More then one logging session with same time stamping can be combined in a single replay session. The replay can also be configured in a cyclic manner with different time delay.</li>
+        <li>The message filtering can be done through Software, hardware or both. Software filter works at application level while hardware filter works at CAN controller level.</li>
+        <li>It supports transmission of message blocks in single shot or periodic mode with time/key trigger.</li>
+        <li>It can display messages and error frames on CAN bus.</li>
+        <li>User can configure acceptance filter, baud rate and warning limit. Warning limit is not supported currently by BUSMASTER with USB interface.</li>
+        <li>Message display can be configured in different colours. Different colours can be assigned to different message IDs. Message display entries and the display update rate can be configured.</li>
+        <li>It provides a message database editor for creating &amp; editing of messages and its signals.</li>
+        <li>The signals of message can be interpreted. It can be interpreted in a separate window or on message display window.</li>
+        <li>Signals alone can be monitored separately with time stamping.</li>
+        <li>It provides programming facility through Function editor. The event-based programming is done using ANSI C language. The user can use all windows provided APIs and any third party LIB/DLL/API files.</li>
+        <li>It supports all bit rates up to 1 MBPS.</li>
+        <li>User can analyse of bus statistics.</li>
+        <li>User preferences can be saved or loaded. The last saved user preferences are loaded automatically at the start of application.</li>
+      </ul>
+    </section>
+  </body>
+</topic>

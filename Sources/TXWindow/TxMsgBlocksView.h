@@ -141,6 +141,12 @@ private:
     // To store trigger type of message block
     unsigned char m_nRBTNTriggerType;
 
+    // To retain the previous value of time delay between messges
+    int m_nTimeDelMsg;
+
+    // To retain the previous value of time delay between blocks
+    int m_nTimeDelBlocks;
+
     // Functions
     // To add a message block
     BOOL bAddBlock(SMSGBLOCKLIST*& psMsgCurrentBlock);

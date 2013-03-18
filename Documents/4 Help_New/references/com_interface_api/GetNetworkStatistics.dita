@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="GetNetworkStatistics" xml:lang="en-us">
+  <title>GetNetworkStatistics : To get all the statistics of a channel</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>This function will provide the channel&apos;s statistics.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Channel number and Pointer to the structuresCHANNELSTATISTICS
+
+{ DOUBLE m_dBusLoad; DOUBLE m_dPeakBusLoad; float m_fTotalMsgCount; float m_unMsgPerSecond; float m_fTotalTxMsgCount; DOUBLE m_dTotalTxMsgRate; float m_fTxSTDMsgCount; DOUBLE m_dTxSTDMsgRate; float m_fTxEXTDMsgCount; DOUBLE m_dTxEXTMsgRate; float m_fTxSTD_RTRMsgCount; float m_fTxEXTD_RTRMsgCount; float m_fTotalRxMsgCount; DOUBLE m_dTotalRxMsgRate; float m_fRxSTDMsgCount; DOUBLE m_dRxSTDMsgRate; float m_fRxEXTDMsgCount; DOUBLE m_dRxEXTMsgRate; float m_fRxSTD_RTRMsgCount; float m_fRxEXTD_RTRMsgCount; float m_fErrorTxCount; DOUBLE m_dErrorTxRate; float m_fErrorRxCount; DOUBLE m_dErrorRxRate; float m_fErrorTotalCount; DOUBLE m_dErrorRate; float m_fDLCCount; DOUBLE m_dBaudRate; DOUBLE m_dTotalBusLoad; int m_nSamples; DOUBLE m_dAvarageBusLoad; UCHAR m_ucTxErrorCounter; UCHAR m_ucRxErrorCounter; UCHAR m_ucTxPeakErrorCount; UCHAR m_ucRxPeakErrorCount; UCHAR m_ucStatus;}</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="bcmp" xml:lang="en-us">
+  <title>bcmp : compare two memory areas</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+int bcmp(const char *s1, const char *s2, size_t n);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function compares not more than n characters of the object pointed to by s1 with the object pointed to by s2.</p>
+      <p>This function is identical to memcmp.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The function returns an integer greater than, equal to or less than zero according to whether the object pointed to by s1 is greater than, equal to or less than the object pointed to by s2.</p>
+    </section>
+  </refbody>
+</reference>

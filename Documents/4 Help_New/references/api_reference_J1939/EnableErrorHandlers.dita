@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableErrorHandlers" xml:lang="en-us">
+  <title>EnableErrorHandlers : To enable or Disable error event handlers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>BOOL EnableErrorHandlers ( BOOL bEnable)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will enable or disable error handlers. User can pass parameter as TRUE to enable and FALSE to disable the handlers. Function will return TRUE, if state change was successful otherwise it will return FALSE.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>bEnable     - TRUE to Enable error handler. FALSE to disable</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>TRUE success. FALSE if the handler is already in the specified state</p>
+    </section>
+  </refbody>
+</reference>

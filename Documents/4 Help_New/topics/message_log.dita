@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="message_log" xml:lang="en-us">
+  <title>Message Log</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Message Log</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>CAN messages can be logged to a file for analysis and replay. Log file name shall be selected as described in section Log and Replay.</p>
+    <p>To start message logging select Log Start or press the Tool Bar Button shown in the figure below. The tool bar is toggle button. Clicking on the button or selecting the menu again will stop logging. Once the logging has started, the messages received and transmitted will be logged in to the file with time of message reception.</p>
+    <image href="../images/LogToolBar.bmp" placement="break"/>
+    <note>
+      <ul>
+        <li>Logging will fail if the log file is not present in the specified location.</li>
+        <li>Logging status is stored in coniguration file and logging will be started automatically during application startup if it is enabled and saved in the configuration file.</li>
+      </ul>
+    </note>
+  </body>
+</topic>

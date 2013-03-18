@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="atof" xml:lang="en-us">
+  <title>atof, atoff : string to double or float</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+double atof(const char *s);
+float atoff(const char *s);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>atof converts the initial portion of a string to a double. atoff converts the initial portion of a string to a float. The functions parse the character string s, locating a substring which can be converted to a floating point value. The substring must match the format: [+|-]digits[.][digits][(e|E)[+|-]digits]</p>
+      <p>The substring converted is the longest initial fragment of s that has the expected format, beginning with the first non-whitespace character. The substring is empty if str is empty, consists entirely of whitespace, or if the first non-whitespace character is something other than +, -, ., or a digit.</p>
+      <p>atof(s) is implemented as strtod(s, NULL). atoff(s) is implemented as strtodf(s, NULL).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>atof returns the converted substring value, if any, as a double; or 0.0, if no conversion could be performed. If the correct value is out of the range of representable values, plus or minus HUGE_VAL is returned, and ERANGE is stored in errno. If the correct value would cause underflow, 0.0 is returned and ERANGE is stored in errno.</p>
+      <p>atoff obeys the same rules as atof, except that it returns a float.</p>
+    </section>
+  </refbody>
+</reference>

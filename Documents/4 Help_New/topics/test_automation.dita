@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="test_automation" xml:lang="en-us">
+  <title>Test Automation</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Test Automation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>Introduction to Test Automation</title>
+      <p>Test Automation is a process of optimizing the effort in testing where the user only needs to define the test cases (rather than writing codes in Node programming). The test cases may be taken directly as input parameters for the execution of a testing session carried out by Test Automation module of BUSMASTER. This means user can expend more time for writing proper test cases rather than implementation issues of the same.</p>
+      <p>To be noted - this is neither a substitute nor a variant of node programming. In the former the actions are predetermined; it is only the parameter set (both in terms of signal value and time axis) that varies, whereas in the later the node behavior / logic are programmed. So the Test Automation is an extension of the tool to simplify the process of carrying out tests of a genre and generating the report.</p>
+      <p>A schematic diagram of Test Automation scenario is presented below:</p>
+      <image href="../images/TestAutomation.jpg" placement="break"/>
+      <p>Test Automation in BUSMASTER can be divided into three Modules:<ul>
+          <li>Test Setup File</li>
+          <li>Test Setup Editor</li>
+          <li>Test Executor</li>
+        </ul></p>
+    </section>
+  </body>
+</topic>

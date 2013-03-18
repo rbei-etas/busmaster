@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="varargs" xml:lang="en-us">
+  <title>Traditional macros, `varargs.h&apos;</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Traditional macros</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>If your C compiler predates ANSI C, you may still be able to use variable argument lists using the macros from the `varargs.h&apos; header file. These macros resemble their ANSI counterparts, but have important differences in usage. In particular, since traditional C has no declaration mechanism for variable argument lists, two additional macros are provided simply for the purpose of defining functions with variable argument lists.</p>
+    <p>As with `stdarg.h&apos;, the type va_list is used to hold a data structure representing a variable argument list.</p>
+  </body>
+</topic>

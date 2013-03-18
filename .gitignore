@@ -10,6 +10,7 @@
 *.sln.cache
 *.suo
 *.vcproj.*.user
+*.db
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
 Sources/BusEmulation/BusEmulation.h

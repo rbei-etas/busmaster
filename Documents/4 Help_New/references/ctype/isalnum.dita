@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="isalnum" xml:lang="en-us">
+  <title>isalnum : alphanumeric character predicate</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ctype.h&gt;
+int isalnum(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>isalnum is a macro which classifies ASCII integer values by table lookup. It is a predicate returning non-zero for alphabetic or numeric ASCII characters, and 0 for other arguments. It is defined for all integer values.</p>
+      <p>You can use a compiled subroutine instead of the macro definition by undefining the macro using `#undef isalnum&apos;.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>isalnum returns non-zero if c is a letter (a--z or A--Z) or a digit (0--9).</p>
+    </section>
+  </refbody>
+</reference>

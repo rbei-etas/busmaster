@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="SetTimerVal" xml:lang="en-us">
+  <title>SetTimerVal : To set a new time value for a timer</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT SetTimerVal ( char* strTimerName, UINT nTimeInterval )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will change the timer value. The timer value and name of timer whose time value is to be changed has to be passed through the parameter strTimerName. The second parameter will take time value. If the timer is running in cyclic mode or next instance of timer is to be fired this function will return FALSE otherwise if will return TRUE.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>strTimerName - Name of the timer. i.e. OnTimer_Tester_Present_100
+nTimeInterval  - Time value of the timer.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>1 on success. 0 if the timer is already running or timer name not found
+
+BOOL</p>
+    </section>
+  </refbody>
+</reference>

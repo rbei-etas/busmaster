@@ -221,10 +221,20 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         m_bInit = FALSE;
     }
 
-    //SSH + issue #438
-    HICON hIco = AfxGetApp()->LoadIcon(IDI_ICO_TX_WINDOW);
-    SetIcon(hIco, TRUE);
-    //SSH -
+    /* Try to load resource DLL for icons*/
+    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+
+    if ( hModAdvancedUILib )
+    {
+        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICO_TX_WINDOW )), TRUE);
+        ::FreeLibrary(hModAdvancedUILib);
+        hModAdvancedUILib = NULL;
+    }
+    else
+    {
+        HICON hIco = AfxGetApp()->LoadIcon(IDI_ICO_TX_WINDOW);
+        SetIcon(hIco, TRUE);
+    }
 
     return bReturn;
 }

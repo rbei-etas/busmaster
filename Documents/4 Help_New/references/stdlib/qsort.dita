@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="qsort" xml:lang="en-us">
+  <title>qsort : sort an array</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *) );</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>qsort sorts an array (beginning at base) of nmemb objects. size describes the size of each element of the array.</p>
+      <p>You must supply a pointer to a comparison function, using the argument shown as compar. (This permits sorting objects of unknown properties.) Define the comparison function to accept two arguments, each a pointer to an element of the array starting at base. The result of (*compar) must be negative if the first argument is less than the second, zero if the two arguments match, and positive if the first argument is greater than the second (where &quot;less than&quot; and &quot;greater than&quot; refer to whatever arbitrary ordering is appropriate).</p>
+      <p>The array is sorted in place; that is, when qsort returns, the array elements beginning at base have been reordered.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>qsort does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

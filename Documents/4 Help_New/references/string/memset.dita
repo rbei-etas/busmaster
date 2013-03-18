@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="memset" xml:lang="en-us">
+  <title>memset : set an area of memory</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+void *memset(const void *dst, int c, size_t length);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function converts the argument c into an unsigned char and fills the first length characters of the array pointed to by dst to the value.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>memset returns the value of m.</p>
+    </section>
+  </refbody>
+</reference>

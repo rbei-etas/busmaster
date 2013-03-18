@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="reset_controller" xml:lang="en-us">
+  <title>Reset Controller</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Reset Controller</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>The CAN controller can be reset through BUSMASTER application. Reset of the controller will require in case of error conditions. BUSMASTER provides two kind of reset of the CAN controller.<ul>
+        <li>Hardware Reset</li>
+        <li>Software Reset</li>
+      </ul></p>
+    <section>
+      <title>Hardware Reset</title>
+      <p>The hardware reset will initialize CAN control by resetting the controller. This will also clear the internal buffer of the CAN controller. After hardware reset the controller&apos;s internal buffer will be empty. To do hardware reset select Functions Reset Hardware</p>
+    </section>
+    <section>
+      <title>Software Reset</title>
+      <p>The software reset of CAN controller will initialize the controller. But the messages in the internal buffer of CAN controller will remain as it is. To do software reset select Functions Reset Software.</p>
+      <note>In USB interface software reset will clear Rx and Tx buffer of that instance of BUSMASTER in driver. Hardware will not be influenced by software reset.</note>
+      <p>Toolbar shortcut Software reset has associated toolbar button as shown in the fig. below.</p>
+      <image href="../images/restartcontroller.bmp" placement="break"/>
+    </section>
+  </body>
+</topic>

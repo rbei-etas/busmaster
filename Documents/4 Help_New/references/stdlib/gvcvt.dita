@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="gvcvt" xml:lang="en-us">
+  <title>gvcvt, gcvtf : format double or float as string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+char *gcvt(double val, int precision, char *buf);
+char *gcvtf(float val, int precision, char *buf);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>gcvt writes a fully formatted number as a null-terminated string in the buffer *buf. gdvtf produces corresponding character representations of float numbers.</p>
+      <p>gcvt uses the same rules as the printf format `%.precisiong&apos; : only negative values are signed (with `-&apos;), and either exponential or ordinary decimal-fraction format is chosen depending on the number of significant digits (specified by precision).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The result is a pointer to the formatted representation of val (the same as the argument buf).</p>
+    </section>
+  </refbody>
+</reference>

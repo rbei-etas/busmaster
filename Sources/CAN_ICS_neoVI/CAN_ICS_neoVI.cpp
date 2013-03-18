@@ -1504,7 +1504,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
-static int nCreateMultipleHardwareNetwork()
+static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
@@ -1592,7 +1592,17 @@ static int nCreateMultipleHardwareNetwork()
     }
 
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
-    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+
+    /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+    if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+    {
+        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+        {
+            sg_anSelectedItems[i] = i;
+        }
+        nHwCount = unDefaultChannelCnt;
+    }
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -1669,7 +1679,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
  * per hardware count. This will popup hardware selection dialog
  * in case there are more hardware present.
  */
-static int nInitHwNetwork()
+static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nDevices = 0;
     int nReturn = NO_HW_INTERFACE;
@@ -1699,7 +1709,7 @@ static int nInitHwNetwork()
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nReturn = nCreateMultipleHardwareNetwork();
+            nReturn = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
         }
         else
         {
@@ -1719,14 +1729,14 @@ static int nInitHwNetwork()
  * parallel port mode this will initialise connection with the
  * driver.
  */
-static int nConnectToDriver()
+static int nConnectToDriver(UINT unDefaultChannelCnt = 0)
 {
     int nReturn = -1;
 
     if( sg_bIsDriverRunning == TRUE )
     {
         // Select Hardware or Simulation Network
-        nReturn = nInitHwNetwork();
+        nReturn = nInitHwNetwork(unDefaultChannelCnt);
     }
     return nReturn;
 }
@@ -1757,7 +1767,7 @@ static int nSetBaudRate()
             unIndex++)
     {
         FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate.c_str());
-        int nBitRate = (INT)(fBaudRate * 1000);
+        int nBitRate = (INT)(fBaudRate);
 
         // Set the baudrate
         nReturn = (*icsneoSetBitRate)(m_anhWriteObject[unIndex], nBitRate, m_bytNetworkIDs[unIndex]);
@@ -2239,7 +2249,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     HRESULT hResult = S_FALSE;
     if (bGetDriverStatus())
     {
-        if (( hResult = nConnectToDriver() ) == CAN_USB_OK)
+        if (( hResult = nConnectToDriver(nCount) ) == CAN_USB_OK)
         {
             nCount = sg_ucNoOfHardware;
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)

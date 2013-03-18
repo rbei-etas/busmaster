@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="index" xml:lang="en-us">
+  <title>index : search for character in string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char * index(const char *string, int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function finds the first occurence of c (converted to a char) in the string pointed to by string (including the terminating null character).</p>
+      <p>This function is identical to strchr. 
+
+</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Returns a pointer to the located character, or a null pointer if c does not occur in string.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="clock" xml:lang="en-us">
+  <title>clock : cumulative processor time</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;time.h&gt;
+clock_t clock(void);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Calculates the best available approximation of the cumulative amount of time used by your program since it started. To convert the result into seconds, divide by the macro CLOCKS_PER_SEC.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The amount of processor time used so far by your program, in units defined by the machine-dependent macro CLOCKS_PER_SEC. If no measurement is available, the result is -1.</p>
+    </section>
+  </refbody>
+</reference>

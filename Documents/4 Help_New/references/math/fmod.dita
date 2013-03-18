@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fmod" xml:lang="en-us">
+  <title>fmod, fmodf : floating-point remainder (modulo) </title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double fmod(double x, double y)
+float fmodf(float x, float y)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The fmod and fmodf functions compute the floating-point remainder of x/y (x modulo y).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The fmod function returns the value for the largest integer i such that, if y is nonzero, the result has the same sign as x and magnitude less than the magnitude of y. fmod(x,0) returns NaN, and sets errno to EDOM. You can modify error treatment for these functions using matherr.</p>
+    </section>
+  </refbody>
+</reference>

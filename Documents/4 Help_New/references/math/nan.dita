@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="nan" xml:lang="en-us">
+  <title>nan, nanf : representation of infinity</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double nan(void);
+float nanf(void);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>nan and nanf return an IEEE NaN (Not a Number) in double and single precision arithmetic respectivly.</p>
+    </section>
+  </refbody>
+</reference>

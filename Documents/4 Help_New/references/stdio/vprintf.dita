@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="vprintf" xml:lang="en-us">
+  <title>vprintf, vfprintf, vsprintf : format argument list</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+#include &lt;stdarg.h&gt;
+int vprintf(const char *fmt, va_list list);
+int vfprintf(FILE *fp, const char *fmt, va_list list);
+int vsprintf(char *str, const char *fmt, va_list list);
+int _vprintf_r(void *reent, const char *fmt, va_list list);
+int _vfprintf_r(void *reent, FILE *fp, const char *fmt, va_list list);
+int _vsprintf_r(void *reent, char *str, const char *fmt, va_list list);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>vprintf, vfprintf, and vsprintf are (respectively) variants of printf, fprintf, and sprintf. They differ only in allowing their caller to pass the variable argument list as a va_list object (initialized by va_start) rather than directly accepting a variable number of arguments.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The return values are consistent with the corresponding functions: vsprintf returns the number of bytes in the output string, save that the concluding NULL is not counted. vprintf and vfprintf return the number of characters transmitted. If an error occurs, vprintf and vfprintf return EOF. No error returns occur for vsprintf.</p>
+    </section>
+  </refbody>
+</reference>

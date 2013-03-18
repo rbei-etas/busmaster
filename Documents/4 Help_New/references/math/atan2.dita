@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="atan2" xml:lang="en-us">
+  <title>atan2, atan2f : arc tangent of y/x</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double atan2(double y,double x);
+float atan2f(float y,float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>atan2 computes the inverse tangent (arc tangent) of y/x. atan2 produces the correct result even for angles near (that is, when x is near 0). atan2f is identical to atan2, save that it takes and returns float.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>atan2 and atan2f return a value in radians. If both x and y are 0.0, atan2 causes a DOMAIN error. You can modify error handling for these functions using matherr.</p>
+    </section>
+  </refbody>
+</reference>

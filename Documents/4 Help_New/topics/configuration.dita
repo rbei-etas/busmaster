@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="configuration" xml:lang="en-us">
+  <title>Configuration</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configuration</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>BUSMASTER has provision for configuring the following properties<ul>
+        <li>Baudrate: By default the tool is configured to operate at 100kbps. This can be changed to any valid value between 5 kbps and 1000 kbps.</li>
+        <li>Acceptance Filter: To increase the response of the tool at very high messages rate one can set the acceptance filter. The controller filters the messages based on the values set for acceptance code and mask. This filtering is faster than the software filter (App filters).</li>
+        <li>Warning Limit: One can monitor the condition of the network by setting a warning limit value. The user will be notified when either one of the error counter (Tx &amp; Rx) exceeds the warning limit. By default this value is set to 96. The valid range is from 1 to 127. In USB interface setting warning limit is not supported and it is internally set to 96.</li>
+        <li>Message Display: Every Message can be assigned a user defined color and text. The text associated with the message will be displayed in the selected color along with its data in the message display window whenever that message is transmitted or received. By default all the messages received are displayed in black color. Display entries can be configured. This is the number of entries that the display will show. When the messages received exceeds this count Display will scroll to show the latest entries. The display update rate can also be configured. This will be used to refresh the display periodically.</li>
+        <li>App Filters: You can opt to view and log messages of your choice. Message filters provide this facility. Filters can be applied to message display window, filters and / or message log. The filter list is configurable from <b>CAN --&gt; Filter Configuration</b> menu.</li>
+        <li>Message Logging: You can select a file to log all the transmitted &amp; received messages. The start of logging can also be triggered on reception of specific message name or message ID. You can configure a logging session for different time stamping mode as well as Hex/Decimal format. You can also select to append or overwrite an existing log file.</li>
+        <li>Message Replay: The messages that are logged to a file can be replayed. The replay can be configured by choosing replay type, time delay and replay file name. You can explicitly specify the delay required between messages or between cycles wherever applicable.</li>
+        <li>Transmit Message: You can configure/define messages that are to be sent on CAN bus. The configured messages can be database messages or undefined messages (Undefined messages are those messages that are not available in the database). Further the messages to be sent can be define as standard, extended messages or as a RTR message.</li>
+        <li>Simulated Systems: Simulated systems can be configured under CAN Bus consisting of multiple nodes, each representing a dll. Multiple user programs can be built as dlls and loaded. The configured simulated systems can be saved and used across sessions.</li>
+      </ul></p>
+    <p>The entire above-mentioned configuration except message replay is saved across sessions.</p>
+    <p>Refer the respective sections for more details</p>
+  </body>
+</topic>

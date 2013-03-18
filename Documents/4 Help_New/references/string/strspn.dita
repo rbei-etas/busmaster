@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strspn" xml:lang="en-us">
+  <title>strspn : find initial match</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+size_t strspn(const char *s1, const char *s2);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function computes the length of the initial segment of the string pointed to by s1 which consists entirely of characters from the string pointed to by s2 (excluding the terminating null character).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>strspn returns the length of the segment found.</p>
+    </section>
+  </refbody>
+</reference>

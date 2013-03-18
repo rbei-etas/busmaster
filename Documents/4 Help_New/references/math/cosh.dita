@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="cosh" xml:lang="en-us">
+  <title>cosh, coshf : hyperbolic cosine</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double cosh(double x);
+float coshf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>cosh computes the hyperbolic cosine of the argument x. cosh(x) is defined as Angles are specified in radians. coshf is identical, save that it takes and returns float.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The computed value is returned. When the correct value would create an overflow, cosh returns the value HUGE_VAL with the appropriate sign, and the global value errno is set to ERANGE. You can modify error handling for these functions using the function matherr.</p>
+    </section>
+  </refbody>
+</reference>
