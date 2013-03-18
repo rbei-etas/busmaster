@@ -16,16 +16,8 @@
   </prolog>
   <body>
     <p>BUSMASTER database consists of information about expected message. You can create a database of messages to be transmitted or received over CAN bus. Each message has a unique ID and name. Each message has upto eight bytes of data. You can define the length of message in bytes. Each message can consist of one or more signals. In a message each signal has start bit and length, no two signals can overlap. Signal can have an offset, a multiplication factor and engineering units. These three information together are used to display signal value received in engineering units. The data received is multiplied by the factor, added to the offset to obtain the engineering value. Also a particular value of the signal can be given a meaningful name by using signal descriptor (e.g. ON = 1, OFF = 0). This information will be used while interpreting the messages.</p>
-    <p>User can create new BUSMASTER database by selecting <menucascade>
-        <uicontrol>File</uicontrol>
-        <uicontrol>Database</uicontrol>
-        <uicontrol>New</uicontrol>
-      </menucascade> menu option. This menu option will be enabled only when no database editor is open.</p>
-    <p>User can also open any BUSMASTER database by selecting <menucascade>
-        <uicontrol>File</uicontrol>
-        <uicontrol>Database</uicontrol>
-        <uicontrol>Open</uicontrol>
-      </menucascade> menu option.</p>
+    <p>User can create new BUSMASTER database by selecting <b>CAN --&gt; Database --&gt; New</b> menu option. This menu option will be enabled only when no database editor is open.</p>
+    <p>User can also open any BUSMASTER database by selecting <b>CAN --&gt; Database --&gt; Open</b> menu option.</p>
     <p>This will allow you to specify the database name, which you want to open and edit.</p>
     <p>There are two panes in the database editor as shown in figure below.</p>
     <image href="../images/database_editor.bmp" placement="break"/>
@@ -41,22 +33,14 @@
     <section>
       <title>Import Database</title>
       <p>User can select any number of BUSMASTER generated database and make them as active databases.<ol>
-          <li>Select <menucascade>
-              <uicontrol>File</uicontrol>
-              <uicontrol>Database</uicontrol>
-              <uicontrol>Associate</uicontrol>
-            </menucascade> menu option. An open file dialog will be displayed.</li>
+          <li>Select <b>CAN --&gt; Database --&gt; Associate</b> menu option. An open file dialog will be displayed.</li>
           <li>Select the databases and click on Open button. </li>
         </ol></p>
     </section>
     <section>
       <title>Dissociate Database</title>
       <p>User can Dissociate any number of active database from the application.<ol>
-          <li>Select <menucascade>
-              <uicontrol>File</uicontrol>
-              <uicontrol>Database</uicontrol>
-              <uicontrol>Dissociate</uicontrol>
-            </menucascade> menu option. Following dialog box will be displayed:<image href="../images/DissociateDatabase.bmp" placement="break"/></li>
+          <li>Select <b>CAN --&gt; Database --&gt; Dissociate</b> menu option. Following dialog box will be displayed:<image href="../images/DissociateDatabase.bmp" placement="break"/></li>
           <li>Select the databases and click on Dissociate button.</li>
         </ol></p>
     </section>
@@ -167,14 +151,10 @@
     </section>
     <section>
       <title>Save database</title>
-      <p>User can save the database to a file by selecting <menucascade>
-          <uicontrol>File</uicontrol>
-          <uicontrol>Database</uicontrol>
-          <uicontrol>Save</uicontrol>
-        </menucascade> or by clicking on the tool bar button shown below.<image href="../images/DB_save.bmp" placement="break"/></p>
+      <p>User can save the database to a file by selecting <b>CAN --&gt; Database --&gt; Save</b> or by clicking on the tool bar button shown below.<image href="../images/DB_save.bmp" placement="break"/></p>
       <p>User also have an option to save the file at different folder location with different name. You can do this by following the steps given below.<ol>
           <li>Select <menucascade>
-              <uicontrol>File</uicontrol>
+              <uicontrol>CAN</uicontrol>
               <uicontrol>Database</uicontrol>
               <uicontrol>Save As</uicontrol>
             </menucascade> menu option.</li>
@@ -184,7 +164,7 @@
     <section>
       <title>Closing database editor</title>
       <p>Select <menucascade>
-          <uicontrol>File</uicontrol>
+          <uicontrol>CAN</uicontrol>
           <uicontrol>Database</uicontrol>
           <uicontrol>Close</uicontrol>
         </menucascade> menu option to close any opened database file. Or click on [X] button at the right upper corner of the database window.</p>

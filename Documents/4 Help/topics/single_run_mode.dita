@@ -23,24 +23,28 @@
           <li>There are four options to select<ul>
               <li>
                 <menucascade>
+                  <uicontrol>CAN</uicontrol>
                   <uicontrol>Replay</uicontrol>
                   <uicontrol>Go</uicontrol>
                 </menucascade>
               </li>
               <li>
                 <menucascade>
+                  <uicontrol>CAN</uicontrol>
                   <uicontrol>Replay</uicontrol>
                   <uicontrol>Step</uicontrol>
                 </menucascade>
               </li>
               <li>
                 <menucascade>
+                  <uicontrol>CAN</uicontrol>
                   <uicontrol>Replay</uicontrol>
                   <uicontrol>Skip</uicontrol>
                 </menucascade>
               </li>
               <li>
                 <menucascade>
+                  <uicontrol>CAN</uicontrol>
                   <uicontrol>Replay</uicontrol>
                   <uicontrol>Stop</uicontrol>
                 </menucascade>

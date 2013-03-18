@@ -162,7 +162,7 @@ J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and c
       <p>User can configure timeouts which will be considered when flow control messages are being sent or received.
 
 </p>
-      <p>Corresponding dialog box can be invoked by clicking the menu <b>J1939-&gt;Configure-&gt;Timeouts</b>.
+      <p>Corresponding dialog box can be invoked by clicking the menu <b>J1939 --&gt; Timeout Configuration</b>.
 
 </p>
       <p>Timeout&apos;s description will appear on clicking the corresponding check box.
@@ -195,7 +195,7 @@ J1939 is a CAN-based layer 7 protocol mainly used in Truck and Bus control and c
 
 </p>
       <title>Node Programming</title>
-      <p>Seperate menu items are available for configuring J1939 node programming.                                                                    Use  &apos;<b>J1939-&gt;Configure-&gt;Simulated Systems</b>&apos; menu for configuring nodes and  &apos;<b>J1939-&gt;Function-&gt;User Program</b>&apos; menu for Building, Loading and Execution of user dll handlers. Most of the features of J1939 node programming remain same as that of CAN. Few differences are listed down
+      <p>Seperate menu items are available for configuring J1939 node programming. Use <b>&apos;J1939 --&gt; Node Simulation --&gt; Configure</b>&apos; menu for configuring nodes and &apos;<b>J1939 --&gt; Node Simulation --&gt; User Program</b>&apos; menu for Building, Loading and Execution of user dll handlers. Most of the features of J1939 node programming remain same as that of CAN. Few differences are listed down.
 
 </p>
       <p><b>1. Node Addition : </b>User has to provide following information to create a new node.

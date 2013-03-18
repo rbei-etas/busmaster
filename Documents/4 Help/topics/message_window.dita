@@ -87,14 +87,6 @@ And clicking on the ‘-’ sign will collapse the expanded entries as shown in 
       <p>Messages can be directly send from Message Display entry. Select a message entry and right click. This will popup message operation menu (Refer Fig.1). Select Send to transmit the selected message entry on the CAN bus.</p>
     </section>
     <section>
-      <title>Toggle Date display</title>
-      <p>You have an option to display the system date on the message window. You can enable the Date by selecting <menucascade>
-          <uicontrol>Display</uicontrol>
-          <uicontrol>Message Window</uicontrol>
-          <uicontrol>Date</uicontrol>
-        </menucascade> menu option. This option is not available in relative time mode display.</p>
-    </section>
-    <section>
       <title>Clear Message Window</title>
       <p>On pressing the tool bar button shown below the message window will be cleared.</p>
       <image href="../images/clearwindowtoolbar.bmp" placement="break"/>

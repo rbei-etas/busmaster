@@ -40,10 +40,7 @@
     <image href="../images/Function_Editor.bmp" placement="break"/>
     <section>
       <title>General access to the function editor</title>
-      <p>Go to <menucascade>
-          <uicontrol>Configure</uicontrol>
-          <uicontrol>Simulated Systems</uicontrol>
-        </menucascade> to open the window <uicontrol>Configure Simulated Systems</uicontrol>. Right click on <uicontrol>CAN Bus</uicontrol> in the left pane and select <menucascade>
+      <p>Go to <b>CAN --&gt; Node Simulation --&gt; Configure</b> to open the window <b>Configure Simulated Systems</b>. Right click on <uicontrol>CAN Bus</uicontrol> in the left pane and select <menucascade>
           <uicontrol>New Simulated System</uicontrol>
         </menucascade> or <menucascade>
           <uicontrol>Add Simulated System</uicontrol>
