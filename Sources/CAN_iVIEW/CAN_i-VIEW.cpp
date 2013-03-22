@@ -710,10 +710,10 @@ HRESULT CDIL_CAN_i_VIEW::CAN_SendMsg(
 	vci_can_record_constructor( CANRec, CANId, CanMsg.m_ucDataLen,
 		CanMsg.m_ucData );
 
-	//LOG_MESSAGE( g_pLog, "RxData" );
-
+	EnterCriticalSection(&m_Mutex);
 	VCI->VCiIF()->SendDataRec( Data, CanMsg.m_ucDataLen+VCI_CAN_ADDR_SZ,
 		Flags, ClientId, (UNUM32)0 );
+	LeaveCriticalSection(&m_Mutex);
 
 	return S_OK;
 }
