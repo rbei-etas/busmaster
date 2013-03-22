@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "CAN_i-VIEW_Resource."
+#include "CAN_i-VIEW_Resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -234,14 +234,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 
 IDB_IVIEW               BITMAP                  "res\\iview.bmp"
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDI_IVIEW               ICON                    "iVIEW.ico"
 #endif    // English (U.K.) resources
 /////////////////////////////////////////////////////////////////////////////
 
