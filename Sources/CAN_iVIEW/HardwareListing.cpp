@@ -38,8 +38,8 @@
 #define defSTR_CHANNEL_NAME_FORMAT         "%s %d"
 
 #define defSTR_HARDWARE_COL_NAME           "Hardware"
-#define defSTR_CHANNEL_COL_WIDTH           90
-#define defSTR_HARDWARE_COL_WIDTH          75
+#define defSTR_CHANNEL_COL_WIDTH           80
+#define defSTR_HARDWARE_COL_WIDTH          200
 
 #define defCHANNEL_COL                     0
 #define defHARDWARE_COL                    1
@@ -159,16 +159,21 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
 	// Clear the lsit
 	m_omHardwareList.DeleteAllItems();
 	// Remove all columns
-	m_omHardwareList.DeleteColumn(0);
-	// Set the Image List
-	m_omHardwareList.SetImageList(&m_omImageList, LVSIL_NORMAL );
-	// Set Image List for selected list
-	m_omSelectedHwList.SetImageList(&m_omImageList, LVSIL_SMALL );
+	//m_omHardwareList.DeleteColumn(0);
+	// Set the Image List for availble list
+	m_omHardwareList.SetImageList(&m_omImageList, LVSIL_SMALL );
+	// Create availablelist column
+	m_omHardwareList.InsertColumn( 0,
+		defSTR_HARDWARE_COL_NAME );
+	m_omHardwareList.SetColumnWidth( 0,
+		defSTR_HARDWARE_COL_WIDTH );
 
 	// Insert First Columns
 	// The style is Icon. So insert Empty column
-	m_omHardwareList.InsertColumn(0, "");
+	//m_omHardwareList.InsertColumn(0, "");
 
+	// Set Image List for selected list
+	m_omSelectedHwList.SetImageList(&m_omImageList, LVSIL_SMALL );
 	// Create selelected list columns
 	m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
 		defSTR_CHANNEL_NAME );
@@ -714,8 +719,7 @@ void CHardwareListing::OnNMClickLstcHwList(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	// If it is a selection change update the hardware details
 	INT nSelectedItem = pNMListView->iItem;
-	if(nSelectedItem > -1)
-	{
+	if(nSelectedItem > -1){
 		// Get the selected Item index
 		m_nSelectedItem = pNMListView->iItem;
 		// Update selected Hw details
@@ -733,8 +737,7 @@ void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResu
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	// If it is a selection change update the hardware details
 	INT nSelectedItem = pNMListView->iItem;
-	if(nSelectedItem > -1)
-	{
+	if(nSelectedItem > -1){
 		// Update selected Hw details
 		vUpdateHwDetails( (INT)m_omSelectedHwList.GetItemData( nSelectedItem ) );
 	}
@@ -744,52 +747,37 @@ void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResu
 
 void CHardwareListing::vSortHardwareItems()
 {
-	// clear map data
-
-	if(mHardwareListMap.size() > 0 )
-	{
+	if(mHardwareListMap.size() > 0 ){
 		mHardwareListMap.clear();
 	}
 
 	int nItemCount = m_omHardwareList.GetItemCount();
-	for(int nIndex = 0; nIndex < nItemCount; nIndex++)
-	{
+	for(int nIndex = 0; nIndex < nItemCount; nIndex++){
 		m_pouHardwareContainer = new HARDWARE_CONTAINER();
 		m_pouHardwareContainer->m_omHardwareName  = m_omHardwareList.GetItemText(nIndex,0);
 
 		// Get the array index
 		m_pouHardwareContainer->m_omDriverId  = m_omHardwareList.GetItemData( nIndex );
-
-		// Insert List Item
 		mHardwareListMap.insert ( Int_Pair ( m_pouHardwareContainer->m_omDriverId , m_pouHardwareContainer ) );
-
 	}
 
 	m_omHardwareList.DeleteAllItems();
 	int iCount = 0;
-	for(int nIndex = 0; nIndex < m_nSize; nIndex++)
-	{
+	for(int nIndex = 0; nIndex < m_nSize; nIndex++){
 		m_pIter = mHardwareListMap.find(nIndex);
 
-		if(m_pIter != mHardwareListMap.end() )//Hardware found
-		{
+		if(m_pIter != mHardwareListMap.end() ){
 			PHARDWARE_CONTAINER pTempHardware = m_pIter->second;
-
-			//insert List Item
 			m_omHardwareList.InsertItem( iCount, pTempHardware->m_omHardwareName, 0);
 			// Set the hardware list index as item data
 			m_omHardwareList.SetItemData( iCount++, pTempHardware->m_omDriverId );
-
 		}
 	}
 
-	for (m_pIter = mHardwareListMap.begin(); m_pIter != mHardwareListMap.end(); ++m_pIter)
-	{
-		delete(m_pIter->second); //release Memory
+	for (m_pIter = mHardwareListMap.begin(); m_pIter != mHardwareListMap.end(); ++m_pIter){
+		delete(m_pIter->second);
 		m_pIter->second = NULL;
 	}
-
-	// clear map data
 	mHardwareListMap.clear();
 }
 

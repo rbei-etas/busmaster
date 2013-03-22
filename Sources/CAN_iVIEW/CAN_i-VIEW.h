@@ -21,11 +21,18 @@
 
 #pragma once
 
+#include <string>
+#include <sstream>
+#include <vector>
+#include <set>
+#include <array>
+
 #include "VCiViewIF.h"
 #include "include/Error.h"
 #include "Include/Struct_CAN.h"
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
+#include "Include/CAN_Error_Defs.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "BusEmulation/BusEmulation.h"
@@ -85,6 +92,96 @@ public:
 };
 
 /**
+ * String Utility Templates
+ */
+
+/**
+ * fromString
+ * \brief Read and convert the given type from a string.
+ */
+template<class T>
+	T FromString(const std::string& s, bool Hex=false)
+{
+	std::istringstream stream (s);
+	T t;
+	stream >> (Hex ? std::hex : std::dec) >> t;
+	return t;
+}
+
+/**
+ * toString
+ * \brief Convert and write the given type to a string.
+ */
+
+template<class T>
+	static std::string ToString(const T& t, bool Hex=false)
+{
+	std::ostringstream stream;
+	stream << (Hex ? std::hex : std::dec) << t;
+	return stream.str();
+}
+
+/**
+ * VCI Filters
+ */
+class CFilter
+{
+public:
+	CFilter( UNUM32 Type,
+		UNUM32	Flags,
+		UNUM32	Size,
+		UNUM8*	Pattern,
+		UNUM8*	Mask ) :
+	m_Type(Type),
+	m_Flags(Flags),
+	m_Pattern(Pattern,Pattern+Size),
+	m_Mask(Mask,Mask+Size),
+	m_Id(0){}
+	UNUM32 Type()
+	{
+		return m_Type;
+	}
+	UNUM32 Flags()
+	{
+		return m_Flags;
+	}
+	UNUM32 Size()
+	{
+		return m_Pattern.size();
+	}
+	UNUM8* Pattern()
+	{
+		if (m_Pattern.size() > 0)
+			return &m_Pattern[0];
+		else
+			return NULL;
+	}
+	UNUM8* Mask()
+	{
+		if (m_Pattern.size() > 0)
+			return &m_Mask[0];
+		else
+			return NULL;
+	}
+	void Id( UNUM32 Id)
+	{
+		m_Id = Id;
+	}
+	UNUM32 Id()
+	{
+		return m_Id;
+	}
+private:
+	UNUM32		m_Type;
+	UNUM32		m_Flags;
+	vector<UNUM8>	m_Pattern;
+	vector<UNUM8>	m_Mask;
+	UNUM32		m_Id;
+};
+
+typedef CFilter*	pFilter_t;
+
+/**
  * VCI HW (Channel)
  */
 class VCI
@@ -93,6 +190,8 @@ public:
 	VCI(	const string&	Name,
 		UNUM32		TypeId,
 		UNUM32		CAN );
+	virtual ~VCI();
+
 	UNUM32 Id()
 	{
 		return m_Id;
@@ -129,33 +228,55 @@ public:
 	{
 		m_Baudrate = Baudrate;
 	}
+	void AddFilter( CFilter* Filter )
+	{
+		m_Filters.push_back(Filter);
+	}
+	void ClearFilters()
+	{
+		vector<pFilter_t>::iterator i=m_Filters.begin();
+		while (i!=m_Filters.end()){
+			delete *i++;
+		}
+		m_Filters.clear();
+	}
 	/** Connect
-	 * \brief Connect to either CAN 0 or CAN 1
+	 * \brief Connect the CAN controller to the bus
 	 * \return T_PDU_ERROR
 	 * \retval PDU_STATUS_NOERROR		Function call successful.
 	 * \retval PDU_ERR_FCT_FAILED		Function call failed.
 	 */
 	virtual T_PDU_ERROR Connect();
+	/** Disconnect
+	 * \brief Disconnect the CAN controller from the bus
+	 * \return T_PDU_ERROR
+	 * \retval PDU_STATUS_NOERROR		Function call successful.
+	 * \retval PDU_ERR_FCT_FAILED		Function call failed.
+	 */
+	virtual T_PDU_ERROR Disconnect();
 private:
-	static UNUM32	m_NextId;
-	UNUM32		m_Id;
-	CVCiViewIF*	m_VCiIF;
-	string		m_Name;
-	UNUM32		m_TypeId;
-	UNUM32		m_CAN;
-	string		m_Firmware;
-	UNUM32		m_ControllerState;
+	static UNUM32		m_NextId;
+	static UNUM32		m_ConnRef;
+	static LARGE_INTEGER	m_TickBase;
+	UNUM32			m_Id;
+	CVCiViewIF*		m_VCiIF;
+	string			m_Name;
+	UNUM32			m_TypeId;
+	UNUM32			m_CAN;
+	string			m_Firmware;
+	UNUM32			m_ControllerState;
 	/*
 	 * Configuration
 	 */
-	UNUM32		m_Baudrate;
+	UNUM32			m_Baudrate;
+	vector<pFilter_t>	m_Filters;
 	/*
 	 * Stats
 	 */
-	UNUM32		m_TxErrorCounter;
-	UNUM32		m_RxErrorCounter;
-	UNUM32		m_PeakRxErrorCounter;
-	UNUM32		m_PeakTxErrorCounter;
+	UNUM32			m_TxErrorCounter;
+	UNUM32			m_RxErrorCounter;
+	UNUM32			m_PeakRxErrorCounter;
+	UNUM32			m_PeakTxErrorCounter;
 };
 
 typedef VCI* pVCI_t;

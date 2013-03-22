@@ -14,9 +14,9 @@
  */
 
 /**
- * \file      ChangeRegisters_CAN_ETAS_BOA.cpp
+ * \file      ChangeRegisters.cpp
  * \brief     This file contain definition of all function of
- * \author    Amitesh Bharti
+ * \authors   Amitesh Bharti, Pradeep Kadoor
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain definition of all function of
@@ -29,93 +29,79 @@
 #include <string>
 
 /* Project includes */
-#include "ContrConfigDefs.h"
-#include "CAN_i-VIEW_Resource.h"
+#include "math.h"
+#include "include/struct_can.h"
+#include "ContrConfigPeakUsbDefs.h"
+#include "Utility/RadixEdit.h"
+#include "ChangeRegDefines.h"
+// CChangeRegisters class defination file.
 #include "ChangeRegisters.h"
+// Definition of CAcceptanceFilterDlg class
+#include "AcceptanceFilterDlg.h"
 #include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
-#ifdef BOA_FD_VERSION
-#include "EXTERNAL_INCLUDE/OCI/ocicanfd.h"
-#endif
-using namespace std;
-/* Structure definiions */
-class ENTRY_COMPATIBILITY
-{
-public:
-    BYTE        m_bytComptID;
-    string      m_acComptName;
 
-};
-
-#ifdef BOA_FD_VERSION
-static ENTRY_COMPATIBILITY sg_ListTxCompatibility[] =
-{
-    /* Tx Compatibility flags */
-    {OCI_CANFD_TX_USE_NBR,      "CANFD_TX_USE_NBR"       },
-    {OCI_CANFD_TX_USE_DBR,      "CANFD_TX_USE_DBR"       },
-};
-
-static ENTRY_COMPATIBILITY sg_ListRxCompatibility[] =
-{
-    /* Rx Compatibility flags */
-    {OCI_CANFD_RX_FILTER_NBR_ONLY,          "CANFD_RX_FILTER_NBR_ONLY"          },
-    {OCI_CANFD_RX_FILTER_DBR8,              "CANFD_RX_FILTER_DBR8"              },
-    {OCI_CANFD_RX_USE_RXFD_MESSAGE,         "CANFD_RX_USE_RXFD_MESSAGE"         },
-    {OCI_CANFD_RX_USE_RXFD_MESSAGE_PADDING, "CANFD_RX_USE_RXFD_MESSAGE_PADDING" },
-};
+// For HI Layer definition
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
 #endif
 
-/**
-* \brief Constructor
-*
-* Constructor is called when user create an object of
-* this class. Initialisation of all data members
-*/
-CChangeRegisters_CAN_iVIEW::CChangeRegisters_CAN_iVIEW(
-		CWnd*			pParent /*=NULL*/,
-		PSCONTROLLER_DETAILS	psControllerDetails,
-		UINT			nHardwareCount) :
-	CDialog(IDD_DLG_CHANGE_REGISTERS_CAN_iVIEW, pParent),
-	m_omStrSamplePoint("70"),
-	m_omStrSJW("")
+
+long lFromStrTCHAR_2_Long(TCHAR acStr[], char** pccEndPtr, int nBase)
 {
-	//{{AFX_DATA_INIT(CChangeRegisters_CAN_ETAS_BOA)
-	//m_omStrEditBTR0 = _T("");
-	//m_omStrEditBTR1 = _T("");
-	m_omStrEditCNF1 = "";
-	m_omStrEditCNF2 = "";
-	m_omStrEditCNF3 = "";
-	m_omStrComboSampling = "";
-	m_omStrEditBaudRate = "";
-	m_omStrEditWarningLimit = "";
-	//}}AFX_DATA_INIT
-	m_unCombClock      = 32;
-	m_bDialogCancel    = FALSE;
-	memset(&m_sAccFilterInfo, 0, sizeof(m_sAccFilterInfo));
-	m_ucWarningLimit    = defWARNING_LIMIT_MIN;
-	m_ucControllerMode  = defCONTROLLER_MODE;
-	m_usBTR0BTR1 = defDEFAUT_BAUDRATE;
-	// Update controller data
-	for (UINT i = 0; i < min(defNO_OF_CHANNELS, nHardwareCount); i++)
-	{
-		m_pControllerDetails[i] = psControllerDetails[i];
-	}
-	psMainContrDets = psControllerDetails;
-	m_nLastSelection = 0;
-	m_nPropDelay = 0;
-	m_nSJWCurr = 0;
-	m_bOption = 0;
-	m_nNoHardware = nHardwareCount;
-	m_nDataConfirmStatus = WARNING_NOTCONFIRMED;
-	/*CAN FD Parameters */
-	m_omstrDataBitRate                  = "";
-	m_omstrDataSamplePoint              = "";
-	m_omstrDataBTL_Cycles               = "";
-	m_omstrDataSJW                      = "";
-	m_omstrTxDelayCompensationON        = "";
-	m_omstrTxDelayCompensationQuanta    = "";
-	m_omstrRxCompatibility              = "";
-	m_omstrTxCompatibility              = "";
+    return _tcstol(acStr, pccEndPtr, nBase);
+}
+
+long lFromCString_2_Long(CString omStr, char** pccEndPtr, int nBase)
+{
+    return _tcstol(omStr.GetBuffer(MAX_PATH), pccEndPtr, nBase);
+}
+
+
+// For Application object
+//extern CMcNetApp theApp;
+// For Hardware Interface Functions
+//extern CHardwareInterface* g_podHardwareInterface;
+/******************************************************************************/
+/*  Function Name    :  CChangeRegisters                                      */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Constructor is called when user create an object of   */
+/*                      this class. Initialisation of all data members        */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/*  Modifications    :  Raja N on 13.09.2004, Added init of member variables  */
+/*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
+/*                      m_pControllerDetails                                  */
+/******************************************************************************/
+//IMPLEMENT_DYNAMIC(CChangeRegisters, CPropertyPage)
+CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nCount)
+    : CDialog(CChangeRegisters::IDD, pParent)
+    //: CPropertyPage(CChangeRegisters::IDD, IDS_PPAGE_CHANGE_REGISTER)
+{
+    //{{AFX_DATA_INIT(CChangeRegisters)
+    m_byEditBRP = 1;
+    m_omStrEditBTR0 = "";
+    m_omStrEditBTR1 = "";
+    m_omStrComboSampling = "";
+    m_omStrEditBaudRate = "";
+    m_omStrComboClock = defCLOCK;
+    m_omStrEditWarningLimit = "";
+    //}}AFX_DATA_INIT
+    m_unCombClock      = 0;
+    m_bDialogCancel    = FALSE;
+    m_ucWarningLimit    = defWARNING_LIMIT_MIN;
+    m_ucControllerMode  = defCONTROLLER_MODE;
+    m_usBTR0BTR1 = defDEFAUT_BAUDRATE;
+    // Update controller data
+    m_pControllerDetails = psControllerDetails;
+    bFillControllerConfig();
+    m_usBTR0BTR1 = defDEFAUT_BAUDRATE;
+    m_unHardwareCount = nCount;
+    m_nDataConfirmStatus = WARNING_NOTCONFIRMED;
 }
 
 /******************************************************************************/
@@ -126,7 +112,7 @@ CChangeRegisters_CAN_iVIEW::CChangeRegisters_CAN_iVIEW(
 /*  Functionality    :  Called by the framework to exchange and validate      */
 /*                         dialog data                                        */
 /*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -134,49 +120,55 @@ CChangeRegisters_CAN_iVIEW::CChangeRegisters_CAN_iVIEW(
 /*  Modifications    :  Raja N on 14.03.2005                                  */
 /*                      Added list variable to include channel information    */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::DoDataExchange(CDataExchange* pDX)
+void CChangeRegisters::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CChangeRegisters_CAN_ETAS_BOA)
-	DDX_Control(pDX, IDC_LIST_CHANNELS, m_omChannelList);
-	DDX_Control(pDX, IDC_EDIT_WARNING_LIMIT, m_omEditWarningLimit);
-	DDX_Control(pDX, IDC_COMB_SAMPLING, m_omCombSampling);
-	DDX_Control(pDX, IDC_EDIT_BAUD_RATE, m_omEditBaudRate);
-	DDX_CBString(pDX, IDC_COMB_SAMPLING, m_omStrComboSampling);
-	DDV_MaxChars(pDX, m_omStrComboSampling, 1);
-	DDX_Text(pDX, IDC_EDIT_BAUD_RATE, m_omStrEditBaudRate);
-	DDX_Text(pDX, IDC_EDIT_WARNING_LIMIT, m_omStrEditWarningLimit);
-	DDX_Control(pDX, IDC_COMB_SAMPOINT, m_omCtrlSamplePoint);
-	DDX_CBString(pDX, IDC_COMB_SJW, m_omStrSJW);
-	DDX_CBString(pDX,IDC_COMB_SAMPOINT, m_omStrSamplePoint);
-	DDX_Control(pDX, IDC_COMB_SJW, m_omCtrlSJW);
-	//}}AFX_DATA_MAP
-	DDX_Text(pDX, IDC_EDIT_DATA_BAUD_RATE, m_omstrDataBitRate);
-	DDV_MinMaxInt(pDX,atoi(m_omstrDataBitRate.GetBuffer(0)),0,1000000);
-	DDX_CBString(pDX,IDC_COMB_DATA_SAMPOINT, m_omstrDataSamplePoint);
-	DDX_CBString(pDX,IDC_COMB_DELAY_COMPENSATION, m_omstrTxDelayCompensationON);
-	DDX_CBString(pDX,IDC_COMB_DATA_BTL, m_omstrDataBTL_Cycles);
-	DDX_Text(pDX, IDC_EDIT_COMPENSATION_QUANTA, m_omstrTxDelayCompensationQuanta);
-	DDX_CBString(pDX,IDC_COMB_DATA_SJW, m_omstrDataSJW);
-	DDX_CBString(pDX,IDC_COMB_RX_COMPATIBILITY, m_omstrRxCompatibility);
-	DDX_CBString(pDX,IDC_COMB_TX_COMPATIBILITY, m_omstrTxCompatibility);
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CChangeRegisters)
+    DDX_Control(pDX, IDC_LIST_CHANNELS, m_omChannelList);
+    DDX_Control(pDX, IDC_EDIT_WARNING_LIMIT, m_omEditWarningLimit);
+    DDX_Control(pDX, IDC_COMB_SAMPLING, m_omCombSampling);
+    DDX_Control(pDX, IDC_COMB_CLOCK, m_omCombClock);
+    DDX_Control(pDX, IDC_EDIT_BRP, m_omEditBRP);
+    DDX_Control(pDX, IDC_LSTC_BTR_LIST, m_omListCtrlBitTime);
+    DDX_Control(pDX, IDC_EDIT_BAUD_RATE, m_omEditBaudRate);
+    DDX_Control(pDX, IDC_EDIT_BTR1, m_omEditBTR1);
+    DDX_Control(pDX, IDC_EDIT_BTR0, m_omEditBTR0);
+    DDX_Text(pDX, IDC_EDIT_BRP, m_byEditBRP);
+    DDV_MinMaxByte(pDX, m_byEditBRP, 1, 64);
+    DDX_Text(pDX, IDC_EDIT_BTR0, m_omStrEditBTR0);
+    DDV_MaxChars(pDX, m_omStrEditBTR0, 2);
+    DDX_Text(pDX, IDC_EDIT_BTR1, m_omStrEditBTR1);
+    DDV_MaxChars(pDX, m_omStrEditBTR1, 2);
+    DDX_CBString(pDX, IDC_COMB_SAMPLING, m_omStrComboSampling);
+    DDV_MaxChars(pDX, m_omStrComboSampling, 1);
+    DDX_Text(pDX, IDC_EDIT_BAUD_RATE, m_omStrEditBaudRate);
+    DDX_CBString(pDX, IDC_COMB_CLOCK, m_omStrComboClock);
+    DDX_Text(pDX, IDC_EDIT_WARNING_LIMIT, m_omStrEditWarningLimit);
+    //}}AFX_DATA_MAP
 }
 
 
-BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_iVIEW, CDialog)
-	//{{AFX_MSG_MAP(CChangeRegisters_CAN_ETAS_BOA)
-	ON_EN_KILLFOCUS(IDC_EDIT_BAUD_RATE, OnKillfocusEditBaudRate)
-	ON_CBN_SELCHANGE(IDC_COMB_SAMPLING, OnSelchangeCombSampling)
-	ON_EN_SETFOCUS(IDC_EDIT_BAUD_RATE, OnSetfocusEditBaudRate)
-	ON_BN_CLICKED(IDC_ButtonOK, OnClickedOK)
-	ON_CBN_SETFOCUS(IDC_COMB_SAMPLING, OnSetfocusCombSampling)
-	ON_WM_HELPINFO()
-	ON_NOTIFY(NM_CLICK, IDC_LIST_CHANNELS, OnClickListChannels)
-	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CHANNELS, OnItemchangedListChannels)
-	ON_NOTIFY(NM_DBLCLK, IDC_LIST_CHANNELS, OnDblclkListChannels)
-	ON_CBN_SELCHANGE(IDC_COMB_SJW, OnCbnSelchangeCombSjw)
-	ON_CBN_SELCHANGE(IDC_COMB_DELAY_COMPENSATION, OnCbnSelchangeCombDelayCompensation)
-	//}}AFX_MSG_MAP
+BEGIN_MESSAGE_MAP(CChangeRegisters, CDialog)
+    //{{AFX_MSG_MAP(CChangeRegisters)
+    ON_EN_KILLFOCUS(IDC_EDIT_BAUD_RATE, OnKillfocusEditBaudRate)
+    ON_EN_KILLFOCUS(IDC_EDIT_BTR0, OnKillfocusEditBTR0)
+    ON_EN_KILLFOCUS(IDC_EDIT_BTR1, OnKillfocusEditBTR1)
+    ON_CBN_SELCHANGE(IDC_COMB_SAMPLING, OnSelchangeCombSampling)
+    ON_EN_SETFOCUS(IDC_EDIT_BAUD_RATE, OnSetfocusEditBaudRate)
+    ON_EN_SETFOCUS(IDC_EDIT_BTR0, OnSetfocusEditBTR0)
+    ON_EN_SETFOCUS(IDC_EDIT_BTR1, OnSetfocusEditBTR1)
+    ON_BN_CLICKED(IDC_ButtonOK, OnClickedOK)
+    ON_CBN_SELCHANGE(IDC_COMB_CLOCK, OnSelchangeCombClock)
+    ON_CBN_SETFOCUS(IDC_COMB_CLOCK, OnSetfocusCombClock)
+    ON_CBN_SETFOCUS(IDC_COMB_SAMPLING, OnSetfocusCombSampling)
+    ON_WM_HELPINFO()
+    ON_BN_CLICKED(IDC_CBTN_ACCEPTANCE, OnCbtnAcceptance)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_BTR_LIST, OnItemchangedLstcBtrList)
+    ON_NOTIFY(NM_CLICK, IDC_LIST_CHANNELS, OnClickListChannels)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CHANNELS, OnItemchangedListChannels)
+    ON_NOTIFY(NM_DBLCLK, IDC_LIST_CHANNELS, OnDblclkListChannels)
+    ON_BN_CLICKED(IDC_CBTN_BLINK, OnCbtnBlink)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /******************************************************************************/
@@ -189,181 +181,129 @@ END_MESSAGE_MAP()
 /*                      the dialog box during DoModal calls,which occur       */
 /*                      immediately before the dialog box is displayed.       */
 /*                      All controls of dialog are initialised in this func.  */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                         */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
-/*                      Review comment incorporated                           */
-/*                      13.11.2002, Gopi                                      */
-/*                      Changed to usage of configuration file to read the    */
-/*                      values.                                               */
-/*                      18.12.2002, Edit box will not take negative value     */
-/*                      28.03.2003, Changes for acceptance filter and warning */
-/*                      limit.                                                */
-/*                      23.10.2003, Moved updating fields on selection of     */
-/*                      items in listctrl to OnItemchangedLstcBtrList function*/
-/*  Modifications    :  31.08.2004, Raja N                                    */
-/*                      Changes for USB devices specific code                 */
-/*                      Added code to disable warning limit and to set default*/
-/*                      value 96                                              */
-/*  Modifications    :  14.03.2005, Raja N                                    */
-/*                      Changes for Multi channel support to configure        */
-/*                      multiple controllers                                  */
-/*  Modifications    :  14.03.2005, Raja N                                    */
-/*                      Implemented code review comments                      */
-/*  Modifications    :  09.05.2008, Pradeep Kadoor                            */
-/*                      Modification done for getting values of PropDelay and */
-/*                      SJW from configuration file and display list          */
-/*                      accordingly                                           */
-/*  Modifications    :  09.05.2008, Pradeep Kadoor                            */
-/*                      Modifications for setting two newly added combo box   */
 /******************************************************************************/
 
-BOOL CChangeRegisters_CAN_iVIEW::OnInitDialog()
+BOOL CChangeRegisters::OnInitDialog()
 {
-	CDialog::OnInitDialog();
-	CString omStrClock          = defCLOCK;
-	CString omStrBaudRate       = "";
-	CString omStrAcceptanceMask = "";
-	CString omStrAcceptanceCode = "";
-	CString omStrBrp            = "";
-	CString omStrBtr0           = "";
-	CString omStrBtr1           = "";
+    CDialog::OnInitDialog();
+    char caColumnName[5][50] = { defSTR_BTR0_COL_HEADING,
+                                 defSTR_BTR1_COL_HEADING,
+                                 defSTR_SAMPLE_POINT_COL_HEADING,
+                                 defSTR_NBT_COL_HEADING,
+                                 defSTR_SJW_COL_HEADING
+                               };
+    CString omStrClock          = "";
+    CString omStrBaudRate       = "";
+    CString omStrAcceptanceMask = "";
+    CString omStrAcceptanceCode = "";
+    CString omStrBrp            = "";
+    CString omStrBtr0           = "";
+    CString omStrBtr1           = "";
 
-	// Init Channel List box
+    INT nColumnSize             = 0;
+    INT nTotalColunmSize        = 0;
+    INT nTotalStrLengthPixel    = 0;
+    RECT rListCtrlRect          ;
 
-	// Create Image List for Channel List Control
-	m_omChannelImageList.Create( defCHANNEL_ICON_SIZE,
-		defCHANNEL_ICON_SIZE,
-		ILC_COLOR24,
-		defCHANNEL_LIST_INIT_SIZE,
-		defCHANNEL_LIST_GROW_SIZE);
-	// Load Channel Icon
-	CWinApp* pWinApp = (CWinApp*)this;
-	m_omChannelImageList.Add(pWinApp->LoadIcon(IDR_PGM_EDTYPE));
-	// Assign the image list to the control
-	m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL);
-	// Insert empty column
-	m_omChannelList.InsertColumn( 0, "");
-	// Insert all channel information
-	// Insert only for available channel information
-	int nAvailableHardware = m_nNoHardware;//g_podHardwareInterface->nGetNoOfHardware();
-	for (int nChannel = 0 ;
-		nChannel < nAvailableHardware;
-		nChannel++)
-	{
-		CString omStrChannel("");
-		// Create Channel String
-		omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
-			_(defSTR_CHANNEL_NAME),
-			nChannel + 1);
-		// Insert channel item
-		m_omChannelList.InsertItem( nChannel, omStrChannel);
-	}
+    // Init Channel List box
 
-	// Set the selected item index to zero
-	m_nLastSelection = 0;
+    // Create Image List for Channel List Control
+    //m_omChannelImageList.Create( defCHANNEL_ICON_SIZE,
+    //                             defCHANNEL_ICON_SIZE,
+    //                             ILC_COLOR24,
+    //                            defCHANNEL_LIST_INIT_SIZE,
+    //                             defCHANNEL_LIST_GROW_SIZE );
+    m_omChannelImageList.Create( IDB_BITMAP1,defCHANNEL_ICON_SIZE,
+                                 defCHANNEL_LIST_GROW_SIZE,CLR_NONE);
+    // Load Channel Icon
+    CWinApp* pWinApp = (CWinApp*)this;
+    //m_omChannelImageList.Add(pWinApp->LoadIcon(IDI_IVIEW));
+    //m_omChannelImageList.SetBkColor(RGB(255, 255, 255));
+    // Assign the image list to the control
+    m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL );
+    // Insert empty column
+    m_omChannelList.InsertColumn( 0, "" );
+    // Insert all channel information
+    // Insert only for available channel information
+    int nAvailableHardware = m_unHardwareCount;//g_podHardwareInterface->nGetNoOfHardware();
+    for( int nChannel = 0 ;
+            nChannel < nAvailableHardware;
+            nChannel++ )
+    {
+        CString omStrChannel("");
+        // Create Channel String
+        omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
+                             _(defSTR_CHANNEL_NAME),
+                             nChannel + 1 );
+        // Insert channel item
+        m_omChannelList.InsertItem( nChannel, omStrChannel );
+    }
 
-	m_omEditBaudRate.vSetBase( BASE_DECIMAL);
-	m_omEditBaudRate.vSetSigned(FALSE);
-	m_omEditBaudRate.vAcceptFloatingNum( TRUE);
-	m_omEditBaudRate. SetLimitText(7);
+    // Set the selected item index to zero
+    m_nLastSelection = 0;
 
-	m_omEditWarningLimit.vSetBase( BASE_DECIMAL);
-	m_omEditWarningLimit.vSetSigned(FALSE);
-	m_omEditWarningLimit.vAcceptFloatingNum( FALSE);
+    m_omEditBTR0.vSetBase( BASE_HEXADECIMAL );
+    m_omEditBTR0.vSetSigned(FALSE);
 
-	CComboBox* pComboBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_BTL);
-	if (pComboBTLCYCL != NULL)
-	{
-		pComboBTLCYCL->SetCurSel (0);
-		pComboBTLCYCL->EnableWindow(FALSE);
-	}
-	CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHECK_SELF_REC);
-	if (pCheckSelfRec != NULL)
-	{
-		pCheckSelfRec->SetCheck(BST_CHECKED);
-	}
-	// Add an entry in each of the two combo boxes FindStringExact
-	int nIndex = m_omCtrlSamplePoint.FindStringExact(-1,
-		m_pControllerDetails->m_omStrSamplePercentage.c_str());
-	m_omStrSamplePoint = m_pControllerDetails->m_omStrSamplePercentage.c_str();
-	m_omStrSJW = m_pControllerDetails->m_omStrSjw.c_str();
-	//UpdateData();
-	if (CB_ERR != nIndex)
-	{
-		m_omCtrlSamplePoint.SetCurSel (nIndex);
-	}
-	else
-	{
-		//Set the default selection as 70% and update the controller structure
-		m_omCtrlSamplePoint.SetCurSel (7);
-		m_pControllerDetails->m_omStrSamplePercentage = "70";
-	}
+    m_omEditBTR1.vSetBase( BASE_HEXADECIMAL );
+    m_omEditBTR1.vSetSigned(FALSE);
 
-	nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw.c_str());
+    m_omEditBaudRate.vSetBase( BASE_DECIMAL );
+    m_omEditBaudRate.vSetSigned(FALSE);
+    m_omEditBaudRate.vAcceptFloatingNum( TRUE );
 
-	if (CB_ERR != nIndex)
-	{
-		m_omCtrlSJW.SetCurSel (nIndex);
-	}
-	else
-	{
-		m_omCtrlSJW.SetCurSel (0);
-	}
-	// List values having prop delay
-	int nPropDelay = nGetValueFromComboBox(m_omCtrlSamplePoint);
-	if (nPropDelay != m_nPropDelay)
-	{
-		m_nPropDelay = nPropDelay;
-	}
-	// List Values having SJW
-	int nSJWCurr = nGetValueFromComboBox(m_omCtrlSJW);
-	if (nSJWCurr != m_nSJWCurr)
-	{
-		m_nSJWCurr = nSJWCurr;
-	}
+    m_omEditWarningLimit.vSetBase( BASE_DECIMAL );
+    m_omEditWarningLimit.vSetSigned(FALSE);
+    m_omEditWarningLimit.vAcceptFloatingNum( FALSE );
 
-	m_omEditWarningLimit.SetReadOnly(TRUE);
-	//Initialise the index for number of items in list box before passing it is
-	//function to calculate the same.
+    m_omEditBRP.vSetBase( BASE_DECIMAL );
 
-	// Set the Focus to the First Item
-	m_omChannelList.SetItemState( 0,
-		LVIS_SELECTED | LVIS_FOCUSED,
-		LVIS_SELECTED | LVIS_FOCUSED);
-	return TRUE;
+    m_omEditBTR0.LimitText(defVALID_LENGTH_BTR);
+
+    m_omEditBTR1.LimitText(defVALID_LENGTH_BTR);
+
+    //Calculate the total size of all column header
+    m_omListCtrlBitTime.GetWindowRect( &rListCtrlRect);
+    nTotalColunmSize     = rListCtrlRect.right - rListCtrlRect.left;
+    nTotalStrLengthPixel = 0;
+
+    for(INT j=0; j<defNUMBER_OF_COLUMNS; j++)
+    {
+        nTotalStrLengthPixel +=
+            m_omListCtrlBitTime.GetStringWidth(_(caColumnName[j]));
+    }
+    //Insert each column name after calculating the size for the same.
+    for(INT i=0; i<defNUMBER_OF_COLUMNS; i++)
+    {
+        nColumnSize  = m_omListCtrlBitTime.GetStringWidth(_(caColumnName[i])) ;
+        nColumnSize +=
+            (nTotalColunmSize-nTotalStrLengthPixel)/defNUMBER_OF_COLUMNS;
+        m_omListCtrlBitTime.InsertColumn(i,_(caColumnName[i]),
+                                         LVCFMT_CENTER, nColumnSize);
+    }
+
+    //Set extended style to show selection for all subitems
+    m_omListCtrlBitTime.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+
+
+
+    //Initialise the index for number of items in list box before passing it is
+    //function to calculate the same.
+
+    // Set the Focus to the First Item
+    m_omChannelList.SetItemState( 0,
+                                  LVIS_SELECTED | LVIS_FOCUSED,
+                                  LVIS_SELECTED | LVIS_FOCUSED );
+
+    // return TRUE unless you set the focus to a control
+    return TRUE;
+    // EXCEPTION: OCX Property Pages should return FALSE
 }
-
-/******************************************************************************/
-/*  Function Name    :  EnableFDParameters                                    */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  message handlers to enable FD Parameters              */
-/*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                         */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Prathiba                                              */
-/*  Date Created     :  7.11.2012                                             */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::vEnableFDParameters(BOOL bEnable)
-{
-	GetDlgItem(IDC_EDIT_DATA_BAUD_RATE)->EnableWindow(bEnable);
-	GetDlgItem(IDC_COMB_DELAY_COMPENSATION)->EnableWindow(bEnable);
-	GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(bEnable);
-	GetDlgItem(IDC_COMB_DATA_SAMPOINT)->EnableWindow(bEnable);
-	GetDlgItem(IDC_COMB_DATA_BTL)->EnableWindow(bEnable);
-	GetDlgItem(IDC_COMB_DATA_SJW)->EnableWindow(bEnable);
-	GetDlgItem(IDC_COMB_TX_COMPATIBILITY)->EnableWindow(bEnable);
-	GetDlgItem(IDC_COMB_RX_COMPATIBILITY)->EnableWindow(bEnable);
-}
-
 /******************************************************************************/
 /*  Function Name    :  OnCancel                                              */
 /*                                                                            */
@@ -371,7 +311,7 @@ void CChangeRegisters_CAN_iVIEW::vEnableFDParameters(BOOL bEnable)
 /*  Output           :                                                        */
 /*  Functionality    :  message handlers on CANCEL request                    */
 /*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -379,14 +319,13 @@ void CChangeRegisters_CAN_iVIEW::vEnableFDParameters(BOOL bEnable)
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnCancel()
+void CChangeRegisters::OnCancel()
 {
-	// Flag to be checked while validating the edit control input on kill focus
-	m_bDialogCancel = TRUE;
-	m_nDataConfirmStatus = INFO_RETAINED_CONFDATA;
-	CDialog::OnCancel();
+    // Flag to be checked while validating the edit control input on kill focus
+    m_bDialogCancel = TRUE;
+    m_nDataConfirmStatus = INFO_RETAINED_CONFDATA;
+    CDialog::OnCancel();
 }
-
 /******************************************************************************/
 /*  Function Name    :  OnOK                                                  */
 /*                                                                            */
@@ -394,7 +333,7 @@ void CChangeRegisters_CAN_iVIEW::OnCancel()
 /*  Output           :                                                        */
 /*  Functionality    :  Message handlers on Enter Button ( Default OK button) */
 /*                      Every press of enter key, focus is to next control    */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
@@ -402,122 +341,317 @@ void CChangeRegisters_CAN_iVIEW::OnCancel()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnOK()
+void CChangeRegisters::OnOK()
 {
-	// Dummy virtual function to avoid closing the dialog when ENTER key is
-	//  pressed. Instead next conrol gets focus in tab order
-	NextDlgCtrl();
-}
 
-/*****************************************************************************/
-/*  Function Name    : omGetFormattedRegVal                                  */
-/*                                                                           */
-/*  Input(s)         :  Register value in UCHAR                              */
-/*  Output           :  CString                                              */
-/*  Functionality    :  Formats the input register value as 0xYY             */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                     */
-/*  Friend of        :      -                                                */
-/*                                                                           */
-/*  Author(s)        :  Ratnadip Choudhury                                   */
-/*  Date Created     :  19.04.2008                                           */
-/*****************************************************************************/
-CString CChangeRegisters_CAN_iVIEW::omGetFormattedRegVal(UCHAR ucRegVal)
+    // Dummy virtual function to avoid closing the dialog when ENTER key is
+    //  pressed. Instead next conrol gets focus in tab order
+    NextDlgCtrl( );
+}
+/******************************************************************************/
+/*  Function Name    : vDisplayListBox                                        */
+/*                                                                            */
+/*  Input(s)         :  Total number of item and item last on fucus           */
+/*  Output           :                                                        */
+/*  Functionality    :  Insert columns of each row in the list control        */
+/*                      Calls function vSelSetFocusItemList to set focus      */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
 {
-	CString omStr = "";
-	omStr.Format(TEXT("0x%X"), ucRegVal);
-	// Insert one zero to format the sigle digit value to 0x05 etc.
-	if (omStr.GetLength() == 3)
-	{
-		omStr.Insert(2, '0');
-	}
-	return omStr;
-}
+    //    BOOL bResult = ::IsWindowVisible(m_hWnd);
 
+    //    bResult = ::IsWindowVisible(m_omListCtrlBitTime.m_hWnd);
+
+    //    if (bResult == FALSE) return;
+
+    CString cStrText    = "";
+    INT nItem           = -1;
+    CString omStrBTR0   = "";
+    CString omStrBTR1   = "";
+
+    // Clear list box first
+    m_omListCtrlBitTime.DeleteAllItems();
+    // Get the total number of Columns in the List View Header
+    INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+
+    m_omEditBTR0.GetWindowText(omStrBTR0);
+    m_omEditBTR1.GetWindowText(omStrBTR1);
+    // Insert items and subitems after Formating the strings in the list view
+    // control.
+    for (INT i=0; i <nIndex; i++)
+    {
+        cStrText.Format(TEXT("0x%X"),m_asColListCtrl[i].uBTRReg0.ucBTR0);
+        // Insert one zero to format the sigle digit value to 0x05 etc.
+        if(cStrText.GetLength()==3)
+        {
+            cStrText.Insert(2,'0');
+        }
+        m_omListCtrlBitTime.InsertItem(LVIF_TEXT|LVIF_STATE, i, cStrText,
+                                       (i==0) ? LVIS_SELECTED : 0,LVIS_SELECTED, 0, 0);
+
+        // Format and Initialize the text of the subitems.
+        for (INT j=1; j < nColumnCount; j++)
+        {
+            // Format the text of the subitems.
+            if(1==j )
+            {
+                // To set the focus point if baudrate is changed due to change in
+                //  BTR value.
+                if(cStrText.Find(omStrBTR0) !=-1 &&
+                        nItemFocus == defFromKillFocusBTR
+                        && nItem ==-1)
+                {
+                    nItem = i;
+                }
+
+                cStrText.Format(TEXT("0x%X"),m_asColListCtrl[i].uBTRReg1.ucBTR1);
+                // Insert one zero to format the sigle digit value to 0x05 etc.
+                if(cStrText.GetLength()==3)
+                {
+                    cStrText.Insert(2,'0');
+                }
+                // To set the focus point if baudrate is changed due to change in BTR
+                // value
+                if(cStrText.Find(omStrBTR1) ==-1 && nItemFocus== defFromKillFocusBTR
+                        && nItem ==i)
+                {
+                    nItem = -1;
+                }
+            }
+            else if(2==j)
+            {
+                cStrText.Format(TEXT("%d%%"),
+                                m_asColListCtrl[i].sBRPNBTSampNSJW.usSampling);
+            }
+            else if(3==j)
+            {
+                cStrText.Format(TEXT("%d"),m_asColListCtrl[i].sBRPNBTSampNSJW.usNBT);
+            }
+            else if(4==j)
+            {
+                cStrText.Format(TEXT("%d"),m_asColListCtrl[i].sBRPNBTSampNSJW.usSJW);
+                //Set the defualt focus point on row having SJW = 2, NBT = 8
+                if(m_asColListCtrl[i].sBRPNBTSampNSJW.usSJW==defMAX_SJW/2&&nItem==-1
+                        && m_asColListCtrl[i].sBRPNBTSampNSJW.usNBT==defMIN_NBT )
+                {
+                    nItem = i;
+                }
+            }
+            // Initialize the text of the subitems.
+            INT nTemp = m_omListCtrlBitTime.SetItemText(i,j, cStrText);
+            if(nTemp == 0)
+            {
+                //if(theApp.m_bFromAutomation == FALSE)
+                AfxMessageBox(defERRORMSG_INSERT);
+            }
+
+        }
+    }
+    // If nItemfucus is last saved value assign it to nItem
+    if(nItemFocus>=0)
+    {
+        nItem = nItemFocus;
+    }
+    //  Set the focus on item
+    vSelSetFocusItemList(nIndex,nItem);
+}
 /******************************************************************************/
 /*  Function Name    :  OnKillfocusEditBaudRate                               */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  Validate the buadrate on kill focus of this edit      */
 /*                      control                                               */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  22.03.2002, Validation for hexadecimal in CRadixEdit  */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  27.05.2002, Validation for zero value entered         */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  29.05.2002,Don't validate if CANCEL button is clicked */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  12.12.2002, negative value of baudrate will not be    */
-/*                      acceptect.Also the range is fixed to 1000kbps         */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  14.03.2005, Added code to update list control for the */
-/*                      values updated in the baud rate edit control          */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnKillfocusEditBaudRate()
+void CChangeRegisters::OnKillfocusEditBaudRate()
 {
-	CString omStrBaudRate   ="";
-	CString omStrValid      ="";
-	INT     nLength         = 0;
+    CString omStrBaudRate   ="";
+    CString omStrValid      ="";
+    INT     nLength         = 0;
 
-	m_omEditBaudRate.GetWindowText(omStrBaudRate);
-	nLength             = omStrBaudRate.GetLength();
+    m_omEditBaudRate.GetWindowText(omStrBaudRate);
 
-	CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
-	// To get the state of CANCEL button. A non zero value if the button is
-	// clicked.
-	UINT unButtonState       = pomButtonCancel->GetState();
-	// Validate only if next command is not ESC Button
-	if (m_bDialogCancel != TRUE )
-	{
-		// Don't validate if CANCEL button is clicked.
-		if (unButtonState ==0)
-		{
-			// Validate for empty string and if zero value is entered.
-			DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
-			if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0)
-			{
-				m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
-				AfxMessageBox(_(defVALIDATION_MSG_BAUD_RATE));
-				m_omEditBaudRate.SetFocus();
-				m_omEditBaudRate.SetSel(0, -1,FALSE);
-			}
-			else
-			{
+    nLength             = omStrBaudRate.GetLength();
 
-				m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
+    CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
+    // To get the state of CANCEL button. A non zero value if the button is
+    // clicked.
+    UINT unButtonState       = pomButtonCancel->GetState();
+    // Validate only if next command is not ESC Button
+    if(m_bDialogCancel != TRUE  )
+    {
+        // Don't validate if CANCEL button is clicked.
+        if(unButtonState ==0 )
+        {
+            // Validate for empty string and if zero value is entered.
+            DOUBLE dBaudRate = (FLOAT) _tstof(omStrBaudRate);
+            if(nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0 )
+            {
+                m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
+                //if(theApp.m_bFromAutomation == FALSE)
+                AfxMessageBox(defVALIDATION_MSG_BAUD_RATE);
+                m_omEditBaudRate.SetFocus();
+                m_omEditBaudRate.SetSel(0, -1,FALSE);
+            }
+            else
+            {
 
-				// Call if string is valid to validate the baud rate value and
-				// suggest  a next valid baud rate
-				//Validate only if previous value in edit control is not the
-				//  same as the one changed by user
-				if (m_dEditBaudRate != dBaudRate && dBaudRate>0
-					&& m_dEditBaudRate > 0 )
-				{
-					vValidateBaudRate();
-					// Update List items only it is from edit box
-					//vChangeListBoxValues(-1);
-					CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
-					CButton* pomFocusWnd     = (CButton*)GetFocus();
+                m_dEditBaudRate     = (FLOAT) _tstof(m_omStrEditBaudRate);
 
-					if (pomButtonoK ==pomFocusWnd)
-					{
-						// Close the dialog if the user
-						// has pressed OK button
-						OnClickedOK();
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
-	}
+                // Call if string is valid to validate the baud rate value and
+                // suggest  a next valid baud rate
+                //Validate only if previous value in edit control is not the
+                //  same as the one changed by user
+                if(m_dEditBaudRate != dBaudRate && dBaudRate>0
+                        && m_dEditBaudRate > 0  )
+                {
+                    vValidateBaudRate();
+                    // Update List items only it is from edit box
+                    vChangeListBoxValues(-1);
+                    CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
+                    CButton* pomFocusWnd     = (CButton*)GetFocus();
+
+                    if (pomButtonoK ==pomFocusWnd)
+                    {
+                        // Close the dialog if the user
+                        // has pressed OK button
+                        OnClickedOK();
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
+    }
 }
+/******************************************************************************/
+/*  Function Name    :  OnKillfocusEditBTR0                                   */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Validate the BTR0 on kill focus of this edit          */
+/*                      control                                               */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::OnKillfocusEditBTR0()
+{
+    CString omStrBtr0Get    ="";
+    CString omStrValidBtr0  ="";
+    INT     nLength         = 0;
 
+    m_omEditBTR0.GetWindowText(omStrBtr0Get);
+    nLength             = omStrBtr0Get.GetLength();
+    CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
+    CButton* pomFocusWnd     = (CButton*)GetFocus();
+    // Validate only if next focus is not on Cancel Button
+    if(m_bDialogCancel != TRUE )
+    {
+        if(pomButtonCancel !=pomFocusWnd)
+        {
+            // Validate for empty string
+            if(nLength == 0)
+            {
+                m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
+                //if(theApp.m_bFromAutomation == FALSE)
+                AfxMessageBox(defVALIDATION_MESSAGE);
+                m_omEditBTR0.SetFocus();
+                m_omEditBTR0.SetSel(0, -1,FALSE);
+            }
+            else
+            {
+                if(m_omStrEditBTR0!=omStrBtr0Get)
+                {
+                    vCalculateBaudRateNBTR1(omStrBtr0Get);
+                }
+
+            }
+        }
+    }
+    else
+    {
+        m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
+    }
+    // Call OnCancel() function if next focus is on CANCEL button  \
+    //  close the dialog if CANCEL button is clicked
+    if (pomButtonCancel == pomFocusWnd)
+    {
+        OnCancel();
+    }
+
+}
+/******************************************************************************/
+/*  Function Name    :  OnKillfocusEditBTR1                                   */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Validate the BTR1 on kill focus of this edit          */
+/*                      control                                               */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::OnKillfocusEditBTR1()
+{
+    CString omStrBtr1Get    ="";
+    CString omStrValidBtr1  ="";
+    INT     nLength         = 0;
+
+    m_omEditBTR1.GetWindowText(omStrBtr1Get);
+
+    nLength = omStrBtr1Get.GetLength();
+    CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
+    CButton* pomFocusWnd     = (CButton*)GetFocus();
+    // Validate only if next focus is not on Cancel Button
+    if(m_bDialogCancel != TRUE)
+    {
+        if(pomButtonCancel !=pomFocusWnd)
+        {
+            // Validate for empty string
+            if(nLength ==0 )
+            {
+                m_omEditBTR1.SetWindowText(m_omStrEditBTR1);
+                //              if(theApp.m_bFromAutomation == FALSE)
+                AfxMessageBox(defVALIDATION_MESSAGE);
+                m_omEditBTR1.SetFocus();
+                m_omEditBTR1.SetSel(0, -1,FALSE);
+            }
+            else
+            {
+                if(m_omStrEditBTR1!=omStrBtr1Get)
+                {
+                    vCalculateBaudRateNBTR0(omStrBtr1Get);
+                }
+            }
+        }
+    }
+    else
+    {
+        m_omEditBTR1.SetWindowText(m_omStrEditBTR1);
+    }
+    // Call OnCancel() function if next focus is on CANCEL button  \
+    //  close the dialog if CANCEL button is clicked
+    if (pomButtonCancel == pomFocusWnd)
+    {
+        OnCancel();
+    }
+
+}
 /******************************************************************************/
 /*  Function Name    :  OnSelchangeCombSampling                               */
 /*                                                                            */
@@ -525,30 +659,93 @@ void CChangeRegisters_CAN_iVIEW::OnKillfocusEditBaudRate()
 /*  Output           :                                                        */
 /*  Functionality    :  Change the content of list control on change in       */
 /*                      selection of number of sampling combo box.            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :                                                        */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnSelchangeCombSampling()
+void CChangeRegisters::OnSelchangeCombSampling()
 {
-	INT nGetValue               = 0;
-	CString omStrComboEditItem  ="";
+    INT nGetValue               = 0;
+    CString omStrComboEditItem  ="";
 
-	nGetValue =  m_omCombSampling.GetCurSel();
-	if (nGetValue != CB_ERR)
-	{
-		m_omCombSampling.GetLBText(nGetValue, omStrComboEditItem);
-	}
-	if (m_omStrComboSampling != omStrComboEditItem)
-	{
-		//vChangeListBoxValues(-1);
-		m_omStrComboSampling = omStrComboEditItem;
-	}
+    nGetValue =  m_omCombSampling.GetCurSel();
+    if (nGetValue !=CB_ERR)
+    {
+        m_omCombSampling.GetLBText(nGetValue,omStrComboEditItem);
+    }
+    if(m_omStrComboSampling!=omStrComboEditItem)
+    {
+        vChangeListBoxValues(-1);
+        m_omStrComboSampling = omStrComboEditItem;
+    }
+
 }
+/******************************************************************************/
+/*  Function Name    :  vChangeListBoxValues                                  */
+/*                                                                            */
+/*  Input(s)         :  Flag to indicate from where this function is called   */
+/*  Output           :                                                        */
+/*  Functionality    :  Change the content of list control on change in       */
+/*                      selection of number of sampling or clock, or BTR0     */
+/*                      or BTR1 or baudrate combo box.                        */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::vChangeListBoxValues(INT nflag)
+{
+    UINT unIndex                = 0;
+    CString omStrComboEditItem  ="";
+    INT nGetValue               = 0;
+    INT nSample                 = 0;
+    INT nReturn                 = 0;
+    UINT unClock                = 0;
 
+    //Get the value selected by user for number of sampling/bit
+    nGetValue =  m_omCombSampling.GetCurSel();
+    if (nGetValue !=CB_ERR)
+    {
+        m_omCombSampling.GetLBText(nGetValue,omStrComboEditItem);
+    }
+    nSample = _tstoi(omStrComboEditItem.GetBuffer(MAX_PATH));
+    unIndex = 0;
+    //Get the value selected by user for clock.
+    nGetValue =  m_omCombClock.GetCurSel();
+    if (nGetValue !=CB_ERR)
+    {
+        m_omCombClock.GetLBText(nGetValue,omStrComboEditItem);
+    }
+    unClock       = _tstoi(omStrComboEditItem.GetBuffer(MAX_PATH));
+    // Call function to calculate the list of BTR0, BTR1, SJW,NBT and Sampling.
+    nReturn = nListBoxValues( m_asColListCtrl,m_dEditBaudRate,(WORD)unClock,&unIndex,
+                              nSample) ;
+    if(nReturn != -1)
+    {
+        // Remove all the items in the list box.
+        m_omListCtrlBitTime.DeleteAllItems();
+        // Display all the new items in the list box
+        vDisplayListBox(unIndex,nflag);
+        // Update the clock frequency value in data member
+        m_unCombClock = unClock;
+        // Get the number of columns.
+        INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+        // Get the row number selected.
+        INT nItem        = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED) ;
+        if(nColumnCount !=defERROR)
+        {
+            vUpdateBTRsBRPEditWindow(nColumnCount,nItem);
+        }
+    }
+    else
+    {
+        vValidateBaudRate();
+    }
+
+}
 /******************************************************************************/
 /*  Function Name    :  OnSetfocusEditBaudRate                                */
 /*                                                                            */
@@ -557,18 +754,504 @@ void CChangeRegisters_CAN_iVIEW::OnSelchangeCombSampling()
 /*  Functionality    :  Called when focus is set on baudrate edit box control */
 /*                      Update all data members associated with Dialog        */
 /*                      control.                                              */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnSetfocusEditBaudRate()
+void CChangeRegisters::OnSetfocusEditBaudRate()
 {
-	// To update the data members before editing it and use it in kill focus
-	UpdateData(TRUE);
+    // To update the data members before editing it and use it in kill focus
+    UpdateData(TRUE);
+
+}
+/******************************************************************************/
+/*  Function Name    :  vUpdateBtriBrpEditWindow                              */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function will update the BTR0,BTR1 and BRP value */
+/*                      corresponding values in the list control.             */
+/*                      control.                                              */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem)
+{
+    CString omStrItems[defNUMBER_OF_COLUMNS];
+    CString omStrBaudRate   ="";
+    CString omStrClockFreq  ="";
+    CString omStrBrp        ="";
+
+    DOUBLE  dBaudRate       = 0;
+    UINT    unBrp           = 0;
+    UINT    unClockFreq     = 0;
+    UINT    unNbt           = 0;
+    uBTR0   uBtr0;
+    // Get the values of subitems having item index as nItem.
+    for(INT j=0 ; j<defNUMBER_OF_COLUMNS ; j++)
+    {
+        omStrItems[j] = m_omListCtrlBitTime.GetItemText(nItem,j);
+    }
+
+    omStrItems[defBRT0_COLUNM_POS-1].Replace(defHEX_STRING,defEMPTY_STRING);
+    m_omEditBTR0.SetWindowText(omStrItems[defBRT0_COLUNM_POS-1]);
+
+    omStrItems[defBRT1_COLUNM_POS-1].Replace(defHEX_STRING,defEMPTY_STRING);
+    m_omEditBTR1.SetWindowText(omStrItems[defBRT1_COLUNM_POS-1]);
+
+    m_omEditBaudRate.GetWindowText(omStrBaudRate);
+    m_omCombClock.GetWindowText(omStrClockFreq);
+
+    dBaudRate  = (FLOAT) _tstof(omStrBaudRate);
+    unClockFreq= _tstoi(omStrClockFreq.GetBuffer(MAX_PATH));
+
+    unNbt      = _tstoi(omStrItems[defNBT_COLUNM_POS-1].GetBuffer(MAX_PATH));
+    if(unNbt>0)
+    {
+        char* pcStopStr = NULL;
+        uBtr0.ucBTR0 = (UCHAR) lFromCString_2_Long(
+                           omStrItems[defBRT0_COLUNM_POS-1], &pcStopStr, defHEXADECIMAL);
+        unBrp = uBtr0.sBTR0Bit.ucBRPbit + 1;
+    }
+    //Convert UINT to string.
+    char acBrpStr[32] = {L'\0'};
+    _itot(unBrp, acBrpStr, 10);
+    omStrBrp = acBrpStr;
+    m_omEditBRP.SetWindowText(omStrBrp);
+
+}
+/******************************************************************************/
+/*  Function Name    :  vCalculateBaudRateNBTR1                               */
+/*                                                                            */
+/*  Input(s)         :  BTR0 value                                            */
+/*  Output           :                                                        */
+/*  Functionality    :  Called to calculate baudrate or select corresponding  */
+/*                      BTR1 value from list control. This function will      */
+/*                      also update the correspoding BRP value.               */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
+{
+    CString omStrBaudRate   ="";
+    CString omStrClockFreq  ="";
+    CString omStrBtr1       ="";
+    CString omStrLocalBtr0  ="";
+    CString omStrLocalBtr1  ="";
+    CString omStrBrp        ="";
+    CString omStrNbt        ="";
+
+    DOUBLE  dBaudRate       = 0;
+    UINT    unClockFreq     = 0;
+    UINT    unNbt           = 0;
+    FLOAT   fNbt            = 0;
+    UINT    unBrp           = 0;
+    UINT    unProductNbtNBrp= 0;
+    uBTR0   sBtr0Reg    ;
+    char* pcStopStr         = NULL;
+
+    // Get the baudrate for BTR0 and BTR1 values.
+    dBaudRate = dCalculateBaudRateFromBTRs(omStrBtr0,m_omStrEditBTR1);
+    m_omCombClock.GetWindowText(omStrClockFreq);
+    unClockFreq         = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH));
+
+    omStrLocalBtr0      = omStrBtr0;
+    sBtr0Reg.ucBTR0     = (UCHAR) lFromCString_2_Long(omStrLocalBtr0,
+                          &pcStopStr, defHEXADECIMAL);
+
+    // Calculate the NBT and BRP product. and NBT value using BTR0 value
+    unProductNbtNBrp    = (UINT)((unClockFreq/(dBaudRate/1000))/2.0*
+                                 (defFACT_FREQUENCY / defFACT_BAUD_RATE));
+    unBrp               = (sBtr0Reg.sBTR0Bit.ucBRPbit+1);
+    unNbt               = unProductNbtNBrp/unBrp;
+    fNbt                = (FLOAT)unProductNbtNBrp/unBrp;
+    // Check for baudrate with baudrate in the edit field. If it is same find
+    // the corresponding BTR0 and BTR1 value in list else calculate the new list
+    if(fabs((dBaudRate - m_dEditBaudRate)) >= defVALID_DECIMAL_VALUE)
+    {
+        //Check if the BTR0 and BTR1 value entered is valid. if Not valid
+        // Restore the previos value else calculate the new list.
+        if(unNbt>defMAX_NBT || unNbt<defMIN_NBT || fNbt != unNbt )
+        {
+            m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
+            m_omEditBTR0.SetSel(0, -1,FALSE);
+            //          if(theApp.m_bFromAutomation == FALSE)
+            AfxMessageBox(_T("Invalid Configuration"),MB_OK|MB_ICONSTOP);
+        }
+        else
+        {
+            /*FLOAT  fTempBaudRate;
+            fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
+            fTempBaudRate = fTempBaudRate/100000;
+            omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);*/
+            long lBaudRate = (LONG)dBaudRate;
+            omStrBaudRate.Format(_T("%ld"),lBaudRate);
+            m_omEditBaudRate.SetWindowText(omStrBaudRate);
+            m_dEditBaudRate     = dBaudRate;
+            m_omStrEditBaudRate = omStrBaudRate;
+            // Calculate the new list display it is list control and set
+            // the selection on row having BTR0 and BTR1 same as
+            // edit control value.
+            vChangeListBoxValues(defFromKillFocusBTR);
+        }
+    }
+    else
+    {
+        INT nItemCount   = m_omListCtrlBitTime.GetItemCount();
+
+        LVFINDINFO info;
+
+        info.flags = LVFI_PARTIAL|LVFI_STRING;
+
+        omStrLocalBtr0 = _T("0x") + omStrBtr0;
+        info.psz   = omStrLocalBtr0;
+
+        INT nItem = m_omListCtrlBitTime.FindItem(&info);
+        // Search for the item containing the same BTR0 and BTR1 value.
+        if(nItem!= -1 )
+        {
+            omStrLocalBtr1 = m_omListCtrlBitTime.GetItemText(nItem,
+                             defBRT1_COLUNM_POS-1);
+            omStrLocalBtr1.Replace(defHEX_STRING,defEMPTY_STRING);
+            m_omEditBTR1.GetWindowText(omStrBtr1);
+            while(omStrLocalBtr1!=omStrBtr1
+                    && omStrLocalBtr1.IsEmpty() == FALSE)
+            {
+                nItem++;
+                omStrLocalBtr1 = m_omListCtrlBitTime.GetItemText(nItem,
+                                 defBRT1_COLUNM_POS-1);
+                omStrLocalBtr1.Replace(defHEX_STRING,defEMPTY_STRING);
+                omStrLocalBtr0 = m_omListCtrlBitTime.GetItemText(nItem,0);
+                omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
+            }
+            /* If 0x is found, get rid of it*/
+            omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
+
+            if(omStrLocalBtr1.IsEmpty() == FALSE && omStrLocalBtr0 == omStrBtr0)
+            {
+                omStrLocalBtr1 = m_omListCtrlBitTime.GetItemText(nItem,
+                                 defBRT1_COLUNM_POS-1);
+                omStrLocalBtr1.Replace(defHEX_STRING,defEMPTY_STRING);
+                omStrNbt      = m_omListCtrlBitTime.GetItemText(nItem,
+                                defNBT_COLUNM_POS-1);
+                unNbt         = _tstoi(omStrNbt.GetBuffer(MAX_PATH));
+                if(unNbt >0)
+                {
+                    unBrp     = unProductNbtNBrp/unNbt;
+                }
+                char acStrBrp[32] = {L'\0'};
+                _itot(unBrp, acStrBrp, 10);
+                omStrBrp = acStrBrp;
+
+                m_omEditBRP.SetWindowText(omStrBrp);
+                omStrLocalBtr1.Replace(defHEX_STRING,defEMPTY_STRING);
+                m_omEditBTR1.SetWindowText(omStrLocalBtr1);
+                vSelSetFocusItemList(nItemCount,nItem);
+            }
+            else
+            {
+                m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
+                //              if(theApp.m_bFromAutomation == FALSE)
+                AfxMessageBox(_T(_("Invalid Configuration")),MB_OK|MB_ICONSTOP);
+            }
+        }
+        else
+        {
+            m_omEditBTR0.SetWindowText(m_omStrEditBTR0);
+            //        if(theApp.m_bFromAutomation == FALSE)
+            AfxMessageBox(_T(_("Invalid Configuration")),MB_OK|MB_ICONSTOP);
+        }
+    }
+}
+/******************************************************************************/
+/*  Function Name    :  vCalculateBaudRateNBTR0                               */
+/*                                                                            */
+/*  Input(s)         :  BTR1 value                                            */
+/*  Output           :                                                        */
+/*  Functionality    :  Called to calculate baudrate or select corresponding  */
+/*                      BTR0 value from list control. This function will      */
+/*                      also update the correspoding BRP value.               */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
+{
+    CString omStrBaudRate       = "";
+    CString omStrClockFreq      = "";
+    CString omStrBtr0           = "";
+    CString omStrLocalBtr1      = "";
+    CString omStrLocalBtr0      = "";
+    CString omStrBrp            = "";
+    CString omStrNbt            = "";
+    CString omStrComboEditItem  = "";
+    DOUBLE  dBaudRate           = 0;
+    UINT    unClockFreq         = 0;
+    UINT    unNbt               = 0;
+    UINT    unBrp               = 0;
+    FLOAT   fBrp                = 0;
+    WORD    usProductNbtNBrp    = 0;
+    INT     nSample             = 0;
+    INT     nSampleChange       = 0;
+    INT     nGetValue           = 0;
+    char*  pcStopStr           = NULL;
+
+    uBTR1   sBtr1Reg;
+    uBTR0   sBtr0Reg;
+
+    m_omEditBaudRate.GetWindowText(omStrBaudRate);
+    dBaudRate           = (DOUBLE) _tstof(omStrBaudRate);
+
+    m_omCombClock.GetWindowText(omStrClockFreq);
+    unClockFreq         = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH));
+
+    omStrLocalBtr1      = omStrBtr1;
+    // Get the baudrate for BTR0 and BTR1 values.
+    dBaudRate = dCalculateBaudRateFromBTRs(m_omStrEditBTR0,omStrBtr1 );
+    sBtr1Reg.ucBTR1     = (UCHAR) lFromCString_2_Long(omStrLocalBtr1,
+                          &pcStopStr, defHEXADECIMAL);
+    // Calculate the NBT and BRP product. and NBT value using BTR0 value
+    usProductNbtNBrp    = (WORD)((unClockFreq/(dBaudRate/1000))/2.0*
+                                 (defFACT_FREQUENCY / defFACT_BAUD_RATE));
+    unNbt               = (sBtr1Reg.sBTR1Bit.ucTSEG1bit+1)+
+                          (sBtr1Reg.sBTR1Bit.ucTSEG2bit+1)+1;
+    unBrp               = usProductNbtNBrp/unNbt;
+    fBrp                = (FLOAT)usProductNbtNBrp/unNbt;
+    // Check for number of sampling for new BTR1 value and get the already
+    // selected value
+    nGetValue =  m_omCombSampling.GetCurSel();
+    if (nGetValue !=CB_ERR)
+    {
+        m_omCombSampling.GetLBText(nGetValue,omStrComboEditItem);
+    }
+    nSample = _tstoi(omStrComboEditItem.GetBuffer(MAX_PATH));
+    if(sBtr1Reg.sBTR1Bit.ucSAMbit==0)
+    {
+        nSampleChange = 1;
+    }
+    else
+    {
+        nSampleChange = 3;
+    }
+
+    // Check for baudrate with baudrate in the edit field. If it is same find
+    //the corresponding BTR0 and BTR1 value in list else calculate the new list
+    if( fabs((dBaudRate - m_dEditBaudRate)) >=defVALID_DECIMAL_VALUE)
+    {
+
+        //Check if the BTR0 and BTR1 value entered is valid. if Not valid
+        // Restore the previos value else calculate the new list.
+        if(unBrp>defMAX_BRP || unBrp<defMIN_BRP || unBrp != fBrp
+                || unNbt>defMAX_NBT || unNbt<defMIN_NBT)
+        {
+            m_omEditBTR1.SetWindowText(m_omStrEditBTR1);
+            m_omEditBTR1.SetSel(0, -1,FALSE);
+            //          if(theApp.m_bFromAutomation == FALSE)
+            AfxMessageBox(_T(_("Invalid Configuration")), MB_OK|MB_ICONSTOP);
+        }
+        else
+        {
+            /*FLOAT  fTempBaudRate;
+             fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
+             fTempBaudRate = fTempBaudRate/100000;
+             omStrBaudRate.Format(_T("%.4f"),fTempBaudRate);*/
+            long lBaudRate = (LONG)dBaudRate;
+            omStrBaudRate.Format(_T("%ld"),lBaudRate);
+            m_omEditBaudRate.SetWindowText(omStrBaudRate);
+            m_dEditBaudRate     = dBaudRate;
+            m_omStrEditBaudRate = omStrBaudRate;
+            // change the number of sampling field, if required before
+            // calculating the new list
+            if(nSampleChange != nSample)
+            {
+                m_omCombSampling.SetCurSel(sBtr1Reg.sBTR1Bit.ucSAMbit);
+            }
+            // Calculate the new list display it is list control and set
+            // the selection on row having BTR0 and BTR1 same as
+            // edit control value.
+            vChangeListBoxValues(defFromKillFocusBTR);
+        }
+    }
+    else
+    {
+        // change the number of sampling field, if required before
+        // calculating the new list
+        if(nSampleChange != nSample)
+        {
+            m_omCombSampling.SetCurSel(sBtr1Reg.sBTR1Bit.ucSAMbit);
+            vChangeListBoxValues(-1);
+        }
+        INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+        INT nItemCount   = m_omListCtrlBitTime.GetItemCount();
+        sBtr0Reg.sBTR0Bit.ucBRPbit = unBrp - 1;
+        sBtr0Reg.sBTR0Bit.ucSJWbit = 1;
+
+        LVFINDINFO info;
+
+        info.flags = LVFI_PARTIAL|LVFI_STRING;
+
+        omStrLocalBtr0.Format(_T("0x%0x"), sBtr0Reg.ucBTR0);
+
+        info.psz   = omStrLocalBtr0;
+
+        INT nItem = m_omListCtrlBitTime.FindItem(&info);
+        // Search for the item containing the same BTR0 and BTR1 value.
+        if(nItem!= -1 )
+        {
+            omStrLocalBtr1 = m_omListCtrlBitTime.GetItemText(nItem,
+                             defBRT1_COLUNM_POS-1);
+            omStrLocalBtr1.Replace(defHEX_STRING,defEMPTY_STRING);
+            while(omStrLocalBtr1!=omStrBtr1
+                    && omStrLocalBtr1.IsEmpty() == FALSE)
+            {
+                nItem++;
+                omStrLocalBtr1 = m_omListCtrlBitTime.GetItemText(nItem,
+                                 defBRT1_COLUNM_POS-1);
+                omStrLocalBtr1.Replace(defHEX_STRING,defEMPTY_STRING);
+                omStrBtr0 = m_omListCtrlBitTime.GetItemText(nItem,0);
+            }
+            if(omStrLocalBtr1 == omStrBtr1
+                    && omStrLocalBtr1.IsEmpty() == FALSE )
+            {
+                omStrNbt  = m_omListCtrlBitTime.GetItemText(nItem,
+                            defNBT_COLUNM_POS-1);
+                unNbt     = _tstoi(omStrNbt.GetBuffer(MAX_PATH));
+                if(unNbt >0)
+                {
+                    unBrp     = usProductNbtNBrp/unNbt;
+                }
+
+                char acStrBrp[32] = {L'\0'};
+                _itot(unBrp, acStrBrp, 10);
+                omStrBrp = acStrBrp;
+                m_omEditBRP.SetWindowText(omStrBrp);
+
+                omStrLocalBtr0.Replace(defHEX_STRING,defEMPTY_STRING);
+                m_omEditBTR0.SetWindowText(omStrLocalBtr0);
+                m_omEditBTR1.SetWindowText(omStrBtr1);
+                vSelSetFocusItemList(nItemCount,nItem);
+            }
+            else
+            {
+                m_omEditBTR1.SetWindowText(m_omStrEditBTR1);
+                //                if(theApp.m_bFromAutomation == FALSE)
+                AfxMessageBox(_T(_("Invalid Configuration")),MB_OK|MB_ICONSTOP);
+            }
+        }
+    }
+}
+/******************************************************************************/
+/*  Function Name    :  vSelSetFocusItemList                                  */
+/*                                                                            */
+/*  Input(s)         : Total number of item in list control and item number   */
+/*                     for selection from list control                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called when focus is set on baudrate edit box control */
+/*                      Update all data members associated with Dialog        */
+/*                      control.                                              */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::vSelSetFocusItemList(INT nItemCount,INT nItem)
+{
+    LVITEM sItem;
+    // If there is no defualt or last selected item, selection will be at
+    // item number middle of the total item numbers.
+    if(nItem ==-1 || nItem>=nItemCount)
+    {
+        nItem = nItemCount/2;
+
+        /* Make the current BTR0, BTR1 values as default selection */
+        CString omStrItems[defNUMBER_OF_COLUMNS];
+
+        CString omStrBTR0   = "";
+        CString omStrBTR1   = "";
+
+        m_omEditBTR0.GetWindowText(omStrBTR0);
+        m_omEditBTR1.GetWindowText(omStrBTR1);
+
+        // Get the values of subitems having item index as nItem.
+        for(INT i=0 ; i<nItemCount ; i++)
+        {
+            for(INT j=0 ; j<defNUMBER_OF_COLUMNS ; j++)
+            {
+                omStrItems[j] = m_omListCtrlBitTime.GetItemText(i,j);
+            }
+            omStrItems[defBRT0_COLUNM_POS-1].Replace(defHEX_STRING,defEMPTY_STRING);
+            omStrItems[defBRT1_COLUNM_POS-1].Replace(defHEX_STRING,defEMPTY_STRING);
+
+            if ( omStrBTR0 == omStrItems[defBRT0_COLUNM_POS-1] &&
+                    omStrBTR1 == omStrItems[defBRT1_COLUNM_POS-1] )
+            {
+                nItem = i;
+            }
+        }
+    }
+
+    sItem.mask      = LVIF_STATE;
+    sItem.iItem     = nItem;
+
+    if (m_omListCtrlBitTime.GetItem(&sItem) == TRUE)
+    {
+        sItem.state     = LVIS_FOCUSED | LVIS_SELECTED;
+        sItem.stateMask = LVIS_SELECTED | LVIS_FOCUSED;
+        sItem.iSubItem  = 0;
+
+        m_omListCtrlBitTime.SetItem(&sItem);
+        m_omListCtrlBitTime.EnsureVisible(nItem, FALSE);
+    }
+}
+/******************************************************************************/
+/*  Function Name    :  OnSetfocusEditBTR0                                    */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called when focus is set on BTR0 edit box control     */
+/*                      Update all data members associated with Dialog        */
+/*                      control.                                              */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::OnSetfocusEditBTR0()
+{
+    // To update the data members before editing it and use it in kill focus
+    UpdateData(TRUE);
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnSetfocusEditBTR1                                    */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called when focus is set on BTR1 edit box control     */
+/*                      Update all data members associated with Dialog        */
+/*                      control.                                              */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::OnSetfocusEditBTR1()
+{
+    // To update the data members before editing it and use it in kill focus
+    UpdateData(TRUE);
 }
 
 /******************************************************************************/
@@ -578,110 +1261,101 @@ void CChangeRegisters_CAN_iVIEW::OnSetfocusEditBaudRate()
 /*  Output           :                                                        */
 /*  Functionality    :  This function will validate the user input value of   */
 /*                      baud rate. A valid baud rate will be calculated       */
-/*  Member of        :  CChangeRegisters_CAN_iVIEW                            */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  18.02.2002                                            */
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
-/*                      Incorporated review comments                          */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  22.03.2002, If user changes clock freq. and select no */
-/*                      for changing valid baudrate, change the clock freq. to*/
-/*                      previous value.                                       */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  14.03.2005, Removed message box for asking the user to*/
-/*                      change the baudrate to nearest possible value. Now it */
-/*                      will automatically change the values                  */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::vValidateBaudRate()
+void CChangeRegisters::vValidateBaudRate()
 {
-	CString omStrBaudRate       = "";
-	CString omStrPrvBaudRate    = "";
-	CString omStrClockFreq      = "";
-	DOUBLE  dBaudRate           = 0;
-	//UINT    unClockFreq         = 0;
-	//UINT    unClockPrevValue    = 0 ;
-	UINT    unProductNbtNBrp    = 0;
-	DOUBLE  dProductNbtNBrp     = 0;
-	CString omStrMessage        = "";
+    CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
+    DOUBLE  dBaudRate           = 0;
+    UINT    unClockFreq         = 0;
+    UINT    unProductNbtNBrp    = 0;
+    DOUBLE  dProductNbtNBrp     = 0;
+    CString omStrMessage        = "";
+    //INT     nUserOption         = 0;
 
-	m_omEditBaudRate.GetWindowText(omStrBaudRate);
-	dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
-	m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
 
-	//m_omCombClock.GetWindowText(omStrClockFreq);
-	//unClockFreq          = _tstoi(omStrClockFreq);
+    m_omEditBaudRate.GetWindowText(omStrBaudRate);
+    dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
+    m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
 
-	dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
-		(defFACT_FREQUENCY / defFACT_BAUD_RATE);
-	unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
+    m_omCombClock.GetWindowText(omStrClockFreq);
+    unClockFreq          = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH));
 
-	if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
-		||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
-		|| (unProductNbtNBrp < defMIN_NBT))
-	{
-		unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-		int nFlag = defRESET;
+    dProductNbtNBrp     = (DOUBLE)(unClockFreq/(dBaudRate/1000))/2.0 *
+                          (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+    unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
 
-		while (nFlag == defRESET)
-		{
-			INT i = 1;
-			UINT unNbt = unProductNbtNBrp / i;
-			FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
+    if( fabs((dProductNbtNBrp - unProductNbtNBrp))> defVALID_DECIMAL_VALUE
+            ||unProductNbtNBrp>(defMAX_NBT*defMAX_BRP)
+            || unProductNbtNBrp<defMIN_NBT )
+    {
+        unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
+        INT nFlag = defRESET;
 
-			while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
-			{
-				if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
-					&& (unNbt <=defMAX_NBT))
-				{
-					nFlag =defSET;
-				}
-				else
-				{
-					i++;
-					unNbt    = unProductNbtNBrp / i;
-					fNbt     = (FLOAT)unProductNbtNBrp / i;
-				}
-			} //end while( unNbt >=1 && i<=MAX_BRP)
+        while(nFlag == defRESET)
+        {
+            INT i = 1;
+            UINT unNbt = unProductNbtNBrp/i;
+            FLOAT fNbt  = (FLOAT)unProductNbtNBrp/i;
 
-			if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
-			{
-				unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
-			}
-			else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
-				&& (nFlag == defRESET))
-			{
-				unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
-			}
-			else if (nFlag == defRESET)
-			{
-				unProductNbtNBrp++;
-			}
-		}//end while(nFlag==RESET)
-		dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
-			( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
+            while( unNbt >= 1 && i <= defMAX_BRP && nFlag == defRESET )
+            {
+                if( (unNbt == fNbt) && (unNbt >= defMIN_NBT)
+                        && (unNbt <=defMAX_NBT) )
+                {
+                    nFlag =defSET;
+                }
+                else
+                {
+                    i++;
+                    unNbt    = unProductNbtNBrp/ i;
+                    fNbt     = (FLOAT)unProductNbtNBrp/ i;
+                }
+            } //end while( unNbt >=1 && i<=MAX_BRP )
 
-		/*FLOAT  fTempBaudRate;
-		fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-		fTempBaudRate = fTempBaudRate/100000;*/
-		if(dBaudRate < 5000)
-		{
-			dBaudRate = 5000;
-		}
-		omStrBaudRate.Format(_T("%ld"),/*fTempBaudRate*/(long)dBaudRate);
+            if(nFlag == defRESET && unProductNbtNBrp < (defMIN_NBT *defMIN_BRP))
+            {
+                unProductNbtNBrp = defMIN_NBT *defMIN_BRP;
+            }
+            else if( unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP )
+                     && nFlag == defRESET )
+            {
+                unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
+            }
+            else if( nFlag == defRESET )
+            {
+                unProductNbtNBrp++;
+            }
+        }//end while(nFlag==RESET)
+        dBaudRate = (DOUBLE)((unClockFreq/2.0)*
+                             ( defFACT_FREQUENCY / defFACT_BAUD_RATE ))/unProductNbtNBrp;
 
-		omStrMessage.Format(_(defBAUD_RATE_MESSAGE),omStrBaudRate);
-		omStrPrvBaudRate = m_omStrEditBaudRate;
-		//unClockPrevValue = m_unCombClock;
+        /*FLOAT  fTempBaudRate;
+        fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
+        fTempBaudRate = fTempBaudRate/100000;*/
+        if(dBaudRate < 5000)
+        {
+            dBaudRate = 5000;
+        }
+        omStrBaudRate.Format(_T("%ld"),(long)dBaudRate);
 
-		// set the baudrate
-		m_omEditBaudRate.SetWindowText(omStrBaudRate);
-	}// End if
-	// Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
-	m_dEditBaudRate     = dBaudRate;
-	m_omStrEditBaudRate = omStrBaudRate;
-	//m_unCombClock       = unClockFreq;
+        omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
+        omStrPrvBaudRate = m_omStrEditBaudRate;
+
+        // set the baudrate
+        m_omEditBaudRate.SetWindowText(omStrBaudRate);
+    }
+    // End if
+    // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
+    m_dEditBaudRate     = dBaudRate;
+    m_omStrEditBaudRate = omStrBaudRate;
+    m_unCombClock       = unClockFreq;
 }
 
 /******************************************************************************/
@@ -693,48 +1367,95 @@ void CChangeRegisters_CAN_iVIEW::vValidateBaudRate()
 /*  Functionality    :  Message handlers on OK Button.To Remove control       */
 /*                      to close when Enter Button is pressed                 */
 /*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_iVIEW                            */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  18.02.2002                                            */
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
-/*                      Incorporated review comments                          */
-/*                      13.11.2002, Gopi                                      */
-/*                      Changed to usage of configuration file                */
-/*                      14.12.2002, put the tool in same state after baudrate */
-/*                      is initialise. i.e. connected or disconnected state   */
-/*                      28.03.2003, Changes for acceptance filter and warning */
-/*                      limit.                                                */
-/*  Modifications    :  Raja N on 07.09.2004. Modified code to refer HI layer */
-/*                      for Hardware related functions. Removed code to refer */
-/*                      CChangeRegisters_CAN_ETAS_BOA static functions as they are moved in*/
-/*                      to HI layer                                           */
-/*  Modifications    :  Raja N on 09.03.2005                                  */
-/*                   :  Added code to support multiple contoller information  */
-/*                      in the configuration module                           */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnClickedOK()
+void CChangeRegisters::OnClickedOK()
 {
-	// Update modified data
-	UpdateData( TRUE);
-	// Validate Baud rate and find the nearest match
-	vValidateBaudRate();
-	// Update data members associated with the controller
-	if (bUpdateControllerDataMembers() == FALSE)
-	{
-		return;
-	}
-	// Save the changes in to the local data structure
-	vUpdateControllerDetails();
-	// Save the changes permanently into the main data structure
-	for (UINT i = 0; i < min(m_nNoHardware, defNO_OF_CHANNELS); i++)
-	{
-		psMainContrDets[i] = m_pControllerDetails[i];
-	}
-	// Close the dialog
-	m_nDataConfirmStatus = INFO_INIT_DATA_CONFIRMED;
-	CDialog::OnOK();
+    // Update modified data
+    UpdateData( TRUE );
+    // Validate Baud rate and find the nearest match
+    vValidateBaudRate();
+    // Save the changes in to the local data structure
+    vUpdateControllerDetails();
+    // Update Configuration file
+    //theApp.bSetData( CONTROLLER_DETAILS, m_pControllerDetails );
+    // Update Hardware Interface Layer
+    // if( g_podHardwareInterface->bLoadDataFromConfig() == TRUE )
+    // {
+    //     int nApply = g_podHardwareInterface->nSetApplyConfiguration();
+    //     if( nApply != defERR_OK )
+    //     {
+    //         // Check for device type to select error message
+    //
+    //
+    //         #ifdef PEAL_USB_BUILD
+    //if(theApp.m_bFromAutomation == FALSE)
+    //         AfxMessageBox( defHARDWARE_ERROR_MSG_USB );
+
+    //         #endif
+    //     }
+    // }
+
+    // Close the dialog
+    m_nDataConfirmStatus = INFO_INIT_DATA_CONFIRMED;
+    CDialog::OnOK();
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnSelchangeCombClock                                  */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function is called by the framework in response  */
+/*                      to the CNB_SELCHANGE message. This message is sent to */
+/*                      the dialog box when user change the selection.        */
+/*                      New list of BRT0, BTR1 etc will be calculated.        */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  18.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::OnSelchangeCombClock()
+{
+    UINT unSelClock             = 0;
+    INT nGetValue               = 0;
+    CString omStrComboEditItem  = "";
+
+    nGetValue =  m_omCombClock.GetCurSel();
+    if (nGetValue !=CB_ERR)
+    {
+        m_omCombClock.GetLBText(nGetValue,omStrComboEditItem);
+    }
+    unSelClock = _tstoi(omStrComboEditItem.GetBuffer(MAX_PATH));
+    // If user has changed the clock freq. calculate the new list.
+    if(m_unCombClock  != unSelClock )
+    {
+        vChangeListBoxValues(-1);
+    }
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnSetfocusCombClock                                   */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called when focus is set on Clock combo box control   */
+/*                      Update all data members associated with Dialog        */
+/*                      control.                                              */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+void CChangeRegisters::OnSetfocusCombClock()
+{
+    UpdateData(TRUE);
 }
 
 /******************************************************************************/
@@ -745,17 +1466,105 @@ void CChangeRegisters_CAN_iVIEW::OnClickedOK()
 /*  Functionality    :  Called when focus is set on Number of sampling        */
 /*                      combo box control. Updates all data members           */
 /*                      associated with Dialog control.                       */
-/*  Member of        :  CChangeRegisters_CAN_iVIEW                            */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
 /******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnSetfocusCombSampling()
+void CChangeRegisters::OnSetfocusCombSampling()
 {
-	UpdateData(TRUE);
+    UpdateData(TRUE);
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnHelpInfo                                            */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function is called by the framework in response  */
+/*                      to the WM_HELPINFO message. This message is sent to   */
+/*                      the dialog box during help request from user.         */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  15.02.2002                                            */
+/******************************************************************************/
+BOOL CChangeRegisters::OnHelpInfo(HELPINFO* pHelpInfo)
+{
+    return CDialog::OnHelpInfo(pHelpInfo);
+}
+
+/******************************************************************************/
+/*  Function Name    :  dCalculateBaudRateFromBTRs                            */
+/*                                                                            */
+/*  Input(s)         :  BTR0 and BTR1                                         */
+/*  Output           :  baudrate                                              */
+/*  Functionality    :  This function is called to calcualte the baudrate for */
+/*                      given BTR0 and BTR1 value.                            */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  19.02.2002                                            */
+/******************************************************************************/
+DOUBLE CChangeRegisters::dCalculateBaudRateFromBTRs(CString omStrBTR0,
+        CString omStrBTR1)
+{
+    uBTR1 uBTR1val      ;
+    uBTR0 uBTR0val      ;
+    DOUBLE dBaudRate    = 0;
+    BYTE   byBRP        = 0;
+    BYTE   byNBT        = 0;
+    BYTE   byTSEG1      = 0;
+    BYTE   byTSEG2      = 0;
+    char* pcStopStr     = NULL;
+
+    uBTR0val.ucBTR0 = (UCHAR) lFromCString_2_Long(omStrBTR0, &pcStopStr,defHEXADECIMAL);
+    uBTR1val.ucBTR1 = (UCHAR) lFromCString_2_Long(omStrBTR1, &pcStopStr,defHEXADECIMAL);
+
+    // BRP = BRPbit+1
+    byBRP      = static_cast <BYTE> (uBTR0val.sBTR0Bit.ucBRPbit + 1);
+
+    //  TSEG1 = TSEG1bit +1
+    byTSEG1    = static_cast <BYTE> (uBTR1val.sBTR1Bit.ucTSEG1bit + 1 );
+
+    //TSEG2 = TSEG2bit+1;
+    byTSEG2    =  static_cast <BYTE> (uBTR1val.sBTR1Bit.ucTSEG2bit + 1 );
+
+    //NBT = TESG1 + TSEG2 +1
+    byNBT      = static_cast <BYTE> ( byTSEG1 + byTSEG2 + 1) ;
+
+    dBaudRate  = (DOUBLE)(_tstoi(defCLOCK)/ ( 2.0 * byBRP * byNBT ));
+    dBaudRate  = dBaudRate * (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+
+    /* covert to bps */
+    dBaudRate*=1000;
+
+    return dBaudRate;
+}
+
+/******************************************************************************/
+/*  Function Name    : OnCbtnAcceptance                                       */
+/*                                                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    : This function is called by framework when user select  */
+/*                     to configure Acceptance Filter. The acceptance filter  */
+/*                     dialog will get initialised.                           */
+/*  Member of        : CChangeRegisters                                       */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        : Amitesh Bharti                                         */
+/*  Date Created     : 26.03.2003                                             */
+/******************************************************************************/
+void CChangeRegisters::OnCbtnAcceptance()
+{
+    // Send the controller details of selected channel
+    // This dialog will modifiy this pointer as per user change
+    CAcceptanceFilterDlg odAcceptance( NULL,
+                                       &m_pControllerDetails[ m_nLastSelection ]);
+    odAcceptance.DoModal();
 }
 
 /******************************************************************************/
@@ -764,200 +1573,253 @@ void CChangeRegisters_CAN_iVIEW::OnSetfocusCombSampling()
 /*  Input(s)         : -                                                      */
 /*  Output           :                                                        */
 /*  Functionality    : This function is called to read registry  or ini file  */
-/*                     and return the baudrate ( BTR0 and BTR1). If there is */
+/*                     and return the baudrate ( BTR0 and BTR1 ). If there is */
 /*                     no entry return the default value                      */
-/*  Member of        : CChangeRegisters_CAN_iVIEW                             */
+/*  Member of        : CChangeRegisters                                       */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        : Amitesh Bharti                                         */
 /*  Date Created     : 26.03.2003                                             */
-/*  Modifications    : Raja N on 13.09.2004                                   */
-/*                     Modified the function as member function and changed   */
-/*                     name as per coding standards                           */
-/*  Modifications    : Raja N on 09.03.2005                                   */
-/*                   : Added code to support multiple contoller information   */
-/*                     in the configuration module                            */
 /******************************************************************************/
-BOOL CChangeRegisters_CAN_iVIEW::bFillControllerConfig()
+BOOL CChangeRegisters::bFillControllerConfig()
 {
-	BOOL bReturn = FALSE;
-	// If successful then set the result to pass
-	if (m_pControllerDetails != NULL)
-	{
-		bReturn = TRUE;
-	}
-	// Return the result
-	return bReturn;
+    BOOL bReturn = FALSE;
+    // Get the data from the configuration module
+    //theApp.bGetData(CONTROLLER_DETAILS, (void**) &m_pControllerDetails);
+    // If successful then set the result to pass
+    if (m_pControllerDetails != NULL)
+    {
+        bReturn = TRUE;
+    }
+    // Return the result
+    return bReturn;
 }
 
 /******************************************************************************/
-/*  Function Name    :  ~CChangeRegisters_CAN_iVIEW                           */
+/*  Function Name    :  ~CChangeRegisters                                     */
 /*                                                                            */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
 /*  Functionality    :  This is destructor of the class. It is called when    */
 /*                      object of this class is being destroyed. All memory   */
 /*                      allocation is deleted here.                           */
-/*  Member of        :  CChangeRegisters_CAN_iVIEW                            */
+/*  Member of        :  CChangeRegisters                                      */
 /*  Friend of        :      -                                                 */
 /*                                                                            */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  07.04.2003                                            */
-/*  Modifications    :  Raja N on 14.03.2005, Added code to clear memory used */
-/*                      to get controller information                         */
 /******************************************************************************/
-CChangeRegisters_CAN_iVIEW::~CChangeRegisters_CAN_iVIEW()
+CChangeRegisters::~CChangeRegisters()
 {
-
 }
 
-
-/*******************************************************************************
-Function Name  : OnClickListChannels
-Input(s)       : pNMHDR - Pointer to Notification Block
-pResult - Pointer to the result
-Output         : -
-Functionality  : This function will be called when the user clicks the channel
-list item. This will set the focus to the last selected item
-if user clicks outside
-Member of      : CChangeRegisters_CAN_iVIEW
-Author(s)      : Raja N
-Date Created   : 14.3.2005
-Modifications  :
-*******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+/******************************************************************************/
+/*  Function Name    :  OnItemchangedLstcBtrList                              */
+/*                                                                            */
+/*  Input(s)         :  NMHDR* pNMHDR, LRESULT* pResult                       */
+/*  Output           :  LRESULT* pResult                                      */
+/*  Functionality    :  This function will be called by framework when item in*/
+/*                      list control is changed. Based on the index of        */
+/*                      selected and focused item, the other field will be    */
+/*                      updated by calling vUpdateBTRsBRPEditWindow(..)       */
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*                                                                            */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  23.10.2003                                            */
+/******************************************************************************/
+void CChangeRegisters::OnItemchangedLstcBtrList(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	// Get the selection mask
-	UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
-	// Get the selected item index
-	int nSel = m_omChannelList.GetNextItem( -1, LVNI_SELECTED);
-	// If nothing is selected then set the selection to the last saved index
-	if (nSel == -1)
-	{
-		m_omChannelList.SetItemState( m_nLastSelection,
-			unItemStateMask,
-			unItemStateMask);
-	}
-	*pResult = 0;
+    NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+    INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
+    UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
+    if(nColumnCount !=defERROR && pNMListView->uNewState == unItemStateMask)
+    {
+        vUpdateBTRsBRPEditWindow(nColumnCount,pNMListView->iItem);
+    }
+    *pResult = 0;
 }
 
 /*******************************************************************************
-Function Name  : OnItemchangedListChannels
-Input(s)       : pNMHDR - Pointer to the list item struct
-pResult - Pointer to the result value
-Output         : -
-Functionality  : This function will update baudrate information of selected
-channel
-Member of      : CChangeRegisters_CAN_iVIEW
-Author(s)      : Raja N
-Date Created   : 14.03.2005
-Modifications  :
+  Function Name  : OnClickListChannels
+  Input(s)       : pNMHDR - Pointer to Notification Block
+                   pResult - Pointer to the result
+  Output         : -
+  Functionality  : This function will be called when the user clicks the channel
+                   list item. This will set the focus to the last selected item
+                   if user clicks outside
+  Member of      : CChangeRegisters
+  Author(s)      : Raja N
+  Date Created   : 14.3.2005
+  Modifications  :
 *******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult)
+void CChangeRegisters::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
-	// Get the List item data from the notification
-	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-	// Create selection mask
-	UINT unItemStateMask = LVIS_SELECTED | LVIS_FOCUSED;
-	// If new state is selected then show selected channel details
-	if (pNMListView->uNewState == unItemStateMask)
-	{
-		// Set the selection
-		m_nLastSelection = pNMListView->iItem;
-		// Update the UI Controls with the
-		vFillControllerConfigDetails();
-
-	}
-	// If it is lose of focus then save the user changes
-	else if (pNMListView->uChanged  == LVIF_STATE &&
-		pNMListView->uOldState == LVIS_SELECTED)
-	{
-		// Update modified data
-		UpdateData( TRUE);
-		if (bUpdateControllerDataMembers() == FALSE)
-		{
-			return;
-		}
-		// Validate Baud rate and find the nearest match
-		vValidateBaudRate();
-		// Save the changes in to the local data structure
-		vUpdateControllerDetails();
-	}
-	*pResult = 0;
+    // Get the selection mask
+    UINT unItemStateMask = LVNI_SELECTED|LVNI_FOCUSED;
+    // Get the selected item index
+    int nSel = m_omChannelList.GetNextItem( -1, LVNI_SELECTED );
+    // If nothing is selected then set the selection to the last saved index
+    if(nSel == -1)
+    {
+        m_omChannelList.SetItemState( m_nLastSelection,
+                                      unItemStateMask,
+                                      unItemStateMask );
+    }
+    *pResult = 0;
 }
 
 /*******************************************************************************
-Function Name  : OnDblclkListChannels
-Input(s)       : pNMHDR - Pointer to Notification Block
-pResult - Pointer to the result
-Output         : -
-Functionality  : This function will be called wher the user double clicks the
-channel list item. This will set the focus to the last
-selected item if user clicks outside
-Member of      : CChangeRegisters_CAN_iVIEW
-Author(s)      : Raja N
-Date Created   : 14.3.2005
-Modifications  :
+  Function Name  : OnItemchangedListChannels
+  Input(s)       : pNMHDR - Pointer to the list item struct
+                   pResult - Pointer to the result value
+  Output         : -
+  Functionality  : This function will update baudrate information of selected
+                   channel
+  Member of      : CChangeRegisters
+  Author(s)      : Raja N
+  Date Created   : 14.03.2005
+  Modifications  :
 *******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+void CChangeRegisters::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	// Create selection mask
-	UINT unItemStateMask = LVNI_SELECTED | LVNI_FOCUSED;
-	// Get current selection
-	int nSel = m_omChannelList.GetNextItem( -1, LVNI_SELECTED);
-	// If nothing got selected restore last selection
-	if (nSel == -1)
-	{
-		m_omChannelList.SetItemState( m_nLastSelection,
-			unItemStateMask,
-			unItemStateMask);
-	}
-	*pResult = 0;
+    if (::IsWindow(m_hWnd) == FALSE)
+    {
+        *pResult = 0;
+        return;
+    }
+    // Get the List item data from the notification
+    NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+    // Create selection mask
+    UINT unItemStateMask = LVIS_SELECTED | LVIS_FOCUSED;
+    // If new state is selected then show selected channel details
+    if(pNMListView->uNewState == unItemStateMask)
+    {
+        // Set the selection
+        m_nLastSelection = pNMListView->iItem;
+        // Update the UI Controls with the
+        vFillControllerConfigDetails();
+
+    }
+    // If it is lose of focus then save the user changes
+    else if( pNMListView->uChanged  == LVIF_STATE &&
+             pNMListView->uOldState == LVIS_SELECTED )
+    {
+        // Update modified data
+        UpdateData( TRUE );
+        // Validate Baud rate and find the nearest match
+        vValidateBaudRate();
+        // Save the changes in to the local data structure
+        vUpdateControllerDetails();
+    }
+    *pResult = 0;
 }
 
 /*******************************************************************************
-Function Name  : vFillControllerConfigDetails
-Input(s)       : -
-Output         : -
-Functionality  : This function will fill details of selected channel in to the
-member variables used. This will also update the BTR0 and
-BTR1 registers value and list box of possible values for the
-selected baudrate.
-Member of      : CChangeRegisters_CAN_iVIEW
-Author(s)      : Raja N
-Date Created   : 14.3.2005
-Modifications  :
+  Function Name  : OnDblclkListChannels
+  Input(s)       : pNMHDR - Pointer to Notification Block
+                   pResult - Pointer to the result
+  Output         : -
+  Functionality  : This function will be called wher the user double clicks the
+                   channel list item. This will set the focus to the last
+                   selected item if user clicks outside
+  Member of      : CChangeRegisters
+  Author(s)      : Raja N
+  Date Created   : 14.3.2005
+  Modifications  :
 *******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::vFillControllerConfigDetails()
+void CChangeRegisters::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
-	int nIndex = m_nLastSelection;
-	/* Add hardware info to the description field */
-	CWnd* pWnd = GetDlgItem(IDC_EDIT_CHANNEL_DESC);
-	if (pWnd != NULL)
-	{
-		pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
-	}
+    // Create selection mask
+    UINT unItemStateMask = LVNI_SELECTED | LVNI_FOCUSED;
+    // Get current selection
+    int nSel = m_omChannelList.GetNextItem( -1, LVNI_SELECTED );
+    // If nothing got selected restore last selection
+    if(nSel == -1)
+    {
+        m_omChannelList.SetItemState( m_nLastSelection,
+                                      unItemStateMask,
+                                      unItemStateMask );
+    }
+    *pResult = 0;
+}
 
-	m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
-	m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1.c_str();
-	m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2.c_str();
-	m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3.c_str();
-	//m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
-	m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
-	m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
-	m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str();
-	m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw.c_str();
+/*******************************************************************************
+  Function Name  : vFillControllerConfigDetails
+  Input(s)       : -
+  Output         : -
+  Functionality  : This function will fill details of selected channel in to the
+                   member variables used. This will also update the BTR0 and
+                   BTR1 registers value and list box of possible values for the
+                   selected baudrate.
+  Member of      : CChangeRegisters
+  Author(s)      : Raja N, Arunkumar K
+  Date Created   : 14.3.2005
+  Modifications  : 17/11/2011, Updated with self reception checking
+*******************************************************************************/
+void CChangeRegisters::vFillControllerConfigDetails()
+{
+    int nIndex = m_nLastSelection;
+    /* Add hardware info to the description field */
+    CWnd* pWnd = GetDlgItem(IDC_EDIT_CHANNEL_DESC);
+    if (pWnd != NULL)
+    {
+        pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
+    }
 
+    m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
+    m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0.c_str();
+    m_omStrEditBTR1         = m_pControllerDetails[ nIndex ].m_omStrBTR1.c_str();
+    m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
+    m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
+    m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
 
-	//omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
-	//Assign edit box string value to CString member variable of Edit control
-	// for Baudrate Convert String into float or INT to be used to make a list
-	// of all possible  of BTRi, SJW, Sampling Percentage, and NBT values
-	//m_unCombClock       = (UINT)_tstoi(m_omStrComboClock);
+    m_usBTR0BTR1 = static_cast<USHORT>(m_pControllerDetails[ nIndex ].m_nBTR0BTR1);
 
-	// TO BE FIXED LATER
-	m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
-	UpdateData(FALSE);
+    int nSample             = _tstoi(m_omStrComboSampling.GetBuffer(MAX_PATH));
+    //omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
+    //Assign edit box string value to CString member variable of Edit control
+    // for Baudrate Convert String into float or INT to be used to make a list
+    // of all possible  of BTRi, SJW, Sampling Percentage, and NBT values
+    m_unCombClock       = (UINT)_tstoi(m_omStrComboClock.GetBuffer(MAX_PATH));
+
+    m_dEditBaudRate =
+        dCalculateBaudRateFromBTRs( m_omStrEditBTR0, m_omStrEditBTR1 );
+
+    UpdateData(FALSE);
+    unsigned int unIndex = 0;
+    int nReturn =
+        nListBoxValues( m_asColListCtrl, m_dEditBaudRate, (WORD)m_unCombClock,
+                        &unIndex,nSample );
+
+    // if Function returns Success display the item and set the focus to last
+    // saved item or at item which is at the mid of the list. Update edit boxes
+    // for BRP, BTRi by calling function vUpdateBtriBrpEditWindow(..,..)
+    if(nReturn == defSUCCESS)
+    {
+
+        // read the item to set the focus from the configuration
+        if(m_pControllerDetails != NULL)
+        {
+            nReturn =
+                m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus;
+        }
+
+        vDisplayListBox(unIndex,nReturn);
+    }
+    //Set the self reception option
+    CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
+    if (pCheckSelfRec != NULL)
+    {
+        if ( m_pControllerDetails[ m_nLastSelection ].m_bSelfReception )
+        {
+            pCheckSelfRec->SetCheck(BST_CHECKED);
+        }
+        else
+        {
+            pCheckSelfRec->SetCheck(BST_UNCHECKED);
+        }
+    }
 }
 
 /*******************************************************************************
@@ -966,69 +1828,160 @@ void CChangeRegisters_CAN_iVIEW::vFillControllerConfigDetails()
   Output         : -
   Functionality  : This function will save the user enter values for baud rate
                    into the controller configuration structure
-  Member of      : CChangeRegisters_CAN_iVIEW
+  Member of      : CChangeRegisters
   Author(s)      : Raja N
   Date Created   : 14.3.2005
   Modifications  :
 *******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::vUpdateControllerDetails()
+void CChangeRegisters::vUpdateControllerDetails()
 {
-	char*    pcStopStr              = NULL;
-	CString omStrComboSampling      = "";
-	CString omStrEditBtr0           = "";
-	CString omStrEditBtr1           = "";
-	CString omStrEditAcceptanceCode = "";
-	CString omStrEditAcceptanceMask = "";
+    char* pcStopStr                = NULL;
+    CString omStrComboSampling      = "";
+    CString omStrEditBtr0           = "";
+    CString omStrEditBtr1           = "";
+    CString omStrEditAcceptanceCode = "";
+    CString omStrEditAcceptanceMask = "";
+    // Update the data members before writing into ini file or registry.
+    UpdateData(TRUE);
 
-	// Update the data members before writing into ini file or registry.
-	UpdateData(TRUE);
+    // Get the warning limit.
+    UINT unWarningLimit = 0;
+    unWarningLimit = (UINT) lFromCString_2_Long(m_omStrEditWarningLimit, &pcStopStr, defBASE_DEC);
 
-	// Get the warning limit.
-	UINT unWarningLimit = 0;
-	unWarningLimit = static_cast <UINT>(_tcstol((LPCTSTR)
-		m_omStrEditWarningLimit,
-		&pcStopStr,defBASE_DEC));
+    UINT unWarningLimtMin = static_cast <UINT> (defWARNING_LIMIT_MIN );
+    UINT unWarningLimtMax = static_cast <UINT> (defWARNING_LIMIT_MAX );
 
-	UINT unWarningLimtMin = static_cast <UINT> (defWARNING_LIMIT_MIN);
-	UINT unWarningLimtMax = static_cast <UINT> (defWARNING_LIMIT_MAX);
+    if(   ( unWarningLimit >= unWarningLimtMin )
+            && ( unWarningLimit <= unWarningLimtMax ) )
+    {
+        INT nItemUnderFocus = m_omListCtrlBitTime.GetNextItem(-1, LVNI_SELECTED );
+        m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
+        UCHAR ucBtr0 = (UCHAR) lFromCString_2_Long(m_omStrEditBTR0, &pcStopStr, defHEXADECIMAL);
+        UCHAR ucBtr1 = (UCHAR) lFromCString_2_Long(m_omStrEditBTR1, &pcStopStr, defHEXADECIMAL);
+        // Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction
+        // to initialise.
+        m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8 )| ucBtr1) & 0xffff);
 
-	if (  ( unWarningLimit >= unWarningLimtMin)
-		&& ( unWarningLimit <= unWarningLimtMax))
-	{
-		INT nItemUnderFocus = 0;
-		m_ucWarningLimit = static_cast <UCHAR> (unWarningLimit);
-		UCHAR ucBtr0 = 0;
-		UCHAR ucBtr1 = 0;
-		// Pack the BTR0 and BTR1 values in two bytes before calling DIL fuction
-		// to initialise.
-		m_usBTR0BTR1 = static_cast <USHORT>(((ucBtr0 << 8)| ucBtr1) & 0xffff);
-		// Update controller information
-		m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
-			nItemUnderFocus;
-		m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
-		//m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
-		//                                                    m_omStrComboClock;
-		m_pControllerDetails[m_nLastSelection].m_omStrCNF1 = m_omStrEditCNF1.GetBuffer(MAX_PATH);
-		m_pControllerDetails[m_nLastSelection].m_omStrCNF2 = m_omStrEditCNF2.GetBuffer(MAX_PATH);
-		m_pControllerDetails[m_nLastSelection].m_omStrCNF3 = m_omStrEditCNF3.GetBuffer(MAX_PATH);
-		ostringstream oss;
-		oss << dec << m_unCombClock;
-		m_pControllerDetails[m_nLastSelection].m_omStrClock = oss.str();
-		m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
-		m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
-		m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = m_omStrSamplePoint.GetBuffer(MAX_PATH);
-		m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
-	}
-	else
-	{
-		// Invalid Warning Limit Error Message
-		CString omStrMsg = "";
-		omStrMsg.Format( defWARNINGLIMIT_MSG, m_omStrEditWarningLimit,
-			defWARNING_LIMIT_MIN,
-			defWARNING_LIMIT_MAX);
-		m_omEditWarningLimit.SetFocus();
-		m_omEditWarningLimit.SetSel(0, -1,FALSE);
-	}
+        // Update controller information
+        //int nIndex = m_nLastSelection;
+
+        m_pControllerDetails[ m_nLastSelection ].m_nBTR0BTR1 = m_usBTR0BTR1;
+        m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
+            nItemUnderFocus;
+
+        m_pControllerDetails[m_nLastSelection].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrBTR0 = m_omStrEditBTR0.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrBTR1 = m_omStrEditBTR1.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrClock = m_omStrComboClock.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
+        m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
+
+        //Get the self reception option
+        CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
+        if (pCheckSelfRec != NULL)
+        {
+            if ( pCheckSelfRec->GetCheck() == BST_CHECKED )
+            {
+                m_pControllerDetails[ m_nLastSelection ].m_bSelfReception = TRUE;
+            }
+            else
+            {
+                m_pControllerDetails[ m_nLastSelection ].m_bSelfReception = FALSE;
+            }
+        }
+    }
+    else
+    {
+        // Invalid Warning Limit Error Message
+        CString omStrMsg = "";
+        omStrMsg.Format( _(defWARNINGLIMIT_MSG), m_omStrEditWarningLimit,
+                         defWARNING_LIMIT_MIN,
+                         defWARNING_LIMIT_MAX );
+        //      if(theApp.m_bFromAutomation == FALSE)
+        AfxMessageBox(omStrMsg);
+        m_omEditWarningLimit.SetFocus();
+        m_omEditWarningLimit.SetSel(0, -1,FALSE);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : OnCbtnBlink
+  Input(s)       : -
+  Output         : -
+  Functionality  : This function will be called when the user selects blink from
+                   the dialog
+  Member of      : CChangeRegisters
+  Author(s)      : Raja N
+  Date Created   : 7.3.2005
+  Modifications  :
+*******************************************************************************/
+void CChangeRegisters::OnCbtnBlink()
+{
+}
+
+/*******************************************************************************
+  Function Name  : bSetBaudRateFromCom
+  Input(s)       : -
+  Output         : -
+  Functionality  : This function will be called from COM function to set baud rate
+  Member of      : CChangeRegisters
+  Author(s)      : Anish
+  Date Created   : 21.06.06
+  Modifications  :
+*******************************************************************************/
+BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
+{
+    BOOL bReturn = FALSE;
+    CString omStrBtr0(_T(""));
+    CString omStrBtr1(_T(""));
+    CString omStrBaudRate(_T(""));
+    USHORT m_usBTR0BTR1 = 0xC03A;
+    UINT unIndex                    = 0;
+
+    UINT unClock                    = 0;
+    UINT unSample                   = 1;
+
+    //convert all the values in string to  save in file
+    //bHexBTR0 = (bBTR0/16)*10 +(bBTR0%10);
+    omStrBtr0.Format(_T("%02X"), bBTR0);
+
+    omStrBtr1.Format(_T("%02X"), bBTR1);
+    //calculate baudrate from BTRs
+    double dBaudRate = dCalculateBaudRateFromBTRs(omStrBtr0,omStrBtr1);
+    omStrBaudRate.Format(_T("%f"), dBaudRate);
+    m_usBTR0BTR1 = static_cast <USHORT>(((bBTR0 << 8 )| bBTR1) & 0xffff);
+    //Save the changes for the channels
+    unClock       = (UINT) _tstoi(m_pControllerDetails[ nChannel-1 ].m_omStrClock.c_str());
+    if( (bBTR1 & 0x80 ) != 0)
+    {
+        unSample          =  3 ;
+    }
+
+    UINT nReturn  = nListBoxValues( m_asColListCtrl,dBaudRate, (WORD)unClock,&unIndex,
+                                    unSample) ;
+    if(nReturn != -1 )
+    {
+        for (UINT i = 0; i<unIndex; i++)
+        {
+            if( ( bBTR0 == (m_asColListCtrl[i].uBTRReg0.ucBTR0) )&&
+                    ( bBTR1 == (m_asColListCtrl[i].uBTRReg1.ucBTR1) ) )
+            {
+                m_pControllerDetails[nChannel-1 ].m_nItemUnderFocus = i;
+            }
+        }
+    }
+    m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1 = m_usBTR0BTR1;
+
+    m_pControllerDetails[ nChannel-1 ].m_omStrBaudrate = omStrBaudRate.GetBuffer(MAX_PATH);
+    m_pControllerDetails[ nChannel-1 ].m_omStrBTR0 = omStrBtr0.GetBuffer(MAX_PATH);
+    m_pControllerDetails[ nChannel-1 ].m_omStrBTR1 = omStrBtr1.GetBuffer(MAX_PATH);
+    char chTemp[256];
+    sprintf_s(chTemp, 256, "%d", unSample);
+    m_pControllerDetails[ nChannel-1  ].m_omStrSampling = chTemp;
+
+    m_nLastSelection = nChannel-1;
+
+    return bReturn;
 }
 
 /*******************************************************************************
@@ -1036,250 +1989,133 @@ void CChangeRegisters_CAN_iVIEW::vUpdateControllerDetails()
   Input(s)       : -
   Output         : -
   Functionality  : This function will be called from COM function to set baud rate
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
+  Member of      : CChangeRegisters
   Author(s)      : Anish
   Date Created   : 21.06.06
   Modifications  :
 *******************************************************************************/
-BOOL CChangeRegisters_CAN_iVIEW::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
+BOOL CChangeRegisters::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
 {
-	BOOL bReturn =FALSE;
-	if (m_pControllerDetails != NULL)
-	{
-		int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
-		bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
-		bBTR0 = (BYTE)((nTempBTR0BTR1>>defBITS_IN_BYTE ) & 0XFF);
+    BOOL bReturn =FALSE;
+    if(m_pControllerDetails != NULL)
+    {
+        int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
+        bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
+        bBTR0 = (BYTE)((nTempBTR0BTR1>>defBITS_IN_BYTE  ) & 0XFF);
 
-		bReturn=TRUE;
-	}
-	return bReturn;
+        bReturn=TRUE;
+    }
+    return bReturn;
 }
 
 /*******************************************************************************
-Function Name  : bSetFilterFromCom
-Input(s)       : long  nExtended,\\for extended msg or not
-DWORD  dBeginMsgId, \\filter's msg id start
-DWORD dEndMsgId \\filter's msg id stop
-Output         : int - Operation Result. 0 incase of no errors. Failure Error
-codes otherwise.
-Functionality  : This function will set the filter information if called using
-com interface.
-Member of      : CChangeRegisters_CAN_ETAS_BOA
-Author(s)      : Anish kr
-Date Created   : 05.06.06
+ Function Name  : bSetFilterFromCom
+ Input(s)       : long  nExtended,\\for extended msg or not
+                  DWORD  dBeginMsgId, \\filter's msg id start
+                  DWORD dEndMsgId \\filter's msg id stop
+ Output         : int - Operation Result. 0 incase of no errors. Failure Error
+                  codes otherwise.
+ Functionality  : This function will set the filter information if called using
+                  com interface.
+ Member of      : CChangeRegisters
+ Author(s)      : Anish kr
+ Date Created   : 05.06.06
 
 *******************************************************************************/
-BOOL CChangeRegisters_CAN_iVIEW::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
-						   DWORD dEndMsgId)
+BOOL CChangeRegisters::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+        DWORD dEndMsgId)
 {
-	BOOL bReturn = FALSE;
-	// for getting separate byte
-	DWORD dTemp=0XFF;
+    BOOL bReturn = TRUE;
+    // for getting separate byte
+    DWORD dTemp=0XFF;
+    // To set no. shifts
+    int nShift = sizeof( UCHAR ) * defBITS_IN_BYTE;
 
-	for (UINT unIndex = 0;
-		unIndex < defNO_OF_CHANNELS;
-		unIndex++)
-	{
-		// To set no. shifts
-		int nShift = sizeof( UCHAR) * defBITS_IN_BYTE;
 
-		//to convert all acceptance and mask byets into string
-		CString omStrTempByte;
-		// Create Code
-		omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId)));
-		m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId >> nShift)));
-		m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId >> nShift * 2)));
-		m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		omStrTempByte.Format("%02X",(dTemp & ( dBeginMsgId >> nShift * 3)));
-		m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		// Create Mask
-		omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId)));
-		m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId >> nShift)));
-		m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId >> nShift * 2)));
-		m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		omStrTempByte.Format("%02X",(dTemp & ( dEndMsgId >> nShift * 3)));
-		m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended] =
-			omStrTempByte.GetBuffer(MAX_PATH);
-		m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
-	}
-	return bReturn;
+    for( UINT unIndex = 0;
+            unIndex < defNO_OF_CHANNELS;
+            unIndex++ )
+    {
+        //to convert all acceptance and mask byets into string
+        CString omStrTempByte;
+        // Create Code
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte4[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte3[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 2)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte2[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dBeginMsgId >> nShift * 3)));
+        m_pControllerDetails[ unIndex ].m_omStrAccCodeByte1[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        // Create Mask
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId )));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte4[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte3[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 2)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte2[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        omStrTempByte.Format(_T("%02X"),(dTemp & ( dEndMsgId >> nShift * 3)));
+        m_pControllerDetails[ unIndex ].m_omStrAccMaskByte1[bExtended] = omStrTempByte.GetBuffer(MAX_PATH);
+
+        m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
+    }
+
+    return bReturn;
 }
 
 /*******************************************************************************
-Function Name  : bGetFilterFromCom
-Input(s)       : long  nExtended,\\for extended msg or not
-DWORD  dBeginMsgId, \\acceptance code
-DWORD dEndMsgId \\mask code
-Output         : int - Operation Result. 0 incase of no errors. Failure Error
-codes otherwise.
-Functionality  : This function will set the filter information if called using
-com interface.
-Member of      : CChangeRegisters_CAN_ETAS_BOA
-Author(s)      : Anish kr
-Date Created   : 05.06.06
+ Function Name  : bGetFilterFromCom
+ Input(s)       : long  nExtended,\\for extended msg or not
+                  DWORD  dBeginMsgId, \\acceptance code
+                  DWORD dEndMsgId \\mask code
+ Output         : int - Operation Result. 0 incase of no errors. Failure Error
+                  codes otherwise.
+ Functionality  : This function will set the filter information if called using
+                  com interface.
+ Member of      : CChangeRegisters
+ Author(s)      : Anish kr
+ Date Created   : 05.06.06
 
 *******************************************************************************/
-BOOL CChangeRegisters_CAN_iVIEW::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
-						   double& dEndMsgId)
+BOOL CChangeRegisters::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
+        double& dEndMsgId)
 {
-	BOOL bReturn = FALSE;
-	if (m_pControllerDetails != NULL)
-	{
+    BOOL bReturn = FALSE;
+    if(m_pControllerDetails != NULL)
+    {
 
-		char* pcStopStr ;
-		//Change to separate integer value for each byte
-		int nAccCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte1,
-			&pcStopStr,defHEXADECIMAL);
-		int nAccCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte2,
-			&pcStopStr,defHEXADECIMAL);
-		int nAccCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte3,
-			&pcStopStr,defHEXADECIMAL);
-		int nAccCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccCodeByte4,
-			&pcStopStr,defHEXADECIMAL);
-		int nMaskCodeByte1 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte1,
-			&pcStopStr,defHEXADECIMAL);
-		int nMaskCodeByte2 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte2,
-			&pcStopStr,defHEXADECIMAL);
-		int nMaskCodeByte3 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte3,
-			&pcStopStr,defHEXADECIMAL);
-		int nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
-			&pcStopStr,defHEXADECIMAL);
-		//now make them as dword in decimal
-		dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
-			nAccCodeByte3*0X100+nAccCodeByte4);
-		dEndMsgId = (ULONG)(nMaskCodeByte1*0X1000000+nMaskCodeByte2*0X10000+
-			nMaskCodeByte3*0X100+nMaskCodeByte4);
+        char* pcStopStr = NULL;
+        //Change to separate integer value for each byte
+        int nAccCodeByte1 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte1[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte2 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte2[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte3 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte3[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nAccCodeByte4 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte4[0].c_str(), &pcStopStr, defHEXADECIMAL);
 
-		bExtended=  m_pControllerDetails[ 0 ].m_bAccFilterMode;
-		bReturn=TRUE;
-	}
-	return bReturn;
+        int nMaskCodeByte1 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte1[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte2 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte2[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte3 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte3[0].c_str(), &pcStopStr, defHEXADECIMAL);
+        int nMaskCodeByte4 = _tcstol(m_pControllerDetails[0].m_omStrAccMaskByte4[0].c_str(), &pcStopStr, defHEXADECIMAL);
+
+        //now make them as dword in decimal
+        dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
+                              nAccCodeByte3*0X100+nAccCodeByte4);
+        dEndMsgId = (ULONG)(nMaskCodeByte1*0X1000000+nMaskCodeByte2*0X10000+
+                            nMaskCodeByte3*0X100+nMaskCodeByte4);
+
+
+        bExtended=  m_pControllerDetails[ 0 ].m_bAccFilterMode;
+        bReturn=TRUE;
+    }
+    return bReturn;
 }
-
-/*******************************************************************************
- Function Name  : OnCbnSelchangeCombSjw
- Input(s)       : void
- Output         : void
- Functionality  : Handler when the user selects a specific value in the SJW list
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 19.04.2008
-
-*******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnCbnSelchangeCombSjw()
+INT CChangeRegisters::nGetInitStatus()
 {
-	int nSJWCurr = nGetValueFromComboBox(m_omCtrlSJW);
-	if (nSJWCurr != m_nSJWCurr)
-	{
-		m_nSJWCurr = nSJWCurr;
-	}
-}
-
-/**
-* \brief         Handler when user switches the Delay compensation ON\OFF state
-* \param[out]    void
-* \return        void
-* \authors       Arunkumar Karri
-* \date          07.09.2012 Created
-*/
-void CChangeRegisters_CAN_iVIEW::OnCbnSelchangeCombDelayCompensation()
-{
-	UpdateData();
-	if ( m_omstrTxDelayCompensationON == defSTR_CANFD_TX_DELAY_COMPENSATION_ON )
-	{
-		GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(TRUE);
-	}
-	else
-	{
-		GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(FALSE);
-	}
-}
-
-/*******************************************************************************
- Function Name  : OnCbnSelchangeCombPropdelay
- Input(s)       : void
- Output         : void
- Functionality  : Handler when the user selects a specific value in the PD list
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 19.04.2008
-
-*******************************************************************************/
-void CChangeRegisters_CAN_iVIEW::OnCbnSelchangeCombPropdelay()
-{
-	int nPropDelay = nGetValueFromComboBox(m_omCtrlSamplePoint);
-	if (nPropDelay != m_nPropDelay)
-	{
-		m_nPropDelay = nPropDelay;
-	}
-}
-
-/*******************************************************************************
- Function Name  : bUpdateControllerDataMembers
- Input(s)       : void
- Output         : TRUE if successful, else FALSE
- Functionality  : This function updates the controller data members with the
-                  present selected combination value in the list control
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 21.04.2008
-
-*******************************************************************************/
-BOOL CChangeRegisters_CAN_iVIEW::bUpdateControllerDataMembers(void)
-{
-
-	BOOL Result = 1; // Calculate if required in future
-	if (Result)
-	{
-		BYTE bCNF1 = 0x0, bCNF2 = 0x0, bCNF3 = 0x0;
-		m_omStrEditCNF1.Format("%x", bCNF1);
-		m_omStrEditCNF2.Format("%x", bCNF2);
-		m_omStrEditCNF3.Format("%x", bCNF3);
-	}
-	return Result;
-}
-
-/*******************************************************************************
- Function Name  : nGetValueFromComboBox
- Input(s)       : void
- Output         : TRUE if successful, else FALSE
- Functionality  : This function returns value of the selected entry in a combo
-                  box. Although helper in broader sense, this assumes the
-                  entries to be 1 based integers and returns 0 when the entry
-                  contains the string 'ALL'.
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 21.04.2008
-
-*******************************************************************************/
-int CChangeRegisters_CAN_iVIEW::nGetValueFromComboBox(CComboBox& omComboBox)
-{
-	int nResult = 0;
-	int nCurrSel =  omComboBox.GetCurSel();
-	if (nCurrSel != CB_ERR)
-	{
-		CString omCurText = "";
-		omComboBox.GetLBText(nCurrSel, omCurText);
-		if (omCurText != "ALL")
-		{
-			nResult = _tstoi(omCurText);
-		}
-	}
-	return nResult;
-}
-
-INT CChangeRegisters_CAN_iVIEW::nGetInitStatus()
-{
-	return m_nDataConfirmStatus;
+    return m_nDataConfirmStatus;
 }

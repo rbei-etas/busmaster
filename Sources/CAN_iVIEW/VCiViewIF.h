@@ -107,9 +107,9 @@ public:
 	 * \brief
 	 * 	Add filtering based on specified criteria
 	 * \param [in]  Type		Filter type
-	 * \param [in]  NumDataBytes	Number of data bytes
+	 * \param [in]  FilterLen	Number of filter bytes
 	 * \param [in]  pData		Data bytes
-	 * \param [in]  NumFlowBytes	Number of flow bytes
+	 * \param [in]  pMask		Mask bytes
 	 * \param [in]  pFlow		Flow bytes
 	 * \param [out] FilterID	Filter ID
 	 * \return \ref T_PDU_ERROR
@@ -119,9 +119,10 @@ public:
 	virtual T_PDU_ERROR AddFilter(
 			UNUM32		Type,
 			UNUM32		Flags,
-			UNUM32		NumDataBytes,
+			UNUM32		FilterLen,
 			UNUM8*		pData,
-			UNUM32		NumFlowBytes,
+			UNUM8*		pMask,
+			UNUM32		FlowLen,
 			UNUM8*		pFlow,
 			UNUM32&		FilterID );
 	/** DelFilter

@@ -14,133 +14,173 @@
  */
 
 /**
- * \file	CAN_i_VIEW/ChangeRegisters.h
- * \author	Pradeep Kadoor modified for iView by D Southworth
- * \copyright Copyright (c) 2013, Robert Bosch Automotive Service Solutions.
+ * \file      ChangeRegisters.h
+ * \brief     This header file contains the defination of class
+ * \authors   Amitesh Bharti, Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * This header file contains the defination of class CChangeRegisters_CAN_iVIEW
+ * This header file contains the defination of class
  */
 
 #pragma once
 
-// CChangeRegisters_CAN_ETAS_BOA dialog
+// CChangeRegisters dialog
+#include "CAN_i-VIEW_Resource.h"
 #include "Utility/RadixEdit.h"
-#include "Math.h"
-#include "Include/Struct_Can.h"
-#include "Include/CanUsbDefs.h"
 #include "ChangeRegDefines.h"
-
-#define defMAXPropDelay 8
-
+#include "Include/CanUsbDefs.h"
 
 
-class CChangeRegisters_CAN_iVIEW : public CDialog
+class CChangeRegisters : public CDialog//CPropertyPage
 {
-	// Construction
+    //DECLARE_DYNCREATE(CChangeRegisters)
+    // Construction
 public:
-	// To Fill controller information taken from configuration module
-	BOOL   bFillControllerConfig();
-	// standard constructor
-	CChangeRegisters_CAN_iVIEW(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
-	virtual ~CChangeRegisters_CAN_iVIEW();
-	BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
-	BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);
-	BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
-		DWORD dEndMsgId);
-	BOOL bGetFilterFromCom(BOOL& bExtended, double& dBeginMsgId, double& dEndMsgId);
-	INT nGetInitStatus();
+    // To Fill controller information taken from configuration module
+    BOOL   bFillControllerConfig();
+    // standard constructor
+    CChangeRegisters(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    virtual ~CChangeRegisters();
+    BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
+    BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);
+    BOOL bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+                           DWORD dEndMsgId);
+    BOOL bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
+                           double& dEndMsgId);
+    INT nGetInitStatus();
 
 protected:
-	// Dialog Data
-	//{{AFX_DATA(CChangeRegisters_CAN_ETAS_BOA)
-	enum { IDD = IDD_DLG_CHANGE_REGISTERS_CAN_iVIEW };
-	CListCtrl   m_omChannelList;
-	CRadixEdit  m_omEditWarningLimit;
-	CComboBox   m_omCombSampling;
-	CListCtrl   m_omListCtrlBitTime;
-	CRadixEdit   m_omEditBaudRate;
-	CString m_omStrEditBTR0;
-	CString m_omStrEditBTR1;
-	CString m_omStrEditCNF1;
-	CString m_omStrEditCNF2;
-	CString m_omStrEditCNF3;
-	CString m_omStrComboSampling;
-	CString m_omStrEditBaudRate;
-	CString m_omStrEditWarningLimit;
-	CString m_omStrSamplePoint;
-	CString m_omStrSJW;
-	//}}AFX_DATA
-	DOUBLE  m_dEditBaudRate;
-	UINT    m_unCombClock;
-	/*CAN FD Parameters */
-	CString m_omstrDataBitRate;
-	CString m_omstrDataSamplePoint;
-	CString m_omstrDataBTL_Cycles;
-	CString m_omstrDataSJW;
-	CString m_omstrTxDelayCompensationON;
-	CString m_omstrTxDelayCompensationQuanta;
-	CString m_omstrRxCompatibility;
-	CString m_omstrTxCompatibility;
-	// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CChangeRegisters_CAN_ETAS_BOA)
+    // Dialog Data
+    //{{AFX_DATA(CChangeRegisters)
+    enum { IDD = IDD_DLG_CHANGE_REGISTERS };
+    CListCtrl   m_omChannelList;
+    CRadixEdit  m_omEditWarningLimit;
+    CComboBox   m_omCombSampling;
+    CComboBox   m_omCombClock;
+    CRadixEdit   m_omEditBRP;
+    CListCtrl   m_omListCtrlBitTime;
+    CRadixEdit   m_omEditBaudRate;
+    CRadixEdit   m_omEditBTR1;
+    CRadixEdit   m_omEditBTR0;
+    BYTE    m_byEditBRP;
+    CString m_omStrEditBTR0;
+    CString m_omStrEditBTR1;
+    CString m_omStrComboSampling;
+    CString m_omStrEditBaudRate;
+    CString m_omStrComboClock;
+    CString m_omStrEditWarningLimit;
+    //}}AFX_DATA
+    DOUBLE  m_dEditBaudRate;
+    UINT    m_unCombClock;
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CChangeRegisters)
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-	// Implementation
+    // Implementation
 private:
-	// Generated message map functions
-	//{{AFX_MSG(CChangeRegisters_CAN_ETAS_BOA)
-	virtual void OnCancel();
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnKillfocusEditBaudRate();
-	afx_msg void OnSelchangeCombSampling();
-	afx_msg void OnSetfocusEditBaudRate();
-	afx_msg void OnClickedOK();
-	afx_msg void OnSetfocusCombSampling();
-	afx_msg void OnClickListChannels(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnDblclkListChannels(NMHDR* pNMHDR, LRESULT* pResult);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+
+    // Defination of BTR0 Register
+    struct sBTR0
+    {
+        UCHAR  ucBRPbit   : 6;    // 0..5   (6 bits)
+        UCHAR  ucSJWbit   : 2;    // 6..7   (2 bits)
+    };
+
+    // Packing of Struct BTR0 in one Byte
+    union uBTR0
+    {
+        UCHAR ucBTR0;
+        sBTR0 sBTR0Bit;
+    };
+
+    // Defination of BTR1 Register
+    struct sBTR1
+    {
+        UCHAR ucTSEG1bit  : 4;    // 0..3   (4 bits)
+        UCHAR ucTSEG2bit  : 3;    // 4..7   (3 bits)
+        UCHAR ucSAMbit    : 1;    // 8      (1 bit )
+    };
+
+    // Packing of Struct BTR1 in one Byte
+    union  uBTR1
+    {
+        UCHAR ucBTR1;
+        sBTR1 sBTR1Bit;
+    } ;
+
+    // For Values of BRP, NBT , Sampling Percentage and SJW
+    struct sBRP_NBT_SAMP_n_SJW
+    {
+        USHORT usBRP;
+        USHORT usNBT;
+        USHORT usSampling;
+        USHORT usSJW;
+    } ;
+    // structure defination of all five columns in the list control
+    struct sCOLUMNS
+    {
+        uBTR1                uBTRReg1;
+        uBTR0                uBTRReg0;
+        sBRP_NBT_SAMP_n_SJW  sBRPNBTSampNSJW ;
+    } m_asColListCtrl[defREG_VALUE_LIST_COUNT_MAX];
+
+    // Generated message map functions
+    //{{AFX_MSG(CChangeRegisters)
+    virtual void OnCancel();
+    virtual void OnOK();
+    virtual BOOL OnInitDialog();
+    afx_msg void OnKillfocusEditBaudRate();
+    afx_msg void OnKillfocusEditBTR0();
+    afx_msg void OnKillfocusEditBTR1();
+    afx_msg void OnSelchangeCombSampling();
+    afx_msg void OnSetfocusEditBaudRate();
+    afx_msg void OnSetfocusEditBTR0();
+    afx_msg void OnSetfocusEditBTR1();
+    afx_msg void OnClickedOK();
+    afx_msg void OnSelchangeCombClock();
+    afx_msg void OnSetfocusCombClock();
+    afx_msg void OnSetfocusCombSampling();
+    afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+    afx_msg void OnCbtnAcceptance();
+    afx_msg void OnItemchangedLstcBtrList(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnClickListChannels(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnDblclkListChannels(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnCbtnBlink();
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 private:
-	// Pointer to hold controller information
-	SCONTROLLER_DETAILS  m_pControllerDetails[defNO_OF_CHANNELS];
-	PSCONTROLLER_DETAILS psMainContrDets;
-	int m_nLastSelection;
-	CImageList m_omChannelImageList;
-	SACC_FILTER_INFO m_sAccFilterInfo;
-	USHORT  m_usBTR0BTR1;
-	UCHAR   m_ucWarningLimit;
-	UCHAR   m_ucControllerMode;
-
-	BOOL    m_bDialogCancel;
-	int     m_nPropDelay;
-	int     m_nSJWCurr;
-	BYTE    m_bOption;
-	UINT    m_nNoHardware;
-	INT     m_nDataConfirmStatus;
-
-	// To populate list box with possible vlaues for the given baudrate
-	// and to set the focus to the selected item
-	void    vValidateBaudRate();
-	// To save user given values in to the backend data
-	void vUpdateControllerDetails();
-	// To set the backend data to UI
-	void vFillControllerConfigDetails();
-	BYTE bGetNBT(double fBaudRate);
-	int nGetValueFromComboBox(CComboBox& omComboBox);
-	CString omGetFormattedRegVal(UCHAR ucRegVal);
-	int GetSelectedEntryIndex(void);
-	BOOL bUpdateControllerDataMembers(void);
-
-	void vEnableFDParameters(BOOL bEnable);
-public:
-	afx_msg void OnCbnSelchangeCombSjw();
-	afx_msg void OnCbnSelchangeCombDelayCompensation();
-	afx_msg void OnCbnSelchangeCombPropdelay();
-	CComboBox m_omCtrlSamplePoint;
-	CComboBox m_omCtrlSJW;
+    // Pointer to hold controller information
+    PSCONTROLLER_DETAILS  m_pControllerDetails;
+    int m_nLastSelection;
+    CImageList m_omChannelImageList;
+    USHORT   m_usBTR0BTR1;
+    UCHAR    m_ucWarningLimit;
+    UCHAR    m_ucControllerMode;
+    UINT     m_unHardwareCount;
+    INT      m_nDataConfirmStatus;
+    BOOL    m_bDialogCancel;
+    // To populate list box with possible vlaues for the given baudrate
+    // and to set the focus to the selected item
+    void    vDisplayListBox(INT nIndex,INT nItemFocus  );
+    void    vChangeListBoxValues(INT nflag) ;
+    void    vUpdateBTRsBRPEditWindow(INT nColumnCount, INT nItem);
+    void    vCalculateBaudRateNBTR0(CString omStrBtr1);
+    void    vCalculateBaudRateNBTR1(CString omStrBtr0);
+    void    vSelSetFocusItemList(INT nItemCount,INT nItem);
+    void    vValidateBaudRate();
+    DOUBLE  dCalculateBaudRateFromBTRs(CString omStrBTR0, CString omStrBTR1);
+    BOOL nListBoxValues(struct sCOLUMNS* psColListCtrl,
+                        DOUBLE dBuadRate,WORD usClockFreq,
+                        UINT* puwIndex,INT nSample);
+    BOOL nCalculateRegValues (struct sCOLUMNS* psColListCtrl,
+                              WORD wNbt,WORD wBrp,UINT* puwIndex,
+                              INT nSample);
+    // To save user given values in to the backend data
+    void vUpdateControllerDetails();
+    // To set the backend data to UI
+    void vFillControllerConfigDetails();
 };

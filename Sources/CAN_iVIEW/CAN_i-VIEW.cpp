@@ -21,13 +21,6 @@
  * Implementation of Ci_VIEW
  */
 
-/* C++ includes */
-#include <string>
-#include <sstream>
-#include <vector>
-#include <set>
-#include <array>
-
 /* Project includes */
 #include "CAN_i-VIEW_stdafx.h"
 #include "CAN_i-VIEW.h"
@@ -71,7 +64,9 @@ static Base_WrapperErrorLogger*	g_pLog = NULL;
  * VCI HW Class Members
  * An instance of this class defines a Channel
  */
-UNUM32 VCI::m_NextId = 0;
+UNUM32		VCI::m_NextId = 0;
+UNUM32		VCI::m_ConnRef = 0;
+LARGE_INTEGER	VCI::m_TickBase;
 
 /**
  * VCI HW Class Contructor.
@@ -105,8 +100,17 @@ VCI::VCI(	const string&	Name,
 	}
 }
 
+/**
+ * VCI HW Class Destructor.
+ */
+VCI::~VCI()
+{
+	Disconnect();
+	ClearFilters();
+}
+
 /** Connect
- * \brief Connect to either CAN 0 or CAN 1
+ * \brief Connect the CAN controller to the bus
  * \return T_PDU_ERROR
  * \retval PDU_STATUS_NOERROR		Function call successful.
  * \retval PDU_ERR_FCT_FAILED		Function call failed.
@@ -115,23 +119,73 @@ T_PDU_ERROR VCI::Connect()
 {
 	T_PDU_ERROR Err = PDU_ERR_FCT_FAILED;
 
+	if (m_VCiIF->Connected())
+		return Err;
+
 	UNUM32 PinHi, PinLo;
-	if( m_CAN==0 ){
+	if (m_CAN==0){
 		PinHi = 6;
 		PinLo = 14;
 	} else {
 		PinHi = 3;
 		PinLo = 11;
 	}
-	if( m_VCiIF ){
-		Err = m_VCiIF->Connect( (UNUM32)VCI_PROTO_RAW,
-			(UNUM32)VCI_PHYS_ISO11898_2, PinHi, PinLo,
-			(UNUM32)VCI_TERM_NONE, m_Baudrate, (UNUM32)0 );
+	if (m_VCiIF){
+		Err = m_VCiIF->Connect( VCI_PROTO_RAW,
+			VCI_PHYS_ISO11898_2, PinHi, PinLo,
+			VCI_TERM_NONE, m_Baudrate, VCI_DEFAULT_BLOCK_ALL );
 		if( Err == PDU_STATUS_NOERROR ){
 			Err = m_VCiIF->IOCtl(VCI_FIOTXNOTIFY, VCI_TX_ECHO);
 		}
+		vector<pFilter_t>::iterator i=m_Filters.begin();
+		for (; i!=m_Filters.end(); i++ ){
+			UNUM32 Id;
+			if ((Err==PDU_STATUS_NOERROR) && ((*i)->Type()==VCI_PASS_FILTER)){
+				Err = m_VCiIF->AddFilter((*i)->Type(),(*i)->Flags(),(*i)->Size(),
+					(*i)->Pattern(), (*i)->Mask(),0,NULL,Id);
+				(*i)->Id(Id);
+			}
+		}
+		/*
+		 * Reset and attempt to synchonise the VCI timestamp counts by
+		 * accounting for the initialsation time of each itteration.
+		 */
+		if( m_TickBase.QuadPart == 0 ){
+			QueryPerformanceCounter(&m_TickBase);
+		}
+		LARGE_INTEGER TickNow;
+		LARGE_INTEGER Div;
+		QueryPerformanceCounter(&TickNow);
+		QueryPerformanceFrequency(&Div);
+		UNUM32 Offset = (UNUM32)(((TickNow.QuadPart - m_TickBase.QuadPart)*1000000)/Div.QuadPart);
 		if( Err == PDU_STATUS_NOERROR ){
-			Err = m_VCiIF->IOCtl(VCI_FIOTIMESTAMP, (UNUM32)0);
+			Err = m_VCiIF->IOCtl(VCI_FIOTIMESTAMP, (UNUM32)Offset);
+		}
+	}
+	if (Err == PDU_STATUS_NOERROR){
+		m_ConnRef++;
+	}
+	return Err;
+}
+
+/** Disconnect
+ * \brief Disconnect CAN controller from the bus
+ * \return T_PDU_ERROR
+ * \retval PDU_STATUS_NOERROR		Function call successful.
+ * \retval PDU_ERR_FCT_FAILED		Function call failed.
+ */
+T_PDU_ERROR VCI::Disconnect()
+{
+	T_PDU_ERROR Err = PDU_ERR_FCT_FAILED;
+
+	if (!m_VCiIF->Connected())
+		return Err;
+
+	m_VCiIF->DelFilter((UNUM32)VCI_FILTER_DELETE_ALL);
+	Err = m_VCiIF->Disconnect();
+	if (Err == PDU_STATUS_NOERROR){
+		if (--m_ConnRef == 0){
+			m_TickBase.QuadPart = 0;
 		}
 	}
 	return Err;
@@ -213,14 +267,15 @@ CDIL_CAN_i_VIEW::CDIL_CAN_i_VIEW() :
 	m_CreateCCommTCP(NULL),
 	m_CreateCVCiViewIF(NULL),
 	m_hDll( NULL ),
-	m_CurrState(STATE_DRIVER_SELECTED),
+	m_CmDNS(NULL),
+	m_CurrState(STATE_DRIVER_UNLOADED),
 	m_hOwnerWnd(NULL),
 	m_nChannels(0)
 {
 	m_Channel.assign(NULL);
 }
 
-~CDIL_CAN_i_VIEW::CDIL_CAN_i_VIEW()
+CDIL_CAN_i_VIEW::~CDIL_CAN_i_VIEW()
 {
 	CAN_PerformClosureOperations();
 }
@@ -371,45 +426,6 @@ BOOL CDIL_CAN_i_VIEW::RemoveClient(
  */
 
 /**
- * \return TRUE for success, FALSE for failure
- *
- * Call back function called from ConfigDialogDIL
- */
-BOOL Callback_DIL_iVIEW(
-		BYTE /*Argument*/,
-		PSCONTROLLER_DETAILS pDatStream,
-		INT /*Length*/)
-{
-	return (g_DIL_CAN_i_VIEW->CAN_SetConfigData( pDatStream, 0) == S_OK);
-}
-
-/**
- * \return S_OK for success, S_FALSE for failure
- *
- * Displays the configuration dialog for controller
- */
-int DisplayConfigurationDlg(
-		HWND			/*hParent*/,
-		DILCALLBACK		/*ProcDIL*/,
-		PSCONTROLLER_DETAILS	pControllerDetails,
-		UINT			nCount )
-{
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	int nResult = WARNING_NOTCONFIRMED;
-
-	SCONTROLLER_DETAILS sController[defNO_OF_CHANNELS];
-
-	for(int i =0 ; i < defNO_OF_CHANNELS; i++){
-		sController[i] = pControllerDetails[i];
-	}
-
-	CChangeRegisters_CAN_iVIEW ouChangeRegister(NULL, pControllerDetails, nCount);
-	ouChangeRegister.DoModal();
-	nResult = ouChangeRegister.nGetInitStatus();
-	return nResult;
-}
-
-/**
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
  * This function will popup hardware selection dialog and gets the user selection of channels.
@@ -479,21 +495,25 @@ HRESULT CDIL_CAN_i_VIEW::CAN_DisplayConfigDlg(
 	USES_CONVERSION;
 
 	INT Result = WARN_INITDAT_NCONFIRM;
-	PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)InitData;
 	//First initialize with existing hw description
 	for (INT i = 0; i < min(Length, (INT)m_nChannels); i++){
-		psContrlDets[i].m_omHardwareDesc = m_Channel[i]->Name();
+		InitData[i].m_omHardwareDesc = m_Channel[i]->Name();
 	}
 	if (m_nChannels > 0){
-		Result = DisplayConfigurationDlg(m_hOwnerWnd, Callback_DIL_iVIEW,
-			psContrlDets, m_nChannels);
+		//Result = DisplayConfigurationDlg(m_hOwnerWnd, Callback_DIL_iVIEW,
+		//	psContrlDets, m_nChannels);
+		AFX_MANAGE_STATE(AfxGetStaticModuleState());
+		CChangeRegisters ChangeRegisters(NULL, InitData, m_nChannels);
+		ChangeRegisters.DoModal();
+		Result = ChangeRegisters.nGetInitStatus();
+
 		switch (Result){
 		case WARNING_NOTCONFIRMED:
 			Result = WARN_INITDAT_NCONFIRM;
 			break;
 		case INFO_INIT_DATA_CONFIRMED:
 			Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-			Result = CAN_SetConfigData(psContrlDets, Length);
+			Result = CAN_SetConfigData(InitData, Length);
 			if (Result == S_OK){
 				Result = INFO_INITDAT_CONFIRM_CONFIG;
 			}
@@ -611,7 +631,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_StopHardware(void)
 	for (UINT i = 0; i < m_nChannels; i++){
 		pVCI_t pVCI = m_VCI[m_SelectedVCI[i]];
 		if( pVCI && pVCI->VCiIF()->Connected() ){
-			pVCI->VCiIF()->Disconnect();
+			pVCI->Disconnect();
 		} else {
 			HRESULT hResult = S_FALSE;
 		}
@@ -630,22 +650,37 @@ HRESULT CDIL_CAN_i_VIEW::CAN_StopHardware(void)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_SetConfigData(
 		PSCONTROLLER_DETAILS	InitData,
-		int			Length )
+		int			/*Length*/ )
 {
-	// First disconnect the node
+	VALIDATE_VALUE_RETURN_VAL(m_CurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 	CAN_StopHardware();
 
 	for (UINT i = 0; i < m_nChannels; i++){
 		pVCI_t VCI = m_Channel[i];
 		if (!VCI)
 			continue;
-		std::stringstream	Stream;
-		UNUM32			Baudrate;
-		Stream << InitData->m_omStrBaudrate;
-		Stream >> Baudrate;
-		VCI->Baudrate( Baudrate );
+		VCI->Baudrate( FromString<UNUM32>( InitData[i].m_omStrBaudrate ) );
+		VCI->ClearFilters();
+		for( UINT f=0; f<CAN_MSG_IDS; f++ ){
+			pFilter_t Filter=NULL;
+			UNUM8 Id[4]={0,0,0,0}, Mask[4]={0,0,0,0};
+			if (InitData[i].m_enmHWFilterType[f]==HW_FILTER_MANUAL_SET){
+				Id[0] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccCodeByte1[f], true);
+				Id[1] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccCodeByte2[f], true);
+				Id[2] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccCodeByte3[f], true);
+				Id[3] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccCodeByte4[f], true);
+				Mask[0] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccMaskByte1[f], true);
+				Mask[1] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccMaskByte2[f], true);
+				Mask[2] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccMaskByte3[f], true);
+				Mask[3] = (UNUM8)FromString<UNUM32>(InitData[i].m_omStrAccMaskByte4[f], true);
+			}
+			if (InitData[i].m_enmHWFilterType[f]!=HW_FILTER_REJECT_ALL){
+				pFilter_t Filter = new CFilter( VCI_PASS_FILTER,
+					f==1?VCI_CAN_29BIT_ID:0,4,Id,Mask);
+				VCI->AddFilter( Filter );
+			}
+		}
 	}
-
 	return S_OK;
 }
 
@@ -727,7 +762,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_SendMsg(
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_GetCntrlStatus(
 		const HANDLE&	/*hEvent*/,
-		UINT&		 unCntrlStatus)
+		UINT&		 /*unCntrlStatus*/)
 {
 	HRESULT hResult = S_OK;
 
@@ -890,8 +925,8 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ListHwInterfaces(
  * Selects the hardware interface selected by the user.
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_SelectHwInterface(
-		const INTERFACE_HW_LIST&	sSelHwInterface,
-		INT				nSize )
+		const INTERFACE_HW_LIST&	/*SelHwInterface*/,
+		INT				/*Size*/ )
 {
 	USES_CONVERSION;
 	VALIDATE_POINTER_RETURN_VAL(m_hDll, S_FALSE);
@@ -960,12 +995,12 @@ HRESULT CDIL_CAN_i_VIEW::CAN_UnloadDriverLibrary(void)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_GetControllerParams(
 		LONG&		lParam,
-		UINT		nChannel,
-		ECONTR_PARAM	eContrParam)
+		UINT		/*Channel*/,
+		ECONTR_PARAM	ContrParam)
 {
 	HRESULT hResult = S_OK;
 
-	switch (eContrParam){
+	switch (ContrParam){
 	case NUMBER_HW:
 		lParam = CHANNEL_ALLOWED;
 		break;
@@ -1051,7 +1086,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetErrorCount(
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_FilterFrames(
+HRESULT CDIL_CAN_i_VIEW::CAN_FilterFrames(
 		FILTER_TYPE	FilterType,
 		TYPE_CHANNEL	Channel,
 		UINT*		pMsgIds,
@@ -1097,7 +1132,6 @@ T_PDU_ERROR CDIL_CAN_i_VIEW::RxData(
 	CanMsg.m_ucRTR = /*(Flags & VCI_CAN_RTR_ID) ? 1 :*/ 0;
 	memcpy(&CanMsg.m_ucData, CANRec->data, Len);
 
-	EnterCriticalSection(&m_Mutex);
 	/*
 	 * If the frame is a Tx echo, the originating client see's
 	 * the frame as a Tx, the rest as an Rx.
@@ -1105,14 +1139,13 @@ T_PDU_ERROR CDIL_CAN_i_VIEW::RxData(
 	pClientMap_t::iterator pClientItr = m_Clients.begin();
 
 	for (; pClientItr != m_Clients.end(); pClientItr++){
-		if( ( Flags & VCI_TX_ECHO ) && ClientId == pClientItr->first ){
+		if( ( Flags & VCI_TX_ECHO ) /*&& ClientId == pClientItr->first*/ ){
 			CanData.m_ucDataType = TX_FLAG;
 		} else {
 			CanData.m_ucDataType = RX_FLAG;
 		}
 		pClientItr->second->WriteClientBuffers(CanData);
 	}
-	LeaveCriticalSection(&m_Mutex);
 
 	return PDU_STATUS_NOERROR;
 }
@@ -1124,6 +1157,51 @@ T_PDU_ERROR CDIL_CAN_i_VIEW::RxEvent(
 		UNUM32				Id,
 		vci_event_record_s*		VCIEvent )
 {
-	LOG_MESSAGE( g_pLog, "RxEvent" );
+	UNUM32 ClientId = htonl(VCIEvent->header.user_data);
+	UNUM32 TS = htonl(VCIEvent->timestamp) / 100;
+	UNUM32 Code = htonl(VCIEvent->event_code);
+	/*
+	 * Set the base timestamp on first message
+	 */
+	if( m_TimeStamp==0 ){
+		m_TimeStamp = TS;
+		GetLocalTime(&m_CurrSysTime);
+		QueryPerformanceCounter(&m_QueryTickCount);
+	}
+	STCANDATA CanData;
+	SERROR_INFO& ErrMsg = CanData.m_uDataInfo.m_sErrInfo;
+	
+	CanData.m_ucDataType = ERR_FLAG;
+	CanData.m_lTickCount.QuadPart = TS;
+
+	switch( Code ){
+	case VCI_EVENT_TX_TIMEOUT:
+		CanData.m_ucDataType |= TX_FLAG;
+		ErrMsg.m_nSubError = 0;
+		ErrMsg.m_ucErrType = ERROR_BUS/*ERROR_TX_TIMEOUT*/;
+		ErrMsg.m_ucReg_ErrCap = 0xc0;
+		ErrMsg.m_ucTxErrCount = 0;
+		ErrMsg.m_ucRxErrCount = 0;
+		break;
+	default:
+		ErrMsg.m_ucErrType = ERROR_BUS;
+		ErrMsg.m_nSubError = 0;
+		ErrMsg.m_ucReg_ErrCap = 0;
+		ErrMsg.m_ucTxErrCount = 0;
+		ErrMsg.m_ucRxErrCount = 0;
+		break;
+	}
+	ErrMsg.m_ucChannel = (unsigned char)Id;
+
+	/*
+	 * If the frame is a Tx timeout, only send to the originating client.
+	 */
+	pClientMap_t::iterator pClientItr = m_Clients.begin();
+	for (; pClientItr != m_Clients.end(); pClientItr++){
+		if( ClientId != pClientItr->first )
+			continue;
+		pClientItr->second->WriteClientBuffers(CanData);
+	}
+
 	return PDU_STATUS_NOERROR;
 }
