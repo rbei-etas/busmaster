@@ -15098,6 +15098,10 @@ INT CMainFrame::nGetControllerID(string strDriverName)
     {
         nDriverID = DRIVER_CAN_PEAK_USB;
     }
+    if(strDriverName == "i-VIEW")
+    {
+        nDriverID = DRIVER_CAN_IVIEW;
+    }
     else
     {
         nDriverID = DRIVER_CAN_STUB;

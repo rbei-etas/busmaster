@@ -264,77 +264,8 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
                                       SFORMATTEDDATA_CAN* CurrDataCAN,
                                       BYTE bExprnFlag_Log)
 {
-    if (RX_FLAG == pMsgCAN->m_ucDataType)
-    {
-        CurrDataCAN->m_eDirection = DIR_RX;
-        CurrDataCAN->m_acMsgDir[0] = _T('R');
-    }
-    else if (TX_FLAG == pMsgCAN->m_ucDataType)
-    {
-        CurrDataCAN->m_eDirection = DIR_TX;
-        CurrDataCAN->m_acMsgDir[0] = _T('T');
-    }
-    CurrDataCAN->m_acMsgDir[1] = _T('x');
-
-    TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;  // Assuming default CAN msg
-    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD) // Incase of CANFD msg
-    {
-        CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
-    }
-
-    if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
-    {
-        sprintf_s(CurrDataCAN->m_acChannel, "%d", CurrChannel);
-    }
-
-    memset(CurrDataCAN->m_acType,'\0',sizeof(CurrDataCAN->m_acType));
-    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucEXTENDED != 0)
-    {
-        CurrDataCAN->m_byIDType = TYPE_ID_CAN_EXTENDED;
-        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("x"));
-    }
-    else
-    {
-        CurrDataCAN->m_byIDType = TYPE_ID_CAN_STANDARD;
-        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("s"));
-    }
-    /* If it is a CAN FD frame */
-    if ( pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD )
-    {
-        strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("-fd"));
-    }
-    else if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucRTR != 0) // CANFD cannot have RTR frames
-    {
-        CurrDataCAN->m_byMsgType |= TYPE_MSG_CAN_RTR;
-        strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("r"));
-    }
-
-    /* If it is a CAN FD frame */
-    //if ( pMsgCAN->m_bCANFDMsg )
-    //{
-    //    _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
-    //    strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
-    //    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
-    //    CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
-    //    CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
-
-    //    memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_aucCANFDData,
-    //           CurrDataCAN->m_byDataLength);
-    //}
-    //else
-    {
-        _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
-        strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
-        CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
-        CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
-        CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
-
-        memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucData,
-               CurrDataCAN->m_byDataLength);
-    }
-
     /*PROCESS ERROR MSGS: If Error Message type. Change the data and type fields. */
-    if(ERR_FLAG == pMsgCAN->m_ucDataType)
+    if (IS_ERR_MESSAGE(pMsgCAN->m_ucDataType))
     {
         USHORT usErrCode = usProcessCurrErrorEntry(pMsgCAN->m_uDataInfo.m_sErrInfo);
 
@@ -350,11 +281,78 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
                 strcpy_s(CurrDataCAN->m_acDataHex, LENGTH_STR_DATA_CAN, ptrStrErrName);
             }
         }
-
-        CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
+        CurrDataCAN->m_dwMsgID = 0;
         sprintf_s(CurrDataCAN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataCAN->m_dwMsgID);
         strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_TYPE_CAN, "ERR");
+    } else {
+	    if (IS_RX_MESSAGE(pMsgCAN->m_ucDataType))
+	    {
+		CurrDataCAN->m_eDirection = DIR_RX;
+		CurrDataCAN->m_acMsgDir[0] = _T('R');
+	    }
+	    else if (IS_TX_MESSAGE(pMsgCAN->m_ucDataType))
+	    {
+		CurrDataCAN->m_eDirection = DIR_TX;
+		CurrDataCAN->m_acMsgDir[0] = _T('T');
+	    }
+	    CurrDataCAN->m_acMsgDir[1] = _T('x');
+
+	    TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;  // Assuming default CAN msg
+	    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD) // Incase of CANFD msg
+	    {
+		CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
+	    }
+
+	    if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
+	    {
+		sprintf_s(CurrDataCAN->m_acChannel, "%d", CurrChannel);
+	    }
+
+	    memset(CurrDataCAN->m_acType,'\0',sizeof(CurrDataCAN->m_acType));
+	    if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucEXTENDED != 0)
+	    {
+		CurrDataCAN->m_byIDType = TYPE_ID_CAN_EXTENDED;
+		strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("x"));
+	    }
+	    else
+	    {
+		CurrDataCAN->m_byIDType = TYPE_ID_CAN_STANDARD;
+		strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("s"));
+	    }
+	    /* If it is a CAN FD frame */
+	    if ( pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD )
+	    {
+		strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("-fd"));
+	    }
+	    else if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucRTR != 0) // CANFD cannot have RTR frames
+	    {
+		CurrDataCAN->m_byMsgType |= TYPE_MSG_CAN_RTR;
+		strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("r"));
+	    }
+
+	    /* If it is a CAN FD frame */
+	    //if ( pMsgCAN->m_bCANFDMsg )
+	    //{
+	    //    _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
+	    //    strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
+	    //    CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
+	    //    CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
+	    //    CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
+
+	    //    memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_aucCANFDData,
+	    //           CurrDataCAN->m_byDataLength);
+	    //}
+	    //else
+	    {
+		_itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
+		strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
+		CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
+		CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;
+		memcpy(CurrDataCAN->m_abData, pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucData,
+		       CurrDataCAN->m_byDataLength);
+	    }
     }
+     CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
 
     /* PROCESS ERROR MSGS ENDS */
     vFormatTime(bExprnFlag_Log, CurrDataCAN);
