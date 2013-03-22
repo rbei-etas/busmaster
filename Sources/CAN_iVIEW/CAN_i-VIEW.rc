@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "CAN_i-VIEW_Resource.h"
+#include "CAN_i-VIEW_Resource."
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -27,18 +27,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "CAN_i-VIEW_Resource.\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "\r\n"
     "\0"
@@ -172,7 +172,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_DLG_HW_LISTING, DIALOG
     BEGIN
@@ -206,11 +206,11 @@ END
 IDD_DLG_CHANGE_REGISTERS DLGINIT
 BEGIN
     IDC_COMB_CLOCK, 0x403, 3, 0
-0x3631, "\000" 
+0x3631, "\000"
     IDC_COMB_SAMPLING, 0x403, 2, 0
-0x0031, 
+0x0031,
     IDC_COMB_SAMPLING, 0x403, 2, 0
-0x0033, 
+0x0033,
     0
 END
 
@@ -232,7 +232,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "res\\bitmap1.bmp"
+IDB_IVIEW               BITMAP                  "res\\iview.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
