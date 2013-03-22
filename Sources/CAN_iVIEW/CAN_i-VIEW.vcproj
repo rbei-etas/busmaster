@@ -331,11 +331,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_i-VIEW_Resource.h"
+				RelativePath=".\CAN_i-VIEW_Extern.h"
 				>
 			</File>
 			<File
-				RelativePath=".\CAN_i-VIEW_Resource.hm"
+				RelativePath=".\CAN_i-VIEW_Resource.h"
 				>
 			</File>
 			<File
@@ -355,14 +355,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.hm"
-				>
-			</File>
-			<File
 				RelativePath=".\VCiViewIF.h"
 				>
 			</File>
@@ -375,30 +367,6 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\res\bitmap1.bmp"
-			>
-		</File>
-		<File
-			RelativePath=".\res\bmp_net.bmp"
-			>
-		</File>
-		<File
-			RelativePath=".\res\BUSMASTERDoc.ico"
-			>
-		</File>
-		<File
-			RelativePath=".\CAN_i-VIEW_Extern.h"
-			>
-		</File>
-		<File
-			RelativePath=".\CAN_i-VIEW_Resource"
-			>
-		</File>
-		<File
-			RelativePath=".\iVIEW.ico"
-			>
-		</File>
 	</Files>
 	<Globals>
 		<Global

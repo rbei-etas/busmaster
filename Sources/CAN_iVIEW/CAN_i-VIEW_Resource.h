@@ -6,6 +6,7 @@
 #define IDC_BUT_SELECT                  5
 #define IDI_IVIEW                       103
 #define IDB_BITMAP1                     104
+#define IDB_IVIEW                       104
 #define IDD_DLG_HW_LISTING              130
 #define IDD_DLG_ACCEPTANCE              197
 #define IDR_BMP_NET                     204
