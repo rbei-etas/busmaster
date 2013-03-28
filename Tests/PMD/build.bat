@@ -3,6 +3,8 @@
 :JAVA_FIND
 for /d %%i in ("%ProgramFiles%\Java\jdk*") do set JAVA_HOME=%%i
 if exist "%JAVA_HOME%\lib\tools.jar" goto SERNA_FIND
+for /d %%i in ("%ProgramFiles(x86)%\Java\jdk*") do set JAVA_HOME=%%i
+if exist "%JAVA_HOME%\lib\tools.jar" goto SERNA_FIND
 
 :JAVA_NOT_FOUND
 echo Java Development Kit not found. Build failed!
@@ -10,6 +12,8 @@ goto END
 
 :SERNA_FIND
 for /d %%i in ("%ProgramFiles%\Syntext\Serna Free*") do set SERNA_HOME=%%i
+if exist "%SERNA_HOME%" goto DITA_FIND
+for /d %%i in ("%ProgramFiles(x86)%\Syntext\Serna Free*") do set SERNA_HOME=%%i
 if exist "%SERNA_HOME%" goto DITA_FIND
 
 :SERNA_NOT_FOUND
@@ -46,6 +50,8 @@ set ANT_OPTS=%ANT_OPTS% -Djavax.xml.transform.TransformerFactory=net.sf.saxon.Tr
 :PMD_FIND
 for /d %%i in ("%ProgramFiles%\PMD*") do set PMD_HOME=%%i
 if exist "%PMD_HOME%" goto MINGW
+for /d %%i in ("%ProgramFiles(x86)%\PMD*") do set PMD_HOME=%%i
+if exist "%PMD_HOME%" goto MINGW
 
 :PMD_NOT_FOUND
 echo PMD not found. Build failed!
@@ -77,5 +83,4 @@ set CLASSPATH=%CLASSPATH%;%PMD_HOME%\lib\pmd-5.0-alpha.jar
 call ant -Dpmd.dir="%PMD_HOME%" -v -f build.xml
 
 :END
-pause
 exit 0

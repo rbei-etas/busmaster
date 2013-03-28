@@ -3,6 +3,8 @@
 :CPPCHECK_FIND
 set CPPCHECK_HOME=%ProgramFiles%\Cppcheck
 if exist "%CPPCHECK_HOME%" goto PYTHON_FIND
+set CPPCHECK_HOME=%ProgramFiles(x86)%\Cppcheck
+if exist "%CPPCHECK_HOME%" goto PYTHON_FIND
 
 :CPPCHECK_NOT_FOUND
 echo Cppcheck not found. Build failed!
@@ -12,6 +14,8 @@ goto END
 set PYTHON_HOME=C:\Python27
 if exist "%PYTHON_HOME%" goto BUILD
 set PYTHON_HOME=C:\Python32
+if exist "%PYTHON_HOME%" goto BUILD
+set PYTHON_HOME=C:\Python33
 if exist "%PYTHON_HOME%" goto BUILD
 
 :PYTHON_NOT_FOUND
