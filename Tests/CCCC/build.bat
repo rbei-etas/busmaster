@@ -3,6 +3,8 @@
 :CCCC_FIND
 set CCCC_HOME=%ProgramFiles%\CCCC
 if exist "%CCCC_HOME%" goto FILELIST
+set CCCC_HOME=%ProgramFiles(x86)%\CCCC
+if exist "%CCCC_HOME%" goto FILELIST
 
 :CCCC_NOT_FOUND
 echo CCCC not found. Build failed!
