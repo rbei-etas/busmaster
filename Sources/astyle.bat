@@ -1,5 +1,18 @@
 @echo off
 
-"%ProgramFiles%\AStyle\bin\AStyle.exe" --options=..\Tests\AStyle\astyle.txt --exclude=EXTERNAL_INCLUDE --recursive *.c *.cpp *.h *.hpp
+:ASTYLE_FIND
+set ASTYLE_HOME=%ProgramFiles%\AStyle
+if exist "%ASTYLE_HOME%\bin\AStyle.exe" goto BUILD
+set ASTYLE_HOME=%ProgramFiles(x86)%\AStyle
+if exist "%ASTYLE_HOME%\bin\AStyle.exe" goto BUILD
 
-pause
+:ASTYLE_NOT_FOUND
+echo AStyle not found. Build failed!
+goto END
+
+:BUILD
+echo Using AStyle found in %ASTYLE_HOME%
+"%ASTYLE_HOME%\bin\AStyle.exe" --options=astyle.txt --exclude=EXTERNAL_INCLUDE --recursive *.c *.cpp *.h *.hpp
+
+:END
+exit 0
