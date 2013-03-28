@@ -674,7 +674,7 @@ Section "BUSMASTER"
     File /r ..\Sources\BIN\Release\ConverterPlugins
 	
 	; Japanese lib files
-	File /r ..\Sources\BIN\Release\JPN
+	; File /r ..\Sources\BIN\Release\JPN
 	
 	; Japanese Localization folder
 	File /r ..\Sources\Localization
@@ -787,16 +787,22 @@ Section "Vector XL"
     File ..\Sources\BIN\Release\CAN_Vector_XL.dll
 	File ..\Sources\BIN\Release\vxlapi.dll	
 SectionEnd
-Section "IXXAT VCI"
-    SectionIn 1 2
-    SetOutPath $INSTDIR    
-    File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
-SectionEnd
-Section "Vision Systems GmbH VSCAN API"
+;Section "IXXAT VCI"
+;    SectionIn 1 2
+;    SetOutPath $INSTDIR    
+;    File ..\Sources\BIN\Release\CAN_IXXAT_VCI.dll	
+;SectionEnd
+;Section "Vision Systems GmbH VSCAN API"
+;    SectionIn 1 2
+;    SetOutPath $INSTDIR
+;    File ..\Sources\BIN\Release\CAN_VSCOM.dll
+;    File ..\Sources\BIN\Release\vs_can_api.dll
+;SectionEnd
+Section "Diagnostic Solutions iVIEW VCI API"
     SectionIn 1 2
     SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\CAN_VSCOM.dll
-    File ..\Sources\BIN\Release\vs_can_api.dll
+    File ..\Sources\BIN\Release\CAN_i-VIEW.dll
+    File ..\Sources\BIN\Release\VCiViewIF.dll
 SectionEnd
 
 SectionGroupEnd
