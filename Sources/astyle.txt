@@ -5,13 +5,13 @@
 
 # Indentation Options
 --indent-switches
-#--indent-namespaces	# deleted from ETAS profile
+#--indent-namespaces    # deleted from ETAS profile
 --indent-preprocessor
---indent-col1-comments	# added to BUSMASTER profile
+--indent-col1-comments  # added to BUSMASTER profile
 
 # Padding Options
---break-blocks
---delete-empty-lines
+#--break-blocks         # deleted from ETAS profile
+#--delete-empty-lines   # deleted from ETAS profile
 
 # Formatting Options
 --add-brackets
