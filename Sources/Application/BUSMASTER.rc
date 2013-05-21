@@ -1636,9 +1636,6 @@ BEGIN
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
     IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
     IDM_CHECK_HW_INTERFACE  "Test Hardware Interface\nTest Hardware Interface"
-    IDM_PARALLEL_PORT_EPP   "Operate Parallel Port in EPP mode\nEPP Mode"
-    IDM_PARALLEL_PORT_NONEPP 
-                            "Operate Parallel Port in Non-EPP (Std Bidirectional ) mode\n Non-EPP (Std Bidirectional ) Mode"
 END
 
 STRINGTABLE 

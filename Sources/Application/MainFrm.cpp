@@ -270,10 +270,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(IDM_TRACE_WND, OnMessageTraceWnd)
     ON_UPDATE_COMMAND_UI(IDM_TRACE_WND, OnUpdateTraceWnd)
     ON_COMMAND(IDM_CHECK_HW_INTERFACE, OnCheckHwInterface)
-    ON_COMMAND(IDM_PARALLEL_PORT_EPP, OnParallelPortEpp)
-    ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_EPP, OnUpdateParallelPortEpp)
-    ON_COMMAND(IDM_PARALLEL_PORT_NONEPP, OnParallelPortNonepp)
-    ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_NONEPP, OnUpdateParallelPortNonepp)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_BAUDRATE, OnUpdateConfigureBaudrate)
     ON_UPDATE_COMMAND_UI(IDM_CHECK_HW_INTERFACE, OnUpdateCheckHwInterface)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnDisplayAbsoluteTime)
@@ -9887,82 +9883,6 @@ void CMainFrame::OnCheckHwInterface()
     {
         AfxMessageBox(omStrMsg, nIconType, 0);
     }
-}
-/******************************************************************************/
-/*  Function Name    :  OnParallelPortNonepp                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user select to change*/
-/*                      the parallel port mode to EPP. It will set the mode to*/
-/*                      EPP and prompt the user for success/failure.          */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions to set parallel port mode             */
-/*  Modifications    :  Raja N on 13.09.2004, Modified the code to set the port
-/*                      mode first and update registry and flag status only on*/
-/*                      success condition                                     */
-/******************************************************************************/
-void CMainFrame::OnParallelPortEpp()
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnUpdateParallelPortEpp                               */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
-/*                      this menuitem in case of USB build                    */
-/******************************************************************************/
-void CMainFrame::OnUpdateParallelPortEpp(CCmdUI* /*pCmdUI*/)
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnParallelPortNonepp                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user select to change*/
-/*                      the parallel port mode to nonEPP. It will set the mode*/
-/*                      to NonEPP and prompt the user for success/failure     */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions to set parallel port mode             */
-/*  Modifications    :  Raja N on 13.09.2004, Modified the code to set the port
-/*                      mode first and update registry and flag status only on*/
-/*                      success condition                                     */
-/******************************************************************************/
-void CMainFrame::OnParallelPortNonepp()
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnUpdateParallelPortEpp                               */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
-/*                      this menuitem in case of USB build                    */
-/******************************************************************************/
-void CMainFrame::OnUpdateParallelPortNonepp(CCmdUI* /*pCmdUI*/)
-{
 }
 
 /******************************************************************************/

@@ -437,10 +437,6 @@ protected:
     afx_msg LRESULT OnMessageTraceWnd(WPARAM wParam, LPARAM lParam);
     afx_msg void OnUpdateTraceWnd(CCmdUI* pCmdUI);
     afx_msg void OnCheckHwInterface();
-    afx_msg void OnParallelPortEpp();
-    afx_msg void OnUpdateParallelPortEpp(CCmdUI* pCmdUI);
-    afx_msg void OnParallelPortNonepp();
-    afx_msg void OnUpdateParallelPortNonepp(CCmdUI* pCmdUI);
     afx_msg void OnUpdateConfigureBaudrate(CCmdUI* pCmdUI);
 
     afx_msg void OnUpdateCheckHwInterface(CCmdUI* pCmdUI);
