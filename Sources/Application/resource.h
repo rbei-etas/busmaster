@@ -965,7 +965,6 @@
 #define IDM_CHECK_HW_INTERFACE          32925
 #define IDM_PARALLEL_PORT_EPP           32926
 #define IDM_PARALLEL_PORT_NONEPP        32927
-#define IDM_FUNCTIONS_RESET_HARDWARE    32930
 #define IDM_REC_CFG_FILE1               32932
 #define IDM_REC_CFG_FILE2               32933
 #define IDM_REC_CFG_FILE3               32934

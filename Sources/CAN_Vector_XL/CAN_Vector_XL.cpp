@@ -270,7 +270,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -942,8 +941,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    hResult = CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -1856,24 +1853,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_StopHardware(void)
         vRetrieveAndLog(hResult, __FILE__, __LINE__);
         hResult = ERR_LOAD_HW_INTERFACE;
     }
-
-    return hResult;
-}
-
-/**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_OK;
-
-    /* Stop the hardware if connected */
-    /*hResult = */
-    CAN_StopHardware(); // return value not necessary ..fix for git issue 204 by Srinivas
 
     return hResult;
 }

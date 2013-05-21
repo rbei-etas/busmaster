@@ -442,7 +442,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -2252,18 +2251,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 }
 
 /**
- * \param[in] bHardwareReset Reset Mode: TRUE - Hardware Reset, FALSE - Software Reset
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
- *
- * This function will do controller reset. In case of USB mode
- * Software Reset will be simulated by Client Reset.
- */
-static int nResetHardware(BOOL /*bHardwareReset*/)
-{
-    return 0;
-}
-
-/**
  * Function to deselect the chosen hardware interface
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
@@ -2271,8 +2258,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -2765,24 +2750,6 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
     }
 
     return nReturn;
-}
-
-/**
- * Function to reset the hardware, fcClose resets all the buffer
- */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_FALSE;
-    // Stop the hardware if connected
-    CAN_StopHardware(); //return value not necessary
-    if (sg_sParmRThread.bTerminateThread())
-    {
-        if (nResetHardware(TRUE) == CAN_USB_OK)
-        {
-            hResult = S_OK;
-        }
-    }
-    return hResult;
 }
 
 /**

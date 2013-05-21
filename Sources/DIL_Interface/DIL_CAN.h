@@ -159,12 +159,6 @@ public:
     HRESULT DILC_StopHardware(void);
 
     /**
-     * Reset Hardware
-     */
-    HRESULT DILC_ResetHardware(void);
-
-
-    /**
      * Send messages
      */
     HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -215,7 +209,6 @@ private:
     HRESULT (*m_pfSetConfigData)(PCHAR pInitData, int Length);
     HRESULT (*m_pfStartHardware)(void);
     HRESULT (*m_pfStopHardware)(void);
-    HRESULT (*m_pfResetHardware)(void);
     HRESULT (*m_pfGetTxMsgBuffer)(BYTE*& pouTxMsgBuffer);
     HRESULT (*m_pfSendMsg)(DWORD dwClientID, const STCAN_MSG& pouFlxTxMsg);
     HRESULT (*m_pfGetBusConfigInfo)(BYTE* BusInfo);

@@ -193,7 +193,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -625,8 +624,6 @@ HRESULT CDIL_CAN_MHS::CAN_DeselectHwInterface(void)
 
     HRESULT hResult = S_OK;
 
-    hResult = CAN_ResetHardware();
-
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
     return hResult;
@@ -917,19 +914,6 @@ HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
     (void)CanDeviceClose(0);
     return(S_OK);
 }
-
-
-/**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_ResetHardware(void)
-{
-    (void)CAN_StopHardware();
-    return(S_OK);
-}
-
 
 /**
 * \brief         Function to get Controller status

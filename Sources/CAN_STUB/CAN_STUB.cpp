@@ -213,7 +213,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -821,14 +820,6 @@ HRESULT CDIL_CAN_STUB::CAN_StartHardware(void)
         hResult = PerformAnOperation(START_HARDWARE);
     }
     return hResult;
-}
-
-HRESULT CDIL_CAN_STUB::CAN_ResetHardware(void)
-{
-    // Clear the transmitable message list
-
-    // Now disconnect the node
-    return CAN_StopHardware();
 }
 
 HRESULT CDIL_CAN_STUB::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)

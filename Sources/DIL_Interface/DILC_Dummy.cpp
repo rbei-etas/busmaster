@@ -89,11 +89,6 @@ HRESULT CDIL_CAN_DUMMY::CAN_StopHardware(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_ResetHardware(void)
-{
-    return WARN_DUMMY_API;
-}
-
 HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
 {
     return WARN_DUMMY_API;
