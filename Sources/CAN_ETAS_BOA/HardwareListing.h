@@ -32,10 +32,8 @@
 #include <map>
 /////////////////////////////////////////////////////////////////////////////
 // CHardwareListing dialog
-typedef void (*fnCallBackBlink)(INTERFACE_HW);
 class CHardwareListing : public CDialog
 {
-    fnCallBackBlink m_pfnBlinkFunction;
 public:
     // Array of channels
     int m_anSelectedChannels[ CHANNEL_ALLOWED ];
@@ -46,7 +44,7 @@ public:
     // To set List of hardware handles
     void vSetHardwareList(INTERFACE_HW*, int );
     // Constructor
-    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = NULL, fnCallBackBlink m_pfnBlinkFunction= NULL);
+    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = NULL);
     // standard constructor
     CHardwareListing();
     //Get selection list
@@ -79,7 +77,6 @@ protected:
     //{{AFX_MSG(CHardwareListing)
     virtual BOOL OnInitDialog();
     afx_msg void OnItemchangedHWList(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnBlinkHw();
     afx_msg void OnButtonSelect();
     afx_msg void OnButtonRemove();
     virtual void OnOK();

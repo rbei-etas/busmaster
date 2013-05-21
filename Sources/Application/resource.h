@@ -356,7 +356,6 @@
 #define IDC_RADIO_AXIS_XY               1019
 #define IDC_COMB_CLOCK                  1020
 #define IDC_STAT_BYINDEX                1020
-#define IDC_BUT_BLINK                   1020
 #define IDC_RADIO_ACTION_MOVE           1020
 #define IDC_BUTTON_SELECTONE            1020
 #define IDC_STAT_STBIT                  1021
@@ -692,7 +691,6 @@
 #define IDC_CBTN_ACCEPTANCE             1199
 #define IDC_EDIT_RX_RTR_STD             1200
 #define IDC_CBTN_ACCETANCE_OK           1200
-#define IDC_CBTN_BLINK                  1200
 #define IDC_EDIT_RX_RTR_EXTD            1201
 #define IDC_EDIT_ACCEPTANCE_MASK2       1201
 #define IDC_EDIT_ACCEPTANCE_CODE3       1202

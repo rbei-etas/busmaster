@@ -149,7 +149,6 @@ private:
     afx_msg void OnClickListChannels(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnDblclkListChannels(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnCbtnBlink();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
