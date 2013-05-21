@@ -109,7 +109,6 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     m_bErrorHandlerOn       = FALSE;
     m_bDLLHandlerOn         = FALSE;
     m_bALLHandler           = FALSE;
-    m_bParallelPortEPP      = TRUE;
     m_bLogHexON             = TRUE;
     m_wLogTimeMode          = eSYSTEM_MODE; // System mode
     m_nReplayMsgType        = eALL_MESSAGE; // default is all messages
@@ -420,10 +419,6 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_wControllerMode = static_cast<WORD>(nValue);
             break;
 
-        case PARALLEL_PORT_EPP:
-            m_bParallelPortEPP = nValue;
-            break;
-
         case LOGHEXON:
             if (m_bLogHexON != nValue )
             {
@@ -597,9 +592,6 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case CONTROLLER_MODE:
             nRetValue  = m_wControllerMode;
-            break;
-        case PARALLEL_PORT_EPP:
-            nRetValue  = m_bParallelPortEPP;
             break;
         case LOGHEXON:
             nRetValue = m_bLogHexON;

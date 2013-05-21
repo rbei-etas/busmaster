@@ -61,7 +61,6 @@ typedef enum eCANMONITORFLAG
     DLL_HANDLER,
     ALL_HANDLER,
     CONTROLLER_MODE,
-    PARALLEL_PORT_EPP,
     LOGHEXON,
     LOGTIMEMODE,
     eLOGOVERWRITEMODEON,
@@ -117,7 +116,6 @@ private:
     BOOL m_bErrorHandlerOn;
     BOOL m_bDLLHandlerOn;
     BOOL m_bALLHandler;
-    BOOL m_bParallelPortEPP;
     BOOL m_bLogHexON;
     WORD m_wLogTimeMode;
     int m_nReplayMsgType;
