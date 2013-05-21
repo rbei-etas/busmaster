@@ -1318,8 +1318,6 @@ transmission is ON.\nDo you want to ignore the changes ?"
 
 #define defSTR_MODE_MISMATCH                "No USB Hardware found. Switching to Simulation mode"
 #define defSTR_HW_TEST_SUCCESS              "Hardware Interface test passed successfully"
-#define defSTR_PP_MODE_EPP_FAILED           "Unable to set the parallel port to EPP mode"
-#define defSTR_PP_MODE_NON_EPP_FAILED       "Unable to set the parallel port to Non EPP mode"
 #define defSTR_USB_DRIVER_IS_NOT_RUNNING    "Unable to communicate with the driver or Unable to create client networks. Application will quit"
 
 #define defSTR_NET_NAME_FORAMT              "%s_%d"
