@@ -27,10 +27,6 @@ typedef int (*APPFUNCPROC) (STCAN_TIME_MSG,HMODULE);
 // Prototype of the exported function from user-defined DLL
 typedef void (*DLLFUNCPROC)(APPFUNCPROC);
 
-typedef void (*RESETCONTROLLER) (BOOL);
-// Prototype of the exported function from user-defined DLL
-typedef void (*DLLRESETCONTROLLERPROC)(RESETCONTROLLER);
-
 typedef int (*CONTROLLERMODE) (BOOL);
 // Prototype of the exported function from user-defined DLL
 typedef void (*DLLCONTROLLERMODEPROC)(CONTROLLERMODE);
@@ -45,7 +41,6 @@ typedef void (*DLLDISCONNECTPROC)(DISCONNECT);
 
 // Name of the exported function from user-defined DLL
 #define NAME_FUNC_USERDLL               "vSetSendMsgProcAddress"
-#define NAME_FUNC_RESET_CONTROLLER      "vSetResetControllerProcAddress"
 #define NAME_FUNC_CONTROLLER_MODE       "vSetControllerModeProcAddress"
 #define NAME_FUNC_ONLINE                "vSetGoOnlineProcAddress"
 #define NAME_FUNC_OFFLINE               "vSetGoOfflineProcAddress"

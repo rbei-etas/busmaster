@@ -1045,7 +1045,6 @@ BEGIN
             MENUITEM "&Passive",                    IDM_CONFIGURE_PASSIVE, CHECKED
         END
         MENUITEM "Driver Test",                 IDM_CHECK_HW_INTERFACE
-        MENUITEM "Driver Reset",                IDM_FUNCTIONS_RESET_HARDWARE
         MENUITEM SEPARATOR
         MENUITEM "Channel &Selection",          ID_CONFIGURE_CHANNELSELECTION
         MENUITEM "Channel Con&figuration",      IDM_CONFIGURE_BAUDRATE
@@ -1823,7 +1822,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDM_FUNCTIONS_RESET_HARDWARE "Hardware Reset\nHardware Reset"
     IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME 
                             "The Display in System Time\nSystem Time"
     ID_DISPLAY_MESSAGEWINDOW_TIMEMODE_RELATIVETIME 

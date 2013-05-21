@@ -539,35 +539,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StopHardware(void)
     return hResult;
 }
 
-
-/**
- * @brief
- *  Stop and reset the CAN controller.
- *
- * @return
- *  E_POINTER - No IXXAT CAN hardware available.
- *  HW_INTERFACE_NO_SEL - No open CAN controller.
- *  ERR_INITDAT_CONFIRM_CONFIG - Error message from VCI driver.
- *  S_OK - Success.
- *
- */
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_ResetHardware(void)
-{
-#ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_ResetHardware\n"));
-#endif
-
-    HRESULT hResult = E_POINTER;
-    if (m_iNumberOfCANChannelsTotal > 0)
-    {
-        for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
-        {
-            hResult = m_arrIxxatCanChannels[i].ResetController();
-        }
-    }
-    return hResult;
-}
-
 /**
  * @brief
  *  Fill the given structure with the current state

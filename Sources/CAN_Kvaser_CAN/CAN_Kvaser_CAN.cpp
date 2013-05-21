@@ -339,7 +339,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -858,8 +857,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    hResult = CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -1656,24 +1653,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_StopHardware(void)
     }
 
     return hResult;
-}
-
-/**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          12.10.2011 Created
-*/
-HRESULT CDIL_CAN_Kvaser::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_OK;
-
-    /* Stop the hardware if connected */
-    CAN_StopHardware(); // return value not necessary
-
-    return hResult;
-
 }
 
 /**

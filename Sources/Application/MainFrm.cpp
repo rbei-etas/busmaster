@@ -274,7 +274,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_EPP, OnUpdateParallelPortEpp)
     ON_COMMAND(IDM_PARALLEL_PORT_NONEPP, OnParallelPortNonepp)
     ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_NONEPP, OnUpdateParallelPortNonepp)
-    ON_COMMAND(IDM_FUNCTIONS_RESET_HARDWARE, OnFunctionsResetHardware)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_BAUDRATE, OnUpdateConfigureBaudrate)
     ON_UPDATE_COMMAND_UI(IDM_CHECK_HW_INTERFACE, OnUpdateCheckHwInterface)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnDisplayAbsoluteTime)
@@ -286,7 +285,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME,OnEnableTimeStampButton)
     ON_WM_SIZE()
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnUpdateSignalWatchWnd)
-    ON_UPDATE_COMMAND_UI(IDM_FUNCTIONS_RESET_HARDWARE, OnUpdateFunctionsResetHardware)
     ON_COMMAND(IDM_GRAPH_WND, OnGraphWindow)
     ON_UPDATE_COMMAND_UI(IDM_GRAPH_WND, OnUpdateGraphWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
@@ -306,7 +304,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnClickMruList)
     ON_UPDATE_COMMAND_UI_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnUpdateMruList)
     ON_MESSAGE(WM_FILE_DISCONNECT,vDisconnect)
-    ON_MESSAGE(WM_RESET_CONTROLLER,vResetController)
     ON_MESSAGE(WM_SET_WARNING_LIMIT_VAR,vSetWarningLimitVar)
     ON_MESSAGE(WM_KEY_PRESSED_MSG_WND,vKeyPressedInMsgWnd)
     ON_MESSAGE(WM_NOTIFICATION_FROM_OTHER, vNotificationFromOtherWin)
@@ -9545,34 +9542,6 @@ BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
 }
 
 /******************************************************************************
-    Function Name    :  vResetController
-    Input(s)         :  wParam : Indicate if hardware reset or software reset.
-    Output           :
-    Functionality    :  This function will Reset the Controller. It calls
-                        OnRestartController() member function.
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Ravikumar Patil
-    Date Created     :  28.02.2003
-    Modifications    :  Amitesh Bharti, 02.08.2004, The parameter wParam will
-                        indicate if it is hardware reset or software reset.
-                        Appropriate function is called for both cases.
-******************************************************************************/
-LRESULT CMainFrame::vResetController(WPARAM wParam, LPARAM )
-{
-    BOOL bHardwareReset = static_cast<BOOL>(wParam);
-    if(bHardwareReset == FALSE )
-    {
-        //        OnRestartController() ;
-    }
-    else
-    {
-        OnFunctionsResetHardware();
-    }
-    return 0;
-}
-
-/******************************************************************************
     Function Name    :  bSetControllerMode
     Input(s)         :  bbMode, New controller Mode
     Output           :
@@ -9995,68 +9964,7 @@ void CMainFrame::OnParallelPortNonepp()
 void CMainFrame::OnUpdateParallelPortNonepp(CCmdUI* /*pCmdUI*/)
 {
 }
-/******************************************************************************/
-/*  Function Name    :  OnFunctionsResetHardware                              */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects hardware*/
-/*                      reset menu menu item. It will give a hardware reset to*/
-/*                      controller and set controller to same state it was    */
-/*                      before hardware reset.                                */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  01.04.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions                                       */
-/*  Modifications    :  Raja N on 14.03.2005, Modified the new bus statistics */
-/*                      pointer and added check before access. Added support  */
-/*                      for multi channel hardware reset and error counter    */
-/*                      update                                                */
-/*  Modifications    :  Raja N on 21.03.2005, Implemented code review points  */
-/******************************************************************************/
-void CMainFrame::OnFunctionsResetHardware()
-{
-    CFlags* podFlag  = NULL;
 
-    podFlag  =  theApp.pouGetFlagsPtr();
-    if (podFlag != NULL)
-    {
-        // Reset statistics calculation content
-        GetICANBusStat()->BSC_ResetBusStatistic();
-        // Reset the hardware using HIL function
-        // If unsuccessful error messages will be displayed from HIL
-        BOOL bConnected = podFlag->nGetFlagStatus(CONNECTED);
-        if (bConnected == TRUE)
-        {
-            OnFileConnect(); //First disconnect
-            g_pouDIL_CAN_Interface->DILC_ResetHardware();
-        }
-        // Update error hander execution. There could be possible change in
-        // Controller status.
-        // Get number of hardware connected with the system
-        UINT unTotalChannels = 0;
-        LONG lParam = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-        {
-            unTotalChannels = (INT)lParam;
-        }
-        // Get the error counter of each hardware and call error handling
-        // procedure
-        for( UINT unChannel = 0; unChannel < unTotalChannels; unChannel++ )
-        {
-            if( g_pouDIL_CAN_Interface->DILC_GetErrorCount(m_sErrorCount, unChannel, ERR_CNT) == S_OK)
-            {
-                // Make Channel specific error code
-                WORD nErrorWord = MAKEWORD( ERROR_BUS , unChannel );
-                // Call error handler function to process
-                OnErrorMessageProc( nErrorWord,
-                                    MAKEWORD(m_sErrorCount.m_ucRxErrCount,
-                                             m_sErrorCount.m_ucTxErrCount));
-            }
-        }
-    }
-}
 /******************************************************************************/
 /*  Function Name    :  OnUpdateConfigureBaudrate                             */
 /*  Input(s)         :  CCmdUI* pCmdUI                                        */
@@ -10948,49 +10856,6 @@ LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
             break;
     }
     return 0;
-}
-
-
-
-
-/******************************************************************************/
-/*  Function Name    :  OnUpdateFunctionsResetHardware                        */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else. This handler will disable the menuitem */
-/*                      if the controller mode is simulation to avoid hardware*/
-/*                      reset.                                                */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Raja N                                                */
-/*  Date Created     :  03.09.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CMainFrame::OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI)
-{
-    if(pCmdUI != NULL )
-    {
-        UCHAR ucControllerMode = 0;
-        // Check the mode
-        LONG lParam = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
-        {
-            ucControllerMode = (UCHAR)lParam;
-        }
-        // If it is simulation then disable this menuitem.
-        if( ucControllerMode == defMODE_SIMULATE )
-        {
-            pCmdUI->Enable( FALSE );
-        }
-        else
-        {
-            pCmdUI->Enable( TRUE );
-        }
-    }
 }
 
 /******************************************************************************/
@@ -17151,11 +17016,6 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             {
                 hRetVal = S_FALSE;
             }
-        }
-        break;
-        case RESET_HARDWARE_CONTROLLER:
-        {
-            OnFunctionsResetHardware();
         }
         break;
         default:
