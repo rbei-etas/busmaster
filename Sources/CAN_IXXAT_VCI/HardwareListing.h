@@ -77,7 +77,6 @@ protected:
     //{{AFX_MSG(CHardwareListing)
     virtual BOOL OnInitDialog();
     afx_msg void OnItemchangedHWList(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnBlinkHw();
     afx_msg void OnButtonSelect();
     afx_msg void OnButtonRemove();
     virtual void OnOK();

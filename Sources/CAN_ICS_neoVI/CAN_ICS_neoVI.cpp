@@ -463,30 +463,6 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
-void vBlinkHw(INTERFACE_HW s_HardwareIntr)
-{
-    NeoDevice pNeoDevice;
-    pNeoDevice.Handle       = (int)s_HardwareIntr.m_dwIdInterface;
-    pNeoDevice.SerialNumber = (int)s_HardwareIntr.m_dwVendor;
-
-    sscanf_s(s_HardwareIntr.m_acNameInterface.c_str(), "%d", &pNeoDevice.DeviceType);
-
-    int hObject = NULL;
-    int nErrors;
-    int nResult = (*icsneoOpenNeoDevice)(&pNeoDevice, &hObject, NULL, 1, 0);
-    if (nResult == NEOVI_OK && hObject!=NULL)
-    {
-        stAPIFirmwareInfo objstFWInfo;
-        /*nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
-
-        int nHardwareLic = 0;
-        int nErrors = 0;
-        if ( icsneoGetHardwareLicense )
-            (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);        */
-        Sleep(500);
-        (*icsneoClosePort)(hObject, &nErrors);
-    }
-}
 static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
 
 /**
