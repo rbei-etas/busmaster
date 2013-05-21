@@ -73,8 +73,6 @@ public:
     //HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
     //HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-
-    //HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
 
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
