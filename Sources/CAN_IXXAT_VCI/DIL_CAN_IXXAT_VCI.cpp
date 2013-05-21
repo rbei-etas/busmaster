@@ -710,33 +710,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(string& acErrorStr)
     return  E_NOTIMPL;
 }
 
-
-/**
- * @brief
- *  Function to set a filter for received CAN messages.
- *  TODO: no sample what to do here, so return not implemented.*
- *
- * @param FilterType
- *  Type of the filter.
- * @param Channel
- *  The channel.
- * @param [in,out]  punMsgIds
- *  If non-null, list of identifiers for filtering messages.
- * @param nLength
- *  The length.
- *
- * @return
- *  Always E_NOTIMPL
- *
-  */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_FilterFrames\n"));
-//#endif
-//  return  E_NOTIMPL;
-//}
-
 /**
  * @brief
  *  Get CAN controller information.

@@ -213,7 +213,6 @@ private:
     HRESULT (*m_pfSendMsg)(DWORD dwClientID, const STCAN_MSG& pouFlxTxMsg);
     HRESULT (*m_pfGetBusConfigInfo)(BYTE* BusInfo);
     HRESULT (*m_pfGetLastErrorString)(CHAR* acErrorStr, int nLength);
-    HRESULT (*m_pfFilterFrames)(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength);
     HRESULT (*m_pfManageMsgBuf)(BYTE, DWORD ClientID, CBaseCANBufFSE*);
     HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, char*);
     HRESULT (*m_pfGetCntrlStatus)(const HANDLE& hEvent, UINT& unCntrlStatus);

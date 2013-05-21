@@ -198,7 +198,6 @@ public:
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
@@ -1022,22 +1021,6 @@ HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& acErrorStr)
 {
     return WARN_DUMMY_API;
 }
-
-
-/**
-* \brief         Applies FilterType(PASS/STOP) filter for corresponding
-*                channel. Frame ids are supplied by punMsgIds.
-* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
-* \param[in]     Channel, is TYPE_CHANNEL
-* \param[in]     punMsgIds, is UINT*
-* \param[in]     nLength, is UINT
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
-    return(S_OK);
-}
-
 
 /**
 * \brief         Gets the controller parametes of the channel based on the request.
