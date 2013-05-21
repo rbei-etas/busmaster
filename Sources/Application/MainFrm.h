@@ -268,8 +268,6 @@ public:
     BOOL bEnableDisableLog(BOOL bStart) ;
     //Called by wrapper function to Log a string $Log:$Log:
     BOOL bWriteToLog(char* pcOutStrLog) ;
-    //Called by wrapper function to Reset the controller $Log:$Log:
-    //void vResetController() ;
     //Called by wrapper function to change the controller mode $Log:$Log:
     BOOL bSetControllerMode(BOOL bMode) ;
     //To display the context menu when user selects the time mode drop down menu
@@ -455,7 +453,6 @@ protected:
     afx_msg void OnEnableTimeStampButton();
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnUpdateSignalWatchWnd(CCmdUI* pCmdUI);
-    afx_msg void OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI);
     afx_msg void OnGraphWindow();
     afx_msg void OnUpdateGraphWnd(CCmdUI* pCmdUI);
     afx_msg void OnCfgnReplay();
@@ -483,7 +480,6 @@ protected:
     afx_msg void OnUpdateStatusBar(WPARAM wpParam, LPARAM lParam);
     afx_msg void OnUpdateConfigurationFileName(CCmdUI* pCmdUI);
     afx_msg LRESULT vDisconnect(WPARAM wParam, LPARAM lParam);
-    afx_msg LRESULT vResetController(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT vSetWarningLimitVar(WPARAM wParam, LPARAM lParam);
     // Notification from trace window
     afx_msg LRESULT vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam);
@@ -724,7 +720,6 @@ public:
     afx_msg LRESULT OnMessageFromUserDll(WPARAM wParam, LPARAM lParam);
     afx_msg void OnConfigureModeActive();
     afx_msg void OnConfigurePassive();
-    afx_msg void OnFunctionsResetHardware();
     afx_msg void OnLogEnable();
     afx_msg void OnRestartController();
     afx_msg void OnUpdateCfgnLog(CCmdUI* pCmdUI);

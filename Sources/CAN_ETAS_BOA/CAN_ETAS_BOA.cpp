@@ -310,7 +310,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
@@ -2513,17 +2512,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 
     return S_OK;
 }
-
-/**
- * \return S_OK for success, S_FALSE for failure
- *
- * Resets the controller.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
-{
-    return WARN_DUMMY_API;
-}
-
 
 /**
  * Sends STCAN_MSG structure from the client dwClientID.

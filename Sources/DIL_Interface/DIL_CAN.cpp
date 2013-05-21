@@ -499,19 +499,6 @@ HRESULT CDIL_CAN::DILC_StopHardware(void)
 }
 
 /**
- * \brief     Reset hardware
- * \req       RSI_14_016 - DILC_ResetHardware
- * \req       RS_23_18 - Reset the presently selected controller
- *
- * Reset Hardware
- */
-HRESULT CDIL_CAN::DILC_ResetHardware(void)
-{
-    return m_pBaseDILCAN_Controller->CAN_ResetHardware();
-}
-
-
-/**
  * \brief     Send messages
  * \req       RSI_14_017 - DILC_SendMsg
  * \req       RS_23_19 - Transmit a frame

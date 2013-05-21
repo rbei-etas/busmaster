@@ -48,8 +48,7 @@ static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
     "BOOL EnableDisableMsgTx(BOOL)",
     "UINT SendMsg(STCAN_MSG)",
     "HMODULE GetDllHandle(char*)",
-    "UINT Trace(char*, ...)",
-    "void ResetController(BOOL)"
+    "UINT Trace(char*, ...)"
 };
 
 static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
@@ -70,8 +69,7 @@ static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
     "EnableDisableMsgTx",
     "SendMsg",
     "GetDllHandle",
-    "Trace",
-    "ResetController"
+    "Trace"
 };
 
 #define TOTAL_API_COUNT_J1939 21
