@@ -18,7 +18,6 @@
 #define IDC_EDIT_FIRMWARE               1008
 #define IDC_LSTC_HW_LIST                1018
 #define IDC_EDIT_DRIVER_ID              1019
-#define IDC_BUT_BLINK                   1020
 #define IDC_STAT_LINE3                  1119
 #define IDC_LSTC_SELECTED_HW_LIST       1226
 
