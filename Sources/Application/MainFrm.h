@@ -436,10 +436,7 @@ protected:
     afx_msg void OnTraceWnd();
     afx_msg LRESULT OnMessageTraceWnd(WPARAM wParam, LPARAM lParam);
     afx_msg void OnUpdateTraceWnd(CCmdUI* pCmdUI);
-    afx_msg void OnCheckHwInterface();
     afx_msg void OnUpdateConfigureBaudrate(CCmdUI* pCmdUI);
-
-    afx_msg void OnUpdateCheckHwInterface(CCmdUI* pCmdUI);
     afx_msg void OnDisplayAbsoluteTime();
     afx_msg void OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI);
     afx_msg void OnDisplayRelativetime();

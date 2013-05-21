@@ -269,9 +269,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_TRACE_WND, OnTraceWnd)
     ON_MESSAGE(IDM_TRACE_WND, OnMessageTraceWnd)
     ON_UPDATE_COMMAND_UI(IDM_TRACE_WND, OnUpdateTraceWnd)
-    ON_COMMAND(IDM_CHECK_HW_INTERFACE, OnCheckHwInterface)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_BAUDRATE, OnUpdateConfigureBaudrate)
-    ON_UPDATE_COMMAND_UI(IDM_CHECK_HW_INTERFACE, OnUpdateCheckHwInterface)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnDisplayAbsoluteTime)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnUpdateDisplayAbsolutetime)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, OnDisplayRelativetime)
@@ -9809,81 +9807,6 @@ void CMainFrame::OnUpdateTraceWnd(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_bNotificWndVisible);
 }
-/******************************************************************************/
-/*  Function Name    :  OnCheckHwInterface                                    */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects to      */
-/*                      check hardware Interface. User will be promted to take*/
-/*                      action to change the mode of parallel port or connect */
-/*                      dongle if it is not connected.                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions to check the hardware presence        */
-/*  Modifications    :  Raja N at 09.03.2005                                  */
-/*                      Added code to support multi channel                   */
-/******************************************************************************/
-void CMainFrame::OnCheckHwInterface()
-{
-    CString omStrMsg = STR_EMPTY;
-    LONG nIconType = MB_ICONINFORMATION;
-    // Get the selected hardware status from Hardware interface layer
-    HRESULT hReturn = S_OK;
-    LONG lParam = 0;
-    INT unHwCount = 0;
-
-    if (g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, NULL, NUMBER_HW ) == S_OK)
-    {
-        unHwCount = (INT)lParam;
-    }
-    // Parse the array to get individual result
-    for( UINT ucIndex = 0; ucIndex < (UINT)unHwCount; ucIndex++ )
-    {
-        hReturn |= g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, ucIndex, CON_TEST );
-        // If passed
-        if( (BOOL)lParam == TRUE )
-        {
-            CString omStr;
-            // Format pass message
-            omStr.Format( _(defSTR_CHANNEL_TEST_PASS_FORMAT), ucIndex + 1);
-            // Add with the result
-            omStrMsg += omStr;
-        }
-        // If Failed
-        else
-        {
-            CString omStr;
-            // Format the fail message
-            omStr.Format( _(defSTR_CHANNEL_TEST_FAIL_FORMAT), ucIndex + 1);
-            // Add with the result
-            omStrMsg += omStr;
-        }
-    }
-
-    // If Hardware not present then display approp. error message
-    if(hReturn != S_OK)
-    {
-        // Set the critical Icon
-        nIconType = MB_ICONSTOP;
-        // Add error message at the end
-        omStrMsg += NEW_LINE;
-        omStrMsg += _(defHARDWARE_ERROR_MSG);
-    }
-    else
-    {
-        // Append success message at the end
-        omStrMsg += NEW_LINE;
-        omStrMsg += _(defSTR_HW_TEST_SUCCESS);
-    }
-    // Display the information
-    if(theApp.m_bFromAutomation == FALSE)
-    {
-        AfxMessageBox(omStrMsg, nIconType, 0);
-    }
-}
 
 /******************************************************************************/
 /*  Function Name    :  OnUpdateConfigureBaudrate                             */
@@ -10031,47 +9954,6 @@ CMenu* CMainFrame::GetSubMenu(CString MenuName)
     return Submenu;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnUpdateCheckHwInterface                              */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.05.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, This menu item will be disabled */
-/*                      if the available hardware is zero.                    */
-/******************************************************************************/
-void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI)
-{
-    if(pCmdUI != NULL )
-    {
-        BOOL bDisable = TRUE;
-        // Check the number of hardware found during startup
-        LONG lParam = 0;
-        INT nNoOfHw = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-        {
-            nNoOfHw = (INT)lParam;
-        }
-        if( nNoOfHw > 0 )
-        {
-            // If some hardware present then enable this item if the tool is not
-            // connected
-            CFlags* pouFlags = theApp.pouGetFlagsPtr();
-            if(pouFlags != NULL )
-            {
-                bDisable = pouFlags->nGetFlagStatus( CONNECTED );
-            }
-        }
-        // Set the enable value
-        pCmdUI->Enable(bDisable);
-    }
-}
 /******************************************************************************/
 /*  Function Name    : vToolBarDropDownMenu                                   */
 /*  Input(s)         : UINT unControlID, int nButtonIndex                     */
