@@ -1044,7 +1044,6 @@ BEGIN
             MENUITEM "&Active",                     IDM_CONFIGURE_ACTIVE, CHECKED
             MENUITEM "&Passive",                    IDM_CONFIGURE_PASSIVE, CHECKED
         END
-        MENUITEM "Driver Test",                 IDM_CHECK_HW_INTERFACE
         MENUITEM SEPARATOR
         MENUITEM "Channel &Selection",          ID_CONFIGURE_CHANNELSELECTION
         MENUITEM "Channel Con&figuration",      IDM_CONFIGURE_BAUDRATE
@@ -1635,7 +1634,6 @@ BEGIN
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
     IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
-    IDM_CHECK_HW_INTERFACE  "Test Hardware Interface\nTest Hardware Interface"
 END
 
 STRINGTABLE 

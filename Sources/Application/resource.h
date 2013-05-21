@@ -962,7 +962,6 @@
 #define IDM_CONFIGURE_PASSIVE           32920
 #define IDM_CONFIGURE_ACTIVE            32921
 #define IDM_TRACE_WND                   32922
-#define IDM_CHECK_HW_INTERFACE          32925
 #define IDM_REC_CFG_FILE1               32932
 #define IDM_REC_CFG_FILE2               32933
 #define IDM_REC_CFG_FILE3               32934
