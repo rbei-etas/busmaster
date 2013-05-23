@@ -310,7 +310,9 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
+    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
+	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -325,6 +327,47 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
+void vBlinkHw(INTERFACE_HW s_HardwareIntr)
+{
+    OCI_ControllerHandle ouOCI_HwHandle;
+    BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(s_HardwareIntr.m_acNameInterface.c_str(),
+                          &(ouOCI_HwHandle));
+    if (err == OCI_SUCCESS)
+    {
+        SCHANNEL s_asChannel;
+        strcpy_s(s_asChannel.m_acURI, MAX_URI, s_HardwareIntr.m_acNameInterface.c_str());
+        s_asChannel.m_OCI_RxQueueCfg.onFrame.userData = (void*)ouOCI_HwHandle;
+        s_asChannel.m_OCI_RxQueueCfg.onEvent.userData = (void*)ouOCI_HwHandle;
+        BOA_ResultCode ErrorCode = OCI_FAILURE;
+#ifdef BOA_FD_VERSION
+        {
+
+            //configure the controller first for CANFD
+            ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANFDController))(ouOCI_HwHandle,
+                        &(s_asChannel.m_OCI_CANFDConfig),
+                        &(s_asChannel.m_OCI_CntrlProp));
+        }
+#else
+        {
+            //configure the controller first
+            ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(ouOCI_HwHandle,
+                        &(s_asChannel.m_OCI_CANConfig),
+                        &(s_asChannel.m_OCI_CntrlProp));
+        }
+#endif
+        //HRESULT hResult = S_OK;
+        if (ErrorCode == OCI_SUCCESS)
+        {
+            Sleep(500);
+            if ((*(sBOA_PTRS.m_sOCI.closeCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
+            {
+                if ((*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
+                {
+                }
+            }
+        }
+    }
+}
 static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
 
 /**
@@ -2511,6 +2554,24 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
     StatusData.wControllerStatus = NORMAL_ACTIVE;
 
     return S_OK;
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Resets the controller.
+ */
+HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
+{
+    return WARN_DUMMY_API;
+}
+
+/**
+ * Gets STCAN_MSG structure.
+ */
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
+{
+	return S_OK;
 }
 
 /**

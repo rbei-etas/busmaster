@@ -148,7 +148,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.8.0.exe"
+Outfile "BUSMASTER_Installer_Ver_1.8.8.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -285,6 +285,11 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\CAN_MHS.dll bCanMHSbExists
 	bCanMHSbExists:
 			Delete "$INSTDIR\CAN_MHS.dll"
+			
+	; Deleting If CAN_NSI.dll exists
+	IfFileExists $INSTDIR\CAN_NSI.dll bCanNSIbExists
+	bCanNSIbExists:
+			Delete "$INSTDIR\CAN_NSI.dll"
 			
 	; Deleting If CAN_PEAK_USB.dll exists
 	IfFileExists $INSTDIR\CAN_PEAK_USB.dll bCanPeakbExists
@@ -587,6 +592,11 @@ Section "BUSMASTER"
 	bJPNCANMHSJPNbExists:
 			Delete "$INSTDIR\JPN\CAN_MHSJPN.dll"
 			
+	; Deleting If CAN_NSIJPN.dll exists
+	IfFileExists $INSTDIR\JPN\CAN_NSIJPN.dll bJPNCANNSIJPNbExists
+	bJPNCANNSIJPNbExists:
+			Delete "$INSTDIR\JPN\CAN_NSIJPN.dll"
+			
 	; Deleting If CAN_Kvaser_CANJPN.dll exists
 	IfFileExists $INSTDIR\JPN\CAN_Kvaser_CANJPN.dll bJPNKvsrbExists
 	bJPNKvsrbExists:
@@ -779,6 +789,12 @@ Section "MHS-Elektronik Tiny-CAN"
     SetOutPath $INSTDIR    
     File ..\Sources\BIN\Release\CAN_MHS.dll
 	File ..\Sources\BIN\Release\mhstcan.dll
+SectionEnd
+Section "NSI API CAN"
+    SectionIn 1 2
+    SetOutPath $INSTDIR    
+    File ..\Sources\BIN\Release\CAN_NSI.dll
+	File ..\Sources\BIN\Release\CAN_NSI_CANEX.dll
 SectionEnd
 Section "Peak USB"
     SectionIn 1 2

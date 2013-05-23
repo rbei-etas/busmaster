@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_NSI", "CAN_NSI.vcproj", "{191E1FE9-43CB-49C2-BF40-CC5994A586FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		busmaster_debug|Win32 = busmaster_debug|Win32
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Debug|Win32.Build.0 = Debug|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Release|Win32.ActiveCfg = Release|Win32
+		{191E1FE9-43CB-49C2-BF40-CC5994A586FB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

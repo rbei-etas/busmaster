@@ -52,8 +52,7 @@ IMPLEMENT_DYNCREATE(CTxMsgBlocksView, CFormView)
   Date Created   : 20.4.2005
   Modifications  :
 *******************************************************************************/
-CTxMsgBlocksView::CTxMsgBlocksView()
-    : CFormView(CTxMsgBlocksView::IDD)
+CTxMsgBlocksView::CTxMsgBlocksView() : CFormView(CTxMsgBlocksView::IDD)
 {
     //{{AFX_DATA_INIT(CTxMsgBlocksView)
     m_omStrMsgBlockName = STR_EMPTY;

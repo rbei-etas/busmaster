@@ -21,6 +21,7 @@
 #define IDC_STAT_KBPS2                  1018
 #define IDC_EDIT_DRIVER_ID              1019
 #define IDC_COMB_SAMPLING               1019
+#define IDC_BUT_BLINK                   1020
 #define IDC_COMB_SJW                    1023
 #define IDC_COMB_BTL                    1024
 #define IDC_COMB_DATA_BTL               1025

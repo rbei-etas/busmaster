@@ -1,0 +1,508 @@
+.rn '' }`
+''' $RCSfile$$Revision$$Date$
+'''
+''' $Log$
+'''
+.de Sh
+.br
+.if t .Sp
+.ne 5
+.PP
+\fB\\$1\fR
+.PP
+..
+.de Sp
+.if t .sp .5v
+.if n .sp
+..
+.de Ip
+.br
+.ie \\n(.$>=3 .ne \\$3
+.el .ne 3
+.IP "\\$1" \\$2
+..
+.de Vb
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve
+.ft R
+
+.fi
+..
+'''
+'''
+'''     Set up \*(-- to give an unbreakable dash;
+'''     string Tr holds user defined translation string.
+'''     Bell System Logo is used as a dummy character.
+'''
+.tr \(*W-|\(bv\*(Tr
+.ie n \{\
+.ds -- \(*W-
+.ds PI pi
+.if (\n(.H=4u)&(1m=24u) .ds -- \(*W\h'-12u'\(*W\h'-12u'-\" diablo 10 pitch
+.if (\n(.H=4u)&(1m=20u) .ds -- \(*W\h'-12u'\(*W\h'-8u'-\" diablo 12 pitch
+.ds L" ""
+.ds R" ""
+'''   \*(M", \*(S", \*(N" and \*(T" are the equivalent of
+'''   \*(L" and \*(R", except that they are used on ".xx" lines,
+'''   such as .IP and .SH, which do another additional levels of
+'''   double-quote interpretation
+.ds M" """
+.ds S" """
+.ds N" """""
+.ds T" """""
+.ds L' '
+.ds R' '
+.ds M' '
+.ds S' '
+.ds N' '
+.ds T' '
+'br\}
+.el\{\
+.ds -- \(em\|
+.tr \*(Tr
+.ds L" ``
+.ds R" ''
+.ds M" ``
+.ds S" ''
+.ds N" ``
+.ds T" ''
+.ds L' `
+.ds R' '
+.ds M' `
+.ds S' '
+.ds N' `
+.ds T' '
+.ds PI \(*p
+'br\}
+.\"	If the F register is turned on, we'll generate
+.\"	index entries out stderr for the following things:
+.\"		TH	Title 
+.\"		SH	Header
+.\"		Sh	Subsection 
+.\"		Ip	Item
+.\"		X<>	Xref  (embedded
+.\"	Of course, you have to process the output yourself
+.\"	in some meaninful fashion.
+.if \nF \{
+.de IX
+.tm Index:\\$1\t\\n%\t"\\$2"
+..
+.nr % 0
+.rr F
+.\}
+.TH DLLTOOL 1 "binutils-2.11.90" "14/Sep/101" "GNU"
+.UC
+.if n .hy 0
+.ds C+ C\v'-.1v'\h'-1p'\s-2+\h'-1p'+\s0\v'.1v'\h'-1p'
+.de CQ          \" put $1 in typewriter font
+.ft CW
+'if n "\c
+'if t \\&\\$1\c
+'if n \\&\\$1\c
+'if n \&"
+\\&\\$2 \\$3 \\$4 \\$5 \\$6 \\$7
+'.ft R
+..
+.\" @(#)ms.acc 1.5 88/02/08 SMI; from UCB 4.2
+.	\" AM - accent mark definitions
+.bd B 3
+.	\" fudge factors for nroff and troff
+.if n \{\
+.	ds #H 0
+.	ds #V .8m
+.	ds #F .3m
+.	ds #[ \f1
+.	ds #] \fP
+.\}
+.if t \{\
+.	ds #H ((1u-(\\\\n(.fu%2u))*.13m)
+.	ds #V .6m
+.	ds #F 0
+.	ds #[ \&
+.	ds #] \&
+.\}
+.	\" simple accents for nroff and troff
+.if n \{\
+.	ds ' \&
+.	ds ` \&
+.	ds ^ \&
+.	ds , \&
+.	ds ~ ~
+.	ds ? ?
+.	ds ! !
+.	ds /
+.	ds q
+.\}
+.if t \{\
+.	ds ' \\k:\h'-(\\n(.wu*8/10-\*(#H)'\'\h"|\\n:u"
+.	ds ` \\k:\h'-(\\n(.wu*8/10-\*(#H)'\`\h'|\\n:u'
+.	ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'^\h'|\\n:u'
+.	ds , \\k:\h'-(\\n(.wu*8/10)',\h'|\\n:u'
+.	ds ~ \\k:\h'-(\\n(.wu-\*(#H-.1m)'~\h'|\\n:u'
+.	ds ? \s-2c\h'-\w'c'u*7/10'\u\h'\*(#H'\zi\d\s+2\h'\w'c'u*8/10'
+.	ds ! \s-2\(or\s+2\h'-\w'\(or'u'\v'-.8m'.\v'.8m'
+.	ds / \\k:\h'-(\\n(.wu*8/10-\*(#H)'\z\(sl\h'|\\n:u'
+.	ds q o\h'-\w'o'u*8/10'\s-4\v'.4m'\z\(*i\v'-.4m'\s+4\h'\w'o'u*8/10'
+.\}
+.	\" troff and (daisy-wheel) nroff accents
+.ds : \\k:\h'-(\\n(.wu*8/10-\*(#H+.1m+\*(#F)'\v'-\*(#V'\z.\h'.2m+\*(#F'.\h'|\\n:u'\v'\*(#V'
+.ds 8 \h'\*(#H'\(*b\h'-\*(#H'
+.ds v \\k:\h'-(\\n(.wu*9/10-\*(#H)'\v'-\*(#V'\*(#[\s-4v\s0\v'\*(#V'\h'|\\n:u'\*(#]
+.ds _ \\k:\h'-(\\n(.wu*9/10-\*(#H+(\*(#F*2/3))'\v'-.4m'\z\(hy\v'.4m'\h'|\\n:u'
+.ds . \\k:\h'-(\\n(.wu*8/10)'\v'\*(#V*4/10'\z.\v'-\*(#V*4/10'\h'|\\n:u'
+.ds 3 \*(#[\v'.2m'\s-2\&3\s0\v'-.2m'\*(#]
+.ds o \\k:\h'-(\\n(.wu+\w'\(de'u-\*(#H)/2u'\v'-.3n'\*(#[\z\(de\v'.3n'\h'|\\n:u'\*(#]
+.ds d- \h'\*(#H'\(pd\h'-\w'~'u'\v'-.25m'\f2\(hy\fP\v'.25m'\h'-\*(#H'
+.ds D- D\\k:\h'-\w'D'u'\v'-.11m'\z\(hy\v'.11m'\h'|\\n:u'
+.ds th \*(#[\v'.3m'\s+1I\s-1\v'-.3m'\h'-(\w'I'u*2/3)'\s-1o\s+1\*(#]
+.ds Th \*(#[\s+2I\s-2\h'-\w'I'u*3/5'\v'-.3m'o\v'.3m'\*(#]
+.ds ae a\h'-(\w'a'u*4/10)'e
+.ds Ae A\h'-(\w'A'u*4/10)'E
+.ds oe o\h'-(\w'o'u*4/10)'e
+.ds Oe O\h'-(\w'O'u*4/10)'E
+.	\" corrections for vroff
+.if v .ds ~ \\k:\h'-(\\n(.wu*9/10-\*(#H)'\s-2\u~\d\s+2\h'|\\n:u'
+.if v .ds ^ \\k:\h'-(\\n(.wu*10/11-\*(#H)'\v'-.4m'^\v'.4m'\h'|\\n:u'
+.	\" for low resolution devices (crt and lpr)
+.if \n(.H>23 .if \n(.V>19 \
+\{\
+.	ds : e
+.	ds 8 ss
+.	ds v \h'-1'\o'\(aa\(ga'
+.	ds _ \h'-1'^
+.	ds . \h'-1'.
+.	ds 3 3
+.	ds o a
+.	ds d- d\h'-1'\(ga
+.	ds D- D\h'-1'\(hy
+.	ds th \o'bp'
+.	ds Th \o'LP'
+.	ds ae ae
+.	ds Ae AE
+.	ds oe oe
+.	ds Oe OE
+.\}
+.rm #[ #] #H #V #F C
+.SH "NAME"
+dlltool \- Create files needed to build and use DLLs.
+.SH "SYNOPSIS"
+dlltool [\fB\-d\fR|\fB--input-def\fR \fIdef-file-name\fR]
+        [\fB\-b\fR|\fB--base-file\fR \fIbase-file-name\fR]
+        [\fB\-e\fR|\fB--output-exp\fR \fIexports-file-name\fR]
+        [\fB\-z\fR|\fB--output-def\fR \fIdef-file-name\fR]
+        [\fB\-l\fR|\fB--output-lib\fR \fIlibrary-file-name\fR]        
+        [\fB--export-all-symbols\fR] [\fB--no-export-all-symbols\fR]
+        [\fB--exclude-symbols\fR \fIlist\fR]
+        [\fB--no-default-excludes\fR]
+        [\fB\-S\fR|\fB--as\fR \fIpath-to-assembler\fR] [\fB\-f\fR|\fB--as-flags\fR \fIoptions\fR]
+        [\fB\-D\fR|\fB--dllname\fR \fIname\fR] [\fB\-m\fR|\fB--machine\fR \fImachine\fR]
+        [\fB\-a\fR|\fB--add-indirect\fR] [\fB\-U\fR|\fB--add-underscore\fR] [\fB\-k\fR|\fB--kill-at\fR]
+        [\fB\-A\fR|\fB--add-stdcall-alias\fR]
+        [\fB\-x\fR|\fB--no-idata4\fR] [\fB\-c\fR|\fB--no-idata5\fR] [\fB\-i\fR|\fB--interwork\fR]
+        [\fB\-n\fR|\fB--nodelete\fR] [\fB\-v\fR|\fB--verbose\fR] 
+        [\fB\-h\fR|\fB--help\fR] [\fB\-V\fR|\fB--version\fR]
+        [object-file ...]
+.SH "DESCRIPTION"
+\fBdlltool\fR reads its inputs, which can come from the \fB\-d\fR and
+\fB\-b\fR options as well as object files specified on the command
+line.  It then processes these inputs and if the \fB\-e\fR option has
+been specified it creates a exports file.  If the \fB\-l\fR option
+has been specified it creates a library file and if the \fB\-z\fR option
+has been specified it creates a def file.  Any or all of the \fB\-e\fR, 
+\fB\-l\fR and \fB\-z\fR options can be present in one invocation of 
+dlltool.
+.PP
+When creating a DLL, along with the source for the DLL, it is necessary
+to have three other files.  \fBdlltool\fR can help with the creation of
+these files.
+.PP
+The first file is a \fB.def\fR file which specifies which functions are
+exported from the DLL, which functions the DLL imports, and so on.  This
+is a text file and can be created by hand, or \fBdlltool\fR can be used
+to create it using the \fB\-z\fR option.  In this case \fBdlltool\fR
+will scan the object files specified on its command line looking for
+those functions which have been specially marked as being exported and
+put entries for them in the .def file it creates.
+.PP
+In order to mark a function as being exported from a DLL, it needs to
+have an \fB\-export:<name_of_function>\fR entry in the \fB.drectve\fR
+section of the object file.  This can be done in C by using the
+\fIasm()\fR operator:
+.PP
+.Vb 5
+\&        
+\&          asm (".section .drectve");  
+\&          asm (".ascii \e"-export:my_func\e"");
+\&        
+\&          int my_func (void) { ... }
+.Ve
+The second file needed for DLL creation is an exports file.  This file
+is linked with the object files that make up the body of the DLL and it
+handles the interface between the DLL and the outside world.  This is a
+binary file and it can be created by giving the \fB\-e\fR option to
+\fBdlltool\fR when it is creating or reading in a .def file. 
+.PP
+The third file needed for DLL creation is the library file that programs
+will link with in order to access the functions in the DLL.  This file
+can be created by giving the \fB\-l\fR option to dlltool when it
+is creating or reading in a .def file.
+.PP
+\fBdlltool\fR builds the library file by hand, but it builds the
+exports file by creating temporary files containing assembler statements
+and then assembling these.  The \fB\-S\fR command line option can be
+used to specify the path to the assembler that dlltool will use,
+and the \fB\-f\fR option can be used to pass specific flags to that
+assembler.  The \fB\-n\fR can be used to prevent dlltool from deleting
+these temporary assembler files when it is done, and if \fB\-n\fR is
+specified twice then this will prevent dlltool from deleting the
+temporary object files it used to build the library.
+.PP
+Here is an example of creating a DLL from a source file \fBdll.c\fR and
+also creating a program (from an object file called \fBprogram.o\fR)
+that uses that DLL:
+.PP
+.Vb 5
+\&        
+\&          gcc -c dll.c
+\&          dlltool -e exports.o -l dll.lib dll.o
+\&          gcc dll.o exports.o -o dll.dll
+\&          gcc program.o dll.lib -o program
+.Ve
+.SH "OPTIONS"
+The command line options have the following meanings:
+.Ip "\fB\-d\fR \fIfilename\fR" 4
+.Ip "\fB--input-def\fR \fIfilename\fR" 4
+Specifies the name of a .def file to be read in and processed.
+.Ip "\fB\-b\fR \fIfilename\fR" 4
+.Ip "\fB--base-file\fR \fIfilename\fR" 4
+Specifies the name of a base file to be read in and processed.  The
+contents of this file will be added to the relocation section in the
+exports file generated by dlltool.
+.Ip "\fB\-e\fR \fIfilename\fR" 4
+.Ip "\fB--output-exp\fR \fIfilename\fR" 4
+Specifies the name of the export file to be created by dlltool.
+.Ip "\fB\-z\fR \fIfilename\fR" 4
+.Ip "\fB--output-def\fR \fIfilename\fR" 4
+Specifies the name of the .def file to be created by dlltool.
+.Ip "\fB\-l\fR \fIfilename\fR" 4
+.Ip "\fB--output-lib\fR \fIfilename\fR" 4
+Specifies the name of the library file to be created by dlltool.
+.Ip "\fB--export-all-symbols\fR" 4
+Treat all global and weak defined symbols found in the input object
+files as symbols to be exported.  There is a small list of symbols which
+are not exported by default; see the \fB--no-default-excludes\fR
+option.  You may add to the list of symbols to not export by using the
+\fB--exclude-symbols\fR option.
+.Ip "\fB--no-export-all-symbols\fR" 4
+Only export symbols explicitly listed in an input .def file or in
+\&\fB.drectve\fR sections in the input object files.  This is the default
+behaviour.  The \fB.drectve\fR sections are created by \fBdllexport\fR
+attributes in the source code.
+.Ip "\fB--exclude-symbols\fR \fIlist\fR" 4
+Do not export the symbols in \fIlist\fR.  This is a list of symbol names
+separated by comma or colon characters.  The symbol names should not
+contain a leading underscore.  This is only meaningful when
+\fB--export-all-symbols\fR is used.
+.Ip "\fB--no-default-excludes\fR" 4
+When \fB--export-all-symbols\fR is used, it will by default avoid
+exporting certain special symbols.  The current list of symbols to avoid
+exporting is \fBDllMain@12\fR, \fBDllEntryPoint@0\fR,
+\fBimpure_ptr\fR.  You may use the \fB--no-default-excludes\fR option
+to go ahead and export these special symbols.  This is only meaningful
+when \fB--export-all-symbols\fR is used.
+.Ip "\fB\-S\fR \fIpath\fR" 4
+.Ip "\fB--as\fR \fIpath\fR" 4
+Specifies the path, including the filename, of the assembler to be used
+to create the exports file.
+.Ip "\fB\-f\fR \fIswitches\fR" 4
+.Ip "\fB--as-flags\fR \fIswitches\fR" 4
+Specifies any specific command line switches to be passed to the
+assembler when building the exports file.  This option will work even if
+the \fB\-S\fR option is not used.  This option only takes one argument,
+and if it occurs more than once on the command line, then later
+occurrences will override earlier occurrences.  So if it is necessary to
+pass multiple switches to the assembler they should be enclosed in
+double quotes.
+.Ip "\fB\-D\fR \fIname\fR" 4
+.Ip "\fB--dll-name\fR \fIname\fR" 4
+Specifies the name to be stored in the .def file as the name of the \s-1DLL\s0
+when the \fB\-e\fR option is used.  If this option is not present, then
+the filename given to the \fB\-e\fR option will be used as the name of
+the \s-1DLL\s0.
+.Ip "\fB\-m\fR \fImachine\fR" 4
+.Ip "\fB\-machine\fR \fImachine\fR" 4
+Specifies the type of machine for which the library file should be
+built.  \fBdlltool\fR has a built in default type, depending upon how
+it was created, but this option can be used to override that.  This is
+normally only useful when creating DLLs for an \s-1ARM\s0 processor, when the
+contents of the \s-1DLL\s0 are actually encode using Thumb instructions.
+.Ip "\fB\-a\fR" 4
+.Ip "\fB--add-indirect\fR" 4
+Specifies that when \fBdlltool\fR is creating the exports file it
+should add a section which allows the exported functions to be
+referenced without using the import library.  Whatever the hell that
+means! 
+.Ip "\fB\-U\fR" 4
+.Ip "\fB--add-underscore\fR" 4
+Specifies that when \fBdlltool\fR is creating the exports file it
+should prepend an underscore to the names of the exported functions. 
+.Ip "\fB\-k\fR" 4
+.Ip "\fB--kill-at\fR" 4
+Specifies that when \fBdlltool\fR is creating the exports file it
+should not append the string \fB@ <number>\fR.  These numbers are
+called ordinal numbers and they represent another way of accessing the
+function in a \s-1DLL\s0, other than by name.
+.Ip "\fB\-A\fR" 4
+.Ip "\fB--add-stdcall-alias\fR" 4
+Specifies that when \fBdlltool\fR is creating the exports file it
+should add aliases for stdcall symbols without \fB@ <number>\fR
+in addition to the symbols with \fB@ <number>\fR.
+.Ip "\fB\-x\fR" 4
+.Ip "\fB--no-idata4\fR" 4
+Specifies that when \fBdlltool\fR is creating the exports and library
+files it should omit the \f(CW.idata4\fR section.  This is for compatibility
+with certain operating systems.
+.Ip "\fB\-c\fR" 4
+.Ip "\fB--no-idata5\fR" 4
+Specifies that when \fBdlltool\fR is creating the exports and library
+files it should omit the \f(CW.idata5\fR section.  This is for compatibility
+with certain operating systems.
+.Ip "\fB\-i\fR" 4
+.Ip "\fB--interwork\fR" 4
+Specifies that \fBdlltool\fR should mark the objects in the library
+file and exports file that it produces as supporting interworking
+between \s-1ARM\s0 and Thumb code.
+.Ip "\fB\-n\fR" 4
+.Ip "\fB--nodelete\fR" 4
+Makes \fBdlltool\fR preserve the temporary assembler files it used to
+create the exports file.  If this option is repeated then dlltool will
+also preserve the temporary object files it uses to create the library
+file. 
+.Ip "\fB\-v\fR" 4
+.Ip "\fB--verbose\fR" 4
+Make dlltool describe what it is doing.
+.Ip "\fB\-h\fR" 4
+.Ip "\fB--help\fR" 4
+Displays a list of command line options and then exits.
+.Ip "\fB\-V\fR" 4
+.Ip "\fB--version\fR" 4
+Displays dlltool's version number and then exits.
+.SH "SEE ALSO"
+the Info entries for \fIbinutils\fR.
+.SH "COPYRIGHT"
+Copyright (c) 1991, 92, 93, 94, 95, 96, 97, 98, 99, 2000, 2001 Free Software Foundation, Inc.
+.PP
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, with no Front-Cover Texts, and with no
+Back-Cover Texts.  A copy of the license is included in the
+section entitled \*(L"GNU Free Documentation License\*(R".
+
+.rn }` ''
+.IX Title "DLLTOOL 1"
+.IX Name "dlltool - Create files needed to build and use DLLs."
+
+.IX Header "NAME"
+
+.IX Header "SYNOPSIS"
+
+.IX Header "DESCRIPTION"
+
+.IX Header "OPTIONS"
+
+.IX Item "\fB\-d\fR \fIfilename\fR"
+
+.IX Item "\fB--input-def\fR \fIfilename\fR"
+
+.IX Item "\fB\-b\fR \fIfilename\fR"
+
+.IX Item "\fB--base-file\fR \fIfilename\fR"
+
+.IX Item "\fB\-e\fR \fIfilename\fR"
+
+.IX Item "\fB--output-exp\fR \fIfilename\fR"
+
+.IX Item "\fB\-z\fR \fIfilename\fR"
+
+.IX Item "\fB--output-def\fR \fIfilename\fR"
+
+.IX Item "\fB\-l\fR \fIfilename\fR"
+
+.IX Item "\fB--output-lib\fR \fIfilename\fR"
+
+.IX Item "\fB--export-all-symbols\fR"
+
+.IX Item "\fB--no-export-all-symbols\fR"
+
+.IX Item "\fB--exclude-symbols\fR \fIlist\fR"
+
+.IX Item "\fB--no-default-excludes\fR"
+
+.IX Item "\fB\-S\fR \fIpath\fR"
+
+.IX Item "\fB--as\fR \fIpath\fR"
+
+.IX Item "\fB\-f\fR \fIswitches\fR"
+
+.IX Item "\fB--as-flags\fR \fIswitches\fR"
+
+.IX Item "\fB\-D\fR \fIname\fR"
+
+.IX Item "\fB--dll-name\fR \fIname\fR"
+
+.IX Item "\fB\-m\fR \fImachine\fR"
+
+.IX Item "\fB\-machine\fR \fImachine\fR"
+
+.IX Item "\fB\-a\fR"
+
+.IX Item "\fB--add-indirect\fR"
+
+.IX Item "\fB\-U\fR"
+
+.IX Item "\fB--add-underscore\fR"
+
+.IX Item "\fB\-k\fR"
+
+.IX Item "\fB--kill-at\fR"
+
+.IX Item "\fB\-A\fR"
+
+.IX Item "\fB--add-stdcall-alias\fR"
+
+.IX Item "\fB\-x\fR"
+
+.IX Item "\fB--no-idata4\fR"
+
+.IX Item "\fB\-c\fR"
+
+.IX Item "\fB--no-idata5\fR"
+
+.IX Item "\fB\-i\fR"
+
+.IX Item "\fB--interwork\fR"
+
+.IX Item "\fB\-n\fR"
+
+.IX Item "\fB--nodelete\fR"
+
+.IX Item "\fB\-v\fR"
+
+.IX Item "\fB--verbose\fR"
+
+.IX Item "\fB\-h\fR"
+
+.IX Item "\fB--help\fR"
+
+.IX Item "\fB\-V\fR"
+
+.IX Item "\fB--version\fR"
+
+.IX Header "SEE ALSO"
+
+.IX Header "COPYRIGHT"
+

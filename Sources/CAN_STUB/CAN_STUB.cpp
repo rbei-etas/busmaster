@@ -213,11 +213,14 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
+    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -819,6 +822,26 @@ HRESULT CDIL_CAN_STUB::CAN_StartHardware(void)
         hResult = PerformAnOperation(START_HARDWARE);
     }
     return hResult;
+}
+
+HRESULT CDIL_CAN_STUB::CAN_ResetHardware(void)
+{
+    // Clear the transmitable message list
+
+    // Now disconnect the node
+    return CAN_StopHardware();
+}
+
+/**
+* \brief         Gets STCAN_MSG structure.
+* \param[in]     sMessage is the application specific CAN message structure
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Gregory Merchat
+* \date          23.04.2013 Created
+*/
+HRESULT CDIL_CAN_STUB::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
+{
+	return S_OK;
 }
 
 HRESULT CDIL_CAN_STUB::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)

@@ -146,6 +146,16 @@ public:
     virtual HRESULT DILC_StopHardware(void) = 0;
 
     /**
+     * Reset Hardware
+     */
+    virtual HRESULT DILC_ResetHardware(void) = 0;
+
+	/**
+     * Get messages
+     */
+    virtual HRESULT DILC_GetMsg(const STCAN_MSG& sCanTxMsg) = 0;
+
+    /**
      * Send messages
      */
     virtual HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;

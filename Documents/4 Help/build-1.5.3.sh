@@ -1,7 +1,7 @@
 #!/bin/sh
 
 JAVA_DIR=/usr/lib/jvm/java-6-sun
-DITA_DIR=/opt/DITA-OT1.5.3
+DITA_DIR=/opt/DITA-OT1.7.4
 
 export PATH="$JAVA_DIR/bin":"$DITA_DIR/tools/ant/bin":"$PATH"
 

@@ -339,17 +339,15 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
+    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
+	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
-
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
     // Specific function set
@@ -858,6 +856,8 @@ HRESULT CDIL_CAN_Kvaser::CAN_DeselectHwInterface(void)
 
     HRESULT hResult = S_OK;
 
+    hResult = CAN_ResetHardware();
+
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
     return hResult;
@@ -992,7 +992,8 @@ static int nSetBaudRate( )
             //0x47 14
             BTR0 = odChannel.m_usBaudRate >> 8;
             BTR1 = odChannel.m_usBaudRate & 0xFF;
-            // Set the baud rate
+
+			// Set the baud rate
             nStatus = canSetBusParamsC200( odChannel.m_hnd,             //Handle of the channel
                                            BTR0,                        //BTR0
                                            BTR1);                       //BTR1
@@ -1656,6 +1657,24 @@ HRESULT CDIL_CAN_Kvaser::CAN_StopHardware(void)
 }
 
 /**
+* \brief         Resets the controller.
+* \param         void
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+HRESULT CDIL_CAN_Kvaser::CAN_ResetHardware(void)
+{
+    HRESULT hResult = S_OK;
+
+    /* Stop the hardware if connected */
+    CAN_StopHardware(); // return value not necessary
+
+    return hResult;
+
+}
+
+/**
 * \brief         Gets the Tx queue configured.
 * \param[out]    pouFlxTxMsgBuffer, is BYTE*
 * \return        S_OK for success, S_FALSE for failure
@@ -1708,6 +1727,18 @@ static int nWriteMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
     }
 
     return nReturn;
+}
+
+/**
+* \brief         Gets STCAN_MSG structure.
+* \param[in]     sMessage is the application specific CAN message structure
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Gregory Merchat
+* \date          23.04.2013 Created
+*/
+HRESULT CDIL_CAN_Kvaser::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
+{
+	return S_OK;
 }
 
 /**
@@ -1767,7 +1798,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
     return WARN_DUMMY_API;
 }
 
-
 /**
 * \brief         Gets last occured error and puts inside acErrorStr.
 * \param[out]    acErrorStr, is CHAR contains error string
@@ -1781,12 +1811,10 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(string& /*acErrorStr*/)
     return WARN_DUMMY_API;
 }
 
-
-
 /**
 * \brief         This function will check all hardware connectivity by switching to channel ON.
 * \param[out]    ucaTestResult Array that will hold test result.
-                 TRUE if hardware present and false if not connected
+                 TRUE if hardware present and FALSE if not connected
 * \param[in]     nChannel, indicates channel ID
 * \return        S_OK for success, S_FALSE for failure
 * \authors       Arunkumar Karri
@@ -1926,8 +1954,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContr
     }
     return S_OK;
 }
-
-
 
 /**
 * \brief         Gets the error counter for corresponding channel.

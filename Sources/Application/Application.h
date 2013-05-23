@@ -105,6 +105,7 @@ public:
         dispidUnLoadAllDll          = 7L,
         dispidStartTxMsgBlock       = 8L,
         dispidStopTxMsgBlock        = 9L,
+        dispidReSetHW               = 10L,
         dispidReSetSW               = 11L,
         dispidStartLogging          = 12L,
         dispidDisplayWindow         = 13L,
@@ -188,6 +189,31 @@ public:
             {
                 hResult = E_FAIL;
             }
+        }
+
+        return hResult;
+    }
+
+    /******************************************************************************
+        Function Name    :  ResetHW
+
+        Input(s)         :
+        Output           :  -
+        Functionality    :  reset hardware
+        Member of        :  CApplication
+        Author(s)        :  Anish kumar
+        Date Created     :  20.06.2006
+        Modifications    :
+    ******************************************************************************/
+    HRESULT ResetHW()
+    {
+        HRESULT hResult = E_POINTER;
+        CMainFrame* pMainFrm = GetIMainFrame();
+
+        if (NULL != pMainFrm)
+        {
+            pMainFrm->OnFunctionsResetHardware();
+            hResult = S_OK;
         }
 
         return hResult;
@@ -1528,6 +1554,7 @@ public:
     STDMETHOD(StopLogging)();
     STDMETHOD(StartLogging)();
     STDMETHOD(ResetSW)();
+    STDMETHOD(ResetHW)();
     STDMETHOD(StopTxMsgBlock)();
     STDMETHOD(StartTxMsgBlock)();
     STDMETHOD(UnLoadAllDll)();

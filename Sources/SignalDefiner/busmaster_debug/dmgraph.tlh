@@ -1,0 +1,517 @@
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.21022.08 (c2f7348d).
+//
+// d:\busmaster-master\sources\signaldefiner\busmaster_debug\dmgraph.tlh
+//
+// C++ source equivalent of Win32 type library ..\..\EXTERNAL_SOURCE\DMGraph\DMGraph.tlb
+// compiler-generated file created 04/15/13 at 11:18:29 - DO NOT EDIT!
+
+#pragma once
+#pragma pack(push, 8)
+
+#include <comdef.h>
+
+//
+// Forward references and typedefs
+//
+
+struct __declspec(uuid("a5e18713-3023-4fd2-8dcb-e82b6f330f48"))
+/* LIBID */ __DMGraphLib;
+struct __declspec(uuid("4ca52ab5-b6ce-41af-9a09-284d00714f8e"))
+/* dual interface */ IDMGraphElement;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0001;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0002;
+struct __declspec(uuid("7d965dbb-74cd-42d2-a9c6-53ed80188b35"))
+/* dual interface */ IDMGraphAnnotation;
+struct __declspec(uuid("fb9b14b4-6acc-4bda-94a4-b75a3c349623"))
+/* dual interface */ IDMGraphCursor;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0006;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0005;
+struct __declspec(uuid("c735264e-70bb-48bb-ac9c-93188a12c254"))
+/* dual interface */ IDMGraphAxis;
+struct __declspec(uuid("022e739f-00bb-40be-bbba-8492e4443493"))
+/* dual interface */ IDMGraphCollection;
+struct __declspec(uuid("9392e24c-430f-467d-99a2-69fa98cbcb78"))
+/* dispinterface */ _IDMGraphCtrlEvents;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0004;
+struct /* coclass */ DMGraphCtrl;
+struct __declspec(uuid("2dc9c043-d85a-45b3-8867-9e3d035dec7f"))
+/* dual interface */ IDMGraphCtrl;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0003;
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0007;
+struct /* coclass */ ElementPropPage;
+struct /* coclass */ AnnoPropPage;
+struct /* coclass */ CursorPropPage;
+struct /* coclass */ FormatPropPage;
+struct /* coclass */ DMGraphPropPage;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0001 LineType;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0002 SymbolType;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0006 Crosshair;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0005 CursorMode;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0004 TrackModeState;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0003 FrameStyle;
+typedef enum __MIDL___MIDL_itf_DMGraph_0000_0000_0007 Orientation;
+
+//
+// Smart pointer typedef declarations
+//
+
+_COM_SMARTPTR_TYPEDEF(IDMGraphElement, __uuidof(IDMGraphElement));
+_COM_SMARTPTR_TYPEDEF(IDMGraphAnnotation, __uuidof(IDMGraphAnnotation));
+_COM_SMARTPTR_TYPEDEF(IDMGraphCursor, __uuidof(IDMGraphCursor));
+_COM_SMARTPTR_TYPEDEF(IDMGraphAxis, __uuidof(IDMGraphAxis));
+_COM_SMARTPTR_TYPEDEF(IDMGraphCollection, __uuidof(IDMGraphCollection));
+_COM_SMARTPTR_TYPEDEF(_IDMGraphCtrlEvents, __uuidof(_IDMGraphCtrlEvents));
+_COM_SMARTPTR_TYPEDEF(IDMGraphCtrl, __uuidof(IDMGraphCtrl));
+
+//
+// Type library items
+//
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0001
+{
+    Solid = 0,
+    Dash = 1,
+    Dot = 2,
+    DashDot = 3,
+    DashDotDot = 4,
+    Null = 5,
+    XYStep = 6,
+    YXStep = 7,
+    Bars = 8,
+    Stick = 9
+};
+
+struct __declspec(uuid("4ca52ab5-b6ce-41af-9a09-284d00714f8e"))
+IDMGraphElement : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_LineColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LineColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_PointColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_PointColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_LineType (
+        /*[out,retval]*/ LineType * pVal ) = 0;
+      virtual HRESULT __stdcall put_LineType (
+        /*[in]*/ LineType pVal ) = 0;
+      virtual HRESULT __stdcall get_LineWidth (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_LineWidth (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_PointSymbol (
+        /*[out,retval]*/ SymbolType * pVal ) = 0;
+      virtual HRESULT __stdcall put_PointSymbol (
+        /*[in]*/ SymbolType pVal ) = 0;
+      virtual HRESULT __stdcall get_SolidPoint (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_SolidPoint (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_PointSize (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_PointSize (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall get_Show (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Show (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Name (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Name (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Count (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_XValue (
+        /*[in]*/ long index,
+        /*[out,retval]*/ double * pVal ) = 0;
+      virtual HRESULT __stdcall put_XValue (
+        /*[in]*/ long index,
+        /*[in]*/ double pVal ) = 0;
+      virtual HRESULT __stdcall get_YValue (
+        /*[in]*/ long index,
+        /*[out,retval]*/ double * pVal ) = 0;
+      virtual HRESULT __stdcall put_YValue (
+        /*[in]*/ long index,
+        /*[in]*/ double pVal ) = 0;
+      virtual HRESULT __stdcall PlotXY (
+        /*[in]*/ double X,
+        /*[in]*/ double Y ) = 0;
+      virtual HRESULT __stdcall PlotY (
+        /*[in]*/ double Y ) = 0;
+      virtual HRESULT __stdcall Plot (
+        /*[in]*/ VARIANT newXVals,
+        /*[in]*/ VARIANT newYVals ) = 0;
+};
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0002
+{
+    Nosym = 0,
+    Dots = 1,
+    Rectangles = 2,
+    Diamonds = 3,
+    Asterisk = 4,
+    DownTriangles = 5,
+    UpTriangles = 6,
+    LeftTriangles = 7,
+    RightTriangles = 8
+};
+
+struct __declspec(uuid("7d965dbb-74cd-42d2-a9c6-53ed80188b35"))
+IDMGraphAnnotation : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_LabelCaption (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelCaption (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelX (
+        /*[out,retval]*/ double * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelX (
+        /*[in]*/ double pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelY (
+        /*[out,retval]*/ double * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelY (
+        /*[in]*/ double pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelHorizontal (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelHorizontal (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Visible (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Visible (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelBkColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelBkColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+};
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0006
+{
+    XY = 0,
+    X = 1,
+    Y = 2
+};
+
+struct __declspec(uuid("fb9b14b4-6acc-4bda-94a4-b75a3c349623"))
+IDMGraphCursor : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_Color (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Color (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_X (
+        /*[out,retval]*/ double * pVal ) = 0;
+      virtual HRESULT __stdcall put_X (
+        /*[in]*/ double pVal ) = 0;
+      virtual HRESULT __stdcall get_Y (
+        /*[out,retval]*/ double * pVal ) = 0;
+      virtual HRESULT __stdcall put_Y (
+        /*[in]*/ double pVal ) = 0;
+      virtual HRESULT __stdcall get_Style (
+        /*[out,retval]*/ Crosshair * pVal ) = 0;
+      virtual HRESULT __stdcall put_Style (
+        /*[in]*/ Crosshair pVal ) = 0;
+      virtual HRESULT __stdcall get_Visible (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Visible (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Mode (
+        /*[out,retval]*/ CursorMode * pVal ) = 0;
+      virtual HRESULT __stdcall put_Mode (
+        /*[in]*/ CursorMode pVal ) = 0;
+      virtual HRESULT __stdcall get_Name (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Name (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_CursorID (
+        /*[out,retval]*/ short * pVal ) = 0;
+      virtual HRESULT __stdcall put_CursorID (
+        /*[in]*/ short pVal ) = 0;
+};
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0005
+{
+    Fixed = 0,
+    Floating = 1,
+    Snap = 2
+};
+
+struct __declspec(uuid("c735264e-70bb-48bb-ac9c-93188a12c254"))
+IDMGraphAxis : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_GridNumber (
+        /*[out,retval]*/ short * pVal ) = 0;
+      virtual HRESULT __stdcall put_GridNumber (
+        /*[in]*/ short pVal ) = 0;
+      virtual HRESULT __stdcall get_Label (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Label (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_Log (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Log (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Time (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_Time (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_Format (
+        /*[out,retval]*/ BSTR * pVal ) = 0;
+      virtual HRESULT __stdcall put_Format (
+        /*[in]*/ BSTR pVal ) = 0;
+      virtual HRESULT __stdcall get_ShowGrid (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_ShowGrid (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+};
+
+struct __declspec(uuid("022e739f-00bb-40be-bbba-8492e4443493"))
+IDMGraphCollection : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall get_Count (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall get_Item (
+        /*[in]*/ long index,
+        /*[out,retval]*/ IDispatch * * pVal ) = 0;
+      virtual HRESULT __stdcall get_Selected (
+        /*[out,retval]*/ long * pVal ) = 0;
+      virtual HRESULT __stdcall put_Selected (
+        /*[in]*/ long pVal ) = 0;
+      virtual HRESULT __stdcall Add (
+        /*[out,retval]*/ IDispatch * * pVal ) = 0;
+      virtual HRESULT __stdcall Delete (
+        /*[in]*/ long index ) = 0;
+};
+
+struct __declspec(uuid("9392e24c-430f-467d-99a2-69fa98cbcb78"))
+_IDMGraphCtrlEvents : IDispatch
+{};
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0004
+{
+    None = 0,
+    TrackCursor = 1,
+    TrackElement = 2,
+    Zoom = 3,
+    ZoomX = 4,
+    ZoomY = 5,
+    PanXY = 6,
+    PanX = 7,
+    PanY = 8
+};
+
+struct __declspec(uuid("aaf89a51-7fc0-43b0-9f81-ffeff6a8db43"))
+DMGraphCtrl;
+    // [ default ] interface IDMGraphCtrl
+    // [ default, source ] dispinterface _IDMGraphCtrlEvents
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0003
+{
+    Flat = 0,
+    Scope = 1,
+    Bitmap = 2
+};
+
+struct __declspec(uuid("2dc9c043-d85a-45b3-8867-9e3d035dec7f"))
+IDMGraphCtrl : IDispatch
+{
+    //
+    // Raw methods provided by interface
+    //
+
+      virtual HRESULT __stdcall put_Enabled (
+        /*[in]*/ VARIANT_BOOL pbool ) = 0;
+      virtual HRESULT __stdcall get_Enabled (
+        /*[out,retval]*/ VARIANT_BOOL * pbool ) = 0;
+      virtual HRESULT __stdcall put_Caption (
+        /*[in]*/ BSTR pstrCaption ) = 0;
+      virtual HRESULT __stdcall get_Caption (
+        /*[out,retval]*/ BSTR * pstrCaption ) = 0;
+      virtual HRESULT __stdcall put_Appearance (
+        /*[in]*/ short pappearance ) = 0;
+      virtual HRESULT __stdcall get_Appearance (
+        /*[out,retval]*/ short * pappearance ) = 0;
+      virtual HRESULT __stdcall get_AxisColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_AxisColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_GridColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_GridColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_LabelFont (
+        /*[out,retval]*/ IFontDisp * * pVal ) = 0;
+      virtual HRESULT __stdcall put_LabelFont (
+        /*[in]*/ IFontDisp * pVal ) = 0;
+      virtual HRESULT __stdcall get_TickFont (
+        /*[out,retval]*/ IFontDisp * * pVal ) = 0;
+      virtual HRESULT __stdcall put_TickFont (
+        /*[in]*/ IFontDisp * pVal ) = 0;
+      virtual HRESULT __stdcall get_TitleFont (
+        /*[out,retval]*/ IFontDisp * * pVal ) = 0;
+      virtual HRESULT __stdcall put_TitleFont (
+        /*[in]*/ IFontDisp * pVal ) = 0;
+      virtual HRESULT __stdcall get_IdentFont (
+        /*[out,retval]*/ IFontDisp * * pVal ) = 0;
+      virtual HRESULT __stdcall put_IdentFont (
+        /*[in]*/ IFontDisp * pVal ) = 0;
+      virtual HRESULT __stdcall get_ElementIdentify (
+        /*[out,retval]*/ VARIANT_BOOL * pVal ) = 0;
+      virtual HRESULT __stdcall put_ElementIdentify (
+        /*[in]*/ VARIANT_BOOL pVal ) = 0;
+      virtual HRESULT __stdcall get_TrackMode (
+        /*[out,retval]*/ TrackModeState * pVal ) = 0;
+      virtual HRESULT __stdcall put_TrackMode (
+        /*[in]*/ TrackModeState pVal ) = 0;
+      virtual HRESULT __stdcall get_ControlFramePicture (
+        /*[out,retval]*/ IPictureDisp * * pVal ) = 0;
+      virtual HRESULT __stdcall put_ControlFramePicture (
+        /*[in]*/ IPictureDisp * pVal ) = 0;
+      virtual HRESULT __stdcall get_PlotAreaPicture (
+        /*[out,retval]*/ IPictureDisp * * pVal ) = 0;
+      virtual HRESULT __stdcall put_PlotAreaPicture (
+        /*[in]*/ IPictureDisp * pVal ) = 0;
+      virtual HRESULT __stdcall get_ControlFrameColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_ControlFrameColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_PlotAreaColor (
+        /*[out,retval]*/ OLE_COLOR * pVal ) = 0;
+      virtual HRESULT __stdcall put_PlotAreaColor (
+        /*[in]*/ OLE_COLOR pVal ) = 0;
+      virtual HRESULT __stdcall get_FrameStyle (
+        /*[out,retval]*/ FrameStyle * pVal ) = 0;
+      virtual HRESULT __stdcall put_FrameStyle (
+        /*[in]*/ FrameStyle pVal ) = 0;
+      virtual HRESULT __stdcall get_Annotations (
+        /*[out,retval]*/ struct IDMGraphCollection * * pVal ) = 0;
+      virtual HRESULT __stdcall get_Elements (
+        /*[out,retval]*/ struct IDMGraphCollection * * pVal ) = 0;
+      virtual HRESULT __stdcall get_Cursors (
+        /*[out,retval]*/ struct IDMGraphCollection * * pVal ) = 0;
+      virtual HRESULT __stdcall get_Axis (
+        /*[in]*/ Orientation eOrientation,
+        /*[out,retval]*/ struct IDMGraphAxis * * pVal ) = 0;
+      virtual HRESULT __stdcall SetRange (
+        /*[in]*/ double xmin,
+        /*[in]*/ double xmax,
+        /*[in]*/ double ymin,
+        /*[in]*/ double ymax ) = 0;
+      virtual HRESULT __stdcall GetRange (
+        /*[out]*/ double * xmin,
+        /*[out]*/ double * xmax,
+        /*[out]*/ double * ymin,
+        /*[out]*/ double * ymax ) = 0;
+      virtual HRESULT __stdcall AutoRange ( ) = 0;
+      virtual HRESULT __stdcall GetAutoRange (
+        /*[out]*/ double * xmin,
+        /*[out]*/ double * xmax,
+        /*[out]*/ double * ymin,
+        /*[out]*/ double * ymax ) = 0;
+      virtual HRESULT __stdcall CopyToClipboard ( ) = 0;
+      virtual HRESULT __stdcall PrintGraph ( ) = 0;
+      virtual HRESULT __stdcall ClearGraph ( ) = 0;
+      virtual HRESULT __stdcall ShowProperties ( ) = 0;
+      virtual HRESULT __stdcall SaveAs (
+        /*[in]*/ BSTR szFilename ) = 0;
+      virtual HRESULT __stdcall AboutBox ( ) = 0;
+      virtual HRESULT __stdcall ShiftDisplay (
+        short xShift,
+        short yShift ) = 0;
+      virtual HRESULT __stdcall GenerateCSVReport (
+        LPWSTR pFilename ) = 0;
+      virtual HRESULT __stdcall GetElementValueAtCursor (
+        /*[in]*/ short shElementID,
+        /*[in]*/ double dblCursorVal,
+        /*[out]*/ double * dblElemVal ) = 0;
+};
+
+enum __MIDL___MIDL_itf_DMGraph_0000_0000_0007
+{
+    HorizontalX = 0,
+    VerticalY = 1
+};
+
+struct __declspec(uuid("14a14bad-2949-4186-9529-bbb2cc7f9699"))
+ElementPropPage;
+    // [ default ] interface IUnknown
+
+struct __declspec(uuid("273db50a-e76d-4b95-8e1a-0993e14ffef0"))
+AnnoPropPage;
+    // [ default ] interface IUnknown
+
+struct __declspec(uuid("5df8a597-c334-4ed5-8d45-8884d506044d"))
+CursorPropPage;
+    // [ default ] interface IUnknown
+
+struct __declspec(uuid("9ee3e072-2b3f-47ab-8612-b6ed7f0cdae6"))
+FormatPropPage;
+    // [ default ] interface IUnknown
+
+struct __declspec(uuid("cb32b59d-7aaa-44b5-acdf-a64b9380e48c"))
+DMGraphPropPage;
+    // [ default ] interface IUnknown
+
+//
+// Named GUID constants initializations
+//
+
+extern "C" const GUID __declspec(selectany) LIBID_DMGraphLib =
+    {0xa5e18713,0x3023,0x4fd2,{0x8d,0xcb,0xe8,0x2b,0x6f,0x33,0x0f,0x48}};
+extern "C" const GUID __declspec(selectany) IID_IDMGraphElement =
+    {0x4ca52ab5,0xb6ce,0x41af,{0x9a,0x09,0x28,0x4d,0x00,0x71,0x4f,0x8e}};
+extern "C" const GUID __declspec(selectany) IID_IDMGraphAnnotation =
+    {0x7d965dbb,0x74cd,0x42d2,{0xa9,0xc6,0x53,0xed,0x80,0x18,0x8b,0x35}};
+extern "C" const GUID __declspec(selectany) IID_IDMGraphCursor =
+    {0xfb9b14b4,0x6acc,0x4bda,{0x94,0xa4,0xb7,0x5a,0x3c,0x34,0x96,0x23}};
+extern "C" const GUID __declspec(selectany) IID_IDMGraphAxis =
+    {0xc735264e,0x70bb,0x48bb,{0xac,0x9c,0x93,0x18,0x8a,0x12,0xc2,0x54}};
+extern "C" const GUID __declspec(selectany) IID_IDMGraphCollection =
+    {0x022e739f,0x00bb,0x40be,{0xbb,0xba,0x84,0x92,0xe4,0x44,0x34,0x93}};
+extern "C" const GUID __declspec(selectany) DIID__IDMGraphCtrlEvents =
+    {0x9392e24c,0x430f,0x467d,{0x99,0xa2,0x69,0xfa,0x98,0xcb,0xcb,0x78}};
+extern "C" const GUID __declspec(selectany) CLSID_DMGraphCtrl =
+    {0xaaf89a51,0x7fc0,0x43b0,{0x9f,0x81,0xff,0xef,0xf6,0xa8,0xdb,0x43}};
+extern "C" const GUID __declspec(selectany) IID_IDMGraphCtrl =
+    {0x2dc9c043,0xd85a,0x45b3,{0x88,0x67,0x9e,0x3d,0x03,0x5d,0xec,0x7f}};
+extern "C" const GUID __declspec(selectany) CLSID_ElementPropPage =
+    {0x14a14bad,0x2949,0x4186,{0x95,0x29,0xbb,0xb2,0xcc,0x7f,0x96,0x99}};
+extern "C" const GUID __declspec(selectany) CLSID_AnnoPropPage =
+    {0x273db50a,0xe76d,0x4b95,{0x8e,0x1a,0x09,0x93,0xe1,0x4f,0xfe,0xf0}};
+extern "C" const GUID __declspec(selectany) CLSID_CursorPropPage =
+    {0x5df8a597,0xc334,0x4ed5,{0x8d,0x45,0x88,0x84,0xd5,0x06,0x04,0x4d}};
+extern "C" const GUID __declspec(selectany) CLSID_FormatPropPage =
+    {0x9ee3e072,0x2b3f,0x47ab,{0x86,0x12,0xb6,0xed,0x7f,0x0c,0xda,0xe6}};
+extern "C" const GUID __declspec(selectany) CLSID_DMGraphPropPage =
+    {0xcb32b59d,0x7aaa,0x44b5,{0xac,0xdf,0xa6,0x4b,0x93,0x80,0xe4,0x8c}};
+
+#pragma pack(pop)

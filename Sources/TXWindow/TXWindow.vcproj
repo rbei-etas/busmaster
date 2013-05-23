@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="TXWindow"
 	ProjectGUID="{D12A1B79-CA60-4D7F-BA6F-79130C986BF9}"
 	RootNamespace="TXWindow"

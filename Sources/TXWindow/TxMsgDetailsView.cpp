@@ -48,6 +48,11 @@
 #define defIMAGE_DIRTY 2
 #define defIMAGE_GOOD  0
 
+static CTxMsgManager sTxMsgManager;
+
+//DIL Interface
+static CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL;
+
 //extern UINT unGetMsgIDFromName(CString omMsgName);
 /*************************************************************************
     Function Name    : unGetMsgIDFromName
@@ -2352,10 +2357,29 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
 void CTxMsgDetailsView::OnButtonAddMsg()
 {
     BOOL bDataValid = FALSE;
+	
+	STCAN_MSG sTxMsg;
+	// User has to input atleast msg code and dlc
+    CString omStr = "";
+	CStringArray omStrTab;
+
     // Validate the data
     bDataValid = bValidateData();
     if(bDataValid == TRUE )
     {
+		bDataValid = bUpdateMessageDetail(&sTxMsg);
+		if(bDataValid == TRUE)
+		{		
+			sTxMsgManager.s_unSendDefMsg(sTxMsg);
+		}
+		else
+		{
+			// Display a message in a new window
+			CString omErr;
+			omErr.Format(_("Error getting message detail."));
+			AfxMessageBox(omErr);
+		}
+
         // Add the message block
         bAddMsgInBlock();
         // Apply the changes
@@ -2435,13 +2459,13 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
                                               psMsgCurrentBlock );
                     if(psTxCurrentMsgList != NULL )
                     {
-                        psTxCurrentMsgList->m_psNextMsgDetails = psTxMsgList;
+                        psTxCurrentMsgList->m_psNextMsgDetails = psTxMsgList;						
                     }
                 }
                 else
                 {
                     psMsgCurrentBlock->m_psTxCANMsgList = psTxMsgList;
-                    //Enable Delete All for the first node insert only
+					//Enable Delete All for the first node insert only
                     // if transmission is off.
                     pomListView->m_omButtonDeleteAllMsg.EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG));
                 }
@@ -2464,16 +2488,16 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
                     pomListView->vUpdateMsgListDisplay(
                         psTxMsgList->m_sTxMsgDetails,
                         -1 );
-                }
+                }				
+				//int nRet = g_pouDIL_CAN_Interface->DILC_GetMsg(sTxMsg);
             }
             else
             {
                 bReturn = FALSE;
             }
         }
-    }
+    }	
     vUpdateStateDataBytes();
-
     return bReturn;
 }
 

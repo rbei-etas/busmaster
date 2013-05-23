@@ -168,6 +168,7 @@ BEGIN_MESSAGE_MAP(CChangeRegisters, CDialog)
     ON_NOTIFY(NM_CLICK, IDC_LIST_CHANNELS, OnClickListChannels)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CHANNELS, OnItemchangedListChannels)
     ON_NOTIFY(NM_DBLCLK, IDC_LIST_CHANNELS, OnDblclkListChannels)
+    ON_BN_CLICKED(IDC_CBTN_BLINK, OnCbtnBlink)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1903,6 +1904,21 @@ void CChangeRegisters::vUpdateControllerDetails()
         m_omEditWarningLimit.SetFocus();
         m_omEditWarningLimit.SetSel(0, -1,FALSE);
     }
+}
+
+/*******************************************************************************
+  Function Name  : OnCbtnBlink
+  Input(s)       : -
+  Output         : -
+  Functionality  : This function will be called when the user selects blink from
+                   the dialog
+  Member of      : CChangeRegisters
+  Author(s)      : Raja N
+  Date Created   : 7.3.2005
+  Modifications  :
+*******************************************************************************/
+void CChangeRegisters::OnCbtnBlink()
+{
 }
 
 /*******************************************************************************

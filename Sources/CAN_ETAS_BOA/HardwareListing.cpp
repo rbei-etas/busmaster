@@ -65,7 +65,7 @@
                   Implemented code review comments
 *******************************************************************************/
 CHardwareListing::CHardwareListing( INTERFACE_HW* psIntrHw,
-                                    int nSize, int* pnSelList, CWnd* pParent /*=NULL*/)
+                                    int nSize, int* pnSelList, CWnd* pParent /*=NULL*/, fnCallBackBlink fnBlink)
     : CDialog(CHardwareListing::IDD, pParent),
       m_nSize( nSize ),
       m_nSelectedItem( -1)
@@ -73,6 +73,7 @@ CHardwareListing::CHardwareListing( INTERFACE_HW* psIntrHw,
     //{{AFX_DATA_INIT(CHardwareListing)
     //}}AFX_DATA_INIT
     // Create Image List for Hardware
+    m_pfnBlinkFunction = fnBlink;
     m_omImageList.Create(IDR_BMP_NET, defSIGNAL_ICON_SIZE, 1, WHITE_COLOR);
     m_psHwInterface = psIntrHw;
     m_pnSelList = pnSelList;
@@ -93,6 +94,7 @@ CHardwareListing::CHardwareListing()
 {
     // This dialog will not work with out enough constructor parameters
     // Refer previous constructor for the parameter list
+    m_pfnBlinkFunction = NULL;
     ASSERT( FALSE );
 }
 
@@ -124,6 +126,7 @@ void CHardwareListing::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHardwareListing, CDialog)
     //{{AFX_MSG_MAP(CHardwareListing)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_HW_LIST, OnItemchangedHWList)
+    ON_BN_CLICKED(IDC_BUT_BLINK, OnBlinkHw)
     ON_BN_CLICKED(IDC_BUT_SELECT, OnButtonSelect)
     ON_BN_CLICKED(IDC_BUT_REMOVE, OnButtonRemove)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_SELECTED_HW_LIST, OnItemchangedLstcSelectedHwList)
@@ -292,6 +295,39 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
 
     }
 }
+
+/*******************************************************************************
+ Function Name  : OnBlinkHw
+ Input(s)       :  -
+ Output         :  -
+ Functionality  : This function will make the selected hardware LED to blink.
+                  This is done by sending the CAN_PARAM_USER_LOCATION_INFO
+                  string continously. The LED blink will indicate Hw access.
+ Member of      : CHardwareListing
+ Author(s)      : Raja N
+ Date Created   : 08.09.2004
+ Modifications  : Raja N on 14.3.2005
+                  Modified blinking logic. Now a temp net and client will be
+                  created. Temp Client will be connected with temp net so that
+                  LED in the hardware will blink and then will be disconnected.
+                  Temp resources will be freed then.
+ Modifications  : Raja N on 14.3.2005
+                  Modified function name to get free net handle
+ Modifications  : Raja N on 22.3.2005
+                  Modified as per testing. Refered item data for getting Hw
+                  index rather then item index.
+                  venkatanarayana Makam on 15.11.2011
+                  Reintrduced blink functionality
+*******************************************************************************/
+void CHardwareListing::OnBlinkHw()
+{
+    INT nIndex = (INT)m_omHardwareList.GetItemData( m_nSelectedItem );
+    if( m_pfnBlinkFunction != NULL)
+    {
+        m_pfnBlinkFunction(m_psHwInterface[nIndex]);
+    }
+}
+
 
 /*******************************************************************************
   Function Name  : OnButtonSelect
@@ -595,6 +631,19 @@ void CHardwareListing::vEnableDisableButtons()
         if( bHardwareDetailsEnable == FALSE )
         {
             pWnd->SetWindowText("");
+        }
+    }
+    // Blink Button
+    pWnd = GetDlgItem( IDC_BUT_BLINK );
+    if( pWnd != NULL )
+    {
+        if(bSelectEnable == FALSE || m_pfnBlinkFunction == NULL)
+        {
+            pWnd->EnableWindow( FALSE );//venkat
+        }
+        else
+        {
+            pWnd->EnableWindow( TRUE );
         }
     }
 }

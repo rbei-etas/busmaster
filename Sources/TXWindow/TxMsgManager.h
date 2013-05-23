@@ -36,6 +36,7 @@ public:
     // To clear memory used by the singleton object
     static BOOL s_bDeleteTxMsgManager();
     // Static Tx Thread Functions
+	UINT CTxMsgManager::s_unSendDefMsg(const STCAN_MSG& sTxMsg);
     // Thread proc for Send Selected Message Transmission
     static UINT s_unSendSelectedMsg(LPVOID pParam );
     // Thread proc for Timer Block Transmission

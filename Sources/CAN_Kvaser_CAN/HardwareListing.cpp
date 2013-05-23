@@ -129,6 +129,7 @@ void CHardwareListing::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CHardwareListing, CDialog)
     //{{AFX_MSG_MAP(CHardwareListing)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_HW_LIST, OnItemchangedHWList)
+    ON_BN_CLICKED(IDC_BUT_BLINK, OnBlinkHw)
     ON_BN_CLICKED(IDC_BUT_SELECT, OnButtonSelect)
     ON_BN_CLICKED(IDC_BUT_REMOVE, OnButtonRemove)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_SELECTED_HW_LIST, OnItemchangedLstcSelectedHwList)
@@ -297,6 +298,84 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
 
     }
 }
+
+/*******************************************************************************
+ Function Name  : OnBlinkHw
+ Input(s)       :  -
+ Output         :  -
+ Functionality  : This function will make the selected hardware LED to blink.
+                  This is done by sending the CAN_PARAM_USER_LOCATION_INFO
+                  string continously. The LED blink will indicate Hw access.
+ Member of      : CHardwareListing
+ Author(s)      : Raja N
+ Date Created   : 08.09.2004
+ Modifications  : Raja N on 14.3.2005
+                  Modified blinking logic. Now a temp net and client will be
+                  created. Temp Client will be connected with temp net so that
+                  LED in the hardware will blink and then will be disconnected.
+                  Temp resources will be freed then.
+ Modifications  : Raja N on 14.3.2005
+                  Modified function name to get free net handle
+ Modifications  : Raja N on 22.3.2005
+                  Modified as per testing. Refered item data for getting Hw
+                  index rather then item index.
+*******************************************************************************/
+void CHardwareListing::OnBlinkHw()
+{
+}
+//{
+//    // Get the Hardware index
+//    // Get the Item data. Don't refer the index directly as index can be changed
+//    // because of add/remove
+//    int nIndex = m_omHardwareList.GetItemData( m_nSelectedItem );
+//    // If it is valid
+//    if( nIndex != -1 )
+//    {
+//        char cBuff[ defUSB_PARAM_BUFFER_SIZE ];
+//
+//        SHWNETLIST sSelected = m_sHwNetList[ nIndex ];
+//        BOOL bNetCreated = FALSE;
+//        // If net is not yet created
+//        if( sSelected.m_hNet == 0 )
+//        {
+//            int nNetHandle = CHardwareInterface::s_podGetSingletonInstance()->
+//                            nGetFreeNetHandle();
+//            sSelected.m_hNet = static_cast<UCHAR>( nNetHandle );
+//            // Create a temporary network
+//            CAN_RegisterNet( sSelected.m_hNet ,
+//                             defSTR_TEMP_NET_NAME,
+//                             sSelected.m_hHw,
+//                             defBAUD_RATE );
+//            bNetCreated = TRUE;
+//        }
+//
+//        HCANCLIENT hClient;
+//        int nReturn;
+//        // Create Temp Client
+//        nReturn = CAN_RegisterClient( defSTR_TEMP_CLIENT_NAME, 0 , &hClient);
+//        // Set the Hardware in Listen only mode
+//        CAN_SetHwParam( sSelected.m_hHw, CAN_PARAM_LISTEN_ONLY, TRUE );
+//        // Get the network Name
+//        CAN_GetNetParam( sSelected.m_hNet, CAN_PARAM_NAME, cBuff,
+//                           defUSB_PARAM_BUFFER_SIZE );
+//        HCANNET hRetNet;
+//        // Connect to the net. Wait for LED to blink and then disconnect
+//        CAN_ConnectToNet( hClient, cBuff, &hRetNet );
+//        Sleep(250);
+//        CAN_DisconnectFromNet( hClient, sSelected.m_hNet );
+//
+//        // Set the Hardware in Listen only mode
+//        CAN_SetHwParam( sSelected.m_hHw, CAN_PARAM_LISTEN_ONLY, FALSE );
+//        // Delete the Client
+//        CAN_RemoveClient( hClient );
+//
+//        // Delete Temp net if created
+//        if( bNetCreated == TRUE )
+//        {
+//            CAN_RemoveNet( sSelected.m_hNet );
+//        }
+//    }
+//}
 
 /*******************************************************************************
   Function Name  : OnButtonSelect
@@ -600,6 +679,12 @@ void CHardwareListing::vEnableDisableButtons()
             pWnd->SetWindowText( STR_EMPTY );
         }
     }
+    // Blink Button
+    pWnd = GetDlgItem( IDC_BUT_BLINK );
+    if( pWnd != NULL )
+    {
+        pWnd->EnableWindow( FALSE);/*Kadoor bHardwareDetailsEnable );*/
+    }
 }
 
 /******************************************************************************
@@ -718,9 +803,11 @@ void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResu
     vEnableDisableButtons();
     *pResult = 0;
 }
+
 void CHardwareListing::vSortHardwareItems()
 {
     // clear map data
+
     if(mHardwareListMap.size() > 0 )
     {
         mHardwareListMap.clear();

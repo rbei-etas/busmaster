@@ -89,4 +89,5 @@ echo CHM was not build. I try again.
 hhc out\help.hhp
 
 :END
+pause
 exit 0

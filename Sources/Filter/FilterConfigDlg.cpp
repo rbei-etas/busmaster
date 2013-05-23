@@ -33,12 +33,16 @@
 /* Project includes */
 #include "Filter_resource.h"
 #include "Include/CanUsbDefs.h"
+#include "DIL_Interface/BaseDIL_CAN.h"
 #include "FilterConfigDlg.h"        // For Filter Configuration Dialog
 #include "Utility\MultiLanguageSupport.h"
 
 
 #define defNAMED_FILTER_LIST_COLUMNS            2
 #define defFILTER_DETAILS_LIST_COLUMNS          6
+
+//DIL Interface
+static CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL;
 
 
 UINT unGetMsgIDFromName(CString omMsgName)
@@ -2098,7 +2102,7 @@ void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
  */
 void CFilterConfigDlg::OnOkPress()
 {
-    // Close the dialog with OK return
+	// Close the dialog with OK return
     CDialog::OnOK();
 }
 

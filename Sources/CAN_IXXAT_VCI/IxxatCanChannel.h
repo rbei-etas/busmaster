@@ -54,6 +54,7 @@ public:
     HRESULT AccessController(BYTE byChannelNumber);
     HRESULT ReleaseController();
     HRESULT InitController();
+    HRESULT ResetController();
     HRESULT StartController();
     HRESULT StopController();
     HRESULT GetStatus(s_STATUSMSG* pStatusData);

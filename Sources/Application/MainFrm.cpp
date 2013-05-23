@@ -269,7 +269,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_TRACE_WND, OnTraceWnd)
     ON_MESSAGE(IDM_TRACE_WND, OnMessageTraceWnd)
     ON_UPDATE_COMMAND_UI(IDM_TRACE_WND, OnUpdateTraceWnd)
+    ON_COMMAND(IDM_CHECK_HW_INTERFACE, OnCheckHwInterface)
+    ON_COMMAND(IDM_PARALLEL_PORT_EPP, OnParallelPortEpp)
+    ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_EPP, OnUpdateParallelPortEpp)
+    ON_COMMAND(IDM_PARALLEL_PORT_NONEPP, OnParallelPortNonepp)
+    ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_NONEPP, OnUpdateParallelPortNonepp)
+    ON_COMMAND(IDM_FUNCTIONS_RESET_HARDWARE, OnFunctionsResetHardware)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_BAUDRATE, OnUpdateConfigureBaudrate)
+    ON_UPDATE_COMMAND_UI(IDM_CHECK_HW_INTERFACE, OnUpdateCheckHwInterface)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnDisplayAbsoluteTime)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnUpdateDisplayAbsolutetime)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, OnDisplayRelativetime)
@@ -279,6 +286,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME,OnEnableTimeStampButton)
     ON_WM_SIZE()
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnUpdateSignalWatchWnd)
+    ON_UPDATE_COMMAND_UI(IDM_FUNCTIONS_RESET_HARDWARE, OnUpdateFunctionsResetHardware)
     ON_COMMAND(IDM_GRAPH_WND, OnGraphWindow)
     ON_UPDATE_COMMAND_UI(IDM_GRAPH_WND, OnUpdateGraphWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
@@ -298,6 +306,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnClickMruList)
     ON_UPDATE_COMMAND_UI_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnUpdateMruList)
     ON_MESSAGE(WM_FILE_DISCONNECT,vDisconnect)
+    ON_MESSAGE(WM_RESET_CONTROLLER,vResetController)
     ON_MESSAGE(WM_SET_WARNING_LIMIT_VAR,vSetWarningLimitVar)
     ON_MESSAGE(WM_KEY_PRESSED_MSG_WND,vKeyPressedInMsgWnd)
     ON_MESSAGE(WM_NOTIFICATION_FROM_OTHER, vNotificationFromOtherWin)
@@ -2241,33 +2250,36 @@ void CMainFrame::OnConfigChannelSelection()
 {
     INT nCount = CHANNEL_ALLOWED;
     HRESULT hResult = S_FALSE;
+	if(m_nNumChannels >= 1)
+	{
+		/* Deselect hardware interfaces if selected */
+		hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
 
-    /* Deselect hardware interfaces if selected */
-    hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
+		if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
+		{
+			hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+			if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
+			{
+				/* Updates the number of channels selected */
+				m_nNumChannels = nCount;
 
-    if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
-    {
-        hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
-        if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
-        {
-            /* Updates the number of channels selected */
-            m_nNumChannels = nCount;
+				//Update hardware info in status bar
+				vUpdateHWStatusInfo();
 
-            //Update hardware info in status bar
-            vUpdateHWStatusInfo();
+				//Update NW statistics window channel information
+				vUpdateChannelInfo();
 
-            //Update NW statistics window channel information
-            vUpdateChannelInfo();
-
-            // Update controller information
-            g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails, nCount);
-        }
-    }
-    else
-    {
-        /* Select previously available channels */
-        g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
-    }
+				// Update controller information
+				g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails, nCount);
+			}
+		}
+		else
+		{
+			/* Select previously available channels */
+			hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+			// Display a message in a new window
+		}
+	}
 }
 
 void CMainFrame::OnUpdateConfigChannelSelection(CCmdUI* pCmdUI)
@@ -3758,7 +3770,6 @@ void CMainFrame::OnSelectMessage()
     }
 
     HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedCAN, psMsgEntry, CAN, (UINT)lParam, this);
-
     SMSGENTRY::vClearMsgList(psMsgEntry);
     psMsgEntry = NULL;
 
@@ -9536,6 +9547,34 @@ BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
 }
 
 /******************************************************************************
+    Function Name    :  vResetController
+    Input(s)         :  wParam : Indicate if hardware reset or software reset.
+    Output           :
+    Functionality    :  This function will Reset the Controller. It calls
+                        OnRestartController() member function.
+    Member of        :  CMainFrame
+    Friend of        :      -
+    Author(s)        :  Ravikumar Patil
+    Date Created     :  28.02.2003
+    Modifications    :  Amitesh Bharti, 02.08.2004, The parameter wParam will
+                        indicate if it is hardware reset or software reset.
+                        Appropriate function is called for both cases.
+******************************************************************************/
+LRESULT CMainFrame::vResetController(WPARAM wParam, LPARAM )
+{
+    BOOL bHardwareReset = static_cast<BOOL>(wParam);
+    if(bHardwareReset == FALSE )
+    {
+        //        OnRestartController() ;
+    }
+    else
+    {
+        OnFunctionsResetHardware();
+    }
+    return 0;
+}
+
+/******************************************************************************
     Function Name    :  bSetControllerMode
     Input(s)         :  bbMode, New controller Mode
     Output           :
@@ -9807,7 +9846,219 @@ void CMainFrame::OnUpdateTraceWnd(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_bNotificWndVisible);
 }
+/******************************************************************************/
+/*  Function Name    :  OnCheckHwInterface                                    */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user selects to      */
+/*                      check hardware Interface. User will be promted to take*/
+/*                      action to change the mode of parallel port or connect */
+/*                      dongle if it is not connected.                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  26.03.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
+/*                      Layer functions to check the hardware presence        */
+/*  Modifications    :  Raja N at 09.03.2005                                  */
+/*                      Added code to support multi channel                   */
+/******************************************************************************/
+void CMainFrame::OnCheckHwInterface()
+{
+    CString omStrMsg = STR_EMPTY;
+    LONG nIconType = MB_ICONINFORMATION;
+    // Get the selected hardware status from Hardware interface layer
+    HRESULT hReturn = S_OK;
+    LONG lParam = 0;
+    INT unHwCount = 0;
 
+    if (g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, NULL, NUMBER_HW ) == S_OK)
+    {
+        unHwCount = (INT)lParam;
+    }
+    // Parse the array to get individual result
+    for( UINT ucIndex = 0; ucIndex < (UINT)unHwCount; ucIndex++ )
+    {
+        hReturn |= g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, ucIndex, CON_TEST );
+        // If passed
+        if( (BOOL)lParam == TRUE )
+        {
+            CString omStr;
+            // Format pass message
+            omStr.Format( _(defSTR_CHANNEL_TEST_PASS_FORMAT), ucIndex + 1);
+            // Add with the result
+            omStrMsg += omStr;
+        }
+        // If Failed
+        else
+        {
+            CString omStr;
+            // Format the fail message
+            omStr.Format( _(defSTR_CHANNEL_TEST_FAIL_FORMAT), ucIndex + 1);
+            // Add with the result
+            omStrMsg += omStr;
+        }
+    }
+
+    // If Hardware not present then display approp. error message
+    if(hReturn != S_OK)
+    {
+        // Set the critical Icon
+        nIconType = MB_ICONSTOP;
+        // Add error message at the end
+        omStrMsg += NEW_LINE;
+        omStrMsg += _(defHARDWARE_ERROR_MSG);
+    }
+    else
+    {
+        // Append success message at the end
+        omStrMsg += NEW_LINE;
+        omStrMsg += _(defSTR_HW_TEST_SUCCESS);
+    }
+    // Display the information
+    if(theApp.m_bFromAutomation == FALSE)
+    {
+        AfxMessageBox(omStrMsg, nIconType, 0);
+    }
+}
+/******************************************************************************/
+/*  Function Name    :  OnParallelPortNonepp                                  */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user select to change*/
+/*                      the parallel port mode to EPP. It will set the mode to*/
+/*                      EPP and prompt the user for success/failure.          */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  26.03.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
+/*                      Layer functions to set parallel port mode             */
+/*  Modifications    :  Raja N on 13.09.2004, Modified the code to set the port
+/*                      mode first and update registry and flag status only on*/
+/*                      success condition                                     */
+/******************************************************************************/
+void CMainFrame::OnParallelPortEpp()
+{
+}
+/******************************************************************************/
+/*  Function Name    :  OnUpdateParallelPortEpp                               */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  26.03.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
+/*                      this menuitem in case of USB build                    */
+/******************************************************************************/
+void CMainFrame::OnUpdateParallelPortEpp(CCmdUI* /*pCmdUI*/)
+{
+}
+/******************************************************************************/
+/*  Function Name    :  OnParallelPortNonepp                                  */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user select to change*/
+/*                      the parallel port mode to nonEPP. It will set the mode*/
+/*                      to NonEPP and prompt the user for success/failure     */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  26.03.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
+/*                      Layer functions to set parallel port mode             */
+/*  Modifications    :  Raja N on 13.09.2004, Modified the code to set the port
+/*                      mode first and update registry and flag status only on*/
+/*                      success condition                                     */
+/******************************************************************************/
+void CMainFrame::OnParallelPortNonepp()
+{
+}
+/******************************************************************************/
+/*  Function Name    :  OnUpdateParallelPortEpp                               */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  26.03.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
+/*                      this menuitem in case of USB build                    */
+/******************************************************************************/
+void CMainFrame::OnUpdateParallelPortNonepp(CCmdUI* /*pCmdUI*/)
+{
+}
+/******************************************************************************/
+/*  Function Name    :  OnFunctionsResetHardware                              */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user selects hardware*/
+/*                      reset menu menu item. It will give a hardware reset to*/
+/*                      controller and set controller to same state it was    */
+/*                      before hardware reset.                                */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  01.04.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
+/*                      Layer functions                                       */
+/*  Modifications    :  Raja N on 14.03.2005, Modified the new bus statistics */
+/*                      pointer and added check before access. Added support  */
+/*                      for multi channel hardware reset and error counter    */
+/*                      update                                                */
+/*  Modifications    :  Raja N on 21.03.2005, Implemented code review points  */
+/******************************************************************************/
+void CMainFrame::OnFunctionsResetHardware()
+{
+    CFlags* podFlag  = NULL;
+
+    podFlag  =  theApp.pouGetFlagsPtr();
+    if (podFlag != NULL)
+    {
+        // Reset statistics calculation content
+        GetICANBusStat()->BSC_ResetBusStatistic();
+        // Reset the hardware using HIL function
+        // If unsuccessful error messages will be displayed from HIL
+        BOOL bConnected = podFlag->nGetFlagStatus(CONNECTED);
+        if (bConnected == TRUE)
+        {
+            OnFileConnect(); //First disconnect
+            g_pouDIL_CAN_Interface->DILC_ResetHardware();
+        }
+        // Update error hander execution. There could be possible change in
+        // Controller status.
+        // Get number of hardware connected with the system
+        UINT unTotalChannels = 0;
+        LONG lParam = 0;
+        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+        {
+            unTotalChannels = (INT)lParam;
+        }
+        // Get the error counter of each hardware and call error handling
+        // procedure
+        for( UINT unChannel = 0; unChannel < unTotalChannels; unChannel++ )
+        {
+            if( g_pouDIL_CAN_Interface->DILC_GetErrorCount(m_sErrorCount, unChannel, ERR_CNT) == S_OK)
+            {
+                // Make Channel specific error code
+                WORD nErrorWord = MAKEWORD( ERROR_BUS , unChannel );
+                // Call error handler function to process
+                OnErrorMessageProc( nErrorWord,
+                                    MAKEWORD(m_sErrorCount.m_ucRxErrCount,
+                                             m_sErrorCount.m_ucTxErrCount));
+            }
+        }
+    }
+}
 /******************************************************************************/
 /*  Function Name    :  OnUpdateConfigureBaudrate                             */
 /*  Input(s)         :  CCmdUI* pCmdUI                                        */
@@ -9954,6 +10205,47 @@ CMenu* CMainFrame::GetSubMenu(CString MenuName)
     return Submenu;
 }
 
+/******************************************************************************/
+/*  Function Name    :  OnUpdateCheckHwInterface                              */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  07.05.2003                                            */
+/*  Modifications    :  Raja N on 08.09.2004, This menu item will be disabled */
+/*                      if the available hardware is zero.                    */
+/******************************************************************************/
+void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI)
+{
+    if(pCmdUI != NULL )
+    {
+        BOOL bDisable = TRUE;
+        // Check the number of hardware found during startup
+        LONG lParam = 0;
+        INT nNoOfHw = 0;
+        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+        {
+            nNoOfHw = (INT)lParam;
+        }
+        if( nNoOfHw > 0 )
+        {
+            // If some hardware present then enable this item if the tool is not
+            // connected
+            CFlags* pouFlags = theApp.pouGetFlagsPtr();
+            if(pouFlags != NULL )
+            {
+                bDisable = pouFlags->nGetFlagStatus( CONNECTED );
+            }
+        }
+        // Set the enable value
+        pCmdUI->Enable(bDisable);
+    }
+}
 /******************************************************************************/
 /*  Function Name    : vToolBarDropDownMenu                                   */
 /*  Input(s)         : UINT unControlID, int nButtonIndex                     */
@@ -10658,6 +10950,49 @@ LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
             break;
     }
     return 0;
+}
+
+
+
+
+/******************************************************************************/
+/*  Function Name    :  OnUpdateFunctionsResetHardware                        */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else. This handler will disable the menuitem */
+/*                      if the controller mode is simulation to avoid hardware*/
+/*                      reset.                                                */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Raja N                                                */
+/*  Date Created     :  03.09.2004                                            */
+/*  Modification By  :                                                        */
+/*  Modification on  :                                                        */
+/******************************************************************************/
+void CMainFrame::OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI)
+{
+    if(pCmdUI != NULL )
+    {
+        UCHAR ucControllerMode = 0;
+        // Check the mode
+        LONG lParam = 0;
+        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
+        {
+            ucControllerMode = (UCHAR)lParam;
+        }
+        // If it is simulation then disable this menuitem.
+        if( ucControllerMode == defMODE_SIMULATE )
+        {
+            pCmdUI->Enable( FALSE );
+        }
+        else
+        {
+            pCmdUI->Enable( TRUE );
+        }
+    }
 }
 
 /******************************************************************************/
@@ -16818,6 +17153,11 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             {
                 hRetVal = S_FALSE;
             }
+        }
+        break;
+        case RESET_HARDWARE_CONTROLLER:
+        {
+            OnFunctionsResetHardware();
         }
         break;
         default:

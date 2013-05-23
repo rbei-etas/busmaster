@@ -344,6 +344,35 @@ HRESULT CIxxatCanChannel::InitController()
 
 /**
  * @brief
+ *  Stop and resets the controller.
+ *
+ * @return
+ *  HW_INTERFACE_NO_SEL - No controller selected.
+ *  ERR_INITDAT_CONFIRM_CONFIG - Error while calling driver function.
+ *  S_OK - Success.
+ *
+ */
+HRESULT CIxxatCanChannel::ResetController()
+{
+    HRESULT hResult = HW_INTERFACE_NO_SEL;
+    if (m_hCANControl)
+    {
+        StopController();
+        hResult = DYNCALL(canControlReset)( m_hCANControl );
+
+        if (VCI_OK != hResult)
+        {
+            hResult = ERR_INITDAT_CONFIRM_CONFIG;
+        }
+        m_byCtrlInitialized = FALSE;
+        m_dwRxErrorFrameCounter = 0;
+    }
+    return hResult;
+}
+
+
+/**
+ * @brief
  *  Starts bus access with controller.
  *  The controller must accessed and initialized with
  *  AccessController() and InitController().

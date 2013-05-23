@@ -34,6 +34,9 @@ Not implemented. No sample what to do, and never called.
 CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString
 Not implemented. No sample what to do, and never called.
 
+CDIL_CAN_IXXAT_VCI::CAN_FilterFrames
+Not implemented. No sample what to do, and never called.
+
 CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams
 Check if this is correct. Only copied from another DLL.
 

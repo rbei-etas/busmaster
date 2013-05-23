@@ -195,11 +195,9 @@ typedef struct tagFormattedData_CAN
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
+} SFORMATTEDDATA_CAN;
 
-
-};
-
-typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
+//typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
 
 typedef struct sWMUpdatePtrPara
 {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="BUSMASTER"
 	ProjectGUID="{B3C78624-42F9-4A8D-9572-16D17F52DC14}"
 	RootNamespace="CAN_Monitor"
@@ -189,7 +189,7 @@
 				OutputFile="$(SolutionDir)/bin/$(OutDir)/BUSMASTER.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
+				AdditionalLibraryDirectories="&quot;C:\Users\gmerchat\Downloads\busmaster-master\Sources\BIN\Libs\Release&quot;;C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
 				GenerateManifest="true"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"

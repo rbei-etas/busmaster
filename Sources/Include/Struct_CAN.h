@@ -147,6 +147,7 @@ private:
         m_bAccFilterMode    = objRef.m_bAccFilterMode;
         m_ucControllerMode  = objRef.m_ucControllerMode;
         m_bSelfReception    = objRef.m_bSelfReception;
+		m_bLowSpeed			= objRef.m_bLowSpeed;
 
         /* CAN FD related parameters */
         m_unDataBitRate                 = objRef.m_unDataBitRate;
@@ -192,6 +193,7 @@ public:
     int     m_bAccFilterMode;                    // acceptance filter mode(0: single, 1: Dual)
     int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
     int     m_bSelfReception;
+	int		m_bLowSpeed;
 
     /* CAN FD related parameters */
     UINT32  m_unDataBitRate;
@@ -228,11 +230,11 @@ public:
     {
         // The default baudrate is taken as 500 kbps
         m_nItemUnderFocus = 64;
-        m_nBTR0BTR1 = 49210;
+        m_nBTR0BTR1 = 58;
         m_omStrCNF1 = "7";
         m_omStrCNF2 = "B8";
         m_omStrCNF3 = "5";
-        m_omStrBTR0 = "C0";
+        m_omStrBTR0 = "00";
         m_omStrBTR1 = "3A";
         m_omStrBaudrate = "500000";
         m_omStrClock = "16";
@@ -240,7 +242,7 @@ public:
         m_omStrSampling = "1";
         m_omStrWarningLimit = "96";
         m_omStrPropagationDelay = "ALL";
-        m_omStrSjw = "4";
+        m_omStrSjw = "1";
         m_omStrAccCodeByte1[0] = "0";
         m_omStrAccCodeByte2[0] = "0";
         m_omStrAccCodeByte3[0] = "0";
@@ -267,6 +269,7 @@ public:
         m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
         m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
         m_bSelfReception = TRUE;
+		m_bLowSpeed = FALSE;
 
         /* CAN FD related parameters */
         m_unDataBitRate                 = 2000000;
@@ -279,7 +282,7 @@ public:
         m_bytTxCompatibility            = 1;    //OCI_CANFD_TX_USE_DBR
     }
     //MVN
-    void LoadControllerConfigData(xmlNodePtr& pNodePtr)
+    void LoadControllerConfigData(xmlNodePtr& /*pNodePtr*/)
     {
     }
     //~MVN
@@ -290,6 +293,7 @@ public:
         COPY_DATA_2(&m_bAccFilterMode, pbyTemp, sizeof(INT));
         COPY_DATA_2(&m_ucControllerMode, pbyTemp, sizeof(INT));
         COPY_DATA_2(&m_bSelfReception, pbyTemp, sizeof(INT));
+		COPY_DATA_2(&m_bLowSpeed, pbyTemp, sizeof(INT));
         COPY_DATA_2(&m_enmHWFilterType[0], pbyTemp, sizeof(eHW_FILTER_TYPES));
         COPY_DATA_2(&m_enmHWFilterType[1], pbyTemp, sizeof(eHW_FILTER_TYPES));
 
@@ -325,7 +329,7 @@ public:
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
         chTemp[nSize] = '\0';
         m_omStrBaudrate = chTemp;
-        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        float fBaudRate = (float)atof(m_omStrBaudrate.c_str());
         fBaudRate *=  1000;   //convert from Kbps to bps
         std::stringstream ss;
         ss << fBaudRate;
@@ -448,7 +452,7 @@ public:
     }
     void GetControllerConfigSize(int& nSize)
     {
-        int nStrSize;
+        //int nStrSize;
         nSize = 34 * sizeof(int);
         nSize += 2 * sizeof(eHW_FILTER_TYPES);
         nSize += m_omStrCNF1.length();;
@@ -484,7 +488,7 @@ public:
 
     void SaveConfigDataToXML(xmlNodePtr pNodePtr)
     {
-        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        float fBaudRate = (float)atof(m_omStrBaudrate.c_str());
         // if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
         {
             fBaudRate = fBaudRate/1000;    //convert to Kbps before saving to XML
@@ -611,33 +615,39 @@ public:
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "SelfReception", BAD_CAST strVar);
 
-        stringstream stream5;
-        stream5 << (int)m_enmHWFilterType[0];
+		stringstream stream5;
+        stream5 << m_bLowSpeed;
         strData = stream5.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "LowSpeed", BAD_CAST strVar);
+
+        stringstream stream6;
+        stream6 << (int)m_enmHWFilterType[0];
+        strData = stream6.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_0", BAD_CAST strVar);
 
-        stringstream stream6;
-        stream6 << (int)m_enmHWFilterType[1];
-        strData = stream6.str();
+        stringstream stream7;
+        stream7 << (int)m_enmHWFilterType[1];
+        strData = stream7.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_1", BAD_CAST strVar);
 
-        stringstream stream7;
-        stream7 << m_bDebug;
-        strData = stream7.str();
+        stringstream stream8;
+        stream8 << m_bDebug;
+        strData = stream8.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "Debug", BAD_CAST strVar);
 
-        stringstream stream8;
-        stream8 << m_bPassiveMode;
-        strData = stream8.str();
+        stringstream stream9;
+        stream9 << m_bPassiveMode;
+        strData = stream9.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "PassiveMode", BAD_CAST strVar);
 
-        stringstream stream9;
-        stream9 << m_bHWTimestamps;
-        strData = stream9.str();
+        stringstream stream10;
+        stream10 << m_bHWTimestamps;
+        strData = stream10.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWTimestamps", BAD_CAST strVar);
 
@@ -655,6 +665,8 @@ public:
         COPY_DATA(pbyTemp, &m_ucControllerMode,  sizeof(INT));
         nSize += nIntSize;
         COPY_DATA(pbyTemp, &m_bSelfReception,  sizeof(INT));
+        nSize += nIntSize;
+		COPY_DATA(pbyTemp, &m_bLowSpeed,  sizeof(INT));
         nSize += nIntSize;
         COPY_DATA(pbyTemp, &m_enmHWFilterType[0],  sizeof(eHW_FILTER_TYPES));
         nSize += sizeof(eHW_FILTER_TYPES);
@@ -995,8 +1007,7 @@ private:
 
 public:
     unsigned char    m_ucDataType;  //Type of the message
-    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
-    //QueryPerf..Counter()
+    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from QueryPerf..Counter()
     STDATAINFO       m_uDataInfo;
 
     static void vSetSortField(int nField);

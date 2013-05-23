@@ -965,6 +965,7 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
             if( hResult == S_OK && IS_A_MESSAGE( sInfo.m_ucDataType ) )
             {
                 //HRESULT hRet =
+				g_pouDIL_CAN_Interface->DILC_GetMsg(sInfo.m_uDataInfo.m_sCANMsg);
                 g_pouDIL_CAN_Interface->DILC_SendMsg(m_dwClientID, sInfo.m_uDataInfo.m_sCANMsg);
             }
         }

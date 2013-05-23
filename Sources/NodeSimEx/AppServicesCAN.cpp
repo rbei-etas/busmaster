@@ -62,6 +62,11 @@ UINT gunSendMsg_CAN(STCAN_TIME_MSG* psTxMsg, HMODULE hModule)
     return Return;
 }
 
+void gvResetController_CAN(BOOL bEnable)
+{
+    ::SendMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)RESET_HARDWARE_CONTROLLER,(LPARAM)bEnable);
+}
+
 /******************************************************************************
     Function Name    :  gvControllerMode
     Input(s)         :  bNewMode, new mode
