@@ -115,9 +115,9 @@ VCI::~VCI()
  * \retval PDU_STATUS_NOERROR		Function call successful.
  * \retval PDU_ERR_FCT_FAILED		Function call failed.
  */
-T_PDU_ERROR VCI::Connect()
+T_IVIEW_STATUS VCI::Connect()
 {
-	T_PDU_ERROR Err = PDU_ERR_FCT_FAILED;
+	T_IVIEW_STATUS Err = IVIEW_ERR_FCT_FAILED;
 
 	if (m_VCiIF->Connected())
 		return Err;
@@ -134,13 +134,13 @@ T_PDU_ERROR VCI::Connect()
 		Err = m_VCiIF->Connect( VCI_PROTO_RAW,
 			VCI_PHYS_ISO11898_2, PinHi, PinLo,
 			VCI_TERM_NONE, m_Baudrate, VCI_DEFAULT_BLOCK_ALL );
-		if( Err == PDU_STATUS_NOERROR ){
+		if( Err == IVIEW_NOERROR ){
 			Err = m_VCiIF->IOCtl(VCI_FIOTXNOTIFY, VCI_TX_ECHO);
 		}
 		vector<pFilter_t>::iterator i=m_Filters.begin();
 		for (; i!=m_Filters.end(); i++ ){
 			UNUM32 Id;
-			if ((Err==PDU_STATUS_NOERROR) && ((*i)->Type()==VCI_PASS_FILTER)){
+			if ((Err==IVIEW_NOERROR) && ((*i)->Type()==VCI_PASS_FILTER)){
 				Err = m_VCiIF->AddFilter((*i)->Type(),(*i)->Flags(),(*i)->Size(),
 					(*i)->Pattern(), (*i)->Mask(),0,NULL,Id);
 				(*i)->Id(Id);
@@ -158,11 +158,11 @@ T_PDU_ERROR VCI::Connect()
 		QueryPerformanceCounter(&TickNow);
 		QueryPerformanceFrequency(&Div);
 		UNUM32 Offset = (UNUM32)(((TickNow.QuadPart - m_TickBase.QuadPart)*1000000)/Div.QuadPart);
-		if( Err == PDU_STATUS_NOERROR ){
+		if( Err == IVIEW_NOERROR ){
 			Err = m_VCiIF->IOCtl(VCI_FIOTIMESTAMP, (UNUM32)Offset);
 		}
 	}
-	if (Err == PDU_STATUS_NOERROR){
+	if (Err == IVIEW_NOERROR){
 		m_ConnRef++;
 	}
 	return Err;
@@ -170,20 +170,20 @@ T_PDU_ERROR VCI::Connect()
 
 /** Disconnect
  * \brief Disconnect CAN controller from the bus
- * \return T_PDU_ERROR
- * \retval PDU_STATUS_NOERROR		Function call successful.
- * \retval PDU_ERR_FCT_FAILED		Function call failed.
+ * \return T_IVIEW_STATUS
+ * \retval IVIEW_NOERROR		Function call successful.
+ * \retval IVIEW_ERR_FCT_FAILED		Function call failed.
  */
-T_PDU_ERROR VCI::Disconnect()
+T_IVIEW_STATUS VCI::Disconnect()
 {
-	T_PDU_ERROR Err = PDU_ERR_FCT_FAILED;
+	T_IVIEW_STATUS Err = IVIEW_ERR_FCT_FAILED;
 
 	if (!m_VCiIF->Connected())
 		return Err;
 
 	m_VCiIF->DelFilter((UNUM32)VCI_FILTER_DELETE_ALL);
 	Err = m_VCiIF->Disconnect();
-	if (Err == PDU_STATUS_NOERROR){
+	if (Err == IVIEW_NOERROR){
 		if (--m_ConnRef == 0){
 			m_TickBase.QuadPart = 0;
 		}
@@ -267,7 +267,7 @@ CDIL_CAN_i_VIEW::CDIL_CAN_i_VIEW() :
 	m_CreateCCommTCP(NULL),
 	m_CreateCVCiViewIF(NULL),
 	m_hDll( NULL ),
-	m_CmDNS(NULL),
+	m_iViewBrowser(NULL),
 	m_CurrState(STATE_DRIVER_UNLOADED),
 	m_hOwnerWnd(NULL),
 	m_nChannels(0)
@@ -308,8 +308,8 @@ void CDIL_CAN_i_VIEW::GetSystemErrorString()
  * \details
  * 	Receive notifications for servers providing the requested service
  */
-void CDIL_CAN_i_VIEW::mDNSResolver(
-	mDNS_Event_t	State,
+void CDIL_CAN_i_VIEW::iViewResolver(
+	iVIEW_Event_t	State,
 	std::string&	Service,
 	std::string&	/* Type */,
 	std::string&	/* Hostname */,
@@ -319,7 +319,7 @@ void CDIL_CAN_i_VIEW::mDNSResolver(
 {
 	UNUM32		ModuleTypeId=0;
 	EnterCriticalSection(&m_Mutex);
-	if( State == MDNS_SERVICE_ADD ){
+	if( State == iVIEW_SERVICE_ADD ){
 		FromStringInMap(API_DNS_SD_TXT_MOD_TYP_ID,
 				TxtList, ModuleTypeId);
 		for( int CAN=0; CAN<2; CAN++ ){
@@ -699,7 +699,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_StartHardware(void)
 	for (UINT i = 0; i < m_nChannels; i++){
 		pVCI_t pVCI = m_VCI[m_SelectedVCI[i]];
 		if( pVCI && !pVCI->VCiIF()->Connected() ){
-			if (pVCI->Connect() != PDU_STATUS_NOERROR){
+			if (pVCI->Connect() != IVIEW_NOERROR){
 				hResult = S_FALSE;
 			}
 		}
@@ -811,8 +811,8 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformInitOperations(void)
 		STATE_DRIVER_LOADED, ERR_IMPROPER_STATE);
 
 	InitializeCriticalSection(&m_Mutex);
-	m_CmDNS = m_CreatemDNS( API_MDNS_SERVICE_TYPE, this );
-	m_CmDNS->Start();
+	m_iViewBrowser = m_CreateBrowser( API_MDNS_SERVICE_TYPE, this );
+	m_iViewBrowser->Start();
 	//Initialize the selected channel items array to -1
 	for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ ){
 		m_SelectedVCI[i] = -1;
@@ -848,9 +848,9 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformClosureOperations(void)
 		CAN_RegisterClient(FALSE, Id, NULL);
 	}
 
-	if (m_CmDNS){
-		m_CmDNS->Stop();
-		delete m_CmDNS;
+	if (m_iViewBrowser){
+		m_iViewBrowser->Stop();
+		delete m_iViewBrowser;
 	}
 
 	if( m_CurrState == STATE_CONNECTED ){
@@ -967,11 +967,11 @@ HRESULT CDIL_CAN_i_VIEW::CAN_LoadDriverLibrary(void)
 		g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _T( iVIEW_DLL " loading failed" ));
 		return ERR_LOAD_DRIVER;
 	}
-	m_CreatemDNS = (CreatemDNS_t)GetProcAddress(m_hDll,"CreatemDNS");
+	m_CreateBrowser = (CreateBrowser_t)GetProcAddress(m_hDll,"CreateBrowser");
 	m_CreateCCommTCP = (CreateCCommTCP_t)GetProcAddress(m_hDll,"CreateCCommTCP");
 	m_CreateCVCiViewIF = (CreateCVCiViewIF_t)GetProcAddress(m_hDll,"CreateCVCiViewIF");
 	m_CurrState = STATE_DRIVER_LOADED;
-	return S_OK;
+	return (m_CreateBrowser && m_CreateCCommTCP && m_CreateCVCiViewIF ) ? S_OK : S_FALSE;
 }
 
 /**
@@ -1099,7 +1099,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_FilterFrames(
  * VCI Rx Data
  * Process incomming frames.
  */
-T_PDU_ERROR CDIL_CAN_i_VIEW::RxData(
+void CDIL_CAN_i_VIEW::RxData(
 		UNUM32				Id,
 		vci_data_record_with_data*	VCIRec )
 {
@@ -1146,14 +1146,12 @@ T_PDU_ERROR CDIL_CAN_i_VIEW::RxData(
 		}
 		pClientItr->second->WriteClientBuffers(CanData);
 	}
-
-	return PDU_STATUS_NOERROR;
 }
 /**
  * VCI Rx Event
  * Process incomming events
  */
-T_PDU_ERROR CDIL_CAN_i_VIEW::RxEvent(
+void CDIL_CAN_i_VIEW::RxEvent(
 		UNUM32				Id,
 		vci_event_record_s*		VCIEvent )
 {
@@ -1202,6 +1200,4 @@ T_PDU_ERROR CDIL_CAN_i_VIEW::RxEvent(
 			continue;
 		pClientItr->second->WriteClientBuffers(CanData);
 	}
-
-	return PDU_STATUS_NOERROR;
 }

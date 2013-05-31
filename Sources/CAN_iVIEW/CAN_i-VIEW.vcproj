@@ -130,7 +130,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;&quot;$(D_PDU_API_PRJ_DIR)\lib&quot;;&quot;$(D_PDU_API_PRJ_DIR)\include&quot;;&quot;$(D_PDU_3RD_LIBS)\mDNSResponder-333.10\mDNSShared&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;&quot;$(D_PDU_3RD_LIBS)\mDNSResponder-333.10\mDNSShared&quot;;."
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"

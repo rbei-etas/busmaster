@@ -122,6 +122,70 @@ template<class T>
 }
 
 /**
+ * SetVal
+ * \brief Set a value from a string
+ * \detail
+ *	Set the value of the template input based on the supplied
+ *      source string.  Will sanity check the validity of the data
+ *	where applicable (through specialisation) and indicate whether it was
+ *	successful
+ * \param Tgt		reference to the variable we wish to set
+ * \param SourceStr	Source string we are converting
+ */
+template<class T> 
+	static bool SetVal(T &Tgt, std::string SourceStr)
+{
+	LOG(LogNOTICE) << " UNSUPPORTED CONVERSION";
+	return false;
+}
+/* Specialisation of template for UNUM32s */
+template<> 
+	bool SetVal<UNUM32>(UNUM32 &Tgt, std::string SourceStr)
+{
+	std::string::iterator Itr;
+	for (Itr = SourceStr.begin(); Itr != SourceStr.end(); Itr++){
+		if (isdigit(*Itr) == 0)
+			return false;
+	}
+	Tgt = FromString<UNUM32>(SourceStr);
+	return true;
+}
+
+/* Specialisation of template for strings (simple copy) */
+template<>
+	bool SetVal<std::string>(std::string &Tgt, std::string SourceStr)
+{
+	Tgt = SourceStr;
+	return true;
+}
+
+/**
+ * FromStringInMap
+ * \brief Find a given string in a map
+ * \detail
+ *	Find the requested string in a map and if it's there, copy out to the 
+ *	supplied parameter, otherwise, populate with a default value.
+ * \param Sought	The name of the value we want to extract
+ * \param List		The map we are looking in
+ * \param Tgt		The target variable for the data
+ */
+template<class T>
+	bool FromStringInMap(
+		std::string	Sought,
+		const std::map< std::string, std::string > &Map,
+		T&		Tgt)
+{
+	bool Found = false;
+
+	std::map< std::string, std::string >::const_iterator Itr;
+	if ( (Itr = Map.find(Sought)) != Map.end() ){
+		SetVal(Tgt, (*Itr).second);
+		Found = true;
+	}
+	return Found;
+}
+
+/**
  * VCI Filters
  */
 class CFilter
@@ -246,14 +310,14 @@ public:
 	 * \retval PDU_STATUS_NOERROR		Function call successful.
 	 * \retval PDU_ERR_FCT_FAILED		Function call failed.
 	 */
-	virtual T_PDU_ERROR Connect();
+	virtual T_IVIEW_STATUS Connect();
 	/** Disconnect
 	 * \brief Disconnect the CAN controller from the bus
 	 * \return T_PDU_ERROR
 	 * \retval PDU_STATUS_NOERROR		Function call successful.
 	 * \retval PDU_ERR_FCT_FAILED		Function call failed.
 	 */
-	virtual T_PDU_ERROR Disconnect();
+	virtual T_IVIEW_STATUS Disconnect();
 private:
 	static UNUM32		m_NextId;
 	static UNUM32		m_ConnRef;
@@ -322,7 +386,7 @@ typedef Client* pClient_t;
 
 class CDIL_CAN_i_VIEW :
 	public CBaseDIL_CAN_Controller,
-	public CmDNSIF,
+	public CVCiViewBrowserIF,
 	public CVCiViewHostIF
 {
 	typedef tr1::array<pVCI_t,defNO_OF_CHANNELS> Channels_t;
@@ -358,7 +422,7 @@ public:
 	
 private:
 	void GetSystemErrorString();
-	void mDNSResolver( mDNS_Event_t	State,
+	void iViewResolver( iVIEW_Event_e	State,
 			std::string&	Service,
 			std::string&	Type,
 			std::string&	Hostname,
@@ -372,10 +436,10 @@ private:
 			int*		pnSelList,
 			int&		nCount );
 
-	T_PDU_ERROR RxData(
+	void RxData(
 			UNUM32				Id,
 			vci_data_record_with_data*	VCIRec);
-	T_PDU_ERROR RxEvent(
+	void RxEvent(
 			UNUM32				Id,
 			vci_event_record_s*		VCIEvent );
 
@@ -391,12 +455,12 @@ private:
 	BOOL RemoveClient(
 			DWORD		ClientId);
 
-	CreatemDNS_t			m_CreatemDNS;
+	CreateBrowser_t			m_CreateBrowser;
 	CreateCCommTCP_t		m_CreateCCommTCP;
 	CreateCVCiViewIF_t		m_CreateCVCiViewIF;
 	HINSTANCE			m_hDll;
 	CRITICAL_SECTION		m_Mutex;
-	CmDNS*				m_CmDNS;
+	CVCiViewBrowser*		m_iViewBrowser;
 	State_e				m_CurrState;
 	string				m_Err;
 	HWND				m_hOwnerWnd;
