@@ -255,14 +255,17 @@ int CSignal::Format(char* pcLine)
     pcTemp = acTemp;
 
     // get scale factor
-    while(*pcToken && *pcToken != ',')
+    char szSep;
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STHOUSAND, &szSep, 1);
+    while(*pcToken && *pcToken != szSep)
     {
         *pcTemp++ = *pcToken++;
     }
 
     *pcTemp='\0';
     pcToken++; // skip ','
-    m_fScaleFactor = (float)atof(acTemp); // store scale factor
+    //m_fScaleFactor = (float)atof(acTemp); // store scale factor
+    sscanf_s(acTemp, "%f", &m_fScaleFactor);
     // Get offset
     pcTemp = acTemp;
 
@@ -272,7 +275,8 @@ int CSignal::Format(char* pcLine)
     }
 
     *pcTemp='\0';
-    m_fOffset = (float)atof(acTemp); // store Offset
+    //m_fOffset = (float)atof(acTemp); // store Offset
+    sscanf_s(acTemp, "%f", &m_fOffset);
     // next token [MIN|MAX]
     pcToken = strtok_s(NULL, " [", &pcTok);
     // get MIN

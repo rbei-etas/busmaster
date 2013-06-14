@@ -196,6 +196,7 @@ void CFlags::vInitializeFlags()
     m_bFunctionEditorOn     = FALSE;
     m_bFilterTxMsg          = FALSE;
     m_bDbOpen               = FALSE;
+    m_bDbOpenJ1939          = FALSE;
     m_wReplayMode           = FALSE;
     m_bReplayFileSelected   = FALSE;
     m_bMsgHandlerOn         = FALSE;
@@ -350,6 +351,9 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             break;
         case DBOPEN :
             m_bDbOpen = nValue;
+            break;
+        case DBOPEN_J1939 :
+            m_bDbOpenJ1939 = nValue;
             break;
         case HEX :
             if ( m_bDisplayHexON != nValue)
@@ -553,6 +557,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case DBOPEN :
             nRetValue = m_bDbOpen;
+            break;
+        case DBOPEN_J1939 :
+            nRetValue = m_bDbOpenJ1939;
             break;
         case HEX :
             nRetValue = m_bDisplayHexON;

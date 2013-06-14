@@ -219,7 +219,7 @@ typedef CList<int,int>      defomIntegerList;
 #define defDATATYPE_MSG_DATA    "\t%-12s  %s     ;\n"
 #define defSTART_OF_STRUCT_DEF  "\n\tstruct\n\t{\n"
 #define defEND_OF_STRUCT_DEF    "\n} %s;\n"
-#define defEND_OF_UNION_DEF     "\n\t};\n}%s_;"
+#define defEND_OF_UNION_DEF     "\n\t} __attribute__((__packed__));\n}%s_;"
 #define defUNDERSCORE           "_"
 
 #define defUINT_LENGTH           32

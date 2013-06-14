@@ -307,6 +307,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
+    ON_COMMAND(IDM_SAVE_IMPORT_J1939, OnSaveImportJ1939Database)
+    ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT_J1939, OnUpdateSaveImportJ1939Database)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
     ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)
@@ -345,9 +347,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(33079, OnJ1939DBNew)
     ON_UPDATE_COMMAND_UI(33079, OnUpdateJ1939DBNew)
     ON_COMMAND(33080, OnJ1939DBOpen)
-    ON_COMMAND(33084, OnJ1939DBClose)
+    ON_COMMAND(ID_DATABASE_CLOSE, OnJ1939DBClose)
+    ON_UPDATE_COMMAND_UI(ID_DATABASE_CLOSE, OnUpdateJ1939DBClose)
     ON_COMMAND(ID_DATABASE_SAVE, OnJ1939DBSave)
+    ON_COMMAND(IDM_CONFIGURE_J1939_DB_SAVEAS, OnJ1939DBSaveAs)
     ON_UPDATE_COMMAND_UI(ID_DATABASE_SAVE, OnUpdateJ1939DBSave)
+    ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_J1939_DB_SAVEAS, OnUpdateJ1939DBSaveAs)
     ON_COMMAND(33082, OnJ1939DBAssociate)
     ON_COMMAND(33083, OnJ1939DBDissociate)
     ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
@@ -2212,7 +2217,11 @@ void CMainFrame::OnConfigBaudrate()
     //update baudrate details in global statistics buffer
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
+#ifdef BOA_FD_VERSION
+        GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+#else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#endif
     }
 
 }
@@ -2506,6 +2515,70 @@ void CMainFrame::OnConfigDatabaseSaveAs()
         }
     }
 }
+
+/**
+* \brief         Called by the framework when user selects SaveAs...
+                 option from the menu for the database editor
+* \param[in]     NULL
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.06.2013 Created
+*/
+void CMainFrame::OnJ1939DBSaveAs()
+{
+    // Display a save file dialog
+    CFileDialog fileDlg( FALSE,     // Save File dialog
+                         "dbf",     // Default Extension,
+                         "NewDB.dbf",
+                         OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                         _("CAN Datatbase File(*.dbf)|*.dbf||"),
+                         NULL );
+
+    // Set Title
+    fileDlg.m_ofn.lpstrTitle  = _T(_("Save As..."));
+
+    if ( IDOK == fileDlg.DoModal() )
+    {
+        CString strExtName  = fileDlg.GetFileExt();
+        CString strDbName   = fileDlg.GetPathName();
+
+        if ( strDbName.Find('.') )
+        {
+            strDbName = strDbName.Left( strDbName.Find('.') + 1);
+            strDbName.TrimRight();
+            strDbName += strExtName;
+        }
+
+        CMsgSignal* pTempMsgSg = NULL;
+        // Get the pointer to the editor database data structure
+        pTempMsgSg = (CMsgSignal*)*m_podMsgSgWndJ1939->m_sDbParams.m_ppvActiveDB;
+
+        if ( pTempMsgSg != NULL )
+        {
+            BeginWaitCursor( );
+            // save into the file
+            pTempMsgSg->bWriteIntoDatabaseFileFromDataStructure( strDbName, PROTOCOL_J1939 );
+            if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
+            {
+                vPostMsgToSendMsgDlg(J1939);
+            }
+            EndWaitCursor( );
+            // Now set the root item in the tree view to
+            // selected name
+            if ( m_pomMsgSgTreeViews[J1939] != NULL)
+            {
+                m_pomMsgSgTreeViews[J1939]->vSetRootItemText(strDbName);
+            }
+
+            // Set all the items in the tree view to normal font
+            if ( m_pomMsgSgTreeViews[J1939] != NULL)
+            {
+                m_pomMsgSgTreeViews[J1939]->vSetAllItemsNormal();
+            }
+        }
+    }
+}
+
 /******************************************************************************
 FUNCTION:       OnConfigDatabaseSave
 DESCRIPTION:    #Called by the framework when user selects Save...
@@ -6080,7 +6153,7 @@ void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex,
         {
             pList->Replace(bytItemIndex, hIcon);
             pListHot->Replace(bytItemIndex, hIcon);
-            pListDisabled->Replace(bytItemIndex, hIcon);
+            //pListDisabled->Replace(bytItemIndex, hIcon);
 
             objToolbar.Invalidate();
         }
@@ -7772,13 +7845,14 @@ void CMainFrame::OnFileConnect()
             GetICANBusStat()->BSC_ResetBusStatistic();
             for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
             {
-                GetICANBusStat()->BSC_SetBaudRate(i,
-                                                  _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#ifdef BOA_FD_VERSION
+                GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+#else
+                GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#endif
             }
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
 
-            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
-            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
 
             //send time to nodesim for calculation
             if (NS_GetInterface(CAN, (void**) &pNodeSim) == S_OK)
@@ -7805,8 +7879,7 @@ void CMainFrame::OnFileConnect()
                           eWINID_STOP_READ, 0);
 
 
-            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
-            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+
             //m_n64TimeElapsedSinceConnection =0;
 
             //send time to nodesim for calculation
@@ -8029,6 +8102,16 @@ void CMainFrame::OnFileConnect()
                     }
                 }
             }
+        }
+        if ( bConnected == TRUE )
+        {
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+        }
+        else
+        {
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
         }
     }
 }
@@ -10660,6 +10743,10 @@ LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
     return 0;
 }
 
+
+
+
+
 /******************************************************************************/
 /*  Function Name    :  vSetControllerParameters                              */
 /*  Input(s)         :    -                                                   */
@@ -11598,6 +11685,34 @@ void CMainFrame::OnUpdateSaveImportDatabase(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
+
+/**
+* \brief         This function will save and import currently edited(open)
+                 database file.
+* \param[in]     NULL
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.06.2013 Created
+*/
+void CMainFrame::OnSaveImportJ1939Database()
+{
+    OnJ1939DBSave();
+    dLoadJ1939DBFile(m_podMsgSgWndJ1939->m_sDbParams.m_omDBPath,FALSE);
+}
+
+/**
+* \brief         This function will update the menu status of J1939 Save
+                 and Import
+* \param[in]     pCmdUI, is pointer to CCmdUI
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.06.2013 Created
+*/
+void CMainFrame::OnUpdateSaveImportJ1939Database(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN_J1939 ));
+}
+
 /******************************************************************************
     Function Name    :  OnMessageTraceWnd
 
@@ -14442,6 +14557,8 @@ int CMainFrame::nLoadXMLConfiguration()
                     if ( NULL != pTempNode )
                     {
                         nRetVal = m_podBusStatistics->SetConfigData(m_pCopyBusStsticsNode);
+                        // On Load Config hiding Network statistics window
+                        m_podBusStatistics->ShowWindow(SW_HIDE);
                     }
                     else
                     {
@@ -16833,7 +16950,11 @@ void CMainFrame::vInitializeBusStatCAN(void)
     GetICANBusStat()->BSC_DoInitialization();
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
+#ifdef BOA_FD_VERSION
+        GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+#else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#endif
     }
 }
 
@@ -16978,7 +17099,7 @@ void CMainFrame::OnUpdateActivateJ1939(CCmdUI* pCmdUI)
         }
         else
         {
-            pCmdUI->SetText(_T(_("Deac&tivate")));
+            pCmdUI->SetText(_T(_("D&eactivate")));
         }
 
         pCmdUI->Enable(TRUE);
@@ -17468,6 +17589,14 @@ void CMainFrame::OnJ1939DBNew()
             CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
             m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
             m_podMsgSgWndJ1939->UpdateWindow();
+
+            // Set the flag to indicate the opening of database window
+            CFlags* pFlags = theApp.pouGetFlagsPtr();
+
+            if(pFlags != NULL)
+            {
+                pFlags->vSetFlagStatus( DBOPEN_J1939, TRUE );
+            }
         }
     }
 
@@ -17567,6 +17696,13 @@ void CMainFrame::OnJ1939DBOpen()
                 CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
                 m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
                 m_podMsgSgWndJ1939->UpdateWindow();
+
+                // Set the flag to indicate the opening of database window
+                CFlags* pFlags = theApp.pouGetFlagsPtr();
+                if(pFlags != NULL)
+                {
+                    pFlags->vSetFlagStatus( DBOPEN_J1939, TRUE );
+                }
             }
             else
             {
@@ -17589,6 +17725,13 @@ void CMainFrame::OnJ1939DBClose()
         else
         {
             m_podMsgSgWndJ1939 = NULL;
+        }
+        // Set the flag to indicate the opening of database window
+        CFlags* pFlags = theApp.pouGetFlagsPtr();
+
+        if(pFlags != NULL)
+        {
+            pFlags->vSetFlagStatus( DBOPEN_J1939, FALSE );
         }
     }
 }
@@ -17632,6 +17775,16 @@ void CMainFrame::OnUpdateJ1939DBSave(CCmdUI* pCmdUI)
     }
 
     pCmdUI->Enable(bResult);
+}
+
+void CMainFrame::OnUpdateJ1939DBSaveAs(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN_J1939 ));
+}
+
+void CMainFrame::OnUpdateJ1939DBClose(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN_J1939 ));
 }
 
 void CMainFrame::OnJ1939DBAssociate()

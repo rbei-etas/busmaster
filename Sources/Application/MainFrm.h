@@ -706,6 +706,8 @@ public:
     afx_msg void OnDissociateDatabase();
     afx_msg void OnSaveImportDatabase();
     afx_msg void OnUpdateSaveImportDatabase(CCmdUI* pCmdUI);
+    afx_msg void OnSaveImportJ1939Database();
+    afx_msg void OnUpdateSaveImportJ1939Database(CCmdUI* pCmdUI);
     //To update the Message DB Pointer
     afx_msg LRESULT OnProvideMsgDBPtr(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam);
@@ -755,8 +757,11 @@ public:
     afx_msg void OnJ1939DBNew();
     afx_msg void OnJ1939DBOpen();
     afx_msg void OnJ1939DBClose();
+    afx_msg void OnUpdateJ1939DBClose(CCmdUI* pCmdUI);
     afx_msg void OnJ1939DBSave();
+    afx_msg void OnJ1939DBSaveAs();
     afx_msg void OnUpdateJ1939DBSave(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateJ1939DBSaveAs(CCmdUI* pCmdUI);
     afx_msg void OnJ1939DBAssociate();
     afx_msg void OnJ1939DBDissociate();
     afx_msg void OnJ1939CfgSimSys();
