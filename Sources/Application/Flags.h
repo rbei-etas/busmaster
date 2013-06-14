@@ -47,6 +47,7 @@ typedef enum eCANMONITORFLAG
     //SIGNALWATCH,
     FUNCEDITOR,
     DBOPEN,
+    DBOPEN_J1939,
     HEX,
     DISPLAYMSGWINDOW,
     DISPLAYTIMEMODE,
@@ -100,6 +101,7 @@ private:
     BOOL m_bFunctionEditorOn;
     BOOL m_bFilterTxMsg;
     BOOL m_bDbOpen;
+    BOOL m_bDbOpenJ1939;
     WORD m_wReplayMode;
     BOOL m_bMsgHandlerOn;
     WORD m_wDisplayTimeMode;

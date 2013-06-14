@@ -304,6 +304,11 @@ void CMsgSignalDBWnd::OnClose()
         else if (m_sDbParams.m_eBus == J1939)
         {
             CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
+            CFlags* pFlags = theApp.pouGetFlagsPtr();
+            if ( pFlags != NULL )
+            {
+                pFlags->vSetFlagStatus( DBOPEN_J1939, FALSE );
+            }
         }
         CMDIChildWnd::OnClose();
     }

@@ -182,6 +182,8 @@ char g_chErrorString[1024];
 class GlobalVaribles
 {
 public:
+    //ParseSate
+    int g_nLastParseState;
     //Converter Class
     CDBCConverterBase* g_ouDBC2DBFConverter;
     //FunCtion PrototypeList
@@ -234,6 +236,7 @@ public:
         g_ouErrorStrings.clear();
         g_omStrRepeatedMsg.RemoveAll();
         m_bChannelSpecMsg = FALSE;
+        g_nLastParseState = 1;
     }
 };
 
@@ -297,6 +300,9 @@ void vHandleTimerDeclaration(CString&);
 void vCnvrtThis();
 void vCnvrtThisData();
 void vHandleMessageMembers();
+
+void vHandleUnsupportedFunctionEnd();
+void vHandleUnsupportedLine();
 
 void vResetCan();
 void vDisconnect();

@@ -98,9 +98,6 @@
 using namespace std;
 typedef std::string TString;
 
-/*To enable CANFD - uncomment the BOA_FD_VERSION define*/
-//#define BOA_FD_VERSION
-
 // TODO: reference additional headers your program requires here
 const int ERR_INVALID_PROCDIL       = -1;
 const int ERR_INVALID_PARENTHANDLE  = -2;

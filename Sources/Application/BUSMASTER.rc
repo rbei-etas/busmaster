@@ -685,13 +685,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.8.0"
+            VALUE "FileVersion", "Ver 1.8.1"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.8.0"
+            VALUE "ProductVersion", "Ver 1.8.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -1026,7 +1026,7 @@ BEGIN
         MENUITEM "&Save",                       IDM_SAVE_CONFIG
         MENUITEM "Save &As...",                 IDM_SAVEAS_CONFIG
         MENUITEM SEPARATOR
-        POPUP "Recent Configurations"
+        POPUP "&Recent Configurations"
         BEGIN
             MENUITEM "Empty",                       IDM_REC_CFG_FILE1
         END
@@ -1039,7 +1039,7 @@ BEGIN
     END
     POPUP "&Hardware"
     BEGIN
-        POPUP "Driver Mode"
+        POPUP "Driver M&ode"
         BEGIN
             MENUITEM "&Active",                     IDM_CONFIGURE_ACTIVE, CHECKED
             MENUITEM "&Passive",                    IDM_CONFIGURE_PASSIVE, CHECKED
@@ -1154,14 +1154,17 @@ BEGIN
         MENUITEM "&Activate",                   ID_ACTIVEBUS_J1939
         MENUITEM "&Go Online",                  ID_TOOLBAR_CONFIGURE
         MENUITEM SEPARATOR
-        MENUITEM "&Timeout Configuration",      ID_CONFIGURE_TIMEOUTS
+        MENUITEM "T&imeout Configuration",      ID_CONFIGURE_TIMEOUTS
         POPUP "&Database"
         BEGIN
             MENUITEM "&New",                        ID_DATABASE_NEW
             MENUITEM "&Open",                       ID_DATABASE_OPEN
-            MENUITEM "&Close",                      ID_DATABASE_CLOSE
             MENUITEM SEPARATOR
             MENUITEM "&Save",                       ID_DATABASE_SAVE
+            MENUITEM "Save and Im&port",            IDM_SAVE_IMPORT_J1939
+            MENUITEM "Sa&ve As...",                 IDM_CONFIGURE_J1939_DB_SAVEAS
+            MENUITEM SEPARATOR
+            MENUITEM "&Close",                      ID_DATABASE_CLOSE
             MENUITEM SEPARATOR
             MENUITEM "&Associate",                  33082
             MENUITEM "&Dissociate",                 ID_DATABASE_DISSOCIATE
@@ -1219,7 +1222,7 @@ BEGIN
         MENUITEM "T&race Window",               IDM_TRACE_WND, CHECKED
         MENUITEM SEPARATOR
         MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
-        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "Ti&le",                       ID_WINDOW_TILE_HORZ
         MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
         MENUITEM SEPARATOR
         POPUP "&Toolbar"
@@ -1233,7 +1236,7 @@ BEGIN
         END
         MENUITEM "&Statusbar",                  ID_VIEW_STATUS_BAR
     END
-    POPUP "&Help"
+    POPUP "Hel&p"
     BEGIN
         MENUITEM "&Help Topics\tF1",            ID_HELP_FINDER
         MENUITEM "&What's This?",               ID_CONTEXT_HELP
@@ -1619,7 +1622,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.8.0"
+    IDS_VERSION             "Ver 1.8.1 Beta 3"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1634,6 +1637,7 @@ BEGIN
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
     IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
+    IDM_CHECK_HW_INTERFACE  "Test Hardware Interface\nTest Hardware Interface"
 END
 
 STRINGTABLE 
@@ -1893,7 +1897,12 @@ BEGIN
     ID_DATABASE_SAVE        "Save J1939 Database"
 END
 
-#endif    // English (U.S.) resources
+STRINGTABLE
+BEGIN
+    IDM_SAVE_IMPORT_J1939   "Save and import database file\nSave and import database file"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

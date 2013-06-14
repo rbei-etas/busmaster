@@ -45,7 +45,7 @@ using namespace std;
 //          #include <afxdllx.h>
 #endif
 
-static AFX_EXTENSION_MODULE DBC2DBFConverterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE DBF2DBCConverterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -62,7 +62,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         TRACE0("DBF2DBCConverter.DLL Initializing!\n");
 
         // Extension DLL one-time initialization
-        if (!AfxInitExtensionModule(DBC2DBFConverterDLL, hInstance))
+        if (!AfxInitExtensionModule(DBF2DBCConverterDLL, hInstance))
         {
             return 0;
         }
@@ -78,13 +78,13 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  the CDynLinkLibrary object will not be attached to the
         //  Regular DLL's resource chain, and serious problems will
         //  result.
-        new CDynLinkLibrary(DBC2DBFConverterDLL);
+        new CDynLinkLibrary(DBF2DBCConverterDLL);
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
         TRACE0("DBF2DBCConverter.DLL Terminating!\n");
         // Terminate the library before destructors are called
-        AfxTermExtensionModule(DBC2DBFConverterDLL);
+        //AfxTermExtensionModule(DBF2DBCConverterDLL);
     }
 
     return 1;   // ok
