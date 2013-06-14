@@ -21,14 +21,14 @@ CAPL_TRIGONOMETRIC_FUN ("_max"|"_min"|"_pow"|"_round"|"abs"|"cos"|"exp"|"random"
 ALNUM   [a-zA-Z0-9_]
 ALPHA	[a-zA-Z_]
 NOALNUM  [^a-zA-Z0-9_]
-CAPL_SUP_EVENTS ("PreStart"|"Start"|"stopMeasurement"|"busOff"|"timer"|"key"|"message"|"errorActive"|"errorPassive"|"warningLimit"|"errorFrame"|"envVar")
+CAPL_SUP_EVENTS ("PreStart"|"Start"|"stopMeasurement"|"busOff"|"timer"|"key"|"message"|"errorActive"|"errorPassive"|"warningLimit"|"errorFrame"|"envVar"|"preStop")
 STORAGETYPE	("int"|"word"|"long"|"dword"|"float"|"double"|"message"|"byte"|"msTimer"|"timer"|"char")
 STORAGETYPEDEF	("int"|"word"|"long"|"dword"|"float"|"double"|"message"|"byte"|"msTimer"|"timer"|"void")
 TYPECASTETYPE ("int"|"word"|"long"|"dword"|"float"|"double"|"byte")
 MESSAGE "message"
 ARRAYBOUND	[{WS}*[a-zA-Z0-9_]+{WS}*]
 VALIDSPACE ({WS}|{LINECOMMENT}|{BLOCKCOMMENT})
-
+CAPLFUNCTIONEND	("/*@@end*/")
 %{
 #include "LexerHandlers.h"
 %}	
@@ -38,11 +38,15 @@ VALIDSPACE ({WS}|{LINECOMMENT}|{BLOCKCOMMENT})
 %x  FourthParse
 %x  FifthParse
 %x	VariableParse
+%x	UnsupportedParse
 %option stack
 %option never-interactive 
 %option array
 %option yylineno
 %%
+<UnsupportedParse>{CAPLFUNCTIONEND} vHandleUnsupportedFunctionEnd();	
+<UnsupportedParse>\n vHandleUnsupportedLine(); 	
+<UnsupportedParse>. ECHO;  	
 <SecondParse>{LINECOMMENT} {ECHO;}
 <SecondParse>{BLOCKCOMMENT} {ECHO;}
 <ThirdParse>{LINECOMMENT} {ECHO;}
