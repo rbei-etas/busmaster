@@ -15,11 +15,11 @@
 
 /**
  * \file      CAN_NSI.cpp
- * \brief     Source file for Kvaser CAN DIL functions
- * \author    Tobias Lorenz, Arunkumar Karri
+ * \brief     Source file for NSI CAN DIL functions
+ * \author    Gregory MERCHAT
  * \copyright Copyright (c) 2011, ETAS GmbH. All rights reserved.
  *
- * Source file for Kvaser CAN DIL functions
+ * Source file for NSI CAN DIL functions
  */
 // CAN_NSI.cpp : Defines the initialization routines for the DLL.
 //
@@ -46,11 +46,18 @@
 #define USAGE_EXPORT
 #include "CAN_NSI_Extern.h"
 
+
 // CCAN_NSI
 
 BEGIN_MESSAGE_MAP(CCAN_NSI, CWinApp)
 END_MESSAGE_MAP()
 
+typedef struct
+{
+	unsigned long ident;
+	HANDLE hEvent;
+	HANDLE hThread;
+} t_ThreadContext;
 
 /**
  * NSI Functions
@@ -80,15 +87,16 @@ t_CardData NSI_cardData[MAX_BUFF_ALLOWED];			// Structure array to receive chann
 t_CANdeviceInfo NSI_deviceInfo[MAX_BUFF_ALLOWED];	// Structure array to receive device info
 BOOL flagLowSpeed = FALSE;
 BOOL flagSendError = FALSE;
+BOOL flagConnect = FALSE;
 HANDLE NSI_hCanal[MAX_BUFF_ALLOWED];				// Open channel handle
-HANDLE NSI_hEvent= INVALID_HANDLE_VALUE;			// FIFO event handle
+HANDLE NSI_hEvent[defNO_OF_CHANNELS]  = {0};			// FIFO event handle
 HANDLE NSI_hMutex= INVALID_HANDLE_VALUE;			// Display synchronization
 HANDLE NSI_hWakeUp = INVALID_HANDLE_VALUE;			// WAKE-UP event handle
 /* Thread control variables */
 DWORD NSI_threadId;
 HANDLE NSI_hThread;
 
-#define MAX_CAN_MSG_PTR 4096
+#define MAX_CAN_MSG_PTR 8192 //4096 
 static STCAN_MSG sTxMsgTab[MAX_CAN_MSG_PTR];
 static UINT nbMsgInTab = 0;
 
@@ -104,7 +112,6 @@ CCAN_NSI::CCAN_NSI()
 
 // The one and only CCAN_NSI object
 CCAN_NSI theApp;
-
 
 /**
  * CCAN_NSI initialization
@@ -140,14 +147,14 @@ BOOL CCAN_NSI::InitInstance()
 	   This can wake-up a program which was waiting for this event. This program is a Thread which job 
 	   is to extract event from the FIFO until the FIFO is empty and then go back to sleep. This event 
 	   object must be created by the application and then given to the interface.*/
-	NSI_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+	//NSI_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
 	/* Create mutex object to avoid display conflict between main 
 	   thread and the FIFO extractor thread (Thread)*/
-	NSI_hMutex = CreateMutex(NULL, FALSE, NULL);
+	//NSI_hMutex = CreateMutex(NULL, FALSE, NULL);
 	/* In FIFO mode, receptions and transmission of CAN messages are stored into the FIFO list. 
 	   A program (the Thread) is waiting for the FIFO not to be empty to extract the data. 
 	   The CreateThread function is creating and starting this THREAD. See the Thread() function.*/	
-	NSI_hThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread, NSI_hEvent, 0, &NSI_threadId);
+	//NSI_hThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread, NSI_hEvent, 0, &NSI_threadId);
 
 	for(UINT i = 0; i < MAX_CAN_MSG_PTR; i++)
 	{
@@ -351,6 +358,8 @@ typedef struct tagClientBufMap
  * Forward declarations
  */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData);
+static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir);
+static void vCreateTimeModeMapping(HANDLE hDataEvent);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot();
 static BOOL bClientExist(string pcClientName, INT& Index);
@@ -388,8 +397,8 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static BOOL sg_bIsConnected = FALSE;
 static UCHAR sg_ucControllerMode = defUSB_MODE_ACTIVE;
 static CPARAM_THREADPROC sg_sParmRThread;
-static int sg_nFRAMES = 128;
-const int ENTRIES_IN_GBUF       = 2000;
+static int sg_nFRAMES = 1280;//128
+const int ENTRIES_IN_GBUF       = 20000;//2000
 static STCANDATA sg_asCANMsg;
 static STCAN_MSG sg_ReadMsg;
 static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
@@ -499,7 +508,7 @@ static char* GetCodeString(short cr)
 	case _SLEEP_MODE : return "_SLEEP_MODE";
 	case _USB_ERR : return ": USB error.";
 	case _RS232_ERR : return ": RS232 error.";
-	case _BOARD_TIMEOUT : return ": No board acknowledge.";
+	case _BOARD_TIMEOUT : return ": No USB acknowledge.";
 	default : return "_???";
 	}
 }
@@ -533,13 +542,25 @@ ULONGLONG GetTimeStamp()
 void GetEventString(t_CANevent* pEvent, UINT unDrvChannel)
 {
 	ULONG64 timeStamp = pEvent->timeStamp;
-	int i;
 	LARGE_INTEGER g_QueryTickCount;
 	char * pchPCMCIA;
+	char * pchPCI;
 	pchPCMCIA = strstr(sg_aodChannels[unDrvChannel].m_strName, "CANPCMCIA");
-	if(pchPCMCIA != NULL)
+	pchPCI = strstr(sg_aodChannels[unDrvChannel].m_strName, "CANPCI");
+	if((pchPCMCIA != NULL) || (pchPCI != NULL))
 	{
-		sg_asCANMsg.m_lTickCount.QuadPart = GetTimeStamp();
+		if(sg_byCurrState[unDrvChannel] == CREATE_MAP_TIMESTAMP)
+		{
+			sg_TimeStampInit[unDrvChannel] = GetTimeStamp();		
+			sg_TimeStampOffset[unDrvChannel] = sg_TimeStampInit[unDrvChannel];
+			sg_asCANMsg.m_lTickCount.QuadPart = sg_TimeStampOffset[unDrvChannel];
+			sg_byCurrState[unDrvChannel] = CALC_TIMESTAMP_READY;
+		}
+		else
+		{
+			g_QueryTickCount.QuadPart = GetTimeStamp();
+			sg_asCANMsg.m_lTickCount.QuadPart = sg_TimeStampOffset[unDrvChannel] + (g_QueryTickCount.QuadPart - sg_TimeStampInit[unDrvChannel]);
+		}
 	}
 	else
 	{
@@ -556,40 +577,57 @@ void GetEventString(t_CANevent* pEvent, UINT unDrvChannel)
 			sg_asCANMsg.m_lTickCount.QuadPart = sg_TimeStampOffset[unDrvChannel] + (g_QueryTickCount.QuadPart - sg_TimeStampInit[unDrvChannel]);
 		}
 	}
-	switch(pEvent->eventType)
-	{ 
-		case _CAN_TX_DATA :
-			sg_asCANMsg.m_ucDataType = TX_FLAG;
-			break;
-		case _CAN_RX_DATA :
-			sg_asCANMsg.m_ucDataType = RX_FLAG;
-			break;
-		case _CAN_TX_RX_REMOTE :
-			sg_asCANMsg.m_ucDataType = TX_FLAG;
-			break;
-		case _CAN_TX_REMOTE :
-			sg_asCANMsg.m_ucDataType = TX_FLAG;
-			break;
-		case _CAN_RX_REMOTE :
-			sg_asCANMsg.m_ucDataType = RX_FLAG;
-			break;
-		case _CAN_RX_DATA_REMOTE :
-			sg_asCANMsg.m_ucDataType = RX_FLAG;
-			break;
-		case _CAN_TX_AUTO_REMOTE :
-			sg_asCANMsg.m_ucDataType = TX_FLAG;
-			break;
-		default :
-			sg_asCANMsg.m_ucDataType = ERR_FLAG;
-			break;
-	}
-	sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)unDrvChannel+1;
-	sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID = pEvent->ident;
-	sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucEXTENDED = (UCHAR)pEvent->identType;
-	sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucDataLen = (UCHAR)pEvent->dlc;
-	for( i=0; i<pEvent->dlc && i<=_CAN_MAX_DATA; i++ )
+	if(!(pEvent->eventType == _CAN_LOST_MSG))
 	{
-		sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucData[i] = pEvent->data[i];
+		switch(pEvent->eventType)
+		{ 
+			case _CAN_TX_RX_REMOTE :
+			case _CAN_TX_REMOTE :
+			case _CAN_TX_AUTO_REMOTE :
+			case _CAN_TX_DATA :
+				sg_asCANMsg.m_ucDataType = TX_FLAG;
+				break;
+			case _CAN_RX_DATA_REMOTE :
+			case _CAN_RX_REMOTE :
+			case _CAN_RX_DATA :
+				sg_asCANMsg.m_ucDataType = RX_FLAG;
+				break;
+			default :
+				sg_asCANMsg.m_ucDataType = ERR_FLAG;
+				break;
+		}
+		sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)unDrvChannel+1;
+		sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID = pEvent->ident;
+		sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucEXTENDED = (UCHAR)pEvent->identType;
+		sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucDataLen = (UCHAR)pEvent->dlc;
+		/*for( i=0; i<pEvent->dlc && i<=_CAN_MAX_DATA; i++ )
+		{
+			sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucData[i] = pEvent->data[i];
+		}*/
+		memcpy(sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucData, pEvent->data, pEvent->dlc);
+	}
+	else
+	{
+		sg_asCANMsg.m_ucDataType = ERR_FLAG;
+        // Set bus error as default error. This will be
+        // Modified by the function USB_ucHandleErrorCounter
+        sg_asCANMsg.m_uDataInfo.m_sErrInfo.m_ucErrType = ERROR_BUS;
+        // Assign the channel number
+        sg_asCANMsg.m_uDataInfo.m_sErrInfo.m_ucChannel = (UCHAR)unDrvChannel+1;
+        sg_asCANMsg.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)unDrvChannel+1;
+
+        // Assign error type in the Error Capture register
+        // and the direction of the error	
+        if (pEvent->eventType == _CAN_TX_DATA)
+        {
+            sg_asCANMsg.m_uDataInfo.m_sErrInfo.m_ucReg_ErrCap = ERROR_DEVICE_BUFF_OVERFLOW;
+        }
+		else
+		{
+			sg_asCANMsg.m_uDataInfo.m_sErrInfo.m_ucReg_ErrCap = OTHER_ERROR_RX;
+		}        
+        //explaination of error bit
+        sg_asCANMsg.m_uDataInfo.m_sErrInfo.m_nSubError= 0;
 	}
 	//Write into client buffer.
     vWriteIntoClientsBuffer(sg_asCANMsg);
@@ -607,30 +645,178 @@ void GetEventString(t_CANevent* pEvent, UINT unDrvChannel)
 /// \authors       Grégory Merchat
 /// \date          18.04.2013 Created
 ///---------------------------------------------------------------------------------------------------
-DWORD Thread(HANDLE hEvent)
+//DWORD Thread(HANDLE hEvent)
+//{
+//	t_CANevent NSI_event;
+//	long count = 0;
+//	// "Infinite" loop (until the program stops running)
+//	while(1)
+//	{
+//		/*This function call puts the thread to sleep and waiting for the event. 
+//		  Note that this is not using any CPU time. The thread is asleep until 
+//		  the OS wake it up when the event is signaled.*/		
+//		if( WaitForSingleObject(hEvent, INFINITE) == WAIT_OBJECT_0 )
+//		{
+//			for (UINT i = 0; i < sg_nNoOfChannels ; i++)
+//			{
+//				// Loop while events are found in FIFO
+//				while(Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event) == _OK)
+//				{				
+//					count++;
+//					GetEventString(&NSI_event, i);
+//				}
+//			}
+//		}
+//	}	
+//	return 0;
+//}
+
+DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
 {
-	t_CANevent NSI_event;
-	long count = 0;
-	// "Infinite" loop (until the program stops running)
-	while(1)
-	{
-		/*This function call puts the thread to sleep and waiting for the event. 
-		  Note that this is not using any CPU time. The thread is asleep until 
-		  the OS wake it up when the event is signaled.*/		
-		if( WaitForSingleObject(hEvent, INFINITE) == WAIT_OBJECT_0 )
+    USES_CONVERSION;
+    canStatus nStatus = canOK;
+
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+
+    /* Validate certain required pointers */
+    VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam, (DWORD)-1);
+
+    //get CAN - eventHandles
+    for (UINT i = 0; i < sg_nNoOfChannels; i++)
+    {
+        /*sg_arrReadHandles[i] = canOpenChannel(sg_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
+        nStatus = canBusOn(sg_arrReadHandles[i]);
+
+        HANDLE tmp;
+        nStatus = canIoCtl(sg_arrReadHandles[i],
+                           canIOCTL_GET_EVENTHANDLE,
+                           &tmp,
+                           sizeof(tmp));
+        if ( nStatus == canOK )
+        {
+            g_hDataEvent[i] = tmp;
+        }*/
+		/* Indicates to the CAN interface the HANDLE of the event object used to signal events about the FIFO. 
+			   See the Thread and CreateEvent functions. */
+		cr = Ic_ConfigEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], g_hDataEvent[i], 0);
+		if(cr != _OK) 
 		{
-			for (UINT i = 0; i < sg_nNoOfChannels ; i++)
-			{
-				// Loop while events are found in FIFO
-				while(Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event) == _OK)
-				{				
-					count++;
-					GetEventString(&NSI_event, i);
-				}
+			// Display a message in a new window
+			CString omErr;
+			omErr.Format(_("Ic_ConfigEvent : NSI %s"), GetCodeString(cr));
+			AfxMessageBox(omErr);
+		}
+    }
+    //Apply filters for read handles
+    //nSetFilter(false);
+    if (g_hDataEvent[0] != NULL)
+    {
+        pThreadParam->m_hActionEvent = g_hDataEvent[0];
+    }
+	SetEvent(pThreadParam->m_hActionEvent);
+    pThreadParam->m_unActionCode = INVOKE_FUNCTION;
+
+    bool bLoopON = true;
+    //int moreDataExist;
+    /*static UINT unFlags = 0;
+    static DWORD dwTime = 0;
+    unsigned char   ucData[8];*/
+	t_CANevent NSI_event;
+
+    //New approach{{
+    while (bLoopON)
+    {
+        WaitForMultipleObjects(sg_nNoOfChannels, g_hDataEvent, FALSE, INFINITE);
+		for (UINT i = 0; i < sg_nNoOfChannels ; i++)
+        {
+			//Loop while events are found in FIFO
+			while(Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event) == _OK)
+			{				
+				//count++;
+				GetEventString(&NSI_event, i);
 			}
 		}
-	}	
-	return 0;
+        /*switch (pThreadParam->m_unActionCode)
+        {
+            case INVOKE_FUNCTION:
+            {
+				moreDataExist = 1;
+				while(moreDataExist)
+				{
+					for (UINT i = 0; i < sg_nNoOfChannels ; i++)
+                    {
+						// Loop while events are found in FIFO
+						cr = Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event);
+						if(cr == _OK)
+						{
+							GetEventString(&NSI_event, i);
+							moreDataExist = 1;
+						}
+						else if(cr == _EMPTY_FIFO)
+						{
+							moreDataExist = 0;
+						}
+						else
+						{
+							moreDataExist = 0;
+						}
+					}
+				}
+                /*do
+                {
+                    moreDataExist = 0;
+                    for (UINT i = 0; i < sg_nNoOfChannels ; i++)
+                    {
+                        //Read CAN Message from channel
+                        /*nStatus = canRead(sg_arrReadHandles[i], (long*)&sg_ReadMsg.m_unMsgID,
+                                          &ucData[0], (unsigned int*)&sg_ReadMsg.m_ucDataLen,
+                                          &unFlags, &dwTime);
+						// Loop while events are found in FIFO
+						cr = Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event);
+                        switch (cr)
+                        {
+                            case _OK:
+                                //memcpy(sg_ReadMsg.m_ucData, ucData, (unsigned int)sg_ReadMsg.m_ucDataLen);
+                                //ProcessCANMsg(i, unFlags, dwTime);
+								GetEventString(&NSI_event, i);
+                                moreDataExist = 1;
+                                break;
+
+							case _EMPTY_FIFO:
+                                // No more data on this handle
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+                }
+                while (moreDataExist);
+            }
+            break;
+            case EXIT_THREAD:
+            {
+                bLoopON = false;
+            }
+            break;
+            default:
+            case INACTION:
+            {
+                // nothing right at this moment
+            }
+            break;
+        }*/
+    }
+
+    SetEvent(pThreadParam->hGetExitNotifyEvent());
+    for (UINT i = 0; i < sg_nNoOfChannels+1; i++)
+    {
+        ResetEvent(g_hDataEvent[i]);
+        g_hDataEvent[i] = NULL;
+    }
+    pThreadParam->m_hActionEvent = NULL;
+
+    return 0;
 }
 
 ///----------------------------------------------------------------------------------
@@ -642,13 +828,7 @@ DWORD Thread(HANDLE hEvent)
 ///----------------------------------------------------------------------------------
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 {
-    //Write into the client's buffer and Increment message Count
-    /*static SACK_MAP sAckMap;
-    UINT ClientId = 0;
-    static UINT Index = (UINT)-1;
-    sAckMap.m_Channel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
-    sAckMap.m_MsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;*/
-
+	/* Write into the respective client's buffer */
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
         for (UINT j = 0; j < sg_asClientToBufMap[i].unBufCount; j++)
@@ -658,6 +838,61 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
     }
 }
 
+/**
+* \brief         This will convert the error code from Kvaser driver format
+*                to the format that is used by BUSMASTER.
+* \param[in]     lError Error code in Peak USB driver format
+* \param[in]     byDir  Error direction Tx/Rx
+* \return        UCHAR which indicates error code
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
+{
+    UCHAR ucReturn = 0;
+
+    // Tx Errors
+    if( byDir == 1)
+    {
+		if (lError & _CAN_LOST_MSG)
+        {
+			ucReturn = STUFF_ERROR_TX;
+        }
+        else
+        {
+            ucReturn = OTHER_ERROR_TX;
+        }
+    }
+    // Rx Errors
+    else
+    {
+        if (lError & _CAN_LOST_MSG)
+        {
+			ucReturn = STUFF_ERROR_RX;
+        }
+        else
+        {
+            ucReturn = OTHER_ERROR_RX;
+        }
+    }
+    // Return the error code
+    return ucReturn;
+}
+
+/**
+* \brief         Function to create time mode mapping
+* \param[in]     hDataEvent, is HANDLE
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.10.2011 Created
+*/
+static void vCreateTimeModeMapping(HANDLE hDataEvent)
+{
+    WaitForSingleObject(hDataEvent, INFINITE);
+    GetLocalTime(&sg_CurrSysTime);
+    /*Query Tick Count*/
+    QueryPerformanceCounter(&sg_QueryTickCount);
+}
 ///---------------------------------------------------------------------------
 /// \brief         This function will check if the client ID exists
 /// \param[in]     dwClientId, client ID to be checked for existance
@@ -1134,6 +1369,9 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 				flagLowSpeed = FALSE;
 				break;
 			case _CANPCI2P: // CANPCI
+				strcpy_s(chBuffer, "NSI - ");
+				strcat_s(chBuffer, NSI_deviceInfo[nCount].CAN_PCI.cardName);
+				sg_HardwareIntr[nCount].m_acDescription = chBuffer;
 				sg_HardwareIntr[nCount].m_dwIdInterface = nCount;
 				flagLowSpeed = FALSE;
 				break;
@@ -1241,9 +1479,9 @@ static int nCreateSingleHardwareNetwork()
 		case _CANPCISA: // CANPC, CANPCa, CANPCMCIA, CAN104
 			flagLowSpeed = FALSE;
 			break;
-		/*case _CANPCI2P: // CANPCI
+		case _CANPCI2P: // CANPCI
 			flagLowSpeed = FALSE;
-			break;*/
+			break;
 		case _CANPCUSB: // CAN-USB Interface
 			flagLowSpeed = FALSE;
 			break;
@@ -1256,24 +1494,24 @@ static int nCreateSingleHardwareNetwork()
 			sg_HardwareIntr[0].m_dwIdInterface = 0;
 			flagLowSpeed = FALSE;
 			break;
-		/*case _USBBOX: // MUXyBox
+		case _USBBOX: // MUXyBox
 			strcpy(chBuffer, NSI_deviceInfo[0].CAN_USB.manufacturerName);
 			strcat(chBuffer, " - ");
 			strcat(chBuffer, NSI_deviceInfo[0].CAN_USB.productName);
-			sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[nCount].CAN_USB.serialNumber;
+			sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[0].CAN_USB.serialNumber;
 			sg_HardwareIntr[0].m_acDescription = chBuffer;
 			sg_HardwareIntr[0].m_dwIdInterface = 0;
 			flagLowSpeed = TRUE;
-			break;*/
-		/*case _USBMUXY2: //MUXy2010 et MUXybox 2
+			break;
+		case _USBMUXY2: //MUXy2010 et MUXybox 2
 			strcpy(chBuffer, NSI_deviceInfo[0].CAN_USB.manufacturerName);
 			strcat(chBuffer, " - ");
 			strcat(chBuffer, NSI_cardData[0].cardNameString);
-			sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[nCount].CAN_USB.serialNumber;
+			sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[0].CAN_USB.serialNumber;
 			sg_HardwareIntr[0].m_acDescription = chBuffer;
 			sg_HardwareIntr[0].m_dwIdInterface = 0;
 			flagLowSpeed = TRUE;
-			break;*/
+			break;
 	}
 
 	/*_stprintf(sg_aodChannels[0].m_strName , _T("%s, Serial Number - %s"),
@@ -1331,8 +1569,8 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
 	else
 	{
 		// Check whether channel selection dialog is required
-		if( nChannelCount > 1)
-		{;
+		/*if( nChannelCount > 1)
+		{
 			// Get the selection from the user. This will also
 			// create and assign the networks
 			nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
@@ -1348,7 +1586,8 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
 				// Use available one hardware
 				nResult = nCreateSingleHardwareNetwork();
 			}
-		}
+		}*/
+		nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
 	}
     return nResult;
 }
@@ -1593,8 +1832,9 @@ static int nSetFilter(UINT unDrvChannel, BOOL /*bWrite*/)
 static int nSetApplyConfiguration()
 {
     int nReturn = defERR_OK;
-	char * pchMB2;
-	char * pchMB;
+	char * pchMuxyBox2;
+	char * pchMuxy2010;
+	char * pchMuxyBox;
 	char * pchPCMCIA;
 
 	for (UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
@@ -1606,10 +1846,11 @@ static int nSetApplyConfiguration()
 		nReturn = nSetBaudRate(unIndex);
 		// Sequence to follow before setting Rx filter
 		nReturn = nInitInterface((UINT)sg_aodChannels[unIndex].m_nChannel, _FIFO);
-		pchMB2 = strstr(sg_aodChannels[unIndex].m_strName, "MuxyBox2-CAN CH2");
-		pchMB = strstr(sg_aodChannels[unIndex].m_strName, "MUXy box CH");
+		pchMuxyBox2 = strstr(sg_aodChannels[unIndex].m_strName, "MuxyBox2-CAN CH2");
+		pchMuxy2010 = strstr(sg_aodChannels[unIndex].m_strName, "MUXYv2-CAN CH2");
+		pchMuxyBox = strstr(sg_aodChannels[unIndex].m_strName, "MUXy box CH");
 		pchPCMCIA = strstr(sg_aodChannels[unIndex].m_strName, "CANPCMCIA /LS");
-		if(pchMB2 != NULL)
+		if(pchMuxyBox2 != NULL)
 		{
 			if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
 			{
@@ -1620,7 +1861,18 @@ static int nSetApplyConfiguration()
 				nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_HIGH_SPEED);
 			}
 		}
-		if(pchMB != NULL)
+		if(pchMuxy2010 != NULL)
+		{
+			if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
+			{
+				nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_LOW_SPEED);
+			}
+			else
+			{
+				nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_HIGH_SPEED);
+			}
+		}
+		if(pchMuxyBox != NULL)
 		{
 			if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
 			{
@@ -1654,19 +1906,10 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 	unsigned int i;
 
 	if(bConnect)
-	{		
+	{
+		InitializeCriticalSection(&sg_CritSectForAckBuf);
 		for(i=0;i<sg_nNoOfChannels;i++)
 		{			
-			/* Indicates to the CAN interface the HANDLE of the event object used to signal events about the FIFO. 
-			   See the Thread and CreateEvent functions. */
-			cr = Ic_ConfigEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], NSI_hEvent, 0);
-			if(cr != _OK) 
-			{
-				// Display a message in a new window
-				CString omErr;
-				omErr.Format(_("Ic_ConfigEvent : NSI %s"), GetCodeString(cr));
-				AfxMessageBox(omErr);
-			}
 			/* Start CAN controler. Receptions are starting now. The controler is seting the acknowledge bit 
 			   for all correctly formated frame on the CAN bus. */
 			cr = Ic_StartChip(NSI_hCanal[sg_aodChannels[i].m_nChannel]);
@@ -1684,6 +1927,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
 	}
 	else
 	{
+		DeleteCriticalSection(&sg_CritSectForAckBuf);
 		for(i=0;i<sg_nNoOfChannels;i++)
 		{			
 			// Stop hardware
@@ -1786,47 +2030,54 @@ static int nTransmitMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
 	STCAN_MSG newMsg = sMessage;
     int nReturn = -1;
     UINT unClientIndex = (UINT)-1;
+	static bool flagTxFailed = 0;
 
     /* Return when in disconnected state */
     //if (!sg_bIsConnected) return nReturn;
 
-    if ((newMsg.m_ucChannel > 0) && (newMsg.m_ucChannel <= sg_nNoOfChannels))
-    {
+    //if ((newMsg.m_ucChannel > 0) && (newMsg.m_ucChannel <= sg_nNoOfChannels))
+    //{
         unsigned int   nUsedFlags = 0;
 		
-		NSI_canObj.ident = newMsg.m_unMsgID;
-		NSI_canObj.identType = _CAN_STD;
+		//NSI_canObj.ident = newMsg.m_unMsgID;
+		//NSI_canObj.identType = _CAN_STD;
         /* if it is an extended frame */
-        if (newMsg.m_ucEXTENDED == 1)
-        {
-			NSI_canObj.identType = _CAN_EXT;
-        }
-		NSI_canObj.frameType = _CAN_TX_DATA;
+        //if (newMsg.m_ucEXTENDED == 1)
+        //{
+			//NSI_canObj.identType = _CAN_EXT;
+        //}
+		//NSI_canObj.frameType = _CAN_TX_DATA;
         /* in case of remote frame */
-        if (newMsg.m_ucRTR == 1)
-        {
-			NSI_canObj.frameType = _CAN_TX_REMOTE;
-        }
+        //if (newMsg.m_ucRTR == 1)
+        //{
+			//NSI_canObj.frameType = _CAN_TX_REMOTE;
+        //}
 		/* Status report request for this message. In FIFO mode, this parameter is required so that 
 		   exchange status report can be found in the FIFO. */
-		NSI_canObj.statusRq = _STATUS;
-		NSI_canObj.dlc = newMsg.m_ucDataLen;
+		//NSI_canObj.statusRq = _STATUS;
+		//NSI_canObj.dlc = newMsg.m_ucDataLen;
 		// Display the data bytes
-		for( UINT i=0; i<newMsg.m_ucDataLen && i<=_CAN_MAX_DATA; i++ )
-		{
-			NSI_canObj.data[i] = newMsg.m_ucData[i];
-		}		
+		//memcpy(NSI_canObj.data, newMsg.m_ucData, newMsg.m_ucDataLen);
         //Transmit message
-		cr = Ic_TxMsg(NSI_hCanal[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel], NSI_canObj.ident, NSI_canObj.dlc, NSI_canObj.data);
-		/*if(cr != _OK)
+		cr = Ic_TxMsg(NSI_hCanal[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel], newMsg.m_unMsgID, 
+			newMsg.m_ucDataLen, newMsg.m_ucData);
+		if((cr != _OK) && flagTxFailed)
 		{
+			flagTxFailed = 1;
 			// Display a message in a new window
 			CString omErr;
-			omErr.Format(_("Ic_TxMsg : %s %s %s"), sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDeviceName.c_str(), GetCodeString(cr));
+			omErr.Format(_("Ic_TxMsg : %s %s %s"), 
+				sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), 
+				sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDeviceName.c_str(), 
+				GetCodeString(cr));
 			AfxMessageBox(omErr);
 			//nReturn = 1;
-		}*/
-    }
+		}
+		else
+		{
+			flagTxFailed = 0;
+		}
+    //}
     return nReturn;
 }
 
@@ -2099,11 +2350,11 @@ HRESULT CDIL_CAN_NSI::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
 
-	// Terminate the thread execution.
-	TerminateThread(NSI_hThread, 0);
 	// Free system resources
-	if(NSI_hEvent) CloseHandle(NSI_hEvent);
-	if(NSI_hMutex) CloseHandle(NSI_hMutex);
+	//if(NSI_hEvent) CloseHandle(NSI_hEvent);
+	//if(NSI_hMutex) CloseHandle(NSI_hMutex);
+	// Terminate the thread execution.
+	//TerminateThread(NSI_hThread, 0);
 
 	hResult = CAN_StopHardware();    
     // Remove all the existing clients 
@@ -2191,7 +2442,6 @@ HRESULT CDIL_CAN_NSI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInte
 	USES_CONVERSION;
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_OK;
-	char * pchPCMCIA;
 	// Initialize the CAN controler : BitRate (500kbit, sample at 75%)
 	NSI_canBus.baudpresc	= 1;	// BRP	 = 1
 	NSI_canBus.tseg1		= 11;	// TSEG1 = 11
@@ -2348,14 +2598,17 @@ HRESULT CDIL_CAN_NSI::CAN_StartHardware(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
 	HRESULT hResult = S_OK;
+
+	flagConnect = TRUE;
+
     //Connect to the channels
     hResult = nConnect(TRUE, NULL);
     if (hResult == defERR_OK)
     {
         hResult = S_OK;
         sg_bCurrState = STATE_CONNECTED;
-        /*SetEvent(g_hDataEvent[0]); A REMPLACER */
-        /*vCreateTimeModeMapping(g_hDataEvent[0]); A REMPLACER */ 
+        SetEvent(NSI_hEvent[0]); 
+        vCreateTimeModeMapping(NSI_hEvent[0]);
     }
     else
     {
@@ -2363,11 +2616,17 @@ HRESULT CDIL_CAN_NSI::CAN_StartHardware(void)
         vRetrieveAndLog(hResult, __FILE__, __LINE__);
         hResult = ERR_LOAD_HW_INTERFACE;
     }
+	
+	/*t_CANevent NSI_event;
+	for (UINT i = 0; i < sg_nNoOfChannels ; i++)
+	{
+		while(Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event) != _EMPTY_FIFO) ;
+	}*/
 
     //If everything is ok start the read thread
     if (hResult == S_OK)
     {
-        if (/*sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_Kvaser_CAN) A REMPLACER */1)
+        if (sg_sParmRThread.bStartThread(CanMsgReadThreadProc_CAN_NSI))
         {
             hResult = S_OK;
         }
@@ -2391,9 +2650,9 @@ HRESULT CDIL_CAN_NSI::CAN_StopHardware(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_OK;
     //Terminate the read thread
-    /*sg_sParmRThread.bTerminateThread(); A REMPLACER */
+    sg_sParmRThread.bTerminateThread();
 
-
+	flagConnect = FALSE;
 
     hResult = nConnect(FALSE, NULL);
     if (hResult == defERR_OK)
@@ -2403,10 +2662,11 @@ HRESULT CDIL_CAN_NSI::CAN_StopHardware(void)
     }
     else
     {
-        //log the error for open port failure
+        //log the error for closing port failure
         vRetrieveAndLog(hResult, __FILE__, __LINE__);
-        hResult = ERR_LOAD_HW_INTERFACE;
+		hResult = ERR_CLOSE_HW_INTERFACE;
     }
+	
     return hResult;
 }
 
@@ -2447,7 +2707,7 @@ HRESULT CDIL_CAN_NSI::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 ///----------------------------------------------------------------------------
 HRESULT CDIL_CAN_NSI::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
 {
-	HRESULT hResult = S_FALSE;	
+	HRESULT hResult = S_FALSE;
 	int ret = WriteMessageIntoNSIDevice(sCanTxMsg);
     if (ret == defERR_OK)
 	{
@@ -2466,12 +2726,13 @@ HRESULT CDIL_CAN_NSI::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
 ///---------------------------------------------------------------------------
 HRESULT CDIL_CAN_NSI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);		
+	EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
 	STCAN_MSG sendingMsg = sCanTxMsg;
 	HRESULT hResult = S_FALSE;
-    if (sendingMsg.m_ucChannel <= sg_nNoOfChannels)
+    if ((sendingMsg.m_ucChannel > 0) && (sendingMsg.m_ucChannel <= sg_nNoOfChannels))
     {
-        if (nTransmitMessage(sendingMsg, dwClientID) == defERR_OK)
+		if (nTransmitMessage(sendingMsg, dwClientID) == defERR_OK)
         {
             hResult = S_OK;
         }
@@ -2479,7 +2740,8 @@ HRESULT CDIL_CAN_NSI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
     else
     {
         hResult = ERR_INVALID_CHANNEL;
-        }
+    }
+	LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
     return hResult;
 }
 

@@ -31,7 +31,7 @@
 //#include "afxtempl.h"
 
 
-const int SIZE_APP_CAN_BUFFER       = 5000;
+const int SIZE_APP_CAN_BUFFER       = 100000;//5000
 
 
 /* This is the concrete template class of a circular queue where each entry is
@@ -131,7 +131,7 @@ CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
 vClearMessageBuffer(void)
 {
-    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_CAN_BUFFER * m_nMsgSize);
+    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_CAN_BUFFER * m_nMsgSize);//BYTE
     m_omIdIndexMap.RemoveAll();
     m_nIndexRead = 0;
     m_nIndexWrite = 0;

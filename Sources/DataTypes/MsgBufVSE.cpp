@@ -34,8 +34,8 @@
 //type
 #define DATA_LEN   WORD
 #define TYPE       BYTE
-#define MAX_BUFFER_SIZE 100000
-#define MIN_BUFFER_SIZE 5000
+#define MAX_BUFFER_SIZE 200000//100000
+#define MIN_BUFFER_SIZE 50000//5000
 
 // Const variables
 const size_t DATA_LEN_SIZE = sizeof(DATA_LEN);

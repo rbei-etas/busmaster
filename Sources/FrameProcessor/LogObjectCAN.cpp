@@ -230,7 +230,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
         case START:
         {
             if ((m_sLogInfo.m_sLogTrigger.m_unStartID == CANInfo_Basic.m_dwFrameID)
-                    && (CANInfo_Basic.m_eDrctn == DIR_RX))
+				/*&& (CANInfo_Basic.m_eDrctn == DIR_RX)*/)
             {
                 m_CurrTriggerType = NONE;
             }
@@ -243,7 +243,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
         case STOP:
         {
             if ((m_sLogInfo.m_sLogTrigger.m_unStopID == CANInfo_Basic.m_dwFrameID)
-                    && (CANInfo_Basic.m_eDrctn  == DIR_RX))
+                    /*&& (CANInfo_Basic.m_eDrctn  == DIR_RX)*/)
             {
                 m_CurrTriggerType = STOPPED;
             }
@@ -253,7 +253,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
         case BOTH:
         {
             if ((m_sLogInfo.m_sLogTrigger.m_unStartID == CANInfo_Basic.m_dwFrameID)
-                    && (CANInfo_Basic.m_eDrctn == DIR_RX))
+                    /*&& (CANInfo_Basic.m_eDrctn == DIR_RX)*/)
             {
                 m_CurrTriggerType = STOP;
             }

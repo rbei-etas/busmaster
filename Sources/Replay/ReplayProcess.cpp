@@ -189,8 +189,10 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 }
                 if(bTobeBlocked == FALSE)
                 {
+					HRESULT hRet =  s_pouDIL_CAN_Interface->DILC_GetMsg(pReplayDetails->m_omMsgList[ nCurrentIndex ].
+                                    m_uDataInfo.m_sCANMsg);
                     // Use HIL Function to send CAN message
-                    HRESULT hRet =  s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
+                    hRet =  s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
                                     pReplayDetails->m_omMsgList[ nCurrentIndex ].
                                     m_uDataInfo.m_sCANMsg );
                 }
@@ -343,8 +345,10 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
 
                 if(bTobeBlocked == FALSE)
                 {
+					HRESULT hRet = s_pouDIL_CAN_Interface->DILC_GetMsg(pReplayDetails->m_omMsgList[ nCurrentIndex ].
+                                    m_uDataInfo.m_sCANMsg);
                     // Use HIL Function to send CAN message
-                    HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
+                    hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
                                    pReplayDetails->m_omMsgList[ nCurrentIndex ].m_uDataInfo.m_sCANMsg );
                 }
 
@@ -720,7 +724,8 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
 
                 if(bTobeBlocked == FALSE)
                 {
-                    // Use HIL Function to send CAN message
+					hRet = s_pouDIL_CAN_Interface->DILC_GetMsg(pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
+					// Use HIL Function to send CAN message
                     hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
                 }
 

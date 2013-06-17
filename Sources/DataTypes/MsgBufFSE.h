@@ -30,7 +30,7 @@
 #include "BaseMsgBufAll.h"
 
 
-const int SIZE_APP_BUFFER       = 20000;
+const int SIZE_APP_BUFFER       = 100000;//20000
 
 
 /* This is the concrete template class of a circular queue where each entry is
@@ -126,7 +126,7 @@ CMsgBufFSE<SMSGBUFFER>::~CMsgBufFSE()
 template <typename SMSGBUFFER> void CMsgBufFSE<SMSGBUFFER>::
 vClearMessageBuffer(void)
 {
-    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_BUFFER * m_nMsgSize);
+    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_BUFFER * m_nMsgSize);//BYTE
     m_nIndexRead = 0;
     m_nIndexWrite = 0;
     m_nMsgCount = 0;

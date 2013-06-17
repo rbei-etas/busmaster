@@ -312,7 +312,7 @@ public:
     HRESULT CAN_StopHardware(void);
     HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
+    HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -2567,8 +2567,8 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
 }
 
 /**
- * Gets STCAN_MSG structure.
- */
+* Gets STCAN_MSG structure.
+*/
 HRESULT CDIL_CAN_ETAS_BOA::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
 {
 	return S_OK;

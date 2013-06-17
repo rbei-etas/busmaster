@@ -42,7 +42,6 @@
 typedef HRESULT (__stdcall* GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
 static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
-
 /**
  * Error logger
  */

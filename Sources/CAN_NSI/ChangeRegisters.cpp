@@ -1836,19 +1836,26 @@ void CChangeRegisters::vFillControllerConfigDetails()
 	CButton* pCheckLowSpeed = (CButton*)GetDlgItem(IDC_CHKB_LOW_SPEED);
 	if (pCheckLowSpeed != NULL)
 	{
-		char * pchMB2;
-		char * pchMB;
+		char * pchMuxyBox2;
+		char * pchMuxyBox;
+		char * pchMuxy2010;
 		char * pchPCMCIA;
 		pCheckLowSpeed->EnableWindow(FALSE);
-		pchMB2 = strstr((char *)m_pControllerDetails[m_nLastSelection].m_omHardwareDesc.c_str(), "MuxyBox2-CAN CH2");
-		pchMB = strstr((char *)m_pControllerDetails[m_nLastSelection].m_omHardwareDesc.c_str(), "MUXy box CH");
+		pchMuxyBox2 = strstr((char *)m_pControllerDetails[m_nLastSelection].m_omHardwareDesc.c_str(), "MuxyBox2-CAN CH2");
+		pchMuxy2010 = strstr((char *)m_pControllerDetails[m_nLastSelection].m_omHardwareDesc.c_str(), "MUXYv2-CAN CH2");
+		pchMuxyBox = strstr((char *)m_pControllerDetails[m_nLastSelection].m_omHardwareDesc.c_str(), "MUXy box CH");
 		pchPCMCIA = strstr((char *)m_pControllerDetails[m_nLastSelection].m_omHardwareDesc.c_str(), "CANPCMCIA /LS");
-		if(pchMB2 != NULL)
+		if(pchMuxyBox2 != NULL)
 		{
 			pCheckLowSpeed->EnableWindow(TRUE);
 			pCheckLowSpeed->SetCheck(m_pControllerDetails[m_nLastSelection].m_bLowSpeed);
 		}
-		if(pchMB != NULL)
+		if(pchMuxy2010 != NULL)
+		{
+			pCheckLowSpeed->EnableWindow(TRUE);
+			pCheckLowSpeed->SetCheck(m_pControllerDetails[m_nLastSelection].m_bLowSpeed);
+		}
+		if(pchMuxyBox != NULL)
 		{
 			pCheckLowSpeed->EnableWindow(TRUE);
 			pCheckLowSpeed->SetCheck(m_pControllerDetails[m_nLastSelection].m_bLowSpeed);

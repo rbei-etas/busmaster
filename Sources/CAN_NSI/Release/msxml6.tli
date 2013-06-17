@@ -1,9 +1,9 @@
-﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.21022.08 (3b8daefe).
+﻿// Created by Microsoft (R) C/C++ Compiler Version 15.00.21022.08 (c859ec82).
 //
-// d:\busmaster-master\sources\can_nsi\release\msxml6.tli
+// d:\busmaster.addnsiapi.test\sources\can_nsi\release\msxml6.tli
 //
 // Wrapper implementations for Win32 type library msxml6.dll
-// compiler-generated file created 05/22/13 at 09:28:47 - DO NOT EDIT!
+// compiler-generated file created 06/14/13 at 08:32:53 - DO NOT EDIT!
 
 #pragma once
 

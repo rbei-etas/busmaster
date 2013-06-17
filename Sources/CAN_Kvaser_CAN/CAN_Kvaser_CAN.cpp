@@ -1721,7 +1721,6 @@ static int nWriteMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
         //Transmit message
         nStatus = canWrite(sg_aodChannels[sMessage.m_ucChannel-1].m_hnd, sMessage.m_unMsgID,
                            sMessage.m_ucData, (unsigned short)sMessage.m_ucDataLen, nUsedFlags);
-
         //set result
         nReturn = nStatus;
     }

@@ -514,9 +514,9 @@ PLACE_HODLER_FOR_FUNCTIONNAME */"
 #define UI_THREAD               0
 
 //no. of entries in CExecute func message handler buffer
-#define defMAX_FUNC_MSG                     1000
+#define defMAX_FUNC_MSG                     10000//1000
 //no. of entries in global message handler structure buffer
-#define defMAX_HMODULE_MSG                  1000
+#define defMAX_HMODULE_MSG                  10000//1000
 
 // Define for all Util Message Thread
 #define defOFFSET_TXMSG              1
@@ -1180,10 +1180,10 @@ const int LENGTH_DATASTRING = 33;
 
 #define defSIGNAL_ICON_SIZE               16
 // Message Buffer Size Related definitions
-#define defDEF_APPEND_BUFFER_SIZE         5000
-#define defDEF_OVERWRITE_BUFFER_SIZE      2000
-#define defMIN_BUFFER_SIZE                200
-#define defMAX_BUFFER_SIZE                32500
+#define defDEF_APPEND_BUFFER_SIZE         5000 // Default buffer size parameter in append mode dlg
+#define defDEF_OVERWRITE_BUFFER_SIZE      2000 // Default buffer size parameter in ovwt mode dlg
+#define defMIN_BUFFER_SIZE                200 // Min buffer size parameter dlg
+#define defMAX_BUFFER_SIZE                32500 // Max buffer size parameter dlg
 #define defMIN_DISPLAY_UPDATE_TIME        50        // In ms
 #define defDEF_DISPLAY_UPDATE_TIME        100
 #define defMAX_DISPLAY_UPDATE_TIME        20000     // In ms
