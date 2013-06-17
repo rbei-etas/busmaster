@@ -1622,7 +1622,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.8.1 Beta 3"
+    IDS_VERSION             "Ver 1.8.1"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1636,8 +1636,7 @@ BEGIN
                             "Show/Hide Network Statistics Window\nShow/Hide Network Statistics Window"
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
-    IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
-    IDM_CHECK_HW_INTERFACE  "Test Hardware Interface\nTest Hardware Interface"
+    IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"    
 END
 
 STRINGTABLE 
