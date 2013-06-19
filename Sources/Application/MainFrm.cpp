@@ -1039,7 +1039,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
     Sleep(1500);
 
-    theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
+    // Setting Hex Mode by default
+	bSetHexDecFlags(TRUE);
+	//theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
 
 
 
@@ -5647,6 +5649,59 @@ void CMainFrame::OnHex_DecButon()
 }
 
 /**
+* \brief         Enabling or disabling Hex/Numeric mode
+* \param[in]     bHexEnabled is bool variable, if true Hex mode is enabled
+* \return        void
+* \authors       Prathiba P
+* \date          06.18.2013 Created
+*/
+void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
+{
+	 if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        if (bHexEnabled == FALSE)
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_DEC(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, FALSE);
+        }
+        else
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_HEX(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
+        }
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+            //Update Message Window
+            if(hWnd)
+            {
+                BYTE bModes = NUMERIC;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
+
+    BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
+    if(m_objTxHandler.hConfigWindowShown() == S_OK)
+    {
+        eUSERSELCTION eUserSel = eHEXDECCMD;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+    }
+    if (sg_pouSWInterface[CAN] != NULL)
+    {
+        sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
+    }
+    if (sg_pouSWInterface[J1939] != NULL)
+    {
+        sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
+    }
+}
+/**
  * \brief Display Message window Overwrite
  * \req RS_16_01 - Two display modes namely, overwrite and append shall be supported.
  *
@@ -8368,6 +8423,8 @@ void CMainFrame::OnNewConfigFile()
             vStartStopLogging( bLogON );
         }
 
+		// setting by default Hex mode on new configuration
+		bSetHexDecFlags(TRUE);
         // On New Configuration Stop Logging if it is enabled for J1939
         vJ1939StartStopLogging();
 
@@ -11789,6 +11846,9 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
             if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
             {
                 DeselectJ1939Interfaces();
+				// On Deactivate, deactivating J1939 and hiding the message window
+				GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+				m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
@@ -13744,12 +13804,16 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
                 CString strDisplayNumericON = ptext;
 
                 if(strDisplayNumericON == _("TRUE"))
-                {
-                    m_sToolBarInfo.m_byDisplayHexON = FALSE;
+                {	
+				    // Setting decimal mode				
+					bSetHexDecFlags(FALSE);             
+					m_sToolBarInfo.m_byDisplayHexON = FALSE;
                 }
                 else if(strDisplayNumericON == _("FALSE"))
                 {
-                    m_sToolBarInfo.m_byDisplayHexON = TRUE;
+					// Setting Hex mode					
+					bSetHexDecFlags(TRUE);
+					m_sToolBarInfo.m_byDisplayHexON = TRUE;
                 }
                 xmlFree(ptext);
             }
@@ -15464,6 +15528,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             else
             {
                 theApp.pouGetFlagsPtr()->vInitializeFlags();
+				// Setting Hex mode
+				bSetHexDecFlags(TRUE);
                 m_sNotificWndPlacement.length = 0;
                 m_sNotificWndPlacement.rcNormalPosition.top = -1;
                 if (m_podUIThread != NULL)
@@ -17212,7 +17278,16 @@ void CMainFrame::OnActionJ1939TxMessage()
         m_pouTxMsgWndJ1939 = new CTxMsgWndJ1939(this, m_sJ1939ClientParam);
         m_pouTxMsgWndJ1939->Create(IDD_DLG_TX);
     }
-    m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+
+	// Hide the J1939 Transmit window if it is visible
+	if(m_pouTxMsgWndJ1939->IsWindowVisible() == TRUE)
+	{
+		m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+	}
+	else // Show the J1939 Transmit window if it is hidden
+	{
+		m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+	}
 }
 
 void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI* pCmdUI)
