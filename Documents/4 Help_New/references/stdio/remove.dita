@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="remove" xml:lang="en-us">
+  <title>remove : delete a file&apos;s name</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int remove(char *filename);
+int _remove_r(void *reent, char *filename);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use remove to dissolve the association between a particular filename (the string at filename) and the file it represents. After calling remove with a particular filename, you will no longer be able to open the file by that name.</p>
+      <p>In this implementation, you may use remove on an open file without error; existing file descriptors for the file will continue to access the file&apos;s data until the program using them closes the file.</p>
+      <p>The alternate function _remove_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>remove returns 0 if it succeeds, -1 if it fails.</p>
+    </section>
+  </refbody>
+</reference>

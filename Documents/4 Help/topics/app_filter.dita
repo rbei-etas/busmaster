@@ -17,10 +17,7 @@
   <body>
     <p>User can configure filter list by choosing messages to be filtered.To configure the filter list, follow the steps given below
     <ul>
-        <li>Select <menucascade>
-            <uicontrol>Configure</uicontrol>
-            <uicontrol>Filters</uicontrol>
-          </menucascade>.</li>
+        <li>Select <b>CAN --&gt; Filter Configuration</b>.</li>
         <li>The dialog box specified below will be displayed.<image href="../images/MsgFilter.bmp" placement="break"/></li>
       </ul></p>
     <section>

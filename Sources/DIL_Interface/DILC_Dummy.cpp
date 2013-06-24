@@ -89,11 +89,6 @@ HRESULT CDIL_CAN_DUMMY::CAN_StopHardware(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_ResetHardware(void)
-{
-    return WARN_DUMMY_API;
-}
-
 HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
 {
     return WARN_DUMMY_API;
@@ -111,11 +106,6 @@ HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCa
 
 
 HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
-{
-    return WARN_DUMMY_API;
-}
-
-HRESULT CDIL_CAN_DUMMY::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }

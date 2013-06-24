@@ -3727,7 +3727,7 @@ msgid "Test Suite Executor"
 msgstr "テストスイートを実行する"
 
 msgid "Unnamed Test Suite"
-msgstr "無名のテストスイート"
+msgstr "Unnamed Test Suite"
 
 #: TSExecutorGUI_ChildFrame.cpp:197
 msgid "Execution Step"
@@ -5077,6 +5077,10 @@ msgstr "&オンラインにする"
 #: MainFrm.cpp:12653
 msgid "&Hardware Interface"
 msgstr "&ハードウェアインタフェース"
+
+#: MainFrm.cpp:16914
+msgid "&Hardware"
+msgstr "&ハードウェア"
 
 #: MainFrm.cpp:144
 msgid "*.dll"

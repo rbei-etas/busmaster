@@ -109,6 +109,47 @@ BOOL CSignalDefinerApp::InitInstance()
     return TRUE;
 }
 
+int CSignalDefinerApp::ExitInstance()
+{
+    int result = CWinApp::ExitInstance();
+    if (0 == result)
+    {
+        // This DLL is natively linked against the "new" runtime
+        // library, and thus uses that library's allocators
+        // for "new" calls during DllMain.
+
+        // When MFC cleans up during AfxTermExtensionModule,
+        // the de-allocator being called is the one from the "old"
+        // runtime library (against which the MFC DLL itself is
+        // linked). That's okay, but it should not attempt to
+        // destroy any object created with the new allocator.
+
+        // Unfortunately, there's one single CDynLinkLibrary
+        // object being created in our DllMain -- with the new
+        // allocator.
+
+        // Fortunately, that object is expected to be the head
+        // in the list of active libraries.
+
+        AFX_MODULE_STATE* pModuleState = AfxGetModuleState();
+        ASSERT(pModuleState);
+
+        CDynLinkLibrary* pDLL = pModuleState->m_libraryList;
+        if (pDLL &&
+            (pDLL->m_hModule == pModuleState->m_hCurrentInstanceHandle))
+        {
+            // We got it! Remove it, ...
+            pModuleState->m_libraryList.Remove(pDLL);
+            // ... run the destructor, ...
+            pDLL->~CDynLinkLibrary();
+            // ... and free the memory -- with our native
+            // deallocator!
+            free(pDLL);
+        }
+    }
+    return result;
+}
+
 /*Singal Definer variable declaration*/
 CSignalDefinerDlg g_objSignalDefiner;
 

@@ -16,7 +16,6 @@
 
 
 
-
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -686,13 +685,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.7.3"
+            VALUE "FileVersion", "Ver 1.8.1"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.7.3"
+            VALUE "ProductVersion", "Ver 1.8.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -890,9 +889,6 @@ IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_dis
 IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
 IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
 IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
-IDB_MAINFRAMEDSC        BITMAP                  "Res\\ToolbarDsc.bmp"
-IDB_MAINFRAMEDSC_HOT    BITMAP                  "Res\\ToolbarDsc_hot.bmp"
-IDB_MAINFRAMEDSC_DISABLED BITMAP                  "Res\\ToolbarDsc_disabled.bmp"
 IDB_HDRDOWN             BITMAP                  "Res\\hdrdown.bmp"
 IDB_HDRUP               BITMAP                  "Res\\hdrup.bmp"
 IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
@@ -912,210 +908,14 @@ IDR_CAN_DATABASE        BITMAP                  "res\\CANDatabase.bmp"
 IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
 IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
 IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
+IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
+IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
+IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
-
-IDR_MAINFRAME MENUEX 
-BEGIN
-    POPUP "&File",                          65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        POPUP "Confi&guration",                 65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&New",                        32902,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Load...",                    32903,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Save",                       32904,MFT_STRING,MFS_ENABLED
-            MENUITEM "Save &As...",                 32905,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "&Database",                      65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        BEGIN
-            MENUITEM "&New                          Ctrl+B", 32815,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "&Open...                    Ctrl+D", 32817,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Save                         Ctrl+E", 32864,MFT_STRING,MFS_ENABLED
-            MENUITEM "Save and Im&port      Ctrl+I", 33010,MFT_STRING,MFS_ENABLED
-            MENUITEM "Sa&ve As...",                 32865,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Close",                      32849,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Associate...             Ctrl+M", 32860,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "&Disassociate...         Ctrl+T", 33001,MFT_STRING,MFS_ENABLED
-        END
-        MENUITEM MFT_SEPARATOR
-        POPUP "&Utilities",                     65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Format Converters",          32959,MFT_STRING,MFS_ENABLED
-        END
-        MENUITEM "&Properties",                 62455,MFT_STRING,MFS_ENABLED
-        MENUITEM MFT_SEPARATOR
-        POPUP "Recent Configurations",          65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "Empty",                       32932,MFT_STRING,MFS_ENABLED
-        END
-        MENUITEM "E&xit",                       57665,MFT_STRING,MFS_ENABLED
-    END
-    POPUP "&View",                          65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "&Message Window",             33105,MFT_STRING,MFS_CHECKED
-        MENUITEM "Signal &Watch Window",        32784,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        MENUITEM "Signal &Graph Window",        33061,MFT_STRING,MFS_CHECKED
-        MENUITEM "&Network Statistics",         32918,MFT_STRING,MFS_CHECKED
-        MENUITEM "T&race Window",               32922,MFT_STRING,MFS_CHECKED
-        MENUITEM MFT_SEPARATOR
-        POPUP "&Toolbar",                       65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Main",                       33046,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM "Message &Window",             33047,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM "&Node Simulation",            33049,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM "J1939",                       33066,MFT_STRING,MFS_CHECKED
-            MENUITEM "&Configure",                  33073,MFT_STRING,MFS_CHECKED
-            MENUITEM "CAN &Database",               33117,MFT_STRING,MFS_CHECKED
-        END
-        MENUITEM "&Statusbar",                  59393,MFT_STRING,MFS_ENABLED
-    END
-    POPUP "&Configure",                     65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "Hardware Se&lection",         ID_CONFIGURE_CHANNELSELECTION,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Controller",                 32811,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        MENUITEM "&Message Display",            32809,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        MENUITEM "L&og",                        32956,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Tx Messages",                32891,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Replay",                     32955,MFT_STRING,MFS_ENABLED
-        MENUITEM "&App Filters",                32821,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        MENUITEM "&Simulated Systems",          33023,MFT_STRING,MFS_ENABLED
-        MENUITEM "Sig&nal Watch",               32818,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Waveform Messages",          33051,MFT_STRING,MFS_ENABLED
-        MENUITEM "Signal &Graph",               33055,MFT_STRING,MFS_ENABLED
-    END
-    POPUP "F&unctions",                     65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "&Connect           F2",       62454,MFT_STRING,MFS_ENABLED
-        MENUITEM "Start &Logging",              32806,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-        MENUITEM "&Hex",                        32839,MFT_STRING,MFS_CHECKED
-        POPUP "&Transmit",                      65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Normal Blocks",              32873,MFT_STRING,MFS_CHECKED
-            MENUITEM "&Waveforms",                  33052,MFT_STRING,MFS_CHECKED
-        END
-        POPUP "Enable &Filter",                 65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Log",                        32824,MFT_STRING,MFS_CHECKED
-            MENUITEM "&Display",                    32826,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM "&Replay",                     32827,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-        END
-        POPUP "&Replay",                        65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Go",                         32802,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "&Step",                       32803,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "S&kip",                       32804,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            MENUITEM "S&top",                       32805,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        END
-        POPUP "&Message Window",                65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        BEGIN
-            POPUP "Time &Mode",                     65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-            BEGIN
-                MENUITEM "&System Time",                32938,MFT_STRING,MFS_CHECKED
-                MENUITEM "&Absolute Time",              32941,MFT_STRING,MFS_CHECKED
-                MENUITEM "&Relative Time",              32942,MFT_STRING,MFS_CHECKED
-            END
-            MENUITEM "&Overwrite",                  32878,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Interpret",                  32838,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-            MENUITEM "&Show Last",                  32952,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Reset Columns",              33042,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "C&ontroller",                    65535,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        BEGIN
-            MENUITEM "Set All Channels to &Active", 32921,MFT_STRING,MFS_CHECKED
-            MENUITEM "Set All Channels to &Passive", 32920,MFT_STRING,MFS_CHECKED
-            MENUITEM "&Test Interface",             32925,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Reset Hardware",             32930,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "Test &Automation",               65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Editor",                     33119,MFT_STRING,MFS_ENABLED
-            MENUITEM "E&xecutor",                   33120,MFT_STRING,MFS_ENABLED
-        END
-    END
-    POPUP "&Node Simulation",               65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "&Load All",                   33021,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        MENUITEM "&Unload All",                 33022,MFT_STRING,MFS_ENABLED
-        MENUITEM "Build && L&oad All   Ctrl+L", 33020,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Build All",                  33019,MFT_STRING,MFS_ENABLED
-        MENUITEM MFT_SEPARATOR
-        MENUITEM "All &Message Handler(s)",     32848,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-        MENUITEM "All &Timer Handler(s)...",    32850,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-        MENUITEM "All &Key Handler(s)",         32900,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-        MENUITEM "All &Error Handler(s)",       32910,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_CHECKED
-        MENUITEM "&All Handler(s)",             32909,MFT_STRING | MFT_RIGHTJUSTIFY,MFS_ENABLED
-    END
-    POPUP "&J1939",                         65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "&Activate",                   33056,MFT_STRING,MFS_ENABLED
-        POPUP "&Database",                      65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&New",                        33079,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Open",                       33080,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Close",                      33084,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Save",                       ID_DATABASE_SAVE,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "&Associate",                  33082,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Dissociate",                 33083,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "&View",                          65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Message Window",             33106,MFT_STRING,MFS_CHECKED
-            MENUITEM "&Transmit Window",            33064,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Signal Watch Window",        33099,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "&Configure",                     65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Log",                        33062,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Timeouts",                   33077,MFT_STRING,MFS_ENABLED
-            MENUITEM "Signal &Watch",               33098,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Message Display",            33104,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Simulated Systems",          33085,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "&Function",                      65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Go Online",                  33065,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "Start &Logging",              33063,MFT_STRING,MFS_ENABLED
-        END
-        POPUP "&Node Simulation",               65535,MFT_STRING,MFS_ENABLED
-        BEGIN
-            MENUITEM "&Load All",                   33087,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Unload All",                 33088,MFT_STRING,MFS_ENABLED
-            MENUITEM "Build and L&oad All",         33089,MFT_STRING,MFS_ENABLED
-            MENUITEM "&Build All",                  33090,MFT_STRING,MFS_ENABLED
-            MENUITEM MFT_SEPARATOR
-            MENUITEM "All &Message Handlers",       33092,MFT_STRING,MFS_CHECKED
-            MENUITEM "All &Key Handlers ",          33093,MFT_STRING,MFS_CHECKED
-            MENUITEM "All &Timer Handlers",         33094,MFT_STRING,MFS_CHECKED
-            MENUITEM "All &Event Handlers",         ID_EXECUTE_ALLEVENTHANDLERS,MFT_STRING,MFS_CHECKED
-            MENUITEM "&All Handlers",               33096,MFT_STRING,MFS_CHECKED
-        END
-    END
-    POPUP "&Window",                        65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "&Cascade",                    57650,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Tile",                       57651,MFT_STRING,MFS_ENABLED
-        MENUITEM "&Arrange Icons",              57649,MFT_STRING,MFS_ENABLED
-    END
-    POPUP "&Help",                          65535,MFT_STRING,MFS_ENABLED
-    BEGIN
-        MENUITEM "&Help Topics                  F1", 57667,MFT_STRING,MFS_ENABLED
-        MENUITEM "&What's This?",               57669,MFT_STRING,MFS_ENABLED
-        MENUITEM MFT_SEPARATOR
-        MENUITEM "&About BUSMASTER...",         32869,MFT_STRING,MFS_ENABLED
-    END
-END
 
 IDM_MSG_OPN_MENU MENU 
 BEGIN
@@ -1216,6 +1016,235 @@ BEGIN
     END
 END
 
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New",                        IDM_CONFIG_NEW
+        MENUITEM "&Load...",                    IDM_CONFIG_LOAD
+        MENUITEM SEPARATOR
+        MENUITEM "&Save",                       IDM_SAVE_CONFIG
+        MENUITEM "Save &As...",                 IDM_SAVEAS_CONFIG
+        MENUITEM SEPARATOR
+        POPUP "&Recent Configurations"
+        BEGIN
+            MENUITEM "Empty",                       IDM_REC_CFG_FILE1
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Format Converters",          ID_UTILITY_FILE_CONVERTER
+        MENUITEM SEPARATOR
+        MENUITEM "&Properties",                 IDM_FILE_PROPETIES
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Hardware"
+    BEGIN
+        POPUP "Driver M&ode"
+        BEGIN
+            MENUITEM "&Active",                     IDM_CONFIGURE_ACTIVE, CHECKED
+            MENUITEM "&Passive",                    IDM_CONFIGURE_PASSIVE, CHECKED
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Channel &Selection",          ID_CONFIGURE_CHANNELSELECTION
+        MENUITEM "Channel Con&figuration",      IDM_CONFIGURE_BAUDRATE
+    END
+    POPUP "&CAN"
+    BEGIN
+        MENUITEM "&Connect\tF2",                IDM_FILE_CONNECT
+        MENUITEM "&Hex",                        32839, CHECKED
+        POPUP "&Database"
+        BEGIN
+            MENUITEM "&New\tCtrl+B",                IDM_CONFIGURE_DATABASE_NEW
+            MENUITEM "&Open...\tCtrl+D",            IDM_CONFIGURE_DATABASE_OPENACTIVE
+            MENUITEM SEPARATOR
+            MENUITEM "&Save\tCtrl+E",               IDM_CONFIGURE_DATABASE_SAVE
+            MENUITEM "Save and Im&port\tCtrl+I",    IDM_SAVE_IMPORT
+            MENUITEM "Sa&ve As...",                 IDM_CONFIGURE_DATABASE_SAVEAS
+            MENUITEM SEPARATOR
+            MENUITEM "&Close",                      IDM_CONFIGURE_DATABASE_CLOSE
+            MENUITEM SEPARATOR
+            MENUITEM "&Associate...\tCtrl+M",       IDM_FILE_IMPORT_DATABASE
+            MENUITEM "&Dissociate...\tCtrl+T",      IDM_DATABASE_DISSOCIATE_DB
+        END
+        POPUP "&Message Window"
+        BEGIN
+            MENUITEM "&Activate",                   ID_SHOWMESSAGEWINDOW_CAN, CHECKED
+            MENUITEM "&Enable Filters",             IDM_FILTER_MESSAGEFILTEROFF, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_CONFIGURE_MESSAGE
+            MENUITEM SEPARATOR
+            POPUP "Time &Mode"
+            BEGIN
+                MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
+                MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
+                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+            END
+            MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
+            MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
+            MENUITEM "&Show Last",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_SCROLL
+            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+        END
+        POPUP "&Signal Watch"
+        BEGIN
+            MENUITEM "&Activate",                   IDR_TOOL_BUTTON_SIGNAL_WATCH
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_SIGNALWATCH_ADDSIGNAL
+        END
+        POPUP "Signal &Graph"
+        BEGIN
+            MENUITEM "&Activate",                   ID_SIGNALGRAPHWINDOW_CAN, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  ID_CONFIGURE_SIGNALGRAPHWINDOW
+        END
+        MENUITEM "&Filter Configuration",       IDM_FILTER_MESSAGE_SELECTMESSAGES
+        POPUP "&Logging"
+        BEGIN
+            MENUITEM "&Activate",                   IDM_LOG_ON_OFF, CHECKED
+            MENUITEM "&Enable Filters",             IDM_FILTER_LOGFILTEROFF, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_CFGN_LOG
+        END
+        MENUITEM SEPARATOR
+        POPUP "&Replay"
+        BEGIN
+            MENUITEM "&Configure",                  IDM_CFGN_REPLAY
+            MENUITEM "Enable &Filters",             32827, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Go",                         IDM_REPLAY_GO
+            MENUITEM "&Step",                       IDM_REPLAY_STEP
+            MENUITEM "S&kip",                       IDM_REPLAY_SKIP
+            MENUITEM "S&top",                       IDM_REPLAY_STOP
+        END
+        POPUP "&Transmit"
+        BEGIN
+            MENUITEM "&Enable",                     IDR_TOOL_SENDMSG, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_CFGN_SEND_MSGS
+        END
+        POPUP "&Waveform Messages"
+        BEGIN
+            MENUITEM "&Enable",                     IDR_START_SIGNAL_TRANSMISSION, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  ID_CONFIGURE_WAVEFORM_MESSAGES
+        END
+        POPUP "Test &Automation"
+        BEGIN
+            MENUITEM "&Editor",                     ID_TESTAUTOMATION_EDITOR
+            MENUITEM SEPARATOR
+            MENUITEM "E&xecutor",                   ID_TESTAUTOMATION_EXECUTOR
+        END
+        POPUP "&Node Simulation"
+        BEGIN
+            MENUITEM "&Configure",                  IDM_CONFIGURE_SIMULATEDSYSTEMS
+            MENUITEM SEPARATOR
+            MENUITEM "&Load All",                   IDM_DLL_LOADALLDLL
+            MENUITEM "&Unload All",                 IDM_DLL_UNLOAD_ALL
+            MENUITEM "Build && L&oad All\tCtrl+L",  IDM_DLL_BUILDLOAD_ALL
+            MENUITEM "&Build All",                  IDM_DLL_BUILD_ALL
+            MENUITEM SEPARATOR
+            MENUITEM "All &Message Handler(s)",     IDM_EXECUTE_MESSAGEHANDLERS, CHECKED
+            MENUITEM "All &Timer Handler(s)...",    IDM_EXECUTE_TIMERHANDLER
+            MENUITEM "All &Key Handler(s)",         IDM_EXECUTE_KEYHANDLERS, CHECKED
+            MENUITEM "All &Error Handler(s)",       IDM_EXECUTE_ERROR_HANDLERS, CHECKED
+            MENUITEM "&All Handler(s)",             IDM_EXECUTE_ALL_HANDLERS
+        END
+    END
+    POPUP "&J1939"
+    BEGIN
+        MENUITEM "&Activate",                   ID_ACTIVEBUS_J1939
+        MENUITEM "&Go Online",                  ID_TOOLBAR_CONFIGURE
+        MENUITEM SEPARATOR
+        MENUITEM "T&imeout Configuration",      ID_CONFIGURE_TIMEOUTS
+        POPUP "&Database"
+        BEGIN
+            MENUITEM "&New",                        ID_DATABASE_NEW
+            MENUITEM "&Open",                       ID_DATABASE_OPEN
+            MENUITEM SEPARATOR
+            MENUITEM "&Save",                       ID_DATABASE_SAVE
+            MENUITEM "Save and Im&port",            IDM_SAVE_IMPORT_J1939
+            MENUITEM "Sa&ve As...",                 IDM_CONFIGURE_J1939_DB_SAVEAS
+            MENUITEM SEPARATOR
+            MENUITEM "&Close",                      ID_DATABASE_CLOSE
+            MENUITEM SEPARATOR
+            MENUITEM "&Associate",                  33082
+            MENUITEM "&Dissociate",                 ID_DATABASE_DISSOCIATE
+        END
+        POPUP "&Message Window"
+        BEGIN
+            MENUITEM "&Activate",                   ID_SHOWMESSAGEWINDOW_J1939, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  ID_CONFIGURE_MESSAGEDISPLAY_J1939
+            MENUITEM SEPARATOR
+            POPUP "Time &Mode"
+            BEGIN
+                MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
+                MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
+                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+            END
+            MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
+            MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
+            MENUITEM "&Show Last",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_SCROLL
+            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+        END
+        POPUP "&Signal Watch"
+        BEGIN
+            MENUITEM "&Activate",                   ID_SIGNALWATCH_SHOWWINDOW
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  ID_SIGNALWATCH_ADD
+        END
+        POPUP "&Logging"
+        BEGIN
+            MENUITEM "&Activate",                   ID_ACTION_J1939_LOG
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  ID_J1939_CONFIG_LOG
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Transmit",                   ID_ACTION_J1939_TX_MESSAGE
+        POPUP "&Node Simulation"
+        BEGIN
+            MENUITEM "&Configure",                  ID_CONFIGURE_SIMULATEDSYSTEMS
+            MENUITEM SEPARATOR
+            MENUITEM "&Load All",                   ID_USERPROGRAM_LOADALL
+            MENUITEM "&Unload All",                 ID_USERPROGRAM_UNLOADALL
+            MENUITEM "Build and L&oad All",         ID_USERPROGRAM_BUILDANDLOADALL
+            MENUITEM "&Build All",                  ID_USERPROGRAM_BUILDALL
+            MENUITEM SEPARATOR
+            MENUITEM "All &Message Handlers",       ID_EXECUTE_ALLMESSAGEHANDLERS, CHECKED
+            MENUITEM "All &Key Handlers ",          ID_EXECUTE_ALLKEYHANDLERS, CHECKED
+            MENUITEM "All &Timer Handlers",         ID_EXECUTE_ALLTIMERHANDLERS, CHECKED
+            MENUITEM "All &Event Handlers",         ID_EXECUTE_ALLEVENTHANDLERS, CHECKED
+            MENUITEM "&All Handlers",               ID_EXECUTE_ALLHANDLERS, CHECKED
+        END
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND, CHECKED
+        MENUITEM "T&race Window",               IDM_TRACE_WND, CHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "Ti&le",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+        MENUITEM SEPARATOR
+        POPUP "&Toolbar"
+        BEGIN
+            MENUITEM "&Main",                       ID_DISPLAY_MAIN, CHECKED
+            MENUITEM "&Configure",                  ID_DISPLAY_CONFIGURE, CHECKED
+            MENUITEM "CAN &Database",               ID_TB_CANDATABASE, CHECKED
+            MENUITEM "Message &Window",             ID_DISPLAY_MSG_WND, CHECKED
+            MENUITEM "&Node Simulation",            ID_DISPLAY_NODE_SIMULATION, CHECKED
+            MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED
+        END
+        MENUITEM "&Statusbar",                  ID_VIEW_STATUS_BAR
+    END
+    POPUP "Hel&p"
+    BEGIN
+        MENUITEM "&Help Topics\tF1",            ID_HELP_FINDER
+        MENUITEM "&What's This?",               ID_CONTEXT_HELP
+        MENUITEM SEPARATOR
+        MENUITEM "&About BUSMASTER...",         IDM_APP_ABOUT
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1265,6 +1294,7 @@ IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
+ID_CONNECT              ICON                    "Res\\Connect.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1370,7 +1400,7 @@ END
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR  20, 20
+IDR_MAINFRAME TOOLBAR  32, 32
 BEGIN
     BUTTON      32902
     BUTTON      IDM_CONFIG_LOAD
@@ -1396,7 +1426,7 @@ BEGIN
     BUTTON      IDM_REPLAY_STOP
 END
 
-IDR_MSG_WND TOOLBAR  20, 20
+IDR_MSG_WND TOOLBAR  32, 32
 BEGIN
     BUTTON      IDM_CLEAR_MSG_WINDOW
     SEPARATOR
@@ -1406,7 +1436,7 @@ BEGIN
     BUTTON      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME
 END
 
-IDR_NODE_SIMULATION TOOLBAR  20, 20
+IDR_NODE_SIMULATION TOOLBAR  32, 32
 BEGIN
     BUTTON      IDM_DLL_LOADALLDLL
     BUTTON      IDM_DLL_UNLOAD_ALL
@@ -1420,7 +1450,7 @@ BEGIN
     BUTTON      IDM_EXECUTE_ALL_HANDLERS
 END
 
-IDR_FUNCTIONS_J1939 TOOLBAR  20, 20
+IDR_FUNCTIONS_J1939 TOOLBAR  32, 32
 BEGIN
     BUTTON      33056
     SEPARATOR
@@ -1430,7 +1460,7 @@ BEGIN
     BUTTON      33064
 END
 
-IDR_TLB_CONFIGURE TOOLBAR  20, 20
+IDR_TLB_CONFIGURE TOOLBAR  32, 32
 BEGIN
     BUTTON      32811
     BUTTON      32809
@@ -1444,7 +1474,7 @@ BEGIN
     BUTTON      33055
 END
 
-IDR_CAN_DATABASE TOOLBAR  20, 20
+IDR_CAN_DATABASE TOOLBAR  32, 32
 BEGIN
     BUTTON      32815
     BUTTON      32817
@@ -1592,7 +1622,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 1.7.3"
+    IDS_VERSION             "Ver 1.8.1"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1606,11 +1636,7 @@ BEGIN
                             "Show/Hide Network Statistics Window\nShow/Hide Network Statistics Window"
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
-    IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
-    IDM_CHECK_HW_INTERFACE  "Test Hardware Interface\nTest Hardware Interface"
-    IDM_PARALLEL_PORT_EPP   "Operate Parallel Port in EPP mode\nEPP Mode"
-    IDM_PARALLEL_PORT_NONEPP 
-                            "Operate Parallel Port in Non-EPP (Std Bidirectional ) mode\n Non-EPP (Std Bidirectional ) Mode"
+    IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"    
 END
 
 STRINGTABLE 
@@ -1794,7 +1820,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDM_FUNCTIONS_RESET_HARDWARE "Hardware Reset\nHardware Reset"
     IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME 
                             "The Display in System Time\nSystem Time"
     ID_DISPLAY_MESSAGEWINDOW_TIMEMODE_RELATIVETIME 
@@ -1871,7 +1896,12 @@ BEGIN
     ID_DATABASE_SAVE        "Save J1939 Database"
 END
 
-#endif    // English (U.S.) resources
+STRINGTABLE
+BEGIN
+    IDM_SAVE_IMPORT_J1939   "Save and import database file\nSave and import database file"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

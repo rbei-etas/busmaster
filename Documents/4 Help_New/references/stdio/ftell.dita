@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="ftell" xml:lang="en-us">
+  <title>ftell : return position in a stream or file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+long ftell(FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Objects of type FILE can have a &quot;position&quot; that records how much of the file your program has already read. Many of the stdio functions depend on this position, and many change it as a side effect.</p>
+      <p>The result of ftell is the current position for a file identified by fp. If you record this result, you can later use it with fseek to return the file to this position.</p>
+      <p>In the current implementation, ftell simply uses a character count to represent the file position; this is the same number that would be recorded by fgetpos.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>ftell returns the file position, if possible. If it cannot do this, it returns -1L. Failure occurs on streams that do not support positioning; the global errno indicates this condition with the value ESPIPE.</p>
+    </section>
+  </refbody>
+</reference>

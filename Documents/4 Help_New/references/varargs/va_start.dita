@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="va_start" xml:lang="en-us">
+  <title>Initialize variable argument list</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;varargs.h&gt;
+va_list ap; va_start(ap);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>With the `varargs.h&apos; macros, use va_start to initialize a data structure ap to permit manipulating a variable argument list. ap must have the type va_alist.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>va_start does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

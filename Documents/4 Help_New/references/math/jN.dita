@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="jN" xml:lang="en-us">
+  <title>jN,jNf,yN,yNf : Bessel functions</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double j0(double x);
+float j0f(float x);
+double j1(double x);
+float j1f(float x);
+double jn(int n, double x);
+float jnf(int n, float x);
+double y0(double x);
+float y0f(float x);
+double y1(double x);
+float y1f(float x);
+double yn(int n, double x);
+float ynf(int n, float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>The Bessel functions are a family of functions that solve the differential equation These functions have many applications in engineering and physics. jn calculates the Bessel function of the first kind of order n. j0 and j1 are special cases for order 0 and order 1 respectively. Similarly, yn calculates the Bessel function of the second kind of order n, and y0 and y1 are special cases for order 0 and 1. jnf, j0f, j1f, ynf, y0f, and y1f perform the same calculations, but on float rather than double values.
+
+</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The value of each Bessel function at x is returned.</p>
+    </section>
+  </refbody>
+</reference>

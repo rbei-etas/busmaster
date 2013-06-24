@@ -3,6 +3,8 @@
 :ASTYLE_FIND
 set ASTYLE_HOME=%ProgramFiles%\AStyle
 if exist "%ASTYLE_HOME%" goto DIFF_FIND
+set ASTYLE_HOME=%ProgramFiles(x86)%\AStyle
+if exist "%ASTYLE_HOME%" goto DIFF_FIND
 
 :ASTYLE_NOT_FOUND
 echo AStyle not found. Build failed!

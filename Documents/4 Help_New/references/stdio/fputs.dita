@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fputs" xml:lang="en-us">
+  <title>fputs : write a character string in a file or stream</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int fputs(const char *s, FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fputs writes the string at s (but without the trailing null) to the file or stream identified by fp.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If successful, the result is 0; otherwise, the result is EOF.</p>
+    </section>
+  </refbody>
+</reference>

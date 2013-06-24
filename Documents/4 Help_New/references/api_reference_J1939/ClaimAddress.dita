@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableKeyHandlers" xml:lang="en-us">
+  <title>ClaimAddress: To claim a different address for current node</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT ClaimAddress ( BYTE Address, UINT Channel)</codeblock>
+    </section>
+    <section><title>Description</title>This function will claim a different address for the current node.</section>
+    <section>
+      <title>Inputs</title>
+      <lines>Address - Address to be claimed.
+Channel - Channel number.</lines>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>1 on success. 0 on failure.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strncmp" xml:lang="en-us">
+  <title>strncmp : character string compare</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+int strncmp(const char *a, const char * b, size_t length);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strncmp compares up to length characters from the string at a to the string at b.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If *a sorts lexicographically after *b, strncmp returns a number greater than zero. If the two strings are equivalent, strncmp returns zero. If *a sorts lexicographically before *b, strncmp returns a number less than zero.</p>
+    </section>
+  </refbody>
+</reference>

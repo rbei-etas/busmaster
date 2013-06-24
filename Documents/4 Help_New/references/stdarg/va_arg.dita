@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="va_arg" xml:lang="en-us">
+  <title>Extract a value from argument list</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdarg.h&gt;
+type va_arg(va_list ap, type);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>va_arg returns the next unprocessed value from a variable argument list ap (which you must previously create with va_start). Specify the type for the value as the second parameter to the macro, type.</p>
+      <p>You may pass a va_list object ap to a subfunction, and use va_arg from the subfunction rather than from the function actually declared with an ellipsis in the header; however, in that case you may only use va_arg from the subfunction. ANSI C does not permit extracting successive values from a single variable-argument list from different levels of the calling stack.</p>
+      <p>There is no mechanism for testing whether there is actually a next argument available; you might instead pass an argument count (or some other data that implies an argument count) as one of the fixed arguments in your function call.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>va_arg returns the next argument, an object of type type.</p>
+    </section>
+  </refbody>
+</reference>

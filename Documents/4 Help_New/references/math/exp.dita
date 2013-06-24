@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="exp" xml:lang="en-us">
+  <title>exp, expf : exponential </title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double exp(double x);
+float expf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>exp and expf calculate the exponential of x, that is, is the base of the natural system of logarithms, approximately 2.71828). You can use the (non-ANSI) function matherr to specify error handling for these functions.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>On success, exp and expf return the calculated value. If the result underflows, the returned value is 0. If the result overflows, the returned value is HUGE_VAL. In either case, errno is set to ERANGE.</p>
+    </section>
+  </refbody>
+</reference>

@@ -47,7 +47,6 @@ BEGIN_DISPATCH_MAP(CApplication, CCmdTarget)
     DISP_FUNCTION_ID(CApplication, "StopLogging",           dispidStopLogging,              StopLogging,            VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "StartLogging",          dispidStartLogging,             StartLogging,           VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "ResetSW",               dispidReSetSW,                  ResetSW,                VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "ResetHW",               dispidReSetHW,                  ResetHW,                VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "StopTxMsgBlock",        dispidStopTxMsgBlock,           StopTxMsgBlock,         VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "StartTxMsgBlock",       dispidStartTxMsgBlock,          StartTxMsgBlock,        VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "UnLoadAllDll",          dispidUnLoadAllDll,             UnLoadAllDll,           VT_EMPTY, VTS_NONE)
@@ -427,12 +426,6 @@ STDMETHODIMP CApplication::XLocalClass::ResetSW()
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->ResetSW();
-}
-
-STDMETHODIMP CApplication::XLocalClass::ResetHW()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->ResetHW();
 }
 
 STDMETHODIMP CApplication::XLocalClass::StopTxMsgBlock()

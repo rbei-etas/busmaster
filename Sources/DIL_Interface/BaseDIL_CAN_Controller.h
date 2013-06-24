@@ -38,7 +38,6 @@ public:
     virtual HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length) = 0;
     virtual HRESULT CAN_StartHardware(void) = 0;
     virtual HRESULT CAN_StopHardware(void) = 0;
-    virtual HRESULT CAN_ResetHardware(void) = 0;
     virtual HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData) = 0;
     virtual HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg) = 0;
     virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;

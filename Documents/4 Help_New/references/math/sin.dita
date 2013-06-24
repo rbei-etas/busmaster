@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="sin" xml:lang="en-us">
+  <title>sin, sinf, cos, cosf : sine or cosine</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double sin(double x);
+float  sinf(float x);
+double cos(double x);
+float cosf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>sin and cos compute (respectively) the sine and cosine of the argument x. Angles are specified in radians. sinf and cosf are identical, save that they take and return float values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The sine or cosine of x is returned.</p>
+    </section>
+  </refbody>
+</reference>

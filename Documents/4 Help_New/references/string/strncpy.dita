@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strncpy" xml:lang="en-us">
+  <title>strncpy : counted copy string</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strncpy(char *dst, const char *src, size_t length);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>strncpy copies not more than length characters from the the string pointed to by src (including the terminating null character) to the array pointed to by dst. If the string pointed to by src is shorter than length characters, null characters are appended to the destination array until a total of length characters have been written.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>This function returns the initial value of dst.</p>
+    </section>
+  </refbody>
+</reference>

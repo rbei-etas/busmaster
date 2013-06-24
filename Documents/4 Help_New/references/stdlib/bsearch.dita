@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="bsearch" xml:lang="en-us">
+  <title>bsearch : binary search</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdlib.h&gt;
+void *bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *));</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>bsearch searches an array beginning at base for any element that matches key, using binary search. nmemb is the element count of the array; size is the size of each element.</p>
+      <p>The array must be sorted in ascending order with respect to the comparison function compar (which you supply as the last argument of bsearch).</p>
+      <p>You must define the comparison function (*compar) to have two arguments; its result must be negative if the first argument is less than the second, zero if the two arguments match, and positive if the first argument is greater than the second (where &quot;less than&quot; and &quot;greater than&quot; refer to whatever arbitrary ordering is appropriate).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Returns a pointer to an element of array that matches key. If more than one matching element is available, the result may point to any of them.</p>
+    </section>
+  </refbody>
+</reference>

@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="va_arg" xml:lang="en-us">
+  <title>Extract a value from argument list</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;varargs.h&gt;
+type va_arg(va_list ap, type);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>va_arg returns the next unprocessed value from a variable argument list ap (which you must previously create with va_start). Specify the type for the value as the second parameter to the macro, type.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>va_arg returns the next argument, an object of type type.</p>
+    </section>
+  </refbody>
+</reference>

@@ -15,14 +15,33 @@
 #define IDB_OK                          10
 #define IDD_ABOUTBOX                    100
 #define IDD_DLG_MSGSGDETVIEW            101
+#define IDI_ICON_J1939_ACTIVATE         101
 #define IDR_BMP_SPLASH                  102
 #define IDR_BMP_SPLASH_SCREEN           102
-#define IDI_ICON6                       102
+#define IDI_ICON_J1939_DEACTIVATE       102
+#define IDI_ICON_J1939_LOG_OFF          103
 #define IDD_DLG_SEND_DUMMY_MSG          103
+#define IDI_ICON_J1939_LOG_ON           104
+#define IDI_ICON_J1939_OFFLINE          105
+#define IDI_ICON_J1939_ONLINE           106
 #define IDD_PPAGE_MESSAGE               106
+#define IDI_ICON_J1939_TRANSMIT_OFF     107
+#define IDI_ICON_J1939_TRANSMIT_ON      108
+#define IDI_ICON_J1939_LOG_DISABLED     109
+#define IDI_ICON_J1939_ONLINE_DISABLED  110
 #define IDB_LICENSEDLG                  110
+#define IDI_ICON_J1939_TRANSMIT_DISABLED 111
 #define IDR_CAN_MONITOR                 111
+#define IDI_ICON_CAN_CONNECT            112
+#define IDI_ICON_LOG_FILTER_ON          118
+#define IDI_ICON_MSG_FILTER_ON          119
+#define IDI_ICON_REPLAY_FILTER_ON       120
 #define IDR_BUSMASTERINTERFACE          112
+#define IDI_ICON_FILTER_ON              113
+#define IDI_ICON_LOG_FILTER             114
+#define IDI_ICON_MSG_FILTER             115
+#define IDI_ICON_REPLAY_FILTER          116
+#define IDI_ICON_CAN_DISCONNECT         117
 #define IDR_MAINFRAME                   128
 #define IDR_NEWEDTYPE                   129
 #define IDR_PGM_EDTYPE                  129
@@ -74,6 +93,7 @@
 #define IDD_DLG_NETWORK_STATISTICS      193
 #define IDI_ICON_MSGWND                 195
 #define IDI_ICO_WRITE                   196
+#define ID_CONNECT                      197
 #define IDM_MENU_TIMEMODE               198
 #define IDD_DLG_INTERPRET_MSG           199
 #define IDD_DLG_WAVEFORM_CONFIG         200
@@ -157,9 +177,6 @@
 #define IDB_MAINFRAME                   302
 #define IDB_MAINFRAME_HOT               303
 #define IDB_MAINFRAME_DISABLED          304
-#define IDB_MAINFRAMEDSC                305
-#define IDB_MAINFRAMEDSC_HOT            306
-#define IDB_MAINFRAMEDSC_DISABLED       307
 #define ID_DISCONNECT                   308
 #define IDR_MESSAGE_WINDOW_TEXT         309
 #define IDI_ICON_BLANK                  310
@@ -173,7 +190,9 @@
 #define IDI_ICON_LOG_ONLIGHT            318
 #define IDI_ICON_LOG_ON                 319
 #define IDI_ICON_LOG_OFF                320
-#define IDI_ICON_NETWORKSTAT            3007
+#define IDB_TLB_J1939                   321
+#define IDB_TLB_J1939_HOT               322
+#define IDB_TLB_J1939_DISABLED          323
 #define IDC_EDIT_SIGNALNAME             1000
 #define IDC_EDIT_BAUD_RATE              1000
 #define IDC_EDIT_SGNAME                 1000
@@ -337,7 +356,6 @@
 #define IDC_RADIO_AXIS_XY               1019
 #define IDC_COMB_CLOCK                  1020
 #define IDC_STAT_BYINDEX                1020
-#define IDC_BUT_BLINK                   1020
 #define IDC_RADIO_ACTION_MOVE           1020
 #define IDC_BUTTON_SELECTONE            1020
 #define IDC_STAT_STBIT                  1021
@@ -673,7 +691,6 @@
 #define IDC_CBTN_ACCEPTANCE             1199
 #define IDC_EDIT_RX_RTR_STD             1200
 #define IDC_CBTN_ACCETANCE_OK           1200
-#define IDC_CBTN_BLINK                  1200
 #define IDC_EDIT_RX_RTR_EXTD            1201
 #define IDC_EDIT_ACCEPTANCE_MASK2       1201
 #define IDC_EDIT_ACCEPTANCE_CODE3       1202
@@ -834,6 +851,7 @@
 #define IDC_RBTN_OVERWRITE              1351
 #define IDC_CHECK_RESET_TIMESTAMP       1352
 #define IDC_STAT_RANGE                  1353
+#define IDI_ICON_NETWORKSTAT            3007
 #define IDB_J1939TXMSG                  10004
 #define DLG_TEMPLATE_LOCKING_KEY        13030
 #define IDR_TOOL_BUTTON_SIGNAL_WATCH    32784
@@ -944,10 +962,6 @@
 #define IDM_CONFIGURE_PASSIVE           32920
 #define IDM_CONFIGURE_ACTIVE            32921
 #define IDM_TRACE_WND                   32922
-#define IDM_CHECK_HW_INTERFACE          32925
-#define IDM_PARALLEL_PORT_EPP           32926
-#define IDM_PARALLEL_PORT_NONEPP        32927
-#define IDM_FUNCTIONS_RESET_HARDWARE    32930
 #define IDM_REC_CFG_FILE1               32932
 #define IDM_REC_CFG_FILE2               32933
 #define IDM_REC_CFG_FILE3               32934
@@ -1067,6 +1081,8 @@
 #define ID_UTILITIES_FILECONVERTERS     33122
 #define ID_DATABASE_SAVE                33123
 #define ID_EXECUTE_ALLEVENTHANDLERS     33124
+#define IDM_SAVE_IMPORT_J1939           40001
+#define IDM_CONFIGURE_J1939_DB_SAVEAS   40002
 #define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
@@ -1097,3 +1113,14 @@
 #define ID_LOG_RECORD_STATUS            62468
 #define ID_LOG_RECORD_CAN_ICON          62469
 #define ID_LOG_RECORD_J1939_ICON        62470
+
+// Next default values for new objects
+//
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_COMMAND_VALUE         40003
+#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

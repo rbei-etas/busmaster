@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="faq" xml:lang="en-us">
+  <title>Frequently Asked Questions</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Frequently Asked Questions</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>Question: I can log CAN Bus messages, and it looks like I can transmit them, but the Tester does not see the messages I transmit.</title>
+      <p>Answer:  Follow the steps below<ol>
+          <li>Disconnect the BUSMASTER application.Then click &quot;option -&gt; controller mode&quot; if active mode is not selected please select it.</li>
+          <li>If baud rate is &gt;= 500 Kbps use 120 ohm terminating resistors between CANH and CANL at both end of cable between USB hardware and ECU (Tester).</li>
+        </ol></p>
+    </section>
+    <section>
+      <title>Question: BUSMASTER is able to receive messages but when message is transmitted application gives error?</title>
+      <p>Answer: Follow the steps below<ol>
+          <li>Measure the voltage between Pin 2 and 3 and Pin 7 an 3 of the SUB-D connector Pins of the PCAN-USB when system is idle.</li>
+          <li>If voltage is not around 2.5v then CAN Transceiver (Philips PCA82C251T) has got damaged.</li>
+        </ol></p>
+    </section>
+    <section>
+      <b>Question: BUSMASTER throws up an error saying BUSMASTER_Interface.h missing while compling. Why?</b>
+    </section>
+    <section>Answer: </section>
+    <section>Rebuilding the solution will solve the problem. When rebuild is selected, the visual studio will compile BUSMASTER.idl file and will generate BUSMASTER_Interface.h and BUSMASTER_Interface.c files.</section>
+    <section/>
+    <section><b>Question: Why Toolbar replay buttons are not active after changing the active window? </b>Answer: This is the intended behavior of the toolbar replay button. </section>
+    <section>This is because of the following functionality : </section>
+    <section>1. Add more than one log file for replay in Replay Configuration window </section>
+    <section>2. Select interactive replay </section>
+    <section>3. Connect to the network. Multiple replay windows will be displayed corresponding to the number of log files added for reply. If 2 log files are added then 2 interactive replay windows will be displayed on connect. </section>
+    <section>4. The replay toolbar functionality works based on the active interactive window. So making it general will not work. </section>
+    <section>Hence the tool bar is disabled. </section>
+    <section/>
+    <section><b>Question: After the Message Replay Window is closed, there is no way to have it back. </b>Answer:</section>
+    <section>In interactive replay method, the functionality of close button is basically stopping the replay. Hence the window will be closed and immediately the replay will be stopped. To get back the replay window, just disconnect and connect to the network again. No restart of application is required. Make sure, Interactive Replay Window option is selected in the Replay configuration window. </section>
+    <section/>
+    <section>
+      <b>Question:The files union.h are created each time BUSMASTER starts. Due to this, any previous manual changes in these files are lost.</b>
+    </section>
+    <section>Answer:</section>
+    <section>Unions.h file generated is intended to use with BUSMASTER only. So any manual modification will not be retained. If any additional changes or definitions are required then the same can be achieved by creating a new header file and referring it in the cpp file or modifying in the database file itself.</section>
+    <section/>
+    <section>
+      <b>Question:In Message window, close window does not work</b>
+    </section>
+    <section>Answer:</section>
+    <section>This is the intended behavior. Message window will always be kept open. If the window has to be hidden then uncheck the View --&gt; Message Window menu option </section>
+    <section/>
+    <section>
+      <b>Question:Error launching BUSMASTER. When BUSMASTER is installed and launched, error message &quot;The application cannot be started because the application config is not correct&quot; is displayed</b>
+      <p>Answer:</p>
+      <p>Install .Net framework 3.5 or above and try again. BUSMASTER has dependency with .Net Framework.</p>
+    </section>
+  </body>
+</topic>

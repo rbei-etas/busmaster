@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="modf" xml:lang="en-us">
+  <title>modf, modff : split fractional and integer parts</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double modf(double val, double *ipart);
+float modff(float val, float *ipart);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>modf splits the double val apart into an integer part and a fractional part, returning the fractional part and storing the integer part in *ipart. No rounding whatsoever is done; the sum of the integer and fractional parts is guaranteed to be exactly equal to val. That is, if . realpart = modf(val, &amp;intpart); then `realpart+intpart&apos; is the same as val. modff is identical, save that it takes and returns float rather than double values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The fractional part is returned. Each result has the same sign as the supplied argument val.</p>
+    </section>
+  </refbody>
+</reference>

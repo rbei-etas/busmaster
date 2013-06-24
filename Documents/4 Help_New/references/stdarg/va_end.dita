@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="va_end" xml:lang="en-us">
+  <title>Abandon a variable argument list</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdarg.h&gt;
+void va_end(va_list ap);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use va_end to declare that your program will not use the variable argument list ap any further.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>va_end does not return a result.</p>
+    </section>
+  </refbody>
+</reference>

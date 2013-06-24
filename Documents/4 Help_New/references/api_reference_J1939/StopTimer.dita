@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="StopTimer" xml:lang="en-us">
+  <title>StopTimer : To stop a running timer</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT StopTimer ( char* strTimerName)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will stop timer having name passed as parameter strTimerName. If the named timer is not running or timer name is not matched, the function will return FALSE. Otherwise function be return TRUE.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>strTimerName - Name of the timer. i.e. OnTimer_Tester_Present_100</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>1 on success. 0 if the timer is already running or timer name not found</p>
+    </section>
+  </refbody>
+</reference>

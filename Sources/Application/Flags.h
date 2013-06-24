@@ -47,6 +47,7 @@ typedef enum eCANMONITORFLAG
     //SIGNALWATCH,
     FUNCEDITOR,
     DBOPEN,
+    DBOPEN_J1939,
     HEX,
     DISPLAYMSGWINDOW,
     DISPLAYTIMEMODE,
@@ -61,7 +62,6 @@ typedef enum eCANMONITORFLAG
     DLL_HANDLER,
     ALL_HANDLER,
     CONTROLLER_MODE,
-    PARALLEL_PORT_EPP,
     LOGHEXON,
     LOGTIMEMODE,
     eLOGOVERWRITEMODEON,
@@ -101,6 +101,7 @@ private:
     BOOL m_bFunctionEditorOn;
     BOOL m_bFilterTxMsg;
     BOOL m_bDbOpen;
+    BOOL m_bDbOpenJ1939;
     WORD m_wReplayMode;
     BOOL m_bMsgHandlerOn;
     WORD m_wDisplayTimeMode;
@@ -117,7 +118,6 @@ private:
     BOOL m_bErrorHandlerOn;
     BOOL m_bDLLHandlerOn;
     BOOL m_bALLHandler;
-    BOOL m_bParallelPortEPP;
     BOOL m_bLogHexON;
     WORD m_wLogTimeMode;
     int m_nReplayMsgType;

@@ -442,13 +442,11 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
@@ -463,30 +461,6 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
-void vBlinkHw(INTERFACE_HW s_HardwareIntr)
-{
-    NeoDevice pNeoDevice;
-    pNeoDevice.Handle       = (int)s_HardwareIntr.m_dwIdInterface;
-    pNeoDevice.SerialNumber = (int)s_HardwareIntr.m_dwVendor;
-
-    sscanf_s(s_HardwareIntr.m_acNameInterface.c_str(), "%d", &pNeoDevice.DeviceType);
-
-    int hObject = NULL;
-    int nErrors;
-    int nResult = (*icsneoOpenNeoDevice)(&pNeoDevice, &hObject, NULL, 1, 0);
-    if (nResult == NEOVI_OK && hObject!=NULL)
-    {
-        stAPIFirmwareInfo objstFWInfo;
-        /*nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
-
-        int nHardwareLic = 0;
-        int nErrors = 0;
-        if ( icsneoGetHardwareLicense )
-            (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);        */
-        Sleep(500);
-        (*icsneoClosePort)(hObject, &nErrors);
-    }
-}
 static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
 
 /**
@@ -1504,7 +1478,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
-static int nCreateMultipleHardwareNetwork()
+static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
@@ -1592,7 +1566,17 @@ static int nCreateMultipleHardwareNetwork()
     }
 
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
-    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+
+    /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+    if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+    {
+        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+        {
+            sg_anSelectedItems[i] = i;
+        }
+        nHwCount = unDefaultChannelCnt;
+    }
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -1669,7 +1653,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
  * per hardware count. This will popup hardware selection dialog
  * in case there are more hardware present.
  */
-static int nInitHwNetwork()
+static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nDevices = 0;
     int nReturn = NO_HW_INTERFACE;
@@ -1699,7 +1683,7 @@ static int nInitHwNetwork()
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nReturn = nCreateMultipleHardwareNetwork();
+            nReturn = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
         }
         else
         {
@@ -1719,14 +1703,14 @@ static int nInitHwNetwork()
  * parallel port mode this will initialise connection with the
  * driver.
  */
-static int nConnectToDriver()
+static int nConnectToDriver(UINT unDefaultChannelCnt = 0)
 {
     int nReturn = -1;
 
     if( sg_bIsDriverRunning == TRUE )
     {
         // Select Hardware or Simulation Network
-        nReturn = nInitHwNetwork();
+        nReturn = nInitHwNetwork(unDefaultChannelCnt);
     }
     return nReturn;
 }
@@ -1757,7 +1741,7 @@ static int nSetBaudRate()
             unIndex++)
     {
         FLOAT fBaudRate = (FLOAT)_tstof(sg_ControllerDetails[unIndex].m_omStrBaudrate.c_str());
-        int nBitRate = (INT)(fBaudRate * 1000);
+        int nBitRate = (INT)(fBaudRate);
 
         // Set the baudrate
         nReturn = (*icsneoSetBitRate)(m_anhWriteObject[unIndex], nBitRate, m_bytNetworkIDs[unIndex]);
@@ -2239,7 +2223,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     HRESULT hResult = S_FALSE;
     if (bGetDriverStatus())
     {
-        if (( hResult = nConnectToDriver() ) == CAN_USB_OK)
+        if (( hResult = nConnectToDriver(nCount) ) == CAN_USB_OK)
         {
             nCount = sg_ucNoOfHardware;
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
@@ -2266,18 +2250,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 }
 
 /**
- * \param[in] bHardwareReset Reset Mode: TRUE - Hardware Reset, FALSE - Software Reset
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
- *
- * This function will do controller reset. In case of USB mode
- * Software Reset will be simulated by Client Reset.
- */
-static int nResetHardware(BOOL /*bHardwareReset*/)
-{
-    return 0;
-}
-
-/**
  * Function to deselect the chosen hardware interface
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
@@ -2285,8 +2257,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -2779,24 +2749,6 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
     }
 
     return nReturn;
-}
-
-/**
- * Function to reset the hardware, fcClose resets all the buffer
- */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_FALSE;
-    // Stop the hardware if connected
-    CAN_StopHardware(); //return value not necessary
-    if (sg_sParmRThread.bTerminateThread())
-    {
-        if (nResetHardware(TRUE) == CAN_USB_OK)
-        {
-            hResult = S_OK;
-        }
-    }
-    return hResult;
 }
 
 /**

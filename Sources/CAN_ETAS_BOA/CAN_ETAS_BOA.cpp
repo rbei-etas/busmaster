@@ -310,7 +310,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
@@ -326,47 +325,6 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
-void vBlinkHw(INTERFACE_HW s_HardwareIntr)
-{
-    OCI_ControllerHandle ouOCI_HwHandle;
-    BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(s_HardwareIntr.m_acNameInterface.c_str(),
-                          &(ouOCI_HwHandle));
-    if (err == OCI_SUCCESS)
-    {
-        SCHANNEL s_asChannel;
-        strcpy_s(s_asChannel.m_acURI, MAX_URI, s_HardwareIntr.m_acNameInterface.c_str());
-        s_asChannel.m_OCI_RxQueueCfg.onFrame.userData = (void*)ouOCI_HwHandle;
-        s_asChannel.m_OCI_RxQueueCfg.onEvent.userData = (void*)ouOCI_HwHandle;
-        BOA_ResultCode ErrorCode = OCI_FAILURE;
-#ifdef BOA_FD_VERSION
-        {
-
-            //configure the controller first for CANFD
-            ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANFDController))(ouOCI_HwHandle,
-                        &(s_asChannel.m_OCI_CANFDConfig),
-                        &(s_asChannel.m_OCI_CntrlProp));
-        }
-#else
-        {
-            //configure the controller first
-            ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(ouOCI_HwHandle,
-                        &(s_asChannel.m_OCI_CANConfig),
-                        &(s_asChannel.m_OCI_CntrlProp));
-        }
-#endif
-        //HRESULT hResult = S_OK;
-        if (ErrorCode == OCI_SUCCESS)
-        {
-            Sleep(500);
-            if ((*(sBOA_PTRS.m_sOCI.closeCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
-            {
-                if ((*(sBOA_PTRS.m_sOCI.destroyCANController))(ouOCI_HwHandle) == OCI_SUCCESS)
-                {
-                }
-            }
-        }
-    }
-}
 static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
 
 /**
@@ -2055,6 +2013,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     HRESULT hResult = S_FALSE;
     OCI_URIName acURI[defNO_OF_CHANNELS];
     INT nFound = 0;
+
+    UINT unDefaultChannelCnt = nCount;
+
     if (OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
     {
         nCount = nFound;
@@ -2077,7 +2038,16 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
             if (nCount > 1)// List hw interface if there are more than one hw
             {
-                if ( ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+                if ( unDefaultChannelCnt && nCount >= unDefaultChannelCnt )
+                {
+                    for (UINT i = 0; i < unDefaultChannelCnt; i++)
+                    {
+                        sg_anSelectedItems[i] = i;
+                    }
+                    nCount  = unDefaultChannelCnt;
+                }
+                else if ( ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;
@@ -2544,17 +2514,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 }
 
 /**
- * \return S_OK for success, S_FALSE for failure
- *
- * Resets the controller.
- */
-HRESULT CDIL_CAN_ETAS_BOA::CAN_ResetHardware(void)
-{
-    return WARN_DUMMY_API;
-}
-
-
-/**
  * Sends STCAN_MSG structure from the client dwClientID.
  */
 HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
@@ -2577,11 +2536,12 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             sAckMap.m_Channel  = sCanTxMsg.m_ucChannel;
             sAckMap.m_MsgID    = sOciCanMsg.data.txMessage.frameID;
             vMarkEntryIntoMap(sAckMap);
+            BOA_ResultCode ErrCode;
 #ifdef BOA_FD_VERSION
             if(sCanTxMsg.m_bCANFD == false)
             {
-                BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
-                                         (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
+                ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+                          (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
             }
             else
             {
@@ -2596,8 +2556,8 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
                                          (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
             }
 #else
-            BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
-                                     (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
+            ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+                      (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
 #endif
             if (ErrCode == OCI_SUCCESS)
             {

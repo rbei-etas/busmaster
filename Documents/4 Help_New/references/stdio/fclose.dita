@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fclose" xml:lang="en-us">
+  <title>fclose : close a file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int fclose(FILE *fp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>If the file or stream identified by fp is open, fclose closes it, after first ensuring that any pending data is written (by calling fflush(fp)).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>fclose returns 0 if successful (including when fp is NULL or not an open file); otherwise, it returns EOF.</p>
+    </section>
+  </refbody>
+</reference>

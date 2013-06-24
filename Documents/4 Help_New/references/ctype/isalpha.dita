@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="isalpha" xml:lang="en-us">
+  <title>isalpha : alphabetic character predicate</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ctype.h&gt;
+int isalpha(int c);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>isalpha is a macro which classifies ASCII integer values by table lookup. It is a predicate returning non-zero when c represents an alphabetic ASCII character, and 0 otherwise. It is defined only when isascii(c) is true or c is EOF.</p>
+      <p>You can use a compiled subroutine instead of the macro definition by undefining the macro using `#undef isalpha&apos;.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>isalpha returns non-zero if c is a letter (A--Z or a--z).</p>
+    </section>
+  </refbody>
+</reference>

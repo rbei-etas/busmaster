@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="setvbuf" xml:lang="en-us">
+  <title>setvbuf : specify file or stream buffering</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int setvbuf(FILE *fp, char *buf, int mode, size_t size);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use setvbuf to specify what kind of buffering you want for the file or stream identified by fp, by using one of the following values (from stdio.h) as the mode argument:</p>
+      <p>_IONBF
+        Do not use a buffer: send output directly to the host system for the file or stream identified by fp.</p>
+      <p>_IOFBF
+        Use full output buffering: output will be passed on to the host system only when the buffer is full, or when an input operation intervenes.</p>
+      <p>_IOLBF
+        Use line buffering: pass on output to the host system at every newline, as well as when the buffer is full, or when an input operation intervenes.</p>
+      <p>Use the size argument to specify how large a buffer you wish. You can supply the buffer itself, if you wish, by passing a pointer to a suitable area of memory as buf. Otherwise, you may pass NULL as the buf argument, and setvbuf will allocate the buffer.</p>
+    </section>
+    <section>
+      <title>Warnings</title>
+      <p>You may only use setvbuf before performing any file operation other than opening the file.</p>
+      <p>If you supply a non-null buf, you must ensure that the associated storage continues to be available until you close the stream identified by fp.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A 0 result indicates success, EOF failure (invalid mode or size can cause failure).</p>
+    </section>
+  </refbody>
+</reference>

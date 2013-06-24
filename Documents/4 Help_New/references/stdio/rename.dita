@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="rename" xml:lang="en-us">
+  <title>rename : rename a file</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int rename(const char *old, const char *new);
+int _rename_r(void *reent, const char *old, const char *new);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Use rename to establish a new name (the string at new) for a file now known by the string at old. After a successful rename, the file is no longer accessible by the string at old.</p>
+      <p>If rename fails, the file named *old is unaffected. The conditions for failure depend on the host operating system.</p>
+      <p>The alternate function _rename_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The result is either 0 (when successful) or -1 (when the file could not be renamed).</p>
+    </section>
+  </refbody>
+</reference>

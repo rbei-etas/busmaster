@@ -3404,16 +3404,6 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsCAN(HMODULE hModuleHandle)
         (*DllTraceFileProc)((WRITETOTRACE)gbSendStrToTrace);
     }
 
-    DLLRESETCONTROLLERPROC DllResetControllerProc =
-        (DLLRESETCONTROLLERPROC) GetProcAddress(hModuleHandle,
-                (char*) NAME_FUNC_RESET_CONTROLLER);
-    if (DllResetControllerProc != NULL)
-    {
-
-        (*DllResetControllerProc)((RESETCONTROLLER)gvResetController_CAN);
-    }
-
-
     DLLCONTROLLERMODEPROC DllControllerModeProc =
         (DLLCONTROLLERMODEPROC) GetProcAddress(hModuleHandle,
                 (char*) NAME_FUNC_CONTROLLER_MODE);

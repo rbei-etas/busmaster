@@ -769,7 +769,7 @@ void SFILTER_CAN::pbGetConfigData(xmlNodePtr pNodePtr) const
 
     //return pbTStream;
 }
-void SFILTER_CAN::pbSetConfigData(xmlNodePtr )
+void SFILTER_CAN::pbSetConfigData(xmlNodePtr xmlNodePtr)
 {
     vClear();
 
@@ -859,7 +859,7 @@ INT SFILTER_CAN::nSetXMLConfigData(xmlNodePtr pNodePtr)
             if ( NULL != pNodePtr->xmlChildrenNode )
             {
                 strTemp = (char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1); //single node
-                m_byIDType  =  (BYTE)nGetIDType(strTemp);
+                m_byIDType  =  nGetIDType(strTemp);
             }
         }
         else if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"MsgType")))
@@ -867,7 +867,7 @@ INT SFILTER_CAN::nSetXMLConfigData(xmlNodePtr pNodePtr)
             if ( NULL != pNodePtr->xmlChildrenNode )
             {
                 strTemp = (char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                m_byMsgType  = (BYTE)nGetMsgType(strTemp);
+                m_byMsgType  = nGetMsgType(strTemp);
             }
         }
         else if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Channel")))

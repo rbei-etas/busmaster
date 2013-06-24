@@ -51,6 +51,8 @@ BOOL CFormatConverterWnd::OnInitDialog()
 {
     BOOL bResult = CPropertySheet::OnInitDialog();
 
+    SetIcon( AfxGetApp()->LoadIcon(IDR_MAINFRAME), TRUE);
+
     // TODO:  Add your specialized code here
     ModifyStyle(0, WS_MINIMIZEBOX);
     CButton* omBtn;

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="GoOnline" xml:lang="en-us">
+  <title>GoOnline : To enable all event handlers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT GoOnline ( )</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will join all the nodes to the J1939 network. The return value of this function will be 0 or 1. </p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>-</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>A value 1 indicate success condition while a value 0 indicate a failure condition.</p>
+    </section>
+  </refbody>
+</reference>

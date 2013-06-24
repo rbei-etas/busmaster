@@ -269,14 +269,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_TRACE_WND, OnTraceWnd)
     ON_MESSAGE(IDM_TRACE_WND, OnMessageTraceWnd)
     ON_UPDATE_COMMAND_UI(IDM_TRACE_WND, OnUpdateTraceWnd)
-    ON_COMMAND(IDM_CHECK_HW_INTERFACE, OnCheckHwInterface)
-    ON_COMMAND(IDM_PARALLEL_PORT_EPP, OnParallelPortEpp)
-    ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_EPP, OnUpdateParallelPortEpp)
-    ON_COMMAND(IDM_PARALLEL_PORT_NONEPP, OnParallelPortNonepp)
-    ON_UPDATE_COMMAND_UI(IDM_PARALLEL_PORT_NONEPP, OnUpdateParallelPortNonepp)
-    ON_COMMAND(IDM_FUNCTIONS_RESET_HARDWARE, OnFunctionsResetHardware)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_BAUDRATE, OnUpdateConfigureBaudrate)
-    ON_UPDATE_COMMAND_UI(IDM_CHECK_HW_INTERFACE, OnUpdateCheckHwInterface)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnDisplayAbsoluteTime)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnUpdateDisplayAbsolutetime)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, OnDisplayRelativetime)
@@ -286,7 +279,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME,OnEnableTimeStampButton)
     ON_WM_SIZE()
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnUpdateSignalWatchWnd)
-    ON_UPDATE_COMMAND_UI(IDM_FUNCTIONS_RESET_HARDWARE, OnUpdateFunctionsResetHardware)
     ON_COMMAND(IDM_GRAPH_WND, OnGraphWindow)
     ON_UPDATE_COMMAND_UI(IDM_GRAPH_WND, OnUpdateGraphWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
@@ -306,7 +298,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnClickMruList)
     ON_UPDATE_COMMAND_UI_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnUpdateMruList)
     ON_MESSAGE(WM_FILE_DISCONNECT,vDisconnect)
-    ON_MESSAGE(WM_RESET_CONTROLLER,vResetController)
     ON_MESSAGE(WM_SET_WARNING_LIMIT_VAR,vSetWarningLimitVar)
     ON_MESSAGE(WM_KEY_PRESSED_MSG_WND,vKeyPressedInMsgWnd)
     ON_MESSAGE(WM_NOTIFICATION_FROM_OTHER, vNotificationFromOtherWin)
@@ -316,6 +307,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
+    ON_COMMAND(IDM_SAVE_IMPORT_J1939, OnSaveImportJ1939Database)
+    ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT_J1939, OnUpdateSaveImportJ1939Database)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
     ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)
@@ -354,9 +347,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(33079, OnJ1939DBNew)
     ON_UPDATE_COMMAND_UI(33079, OnUpdateJ1939DBNew)
     ON_COMMAND(33080, OnJ1939DBOpen)
-    ON_COMMAND(33084, OnJ1939DBClose)
+    ON_COMMAND(ID_DATABASE_CLOSE, OnJ1939DBClose)
+    ON_UPDATE_COMMAND_UI(ID_DATABASE_CLOSE, OnUpdateJ1939DBClose)
     ON_COMMAND(ID_DATABASE_SAVE, OnJ1939DBSave)
+    ON_COMMAND(IDM_CONFIGURE_J1939_DB_SAVEAS, OnJ1939DBSaveAs)
     ON_UPDATE_COMMAND_UI(ID_DATABASE_SAVE, OnUpdateJ1939DBSave)
+    ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_J1939_DB_SAVEAS, OnUpdateJ1939DBSaveAs)
     ON_COMMAND(33082, OnJ1939DBAssociate)
     ON_COMMAND(33083, OnJ1939DBDissociate)
     ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
@@ -402,6 +398,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_KEYBOARD_CHAR, OnReceiveKeyBoardData)
     ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
     ON_MESSAGE(MSG_GET_CONFIGPATH, onGetConfigPath)
+    ON_MESSAGE(WM_J1939_TX_CLOSE_MSG, onJ1939TxWndClose)
 
 END_MESSAGE_MAP()
 
@@ -595,6 +592,18 @@ CMainFrame::CMainFrame()
     // language support
     vGettextBusmaster();
 
+    m_bUseAdvancedUILib = false;
+    m_hModAdvancedUILib = NULL;
+    m_bytIconSize       = 20;
+
+    /* Try to load resource DLL for icons*/
+    m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+    /* If the AdvancedUIPlugIn DLL exists, use it */
+    if ( m_hModAdvancedUILib )
+    {
+        m_bytIconSize       = 32;
+        m_bUseAdvancedUILib = true;
+    }
 }
 /*******************************************************************************
  Function Name    : ~CMainFrame
@@ -639,6 +648,13 @@ CMainFrame::~CMainFrame()
     }
     DELETE_PTR(m_pouTxMsgWndJ1939);
     CTxMsgWndJ1939::vClearDataStore();
+
+    /* Free the resource DLL */
+    if ( m_bUseAdvancedUILib && m_hModAdvancedUILib )
+    {
+        ::FreeLibrary(m_hModAdvancedUILib);
+        m_hModAdvancedUILib = NULL;
+    }
 }
 
 /******************************************************************************
@@ -783,6 +799,7 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
     }
 }
 
+
 /******************************************************************************
  Function Name    : OnCreate
  Input(s)         : LPCREATESTRUCT
@@ -844,11 +861,27 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T(_("J1939")));
     CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T(_("CAN Database")));
 
-    m_wndToolbarNodeSimul.bLoadCNVTCToolBar(20, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
-    m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
-    m_wndToolbarMsgWnd.bLoadCNVTCToolBar(20, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
-    m_wndToolbarConfig.bLoadCNVTCToolBar(20, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
-    m_wndToolbarCANDB.bLoadCNVTCToolBar(20, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
+    /* Set toolbar button size to small to fit default icons*/
+    if ( !m_bUseAdvancedUILib )
+    {
+        CSize objSize;
+        /* 27 pixels is the default size of toolbar icons */
+        objSize.cx = 27;
+        objSize.cy = 27;
+        vSetToolbarButtonSize( m_wndToolBar,            objSize);
+        vSetToolbarButtonSize( m_wndToolbarNodeSimul,   objSize);
+        vSetToolbarButtonSize( m_wndToolbarMsgWnd,      objSize);
+        vSetToolbarButtonSize( m_wndToolbarConfig,      objSize);
+        vSetToolbarButtonSize( m_wndToolbarCANDB,       objSize);
+        vSetToolbarButtonSize( m_wndToolbarJ1939,       objSize);
+    }
+
+    m_wndToolbarNodeSimul.bLoadCNVTCToolBar(m_bytIconSize, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
+    m_wndToolBar.bLoadCNVTCToolBar(m_bytIconSize, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
+    m_wndToolbarMsgWnd.bLoadCNVTCToolBar(m_bytIconSize, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
+    m_wndToolbarConfig.bLoadCNVTCToolBar(m_bytIconSize, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
+    m_wndToolbarCANDB.bLoadCNVTCToolBar(m_bytIconSize, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
+    m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
 
     EnableDocking(CBRS_ALIGN_ANY);
 
@@ -948,7 +981,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     tbi.cbSize = sizeof tbi;
     tbi.dwMask = TBIF_SIZE;
-    tbi.cx = (WORD)30;
+
+    if ( m_bUseAdvancedUILib )
+    {
+        /* As the width of toolbar item is more, the tick mark position for timer button should be moved */
+        tbi.cx = (WORD)42;
+    }
+    else
+    {
+        tbi.cx = (WORD)30;
+    }
     m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
 
     //vGetWinStatus(m_WinCurrStatus);
@@ -997,7 +1039,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
     Sleep(1500);
 
-    theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
+    // Setting Hex Mode by default
+	bSetHexDecFlags(TRUE);
+	//theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
 
 
 
@@ -2175,7 +2219,11 @@ void CMainFrame::OnConfigBaudrate()
     //update baudrate details in global statistics buffer
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
+#ifdef BOA_FD_VERSION
+        GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+#else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#endif
     }
 
 }
@@ -2469,6 +2517,70 @@ void CMainFrame::OnConfigDatabaseSaveAs()
         }
     }
 }
+
+/**
+* \brief         Called by the framework when user selects SaveAs...
+                 option from the menu for the database editor
+* \param[in]     NULL
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.06.2013 Created
+*/
+void CMainFrame::OnJ1939DBSaveAs()
+{
+    // Display a save file dialog
+    CFileDialog fileDlg( FALSE,     // Save File dialog
+                         "dbf",     // Default Extension,
+                         "NewDB.dbf",
+                         OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                         _("CAN Datatbase File(*.dbf)|*.dbf||"),
+                         NULL );
+
+    // Set Title
+    fileDlg.m_ofn.lpstrTitle  = _T(_("Save As..."));
+
+    if ( IDOK == fileDlg.DoModal() )
+    {
+        CString strExtName  = fileDlg.GetFileExt();
+        CString strDbName   = fileDlg.GetPathName();
+
+        if ( strDbName.Find('.') )
+        {
+            strDbName = strDbName.Left( strDbName.Find('.') + 1);
+            strDbName.TrimRight();
+            strDbName += strExtName;
+        }
+
+        CMsgSignal* pTempMsgSg = NULL;
+        // Get the pointer to the editor database data structure
+        pTempMsgSg = (CMsgSignal*)*m_podMsgSgWndJ1939->m_sDbParams.m_ppvActiveDB;
+
+        if ( pTempMsgSg != NULL )
+        {
+            BeginWaitCursor( );
+            // save into the file
+            pTempMsgSg->bWriteIntoDatabaseFileFromDataStructure( strDbName, PROTOCOL_J1939 );
+            if (pTempMsgSg->bGetDBAcitveFlagStatus() == TRUE)
+            {
+                vPostMsgToSendMsgDlg(J1939);
+            }
+            EndWaitCursor( );
+            // Now set the root item in the tree view to
+            // selected name
+            if ( m_pomMsgSgTreeViews[J1939] != NULL)
+            {
+                m_pomMsgSgTreeViews[J1939]->vSetRootItemText(strDbName);
+            }
+
+            // Set all the items in the tree view to normal font
+            if ( m_pomMsgSgTreeViews[J1939] != NULL)
+            {
+                m_pomMsgSgTreeViews[J1939]->vSetAllItemsNormal();
+            }
+        }
+    }
+}
+
 /******************************************************************************
 FUNCTION:       OnConfigDatabaseSave
 DESCRIPTION:    #Called by the framework when user selects Save...
@@ -3600,7 +3712,28 @@ void CMainFrame::OnLogFilter()
                 sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
-        // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 7;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
+    }
+}
+
+void CMainFrame::ApplyReplayFilter()
+{
+    CFlags* pouFlags = NULL;
+    BOOL bReplayFilterStatus = FALSE;
+
+    pouFlags = theApp.pouGetFlagsPtr();
+    if(pouFlags != NULL )
+    {
+        bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+        pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
+
+        vREP_EnableFilters(bReplayFilterStatus);
+
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 9;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
     }
 }
 
@@ -3623,6 +3756,9 @@ void CMainFrame::ApplyLogFilter()
                 sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 7;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
         // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
     }
 }
@@ -3753,6 +3889,10 @@ void CMainFrame::OnSelectMessage()
                 //re-enable the msg filter, so it will show the modified changes
                 theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, NULL);
+
+                /* Modify filter icon accordingly in Main toolbar*/
+                BYTE bytTbrItemIndex = 8;
+                vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, TRUE, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
             }
         }
     }
@@ -5509,6 +5649,59 @@ void CMainFrame::OnHex_DecButon()
 }
 
 /**
+* \brief         Enabling or disabling Hex/Numeric mode
+* \param[in]     bHexEnabled is bool variable, if true Hex mode is enabled
+* \return        void
+* \authors       Prathiba P
+* \date          06.18.2013 Created
+*/
+void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
+{
+	 if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        if (bHexEnabled == FALSE)
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_DEC(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, FALSE);
+        }
+        else
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_HEX(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
+        }
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+            //Update Message Window
+            if(hWnd)
+            {
+                BYTE bModes = NUMERIC;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
+
+    BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
+    if(m_objTxHandler.hConfigWindowShown() == S_OK)
+    {
+        eUSERSELCTION eUserSel = eHEXDECCMD;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+    }
+    if (sg_pouSWInterface[CAN] != NULL)
+    {
+        sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
+    }
+    if (sg_pouSWInterface[J1939] != NULL)
+    {
+        sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
+    }
+}
+/**
  * \brief Display Message window Overwrite
  * \req RS_16_01 - Two display modes namely, overwrite and append shall be supported.
  *
@@ -5898,6 +6091,163 @@ void CMainFrame::OnMessageFilterButton()
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 8;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
+    }
+}
+
+/**
+* \brief         Handles the J1939 tx window close notification
+* \param[in]     WPARAM, LPARAM
+* \return        LRESULT
+* \authors       Arunkumar Karri
+* \date          28.02.2013 Created
+*/
+LRESULT CMainFrame::onJ1939TxWndClose(WPARAM wParam, LPARAM lParam)
+{
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    /*BYTE bytTbrItemIndex = 4;
+    vSetToolBarIcon( m_wndToolbarJ1939, bytTbrItemIndex, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_DISABLED );*/
+    return S_OK;
+}
+
+/**
+* \brief         Sets the icon of a particular toolbar item
+* \param[in]     Toolbar object, Item Index, Icon resource IDs for normal, hot and disabled options
+* \param[out]    void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          28.02.2013 Created
+*/
+void CMainFrame::vSetToolBarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, UINT nTBIDNormal, UINT nTBIDHot, UINT nTBIDDisabled)
+{
+    /* Perform this only if resource dll is available */
+    if ( m_hModAdvancedUILib )
+    {
+        /* Get hold of toolbar control */
+        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+        /* Get image list objects */
+        CImageList* pList           = Toolbar.GetImageList();
+        CImageList* pListHot        = Toolbar.GetHotImageList();
+        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
+
+        /* If successfully got all the image list pointers, proceed further */
+        if ( pList && pListHot && pListDisabled )
+        {
+            /* Load the icon based on resource ID */
+            HICON hIconNormal, hIconHot, hIconDisabled;
+
+            hIconNormal     = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDNormal));
+            hIconHot        = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDHot));
+            hIconDisabled   = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDDisabled));
+            /* Replace the respective Icon images if icons are successfully loaded */
+            if ( hIconNormal &&  hIconHot && hIconDisabled )
+            {
+                pList->Replace(bytItemIndex, hIconNormal);
+                pListHot->Replace(bytItemIndex, hIconHot);
+                pListDisabled->Replace(bytItemIndex, hIconDisabled);
+
+                objToolbar.Invalidate();
+            }
+        }
+    }
+}
+
+/**
+* \brief         Modifies the toolbar button size
+* \param[in]     Toolbar object, Size object
+* \return        void
+* \authors       Arunkumar Karri
+* \date          01.03.2013 Created
+*/
+void CMainFrame::vSetToolbarButtonSize(CNVTCToolBar& objToolbar, CSize& objSize)
+{
+    /* Get hold of toolbar control */
+    CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+    /* Set the toolbar button size */
+    Toolbar.SetButtonSize(objSize);
+}
+
+/**
+* \brief         Modifies the icon of a particular toolbar item
+* \param[in]     Toolbar object, Item Index, Icon ON and OFF resource IDs and item ON status
+* \param[out]    void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          28.02.2013 Created
+*/
+void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF)
+{
+    /* Perform this only if resource dll is available */
+    if ( m_hModAdvancedUILib )
+    {
+        /* Get hold of toolbar control */
+        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+        /* Get image list objects */
+        CImageList* pList           = Toolbar.GetImageList();
+        CImageList* pListHot        = Toolbar.GetHotImageList();
+        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
+
+        /* Load the icon based on resource ID */
+        HICON hIcon;
+        if ( bItemON )
+        {
+            hIcon = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDON));
+        }
+        else
+        {
+            hIcon = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDOFF));
+        }
+
+        /* Replace the respective Icon images if icon is successfully loaded */
+        if ( hIcon )
+        {
+            pList->Replace(bytItemIndex, hIcon);
+            pListHot->Replace(bytItemIndex, hIcon);
+            //pListDisabled->Replace(bytItemIndex, hIcon);
+
+            objToolbar.Invalidate();
+        }
+    }
+    /* Handle connect icon change for default icons */
+    else if ( nTBIDOFF == IDI_ICON_CAN_CONNECT )
+    {
+        /* Get hold of toolbar control */
+        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
+
+        /* Get image list objects */
+        CImageList* pList           = Toolbar.GetImageList();
+        CImageList* pListHot        = Toolbar.GetHotImageList();
+        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
+
+        /* If successfully got all the image list pointers, proceed further */
+        if ( pList && pListHot && pListDisabled )
+        {
+            /* Load the icon based on resource ID */
+            HICON hIcon;
+            if ( bItemON )
+            {
+                hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_DISCONNECT));
+            }
+            else
+            {
+                hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_CONNECT));
+            }
+
+            /* Replace the respective Icon images if icon is successfully loaded */
+            if ( hIcon )
+            {
+                pList->Replace(bytItemIndex, hIcon);
+                pListHot->Replace(bytItemIndex, hIcon);
+                pListDisabled->Replace(bytItemIndex, hIcon);
+
+                objToolbar.Invalidate();
+            }
+        }
     }
 }
 
@@ -5925,7 +6275,10 @@ void CMainFrame::OnReplayFilter()
         pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
         vREP_EnableFilters(bReplayFilterStatus);
-        //::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 9;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
     }
 }
 
@@ -5942,6 +6295,9 @@ void CMainFrame::ApplyMessageFilterButton()
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 8;
+        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
 }
 
@@ -6272,7 +6628,8 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
         //pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
         USHORT ushCount =  sg_pouFrameProcCAN->FPC_GetLoggingBlockCount();
         ushCount = vCheckValidLogFiles(ushCount);
-        if(ushCount>0)//log files found
+        BOOL bEnableLogTB = bIsAtleastOneLoggingBlockEnabled(ushCount);
+        if(bEnableLogTB == TRUE)//log files found and if checked
         {
             pCmdUI->Enable(TRUE);
             pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
@@ -6327,6 +6684,27 @@ USHORT CMainFrame::vCheckValidLogFiles(USHORT LogBlocks)
     }
     return LogBlocks;
 }
+
+BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
+{
+    BOOL bEnabled = FALSE; // Assume no log files are configured or enabled
+
+    if (LogBlocks > 0)
+    {
+        for (USHORT i = 0; i < LogBlocks; i++)
+        {
+            SLOGINFO sLogObject;
+            sg_pouFrameProcCAN->FPC_GetLoggingBlock(i, sLogObject);
+            if (sLogObject.m_bEnabled == TRUE)
+            {
+                bEnabled = TRUE;
+                break;
+            }
+        }
+    }
+    return bEnabled;
+}
+
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
 /*  Input(s)         :                                                        */
@@ -7522,13 +7900,14 @@ void CMainFrame::OnFileConnect()
             GetICANBusStat()->BSC_ResetBusStatistic();
             for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
             {
-                GetICANBusStat()->BSC_SetBaudRate(i,
-                                                  _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#ifdef BOA_FD_VERSION
+                GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+#else
+                GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#endif
             }
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
 
-            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
-            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
 
             //send time to nodesim for calculation
             if (NS_GetInterface(CAN, (void**) &pNodeSim) == S_OK)
@@ -7555,8 +7934,7 @@ void CMainFrame::OnFileConnect()
                           eWINID_STOP_READ, 0);
 
 
-            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
-            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+
             //m_n64TimeElapsedSinceConnection =0;
 
             //send time to nodesim for calculation
@@ -7747,14 +8125,9 @@ void CMainFrame::OnFileConnect()
 
             // Load the required bitmap to
             // show connect/disconnect state
-            if(!bConnected)
-            {
-                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
-            }
-            else
-            {
-                m_wndToolBar.bLoadCNVTCToolBar(20, IDB_MAINFRAMEDSC,IDB_MAINFRAMEDSC_HOT, IDB_MAINFRAMEDSC_DISABLED);
-            }
+            /* Modify connect icon accordingly in Main toolbar*/
+            BYTE bytTbrItemIndex = 3;
+            vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
 
             // Press / Unpress the button if Connected / Disconnected
             omRefToolBarCtrl.PressButton(IDM_FILE_CONNECT, bConnected);
@@ -7784,6 +8157,16 @@ void CMainFrame::OnFileConnect()
                     }
                 }
             }
+        }
+        if ( bConnected == TRUE )
+        {
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+        }
+        else
+        {
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
         }
     }
 }
@@ -8040,8 +8423,20 @@ void CMainFrame::OnNewConfigFile()
             vStartStopLogging( bLogON );
         }
 
+		// setting by default Hex mode on new configuration
+		bSetHexDecFlags(TRUE);
         // On New Configuration Stop Logging if it is enabled for J1939
         vJ1939StartStopLogging();
+
+        /* Update checked state for the filters(Log, Message) */
+        ApplyLogFilter();
+        ApplyMessageFilterButton();
+
+        /* Switch off Replay filter and update*/
+        CFlags* pouFlags = NULL;
+        pouFlags = theApp.pouGetFlagsPtr();
+        pouFlags->vSetFlagStatus(REPLAYFILTER, FALSE);
+        ApplyReplayFilter();
     }
 }
 void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
@@ -9281,34 +9676,6 @@ BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
 }
 
 /******************************************************************************
-    Function Name    :  vResetController
-    Input(s)         :  wParam : Indicate if hardware reset or software reset.
-    Output           :
-    Functionality    :  This function will Reset the Controller. It calls
-                        OnRestartController() member function.
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Ravikumar Patil
-    Date Created     :  28.02.2003
-    Modifications    :  Amitesh Bharti, 02.08.2004, The parameter wParam will
-                        indicate if it is hardware reset or software reset.
-                        Appropriate function is called for both cases.
-******************************************************************************/
-LRESULT CMainFrame::vResetController(WPARAM wParam, LPARAM )
-{
-    BOOL bHardwareReset = static_cast<BOOL>(wParam);
-    if(bHardwareReset == FALSE )
-    {
-        //        OnRestartController() ;
-    }
-    else
-    {
-        OnFunctionsResetHardware();
-    }
-    return 0;
-}
-
-/******************************************************************************
     Function Name    :  bSetControllerMode
     Input(s)         :  bbMode, New controller Mode
     Output           :
@@ -9580,219 +9947,7 @@ void CMainFrame::OnUpdateTraceWnd(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(m_bNotificWndVisible);
 }
-/******************************************************************************/
-/*  Function Name    :  OnCheckHwInterface                                    */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects to      */
-/*                      check hardware Interface. User will be promted to take*/
-/*                      action to change the mode of parallel port or connect */
-/*                      dongle if it is not connected.                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions to check the hardware presence        */
-/*  Modifications    :  Raja N at 09.03.2005                                  */
-/*                      Added code to support multi channel                   */
-/******************************************************************************/
-void CMainFrame::OnCheckHwInterface()
-{
-    CString omStrMsg = STR_EMPTY;
-    LONG nIconType = MB_ICONINFORMATION;
-    // Get the selected hardware status from Hardware interface layer
-    HRESULT hReturn = S_OK;
-    LONG lParam = 0;
-    INT unHwCount = 0;
 
-    if (g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, NULL, NUMBER_HW ) == S_OK)
-    {
-        unHwCount = (INT)lParam;
-    }
-    // Parse the array to get individual result
-    for( UINT ucIndex = 0; ucIndex < (UINT)unHwCount; ucIndex++ )
-    {
-        hReturn |= g_pouDIL_CAN_Interface->DILC_GetControllerParams( lParam, ucIndex, CON_TEST );
-        // If passed
-        if( (BOOL)lParam == TRUE )
-        {
-            CString omStr;
-            // Format pass message
-            omStr.Format( _(defSTR_CHANNEL_TEST_PASS_FORMAT), ucIndex + 1);
-            // Add with the result
-            omStrMsg += omStr;
-        }
-        // If Failed
-        else
-        {
-            CString omStr;
-            // Format the fail message
-            omStr.Format( _(defSTR_CHANNEL_TEST_FAIL_FORMAT), ucIndex + 1);
-            // Add with the result
-            omStrMsg += omStr;
-        }
-    }
-
-    // If Hardware not present then display approp. error message
-    if(hReturn != S_OK)
-    {
-        // Set the critical Icon
-        nIconType = MB_ICONSTOP;
-        // Add error message at the end
-        omStrMsg += NEW_LINE;
-        omStrMsg += _(defHARDWARE_ERROR_MSG);
-    }
-    else
-    {
-        // Append success message at the end
-        omStrMsg += NEW_LINE;
-        omStrMsg += _(defSTR_HW_TEST_SUCCESS);
-    }
-    // Display the information
-    if(theApp.m_bFromAutomation == FALSE)
-    {
-        AfxMessageBox(omStrMsg, nIconType, 0);
-    }
-}
-/******************************************************************************/
-/*  Function Name    :  OnParallelPortNonepp                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user select to change*/
-/*                      the parallel port mode to EPP. It will set the mode to*/
-/*                      EPP and prompt the user for success/failure.          */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions to set parallel port mode             */
-/*  Modifications    :  Raja N on 13.09.2004, Modified the code to set the port
-/*                      mode first and update registry and flag status only on*/
-/*                      success condition                                     */
-/******************************************************************************/
-void CMainFrame::OnParallelPortEpp()
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnUpdateParallelPortEpp                               */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
-/*                      this menuitem in case of USB build                    */
-/******************************************************************************/
-void CMainFrame::OnUpdateParallelPortEpp(CCmdUI* /*pCmdUI*/)
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnParallelPortNonepp                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user select to change*/
-/*                      the parallel port mode to nonEPP. It will set the mode*/
-/*                      to NonEPP and prompt the user for success/failure     */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions to set parallel port mode             */
-/*  Modifications    :  Raja N on 13.09.2004, Modified the code to set the port
-/*                      mode first and update registry and flag status only on*/
-/*                      success condition                                     */
-/******************************************************************************/
-void CMainFrame::OnParallelPortNonepp()
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnUpdateParallelPortEpp                               */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  26.03.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to disable    */
-/*                      this menuitem in case of USB build                    */
-/******************************************************************************/
-void CMainFrame::OnUpdateParallelPortNonepp(CCmdUI* /*pCmdUI*/)
-{
-}
-/******************************************************************************/
-/*  Function Name    :  OnFunctionsResetHardware                              */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects hardware*/
-/*                      reset menu menu item. It will give a hardware reset to*/
-/*                      controller and set controller to same state it was    */
-/*                      before hardware reset.                                */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  01.04.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, Modified the code to refer HI   */
-/*                      Layer functions                                       */
-/*  Modifications    :  Raja N on 14.03.2005, Modified the new bus statistics */
-/*                      pointer and added check before access. Added support  */
-/*                      for multi channel hardware reset and error counter    */
-/*                      update                                                */
-/*  Modifications    :  Raja N on 21.03.2005, Implemented code review points  */
-/******************************************************************************/
-void CMainFrame::OnFunctionsResetHardware()
-{
-    CFlags* podFlag  = NULL;
-
-    podFlag  =  theApp.pouGetFlagsPtr();
-    if (podFlag != NULL)
-    {
-        // Reset statistics calculation content
-        GetICANBusStat()->BSC_ResetBusStatistic();
-        // Reset the hardware using HIL function
-        // If unsuccessful error messages will be displayed from HIL
-        BOOL bConnected = podFlag->nGetFlagStatus(CONNECTED);
-        if (bConnected == TRUE)
-        {
-            OnFileConnect(); //First disconnect
-            g_pouDIL_CAN_Interface->DILC_ResetHardware();
-        }
-        // Update error hander execution. There could be possible change in
-        // Controller status.
-        // Get number of hardware connected with the system
-        UINT unTotalChannels = 0;
-        LONG lParam = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-        {
-            unTotalChannels = (INT)lParam;
-        }
-        // Get the error counter of each hardware and call error handling
-        // procedure
-        for( UINT unChannel = 0; unChannel < unTotalChannels; unChannel++ )
-        {
-            if( g_pouDIL_CAN_Interface->DILC_GetErrorCount(m_sErrorCount, unChannel, ERR_CNT) == S_OK)
-            {
-                // Make Channel specific error code
-                WORD nErrorWord = MAKEWORD( ERROR_BUS , unChannel );
-                // Call error handler function to process
-                OnErrorMessageProc( nErrorWord,
-                                    MAKEWORD(m_sErrorCount.m_ucRxErrCount,
-                                             m_sErrorCount.m_ucTxErrCount));
-            }
-        }
-    }
-}
 /******************************************************************************/
 /*  Function Name    :  OnUpdateConfigureBaudrate                             */
 /*  Input(s)         :  CCmdUI* pCmdUI                                        */
@@ -9939,47 +10094,6 @@ CMenu* CMainFrame::GetSubMenu(CString MenuName)
     return Submenu;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnUpdateCheckHwInterface                              */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.05.2003                                            */
-/*  Modifications    :  Raja N on 08.09.2004, This menu item will be disabled */
-/*                      if the available hardware is zero.                    */
-/******************************************************************************/
-void CMainFrame::OnUpdateCheckHwInterface(CCmdUI* pCmdUI)
-{
-    if(pCmdUI != NULL )
-    {
-        BOOL bDisable = TRUE;
-        // Check the number of hardware found during startup
-        LONG lParam = 0;
-        INT nNoOfHw = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-        {
-            nNoOfHw = (INT)lParam;
-        }
-        if( nNoOfHw > 0 )
-        {
-            // If some hardware present then enable this item if the tool is not
-            // connected
-            CFlags* pouFlags = theApp.pouGetFlagsPtr();
-            if(pouFlags != NULL )
-            {
-                bDisable = pouFlags->nGetFlagStatus( CONNECTED );
-            }
-        }
-        // Set the enable value
-        pCmdUI->Enable(bDisable);
-    }
-}
 /******************************************************************************/
 /*  Function Name    : vToolBarDropDownMenu                                   */
 /*  Input(s)         : UINT unControlID, int nButtonIndex                     */
@@ -10689,45 +10803,6 @@ LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
 
 
 
-/******************************************************************************/
-/*  Function Name    :  OnUpdateFunctionsResetHardware                        */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else. This handler will disable the menuitem */
-/*                      if the controller mode is simulation to avoid hardware*/
-/*                      reset.                                                */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Raja N                                                */
-/*  Date Created     :  03.09.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CMainFrame::OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI)
-{
-    if(pCmdUI != NULL )
-    {
-        UCHAR ucControllerMode = 0;
-        // Check the mode
-        LONG lParam = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
-        {
-            ucControllerMode = (UCHAR)lParam;
-        }
-        // If it is simulation then disable this menuitem.
-        if( ucControllerMode == defMODE_SIMULATE )
-        {
-            pCmdUI->Enable( FALSE );
-        }
-        else
-        {
-            pCmdUI->Enable( TRUE );
-        }
-    }
-}
 
 /******************************************************************************/
 /*  Function Name    :  vSetControllerParameters                              */
@@ -11667,6 +11742,34 @@ void CMainFrame::OnUpdateSaveImportDatabase(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
+
+/**
+* \brief         This function will save and import currently edited(open)
+                 database file.
+* \param[in]     NULL
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.06.2013 Created
+*/
+void CMainFrame::OnSaveImportJ1939Database()
+{
+    OnJ1939DBSave();
+    dLoadJ1939DBFile(m_podMsgSgWndJ1939->m_sDbParams.m_omDBPath,FALSE);
+}
+
+/**
+* \brief         This function will update the menu status of J1939 Save
+                 and Import
+* \param[in]     pCmdUI, is pointer to CCmdUI
+* \return        void
+* \authors       Arunkumar Karri
+* \date          12.06.2013 Created
+*/
+void CMainFrame::OnUpdateSaveImportJ1939Database(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN_J1939 ));
+}
+
 /******************************************************************************
     Function Name    :  OnMessageTraceWnd
 
@@ -11721,7 +11824,7 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
     xmlFreeNode(pJ1939SimSys);
 }
 
-HRESULT CMainFrame::IntializeDIL(void)
+HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 {
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
@@ -11739,10 +11842,13 @@ HRESULT CMainFrame::IntializeDIL(void)
         if ((hResult = g_pouDIL_CAN_Interface->DILC_SelectDriver(m_dwDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
         {
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
-            INT nCount = defNO_OF_CHANNELS;
+            INT nCount = unDefaultChannelCnt;
             if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
             {
                 DeselectJ1939Interfaces();
+				// On Deactivate, deactivating J1939 and hiding the message window
+				GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+				m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
@@ -12335,6 +12441,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             m_bIsXmlConfig = TRUE;
             ApplyLogFilter();
             ApplyMessageFilterButton();
+            ApplyReplayFilter();
             ApplyMessagewindowOverwrite();
             nRetValue = S_OK;
         }
@@ -12368,6 +12475,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
 
             ApplyLogFilter();
             ApplyMessageFilterButton();
+            ApplyReplayFilter();
         }
     }
     else            //If Default Configuration
@@ -13696,12 +13804,16 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
                 CString strDisplayNumericON = ptext;
 
                 if(strDisplayNumericON == _("TRUE"))
-                {
-                    m_sToolBarInfo.m_byDisplayHexON = FALSE;
+                {	
+				    // Setting decimal mode				
+					bSetHexDecFlags(FALSE);             
+					m_sToolBarInfo.m_byDisplayHexON = FALSE;
                 }
                 else if(strDisplayNumericON == _("FALSE"))
                 {
-                    m_sToolBarInfo.m_byDisplayHexON = TRUE;
+					// Setting Hex mode					
+					bSetHexDecFlags(TRUE);
+					m_sToolBarInfo.m_byDisplayHexON = TRUE;
                 }
                 xmlFree(ptext);
             }
@@ -14061,7 +14173,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     }
 
 
-                    IntializeDIL();
+                    IntializeDIL(unChannelCount);
                     ASSERT(g_pouDIL_CAN_Interface != NULL);
                     g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
                             defNO_OF_CHANNELS);
@@ -14509,6 +14621,8 @@ int CMainFrame::nLoadXMLConfiguration()
                     if ( NULL != pTempNode )
                     {
                         nRetVal = m_podBusStatistics->SetConfigData(m_pCopyBusStsticsNode);
+                        // On Load Config hiding Network statistics window
+                        m_podBusStatistics->ShowWindow(SW_HIDE);
                     }
                     else
                     {
@@ -15418,6 +15532,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             else
             {
                 theApp.pouGetFlagsPtr()->vInitializeFlags();
+				// Setting Hex mode
+				bSetHexDecFlags(TRUE);
                 m_sNotificWndPlacement.length = 0;
                 m_sNotificWndPlacement.rcNormalPosition.top = -1;
                 if (m_podUIThread != NULL)
@@ -16660,11 +16776,11 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 
     if (bResult == TRUE)
     {
-        CMenu* pConfigMenu = GetSubMenu(_T(_("&Configure"))); // Get the Menu "&Configure"
+        CMenu* pConfigMenu = GetSubMenu(_T(_("&Hardware"))); // Get the Menu "&Hardware"
         ASSERT(pConfigMenu != NULL);
         if (pConfigMenu == NULL)
         {
-            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&Configure\") failed"));
+            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&Hardware\") failed"));
         }
         /*  PTV[1.6.4] */
         // Added shortcut key
@@ -16891,11 +17007,6 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-        case RESET_HARDWARE_CONTROLLER:
-        {
-            OnFunctionsResetHardware();
-        }
-        break;
         default:
         {
         }
@@ -16909,7 +17020,11 @@ void CMainFrame::vInitializeBusStatCAN(void)
     GetICANBusStat()->BSC_DoInitialization();
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
+#ifdef BOA_FD_VERSION
+        GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+#else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+#endif
     }
 }
 
@@ -17010,17 +17125,32 @@ void CMainFrame::vPostConfigChangeCmdToSigGrphWnds(BOOL bHideGraphWnd)
 void CMainFrame::OnActivateJ1939()
 {
     HRESULT Result = S_FALSE;
+    bool bActivateStatus = false;
     if ((NULL == sg_pouIJ1939DIL) && (NULL == sg_pouIJ1939Logger))
     {
         Result = ProcessJ1939Interfaces();
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(true);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
+        bActivateStatus = true;
     }
     else
     {
         Result = DeselectJ1939Interfaces();
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+    }
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    BYTE bytTbrItemIndex = 0;
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );
+
+    /* If J1939 is deactivated, retain the old icon set and hide J1939 Tx window */
+    if ( !bActivateStatus )
+    {
+        if(m_pouTxMsgWndJ1939 != NULL)
+        {
+            m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+        }
+        m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
     }
 
     ASSERT(Result == S_OK);
@@ -17039,7 +17169,7 @@ void CMainFrame::OnUpdateActivateJ1939(CCmdUI* pCmdUI)
         }
         else
         {
-            pCmdUI->SetText(_T(_("Deac&tivate")));
+            pCmdUI->SetText(_T(_("D&eactivate")));
         }
 
         pCmdUI->Enable(TRUE);
@@ -17062,10 +17192,12 @@ void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI* pCmdUI)
 
 void CMainFrame::OnActionJ1939Online()
 {
+    bool bOnlineStatus = false;
     if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == FALSE)
     {
         if (sg_pouIJ1939DIL->DILIJ_GoOnline() == S_OK)
         {
+            bOnlineStatus = true;
             theApp.bWriteIntoTraceWnd(_("DIL.J1939 network started..."));
 
             GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
@@ -17107,6 +17239,20 @@ void CMainFrame::OnActionJ1939Online()
             sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
         }
     }
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    BYTE bytTbrItemIndex = 1;
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bOnlineStatus, IDI_ICON_J1939_OFFLINE, IDI_ICON_J1939_ONLINE );
+
+    /* If J1939 goes offline, Switch off J1939 Transmit Item */
+    if ( !bOnlineStatus )
+    {
+        if(m_pouTxMsgWndJ1939 != NULL)
+        {
+            m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+        }
+        /*bytTbrItemIndex = 4;
+        vSetToolBarIcon( m_wndToolbarJ1939, bytTbrItemIndex,  IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_DISABLED);*/
+    }
 }
 
 void CMainFrame::OnUpdateActionJ1939Online(CCmdUI* pCmdUI)
@@ -17137,7 +17283,15 @@ void CMainFrame::OnActionJ1939TxMessage()
         m_pouTxMsgWndJ1939->Create(IDD_DLG_TX);
     }
 
-    m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+	// Hide the J1939 Transmit window if it is visible
+	if(m_pouTxMsgWndJ1939->IsWindowVisible() == TRUE)
+	{
+		m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+	}
+	else // Show the J1939 Transmit window if it is hidden
+	{
+		m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+	}
 }
 
 void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI* pCmdUI)
@@ -17174,6 +17328,9 @@ void CMainFrame::vJ1939StartStopLogging()
 void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
+    /* Modify filter icon accordingly in J1939 toolbar*/
+    BYTE bytTbrItemIndex = 3;
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
 
@@ -17511,6 +17668,14 @@ void CMainFrame::OnJ1939DBNew()
             CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
             m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
             m_podMsgSgWndJ1939->UpdateWindow();
+
+            // Set the flag to indicate the opening of database window
+            CFlags* pFlags = theApp.pouGetFlagsPtr();
+
+            if(pFlags != NULL)
+            {
+                pFlags->vSetFlagStatus( DBOPEN_J1939, TRUE );
+            }
         }
     }
 
@@ -17610,6 +17775,13 @@ void CMainFrame::OnJ1939DBOpen()
                 CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
                 m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
                 m_podMsgSgWndJ1939->UpdateWindow();
+
+                // Set the flag to indicate the opening of database window
+                CFlags* pFlags = theApp.pouGetFlagsPtr();
+                if(pFlags != NULL)
+                {
+                    pFlags->vSetFlagStatus( DBOPEN_J1939, TRUE );
+                }
             }
             else
             {
@@ -17632,6 +17804,13 @@ void CMainFrame::OnJ1939DBClose()
         else
         {
             m_podMsgSgWndJ1939 = NULL;
+        }
+        // Set the flag to indicate the opening of database window
+        CFlags* pFlags = theApp.pouGetFlagsPtr();
+
+        if(pFlags != NULL)
+        {
+            pFlags->vSetFlagStatus( DBOPEN_J1939, FALSE );
         }
     }
 }
@@ -17675,6 +17854,16 @@ void CMainFrame::OnUpdateJ1939DBSave(CCmdUI* pCmdUI)
     }
 
     pCmdUI->Enable(bResult);
+}
+
+void CMainFrame::OnUpdateJ1939DBSaveAs(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN_J1939 ));
+}
+
+void CMainFrame::OnUpdateJ1939DBClose(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN_J1939 ));
 }
 
 void CMainFrame::OnJ1939DBAssociate()

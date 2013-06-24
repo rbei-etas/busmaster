@@ -17,10 +17,8 @@
   <body>
     <section>
       <title>Message Filter</title>
-      <p>Filters for message display can be configured by selecting <menucascade>
-          <uicontrol>Configure</uicontrol>
-          <uicontrol>Message Display</uicontrol>
-        </menucascade> and by selecting Filter tab. This will show list of filters configured for Message Display.</p>
+      <p>Filters for message display can be configured by selecting <b>CAN --&gt; Message Window --&gt; Configure</b> and by selecting Filter tab. This will show list of filters configured for Message Display.
+</p>
       <image href="../images/display_filter.bmp" alt="Display Filter" placement="break"/>
     </section>
     <section>
@@ -38,10 +36,7 @@
     <section>
       <title>Adding message attribute</title>
       <p>To configure a message display option, please follow the steps given below<ol>
-          <li>Select <menucascade>
-              <uicontrol>Configure</uicontrol>
-              <uicontrol>Message Display</uicontrol>
-            </menucascade></li>
+          <li>Select<b> CAN --&gt; Message Window --&gt; Configure</b> </li>
           <li>Dialog box Configure Message Display as in above figure will be displayed</li>
           <li>Click on Add button</li>
           <li>One more dialog box Add Message Display Attributes as shown below will pop up.<image href="../images/MsgDisplayAdd.bmp" placement="break"/></li>
@@ -55,10 +50,7 @@
     <section>
       <title>Editing a message attribute</title>
       <p>To edit the message attributes please follow the steps given below<ol>
-          <li>Select <menucascade>
-              <uicontrol>Configure</uicontrol>
-              <uicontrol>Message Display</uicontrol>
-            </menucascade>.</li>
+          <li>Select <b>CAN --&gt; Message Window --&gt; Configure</b>.</li>
           <li>Dialog box Configure Message Display will be displayed.</li>
           <li>Select the message entry to be edited from the message list.</li>
           <li>Either click on Edit button or double click on the selected entry.</li>
@@ -71,10 +63,7 @@
     <section>
       <title>Deleting message display attribute</title>
       <p>To delete an entry from the Message List follow the steps given below<ol>
-          <li>Select <menucascade>
-              <uicontrol>Configure</uicontrol>
-              <uicontrol>Message Display</uicontrol>
-            </menucascade>.</li>
+          <li>Select <b>CAN --&gt; Message Window --&gt; Configure</b>.</li>
           <li>A dialog box will pop up. Select the message entry to be deleted from the message entry list.</li>
           <li>Click on Remove button. A delete confirmation message box will be displayed.</li>
           <li>Select Yes to confirm deletion.</li>
@@ -85,10 +74,7 @@
     <section>
       <title>Display Buffer size &amp; Update Rate configuration</title>
       <p>To configure Append and overwrite buffer size, follow the steps given below<ol>
-          <li>Select <menucascade>
-              <uicontrol>Configure</uicontrol>
-              <uicontrol>Message Display</uicontrol>
-            </menucascade>.</li>
+          <li>Select <b>CAN --&gt; Message Window --&gt; Configure</b>.</li>
           <li>A dialog box will pop up. Select the Buffer page.<image href="../images/ConfigureMsgDisplayBuffer.bmp" placement="break"/></li>
           <li>The buffer size can be from 200 to 32500 display entries. The display update rate can be from 50 to 20000 milliseconds.</li>
           <li>Set entries for Append buffer and overwrite buffer. Set display update rate.</li>
@@ -98,11 +84,7 @@
     </section>
     <section>
       <title>Show Last Option</title>
-      <p>This option can be used to set the focus of the list item to the latest item in Scroll mode. In append mode latest message entries will be added at the end. To make the latest entries visible always select <menucascade>
-          <uicontrol>Display</uicontrol>
-          <uicontrol>Message Window</uicontrol>
-          <uicontrol>Show Last</uicontrol>
-        </menucascade>.</p>
+      <p>This option can be used to set the focus of the list item to the latest item in Scroll mode. In append mode latest message entries will be added at the end. To make the latest entries visible always select<b> CAN --&gt; Message Window --&gt; Show Last</b>.</p>
     </section>
     <note>
       <ul>

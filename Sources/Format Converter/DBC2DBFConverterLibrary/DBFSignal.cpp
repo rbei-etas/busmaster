@@ -115,6 +115,24 @@ CSignal& CSignal::operator=(CSignal& signal)
     return (*this);
 }
 
+/**
+* \brief         Replaces first occurance of a character in a char array with a new character
+* \param[out]    Char array to be used
+* \param[in]     character to be replaced
+* \param[in]     new character used for replacement
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          03.01.2013 Created
+*/
+void vReplaceChar(char str[], char chOld, char chNew)
+{
+    char* ptrOccured = NULL;
+    ptrOccured = strchr(str, chOld);
+    if ( ptrOccured != 0)
+    {
+        *ptrOccured = chNew;
+    }
+}
 
 /**
  * \brief     Extracts the message data from the given Line
@@ -254,15 +272,22 @@ int CSignal::Format(char* pcLine)
     pcToken = strtok_s(NULL, " (", &pcTok);
     pcTemp = acTemp;
 
-    // get scale factor
-    while(*pcToken && *pcToken != ',')
+    /* get scale factor */
+    char szSep;
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+
+	while(*pcToken && *pcToken != ',')
     {
         *pcTemp++ = *pcToken++;
     }
 
     *pcTemp='\0';
     pcToken++; // skip ','
-    m_fScaleFactor = (float)atof(acTemp); // store scale factor
+
+	/* Make sure we use default decimal symbol for floating values */
+	vReplaceChar(acTemp, '.', szSep);
+
+    sscanf_s(acTemp, "%f", &m_fScaleFactor);
     // Get offset
     pcTemp = acTemp;
 
@@ -272,7 +297,11 @@ int CSignal::Format(char* pcLine)
     }
 
     *pcTemp='\0';
-    m_fOffset = (float)atof(acTemp); // store Offset
+
+   	/* Make sure we use default decimal symbol for floating values */
+	vReplaceChar(acTemp, '.', szSep);
+
+    sscanf_s(acTemp, "%f", &m_fOffset);
     // next token [MIN|MAX]
     pcToken = strtok_s(NULL, " [", &pcTok);
     // get MIN

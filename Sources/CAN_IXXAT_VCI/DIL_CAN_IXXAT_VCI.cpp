@@ -201,6 +201,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
 #endif
     HRESULT hResult = E_POINTER;
 
+    UINT unDefaultChannelCnt = nCount;
     // default: no IXXAT interface available
     nCount = 0;
     m_iNumberOfCANChannelsTotal = 0;
@@ -240,7 +241,16 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
             }
             else    /* Multiple channels available */
             {
-                if ( ListHardwareInterfaces(m_hOwnerWndHandle, DRIVER_CAN_IXXAT, m_sSelHwInterface, m_anSelectedItems, nHwCount) != 0 )
+                /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+                if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+                {
+                    for (UINT i = 0; i < unDefaultChannelCnt; i++)
+                    {
+                        m_anSelectedItems[i] = i;
+                    }
+                    nHwCount  = unDefaultChannelCnt;
+                }
+                else if ( ListHardwareInterfaces(m_hOwnerWndHandle, DRIVER_CAN_IXXAT, m_sSelHwInterface, m_anSelectedItems, nHwCount) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;
@@ -529,35 +539,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StopHardware(void)
     return hResult;
 }
 
-
-/**
- * @brief
- *  Stop and reset the CAN controller.
- *
- * @return
- *  E_POINTER - No IXXAT CAN hardware available.
- *  HW_INTERFACE_NO_SEL - No open CAN controller.
- *  ERR_INITDAT_CONFIRM_CONFIG - Error message from VCI driver.
- *  S_OK - Success.
- *
- */
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_ResetHardware(void)
-{
-#ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_ResetHardware\n"));
-#endif
-
-    HRESULT hResult = E_POINTER;
-    if (m_iNumberOfCANChannelsTotal > 0)
-    {
-        for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
-        {
-            hResult = m_arrIxxatCanChannels[i].ResetController();
-        }
-    }
-    return hResult;
-}
-
 /**
  * @brief
  *  Fill the given structure with the current state
@@ -728,33 +709,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(string& acErrorStr)
 #endif
     return  E_NOTIMPL;
 }
-
-
-/**
- * @brief
- *  Function to set a filter for received CAN messages.
- *  TODO: no sample what to do here, so return not implemented.*
- *
- * @param FilterType
- *  Type of the filter.
- * @param Channel
- *  The channel.
- * @param [in,out]  punMsgIds
- *  If non-null, list of identifiers for filtering messages.
- * @param nLength
- *  The length.
- *
- * @return
- *  Always E_NOTIMPL
- *
-  */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_FilterFrames\n"));
-//#endif
-//  return  E_NOTIMPL;
-//}
 
 /**
  * @brief

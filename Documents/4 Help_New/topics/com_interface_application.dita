@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="com_interface_application" xml:lang="en-us">
+  <title>BUSMASTER COM interface</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>BUSMASTER COM interface</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Using BUSMASTER Automation Object:</p>
+    <p>User can use all the APIs exposed by BUSMASTER, as COM interface functions in his own application by following ways:</p>
+    <p>FROM VB:</p>
+    <p>If the client application is developed using VB the steps are:<ol>
+        <li>Project-&gt;Add Reference ie. <image href="../images/Reference.bmp" placement="break"/></li>
+        <li>Select the CAN_Monitor 1.0 Type Library<image href="../images/TypeLib.bmp" placement="break"/></li>
+      </ol></p>
+    <p>Now all the BUSMASTER COM APIs can be used in the client application.Once the VB project is configured to use CAN_Monitor type library, a global variable is needed to be declared and initialised so that the COM server can be accessed.This can be accomplished using following statement:</p>
+    <codeblock>Dim gBUSMASTERApp As CAN_MonitorApp.Application
+Set gBUSMASTERApp  = New CAN_MonitorApp.Application</codeblock>
+    <p>Now the varible gBUSMASTERApp can be used to access all the COM members.</p>
+    <example>For connecting the tool following code is required:<codeblock>gBUSMASTERApp  .Connect 1</codeblock></example>
+    <p>From C++</p>
+    <p>Let&apos;s start with a very simple C++ application. Make a simple dialog-based application with the class wizard, be it an MFC or an ATL/WTL application. Just make sure that :CoInitialize() and CoUninitialize() are called somewhere (that is done automatically in ATL applications). Put a button on the dialog somewhere, wire it up, and put the following in the message handler for the BN_CLICKED handler:</p>
+    <codeblock>HResult hr;
+hr = ::CoCreateInstance(CLSID_Application, NULL, CLSCTX_LOCAL_SERVER, IID_IApplication, (void**)&amp;m_IApplication);
+if(SUCCEEDED(hr))
+  if (m_IApplication) {
+    m_IApplication-&gt;Connect ( 1 );
+  }
+}</codeblock>
+    <p>In the header for the dialog, declare a member like this:</p>
+    <codeblock>IApplication* m_IApplication;</codeblock>
+    <p>Now, all you need to do is include the file CAN_Monitor_Interface.h which is provided in the BUSMASTER installation folder.When you go looking for this file, you&apos;ll notice another file:  CAN_Monitor_Interface.c. This file contains the implementation of the interface and is needed by the linker. So, again, you can copy it, or add it to your project directly.</p>
+    <p>Now, build your application, click the button you&apos;ve made, and - there is your application!
+
+ 
+</p>
+    <p>
+
+</p>
+    <p>
+
+
+To receive CAN messages from Busmaster makes use of the new interface_IAppEvents (connection points).</p>
+    <p>To know more, refer Example folder in BUSMASTER installation folder.</p>
+  </body>
+</topic>

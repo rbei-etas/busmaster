@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="putchar" xml:lang="en-us">
+  <title>putchar : write a character (macro)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int putchar(int ch);
+int _putchar_r(void *reent, int ch);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>putchar is a macro, defined in stdio.h. putchar writes its argument to the standard output stream, after converting it from an int to an unsigned char.</p>
+      <p>The alternate function _putchar_r is a reentrant version. The extra argument reent is a pointer to a reentrancy structure.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>If successful, putchar returns its argument ch. If an error intervenes, the result is EOF. You can use `ferror(stdin)&apos; to query for errors.</p>
+    </section>
+  </refbody>
+</reference>

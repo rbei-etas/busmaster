@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="gamma" xml:lang="en-us">
+  <title>gamma, gammaf, lgamma, lgammaf, gamma_r, gammaf_r, lgamma_r, lgammaf_r</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double gamma(double x);
+float gammaf(float x);
+double lgamma(double x);
+float lgammaf(float x);
+double gamma_r(double x, int *signgamp);
+float gammaf_r(float x, int *signgamp);
+double lgamma_r(double x, int *signgamp);
+float lgammaf_r(float x, int *signgamp);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>gamma calculates the natural logarithm of the gamma function of x. The gamma function (exp(gamma(x))) is a generalization of factorial, and retains the property that Accordingly, the results of the gamma function itself grow very quickly. gamma is defined as to extend the useful range of results representable.</p>
+      <p>The sign of the result is returned in the global variable signgam, which is declared in math.h. gammaf performs the same calculation as gamma, but uses and returns float values. lgamma and lgammaf are alternate names for gamma and gammaf. The use of lgamma instead of gamma is a reminder that these functions compute the log of the gamma function, rather than the gamma function itself.</p>
+      <p>The functions gamma_r, gammaf_r, lgamma_r, and lgammaf_r are just like gamma, gammaf, lgamma, and lgammaf, respectively, but take an additional argument. This additional argument is a pointer to an integer. This additional argument is used to return the sign of the result, and the global variable signgam is not used. These functions may be used for reentrant calls (but they will still set the global variable errno if an error occurs).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Normally, the computed result is returned. When x is a nonpositive integer, gamma returns HUGE_VAL and errno is set to EDOM. If the result overflows, gamma returns HUGE_VAL and errno is set to ERANGE. You can modify this error treatment using matherr.</p>
+    </section>
+  </refbody>
+</reference>

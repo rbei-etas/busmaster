@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="fabs" xml:lang="en-us">
+  <title>fabs, fabsf : absolute value (magnitude) </title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double fabs(double x);
+float fabsf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>fabs and fabsf calculate the absolute value (magnitude) of the argument x, by direct manipulation of the bit representation of x.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The calculated value is returned. No errors are detected.</p>
+    </section>
+  </refbody>
+</reference>

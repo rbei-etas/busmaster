@@ -201,7 +201,7 @@ static XLCLOSEDRIVER           xlDllCloseDriver = NULL;
 static XLOPENDRIVER            xlDllOpenDriver = NULL;
 
 /* Forward declarations*/
-static int nInitHwNetwork();
+static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
 static BOOL bClientExist(string pcClientName, INT& Index);
@@ -270,13 +270,11 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
@@ -875,7 +873,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    hResult = nInitHwNetwork();
+    hResult = nInitHwNetwork(nCount);
     if ( hResult == 0)
     {
         nCount = sg_nNoOfChannels;
@@ -942,8 +940,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    hResult = CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -1861,24 +1857,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_StopHardware(void)
 }
 
 /**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_OK;
-
-    /* Stop the hardware if connected */
-    /*hResult = */
-    CAN_StopHardware(); // return value not necessary ..fix for git issue 204 by Srinivas
-
-    return hResult;
-}
-
-/**
 * \brief         Function to get Controller status
 * \param[out]    StatusData, is s_STATUSMSG structure
 * \return        S_OK for success, S_FALSE for failure
@@ -2027,22 +2005,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
-    return S_OK;
-}
-
-/**
-* \brief         Applies FilterType(PASS/STOP) filter for corresponding
-*                channel. Frame ids are supplied by punMsgIds.
-* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
-* \param[in]     Channel, is TYPE_CHANNEL
-* \param[in]     punMsgIds, is UINT*
-* \param[in]     nLength, is UINT
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
     return S_OK;
 }
 
@@ -2336,12 +2298,12 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 /**
 * \brief         This function will get the hardware selection from the user
 *                and will create essential networks.
-* \param         void
+* \param         unDefaultChannelCnt
 * \return        returns defERR_OK (always)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nCreateMultipleHardwareNetwork()
+static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
@@ -2368,7 +2330,17 @@ static int nCreateMultipleHardwareNetwork()
         }
     }
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
-    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+
+    /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+    if ( unDefaultChannelCnt && nChannels >= unDefaultChannelCnt )
+    {
+        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+        {
+            sg_anSelectedItems[i] = i;
+        }
+        nHwCount = unDefaultChannelCnt;
+    }
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -2424,12 +2396,12 @@ static int nCreateSingleHardwareNetwork()
 * \brief         This function will find number of hardwares connected.
 *                It will create network as per hardware count.
 *                This will popup hardware selection dialog in case there are more hardwares present.
-* \param         void
+* \param         unDefaultChannelCnt
 * \return        Operation Result. 0 incase of no errors. Failure Error codes otherwise.
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nInitHwNetwork()
+static int nInitHwNetwork(UINT unDefaultChannelCnt)
 {
     int nChannelCount = 0;
     int nResult = NO_HW_INTERFACE;
@@ -2465,7 +2437,7 @@ static int nInitHwNetwork()
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nResult = nCreateMultipleHardwareNetwork();
+            nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
         }
         else
         {

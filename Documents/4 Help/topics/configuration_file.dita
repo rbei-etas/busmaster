@@ -19,22 +19,14 @@
     <section>
       <title>Creating New Configuration file</title>
       <ol>
-        <li>Select <menucascade>
-            <uicontrol>File</uicontrol>
-            <uicontrol>Configuration</uicontrol>
-            <uicontrol>New</uicontrol>
-          </menucascade> menu option. This will invoke file Save dialog box.</li>
+        <li>Select<b> File --&gt; New</b> menu option. This will invoke file Save dialog box.</li>
         <li>Enter the new configuration file name. And select Save button. The new configuration file will be loaded and the same filename can be seen on the status bar.</li>
       </ol>
     </section>
     <section>
       <title>Loading a Configuration File </title>
       <ol>
-        <li>Select <menucascade>
-            <uicontrol>File</uicontrol>
-            <uicontrol>Configuration</uicontrol>
-            <uicontrol>Load</uicontrol>
-          </menucascade> menu option. This will invoke file Open dialog box.</li>
+        <li>Select <b>File --&gt; Load...</b> menu option. This will invoke file Open dialog box.</li>
         <li>Select the configuration file name. And select Open button. The selected configuration file will be loaded and the loaded configuration file will be displayed in the status bar. The same configuration file will be displayed on the top of MRU configuration file list (<menucascade>
             <uicontrol>File</uicontrol>
             <uicontrol>Recent Configuration</uicontrol>
@@ -50,11 +42,7 @@
     <section>
       <title>Saving a configuration file</title>
       <ol>
-        <li>Select <menucascade>
-            <uicontrol>File</uicontrol>
-            <uicontrol>Configuration</uicontrol>
-            <uicontrol>Save</uicontrol>
-          </menucascade> menu option. This will invoke File Save dialog box.</li>
+        <li>Select <b>File --&gt; Save</b> menu option. This will invoke File Save dialog box.</li>
         <li>Select the configuration file name. And select Save button.</li>
         <li>The selected configuration file will be saved. The same configuration file will be displayed on the top of MRU configuration file list (<menucascade>
             <uicontrol>File</uicontrol>
@@ -65,11 +53,7 @@
     <section>
       <title>Saving a configuration file with new name</title>
       <ol>
-        <li>Select <menucascade>
-            <uicontrol>File</uicontrol>
-            <uicontrol>Configuration</uicontrol>
-            <uicontrol>Save As</uicontrol>
-          </menucascade> menu option. This will invoke File Save As dialog box.</li>
+        <li>Select <b>File --&gt; Save As</b> menu option. This will invoke File Save As dialog box.</li>
         <li>Enter new configuration file name. And select Save button. The selected configuration file will be saved.</li>
       </ol>
     </section>

@@ -141,7 +141,7 @@ unsigned long* long_CAPL(STCAN_MSG* sMsg, int nByte)
 int settimer_CAPL(int nTimerType, char* pchTimerName, int nTimerValue, int nNanoSec)
 {
     int nMilliSec = nNanoSec  % (1000 * 1000);
-    nTimerValue = nMilliSec;
+    nTimerValue += nMilliSec;
     if(nTimerType == 1)
     {
         SetTimerVal(pchTimerName, nTimerValue*1000);

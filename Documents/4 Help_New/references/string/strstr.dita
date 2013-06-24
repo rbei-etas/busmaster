@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="strstr" xml:lang="en-us">
+  <title>strstr : find string segment</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;string.h&gt;
+char *strstr(const char *s1, const char *s2);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>Locates the first occurence in the string pointed to by s1 of the sequence of characters in the string pointed to by s2 (excluding the terminating null character).</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>Returns a pointer to the located string segment, or a null pointer if the string s2 is not found. If s2 points to a string with zero length, the s1 is returned.</p>
+    </section>
+  </refbody>
+</reference>

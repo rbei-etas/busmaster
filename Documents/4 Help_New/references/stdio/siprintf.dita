@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="siprintf" xml:lang="en-us">
+  <title>siprintf : write formatted output (integer only)</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;stdio.h&gt;
+int siprintf(char *str, const char *format [, arg, ...]);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>siprintf is a restricted version of sprintf: it has the same arguments and behavior, save that it cannot perform any floating-point formatting: the f, g, G, e, and F type specifiers are not recognized.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>siprintf returns the number of bytes in the output string, save that the concluding NULL is not counted. siprintf returns when the end of the format string is encountered.</p>
+    </section>
+  </refbody>
+</reference>

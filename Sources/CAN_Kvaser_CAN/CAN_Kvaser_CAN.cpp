@@ -298,7 +298,7 @@ static HWND sg_hOwnerWnd = NULL;
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
 /* Forward declarations*/
-static int nInitHwNetwork();
+static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
 static BOOL bClientExist(string pcClientName, INT& Index);
@@ -339,7 +339,6 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -813,7 +812,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterf
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    if (( hResult = nInitHwNetwork()) == 0)
+    if (( hResult = nInitHwNetwork(nCount)) == 0)
     {
         nCount = sg_nNoOfChannels;
         hResult = S_OK;
@@ -858,8 +857,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    hResult = CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -1659,24 +1656,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_StopHardware(void)
 }
 
 /**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          12.10.2011 Created
-*/
-HRESULT CDIL_CAN_Kvaser::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_OK;
-
-    /* Stop the hardware if connected */
-    CAN_StopHardware(); // return value not necessary
-
-    return hResult;
-
-}
-
-/**
 * \brief         Gets the Tx queue configured.
 * \param[out]    pouFlxTxMsgBuffer, is BYTE*
 * \return        S_OK for success, S_FALSE for failure
@@ -2171,12 +2150,12 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 /**
 * \brief         This function will get the hardware selection from the user
 *                and will create essential networks.
-* \param         void
+* \param         unDefaultChannelCnt
 * \return        returns defERR_OK (always)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-static int nCreateMultipleHardwareNetwork()
+static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 {
     int nHwCount = sg_ucNoOfHardware;
     DWORD dwFirmWare[2];
@@ -2200,7 +2179,17 @@ static int nCreateMultipleHardwareNetwork()
         sg_HardwareIntr[nCount].m_acDeviceName = chBuffer;
         //sprintf(sg_HardwareIntr[nCount].m_acDeviceName,"0x%08lx 0x%08lx", dwFirmWare[0], dwFirmWare[1]);
     }
-    if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+
+    /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+    if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+    {
+        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+        {
+            sg_anSelectedItems[i] = i;
+        }
+        nHwCount = unDefaultChannelCnt;
+    }
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_KVASER_CAN, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -2297,12 +2286,12 @@ static int nGetNoOfConnectedHardware(void)
 * \brief         This function will find number of hardwares connected.
 *                It will create network as per hardware count.
 *                This will popup hardware selection dialog in case there are more hardwares present.
-* \param         void
+* \param         unDefaultChannelCnt
 * \return        Operation Result. 0 incase of no errors. Failure Error codes otherwise.
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-static int nInitHwNetwork()
+static int nInitHwNetwork(UINT unDefaultChannelCnt)
 {
     int nChannelCount = 0;
     int nResult = NO_HW_INTERFACE;
@@ -2333,7 +2322,7 @@ static int nInitHwNetwork()
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nResult = nCreateMultipleHardwareNetwork();
+            nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
         }
         else
         {

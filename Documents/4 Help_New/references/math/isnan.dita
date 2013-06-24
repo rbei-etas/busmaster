@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="isnan" xml:lang="en-us">
+  <title>isnan,isnanf,isinf,isinff,finite,finitef : test for exceptional numbers</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;ieeefp.h&gt;
+int isnan(double arg);
+int isinf(double arg);
+int finite(double arg);
+int isnanf(float arg);
+int isinff(float arg);
+int finitef(float arg);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>These functions provide information on the floating point argument supplied. There are five major number formats -</p>
+      <p>zero
+        a number which contains all zero bits.</p>
+      <p>subnormal
+        Is used to represent number with a zero exponent, but a non zero fraction.</p>
+      <p>normal
+        A number with an exponent, and a fraction</p>
+      <p>infinity
+        A number with an all 1&apos;s exponent and a zero fraction.</p>
+      <p>NAN
+        A number with an all 1&apos;s exponent and a non zero fraction.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>isnan returns 1 if the argument is a nan. isinf returns 1 if the argument is infinity. finite returns 1 if the argument is zero, subnormal or normal. The isnanf, isinff and finitef perform the same operations as their isnan, isinf and finite counterparts, but on single precision floating point numbers.</p>
+    </section>
+  </refbody>
+</reference>

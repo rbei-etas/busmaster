@@ -10,6 +10,7 @@
 *.sln.cache
 *.suo
 *.vcproj.*.user
+*.db
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
 Sources/BusEmulation/BusEmulation.h
@@ -23,8 +24,9 @@ EXTERNAL_SOURCE/DmGraph/DMGraph_p.c
 EXTERNAL_SOURCE/DmGraph/dlldata.c
 Sources/Format Converter/AscLogConverter/Asc_Log_Lexer.c
 Sources/Format Converter/AscLogConverter/asc_log_parser.c
-Sources/Format Converter/AscLogConverter/asc_log_parser.h
-Sources/Format Converter/CAPL2CConverter/lexer.h
+Sources/Format Converter/AscLogConverter/Asc_Log_Parser.h
+Sources/Format Converter/CAPL2CConverter/CAPL_C_Lexer.h
+Sources/Format Converter/DBC2DBFConverterLibrary/dbc_dbf_Lexer.c
 Sources/Format Converter/LogAscConverter/Log_Asc_Lexer.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.c
 Sources/Format Converter/LogAscConverter/log_asc_parser.h
@@ -33,14 +35,17 @@ Sources/TestSuiteExecutorGUI/parser.c
 Sources/TestSuiteExecutorGUI/parser.h
 
 # Release dirs (except BIN)
+EXTERNAL_SOURCE/AdvancedUIPlugin/Release
 Sources/Application/Release
 Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ICS_neoVI/Release
+Sources/CAN_IXXAT_VCI/Release
 Sources/CAN_Kvaser_CAN/Release
 Sources/CAN_MHS/Release
 Sources/CAN_STUB/Release
 Sources/CAN_Vector_XL/Release
+Sources/CAN_VSCOM/Release
 Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
 Sources/DataTypes/Release
@@ -65,14 +70,17 @@ Sources/TXWindow/Release
 Sources/Utility/Release
 
 # Debug dirs (except BIN)
+EXTERNAL_SOURCE/AdvancedUIPlugin/Debug
 Sources/Application/Debug
 Sources/BusEmulation/Debug
 Sources/CAN_ETAS_BOA/Debug
 Sources/CAN_ICS_neoVI/Debug
+Sources/CAN_IXXAT_CAN/Debug
 Sources/CAN_Kvaser_CAN/Debug
 Sources/CAN_MHS/Debug
 Sources/CAN_STUB/Debug
 Sources/CAN_Vector_XL/Debug
+Sources/CAN_VSCOM/Debug
 Sources/CommonClass/Debug
 Sources/ConfigDialogsDIL/Debug
 Sources/DataTypes/Debug
@@ -105,20 +113,28 @@ Sources/BIN/*/*.h
 Sources/BIN/*/*.ilk
 Sources/BIN/*/*.pdb
 Sources/BIN/*/*.tlb
+Sources/BIN/*/AdvancedUIPlugin.dll
 Sources/BIN/*/CAN_ETAS_BOA.dll
 Sources/BIN/*/CAN_ICS_neoVI.dll
+Sources/BIN/*/CAN_IXXAT_VCI.dll
+Sources/BIN/*/CAN_IXXAT_VCI.map
 Sources/BIN/*/CAN_Kvaser_CAN.dll
 Sources/BIN/*/CAN_MHS.dll
 Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/CAN_Vector_XL.dll
+Sources/BIN/*/CAN_VSCOM.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
 Sources/BIN/*/ConverterPlugins/CAPL2CConverter.dll
+Sources/BIN/*/ConverterPlugins/CAPL2CConverterJPN.dll
 Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
+Sources/BIN/*/ConverterPlugins/DBC2DBFConverterLibrary.dll
 Sources/BIN/*/ConverterPlugins/DBF2DBCConverter.dll
+Sources/BIN/*/ConverterPlugins/J1939DBC2DBFConverter.dll
 Sources/BIN/*/ConverterPlugins/LogAscConverter.dll
 Sources/BIN/*/ConverterPlugins/LogToExcelConverter.dll
+Sources/BIN/*/ConverterPlugins/LogToExcelConverterJPN.dll
 Sources/BIN/*/DIL_Interface.dll
 Sources/BIN/*/DIL_J1939.dll
 Sources/BIN/*/DMGraph.dll
@@ -139,11 +155,13 @@ Sources/BIN/*/TestSetupEditorGUI.dll
 Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
+Sources/BIN/Libs/*/CAN_IXXAT_VCI.lib
 Sources/BIN/Libs/*/CAN_ICS_neoVI.lib
 Sources/BIN/Libs/*/CAN_Kvaser_CAN.lib
 Sources/BIN/Libs/*/CAN_MHS.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
 Sources/BIN/Libs/*/CAN_Vector_XL.lib
+Sources/BIN/Libs/*/CAN_VSCOM.lib
 Sources/BIN/Libs/*/CommonClass.lib
 Sources/BIN/Libs/*/ConfigDialogsDIL.lib
 Sources/BIN/Libs/*/DIL_Interface.lib
@@ -173,6 +191,7 @@ Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/xl_lib75.zip
 Sources/CAN_Vector_XL/EXTERNAL_INCLUDE/Setup.exe
 
 # Installation Setup
+Installation Setup/BUSMASTER_Cleanup_Registry.exe
 Installation Setup/BUSMASTER_Installer_Ver_*.exe
 
 # Documents
@@ -184,6 +203,8 @@ Documents/3 Design Document/out
 Documents/3 Design Document/temp
 Documents/4 Help/out
 Documents/4 Help/temp
+Documents/4 Help_New/out
+Documents/4 Help_New/temp
 Documents/5 Source Code Documentation/out
 
 # Tests

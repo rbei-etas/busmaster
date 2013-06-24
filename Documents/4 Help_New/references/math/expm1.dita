@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="expm1" xml:lang="en-us">
+  <title>expm1, expm1f : exponential minus 1</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double expm1(double x);
+float expm1f(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>expm1 and expm1f calculate the exponential of x and subtract 1, that is, is the base of the natural system of logarithms, approximately 2.71828). The result is accurate even for small values of x, where using exp(x)-1 would lose many significant digits.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>e raised to the power x, minus 1.</p>
+    </section>
+  </refbody>
+</reference>

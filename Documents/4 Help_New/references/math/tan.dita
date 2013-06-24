@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="tan" xml:lang="en-us">
+  <title>tan, tanf : tangent</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>#include &lt;math.h&gt;
+double tan(double x);
+float tanf(float x);</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>tan computes the tangent of the argument x. Angles are specified in radians. tanf is identical, save that it takes and returns float values.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>The tangent of x is returned.</p>
+    </section>
+  </refbody>
+</reference>

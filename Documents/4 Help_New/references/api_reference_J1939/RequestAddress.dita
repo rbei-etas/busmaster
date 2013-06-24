@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="EnableKeyHandlers" xml:lang="en-us">
+  <title>RequestAddress: To request addresses of currently active nodes in the network</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <codeblock>UINT RequestAddress ( UINT Channel)</codeblock>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function will request the address of each node in the J1939 network.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>Channel - Channel number.</p>
+    </section>
+    <section>
+      <title>Returns</title>
+      <p>TRUE success. FALSE if the handler is already in the specified state</p>
+    </section>
+  </refbody>
+</reference>

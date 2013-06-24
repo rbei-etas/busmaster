@@ -109,7 +109,6 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     m_bErrorHandlerOn       = FALSE;
     m_bDLLHandlerOn         = FALSE;
     m_bALLHandler           = FALSE;
-    m_bParallelPortEPP      = TRUE;
     m_bLogHexON             = TRUE;
     m_wLogTimeMode          = eSYSTEM_MODE; // System mode
     m_nReplayMsgType        = eALL_MESSAGE; // default is all messages
@@ -197,6 +196,7 @@ void CFlags::vInitializeFlags()
     m_bFunctionEditorOn     = FALSE;
     m_bFilterTxMsg          = FALSE;
     m_bDbOpen               = FALSE;
+    m_bDbOpenJ1939          = FALSE;
     m_wReplayMode           = FALSE;
     m_bReplayFileSelected   = FALSE;
     m_bMsgHandlerOn         = FALSE;
@@ -352,6 +352,9 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
         case DBOPEN :
             m_bDbOpen = nValue;
             break;
+        case DBOPEN_J1939 :
+            m_bDbOpenJ1939 = nValue;
+            break;
         case HEX :
             if ( m_bDisplayHexON != nValue)
             {
@@ -418,10 +421,6 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
 
         case CONTROLLER_MODE:
             m_wControllerMode = static_cast<WORD>(nValue);
-            break;
-
-        case PARALLEL_PORT_EPP:
-            m_bParallelPortEPP = nValue;
             break;
 
         case LOGHEXON:
@@ -559,6 +558,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case DBOPEN :
             nRetValue = m_bDbOpen;
             break;
+        case DBOPEN_J1939 :
+            nRetValue = m_bDbOpenJ1939;
+            break;
         case HEX :
             nRetValue = m_bDisplayHexON;
             break;
@@ -597,9 +599,6 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case CONTROLLER_MODE:
             nRetValue  = m_wControllerMode;
-            break;
-        case PARALLEL_PORT_EPP:
-            nRetValue  = m_bParallelPortEPP;
             break;
         case LOGHEXON:
             nRetValue = m_bLogHexON;

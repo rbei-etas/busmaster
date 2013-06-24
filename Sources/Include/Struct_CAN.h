@@ -1043,3 +1043,6 @@ typedef sERROR_CNT* SPERROR_CNT;
 #define IS_A_MESSAGE(a)         ((a) & 0x03)
 #define IS_ERR_MESSAGE(a)       (a & ERR_FLAG)
 #define IS_INTR_MESSAGE(a)      (((a) & INTR_FLAG))
+
+/*To enable CANFD - uncomment the BOA_FD_VERSION define*/
+//#define BOA_FD_VERSION

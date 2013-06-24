@@ -148,7 +148,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.7.3.exe"
+Outfile "BUSMASTER_Installer_Ver_1.8.1.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -636,6 +636,11 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\BUSMASTER_Cleanup_Registry.exe bRegCleanupExists
 	bRegCleanupExists:
 			Delete "$INSTDIR\BUSMASTER_Cleanup_Registry.exe"
+			
+	; Deleting If AdvancedUIPlugIn.dll exists
+	IfFileExists $INSTDIR\AdvancedUIPlugIn.dll bAdvancedUIDllExists
+	bAdvancedUIDllExists:
+			Delete "$INSTDIR\AdvancedUIPlugIn.dll"			
 	; PTV END
 	
 	
@@ -811,6 +816,16 @@ Section "BUSMASTER Reg Cleanup"
     SectionIn RO 1 2 3
     SetOutPath $INSTDIR
     File BUSMASTER_Cleanup_Registry.exe
+SectionEnd
+SectionGroupEnd
+SectionGroup "New Icon Set"
+Section "Oxygen Icons"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+	; Oxygen icons resource Dll
+	File ..\Sources\BIN\Release\AdvancedUIPlugIn.dll
+	 ; Help
+    File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
 SectionEnd
 SectionGroupEnd
 SectionGroup "Examples"

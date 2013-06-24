@@ -183,6 +183,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DMGraph", "..\EXTERNAL_SOUR
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_i-VIEW", "CAN_iVIEW\CAN_i-VIEW.vcproj", "{60225C85-3C15-4DA1-8E5D-17453A3AA0CD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdvancedUIPlugin", "..\EXTERNAL_SOURCE\AdvancedUIPlugin\AdvancedUIPlugin.vcproj", "{6E565EAB-C97A-4D30-BD2F-4713D12FE316}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		busmaster_debug|Win32 = busmaster_debug|Win32
@@ -559,6 +561,18 @@ Global
 		{60225C85-3C15-4DA1-8E5D-17453A3AA0CD}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{60225C85-3C15-4DA1-8E5D-17453A3AA0CD}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{60225C85-3C15-4DA1-8E5D-17453A3AA0CD}.Unicode Release|Win32.Build.0 = Release|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Debug|Win32.Build.0 = Debug|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Release|Win32.ActiveCfg = Release|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Release|Win32.Build.0 = Release|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{6E565EAB-C97A-4D30-BD2F-4713D12FE316}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
