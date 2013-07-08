@@ -268,8 +268,6 @@ public:
     BOOL bEnableDisableLog(BOOL bStart) ;
     //Called by wrapper function to Log a string $Log:$Log:
     BOOL bWriteToLog(char* pcOutStrLog) ;
-    //Called by wrapper function to Reset the controller $Log:$Log:
-    //void vResetController() ;
     //Called by wrapper function to change the controller mode $Log:$Log:
     BOOL bSetControllerMode(BOOL bMode) ;
     //To display the context menu when user selects the time mode drop down menu
@@ -316,6 +314,7 @@ public:
     //~MVN
     void OnHex_DecButon();
 
+	void bSetHexDecFlags(BOOL bHexOn);
     /* API to modify icon for a particular item in toolbar */
     void vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF);
     /* API to set icon for a particular item in toolbar */
@@ -438,14 +437,7 @@ protected:
     afx_msg void OnTraceWnd();
     afx_msg LRESULT OnMessageTraceWnd(WPARAM wParam, LPARAM lParam);
     afx_msg void OnUpdateTraceWnd(CCmdUI* pCmdUI);
-    afx_msg void OnCheckHwInterface();
-    afx_msg void OnParallelPortEpp();
-    afx_msg void OnUpdateParallelPortEpp(CCmdUI* pCmdUI);
-    afx_msg void OnParallelPortNonepp();
-    afx_msg void OnUpdateParallelPortNonepp(CCmdUI* pCmdUI);
     afx_msg void OnUpdateConfigureBaudrate(CCmdUI* pCmdUI);
-
-    afx_msg void OnUpdateCheckHwInterface(CCmdUI* pCmdUI);
     afx_msg void OnDisplayAbsoluteTime();
     afx_msg void OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI);
     afx_msg void OnDisplayRelativetime();
@@ -455,7 +447,6 @@ protected:
     afx_msg void OnEnableTimeStampButton();
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnUpdateSignalWatchWnd(CCmdUI* pCmdUI);
-    afx_msg void OnUpdateFunctionsResetHardware(CCmdUI* pCmdUI);
     afx_msg void OnGraphWindow();
     afx_msg void OnUpdateGraphWnd(CCmdUI* pCmdUI);
     afx_msg void OnCfgnReplay();
@@ -483,7 +474,6 @@ protected:
     afx_msg void OnUpdateStatusBar(WPARAM wpParam, LPARAM lParam);
     afx_msg void OnUpdateConfigurationFileName(CCmdUI* pCmdUI);
     afx_msg LRESULT vDisconnect(WPARAM wParam, LPARAM lParam);
-    afx_msg LRESULT vResetController(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT vSetWarningLimitVar(WPARAM wParam, LPARAM lParam);
     // Notification from trace window
     afx_msg LRESULT vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam);
@@ -717,6 +707,8 @@ public:
     afx_msg void OnDissociateDatabase();
     afx_msg void OnSaveImportDatabase();
     afx_msg void OnUpdateSaveImportDatabase(CCmdUI* pCmdUI);
+    afx_msg void OnSaveImportJ1939Database();
+    afx_msg void OnUpdateSaveImportJ1939Database(CCmdUI* pCmdUI);
     //To update the Message DB Pointer
     afx_msg LRESULT OnProvideMsgDBPtr(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam);
@@ -724,7 +716,6 @@ public:
     afx_msg LRESULT OnMessageFromUserDll(WPARAM wParam, LPARAM lParam);
     afx_msg void OnConfigureModeActive();
     afx_msg void OnConfigurePassive();
-    afx_msg void OnFunctionsResetHardware();
     afx_msg void OnLogEnable();
     afx_msg void OnRestartController();
     afx_msg void OnUpdateCfgnLog(CCmdUI* pCmdUI);
@@ -767,8 +758,11 @@ public:
     afx_msg void OnJ1939DBNew();
     afx_msg void OnJ1939DBOpen();
     afx_msg void OnJ1939DBClose();
+    afx_msg void OnUpdateJ1939DBClose(CCmdUI* pCmdUI);
     afx_msg void OnJ1939DBSave();
+    afx_msg void OnJ1939DBSaveAs();
     afx_msg void OnUpdateJ1939DBSave(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateJ1939DBSaveAs(CCmdUI* pCmdUI);
     afx_msg void OnJ1939DBAssociate();
     afx_msg void OnJ1939DBDissociate();
     afx_msg void OnJ1939CfgSimSys();

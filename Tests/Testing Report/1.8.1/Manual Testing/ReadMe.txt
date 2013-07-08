@@ -1,0 +1,1 @@
+This folder will be removed as soon as all STS are sufficiently implemented as AutoIt blackbox tests.

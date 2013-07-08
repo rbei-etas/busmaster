@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="CAN_IXXAT_VCI"
 	ProjectGUID="{F920F538-A4B0-4EB6-81FC-6011E9C1806F}"
 	RootNamespace="CAN_IXXAT_VCI"
@@ -395,10 +395,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CANtype.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ClientBuffer.h"
 				>
 			</File>
@@ -419,15 +415,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\KLNtype.h"
+				RelativePath="..\Application\MultiLanguage.h"
 				>
 			</File>
 			<File
-				RelativePath=".\LINtype.h"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.h"
+				RelativePath=".\Resource.h"
 				>
 			</File>
 			<File
@@ -435,39 +427,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\vci3.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vciCtrlType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vcierr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vciguid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vciIdType.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vcinpl.h"
-				>
-			</File>
-			<File
 				RelativePath=".\vcinpldynl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vcitype.h"
-				>
-			</File>
-			<File
-				RelativePath=".\vciver.h"
 				>
 			</File>
 		</Filter>

@@ -131,7 +131,7 @@ CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
 template <typename SMSGBUFFER> void CMsgBufCANVFSE<SMSGBUFFER>::
 vClearMessageBuffer(void)
 {
-    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_CAN_BUFFER * m_nMsgSize);//BYTE
+    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_CAN_BUFFER * m_nMsgSize);
     m_omIdIndexMap.RemoveAll();
     m_nIndexRead = 0;
     m_nIndexWrite = 0;

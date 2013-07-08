@@ -30,7 +30,7 @@
 const int SIZE_CHAR = sizeof(char);
 #define ENOENT          2
 
-#define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB 
+#define DEFAULT_FILE_SIZE_IN_MBYTES       100//50 //MB 
 #define MB_VALUE                         1048576
 
 const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;

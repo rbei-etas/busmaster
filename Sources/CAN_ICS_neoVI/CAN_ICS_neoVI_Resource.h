@@ -47,7 +47,6 @@
 #define IDC_COMB_SAMPLING               1019
 #define IDC_EDIT_DRIVER_ID              1019
 #define IDC_COMB_CLOCK                  1020
-#define IDC_BUT_BLINK                   1020
 #define IDC_COMB_PROPDELAY              1021
 #define IDC_STAT_CLOCK                  1022
 #define IDC_COMB_SJW                    1023
@@ -57,7 +56,6 @@
 #define IDC_EDIT_WARNING_LIMIT          1175
 #define IDC_EDIT_ACCEPTANCE_CODE2       1181
 #define IDC_CBTN_ACCEPTANCE             1199
-#define IDC_CBTN_BLINK                  1200
 #define IDC_CBTN_ACCETANCE_OK           1200
 #define IDC_EDIT_ACCEPTANCE_MASK2       1201
 #define IDC_EDIT_ACCEPTANCE_CODE3       1202

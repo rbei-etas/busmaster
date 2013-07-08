@@ -99,7 +99,7 @@ public:
     void vClearSignalInfoList(void);
 
     bool m_bSignalDefinerAutoCorrect;
-public:
+private:
     CSigGenerationInfoList m_lstSignalWaveformInfo;
     CSigGenerationInfoList m_lstTempSignalWaveformInfo;
     sWaveformInfo m_sDefaultWaveInfo;

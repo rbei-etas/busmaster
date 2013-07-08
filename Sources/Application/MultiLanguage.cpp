@@ -187,7 +187,7 @@ LANGID CMultiLanguage::DetectUILanguage()
                 if ((nResult == ERROR_SUCCESS) && (dwType == REG_SZ))
                 {
                     DWORD dwLangID;
-                    int nFields = _stscanf( szValue, _T( "%x" ), &dwLangID );				
+                    int nFields = _stscanf( szValue, _T( "%x" ), &dwLangID );
                     if( nFields == 1 )
                     {
                         langid = LANGID( dwLangID );

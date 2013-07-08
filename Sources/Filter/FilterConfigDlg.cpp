@@ -44,7 +44,6 @@
 //DIL Interface
 static CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL;
 
-
 UINT unGetMsgIDFromName(CString omMsgName)
 {
     CString omStrMsgID;

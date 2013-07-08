@@ -911,6 +911,7 @@ BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
         while(pPrev != NULL)
         {
             pNext = pPrev->m_psSimsysNext;
+            //CExecuteManager::ouGetExecuteManager(m_eBus).vDeleteAllNode();
             delete pPrev;
             pPrev = pNext;
         }

@@ -26,7 +26,7 @@
 #endif
 
 
-static AFX_EXTENSION_MODULE DBC2DBFConverterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE J1939DBC2DBFConverterDLL = { NULL, NULL };
 
 #ifdef _MANAGED
 #pragma managed(push, off)
@@ -43,7 +43,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         TRACE0("DBC2DBFConverter.DLL Initializing!\n");
 
         // Extension DLL one-time initialization
-        if (!AfxInitExtensionModule(DBC2DBFConverterDLL, hInstance))
+        if (!AfxInitExtensionModule(J1939DBC2DBFConverterDLL, hInstance))
         {
             return 0;
         }
@@ -60,7 +60,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         //  Regular DLL's resource chain, and serious problems will
         //  result.
 
-        new CDynLinkLibrary(DBC2DBFConverterDLL);
+        new CDynLinkLibrary(J1939DBC2DBFConverterDLL);
 
     }
     else if (dwReason == DLL_PROCESS_DETACH)
@@ -68,7 +68,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         TRACE0("DBC2DBFConverter.DLL Terminating!\n");
 
         // Terminate the library before destructors are called
-        AfxTermExtensionModule(DBC2DBFConverterDLL);
+        AfxTermExtensionModule(J1939DBC2DBFConverterDLL);
     }
     return 1;   // ok
 }

@@ -25,7 +25,6 @@
 #include "DILC_Dummy.h"
 #include "include/Error.h"
 #include "include/basedefs.h"
-#include "DataTypes/Filter_DataTypes.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
@@ -90,17 +89,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_StopHardware(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_ResetHardware(void)
-{
-    return WARN_DUMMY_API;
-}
-
 HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
-{
-    return WARN_DUMMY_API;
-}
-
-HRESULT CDIL_CAN_DUMMY::CAN_GetMsg(const STCAN_MSG& /*sCanTxMsg*/)
 {
     return WARN_DUMMY_API;
 }
@@ -111,11 +100,6 @@ HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCa
 }
 
 HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
-{
-    return WARN_DUMMY_API;
-}
-
-HRESULT CDIL_CAN_DUMMY::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
 {
     return WARN_DUMMY_API;
 }

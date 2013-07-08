@@ -270,14 +270,11 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
@@ -944,8 +941,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_DeselectHwInterface(void)
 
     HRESULT hResult = S_OK;
 
-    hResult = CAN_ResetHardware();
-
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
     return hResult;
@@ -1433,7 +1428,6 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
 static BYTE bClassifyMsgType(XLevent& xlEvent, STCANDATA& sCanData)
 {
     sCanData.m_lTickCount.QuadPart = (LONGLONG)xlEvent.timeStamp / 100000;
-	
     if (CREATE_MAP_TIMESTAMP == sg_byCurrState)
     {
         LARGE_INTEGER g_QueryTickCount;
@@ -1862,24 +1856,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_StopHardware(void)
 }
 
 /**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_OK;
-
-    /* Stop the hardware if connected */
-    /*hResult = */
-    CAN_StopHardware(); // return value not necessary ..fix for git issue 204 by Srinivas
-
-    return hResult;
-}
-
-/**
 * \brief         Function to get Controller status
 * \param[out]    StatusData, is s_STATUSMSG structure
 * \return        S_OK for success, S_FALSE for failure
@@ -1968,18 +1944,6 @@ static int nWriteMessage(STCAN_MSG sMessage, DWORD dwClientID)
 }
 
 /**
-* \brief         Gets STCAN_MSG structure.
-* \param[in]     sMessage is the application specific CAN message structure
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Gregory Merchat
-* \date          23.04.2013 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
-{
-	return S_OK;
-}
-
-/**
 * \brief         Sends STCAN_MSG structure from the client dwClientID.
 * \param[in]     dwClientID is the client ID
 * \param[in]     sMessage is the application specific CAN message structure
@@ -2040,22 +2004,6 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
-    return S_OK;
-}
-
-/**
-* \brief         Applies FilterType(PASS/STOP) filter for corresponding
-*                channel. Frame ids are supplied by punMsgIds.
-* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
-* \param[in]     Channel, is TYPE_CHANNEL
-* \param[in]     punMsgIds, is UINT*
-* \param[in]     nLength, is UINT
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
     return S_OK;
 }
 

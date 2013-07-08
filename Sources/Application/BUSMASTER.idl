@@ -34,7 +34,6 @@ library CAN_MonitorApp
 		[id(7), helpstring("method UnLoadAllDll")] HRESULT UnLoadAllDll();
 		[id(8), helpstring("method StartTxMsgBlock")] HRESULT StartTxMsgBlock();
 		[id(9), helpstring("method StopTxMsgBlock")] HRESULT StopTxMsgBlock();
-		[id(10), helpstring("method ResetHW")] HRESULT ResetHW();
 		[id(11), helpstring("method ResetSW")] HRESULT ResetSW();
 		[id(12), helpstring("method StartLogging")] HRESULT StartLogging();
 		[id(15), helpstring("method DisplayWindow")] HRESULT DisplayWindow(eWindow eWhichWindow);

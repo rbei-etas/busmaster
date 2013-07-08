@@ -169,9 +169,13 @@ void vStoreTimers()
     		
 		    omStrTimers = omStrTimers.Right(omStrTimers.GetLength() - nStart);
 		    nStart = 0;						
-			vTokenize(omStrTimers, ",;", omStrTemp, nStart);			
-		    while(omStrTemp != "")
-		    {
+			//vTokenize(omStrTimers, ",;", omStrTemp, nStart);
+			char *chTemp = new char[omStrTimers.GetLength()+1];
+			strcpy(chTemp, (LPCSTR)omStrTimers);
+			char* token = strtok( chTemp, ",;" );
+			while( token != NULL )
+			{
+				omStrTemp = token;
 			    omStrTemp.TrimLeft(" \t\n");
 				omStrTemp.TrimRight(" \t\n");
 			    if (omStrTimerType == "mstimer")
@@ -182,9 +186,9 @@ void vStoreTimers()
 			    {
 				    g_ouGlobalVariables.g_omStrSecTimers.Add(omStrTemp);
 			    }
-				
-			    omStrTemp.Empty();
-				vTokenize(omStrTimers, ",;", omStrTemp, nStart);
+				token = strtok( NULL, ",;" );
+			    //omStrTemp.Empty();
+				//vTokenize(omStrTimers, ",;", omStrTemp, nStart);
 		    }
     		
 	    }
@@ -1767,7 +1771,25 @@ void vHandleCaplEvents()
             vHandleOnPreStart();
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_PRESTART;
         }
-        else if( (nIndex = omStrTemp.Find("stopmeasurement")) >= 0 )
+		else if((nIndex = omStrTemp.Find("envvar")) >= 0 )
+        {
+            CString omStrText = yytext;
+            omStrText.Remove('\n');
+            fprintf(yyout, "%s", defSTR_UnSupportedFunctionStart);
+            fprintf(yyout, "//%s", omStrText);
+			g_ouGlobalVariables.g_nLastParseState = SecondParse;
+			BEGIN(UnsupportedParse);
+        }
+		else if((nIndex = omStrTemp.Find("prestop")) >= 0 )
+        {
+            CString omStrText = yytext;
+            omStrText.Remove('\n');
+            fprintf(yyout, "%s", defSTR_UnSupportedFunctionStart);
+            fprintf(yyout, "//%s", omStrText);
+			g_ouGlobalVariables.g_nLastParseState = SecondParse;
+			BEGIN(UnsupportedParse);
+        }
+		else if( (nIndex = omStrTemp.Find("stopmeasurement")) >= 0 )
         {
             omStrTemp.TrimLeft(" \n\t");
             omStrTemp.TrimRight(" \n\t{");
@@ -1844,13 +1866,6 @@ void vHandleCaplEvents()
             omStrTemp.TrimRight(defSTR_FunctionDefinition);
             omStrTemp = defSTF_Extern + omStrTemp + ";";
             g_ouGlobalVariables.g_omStrFunCalls.Add(omStrTemp);
-        }
-        else if((nIndex = omStrTemp.Find("envvar")) >= 0 )
-        {
-            CString omStrText = yytext;
-            omStrText.Remove('\n');
-            fprintf(yyout, "%s", defSTR_UnSupportedFunctionStart);
-            fprintf(yyout, "//%s", omStrText);
         }
     }
    
@@ -1980,6 +1995,15 @@ void vHandleByte(CString val)
     }
     
 
+}
+
+void vHandleUnsupportedFunctionEnd()
+{
+	BEGIN(g_ouGlobalVariables.g_nLastParseState);
+}
+void vHandleUnsupportedLine()
+{
+	fprintf(yyout, "\n//");
 }
 
 /**

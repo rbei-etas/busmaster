@@ -644,13 +644,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.8.0"
+            VALUE "FileVersion", "Ver 1.8.1"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.8.0"
+            VALUE "ProductVersion", "Ver 1.8.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -996,16 +996,15 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&終了",                         ID_APP_EXIT
     END
-    POPUP "&ハードウェア"
+	POPUP "&Hardware"
+	
     BEGIN
         POPUP "ドライバモード"
         BEGIN
             MENUITEM "&アクティブ",                      IDM_CONFIGURE_ACTIVE, CHECKED
             MENUITEM "&受動",                         IDM_CONFIGURE_PASSIVE, CHECKED
-        END
-        MENUITEM "ドライバのテスト",                    IDM_CHECK_HW_INTERFACE
-        MENUITEM "ドライバのリセット",                   IDM_FUNCTIONS_RESET_HARDWARE
-        MENUITEM SEPARATOR
+        END	
+		MENUITEM SEPARATOR
         MENUITEM "&経路選択",                       ID_CONFIGURE_CHANNELSELECTION
         MENUITEM "チャネル構成",                      IDM_CONFIGURE_BAUDRATE
     END
@@ -1120,8 +1119,13 @@ BEGIN
         BEGIN
             MENUITEM "&新規",                         ID_DATABASE_NEW
             MENUITEM "&開く",                         ID_DATABASE_OPEN
-            MENUITEM "&終了",                         ID_DATABASE_CLOSE
+            MENUITEM SEPARATOR
             MENUITEM "&保存",                         ID_DATABASE_SAVE
+            MENUITEM "Save and Im&port",    		  IDM_SAVE_IMPORT_J1939
+            MENUITEM "Sa&ve As...",                 IDM_CONFIGURE_J1939_DB_SAVEAS	    
+            MENUITEM SEPARATOR	    
+            MENUITEM "&終了",                         ID_DATABASE_CLOSE
+
             MENUITEM SEPARATOR
             MENUITEM "&連結",                         33082
             MENUITEM "&分離",                         ID_DATABASE_DISSOCIATE
@@ -1616,7 +1620,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 1.8.0"
+    IDS_VERSION             "Ver 1.8.1"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
@@ -1629,10 +1633,10 @@ BEGIN
     IDM_NETWORK_STATISTICS_WND "ネットワーク統計ウィンドウを表示/非表示\nネットワーク統計ウィンドウの表示/非表示"
     IDM_CONFIGURE_PASSIVE   "コントローラをパッシブモードに更新\nパッシブモード"
     IDM_CONFIGURE_ACTIVE    "コントローラをアクティブモードに更新\nアクティブモード"
-    IDM_TRACE_WND           "トレースウィンドウを表示/非表示\nトレースウィンドウの表示/非表示"
-    IDM_CHECK_HW_INTERFACE  "ハードウェアインタフェースをテスト\nハードウェアインタフェースのテスト"
-    IDM_PARALLEL_PORT_EPP   "並列ポートをEPPモードに操作\nEPPモード"
-    IDM_PARALLEL_PORT_NONEPP "並列ポートをNon-EPPモード(標準双方向性)に操作\n標準双方向性モード"
+    IDM_TRACE_WND           "トレースウィンドウを表示/非表示\nトレースウィンドウの表示/非表示"            
+
+
+
 END
 
 STRINGTABLE 
@@ -1800,7 +1804,8 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDM_FUNCTIONS_RESET_HARDWARE "ハードウェアリセット\nハードウェアリセット"
+
+ 
     IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME "システム時間に表示\nシステム時間"
     ID_DISPLAY_MESSAGEWINDOW_TIMEMODE_RELATIVETIME "相対時間に表示\n相対モード"
     ID_DISPLAY_MESSAGEWINDOW_TIMEMODE_ABSOLUTETIME "絶対時間に表示\n絶対モード"
@@ -1870,6 +1875,10 @@ BEGIN
     ID_DATABASE_SAVE        "J1939データベースの保存"
 END
 
+STRINGTABLE
+BEGIN
+    IDM_SAVE_IMPORT_J1939   "Save and import database file\nSave and import database file"
+END
 #endif    // Japanese resources
 /////////////////////////////////////////////////////////////////////////////
 

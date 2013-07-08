@@ -965,7 +965,6 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
             if( hResult == S_OK && IS_A_MESSAGE( sInfo.m_ucDataType ) )
             {
                 //HRESULT hRet =
-				g_pouDIL_CAN_Interface->DILC_GetMsg(sInfo.m_uDataInfo.m_sCANMsg);
                 g_pouDIL_CAN_Interface->DILC_SendMsg(m_dwClientID, sInfo.m_uDataInfo.m_sCANMsg);
             }
         }
@@ -3727,16 +3726,23 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 
             //COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
 
-            CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
-            //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
-            if(bHexDec)
-            {
-                SET_NUM_HEX(m_bExprnFlag_Disp);
-            }
-            else
-            {
-                SET_NUM_DEC(m_bExprnFlag_Disp);
-            }
+			// commented as IsHex is conflicting with global 
+			// DisplayNumericMode
+            //CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+            ////m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+            //if(bHexDec)
+            //{
+
+            //    SET_NUM_HEX(m_bExprnFlag_Disp);
+            //}
+            //else
+            //{
+
+
+
+            //    SET_NUM_DEC(m_bExprnFlag_Disp);
+            //}
+			
 
             //Reading Overwrite/Append Mode.
             bool bOvrwAppend = false;
@@ -4334,16 +4340,22 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 
             //COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
 
-            CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
-            //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
-            if(bHexDec)
-            {
-                SET_NUM_HEX(m_bExprnFlag_Disp);
-            }
-            else
-            {
-                SET_NUM_DEC(m_bExprnFlag_Disp);
-            }
+			// commented as IsHex is conflicting with global 
+			// DisplayNumericMode
+            //CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+            ////m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+            //if(bHexDec)
+            //{
+
+            //    SET_NUM_HEX(m_bExprnFlag_Disp);
+            //}
+            //else
+            //{
+
+
+
+            //    SET_NUM_DEC(m_bExprnFlag_Disp);
+            //}
 
             //Reading Overwrite/Append Mode.
             bool bOvrwAppend = false;
@@ -5228,7 +5240,9 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
             }
         }
 
-        if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_HEX,strVar))
+		// commented as IsHex is conflicting with global 
+		// DisplayNumericMode
+        /*if (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_HEX,strVar))
         {
             if(strVar == "TRUE")
             {
@@ -5238,7 +5252,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
             {
                 SET_NUM_DEC(m_bExprnFlag_Disp);
             }
-        }
+        }*/
 
         if  (xmlUtils::GetDataFrmNode(pChildNode,DEF_MWND_APPEND,strVar))
         {

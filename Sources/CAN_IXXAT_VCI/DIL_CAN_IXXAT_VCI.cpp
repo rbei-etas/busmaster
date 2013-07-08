@@ -539,35 +539,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StopHardware(void)
     return hResult;
 }
 
-
-/**
- * @brief
- *  Stop and reset the CAN controller.
- *
- * @return
- *  E_POINTER - No IXXAT CAN hardware available.
- *  HW_INTERFACE_NO_SEL - No open CAN controller.
- *  ERR_INITDAT_CONFIRM_CONFIG - Error message from VCI driver.
- *  S_OK - Success.
- *
- */
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_ResetHardware(void)
-{
-#ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_ResetHardware\n"));
-#endif
-
-    HRESULT hResult = E_POINTER;
-    if (m_iNumberOfCANChannelsTotal > 0)
-    {
-        for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
-        {
-            hResult = m_arrIxxatCanChannels[i].ResetController();
-        }
-    }
-    return hResult;
-}
-
 /**
  * @brief
  *  Fill the given structure with the current state
@@ -614,18 +585,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 //#endif
 //  return  E_NOTIMPL;
 //}
-
-/**
-* \brief         Gets STCAN_MSG structure.
-* \param[in]     sMessage is the application specific CAN message structure
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Gregory Merchat
-* \date          23.04.2013 Created
-*/
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
-{
-	return S_OK;
-}
 
 /**
  * @brief
@@ -749,33 +708,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(string& acErrorStr)
 #endif
     return  E_NOTIMPL;
 }
-
-
-/**
- * @brief
- *  Function to set a filter for received CAN messages.
- *  TODO: no sample what to do here, so return not implemented.*
- *
- * @param FilterType
- *  Type of the filter.
- * @param Channel
- *  The channel.
- * @param [in,out]  punMsgIds
- *  If non-null, list of identifiers for filtering messages.
- * @param nLength
- *  The length.
- *
- * @return
- *  Always E_NOTIMPL
- *
-  */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_FilterFrames\n"));
-//#endif
-//  return  E_NOTIMPL;
-//}
 
 /**
  * @brief

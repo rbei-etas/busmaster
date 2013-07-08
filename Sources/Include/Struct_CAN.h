@@ -282,7 +282,7 @@ public:
         m_bytTxCompatibility            = 1;    //OCI_CANFD_TX_USE_DBR
     }
     //MVN
-    void LoadControllerConfigData(xmlNodePtr& /*pNodePtr*/)
+    void LoadControllerConfigData(xmlNodePtr& pNodePtr)
     {
     }
     //~MVN
@@ -329,7 +329,7 @@ public:
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
         chTemp[nSize] = '\0';
         m_omStrBaudrate = chTemp;
-        float fBaudRate = (float)atof(m_omStrBaudrate.c_str());
+        float fBaudRate = atof(m_omStrBaudrate.c_str());
         fBaudRate *=  1000;   //convert from Kbps to bps
         std::stringstream ss;
         ss << fBaudRate;
@@ -452,7 +452,7 @@ public:
     }
     void GetControllerConfigSize(int& nSize)
     {
-        //int nStrSize;
+        int nStrSize;
         nSize = 34 * sizeof(int);
         nSize += 2 * sizeof(eHW_FILTER_TYPES);
         nSize += m_omStrCNF1.length();;
@@ -488,7 +488,7 @@ public:
 
     void SaveConfigDataToXML(xmlNodePtr pNodePtr)
     {
-        float fBaudRate = (float)atof(m_omStrBaudrate.c_str());
+        float fBaudRate = atof(m_omStrBaudrate.c_str());
         // if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
         {
             fBaudRate = fBaudRate/1000;    //convert to Kbps before saving to XML
@@ -1007,7 +1007,8 @@ private:
 
 public:
     unsigned char    m_ucDataType;  //Type of the message
-    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from QueryPerf..Counter()
+    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
+    //QueryPerf..Counter()
     STDATAINFO       m_uDataInfo;
 
     static void vSetSortField(int nField);
@@ -1055,3 +1056,6 @@ typedef sERROR_CNT* SPERROR_CNT;
 #define IS_A_MESSAGE(a)         ((a) & 0x03)
 #define IS_ERR_MESSAGE(a)       (a & ERR_FLAG)
 #define IS_INTR_MESSAGE(a)      (((a) & INTR_FLAG))
+
+/*To enable CANFD - uncomment the BOA_FD_VERSION define*/
+//#define BOA_FD_VERSION

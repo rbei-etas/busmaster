@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Filter"
 	ProjectGUID="{02495AB5-7675-42B9-8904-54EFEE4A4983}"
 	RootNamespace="Filter"

@@ -219,7 +219,7 @@ typedef CList<int,int>      defomIntegerList;
 #define defDATATYPE_MSG_DATA    "\t%-12s  %s     ;\n"
 #define defSTART_OF_STRUCT_DEF  "\n\tstruct\n\t{\n"
 #define defEND_OF_STRUCT_DEF    "\n} %s;\n"
-#define defEND_OF_UNION_DEF     "\n\t};\n}%s_;"
+#define defEND_OF_UNION_DEF     "\n\t} __attribute__((__packed__));\n}%s_;"
 #define defUNDERSCORE           "_"
 
 #define defUINT_LENGTH           32
@@ -582,7 +582,6 @@ PLACE_HODLER_FOR_FUNCTIONNAME */"
 #define WM_WRITE_TO_TRACE           WM_USER + 34
 #define WM_PROCESS_ERROR_MESSAGE    WM_USER + 35
 #define WM_FILE_DISCONNECT          WM_USER + 36
-#define WM_RESET_CONTROLLER         WM_USER + 37
 #define WM_SET_WARNING_LIMIT_VAR    WM_USER + 38
 #define WM_KEY_PRESSED_MSG_WND      WM_USER + 39
 #define TM_SET_FLAG_STATUS          WM_USER + 40
@@ -1319,8 +1318,6 @@ transmission is ON.\nDo you want to ignore the changes ?"
 
 #define defSTR_MODE_MISMATCH                "No USB Hardware found. Switching to Simulation mode"
 #define defSTR_HW_TEST_SUCCESS              "Hardware Interface test passed successfully"
-#define defSTR_PP_MODE_EPP_FAILED           "Unable to set the parallel port to EPP mode"
-#define defSTR_PP_MODE_NON_EPP_FAILED       "Unable to set the parallel port to Non EPP mode"
 #define defSTR_USB_DRIVER_IS_NOT_RUNNING    "Unable to communicate with the driver or Unable to create client networks. Application will quit"
 
 #define defSTR_NET_NAME_FORAMT              "%s_%d"

@@ -442,14 +442,11 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
@@ -464,30 +461,6 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
-void vBlinkHw(INTERFACE_HW s_HardwareIntr)
-{
-    NeoDevice pNeoDevice;
-    pNeoDevice.Handle       = (int)s_HardwareIntr.m_dwIdInterface;
-    pNeoDevice.SerialNumber = (int)s_HardwareIntr.m_dwVendor;
-
-    sscanf_s(s_HardwareIntr.m_acNameInterface.c_str(), "%d", &pNeoDevice.DeviceType);
-
-    int hObject = NULL;
-    int nErrors;
-    int nResult = (*icsneoOpenNeoDevice)(&pNeoDevice, &hObject, NULL, 1, 0);
-    if (nResult == NEOVI_OK && hObject!=NULL)
-    {
-        stAPIFirmwareInfo objstFWInfo;
-        /*nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
-
-        int nHardwareLic = 0;
-        int nErrors = 0;
-        if ( icsneoGetHardwareLicense )
-            (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);        */
-        Sleep(500);
-        (*icsneoClosePort)(hObject, &nErrors);
-    }
-}
 static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
 
 /**
@@ -2277,18 +2250,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 }
 
 /**
- * \param[in] bHardwareReset Reset Mode: TRUE - Hardware Reset, FALSE - Software Reset
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
- *
- * This function will do controller reset. In case of USB mode
- * Software Reset will be simulated by Client Reset.
- */
-static int nResetHardware(BOOL /*bHardwareReset*/)
-{
-    return 0;
-}
-
-/**
  * Function to deselect the chosen hardware interface
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
@@ -2296,8 +2257,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DeselectHwInterface(void)
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-
-    CAN_ResetHardware();
 
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
@@ -2793,24 +2752,6 @@ static int nGetErrorCounter( UINT unChannel, SERROR_CNT& sErrorCount)
 }
 
 /**
- * Function to reset the hardware, fcClose resets all the buffer
- */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_FALSE;
-    // Stop the hardware if connected
-    CAN_StopHardware(); //return value not necessary
-    if (sg_sParmRThread.bTerminateThread())
-    {
-        if (nResetHardware(TRUE) == CAN_USB_OK)
-        {
-            hResult = S_OK;
-        }
-    }
-    return hResult;
-}
-
-/**
  * Function to get Controller status
  */
 HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
@@ -2887,18 +2828,6 @@ static int nWriteMessage(STCAN_MSG sMessage)
     return nReturn; // Multiple return statements had to be added because
     // neoVI specific codes and simulation related codes need to coexist.
     // Code for the later still employs Peak API interface.
-}
-
-/**
-* \brief         Gets STCAN_MSG structure.
-* \param[in]     sMessage is the application specific CAN message structure
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Gregory Merchat
-* \date          23.04.2013 Created
-*/
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
-{
-	return S_OK;
 }
 
 /**

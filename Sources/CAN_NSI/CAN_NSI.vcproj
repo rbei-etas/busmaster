@@ -375,10 +375,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ContrConfigPeakUsbDefs.h"
-				>
-			</File>
-			<File
 				RelativePath=".\HardwareListing.h"
 				>
 			</File>

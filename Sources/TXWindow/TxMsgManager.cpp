@@ -625,11 +625,6 @@ VOID CTxMsgManager::vDeleteTxBlockMemory()
                         function
 ******************************************************************************/
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
-UINT CTxMsgManager::s_unSendDefMsg(const STCAN_MSG& sTxMsg)
-{
-	int nRet = g_pouDIL_CAN_Interface->DILC_GetMsg(sTxMsg);
-	return nRet;
-}
 UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
 {
     s_omState.ResetEvent();

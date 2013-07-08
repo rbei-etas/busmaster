@@ -95,7 +95,7 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
         {
             if (NULL == sg_pouDIL_CAN)
             {
-				if ((sg_pouDIL_CAN = new CDIL_CAN) == NULL)
+                if ((sg_pouDIL_CAN = new CDIL_CAN) == NULL)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;

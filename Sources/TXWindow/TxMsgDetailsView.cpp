@@ -2357,7 +2357,7 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
 void CTxMsgDetailsView::OnButtonAddMsg()
 {
     BOOL bDataValid = FALSE;
-	
+
 	STCAN_MSG sTxMsg;
 	// User has to input atleast msg code and dlc
     CString omStr = "";
@@ -2367,20 +2367,7 @@ void CTxMsgDetailsView::OnButtonAddMsg()
     bDataValid = bValidateData();
     if(bDataValid == TRUE )
     {
-		bDataValid = bUpdateMessageDetail(&sTxMsg);
-		if(bDataValid == TRUE)
-		{		
-			sTxMsgManager.s_unSendDefMsg(sTxMsg);
-		}
-		else
-		{
-			// Display a message in a new window
-			CString omErr;
-			omErr.Format(_("Error getting message detail."));
-			AfxMessageBox(omErr);
-		}
-
-        // Add the message block
+		// Add the message block
         bAddMsgInBlock();
         // Apply the changes
         // Don't apply changes not
@@ -2488,8 +2475,7 @@ BOOL CTxMsgDetailsView::bAddMsgInBlock()
                     pomListView->vUpdateMsgListDisplay(
                         psTxMsgList->m_sTxMsgDetails,
                         -1 );
-                }				
-				//int nRet = g_pouDIL_CAN_Interface->DILC_GetMsg(sTxMsg);
+                }
             }
             else
             {

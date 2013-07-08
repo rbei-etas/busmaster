@@ -39,6 +39,7 @@ public:
     // Overrides
 public:
     virtual BOOL InitInstance();
+    int ExitInstance();
 
     DECLARE_MESSAGE_MAP()
 };

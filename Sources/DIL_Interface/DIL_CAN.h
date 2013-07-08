@@ -159,16 +159,6 @@ public:
     HRESULT DILC_StopHardware(void);
 
     /**
-     * Reset Hardware
-     */
-    HRESULT DILC_ResetHardware(void);
-
-	/**
-     * Get messages
-     */
-    HRESULT DILC_GetMsg(const STCAN_MSG& sCanTxMsg);
-
-    /**
      * Send messages
      */
     HRESULT DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
@@ -219,12 +209,10 @@ private:
     HRESULT (*m_pfSetConfigData)(PCHAR pInitData, int Length);
     HRESULT (*m_pfStartHardware)(void);
     HRESULT (*m_pfStopHardware)(void);
-    HRESULT (*m_pfResetHardware)(void);
     HRESULT (*m_pfGetTxMsgBuffer)(BYTE*& pouTxMsgBuffer);
     HRESULT (*m_pfSendMsg)(DWORD dwClientID, const STCAN_MSG& pouFlxTxMsg);
     HRESULT (*m_pfGetBusConfigInfo)(BYTE* BusInfo);
     HRESULT (*m_pfGetLastErrorString)(CHAR* acErrorStr, int nLength);
-    HRESULT (*m_pfFilterFrames)(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIDs, UINT nLength);
     HRESULT (*m_pfManageMsgBuf)(BYTE, DWORD ClientID, CBaseCANBufFSE*);
     HRESULT (*m_pfRegisterClient)(BOOL bRegister, DWORD&, char*);
     HRESULT (*m_pfGetCntrlStatus)(const HANDLE& hEvent, UINT& unCntrlStatus);

@@ -193,14 +193,11 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
-    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
@@ -626,8 +623,6 @@ HRESULT CDIL_CAN_MHS::CAN_DeselectHwInterface(void)
 
     HRESULT hResult = S_OK;
 
-    hResult = CAN_ResetHardware();
-
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
     return hResult;
@@ -919,19 +914,6 @@ HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
     return(S_OK);
 }
 
-
-/**
-* \brief         Resets the controller.
-* \param         void
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_ResetHardware(void)
-{
-    (void)CAN_StopHardware();
-    return(S_OK);
-}
-
-
 /**
 * \brief         Function to get Controller status
 * \param[out]    StatusData, is s_STATUSMSG structure
@@ -952,18 +934,6 @@ HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return(S_OK);
-}
-
-/**
-* \brief         Gets STCAN_MSG structure.
-* \param[in]     sMessage is the application specific CAN message structure
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Gregory Merchat
-* \date          23.04.2013 Created
-*/
-HRESULT CDIL_CAN_MHS::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
-{
-	return S_OK;
 }
 
 /**
@@ -1050,22 +1020,6 @@ HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(string& acErrorStr)
 {
     return WARN_DUMMY_API;
 }
-
-
-/**
-* \brief         Applies FilterType(PASS/STOP) filter for corresponding
-*                channel. Frame ids are supplied by punMsgIds.
-* \param[in]     FilterType, holds one of the FILTER_TYPE enum value.
-* \param[in]     Channel, is TYPE_CHANNEL
-* \param[in]     punMsgIds, is UINT*
-* \param[in]     nLength, is UINT
-* \return        S_OK for success, S_FALSE for failure
-*/
-HRESULT CDIL_CAN_MHS::CAN_FilterFrames(FILTER_TYPE /*FilterType*/, TYPE_CHANNEL /*Channel*/, UINT* /*punMsgIds*/, UINT /*nLength*/)
-{
-    return(S_OK);
-}
-
 
 /**
 * \brief         Gets the controller parametes of the channel based on the request.

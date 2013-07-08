@@ -126,7 +126,7 @@ CMsgBufFSE<SMSGBUFFER>::~CMsgBufFSE()
 template <typename SMSGBUFFER> void CMsgBufFSE<SMSGBUFFER>::
 vClearMessageBuffer(void)
 {
-    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_BUFFER * m_nMsgSize);//BYTE
+    memset((BYTE*) m_asMsgBuffer, 0, SIZE_APP_BUFFER * m_nMsgSize);
     m_nIndexRead = 0;
     m_nIndexWrite = 0;
     m_nMsgCount = 0;

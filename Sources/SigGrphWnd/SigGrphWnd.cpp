@@ -457,6 +457,14 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
                 CGraphList* podList = NULL;
                 podList = m_pomGraphWindows[nType]->m_pGraphList;
                 INT_PTR nItemCount  = podList->m_omElementList.GetSize();
+				long	lElementCnt = 0;
+				spGraphCollection->get_Count(&lElementCnt);
+				if(nItemCount != lElementCnt)
+				{
+					CGraphLeftView* pLeftView = ( CGraphLeftView*)
+						m_pomGraphWindows[CAN]->pomGetLeftViewPointer();
+					pLeftView->vPopulateGraphControl();
+				}
                 for( int nIndex = 0; nIndex < nItemCount; nIndex++ )
                 {
                     CComPtr<IDispatch> spDispatch;

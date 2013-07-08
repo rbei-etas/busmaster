@@ -356,7 +356,6 @@
 #define IDC_RADIO_AXIS_XY               1019
 #define IDC_COMB_CLOCK                  1020
 #define IDC_STAT_BYINDEX                1020
-#define IDC_BUT_BLINK                   1020
 #define IDC_RADIO_ACTION_MOVE           1020
 #define IDC_BUTTON_SELECTONE            1020
 #define IDC_STAT_STBIT                  1021
@@ -692,7 +691,6 @@
 #define IDC_CBTN_ACCEPTANCE             1199
 #define IDC_EDIT_RX_RTR_STD             1200
 #define IDC_CBTN_ACCETANCE_OK           1200
-#define IDC_CBTN_BLINK                  1200
 #define IDC_EDIT_RX_RTR_EXTD            1201
 #define IDC_EDIT_ACCEPTANCE_MASK2       1201
 #define IDC_EDIT_ACCEPTANCE_CODE3       1202
@@ -964,10 +962,6 @@
 #define IDM_CONFIGURE_PASSIVE           32920
 #define IDM_CONFIGURE_ACTIVE            32921
 #define IDM_TRACE_WND                   32922
-#define IDM_CHECK_HW_INTERFACE          32925
-#define IDM_PARALLEL_PORT_EPP           32926
-#define IDM_PARALLEL_PORT_NONEPP        32927
-#define IDM_FUNCTIONS_RESET_HARDWARE    32930
 #define IDM_REC_CFG_FILE1               32932
 #define IDM_REC_CFG_FILE2               32933
 #define IDM_REC_CFG_FILE3               32934
@@ -1087,6 +1081,8 @@
 #define ID_UTILITIES_FILECONVERTERS     33122
 #define ID_DATABASE_SAVE                33123
 #define ID_EXECUTE_ALLEVENTHANDLERS     33124
+#define IDM_SAVE_IMPORT_J1939           40001
+#define IDM_CONFIGURE_J1939_DB_SAVEAS   40002
 #define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
@@ -1123,7 +1119,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        108
-#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_COMMAND_VALUE         40003
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

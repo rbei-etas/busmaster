@@ -17,7 +17,7 @@
  * \file      CAN_NSI.cpp
  * \brief     Source file for NSI CAN DIL functions
  * \author    Gregory MERCHAT
- * \copyright Copyright (c) 2011, ETAS GmbH. All rights reserved.
+ * \copyright Copyright (c) 2013, NSI by Altran. All rights reserved.
  *
  * Source file for NSI CAN DIL functions
  */
@@ -240,7 +240,7 @@ static LARGE_INTEGER sg_lnFrequency;
  */
 struct CChannel
 {
-    /* Kvaser channel details */
+    /* NSI channel details */
     int        m_nChannel;
     char       m_strName[MAX_CHAR_LONG];
     DWORD      m_dwHwType;
@@ -419,15 +419,15 @@ public:
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
-    HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
-	HRESULT CAN_GetMsg(const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+	//MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
+	//~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
     // Specific function set
@@ -838,15 +838,15 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
     }
 }
 
-/**
-* \brief         This will convert the error code from Kvaser driver format
-*                to the format that is used by BUSMASTER.
-* \param[in]     lError Error code in Peak USB driver format
-* \param[in]     byDir  Error direction Tx/Rx
-* \return        UCHAR which indicates error code
-* \authors       Arunkumar Karri
-* \date          12.10.2011 Created
-*/
+///---------------------------------------------------------------------------
+/// \brief         This will convert the error code from Kvaser driver format
+///                to the format that is used by BUSMASTER.
+/// \param[in]     lError Error code in Peak USB driver format
+/// \param[in]     byDir  Error direction Tx/Rx
+/// \return        UCHAR which indicates error code
+/// \authors       Arunkumar Karri
+/// \date          12.10.2011 Created
+///---------------------------------------------------------------------------
 static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
 {
     UCHAR ucReturn = 0;
@@ -879,13 +879,13 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
     return ucReturn;
 }
 
-/**
-* \brief         Function to create time mode mapping
-* \param[in]     hDataEvent, is HANDLE
-* \return        void
-* \authors       Arunkumar Karri
-* \date          12.10.2011 Created
-*/
+///-----------------------------------------------------
+/// \brief         Function to create time mode mapping
+/// \param[in]     hDataEvent, is HANDLE
+/// \return        void
+/// \authors       Arunkumar Karri
+/// \date          12.10.2011 Created
+///-----------------------------------------------------
 static void vCreateTimeModeMapping(HANDLE hDataEvent)
 {
     WaitForSingleObject(hDataEvent, INFINITE);
@@ -2009,9 +2009,9 @@ static int WriteMessageIntoNSIDevice(STCAN_MSG sMessage)
 		if(cr != _OK)
 		{
 			// Display a message in a new window
-			CString omErr;
+			/*CString omErr;
 			omErr.Format(_("Ic_InitId : %s %s"), sg_HardwareIntr[sg_aodChannels[sMessage.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), GetCodeString(cr));
-			AfxMessageBox(omErr);
+			AfxMessageBox(omErr);*/
 			nReturn = 1;
 		}
     }
@@ -2031,13 +2031,14 @@ static int nTransmitMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
     int nReturn = -1;
     UINT unClientIndex = (UINT)-1;
 	static bool flagTxFailed = 0;
+	int ret=0;
 
     /* Return when in disconnected state */
     //if (!sg_bIsConnected) return nReturn;
 
     //if ((newMsg.m_ucChannel > 0) && (newMsg.m_ucChannel <= sg_nNoOfChannels))
     //{
-        unsigned int   nUsedFlags = 0;
+        unsigned int   nUsedFlags = 1;
 		
 		//NSI_canObj.ident = newMsg.m_unMsgID;
 		//NSI_canObj.identType = _CAN_STD;
@@ -2063,19 +2064,27 @@ static int nTransmitMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
 			newMsg.m_ucDataLen, newMsg.m_ucData);
 		if((cr != _OK) && flagTxFailed)
 		{
-			flagTxFailed = 1;
-			// Display a message in a new window
-			CString omErr;
-			omErr.Format(_("Ic_TxMsg : %s %s %s"), 
-				sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), 
-				sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDeviceName.c_str(), 
-				GetCodeString(cr));
-			AfxMessageBox(omErr);
+			if (cr == _UNKNOWN_ID)
+			{
+				ret = WriteMessageIntoNSIDevice(newMsg);
+				ret = nTransmitMessage(newMsg, 0);
+			}
+			else
+			{
+				flagTxFailed = 0;
+				// Display a message in a new window
+				/*CString omErr;
+				omErr.Format(_("Ic_TxMsg : %s %s %s"), 
+					sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), 
+					sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDeviceName.c_str(), 
+					GetCodeString(cr));
+				AfxMessageBox(omErr);*/
+			}
 			//nReturn = 1;
 		}
 		else
 		{
-			flagTxFailed = 0;
+			flagTxFailed = 1;
 		}
     //}
     return nReturn;
@@ -2484,7 +2493,7 @@ HRESULT CDIL_CAN_NSI::CAN_DeselectHwInterface(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_OK;
-    hResult = CAN_ResetHardware();
+	CAN_StopHardware();
 	unsigned int i;
 	for(i=0;i<sg_nNoOfChannels;i++)
 	{
@@ -2669,23 +2678,6 @@ HRESULT CDIL_CAN_NSI::CAN_StopHardware(void)
 	
     return hResult;
 }
-
-///------------------------------------------------------
-/// \brief         Resets the controller.
-/// \param         void
-/// \return        S_OK for success, S_FALSE for failure
-/// \authors       Arunkumar Karri
-/// \date          12.10.2011 Created
-///------------------------------------------------------
-HRESULT CDIL_CAN_NSI::CAN_ResetHardware(void)
-{
-    HRESULT hResult = S_OK;
-
-    /* Stop the hardware if connected */
-    CAN_StopHardware(); // return value not necessary
-
-    return hResult;
-}
 ///------------------------------------------------------
 /// \brief         Gets the Tx queue configured.
 /// \param[out]    pouFlxTxMsgBuffer, is BYTE*
@@ -2696,24 +2688,6 @@ HRESULT CDIL_CAN_NSI::CAN_ResetHardware(void)
 HRESULT CDIL_CAN_NSI::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return WARN_DUMMY_API;
-}
-
-///----------------------------------------------------------------------------
-/// \brief         Gets STCAN_MSG structure.
-/// \param[in]     sCanTxMsg is the application specific CAN message structure
-/// \return        S_OK for success, S_FALSE for failure
-/// \authors       Gregory Merchat
-/// \date          23.04.2013 Created
-///----------------------------------------------------------------------------
-HRESULT CDIL_CAN_NSI::CAN_GetMsg(const STCAN_MSG& sCanTxMsg)
-{
-	HRESULT hResult = S_FALSE;
-	int ret = WriteMessageIntoNSIDevice(sCanTxMsg);
-    if (ret == defERR_OK)
-	{
-		hResult = S_OK;
-	}
-    return hResult;
 }
 
 ///---------------------------------------------------------------------------

@@ -42,10 +42,6 @@
 typedef HRESULT (__stdcall* GETIDIL_CAN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_CAN_CONTROLLER pfGetIDILCAN_Controller;
 static CDIL_CAN_DUMMY* sg_pouDIL_CAN_DUMMY = new CDIL_CAN_DUMMY;
-/**
- * Error logger
- */
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 
 class ENTRY_DIL
 {
@@ -202,13 +198,16 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             case DRIVER_CAN_PEAK_USB:
                 m_hDll = LoadLibrary("CAN_PEAK_USB.dll");
                 break;
+
             case DRIVER_CAN_ICS_NEOVI:
             case DRIVER_CAN_ETAS_ES581:
                 m_hDll = LoadLibrary("CAN_ICS_neoVI.dll");
                 break;
+
             case DRIVER_CAN_ETAS_BOA:
                 m_hDll = LoadLibrary("CAN_ETAS_BOA.dll");
                 break;
+
             case DRIVER_CAN_VECTOR_XL:
                 m_hDll = LoadLibrary("CAN_Vector_XL.dll");
                 break;
@@ -218,16 +217,20 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             case DRIVER_CAN_KVASER_CAN:
                 m_hDll = LoadLibrary("CAN_Kvaser_CAN.dll");
                 break;
+
             case DRIVER_CAN_STUB:
                 m_hDll = LoadLibrary("CAN_STUB.dll");
                 break;
+
             case DRIVER_CAN_MHS:
                 m_hDll = LoadLibrary("CAN_MHS.dll");
                 break;
+			
 			case DRIVER_CAN_NSI:
 				m_hDll = LoadLibrary("CAN_NSI.dll");
 				//sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Connect to NSI Driver."));
 				break;
+
             case DRIVER_CAN_VSCOM:
                 m_hDll = LoadLibrary("CAN_VSCOM.dll");
                 break;
@@ -503,30 +506,6 @@ HRESULT CDIL_CAN::DILC_StopHardware(void)
 }
 
 /**
- * \brief     Reset hardware
- * \req       RSI_14_016 - DILC_ResetHardware
- * \req       RS_23_18 - Reset the presently selected controller
- *
- * Reset Hardware
- */
-HRESULT CDIL_CAN::DILC_ResetHardware(void)
-{
-    return m_pBaseDILCAN_Controller->CAN_ResetHardware();
-}
-
-/**
- * \brief     Get messages
- * \req       RSI_14_017 - DILC_GetMsg
- * \req       RS_23_19 - Get a frame
- *
- * Get messages
- */
-HRESULT CDIL_CAN::DILC_GetMsg(const STCAN_MSG& sCanTxMsg)
-{
-    return m_pBaseDILCAN_Controller->CAN_GetMsg(sCanTxMsg);
-}
-
-/**
  * \brief     Send messages
  * \req       RSI_14_017 - DILC_SendMsg
  * \req       RS_23_19 - Transmit a frame
@@ -537,6 +516,10 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     return m_pBaseDILCAN_Controller->CAN_SendMsg(dwClientID, sCanTxMsg);
 }
+
+
+
+
 
 /**
  * \brief     Get last error as string
