@@ -143,19 +143,6 @@ BOOL CCAN_NSI::InitInstance()
     }
     // End of Multiple Language support
 
-	/* In FIFO mode, when data is placed into the FIFO while the FIFO empty, an event can be signaled. 
-	   This can wake-up a program which was waiting for this event. This program is a Thread which job 
-	   is to extract event from the FIFO until the FIFO is empty and then go back to sleep. This event 
-	   object must be created by the application and then given to the interface.*/
-	//NSI_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-	/* Create mutex object to avoid display conflict between main 
-	   thread and the FIFO extractor thread (Thread)*/
-	//NSI_hMutex = CreateMutex(NULL, FALSE, NULL);
-	/* In FIFO mode, receptions and transmission of CAN messages are stored into the FIFO list. 
-	   A program (the Thread) is waiting for the FIFO not to be empty to extract the data. 
-	   The CreateThread function is creating and starting this THREAD. See the Thread() function.*/	
-	//NSI_hThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Thread, NSI_hEvent, 0, &NSI_threadId);
-
 	for(UINT i = 0; i < MAX_CAN_MSG_PTR; i++)
 	{
 		sTxMsgTab[i].m_ucChannel = 0;
@@ -634,43 +621,12 @@ void GetEventString(t_CANevent* pEvent, UINT unDrvChannel)
 }
 
 ///---------------------------------------------------------------------------------------------------
-/// \brief		   The thread is created by the main program. It is running in parallel with it and is 
-///				   totally assynchronous. This function is executed by the Thread. It is is waiting 
-///				   for the FIFO to become NOT EMPTY which is signaled with an EVENT. The thread is 
-///				   waiting for the event to be signaled to extract one or more event from the FIFO. 
-///				   The event's hCanal is passed as a parameter to the thread's function. This thread 
-///				   is stopped when the main thread terminates.
-/// \param		   hEvent, handle of event
-/// \return        void.
-/// \authors       Grégory Merchat
-/// \date          18.04.2013 Created
+/// \brief         Read thread procedure
+/// \param[in]     pVoid contains the CPARAM_THREADPROC class object
+/// \return        0
+/// \authors       Arunkumar Karri
+/// \date          12.10.2011 Created
 ///---------------------------------------------------------------------------------------------------
-//DWORD Thread(HANDLE hEvent)
-//{
-//	t_CANevent NSI_event;
-//	long count = 0;
-//	// "Infinite" loop (until the program stops running)
-//	while(1)
-//	{
-//		/*This function call puts the thread to sleep and waiting for the event. 
-//		  Note that this is not using any CPU time. The thread is asleep until 
-//		  the OS wake it up when the event is signaled.*/		
-//		if( WaitForSingleObject(hEvent, INFINITE) == WAIT_OBJECT_0 )
-//		{
-//			for (UINT i = 0; i < sg_nNoOfChannels ; i++)
-//			{
-//				// Loop while events are found in FIFO
-//				while(Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event) == _OK)
-//				{				
-//					count++;
-//					GetEventString(&NSI_event, i);
-//				}
-//			}
-//		}
-//	}	
-//	return 0;
-//}
-
 DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
 {
     USES_CONVERSION;
@@ -684,20 +640,8 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
     //get CAN - eventHandles
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        /*sg_arrReadHandles[i] = canOpenChannel(sg_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
-        nStatus = canBusOn(sg_arrReadHandles[i]);
-
-        HANDLE tmp;
-        nStatus = canIoCtl(sg_arrReadHandles[i],
-                           canIOCTL_GET_EVENTHANDLE,
-                           &tmp,
-                           sizeof(tmp));
-        if ( nStatus == canOK )
-        {
-            g_hDataEvent[i] = tmp;
-        }*/
-		/* Indicates to the CAN interface the HANDLE of the event object used to signal events about the FIFO. 
-			   See the Thread and CreateEvent functions. */
+        /* Indicates to the CAN interface the HANDLE of the event object used to signal events about the FIFO. 
+		   See the Thread and CreateEvent functions. */
 		cr = Ic_ConfigEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], g_hDataEvent[i], 0);
 		if(cr != _OK) 
 		{
@@ -736,76 +680,6 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
 				GetEventString(&NSI_event, i);
 			}
 		}
-        /*switch (pThreadParam->m_unActionCode)
-        {
-            case INVOKE_FUNCTION:
-            {
-				moreDataExist = 1;
-				while(moreDataExist)
-				{
-					for (UINT i = 0; i < sg_nNoOfChannels ; i++)
-                    {
-						// Loop while events are found in FIFO
-						cr = Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event);
-						if(cr == _OK)
-						{
-							GetEventString(&NSI_event, i);
-							moreDataExist = 1;
-						}
-						else if(cr == _EMPTY_FIFO)
-						{
-							moreDataExist = 0;
-						}
-						else
-						{
-							moreDataExist = 0;
-						}
-					}
-				}
-                /*do
-                {
-                    moreDataExist = 0;
-                    for (UINT i = 0; i < sg_nNoOfChannels ; i++)
-                    {
-                        //Read CAN Message from channel
-                        /*nStatus = canRead(sg_arrReadHandles[i], (long*)&sg_ReadMsg.m_unMsgID,
-                                          &ucData[0], (unsigned int*)&sg_ReadMsg.m_ucDataLen,
-                                          &unFlags, &dwTime);
-						// Loop while events are found in FIFO
-						cr = Ic_GetEvent(NSI_hCanal[sg_aodChannels[i].m_nChannel], &NSI_event);
-                        switch (cr)
-                        {
-                            case _OK:
-                                //memcpy(sg_ReadMsg.m_ucData, ucData, (unsigned int)sg_ReadMsg.m_ucDataLen);
-                                //ProcessCANMsg(i, unFlags, dwTime);
-								GetEventString(&NSI_event, i);
-                                moreDataExist = 1;
-                                break;
-
-							case _EMPTY_FIFO:
-                                // No more data on this handle
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                }
-                while (moreDataExist);
-            }
-            break;
-            case EXIT_THREAD:
-            {
-                bLoopON = false;
-            }
-            break;
-            default:
-            case INACTION:
-            {
-                // nothing right at this moment
-            }
-            break;
-        }*/
     }
 
     SetEvent(pThreadParam->hGetExitNotifyEvent());
@@ -1128,20 +1002,6 @@ static BOOL bRemoveClient(DWORD dwClientId)
 static int nTestHardwareConnection(UCHAR& ucaTestResult, UINT nChannel) //const
 {
     int nReturn = 0;
-	/*canStatus nStatus;
-    if (nChannel < sg_nNoOfChannels)
-    {
-        nStatus = canBusOn(sg_aodChannels[nChannel].m_hnd);
-        if ( nStatus < 0 )
-        {
-            sg_bIsConnected = FALSE;
-            ucaTestResult = FALSE;
-        }
-        else
-        {
-            ucaTestResult = TRUE;
-        }
-    }*/
 	unsigned long mode;
 	if (nChannel < sg_nNoOfChannels)
 	{		
@@ -2033,60 +1893,34 @@ static int nTransmitMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
 	static bool flagTxFailed = 0;
 	int ret=0;
 
-    /* Return when in disconnected state */
-    //if (!sg_bIsConnected) return nReturn;
-
-    //if ((newMsg.m_ucChannel > 0) && (newMsg.m_ucChannel <= sg_nNoOfChannels))
-    //{
-        unsigned int   nUsedFlags = 1;
-		
-		//NSI_canObj.ident = newMsg.m_unMsgID;
-		//NSI_canObj.identType = _CAN_STD;
-        /* if it is an extended frame */
-        //if (newMsg.m_ucEXTENDED == 1)
-        //{
-			//NSI_canObj.identType = _CAN_EXT;
-        //}
-		//NSI_canObj.frameType = _CAN_TX_DATA;
-        /* in case of remote frame */
-        //if (newMsg.m_ucRTR == 1)
-        //{
-			//NSI_canObj.frameType = _CAN_TX_REMOTE;
-        //}
-		/* Status report request for this message. In FIFO mode, this parameter is required so that 
-		   exchange status report can be found in the FIFO. */
-		//NSI_canObj.statusRq = _STATUS;
-		//NSI_canObj.dlc = newMsg.m_ucDataLen;
-		// Display the data bytes
-		//memcpy(NSI_canObj.data, newMsg.m_ucData, newMsg.m_ucDataLen);
-        //Transmit message
-		cr = Ic_TxMsg(NSI_hCanal[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel], newMsg.m_unMsgID, 
-			newMsg.m_ucDataLen, newMsg.m_ucData);
-		if((cr != _OK) && flagTxFailed)
+    unsigned int   nUsedFlags = 1;
+	
+    //Transmit message
+	cr = Ic_TxMsg(NSI_hCanal[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel], newMsg.m_unMsgID, 
+		newMsg.m_ucDataLen, newMsg.m_ucData);
+	if((cr != _OK) && flagTxFailed)
+	{
+		if (cr == _UNKNOWN_ID)
 		{
-			if (cr == _UNKNOWN_ID)
-			{
-				ret = WriteMessageIntoNSIDevice(newMsg);
-				ret = nTransmitMessage(newMsg, 0);
-			}
-			else
-			{
-				flagTxFailed = 0;
-				// Display a message in a new window
-				/*CString omErr;
-				omErr.Format(_("Ic_TxMsg : %s %s %s"), 
-					sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), 
-					sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDeviceName.c_str(), 
-					GetCodeString(cr));
-				AfxMessageBox(omErr);*/
-			}
-			//nReturn = 1;
+			ret = WriteMessageIntoNSIDevice(newMsg);
+			ret = nTransmitMessage(newMsg, 0);
 		}
 		else
 		{
-			flagTxFailed = 1;
+			flagTxFailed = 0;
+			// Display a message in a new window
+			/*CString omErr;
+			omErr.Format(_("Ic_TxMsg : %s %s %s"), 
+				sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDescription.c_str(), 
+				sg_HardwareIntr[sg_aodChannels[newMsg.m_ucChannel-1].m_nChannel].m_acDeviceName.c_str(), 
+				GetCodeString(cr));
+			AfxMessageBox(omErr);*/
 		}
-    //}
+	}
+	else
+	{
+		flagTxFailed = 1;
+	}
     return nReturn;
 }
 
@@ -2358,12 +2192,6 @@ HRESULT CDIL_CAN_NSI::CAN_PerformInitOperations(void)
 HRESULT CDIL_CAN_NSI::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
-
-	// Free system resources
-	//if(NSI_hEvent) CloseHandle(NSI_hEvent);
-	//if(NSI_hMutex) CloseHandle(NSI_hMutex);
-	// Terminate the thread execution.
-	//TerminateThread(NSI_hThread, 0);
 
 	hResult = CAN_StopHardware();    
     // Remove all the existing clients 
@@ -2673,7 +2501,7 @@ HRESULT CDIL_CAN_NSI::CAN_StopHardware(void)
     {
         //log the error for closing port failure
         vRetrieveAndLog(hResult, __FILE__, __LINE__);
-		hResult = ERR_CLOSE_HW_INTERFACE;
+		hResult = S_OK;
     }
 	
     return hResult;
