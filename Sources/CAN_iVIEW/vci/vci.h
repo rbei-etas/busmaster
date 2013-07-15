@@ -1,12 +1,14 @@
 /*****************************************************************************
  *
- * MODULE : vci
- *!
- * \brief PURPOSE : VCI char driver interface definitions for the T-MVCI 
+ * \file	vci.h
+ * \brief	VCI char driver interface definitions for the T-MVCI 
  *
- * usr/local/include/vci/vci.h
+ * Copyright (C) 2013 Bosch Automotive Service Solutions
  *
- * DESCRIPTION : TODO: detailed description incl author and licence/copyright?
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
  *****************************************************************************/
 

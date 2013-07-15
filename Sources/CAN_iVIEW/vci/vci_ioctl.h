@@ -1,15 +1,17 @@
-/**
- * \file vci_ioctl.h
- * \brief IOCTL definitions for the VCI protocol drivers for the T-MVCI
+/*****************************************************************************
  *
- * \internal
- * TODO: detailed description incl author and licence/copyright? 
- */
- 
- /**
-  * \example vci.c
-  * Example usage of some general T-MVCI interface functionallity
-  */
+ * \file	vci_ioctl.h
+ * \brief	VCI IOCtl value definitions for the VCI protocol drivers
+ * 		IOCTL interface for the T-MVCI
+ *
+ * Copyright (C) 2013 Bosch Automotive Service Solutions
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ *****************************************************************************/
   
 #ifndef _VCI_IOCTL_H
 #define _VCI_IOCTL_H

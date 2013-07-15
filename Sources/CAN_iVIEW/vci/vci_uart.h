@@ -1,28 +1,25 @@
-/**
- * \file include/vci/vci_uart.h
- * \brief Definitions for using the VCI UART protocol drivers
- * 
- * All UART protocol specific definitions can be found in this file.  This file does not need to be explicitly
- * included, instead include vci.h
+/*****************************************************************************
  *
- * \internal TODO: licence/copyright?
- * \author Dirk Witvrouwen
- */
- 
-/**
- * \example vci_iso14230.c
- * Example usage of the T-MVCI UART ISO14230 protocol interface
- */
-
-/**
- * \example vci_iso9141.c
- * Example usage of the T-MVCI UART ISO9141 protocol interface
- */
+ * \file	vci_uart.h
+ * \brief	VCI UART value definitions for the VCI UART protocol drivers
+ * 		IOCTL interface for the T-MVCI
+ *
+ * Copyright (C) 2013 Bosch Automotive Service Solutions
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ *****************************************************************************/
 
 #ifndef _VCI_UART_H
 #define _VCI_UART_H
 
-#include <vci/vci.h>
+#ifndef _VCI_H
+#error "Do not include this file directly, include top level vci.h"
+#endif
+
 #ifdef _WIN32
 #include <limits.h>
 #endif

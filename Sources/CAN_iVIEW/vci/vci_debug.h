@@ -1,15 +1,17 @@
-
-/*
- * include/vci/vci_debug.h
+/******************************************************************************
  *
- * Header file for vci frame debug functionality
+ * \file	vci_debug.h
+ * \brief	VCI Debug definitions for the VCI protocol drivers
+ * 		IOCTL interface for the T-MVCI
  *
- * Author: Martin Harrison <martin.harrison@teradyne.com>
+ * Copyright (C) 2013 Bosch Automotive Service Solutions
  *
- * Copyright 2005 Teradyne Diagnostic Solutions Ltd.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
- * 2005 (c) Teradyne Diagnostic Solutions Ltd.
- */
+ *****************************************************************************/
 
 #ifndef VCI_DEBUG_H
 #define VCI_DEBUG_H

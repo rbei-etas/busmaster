@@ -358,6 +358,54 @@
 				RelativePath=".\VCiViewIF.h"
 				>
 			</File>
+			<Filter
+				Name="vci"
+				>
+				<File
+					RelativePath=".\vci\vci.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_adc.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_bus.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_can.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_debug.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_filter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_ioctl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_j1850.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_periodic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_uart.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_ui.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

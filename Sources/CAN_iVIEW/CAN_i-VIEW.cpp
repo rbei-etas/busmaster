@@ -1087,9 +1087,9 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetErrorCount(
 * \date          07.10.2011 Created
 */
 HRESULT CDIL_CAN_i_VIEW::CAN_FilterFrames(
-		FILTER_TYPE	FilterType,
-		TYPE_CHANNEL	Channel,
-		UINT*		pMsgIds,
+		FILTER_TYPE	/*FilterType*/,
+		TYPE_CHANNEL	/*Channel*/,
+		UINT*		/*pMsgIds*/,
 		UINT )
 {
 	return S_OK;
