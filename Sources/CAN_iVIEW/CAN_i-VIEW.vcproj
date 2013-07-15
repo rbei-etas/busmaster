@@ -2,10 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="DIL_Interface"
-	ProjectGUID="{77290670-1DBD-4127-8BAD-7C09990FA5AE}"
-	RootNamespace="DIL_Interface"
-	Keyword="Win32Proj"
+	Name="CAN_i-VIEW"
+	ProjectGUID="{60225C85-3C15-4DA1-8E5D-17453A3AA0CD}"
+	RootNamespace="CAN_i-VIEW"
+	Keyword="MFCDLLProj"
 	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
@@ -39,45 +39,45 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
-				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;WINVER=0x0500"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;&quot;$(D_PDU_API_PRJ_DIR)\lib&quot;;&quot;$(D_PDU_API_PRJ_DIR)\include&quot;;&quot;$(D_PDU_3RD_LIBS)\mDNSResponder-333.10\mDNSShared&quot;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;WINVER=0x0500"
 				MinimalRebuild="true"
-				BasicRuntimeChecks="0"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="1"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/Localization/lib/intl.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_i-VIEW.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
+				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/DIL_Interface.pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				SupportUnloadOfDelayLoadedDLL="true"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_i-VIEW.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -104,8 +104,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -125,45 +125,44 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
-				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS; _USRDLL;WINVER=0x0500"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;&quot;$(D_PDU_3RD_LIBS)\mDNSResponder-333.10\mDNSShared&quot;;."
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_i-VIEW.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
-				GenerateManifest="true"
-				GenerateDebugInformation="true"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="false"
 				SubSystem="2"
-				StackReserveSize="8000000"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				SupportUnloadOfDelayLoadedDLL="false"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_i-VIEW.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -211,19 +210,21 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/I &quot;$(SolutionDir)/Localization/include&quot;"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS; _USRDLL;WINVER=0x0500"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;&quot;$(D_PDU_API_PRJ_DIR)\lib&quot;;&quot;$(D_PDU_API_PRJ_DIR)\include&quot;;&quot;$(D_PDU_3RD_LIBS)\mDNSResponder-333.10\mDNSShared&quot;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500"
+				StringPooling="false"
+				MinimalRebuild="false"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="false"
 				TreatWChar_tAsBuiltInType="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="DIL_Interface_stdafx.h"
 				WarningLevel="4"
-				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -231,17 +232,21 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ICS_neoVI.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_VECTOR_XL.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_Kvaser_CAN.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_STUB.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_ETAS_BOA.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_J1939.lib&quot;&#x0D;&#x0A;&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_MHS.lib&quot;"
-				OutputFile="$(SolutionDir)/bin/$(OutDir)/DIL_Interface.dll"
+				AdditionalOptions="&quot;$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib&quot;"
+				OutputFile="$(SolutionDir)/bin/$(OutDir)/CAN_i-VIEW.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386"
-				GenerateManifest="true"
+				IgnoreAllDefaultLibraries="false"
+				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				StackReserveSize="8000000"
@@ -249,8 +254,7 @@
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				SupportUnloadOfDelayLoadedDLL="false"
-				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/DIL_Interface.lib"
+				ImportLibrary="$(SolutionDir)/BIN/Libs/$(OutDir)/CAN_i-VIEW.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -285,23 +289,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\DIL_CAN.cpp"
+				RelativePath=".\AcceptanceFilterDlg.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_Interface.cpp"
+				RelativePath=".\CAN_i-VIEW.cpp"
+				>
+				<FileConfiguration
+					Name="busmaster_debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						DebugInformationFormat="3"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\CANRegAnalysis.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_Interface_stdafx.cpp"
+				RelativePath=".\ChangeRegisters.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DILC_Dummy.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\DILI_J1939.cpp"
+				RelativePath=".\HardwareListing.cpp"
 				>
 			</File>
 		</Filter>
@@ -311,43 +323,103 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\BaseDIL_CAN.h"
+				RelativePath=".\AcceptanceFilterDlg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\BaseDIL_CAN_Controller.h"
+				RelativePath=".\CAN_i-VIEW.h"
 				>
 			</File>
 			<File
-				RelativePath=".\BaseDIL_J1939.h"
+				RelativePath=".\CAN_i-VIEW_Extern.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_CAN.h"
+				RelativePath=".\CAN_i-VIEW_Resource.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_Interface.h"
+				RelativePath=".\CAN_i-VIEW_stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_Interface_extern.h"
+				RelativePath=".\ChangeRegisters.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DIL_Interface_stdafx.h"
+				RelativePath=".\ContrConfigDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DILC_Dummy.h"
+				RelativePath=".\ContrConfigPeakUsbDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DILI_J1939.h"
+				RelativePath=".\VCiViewIF.h"
+				>
+			</File>
+			<Filter
+				Name="vci"
+				>
+				<File
+					RelativePath=".\vci\vci.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_adc.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_bus.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_can.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_debug.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_filter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_ioctl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_j1850.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_periodic.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_uart.h"
+					>
+				</File>
+				<File
+					RelativePath=".\vci\vci_ui.h"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath=".\CAN_i-VIEW.rc"
 				>
 			</File>
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="CAN_i-VIEW.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

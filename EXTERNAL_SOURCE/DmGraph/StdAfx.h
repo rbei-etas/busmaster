@@ -17,7 +17,9 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#if _MSC_VER < 1500
 #pragma comment(lib, "atlthunk.lib")
+#endif
 
 #include <atlbase.h>
 //You may derive a class from CComModule and use it if you want to override

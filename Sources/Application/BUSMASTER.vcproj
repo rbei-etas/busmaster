@@ -303,7 +303,7 @@
 				GenerateManifest="true"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Release/BUSMASTER.pdb"
+				ProgramDatabaseFile="$(TargetDir)$(TargetName).pdb"
 				GenerateMapFile="false"
 				MapFileName=""
 				MapExports="false"
@@ -2698,6 +2698,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Res\LoggingOFF.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\LoggingON.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\LoggingONLIGHT.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\logo.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\Res\Minus.ICO"
 				>
 			</File>
@@ -2727,6 +2743,10 @@
 			</File>
 			<File
 				RelativePath=".\Res\MsgWndHot.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\Res\Network_Statistics.ico"
 				>
 			</File>
 			<File
@@ -2866,6 +2886,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\BUSMASTER.tlb"
+			>
+		</File>
 	</Files>
 	<Globals>
 		<Global

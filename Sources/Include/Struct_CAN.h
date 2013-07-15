@@ -279,7 +279,7 @@ public:
         m_bytTxCompatibility            = 1;    //OCI_CANFD_TX_USE_DBR
     }
     //MVN
-    void LoadControllerConfigData(xmlNodePtr& pNodePtr)
+    void LoadControllerConfigData(xmlNodePtr& )
     {
     }
     //~MVN
@@ -325,7 +325,7 @@ public:
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
         chTemp[nSize] = '\0';
         m_omStrBaudrate = chTemp;
-        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        float fBaudRate = (float)atof(m_omStrBaudrate.c_str());
         fBaudRate *=  1000;   //convert from Kbps to bps
         std::stringstream ss;
         ss << fBaudRate;
@@ -448,7 +448,6 @@ public:
     }
     void GetControllerConfigSize(int& nSize)
     {
-        int nStrSize;
         nSize = 34 * sizeof(int);
         nSize += 2 * sizeof(eHW_FILTER_TYPES);
         nSize += m_omStrCNF1.length();;
@@ -484,7 +483,7 @@ public:
 
     void SaveConfigDataToXML(xmlNodePtr pNodePtr)
     {
-        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        float fBaudRate = (float)atof(m_omStrBaudrate.c_str());
         // if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
         {
             fBaudRate = fBaudRate/1000;    //convert to Kbps before saving to XML

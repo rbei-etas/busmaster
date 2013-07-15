@@ -88,6 +88,7 @@ enum
     DRIVER_CAN_MHS,
     DRIVER_CAN_IXXAT,
     DRIVER_CAN_VSCOM,
+    DRIVER_CAN_IVIEW,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
 };

@@ -1,0 +1,13 @@
+// Microsoft Visual C++ generated Help ID include file.
+// Used by CAN_i-VIEW.rc
+//
+#define HIDC_EDIT_ACCEPTANCE_CODE1      0x80c504b6    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_CODE2      0x80c5049d    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_CODE3      0x80c504b2    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_CODE4      0x80c504b7    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_MASK1      0x80c504b4    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_MASK2      0x80c504b1    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_MASK3      0x80c504b3    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_EDIT_ACCEPTANCE_MASK4      0x80c504b5    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_RBTN_DUAL_FILTER_MODE      0x80c504b9    // IDD_DLG_ACCEPTANCE [English (United States)]
+#define HIDC_RBTN_SINGLE_FILTER_MODE    0x80c504b8    // IDD_DLG_ACCEPTANCE [English (United States)]

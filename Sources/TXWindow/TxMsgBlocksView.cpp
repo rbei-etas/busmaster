@@ -1114,7 +1114,7 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
             CString omStrCurrent = defDEFAULT_KEY_VAL_STR;
             if (psMsgBlock->m_ucKeyValue != defDEFAULT_KEY_VAL)
             {
-                omStrCurrent = psMsgBlock->m_ucKeyValue;
+                omStrCurrent = (char)psMsgBlock->m_ucKeyValue;
             }
 
             m_omEditTrgKeyVal.SetWindowText(omStrCurrent);
@@ -1728,7 +1728,7 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
         if (psMsgBlock->m_ucKeyValue != defDEFAULT_KEY_VAL &&
                 psMsgBlock->m_ucKeyValue == omStrCurrent)
         {
-            omStrCurrent = psMsgBlock->m_ucKeyValue;
+            omStrCurrent = (char)psMsgBlock->m_ucKeyValue;
         }
         m_omStrKeyVal = omStrCurrent;
         // Enable Apply Button

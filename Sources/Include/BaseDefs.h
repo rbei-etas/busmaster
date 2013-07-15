@@ -197,7 +197,7 @@ typedef struct tagFormattedData_CAN
     COLORREF        m_ColourCode;                   // Colour code associated
 
 
-};
+} tagFormattedData_CAN_t;
 
 typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
 
