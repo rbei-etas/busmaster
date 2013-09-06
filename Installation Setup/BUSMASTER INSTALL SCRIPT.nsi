@@ -324,7 +324,12 @@ Section "BUSMASTER"
 	; Deleting If CAN_i-VIEW.dll exists
 	IfFileExists $INSTDIR\CAN_i-VIEW.dll biViewCANExists
 	biViewCANExists:
-			Delete "$INSTDIR\CAN_i-VIEW.dll"					
+			Delete "$INSTDIR\CAN_i-VIEW.dll"
+
+    ; Deleting If CAN_NSI.dll exists
+	IfFileExists $INSTDIR\CAN_NSI.dll biNSICANExists
+	biNSICANExists:
+			Delete "$INSTDIR\CAN_NSI.dll"			
 			
 	; Deleting If Changelog.txt exists
 	IfFileExists $INSTDIR\Changelog.txt bChngLogbExists
@@ -831,6 +836,11 @@ Section "SPX DS API"
     SectionIn 1 2
     SetOutPath $INSTDIR
     File ..\Sources\BIN\Release\CAN_i-VIEW.dll
+SectionEnd
+Section "NSI API"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\CAN_NSI.dll
 SectionEnd
 
 SectionGroupEnd
