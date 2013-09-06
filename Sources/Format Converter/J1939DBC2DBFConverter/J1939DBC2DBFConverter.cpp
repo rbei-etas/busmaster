@@ -92,7 +92,7 @@ CJ1939DBC2DBFConverter::CJ1939DBC2DBFConverter(void)
     m_hDLLModule = NULL;
     m_pouDBC2DBFConverter = NULL;
 }
-HRESULT CJ1939DBC2DBFConverter::GetHelpText(string& pchHelpText)
+HRESULT CJ1939DBC2DBFConverter::GetHelpText(CString pchHelpText)
 {
     pchHelpText = _("Converts the CANoe J1939 Database(.dbc) file to BUSMASTER J1939 Database(.dbf) file");
     return S_OK;
