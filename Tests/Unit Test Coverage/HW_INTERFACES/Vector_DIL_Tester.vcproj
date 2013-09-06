@@ -139,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="--cs-on"
+				AdditionalOptions="--cs-on&#x0D;&#x0A;"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;&quot;C:\Program Files\boost\boost_1_49_0&quot;;..\..\..\Sources\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
@@ -209,6 +209,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\AcceptanceFilterDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL.cpp"
 				>
 			</File>
@@ -217,7 +221,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\CANRegAnalysis.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\ChangeRegisters.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\CAN_Vector_XL\HardwareListing.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.cpp"
 				>
 			</File>
 			<File
@@ -234,6 +250,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\AcceptanceFilterDlg.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\..\Sources\DIL_Interface\BaseDIL_CAN_Controller.h"
 				>
@@ -255,11 +275,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\ChangeRegDefines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\ChangeRegisters.h"
+				>
+			</File>
+			<File
 				RelativePath=".\DIL_Tester_StdAfx.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\CAN_Vector_XL\HardwareListing.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.h"
 				>
 			</File>
 			<File

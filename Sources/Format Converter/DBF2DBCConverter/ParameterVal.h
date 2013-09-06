@@ -46,7 +46,7 @@ public:
     CSignalValue       m_ParamVal;
 
     CParameterValues();
-    CParameterValues& operator=(CParameterValues& param);
+    CParameterValues& operator=(const CParameterValues& param);
     void Format_Param_Value(string& paramType, char* pcLine, const int& index, unsigned int msgId=0, char* Node_Name="");
     void ReadParamValue(string& paramType, char* pcToken);
     void WriteNetValuesToFile(fstream& fileOutput, string& paramType, string& paramName);

@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\STUBDILTester.cpp"
 				>
 			</File>
@@ -252,6 +256,10 @@
 			</File>
 			<File
 				RelativePath=".\DIL_Tester_StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.h"
 				>
 			</File>
 			<File

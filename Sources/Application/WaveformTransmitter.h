@@ -71,7 +71,7 @@ public:
 
     // Helper functions; to be invoked from thread
     // To calculate signal values at the curent iteration and transmit
-    void vProcessWaveForm(int CurrIteration);
+    void vProcessWaveForm(int CurrIteration,int& iStep,eWAVEFORMTYPE& eWFType);
     // Get sampling Time period.
     short shGetSamplingTimePeriod(void);
     // To get the iteration limit

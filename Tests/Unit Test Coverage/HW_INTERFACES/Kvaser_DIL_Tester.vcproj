@@ -238,6 +238,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WrapperErrorLogger.cpp"
 				>
 			</File>
@@ -289,6 +293,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\CAN_Kvaser_CAN\HardwareListing.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.h"
 				>
 			</File>
 			<File

@@ -13,7 +13,7 @@ public:
     virtual HRESULT GetConverterName(string& strConverterName) = 0;
     virtual HRESULT GetErrorStatus(HRESULT hResult, string& omstrStatus) = 0;
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus) = 0;
-    virtual HRESULT GetHelpText(string& pchHelpText)=0;
+    virtual HRESULT GetHelpText(CString pchHelpText)=0;
     virtual BOOL bHaveOwnWindow() = 0;
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage ) = 0;
     virtual HRESULT GettextBusmaster() = 0;

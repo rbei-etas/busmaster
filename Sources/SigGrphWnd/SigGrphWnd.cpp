@@ -457,19 +457,27 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
                 CGraphList* podList = NULL;
                 podList = m_pomGraphWindows[nType]->m_pGraphList;
                 INT_PTR nItemCount  = podList->m_omElementList.GetSize();
-				long	lElementCnt = 0;
-				spGraphCollection->get_Count(&lElementCnt);
-				if(nItemCount != lElementCnt)
-				{
-					CGraphLeftView* pLeftView = ( CGraphLeftView*)
-						m_pomGraphWindows[CAN]->pomGetLeftViewPointer();
-					pLeftView->vPopulateGraphControl();
-				}
+                long    lElementCnt = 0;
+                spGraphCollection->get_Count(&lElementCnt);
+                if(nItemCount != lElementCnt)
+                {
+                    CGraphLeftView* pLeftView = ( CGraphLeftView*)
+                                                m_pomGraphWindows[CAN]->pomGetLeftViewPointer();
+                    if(pLeftView != NULL)
+                    {
+                        pLeftView->vPopulateGraphControl();
+                    }
+                }
 
                 for( int nIndex = 0; nIndex < nItemCount; nIndex++ )
                 {
                     CComPtr<IDispatch> spDispatch;
                     CComPtr<IDMGraphElement> spGraphElement;
+                    if(nIndex >= lElementCnt)       //if new value is added to the graph while transmission then mItemCount will be greater
+                    {
+                        //then lElementCnt hence the loop will be terminated and the graph will stop
+                        continue;
+                    }
                     hResult = spGraphCollection->get_Item(nIndex, &spDispatch);
                     if ( spDispatch == NULL )
                     {

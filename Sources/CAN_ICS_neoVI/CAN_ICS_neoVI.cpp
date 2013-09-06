@@ -35,7 +35,7 @@
 #include "CAN_ICS_neoVI_Network.h"
 #include "Utility/Utility_Thread.h"
 #include "Include/DIL_CommonDefs.h"
-#include "EXTERNAL_INCLUDE/icsnVC40.h"
+#include "EXTERNAL/icsnVC40.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
 #include "ChangeRegisters_CAN_ICS_NeoVI.h"

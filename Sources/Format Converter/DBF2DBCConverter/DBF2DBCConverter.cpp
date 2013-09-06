@@ -63,7 +63,7 @@ HRESULT CDBF2DBCConverter::GettextBusmaster(void)
  *
  * Returns pchHelpText containing the help text.
  */
-HRESULT CDBF2DBCConverter::GetHelpText(string& pchHelpText)
+HRESULT CDBF2DBCConverter::GetHelpText(CString pchHelpText)
 {
     pchHelpText = _("Converts the BUSMASTER Database(.dbf) file to CANoe Database(.dbc) file");
     return S_OK;

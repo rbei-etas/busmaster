@@ -41,7 +41,7 @@ public:
     CSignal();
     virtual ~CSignal();
     int Format(char* pcLine);
-    CSignal& operator=(CSignal& signal);
+    CSignal& operator=(const CSignal& signal);
     unsigned int Validate();
     bool WriteSignaltofile(fstream& fileOutput);
     void GetErrorString(string& str);

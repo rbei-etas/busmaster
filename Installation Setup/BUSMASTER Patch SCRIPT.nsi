@@ -22,6 +22,8 @@
  * Source script for DBC 2 DBF Converter installer.
  */
 
+!include "NSISHeaders.nsh"
+
 ; Show gradient background
 BGGradient 8080C0 0000FF FFFFFF
 
@@ -32,20 +34,20 @@ Name "BUSMASTER Patch Installer"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Patch.exe"
+Outfile "BUSMASTER_Patch_v${VERSION}.exe"
 
 SectionGroup "Main"
 Section "BUSMASTER PATCH"
 
-	ReadRegStr $1 HKLM "SOFTWARE\BUSMASTER\" Install_Dir
+	ReadRegStr $1 HKLM "SOFTWARE\BUSMASTER_v${VERSION}\" Install_Dir
 	
     SetOutPath $1\ConverterPlugins
 	
-	; Deleting If DBC2DBFConverterLibrary.dll exists
-	IfFileExists $1\ConverterPlugins\DBC2DBFConverterLibrary.dll bAppFileExists
+	; Deleting If DBF2DBCConverter.dll exists
+	IfFileExists $1\ConverterPlugins\DBF2DBCConverter.dll bAppFileExists
 	bAppFileExists:
-			Delete "$INSTDIR\ConverterPlugins\DBC2DBFConverterLibrary.dll"
-			File ..\Sources\BIN\Release\ConverterPlugins\DBC2DBFConverterLibrary.dll
+			Delete "$INSTDIR\ConverterPlugins\DBF2DBCConverter.dll"
+			File ..\Sources\BIN\Release\ConverterPlugins\DBF2DBCConverter.dll
 			
 SectionEnd
 SectionGroupEnd

@@ -26,6 +26,7 @@
 #include <atltime.h>
 #include <string.h>
 
+#include "../../Utility/MultiLanguageSupport.h"
 extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
 {
     if(pchDate == NULL || chWeekDay == NULL || pchMonth == NULL)

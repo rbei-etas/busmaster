@@ -276,21 +276,21 @@ void CDefConverterPage::OnCbnSelchangeComboConversions()
     m_omStrInputFilePath = _T("");
     m_omStrOutputFilePath = _T("");
     m_omstrConversionComment = _T("");
-    string m_omstrConversionName;
+    //string m_omstrConversionName;
     INT nSelectedItemIndex = GetConverterPos();
 
     GetDlgItem(IDC_BUTTON_VIEW_LOG)->EnableWindow(FALSE);
 
     if( nSelectedItemIndex >= 0 )
     {
-        string chHelpText;
-        string chConversionName;
+        CString omstrHelpText;
+        //string chConversionName;
         POSITION pos = m_pouPluginManager->m_ConverterList.FindIndex(nSelectedItemIndex);
         ConverterInfo& ouConverterInfo = m_pouPluginManager->m_ConverterList.GetAt(pos);
         ouConverterInfo.m_pouConverter->GettextBusmaster();
-        ouConverterInfo.m_pouConverter->GetHelpText(chHelpText);
+        ouConverterInfo.m_pouConverter->GetHelpText(omstrHelpText);
 
-        m_omstrEditHelp = chHelpText.c_str();
+        m_omstrEditHelp = omstrHelpText;
     }
     UpdateData(FALSE);
 }

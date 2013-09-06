@@ -38,12 +38,12 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
-#include "EXTERNAL_INCLUDE/OCI/ocican.h"
+#include "EXTERNAL/Include/OCI/ocican.h"
 // Including canfd header only if BOA_FD_VERSION is defined
 #ifdef BOA_FD_VERSION
-#include "EXTERNAL_INCLUDE/OCI/ocicanfd.h"
+#include "EXTERNAL/Include/OCI/ocicanfd.h"
 #endif
-#include "EXTERNAL_INCLUDE/CSI/csisfs.h"
+#include "EXTERNAL/Include/CSI/csisfs.h"
 #include "Include/Can_Error_Defs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
@@ -787,9 +787,9 @@ static DWORD dwGetAvailableClientSlot()
  */
 void vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {
-    EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
+    //EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     sg_asAckMapBuf.push_back(RefObj);
-    LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
+    //LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
 }
 
 BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
@@ -883,12 +883,25 @@ void vInitializeFilterConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_FrameFilter.frameIDValue = 0;
     sg_asChannel[nChannel].m_OCI_FrameFilter.tag = 0;
     /* configure frame filter*/
-    sg_asChannel[nChannel].m_OCI_EventFilter.destination = 0;
-    sg_asChannel[nChannel].m_OCI_EventFilter.eventCode = 0;
+    sg_asChannel[nChannel].m_OCI_EventFilter.destination = OCI_EVENT_DESTINATION_CALLBACK;
+    sg_asChannel[nChannel].m_OCI_EventFilter.eventCode = OCI_CAN_BUS_EVENT_STATE_ACTIVE |
+            OCI_CAN_BUS_EVENT_STATE_PASSIVE |
+            OCI_CAN_BUS_EVENT_STATE_ERRLIMIT |
+            OCI_CAN_BUS_EVENT_STATE_BUSOFF |
+            OCI_CAN_BUS_EVENT_FAULT_TOLERANT_SINGLE_WIRE ;
     sg_asChannel[nChannel].m_OCI_EventFilter.tag = 0;
+
     /* configure Error filter */
-    sg_asChannel[nChannel].m_OCI_ErrorFilter.destination = 0;
-    sg_asChannel[nChannel].m_OCI_ErrorFilter.errorFrame = 0;
+    sg_asChannel[nChannel].m_OCI_ErrorFilter.destination =  OCI_EVENT_DESTINATION_CALLBACK;
+    sg_asChannel[nChannel].m_OCI_ErrorFilter.errorFrame =   OCI_CAN_ERR_TYPE_BITSTUFF |
+            OCI_CAN_ERR_TYPE_FORMAT |
+            OCI_CAN_ERR_TYPE_ACK |
+            OCI_CAN_ERR_TYPE_BIT |
+            OCI_CAN_ERR_TYPE_BIT_RECSV_BUT_DOMINANT |
+            OCI_CAN_ERR_TYPE_BIT_DOMINANT_BUT_RECSV |
+            OCI_CAN_ERR_TYPE_CRC |
+            OCI_CAN_ERR_TYPE_OVERLOAD |
+            OCI_CAN_ERR_TYPE_OTHER;
     sg_asChannel[nChannel].m_OCI_ErrorFilter.tag = 0;
     /* configure internal error filter */
     sg_asChannel[nChannel].m_OCI_InternalErrorFilter.eventCode = OCI_INTERNAL_GENERAL_ERROR;
@@ -1358,10 +1371,20 @@ void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCANDATA* 
                 DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = CRC_ERROR_RX;
             }
         }
+        case OCI_CAN_ERR_TYPE_ACK:
+        {
+            if (bIsTx)
+            {
+                DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = ACK_ERROR_TX;
+            }
+            else
+            {
+                DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = ACK_ERROR_RX;
+            }
+        }
         break;
         case OCI_CAN_ERR_TYPE_OVERLOAD:
         case OCI_CAN_ERR_TYPE_BIT_DOMINANT_BUT_RECSV:
-        case OCI_CAN_ERR_TYPE_ACK:
         case OCI_CAN_ERR_TYPE_BIT_RECSV_BUT_DOMINANT:
         default:
         {
@@ -1399,8 +1422,9 @@ void vProcessErrMsg(void* userData, struct OCI_CANMessage* msg)
 {
     static STCANDATA sCanData;
     vCopyOCI_CAN_ERR_2_DATA(&(msg->data.errorFrameMessage), &sCanData);
-    int32* pUserData = (int32*)userData;
-    sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)nGetChannel(*pUserData);
+    //int32* pUserData = (int32*)userData;
+    sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = 0;
+    sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)nGetChannel((OCI_ControllerHandle)userData);
     sCanData.m_uDataInfo.m_sErrInfo.m_ucChannel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
     // Update channel error counter
     vUpdateErrorCounter(sCanData.m_uDataInfo.m_sErrInfo.m_ucTxErrCount,
@@ -1436,9 +1460,7 @@ static void (OCI_CALLBACK ProcessCanData)(void* userData, struct OCI_CANMessage*
 #endif
             vProcessTxMsg(userData, msg);
             break;
-        case OCI_CAN_ERROR_FRAME:
-            vProcessErrMsg(userData, msg);
-            break;
+
     }
 }
 
@@ -1502,6 +1524,9 @@ void (OCI_CALLBACK ProcessEvents)(void* userData, struct OCI_CANMessage* msg)
             break;
         case OCI_CAN_TIMER_EVENT:
             vProcessTimerEvent(userData, msg);
+            break;
+        case OCI_CAN_ERROR_FRAME:
+            vProcessErrMsg(userData, msg);
             break;
     }
 }
@@ -1878,7 +1903,14 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSjw.c_str(),
                 &pcStopStr, 10));
                 sg_asChannel[i].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
-                sg_asChannel[i].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
+                if( FALSE == pControllerDetails [ i ].m_bSelfReception )
+                {
+                    sg_asChannel[i].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_OFF;
+                }
+                else
+                {
+                    sg_asChannel[i].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
+                }
                 sg_asChannel[i].m_OCI_CANConfig.BTL_Cycles = 10;
                 sg_asChannel[i].m_OCI_CANConfig.physicalMedia = OCI_CAN_MEDIA_HIGH_SPEED;
             }
@@ -2520,6 +2552,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
+    EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     if (bClientIdExist(dwClientID))
     {
         if (sCanTxMsg.m_ucChannel <= sg_nNoOfChannels)
@@ -2535,7 +2568,10 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             sAckMap.m_ClientID = dwClientID;
             sAckMap.m_Channel  = sCanTxMsg.m_ucChannel;
             sAckMap.m_MsgID    = sOciCanMsg.data.txMessage.frameID;
-            vMarkEntryIntoMap(sAckMap);
+            if ( sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_CANConfig.selfReceptionMode == OCI_SELF_RECEPTION_ON )
+            {
+                vMarkEntryIntoMap(sAckMap);
+            }
             BOA_ResultCode ErrCode;
 #ifdef BOA_FD_VERSION
             if(sCanTxMsg.m_bCANFD == false)
@@ -2577,6 +2613,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
     {
         hResult = ERR_NO_CLIENT_EXIST;
     }
+    LeaveCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     return hResult;
 }
 

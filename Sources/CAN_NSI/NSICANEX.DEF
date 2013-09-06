@@ -1,0 +1,141 @@
+
+LIBRARY NSICANEX
+EXPORTS
+
+ Ic_ActiveId = Ic_ActiveId
+ _Ic_ActiveId = Ic_ActiveId
+
+ Ic_ChangeId = Ic_ChangeId
+ _Ic_ChangeId = Ic_ChangeId
+
+ Ic_ConfigBus = Ic_ConfigBus
+ _Ic_ConfigBus = Ic_ConfigBus
+
+ Ic_DeactivateId = Ic_DeactivateId
+ _Ic_DeactivateId = Ic_DeactivateId
+
+ Ic_DeleteId = Ic_DeleteId
+ _Ic_DeleteId = Ic_DeleteId
+
+ Ic_Download = Ic_Download 
+ _Ic_Download = Ic_Download 
+
+ Ic_EnumCards = Ic_EnumCards
+ _Ic_EnumCards = Ic_EnumCards
+
+ Ic_ExitDrv = Ic_ExitDrv
+ _Ic_ExitDrv = Ic_ExitDrv
+
+ Ic_GetBoardType = Ic_GetBoardType
+ _Ic_GetBoardType = Ic_GetBoardType
+
+ Ic_GetBuf = Ic_GetBuf
+ _Ic_GetBuf = Ic_GetBuf
+
+ Ic_GetChipState = Ic_GetChipState
+ _Ic_GetChipState = Ic_GetChipState
+
+ Ic_GetCount = Ic_GetCount
+ _Ic_GetCount = Ic_GetCount
+
+ Ic_GetEvent = Ic_GetEvent
+ _Ic_GetEvent = Ic_GetEvent
+
+ Ic_GetFifoState = Ic_GetFifoState
+ _Ic_GetFifoState = Ic_GetFifoState
+ 
+ Ic_InitChip = Ic_InitChip
+ _Ic_InitChip = Ic_InitChip
+
+ Ic_InitDrv = Ic_InitDrv
+ _Ic_InitDrv = Ic_InitDrv
+
+ Ic_InitId = Ic_InitId
+ _Ic_InitId = Ic_InitId
+
+ Ic_InitFlowControl = Ic_InitFlowControl
+ _Ic_InitFlowControl = Ic_InitFlowControl
+ 
+ Ic_InitInterface = Ic_InitInterface
+ _Ic_InitInterface = Ic_InitInterface
+
+ Ic_ResetChip = Ic_ResetChip
+ _Ic_ResetChip = Ic_ResetChip
+
+ Ic_SetRxMask = Ic_SetRxMask
+ _Ic_SetRxMask = Ic_SetRxMask
+ 
+ Ic_StartChip = Ic_StartChip
+ _Ic_StartChip = Ic_StartChip
+
+ Ic_StopChip = Ic_StopChip
+ _Ic_StopChip = Ic_StopChip
+
+ Ic_TxMsg = Ic_TxMsg
+ _Ic_TxMsg = Ic_TxMsg
+
+ Ic_TxBurst = Ic_TxBurst
+ _Ic_TxBurst = Ic_TxBurst
+
+ Ic_TimeStamp = Ic_TimeStamp
+ _Ic_TimeStamp = Ic_TimeStamp
+
+ Ic_WriteData = Ic_WriteData
+ _Ic_WriteData = Ic_WriteData
+
+ Ic_WritePattern = Ic_WritePattern
+ _Ic_WritePattern = Ic_WritePattern
+
+ Ic_ReadChip = Ic_ReadChip
+ _Ic_ReadChip = Ic_ReadChip
+
+ Ic_WriteChip = Ic_WriteChip
+ _Ic_WriteChip = Ic_WriteChip
+
+ Ic_ResetBoard = Ic_ResetBoard
+ _Ic_ResetBoard = Ic_ResetBoard
+
+ Ic_ConfigEvent = Ic_ConfigEvent
+ _Ic_ConfigEvent = Ic_ConfigEvent
+
+ Ic_InitPeriod = Ic_InitPeriod
+ _Ic_InitPeriod = Ic_InitPeriod 
+
+ Ic_StartPeriod = Ic_StartPeriod
+ _Ic_StartPeriod = Ic_StartPeriod 
+ 
+ Ic_StopPeriod = Ic_StopPeriod
+ _Ic_StopPeriod = Ic_StopPeriod 
+
+ Ic_KillPeriod = Ic_KillPeriod
+ _Ic_KillPeriod = Ic_KillPeriod 
+ 
+ Ic_GetMode = Ic_GetMode
+ _Ic_GetMode = Ic_GetMode 
+ 
+ Ic_SetMode = Ic_SetMode
+ _Ic_SetMode = Ic_SetMode 
+ 
+ Ic_GetDiag = Ic_GetDiag
+ _Ic_GetDiag = Ic_GetDiag 
+
+ Ic_InitLineDrv = Ic_InitLineDrv
+ _Ic_InitLineDrv = Ic_InitLineDrv 
+
+ Ic_GetDeviceInfo = Ic_GetDeviceInfo
+ _Ic_GetDeviceInfo = Ic_GetDeviceInfo 
+ 
+ Ic_GetChipInfo = Ic_GetChipInfo
+ _Ic_GetChipInfo = Ic_GetChipInfo 
+ 
+  Ic_GetAPIinfo = Ic_GetAPIinfo
+ _Ic_GetAPIinfo = Ic_GetAPIinfo 
+ 
+  Ic_GetCardConf = Ic_GetCardConf
+ _Ic_GetCardConf = Ic_GetCardConf
+
+  Ic_DeviceGenericCommand = Ic_DeviceGenericCommand
+ _Ic_DeviceGenericCommand = Ic_DeviceGenericCommand
+
+ Ic_SetExtendedAddressing = Ic_SetExtendedAddressing 
+ _Ic_SetExtendedAddressing = Ic_SetExtendedAddressing 

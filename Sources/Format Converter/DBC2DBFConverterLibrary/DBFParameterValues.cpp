@@ -64,7 +64,7 @@ CParameterValues::~CParameterValues()
  *
  * Copies the contents of param to the local object.
  */
-CParameterValues& CParameterValues::operator=(CParameterValues& param)
+CParameterValues& CParameterValues::operator=(const CParameterValues& param)
 {
     // now copy the other elements of the new message to this
     m_NodeName = param.m_NodeName;

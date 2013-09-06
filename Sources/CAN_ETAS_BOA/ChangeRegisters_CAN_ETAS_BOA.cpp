@@ -35,7 +35,7 @@
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 #ifdef BOA_FD_VERSION
-#include "EXTERNAL_INCLUDE/OCI/ocicanfd.h"
+#include "EXTERNAL/Include/OCI/ocicanfd.h"
 #endif
 using namespace std;
 /* Structure definiions */
@@ -96,6 +96,7 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NU
     for (UINT i = 0; i < min(defNO_OF_CHANNELS, nHardwareCount); i++)
     {
         m_pControllerDetails[i] = psControllerDetails[i];
+        m_pControllerDetails[i].m_bSelfReception = psControllerDetails[i].m_bSelfReception;
     }
     psMainContrDets = psControllerDetails;
     m_nLastSelection = 0;
@@ -147,6 +148,7 @@ void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
     DDX_CBString(pDX, IDC_COMB_SJW, m_omStrSJW);
     DDX_CBString(pDX,IDC_COMB_SAMPOINT, m_omStrSamplePoint);
     DDX_Control(pDX, IDC_COMB_SJW, m_omCtrlSJW);
+    DDX_Check(pDX, IDC_CHECK_SELF_REC, m_bSelfReception);
     //}}AFX_DATA_MAP
     DDX_Text(pDX, IDC_EDIT_DATA_BAUD_RATE, m_omstrDataBitRate);
     DDV_MinMaxInt(pDX,atoi(m_omstrDataBitRate.GetBuffer(0)),0,1000000);
@@ -948,7 +950,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
     m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str();
     m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw.c_str();
-
+    m_bSelfReception = m_pControllerDetails[ nIndex ].m_bSelfReception;
 
     //omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
     //Assign edit box string value to CString member variable of Edit control
@@ -1044,7 +1046,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = m_omStrSamplePoint.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
-
+        m_pControllerDetails[m_nLastSelection].m_bSelfReception = m_bSelfReception;
 #ifdef BOA_FD_VERSION
         /*Update CAN FD parameters */
         m_pControllerDetails[ m_nLastSelection ].m_unDataBitRate        = atoi((LPCTSTR)m_omstrDataBitRate) * 1000;

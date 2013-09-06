@@ -35,6 +35,8 @@
 #include "CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h"
 #include "CAN_Vector_XL/CAN_Vector_XL_Extern.h"
 #include "CAN_Kvaser_CAN/CAN_Kvaser_CAN_Extern.h"
+#include "CAN_iVIEW/CAN_i-VIEW_Extern.h"
+#include "CAN_NSI/CAN_NSI_Extern.h"
 #include "Dil_CAN.h"
 #include "Utility\MultiLanguageSupport.h"
 
@@ -59,10 +61,12 @@ static ENTRY_DIL sg_ListDIL[] =
     /* ...all other drivers should be in alphabetical order */
     {DRIVER_CAN_ETAS_BOA,   "ETAS &BOA"         },
     {DRIVER_CAN_ETAS_ES581, "ETAS &ES581"       },
+    {DRIVER_CAN_IVIEW,      "&i-VIEW"           },
     {DRIVER_CAN_ICS_NEOVI,  "&IntrepidCS neoVI" },
     {DRIVER_CAN_IXXAT,      "I&XXAT VCI"        },
     {DRIVER_CAN_KVASER_CAN, "&Kvaser CAN"       },
     {DRIVER_CAN_MHS,        "&MHS Tiny-CAN"     },
+    {DRIVER_CAN_NSI,        "&NSI CAN-API"      },
     {DRIVER_CAN_PEAK_USB,   "&PEAK USB"         },
     {DRIVER_CAN_VECTOR_XL,  "&Vector XL"        },
     {DRIVER_CAN_VSCOM,      "VScom &CAN-API"    },
@@ -206,6 +210,10 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 m_hDll = LoadLibrary("CAN_ETAS_BOA.dll");
                 break;
 
+            case DRIVER_CAN_IVIEW:
+                m_hDll = LoadLibrary("CAN_i-VIEW.dll");
+                break;
+
             case DRIVER_CAN_VECTOR_XL:
                 m_hDll = LoadLibrary("CAN_Vector_XL.dll");
                 break;
@@ -222,6 +230,10 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
 
             case DRIVER_CAN_MHS:
                 m_hDll = LoadLibrary("CAN_MHS.dll");
+                break;
+
+            case DRIVER_CAN_NSI:
+                m_hDll = LoadLibrary("CAN_NSI.dll");
                 break;
 
             case DRIVER_CAN_VSCOM:

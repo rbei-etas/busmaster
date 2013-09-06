@@ -56,6 +56,6 @@ extern CComModule _Module;
 
 extern void Message(HRESULT hr, IUnknown* pUnk, LPCOLESTR szFormat, ...);
 
-#import "..\..\EXTERNAL_SOURCE\DMGraph\DMGraph.tlb" raw_interfaces_only no_namespace named_guids
+#import "..\EXTERNAL\DMGraph\DMGraph.tlb" raw_interfaces_only no_namespace named_guids
 
 
