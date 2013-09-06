@@ -26,13 +26,12 @@
 
 class CRefTimeKeeper
 {
-protected:
-    UINT64   m_qwRefSysTime;
-    UINT64   m_qwAbsBaseTime;
 public:
-    CRefTimeKeeper(void);
-    ~CRefTimeKeeper(void);
-    void vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime);
+    static void vSetTimeParams(SYSTEMTIME& currentSystemTime, UINT64 connectTime);
+    static void vGetTimeParams(UINT64& referenceSystemTime_, UINT64& absoluteBaseTime_);
+protected:
+    static UINT64 m_qwRefSysTime;
+    static UINT64 m_qwAbsBaseTime;
 
     //static void vGetTimeParams(UINT64& qwRefSysTime, UINT64& qwAbsBaseTime);
 };

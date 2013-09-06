@@ -279,7 +279,6 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         if (!bTobeBlocked(sCanData))
         {
             m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
-
             if (NULL != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sCanData, CAN);

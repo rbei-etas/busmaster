@@ -35,7 +35,7 @@ const int SIZE_CHAR = sizeof(char);
 
 const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 
-#define MAX_LOG_FILE_IN_GRP              9
+#define MAX_LOG_FILE_IN_GRP              65535
 #define FILE_COUNT_STR                    "_%d"
 
 

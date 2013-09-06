@@ -52,7 +52,7 @@
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 #define DYNAMIC_XLDRIVER_DLL
-#include "EXTERNAL_INCLUDE/vxlapi.h"
+#include "EXTERNAL/vxlapi.h"
 
 #define USAGE_EXPORT
 #include "CAN_Vector_XL_Extern.h"

@@ -13,7 +13,7 @@ goto END
 :FILELIST
 echo Generating filelist...
 dir /s /b ..\..\Sources\*.cpp ..\..\Sources\*.h ..\..\Sources\*.c > files0.txt
-find /v "EXTERNAL_INCLUDE" < files0.txt > files1.txt
+find /v "EXTERNAL" < files0.txt > files1.txt
 find /v "BIN\Release" < files1.txt > files2.txt
 find /v "~" < files2.txt > files.txt
 del files0.txt

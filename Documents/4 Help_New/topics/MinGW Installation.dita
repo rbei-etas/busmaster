@@ -20,7 +20,9 @@
       <p>The following steps should be followed to install MinGW folder and use it to successfully compile  CPP files in   Node Simulation  using BUSMASTER.</p>
       <ul>
         <li>Download latest mingw executable from the following link <xref href="http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/" scope="external"/> and then use it to download the actual MinGW and copy the MinGW folder to C: drive</li>
+        <li>During MinGW installation, please choose the C++ compiler in component list as shown in the screen below as it is not selected by default:</li>
       </ul>
+      <image href="../images/GCC_Compiler_Selection.bmp" alt="GCC C++ Compiler Selection" placement="break"/>
       <ul>
         <li>Set the environment variable path ‘C:\MinGW\bin’.</li>
       </ul>

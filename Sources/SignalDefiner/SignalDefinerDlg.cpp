@@ -192,16 +192,16 @@ void CSignalDefinerDlg::OnBnClickedOk()
     }
     OnOK();
 
-	// If Sampling time period value is out of range
-	// Setting focus back to Sampling Time Period
-	if(m_dblSamplingTimePeriod < 1 || m_dblSamplingTimePeriod > IDC_EDIT_SIGNAL_SAMPLING_TIME)
-	{
-		(GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME))->SetFocus();
-	}
-	else
-	{
-		(GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
-	}
+    // If Sampling time period value is out of range
+    // Setting focus back to Sampling Time Period
+    if(m_dblSamplingTimePeriod < 1 || m_dblSamplingTimePeriod > MAX_SAMPLING_TIME_PERIOD)
+    {
+        (GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME))->SetFocus();
+    }
+    else
+    {
+        (GetDlgItem(IDC_EDIT_SIGNAL_FREQUENCY))->SetFocus();
+    }
 }
 
 void CSignalDefinerDlg::OnBnClickedAutoCorrect()
@@ -322,15 +322,15 @@ void CSignalDefinerDlg::vGenerateWave()
         }
         if(dblFrqStep == 0)
         {
-			// If Sampling time period value is out of range
-			// Setting focus back to Sampling Time Period
+            // If Sampling time period value is out of range
+            // Setting focus back to Sampling Time Period
             (GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME))->SetFocus();
             return;
         }
         if(dblFrqStep > MAX_SAMPLING_TIME_PERIOD)
         {
-			// If Sampling time period value is out of range
-			// Setting focus back to Sampling Time Period
+            // If Sampling time period value is out of range
+            // Setting focus back to Sampling Time Period
             (GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME))->SetFocus();
             return;
         }

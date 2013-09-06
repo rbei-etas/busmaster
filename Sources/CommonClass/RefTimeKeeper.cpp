@@ -23,59 +23,22 @@
  */
 
 #include "CommonClass_stdafx.h"
-#include "reftimekeeper.h"
+#include "RefTimeKeeper.h"
 
 
-/*******************************************************************************
-  Function Name  : CRefTimeKeeper
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CRefTimeKeeper
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  :
-*******************************************************************************/
-CRefTimeKeeper::CRefTimeKeeper(void)
+UINT64 CRefTimeKeeper::m_qwRefSysTime  = 0;
+UINT64 CRefTimeKeeper::m_qwAbsBaseTime = 0;
+
+void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& currentSystemTime, UINT64 connectTime)
 {
-    m_qwRefSysTime  = 0;
-    m_qwAbsBaseTime = 0;
+    m_qwRefSysTime = (currentSystemTime.wHour * 3600 + currentSystemTime.wMinute * 60 +
+                      + currentSystemTime.wSecond) * 10000 + currentSystemTime.wMilliseconds * 10;
+    m_qwAbsBaseTime = connectTime;
 }
 
-/*******************************************************************************
-  Function Name  : ~CRefTimeKeeper
-  Input(s)       : -
-  Output         : -
-  Functionality  : Destructor
-  Member of      : CRefTimeKeeper
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  :
-*******************************************************************************/
-CRefTimeKeeper::~CRefTimeKeeper(void)
+void CRefTimeKeeper::vGetTimeParams(UINT64& referenceSystemTime_, UINT64& absoluteBaseTime_)
 {
+    referenceSystemTime_ = m_qwRefSysTime;
+    absoluteBaseTime_ = m_qwAbsBaseTime;
 }
-
-
-/*******************************************************************************
-  Function Name  : vSetTimeParams
-  Input(s)       : -
-  Output         : -
-  Functionality  : Save current system time and connection time
-  Member of      : CRefTimeKeeper
-  Author(s)      : Anish
-  Date Created   : 09.2.2010
-  Modifications  :
-*******************************************************************************/
-void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime)
-{
-    m_qwRefSysTime = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60 +
-                      + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;
-    m_qwAbsBaseTime = qwConnectTime;
-}
-
-//void CRefTimeKeeper::vGetTimeParams(UINT64& qwRefSysTime, UINT64& qwAbsBaseTime)
-//{
-//    qwRefSysTime  = m_qwRefSysTime;
-//    qwAbsBaseTime = m_qwAbsBaseTime;
 //}

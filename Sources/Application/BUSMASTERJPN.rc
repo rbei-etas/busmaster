@@ -89,7 +89,7 @@ BEGIN
     DEFPUSHBUTTON   "はい",IDOK,186,6,50,14
     ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
     LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
-    LTEXT           "著作権 2003 Robert Bosch Engineering and Business Solutions Ltd",IDC_STATIC,38,27,138,18
+    LTEXT           "著作権 2011 ETAS GmbH and Robert Bosch Engineering and Business Solutions Limited",IDC_STATIC,38,27,167,18	
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
     LTEXT           "このプログラムはフリーウェアです：GNU Lesser General Public Licenseの下で肺胞したり自由に修正したりすることが可能です。",IDC_STATIC,38,60,167,50
 END
@@ -644,13 +644,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.8.1"
+            VALUE "FileVersion", "Ver 1.9.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.8.1"
+            VALUE "ProductVersion", "Ver 1.9.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -996,8 +996,9 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&終了",                         ID_APP_EXIT
     END
-    POPUP "&Hardware"
+    POPUP "&CAN"
     BEGIN
+        MENUITEM "&接続           F2",            IDM_FILE_CONNECT
         POPUP "ドライバモード"
         BEGIN
             MENUITEM "&アクティブ",                      IDM_CONFIGURE_ACTIVE, CHECKED
@@ -1006,11 +1007,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&経路選択",                       ID_CONFIGURE_CHANNELSELECTION
         MENUITEM "チャネル構成",                      IDM_CONFIGURE_BAUDRATE
-    END
-    POPUP "&CAN"
-    BEGIN
-        MENUITEM "&接続           F2",            IDM_FILE_CONNECT
-        MENUITEM "1&6進数",                       32839, CHECKED
         POPUP "&データベース"
         BEGIN
             MENUITEM "&新規\tCtrl+B",                 IDM_CONFIGURE_DATABASE_NEW
@@ -1025,6 +1021,9 @@ BEGIN
             MENUITEM "&連結...\tCtrl+M",              IDM_FILE_IMPORT_DATABASE
             MENUITEM "&分離...\tCtrl+T",              IDM_DATABASE_DISSOCIATE_DB
         END
+        MENUITEM "&フィルター構成",                    IDM_FILTER_MESSAGE_SELECTMESSAGES
+        MENUITEM SEPARATOR
+        MENUITEM "&ネットワーク統計",                   IDM_NETWORK_STATISTICS_WND, CHECKED
         POPUP "&メッセージウィンドウ"
         BEGIN
             MENUITEM "&活性化する",                      ID_SHOWMESSAGEWINDOW_CAN, CHECKED
@@ -1055,7 +1054,6 @@ BEGIN
             MENUITEM SEPARATOR
             MENUITEM "&設定",                         ID_CONFIGURE_SIGNALGRAPHWINDOW
         END
-        MENUITEM "&フィルター構成",                    IDM_FILTER_MESSAGE_SELECTMESSAGES
         POPUP "&ロギング"
         BEGIN
             MENUITEM "&活性化する",                      IDM_LOG_ON_OFF, CHECKED
@@ -1107,27 +1105,22 @@ BEGIN
             MENUITEM "すべての&エラーハンドラ",                IDM_EXECUTE_ERROR_HANDLERS, CHECKED
             MENUITEM "すべて&のハンドラ",                   IDM_EXECUTE_ALL_HANDLERS
         END
-    END
+	END
     POPUP "&J1939"
     BEGIN
         MENUITEM "&有効化化",                       ID_ACTIVEBUS_J1939
-        MENUITEM "&オンライン",                      ID_TOOLBAR_CONFIGURE
-        MENUITEM SEPARATOR
-        MENUITEM "&タイムアウトの設定",                  ID_CONFIGURE_TIMEOUTS
         POPUP "&データベース"
         BEGIN
             MENUITEM "&新規",                         ID_DATABASE_NEW
             MENUITEM "&開く",                         ID_DATABASE_OPEN
-            MENUITEM SEPARATOR
-            MENUITEM "&保存",                         ID_DATABASE_SAVE
-            MENUITEM "Save and Im&port",    		  IDM_SAVE_IMPORT_J1939
-            MENUITEM "Sa&ve As...",                 IDM_CONFIGURE_J1939_DB_SAVEAS	    
-            MENUITEM SEPARATOR	    
             MENUITEM "&終了",                         ID_DATABASE_CLOSE
+            MENUITEM "&保存",                         ID_DATABASE_SAVE
             MENUITEM SEPARATOR
             MENUITEM "&連結",                         33082
             MENUITEM "&分離",                         ID_DATABASE_DISSOCIATE
         END
+        MENUITEM "&タイムアウトの設定",                  ID_CONFIGURE_TIMEOUTS
+        MENUITEM SEPARATOR
         POPUP "&メッセージウィンドウ"
         BEGIN 
             MENUITEM "&活性化する",                      ID_SHOWMESSAGEWINDOW_J1939, CHECKED
@@ -1175,25 +1168,27 @@ BEGIN
             MENUITEM "すべての&ハンドラ",                   ID_EXECUTE_ALLHANDLERS, CHECKED
         END
     END
-    POPUP "&ウィンドウ"
+    POPUP "&眺める"
     BEGIN
-        MENUITEM "&ネットワーク統計",                   IDM_NETWORK_STATISTICS_WND, CHECKED
         MENUITEM "&トレースウィンドウ",                  IDM_TRACE_WND, CHECKED
-        MENUITEM SEPARATOR
-        MENUITEM "&重ねて表示",                      ID_WINDOW_CASCADE
-        MENUITEM "&タイトル",                       ID_WINDOW_TILE_HORZ
-        MENUITEM "&アイコンの整理",                    ID_WINDOW_ARRANGE
+        MENUITEM "1&6進数",                       32839, CHECKED
         MENUITEM SEPARATOR
         POPUP "&ツールバー"
-        BEGIN
+        BEGIN            
             MENUITEM "&メイン",                        ID_DISPLAY_MAIN, CHECKED
             MENUITEM "&設定e",                        ID_DISPLAY_CONFIGURE, CHECKED
             MENUITEM "&CANデータベース",                  ID_TB_CANDATABASE, CHECKED
             MENUITEM "メ&ッセージウィンドウ",                 ID_DISPLAY_MSG_WND, CHECKED
             MENUITEM "&ノードシミュレーション",                ID_DISPLAY_NODE_SIMULATION, CHECKED
-            MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED
+            MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED            
         END
         MENUITEM "&ステータスバー",                    ID_VIEW_STATUS_BAR
+    END
+    POPUP "&ウィンドウ"
+    BEGIN
+        MENUITEM "&重ねて表示",                      ID_WINDOW_CASCADE
+        MENUITEM "&タイトル",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&アイコンの整理",                    ID_WINDOW_ARRANGE
     END
     POPUP "&ヘルプトピックス"
     BEGIN
@@ -1408,11 +1403,10 @@ BEGIN
     BUTTON      IDM_EXECUTE_ALL_HANDLERS
 END
 
-IDR_FUNCTIONS_J1939 TOOLBAR  32, 32
+IDR_FUNCTIONS_J1939 TOOLBAR 32, 32
 BEGIN
     BUTTON      33056
     SEPARATOR
-    BUTTON      33065
     BUTTON      33062
     BUTTON      33063
     BUTTON      33064
@@ -1618,7 +1612,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 1.8.1"
+    IDS_VERSION             "Ver 1.9.0"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
@@ -1891,8 +1885,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE 0x11, 0x01
 #pragma code_page(932)
-#include "l.jpn\afxres.rc"     // Standard components
-#include "l.jpn\afxprint.rc"       // printing/print preview resources
+#include "..\Localization\l.jpn\afxres.rc"     // Standard components
+#include "..\Localization\l.jpn\afxprint.rc"       // printing/print preview resources
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

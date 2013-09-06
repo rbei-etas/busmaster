@@ -592,6 +592,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
             CString omTemp = "";
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
+            //pcBuff = (char*) new char[dwSize];
             pcBuff = (char*) new char[dwSize+1];
 
             if(pcBuff!=NULL)

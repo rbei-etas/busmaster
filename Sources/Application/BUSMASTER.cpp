@@ -339,8 +339,10 @@ BOOL CCANMonitorApp::InitInstance()
     // read from registry.
     if(cmdInfo.m_strFileName.IsEmpty() == TRUE)
     {
-        ostrCfgFilename =
-            GetProfileString(_(SECTION), defCONFIGFILENAME, STR_EMPTY);
+        //ostrCfgFilename =
+        //    GetProfileString(_(SECTION), defCONFIGFILENAME, STR_EMPTY);
+        DWORD dwVal;
+        bReadFromRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, ostrCfgFilename, dwVal);
     }
     else
     {
@@ -431,7 +433,41 @@ BOOL CCANMonitorApp::InitInstance()
     return TRUE;
 }
 
+bool CCANMonitorApp::bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString strName,  DWORD dwType, CString& strValue , DWORD& dwValue)
+{
+    DWORD dwRet;
+    DWORD cbData;
+    LONG lError = 0;
+    HKEY hKey;
+    BYTE acRegValue[1024] = {0};
+    DWORD dwSize = sizeof(BYTE[1024]) ;
 
+    CString strCompleteSubKey;
+    strCompleteSubKey.Format("Software\\RBEI-ETAS\\BUSMASTER_v%d.%d.%d\\%s",VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,strSubKey);
+
+    lError = RegOpenKeyEx( hRootKey, strCompleteSubKey, 0, KEY_READ, &hKey);
+    // If the registry key open successfully, get the value in "path"
+    // sub key
+    if(lError==ERROR_SUCCESS)
+    {
+        if ( dwType == REG_SZ )
+        {
+            lError = RegQueryValueEx(hKey,strName,0, &dwType, acRegValue,&dwSize);
+            strValue.Format("%s", acRegValue);
+        }
+        else if ( dwType == REG_DWORD )
+        {
+            lError = RegQueryValueEx(hKey,strName,0, &dwType, (LPBYTE)&dwValue,&cbData);
+        }
+
+        RegCloseKey(hKey);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd)
 {

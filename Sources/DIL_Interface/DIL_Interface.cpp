@@ -33,6 +33,7 @@
 #include "DIL_CAN.h"
 
 #include "DILI_J1939.h"
+
 #include "DIL_Interface.h"
 
 
@@ -131,6 +132,7 @@ if sg_pouFP_CAN is null */
 if sg_pouFP_CAN is null */
         }
         break;
+
         default:
         {
             hResult = S_FALSE;

@@ -65,7 +65,7 @@ CSignal::~CSignal()
  *
  * Copies the contents of signal into the local object.
  */
-CSignal& CSignal::operator=(CSignal& signal)
+CSignal& CSignal::operator=(const CSignal& signal)
 {
     // copy all the data members except the list
     m_sName = signal.m_sName;
@@ -103,6 +103,25 @@ int CSignal::operator==(const CSignal& signal) const
     else
     {
         return 0;
+    }
+}
+
+/**
+* \brief         Replaces first occurance of a character in a char array with a new character
+* \param[out]    Char array to be used
+* \param[in]     character to be replaced
+* \param[in]     new character used for replacement
+* \return        S_OK for success, S_FALSE for failure
+* \authors       Arunkumar Karri
+* \date          03.01.2013 Created
+*/
+void vReplaceChar(char str[], char chOld, char chNew)
+{
+    char* ptrOccured = NULL;
+    ptrOccured = strchr(str, chOld);
+    if ( ptrOccured != 0)
+    {
+        *ptrOccured = chNew;
     }
 }
 
@@ -166,13 +185,28 @@ int CSignal::Format(char* pcLine)
         }
     }
 
+    /* get default decimal seperator */
+    char szSep;
+    GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
+
     m_ucStartBit = ucStartBit;
     // next token - (SCALE_FACTOR,OFFSET)
     pcToken = strtok_s(NULL, ",", &pcNextToken);
-    m_fOffset = (float)atof(pcToken); // store scale factor
+
+    /* Make sure we use default decimal symbol for floating values */
+    vReplaceChar(pcToken, '.', szSep);
+
+    /* store Offset */
+    sscanf_s(pcToken, "%f", &m_fOffset);
     // Get offset
     pcToken = strtok_s(NULL, ",", &pcNextToken);
-    m_fScaleFactor = (float)atof(pcToken); // store Offset
+
+    /* Make sure we use default decimal symbol for floating values */
+    vReplaceChar(pcToken, '.', szSep);
+
+    /* store scale factor */
+    sscanf_s(pcToken, "%f", &m_fScaleFactor);
+
     // next token -- "UNIT", ""
     pcTemp = acTemp;
     pcToken = strtok_s(NULL, "", &pcNextToken);

@@ -44,7 +44,7 @@ public:
     char            m_cFrameFormat;
     CSignalValue    m_ParamVal;
     CParameterValues();
-    CParameterValues& operator=(CParameterValues& param);
+    CParameterValues& operator=(const CParameterValues& param);
     int GetNodeParams(string& paramType, char* pcLine);
     int GetMesgParams(string& paramType, char* pcLine);
     int GetSignalParams(string& paramType, char* pcLine);

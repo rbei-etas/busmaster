@@ -144,4 +144,5 @@ public:
     afx_msg void OnCbnSelchangeCombPropdelay();
     CComboBox m_omCtrlSamplePoint;
     CComboBox m_omCtrlSJW;
+    BOOL m_bSelfReception;
 };

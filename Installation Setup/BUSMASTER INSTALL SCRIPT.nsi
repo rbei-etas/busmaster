@@ -21,11 +21,8 @@
  *
  * Source script for BUSMASTER installer.
  */
-!include nsDialogs.nsh
-!include LogicLib.nsh
-!include "DotNetVer.nsh"
 
-!define StrStr "!insertmacro StrStr"
+!include "NSISHeaders.nsh"
  
 !macro StrStr ResultVar String SubString
   Push `${String}`
@@ -33,6 +30,7 @@
   Call StrStr
   Pop `${ResultVar}`
 !macroend
+
  
 Function StrStr
 /*After this point:
@@ -148,7 +146,7 @@ Name "BUSMASTER"
 CRCCheck On
 
 ; Output filename
-Outfile "BUSMASTER_Installer_Ver_1.8.1.exe"
+Outfile "BUSMASTER_Installer_Ver_${VERSION}.exe"
 
 Function .onInit
     # the plugins dir is automatically deleted when the installer exits
@@ -165,9 +163,9 @@ Function .onInit
 FunctionEnd
 
 ; The default installation folder
-InstallDir "$PROGRAMFILES\BUSMASTER"
+InstallDir "$PROGRAMFILES\BUSMASTER_v${VERSION}"
 ; Uninstall info registry location
-InstallDirRegKey HKLM "SOFTWARE\BUSMASTER" "Install_Dir"
+;InstallDirRegKey HKLM "SOFTWARE\BUSMASTER" "Install_Dir"
 
 ; Folder selection prompt
 DirText "Please select an installation folder."
@@ -176,6 +174,12 @@ Var LABEL
 Function onClickMinGWLink
   ExecShell "open" "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/"
 FunctionEnd
+
+Function onClickBMHelpLink
+ StrCpy $0 $WINDIR\hh.exe
+ Exec '"$0" mk:@MSITStore:$INSTDIR\BUSMASTER.chm::/topics/MinGW%20Installation.html'
+FunctionEnd
+
 Function information
 nsDialogs::Create 1018
 
@@ -210,9 +214,11 @@ nsDialogs::Create 1018
 	Pop $Label
 	${NSD_CreateLink} 0 75 100% 12 "http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/"
 	Pop $Label
-	${NSD_OnClick} $Label onClickMinGWLink  
-	${NSD_CreateLabel} 0 100 100% 40 "and then use it to download the actual MinGW and copy the MinGW folder to primary drive.For example C: drive. $\nSet the environment variable path."
-	Pop $Label	
+	${NSD_OnClick} $Label onClickMinGWLink 
+	${NSD_CreateLabel}  0 100 100% 20 "use it to download and install required GCC (C,C++) compilers."		
+	${NSD_CreateLink}   0 120 100% 30 "Refer BUSMASTER Help file MinGW section for detailed information."
+	Pop $Label
+	${NSD_OnClick} $Label onClickBMHelpLink
 	FinishedShow:
 	nsDialogs::Show	
 FunctionEnd
@@ -241,7 +247,7 @@ Section "BUSMASTER"
 	; If the file exists delete it before installing
 	; PTV
 
-	; Deleting If BusEmulation.exe exists
+	; Deleting If BusEmulation.exe exists	
 	IfFileExists $INSTDIR\BusEmulation.exe bBusEmExists
 	bBusEmExists:
 			Delete "$INSTDIR\BusEmulation.exe"
@@ -250,6 +256,11 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\BUSMASTER.exe bBsExists
 	bBsExists:
 			Delete "$INSTDIR\BUSMASTER.exe"
+			
+	; Deleting If BUSMASTER.exe.manifest exists		
+	IfFileExists $INSTDIR\BUSMASTER.exe.manifest bBsManifestExists
+	bBsManifestExists:
+			Delete "$INSTDIR\BUSMASTER.exe.manifest"			
 	
 	; Deleting If BUSMASTER.tlb exists		
 	IfFileExists $INSTDIR\BUSMASTER.tlb bBstlbExists
@@ -289,7 +300,7 @@ Section "BUSMASTER"
 	; Deleting If CAN_PEAK_USB.dll exists
 	IfFileExists $INSTDIR\CAN_PEAK_USB.dll bCanPeakbExists
 	bCanPeakbExists:
-			Delete "$INSTDIR\CAN_PEAK_USB.dll"
+			Delete "$INSTDIR\CAN_PEAK_USB.dll"					
 			
 	; Deleting If CAN_STUB.dll exists
 	IfFileExists $INSTDIR\CAN_STUB.dll bCanSTBbExists
@@ -308,7 +319,12 @@ Section "BUSMASTER"
 	; Deleting If CAN_VSCOM.dll exists
 	IfFileExists $INSTDIR\CAN_VSCOM.dll bCanVSCOMbExists
 	bCanVSCOMbExists:
-			Delete "$INSTDIR\CAN_VSCOM.dll"			
+			Delete "$INSTDIR\CAN_VSCOM.dll"		
+
+	; Deleting If CAN_i-VIEW.dll exists
+	IfFileExists $INSTDIR\CAN_i-VIEW.dll biViewCANExists
+	biViewCANExists:
+			Delete "$INSTDIR\CAN_i-VIEW.dll"					
 			
 	; Deleting If Changelog.txt exists
 	IfFileExists $INSTDIR\Changelog.txt bChngLogbExists
@@ -404,7 +420,7 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\SignalDefiner.dll bSDbExists
 	bSDbExists:
 			Delete "$INSTDIR\SignalDefiner.dll"
-
+			
 	; Deleting files within ConverterPlugins
 	; Deleting If AscLogConverter.dll exists
 	IfFileExists $INSTDIR\ConverterPlugins\AscLogConverter.dll bCVALbExists
@@ -647,6 +663,7 @@ Section "BUSMASTER"
     ; BUSMASTER
     File ..\Sources\BIN\Release\BusEmulation.exe
     File ..\Sources\BIN\Release\BUSMASTER.exe
+	File ..\Sources\BIN\Release\BUSMASTER.exe.manifest	
     File ..\Sources\BIN\Release\BUSMASTER.tlb
     File ..\Sources\Application\BUSMASTER_Interface.c
     File ..\Sources\Application\BUSMASTER_Interface.h
@@ -710,14 +727,22 @@ Section "BUSMASTER"
     ; Readme
     File ..\Readme.txt
 	
+	; Install Visual Studio 2012 Redistributable
+	File "..\Tools\VC++ 2012 Redistributable\vcredist_x86.exe"
+	ExecWait vcredist_x86.exe
+	
+	IfFileExists $INSTDIR\vcredist_x86.exe bVS2012Exists
+	bVS2012Exists:
+			Delete "$INSTDIR\vcredist_x86.exe"
+	
 	; create desktop shortcut
-	CreateShortCut "$DESKTOP\BUSMASTER.lnk" "$INSTDIR\BUSMASTER.exe" ""
+	CreateShortCut "$DESKTOP\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" ""
 	
 
     ; Registry entries
-    WriteRegStr HKLM "Software\BUSMASTER" "Install_Dir" "$INSTDIR"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "DisplayName" "BUSMASTER (remove only)"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER" "UninstallString" '"$INSTDIR\uninst.exe"'
+    WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir" "$INSTDIR"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayName" "BUSMASTER Ver ${VERSION}(remove only)"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "UninstallString" '"$INSTDIR\uninst.exe"'
 
 
     ; Compatibility settings for Windows 7
@@ -733,12 +758,12 @@ Section "BUSMASTER"
     ExecWait 'BUSMASTER.exe /regserver'
 
 	SetShellVarContext all
-	
+		
 	; Start menu entries
-    CreateDirectory "$SMPROGRAMS\BUSMASTER"
-    CreateShortCut "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk" "$INSTDIR\BUSMASTER.exe" "" "$INSTDIR\BUSMASTER.exe" 0
-	CreateShortCut "$SMPROGRAMS\BUSMASTER\BUSMASTER_Cleanup_Registry.lnk" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" "" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" 0
-    CreateShortCut "$SMPROGRAMS\BUSMASTER\Uninstall.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
+    CreateDirectory "$SMPROGRAMS\BUSMASTER v${VERSION}"
+    CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" "" "$INSTDIR\BUSMASTER.exe" 0
+	CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER_Cleanup_Registry.lnk" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" "" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" 0
+    CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Uninstall.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
 	
     ; Uninstaller
     WriteUninstaller "uninst.exe"
@@ -746,8 +771,7 @@ SectionEnd
 Section "DMGraph"
     SectionIn RO 1 2 3
     SetOutPath $INSTDIR
-    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
-    ExecWait 'regsvr32 DMGraph.dll /s'
+    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll    
 SectionEnd
 SectionGroupEnd
 SectionGroup "Hardware Interfaces"
@@ -803,6 +827,11 @@ Section "Vision Systems GmbH VSCAN API"
     File ..\Sources\BIN\Release\CAN_VSCOM.dll
     File ..\Sources\BIN\Release\vs_can_api.dll
 SectionEnd
+Section "SPX DS API"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\CAN_i-VIEW.dll
+SectionEnd
 
 SectionGroupEnd
 SectionGroup "Registry Cleanup"
@@ -836,17 +865,18 @@ Section "Uninstall"
     ; Unregister server
     SetOutPath $INSTDIR
     ExecWait 'BusEmulation.exe /unregserver'
-    ExecWait 'BUSMASTER.exe /unregserver'
-    ExecWait 'regsvr32 /u DMGraph.dll /s'	
+    ExecWait 'BUSMASTER.exe /unregserver'    
 	
     ; Delete registration entries
 	; PTV
-	DeleteRegKey HKCU "Software\RBIN\BUSMASTER"
+	DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}"
+	DeleteRegKey HKCU "Software\RBEI-ETAS"
 	
-	DeleteRegValue HKLM "Software\BUSMASTER" "Install_Dir"
+	DeleteRegValue HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir"
+	DeleteRegKey   HKLM "Software\BUSMASTER_v${VERSION}"
     ; PTV END
 	
-    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER"
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}"
 
     ; Compatibility settings
     DeleteRegValue HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe"
@@ -858,20 +888,20 @@ Section "Uninstall"
      RMDir /r "$INSTDIR"	
 	 
 	 ; Delete desktop shortcut
-	Delete "$DESKTOP\BUSMASTER.lnk"
+	Delete "$DESKTOP\BUSMASTER v${VERSION}.lnk"
 	; Delete shortcut from start menu
-	Delete "$SMPROGRAMS\BUSMASTER.lnk"
+	Delete "$SMPROGRAMS\BUSMASTER v${VERSION}.lnk"
 	
 	 SetShellVarContext all
 	
 	; Delete start menu entries
-    Delete "$SMPROGRAMS\BUSMASTER\Uninstall.lnk"
-    Delete "$SMPROGRAMS\BUSMASTER\BUSMASTER.lnk"
-	Delete "$SMPROGRAMS\BUSMASTER\BUSMASTER_Cleanup_Registry.lnk"
+    Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Uninstall.lnk"
+    Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER v${VERSION}.lnk"
+	Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER_Cleanup_Registry.lnk"
 	
 	; Deleting If StartPrograms BUSMASTER dir exists
-	IfFileExists $SMPROGRAMS\BUSMASTER bSSBMDirExists
+	IfFileExists "$SMPROGRAMS\BUSMASTER v${VERSION}" bSSBMDirExists
 	bSSBMDirExists:
-			RMDir /r "$SMPROGRAMS\BUSMASTER"
+			RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}"
   
 SectionEnd

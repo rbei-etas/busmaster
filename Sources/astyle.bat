@@ -12,7 +12,7 @@ goto END
 
 :BUILD
 echo Using AStyle found in %ASTYLE_HOME%
-"%ASTYLE_HOME%\bin\AStyle.exe" --options=astyle.txt --exclude=EXTERNAL_INCLUDE --recursive *.c *.cpp *.h *.hpp
+"%ASTYLE_HOME%\bin\AStyle.exe" --options=astyle.txt --exclude=EXTERNAL --recursive *.c *.cpp *.h *.hpp
 
 :END
 exit 0
