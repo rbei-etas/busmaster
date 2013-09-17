@@ -39,7 +39,7 @@
 #include "ChangeRegisters.h"
 #include "../Application/MultiLanguage.h"
 #define DYNAMIC_XLDRIVER_DLL
-#include "EXTERNAL_INCLUDE/canlib.h"
+#include "EXTERNAL/INC/canlib.h"
 
 #define USAGE_EXPORT
 #include "CAN_Kvaser_CAN_Extern.h"

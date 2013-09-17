@@ -44,7 +44,8 @@
 #define FORM_ERROR_RX                      0x60
 #define STUFF_ERROR_RX                     0xA0
 #define OTHER_ERROR_RX                     0xE0
-
+#define ACK_ERROR_TX                       0xF0
+#define ACK_ERROR_RX                       0XF1
 
 #define DIL_OK                          0x0000
 #define DIL_FAIL                        0xFFFF

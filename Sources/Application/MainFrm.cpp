@@ -1000,26 +1000,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     // The first sub menu is statically created and is disabled.
     // So enable it and change the text top the first MRU file name
     // Then create menu for the rest of the MRU files
-    m_omStrMRU_ConfigurationFiles[0] =
-        theApp.GetProfileString( _(defSECTION_MRU),
-                                 _(defSECTION_MRU_FILE1),
-                                 _(defSTR_DEFAULT_MRU_ITEM) );
-    m_omStrMRU_ConfigurationFiles[1] =
-        theApp.GetProfileString( _(defSECTION_MRU),
-                                 _(defSECTION_MRU_FILE2),
-                                 STR_EMPTY );
-    m_omStrMRU_ConfigurationFiles[2] =
-        theApp.GetProfileString( _(defSECTION_MRU),
-                                 _(defSECTION_MRU_FILE3),
-                                 STR_EMPTY );
-    m_omStrMRU_ConfigurationFiles[3] =
-        theApp.GetProfileString( _(defSECTION_MRU),
-                                 _(defSECTION_MRU_FILE4),
-                                 STR_EMPTY );
-    m_omStrMRU_ConfigurationFiles[4] =
-        theApp.GetProfileString( _(defSECTION_MRU),
-                                 _(defSECTION_MRU_FILE5),
-                                 STR_EMPTY );
+    DWORD dwVal;
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE1), REG_SZ, m_omStrMRU_ConfigurationFiles[0], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE2), REG_SZ, m_omStrMRU_ConfigurationFiles[1], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE3), REG_SZ, m_omStrMRU_ConfigurationFiles[2], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE4), REG_SZ, m_omStrMRU_ConfigurationFiles[3], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE5), REG_SZ, m_omStrMRU_ConfigurationFiles[4], dwVal);
 
     // Create MRU under "Recent Configurations" menu item
     vCreateMRU_Menus();
@@ -1039,7 +1025,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
     Sleep(1500);
 
-    theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
+    // Setting Hex Mode by default
+    bSetHexDecFlags(TRUE);
+    //theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
 
 
 
@@ -4880,9 +4868,7 @@ void CMainFrame::OnClose()
                     if (SaveConfiguration() ==
                             defCONFIG_FILE_SUCCESS )
                     {
-                        theApp.WriteProfileString(_(SECTION),
-                                                  defCONFIGFILENAME,
-                                                  oCfgFilename);
+                        bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
                 }
             }
@@ -4907,8 +4893,7 @@ void CMainFrame::OnClose()
                     vSetFileStorageInfo(oCfgFilename);
                     if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
                     {
-                        theApp.WriteProfileString(_(SECTION), defCONFIGFILENAME,
-                                                  oCfgFilename);
+                        bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
                 }
                 else if ( unMsgRetVal == IDCANCEL )
@@ -4920,10 +4905,7 @@ void CMainFrame::OnClose()
     }
 
     // Writing in to Registry
-    // PTV [1.6.4] 6
-    theApp.WriteProfileString(SECTION,
-                              defCONFIGFILENAME,
-                              oCfgFilename);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
 
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
@@ -5115,6 +5097,42 @@ void CMainFrame::OnClose()
     CMDIFrameWnd::OnClose();
 }
 
+/**
+* \brief         Writes a value under BUSMASTER registry share
+* \param         void
+* \return        true for SUCCESS, else FALSE
+* \authors       Arunkumar Karri
+* \date          07.09.2013 Created
+*/
+bool CMainFrame::bWriteIntoRegistry(HKEY hRootKey, CString strSubKey, CString strName,  BYTE bytType, CString strValue , DWORD dwValue)
+{
+    HKEY hKey;
+    DWORD dwDisp = 0;
+    LPDWORD lpdwDisp = &dwDisp;
+    CString strCompleteSubKey;
+    strCompleteSubKey.Format("Software\\RBEI-ETAS\\BUSMASTER_v%d.%d.%d\\%s",VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,strSubKey);
+
+    LONG iSuccess = RegCreateKeyEx( HKEY_CURRENT_USER, strCompleteSubKey, 0L,NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKey,lpdwDisp);
+    LSTATUS ls = 0;
+
+    if(iSuccess == ERROR_SUCCESS)
+    {
+        if ( bytType == REG_SZ )
+        {
+            ls = RegSetValueEx (hKey, strName.GetBuffer(MAX_PATH), 0L, REG_SZ,(CONST BYTE*) strValue.GetBuffer(MAX_PATH), strValue.GetLength());
+        }
+        else if ( bytType == REG_DWORD )
+        {
+            ls = RegSetValueEx (hKey, strName.GetBuffer(MAX_PATH), 0L, REG_DWORD,(CONST BYTE*) &dwValue, sizeof(dwValue));
+        }
+        RegCloseKey(hKey);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 /*******************************************************************************
   Function Name  : ClearUserDefinedNodes
   Input(s)       : string& - path to global file
@@ -5646,6 +5664,59 @@ void CMainFrame::OnHex_DecButon()
     }
 }
 
+/**
+* \brief         Enabling or disabling Hex/Numeric mode
+* \param[in]     bHexEnabled is bool variable, if true Hex mode is enabled
+* \return        void
+* \authors       Prathiba P
+* \date          06.18.2013 Created
+*/
+void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
+{
+    if (m_podMsgWndThread != NULL)
+    {
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+        BYTE byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        if (bHexEnabled == FALSE)
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_DEC(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, FALSE);
+        }
+        else
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_HEX(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
+        }
+        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
+        {
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
+            //Update Message Window
+            if(hWnd)
+            {
+                BYTE bModes = NUMERIC;
+                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
+            }
+        }
+    }
+
+    BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
+    if(m_objTxHandler.hConfigWindowShown() == S_OK)
+    {
+        eUSERSELCTION eUserSel = eHEXDECCMD;
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+    }
+    if (sg_pouSWInterface[CAN] != NULL)
+    {
+        sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
+    }
+    if (sg_pouSWInterface[J1939] != NULL)
+    {
+        sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
+    }
+}
 /**
  * \brief Display Message window Overwrite
  * \req RS_16_01 - Two display modes namely, overwrite and append shall be supported.
@@ -6825,30 +6896,20 @@ void CMainFrame::OnUpdateReplayStop(CCmdUI* pCmdUI)
 void CMainFrame::vSaveWinStatus(WINDOWPLACEMENT WinCurrStatus)
 {
     // Write the Window Flag
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG,
-                           WinCurrStatus.flags);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG, REG_DWORD,"",WinCurrStatus.flags);
     // Write the show wnd command
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD,
-                           WinCurrStatus.showCmd);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, REG_DWORD,"",WinCurrStatus.showCmd);
     // Write the X, Y position when window is in minimum position
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X,
-                           WinCurrStatus.ptMinPosition.x);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y,
-                           WinCurrStatus.ptMinPosition.y);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X, REG_DWORD,"",WinCurrStatus.ptMinPosition.x);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y, REG_DWORD,"",WinCurrStatus.ptMinPosition.y);
     // Write the X, Y position when window is in maximum position
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X,
-                           WinCurrStatus.ptMaxPosition.x);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y,
-                           WinCurrStatus.ptMaxPosition.y);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X, REG_DWORD,"",WinCurrStatus.ptMaxPosition.x);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y, REG_DWORD,"",WinCurrStatus.ptMaxPosition.y);
     // Write the Window co-ordinates
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT,
-                           WinCurrStatus.rcNormalPosition.left);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_RIGHT,
-                           WinCurrStatus.rcNormalPosition.right);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_TOP,
-                           WinCurrStatus.rcNormalPosition.top);
-    theApp.WriteProfileInt(defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM,
-                           WinCurrStatus.rcNormalPosition.bottom);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT, REG_DWORD,"",WinCurrStatus.rcNormalPosition.left);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_RIGHT, REG_DWORD,"",WinCurrStatus.rcNormalPosition.right);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_TOP, REG_DWORD,"",WinCurrStatus.rcNormalPosition.top);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM, REG_DWORD,"",WinCurrStatus.rcNormalPosition.bottom);
 }
 /******************************************************************************/
 /*  Function Name    :  vGetWinStatus                                         */
@@ -6865,37 +6926,56 @@ void CMainFrame::vSaveWinStatus(WINDOWPLACEMENT WinCurrStatus)
 /******************************************************************************/
 void CMainFrame::vGetWinStatus(WINDOWPLACEMENT& WinCurrStatus)
 {
+    CString strTemp;
     // Set the length of the structure
     WinCurrStatus.length = sizeof(WINDOWPLACEMENT);
     // Get the Window Flag
-    WinCurrStatus.flags = theApp.GetProfileInt(defSECTION_MAIN_WND,
-                          defITEM_MAIN_WND_FLAG, WPF_RESTORETOMAXIMIZED);
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.flags))
+    {
+        WinCurrStatus.flags = WPF_RESTORETOMAXIMIZED;
+    }
     // Get the show wnd command
-    WinCurrStatus.showCmd = theApp.GetProfileInt(defSECTION_MAIN_WND,
-                            defITEM_MAIN_WND_SHOWCMD, SW_SHOWMAXIMIZED);
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.showCmd) )
+    {
+        WinCurrStatus.showCmd = SW_SHOWMAXIMIZED;
+    }
     // Get the X, Y position when window is in minimum position
-    WinCurrStatus.ptMinPosition.x = theApp.GetProfileInt(defSECTION_MAIN_WND,
-                                    defITEM_MAIN_WND_MINPOS_X, 200);
-    WinCurrStatus.ptMinPosition.y = theApp.GetProfileInt(defSECTION_MAIN_WND,
-                                    defITEM_MAIN_WND_MINPOS_Y, 200);
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.ptMinPosition.x) )
+    {
+        WinCurrStatus.ptMinPosition.x = 200;
+    }
+
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.ptMinPosition.y) )
+    {
+        WinCurrStatus.ptMinPosition.y = 200;
+    }
     // Get the X, Y position when window is in maximum position
-    WinCurrStatus.ptMaxPosition.x = theApp.GetProfileInt(defSECTION_MAIN_WND,
-                                    defITEM_MAIN_WND_MAXPOS_X, 0);
-    WinCurrStatus.ptMaxPosition.y = theApp.GetProfileInt(defSECTION_MAIN_WND,
-                                    defITEM_MAIN_WND_MAXPOS_Y, 0);
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.ptMaxPosition.x) )
+    {
+        WinCurrStatus.ptMaxPosition.x = 0;
+    }
+
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.ptMaxPosition.y) )
+    {
+        WinCurrStatus.ptMaxPosition.y = 0;
+    }
     // Get the Window co-ordinates
-    WinCurrStatus.rcNormalPosition.left = theApp.GetProfileInt(
-            defSECTION_MAIN_WND,
-            defITEM_MAIN_WND_LEFT, 0);
-    WinCurrStatus.rcNormalPosition.right = theApp.GetProfileInt(
-            defSECTION_MAIN_WND,
-            defITEM_MAIN_WND_RIGHT, 400);
-    WinCurrStatus.rcNormalPosition.top = theApp.GetProfileInt(
-            defSECTION_MAIN_WND,
-            defITEM_MAIN_WND_TOP, 0);
-    WinCurrStatus.rcNormalPosition.bottom = theApp.GetProfileInt(
-            defSECTION_MAIN_WND,
-            defITEM_MAIN_WND_BOTTOM, 350);
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.rcNormalPosition.left) )
+    {
+        WinCurrStatus.rcNormalPosition.left = 0;
+    }
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_RIGHT, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.rcNormalPosition.right) )
+    {
+        WinCurrStatus.rcNormalPosition.right = 400;
+    }
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_TOP, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.rcNormalPosition.top) )
+    {
+        WinCurrStatus.rcNormalPosition.top = 0;
+    }
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.rcNormalPosition.bottom) )
+    {
+        WinCurrStatus.rcNormalPosition.bottom = 350;
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnShowWindow                                          */
@@ -6996,16 +7076,11 @@ void CMainFrame::OnDestroy()
     // If DLL is loaded, then delete threads if anything is running/waiting
     //CExecuteManager::ouGetExecuteManager().vDeleteAllNode();
     // Write the MRU file list into the registry
-    theApp.WriteProfileString( _(defSECTION_MRU), _(defSECTION_MRU_FILE1),
-                               m_omStrMRU_ConfigurationFiles[0] );
-    theApp.WriteProfileString( _(defSECTION_MRU), _(defSECTION_MRU_FILE2),
-                               m_omStrMRU_ConfigurationFiles[1] );
-    theApp.WriteProfileString( _(defSECTION_MRU), _(defSECTION_MRU_FILE3),
-                               m_omStrMRU_ConfigurationFiles[2] );
-    theApp.WriteProfileString( _(defSECTION_MRU), _(defSECTION_MRU_FILE4),
-                               m_omStrMRU_ConfigurationFiles[3] );
-    theApp.WriteProfileString( _(defSECTION_MRU), _(defSECTION_MRU_FILE5),
-                               m_omStrMRU_ConfigurationFiles[4] );
+    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE1), REG_SZ, m_omStrMRU_ConfigurationFiles[0]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE2), REG_SZ, m_omStrMRU_ConfigurationFiles[1]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE3), REG_SZ, m_omStrMRU_ConfigurationFiles[2]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE4), REG_SZ, m_omStrMRU_ConfigurationFiles[3]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE5), REG_SZ, m_omStrMRU_ConfigurationFiles[4]);
     // Delete memory associated with signal watch window
     vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
     vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
@@ -7949,6 +8024,9 @@ void CMainFrame::OnFileConnect()
                         vSetBaudRateInfo(J1939);                // Update the baud rate details
                     }
                     sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
+
+                    BYTE bytTbrItemIndex = 2;
+                    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
                 }
 
             }
@@ -8368,6 +8446,8 @@ void CMainFrame::OnNewConfigFile()
             vStartStopLogging( bLogON );
         }
 
+        // setting by default Hex mode on new configuration
+        bSetHexDecFlags(TRUE);
         // On New Configuration Stop Logging if it is enabled for J1939
         vJ1939StartStopLogging();
 
@@ -8451,9 +8531,7 @@ void CMainFrame::OnSaveConfigFile()
                     defCONFIG_FILE_SUCCESS )
             {
                 vPushConfigFilenameDown(omStrCfgFilename);
-                theApp.WriteProfileString(_(SECTION),
-                                          defCONFIGFILENAME,
-                                          omStrCfgFilename);
+                bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
                 m_omStrSavedConfigFile = omStrCfgFilename;
             }
         }
@@ -8465,9 +8543,7 @@ void CMainFrame::OnSaveConfigFile()
             vPushConfigFilenameDown(omStrCfgFilename);
 
             // PTV [1.6.4] 6
-            theApp.WriteProfileString(_(SECTION),
-                                      defCONFIGFILENAME,
-                                      omStrCfgFilename);
+            bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
             m_omStrSavedConfigFile = omStrCfgFilename;
             // PTV [1.6.4] 6
         }
@@ -9030,15 +9106,14 @@ void CMainFrame::vCreateMRU_Menus()
         {
             // Remove the static item
             UINT unMenuID = IDM_REC_CFG_FILE1;
-            pMenu->RemoveMenu( unMenuID, MF_BYCOMMAND);
             // Create menu's to hold rest of MRU configuration files
             for (UINT unCount = 0; unCount < 5; unCount++ )
             {
                 // Create menu only if string is not empty
                 if ( m_omStrMRU_ConfigurationFiles[unCount] != STR_EMPTY )
                 {
-                    pMenu->AppendMenu(MF_STRING | MF_ENABLED,
-                                      unMenuID + unCount,
+                    pMenu->RemoveMenu( unMenuID + unCount, MF_BYCOMMAND);
+                    pMenu->AppendMenu(MF_STRING, unMenuID + unCount,
                                       m_omStrMRU_ConfigurationFiles[unCount] );
                 }
                 else
@@ -11287,7 +11362,6 @@ void CMainFrame::OnCfgnReplay()
     vREP_DisplayReplayConfigDlg(CAN, &m_sFilterAppliedCAN);
 }
 
-
 /*******************************************************************************
   Function Name  : OnUpdateCfgnReplay
   Input(s)       : -
@@ -11789,6 +11863,9 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
             if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
             {
                 DeselectJ1939Interfaces();
+                // On Deactivate, deactivating J1939 and hiding the message window
+                GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+                m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
@@ -12384,6 +12461,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             ApplyReplayFilter();
             ApplyMessagewindowOverwrite();
             nRetValue = S_OK;
+            vCreateMRU_Menus();
         }
         //~MVN
         else                            //2. Load as a Binary File
@@ -13745,10 +13823,14 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
 
                 if(strDisplayNumericON == _("TRUE"))
                 {
+                    // Setting decimal mode
+                    bSetHexDecFlags(FALSE);
                     m_sToolBarInfo.m_byDisplayHexON = FALSE;
                 }
                 else if(strDisplayNumericON == _("FALSE"))
                 {
+                    // Setting Hex mode
+                    bSetHexDecFlags(TRUE);
                     m_sToolBarInfo.m_byDisplayHexON = TRUE;
                 }
                 xmlFree(ptext);
@@ -15464,6 +15546,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             else
             {
                 theApp.pouGetFlagsPtr()->vInitializeFlags();
+                // Setting Hex mode
+                bSetHexDecFlags(TRUE);
                 m_sNotificWndPlacement.length = 0;
                 m_sNotificWndPlacement.rcNormalPosition.top = -1;
                 if (m_podUIThread != NULL)
@@ -16706,18 +16790,18 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 
     if (bResult == TRUE)
     {
-        CMenu* pConfigMenu = GetSubMenu(_T(_("&Hardware"))); // Get the Menu "&Hardware"
+        CMenu* pConfigMenu = GetSubMenu(_T(_("&CAN"))); // Get the Menu "&Hardware"
         ASSERT(pConfigMenu != NULL);
         if (pConfigMenu == NULL)
         {
-            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&Hardware\") failed"));
+            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&CAN\") failed"));
         }
         /*  PTV[1.6.4] */
         // Added shortcut key
 
         if(pConfigMenu != NULL)
         {
-            pConfigMenu->InsertMenu(3, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _T(_("&Hardware Interface")));
+            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _T(_("Dri&ver Selection")));
         }
     }
     if (bResult == FALSE)
@@ -17082,6 +17166,11 @@ void CMainFrame::OnActivateJ1939()
         }
         m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
     }
+    else
+    {
+        // Go online or offline
+        OnActionJ1939Online();
+    }
 
     ASSERT(Result == S_OK);
 }
@@ -17170,8 +17259,8 @@ void CMainFrame::OnActionJ1939Online()
         }
     }
     /* Modify filter icon accordingly in J1939 toolbar*/
-    BYTE bytTbrItemIndex = 1;
-    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bOnlineStatus, IDI_ICON_J1939_OFFLINE, IDI_ICON_J1939_ONLINE );
+    //BYTE bytTbrItemIndex = 1;
+    //vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bOnlineStatus, IDI_ICON_J1939_OFFLINE, IDI_ICON_J1939_ONLINE );
 
     /* If J1939 goes offline, Switch off J1939 Transmit Item */
     if ( !bOnlineStatus )
@@ -17212,7 +17301,16 @@ void CMainFrame::OnActionJ1939TxMessage()
         m_pouTxMsgWndJ1939 = new CTxMsgWndJ1939(this, m_sJ1939ClientParam);
         m_pouTxMsgWndJ1939->Create(IDD_DLG_TX);
     }
-    m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+
+    // Hide the J1939 Transmit window if it is visible
+    if(m_pouTxMsgWndJ1939->IsWindowVisible() == TRUE)
+    {
+        m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
+    }
+    else // Show the J1939 Transmit window if it is hidden
+    {
+        m_pouTxMsgWndJ1939->ShowWindow(SW_SHOW);
+    }
 }
 
 void CMainFrame::OnUpdateActionJ1939TxMessage(CCmdUI* pCmdUI)
@@ -17250,7 +17348,7 @@ void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
     /* Modify filter icon accordingly in J1939 toolbar*/
-    BYTE bytTbrItemIndex = 3;
+    BYTE bytTbrItemIndex = 2;
     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }

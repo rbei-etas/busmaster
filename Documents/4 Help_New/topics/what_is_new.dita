@@ -14,5 +14,13 @@
       </keywords>
     </metadata>
   </prolog>
-  <body/>
+  <body>
+    <p>Support to following hardware interfaces are added:</p>
+    <ul>
+      <li>NSI interface</li>
+      <li>i-View Interface</li>
+      <li>Development Environment IDE is migrated to Visual Studio 2012</li>
+      <li>Visual Studio Redistributable Package is expected by the installer script. Please refer development environment for more information</li>
+    </ul>
+  </body>
 </topic>

@@ -1,0 +1,328 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_DMGRAPHCTRL BITMAP DISCARDABLE "DMGraphc.bmp"
+IDB_FRAME BITMAP DISCARDABLE "Frame.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_DMGRAPHCTRL REGISTRY DISCARDABLE "DMGraphCtrl.rgs"
+IDR_ELEMENTPROPPAGE REGISTRY DISCARDABLE "ElementPropPage.rgs"
+IDR_ANNOPROPPAGE REGISTRY DISCARDABLE "AnnoPropPage.rgs"
+IDR_CURSORPROPPAGE REGISTRY DISCARDABLE "CursorPropPage.rgs"
+IDR_FORMATPROPPAGE REGISTRY DISCARDABLE "FormatPropPage.rgs"
+IDR_DMGRAPHPROPPAGE REGISTRY DISCARDABLE "DMGraphPropPage.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ELEMENTPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 167
+STYLE WS_CHILD
+FONT 8, "MS UI Gothic"
+BEGIN
+	LTEXT	"エレ&メント:", IDC_STATIC, 7, 7, 32, 8
+	PUSHBUTTON	"&エレメントの追加", IDC_ADDBUTTON, 8, 113, 76, 11
+	PUSHBUTTON	"エ&レメントの削除", IDC_DELBUTTON, 8, 127, 76, 11
+	GROUPBOX	"ライン", IDC_TXT_E1, 93, 6, 162, 64
+	LTEXT	"&タイプ:", IDC_TXT_E2, 105, 21, 28, 8
+	COMBOBOX	IDC_COMBO_TYPE, 146, 19, 84, 128, CBS_DROPDOWN | WS_VSCROLL |                     WS_TABSTOP
+	LTEXT	"&色:", IDC_TXT_E3, 105, 37, 19, 8
+	CONTROL	"", IDC_LINE_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 146, 35, 49, 12
+	LTEXT	"&幅:", IDC_TXT_E4, 105, 53, 22, 8
+	EDITTEXT	IDC_LINE_WIDTH, 146, 50, 42, 13, ES_AUTOHSCROLL
+	CONTROL	"Spin1", IDC_SPIN_LINE_WIDTH, "msctls_updown32", UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY |                     UDS_ARROWKEYS, 186, 50, 11, 13
+	GROUPBOX	"ポイント", IDC_STATIC, 94, 76, 162, 64
+	LTEXT	"タ&イプ:", IDC_TXT_E5, 105, 92, 19, 8
+	COMBOBOX	IDC_COMBO_SYMBOL, 148, 87, 84, 122, CBS_DROPDOWN | WS_VSCROLL |                     WS_TABSTOP
+	LTEXT	"&色:", IDC_TXT_E6, 105, 107, 19, 8
+	CONTROL	"", IDC_POINT_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 148, 103, 49, 12
+	CONTROL	"&ソリッド:", IDC_CHECK_SOLID, "Button", BS_AUTOCHECKBOX |                     BS_LEFTTEXT | WS_TABSTOP, 200, 103, 32, 11
+	LTEXT	"&サイズ:", IDC_TXT_E7, 105, 122, 16, 16
+	EDITTEXT	IDC_POINT_WIDTH, 148, 119, 42, 13, ES_AUTOHSCROLL
+	CONTROL	"Spin1", IDC_SPIN_POINT_WIDTH, "msctls_updown32", UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY |                     UDS_ARROWKEYS, 188, 119, 11, 13
+	CONTROL	"&表示:", IDC_CHECK_VISIBLE, "Button", BS_AUTOCHECKBOX |                     BS_LEFTTEXT | WS_TABSTOP, 99, 146, 39, 11
+	LTEXT	"&名:", IDC_TXT_E8, 147, 146, 22, 8
+	EDITTEXT	IDC_EDIT_NAME, 175, 144, 72, 12, ES_AUTOHSCROLL
+	PUSHBUTTON	"&選択を削除", IDC_REMOVE_SEL, 8, 140, 76, 11
+	CONTROL	"List1", IDC_COLLECTION_LIST, "SysListView32", LVS_REPORT |                     LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER |                     LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP, 8, 17, 76, 91
+END
+
+IDD_ANNOPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 167
+STYLE WS_CHILD
+FONT 8, "MS UI Gothic"
+BEGIN
+	LTEXT	"&注釈:", IDC_STATIC, 7, 7, 40, 8
+	PUSHBUTTON	"&注釈を追加", IDC_ADDBUTTON, 7, 114, 76, 11
+	PUSHBUTTON	"注&釈を削除", IDC_DELBUTTON, 7, 129, 76, 11
+	PUSHBUTTON	"&選択を削除", IDC_REMOVE_SEL, 7, 143, 76, 11
+	LTEXT	"&キャプション:", IDC_TXT_A1, 120, 20, 27, 16
+	EDITTEXT	IDC_EDIT_CAPTION, 153, 18, 85, 12, ES_AUTOHSCROLL
+	LTEXT	"&X 座標:", IDC_TXT_A2, 103, 35, 44, 8
+	EDITTEXT	IDC_EDIT_X, 153, 33, 85, 12, ES_AUTOHSCROLL
+	LTEXT	"&Y 座標:", IDC_TXT_A3, 103, 49, 44, 8
+	EDITTEXT	IDC_EDIT_Y, 153, 48, 85, 12, ES_AUTOHSCROLL
+	LTEXT	"&色:", IDC_TXT_A4, 122, 65, 22, 8
+	CONTROL	"&テキスト", IDC_LABEL_COLOR, "Button", BS_OWNERDRAW |                     WS_TABSTOP, 153, 63, 40, 12
+	CONTROL	"&BkG", IDC_LABEL_BGCOLOR, "Button", BS_OWNERDRAW |                     WS_TABSTOP, 197, 63, 40, 12
+	LTEXT	"&原点:", IDC_TXT_A5, 110, 82, 37, 8
+	COMBOBOX	IDC_COMBO_ORIENTATION, 153, 78, 85, 36, CBS_DROPDOWN |                     CBS_DISABLENOSCROLL | WS_TABSTOP
+	CONTROL	"&表示:", IDC_CHECK_VISIBLE, "Button", BS_AUTOCHECKBOX |                     BS_LEFTTEXT | WS_TABSTOP, 122, 92, 39, 11
+	CONTROL	"List1", IDC_COLLECTION_LIST, "SysListView32", LVS_REPORT |                     LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER |                     LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP, 8, 17, 76, 91
+END
+
+IDD_CURSORPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 167
+STYLE WS_CHILD
+FONT 8, "MS UI Gothic"
+BEGIN
+	LTEXT	"カ&ーソル:", IDC_STATIC, 7, 7, 26, 8
+	PUSHBUTTON	"Aカーソルの追加", IDC_ADDBUTTON, 7, 113, 76, 11
+	PUSHBUTTON	"&カーソルの削除", IDC_DELBUTTON, 7, 128, 76, 11
+	LTEXT	"&Crosshair スタイル:", IDC_TXT_C1, 99, 21, 48, 16
+	CONTROL	"&表示:", IDC_CHECK_VISIBLE, "Button", BS_AUTOCHECKBOX |                     BS_LEFTTEXT | WS_TABSTOP, 126, 105, 37, 11
+	CONTROL	"", IDC_CURSOR_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 154, 91, 40, 12
+	LTEXT	"&色:", IDC_TXT_C6, 129, 93, 19, 8
+	COMBOBOX	IDC_COMBO_STYLE, 153, 18, 85, 56, CBS_DROPDOWN |                     CBS_DISABLENOSCROLL | WS_TABSTOP
+	LTEXT	"&X 座標:", IDC_TXT_C2, 103, 35, 44, 8
+	LTEXT	"&Y 座標:", IDC_TXT_C3, 103, 49, 44, 8
+	EDITTEXT	IDC_EDIT_X, 153, 33, 85, 12, ES_AUTOHSCROLL
+	EDITTEXT	IDC_EDIT_Y, 153, 48, 85, 12, ES_AUTOHSCROLL
+	LTEXT	"&スナップモード:", IDC_TXT_C4, 108, 64, 39, 8
+	COMBOBOX	IDC_COMBO_SNAP, 153, 62, 85, 56, CBS_DROPDOWN |                     CBS_DISABLENOSCROLL | WS_TABSTOP
+	LTEXT	"&名:", IDC_TXT_C5, 122, 79, 22, 8
+	EDITTEXT	IDC_EDIT_NAME, 153, 77, 85, 12, ES_AUTOHSCROLL
+	PUSHBUTTON	"&選択を削除", IDC_REMOVE_SEL, 7, 143, 76, 11
+	CONTROL	"List1", IDC_COLLECTION_LIST, "SysListView32", LVS_REPORT |                     LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER |                     LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP, 8, 17, 76, 91
+END
+
+IDD_FORMATPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 105
+STYLE WS_CHILD
+FONT 8, "MS UI Gothic"
+BEGIN
+	COMBOBOX	IDC_COMBO_AXIS, 166, 22, 68, 37, CBS_DROPDOWNLIST |                     WS_VSCROLL | WS_TABSTOP
+	LTEXT	"&軸:", IDC_STATIC, 138, 24, 16, 8
+	EDITTEXT	IDC_EDIT_FORMAT, 166, 54, 67, 13, ES_AUTOHSCROLL
+	LTEXT	"&フォーマット:", IDC_STATIC, 137, 56, 24, 16
+	LISTBOX	IDC_FORMAT_LIST, 14, 23, 91, 80, LBS_NOINTEGRALHEIGHT |                     WS_VSCROLL | WS_TABSTOP
+	LTEXT	"&テンプレート:", IDC_STATIC, 15, 11, 36, 8
+	COMBOBOX	IDC_COMBO_TYPE, 166, 38, 68, 65, CBS_DROPDOWNLIST |                     WS_VSCROLL | WS_TABSTOP
+	LTEXT	"&タイプ:", IDC_STATIC, 138, 40, 19, 8
+	PUSHBUTTON	"&デフォルト", IDC_BUTTON_DEFAULT, 165, 73, 68, 13
+END
+
+IDD_DMGRAPHPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 124
+STYLE WS_CHILD
+FONT 8, "MS UI Gothic"
+BEGIN
+	LTEXT	"&トラックモード:", IDC_STATIC, 16, 13, 42, 8
+	COMBOBOX	IDC_COMBO_MODE, 67, 11, 60, 82, CBS_DROPDOWN | WS_VSCROLL |                     WS_TABSTOP
+	LTEXT	"キャプション", IDC_STATIC, 17, 31, 45, 8
+	EDITTEXT	IDC_CAPTION, 67, 30, 60, 12, ES_AUTOHSCROLL
+	LTEXT	"コントロールフレーム:", IDC_STATIC, 18, 48, 40, 16
+	COMBOBOX	IDC_COMBO_FRAME, 67, 47, 60, 45, CBS_DROPDOWN | WS_TABSTOP
+	CONTROL	"&グリッドXを表示:", IDC_CHECK_SHOWGRID_X, "Button", BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP, 16, 64, 59, 8
+	CONTROL	"グリッドYを表示:", IDC_CHECK_SHOWGRID_Y, "Button", BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP, 16, 79, 59, 8
+	CONTROL	"&ログ:", IDC_CHECK_XLOG, "Button", BS_AUTOCHECKBOX |                     BS_LEFTTEXT | WS_TABSTOP, 15, 94, 60, 8
+	CONTROL	"&ログ:", IDC_CHECK_YLOG, "Button", BS_AUTOCHECKBOX |                     BS_LEFTTEXT | WS_TABSTOP, 15, 107, 60, 8
+	LTEXT	"&コントロールフレーム:", IDC_STATIC, 140, 13, 49, 16
+	CONTROL	"", IDC_FRAME_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 200, 12, 28, 10
+	LTEXT	"&プロット領域:", IDC_STATIC, 140, 27, 32, 16
+	CONTROL	"", IDC_PLOT_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 200, 27, 28, 10
+	LTEXT	"&軸の色:", IDC_STATIC, 140, 43, 38, 8
+	CONTROL	"", IDC_AXIS_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 200, 42, 28, 10
+	LTEXT	"グ&リッド色:", IDC_STATIC, 140, 59, 38, 8
+	CONTROL	"", IDC_GRID_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 200, 58, 28, 10
+	LTEXT	"&ラベル色:", IDC_STATIC, 140, 75, 38, 8
+	CONTROL	"", IDC_LABEL_COLOR, "Button", BS_OWNERDRAW | WS_TABSTOP, 200, 74, 28, 10
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 196, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "DM グラフコントロールについて"
+FONT 8, "MS UI Gothic"
+BEGIN
+	LTEXT	"DMGraph コントロール、バージョン", IDC_STATIC, 21, 7, 88, 16
+	DEFPUSHBUTTON	"はい", IDOK, 47, 186, 100, 14, WS_GROUP
+	LTEXT	"", IDC_VERSION, 122, 7, 67, 8
+	EDITTEXT	IDC_DETAILS, 7, 20, 182, 161, ES_MULTILINE | ES_READONLY |                     WS_VSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CURSORPROPPAGE DLGINIT
+BEGIN
+	IDC_COMBO_STYLE, 0x403, 1, 0
+"\000"
+	0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ELEMENTPROPPAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 157
+    END
+    IDD_CURSORPROPPAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 159
+    END
+    IDD_DMGRAPHPROPPAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 115
+    END
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 189
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TXT
+//
+
+IDR_ABOUT TXT DISCARDABLE "About.txt"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+	IDS_PROJNAME "DMGraph"
+	IDS_TITLEElementPropPage "エレメント"
+	IDS_HELPFILEElementPropPage "ヘルプファイル名"
+	IDS_DOCSTRINGElementPropPage "DMGraph エレメントのプロパティページ"
+	IDS_TITLEAnnoPropPage "注釈"
+	IDS_HELPFILEAnnoPropPage "ヘルプファイル名"
+	IDS_DOCSTRINGAnnoPropPage "DMGraph 注釈のプロパティページ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+	IDS_TITLECursorPropPage "カーソル"
+	IDS_HELPFILECursorPropPage "ヘルプファイル名"
+	IDS_DOCSTRINGCursorPropPage "DMGraph カーソルのプロパティページ"
+	IDS_TITLEFormatPropPage "フォーマット"
+	IDS_HELPFILEFormatPropPage "ヘルプファイル名"
+	IDS_DOCSTRINGFormatPropPage "DMGraph フォーマットのプロパティページ"
+	IDS_TITLEDMGraphPropPage "DM Graph"
+	IDS_HELPFILEDMGraphPropPage "ヘルプファイル名"
+	IDS_DOCSTRINGDMGraphPropPage "DMGraph プロパティページ"
+	IDS_CURSOR_CROSSHAIR_STYLE "Crosshair X＆Y\nXの生え際\nYの生え際"
+	IDS_CURSOR_SNAP_MODE "修正されました\nフローティング\n要素にスナップ"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+	IDS_ANNO_ORIENTATION "水平な\n垂直"
+	IDS_GRAPH_TRACK_MODE "なし\nカーソルを追跡する\n要素を追跡する\nズーム\nZoomX\nズームレンズを用いた\nPanXY\nPanX\nPanY"
+	IDS_GRAPH_FRAME "フラット\n範囲\nビットマップ"
+	IDS_ELEM_LINE_TYPE "固体\n破線の\n溺愛\nダッシュ溺愛\nダッシュドット溺愛\nなし\nXYステップ\nYXステップ\nバー\nスティック"
+	IDS_ELEM_POINT_TYPE "なし\nドット\n長方形\nダイヤモンド\nAsterics\n夜明けの三角形\n最大三角形\n左の三角形\n直角三角形"
+	IDS_FORMAT_AXIS "ボトム\n左"
+	IDS_FORMAT_TYPE "数\n指数関数\nシンボリック\n日付\n時間"
+END
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""DMGraph.tlb""\r\n"
+    "#include ""DMGraph.rc2""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "DMGraph.tlb"
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE 0x11, 0x01
+#pragma code_page(932)
+#include "DMGraph.rc2"
+#include "..\..\Localization\l.jpn\afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

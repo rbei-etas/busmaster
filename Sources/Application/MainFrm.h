@@ -212,6 +212,8 @@ public:
     VOID vDeleteGlobalTxMemory();
     VOID vPostMsgToSendMsgDlg(ETYPE_BUS eBus);
     void vCreateMRU_Menus();
+
+    bool bWriteIntoRegistry(HKEY hRootKey, CString strSubKey, CString strName,  BYTE bytType, CString strValue = "" , DWORD dwValue = 0);
     // Delete memory allocated by signal watch
     void vFreeSignalWatchMemorySpace();
 
@@ -313,6 +315,8 @@ public:
     BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
     //~MVN
     void OnHex_DecButon();
+
+    void bSetHexDecFlags(BOOL bHexOn);
 
     /* API to modify icon for a particular item in toolbar */
     void vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF);
@@ -449,6 +453,7 @@ protected:
     afx_msg void OnGraphWindow();
     afx_msg void OnUpdateGraphWnd(CCmdUI* pCmdUI);
     afx_msg void OnCfgnReplay();
+
     afx_msg void OnUpdateCfgnReplay(CCmdUI* pCmdUI);
     afx_msg void OnConfigureSimulatedsystems();
     afx_msg void OnUpdateDllLoadAll(CCmdUI* pCmdUI);

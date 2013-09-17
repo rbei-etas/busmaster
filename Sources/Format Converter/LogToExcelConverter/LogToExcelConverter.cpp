@@ -132,7 +132,7 @@ CLogToExcelConverter::~CLogToExcelConverter(void)
 {
 };
 
-HRESULT CLogToExcelConverter::GetHelpText(string&)
+HRESULT CLogToExcelConverter::GetHelpText(CString)
 {
     return S_FALSE;
 }
@@ -169,8 +169,8 @@ BOOL CLogToExcelConverter::bHaveOwnWindow()
 
 HRESULT CLogToExcelConverter::GettextBusmaster(void)
 {
-    setlocale(LC_ALL,"");
-    bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
+    setlocale(LC_ALL, "");
+    bindtextdomain("BUSMASTER", getenv("LOCALDIR"));
     textdomain("BUSMASTER");
     return S_OK;
 }
