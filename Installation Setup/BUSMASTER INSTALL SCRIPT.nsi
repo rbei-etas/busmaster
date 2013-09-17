@@ -216,6 +216,27 @@ nsDialogs::Create 1018
 	FinishedShow:
 	nsDialogs::Show	
 FunctionEnd
+
+Function UpdateIcsneo40
+    ; install icsneo40.dll unless the file is already installed and is newer
+    IfFileExists "$SYSDIR\icsneo40.dll" icsneo40_upgrade icsneo40_install
+
+    ; compare versions
+    icsneo40_upgrade:
+    GetDLLVersion "$SYSDIR\icsneo40.dll" $R0 $R1
+    GetDLLVersionLocal "..\Sources\BIN\Release\icsneo40.dll" $R2 $R3
+    IntCmpU $R0 $R2 +1 icsneo40_install icsneo40_done ; compare major version
+    IntCmpU $R1 $R3 +1 icsneo40_install icsneo40_done ; compare minor version
+    Goto icsneo40_done
+
+    ; install file
+    icsneo40_install:
+    SetOutPath $SYSDIR
+    File ..\Sources\BIN\Release\icsneo40.dll
+
+    icsneo40_done:
+FunctionEnd
+
 ; Pages
 Page license
 Page components
@@ -755,8 +776,7 @@ Section "ETAS ES581"
     SectionIn 1 2
     SetOutPath $INSTDIR    
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll    
-    SetOutPath $SYSDIR
-    File ..\Sources\BIN\Release\icsneo40.dll
+    Call UpdateIcsneo40
 SectionEnd
 Section "ETAS BOA"
     SectionIn 1 2
@@ -767,8 +787,7 @@ Section "Intrepid neoVI"
     SectionIn 1 2
     SetOutPath $INSTDIR     
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
-    SetOutPath $SYSDIR
-    File ..\Sources\BIN\Release\icsneo40.dll
+    Call UpdateIcsneo40
 SectionEnd
 Section "Kvaser CAN"
     SectionIn 1 2
