@@ -136,7 +136,7 @@ int CSignalDefinerApp::ExitInstance()
 
         CDynLinkLibrary* pDLL = pModuleState->m_libraryList;
         if (pDLL &&
-            (pDLL->m_hModule == pModuleState->m_hCurrentInstanceHandle))
+                (pDLL->m_hModule == pModuleState->m_hCurrentInstanceHandle))
         {
             // We got it! Remove it, ...
             pModuleState->m_libraryList.Remove(pDLL);
@@ -144,7 +144,7 @@ int CSignalDefinerApp::ExitInstance()
             pDLL->~CDynLinkLibrary();
             // ... and free the memory -- with our native
             // deallocator!
-            free(pDLL);
+            //free(pDLL);
         }
     }
     return result;

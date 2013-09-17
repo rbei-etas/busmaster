@@ -209,6 +209,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\AcceptanceFilterDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\FrameProcessor\BaseLogObject.cpp"
 				>
 			</File>
@@ -218,6 +222,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL_stdafx.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\CANRegAnalysis.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\ChangeRegisters.cpp"
 				>
 			</File>
 			<File
@@ -277,6 +289,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\NetworkMgmt.cpp"
 				>
 			</File>
@@ -307,6 +323,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\AcceptanceFilterDlg.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Sources\DIL_Interface\BaseDIL_CAN.h"
 				>
 			</File>
@@ -336,6 +356,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL_stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\ChangeRegDefines.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\CAN_Vector_XL\ChangeRegisters.h"
 				>
 			</File>
 			<File
@@ -416,6 +444,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\Sources\DIL_J1939\MonitorNode.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\Sources\Application\MultiLanguage.h"
 				>
 			</File>
 			<File

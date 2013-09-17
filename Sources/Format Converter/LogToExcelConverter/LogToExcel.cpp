@@ -177,7 +177,7 @@ void CLogToExcel::vPrintFields()
                 m_strFieldBuffer.append(1,m_strBuffer[unBufferIndex]);
                 unFieldBufferIndex++;
                 unBufferIndex++;
-            }// while - m_strBuffer[unBufferIndex] != _T(" ")
+            }// while - m_strBuffer[unBufferIndex] != " "
 
             if( m_strBuffer.length() != unBufferIndex && m_strBuffer[unBufferIndex] == ' ')
             {

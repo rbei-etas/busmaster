@@ -145,7 +145,7 @@ BOOL CWaveformTransmitter::bGetSignalEntry(CString omSignalName,
     return bIsPresent;
 }
 
-void CWaveformTransmitter::vProcessWaveForm(int CurrItr)
+void CWaveformTransmitter::vProcessWaveForm(int CurrItr,int& iStep,eWAVEFORMTYPE& eWFType)
 {
     /*  Steps involved are:
         1. Get list of waveform messages and start with the first message
@@ -213,6 +213,8 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr)
                     sSIGNALS::vSetSignalValue(psCurrSignal, sCurrFrame.m_ucData,
                                               Amplitude);
                 }
+                iStep = unStep;
+                eWFType =  ouCurrSig.sWaveInfo.m_eSignalWaveType;
             }
             else
             {
@@ -305,6 +307,8 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
 
     bool bLoopON = true;
     int i = 0;
+    int iStep =0;
+    eWAVEFORMTYPE eWaveType;
 
     while (bLoopON)
     {
@@ -316,7 +320,7 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
             {
                 // Calculate signal values at the curent iteration and transmit
                 // the message(s).
-                pCurrObj->vProcessWaveForm(i);
+                pCurrObj->vProcessWaveForm(i,iStep,eWaveType);
             }
             break;
             case EXIT_THREAD:
@@ -331,7 +335,20 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
             }
             break;
         }
-        i = (i < nIterLimit) ? ++i : 0;
+        if(eWaveType == eWave_SAWTOOTH)
+        {
+            int nExcess= 0;
+            if( ((nIterLimit % iStep) != 0)&& (nIterLimit > iStep))
+            {
+                nExcess = (nIterLimit % iStep);
+                nIterLimit = nIterLimit - ( nExcess);
+            }
+            i = (i < nIterLimit-1) ? ++i : 0;
+        }
+        else
+        {
+            i = (i < nIterLimit) ? ++i : 0;
+        }
     }
     SetEvent(pThreadParam->hGetExitNotifyEvent());
 

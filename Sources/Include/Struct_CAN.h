@@ -147,6 +147,7 @@ private:
         m_bAccFilterMode    = objRef.m_bAccFilterMode;
         m_ucControllerMode  = objRef.m_ucControllerMode;
         m_bSelfReception    = objRef.m_bSelfReception;
+        m_bLowSpeed         = objRef.m_bLowSpeed;
 
         /* CAN FD related parameters */
         m_unDataBitRate                 = objRef.m_unDataBitRate;
@@ -192,6 +193,7 @@ public:
     int     m_bAccFilterMode;                    // acceptance filter mode(0: single, 1: Dual)
     int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
     int     m_bSelfReception;
+    int     m_bLowSpeed;
 
     /* CAN FD related parameters */
     UINT32  m_unDataBitRate;
@@ -267,6 +269,7 @@ public:
         m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
         m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
         m_bSelfReception = TRUE;
+        m_bLowSpeed = FALSE;
 
         /* CAN FD related parameters */
         m_unDataBitRate                 = 2000000;
@@ -290,6 +293,7 @@ public:
         COPY_DATA_2(&m_bAccFilterMode, pbyTemp, sizeof(INT));
         COPY_DATA_2(&m_ucControllerMode, pbyTemp, sizeof(INT));
         COPY_DATA_2(&m_bSelfReception, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&m_bLowSpeed, pbyTemp, sizeof(INT));
         COPY_DATA_2(&m_enmHWFilterType[0], pbyTemp, sizeof(eHW_FILTER_TYPES));
         COPY_DATA_2(&m_enmHWFilterType[1], pbyTemp, sizeof(eHW_FILTER_TYPES));
 
@@ -638,10 +642,17 @@ public:
         stringstream stream9;
         stream9 << m_bHWTimestamps;
         strData = stream9.str();
+
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWTimestamps", BAD_CAST strVar);
 
         xmlNewChild(pNodePtr, NULL, BAD_CAST "Location", BAD_CAST strLocation);
+
+        stringstream stream10;
+        stream10 << m_bLowSpeed;
+        strData = stream10.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "LowSpeed", BAD_CAST strVar);
     }
     void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
     {
@@ -655,6 +666,8 @@ public:
         COPY_DATA(pbyTemp, &m_ucControllerMode,  sizeof(INT));
         nSize += nIntSize;
         COPY_DATA(pbyTemp, &m_bSelfReception,  sizeof(INT));
+        nSize += nIntSize;
+        COPY_DATA(pbyTemp, &m_bLowSpeed,  sizeof(INT));
         nSize += nIntSize;
         COPY_DATA(pbyTemp, &m_enmHWFilterType[0],  sizeof(eHW_FILTER_TYPES));
         nSize += sizeof(eHW_FILTER_TYPES);

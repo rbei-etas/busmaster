@@ -29,7 +29,7 @@
 #include "FrameProcessor_stdafx.h"
 #include "include/Utils_macro.h"
 #include "FrameProcessor_Common.h"
-#include "RefTimeKeeper.h"
+#include "CommonClass/RefTimeKeeper.h"
 #include "include/XMLDefines.h"
 
 /* Log version..applicable for log files from ver 1.6.2 */

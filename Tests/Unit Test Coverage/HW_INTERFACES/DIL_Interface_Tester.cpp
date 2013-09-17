@@ -38,6 +38,7 @@
 #define USAGE_IMPORT 1
 #include <boost/test/unit_test.hpp>
 
+
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
@@ -289,7 +290,7 @@ BOOST_AUTO_TEST_CASE( CAN_Initializations_simulation )
 			BOOST_CHECK ( g_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, NULL, &g_ouCanBuf) == S_OK);
 
 			/* Reset CAN hardware */
-			hr = g_pouDIL_CAN_Interface->DILC_ResetHardware();
+			//hr = g_pouDIL_CAN_Interface->DILC_ResetHardware();
 
 			/* Disconnect from CAN network */
 			hr = g_pouDIL_CAN_Interface->DILC_StopHardware();
@@ -317,7 +318,7 @@ BOOST_AUTO_TEST_CASE( CAN_Initializations_simulation )
 	g_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, g_dwClientID, &g_ouCanBuf);
 	g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
 	g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
-	g_pouDIL_CAN_Interface->DILC_ResetHardware();
+	//g_pouDIL_CAN_Interface->DILC_ResetHardware();
 	g_pouDIL_CAN_Interface->DILC_SelectDriver(g_dwDriverId, NULL, &g_ouWrapperLogger);
 	g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(g_asINTERFACE_HW, nCount);
 	g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, sMsg);
@@ -328,7 +329,7 @@ BOOST_AUTO_TEST_CASE( CAN_Initializations_simulation )
 	FILTER_TYPE FilterType;	
 	UINT* punMsgIds;
 	
-	g_pouDIL_CAN_DUMMY->CAN_FilterFrames(FilterType, CHANNEL_CAN_MIN, punMsgIds, 0);
+	//g_pouDIL_CAN_DUMMY->CAN_FilterFrames(FilterType, CHANNEL_CAN_MIN, punMsgIds, 0);
 	g_pouDIL_CAN_DUMMY->CAN_GetCurrStatus(objMsg);
 	g_pouDIL_CAN_DUMMY->CAN_LoadDriverLibrary();
 	g_pouDIL_CAN_DUMMY->CAN_SelectHwInterface(g_asINTERFACE_HW, nCount);

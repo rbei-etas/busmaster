@@ -48,7 +48,7 @@ public:
     virtual HRESULT GetConverterName(string& strConverterName);
     virtual HRESULT GetErrorStatus(HRESULT hResult, string& omstrStatus);
     virtual HRESULT GetLastConversionStatus(HRESULT& hResult, string& omstrStatus);
-    virtual HRESULT GetHelpText(string& pchHelpText);
+    virtual HRESULT GetHelpText(CString pchHelpText);
     virtual BOOL bHaveOwnWindow();
     virtual HRESULT GettextBusmaster();
     virtual HRESULT GetPropertyPage(CPropertyPage*& pPage)

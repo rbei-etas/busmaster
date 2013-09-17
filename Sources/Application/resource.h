@@ -1032,6 +1032,7 @@
 #define ID_TOOLBAR_J1939                33066
 #define ID_BUTTON33067                  33067
 #define ID_BUTTON33069                  33069
+#define ID_CONFIGURATION_TOOLBAR        33070
 #define IDM_CONFIGURE                   33072
 #define ID_DISPLAY_CONFIGURE            33073
 #define ID_DISPLAY_SIGNALGRAPHWINDOW    33075

@@ -30,8 +30,8 @@
 IMPLEMENT_DYNAMIC(CExportLogFileDlg, CPropertyPage)
 CExportLogFileDlg::CExportLogFileDlg(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
     : CPropertyPage(CExportLogFileDlg::IDD)
-    , m_omStrLogFileName(_T(""))
-    , m_omStrCSVFileName(_T(""))
+    , m_omStrLogFileName("")
+    , m_omStrCSVFileName("")
 {
     m_eBus = eBus;
 
@@ -488,14 +488,14 @@ void CExportLogFileDlg::OnCbnSelchangeComboBustype()
 
     if( omStrBus == "CAN")
     {
-        omTitle += _T("CAN");
+        omTitle += "CAN";
         m_eBus = CAN;
         m_pacFields = (CHAR_ARRAY_20*) acFields_CAN;
         m_unNoOfFileds = defNO_OF_FIELDS_CAN;
     }
     else if ( omStrBus == "J1939")
     {
-        omTitle += _T("J1939");
+        omTitle += "J1939";
         m_eBus = J1939;
         m_pacFields = (CHAR_ARRAY_20*)acFields_J1939;
         m_unNoOfFileds = defNO_OF_FIELDS_J1939;

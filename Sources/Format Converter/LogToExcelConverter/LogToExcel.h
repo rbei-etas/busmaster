@@ -64,20 +64,20 @@ __declspec( selectany ) char acFields_J1939[defNO_OF_FIELDS_J1939][20] = {  "Tim
         "Data Bytes"
                                                                          };
 
-#define defSTR_CSV_DIALOG_CAPTION    _T("Select Export File")
-//#define defSTR_CSV_FORMAT_SPECIFIER  _T("Comma Separated Values format (*.xls)|*.xls||")
-//#define defSTR_CSV_FORMAT            _T("xls")
+#define defSTR_CSV_DIALOG_CAPTION    _("Select export file")
+#define defSTR_CSV_FORMAT_SPECIFIER  _("Comma Separated Values file(s) (*.csv)|*.csv||")
+#define defSTR_CSV_FORMAT            "csv"
 
-#define defSTR_XLS_FORMAT_SPECIFIER  _T("Comma Separated Values format (*.xls)|*.xls||")
-#define defSTR_XLS_FORMAT            _T("xls")
+#define defSTR_XLS_FORMAT_SPECIFIER  _("Excel file(s) (*.xls)|*.xls||")
+#define defSTR_XLS_FORMAT            "xls"
 
-#define defSTR_LOG_DIALOG_CAPTION    _T("Select Log File")
-#define defSTR_LOG_FORMAT_SPECIFIER  _T("*.log |*.log||")
-#define defSTR_LOG_FORMAT            _T("log")
-#define defSTR_FILE_NAME_EMPTY       _T("Please enter log file and export file names")
-//#define defSTR_FILE_OPEN_ERROR       _T("Unable to open the file %s")
+#define defSTR_LOG_DIALOG_CAPTION    _("Select log file")
+#define defSTR_LOG_FORMAT_SPECIFIER  "*.log|*.log||"
+#define defSTR_LOG_FORMAT            "log"
+#define defSTR_FILE_NAME_EMPTY       _("Please enter log file and export file names")
+//#define defSTR_FILE_OPEN_ERROR       _("Unable to open the file %s")
 
-#define defSTR_CSV_HEADER            _T("FRAME Generated Report\n\n")
+#define defSTR_CSV_HEADER            _("BUSMASTER generated report\n\n")
 
 class CLogToExcel
 {
