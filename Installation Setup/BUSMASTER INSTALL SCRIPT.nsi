@@ -755,7 +755,8 @@ Section "ETAS ES581"
     SectionIn 1 2
     SetOutPath $INSTDIR    
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll    
-	File ..\Sources\BIN\Release\ETASneo40.dll
+    SetOutPath $SYSDIR
+    File ..\Sources\BIN\Release\icsneo40.dll
 SectionEnd
 Section "ETAS BOA"
     SectionIn 1 2
@@ -766,7 +767,8 @@ Section "Intrepid neoVI"
     SectionIn 1 2
     SetOutPath $INSTDIR     
     File ..\Sources\BIN\Release\CAN_ICS_neoVI.dll
-	File ..\Sources\BIN\Release\icsneo40.dll 
+    SetOutPath $SYSDIR
+    File ..\Sources\BIN\Release\icsneo40.dll
 SectionEnd
 Section "Kvaser CAN"
     SectionIn 1 2
