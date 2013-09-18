@@ -70,7 +70,7 @@
     <ClInclude Include="HardwareListing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EXTERNAL_INCLUDE\icsnVC40.h">
+    <ClInclude Include="EXTERNAL\icsnVC40.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Application\MultiLanguage.h">

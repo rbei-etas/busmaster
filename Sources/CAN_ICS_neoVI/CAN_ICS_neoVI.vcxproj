@@ -216,7 +216,7 @@
     <ClInclude Include="ChangeRegisters_CAN_ICS_neoVI.h" />
     <ClInclude Include="ContrConfigPeakUsbDefs.h" />
     <ClInclude Include="HardwareListing.h" />
-    <ClInclude Include="EXTERNAL_INCLUDE\icsnVC40.h" />
+    <ClInclude Include="EXTERNAL\icsnVC40.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
   </ItemGroup>
   <ItemGroup>

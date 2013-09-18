@@ -262,30 +262,6 @@ static HANDLE m_hDataEvent = NULL;
 static HANDLE sg_hCntrlStateChangeEvent = NULL;
 static DWORD  sg_dwClientID = 0;
 
-struct stAPIFirmwareInfo
-{
-    int iType;
-    // Date and Time (2nd generation neoVI only. See 2nd Generation neoVI Devices)
-    int iMainFirmDateDay;
-    int iMainFirmDateMonth;
-    int iMainFirmDateYear;
-    int iMainFirmDateHour;
-    int iMainFirmDateMin;
-    int iMainFirmDateSecond;
-    int iMainFirmChkSum;
-
-    // Version data (3rd generation neoVI only. See 3rd Generation neoVI Devices)
-    unsigned char iAppMajor;
-    unsigned char iAppMinor;
-    unsigned char iManufactureDay;
-    unsigned char iManufactureMonth;
-    unsigned short iManufactureYear;
-    unsigned char iBoardRevMajor;
-    unsigned char iBoardRevMinor;
-    unsigned char iBootLoaderVersionMajor;
-    unsigned char iBootLoaderVersionMinor;
-};
-
 // Current buffer size
 //static UINT sg_unMsgBufCount = 0;
 
@@ -1507,7 +1483,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
             /* neoVI Fire/Red - 4 channels*/
             case NEODEVICE_FIRE:
             {
-                int narrFIRENtwID[] = {NETID_FIRE_HSCAN1, NETID_FIRE_MSCAN1, NETID_FIRE_SWCAN, NETID_FIRE_LSFT};
+                int narrFIRENtwID[] = {NETID_HSCAN, NETID_MSCAN, NETID_SWCAN, NETID_LSFTCAN};
                 nAddChanneltoHWInterfaceList(narrFIRENtwID, 4, nChannels, nCount);
             }
             break;
@@ -1628,7 +1604,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     }
     nHardwareCount = 32;
     // TODO: Add your command handler code here
-    if ( icsneoFindNeoDevices(NEODEVICE_ANY , sg_ndNeoToOpen , &nHardwareCount ) )
+    if ( icsneoFindNeoDevices(NEODEVICE_ALL , sg_ndNeoToOpen , &nHardwareCount ) )
     {
         if (nHardwareCount == 0)
         {
@@ -2388,6 +2364,8 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
         {
                 /* neoVI Blue */
             case NEODEVICE_BLUE:
+                /* neoVI Fire/Red */
+            case NEODEVICE_FIRE:
                 switch (m_bytNetworkIDs[i])
                 {
                     case NETID_HSCAN:
@@ -2411,29 +2389,6 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 {
                     case NETID_HSCAN:
                         strncpy(&netid_str[0], "CAN", sizeof(netid_str));
-                        break;
-                }
-                break;
-
-                /* neoVI Fire/Red */
-            case NEODEVICE_FIRE:
-                switch (m_bytNetworkIDs[i])
-                {
-                    case NETID_HSCAN:
-                    case NETID_FIRE_HSCAN1:
-                        strncpy(&netid_str[0], "HS CAN 1", sizeof(netid_str));
-                        break;
-                    case NETID_MSCAN:
-                    case NETID_FIRE_MSCAN1:
-                        strncpy(&netid_str[0], "MS CAN", sizeof(netid_str));
-                        break;
-                    case NETID_SWCAN:
-                    case NETID_FIRE_SWCAN:
-                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
-                        break;
-                    case NETID_LSFTCAN:
-                    case NETID_FIRE_LSFT:
-                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
                         break;
                 }
                 break;
@@ -2480,18 +2435,6 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                     break;
                 case NETID_LSFTCAN:
                     strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_HSCAN1:
-                    strncpy(&netid_str[0], "HSCAN1", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_MSCAN1:
-                    strncpy(&netid_str[0], "MSCAN1", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_SWCAN:
-                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
-                    break;
-                case NETID_FIRE_LSFT:
-                    strncpy(&netid_str[0], "LSFT", sizeof(netid_str));
                     break;
             }
         }

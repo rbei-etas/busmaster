@@ -222,7 +222,7 @@
     <ClInclude Include="ContrConfigPeakUsbDefs.h" />
     <ClInclude Include="HardwareListing.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
-    <ClInclude Include="EXTERNAL_INCLUDE\vxlapi.h" />
+    <ClInclude Include="EXTERNAL\vxlapi.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_Vector_XL.rc" />

@@ -1,4 +1,4 @@
-# Install script for directory: D:/BUSMASTER/Sources/EXTERNAL_SOURCE/AdvancedUIPlugin
+# Install script for directory: D:/BUSMASTER/Sources/EXTERNAL/AdvancedUIPlugin
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
