@@ -181,7 +181,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\..\..\..\EXTERNAL_SOURCE\DmGraph\DMGraphJPN.rc"
+				RelativePath="..\..\..\EXTERNAL\DmGraph\DMGraphJPN.rc"
 				>
 			</File>
 		</Filter>

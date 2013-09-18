@@ -366,7 +366,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EXTERNAL_INCLUDE\vxlapi.h"
+				RelativePath=".\EXTERNAL\vxlapi.h"
 				>
 			</File>
 		</Filter>

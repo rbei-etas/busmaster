@@ -64,7 +64,7 @@
     <ClInclude Include="..\Application\MultiLanguage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EXTERNAL_INCLUDE\vxlapi.h">
+    <ClInclude Include="EXTERNAL\vxlapi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
