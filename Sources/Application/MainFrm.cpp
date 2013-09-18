@@ -2205,7 +2205,7 @@ void CMainFrame::OnConfigBaudrate()
     //update baudrate details in global statistics buffer
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
-#ifdef BOA_FD_VERSION
+#ifdef CAN_FD_VERSION
         GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
 #else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
@@ -7920,7 +7920,7 @@ void CMainFrame::OnFileConnect()
             GetICANBusStat()->BSC_ResetBusStatistic();
             for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
             {
-#ifdef BOA_FD_VERSION
+#ifdef CAN_FD_VERSION
                 GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
 #else
                 GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
@@ -17034,7 +17034,7 @@ void CMainFrame::vInitializeBusStatCAN(void)
     GetICANBusStat()->BSC_DoInitialization();
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
-#ifdef BOA_FD_VERSION
+#ifdef CAN_FD_VERSION
         GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
 #else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));

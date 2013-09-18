@@ -22,7 +22,7 @@ goto END
 
 :BUILD
 echo Using git found in %GIT_HOME%
-echo Using NSIS found in $NSIS_HOME%
+echo Using NSIS found in %NSIS_HOME%
 set PATH=%PATH%;%GIT_HOME%\bin;%NSIS_HOME%
 git log > ..\Sources\BIN\Release\Changelog.txt
 dos2unix --u2d ..\Sources\BIN\Release\Changelog.txt
