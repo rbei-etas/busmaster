@@ -34,8 +34,8 @@
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
-#ifdef BOA_FD_VERSION
-#include "EXTERNAL/Include/OCI/ocicanfd.h"
+#ifdef BOA_VERSION_1_5_FD
+#include "EXTERNAL/BOA 1.5/Include/OCI/ocicanfd.h"
 #endif
 using namespace std;
 /* Structure definiions */
@@ -47,7 +47,7 @@ public:
 
 };
 
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
 static ENTRY_COMPATIBILITY sg_ListTxCompatibility[] =
 {
     /* Tx Compatibility flags */
@@ -334,7 +334,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED);
 
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
     vEnableFDParameters(TRUE); /*Enable CANFD controller settings*/
 #else
     vEnableFDParameters(FALSE); /*Disable CANFD controller settings*/
@@ -961,7 +961,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     // TO BE FIXED LATER
     m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
 
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
     /*Update CAN FD parameters */
     m_omstrDataBitRate.Format("%d",     m_pControllerDetails[ nIndex ].m_unDataBitRate/1000);
     m_omstrDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
@@ -1047,7 +1047,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = m_omStrSamplePoint.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_bSelfReception = m_bSelfReception;
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
         /*Update CAN FD parameters */
         m_pControllerDetails[ m_nLastSelection ].m_unDataBitRate        = atoi((LPCTSTR)m_omstrDataBitRate) * 1000;
         m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)m_omstrDataSamplePoint);
