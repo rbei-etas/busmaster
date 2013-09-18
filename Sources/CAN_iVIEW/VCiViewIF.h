@@ -19,7 +19,7 @@
 
 #include <string>
 #include <map>
-#include <EXTERNAL\vci.h>
+#include "EXTERNAL\vci.h"
 
 /*
  * Module detection macros

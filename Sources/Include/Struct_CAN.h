@@ -1058,5 +1058,5 @@ typedef sERROR_CNT* SPERROR_CNT;
 #define IS_ERR_MESSAGE(a)       (a & ERR_FLAG)
 #define IS_INTR_MESSAGE(a)      (((a) & INTR_FLAG))
 
-/*To enable CANFD - uncomment the BOA_FD_VERSION define*/
-//#define BOA_FD_VERSION
+/*To enable CANFD - uncomment the CAN_FD_VERSION define*/
+//#define CAN_FD_VERSION
