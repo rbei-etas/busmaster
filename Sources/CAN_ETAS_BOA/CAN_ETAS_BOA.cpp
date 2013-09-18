@@ -38,12 +38,6 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/BaseDefs.h"
 #include "Include/DIL_CommonDefs.h"
-#include "EXTERNAL/Include/OCI/ocican.h"
-// Including canfd header only if BOA_FD_VERSION is defined
-#ifdef BOA_FD_VERSION
-#include "EXTERNAL/Include/OCI/ocicanfd.h"
-#endif
-#include "EXTERNAL/Include/CSI/csisfs.h"
 #include "Include/Can_Error_Defs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
@@ -54,6 +48,25 @@
 
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
+
+/* ETAS BOA includes */
+#if BOA_VERSION == BOA_VERSION_1_4
+#include "EXTERNAL/BOA 1.4/Include/OCI/ocican.h"
+#include "EXTERNAL/BOA 1.4/Include/CSI/csisfs.h"
+#elif BOA_VERSION == BOA_VERSION_1_5
+#include "EXTERNAL/BOA 1.5/Include/OCI/ocican.h"
+#include "EXTERNAL/BOA 1.5/Include/CSI/csisfs.h"
+#ifdef BOA_VERSION_1_5_FD
+#include "EXTERNAL/BOA 1.5/Include/OCI/ocicanfd.h"
+#include "EXTERNAL/BOA 1.5/Include/OCI/ocicanfd.h"
+#endif
+#elif BOA_VERSION == BOA_VERSION_1_6
+#include "EXTERNAL/BOA 1.6/Include/OCI/ocican.h"
+#include "EXTERNAL/BOA 1.6/Include/CSI/csisfs.h"
+#elif BOA_VERSION == BOA_VERSION_2_0
+#include "EXTERNAL/BOA 2.0/Include/OCI/ocican.h"
+#include "EXTERNAL/BOA 2.0/Include/CSI/csisfs.h"
+#endif
 
 using namespace std;
 
@@ -123,8 +136,8 @@ typedef struct tagCHANNEL
     OCI_URIName m_acURI; /*< URI of the Controller */
     OCI_ControllerHandle m_OCI_HwHandle; /*< Controller handle */
     OCI_CANConfiguration m_OCI_CANConfig; /*< Controller configuration */
-    // Creating OCI_CANFD_Configuration only if BOA_FD_VERSION is defined
-#ifdef BOA_FD_VERSION
+    // Creating OCI_CANFD_Configuration only if BOA_VERSION_1_5_FD is defined
+#ifdef BOA_VERSION_1_5_FD
     OCI_CANFD_Configuration m_OCI_CANFDConfig; /*< CAN FD Controller configuration */
 #endif
     OCI_CANControllerProperties m_OCI_CntrlProp; /*< Controller properties */
@@ -224,39 +237,32 @@ static CRITICAL_SECTION sg_DIL_CriticalSection;
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 
-/**
- * Timer variables
- */
+/* Timer variables */
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
 static LARGE_INTEGER sg_lnFrequency;
 
-/**
- * Required libraries
- */
+/* Required libraries */
 static HMODULE sg_hLibCSI = NULL;
 static HMODULE sg_hLibOCI = NULL;
 
-/**
- * Declarations of CSI API pointers
- */
+/* Declarations of CSI API pointers */
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC1)(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC2)(CSI_Tree* tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC3)(CSI_Tree* tree, const BOA_UuidVersion* uuid, OCI_URIName uriName[], int size, int* count);
 
-/**
- * Macro definitions
- */
-/*Updating registry location macros to 1.5 If BOA_FD_VERSION is defined*/
-#ifdef BOA_FD_VERSION
+/* Macro definitions */
+#if BOA_VERSION == BOA_VERSION_1_4
+#define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.4"
+#define LIB_CSL_NAME    "dll-csiBind_1_4.dll"
+#define LIB_OCI_NAME    "dll-ocdProxy_1_4.dll"
+#elif BOA_VERSION == BOA_VERSION_1_5
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.5"
 #define LIB_CSL_NAME    "dll-csiBind_1_5.dll"
 #define LIB_OCI_NAME    "dll-ocdProxy_1_5.dll"
 #else
-#define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.4"
-#define LIB_CSL_NAME    "dll-csiBind_1_4.dll"
-#define LIB_OCI_NAME    "dll-ocdProxy_1_4.dll"
+#warning Defined BOA Version unsupported
 #endif
 
 /**
@@ -414,7 +420,7 @@ BOOL bGetBOAInstallationPath(string& pcPath)
     BOOL bResult = FALSE;
     LONG lError = 0;
     HKEY sKey;
-    // Get the installation path for BOA 1.4
+    // Get the installation path for BOA
     lError = RegOpenKeyEx( HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
     // If the registry key open successfully, get the value in "path"
     // sub key
@@ -478,7 +484,7 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
         {
             hResult = S_FALSE;
         }
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
         {
             if ((sBOA_PTRS.m_sOCI.openCANFDController = (PF_OCI_OpenCANFDController)
                     GetProcAddress(hLibOCI, "OCI_OpenCANFDController")) == NULL)
@@ -497,7 +503,7 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
         {
             hResult = S_FALSE;
         }
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
         {
             if ((sBOA_PTRS.m_sOCI.getCANFDConfiguration = (PF_OCI_GetCANFDConfiguration)
                     GetProcAddress(hLibOCI, "OCI_GetCANFDConfiguration")) == NULL)
@@ -657,11 +663,11 @@ BOA_ResultCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFou
 
     /* Search for all connected hardware and latch the result for further processing */
     ec = (*(sBOA_PTRS.m_sCSI.createProtocolTree))("", nodeRange, &sfsTree);
-    if (ec == OCI_SUCCESS)
+    if (BOA_SUCCEEDED(ec))
     {
         /* Find the URIs for all nodes which implement v1.1.0.0 of OCI_CAN. */
         ec = (*(sBOA_PTRS.m_sCSI.getUriForUuid))(sfsTree, &ociCanUuid, uriName, nSize, nFound);
-        if (ec == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(ec))
         {
             ec = (*(sBOA_PTRS.m_sCSI.destroyProtocolTree))(sfsTree);
         }
@@ -817,7 +823,7 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
  */
 void vInitializeControllerConfig(UINT nChannel)
 {
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
     {
         sg_asChannel[nChannel].m_OCI_CANFDConfig.can.baudrate = 500000;
         sg_asChannel[nChannel].m_OCI_CANFDConfig.can.samplePoint = 70;
@@ -923,7 +929,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
         ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.addCANFrameFilter))
                   (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                    &(sg_asChannel[nChannel].m_OCI_FrameFilter), 1);
-        if (ErrCode == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(ErrCode))
         {
             hResult = S_OK;
         }
@@ -940,7 +946,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_EventFilter), 1);
 
-            if (ErrCode != OCI_SUCCESS)
+            if (BOA_FAILED(ErrCode))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not add Event filter"));
@@ -953,7 +959,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.addCANErrorFrameFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_ErrorFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if (BOA_FAILED(ErrCode))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not add Error filter"));
@@ -965,7 +971,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.errorVTable.addInternalErrorEventFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_InternalErrorFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if (BOA_FAILED(ErrCode))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not add Error filter"));
@@ -979,7 +985,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
         ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.removeCANFrameFilter))
                   (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                    &(sg_asChannel[nChannel].m_OCI_FrameFilter), 1);
-        if (ErrCode == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(ErrCode))
         {
             hResult = S_OK;
         }
@@ -995,7 +1001,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.removeCANBusEventFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_EventFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if (BOA_FAILED(ErrCode))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not remove Event filter"));
@@ -1008,7 +1014,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.removeCANErrorFrameFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_ErrorFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if (BOA_FAILED(ErrCode))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not remove Error filter"));
@@ -1019,7 +1025,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.errorVTable.removeInternalErrorEventFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_InternalErrorFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if (BOA_FAILED(ErrCode))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not add Error filter"));
@@ -1045,7 +1051,7 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
               (sg_asChannel[nChannel].m_OCI_HwHandle,
                &(sg_asChannel[nChannel].m_OCI_RxQueueCfg),
                &(sg_asChannel[nChannel].m_OCI_RxQueueHandle));
-        if (Err == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(Err))
         {
             hResult = S_OK;
         }
@@ -1061,7 +1067,7 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
                   (sg_asChannel[nChannel].m_OCI_HwHandle,
                    &(sg_asChannel[nChannel].m_OCI_TxQueueCfg),
                    &(sg_asChannel[nChannel].m_OCI_TxQueueHandle));
-            if (Err != OCI_SUCCESS)
+            if (BOA_FAILED(Err))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create TX Queue"));
@@ -1072,7 +1078,7 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
     {
         //Destroy CAN Rx queue
         Err = (*(sBOA_PTRS.m_sOCI.canioVTable.destroyCANRxQueue))(sg_asChannel[nChannel].m_OCI_RxQueueHandle);
-        if (Err == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(Err))
         {
             hResult = S_OK;
         }
@@ -1085,7 +1091,7 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
         if (hResult == S_OK)
         {
             Err = (*(sBOA_PTRS.m_sOCI.canioVTable.destroyCANTxQueue))(sg_asChannel[nChannel].m_OCI_TxQueueHandle);
-            if (Err != OCI_SUCCESS)
+            if (BOA_FAILED(Err))
             {
                 hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create TX Queue"));
@@ -1120,7 +1126,7 @@ void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
 /**
  * copies from OCI_CANRxMessage struct into STCANDATA struct
  */
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
 void vCopyOCI_CAN_FD_RX_2_DATA(const OCI_CANFD_RxMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
@@ -1244,7 +1250,7 @@ void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
         vCopyOCI_CAN_RX_2_DATA(&(msg->data.rxMessage), &sCanData);
         sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
     }
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
     /*Check if its a CAN FD message */
     else if ( msg->type ==  OCI_CANFD_RX_MESSAGE )
     {
@@ -1449,13 +1455,13 @@ static void (OCI_CALLBACK ProcessCanData)(void* userData, struct OCI_CANMessage*
     switch (msg->type)
     {
         case OCI_CAN_RX_MESSAGE:
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
         case OCI_CANFD_RX_MESSAGE:
 #endif
             vProcessRxMsg(userData, msg);
             break;
         case OCI_CAN_TX_MESSAGE:
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
         case OCI_CANFD_TX_MESSAGE:
 #endif
             vProcessTxMsg(userData, msg);
@@ -1851,7 +1857,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
         char* pcStopStr = NULL;
         for( INT i = 0; i < defNO_OF_CHANNELS; i++ )
         {
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
             {
                 sg_asChannel[i].m_OCI_CANFDConfig.can.baudrate =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrBaudrate.c_str(),
@@ -1935,7 +1941,7 @@ void vCopy_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& SrcMsg)
 }
 
 
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
 BOOL vCopy_2_OCI_CANFD_Data(OCI_CANFD_TxMessage& DestMsg, const STCAN_MSG& SrcMsg)
 {
     DestMsg.res     = 0;
@@ -2048,7 +2054,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 
     UINT unDefaultChannelCnt = nCount;
 
-    if (OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
+    if (BOA_SUCCEEDED(OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound)))
     {
         nCount = nFound;
         qsort((void*)acURI, nCount, sizeof(OCI_URIName), nCallBackStrCompareFn);
@@ -2126,7 +2132,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     {
         BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createCANController))(sg_asChannel[i].m_acURI,
                               &(sg_asChannel[i].m_OCI_HwHandle));
-        if (err == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(err))
         {
             /* Assign to userdata of QueueCfg. This will be useful to differentiate
             between the controller */
@@ -2135,7 +2141,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
             sg_asChannel[i].m_OCI_RxQueueCfg.onEvent.userData = (void*)sg_asChannel[i].m_OCI_HwHandle;
             BOA_ResultCode ErrorCode = OCI_FAILURE;
 
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
             {
                 //configure the controller first
                 ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANFDController))(sg_asChannel[i].m_OCI_HwHandle,
@@ -2150,7 +2156,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
                             &(sg_asChannel[i].m_OCI_CntrlProp));
             }
 #endif
-            if (ErrorCode == OCI_SUCCESS)
+            if (BOA_SUCCEEDED(ErrorCode))
             {
                 if (ManageQueue(QUEUE_ADD, i) == S_OK)
                 {
@@ -2218,9 +2224,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DeselectHwInterface(void)
         {
             if ((hResult = ManageQueue(QUEUE_DESTROY, i)) == S_OK)
             {
-                if ((*(sBOA_PTRS.m_sOCI.closeCANController))(sg_asChannel[i].m_OCI_HwHandle) == OCI_SUCCESS)
+                if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.closeCANController))(sg_asChannel[i].m_OCI_HwHandle)))
                 {
-                    if ((*(sBOA_PTRS.m_sOCI.destroyCANController))(sg_asChannel[i].m_OCI_HwHandle) == OCI_SUCCESS)
+                    if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.destroyCANController))(sg_asChannel[i].m_OCI_HwHandle)))
                     {
                         hResult |= S_OK;
                     }
@@ -2375,7 +2381,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
         ManageQueue(QUEUE_DESTROY, i);
         // if controller is open, close the controller. Do not bother about return value
         ErrCode = (*sBOA_PTRS.m_sOCI.closeCANController)(sg_asChannel[i].m_OCI_HwHandle);
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
         {
             //Now load the controller config and open the controller
             ErrCode = (*sBOA_PTRS.m_sOCI.openCANFDController)(sg_asChannel[i].m_OCI_HwHandle,
@@ -2394,7 +2400,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
         ((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc =
             sg_asChannel[i].m_acURI;
 
-        if (ErrCode == OCI_SUCCESS)
+        if (BOA_SUCCEEDED(ErrCode))
         {
             // Rx Tx queue
             if (ManageQueue(QUEUE_ADD, i) == S_OK)
@@ -2426,17 +2432,15 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StartHardware(void)
     HRESULT hResult = S_OK;
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        if ((*(sBOA_PTRS.m_sOCI.getCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                &(sg_asChannel[i].m_OCI_CntrlProp))
-                == OCI_SUCCESS)
+        if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.getCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
+                &(sg_asChannel[i].m_OCI_CntrlProp))))
         {
             if ((sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_SUSPENDED)
                     || (sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_RUNNING))
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_RUNNING;
-                if ((*(sBOA_PTRS.m_sOCI.setCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CntrlProp))
-                        == OCI_SUCCESS)
+                if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.setCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
+                        &(sg_asChannel[i].m_OCI_CntrlProp))))
                 {
                     hResult |= S_OK;
                 }
@@ -2492,16 +2496,14 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StopHardware(void)
     HRESULT hResult = S_OK;
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        if ((*(sBOA_PTRS.m_sOCI.getCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                &(sg_asChannel[i].m_OCI_CntrlProp))
-                == OCI_SUCCESS)
+        if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.getCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
+                &(sg_asChannel[i].m_OCI_CntrlProp))))
         {
             if (sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_RUNNING)
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
-                if ((*(sBOA_PTRS.m_sOCI.setCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CntrlProp))
-                        == OCI_SUCCESS)
+                if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.setCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
+                        &(sg_asChannel[i].m_OCI_CntrlProp))))
                 {
                     hResult |= S_OK;
                 }
@@ -2573,7 +2575,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
                 vMarkEntryIntoMap(sAckMap);
             }
             BOA_ResultCode ErrCode;
-#ifdef BOA_FD_VERSION
+#ifdef BOA_VERSION_1_5_FD
             if(sCanTxMsg.m_bCANFD == false)
             {
                 ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
@@ -2595,7 +2597,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
                       (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
 #endif
-            if (ErrCode == OCI_SUCCESS)
+            if (BOA_SUCCEEDED(ErrCode))
             {
                 hResult = S_OK;
             }

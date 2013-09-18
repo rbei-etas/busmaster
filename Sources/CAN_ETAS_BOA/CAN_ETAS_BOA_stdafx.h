@@ -96,7 +96,6 @@
 
 #include <string>
 using namespace std;
-typedef std::string TString;
 
 // TODO: reference additional headers your program requires here
 const int ERR_INVALID_PROCDIL       = -1;
@@ -111,3 +110,17 @@ const int INFO_CONFIRMED_CONFIGURED = 3;
 
 // First define the callback function type
 typedef BOOL (*DILCALLBACK)(BYTE Argument, PSCONTROLLER_DETAILS pDatStream, int Length);
+
+/* Definitions for BOA versions */
+#define BOA_VERSION_1_4 0x010400
+#define BOA_VERSION_1_5 0x010500
+#define BOA_VERSION_1_6 0x010600
+#define BOA_VERSION_2_0 0x020000
+
+/* Selection which BOA version is used for the compilation. */
+#define BOA_VERSION BOA_VERSION_1_4
+
+#if BOA_VERSION == BOA_VERSION_1_5
+/* To enable support for experimental CANFD extension in BOA v1.5 define the following */
+#undef BOA_VERSION_1_5_FD
+#endif
