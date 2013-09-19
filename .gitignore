@@ -14,6 +14,7 @@
 *.sln.cache
 *.suo
 *.vcproj.*.user
+*.vcxproj.user
 *.db
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
@@ -122,6 +123,8 @@ Sources/BIN/*/*.pdb
 Sources/BIN/*/*.tlb
 Sources/BIN/*/AdvancedUIPlugin.dll
 Sources/BIN/*/CAN_ETAS_BOA.dll
+Sources/BIN/*/CAN_ETAS_BOA_1_4.dll
+Sources/BIN/*/CAN_ETAS_BOA_1_5.dll
 Sources/BIN/*/CAN_ICS_neoVI.dll
 Sources/BIN/*/CAN_i-View.dll
 Sources/BIN/*/CAN_IXXAT_VCI.dll
@@ -165,6 +168,8 @@ Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/*/JPN
 Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
+Sources/BIN/Libs/*/CAN_ETAS_BOA_1_4.lib
+Sources/BIN/Libs/*/CAN_ETAS_BOA_1_5.lib
 Sources/BIN/Libs/*/CAN_i-VIEW.lib
 Sources/BIN/Libs/*/CAN_IXXAT_VCI.lib
 Sources/BIN/Libs/*/CAN_ICS_neoVI.lib

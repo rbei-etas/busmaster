@@ -118,7 +118,7 @@ typedef BOOL (*DILCALLBACK)(BYTE Argument, PSCONTROLLER_DETAILS pDatStream, int 
 #define BOA_VERSION_2_0 0x020000
 
 /* Selection which BOA version is used for the compilation. */
-#define BOA_VERSION BOA_VERSION_1_4
+//#define BOA_VERSION BOA_VERSION_1_4
 
 #if BOA_VERSION == BOA_VERSION_1_5
 /* To enable support for experimental CANFD extension in BOA v1.5 define the following */

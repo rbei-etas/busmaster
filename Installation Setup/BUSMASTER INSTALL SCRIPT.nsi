@@ -302,7 +302,17 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\CAN_ETAS_BOA.dll bCanEtasbExists
 	bCanEtasbExists:
 			Delete "$INSTDIR\CAN_ETAS_BOA.dll"
-			
+
+	; Deleting If CAN_ETAS_BOA_1_4.dll exists
+	IfFileExists $INSTDIR\CAN_ETAS_BOA_1_4.dll bCanEtas14bExists
+	bCanEtas14bExists:
+			Delete "$INSTDIR\CAN_ETAS_BOA_1_4.dll"
+
+	; Deleting If CAN_ETAS_BOA_1_5.dll exists
+	IfFileExists $INSTDIR\CAN_ETAS_BOA_1_5.dll bCanEtas15bExists
+	bCanEtas15bExists:
+			Delete "$INSTDIR\CAN_ETAS_BOA_1_5.dll"
+
 	; Deleting If CAN_ICS_neoVI.dll exists
 	IfFileExists $INSTDIR\CAN_ICS_neoVI.dll bCanneoVIbExists
 	bCanneoVIbExists:
@@ -810,7 +820,8 @@ SectionEnd
 Section "ETAS BOA"
     SectionIn 1 2
     SetOutPath $INSTDIR    
-    File ..\Sources\BIN\Release\CAN_ETAS_BOA.dll	
+    File ..\Sources\BIN\Release\CAN_ETAS_BOA_1_4.dll
+    File ..\Sources\BIN\Release\CAN_ETAS_BOA_1_5.dll
 SectionEnd
 Section "Intrepid neoVI"
     SectionIn 1 2

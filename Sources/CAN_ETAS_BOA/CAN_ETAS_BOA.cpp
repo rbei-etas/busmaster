@@ -50,6 +50,9 @@
 #include "CAN_ETAS_BOA_Extern.h"
 
 /* ETAS BOA includes */
+#ifndef BOA_VERSION
+#error "No BOA version defined"
+#endif
 #if BOA_VERSION == BOA_VERSION_1_4
 #include "EXTERNAL/BOA 1.4/Include/OCI/ocican.h"
 #include "EXTERNAL/BOA 1.4/Include/CSI/csisfs.h"
@@ -66,6 +69,8 @@
 #elif BOA_VERSION == BOA_VERSION_2_0
 #include "EXTERNAL/BOA 2.0/Include/OCI/ocican.h"
 #include "EXTERNAL/BOA 2.0/Include/CSI/csisfs.h"
+#else
+#error "Unknown BOA version defined"
 #endif
 
 using namespace std;

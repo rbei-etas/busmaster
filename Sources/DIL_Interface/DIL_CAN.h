@@ -197,6 +197,7 @@ public:
 
     /* HELPER FUNCTIONS START */
     void vSelectInterface_Dummy(void);
+    HMODULE vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog);
 
 private:
     HRESULT (*m_pfPerformInitOperations)(void);
