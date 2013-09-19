@@ -155,6 +155,38 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
 }
 
 /**
+ * Check and load support for latest available ETAS BOA version.
+ *
+ * \return Library handle
+ */
+HMODULE CDIL_CAN::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
+{
+    USES_CONVERSION;
+
+	LONG lError = 0;
+    HKEY sKey;
+
+	// Check for BOA 1.5
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.5", 0, KEY_READ, &sKey);
+    if(lError==ERROR_SUCCESS) {
+		RegCloseKey(sKey);
+		pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.5..."));
+		return LoadLibrary("CAN_ETAS_BOA_1_5.dll");
+	}
+
+	// Check for BOA 1.4
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.4", 0, KEY_READ, &sKey);
+    if(lError==ERROR_SUCCESS) {
+		RegCloseKey(sKey);
+		pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.4..."));
+		return LoadLibrary("CAN_ETAS_BOA_1_4.dll");
+	}
+
+	pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("ETAS BOA not found in registry."));
+	return NULL;
+}
+
+/**
  * \brief     Select driver from DIL list
  * \req       RSI_14_002 - DILC_SelectDriver
  * \req       RS_23_02 - Selecting a driver from the DIL list
@@ -207,7 +239,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 break;
 
             case DRIVER_CAN_ETAS_BOA:
-                m_hDll = LoadLibrary("CAN_ETAS_BOA.dll");
+                m_hDll = vLoadEtasBoaLibrary(pILog);
                 break;
 
             case DRIVER_CAN_IVIEW:
@@ -217,9 +249,11 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             case DRIVER_CAN_VECTOR_XL:
                 m_hDll = LoadLibrary("CAN_Vector_XL.dll");
                 break;
+
             case DRIVER_CAN_IXXAT:
                 m_hDll = LoadLibrary("CAN_IXXAT_VCI.dll");
                 break;
+
             case DRIVER_CAN_KVASER_CAN:
                 m_hDll = LoadLibrary("CAN_Kvaser_CAN.dll");
                 break;
@@ -239,6 +273,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             case DRIVER_CAN_VSCOM:
                 m_hDll = LoadLibrary("CAN_VSCOM.dll");
                 break;
+
             case DAL_NONE:
                 DILC_PerformClosureOperations();
                 vSelectInterface_Dummy();
