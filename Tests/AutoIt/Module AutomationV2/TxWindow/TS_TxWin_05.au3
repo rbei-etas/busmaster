@@ -7,136 +7,158 @@
 ; Test Data:		-
 ; === Test Procedure ===
 
-Sleep(5000)
-; Disabling Key Trigger
-  If (ControlCommand($mWin,"",$keyctrlID,"IsChecked")=1) Then
-	ControlCommand($mWin,"",$keyctrlID,"UnCheck")
+ConsoleWrite(@CRLF)
+ConsoleWrite("****Start : TS_TxWin_005.au3****"&@CRLF)
 
-EndIf
-sleep(1000)
-
-$cntToolhWd=ControlGetHandle($mWin,"",$connectid)												; Get handle of tollbar
-$conn=_GUICtrlToolbar_ClickIndex($cntToolhWd,4)														; Click on 'Connect' icon
-sleep(500)
-
-WinMenuSelectItem($mWin,"",$fuctions,$transmit,$normalbock)						; Click on 'Transmit normal blocks' icon for transmiting
-sleep(3000)
-
-;~ Send("{b}")
-
- $cntToolhWd=ControlGetHandle($mWin,"",$connectid)												; Get handle of toolbar
-	$conn=_GUICtrlToolbar_ClickIndex($cntToolhWd,4)										; Click on 'DisConnect' icon
+_launchApp()
+$timeDiff=0
+$timeDiff1=0
+WinActivate($WIN_BUSMASTER)
+Local $time_match=0,$Channel_Mono=0,$Dir_Mono=0,$Id_cyclic1=0
+if winexists($WIN_BUSMASTER) then
+	$timeDiff=0                                                                                       ;Initialize time difference values to '0'
+	$timeDiff_all=0
+	$timeDiff1=0
+	$timeDiff2=0
+   _loadConfig("TS_TxWin_01.cfx")
 	sleep(1000)
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)			;handler for tx wimdow
-$msgfifth1=_GUICtrlListView_GetItemTextString($timhWnd, 0)									;selecting 1st elment in message window
-ConsoleWrite("$msgfifth1:" &$msgfifth1 & @CRLF)
-
-$sTimefifth1=StringSplit($msgfifth1,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth1:" &$sTimefifth1[7] & @CRLF)														;Time of msg 1st sent
-
-
-
-$timhWnd1=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow o
-$msgfifth2=_GUICtrlListView_GetItemTextString($timhWnd1, 1)									;selecting 2nd elment in message window
-ConsoleWrite("$msgfifth2:" &$msgfifth2 & @CRLF)
-
-$sTimefifth2=StringSplit($msgfifth2,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth2:" &$sTimefifth2[7] & @CRLF)									;Time of msg 1st sent
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msgfifth3=_GUICtrlListView_GetItemTextString($timhWnd, 2)									;selecting 3rd elment in message window
-ConsoleWrite("$msgfifth3:" &$msgfifth3 & @CRLF)
-
-$sTimefifth3=StringSplit($msgfifth3,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth3:" &$sTimefifth3[7] & @CRLF)														;Time of msg 1st sent
-
-$timhWnd1=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msgfifth4=_GUICtrlListView_GetItemTextString($timhWnd1, 3)									;selecting 4th elment in message window
-ConsoleWrite("$msgfifth4:" &$msgfifth4 & @CRLF)
-
-$sTimefifth4=StringSplit($msgfifth4,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth4:" &$sTimefifth4[7] & @CRLF)									;Time of msg 1st sent
-
-Sleep(1000)
-
-If ($sTimefifth1[7]=11 And $sTimefifth2[7]=12 And $sTimefifth3[7]=21 And $sTimefifth4[7]=22 ) Then
-  $TS1="Pass"
-    ConsoleWrite("Test scenario 1 is Pass")
-  Else
-		ConsoleWrite("Test scenario 1 is Fail")
-         $TS1="Fail"
-EndIf
-      ;~     ; Second senario
-
-
-; Enabling Key Trigger
-  If (ControlCommand($mWin,"",$keyctrlID,"IsChecked")=0) Then
-	ControlCommand($mWin,"",$keyctrlID,"Check")
-	sleep(500)
-EndIf
-
-
-if (ControlCommand($mWin,"",$timedelayBtwblckCtrlID,"IsChecked")=1) then						;to uncheck the time delay between message block
-	ControlCommand($mWin,"",$timedelayBtwblckCtrlID,"UnCheck")
-
-EndIf
-
-Sleep(1000)
-
-if (ControlCommand($mWin,"",$timdeltrg,"IsChecked")=1) then						;to uncheck the time delay between trigger
-	ControlCommand($mWin,"",$timdeltrg,"UnCheck")
-EndIf
-
-$cntToolhWd=ControlGetHandle($mWin,"",$connectid)												; Get handle of tollbar
-$conn=_GUICtrlToolbar_ClickIndex($cntToolhWd,4)														; Click on 'Connect' icon
-sleep(1000)
-
-	WinMenuSelectItem($mWin,"",$fuctions,$transmit,$normalbock)						; Click on 'Transmit normal blocks' icon for transmiting
-	sleep(500)
-
-    Send("{b}")
-
- $cntToolhWd=ControlGetHandle($mWin,"",$connectid)												; Get handle of toolbar
-	$conn=_GUICtrlToolbar_ClickIndex($cntToolhWd,4)										; Click on 'DisConnect' icon
+	_TxMsgMenu()																				      ; Select CAN->Transmit->Configure menu
+     sleep(1000)
+ 	_EnableAutoUpdate()
+ 	sleep(1000)
+	_DeleteMsgBlock()
 	sleep(1000)
+    _ConfigCANTXBlockDetails("Monoshot","No","","No","","","Yes",2000)							            ; Configure TX block details
+	_AddMsg2TxList(0)																			            ; Add the first msg to Tx list
+	  sleep(500)
+	_AddMsg2TxList(1)
+      sleep(500)
+    _ConfigCANTXBlockDetails("Monoshot","No","","Yes","c","","Yes",2000)							                 ; Configure TX block details
+	_AddMsg2TxList(2)																			                     ; Add the first msg to Tx list
+	_AddMsg2TxList(3)
+	Sleep(500)
+	_CloseTxWindow()
+	sleep(500)
+	_ConnectDisconnect()																		                      ; Connect the tool
+	_TransmitMsgsMenu()
+     sleep(5000)
+     _ConnectDisconnect()
+	 _DisableOverwriteMode()
+	$rCount=_GetCANMsgWinItemCount()
+	If $rCount>=7 Then
 
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)			;handler for tx wimdow
-$msgfifth5=_GUICtrlListView_GetItemTextString($timhWnd, 0)									;selecting 1st elment in message window
-ConsoleWrite("$msgfifth5:" &$msgfifth5 & @CRLF)
+		$MonoData1=_GetMsgWinCANInfo(0)                                                                                    ;Fetch messages from message window
+	    $MonoData2=_GetMsgWinCANInfo(1)
+	    $MonoData2=_GetMsgWinCANInfo(1)
+	    $MonoData3=_GetMsgWinCANInfo(2)
+	    $MonoData4=_GetMsgWinCANInfo(3)
+	    $MonoData5=_GetMsgWinCANInfo(4)
+		$MonoData6=_GetMsgWinCANInfo(5)
+	    $MonoData7=_GetMsgWinCANInfo(6)
+	    $MonoData8=_GetMsgWinCANInfo(7)
+		For $i=0 to 7                                                                                                     ;Write messages with all information like(time,Channel,ID) to console
+			ConsoleWrite("MonoData1 :" &$MonoData1[$i] & @CRLF)
+		    ConsoleWrite("MonoData2 :" &$MonoData2[$i] & @CRLF)
+		    ConsoleWrite("MonoData3 :" &$MonoData3[$i] & @CRLF)
+		    ConsoleWrite("MonoData4 :" &$MonoData4[$i] & @CRLF)
+		    ConsoleWrite("MonoData5 :" &$MonoData5[$i] & @CRLF)
+		next
+	    $FirstMsgTime1=StringSplit($MonoData1[0],":")                                                                    ;Split time as hours minutes and seconds
+	    $FifthMsgTime1=StringSplit($MonoData5[0],":")
+	    ConsoleWrite("FirstMsgTime1" & $FirstMsgTime1 & @CRLF)
+	    ConsoleWrite("FifthMsgTime1" & $FifthMsgTime1 & @CRLF)
 
-$sTimefifth5=StringSplit($msgfifth5,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth5:" &$sTimefifth5[7] & @CRLF)														;Time of msg 1st sent
+	    If ($FifthMsgTime1[3]>$FirstMsgTime1[3]) Then                                                                   ;Compare first message time and fifth message time in seconds to get time difference or delay
+			$timeDiff1=$FifthMsgTime1[3]-$FirstMsgTime1[3]
+	    ElseIf($FifthMsgTime1[3]<$FirstMsgTime1[3]) Then
+		    If ($FifthMsgTime1[3]=00 And $FirstMsgTime1[3]=58) Then
+				$timeDiff1=2
+		    ElseIf($FifthMsgTime1[3]=01 And $FirstMsgTime1[3]=59) Then
+			    $timeDiff1=2
+			EndIf
+	    EndIf
 
+	    If $timeDiff1=2 Then                                                                                              ;Verify for time difference or delay
+			$time_match=1
+	    Else
+		    $time_match=0
+	    EndIf
 
+	    If ($MonoData1[1]="Tx" And $MonoData5[1]="Tx" And $MonoData7[1]="Tx") Then                                         ;Verify for Tx/RX
+			$Dir_Mono=1
+		Else
+		    $Dir_Mono=0
+		EndIf
 
-$timhWnd1=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow o
-$msgfifth6=_GUICtrlListView_GetItemTextString($timhWnd1, 1)									;selecting 2nd elment in message window
-ConsoleWrite("$msgfifth6:" &$msgfifth6 & @CRLF)
+	    If ($MonoData1[2]=1 And $MonoData3[2]=1 And $MonoData5[2]=1) Then                                                  ;Verify for Channel
+		    $Channel_Mono=1
+	    Else
+	        $Channel_Mono=0
+	    EndIf
+	EndIf
 
-$sTimefifth6=StringSplit($msgfifth6,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth6:" &$sTimefifth6[7] & @CRLF)									;Time of msg 1st sent
+	If ($time_match=1  And  $Dir_Mono=1 And  $Channel_Mono=1) Then
+		$Pass_transmit_all=1
+	 Else
+		$Pass_transmit_all=0
+	EndIf
+	$handle=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)					                                 ; Get handle of the 'Clear message window'  toolbar
+	_GUICtrlToolbar_ClickIndex($handle,0)											                                 ; Click on 'Clear message window'  toolbar
+	sleep(1000)
+	_TxMsgMenu()
+	$handle1=ControlGetHandle($WIN_BUSMASTER,"",$LSTC_MsgBlk_NameID)
+	_GUICtrlListView_SetItemChecked($handle1,0,False)                                                               ;Unchecks time triggered block
+     sleep(1000)
+	_CloseTxWindow()
+	sleep(500)
+	_ConnectDisconnect()																		                      ; Connect the tool
+	_TransmitMsgsMenu()
+     sleep(4000)
+	 send("{c}")
 
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msgfifth7=_GUICtrlListView_GetItemTextString($timhWnd, 2)									;selecting 3rd elment in message window
-ConsoleWrite("$msgfifth7:" &$msgfifth7 & @CRLF)
+	sleep(3000)
+    send("{c}")
 
-$sTimefifth7=StringSplit($msgfifth7,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTimefifth7:" &$sTimefifth7[7] & @CRLF)											;Time of msg 1st sent
+	sleep(3000)
+    _ConnectDisconnect()
+	_DisableOverwriteMode()
+    $rCount1=_GetCANMsgWinItemCount()
+	If $rCount1>=6 Then
+		$MonoData1=_GetMsgWinCANInfo(0)                                                                                    ;Fetch messages from message window
+	    $MonoData2=_GetMsgWinCANInfo(1)
+	    $MonoData2=_GetMsgWinCANInfo(2)
+	    $MonoData3=_GetMsgWinCANInfo(3)
+	    $MonoData4=_GetMsgWinCANInfo(4)
+	    $MonoData5=_GetMsgWinCANInfo(5)
+	    $MonoData6=_GetMsgWinCANInfo(6)
 
-If ( $sTimefifth5[7]=11 And $sTimefifth6[7]=12 And $sTimefifth7[7]=11 ) Then
-     ConsoleWrite("Test scenario 2 is Pass")
-    $TS2="Pass"
- Else
-		ConsoleWrite("Test scenario 2 is Fail")
-    $TS2="Fail"
+	    For $i=0 to 7                                                                                                     ;Write messages with all information like(time,Channel,ID) to console
+			ConsoleWrite("MonoData1 :" &$MonoData1[$i] & @CRLF)
+		    ConsoleWrite("MonoData2 :" &$MonoData2[$i] & @CRLF)
+		    ConsoleWrite("MonoData3 :" &$MonoData3[$i] & @CRLF)
+		    ConsoleWrite("MonoData4 :" &$MonoData4[$i] & @CRLF)
+		    ConsoleWrite("MonoData5 :" &$MonoData5[$i] & @CRLF)
+        next
+        If ($MonoData1[4]= 0x025 And $MonoData5[4]=0x025 )  Then                                                          ;Verify for message ID
+			$Id_cyclic1=1
+	    Else
+		    $Id_cyclic1=0
+		EndIf
+	EndIf
+
+	If ($Id_cyclic1=1 And $Pass_transmit_all=1) Then
+		_WriteResult("Pass","TS_Tx_05")
+	Else
+		_WriteResult("Fail","TS_Tx_05")
+	EndIf
+EndIf
+$isAppNotRes=_CloseApp()														; Close the app
+
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_Tx_05")
 EndIf
 
-If $TS1="Pass" And $TS2="Pass" Then
+ConsoleWrite("Id_cyclic is " & $Id_cyclic1)
 
-	_ExcelWriteCell($oExcel, "Pass", 10, 2)
-else
-	 _ExcelWriteCell($oExcel,"Fail",10,2)
-
-EndIf
-;~ ControlClick($mWin,"",1015)
+ConsoleWrite("****End : TS_TxWin_05.au3****"&@CRLF)
+ConsoleWrite(@CRLF)

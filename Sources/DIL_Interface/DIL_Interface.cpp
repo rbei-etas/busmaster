@@ -31,15 +31,20 @@
 #include "DIL_Interface_extern.h"
 
 #include "DIL_CAN.h"
+#include "DIL_LIN.h"
 
 #include "DILI_J1939.h"
+#include "DIL_FLEXRAY.h"
 
 #include "DIL_Interface.h"
 
 
 static CDIL_CAN* sg_pouDIL_CAN = NULL;
 
+static CDIL_LIN* sg_pouDIL_LIN = NULL;
+
 static CDILI_J1939* sg_pouDILI_J1939 = NULL;
+static CDIL_FLEXRAY* sg_pouDIL_FLEXRAY = NULL;
 
 // CDILApp
 
@@ -111,6 +116,25 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
 if sg_pouFP_CAN is null */
         }
         break;
+        case LIN:
+        {
+            if (NULL == sg_pouDIL_LIN)
+            {
+                if ((sg_pouDIL_LIN = new CDIL_LIN) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouDIL_LIN->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouDIL_LIN; /* Doesn't matter even
+if sg_pouFP_CAN is null */
+        }
+        break;
         case MCNET:
             break;
         case J1939:
@@ -130,6 +154,24 @@ if sg_pouFP_CAN is null */
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouDILI_J1939; /* Doesn't matter even
 if sg_pouFP_CAN is null */
+        }
+        break;
+        case FLEXRAY:
+        {
+            if (NULL == sg_pouDIL_FLEXRAY)
+            {
+                if ((sg_pouDIL_FLEXRAY = new CDIL_FLEXRAY) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouDIL_FLEXRAY->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouDIL_FLEXRAY; /* Doesn't matter even if sg_pouFP_CAN is null */
         }
         break;
 

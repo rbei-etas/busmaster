@@ -64,6 +64,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_IVIEW,      "&i-VIEW"           },
     {DRIVER_CAN_ICS_NEOVI,  "&IntrepidCS neoVI" },
     {DRIVER_CAN_IXXAT,      "I&XXAT VCI"        },
+    {DRIVER_CAN_ISOLAR,     "ETAS ISO&LAR-EVE"  },
     {DRIVER_CAN_KVASER_CAN, "&Kvaser CAN"       },
     {DRIVER_CAN_MHS,        "&MHS Tiny-CAN"     },
     {DRIVER_CAN_NSI,        "&NSI CAN-API"      },
@@ -163,27 +164,29 @@ HMODULE CDIL_CAN::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
 {
     USES_CONVERSION;
 
-	LONG lError = 0;
+    LONG lError = 0;
     HKEY sKey;
 
-	// Check for BOA 1.5
+    // Check for BOA 1.5
     lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.5", 0, KEY_READ, &sKey);
-    if(lError==ERROR_SUCCESS) {
-		RegCloseKey(sKey);
-		pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.5..."));
-		return LoadLibrary("CAN_ETAS_BOA_1_5.dll");
-	}
+    if(lError==ERROR_SUCCESS)
+    {
+        RegCloseKey(sKey);
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.5..."));
+        return LoadLibrary("CAN_ETAS_BOA_1_5.dll");
+    }
 
-	// Check for BOA 1.4
+    // Check for BOA 1.4
     lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.4", 0, KEY_READ, &sKey);
-    if(lError==ERROR_SUCCESS) {
-		RegCloseKey(sKey);
-		pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.4..."));
-		return LoadLibrary("CAN_ETAS_BOA_1_4.dll");
-	}
+    if(lError==ERROR_SUCCESS)
+    {
+        RegCloseKey(sKey);
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.4..."));
+        return LoadLibrary("CAN_ETAS_BOA_1_4.dll");
+    }
 
-	pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("ETAS BOA not found in registry."));
-	return NULL;
+    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("ETAS BOA not found in registry."));
+    return NULL;
 }
 
 /**
@@ -273,7 +276,9 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             case DRIVER_CAN_VSCOM:
                 m_hDll = LoadLibrary("CAN_VSCOM.dll");
                 break;
-
+            case DRIVER_CAN_ISOLAR:
+                m_hDll = LoadLibrary("CAN_ISOLAR_EVE_VCAN.dll");
+                break;
             case DAL_NONE:
                 DILC_PerformClosureOperations();
                 vSelectInterface_Dummy();

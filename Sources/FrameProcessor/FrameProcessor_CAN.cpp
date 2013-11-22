@@ -472,4 +472,19 @@ HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
     return hResult;
 }
 
+
+//Shailesh +
+//void CFrameProcessor_CAN::IncrementConnectionCount()
+//{
+//  USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+//    for (USHORT i = 0; i < ushBlocks; i++)
+//       {
+//         CBaseLogObject* pouLogObjBase = m_omLogObjectArray.GetAt(i);
+//           CLogObjectCAN* pouLogObjCon = static_cast<CLogObjectCAN*> (pouLogObjBase);
+//         if(pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnMesurement)
+//             pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount ++;
+//     }
+//
+//}
+//Shailesh -
 // USE COMMON BASE CLASS ALIAS FUNCTIONS: END

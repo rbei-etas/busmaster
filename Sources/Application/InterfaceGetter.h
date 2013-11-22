@@ -34,6 +34,7 @@ class CBaseDILI_J1939;
 class CBaseBusStatisticCAN;
 class CBaseNodeSim;
 class CMsgSignal;
+class CFlexRayNetworkStats;
 
 // External function prototypes
 extern CBaseFrameProcessor_CAN* GetICANLogger(void);
@@ -43,7 +44,9 @@ extern CFlags* GetIFlags(void);
 extern CBaseDIL_CAN* GetICANDIL(void);
 extern CBaseDILI_J1939* GetIJ1939DIL(void);
 extern CBaseBusStatisticCAN* GetICANBusStat(void);
+extern CFlexRayNetworkStats* GetIFlexRayBusStat(void);
 extern CBaseNodeSim* GetICANNodeSim(void);
+extern CBaseNodeSim* GetILINNodeSim(void);
 extern CBaseNodeSim* GetIJ1939NodeSim(void);
 extern CMsgSignal* GetIMsgDB(void);
 extern DWORD dwGetMonitorClientID(void);

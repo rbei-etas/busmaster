@@ -70,6 +70,9 @@ public:
     BOOL NS_IsSimSysConfigChanged();
     int NS_nOnBusConnected( bool bConnected);
     void NS_SetJ1939ActivationStatus(bool bActivated);
+    // Save simulation file
+    void NS_SaveSimulationSystem();
+    void NS_PerformApplicationClosureOperation(bool bSave);
     //INTERFACE FUNCTIONS ENDS
 private:
     ETYPE_BUS m_eBus;

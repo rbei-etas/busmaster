@@ -26,11 +26,12 @@
 #include "FrameProcessor_stdafx.h"
 #include "BaseLogObject.h"            // For CBaseLogObject class declaration
 #include "../DataTypes/DIL_Datatypes.h"
+//#include "CommonClass/RefTimeKeeper.h"
 
 const int SIZE_CHAR = sizeof(char);
 #define ENOENT          2
 
-#define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB 
+#define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB //arun
 #define MB_VALUE                         1048576
 
 const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
@@ -56,6 +57,8 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define BUS_LOG_BAUDRATE_START  "***START CHANNEL BAUD RATE***"
 #define BUS_LOG_BAUDRATR_END    "***END CHANNEL BAUD RATE***"
 #define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s bps***"
+//#define BUS_LOG_COMMENT_START "***START COMMENT***"   //arun
+//#define BUS_LOG_COMMENT_END       "***END COMMENT***"
 
 #define PROTOCOL "***PROTOCOL";
 
@@ -226,6 +229,7 @@ BYTE* CBaseLogObject::GetConfigData(BYTE* pvDataStream) const
 BOOL CBaseLogObject::GetConfigData(xmlNodePtr pxmlNodePtr) const
 {
     //BYTE* pbTStream = pvDataStream;
+    //strcpy((char*)m_sLogInfo.m_sLogFileName, (const char*)m_omCurrLogFile);//Shailesh
     m_sLogInfo.pbGetConfigData(pxmlNodePtr);
     Der_GetConfigData(pxmlNodePtr);
 
@@ -275,6 +279,156 @@ void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
 {
     DWORD dwBytes2Write = om_LogText.GetLength()* SIZE_CHAR; //no of bytes
 
+    //Shailesh +
+    //If Log on every connection is specified
+    //if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnMesurement == TRUE)
+    //{
+    //  If connection count not equal to filecount it means we need to create new log file.
+    //  if(m_nCurrFileCnt != m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount)
+    //  {
+    //      triggering type is saved to be used for next file
+    //      ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
+    //      bStopLogging();
+
+    //      INT nFileCount = nGetCurrentFileCount();
+
+    //      if(nFileCount >= atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles))
+    //      {
+    //          vSetCurrentFileCount();
+    //      }
+    //      Set the next file name of the series if
+    //      vSetNextFileName();
+
+    //      m_nCurrFileCnt = m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount;
+    //      if (m_sLogInfo.m_eFileMode == OVERWRITE_MODE)
+    //      {
+    //          m_sLogInfo.m_eFileMode = APPEND_MODE;
+    //      }
+
+    //      strcpy_s(m_sLogInfo.m_sLogFileName, _MAX_PATH, m_omCurrLogFile);
+    //
+    //      If file is append mode then change it to overwrite mode bfore startlogging
+    //      So that old data will be deleted
+
+    //      eMode eFileMode = m_sLogInfo.m_eFileMode;
+
+
+    //      The file mode is changed to overwrite so that when the same file
+    //      is opened in cycle by bStartLogging(), it should overwrite
+    //      /*if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+    //      {
+    //          m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+    //      }*/
+    //      bStartLogging(eBus);
+    //      Save the triggering type
+    //      m_CurrTriggerType = LastTriggerType;
+    //      Revert back to the original mode
+    //      m_sLogInfo.m_eFileMode = eFileMode;
+    //      m_dTotalBytes = 0;
+    //  }
+
+    //}
+    //Shailesh -
+    // If trigger Size is specified
+    //if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnSize == TRUE)
+    //{
+    //  ULONG64 unSpecifiedSize = atol(m_sLogInfo.m_sLogAdvStngs.m_omSizeInMB);
+
+    //  unSpecifiedSize = unSpecifiedSize * 1024 *1024;
+    //  if((m_dTotalBytes + dwBytes2Write) >= unSpecifiedSize)
+    //  {
+    //      //triggering type is saved to be used for next file
+    //      ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
+    //      bStopLogging();
+
+    //      INT nFileCount = nGetCurrentFileCount();
+
+    //      if(nFileCount >= atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles))
+    //      {
+    //          //MAX_LOG_FILE_IN_GRP = atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles);
+    //          vSetCurrentFileCount();
+    //      }
+
+    //      //Set the next file name of the series
+    //      vSetNextFileName();
+
+    //      //strcpy_s(m_sLogInfo.m_sLogFileName, _MAX_PATH, m_omCurrLogFile);
+    //
+    //      //If file is append mode then change it to overwrite mode bfore startlogging
+    //      //So that old data will be deleted
+    //      eMode eFileMode = m_sLogInfo.m_eFileMode;
+    //      //The file mode is changed to overwrite so that when the same file
+    //      //is opened in cycle by bStartLogging(), it should overwrite
+    //      if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+    //      {
+    //          m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+    //      }
+    //      bStartLogging(eBus);
+    //      //Save the triggering type
+    //      m_CurrTriggerType = LastTriggerType;
+    //      //Revert back to the original mode
+    //      m_sLogInfo.m_eFileMode = eFileMode;
+    //      //theApp.GetDefaultLogFile();
+    //      m_dTotalBytes = 0;
+    //  }
+    //}
+    //// If trigger time is specified
+    //if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnTime == TRUE)
+    //{
+    //  LARGE_INTEGER stLogTime, sFrequency;
+    //  QueryPerformanceFrequency(&sFrequency);
+    //  QueryPerformanceCounter(&stLogTime);
+
+    //  double lfCurrentTime;
+
+    //  lfCurrentTime = (double)(stLogTime.QuadPart)/(double)(sFrequency.QuadPart);
+
+    //  INT lfDiffTime = lfCurrentTime - m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime;
+
+
+    //  INT nHrs = atoi(m_sLogInfo.m_sLogAdvStngs.m_omLogTimeHrs);
+    //  INT nMins = atoi(m_sLogInfo.m_sLogAdvStngs.m_omLogTimeMins);
+
+    //  // Converting in to seconds
+    //  nHrs = ((nHrs * 60) + nMins) * 60;
+
+    //  if(lfDiffTime >= nHrs)
+    //  {
+    //      //triggering type is saved to be used for next file
+    //      ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
+    //      bStopLogging();
+
+    //      INT nFileCount = nGetCurrentFileCount();
+
+    //      if(nFileCount >= atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles))
+    //      {
+    //          vSetCurrentFileCount();
+    //      }
+
+    //      //Set the next file name of the series
+    //      vSetNextFileName();
+    //      //If file is append mode then change it to overwrite mode bfore startlogging
+    //      //So that old data will be deleted
+    //      eMode eFileMode = m_sLogInfo.m_eFileMode;
+    //      //The file mode is changed to overwrite so that when the same file
+    //      //is opened in cycle by bStartLogging(), it should overwrite
+    //      if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+    //      {
+    //          m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+    //      }
+    //      bStartLogging(eBus);
+    //      //Save the triggering type
+    //      m_CurrTriggerType = LastTriggerType;
+    //      //Revert back to the original mode
+    //      m_sLogInfo.m_eFileMode = eFileMode;
+    //      //theApp.GetDefaultLogFile();
+    //      m_dTotalBytes = 0;
+    //  }
+
+    //  //m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime = ((double)(stLogTime.QuadPart))/((double)(sFrequency.QuadPart));
+
+    //}
+    //   else
     if ((m_dTotalBytes + dwBytes2Write) >= DEFAULT_FILE_SIZE_IN_BYTES) //megabytes
     {
         //triggering type is saved to be used for next file
@@ -324,15 +478,55 @@ void CBaseLogObject::vSetNextFileName(void)
     {
         //If it reaches max start again
         m_nCurrFileCnt = 0;
+        //m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount = 0;//Shailesh - set connection count to 0 as Max number of files crossed
         m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
     }
     else
     {
+        ////Shailesh +
+        ////
+        //CString sCopyOfCurrLogFile = m_omCurrLogFile;
+        //
+        //int nUnderScorePos = sCopyOfCurrLogFile.ReverseFind(_T('_'));
+        //if(nUnderScorePos != -1)
+        //{
+        //  int nDotPos = sCopyOfCurrLogFile.ReverseFind(_T('.'));
+
+        //  CString sCount = m_omCurrLogFile.Mid(nUnderScorePos+1 ,(nDotPos - nUnderScorePos) -1);
+        //  m_nCurrFileCnt = atoi(sCount) +1;
+        //
+        //  sCopyOfCurrLogFile.Delete(nUnderScorePos ,nDotPos - nUnderScorePos);
+
+        //
+        //  LPTSTR sTemp = sCopyOfCurrLogFile.GetBuffer(sCopyOfCurrLogFile.GetLength());
+        //  strcpy(m_sLogInfo.m_sLogFileName, sTemp);
+        //}
+        ////Shailesh -
+
+        ////Shailesh +
+        //if(m_nCurrFileCnt > atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles))
+        //{
+        //  vSetCurrentFileCount();
+        //  return;
+        //}
+        //Shailesh -
+
         //Add the file count with "_"
         m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt,
                           m_sLogInfo.m_sLogFileName);
+
     }
 }
+
+//INT CBaseLogObject::nGetCurrentFileCount()
+//{
+//  return m_nCurrFileCnt;
+//}
+//
+//void CBaseLogObject::vSetCurrentFileCount()
+//{
+//  m_nCurrFileCnt = MAX_LOG_FILE_IN_GRP;
+//}
 
 CString CBaseLogObject::omAddGroupCountToFileName(int nCount, char sFileName[])
 {
@@ -381,6 +575,16 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
     BOOL bResult = FALSE;
     if ((m_pLogFile == NULL) && (m_sLogInfo.m_bEnabled))
     {
+        ////arun
+        // UINT64 qwRefSysTime, qwAbsBaseTime;
+        //CRefTimeKeeper::vGetTimeParams(qwRefSysTime, qwAbsBaseTime);
+
+        //LARGE_INTEGER stLogTime, sFrequency;
+        //QueryPerformanceFrequency(&sFrequency);
+        //QueryPerformanceCounter(&stLogTime);
+
+        //m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime = ((double)(stLogTime.QuadPart))/((double)(sFrequency.QuadPart));
+
         // This function should be called every time logging is started
         m_CurrTriggerType = m_sLogInfo.m_sLogTrigger.m_unTriggerType;
         char Mode[2] =  " ";
@@ -414,6 +618,17 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
     }
     return bResult;
 }
+//
+////arun
+//void CBaseLogObject::vUpdateLogTimeForTimeTrigger(UINT64 &qwRefSysTime)
+//{
+//  /*LPSYSTEMTIME CurrSysTime;
+//
+//  GetLocalTime(CurrSysTime);
+//
+//  qwRefSysTime = (CurrSysTime.wHour * 3600 + CurrSysTime.wMinute * 60 +
+//      + CurrSysTime.wSecond) * 10000 + CurrSysTime.wMilliseconds * 10;*/
+//}
 
 /**
  * \brief Stop logging
@@ -563,6 +778,18 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     omHeader += L'\n';
     omHeader += BUS_LOG_START;
     omHeader += L'\n';
+
+    ////arun
+    //omHeader += BUS_LOG_COMMENT_START;
+    //omHeader += L'\n';
+    //if(strcmp(m_sLogInfo.m_sLogAdvStngs.m_omLogComment, "") != NULL)
+    //{
+    //  omHeader += m_sLogInfo.m_sLogAdvStngs.m_omLogComment;
+    //  omHeader += L'\n';
+    //}
+    //omHeader += BUS_LOG_COMMENT_END;
+    //omHeader += L'\n';
+    ////~arun
 
     // Log current date and time as the start date and time of logging process
     SYSTEMTIME CurrSysTime;

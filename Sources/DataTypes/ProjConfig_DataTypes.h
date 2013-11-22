@@ -25,6 +25,14 @@
 
 #if !defined PROJCONFIG_DATATYPES__H_INCLUDED_
 #define PROJCONFIG_DATATYPES__H_INCLUDED_
+#include <malloc.h>
+#include <memory.h>
+#include <tchar.h>
+#include <wtypes.h>
+#include <atlconv.h>
+#include <stdio.h>
+#include <iostream>
+#include <list>
 
 
 using namespace std;

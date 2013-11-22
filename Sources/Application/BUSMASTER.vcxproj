@@ -83,6 +83,7 @@
     <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(SolutionDir)\EXTERNAL\zlib\include;$(SolutionDir)\EXTERNAL\libxml2\include;$(SolutionDir)\EXTERNAL\iconv\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
     <TargetName>..\..\BIN\busmaster_debug\$(ProjectName)</TargetName>
+    <ExecutablePath>$(VCInstallDir)bin;$(WindowsSdkDir_71A)bin;$(WindowsSDK_ExecutablePath_x86);$(VSInstallDir)Common7\Tools\bin;$(VSInstallDir)Common7\tools;$(VSInstallDir)Common7\ide;$(ProgramFiles)\HTML Help Workshop;$(MSBuildToolsPath32);$(VSInstallDir);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <EmbedManifest>false</EmbedManifest>
@@ -137,8 +138,8 @@
       <OutputFile>$(SolutionDir)/bin/$(OutDir)BUSMASTER.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/BUSMASTER.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -202,14 +203,14 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
 "$(SolutionDir)/BIN/Libs/$(OutDir)CommonClass.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)PSDI_CAN.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)TXWindow.lib"
- %(AdditionalOptions)</AdditionalOptions>
+"$(SolutionDir)/BIN/Libs/$(OutDir)SignalDefiner.lib" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Winmm.lib;shlwapi.lib;htmlhelp.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)BUSMASTER.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/BUSMASTER.pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
       <MapFileName>
       </MapFileName>
@@ -279,14 +280,14 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
 "$(SolutionDir)/BIN/Libs/$(OutDir)CommonClass.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)PSDI_CAN.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)TXWindow.lib"
- %(AdditionalOptions)</AdditionalOptions>
+"$(SolutionDir)/BIN/Libs/$(OutDir)SignalDefiner.lib" "$(SolutionDir)/BIN/Libs/$(OutDir)UDS_Protocol.lib" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Winmm.lib;shlwapi.lib;htmlhelp.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)BUSMASTER.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/BUSMASTER.pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
       <MapFileName>
       </MapFileName>
@@ -306,16 +307,6 @@ copy ".\$(OutDir)BUSMASTER.tlb" "$(SolutionDir)\bin\$(OutDir)BUSMASTER.tlb"
 copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
 </Command>
     </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
-    <Link>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -440,6 +431,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="ConfigMsgDispPropPg.cpp" />
     <ClCompile Include="ConfigMsgLogDlg.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -495,6 +487,9 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="FibexClass.cpp" />
+    <ClCompile Include="FibexConfigurationDlg.cpp" />
+    <ClCompile Include="FIBEX_Structs.cpp" />
     <ClCompile Include="Flags.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -508,6 +503,10 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="FlexRayDatabaseDissociateDlg.cpp" />
+    <ClCompile Include="FlexRayNetworkStats.cpp" />
+    <ClCompile Include="FlexRayNetworkStatsDlg.cpp" />
+    <ClCompile Include="FlexTxHandler.cpp" />
     <ClCompile Include="GraphConfiguration.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -758,6 +757,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="MultiLanguage.cpp" />
+    <ClCompile Include="NodeUtil_Flexray.cpp" />
     <ClCompile Include="NotificListbox.cpp" />
     <ClCompile Include="NotificWnd.cpp" />
     <ClCompile Include="PPageMessage.cpp">
@@ -921,6 +921,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="TxHandlerLIN.cpp" />
     <ClCompile Include="TxMsgWndJ1939.cpp" />
     <ClCompile Include="UIThread.cpp" />
     <ClCompile Include="Utility.cpp">
@@ -1006,8 +1007,16 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="DisplayIntMsg.h" />
     <ClInclude Include="DriverInfoDlg.h" />
     <ClInclude Include="ElementSelection.h" />
+    <ClInclude Include="FibexClass.h" />
+    <ClInclude Include="FibexClass_extern.h" />
+    <ClInclude Include="FibexConfigurationDlg.h" />
+    <ClInclude Include="Fibex_Defs.h" />
+    <ClInclude Include="FIBEX_Structs.h" />
     <ClInclude Include="Flags.h" />
-    <ClInclude Include="GettextBusmaster.h" />
+    <ClInclude Include="FlexRayDatabaseDissociateDlg.h" />
+    <ClInclude Include="FlexRayNetworkStats.h" />
+    <ClInclude Include="FlexRayNetworkStatsDlg.h" />
+    <ClInclude Include="FlexTxHandler.h" />
     <ClInclude Include="GraphConfiguration.h" />
     <ClInclude Include="GraphElement.h" />
     <ClInclude Include="GraphList.h" />
@@ -1032,6 +1041,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="MsgWndHdrInfo.h" />
     <ClInclude Include="MsgWndThread.h" />
     <ClInclude Include="MultiLanguage.h" />
+    <ClInclude Include="NodeUtil_Flexray.h" />
     <ClInclude Include="NotificListbox.h" />
     <ClInclude Include="NotificWnd.h" />
     <ClInclude Include="PPageMessage.h" />
@@ -1053,6 +1063,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="TSEditorHandler.h" />
     <ClInclude Include="TSExecutorHandler.h" />
     <ClInclude Include="TxHandler.h" />
+    <ClInclude Include="TxHandlerLIN.h" />
     <ClInclude Include="TxMsgWndJ1939.h" />
     <ClInclude Include="UIThread.h" />
     <ClInclude Include="Utility.h" />

@@ -38,6 +38,18 @@
     <ClCompile Include="Struct_BUS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UDS_DataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Defines_FlexRay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FEALData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_Datatypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base_WrapperErrorLogger.h">
@@ -95,6 +107,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SigWatch_Datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UDS_DataTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_FlexRay_Buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FEALData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_Datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Typecode_FBX_entities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -105,7 +105,10 @@ unsigned int CConverter::Convert(string sCanMonFile, string sCanoeFile)
     }
 
     // Generate the list of messages
-    GenerateMessageList(fileInput);
+    if (GenerateMessageList(fileInput) == CON_RC_FORMAT_ERROR_INFILE)
+    {
+        return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
+    }
     DecryptData(m_notProcessed);
     // All information gathered, validate and update if necessary
     // Make appropriate changes in the contents of the list
@@ -173,7 +176,7 @@ void CConverter::GetResultString(string& str)
     switch(m_uiResultCode)
     {
         case 0:
-            str = _("Conversion completed.");
+            str = _("Conversion completed Successfully");
             break;
 
         case 1:
@@ -209,7 +212,7 @@ void CConverter::GetResultString(string& str)
  * This function will parse the input file and line by line
  * and generates a list of message,signal,value table,comments,etc
  */
-void CConverter::GenerateMessageList(fstream& fileInput)
+unsigned int CConverter::GenerateMessageList(fstream& fileInput)
 {
     char acLine[defCON_MAX_LINE_LEN]; // I don't expect one line to be more than this
     bool valTab = false;
@@ -287,7 +290,10 @@ void CConverter::GenerateMessageList(fstream& fileInput)
                     if(strcmp(pcToken,"[START_SIGNALS]") == 0)
                     {
                         CSignal sig;
-                        sig.Format(pcLine + strlen(pcToken)+1);
+                        if (sig.Format(pcLine + strlen(pcToken)+1) == 0)
+                        {
+                            return SetResultCode(CON_RC_FORMAT_ERROR_INFILE);
+                        }
                         sig.m_ucStartBit = 0;
                         posMsg->m_listSignals.push_front(sig);
                         posSig = posMsg->m_listSignals.begin();
@@ -305,7 +311,10 @@ void CConverter::GenerateMessageList(fstream& fileInput)
             else if(strcmp(pcToken,"[START_SIGNALS]") == 0)
             {
                 CSignal sig;
-                sig.Format(pcLine + strlen(pcToken)+1);
+                if (sig.Format(pcLine + strlen(pcToken)+1) == 0)
+                {
+                    m_uiResultCode = CON_RC_FORMAT_ERROR_INFILE;
+                }
                 posMsg->m_listSignals.push_front(sig);
                 posSig = posMsg->m_listSignals.begin();
             }
@@ -472,7 +481,7 @@ void CConverter::GenerateMessageList(fstream& fileInput)
         }
     }
 
-    return ;
+    return m_uiResultCode;
 }
 
 /**

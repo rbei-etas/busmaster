@@ -322,6 +322,11 @@ int CParameter::Format(char* pcLine)
     //get Value Type
     pcToken = strtok_s(NULL, " ", &pcTok);
 
+    if(NULL == pcToken)
+    {
+        return false;
+    }
+
     while(*pcToken == ' ')
     {
         *pcToken++;

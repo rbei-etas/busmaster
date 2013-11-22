@@ -26,7 +26,7 @@
 
 //#define defNO_OF_CHANNELS           2
 #define MAX_PROTOCOL               20
-#define AVAILABLE_PROTOCOLS         4
+#define AVAILABLE_PROTOCOLS         5
 
 
 
@@ -69,6 +69,10 @@
 #define DIL_CFX_MULTI_CHANNEL           0X2
 #define DIL_CFX_STRUCTURE_UPDATE        0X3
 #define DIL_CFX_CURRENT_VERSION         DIL_CFX_STRUCTURE_UPDATE
+#define COLOUR_NULL_FRAME       RGB(  0,   0,   0)
+#define COLOUR_DYNC_FRAME       RGB(  0, 128,   0)
+#define COLOUR_STAT_FRAME       RGB(128,   0,   0)
+#define COLOUR_SYNC_FRAME       RGB(  0,   0, 128)
 // Replay type of logged messages
 enum eREPLAYTYPE
 {
@@ -374,7 +378,7 @@ This operation will convert the message code from 11 to 29 bits.\nDo you want to
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
 #define defMAX_BITS             64
-#define defMAX_SIGNALS          128
+#define defMAX_SIGNALS          14280
 #define defBITS_IN_BYTE         8
 #define defMAX_BYTE             8
 #define defBITS_IN_FOUR_BYTE    32
@@ -630,9 +634,13 @@ Message transmission aborted!"
 
 #define defSTRING_SIZE              50      // Largest size of the following strings
 #define defMESSAGE_ID               "Message ID/Name"
+#define defMESSAGE_PID              "PID"
 #define defMESSAGE_TYPE             "Type"
+#define defMESSAGE_TYPE_LIN         "Frame Type"
 #define defMESSSAGE_DLC             "DLC"
 #define defMESSAGE_DATA_BYTES       "Data Bytes"
+#define defMESSAGE_CHKSUM_TYPE      "Checksum Type"
+#define defMESSAGE_CHKSUM           "Checksum"
 #define defMESSAGE_BLOCK_NAME       "Name"
 #define defMESSAGE_BLOCK_TRIGGER    "Type"
 #define defMESSAGE_BLOCK_TRIG_VAL   "Value"
@@ -655,7 +663,7 @@ Message transmission aborted!"
 #define defMAX_MSGBLOCK             32
 #define defDEFAULT_TIME_VAL         100
 #define defMESSAGE_BLOCK_COLUMN     3
-#define defMESSAGE_FRAME_COLUMN     5
+#define defMESSAGE_FRAME_COLUMN     7
 #define defDATA_BYTES_EXTRA         22
 #define defMAIN_ITEM                0
 #define defSUBITEM_MSGBLOCK_TYPE    1
@@ -664,6 +672,7 @@ Message transmission aborted!"
 #define defSUBITEM_MSGDETAILS_TYPE          2
 #define defSUBITEM_MSGDETAILS_DLC           3
 #define defSUBITEM_MSGDETAILS_DATA          4
+#define defSUBITEM_CHKSUM_TYPE              5
 #define defMASK_DISPLAY             0x01
 #define defMASK_TXON                0x02
 #define defMASK_CONNECT             0x04
@@ -1318,6 +1327,8 @@ transmission is ON.\nDo you want to ignore the changes ?"
 
 #define defSTR_MODE_MISMATCH                "No USB Hardware found. Switching to Simulation mode"
 #define defSTR_HW_TEST_SUCCESS              "Hardware Interface test passed successfully"
+#define defSTR_PP_MODE_EPP_FAILED           "Unable to set the parallel port to EPP mode"
+#define defSTR_PP_MODE_NON_EPP_FAILED       "Unable to set the parallel port to Non EPP mode"
 #define defSTR_USB_DRIVER_IS_NOT_RUNNING    "Unable to communicate with the driver or Unable to create client networks. Application will quit"
 
 #define defSTR_NET_NAME_FORAMT              "%s_%d"
@@ -1653,6 +1664,7 @@ transmission is ON.\nDo you want to ignore the changes ?"
 
 // Tx Message Configuration window
 #define defSTR_TX_WINDOW_TITLE              "Configure Transmission Messages"
+#define defSTR_TX_WINDOW_LIN_TITLE          "Configure LIN Transmission Messages"
 #define defSTR_TX_SAVE_CONFIRMATION         "Do you want to save changes?"
 
 // Simulated system Configuration window

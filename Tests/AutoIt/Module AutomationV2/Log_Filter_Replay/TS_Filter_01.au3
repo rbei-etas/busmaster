@@ -1,65 +1,38 @@
-;=== Test Cases/Test Data ===
-; Module			:		Filters
+;=================================================================== Test Cases/Test Data ========================================================================
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Filter_01
-; TestCases			:		Provision to enter message ID for filtering
-; Test Strategy		:		Black Box
-; Test Data			:		-
-; === Test Procedure ===
+; TestCases			:		Validity of filter list for message window
+; Test Data			:
+; Test Setup		:		1. Invoke dialog box for filter configuration
+;~ 							2. Enter ID of a message to update the filter list
+;~ 							3. Confirm by pressing OK button
+;~ 							4. Enable message filter
+;~ 							5. Send the same message across CAN bus
+
+; Expected Results  : 		"The message ID shouldn't appear in the message window"
+;==========================================================================Test Procedure =========================================================================
+
 
 ConsoleWrite(@CRLF)
-ConsoleWrite(@CRLF)
-ConsoleWrite("***********Filter Script Execution Started************"&@CRLF)
 ConsoleWrite("****Start : TS_Filter_01.au3****"&@CRLF)
 
-WinActivate($WIN_BUSMASTER,3)
+
+_launchApp()
+
+WinActivate($WIN_BUSMASTER)
+Local $MsgWinItemCount=0,$Msg1[5]=["","","","",""]
 if winexists($WIN_BUSMASTER) then
-	_createConfig("cfxFilter_01")												; Create New Configuration
+	_loadConfig("cfxFilter_01")													; Load Configuration
 
-	_createCANDB("testFilter_01")												; Create New Database File
-	sleep(1500)
-
-	_DBmessage("n")																; Select 'New Message' from right click menu
+	_AddFilter("Stop","[0x15]Msg1","","","Std","Non RTR","Tx",1)				; Configure Filter details
 	sleep(1000)
 
-	_addMsgDetails("Msg1",15,8)													; Add the message details
-
-	$sigDetlvPos=ControlGetPos($WIN_BUSMASTER,"",$LVC_SigDet_DBeditor)						; Get handle of signal details list view
-	MouseClick("right",$sigDetlvPos[0]+150,$sigDetlvPos[1]+100)				; Right Click on the Signal details list view
-	send("{DOWN}")															; Select 'New Signal' menu
-	sleep(1500)
-	send("{ENTER}")
-
-	_addSigDetails("int","Signal1",32,0,0)										; Add the signal details
-
-	_saveCloseCANDB()
-
-	_AssociateCANDB("testFilter_01.dbf")										; Associate DB
-
-	_hdWareSelectKvaser()														; Select Kvaser Hardware
-	 sleep(1000)
-
-	_TxMsgMenu()																; Open Tx window from the menu
-
-	_AddMsgBlock()																; Add a msg block
-
-	_EnableAutoUpdate()															; Enable autoupdate
-
-	ControlCommand($WIN_BUSMASTER,"",$COMB_MsgID_ConfigTX,"SetCurrentSelection",0)		; Add the DB msgs to the Tx message list
-
-	_AddMsg2TxList()															; Click on Add button
-
-	_CloseTxWindow()															; Close Tx window
-
-	_AppFilterMenu()															; Open Configure Filter dialog
-
-	_AddFilter("Stop","[0x15]Msg1","Std","Non RTR","Tx",1)						; Configure Filter details
-	sleep(1000)
 	_MsgDisplayMenu()															; Open Message Display dialog
 
 	_AddFiltertoMsgDisp()														; Add the filter to Message display
+	sleep(1000)
 
-	_Enable_DisableFilterDispMenu()											; Enable filters for message display
+	_En_Dis_FilterDisplay()														; Enable filters for message display
 
 	_ConnectDisconnect()														; Connect the tool
 
@@ -71,22 +44,30 @@ if winexists($WIN_BUSMASTER) then
 	Sleep(2000)
 	_DisableJ1939Win()															; If J1939 Msg Window is active then disable it
 
-	sleep(2000)
-	$hwd= ControlGetHandle($WIN_BUSMASTER,"",$LSTC_CANMsgWin)									; Fetch handle of Msg window list view
-	$count=_GUICtrlListView_GetItemCount($hwd)									; Fetch the number of items in the list view
-	ConsoleWrite("$count=" &$count&@CRLF)
-	$dir=_GUICtrlListView_GetItemText($hwd, 0,2)								; Fetch the direction of the msg
-	ConsoleWrite("$dir=" &$dir&@CRLF)
-	$decMsgID=_GUICtrlListView_GetItemText($hwd, 0,5)							; Fetch the Dec msg ID
-	ConsoleWrite("$decMsgID=" &$decMsgID&@CRLF)
-	$hexVal=hex($decMsgID)														; Convert the Dec msg ID to Hex
-	ConsoleWrite("$hexVal=" &$hexVal&@CRLF)
+	_EnableHex()																; Enable Hex display mode
+
+	sleep(1200)
+
+	$MsgWinItemCount=_GetCANMsgWinItemCount()									; Fetch the item count in the msg window
+
+	if $MsgWinItemCount>0 Then
+		$Msg1=_GetMsgWinCANInfo(0)													; Fetch the first msg info
+	EndIf
+EndIf
+ConsoleWrite("$Msg1[2]:"&$Msg1[2]&@CRLF)
+ConsoleWrite("$Msg1[1]:"&$Msg1[1]&@CRLF)
+ConsoleWrite("$Msg1[4]:"&$Msg1[4]&@CRLF)
+
+if $Msg1[2]=2 and $Msg1[1]="Rx" and $Msg1[4]=0x015 Then							; Validate the result
+	_WriteResult("Pass","TS_Filter_01")
+Else
+	_WriteResult("Fail","TS_Filter_01")
 EndIf
 
-if $count=1 and $dir="Rx" and $hexVal=00000015 Then								; Validate the result
-	_ExcelWriteCell($oExcel, "Pass", 6, 2)
-Else
-	_ExcelWriteCell($oExcel, "Fail", 6, 2)
+$isAppNotRes=_CloseApp()														; Close the app
+
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_Filter_01")
 EndIf
 
 ConsoleWrite("****End : TS_Filter_01.au3****"&@CRLF)

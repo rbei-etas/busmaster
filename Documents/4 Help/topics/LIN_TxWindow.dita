@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="transmit_messages" xml:lang="en-us">
+  <title>Transmit Messages</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Transmit Messages</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Messages can be send over LIN-bus by following the steps given below. Select <b>LIN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog as shown is figure below.</p>
+    <section>
+      <title>Getting Started</title>
+      <image href="../images/LIN_TxWindow.bmp" placement="break"/>
+      <ul>
+        <li>Add a message block and select the trigger as “On Time”. Select a name of message block and then enter appropriate message details in “Configure Message“.</li>
+        <li>Provide ID in Name/ID (in Hex) Combo box.Give the Data Bytes in Data bytes window.</li>
+        <li>Select Update button to save the changes and press the tool bar button shown in the figure below.</li>
+        <li>
+          <image href="../images/sendmessagetoolbar.bmp" placement="break"/>
+        </li>
+      </ul>
+      <p>The messages added in to the Tx message list can also be modified. Follow the steps given below.</p>
+      <ul>
+        <li>Select an entry in the message list. The selected detail will be unpacked and will be displayed in the edit controls below. If it is a database message then the signal details will be listed in the signal list with both physical and raw values.</li>
+        <li>Any modification in Message Name/ID, DLC, Data bytes, signal raw and physical values will directly reflect in the selected message entry in the message list. The signal matrix will also get updated to reflect the changes.</li>
+        <li>Selecting Apply or OK button will reflect message details change in transmission immediately if message transmission is on. </li>
+      </ul>
+      <p>User can delete a message frame entry from the list by following the steps given below.</p>
+      <ul>
+        <li>Select <b>LIN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog box as shown below in figure (a).</li>
+        <li>Select an entry in the message frame list.</li>
+        <li>Select Delete button. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected item will be deleted from the list. Multiple items can be selected to delete multiple items in one shot.</li>
+        <li>Select Delete All button to delete all entries in the message block. A delete all confirmation will be displayed. Select Yes to confirm deletion. This will clear message block entries.</li>
+        <li>The other way of doing delete is Right click mouse button. This will display a pop-up menu Delete and Delete All. Select Delete pop-up menu. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected message frame will be removed from the message frame list.</li>
+      </ul>
+      <p>The added messages can be directly transmitted instantaneously. The steps to do this is listed below</p>
+      <ul>
+        <li>Select a message entry or message entries from the message list.</li>
+        <li>Select Send button to transmit these messages.</li>
+        <li>The other way of doing this is right click on selected message entries. This will show a popup menu with Send option. Select Send to transmit selected messages once. </li>
+      </ul>
+      <note>
+        <ul>
+          <li>To send a message tool should be in connected state.</li>
+          <li>If more then one message are selected to send, all messages will be transmitted one after another without any delay. </li>
+        </ul>
+      </note>
+    </section>
+  </body>
+</topic>

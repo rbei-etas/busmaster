@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>FlexRay Message Window</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>FlexRay Transmit Window</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>On-line FlexRay Network Monitoring can be done using FlexRay Message window.</p>
+    <p><b>Activation:</b></p>
+    <p>Use <b>FlexRay-&gt;Message Window-&gt;Activate</b> menu to Activate the Message window.This will display Message Window as shown in following figure.</p>
+    <p><image href="../images/FlexRay_MessageWindow_Empty.bmp"/></p>
+    <p>Once the BUSMASTER is connected to FlexRay Network the Message window will display all the Messages Transmitted on the network.The Messages can also display the message interpretation. </p>
+    <p><b>Enabling Interpretation:</b></p>
+    <p>To enable the interpretation the Message window should be in overwrite mode.Use <b>FlexRay-&gt;Message Window-&gt;Overwrite</b>. menu to enable the overwrite mode.After this use <b>FlexRay-&gt;Message Window-&gt;Interpret.</b></p>
+    <p/>
+    <p>The below figure shows Message window when it BUSMASTER is connected to FlexRay Network.</p>
+    <image href="../images/FlexRay_MessageWindow_Online.bmp"/>
+    <p>The Following section will explain  the Columns Displayed in Message window with explanation.</p>
+    <p><table frame="all">
+        <title/>
+        <tgroup cols="2">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <thead>
+            <row>
+              <entry>Column</entry>
+              <entry>Explanation</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <b>Time</b>
+              </entry>
+              <entry>This Will display the time at which message is received\Sent on FlexRay BUS.The time mode can be changed to Absolute\System\Relative Mode using <b>FlexRay-&gt;Message Window-&gt;Time Mode</b> menu</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Tx/Rx</b>
+              </entry>
+              <entry>This Menu will display weather the message is received or sent from BUSMASTER.Tx Represents the message is sent From BUSMASTER.Rx Represent Message is received in BUSMASTER</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Frame Id</b>
+              </entry>
+              <entry>This Column gives the information about the Scheduling of Message.The information will be displayed in the format of <b><i>slot_id [base_cycle, repetition]</i>.</b></entry>
+            </row>
+            <row>
+              <entry>
+                <b>Frame Type</b>
+              </entry>
+              <entry>This Column will tell the Frame type.The following are the Frame types displayed in this column. <ul>
+                  <li>sync</li>
+                  <li>startup</li>
+                  <li>sync, startup</li>
+                  <li>Null</li>
+                  <li>Data</li>
+                </ul></entry>
+            </row>
+            <row>
+              <entry>
+                <b>Slot Type</b>
+              </entry>
+              <entry>
+                <p>This column will tell weather the message is Transmitted\Received in static\Dynamic Slot.</p>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <p><b>Description</b></p>
+              </entry>
+              <entry>This column will give the Message Name associated with the ID.</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Cycle</b>
+              </entry>
+              <entry>This column will display the Cycle in which the message was received </entry>
+            </row>
+            <row>
+              <entry>
+                <b>Channel</b>
+              </entry>
+              <entry><b>:</b>This column will display on which channel ( A, B or AB ) the message was received.</entry>
+            </row>
+            <row>
+              <entry>
+                <b>DLC</b>
+              </entry>
+              <entry>This column will display the Length of Frame in Bytes.</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Data Byte (s)</b>
+              </entry>
+              <entry>This column will display the Data Bytes received\Transmitted of the Frame</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p><b>Message Interpretation window:</b></p>
+    <p>It is possible to Monitor the interpretation of a single message in separate window called <b>Message Interpretation.</b>Double click on any message in Message window to Activate the Message Interpretation window.An Instance of this window is shown in following figure.</p>
+    <p><image href="../images/FlexRay_MessageWindow_Interpretation.bmp"/></p>
+  </body>
+</topic>

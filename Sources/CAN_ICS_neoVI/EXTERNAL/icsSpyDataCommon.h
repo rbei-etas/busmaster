@@ -44,7 +44,7 @@ Public Enum icsspyHardwareProtocol
     icsspyProtocolChryslerCCD
     icsspyProtocolChryslerSCI
     icsspyProtocolFordUBP
-	icsspyProtocolBean
+    icsspyProtocolBean
 End Enum */
 
 const int SPY_PROTOCOL_CUSTOM = 0;
@@ -109,16 +109,16 @@ Public Enum icsSpyDataStatusBitfield
     icsSpyStatusBreak = 2 ^ 19
 
     icsSpyStatusAVT_VSIRecOverflow = 2 ^ 20
-	icsSpyStatusTestTrigger = 2 ^ 21
+    icsSpyStatusTestTrigger = 2 ^ 21
     icsSpyStatusAudioCommentType = 2 ^ 22
     icsSpyStatusGPSDataValue = 2 ^ 23
-    
-	icsSpyStatusAnalogDigitalInputValue = 2 ^ 24
-	icsSpyStatusTextCommentType = 2 ^ 25
+
+    icsSpyStatusAnalogDigitalInputValue = 2 ^ 24
+    icsSpyStatusTextCommentType = 2 ^ 25
     icsSpyStatusNetworkMessageType = 2 ^ 26
     icsSpyStatusVSI_TxUnderRun = 2 ^ 27
-    
-	icsSpyStatusVSI_IFR_CRCBit = 2 ^ 28
+
+    icsSpyStatusVSI_IFR_CRCBit = 2 ^ 28
 End Enum */
 
 // constants for the status bitfield
@@ -181,32 +181,32 @@ const long SPY_STATUS2_GLOBAL_CHANGE = 0x10000;
 const long SPY_STATUS2_ERROR_FRAME = 0x20000;
 const long SPY_STATUS2_END_OF_LONG_MESSAGE = 0x100000; //TRM for ISO and J1708
 /* LIN/ISO Specific - check protocol before handling  */
-const long SPY_STATUS2_LIN_ERR_RX_BREAK_NOT_0 = 	0x200000;
-const long SPY_STATUS2_LIN_ERR_RX_BREAK_TOO_SHORT = 	0x400000;
-const long SPY_STATUS2_LIN_ERR_RX_SYNC_NOT_55 = 	0x800000;
-const long SPY_STATUS2_LIN_ERR_RX_DATA_GREATER_8 = 	0x1000000;
-const long SPY_STATUS2_LIN_ERR_TX_RX_MISMATCH = 	0x2000000;
-const long SPY_STATUS2_LIN_ERR_MSG_ID_PARITY = 		0x4000000;
-const long SPY_STATUS2_ISO_FRAME_ERROR 		= 		0x8000000;
-const long SPY_STATUS2_LIN_SYNC_FRAME_ERROR = 		0x8000000;
-const long SPY_STATUS2_ISO_OVERFLOW_ERROR= 		0x10000000;
-const long SPY_STATUS2_LIN_ID_FRAME_ERROR= 		0x10000000;
-const long SPY_STATUS2_ISO_PARITY_ERROR = 		0x20000000;
-const long SPY_STATUS2_LIN_SLAVE_BYTE_ERROR =	0x20000000;
-const long SPY_STATUS2_RX_TIMEOUT_ERROR = 		0x40000000;
-const long SPY_STATUS2_LIN_NO_SLAVE_DATA = 		0x80000000;
+const long SPY_STATUS2_LIN_ERR_RX_BREAK_NOT_0 =     0x200000;
+const long SPY_STATUS2_LIN_ERR_RX_BREAK_TOO_SHORT =     0x400000;
+const long SPY_STATUS2_LIN_ERR_RX_SYNC_NOT_55 =     0x800000;
+const long SPY_STATUS2_LIN_ERR_RX_DATA_GREATER_8 =  0x1000000;
+const long SPY_STATUS2_LIN_ERR_TX_RX_MISMATCH =     0x2000000;
+const long SPY_STATUS2_LIN_ERR_MSG_ID_PARITY =      0x4000000;
+const long SPY_STATUS2_ISO_FRAME_ERROR      =       0x8000000;
+const long SPY_STATUS2_LIN_SYNC_FRAME_ERROR =       0x8000000;
+const long SPY_STATUS2_ISO_OVERFLOW_ERROR=      0x10000000;
+const long SPY_STATUS2_LIN_ID_FRAME_ERROR=      0x10000000;
+const long SPY_STATUS2_ISO_PARITY_ERROR =       0x20000000;
+const long SPY_STATUS2_LIN_SLAVE_BYTE_ERROR =   0x20000000;
+const long SPY_STATUS2_RX_TIMEOUT_ERROR =       0x40000000;
+const long SPY_STATUS2_LIN_NO_SLAVE_DATA =      0x80000000;
 /* MOST Specific - check protocol before handling */
-const long SPY_STATUS2_MOST_PACKET_DATA		 = 	0x200000;
-const long SPY_STATUS2_MOST_STATUS	 	= 	0x400000; /* reflects changes in light/lock/MPR/SBC/etc... */
-const long SPY_STATUS2_MOST_LOW_LEVEL 		= 	0x800000; /* MOST low level message, allocs, deallocs, remote requests...*/
-const long SPY_STATUS2_MOST_CONTROL_DATA 	= 	0x1000000;
-const long SPY_STATUS2_MOST_MHP_USER_DATA 	= 	0x2000000; /* MOST HIGH User Data Frame */
-const long SPY_STATUS2_MOST_MHP_CONTROL_DATA	 = 	0x4000000; /* MOST HIGH Control Data */
-const long SPY_STATUS2_MOST_I2S_DUMP 		= 	0x8000000;
-const long SPY_STATUS2_MOST_TOO_SHORT 		= 	0x10000000;
-const long SPY_STATUS2_MOST_MOST50 		= 	0x20000000; /* absence of MOST50 and MOST150 implies it's MOST25 */
-const long SPY_STATUS2_MOST_MOST150		= 	0x40000000;
-const long SPY_STATUS2_MOST_CHANGED_PAR		= 	0x80000000; /* first byte in ack reflects what changed. */ 
+const long SPY_STATUS2_MOST_PACKET_DATA      =  0x200000;
+const long SPY_STATUS2_MOST_STATUS      =   0x400000; /* reflects changes in light/lock/MPR/SBC/etc... */
+const long SPY_STATUS2_MOST_LOW_LEVEL       =   0x800000; /* MOST low level message, allocs, deallocs, remote requests...*/
+const long SPY_STATUS2_MOST_CONTROL_DATA    =   0x1000000;
+const long SPY_STATUS2_MOST_MHP_USER_DATA   =   0x2000000; /* MOST HIGH User Data Frame */
+const long SPY_STATUS2_MOST_MHP_CONTROL_DATA     =  0x4000000; /* MOST HIGH Control Data */
+const long SPY_STATUS2_MOST_I2S_DUMP        =   0x8000000;
+const long SPY_STATUS2_MOST_TOO_SHORT       =   0x10000000;
+const long SPY_STATUS2_MOST_MOST50      =   0x20000000; /* absence of MOST50 and MOST150 implies it's MOST25 */
+const long SPY_STATUS2_MOST_MOST150     =   0x40000000;
+const long SPY_STATUS2_MOST_CHANGED_PAR     =   0x80000000; /* first byte in ack reflects what changed. */
 
 // these are used in status2 for Vehicle Spy 3
 const long icsspystatusChangeLength =0x10;
@@ -224,8 +224,8 @@ const long icsspystatusChangeBitB8 = 0x8000  ;
 const long icsspystatusChangedGlobal = 0x10000 ;
 
 
-//Status bit field 3   
-const long SPY_STATUS3_LIN_JUST_BREAK_SYNC = 1;   
+//Status bit field 3
+const long SPY_STATUS3_LIN_JUST_BREAK_SYNC = 1;
 const long SPY_STATUS3_LIN_SLAVE_DATA_TOO_SHORT = 2;
 const long SPY_STATUS3_LIN_ONLY_UPDATE_SLAVE_TABLE_ONCE = 4;
 
@@ -256,28 +256,28 @@ Public Type icsSpyMessageGPS
 End Type */
 
 typedef struct // matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;		// 1
-	unsigned char Protocol;		// 1
-	unsigned char MessagePieceID;	// 1
-	unsigned char ExtraDataPtrEnabled;			// 1
-	short GPSDataID;
-	short DescriptionID;			// 2
-	unsigned char AckBytes[8];			
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;       // 1
+    unsigned char Protocol;     // 1
+    unsigned char MessagePieceID;   // 1
+    unsigned char ExtraDataPtrEnabled;          // 1
+    short GPSDataID;
+    short DescriptionID;            // 2
+    unsigned char AckBytes[8];
     double Value1; // 8
     double Value2;// 8
-	unsigned char MiscData;
-    }  icsSpyMessageGPS;
-	
+    unsigned char MiscData;
+}  icsSpyMessageGPS;
+
 
 /*
 Public Type icsSpyMessageAnalog
@@ -306,29 +306,29 @@ End Type
  */
 
 typedef struct // matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;		// 1
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;		// 1
-	unsigned char Protocol;
-	unsigned char MessagePieceID;	// 1
-	unsigned char ExtraDataPtrEnabled;			// 1
-	short AIDataID;
-	short DescriptionID;			// 2
-	double Value;
-	short HardwareIndex;
-	unsigned char AckBytes[8];
-	short iDummy;
-	long lDummy;
-	unsigned char MiscData;
-    }  icsSpyMessageAnalog;
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;        // 1
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;       // 1
+    unsigned char Protocol;
+    unsigned char MessagePieceID;   // 1
+    unsigned char ExtraDataPtrEnabled;          // 1
+    short AIDataID;
+    short DescriptionID;            // 2
+    double Value;
+    short HardwareIndex;
+    unsigned char AckBytes[8];
+    short iDummy;
+    long lDummy;
+    unsigned char MiscData;
+}  icsSpyMessageAnalog;
 const unsigned char SYSTEM_TIMESTAMP_ID_NONE = 0;
 const unsigned char SYSTEM_TIMESTAMP_ID_TIMEGETTIME_API = 1;
 
@@ -345,15 +345,15 @@ Public Type icsspyMsgTime
 End Enum */
 
 typedef struct // matching C structure
-    {
-    unsigned long SystemTimeStampID;	// 4
-	unsigned long SystemTime1;			// 4
-    unsigned long SystemTime2;			// 4
-	unsigned long HardwareTimeStampID;	// 4
-    unsigned long HardwareTime1;		// 4
-	unsigned long HardwareTime2;		// 4
-	
-    }  icsSpyMsgTime;
+{
+    unsigned long SystemTimeStampID;    // 4
+    unsigned long SystemTime1;          // 4
+    unsigned long SystemTime2;          // 4
+    unsigned long HardwareTimeStampID;  // 4
+    unsigned long HardwareTime1;        // 4
+    unsigned long HardwareTime2;        // 4
+
+}  icsSpyMsgTime;
 
 
 /* Public Type spyFilterBytes
@@ -375,33 +375,33 @@ typedef struct // matching C structure
     bStuff2 As Byte
     ExpectedLength As Long
     NodeID As Long
-End Type */ 
+End Type */
 
 
 typedef struct // matching C structure
-    {
-	unsigned long StatusValue;  // 4
-	unsigned long StatusMask;  // 4
-	unsigned long Status2Value;  // 4
-	unsigned long Status2Mask;  // 4
-	unsigned char Header[4];	// 4
-	unsigned char HeaderMask[4];  // 4
-	unsigned long MiscData; // 4
-	unsigned long MiscDataMask;  // 4 
-	unsigned char ByteData[8];	// 4
-	unsigned char ByteDataMask[8];  // 4
-	unsigned long HeaderLength; // 4 
-	unsigned long ByteDataLength; // 4
-	unsigned long NetworkID;	// 4
-	unsigned short FrameMaster;	// 2
-	unsigned char bUseArbIdRangeFilter;
-	unsigned char bStuff2;
-	unsigned long ExpectedLength;
-	unsigned long NodeID;
-	}  spyFilterBytes;
+{
+    unsigned long StatusValue;  // 4
+    unsigned long StatusMask;  // 4
+    unsigned long Status2Value;  // 4
+    unsigned long Status2Mask;  // 4
+    unsigned char Header[4];    // 4
+    unsigned char HeaderMask[4];  // 4
+    unsigned long MiscData; // 4
+    unsigned long MiscDataMask;  // 4
+    unsigned char ByteData[8];  // 4
+    unsigned char ByteDataMask[8];  // 4
+    unsigned long HeaderLength; // 4
+    unsigned long ByteDataLength; // 4
+    unsigned long NetworkID;    // 4
+    unsigned short FrameMaster; // 2
+    unsigned char bUseArbIdRangeFilter;
+    unsigned char bStuff2;
+    unsigned long ExpectedLength;
+    unsigned long NodeID;
+}  spyFilterBytes;
 
 
-        
+
 /*Public Type spyFilterLong
     StatusValue As Long
     StatusMask As Long
@@ -427,65 +427,66 @@ End Type */
 
 typedef struct // matching C structure
 {
-	unsigned long StatusValue;  // 4
-	unsigned long StatusMask;  // 4
-	unsigned long Status2Value;  // 4
-	unsigned long Status2Mask;  // 4
-	unsigned long Header;	// 4
-	unsigned long HeaderMask;  // 4
-	unsigned long MiscData; // 4
-	unsigned long MiscDataMask;  // 4 
-	unsigned long ByteDataMSB;	// 4
-	unsigned long ByteDataLSB;	// 4
-	unsigned long ByteDataMaskMSB;  // 4
-	unsigned long ByteDataMaskLSB;  // 4
-	unsigned long HeaderLength; // 4 
-	unsigned long ByteDataLength; // 4
-	unsigned long NetworkID;	// 4
-	unsigned short FrameMaster;	// 2
-	unsigned char bUseArbIdRangeFilter;
-	unsigned char bStuff2;
-	unsigned long ExpectedLength;
-	unsigned long NodeID;
+    unsigned long StatusValue;  // 4
+    unsigned long StatusMask;  // 4
+    unsigned long Status2Value;  // 4
+    unsigned long Status2Mask;  // 4
+    unsigned long Header;   // 4
+    unsigned long HeaderMask;  // 4
+    unsigned long MiscData; // 4
+    unsigned long MiscDataMask;  // 4
+    unsigned long ByteDataMSB;  // 4
+    unsigned long ByteDataLSB;  // 4
+    unsigned long ByteDataMaskMSB;  // 4
+    unsigned long ByteDataMaskLSB;  // 4
+    unsigned long HeaderLength; // 4
+    unsigned long ByteDataLength; // 4
+    unsigned long NetworkID;    // 4
+    unsigned short FrameMaster; // 2
+    unsigned char bUseArbIdRangeFilter;
+    unsigned char bStuff2;
+    unsigned long ExpectedLength;
+    unsigned long NodeID;
 }  spyFilterLong;
 /*
 // Structure for firmware info
 struct stAPIFirmwareInfo
 {
-	int iType;  // 1,2,3 for Generation of HW.
-	
-	// Date and Time (only valid for type 1 and 2
-	int  iMainFirmDateDay;
-	int  iMainFirmDateMonth;
-	int  iMainFirmDateYear;
-	int  iMainFirmDateHour;
-	int  iMainFirmDateMin;
-	int  iMainFirmDateSecond;
-	int  iMainFirmChkSum;
+    int iType;  // 1,2,3 for Generation of HW.
 
-	// Version data (only valid for type 3)
-	unsigned char iAppMajor;
-	unsigned char iAppMinor;
+    // Date and Time (only valid for type 1 and 2
+    int  iMainFirmDateDay;
+    int  iMainFirmDateMonth;
+    int  iMainFirmDateYear;
+    int  iMainFirmDateHour;
+    int  iMainFirmDateMin;
+    int  iMainFirmDateSecond;
+    int  iMainFirmChkSum;
 
-	unsigned char iManufactureDay;
-	unsigned char iManufactureMonth;
-	unsigned short iManufactureYear;
+    // Version data (only valid for type 3)
+    unsigned char iAppMajor;
+    unsigned char iAppMinor;
 
-	unsigned char iBoardRevMajor;
-	unsigned char iBoardRevMinor;
+    unsigned char iManufactureDay;
+    unsigned char iManufactureMonth;
+    unsigned short iManufactureYear;
 
-	unsigned char iBootLoaderVersionMajor;
-	unsigned char iBootLoaderVersionMinor;
+    unsigned char iBoardRevMajor;
+    unsigned char iBoardRevMinor;
+
+    unsigned char iBootLoaderVersionMajor;
+    unsigned char iBootLoaderVersionMinor;
 
 };   */
 
-typedef struct _icsSpyTime{
-	unsigned char sec;	   	// --- Seconds (00-59)
-	unsigned char min;		// --- (00-59)
-	unsigned char hour;		// --- (00-23)
-	unsigned char day;		// --- (01-31)
-	unsigned char month;	// --- (01-12)
-	unsigned char year;		// --- (00-99)
+typedef struct _icsSpyTime
+{
+    unsigned char sec;      // --- Seconds (00-59)
+    unsigned char min;      // --- (00-59)
+    unsigned char hour;     // --- (00-23)
+    unsigned char day;      // --- (01-31)
+    unsigned char month;    // --- (01-12)
+    unsigned char year;     // --- (00-99)
 } icsSpyTime ;
 #endif
 

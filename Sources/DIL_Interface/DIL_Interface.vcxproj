@@ -96,7 +96,7 @@
       <OutputFile>$(SolutionDir)/bin/$(OutDir)DIL_Interface.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)DIL_Interface.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
@@ -136,7 +136,6 @@
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)DIL_Interface.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
@@ -167,26 +166,39 @@
       <SupportUnloadOfDelayLoadedDLL>false</SupportUnloadOfDelayLoadedDLL>
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)DIL_Interface.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientBuffer.cpp" />
+    <ClCompile Include="ClientList.cpp" />
+    <ClCompile Include="CommanDIL_Flexray.cpp" />
+    <ClCompile Include="DILL_Dummy.cpp" />
     <ClCompile Include="DIL_CAN.cpp" />
+    <ClCompile Include="DIL_FLEXRAY.cpp" />
     <ClCompile Include="DIL_Interface.cpp" />
     <ClCompile Include="DIL_Interface_stdafx.cpp" />
     <ClCompile Include="DILC_Dummy.cpp" />
     <ClCompile Include="DILI_J1939.cpp" />
+    <ClCompile Include="DIL_LIN.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDIL_CAN.h" />
     <ClInclude Include="BaseDIL_CAN_Controller.h" />
+    <ClInclude Include="BaseDIL_FLEXRAY.h" />
+    <ClInclude Include="BaseDIL_FLEXRAY_Controller.h" />
     <ClInclude Include="BaseDIL_J1939.h" />
+    <ClInclude Include="ClientBuffer.h" />
+    <ClInclude Include="ClientList.h" />
+    <ClInclude Include="CommanDIL_Flexray.h" />
+    <ClInclude Include="DILL_Dummy.h" />
     <ClInclude Include="DIL_CAN.h" />
+    <ClInclude Include="DIL_FLEXRAY.h" />
     <ClInclude Include="DIL_Interface.h" />
     <ClInclude Include="DIL_Interface_extern.h" />
     <ClInclude Include="DIL_Interface_stdafx.h" />
     <ClInclude Include="DILC_Dummy.h" />
     <ClInclude Include="DILI_J1939.h" />
+    <ClInclude Include="DIL_LIN.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusEmulation\BusEmulation.vcxproj">

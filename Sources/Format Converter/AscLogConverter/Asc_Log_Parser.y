@@ -77,7 +77,7 @@ int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile)
 }
 int nAddFunctionHeader(char* pchDay, int nMonth, char* pchYear, int nHour, int nMins, int nSec)
 {
-	fprintf(yyout, "***BUSMASTER Ver 1.7.2***\n");
+	fprintf(yyout, "***BUSMASTER Ver 2.0.0***\n");
 	fprintf(yyout, "***PROTOCOL CAN***\n");
     fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
     fprintf(yyout, "***[START LOGGING SESSION]***\n");

@@ -69,6 +69,10 @@ public:
     virtual BOOL NS_IsSimSysConfigChanged() = 0;
     virtual int NS_nOnBusConnected(bool bConnected) = 0;
     virtual void NS_SetJ1939ActivationStatus(bool bActivated) =0;
+    // Save simulation file
+    virtual void NS_SaveSimulationSystem() = 0;
+    // Application closure operations
+    virtual void NS_PerformApplicationClosureOperation(bool bSave) = 0;
     //INTERFACE FUNCTIONS ENDS
 };
 #endif //BASENODESIM_H__INCLUDED_

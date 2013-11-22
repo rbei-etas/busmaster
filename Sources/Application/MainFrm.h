@@ -47,6 +47,7 @@
 #include "Utility/NumSpinCtrl.h"        // For the custom spin control
 #include "Utility/flexlistctrl.h"           // For editable list control implementation
 #include "BusStatisticsDlg.h"       // BusStatisticsDlg Dialog class for bus 
+#include "FlexRayNetworkStatsDlg.h" // FlexRay Bus Statistics will be called
 // statistics
 #include "GraphParameters.h"        // For Graph Parameter Class
 #include "GraphElement.h"           // For Graph Element class
@@ -61,6 +62,7 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_DataTypes.h"    // DIL_INTERFACE
 #include "DataTypes/J1939_Datatypes.h"  //J1939 related structures
+#include "DataTypes/FLEXRAY_DataTypes.h"    // FLEXRAY related structures
 #include "WrapperErrorLogger.h" //For Logging Error in DIL Interface 
 #include "CFilesDefs_CAN.h"
 //For node simulation interface
@@ -70,6 +72,8 @@
 #include "MsgWndThread.h"
 #include "CNVTCToolBar.h"
 #include "TxHandler.h"
+#include "FlexTxHandler.h"
+#include "TxHandlerLIN.h"
 #include "WaveFormDataHandler.h"
 #include "WaveformTransmitter.h"
 #include "TxMsgWndJ1939.h"
@@ -103,6 +107,8 @@ public:
     //controller mode
     BYTE m_byControllerMode;
     DWORD m_dwDriverId;
+    SHORT m_shFLEXRAYDriverId;
+    DWORD m_dwLINDriverId;
     WrapperErrorLogger m_ouWrapperLogger;
     // send toolbar button
     //BOOL m_bEnableSendToolbarButton;
@@ -154,6 +160,8 @@ public:
     CMsgWndThread* m_podMsgWndThread;
     BOOL m_bInterPretMsg;
     CTxHandler m_objTxHandler;
+    CFlexTxHandler  m_objFlexTxHandler;
+    CTxHandlerLIN m_objTxHandlerLin;
     CSigGrphHandler m_objSigGrphHandler;
     S_EXFUNC_PTR    m_sExFuncPtr[BUS_TOTAL];
     CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
@@ -162,6 +170,7 @@ public:
     BOOL CompareFile(CString FirstFile,CString SecFile);
 
     int             m_nNumChannels;
+    int             m_nNumChannelsLIN;
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CMainFrame)
@@ -179,6 +188,7 @@ public:
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
     BOOL m_bIconSetFlag;
     BOOL m_bJ1939IconSetFlag;
+    BOOL m_bLinIconSetFlag;
 
     INT m_nSendMsgLogCnt;
     INT m_nSendMsgJ1939LogCnt;
@@ -193,6 +203,23 @@ public:
     }
     //To initialize DIL
     HRESULT IntializeDIL(UINT unDefaultChannelCnt = 0);
+
+    //To initialize LIN DIL
+    HRESULT IntializeDILL(UINT unDefaultChannelCnt = 0);
+    //To initialize FLEXRAY DIL
+    HRESULT InitializeFLEXRAYDIL();
+    DWORD m_dwFLEXClientID;
+    /* To maintain associated FLEXRAY database/configuration list */
+    FLEXRAY_CONFIG_FILES m_acFlexDBConfigInfo;
+    FlexConfig  m_ouFlexConfig;
+    bool m_bFRConfigModified;
+
+    /* FIBEX database information */
+    CMsgSignal* m_pouMsgSigFLEXRAY;
+
+
+    /* Buffer for FLEXRAY */
+    FLEXRAY_INTERFACE_HW_LIST m_sSelFlxHwInterface;
     // To Create Graph UI thread and graph Window
     BOOL bCreateGraphWindow();
     // Function to club activities needs to be done after conf load.
@@ -224,6 +251,7 @@ public:
     VOID vSetMessageData(BYTE*  pbMessageData);
     // Creates message window
     BOOL bCreateMsgWindow(void);
+    BOOL bCreateFlexRayMsgWindow();
     //Create toolbar nodes
     //BOOL CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, string strData);
     //BOOL CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, int nData);
@@ -306,6 +334,7 @@ public:
     CMenu* GetSubMenu(CString MenuName);
 
     BOOL bInitFrameProcCAN(void);
+    BOOL bInitFrameProcLIN(void);
     DWORD dwGetMonitorNodeClientID();
 
     CWnd* IsWindowCreated();
@@ -339,7 +368,9 @@ protected:
     CNVTCToolBar    m_wndToolbarConfig;
     CNVTCToolBar    m_wndToolbarJ1939;
     CNVTCToolBar    m_wndToolbarCANDB;
-
+    CNVTCToolBar    m_wndToolbarFlexRay;
+    CNVTCToolBar    m_wndToolbarConfiguration;
+    CNVTCToolBar    m_wndToolbarLIN;
 
     // Generated message map functions
 protected:
@@ -349,6 +380,8 @@ protected:
     afx_msg void OnCloseDatabase();
     afx_msg void OnImportDatabase();
     afx_msg void OnConfigBaudrate();
+    afx_msg void OnConfigLinChannel();
+    afx_msg void OnConfigBaudrateLIN();
     afx_msg void OnNewDatabase();
     afx_msg void OnConfigDatabaseSaveAs();
     afx_msg void OnConfigDatabaseSave();
@@ -385,6 +418,7 @@ protected:
     afx_msg void OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI);
     afx_msg void OnExecuteMessagehandlersButton();
     afx_msg void OnSendMessage();
+    afx_msg void OnSendFlexRayMessage();
     //afx_msg void OnLogFilterButton();
     //afx_msg void OnUpdateLogFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnMessageFilterButton();
@@ -414,8 +448,13 @@ protected:
     afx_msg void OnEndSession(BOOL bEnding);
     afx_msg void OnCfgSendMsgs();
     afx_msg void OnUpdateToolSendmsg(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateToolFlexRaySendmsg(CCmdUI* pCmdUI);
     afx_msg void OnFileConnect();
     afx_msg void OnUpdateFileConnect(CCmdUI* pCmdUI);
+    afx_msg void OnFlexRayConnect();
+    afx_msg void OnUpdateFlexRayConnect(CCmdUI* pCmdUI);
+    afx_msg void OnLINConnect();
+    afx_msg void OnUpdateLINConnect(CCmdUI* pCmdUI);
     afx_msg void OnExecuteKeyhandlers();
     afx_msg void OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI);
     afx_msg void OnLoadConfigFile();
@@ -436,6 +475,10 @@ protected:
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnNetworkStatisticsWnd();
     afx_msg void OnUpdateNetworkStatisticsWnd(CCmdUI* pCmdUI);
+
+    afx_msg void OnFlexRayNetworkStatisticsWnd();
+    afx_msg void OnUpdateFlexRayNetworkStatisticsWnd(CCmdUI* pCmdUI);
+
     afx_msg void OnUpdateConfigurePassive(CCmdUI* pCmdUI);
     afx_msg void OnTraceWnd();
     afx_msg LRESULT OnMessageTraceWnd(WPARAM wParam, LPARAM lParam);
@@ -461,7 +504,12 @@ protected:
     afx_msg void OnAutomationTSEditor();
     afx_msg void OnAutomationTSExecutor();
 
+    afx_msg void OnFlexRayTxWindow();
+    afx_msg void OnFlexRayDBAssociate();
+    afx_msg void OnUpdateFlexrayAssociate(CCmdUI* pCmdUI);
+    afx_msg void OnFlexRayDBDisociate();
     afx_msg void OnConfigChannelSelection();
+    afx_msg void OnConfigChannelSelectionLIN();
     afx_msg void OnUpdateConfigChannelSelection(CCmdUI* pCmdUI);
 
     afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
@@ -505,8 +553,14 @@ private:
     PROJECTDATA m_sProjData;
     CMenu* m_pExternalTools; // External Tools menu is dynamically created.
     DILLIST m_ouList;// List of the driver interface layers supported
+    DILLIST m_ouListLin;// List of the driver interface layers supported
     INT m_nDILCount; //Count of the driver interface layers supported
+    INT m_nDILCountLin; //Count of the driver interface layers supported
     CMenu* m_pDILSubMenu;
+    FLEXRAY_DILLIST m_ouFlexRayList;    // List of the FlexRay driver interface layers supported
+    INT             m_nFlexRayDILCount; //Count of the FlexRay driver interface layers supported
+    CMenu*          m_pFlxDILSubMenu;
+    CMenu* m_pDILSubMenuLin;
     CWaveFormDataHandler m_objWaveformDataHandler;
     CMainEntryList m_odResultingList;
     //CMainEntryList m_odResultingList;
@@ -524,12 +578,16 @@ private:
     SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 
     SCONTROLLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
+    SCONTROLLER_DETAILS m_asControllerDetailsLIN[defNO_OF_CHANNELS];
+
     SFILTERAPPLIED_CAN m_sFilterAppliedCAN; // Filter applied struct for CAN
     SFILTERAPPLIED_J1939 m_sFilterAppliedJ1939; // Filter applied struct for J1939
     CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN
     CMsgInterpretationJ1939 m_ouMsgInterpretSW_J; //Msg interpretation object for signal watch CAN
     CString m_omStrSavedConfigFile;
     STCAN_MSG m_sRxMsgInfo;
+    STLIN_MSG m_sRxMsgInfoLin;
+
     BOOL m_bMsgHandlerRxDataByte;
     BOOL m_bAbortMsgHandler;
     //   VOID vInitialiseInterfaceFunctionPointers();
@@ -575,6 +633,8 @@ private:
     WINDOWPLACEMENT m_WinCurrStatus;
     // To remember the current error state
     eERROR_STATE m_eCurrErrorState[ defNO_OF_CHANNELS ];
+    // Timer to update FleaRay Network Statics
+    UINT_PTR m_unFlexRayNSTimer;
     // Timer to update status bar
     UINT_PTR m_unTimerSB;
     // PTV [1.6.4]
@@ -601,14 +661,22 @@ private:
     HRESULT ProcessJ1939Interfaces(void);
     // To deselect J1939 interfaces
     HRESULT DeselectJ1939Interfaces(void);
+    // To process LIN DIL and logger interfaces
+    HRESULT ProcessLINInterfaces(void);
+    // To deselect LIN interfaces
+    HRESULT DeselectLINInterfaces(void);
     // To configure logging for a bus
     void vConfigureLogFile(ETYPE_BUS eCurrBus);
     // The bus statistics modeless dialog box
     CBusStatisticsDlg* m_podBusStatistics;
+    CFlexRayNetworkStatsDlg* m_podFlexRayBusStatistics;
+
     BOOL m_bIsStatWndCreated;
+    BOOL m_bIsFlexRayStatWndCreated;
     UINT m_unWarningLimit;
 
     CString         m_omAppDirectory;
+    BOOL            m_bFlxDILChanging;
 
     void ToggleView(CToolBar& omToolbar);
     BOOL bIsToolbarVisible(CToolBar& omToolbar);
@@ -617,6 +685,7 @@ private:
     void vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& psToList, CMsgSignal* pouDatabase);
     /* Helper function to re register all the nodes when driver changes */
     void vReRegisterAllCANNodes(void);
+    void vReRegisterAllLINNodes(void);
     void vReRegisterAllJ1939Nodes(void);
     void vGetLoadedCfgFileName(CString& omFileName);
     BOOL bIsConfigurationModified(void);
@@ -661,13 +730,21 @@ private:
     void vSetCurrProjInfo(float fAppVersion);
 
     DILINFO* psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
+    FLEXRAY_DILINFO* psGetFLEXRAYDILEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
     void vInitializeBusStatCAN(void);
+    void vInitializeBusStatFlexRay(void);
+
+    DILINFO* psGetDILLINEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
+    void vInitializeBusStatLIN(void);
+
     BOOL bStartGraphReadThread();
     BOOL bStopGraphReadThread();
     void vUpdateGraphData(const STCANDATA& sCanData);
     void vClearDbInfo(ETYPE_BUS eBus);
     CPARAM_THREADPROC m_ouGraphReadThread;
     CCANBufFSE m_ouCanBuf;
+    CLINBufFSE m_ouLinBuf;
+
     CMsgBufVSE* m_pouMsgInterpretBuffer;
     LONGLONG m_nTimeStamp;
     CMsgInterpretation m_odIntMsg;
@@ -694,6 +771,8 @@ public:
     void COM_EnableAllHandlers(BOOL bEnable);
 
     BOOL bUpdatePopupMenuDIL(void);
+    BOOL bUpdatePopupMenuFLEXRAYDIL(void);
+    BOOL bUpdatePopupMenuDILL(void);
     CString omStrGetUnionFilePath(CString omStrTemp);
     void vInitCFileFunctPtrs();
     void NS_InitJ1939SpecInfo();
@@ -705,6 +784,11 @@ public:
     afx_msg void OnUpdateSelectDriver(CCmdUI* pCmdUI);
     afx_msg void OnSelectDriver(UINT nID);
 
+    afx_msg void OnUpdateSelectFLEXRAYDriver(CCmdUI* pCmdUI);
+    afx_msg void OnSelectFLEXRAYDriver(UINT nID);
+
+    afx_msg void OnUpdateSelectLINDriver(CCmdUI* pCmdUI);
+    afx_msg void OnSelectLINDriver(UINT nID);
     afx_msg LRESULT vKeyPressedInMsgWnd(WPARAM wParam, LPARAM lParam);
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
@@ -756,6 +840,12 @@ public:
     afx_msg void OnUpdateActionJ1939Log(CCmdUI* pCmdUI);
     afx_msg void OnToolbarJ1939();
     afx_msg void OnUpdateToolbarJ1939(CCmdUI* pCmdUI);
+    afx_msg void OnToolbarFlexRay();
+    afx_msg void OnUpdateToolbarFlexRay(CCmdUI* pCmdUI);
+    afx_msg void OnToolbarConfiguration();
+    afx_msg void OnUpdateToolbarConfiguration(CCmdUI* pCmdUI);
+    afx_msg void OnToolbarLIN();
+    afx_msg void OnUpdateToolbarLIN(CCmdUI* pCmdUI);
     afx_msg void OnJ1939ConfigureTimeouts();
     afx_msg void OnUpdateJ1939Timeouts(CCmdUI* pCmdUI);
     afx_msg void OnUpdateJ1939DBNew(CCmdUI* pCmdUI);
@@ -793,6 +883,7 @@ public:
     afx_msg void OnJ1939SignalwatchShow();
     afx_msg void OnUpdateJ1939SignalwatchShow(CCmdUI* pCmdUI);
     afx_msg void OnConfigureMessagedisplayJ1939();
+    afx_msg void OnConfigureMessageDisplayFlexRay();
     afx_msg void OnJ1939Exportlog();
     afx_msg void OnShowHideMessageWindow(UINT nID);
     afx_msg void OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI);
@@ -801,10 +892,18 @@ public:
     afx_msg LRESULT OnMessageFromUserDllGetAbsoluteTime(WPARAM wParam, LPARAM lParam);
     afx_msg void OnFileConverter();
 
+    //afx_msg void OnActivateLIN();
+    afx_msg void OnCfgSendMsgsLIN();
+    afx_msg void OnSendMessageLIN();
+
     void ApplyLogFilter();
     void ApplyReplayFilter();
     //MVN
     xmlDocPtr m_xmlConfigFiledoc;
     BOOL m_bIsXmlConfig;
     //~MVN
+
+private:
+    void vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexContainer);
+    int m_nMaxFlexChannels;
 };

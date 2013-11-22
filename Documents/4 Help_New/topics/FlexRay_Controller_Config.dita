@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>FlexRay Controller Configuration</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>FlexRay Transmit Window</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>BUSMASTER Can be connected to FlexRay physical channel using FlexRay Controller.</p>
+    <p>Currently BUSMASTER Supports the following FlexRay Controllers.</p>
+    <p><ol>
+        <li> ETAS BOA Controllers.</li>
+      </ol></p>
+    <p><b>Selecting Controller:</b></p>
+    <p>Before Selecting the controlletr the BUSMASTER has to be configured with the proper FIBEX File.Refer <b>Cluster Configuration</b> for more information.</p>
+    <p>To select controller use FlexRay-&gt;Driver Selection-&gt;<i>{Driver}</i> For example to select ETAS BOA Driver use <b>FlexRay-&gt;Driver Selection-&gt;ETAS BOA.</b>If only one controller is connected to PC that controller will be selected automatically.Otherwise  Hardware Selection window with all the available controllers will be displayed as shown in following figure.</p>
+    <p/>
+    <image href="../images/FlexRay_Hardware_Selection.bmp"/>
+    <p/>
+    <p>Once the Cluster &amp; Controller is configured BUSMASTER Can be connected to FlexRay network using <b>FlexRay-&gt;Connect</b> Menu.If any Error occur during the initialisation of Controller the information will be displayed in BUSMASTER Trace Window.</p>
+  </body>
+</topic>

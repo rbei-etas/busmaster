@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>Transmit Messages</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>FlexRay Transmit Window</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>FlexRay Transmit Window</b> can be used to send FlexRay Messages over FlexRay bus using.Select <b>FlexRay-&gt;Transmit-&gt;Configure</b> menu option.This Will Display\Hide the FlexRay Tx Window as shown in figure below.</p>
+    <p/>
+    <image href="../images/FlexRay_TxWindow_Empty.bmp"/>
+    <p/>
+    <p>To Add messages Use <b>Add New Frame</b> button.This Will display a window, as shown below, containing all the Tx Messages of Selected ECU&apos;s. To add the messages in Transmit Window select the message using check box click on the <b>OK</b> Button.</p>
+    <p><image href="../images/FlexRay_TxWindow_TransmitList.bmp"/></p>
+    <p><b>Transmitting Message Over FlexRay BUS:</b></p>
+    <p>After Configuring the messages they will be displayed in Transmit Window as shown in below figure.Click on the check box beside a message to select the message for transmission. Once the BUSMASTER Connected to the  FlexRay network all the selected message will be sent on the network in their schedule time.</p>
+    <p><image href="../images/FlexRay_TxWindow_Messages.bmp"/></p>
+    <p><b>Updating Data Bytes:</b></p>
+    <p>To Change the Data bytes of a message click on the message.This  will display the current data bytes of the Message. in Data Window as shown in below image.To change the Data bytes double click on the required data byte.Use Tab or Arrow Keys to move to the next data bytes.Click on Update button to Apply the changes.</p>
+    <p/>
+    <image href="../images/FlexRay_TxWindow_DataBytes.bmp"/>
+    <p><b>Signal View:</b></p>
+    <p>To View the Signals of a any Frame click on it and select the Signal View.This will display the signals &amp; their Raw\Physical values as shown in below.</p>
+    <p><image href="../images/FlexRay_TxWindow_SignalView.bmp"/></p>
+  </body>
+</topic>

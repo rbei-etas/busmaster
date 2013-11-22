@@ -62,7 +62,7 @@ private:
          };
 
     unsigned int SetResultCode(unsigned int uiCode);
-    void GenerateMessageList(fstream& fileInput);
+    unsigned int GenerateMessageList(fstream& fileInput);
     void ValidateMessageList();
     bool WriteToOutputFile(fstream& fileOutput);
     void CreateLogFile(fstream& fileLog);

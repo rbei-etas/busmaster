@@ -1,0 +1,543 @@
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file      TxHandler.cpp
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ */
+#include "stdafx.h"
+#include "FlexTxHandler.h"
+
+//Function Pointer Declarations
+typedef HRESULT (*SETMSGPTRINDETAILSVIEW)(void* pMsgDB);
+typedef HRESULT (*SHOWCONFIGUREMSGWINDOW)(void* pParentWnd);
+typedef HRESULT (*SETCLIENTID)(DWORD dwClientID);
+typedef HRESULT (*SETDILINTERFACEPTR)();
+typedef HRESULT (*POSTMESSAGETOTXWND)(UINT msg, WPARAM wParam, LPARAM lParam);
+typedef HRESULT (*CONFIGWINDOWSHOWN)();
+typedef HRESULT (*STARTTRANSMISSION)(UCHAR ucKeyVal);
+typedef HRESULT (*ALLOCMEMFORGLOBALTXLIST)();
+typedef HRESULT (*ASSIGNMSGBLOCKLIST)();
+typedef HRESULT (*DELETETXBLOCKMEMORY)();
+typedef HRESULT (*STOPTRANSMISSION)(UINT unMaxWaitTime);
+typedef HRESULT (*GETTXWNDCONFIGDATA)(BYTE*& pDesBuffer, int& nBuffSize);
+typedef HRESULT (*GETTXWNDCONFIGDATAXML)(xmlNodePtr pxmlNodePtr);
+typedef HRESULT (*SETTXWNDCONFIGDATA)(BYTE* pSrcBuffer, int nBuffSize);
+typedef HRESULT (*SETTXWNDCONFIGDATAXML)(xmlDocPtr pDoc);
+//typedef HRESULT (*ISTXWNDCONFIGCHANGED)();
+typedef UINT    (*GETTXBLOCKCOUNT)(void);
+typedef HRESULT (*SETTXSTOPFLAG)(BOOL bStartStop);
+typedef HRESULT (*GETTXSTOPFLAG)();
+typedef void (*FLEXFILECHANGED)();
+typedef HRESULT (*PFUPDATEFIBEXCONFIG)(FlexConfig& ouFlexConfig);
+typedef HRESULT (*BUSSTATUSCHANGED)(bool bChanged);
+SETMSGPTRINDETAILSVIEW      pfFlexSetMsgDBPtrInDetailsView;
+SHOWCONFIGUREMSGWINDOW      pfFlexShowConfigureMsgWindow;
+SETCLIENTID                 pfFlexSetClientId;
+SETDILINTERFACEPTR          pfFlexSetDILInterfacePtr;
+POSTMESSAGETOTXWND          pfFlexPostMessageToTxWnd;
+CONFIGWINDOWSHOWN           pfFlexConfigWindowShown;
+STARTTRANSMISSION           pfFlexStartTransmission;
+ALLOCMEMFORGLOBALTXLIST     pfFlexAllocateMemoryForGlobalTxList;
+ASSIGNMSGBLOCKLIST          pfFlexAssignMsgBlockList;
+DELETETXBLOCKMEMORY         pfFlexDeleteTxBlockMemory;
+STOPTRANSMISSION            pfFlexStopTransmission;
+BUSSTATUSCHANGED            pfBusStatusChanged;
+GETTXWNDCONFIGDATAXML       pfFlexGetTxWndConfigData;
+SETTXWNDCONFIGDATA          pfFlexSetTxWndConfigData;
+SETTXWNDCONFIGDATAXML       pfFlexSetTxWndConfigDataXML;
+//ISTXWNDCONFIGCHANGED      pfIsTxWndConfigChanged;
+GETTXBLOCKCOUNT             pfFlexGetTxBlockCount;
+SETTXSTOPFLAG               pfFlexSetTxStopFlag;
+GETTXSTOPFLAG               pfFlexGetTxStopFlag;
+FLEXFILECHANGED             pfFlexFileChanged;
+PFUPDATEFIBEXCONFIG         pfUpdateFibexConfig;
+CFlexTxHandler::CFlexTxHandler(void)
+{
+    m_hTxHandle = NULL;
+}
+
+CFlexTxHandler::~CFlexTxHandler(void)
+{
+    if ( m_hTxHandle != NULL )
+    {
+        FreeLibrary(m_hTxHandle);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vInitializeFuncPtrs
+  Input(s)       : -
+  Output         : -
+  Functionality  : Load the TxWindow DLL
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vLoadTx_DLL()
+{
+    if ( m_hTxHandle != NULL )
+    {
+        FreeLibrary(m_hTxHandle);
+        m_hTxHandle = NULL;
+    }
+    m_hTxHandle = LoadLibrary("TXWindowFlexRay.dll");
+    vloadFuncPtrAddress();
+}
+
+/*******************************************************************************
+  Function Name  : vInitializeFuncPtrs
+  Input(s)       : -
+  Output         : -
+  Functionality  : Initialize Function Ptrs to null
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vInitializeFuncPtrs()
+{
+    pfFlexSetMsgDBPtrInDetailsView      = NULL;
+    pfFlexShowConfigureMsgWindow        = NULL;
+    pfFlexSetClientId                   = NULL;
+    pfFlexSetDILInterfacePtr            = NULL;
+    pfFlexPostMessageToTxWnd            = NULL;
+    pfFlexConfigWindowShown             = NULL;
+    pfFlexStartTransmission             = NULL;
+    pfFlexAllocateMemoryForGlobalTxList = NULL;
+    pfFlexAssignMsgBlockList            = NULL;
+    pfFlexDeleteTxBlockMemory           = NULL;
+    pfFlexStopTransmission              = NULL;
+    pfFlexGetTxWndConfigData            = NULL;
+    pfFlexSetTxWndConfigData            = NULL;
+    //pfIsTxWndConfigChanged            = NULL;
+    pfFlexSetTxStopFlag                 = NULL;
+    pfFlexGetTxStopFlag                 = NULL;
+    pfFlexFileChanged                   = NULL;
+    pfUpdateFibexConfig                 = NULL;
+    pfBusStatusChanged                  = NULL;
+}
+
+/*******************************************************************************
+  Function Name  : vloadFuncPtrAddress
+  Input(s)       : -
+  Output         : -
+  Functionality  : load lib and get Function pointers
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vloadFuncPtrAddress()
+{
+    vInitializeFuncPtrs();
+    pfFlexSetMsgDBPtrInDetailsView          = (SETMSGPTRINDETAILSVIEW)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetMsgDBPtrInDetailsView");
+    pfFlexShowConfigureMsgWindow            = (SHOWCONFIGUREMSGWINDOW)GetProcAddress(m_hTxHandle, "TXFlexRay_vShowConfigureMsgWindow");         //mess wnd creation
+    pfFlexSetClientId                       = (SETCLIENTID)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetClientID");
+    pfFlexSetDILInterfacePtr                = (SETDILINTERFACEPTR)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetDILInterfacePtr");
+    pfFlexPostMessageToTxWnd                = (POSTMESSAGETOTXWND)GetProcAddress(m_hTxHandle, "TXFlexRay_vPostMessageToTxWnd");
+    pfFlexConfigWindowShown                 = (CONFIGWINDOWSHOWN)GetProcAddress(m_hTxHandle, "TXFlexRay_hConfigWindowShown");
+    pfFlexStartTransmission                 = (STARTTRANSMISSION)GetProcAddress(m_hTxHandle, "TXFlexRay_vStartTransmission");
+    pfFlexAllocateMemoryForGlobalTxList     = (ALLOCMEMFORGLOBALTXLIST)GetProcAddress(m_hTxHandle, "TXFlexRay_bAllocateMemoryForGlobalTxList");
+    pfFlexAssignMsgBlockList                = (ASSIGNMSGBLOCKLIST)GetProcAddress(m_hTxHandle, "TXFlexRay_vAssignMsgBlockList");
+    pfFlexDeleteTxBlockMemory               = (DELETETXBLOCKMEMORY)GetProcAddress(m_hTxHandle, "TXFlexRay_vDeleteTxBlockMemory");
+    pfFlexStopTransmission                  = (STOPTRANSMISSION)GetProcAddress(m_hTxHandle, "TXFlexRay_vBusStatusChanged");
+    pfFlexGetTxWndConfigData                = (GETTXWNDCONFIGDATAXML)GetProcAddress(m_hTxHandle, "TXFlexRay_vGetTxWndConfigData");
+    pfFlexSetTxWndConfigData                = (SETTXWNDCONFIGDATA)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetTxWndConfigData");
+    pfFlexSetTxWndConfigDataXML             = (SETTXWNDCONFIGDATAXML)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetTxWndConfigDataXML");
+    //pfIsTxWndConfigChanged                = (ISTXWNDCONFIGCHANGED)GetProcAddress(m_hTxHandle, "TXFlexRay_bIsTxWndConfigChanged");
+    pfFlexSetTxStopFlag                     = (SETTXSTOPFLAG)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetTxStopFlag");
+    pfFlexGetTxStopFlag                     = (GETTXSTOPFLAG)GetProcAddress(m_hTxHandle, "TXFlexRay_bGetTxStopFlag");
+    pfFlexGetTxBlockCount                   = (GETTXBLOCKCOUNT)GetProcAddress(m_hTxHandle, "TXFlexRay_unGetTxBlockCount");
+    pfFlexFileChanged                       = (FLEXFILECHANGED)GetProcAddress(m_hTxHandle, "TXFlexRay_vFlexFileChanged");
+    pfUpdateFibexConfig                     = (PFUPDATEFIBEXCONFIG)GetProcAddress(m_hTxHandle, "TXFlexray_nSetFibexConfig");
+    pfBusStatusChanged                      = (BUSSTATUSCHANGED)GetProcAddress(m_hTxHandle, "TXFlexRay_vBusStatusChanged");
+
+}
+
+void CFlexTxHandler::vBusStatusChanged(bool bChanged)
+{
+    if ( pfBusStatusChanged != NULL )
+    {
+        pfBusStatusChanged(bChanged);
+    }
+}
+
+
+
+/*******************************************************************************
+  Function Name  : vSetMsgDBPtrInDetailsView
+  Input(s)       : pMsgDB
+  Output         : -
+  Functionality  : To set CMsgSignal pointer in TxWindow
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 04.08.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
+{
+    if(pfFlexSetMsgDBPtrInDetailsView != NULL)
+    {
+        pfFlexSetMsgDBPtrInDetailsView(pMsgDB);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vShowConfigureMsgWindow
+  Input(s)       : -
+  Output         : -
+  Functionality  : To Show the Configure Msg Window Dialog
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 02.08.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vShowConfigureMsgWindow(void* pParentWnd)
+{
+    if(pfFlexShowConfigureMsgWindow != NULL)
+    {
+        pfFlexShowConfigureMsgWindow(pParentWnd);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vSetClientID
+  Input(s)       : dwClientID
+  Output         : -
+  Functionality  : To update client ID to TxWindow Dll.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 03.08.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vSetClientID(DWORD dwClientID)
+{
+    if(pfFlexSetClientId != NULL)
+    {
+        pfFlexSetClientId(dwClientID);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vSetDILInterfacePtr
+  Input(s)       : DILInterfacePtr (void*)
+  Output         : -
+  Functionality  : To update DIL interface Pointer to TxWindow Dll.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 03.08.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vSetDILInterfacePtr()
+{
+    if(pfFlexSetDILInterfacePtr != NULL)
+    {
+        pfFlexSetDILInterfacePtr();
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vFlexFileChanged
+  Input(s)       : -
+  Output         : -
+  Functionality  : Intimates the FlexTxWindow about the change of FlexConfig File
+  Member of      : CFlexTxHandler
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 14.06.2013
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vFlexFileChanged()
+{
+    if(pfFlexFileChanged != NULL)
+    {
+        pfFlexFileChanged();
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vPostMessageToTxWnd
+  Input(s)       : UINT msg, WPARAM wParam, LPARAM lParam
+  Output         : -
+  Functionality  : Posts the Message to TxWindow Dll.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 03.08.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    if(pfFlexPostMessageToTxWnd != NULL)
+    {
+        pfFlexPostMessageToTxWnd(msg, wParam, lParam);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : hConfigWindowShown
+  Input(s)       : -
+  Output         : HRESULT
+  Functionality  : Gets the TxConfiguration Window availability status.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 04.08.2010
+  Modifications  :
+*******************************************************************************/
+HRESULT CFlexTxHandler::hConfigWindowShown()
+{
+    HRESULT hResult = S_FALSE;
+
+    if(pfFlexConfigWindowShown != NULL)
+    {
+        hResult = pfFlexConfigWindowShown();
+    }
+
+    return hResult;
+}
+
+/*******************************************************************************
+  Function Name  : vStartTransmission
+  Input(s)       : ucKeyVal
+  Output         : -
+  Functionality  : Start transmission
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vStartTransmission(UCHAR ucKeyVal)
+{
+    if(pfFlexStartTransmission != NULL)
+    {
+        pfFlexStartTransmission(ucKeyVal);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : hAllocateMemoryForGlobalTxList
+  Input(s)       : -
+  Output         : HRESULT
+  Functionality  : Allocates memory for Global Tx List
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+HRESULT CFlexTxHandler::hAllocateMemoryForGlobalTxList()
+{
+    HRESULT hResult = S_OK;
+
+    if(pfFlexAllocateMemoryForGlobalTxList != NULL)
+    {
+        hResult = pfFlexAllocateMemoryForGlobalTxList();
+    }
+
+    return hResult;
+}
+
+/*******************************************************************************
+  Function Name  : vAssignMsgBlockList
+  Input(s)       : -
+  Output         : -
+  Functionality  : Assigns Message Block List
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vAssignMsgBlockList()
+{
+    if(pfFlexAssignMsgBlockList != NULL)
+    {
+        pfFlexAssignMsgBlockList();
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vDeleteTxBlockMemory
+  Input(s)       : -
+  Output         : -
+  Functionality  : Deletes Tx Block Memory
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vDeleteTxBlockMemory()
+{
+    if(pfFlexDeleteTxBlockMemory != NULL)
+    {
+        pfFlexDeleteTxBlockMemory();
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vStopTransmission
+  Input(s)       : unMaxWaitTime
+  Output         : -
+  Functionality  : Stops the Transmission of Messages.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vStopTransmission(UINT unMaxWaitTime)
+{
+    if(pfFlexStopTransmission != NULL)
+    {
+        pfFlexStopTransmission(unMaxWaitTime);
+    }
+}
+/*******************************************************************************
+  Function Name  : vGetTxWndConfigData
+  Input(s)       : xmlNodePtr
+  Output         : -
+  Functionality  : Gets the configuration data of Tx Window in XML format.
+  Member of      : CFlexTxHandler
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 2-8-2012
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
+{
+    if(pfFlexGetTxWndConfigData != NULL)
+    {
+        pfFlexGetTxWndConfigData(pxmlNodePtr);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vGetTxWndConfigData
+  Input(s)       : pDesBuffer, nBuffSize
+  Output         : -
+  Functionality  : Gets the configuration data of Tx Window.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+{
+    if(pfFlexGetTxWndConfigData != NULL)
+    {
+        // pfFlexGetTxWndConfigData(pDesBuffer, nBuffSize);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vSetTxWndConfigData
+  Input(s)       : pSrcBuffer, nBuffSize
+  Output         : -
+  Functionality  : Sets the configuration data of Tx Window.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
+{
+    if(pfFlexSetTxWndConfigData != NULL)
+    {
+        pfFlexSetTxWndConfigData(pSrcBuffer,nBuffSize);
+    }
+}
+void CFlexTxHandler::vSetTxWndConfigData(xmlDocPtr pDoc)
+{
+    if(pfFlexSetTxWndConfigDataXML != NULL)
+    {
+        pfFlexSetTxWndConfigDataXML(pDoc);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : hIsTxWndConfigChanged
+  Input(s)       : -
+  Output         : HRESULT
+  Functionality  : Gets the Configuration Changed status.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+HRESULT CFlexTxHandler::hIsTxWndConfigChanged()
+{
+    HRESULT hResult = S_OK;
+    //if(pfIsTxWndConfigChanged != NULL)
+    //  hResult = pfIsTxWndConfigChanged();
+    return hResult;
+}
+
+UINT CFlexTxHandler::unGetTxBlockCount(void)
+{
+    UINT Result = 0;
+
+    if (NULL != pfFlexGetTxBlockCount)
+    {
+        Result = pfFlexGetTxBlockCount();
+    }
+    return Result;
+}
+
+/*******************************************************************************
+  Function Name  : vSetTxStopFlag
+  Input(s)       : bStartStop
+  Output         : -
+  Functionality  : Sets Stop Flag to 'bStartStop'.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+void CFlexTxHandler::vSetTxStopFlag(BOOL bStartStop)
+{
+    if (NULL != pfFlexSetTxStopFlag)
+    {
+        pfFlexSetTxStopFlag(bStartStop);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : bGetTxStopFlag
+  Input(s)       : -
+  Output         : HRESULT
+  Functionality  : Gets the StopFlag status.
+  Member of      : CFlexTxHandler
+  Author(s)      : ArunKumar K
+  Date Created   : 30.07.2010
+  Modifications  :
+*******************************************************************************/
+BOOL CFlexTxHandler::bGetTxStopFlag(void)
+{
+    BOOL bResult = TRUE;
+
+    if (NULL != pfFlexGetTxStopFlag)
+    {
+        bResult = pfFlexGetTxStopFlag();
+    }
+
+    return bResult;
+}
+
+
+HRESULT CFlexTxHandler::SetFibexConfig(FlexConfig& ouFlexConfig)
+{
+    if ( NULL != pfUpdateFibexConfig )
+    {
+        return pfUpdateFibexConfig(ouFlexConfig);
+    }
+    return S_FALSE;
+}

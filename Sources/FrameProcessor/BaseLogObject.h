@@ -46,10 +46,18 @@ private:
     CString omAddGroupCountToFileName(int nCount, char FileName[]);
     CString omRemoveGroupCountFromFileName(CString FileName);
     void vSetNextFileName(void);
+
+    /*INT nGetCurrentFileCount();
+
+    void vSetCurrentFileCount();*/
+
     // Reset certain data member values
     void vResetValues(void);
 
+    void vUpdateLogTimeForTimeTrigger(UINT64& qwRefSysTime);
+
 protected:
+    //arun
     //All log info
     SLOGINFO m_sLogInfo;
 
@@ -80,6 +88,9 @@ protected:
     virtual UINT Der_unGetBufSize(void) const = 0;
 
 public:
+    ////Shailesh +
+    //SLOGINFO m_sLogInfo;
+    ////Shailesh -
     // Overloaded Constructor
     CBaseLogObject(CString omVersion);
 

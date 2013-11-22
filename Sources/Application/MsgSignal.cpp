@@ -31,6 +31,9 @@
 #include "MessageAttrib.h"   //Saving contents on dissocation of database
 #include "BUSMASTER.h"
 #include <algorithm>
+#include <map>
+#include <list>
+#include "FibexClass_extern.h"
 static CHAR s_acTraceStr[1024] = {""};
 
 //Trace window ptr
@@ -250,7 +253,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             UINT aunSigStartBit[defMAX_SIGNALS] ;
             UINT aunLength[defMAX_SIGNALS] ;
             CStringArray omStrArraySigName;
-            //            UINT unCountSig = 0;
+            omStrArraySigName.RemoveAll();
             BOOL bReturn = FALSE;
             UINT unSigCount = 0;
             CString omStrcommandLine = STR_EMPTY;
@@ -268,10 +271,10 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
                 sSIGNALS* pSg = m_psMessages[unMsgIndex].m_psSignals;
                 while  ( pSg != NULL )
                 {
+                    UINT nSize = omStrArraySigName.GetSize();
                     aunSigStartBit[unSigCount] =
                     (pSg->m_unStartByte - 1 ) * defBITS_IN_BYTE;
-                    aunSigStartBit[unSigCount] +=
-                    pSg->m_byStartBit ;
+                    aunSigStartBit[unSigCount] += pSg->m_byStartBit;
                     unSigCount++;
                     pSg = pSg->m_psNextSignalList;
                 }
@@ -1070,7 +1073,17 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
 BOOL CMsgSignal::bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName)
 {
     BOOL bResult = FALSE;
-    if (unMsgCode >= 0)
+    if ( m_sDbParams.m_eBus == FLEXRAY && unMsgCode >= 0)
+    {
+        static CFrameDef ouFrameDef;
+        BOOL bRet = m_ouFrameDataSet.Lookup(unMsgCode, ouFrameDef);
+        if (bRet)
+        {
+            omMsgName = ouFrameDef.m_omNameFrame;
+            bResult = TRUE;
+        }
+    }
+    else if (unMsgCode >= 0)
     {
         sMESSAGE* psMsgStruct = NULL;
         m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
@@ -5391,4 +5404,1066 @@ BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeL
         }
     }
     return TRUE;
+}
+/**
+* \brief         API to get the alias to CFrameMap list
+* \req           RS_FLX_03 - Importing of Fibex file
+* \param[in]     string containing the path for FIBEX File
+* \return        returns S_OK if successful, else S_FALSE
+* \authors       Arunkumar Karri
+* \date          16.04.2013 Created
+*/
+
+CFrameMap&  CMsgSignal::GetFlexRayFrameMap()
+{
+    return m_ouFrameDataSet;
+}
+
+int CMsgSignal::nGetDeviceConfig(ABS_DEVICE_CONFIG& ouDeviceConfig)
+{
+    //assigning ECU spec configuration
+    if(m_AbsFibexContainer.m_omProject.m_omID == "" )
+    {
+        return FALSE;
+    }
+    POSITION    pos = m_AbsFibexContainer.m_omElement.m_omECUList.GetHeadPosition();
+    ABS_ECU& oECU = m_AbsFibexContainer.m_omElement.m_omECUList.GetAt(pos);
+    ABS_CONTROLLER oCtrlr = oECU.m_odControllerList.GetAt(pos);
+    ouDeviceConfig.m_ouFlxSpecCntlr = oCtrlr.m_sFlexraySpecControllerData;
+
+    //assigning cluster configuration
+    ABS_CLUSTER& oCluster = m_AbsFibexContainer.m_omElement.m_omClusterList.GetAt(pos);
+    ouDeviceConfig.m_ouFlxClusterConfig = *oCluster.m_ouBusInfo.m_pouFlexRayCluster;
+    return TRUE;
+}
+
+/**
+* \brief         API to load the FIBEX file and fill the respective CFrameMap list
+* \req           RS_FLX_03 - Importing of Fibex file
+* \param[in]     string containing the path for FIBEX File
+* \return        returns S_OK if successful, else S_FALSE
+* \authors       Arunkumar Karri
+* \date          16.04.2013 Created
+*/
+HRESULT CMsgSignal::hLoadFibexDBFile(CString strFIBEXFile, list<Cluster>& ouClusterList)
+{
+    //return hSimulateFibexCluster(strFIBEXFile, ouClusterList);
+
+    try
+    {
+        map<string, Cluster> lstCluster;
+
+        CPARSER_FIBEX objFibexParser;
+
+        if(strFIBEXFile.IsEmpty() == TRUE)
+        {
+            return S_FALSE;
+        }
+
+        int nReturnVal =  objFibexParser.LoadFibexFile_Generic(strFIBEXFile.GetBuffer(MAX_PATH), lstCluster);
+        //
+        objFibexParser.Initialize();
+        if (nReturnVal == FCLASS_SUCCESS )
+        {
+            map<string, Cluster>::iterator itrClusterMap = lstCluster.begin();
+
+            while(itrClusterMap != lstCluster.end())
+            {
+                ouClusterList.push_back( itrClusterMap->second );
+
+                itrClusterMap++;
+            }
+            lstCluster.clear();
+        }
+        else
+        {
+            return nReturnVal;
+        }
+    }
+    catch(...)
+    {
+        return FCLASS_FAILURE;
+    }
+
+    return FCLASS_SUCCESS;
+}
+
+HRESULT CMsgSignal::hSimulateFibexCluster(CString strFIBEXFile, list<Cluster>& ouClusterList)
+{
+    HRESULT hr = S_OK;
+    if ( strFIBEXFile == "" )
+    {
+        return hr;
+    }
+    Cluster ouCluster;
+    int nStartIndex = strFIBEXFile.ReverseFind('\\');
+    CString strName ="Unknown";
+
+    if ( nStartIndex >= 0);
+    {
+        int nEndIndex = strFIBEXFile.Find(".", nStartIndex);
+        if ( nEndIndex >= nStartIndex+1)
+        {
+            strName = strFIBEXFile.Mid(nStartIndex+1, nEndIndex - nStartIndex-1 );
+        }
+    }
+
+    hSimulateFillClusterInfo(strName, ouCluster);
+    ouClusterList.clear();
+    ouClusterList.push_back(ouCluster);
+
+
+    return hr;
+}
+
+HRESULT CMsgSignal::hSimulateFillClusterInfo(CString strName, Cluster& ouCluster)
+{
+    HRESULT hr = S_OK;
+
+    //string strAppend = "_"+strName;
+    ////1. Name
+    //ouCluster.m_strName = "PowerTrain"+strAppend;
+
+    ////2. Configuration
+    //ouCluster.m_ouClusterInfo.m_shCOLD_START_ATTEMPTS                 =   8;
+    //ouCluster.m_ouClusterInfo.m_shACTION_POINT_OFFSET                 =   2;
+    //ouCluster.m_ouClusterInfo.m_shDYNAMIC_SLOT_IDLE_PHASE             =   1 ;
+    //ouCluster.m_ouClusterInfo.m_shMINISLOT                                =   5 ;
+    //ouCluster.m_ouClusterInfo.m_shMINISLOT_ACTION_POINT_OFFSET            =   2 ;
+    //ouCluster.m_ouClusterInfo.m_shNIT                                 =   -1 ;
+    //ouCluster.m_ouClusterInfo.m_fSAMPLE_CLOCK_PERIOD                  =   -1 ;
+    //ouCluster.m_ouClusterInfo.m_shSTATIC_SLOT                         =   24 ;
+    //ouCluster.m_ouClusterInfo.m_shSYMBOL_WINDOW                           =    0;
+    //ouCluster.m_ouClusterInfo.m_shTSS_TRANSMITTER                     =   9 ;
+    //ouCluster.m_ouClusterInfo.m_ouWAKEUP.m_shWAKE_UP_SYMBOL_RX_IDLE       =   59 ;
+    //ouCluster.m_ouClusterInfo.m_ouWAKEUP.m_shWAKE_UP_SYMBOL_RX_LOW        =  50  ;
+    //ouCluster.m_ouClusterInfo.m_ouWAKEUP.m_shWAKE_UP_SYMBOL_RX_WINDOW = 301    ;
+    //ouCluster.m_ouClusterInfo.m_ouWAKEUP.m_shWAKE_UP_SYMBOL_TX_IDLE       = 180   ;
+    //ouCluster.m_ouClusterInfo.m_ouWAKEUP.m_shWAKE_UP_SYMBOL_TX_LOW        = 60   ;
+    //ouCluster.m_ouClusterInfo.m_shLISTEN_NOISE                            = 2   ;
+    //ouCluster.m_ouClusterInfo.m_shMACRO_PER_CYCLE                     = 3636   ;
+    //ouCluster.m_ouClusterInfo.m_fMACROTICK                                =  -1  ;
+    //ouCluster.m_ouClusterInfo.m_fMAX_INITIALIZATION_ERROR             =  -1  ;
+    //ouCluster.m_ouClusterInfo.m_shMAX_WITHOUT_CLOCK_CORRECTION_FATAL  =  2   ;
+    //ouCluster.m_ouClusterInfo.m_shMAX_WITHOUT_CLOCK_CORRECTION_PASSIVE    =  2  ;
+    //ouCluster.m_ouClusterInfo.m_shNETWORK_MANAGEMENT_VECTOR_LENGTH        =  0  ;
+    //ouCluster.m_ouClusterInfo.m_shNUMBER_OF_MINISLOTS                 =  289   ;
+    //ouCluster.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS              =  91  ;
+    //ouCluster.m_ouClusterInfo.m_shOFFSET_CORRECTION_START             =  3632  ;
+    //ouCluster.m_ouClusterInfo.m_shPAYLOAD_LENGTH_STATIC                   =  8  ;
+    //ouCluster.m_ouClusterInfo.m_shSYNC_NODE_MAX                           =  15  ;
+    //ouCluster.m_ouClusterInfo.m_shCAS_RX_LOW_MAX                      =   87 ;
+    //ouCluster.m_ouClusterInfo.m_fBIT                                  =  -1  ;
+    //ouCluster.m_ouClusterInfo.m_shCYCLE                                   =  -1  ;
+    //ouCluster.m_ouClusterInfo.m_shCLUSTER_DRIFT_DAMPING                   =  -1  ;
+
+    ////3. ECU List
+    ////3.1 ECU_1 - BLU
+    //ECU ouEcu;
+    //ouEcu.m_strEcuId  = "ECU_1"+strAppend;
+    //ouEcu.m_strECUName    = "BLU"+strAppend;
+    //ouEcu.m_ouChannel = CHANNEL_A ;
+    //ouEcu.m_nKeySlot  = -1;
+    //ouEcu.m_ouRxFrames.clear();
+    //ouEcu.m_ouTxFrames.clear();
+
+    //list<FRAME> ouFrameList;
+    //FRAME ouFrame;
+    //
+    ////Frame BackLightInfo
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrame.m_strFrameName = "BackLightInfo"+strAppend;
+    //ouFrame.m_nSlotId = 51;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //
+    //SIGNAL ouSignal;
+    //ouSignal.m_strSignalName = "BrakeLight"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 7;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "BackUpLight"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 6;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //ouCluster.m_ouEcuList[ouEcu.m_strEcuId] = ouEcu;
+
+
+    ////3.2 ECU_2 - BSC
+    //ouEcu.m_ouRxFrames.clear();
+    //ouEcu.m_ouTxFrames.clear();
+    //ouFrameList.clear();
+
+    //ouEcu.m_strEcuId  = "ECU_2"+strAppend;
+    //ouEcu.m_strECUName    = "BSC"+strAppend;
+    //ouEcu.m_ouChannel = CHANNEL_A ;
+    //ouEcu.m_nKeySlot  = 16;
+    //
+    //
+    //ouFrame.m_strFrameName = "BrakeControl"+strAppend;
+    //ouFrame.m_nSlotId = 16;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 1;
+    //ouFrame.m_bConsiderPdu = false;
+    //ouFrame.m_ouSignalList.clear();
+
+    //ouSignal.m_strSignalName = "ABSWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 7;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "BrakeWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 6;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "ASRMode"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 5;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "ESPWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 4;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "BrakePressure"+strAppend;
+    //ouSignal.m_nLength = 15;
+    //ouSignal.m_nStartBit = 8;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
+
+    ////Frame - BackLightInfo
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "BackLightInfo"+strAppend;
+    //ouFrame.m_nSlotId = 51;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "BrakeLight"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 7;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "BackUpLight"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 6;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouEcu.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //
+    ////GearBoxInfo
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "GearBoxInfo"+strAppend;
+    //ouFrame.m_nSlotId = 51;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "Gear"+strAppend;
+    //ouSignal.m_nLength = 3;
+    //ouSignal.m_nStartBit = 5;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "ShiftRequest"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 4;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "EcoMode"+strAppend;
+    //ouSignal.m_nLength = 2;
+    //ouSignal.m_nStartBit = 2;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //ouCluster.m_ouEcuList[ouEcu.m_strEcuId] = ouEcu;
+
+    ////3.3 ECU_3 - Dashboard
+    //ouEcu.m_ouRxFrames.clear();
+    //ouEcu.m_ouTxFrames.clear();
+    //ouEcu.m_strEcuId  = "ECU_3"+strAppend;
+    //ouEcu.m_strECUName    = "Dashboard"+strAppend;
+    //ouEcu.m_ouChannel = CHANNEL_A ;
+    //ouEcu.m_nKeySlot  = 16;
+    //
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "ABSInfo"+strAppend;
+    //ouFrame.m_nSlotId = 13;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "CarSpeed"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 0;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "GearLock"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 23;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "Diagnostics"+strAppend;
+    //ouSignal.m_nLength = 8;
+    //ouSignal.m_nStartBit = 24;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "AccelerationForce"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 32;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+
+    ////Frame - BrakeControl
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "BrakeControl"+strAppend;
+    //ouFrame.m_nSlotId = 16;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 1;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "ABSWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 7;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "BrakeWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 6;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "ASRMode"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 5;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "ESPWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 4;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "BrakePressure"+strAppend;
+    //ouSignal.m_nLength = 15;
+    //ouSignal.m_nStartBit = 8;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //
+    ////Frame EngineData
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "EngineData"+strAppend;
+    //ouFrame.m_nSlotId = 25;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 1;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "EngSpeed"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 0;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "EngTemp"+strAppend;
+    //ouSignal.m_nLength = 7;
+    //ouSignal.m_nStartBit = 17;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouSignal.m_strSignalName = "IdleRunning"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 16;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouSignal.m_strSignalName = "EngTemp"+strAppend;
+    //ouSignal.m_nLength = 7;
+    //ouSignal.m_nStartBit = 17;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouSignal.m_strSignalName = "PetrolLevel"+strAppend;
+    //ouSignal.m_nLength = 8;
+    //ouSignal.m_nStartBit = 24;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouSignal.m_strSignalName = "EngForce"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 32;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouSignal.m_strSignalName = "EngPower"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 48;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //
+
+    ////Frame EngineStatus
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "EngineStatus"+strAppend;
+    //ouFrame.m_nSlotId = 26;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "Status"+strAppend;
+    //ouSignal.m_nLength = 2;
+    //ouSignal.m_nStartBit = 6;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "WaterWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 15;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "OilWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 14;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "BatteryWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 13;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "ErrorCode"+strAppend;
+    //ouSignal.m_nLength = 6;
+    //ouSignal.m_nStartBit = 18;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //ouCluster.m_ouEcuList[ouEcu.m_strEcuId] = ouEcu;
+
+
+    ////ECU_4 - Engine
+    //ouEcu.m_ouRxFrames.clear();
+    //ouEcu.m_ouTxFrames.clear();
+    //ouEcu.m_strEcuId  = "ECU_4"+strAppend;
+    //ouEcu.m_strECUName    = "Engine"+strAppend;
+    //ouEcu.m_ouChannel = CHANNEL_A ;
+    //ouEcu.m_nKeySlot  = 16;
+    //
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "ABSInfo"+strAppend;
+    //ouFrame.m_nSlotId = 13;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "CarSpeed"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 0;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "GearLock"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 23;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "Diagnostics"+strAppend;
+    //ouSignal.m_nLength = 8;
+    //ouSignal.m_nStartBit = 24;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "AccelerationForce"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 32;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
+
+    ////Frame EngineData
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "EngineData"+strAppend;
+    //ouFrame.m_nSlotId = 25;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 1;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "EngSpeed"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 0;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "EngTemp"+strAppend;
+    //ouSignal.m_nLength = 7;
+    //ouSignal.m_nStartBit = 17;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "IdleRunning"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 16;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "PetrolLevel"+strAppend;
+    //ouSignal.m_nLength = 8;
+    //ouSignal.m_nStartBit = 24;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "EngForce"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 32;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "EngPower"+strAppend;
+    //ouSignal.m_nLength = 16;
+    //ouSignal.m_nStartBit = 48;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouFrameList.push_back(ouFrame);
+    //ouEcu.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
+
+
+    ////Frame EngineStatus
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "EngineStatus"+strAppend;
+    //ouFrame.m_nSlotId = 26;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "Status"+strAppend;
+    //ouSignal.m_nLength = 2;
+    //ouSignal.m_nStartBit = 6;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "WaterWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 15;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "OilWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 14;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "BatteryWarningLamp"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 13;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+
+    //ouSignal.m_strSignalName = "ErrorCode"+strAppend;
+    //ouSignal.m_nLength = 6;
+    //ouSignal.m_nStartBit = 18;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouEcu.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
+
+    ////GearBoxInfo
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "GearBoxInfo"+strAppend;
+    //ouFrame.m_nSlotId = 52;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "Gear"+strAppend;
+    //ouSignal.m_nLength = 3;
+    //ouSignal.m_nStartBit = 5;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "ShiftRequest"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 4;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "GearBoxInfo"+strAppend;
+    //ouSignal.m_nLength = 2;
+    //ouSignal.m_nStartBit = 2;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouEcu.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //ouCluster.m_ouEcuList[ouEcu.m_strEcuId] = ouEcu;
+
+
+    ////ECU_5 GearBox
+    //ouEcu.m_ouRxFrames.clear();
+    //ouEcu.m_ouTxFrames.clear();
+    //ouEcu.m_strEcuId  = "ECU_5"+strAppend;
+    //ouEcu.m_strECUName    = "GearBox"+strAppend;
+    //ouEcu.m_ouChannel = CHANNEL_A ;
+    //ouEcu.m_nKeySlot  = 16;
+    //
+    //
+    ////GearBoxInfo
+    //ouFrame.m_ouSignalList.clear();
+    //ouFrameList.clear();
+    //ouFrame.m_strFrameName = "GearBoxInfo"+strAppend;
+    //ouFrame.m_nSlotId = 52;
+    //ouFrame.m_nBaseCycle = 0;
+    //ouFrame.m_nReptition = 2;
+    //ouFrame.m_bConsiderPdu = false;
+
+    //ouSignal.m_strSignalName = "Gear"+strAppend;
+    //ouSignal.m_nLength = 3;
+    //ouSignal.m_nStartBit = 5;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //
+    //ouSignal.m_strSignalName = "ShiftRequest"+strAppend;
+    //ouSignal.m_nLength = 1;
+    //ouSignal.m_nStartBit = 4;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+
+    //ouSignal.m_strSignalName = "GearBoxInfo"+strAppend;
+    //ouSignal.m_nLength = 2;
+    //ouSignal.m_nStartBit = 2;
+    //ouSignal.m_ouEndianness = INTEL;
+    //ouFrame.m_ouSignalList.push_back(ouSignal);
+    //ouFrameList.push_back(ouFrame);
+
+    //ouEcu.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
+    //ouCluster.m_ouEcuList[ouEcu.m_strEcuId] = ouEcu;
+
+
+    //hSimulateFillClusterInfo(ouEcu.m_ouControllerParams);
+    //ouCluster.m_ouEcuList[(ECU_ID)(ouEcu.m_strEcuId)] = ouEcu;
+
+    return hr;
+}
+
+HRESULT CMsgSignal::hSimulateFillClusterInfo(ABS_FLEXRAY_SPEC_CNTLR& ouController)
+{
+    HRESULT hr = S_OK;
+
+    ouController.m_shMaxDynPayloadLgt           =  -1;
+    ouController.m_shClusterDriftDamping            =  2;
+    ouController.m_nDecodingCorr                    =  48;
+    ouController.m_nListenTimeOut               =  401202;
+    ouController.m_shMaxDrift                   =  601;
+    ouController.m_shExternOffsetCorr           =  0;
+    ouController.m_shExternRateCorr             =  0;
+    ouController.m_shLatestTx                   =  249;
+    ouController.m_nMicroPreCycle               =  200000;
+    ouController.m_shOffsetCorrOut              =  127;
+    ouController.m_shRateCorrOut                    =  601;
+    ouController.m_shSamplePerMicrotick         =  -1;
+    ouController.m_shDelayCompensationA         =  1;
+    ouController.m_shDelayCompensationB         =  1;
+    ouController.m_shWakeUpPattern              =  33;
+    ouController.m_bAllowHaltDewToClock         =  1;
+    ouController.m_shAllowPassiveToActive       =  1;
+    ouController.m_shAcceptedStartUpRange       =  220;
+    ouController.m_shMacroInitialOffsetA            =  3;
+    ouController.m_shMacroInitialOffsetB            =  3;
+    ouController.m_shMicroInitialOffsetA            =  6;
+    ouController.m_shMicroInitialOffsetB            =  6;
+    ouController.m_bSingleSlotEnable                =  0;
+    ouController.m_fMicrotick                   =  -1;
+    ouController.m_fMicroPerMacroNom                =  -1;
+    ouController.m_nChannels                        =  CHANNEL_A | CHANNEL_B;
+    ouController.m_nKeySlotId                   =  3;
+    ouController.m_nWakeUpChannel               =  CHANNEL_A;
+
+
+    return hr;
+}
+void CMsgSignal::vClearFIBEXContainers()
+{
+    m_AbsFibexContainer.m_omElement.DoCleanup();
+    m_AbsFibexContainer.m_omProcInfo.DoCleanup();
+    m_AbsFibexContainer.m_omProject.DoCleanup();
+    m_AbsFibexContainer.m_omProtocol.DoCleanup();
+    m_AbsFibexContainer.m_omRequirements.DoCleanup();
+
+    m_ouFrameDataSet.RemoveAll(); // Clear all filled dataset
+}
+
+//void CMsgSignal::vGetSIgnalDetails( CSignalDefArray& ouSignalDefArray, AbsCSigInstanceList& odSignalInstList)
+//{
+//    POSITION pos = odSignalInstList.GetHeadPosition();
+//    while (pos != NULL)
+//    {
+//        CSignalDef ouTempSignalDef; // Temporary placeholder for Signal details
+//        ABS_SIGNAL_INSTANCE& ouTempSigInst = odSignalInstList.GetNext(pos);
+//
+//        ouTempSignalDef.m_unStartbit = ouTempSigInst.m_uStartPos.m_sSigStartPos.m_ushBIT_POSITION;
+//        ouTempSignalDef.m_bIsBigEndian = ouTempSigInst.m_uStartPos.m_sSigStartPos.m_bIS_HIGH_LOW_BYTE_ORDER;
+//
+//        POSITION pos1 = m_AbsFibexContainer.m_omElement.m_omSignalList.GetHeadPosition();
+//        while (pos1 != NULL)
+//        {
+//            ABS_SIGNAL& ouTempAbsSignal = m_AbsFibexContainer.m_omElement.m_omSignalList.GetNext(pos1);
+//            if (ouTempSigInst.m_omSigRef == ouTempAbsSignal.m_omSignalID)
+//            {
+//                ouTempSignalDef.m_omNameSignal = ouTempAbsSignal.m_omSignalName;
+//                POSITION pos2 = m_AbsFibexContainer.m_omProcInfo.m_omCodingList.GetHeadPosition();
+//                while (pos2 != NULL)
+//                {
+//                    ABS_CODING& ouTempAbsCoding = m_AbsFibexContainer.m_omProcInfo.m_omCodingList.GetNext(pos2);
+//                    if (ouTempAbsSignal.m_omCoding == ouTempAbsCoding.m_omCodingID)
+//                    {
+//                        ouTempSignalDef.m_unLength = ouTempAbsCoding.m_sCodedType.m_sLength.m_unLength;
+//                        POSITION pos3 = ouTempAbsCoding.m_odCompuMethodList.GetHeadPosition();
+//                        while (pos3 != NULL)
+//                        {
+//                            ABS_COMPU_METHOD& tempAbsCompuMethod = ouTempAbsCoding.m_odCompuMethodList.GetNext(pos3);
+//                            POSITION pos4 = tempAbsCompuMethod.m_odInternalConstrs.GetHeadPosition();
+//                            while (pos4 != NULL)
+//                            {
+//                                SIG_INT_CONSTRAINT_EX tempConsts;
+//                                ABS_CONSTRS tempInterConstr = tempAbsCompuMethod.m_odInternalConstrs.GetNext(pos4);
+//                                tempConsts.m_eValid = eGetRangeValid(tempInterConstr.m_omValidity);
+//                                tempConsts.m_sRange.m_dwLowerLimit = tempInterConstr.m_sLowerLimit.m_fValue;
+//                                tempConsts.m_sRange.m_dwUpperLimit = tempInterConstr.m_sUpperLimit.m_fValue;
+//                                ouTempSignalDef.m_ouSigConstrnt.Add(tempConsts);
+//                            }
+//
+//                            pos4 = tempAbsCompuMethod.m_odPhysConstrs.GetHeadPosition();
+//                            while (pos4 != NULL)
+//                            {
+//                                SIG_INT_CONSTRAINT_EX tempConsts;
+//                                ABS_CONSTRS tempPhylConstr = tempAbsCompuMethod.m_odInternalConstrs.GetNext(pos4);
+//                                tempConsts.m_eValid = eGetRangeValid(tempPhylConstr.m_omValidity);
+//                                tempConsts.m_sRange.m_dwLowerLimit = tempPhylConstr.m_sLowerLimit.m_fValue;
+//                                tempConsts.m_sRange.m_dwUpperLimit = tempPhylConstr.m_sUpperLimit.m_fValue;
+//                                ouTempSignalDef.m_ouSigConstrnt.Add(tempConsts);
+//                            }
+//
+//                            CCompuMethodEx tempCompuMethod;
+//                            tempCompuMethod.m_eCompuType = sCopyCompuType(tempAbsCompuMethod.m_omCategory);
+//                            sCopyCompuMethod(tempCompuMethod, tempAbsCompuMethod.m_sCompu_Internal_To_Phys);
+//                          //ouTempSignalDef.m_ouCompuMethods.SetSize(ouTempSignalDef.m_ouCompuMethods.GetSize() + 1);
+//                            ouTempSignalDef.m_ouCompuMethods.Add(tempCompuMethod);
+//
+//
+//                            pos4 = m_AbsFibexContainer.m_omProcInfo.m_ouUnitSpec.m_odUnitList.GetHeadPosition();
+//                            while (pos4 != NULL)
+//                            {
+//                                ABS_UNIT& tempAbsUnit = m_AbsFibexContainer.m_omProcInfo.m_ouUnitSpec.m_odUnitList.GetNext(pos4);
+//                                if (tempAbsCompuMethod.m_omUnitRef == tempAbsUnit.m_omID)
+//                                {
+//                                    ouTempSignalDef.m_omUnit = tempAbsUnit.m_omDisplayName;
+//                                    pos4 = NULL;
+//                                }
+//                            }
+//                        }
+//                        pos2 = NULL;
+//                    }
+//                }
+//                pos1 = NULL;
+//            }
+//        }
+//        ouSignalDefArray.Add(ouTempSignalDef);
+//    }
+//}
+//void CMsgSignal::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, ABS_COMPU_INTERNAL_TO_PHYS& ouCompuInToPhys)
+//{
+//    POSITION pos = ouCompuInToPhys.m_odCompuScaleList.GetHeadPosition();
+//    COMPU_EXPRESSION_MSGSIG eCategory = ouCompuMethodEx.m_eCompuType;
+//    COMPU_METHOD_EX& ouReturnCompuMethod = ouCompuMethodEx.m_uMethod;
+//    switch (eCategory)
+//    {
+//        case IDENTICAL_ENUM:
+//        {
+//            while (pos != NULL)
+//            {
+//                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
+//                ouReturnCompuMethod.m_IdenticalCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//                ouReturnCompuMethod.m_IdenticalCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//                ouReturnCompuMethod.m_IdenticalCode.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//            }
+//            break;
+//        }
+//        case LINEAR_ENUM:
+//        {
+//            while (pos != NULL)
+//            {
+//                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
+//                ouReturnCompuMethod.m_LinearCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//                ouReturnCompuMethod.m_LinearCode.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//                POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
+//                if (pos1 != NULL)
+//                {
+//                    ouReturnCompuMethod.m_LinearCode.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
+//                }
+//                pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
+//                if (pos1 != NULL)
+//                {
+//                    ouReturnCompuMethod.m_LinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+//                    float fCheck = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetAt(pos1);
+//                    if (fCheck == 0.062525)
+//                    {
+//                        int z = 0;
+//                    }
+//                    ouReturnCompuMethod.m_LinearCode.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+//                }
+//            }
+//            break;
+//        }
+//        case SCALE_LINEAR_ENUM:
+//        {
+//            while (pos != NULL)
+//            {
+//                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
+//
+//              LINEAR_CODE_EX objLinearCode;
+//
+//              objLinearCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//                objLinearCode.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//
+//
+//                POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
+//                if (pos1 != NULL)
+//                {
+//                   objLinearCode.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
+//                }
+//
+//                pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
+//                if (pos1 != NULL)
+//                {
+//                    objLinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+//
+//                   objLinearCode.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+//                }
+//
+//              ouReturnCompuMethod.m_objScaleLinear.push_back(objLinearCode);
+//
+//                /*PSCALE_LINEAR_CODE_VAR_EX temp = ouReturnCompuMethod.m_pScaleLinear;
+//                tempScaleLinear->m_pNextLinearType = temp;
+//                ouReturnCompuMethod.m_pScaleLinear = tempScaleLinear;*/
+//
+//
+//    //            PSCALE_LINEAR_CODE_VAR_EX tempScaleLinear = new SCALE_LINEAR_CODE_VAR_EX;
+//    //            tempScaleLinear->m_pNextLinearType = NULL;
+//              ////LINEAR_CODE
+//    //            tempScaleLinear->m_sLinearType.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//    //            tempScaleLinear->m_sLinearType.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//
+//
+//    //            POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
+//    //            if (pos1 != NULL)
+//    //            {
+//    //                tempScaleLinear->m_sLinearType.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
+//    //            }
+//
+//    //            pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
+//    //            if (pos1 != NULL)
+//    //            {
+//    //                tempScaleLinear->m_sLinearType.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+//
+//    //                tempScaleLinear->m_sLinearType.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+//    //            }
+//    //            PSCALE_LINEAR_CODE_VAR_EX temp = ouReturnCompuMethod.m_pScaleLinear;
+//    //            tempScaleLinear->m_pNextLinearType = temp;
+//    //            ouReturnCompuMethod.m_pScaleLinear = tempScaleLinear;
+//            }
+//            break;
+//        }
+//        case TEXTTABLE_ENUM:
+//        {
+//            while (pos != NULL)
+//            {
+//                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
+//
+//              TEXT_CODE_VAR_EX objTextCdeVar;
+//
+//              objTextCdeVar.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//              objTextCdeVar.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//              strcpy(objTextCdeVar.m_aTextName,tempAbsCompuScale.m_sCompuConst.m_omVT.GetBuffer(MAX_PATH));
+//
+//              ouReturnCompuMethod.m_objTextCode.push_back(objTextCdeVar);
+//               /* PTEXT_CODE_VAR_EX tempTextCode = new TEXT_CODE_VAR_EX;
+//                tempTextCode->m_pNextTextCodeType = NULL;
+//
+//                tempTextCode->m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//                tempTextCode->m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//                strcpy(tempTextCode->m_aTextName,tempAbsCompuScale.m_sCompuConst.m_omVT.GetBuffer(MAX_PATH));
+//
+//                PTEXT_CODE_VAR_EX temp = ouReturnCompuMethod.m_pTextCode;
+//                tempTextCode->m_pNextTextCodeType = temp;
+//                ouReturnCompuMethod.m_pTextCode = tempTextCode;*/
+//            }
+//            break;
+//        }
+//        case TAB_NOINTP_ENUM:
+//        {
+//            while (pos != NULL)
+//            {
+//                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
+//
+//              TAB_CODE_VAR_EX objTab;
+//
+//              objTab.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//              objTab.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//                objTab.m_dPhysVal = tempAbsCompuScale.m_sCompuConst.m_fV;
+//
+//              ouReturnCompuMethod.m_objTabCode.push_back(objTab);
+//
+//                /*PTAB_CODE_VAR_EX tempTabCode = new TAB_CODE_VAR_EX;
+//                tempTabCode->m_pNextTabCodeType = NULL;
+//
+//                tempTabCode->m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
+//                tempTabCode->m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
+//                tempTabCode->m_dPhysVal = tempAbsCompuScale.m_sCompuConst.m_fV;
+//
+//                PTAB_CODE_VAR_EX temp = ouReturnCompuMethod.m_pTabCode;
+//                tempTabCode->m_pNextTabCodeType = temp;
+//                ouReturnCompuMethod.m_pTabCode = tempTabCode;*/
+//            }
+//            break;
+//        }
+//        case FORMULA_ENUM:
+//        {
+//            while (pos != NULL)
+//            {
+//                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
+//                PFORMULA_CODE_VAR_EX tempFormula = new FORMULA_CODE_VAR_EX;
+//                tempFormula->m_pFirstOperand = NULL;
+//
+//                tempFormula->m_omFormula = tempAbsCompuScale.m_sCompuConst.m_omVT;
+//                /*tempFormula->m_pFirstOperand = tempAbsCompuScale.m_sUpper.m_fValue;*/
+//            }
+//            break;
+//        }
+//    }
+//}
+
+COMPU_EXPRESSION_MSGSIG CMsgSignal::sCopyCompuType(CString ouCompuType)
+{
+    COMPU_EXPRESSION_MSGSIG sReturnCompuEx = IDENTICAL_ENUM;
+    if (ouCompuType == "IDENTICAL")
+    {
+        sReturnCompuEx = IDENTICAL_ENUM;
+    }
+    else if (ouCompuType == "LINEAR")
+    {
+        sReturnCompuEx = LINEAR_ENUM;
+    }
+    else if (ouCompuType == "SCALE-LINEAR")
+    {
+        sReturnCompuEx = SCALE_LINEAR_ENUM;
+    }
+    else if (ouCompuType == "TEXTTABLE")
+    {
+        sReturnCompuEx = TEXTTABLE_ENUM;
+    }
+    else if (ouCompuType == "SCALE-LINEAR-TEXTTABLE")
+    {
+        sReturnCompuEx = SCALE_LINEAR_TEXTTABLE_ENUM;
+    }
+    else if (ouCompuType == "TAB-NOINTP")
+    {
+        sReturnCompuEx = TAB_NOINTP_ENUM;
+    }
+    else if (ouCompuType == "FORMULA")
+    {
+        sReturnCompuEx = FORMULA_ENUM;
+    }
+
+    return sReturnCompuEx;
+}
+
+RANGE_VALID CMsgSignal::eGetRangeValid(CString omValidity)
+{
+    RANGE_VALID eResult = VALID;
+
+    if (omValidity == "NOT-VALID")
+    {
+        eResult = INVALID;
+    }
+    else if (omValidity == "NOT-AVAILABLE")
+    {
+        eResult = NOT_AVAILABLE;
+    }
+    else if (omValidity ==  "VALID")
+    {
+        eResult = VALID;
+    }
+
+    return eResult;
 }

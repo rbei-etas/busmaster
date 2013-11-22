@@ -115,7 +115,6 @@
       </DataExecutionPrevention>
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)PSDI_CAN.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -160,7 +159,6 @@
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)PSDI_CAN.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
@@ -203,17 +201,20 @@
       </DataExecutionPrevention>
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)PSDI_CAN.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MsgContainer_CAN.cpp" />
+    <ClCompile Include="MsgContainer_FlexRay.cpp" />
     <ClCompile Include="MsgContainer_J1939.cpp" />
+    <ClCompile Include="MsgContainer_LIN.cpp" />
     <ClCompile Include="PSDI_CAN.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MsgContainer_CAN.h" />
+    <ClInclude Include="MsgContainer_FlexRay.h" />
     <ClInclude Include="MsgContainer_J1939.h" />
+    <ClInclude Include="MsgContainer_LIN.h" />
     <ClInclude Include="PSDI_CAN.h" />
     <ClInclude Include="stdafx_CAN.h" />
     <ClInclude Include="..\Utility\Utility_Thread.h" />

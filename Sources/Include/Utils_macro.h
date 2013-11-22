@@ -31,6 +31,7 @@
 #define FORMAT_PGN_ID_HEX       _T("0x%06X")
 #define FORMAT_PGN_ID_DEC       _T("%06d")
 
+#define FORMAT_FLX_CONTROLLER_STATE       _T("FLEXRAY POC State: %s")
 #define BIT_TM_ABS              0x01
 #define BIT_TM_REL              0x02
 #define BIT_TM_SYS              0x04

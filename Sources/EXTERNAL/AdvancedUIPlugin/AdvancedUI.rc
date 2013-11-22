@@ -67,7 +67,15 @@ IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
 IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
 IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
 IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
-
+IDB_TLB_FLEXRAY           BITMAP                "res\\FlexRay_Toolbar.bmp"
+IDB_TLB_FLEXRAY_HOT       BITMAP                "res\\FlexRay_Toolbar_Hot.bmp"
+IDB_TLB_FLEXRAY_DISABLED  BITMAP                "res\\FlexRay_Toolbar_Disabled.bmp"
+IDR_CONFIG_TOOLBAR		BITMAP					"res\\Configuration_Toolbar.bmp"
+IDR_CONFIG_TOOLBAR_HOT	BITMAP					"res\\Configuration_Toolbar_Hot.bmp"
+IDR_CONFIG_TOOLBAR_DISABLED	BITMAP				"res\\Configuration_Toolbar_Disabled.bmp"
+IDB_LIN_IMG             BITMAP                  "res\\LIN_Toolbar.bmp"
+IDB_LIN_IMGDISABLED     BITMAP                  "res\\LIN_Toolbar_Disabled.bmp"
+IDB_LIN_IMGHOT          BITMAP                  "res\\LIN_Toolbar_Hot.bmp"
 /////////////////////////////////////////////////////////////////////////////
 //
 // Icon
@@ -97,6 +105,7 @@ IDI_ICON_REPLAY_FILTER_ON ICON                  "res\\ReplayFilterON.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
 IDI_ICON_SIGNALWATCH    ICON                    "res\\Signal_Watch.ico"
 IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
+IDC_FLEXRAY_LOGO		ICON					"res\\FlexRay_Logo.ico"
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

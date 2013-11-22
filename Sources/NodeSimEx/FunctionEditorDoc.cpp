@@ -372,7 +372,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                 pFile->Read(pbyFileData, (COMMANUINT)FileLength);
 
                 UINT nIndex = 0;
-                CHAR acFileLine[1024];
+                CHAR acFileLine[4000];
                 while (ReadString((LPSTR)pbyFileData, (COMMANUINT)FileLength, acFileLine, nIndex))
                 {
                     //omTextLine = A2T(acFileLine);

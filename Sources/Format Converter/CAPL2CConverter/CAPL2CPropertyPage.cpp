@@ -680,7 +680,7 @@ void CCAPL2CPropertyPage::OnConvert()
                 m_pouDBC2DBFConverter->ConvertFile(m_omDBCList.GetItemText(i, 1).GetBuffer(MAX_PATH));
             }
         }
-        ouWaitIndicator.SetWindowText(_("Conversion Completed"));
+        ouWaitIndicator.SetWindowText(_("Conversion Completed Successfully"));
         Sleep(520);
         ouWaitIndicator.CloseWindow();
 

@@ -108,7 +108,13 @@ END_MESSAGE_MAP()
 /******************************************************************************/
 void CValueDescriptionDlg::OnClickedOk()
 {
-    UpdateData(TRUE);
+    BOOL bIsUpdated = UpdateData(TRUE);
+
+    if(bIsUpdated == FALSE)
+    {
+        return;
+    }
+
     BOOL bRetValue = TRUE;
     BOOL bModifiedFlag = FALSE;
     // Validate data

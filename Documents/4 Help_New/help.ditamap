@@ -106,6 +106,23 @@
       <topicref href="references/api_reference_J1939/SetTimeout.dita" type="reference"/>
     </topicref>
   </topicref>
+  <topicref href="topics/FlexRay_Introduction.dita" type="topic">
+      <topicref href="topics/FlexRay_Cluster_Configuration.dita" type="reference"/>
+      <topicref href="topics/FlexRay_Controller_Config.dita" type="reference"/>
+      <topicref href="topics/FlexRay_Transmit_Recieve.dita" type="reference"/>
+      <topicref href="topics/FlexRay_Message_Window.dita" type="reference"/>
+      <topicref href="topics/FlexRay_Tx_Window.dita" type="reference"/>
+    </topicref>
+	
+	<topicref href="topics/LIN_Introduction.dita" type="topic">
+	  <topicref href="topics/LIN_Controller_Config.dita" type="reference"/>
+	  <topicref href="topics/LIN_Connect.dita" type="reference"/>
+	  <topicref href="topics/LIN_TxWindow.dita" type="reference"/>
+	</topicref>
+
+
+
+	
   <topicref href="topics/c_library.dita" type="topic">
     <topicref href="topics/stdlib.dita" type="topic">
       <topicref href="references/stdlib/abs.dita" type="reference"/>

@@ -79,6 +79,16 @@ void tagLogInfo::vClear(void)
     m_sLogTrigger.m_unTriggerType = NONE;   // No trigger
     m_sLogTrigger.m_unStartID = 0;          // No Start-ID
     m_sLogTrigger.m_unStopID = 0;           // No Stop-ID
+
+    //m_sLogAdvStngs.m_bIsLogOnMesurement = FALSE;
+    //m_sLogAdvStngs.m_bIsLogOnSize = FALSE;
+    //m_sLogAdvStngs.m_bIsLogOnTime = FALSE;
+    //m_sLogAdvStngs.m_omSizeInMB = "50";//Shailesh
+    //m_sLogAdvStngs.m_omLogTimeHrs = "0";
+    //m_sLogAdvStngs.m_omLogTimeMins = "0";
+    //m_sLogAdvStngs.m_omMaxNoOfLogFiles = "10";
+    //m_sLogAdvStngs.m_omLogComment = ""; //arun
+    //m_sLogAdvStngs.m_nConnectionCount = -1;
 }
 
 /******************************************************************************
@@ -264,6 +274,43 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
 
     xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TRGR_STP_ID, BAD_CAST omcStpId);
     xmlAddChild(pxmlNodePtr, pStpIdPtr);
+
+    ////Shailesh +
+    //const char* omstrIsLogOnTransmission ="FALSE";
+    //const char* omstrIsLogOnSize ="FALSE";
+    //const char* omstrIsLogOnTime ="FALSE";
+    //const char* omstrLogTime ="FALSE";
+
+
+    //if(m_sLogAdvStngs.m_bIsLogOnMesurement)
+    //   omstrIsLogOnTransmission = "TRUE";
+
+    //if(m_sLogAdvStngs.m_bIsLogOnSize)
+    //   omstrIsLogOnSize = "TRUE";
+
+    //if(m_sLogAdvStngs.m_bIsLogOnTime)
+    //   omstrIsLogOnTime = "TRUE";
+    //CString LogOnSize = m_sLogAdvStngs.m_omSizeInMB;
+
+    //CString LogTime = m_sLogAdvStngs.m_omLogTimeHrs + "." + m_sLogAdvStngs.m_omLogTimeMins;
+
+    //xmlNodePtr pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_LOGON_TRANS, BAD_CAST omstrIsLogOnTransmission);
+    //   xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    //pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_LOGON_SIZE, BAD_CAST omstrIsLogOnSize);
+    //   xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    //pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOGON_SIZE, BAD_CAST LogOnSize.GetBuffer(LogOnSize.GetLength()));
+    //   xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    //pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_LOGON_TIME, BAD_CAST omstrIsLogOnTime);
+    //   xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    //pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOGON_TIME, BAD_CAST LogTime.GetBuffer(LogTime.GetLength()));
+    //   xmlAddChild(pxmlNodePtr, pLogPtr);
+
+
+    //Shailesh -
 
     /*xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CAN_LOG_BLOCK, BAD_CAST "");
     xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CAN_LOG_BLOCK, BAD_CAST "");
@@ -454,6 +501,72 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
                     xmlFree(key);
                 }
             }
+            //          //Shailesh +
+            //          //Get XML Node value for LogOnTransmission bool and update the GUI.
+            //          else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsLogOnTransmission")))
+            //            {
+            //                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            //                if(NULL != key)
+            //                {
+            //                  m_sLogAdvStngs.m_bIsLogOnMesurement = xmlUtils::bGetBooleanValue((char*)key);
+            //                    xmlFree(key);
+            //                }
+            //            }
+            //          //Get XML Node value for LogOnSize bool and update the GUI.
+            //          else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsLogOnSize")))
+            //            {
+            //                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            //                if(NULL != key)
+            //                {
+            //                  m_sLogAdvStngs.m_bIsLogOnSize = xmlUtils::bGetBooleanValue((char*)key);
+            //                    xmlFree(key);
+            //                }
+            //            }
+            //
+            //          //Get XML Node value for LogOnSize MB value and update the GUI.
+            //          else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"LogOnSize")))
+            //            {
+            //                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
+            //                if(NULL != key)
+            //                {
+            //                  CString stemp((char*)key);
+            //                  m_sLogAdvStngs.m_omSizeInMB =  stemp;
+            ////                    strcpy_s(m_sLogAdvStngs.m_omSizeInMB ,temp.GetLength(),temp);
+            //                    xmlFree(key);
+            //                }
+            //            }
+            //
+            //          //Get XML Node value for LogOnTime bool and update the GUI.
+            //          else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsLogOnTime")))
+            //            {
+            //                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            //                if(NULL != key)
+            //                {
+            //                  m_sLogAdvStngs.m_bIsLogOnTime = xmlUtils::bGetBooleanValue((char*)key);
+            //                    xmlFree(key);
+            //                }
+            //            }
+            //
+            //          else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"LogOnTime")))
+            //            {
+            //                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            //                if(NULL != key)
+            //                {
+            //                  CString stemp((char*)key);
+            //                  char* Hrs= strtok(stemp.GetBuffer(stemp.GetLength()) ,".");
+            //                  char* Min= strtok(NULL ,".");
+            //
+            //                  CString sHrs(Hrs);
+            //                  CString sMin(Min);
+            //                  m_sLogAdvStngs.m_omLogTimeHrs = sHrs;
+            //                  m_sLogAdvStngs.m_omLogTimeMins = sMin;
+            //
+            //                  //m_sLogAdvStngs.m_omSizeInMB =  stemp.;
+            //                  //strcpy_s(m_sLogAdvStngs.m_omSizeInMB ,temp.GetLength(),temp);
+            //                    xmlFree(key);
+            //                }
+            //            }
+            //          //Shailesh -
         }//if Conditions
         pNodePtr = pNodePtr->next;
     }//While

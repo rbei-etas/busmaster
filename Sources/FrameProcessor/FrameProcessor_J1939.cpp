@@ -55,6 +55,7 @@
 #include "FrameProcessor_J1939.h"
 #include "LogObjectJ1939.h"
 #include "Utility\MultiLanguageSupport.h"
+#include "Application/StdAfx.h"
 //#include "../Application/GettextBusmaster.h"
 
 
@@ -137,7 +138,8 @@ CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(const CString& omStrVersi
     CString strVersion = CString(m_sJ1939ProcParams.m_acVersion);
     if (strVersion.IsEmpty())
     {
-        strVersion = omStrVersion;
+        strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+        //strVersion = omStrVersion;
     }
     pLogObj = new CLogObjectJ1939(strVersion);
     return (static_cast<CBaseLogObject*> (pLogObj));

@@ -15,6 +15,38 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.0.0</b></p>
+    <p>Added Support For Following CAN Controllers:</p>
+    <p><ul>
+        <li>ETAS ISOLAR EVE CAN</li>
+      </ul></p>
+    <p>Added FlexRay Support For Following Controllers:</p>
+    <p><ul>
+        <li>ETAS BOA</li>
+      </ul></p>
+    <p>Added  following FlexRay Modules:</p>
+    <ul>
+      <li>
+        <p>FIBEX Import support for 2.0,3.0</p>
+      </li>
+      <li>Message Window</li>
+    </ul>
+    <ul>
+      <li>Transmit Window</li>
+    </ul>
+    <p>Added LIN Suppoer for Following Controllers</p>
+    <p><ul>
+        <li>ETAS ISOLAR EVE LIN</li>
+      </ul></p>
+    <p>Added Following LIN Modules:</p>
+    <p><ul>
+        <li>Message window</li>
+      </ul></p>
+    <p><ul>
+        <li>Transmit Window</li>
+      </ul></p>
+    <p/>
+    <p><b>1.9.0</b></p>
     <p>Support to following hardware interfaces are added:</p>
     <ul>
       <li>NSI interface</li>

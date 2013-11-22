@@ -25,7 +25,10 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
 {
     DATABASE_SECTION_ID = 0x0,
     DATABASE_SECTION_J1939_ID,
+    DATABASE_SECTION_FLEXRAY,
+    DATABASE_SECTION_LIN_ID,
     DIL_SECTION_ID,
+    DIL_SECTION_LIN_ID,
     FILTER_SECTION_ID,
     MAINFRAME_SECTION_ID,
     SIGWATCH_SECTION_ID,
@@ -38,11 +41,16 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
     REPLAY_SECTION_ID,
     MSGWND_SECTION_ID,
     MSGWND_SECTION_J1939_ID,
+    MSGWND_SECTION_LIN_ID,
     TXWND_SECTION_ID,
+    TXWND_SECTION_LIN_ID,
     WAVEFORMDATA_SECTION_ID,
     BUS_STATISTICS_SECTION_ID,
     TEST_SETUP_EDITOR_SECTION_ID,
     TEST_SUITE_EXECUTOR_SECTION_ID,
+    FLEXRAY_TXWND,
+    MSGWND_SECTION_FLEXRAY_ID,
+    FLEXRAY_CLUSTER_CONFIG,
     SECTION_TOTAL
 };
 
@@ -52,6 +60,7 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
     "DatabaseConfigSectionName",
     "DatabaseConfigSectionNameJ1939",
     "DilConfigSectionName",
+    "DilConfigSectionNameLIN",
     "FilterConfigSectionName",
     "MainFrameConfigSectionName",
     "SigWatchConfigSectionName",
@@ -64,7 +73,9 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
     "ReplayConfigSectionName",
     "MsgWndConfigSectionName",
     "MsgWndConfigSectionNameJ1939",
+    "MsgWndConfigSectionNameLIN",
     "TxWndConfigSectionName",
+    "TxWndConfigSectionNameLIN",
     "WaveformConfigSectionName",
     "BusStatsConfigSectionName",
     "TestSetupEditorSectionName",
@@ -86,6 +97,7 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
 #define DEF_GLOBAL_CONFIGURATION        "Global_Configuration"
 #define DEF_MODULE_CONFIGURATION        "Module_Configuration"
 #define DEF_CAN_DATABASE_FILES          "CAN_Database_Files"
+#define DEF_FLEXRAY_CLUSTER_CONFIG      "FLEX_Cluster_Config"
 #define DEF_J1939_DATABASE_FILES        "J1939_Database_Files"
 #define DEF_FILE_PATH                   "FilePath"
 #define DEF_CAN_DIL_SECTION             "CAN_DIL_Section"

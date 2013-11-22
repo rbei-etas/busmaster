@@ -51,6 +51,16 @@ typedef struct tagSFRAMEINFO_BASIC_CAN
     BYTE         m_byMsgType;
 } SFRAMEINFO_BASIC_CAN;
 
+// Basic information needed for filtering when the bus is CAN.
+typedef struct tagSFRAMEINFO_BASIC_LIN
+{
+    DWORD        m_dwFrameID;
+    TYPE_CHANNEL m_eChannel;
+    EDIRECTION   m_eDrctn;
+    BYTE         m_byIDType;
+    BYTE         m_byMsgType;
+} SFRAMEINFO_BASIC_LIN;
+
 // Basic information needed for filtering when the bus is MCNet.
 typedef struct tagSFRAMEINFO_BASIC_MCNET
 {
@@ -933,6 +943,9 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(xmlDocPtr& pDocPtr)
 //~MVN
 // For CAN
 typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_CAN> SFILTERAPPLIED_CAN;
+
+// For LIN
+typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_LIN> SFILTERAPPLIED_LIN;
 
 // For FlexRay
 typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_FLEXRAY> SFILTERAPPLIED_FLEXRAY;

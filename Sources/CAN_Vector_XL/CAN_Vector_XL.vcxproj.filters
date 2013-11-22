@@ -64,9 +64,6 @@
     <ClInclude Include="..\Application\MultiLanguage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EXTERNAL\vxlapi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_Vector_XL.rc">

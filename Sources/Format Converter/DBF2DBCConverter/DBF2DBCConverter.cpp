@@ -174,7 +174,10 @@ HRESULT CDBF2DBCConverter::ConvertFile(string& chInputFile, string& chOutputFile
 
     if(nRetVal != 0)
     {
-        m_omstrConversionStatus += ouConverter.m_omLogFilePath;
+        if (nRetVal != 4) //CON_RC_FORMAT_ERROR_INFILE
+        {
+            m_omstrConversionStatus += ouConverter.m_omLogFilePath;
+        }
         m_hResult = nRetVal;
     }
 

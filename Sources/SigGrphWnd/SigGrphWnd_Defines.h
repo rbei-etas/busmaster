@@ -26,7 +26,7 @@
 
 #define STR_EMPTY ""
 #define MAX_PROTOCOLS 20
-#define AVAILABLE_PROTOCOLS         4
+#define AVAILABLE_PROTOCOLS         5
 
 // Export Dialog
 

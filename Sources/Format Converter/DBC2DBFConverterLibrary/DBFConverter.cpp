@@ -356,7 +356,7 @@ unsigned int CDBFConverter::Convert(string sCanoeFile, string sCanMonFile)
 
 const char* CDBFConverter::m_pacResultStrings[] =
 {
-    "Conversion completed.",
+    "Conversion completed Successfully",
     "Conversion completed with warnings.",
     "Conversion aborted. Error opening input file.",
     "Conversion aborted. Error creating output file.",
@@ -1197,7 +1197,7 @@ bool CDBFConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //For easy replacement of version Info #define is not added
-    fileOutput<< "[BUSMASTER_VERSION] [1.9.0]"<<endl;
+    fileOutput<< "[BUSMASTER_VERSION] [2.0.0]"<<endl;
 
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;

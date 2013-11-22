@@ -52,6 +52,7 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 sBUSSTATTISTICSDATA CBusStatisticsDlg::sm_sBusSerializationData;
 
 
+
 /* constructor */
 sBUSSTATTISTICSDATA::sBUSSTATTISTICSDATA()
 {
@@ -740,6 +741,10 @@ HRESULT CBusStatisticsDlg::GetConfigData(BYTE* pvDataStream)
 HRESULT CBusStatisticsDlg::GetConfigData(xmlNodePtr pxmlNodePtr)
 {
     const char* omcVarChar ;
+    if(m_omStatList.m_hWnd == NULL)
+    {
+        return true;
+    }
     CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
     int  nColumnCount = pHeaderCtrl->GetItemCount();
     LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));

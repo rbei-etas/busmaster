@@ -111,6 +111,23 @@ private:
     ETYPE_BUS m_eCurrBus;
     BOOL& m_bLogOnConnect;
     UINT m_unChannelCount;
+
+    //arun
+    // START Advanced settings of increment log creation
+    /*CButton m_ChkLogOnMeasurement;
+    CButton m_ChkLogOnSize;
+    CButton m_ChkLogOnTime;
+
+    CRadixEdit m_odLogOnSize;
+    CRadixEdit m_odLogOnTimeHrs;
+    CRadixEdit m_odLogOnTimeMins;
+
+    CRadixEdit m_odMaxLogFilesAllwd;
+
+    void EnablingMaxNumEdit();
+    void EnablingAdvSettings(BOOL);*/
+    // END Advanced settings of increment log creation
+
 private:
     void vEnableDisableControls(BOOL);
     SLOGTRIGGER GetLogTriggerFromGUI(void);
@@ -145,9 +162,23 @@ protected:
     afx_msg void OnSelChangeComb(UINT);
     afx_msg void OnStartStopMsgIDEnChange(UINT);
     afx_msg void OnBnClickedLogFilter(void);
+
+    //arun
+    /*afx_msg void OnBnClickedLogOnMeasurement(void);
+    afx_msg void OnBnClickedLogOnSize(void);
+    afx_msg void OnBnClickedLogOnTime(void);*/
+
     virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 public:
     afx_msg void OnTimer(UINT nIDEvent);
+
+    //arun
+    //afx_msg void OnEnChngLogFileSize();
+    //afx_msg void OnEnChngLogFileTimeHrs();
+    //afx_msg void OnEnChngLogFileTimeMins();
+    //afx_msg void OnEnChngLogFilesAllowed();
+    //afx_msg void OnEnChngLogComment(); //arun
+
 protected:
     CString m_omControlParam;
     CString m_omControlParam2;

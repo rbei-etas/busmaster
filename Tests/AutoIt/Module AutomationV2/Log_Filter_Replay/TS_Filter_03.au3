@@ -1,67 +1,40 @@
-;=== Test Cases/Test Data ===
-; Module			:		Filters
+;=================================================================== Test Cases/Test Data ========================================================================
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Filter_03
 ; TestCases			:		Check for effectiveness
-; Test Strategy		:		Black Box
-; Test Data			:		-
-; === Test Procedure ===
+; Test Data			:
+; Test Setup		:		1. Invoke dialog box for filter configuration
+;~ 							2. Specify a filter range
+;~ 							3. Confirm by pressing OK button
+;~ 							4. Enable display/log filter
+;~ 							5. Send message(s) specified in the range across CAN bus
 
-ConsoleWrite(@CRLF)
+; Expected Results  : 		"Specified message(s) shouldn't be found in the message display window / log file"
+;==========================================================================Test Procedure =========================================================================
+
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_Filter_03.au3****"&@CRLF)
 
-_launchApp()																; Check if the App is open else launch it
+_launchApp()																		; Check if the App is open else launch it
+
+WinActivate($WIN_BUSMASTER)
+Local $MsgWinItemCount=0,$MsgWinFilter=0,$LogFilter=0
+Dim $Msg1[10]=[1,2,3,4,5,6,7,8,9,10], $Msg2[10]=[1,2,3,4,5,6,7,8,9,10],$Msg3[10]=[1,2,3,4,5,6,7,8,9,10],$Msg4[10]=[1,2,3,4,5,6,7,8,9,10]
+Dim $FirstMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13],$SecMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13],$ThirdMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13],$FourthMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13]
 
 if winexists($WIN_BUSMASTER) then
-	_createConfig("cfxFilter_03")												; Create New Configuration
+	_loadConfig("cfxFilter_03")														; Load configuration
 
-	_createCANDB("testFilter_03")												; Create New Database File
-	sleep(1500)
-
-	_DBmessage("n")																; Select 'New Message' from right click menu
+	_AddFilter("Stop","",16,17,"Std","Non RTR","All","All")							; Configure Filter details
 	sleep(1000)
 
-	_addMsgDetails("Msg1",15,8)													; Add the message details
+	_MsgDisplayMenu()																; Open Message Display dialog
 
-	$sigDetlvPos=ControlGetPos($WIN_BUSMASTER,"",$LVC_SigDet_DBeditor)						; Get handle of signal details list view
-	MouseClick("right",$sigDetlvPos[0]+150,$sigDetlvPos[1]+100)				; Right Click on the Signal details list view
-	send("{DOWN}")															; Select 'New Signal' menu
-	sleep(1500)
-	send("{ENTER}")
+	_AddFiltertoMsgDisp()															; Add the filter to Message display
 
-	_addSigDetails("int","Signal1",32,0,0)										; Add the signal details
+	_En_Dis_FilterDisplay()															; Enable filters for message display
 
-	_saveCloseCANDB()
-
-	_AssociateCANDB("testFilter_03.dbf")										; Associate DB
-
-	_hdWareSelectKvaser()														; Select Kvaser Hardware
-	 sleep(1000)
-
-	_TxMsgMenu()																; Open Tx window from the menu
-
-	_AddMsgBlock()																; Add a msg block
-
-	_EnableAutoUpdate()															; Enable autoupdate
-
-	ControlCommand($WIN_BUSMASTER,"",$COMB_MsgID_ConfigTX,"SetCurrentSelection",0)		; Add the DB msgs to the Tx message list
-
-	_AddMsg2TxList()															; Click on Add button
-
-	_CloseTxWindow()															; Close Tx window
-
-	_AppFilterMenu()															; Open Configure Filter dialog
-
-	_AddFilter("Stop","[0x15]Msg1","Std","Non RTR","Tx",1)						; Configure Filter details
-	sleep(1000)
-	_MsgDisplayMenu()															; Open Message Display dialog
-
-	_AddFiltertoMsgDisp()														; Add the filter to Message display
-
-	_Enable_DisableFilterDispMenu()												; Enable filters for message display
-
-	_ConfigureCANLog("Log_Filter_03","System","ALL","Decimal","Append","","","True")	; Configure Logging details
+	_ConfigureCANLog("Log_Filter_03","System","ALL","Hex","Append","","","True")	; Configure Logging details
 
 	_EnableFilterLog()																; Enable Filter during logging
 	sleep(1500)
@@ -76,30 +49,58 @@ if winexists($WIN_BUSMASTER) then
 	Sleep(2000)
 	_DisableJ1939Win()																; If J1939 Msg Window is active then disable it
 
-	_DisableOverwriteMode()															; Disable Overwrite Mode
-	Sleep(2000)
+	$MsgWinItemCount=_GetCANMsgWinItemCount()									; Fetch the item count in the msg window
 
+	if $MsgWinItemCount=4 Then
+		$Msg1=_GetMsgWinCANInfo(0)													; Fetch the first msg info
+		$Msg2=_GetMsgWinCANInfo(1)													; Fetch the second msg info
+		$Msg3=_GetMsgWinCANInfo(2)													; Fetch the third msg info
+		$Msg4=_GetMsgWinCANInfo(3)													; Fetch the fourth msg info
+	EndIf
 
-	$hwd= ControlGetHandle($WIN_BUSMASTER,"",$LSTC_CANMsgWin)										; Fetch the Msg Window Handle
-	$MsgEntryRx=_GUICtrlListView_GetItemTextString($hwd,0)							; Fetch the Msg window first item text
-	$AfterTrim_MsgEntryRx=StringTrimLeft($MsgEntryRx,1)								; Remove the first character
-	$AfterRepl_MsgEntryRx=StringReplace($AfterTrim_MsgEntryRx,"|"," ")				; Replace "|" with " "(Space)
-	ConsoleWrite("$AfterRepl_MsgEntryRx:"&$AfterRepl_MsgEntryRx&@CRLF)
-	$MsgWinTrim=StringMid ($AfterRepl_MsgEntryRx,1,18)								; Extract the first 18 charater from the trimmed string
-	$GetLogFile_Path=_SetOneFolderUp()												; Fetch the Log file path
+	$GetLogFile_Path=_OutputDataPath()												; Fetch the Log file path
 	ConsoleWrite("$GetLogFile_Path:"&$GetLogFile_Path&@CRLF)
-	$Read_LogFirstEnter=FileReadLine ($GetLogFile_Path & "\Log_Filter_03.log",16)		; Read the 16th line from the Log file
-	consolewrite("@error :"&@error&@CRLF)
-	consolewrite("$Read_LogFirstEnter:"&$Read_LogFirstEnter&@CRLF)
-	$LogTrim=StringMid ($Read_LogFirstEnter,1,18)													; Extract the first 18 charater
-	ConsoleWrite("$MsgWinTrim	: "&$MsgWinTrim&@CRLF)
-	ConsoleWrite("$LogTrim	: "&$LogTrim&@CRLF)
+	if _FileCountLines($GetLogFile_Path & "\Log_Filter_03.log")>=19 Then
+		$Read_LogFirstMsg=FileReadLine ($GetLogFile_Path & "\Log_Filter_03.log",16)	; Read the 16th line from the Log file
+		$Read_LogSecMsg=FileReadLine ($GetLogFile_Path & "\Log_Filter_03.log",17)	; Read the 17th line from the Log file
+		$Read_LogThrMsg=FileReadLine ($GetLogFile_Path & "\Log_Filter_03.log",18)	; Read the 18th line from the Log file
+		$Read_LogFourthMsg=FileReadLine ($GetLogFile_Path & "\Log_Filter_03.log",19); Read the 19th line from the Log file
+		consolewrite("@error :"&@error&@CRLF)
+		consolewrite("$Read_LogFirstMsg:"&$Read_LogFirstMsg&@CRLF)
+		consolewrite("$Read_LogSecMsg:"&$Read_LogSecMsg&@CRLF)
+		consolewrite("$Read_LogThrMsg:"&$Read_LogThrMsg&@CRLF)
+		consolewrite("$Read_LogFourthMsg:"&$Read_LogFourthMsg&@CRLF)
+		$FirstMsg=StringSplit($Read_LogFirstMsg," ")
+		$SecMsg=StringSplit($Read_LogSecMsg," ")
+		$ThirdMsg=StringSplit($Read_LogThrMsg," ")
+		$FourthMsg=StringSplit($Read_LogFourthMsg," ")
+	EndIf
 EndIf
 
-if $MsgWinTrim=$LogTrim Then														; Validate the result
-	_ExcelWriteCell($oExcel, "Pass", 8, 2)
+if $Msg1[4]=0x015 and $Msg2[4]=0x015 and $Msg3[4]=0x018 and $Msg4[4]=0x018 Then
+	$MsgWinFilter=1
+EndIf
+if $FirstMsg[4]=0x015 and $SecMsg[4]=0x015 and $ThirdMsg[4]=0x018 and $FourthMsg[4]=0x018 Then
+	$LogFilter=1
+EndIf
+
+consolewrite("$MsgWinFilter:"&$MsgWinFilter&@CRLF)
+consolewrite("$LogFilter:"&$LogFilter&@CRLF)
+consolewrite("$FirstMsg[4]:"&$FirstMsg[4]&@CRLF)
+consolewrite("$SecMsg[4]:"&$SecMsg[4]&@CRLF)
+consolewrite("$ThirdMsg[4]:"&$ThirdMsg[4]&@CRLF)
+consolewrite("$FourthMsg[4]:"&$FourthMsg[4]&@CRLF)
+
+if $MsgWinFilter=1 and $LogFilter=1 Then											; Validate the result
+	_WriteResult("Pass","TS_Filter_03")
 Else
-	_ExcelWriteCell($oExcel, "Fail", 8, 2)
+	_WriteResult("Fail","TS_Filter_03")
+EndIf
+
+$isAppNotRes=_CloseApp()															; Close the app
+
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_Filter_03")
 EndIf
 
 ConsoleWrite("****End : TS_Filter_03.au3****"&@CRLF)

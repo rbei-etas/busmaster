@@ -94,7 +94,7 @@ public:
     //~MVN
     BOOL bIsConfigChanged();
 
-    void vApplicationClosing();
+    void vApplicationClosing(bool bSave);
     void vSaveAllSimSys();
     void vInitailizeSimSysInfo();
     void vSaveSimSys(CString omStrSimSysName);

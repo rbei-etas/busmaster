@@ -109,6 +109,7 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     m_bErrorHandlerOn       = FALSE;
     m_bDLLHandlerOn         = FALSE;
     m_bALLHandler           = FALSE;
+    m_bParallelPortEPP      = TRUE;
     m_bLogHexON             = TRUE;
     m_wLogTimeMode          = eSYSTEM_MODE; // System mode
     m_nReplayMsgType        = eALL_MESSAGE; // default is all messages
@@ -216,6 +217,10 @@ void CFlags::vInitializeFlags()
     m_bLogOverWriteON       = TRUE;         // over write by default
     m_bSendSignalMSg        = FALSE;
     m_bActivatedJ1939       = FALSE; // CAN is default active bus for configuration.
+    m_bFlexRaySendMsg       = FALSE;
+
+    /* Initialize FLEXRAY flags */
+    m_bFlexConnected            = FALSE;
 }
 /******************************************************************************/
 /*  Function Name    :  ~CFlags                                               */
@@ -383,6 +388,10 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bMessageSelected = nValue;
             break;
 
+        case SENDMESGLIN:
+            m_bMessageSelectedLin = nValue;
+            break;
+
         case OVERWRITE:
             if ( m_bOverwriteEnable != nValue )
             {
@@ -403,6 +412,10 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bConnected = nValue;
             break;
 
+        case LIN_CONNECTED:
+            m_bConnectedLin = nValue;
+            break;
+
         case KEY_HANDLER_ON:
             m_bKeyHandlerOn = nValue;
             break;
@@ -421,6 +434,10 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
 
         case CONTROLLER_MODE:
             m_wControllerMode = static_cast<WORD>(nValue);
+            break;
+
+        case PARALLEL_PORT_EPP:
+            m_bParallelPortEPP = nValue;
             break;
 
         case LOGHEXON:
@@ -457,10 +474,26 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
         case REPLAYFILTER:
             m_bReplayFilter = nValue;
             break;
+        case FLEXRAYSENDMSG:
+            m_bFlexRaySendMsg = nValue;
+            break;
         default:
             ASSERT(FALSE); // Invalid flag enum value
     }
     m_omCriticalSec.Unlock();
+}
+VOID CFlags::vSetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag, INT nValue)
+{
+    m_omCriticalSecFlex.Lock();
+    switch( eWhichFlag )
+    {
+        case FLEX_CONNECTED:
+            m_bFlexConnected = nValue;
+            break;
+        default:
+            ASSERT(FALSE); // Invalid flag enum value
+    }
+    m_omCriticalSecFlex.Unlock();
 }
 /******************************************************************************/
 /*  Function Name    :  nGetFlagStatus                                        */
@@ -585,6 +618,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case CONNECTED:
             nRetValue  = m_bConnected;
             break;
+        case LIN_CONNECTED:
+            nRetValue  = m_bConnectedLin;
+            break;
         case KEY_HANDLER_ON:
             nRetValue  = m_bKeyHandlerOn;
             break;
@@ -599,6 +635,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case CONTROLLER_MODE:
             nRetValue  = m_wControllerMode;
+            break;
+        case PARALLEL_PORT_EPP:
+            nRetValue  = m_bParallelPortEPP;
             break;
         case LOGHEXON:
             nRetValue = m_bLogHexON;
@@ -621,11 +660,33 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case REPLAYFILTER:
             nRetValue = (int) m_bReplayFilter;
             break;
+        case FLEXRAYSENDMSG:
+            nRetValue = (int) m_bFlexRaySendMsg;
+            break;
         default:
             // Invalid flag enum value
             ASSERT ( FALSE );
     }
     m_omCriticalSec.Unlock();
+    return nRetValue;
+}
+
+int CFlags::nGetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag)
+{
+    INT nRetValue = -1;
+
+    m_omCriticalSecFlex.Lock();
+
+    switch( eWhichFlag )
+    {
+        case FLEX_CONNECTED:
+            nRetValue = m_bFlexConnected;
+            break;
+        default:
+            // Invalid flag enum value
+            ASSERT ( FALSE );
+    }
+    m_omCriticalSecFlex.Unlock();
 
     return nRetValue;
 }

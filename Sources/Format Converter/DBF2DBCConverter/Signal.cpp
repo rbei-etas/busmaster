@@ -135,6 +135,7 @@ void vReplaceChar(char str[], char chOld, char chNew)
  */
 int CSignal::Format(char* pcLine)
 {
+    bool bError = false;
     char* pcToken;
     char* pcNextToken;
     char acTemp[defCON_MAX_TOKN_LEN],*pcTemp;
@@ -155,8 +156,17 @@ int CSignal::Format(char* pcLine)
     m_ucStartBit = atoi(pcToken);
     ucStartBit = m_ucStartBit + (m_ucWhichByte - 1) * 8;
     //get Data type
+    CString strPrevToken = pcNextToken;
     pcToken = strtok_s(NULL, ",", &pcNextToken);
     m_ucType = *pcToken;
+    // Check if its a valid data type
+    if (m_ucType != 'B' && m_ucType != 'U' && m_ucType != 'I')
+    {
+        pcNextToken = strPrevToken.GetBuffer(1024);
+        strPrevToken.ReleaseBuffer();
+        bError = true;
+    }
+
     // get MAX
     pcToken = strtok_s(NULL, ",", &pcNextToken);
     // now store as double until we parse till SIG_VALTYPE_
@@ -272,6 +282,11 @@ int CSignal::Format(char* pcLine)
     if(m_sNode.length() == 0)
     {
         m_sNode = "Vector__XXX";
+    }
+
+    if (bError == true)
+    {
+        return 0;
     }
 
     return 1;
