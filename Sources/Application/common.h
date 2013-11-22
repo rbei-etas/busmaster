@@ -46,6 +46,8 @@ enum
     eWINID_MSG_WND_GET_BUFFER_DETAILS,
     eWINID_MSG_WND_SET_CONFIG_DATA_XML,
     eWINID_MSG_WND_SET_CONFIG_DATA_J1939_XML,
+    eWINID_MSG_WND_SET_CONFIG_DATA_FLEXRAY_XML,
+    eWINID_MSG_WND_SET_CONFIG_DATA_LIN_XML
 };
 
 #define IDC_LSTB_OUTPUT             300
@@ -54,6 +56,8 @@ enum
 //#define WM_LSTC_DBLCLK              (WM_USER + 59)
 //#define WM_OWNER_DATA_NOTIFICATION  (WM_USER + 60)
 
+
+#define WM_NOTIFICATION_FROM_OTHER  (WM_USER + 34)
 #define WM_RX_COMPLETE              (WM_USER + 61)
 #define WM_TX_COMPLETE              (WM_USER + 62)
 #define WM_HW_STATUS                (WM_USER + 63)
@@ -104,6 +108,7 @@ enum
 #define WM_SHOW_MESSAGE_WINDOW      (WM_USER + 107)
 #define WM_GET_MSG_NAME_FROM_CODE   (WM_USER + 108)
 #define WM_GET_PGN_NAME_FROM_CODE   (WM_USER + 109)
+#define WM_HW_FLEXRAY_NETWORK_STATISTICS    (WM_USER + 110)
 
 
 #define APPLICATION_NAME             "BUSMASTER"
@@ -149,3 +154,15 @@ enum
 #define defSTR_EMPTY_ACTIVE_DATABASE        "There is no active database. Please import database"
 #define defNEW_LINE                         "\n"
 #define DEFAULT_RULE_FILE                   "MCNet_Example.xml"
+
+
+#define FIRST_COL       0       // First column of the List control.
+#define SECOND_COL      1       // Second column of the List control.
+#define THIRD_COL       2       // Third column of the List control.
+#define FOURTH_COL      3
+#define FIFTH_COL       4
+#define SIXTH_COL       5
+#define SEVENTH_COL     6       //Data Bytes
+#define EIGHT_COL       7
+#define NINTH_COL       8
+#define TENTH_COL       9

@@ -112,6 +112,7 @@
     <ClInclude Include="Error.h" />
     <ClInclude Include="ModuleID.h" />
     <ClInclude Include="Struct_CAN.h" />
+    <ClInclude Include="Struct_LIN.h" />
     <ClInclude Include="Utils_macro.h" />
     <ClInclude Include="XMLDefines.h" />
   </ItemGroup>

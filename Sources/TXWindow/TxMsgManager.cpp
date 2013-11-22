@@ -626,7 +626,7 @@ VOID CTxMsgManager::vDeleteTxBlockMemory()
 ******************************************************************************/
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
 UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
-{
+{	
     s_omState.ResetEvent();
     PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA> (pParam);
     if(psTxCanMsg != NULL)
@@ -638,25 +638,13 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
             if (psTxCanMsg->m_psTxMsg[unIndex].m_unMsgID != -1)
             {
                 // Use HIL function to send CAN message
-
                 int nReturn = g_pouDIL_CAN_Interface->DILC_SendMsg(g_dwClientID, psTxCanMsg->m_psTxMsg[unIndex]);
-                if (nReturn != S_OK)
-                {
-                    //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
-                    //            ERROR_DRIVER_API_FAIL, 0);
-                }
-                //SDLL_MSG sTempDllMsg;
-                //memcpy(&sTempDllMsg.sRxMsg,&psTxCanMsg->m_psTxMsg[unIndex],SIZE_STCAN_MSG);
-                //sTempDllMsg.h_DllHandle=NULL;
-                //EnterCriticalSection(&g_CritSectDllBufferRead);
-                //g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
-                //LeaveCriticalSection(&g_CritSectDllBufferRead);
             }
             unIndex++;
         }
         delete [](psTxCanMsg->m_psTxMsg);
         psTxCanMsg->m_psTxMsg = NULL;
-        delete psTxCanMsg;
+		delete psTxCanMsg;
         psTxCanMsg = NULL;
     }
     s_sUtilThread.m_pvThread = NULL;

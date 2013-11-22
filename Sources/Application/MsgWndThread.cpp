@@ -40,6 +40,7 @@ CMsgWndThread::CMsgWndThread()
     g_arrstrBusNames.Add(CString(" - MCNET"));
     g_arrstrBusNames.Add(CString(" - J1939"));
     g_arrstrBusNames.Add(CString(" - FLEXRAY"));
+    g_arrstrBusNames.Add(CString(" - LIN"));
 
     for(short shBusID = CAN; shBusID < BUS_TOTAL; shBusID++)
     {

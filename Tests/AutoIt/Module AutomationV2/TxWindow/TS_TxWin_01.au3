@@ -7,173 +7,165 @@
 ; Test Data:		-
 ; === Test Procedure ===
 
-;~   _launchApp()																			;launching the app
- WinActivate($WIN_BUSMASTER)
-Sleep(1000)
-
-;~ _loadConfig("TestcaseTx7")
- sleep(500)
- _TxWindowOpen()
-
-$timemsglisthWnd=ControlGetHandle ($WIN_BUSMASTER,"",$LVC_MsgBlock_ConfigTX)				; handler for tx wimdow
-    $msg1=_GUICtrlListView_GetItemCount($timemsglisthWnd)										;To get the listview count
- 	ConsoleWrite("$msg1 : " &$msg1 &@CRLF)
-
-For  $i = 0 To $msg1
-																						;~  To delete all the message block
- ControlCommand($WIN_BUSMASTER,"",$BTN_DeleteBlock_ConfigTX,"IsEnabled")
-		; click on delete button
-		ControlClick($WIN_BUSMASTER,"",$BTN_DeleteBlock_ConfigTX)
-
-		;click on confirmation button for deletion
-		ControlClick($WIN_BUSMASTER,"",$BTN_Yes_Busmaster)
-Next
-
- sleep(1000)
- ControlClick($WIN_BUSMASTER,"",$BTN_AddBlock_ConfigTX)									; Adding the Block
- ControlSetText($WIN_BUSMASTER,"",$TXT_MsgID_ConfigTX,11)   							; Enter Non Db msg 11
- ;~ ; Click on Add message button
-  ControlClick($WIN_BUSMASTER, "",$BTN_AddMsg_ConfigTX)
-
-ControlSetText($WIN_BUSMASTER,"",$TXT_MsgID_ConfigTX,12)   							; Enter Non Db msg 12
- ;~ ; Click on Add message button
-  ControlClick($WIN_BUSMASTER, "",$BTN_AddMsg_ConfigTX)
-
-	_ConnectDisconnect()
-
+_launchApp()
+$timeDiff=0
+$timeDiff1=0
+WinActivate($WIN_BUSMASTER)
+Local $Time_cyclic=0
+if winexists($WIN_BUSMASTER) then
+	$timeDiff=0
+	$timeDiff1=0
+    _loadConfig("TS_TxWin_01.cfx")
 	sleep(1000)
-
-	_TransmitMsgsMenu()					; Click on 'Transmit normal blocks' icon for transmiting
+	_TxMsgMenu()																				    ; Select CAN->Transmit->Configure menu
+     sleep(1000)
+ 	_EnableAutoUpdate()                                                                             ;Enable Auto update
+ 	sleep(1000)
+	_DeleteMsgBlock()                                                                               ;Delete message blocks if there are any
 	sleep(1000)
+	_ConfigCANTXBlockDetails("Cyclic","Yes",2000,"No","","","No","")							    ; Configure TX block details
+     sleep(500)
+	_AddMsg2TxList(0)																			    ; Add the first msg to Tx list
+	sleep(500)
+	_AddMsg2TxList(1)
+	sleep(1000)
+	_ConfigCANTXBlockDetails("Cyclic","Yes",2000,"No","","","No","")							    ; Configure TX block details
+	_AddMsg2TxList(2)																			    ; Add the first msg to Tx list
+	sleep(500)
+	_AddMsg2TxList(3)
 
-    _TransmitMsgsMenu()					; Click on 'Transmit normal blocks' icon for disconnecting
-	 sleep(1000)
+	_CloseTxWindow()																			    ; Close Tx window
+	sleep(1000)
+	_ConnectDisconnect()																		    ; Connect the tool
+	_TransmitMsgsMenu()																			    ; Transmit normal blocks
+	Sleep(5000)
+	_ConnectDisconnect()																		    ; Disconnect the tool
+	Sleep(1000)
+	_DisableOverwriteMode()                                                                          ;Disable overwrite mode
+    $rCount=_GetCANMsgWinItemCount()                                                               ;Fetch the no of entries in message window
+	If $rCount>=8 Then
+		$Data1=_GetMsgWinCANInfo(0)                                                                      ;Fetch messages from message window
+	    $Data2=_GetMsgWinCANInfo(1)
+	    $Data3=_GetMsgWinCANInfo(2)
+	    $Data4=_GetMsgWinCANInfo(3)
+		$Data5=_GetMsgWinCANInfo(4)
+	    $Data6=_GetMsgWinCANInfo(5)
+	    $Data7=_GetMsgWinCANInfo(6)
+	    $Data8=_GetMsgWinCANInfo(7)
+	    $Data9=_GetMsgWinCANInfo(8)
 
-$timhWnd=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)								;handler for tx wimdow of J1939
-$msg1=_GUICtrlListView_GetItemTextString($timhWnd, 0)									;selecting 1st elment of tx window in j1939
-ConsoleWrite("$msg1:" &$msg1 & @CRLF)
+		For $i=0 to 7                                                                                    ;Write messages with all information like(time,Channel,ID) to console
+			ConsoleWrite("Data1 :" &$Data1[$i] & @CRLF)
+		    ConsoleWrite("Data2 :" &$Data2[$i] & @CRLF)
+		    ConsoleWrite("Data3 :" &$Data3[$i] & @CRLF)
+		    ConsoleWrite("Data4 :" &$Data4[$i] & @CRLF)
+		    ConsoleWrite("Data5 :" &$Data5[$i] & @CRLF)
+		    ConsoleWrite("Data6 :" &$Data6[$i] & @CRLF)
+		    ConsoleWrite("Data7 :" &$Data7[$i] & @CRLF)
+		    ConsoleWrite("Data8 :" &$Data8[$i] & @CRLF)
+		    ConsoleWrite("Data9 :" &$Data9[$i] & @CRLF)
+	    next
 
-$sTime1=StringSplit($msg1,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime1:" &$sTime1[7] & @CRLF)														;Time of msg 1st sent
+	    $FirstMsgTime=StringSplit($Data1[0],":")                                                          ;Split time as hours minutes and seconds
+	    $FifthMsgTime=StringSplit($Data5[0],":")
 
 
-$timhWnd=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)							;handler for tx wimdow
-$msg2=_GUICtrlListView_GetItemTextString($timhWnd, 1)
-ConsoleWrite("$msg2:" &$msg2 & @CRLF)
 
-$sTime2=StringSplit($msg2,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime2:" &$sTime2[7] & @CRLF)											;Time of msg 2nd sent
-
-
-$timhWnd=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)							;handler for tx wimdow
-$msg3=_GUICtrlListView_GetItemTextString($timhWnd, 2)
-ConsoleWrite("$msg3:" &$msg3 & @CRLF)
-
-$sTime3=StringSplit($msg3,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime3:" &$sTime3[7] & @CRLF)											;Time of msg 3rd sent
-
-$timhWnd=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)							;handler for tx wimdow
-$msg4=_GUICtrlListView_GetItemTextString($timhWnd, 3)
-ConsoleWrite("$msg4:" &$msg4 & @CRLF)
-
-$sTime4=StringSplit($msg4,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime4:" &$sTime4[7] & @CRLF)											;Time of msg 3rd sent
-
-_ConnectDisconnect()
-sleep(1000)
-
-;~ 	For  Disabling Auto update
-	if (ControlCommand($WIN_BUSMASTER,"",$BTN_AutoUpdate_ConfigTX,"IsChecked")=1) Then
-		ControlCommand($WIN_BUSMASTER,"",$BTN_AutoUpdate_ConfigTX,"UnCheck")
+	    If ($FifthMsgTime[3]>$FirstMsgTime[3]) Then                                                       ;Compare first message time and fifth message time in seconds to get time difference or delay
+			$timeDiff=$FifthMsgTime[3]-$FirstMsgTime[3]
+	    ElseIf($FifthMsgTime[3]<$FirstMsgTime[3]) Then
+			If ($FifthMsgTime[3]=00 And $FirstMsgTime[3]=58) Then
+				$timeDiff=2
+		    ElseIf($FifthMsgTime[3]=01 And $FirstMsgTime[3]=59) Then
+				$timeDiff=2
+		    EndIf
+	    EndIf
+		ConsoleWrite("$timeDiff " & $timeDiff & @CRLF)
+	    If $timeDiff=2 Then                                                                                ;Verify for time difference or delay
+			$Time_cyclic=1
+	    Else
+		    $Time_cyclic=0
+	    EndIf
 	EndIf
-    Sleep(500)
 
-If ($sTime1[7]=11 And $sTime2[7]=12 And $sTime3[7]=11 And $sTime4[7]=12) Then
-    $TS1="Pass"
-    ConsoleWrite("Test scenario 1 is Pass")
- Else
-	ConsoleWrite("Test scenario 1 is Fail")
-    $TS1="Fail"
-EndIf
+		$handle=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)					                    ; Get handle of the 'Clear message window'  toolbar
 
+	    _GUICtrlToolbar_ClickIndex($handle,0)											                    ; Click on 'Clear message window'  toolbar
+	     sleep(1000)
+	    _DeleteMsgBlock()
 
-For  $i = 0 To $msg1
-																						;~  TO delete all the message block
- ControlCommand($WIN_BUSMASTER,"",$BTN_DeleteBlock_ConfigTX,"IsEnabled")
-		; click on delete button
-		ControlClick($WIN_BUSMASTER,"",$BTN_DeleteBlock_ConfigTX)
+	_ConfigCANTXBlockDetails("Monoshot","Yes",2000,"No","","","No","")							       ; Configure TX block details
 
-		;click on confirmation button for deletion
-		ControlClick($WIN_BUSMASTER,"",$BTN_Yes_Busmaster)
-Next
+	_AddMsg2TxList(0)																			       ; Add the first msg to Tx list
+	_AddMsg2TxList(1)
 
- sleep(1000)
- ControlClick($WIN_BUSMASTER,"",$AddblckctrlID)													;adding  the message block
+    _ConfigCANTXBlockDetails("Monoshot","Yes",2000,"No","","","No","")							       ; Configure TX block details
 
- ControlClick($WIN_BUSMASTER,"",$txmodemonoshotCtrlID)															;click on monoshot
+	_AddMsg2TxList(2)																			       ; Add the first msg to Tx list
+	_AddMsg2TxList(3)
 
-ControlSetText($WIN_BUSMASTER,"",$TXT_MsgID_ConfigTX,21)   							; Enter Non Db msg 21
- ;~ ; Click on Add message button
-  ControlClick($WIN_BUSMASTER, "",$BTN_AddMsg_ConfigTX)
+	_CloseTxWindow()
 
-ControlSetText($WIN_BUSMASTER,"",$TXT_MsgID_ConfigTX,22)   							; Enter Non Db msg 22
- ;~ ; Click on Add message button
-  ControlClick($WIN_BUSMASTER, "",$BTN_AddMsg_ConfigTX)
- sleep(1000)
-
-  ControlClick($WIN_BUSMASTER, "",$BTN_Update_ConfigTX)											;click on update button
- sleep(1000)
-
-_ConnectDisconnect()
 	sleep(1000)
+	_ConnectDisconnect()																		       ; Connect the tool
 
-_TransmitMsgsMenu()					; Click on 'Transmit normal blocks' icon for transmiting
-	sleep(1000)
+	_TransmitMsgsMenu()																			       ; Transmit normal blocks
+	Sleep(6000)
+	_ConnectDisconnect()
+	_DisableOverwriteMode()
+	$rCount1= _GetCANMsgWinItemCount()
+	If $rCount1>=7 Then
+		$MonoData1=_GetMsgWinCANInfo(0)                                                                     ;Fetch messages from message window
+	    $MonoData2=_GetMsgWinCANInfo(1)
+	    $MonoData3=_GetMsgWinCANInfo(2)
+	    $MonoData4=_GetMsgWinCANInfo(3)
+	    $MonoData5=_GetMsgWinCANInfo(4)
+	    $MonoData6=_GetMsgWinCANInfo(5)
+	    $MonoData7=_GetMsgWinCANInfo(6)
+	    $MonoData8=_GetMsgWinCANInfo(7)
 
-_TransmitMsgsMenu()					; Click on 'Transmit normal blocks' icon for disconnecting
-	 sleep(1000)
 
-$timhWnd1=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)							;handler for tx wimdow
-$msg6=_GUICtrlListView_GetItemTextString($timhWnd1, 0)
-ConsoleWrite("$msg6:" &$msg6 & @CRLF)
+	    For $i=0 to 7                                                                                       ;Write messages with all information like(time,Channel,ID) to console
+			ConsoleWrite("MonoData1 :" &$MonoData1[$i] & @CRLF)
+		    ConsoleWrite("MonoData2 :" &$MonoData2[$i] & @CRLF)
+		    ConsoleWrite("MonoData3 :" &$MonoData3[$i] & @CRLF)
+		    ConsoleWrite("MonoData4 :" &$MonoData4[$i] & @CRLF)
+         next
 
-$sTime5=StringSplit($msg6,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime5:" &$sTime5[7] & @CRLF)											;Time of msg 2nd sent
+		$FirstMsgTime1=StringSplit($MonoData1[0],":")                                                       ;Split time as hours minutes and seconds
+	    $FifthMsgTime1=StringSplit($MonoData5[0],":")
+	    If ($FifthMsgTime1[3]>$FirstMsgTime1[3]) Then                                                       ;Compare first message time and fifth message time in seconds to get time difference or delay
+			$timeDiff1=$FifthMsgTime1[3]-$FirstMsgTime1[3]
+	    ElseIf($FifthMsgTime1[3]<$FirstMsgTime1[3]) Then
+		    If ($FifthMsgTime1[3]=00 And $FirstMsgTime1[3]=58) Then
+				$timeDiff1=2
+		    ElseIf($FifthMsgTime1[3]=01 And $FirstMsgTime1[3]=59) Then
+			    $timeDiff1=2
+		    EndIf
+	    EndIf
+
+	    ConsoleWrite("$timeDiff1 " & $timeDiff1 & @CRLF)
 
 
-$timhWnd1=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)							;handler for tx wimdow
-$msg7=_GUICtrlListView_GetItemTextString($timhWnd1, 1)
-ConsoleWrite("$msg7:" &$msg7 & @CRLF)
+		If $timeDiff1=2 Then                                                                                ;Verify for time difference or delay
+			$time_monoshot=1
+	    Else
+		    $time_monoshot=0
+	    EndIf
+	EndIf
 
-$sTime6=StringSplit($msg7,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime6:" &$sTime6[7] & @CRLF)											;Time of msg 3rd sent
+	If($Time_cyclic=1 And $time_monoshot=1) Then
+		_WriteResult("Pass","TS_Tx_01")
+	Else
+		_WriteResult("Fail","TS_Tx_01")
+	EndIf
 
-$timhWnd1=ControlGetHandle ($WIN_BUSMASTER,"",$LSTC_CANMsgWinInst4)							;handler for tx wimdow
-$msg8=_GUICtrlListView_GetItemTextString($timhWnd1, 2)
-ConsoleWrite("$msg8:" &$msg8 & @CRLF)
+EndIf
+	$isAppNotRes=_CloseApp()														; Close the app
 
-$sTime7=StringSplit($msg8,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime7:" &$sTime7[7] & @CRLF)											;Time of msg 3rd sent
-
-;~ 	For  Enabling Auto update
-	_EnableAutoUpdate()
-    Sleep(500)
-
-_ConnectDisconnect()
-sleep(1000)
-
-If ($sTime5[7]=21 And $sTime6[7]=22 And $sTime7[7]=0)  Then
-     ConsoleWrite("Test scenario 2 is Pass")
-    $TS2="Pass"
- Else
-		ConsoleWrite("Test scenario 2 is Fail")
-    $TS2="Fail"
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_Tx_01")
 EndIf
 
-If $TS1="Pass" And $TS2="Pass" Then
-
-	_ExcelWriteCell($oExcel, "Pass", 6, 2)
-else
-	 _ExcelWriteCell($oExcel,"Fail",6,2)
-
-EndIf
+ConsoleWrite("****End : TS_TxWin_01.au3****"&@CRLF)
+ConsoleWrite(@CRLF)

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>FlexRay Simulation in BUSMASTER</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>FlexRay Transmit Window</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>BUSMASTER can be used to Transmit or Receive (Monitor) the FlexRay messages.The following steps are required to Configure the BUSMASTER for Transmit\Receive the FlexRay Messages.</p>
+    <p><b>1. Cluster Configuration:</b> </p>
+    <p>To Transmit\Receive the FlexRay Messages a proper FIBEX File has to Imported in BUSMASTER.Refer <b>Cluster Configuration</b> Section for more Information.</p>
+    <p/>
+    <p><b>2. <b>Controller (Driver) Selection:</b></b></p>
+    <p>BUSMASTER can be connected to Physical FlexRay Network using FlexRay Controller.Refer <b>Controller Selection</b> section for more Information.</p>
+    <p/>
+    <p><b>3. Connect to Network:</b></p>
+    <p>Once the Cluster &amp; Controllers are properly configured BUSMASTER can be connected to Network using <b>FlexRay-&gt;Connect</b>. menu or the FlexRay Connect Tool bar Button as shown in following figure.</p>
+    <p/>
+    <p><image href="../images/FlexRay_Connect.bmp"/></p>
+    <p/>
+    <p><b>4. Transmit Messages:</b></p>
+    <p>FlexRay Messages Can be transmitted ovr FlexRay network using FlexRay Tx Window.Refer <b>FlexRay Transmission Window</b> Section for more information.</p>
+    <p/>
+    <p><b>5. Monitoring Messages:</b></p>
+    <p>BUSMASTER Message Window can be used to monitor the FlexRay messages of FlexRay Network.Refer <b>FlexRay Message Window</b> section for more information.</p>
+  </body>
+</topic>

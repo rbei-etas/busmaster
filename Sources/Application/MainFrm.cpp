@@ -23,7 +23,9 @@
  */
 #include "stdafx.h"             // Standard include header
 #include "include/Struct_CAN.h"
+#include "include/Struct_LIN.h"
 #include "Include/CAN_Error_Defs.h"
+#include "Include/LIN_Error_Defs.h"
 #include "BUSMASTER.h"        // App class definition file
 #include "Utility\UtilFunctions.h"
 
@@ -63,10 +65,13 @@
 #include "Utility/WaitIndicator.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
+#include "DIL_Interface/BaseDIL_LIN.h"
 #include "DIL_Interface/BaseDIL_J1939.h"
+#include "DIL_Interface/BaseDIL_FLEXRAY.h"
 #include "include/ModuleID.h"
 #include "FrameProcessor/FrameProcessor_extern.h"
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
+#include "FrameProcessor/BaseFrameProcessor_LIN.h"
 #include "FrameProcessor/BaseFrameProcessor_J1939.h"
 #include "ConfigMsgLogDlg.h"
 #include "Replay/Replay_Extern.h"
@@ -85,8 +90,13 @@
 #include "J1939TimeOutCfg.h"
 #include "include/XMLDefines.h"
 #include "Utility\MultiLanguageSupport.h"
-
+#include "FlexRayDatabaseDissociateDlg.h"
+#include "ConfigMsgDispPropPg.h"
+#include "FibexConfigurationDlg.h"
 #define MSG_GET_CONFIGPATH  10000
+#ifndef _FLEXRAY_
+#define _FLEXRAY_
+#endif
 
 // For bus statistics information
 extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
@@ -95,6 +105,7 @@ extern CCANMonitorApp theApp;       // Application object
 //extern DWORD GUI_dwThread_MsgDisp;  // GUI display thread
 //extern HWND GUI_hDisplayWindow;     // Message window handle
 CCANBufFSE g_ouCANBufFSE;    //Global CAN buffer
+CLINBufFSE g_ouLINBufFSE;    //Global LIN buffer
 
 //const BYTE MSGBUF_ADD = 0x1;
 //const BYTE MSGBUF_CLEAR = 0x0;
@@ -111,7 +122,9 @@ extern BOOL g_bStopDLLHandlers;
 extern BOOL g_bStopMsgHandlers;
 
 extern int nWriteToCAN(STCAN_MSG sTxMsg);
+extern int nWriteToLIN(STLIN_MSG sTxMsg);
 extern int gnSendCANMsg(STCAN_MSG sTxMsg,HMODULE hModule);
+extern int gnSendLINMsg(STLIN_MSG sTxMsg,HMODULE hModule);
 extern BOOL gbMsgTransmissionOnOff(BOOL bOnOff,HMODULE hModule);
 //BOOL g_bStopMsgBlockTx    ;
 BOOL g_bStopSelectedMsgTx ;
@@ -129,7 +142,14 @@ extern UINT g_unWriteDllMsg;
 
 static CBaseFrameProcessor_CAN* sg_pouFrameProcCAN = NULL; // CAN logger interface
 CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL; // CAN DIL interface
+CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface = NULL; // FLEXRAY DIL interface
 static CBaseSignalWatch_CAN* sg_pouSWInterface[BUS_TOTAL] = {NULL}; // SIGNAL WATCH INTERFACE
+
+static CBaseFrameProcessor_LIN* sg_pouFrameProcLIN = NULL; // CAN logger interface
+CBaseDIL_LIN* g_pouDIL_LIN_Interface = NULL; // LIN DIL interface
+
+//static bool m_bLinDILChanging;
+//static bool m_shLINDriverId;
 
 DWORD g_dwClientID = 0;
 //extern CRITICAL_SECTION g_CritSectDllBufferRead;
@@ -140,10 +160,17 @@ HANDLE g_hSemaphore = NULL;
 static CBaseFrameProcessor_J1939* sg_pouIJ1939Logger = NULL; // Logger interface
 static CBaseDILI_J1939* sg_pouIJ1939DIL = NULL; // DIL interface
 
+// Related to LIN
+static CBaseFrameProcessor_LIN* sg_pouLinLogger = NULL; // Logger interface
+static CBaseDIL_LIN* sg_pouLinDIL = NULL; // DIL interface
 
 //J1939 Database editor window
 BOOL CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
 SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = NULL;
+
+//LIN Database editor window
+//BOOL CMsgSignalDBWnd::sm_bValidLinWnd = FALSE;
+
 
 #define CREATE_TOOLBAR(pParentWnd, ToolBarObj, ID, Title) {if (nCreateToolbar(pParentWnd, ToolBarObj, ID, Title) != 0){return -1;}}
 #define defCONFIGFILTER         _T("BUSMASTER Configuration files(*.cfx)|*.cfx||")
@@ -154,6 +181,8 @@ SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = NULL;
 // PTV [1.6.4]
 #define TIMER_REFRESH_LOG_STATUS 0x101
 #define TIMER_REFRESH_J1939_LOG_STATUS 0x102
+#define TIMER_REFRESH_FLEXRAY_STATUS   0X103
+#define TIMER_REFRESH_LIN_LOG_STATUS 0x103
 // PTV [1.6.4] END
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define STSBAR_REFRESH_TIME_PERIOD_LOG  1000  // in milliseconds
@@ -174,6 +203,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_CLOSE, OnCloseDatabase)
     ON_COMMAND(IDM_FILE_IMPORT_DATABASE, OnImportDatabase)
     ON_COMMAND(IDM_CONFIGURE_BAUDRATE, OnConfigBaudrate)
+    ON_COMMAND(IDM_CONFIGURE_LIN_CHANNEL, OnConfigLinChannel)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_NEW, OnNewDatabase)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_SAVEAS, OnConfigDatabaseSaveAs)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_SAVE, OnConfigDatabaseSave)
@@ -213,6 +243,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnUpdateExecuteMessagehandlersButton)
     ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnExecuteMessagehandlersButton)
     ON_COMMAND(IDR_TOOL_SENDMSG, OnSendMessage)
+    ON_COMMAND(IDR_TOOL_FLEX_SENDMSG, OnSendFlexRayMessage)
+    ON_COMMAND(ID_TRANSMIT_ACTIVATE_LIN, OnSendMessageLIN)
     ON_COMMAND(IDM_FILTER_LOGFILTEROFF_BUTTON, OnLogFilter)
     //    ON_COMMAND(IDM_FILTER_LOGFILTEROFF_BUTTON, OnLogFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF_BUTTON, OnUpdateLogFilter)
@@ -241,8 +273,13 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_WM_ENDSESSION()
     ON_COMMAND(IDM_CFGN_SEND_MSGS, OnCfgSendMsgs)
     ON_UPDATE_COMMAND_UI(IDR_TOOL_SENDMSG, OnUpdateToolSendmsg)
+    ON_UPDATE_COMMAND_UI(IDR_TOOL_FLEX_SENDMSG, OnUpdateToolFlexRaySendmsg)
     ON_COMMAND(IDM_FILE_CONNECT, OnFileConnect)
     ON_UPDATE_COMMAND_UI(IDM_FILE_CONNECT, OnUpdateFileConnect)
+    ON_COMMAND(ID_FLEXRAY_CONNECT, OnFlexRayConnect)
+    ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CONNECT, OnUpdateFlexRayConnect)
+    ON_COMMAND(IDM_LIN_CONNECT, OnLINConnect)
+    ON_UPDATE_COMMAND_UI(IDM_LIN_CONNECT, OnUpdateLINConnect)
     ON_COMMAND(IDM_EXECUTE_KEYHANDLERS, OnExecuteKeyhandlers)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_KEYHANDLERS, OnUpdateExecuteKeyhandlers)
     ON_COMMAND(IDM_CONFIG_LOAD, OnLoadConfigFile)
@@ -262,8 +299,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_CONFIGURE_ACTIVE, OnConfigureModeActive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_ACTIVE, OnUpdateConfigureModeActive)
     ON_WM_TIMER()
+
     ON_COMMAND(IDM_NETWORK_STATISTICS_WND, OnNetworkStatisticsWnd)
     ON_UPDATE_COMMAND_UI(IDM_NETWORK_STATISTICS_WND, OnUpdateNetworkStatisticsWnd)
+
     ON_COMMAND(IDM_CONFIGURE_PASSIVE, OnConfigurePassive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_PASSIVE, OnUpdateConfigurePassive)
     ON_COMMAND(IDM_TRACE_WND, OnTraceWnd)
@@ -287,6 +326,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL, OnUpdateDllLoadAll)
     ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnSelectDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnUpdateSelectDriver)
+    ON_COMMAND_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnSelectFLEXRAYDriver)
+    ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnUpdateSelectFLEXRAYDriver)
+    ON_COMMAND_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + DIL_LIN_TOTAL, OnSelectLINDriver)
+    ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + DIL_LIN_TOTAL, OnUpdateSelectLINDriver)
     //}}AFX_MSG_MAP
     // Global help commands
     ON_COMMAND(ID_HELP_FINDER, CMDIFrameWnd::OnHelpFinder)
@@ -307,8 +350,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
-    ON_COMMAND(IDM_SAVE_IMPORT_J1939, OnSaveImportJ1939Database)
-    ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT_J1939, OnUpdateSaveImportJ1939Database)
+    //    ON_COMMAND(IDM_SAVE_IMPORT_J1939, OnSaveImportJ1939Database)
+    //    ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT_J1939, OnUpdateSaveImportJ1939Database)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
     ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)
@@ -342,6 +385,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_ACTION_J1939_LOG, OnUpdateActionJ1939Log)
     ON_COMMAND(ID_TOOLBAR_J1939, OnToolbarJ1939)
     ON_UPDATE_COMMAND_UI(ID_TOOLBAR_J1939, OnUpdateToolbarJ1939)
+    ON_COMMAND(ID_FLEXRAY_TOOLBAR, OnToolbarFlexRay)
+    ON_UPDATE_COMMAND_UI(ID_FLEXRAY_TOOLBAR, OnUpdateToolbarFlexRay)
+    ON_COMMAND(ID_CONFIGURATION_TOOLBAR, OnToolbarConfiguration)
+    ON_UPDATE_COMMAND_UI(ID_CONFIGURATION_TOOLBAR, OnUpdateToolbarConfiguration)
+    ON_COMMAND(ID_TOOLBAR_LIN, OnToolbarLIN)
+    ON_UPDATE_COMMAND_UI(ID_TOOLBAR_LIN, OnUpdateToolbarLIN)
     ON_COMMAND(33077, OnJ1939ConfigureTimeouts)
     ON_UPDATE_COMMAND_UI(33077, OnUpdateJ1939Timeouts)
     ON_COMMAND(33079, OnJ1939DBNew)
@@ -350,9 +399,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(ID_DATABASE_CLOSE, OnJ1939DBClose)
     ON_UPDATE_COMMAND_UI(ID_DATABASE_CLOSE, OnUpdateJ1939DBClose)
     ON_COMMAND(ID_DATABASE_SAVE, OnJ1939DBSave)
-    ON_COMMAND(IDM_CONFIGURE_J1939_DB_SAVEAS, OnJ1939DBSaveAs)
+    //    ON_COMMAND(IDM_CONFIGURE_J1939_DB_SAVEAS, OnJ1939DBSaveAs)
     ON_UPDATE_COMMAND_UI(ID_DATABASE_SAVE, OnUpdateJ1939DBSave)
-    ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_J1939_DB_SAVEAS, OnUpdateJ1939DBSaveAs)
+    //    ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_J1939_DB_SAVEAS, OnUpdateJ1939DBSaveAs)
     ON_COMMAND(33082, OnJ1939DBAssociate)
     ON_COMMAND(33083, OnJ1939DBDissociate)
     ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
@@ -383,8 +432,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(ID_SIGNALWATCH_SHOWWINDOW, OnJ1939SignalwatchShow)
     ON_UPDATE_COMMAND_UI(ID_SIGNALWATCH_SHOWWINDOW, OnUpdateJ1939SignalwatchShow)
     ON_COMMAND(ID_CONFIGURE_MESSAGEDISPLAY_J1939, OnConfigureMessagedisplayJ1939)
+    // ON_COMMAND(ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY, OnConfigureMessageDisplayFlexRay)
     ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnShowHideMessageWindow)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)
+    ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_FLEXRAY, OnShowHideMessageWindow)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_FLEXRAY, OnUpdateShowHideMessageWindow)
+
     //ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)
     ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
     ON_UPDATE_COMMAND_UI(ID_TB_CANDATABASE, OnUpdateToolbarCanDatabase)
@@ -399,6 +452,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
     ON_MESSAGE(MSG_GET_CONFIGPATH, onGetConfigPath)
     ON_MESSAGE(WM_J1939_TX_CLOSE_MSG, onJ1939TxWndClose)
+
+    ON_COMMAND(IDM_FLEX_CFGN_SEND_MSGS, OnFlexRayTxWindow)             //open flexray window
+    ON_COMMAND(ID_FLEXRAY_CLUSTER_CONFIG, OnFlexRayDBAssociate)               //open flexray DB association
+    ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CLUSTER_CONFIG, OnUpdateFlexrayAssociate)
+    ON_COMMAND(ID_FLEXRAY_DB_DISOCIATE, OnFlexRayDBDisociate)               //open flexray DB association
+
+    //LIN MESSAGE MAPPING
+    ON_UPDATE_COMMAND_UI(ID_HARDWAREINTERFACE_CUBASLIN, OnConfigBaudrateLIN)
+    //ON_COMMAND(ID_TRANSMIT_ACTIVATE_LIN, OnActivateLIN)
+    ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
 
 END_MESSAGE_MAP()
 
@@ -415,6 +478,7 @@ const int INDEX_DB_NAME = 0x1;
 const int INDEX_CHANNELS = 0x4;
 const int INDEX_J1939_LOG_ICON = 0x3;
 const int INDEX_CAN_LOG_ICON = 0x2;
+const int INDEX_LIN_LOG_ICON = 0x5;
 
 CAppServices_Impl sg_ouAppServiceObj;
 
@@ -458,6 +522,7 @@ CAppServices_Impl sg_ouAppServiceObj;
 CMainFrame::CMainFrame()
 {
     GetCurrentDirectory(MAX_PATH, theApp.m_acApplicationDirectory);// Get application directory
+    m_nMaxFlexChannels = 1;
     m_podMsgSgWnd                   = NULL;
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
@@ -480,6 +545,7 @@ CMainFrame::CMainFrame()
     m_unReplayTimeDelay             = 50;
     m_unCycleTimeDelay              = 0;
     m_unTimerSB                     = 0;
+    m_unFlexRayNSTimer              = 0;
     m_omStrPrevLoadedDll            = "";
     m_bIsSendingMsg                 = FALSE;
     m_bMessageName                  = TRUE;
@@ -503,6 +569,7 @@ CMainFrame::CMainFrame()
     // Send toolbar button is not enabled.
     //m_bEnableSendToolbarButton = FALSE;
     m_bIsStatWndCreated = FALSE;
+    m_bIsFlexRayStatWndCreated == FALSE;
     m_bNotificWndVisible         = FALSE;
     // Initially the controller will be in error active mode.
     for( UINT unIndex = 0; unIndex < defNO_OF_CHANNELS; unIndex++)
@@ -515,6 +582,7 @@ CMainFrame::CMainFrame()
     m_omStrSavedConfigFile = STR_EMPTY;
     // PTV [1.6.4]
     m_unTimerSBLog = NULL;
+
     m_unJ1939TimerSBLog = NULL;
 
     // Graph related pointers
@@ -537,6 +605,7 @@ CMainFrame::CMainFrame()
 
     // Init Bus Statistics pointer
     m_podBusStatistics = NULL;
+    m_podFlexRayBusStatistics = NULL;
     // Initialise Tx Msg Window Pointer
     //m_pomTxMsgChildWindow = NULL;
     //Initialize notific window position
@@ -557,6 +626,8 @@ CMainFrame::CMainFrame()
     m_bInterPretMsg = FALSE;
     m_pouMsgInterpretBuffer = NULL;
     m_objTxHandler.vLoadTx_DLL();
+    m_objFlexTxHandler.vLoadTx_DLL();
+    m_objTxHandlerLin.vLoadTx_DLL();
     m_objSigGrphHandler.vLoadSigGrph_DLL();
     m_pouMsgInterpretBuffer = m_objSigGrphHandler.vGetGraphBuffer();
 
@@ -566,6 +637,7 @@ CMainFrame::CMainFrame()
     m_sMsgInterpretPlacement.length = 0;
     //Driver selection popup menu updation
     m_pDILSubMenu = NULL;
+    m_pFlxDILSubMenu = NULL;
     m_dwDriverId = DRIVER_CAN_STUB;
     m_pouTxMsgWndJ1939 = NULL;
     m_sJ1939ClientParam.m_byAddress = ADDRESS_NULL;
@@ -575,6 +647,7 @@ CMainFrame::CMainFrame()
     m_podMsgSgWndJ1939 = NULL;
     m_pouMsgSigJ1939   = NULL;
     m_pouActiveDbJ1939 = NULL;
+    m_pouMsgSigFLEXRAY = NULL;
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         m_abLogOnConnect[i] = FALSE;
@@ -604,6 +677,24 @@ CMainFrame::CMainFrame()
         m_bytIconSize       = 32;
         m_bUseAdvancedUILib = true;
     }
+    /* Set the associated FIBEX Database/configuration files list */
+    m_acFlexDBConfigInfo.m_nFilesCount = 0;
+    m_acFlexDBConfigInfo.m_nSelectedIndex = 0;
+
+    /* Set the FLEXRAY Monitor client ID to NULL */
+    m_dwFLEXClientID = NULL;
+    m_bFRConfigModified = false;
+    /* Set default FlexRay DIL selection to NONE */
+    m_shFLEXRAYDriverId = DAL_NONE;
+
+    /* Initialize FlexRay DB object */
+    m_pouMsgSigFLEXRAY = new CMsgSignal(sg_asDbParams[FLEXRAY], FALSE);
+
+    m_bFlxDILChanging = FALSE;
+
+    m_dwLINDriverId = DAL_NONE;
+
+
 }
 /*******************************************************************************
  Function Name    : ~CMainFrame
@@ -624,11 +715,16 @@ CMainFrame::~CMainFrame()
 {
 
     m_objTxHandler.vDeleteTxBlockMemory();
+    m_objFlexTxHandler.vDeleteTxBlockMemory();
+    m_objTxHandlerLin.vDeleteTxBlockMemory();
 
     vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
     vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
 
+    m_pDILSubMenu->DestroyMenu();
     DELETE_PTR(m_pDILSubMenu);
+    m_pFlxDILSubMenu->DestroyMenu();
+    DELETE_PTR(m_pFlxDILSubMenu);
     DELETE_PTR(m_podMsgWndThread);
     if (m_pouMsgSigJ1939 != NULL)
     {
@@ -860,6 +956,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T(_("Configure")));
     CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T(_("J1939")));
     CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T(_("CAN Database")));
+    CREATE_TOOLBAR(this, m_wndToolbarFlexRay, IDB_TLB_FLEXRAY, _T(_("FlexRay")));
+    CREATE_TOOLBAR(this, m_wndToolbarConfiguration, IDR_CONFIG_TOOLBAR, _T(_("Configuration")));
+    CREATE_TOOLBAR(this, m_wndToolbarLIN, IDB_LIN_IMG, _T(_("LIN")));
 
     /* Set toolbar button size to small to fit default icons*/
     if ( !m_bUseAdvancedUILib )
@@ -874,6 +973,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         vSetToolbarButtonSize( m_wndToolbarConfig,      objSize);
         vSetToolbarButtonSize( m_wndToolbarCANDB,       objSize);
         vSetToolbarButtonSize( m_wndToolbarJ1939,       objSize);
+        vSetToolbarButtonSize( m_wndToolbarFlexRay,       objSize);
+        vSetToolbarButtonSize( m_wndToolbarConfiguration,       objSize);
+        vSetToolbarButtonSize( m_wndToolbarLIN,       objSize);
     }
 
     m_wndToolbarNodeSimul.bLoadCNVTCToolBar(m_bytIconSize, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
@@ -882,6 +984,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_wndToolbarConfig.bLoadCNVTCToolBar(m_bytIconSize, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
     m_wndToolbarCANDB.bLoadCNVTCToolBar(m_bytIconSize, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
     m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
+    m_wndToolbarFlexRay.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_FLEXRAY,IDB_TLB_FLEXRAY_HOT, IDB_TLB_FLEXRAY_DISABLED);
+    m_wndToolbarConfiguration.bLoadCNVTCToolBar(m_bytIconSize, IDR_CONFIG_TOOLBAR,IDR_CONFIG_TOOLBAR_HOT, IDR_CONFIG_TOOLBAR_DISABLED);
+    m_wndToolbarLIN.bLoadCNVTCToolBar(m_bytIconSize, IDB_LIN_IMG,IDB_LIN_IMGHOT, IDB_LIN_IMGDISABLED);
 
     EnableDocking(CBRS_ALIGN_ANY);
 
@@ -1017,6 +1122,19 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     }
     m_nDILCount = g_pouDIL_CAN_Interface->DILC_GetDILList(false, &m_ouList);
 
+    //Update FlexRay DIL List
+    if (g_pouDIL_FLEXRAY_Interface == NULL)
+    {
+        DIL_GetInterface(FLEXRAY, (void**)&g_pouDIL_FLEXRAY_Interface);
+    }
+    m_nFlexRayDILCount = g_pouDIL_FLEXRAY_Interface->DILF_GetDILList(false, &m_ouFlexRayList);
+
+    if (g_pouDIL_LIN_Interface == NULL)
+    {
+        DIL_GetInterface(LIN, (void**)&g_pouDIL_LIN_Interface);
+    }
+    m_nDILCountLin = g_pouDIL_LIN_Interface->DILL_GetDILList(false, &m_ouListLin);
+
     // Do initialisation for the waveform transmission object
     m_ouWaveTransmitter.vDoInitialisation(&m_objWaveformDataHandler,
                                           g_pouDIL_CAN_Interface, &(theApp.m_pouMsgSignal));
@@ -1047,12 +1165,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
  ******************************************************************************/
 bool CMainFrame::bSetDefaultToolbarPosition()
 {
-    DockControlBar(&m_wndToolBar, AFX_IDW_DOCKBAR_TOP);             //set the first toolbar at the top
+    DockControlBar(&m_wndToolbarConfiguration, AFX_IDW_DOCKBAR_TOP);             //set the first toolbar at the top
+    DockControlBarLeftOf(&m_wndToolBar,&m_wndToolbarConfiguration);        //align others next to it
     DockControlBarLeftOf(&m_wndToolbarMsgWnd,&m_wndToolBar);        //align others next to it
     DockControlBarLeftOf( &m_wndToolbarCANDB, &m_wndToolbarMsgWnd);
     DockControlBarLeftOf( &m_wndToolbarNodeSimul, &m_wndToolbarCANDB);
+    DockControlBarLeftOf( &m_wndToolbarFlexRay,&m_wndToolbarNodeSimul);
     DockControlBar(&m_wndToolbarJ1939,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
     DockControlBarLeftOf( &m_wndToolbarConfig, &m_wndToolbarJ1939); //aign the next toolbar below it
+    DockControlBar(&m_wndToolbarLIN,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
+    DockControlBarLeftOf( &m_wndToolbarConfig, &m_wndToolbarLIN); //aign the next toolbar below it
     return true;
 }
 
@@ -2205,13 +2327,26 @@ void CMainFrame::OnConfigBaudrate()
     //update baudrate details in global statistics buffer
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
-#ifdef CAN_FD_VERSION
+#ifdef BOA_FD_VERSION
         GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
 #else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
 #endif
     }
 
+}
+
+void CMainFrame::OnConfigLinChannel()
+{
+    PCHAR pInitData = (PCHAR)m_asControllerDetails;
+    int nSize = sizeof(SCONTROLLER_DETAILS_LIN) * defNO_OF_LIN_CHANNELS;
+    if (g_pouDIL_LIN_Interface->DILL_DisplayConfigDlg(m_asControllerDetails, nSize) == S_OK)
+    {
+        //Set Controller to ConfigDetails
+        //memcpy(m_asControllerDetails, pInitData, nSize);
+    }
+    //Update hardware info in status bar
+    vUpdateHWStatusInfo();
 }
 
 /******************************************************************************/
@@ -3699,7 +3834,7 @@ void CMainFrame::OnLogFilter()
             }
         }
         /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 7;
+        BYTE bytTbrItemIndex = 5;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
     }
 }
@@ -3718,7 +3853,7 @@ void CMainFrame::ApplyReplayFilter()
         vREP_EnableFilters(bReplayFilterStatus);
 
         /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 9;
+        BYTE bytTbrItemIndex = 7;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
     }
 }
@@ -3742,8 +3877,8 @@ void CMainFrame::ApplyLogFilter()
                 sg_pouFrameProcCAN->FPC_EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 7;
+        /* Modify filter icon accordi5ngly in Main toolbar*/
+        BYTE bytTbrItemIndex = 5;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
         // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
     }
@@ -3877,7 +4012,7 @@ void CMainFrame::OnSelectMessage()
                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, NULL);
 
                 /* Modify filter icon accordingly in Main toolbar*/
-                BYTE bytTbrItemIndex = 8;
+                BYTE bytTbrItemIndex = 6;
                 vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, TRUE, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
             }
         }
@@ -4073,6 +4208,25 @@ void CMainFrame::OnSendMessage()
     }
 }
 
+void CMainFrame::OnSendFlexRayMessage()
+{
+    bool        bConnected = false;
+    if ( !theApp.pouGetFlagsPtr()->nGetFlagStatus( FLEXRAYSENDMSG ) )
+    {
+        m_objFlexTxHandler.vStartTransmission(0);
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( FLEXRAYSENDMSG, TRUE );
+        bConnected = true;
+    }
+    else
+    {
+        m_objFlexTxHandler.vStopTransmission(0);
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( FLEXRAYSENDMSG, FALSE );
+        bConnected = false;
+    }
+    CToolBar* pToolBar = &m_wndToolbarFlexRay;
+    CToolBarCtrl& omRefToolBarCtrl = ((pToolBar)->GetToolBarCtrl());
+    omRefToolBarCtrl.PressButton(IDR_TOOL_FLEX_SENDMSG, bConnected);
+}
 /******************************************************************************
     Function Name    :  podGetFunctionViewPtr
 
@@ -4839,6 +4993,7 @@ void CMainFrame::OnClose()
 {
     CString oCfgFilename;
     vGetLoadedCfgFileName(oCfgFilename);
+    bool bSaveConfig = true; // Used for node simuation closure operations
     // get the name of the loaded config file only if no filename has
     // been specified until now..
     if(oCfgFilename.IsEmpty() == TRUE && bIsConfigurationModified())
@@ -4870,11 +5025,16 @@ void CMainFrame::OnClose()
                     {
                         bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
+                    bSaveConfig = true;
                 }
             }
             else if ( unMsgRetVal == IDCANCEL )
             {
                 return;
+            }
+            else
+            {
+                bSaveConfig = false;
             }
         }
     }
@@ -4900,6 +5060,10 @@ void CMainFrame::OnClose()
                 {
                     return;
                 }
+                else
+                {
+                    bSaveConfig = false;
+                }
             }
         }
     }
@@ -4910,11 +5074,13 @@ void CMainFrame::OnClose()
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
     OnDllUnload(); //Unload all the loaded dlls
-    GetICANNodeSim()->NS_SetSimSysConfigData(NULL, 0); // Reset SimSysConfig
+    //GetICANNodeSim()->NS_SetSimSysConfigData(NULL, 0); // Reset SimSysConfig
+    GetICANNodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
 
     //Unload J1939 Node sim dll
     OnDllUnloadJ1939();
-    GetIJ1939NodeSim()->NS_SetSimSysConfigData(NULL, 0);
+    //GetIJ1939NodeSim()->NS_SetSimSysConfigData(NULL, 0);
+    GetIJ1939NodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
 
     if(m_unTimerSB != 0)
     {
@@ -4949,7 +5115,7 @@ void CMainFrame::OnClose()
     }*/
     //SGW Code commented by Arun 21-10-2010
     m_bIsStatWndCreated = FALSE;
-
+    m_bIsFlexRayStatWndCreated == FALSE;
     // Get appropriate data structure
     // Call Close Database to take app. action
     CFlags* pFlags = NULL;
@@ -4976,13 +5142,22 @@ void CMainFrame::OnClose()
     }
 
     // Stop J1939 Logging if it is enabled
-    vJ1939StartStopLogging();
+    if (NULL != sg_pouIJ1939Logger)
+    {
+        sg_pouIJ1939Logger->FPJ1_EnableLogging(FALSE);
+    }
 
     if (g_pouDIL_CAN_Interface != NULL)
     {
         g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
     }
 
+    if ( g_pouDIL_FLEXRAY_Interface != NULL )
+    {
+        g_pouDIL_FLEXRAY_Interface->DILF_PerformClosureOperations();
+    }
+
+    //OnFlexRayConnect();
     vCloseFormatconverters();
 
     SaveBarState(PROFILE_CAN_MONITOR);
@@ -5582,10 +5757,16 @@ BOOL CMainFrame::bCreateMsgWindow()
                                             0, NULL);
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
 
+            //LIN Message Window
+            m_podMsgWndThread->CreateMsgWnd(m_hWnd, LIN,
+                                            0, NULL);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+
             //J1939 Message Window
             m_podMsgWndThread->CreateMsgWnd(m_hWnd, J1939,
                                             0, NULL);
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+            bCreateFlexRayMsgWindow();
         }
         else
         {
@@ -5595,6 +5776,7 @@ BOOL CMainFrame::bCreateMsgWindow()
     else
     {
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)CAN);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
     }
 
@@ -5636,6 +5818,23 @@ void CMainFrame::OnHex_DecButon()
             SET_NUM_HEX(byGetDispFlag);
             theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
         }
+
+        hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
+        byGetDispFlag = 0;
+        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+        if (IS_NUM_HEX_SET(byGetDispFlag))
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_DEC(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, FALSE);
+        }
+        else
+        {
+            CLEAR_EXPR_NUM_BITS(byGetDispFlag);
+            SET_NUM_HEX(byGetDispFlag);
+            theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX, TRUE);
+        }
+
         for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
         {
             hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
@@ -5654,6 +5853,7 @@ void CMainFrame::OnHex_DecButon()
         eUSERSELCTION eUserSel = eHEXDECCMD;
         m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
     }
+    m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
     if (sg_pouSWInterface[CAN] != NULL)
     {
         sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
@@ -5661,6 +5861,10 @@ void CMainFrame::OnHex_DecButon()
     if (sg_pouSWInterface[J1939] != NULL)
     {
         sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
+    }
+    if (sg_pouSWInterface[LIN] != NULL)
+    {
+        sg_pouSWInterface[LIN]->SW_SetDisplayMode(bHexON);
     }
 }
 
@@ -5708,6 +5912,9 @@ void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
         eUSERSELCTION eUserSel = eHEXDECCMD;
         m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
     }
+    //Flexray Window.
+    m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
+
     if (sg_pouSWInterface[CAN] != NULL)
     {
         sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
@@ -5792,6 +5999,9 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
         HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
         BYTE byGetDispFlag = 0;
         ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), NULL);
+
+
+
         if (IS_MODE_APPEND(byGetDispFlag))
         {
             CLEAR_EXPR_DISP_BITS(byGetDispFlag);
@@ -5897,7 +6107,9 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
         }
 
         if (aomstrTempDBFilesCAN.GetSize() > 0 ||
-                aomstrTempDBFilesJ1939.GetSize() > 0)
+                aomstrTempDBFilesJ1939.GetSize() > 0 ||
+                m_ouFlexConfig.m_nChannelsConfigured > 0)
+            //!m_acFlexDBConfigInfo.m_acConfigFileName[0].empty() )
         {
             //If fil epresent then check for other status
             HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -6108,7 +6320,7 @@ void CMainFrame::OnMessageFilterButton()
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
         /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 8;
+        BYTE bytTbrItemIndex = 6;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
 }
@@ -6293,7 +6505,7 @@ void CMainFrame::OnReplayFilter()
         vREP_EnableFilters(bReplayFilterStatus);
 
         /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 9;
+        BYTE bytTbrItemIndex = 7;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
     }
 }
@@ -6312,7 +6524,7 @@ void CMainFrame::ApplyMessageFilterButton()
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
         /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 8;
+        BYTE bytTbrItemIndex = 6;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
 }
@@ -6423,6 +6635,26 @@ void CMainFrame::OnShowHideMessageWindow(UINT nID)
             }
         }
         break;
+        case ID_SHOWMESSAGEWINDOW_FLEXRAY:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY);
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
+        break;
+        case ID_SHOWMESSAGEWINDOW_LIN:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
+        break;
         default:
         {
             ASSERT(FALSE);
@@ -6459,6 +6691,26 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
         {
             HWND hWnd;
             hWnd = m_podMsgWndThread->hGetHandleMsgWnd(J1939);
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
+        break;
+        case ID_SHOWMESSAGEWINDOW_FLEXRAY:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY);
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
+        break;
+        case ID_SHOWMESSAGEWINDOW_LIN:
+        {
+            HWND hWnd;
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
             if(hWnd)
             {
                 ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
@@ -7094,6 +7346,14 @@ void CMainFrame::OnDestroy()
         m_podBusStatistics = NULL;
     }
 
+    // Clean FlexRay Network statistics dialog
+    if( m_podFlexRayBusStatistics != NULL )
+    {
+        // Delete the memory associated with this member
+        delete m_podFlexRayBusStatistics;
+        m_podFlexRayBusStatistics = NULL;
+    }
+
     CMDIFrameWnd::OnDestroy();
 
     // Check for the current status of the window
@@ -7484,6 +7744,37 @@ void CMainFrame::OnCfgSendMsgs()
                         resply
     Member of        :  CMainFrame
     Friend of        :      -
+    Author(s)        :  Ashwin R Uchil
+    Date Created     :  26.3.2013
+******************************************************************************/
+void CMainFrame::OnUpdateToolFlexRaySendmsg(CCmdUI* pCmdUI)
+{
+    BOOL bIsConnected = theApp.pouGetFlagsPtr()->nGetFlagStatus(FLEX_CONNECTED);
+    BOOL bEnable = bIsConnected && (m_objFlexTxHandler.unGetTxBlockCount() > 0);
+    BOOL bStopFlag = !(theApp.pouGetFlagsPtr()->nGetFlagStatus(FLEXRAYSENDMSG));
+    pCmdUI->Enable(bEnable);// && (m_bEnableSendToolbarButton));
+    if (bIsConnected)
+    {
+        pCmdUI->SetCheck(!bStopFlag);
+    }
+    else // Disconnected state
+    {
+        ASSERT(bStopFlag); // In this state bStopFlag is supposed to be TRUE
+        pCmdUI->SetCheck(FALSE);
+    }
+}
+/******************************************************************************
+    Function Name    :  OnUpdateToolSendmsg
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :  void
+    Functionality    :  - Called by the framework when the current GUI state of
+                        toolbar button needs to be updated.
+                        - Enables the toolbar if the number of configured
+                        mesages is more than zero, disables if zero
+                        - Press / Unpresses the button if Txing / Not-Txing
+                        resply
+    Member of        :  CMainFrame
+    Friend of        :      -
     Author(s)        :  Amarnath S
     Date Created     :  16.10.2002
     Modifications    :  18.12.2002, Amarnath S
@@ -7835,6 +8126,10 @@ void CMainFrame::OnFileConnect()
         if(bConnected)
         {
             m_objTxHandler.vSetTxStopFlag(TRUE);
+            //Shailesh +
+            //sg_pouFrameProcCAN->IncrementConnectionCount();
+            //Shailesh -
+
         }
         //g_bStopMsgBlockTx       = TRUE;
         g_bStopSelectedMsgTx    = TRUE;
@@ -7880,6 +8175,10 @@ void CMainFrame::OnFileConnect()
             HWND hWnd = NULL;
             for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
             {
+                if (shBusID == FLEXRAY)
+                {
+                    continue;
+                }
                 hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
                 //Update Message Window
                 if(hWnd)
@@ -7906,6 +8205,10 @@ void CMainFrame::OnFileConnect()
             {
                 for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
                 {
+                    if (shBusID == FLEXRAY)
+                    {
+                        continue;
+                    }
                     HWND hWnd;
                     hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)shBusID);
                     if(hWnd)
@@ -7920,7 +8223,7 @@ void CMainFrame::OnFileConnect()
             GetICANBusStat()->BSC_ResetBusStatistic();
             for (UINT i = 0; i < defNO_OF_CHANNELS; i++)
             {
-#ifdef CAN_FD_VERSION
+#ifdef BOA_FD_VERSION
                 GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
 #else
                 GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
@@ -7928,6 +8231,8 @@ void CMainFrame::OnFileConnect()
             }
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
 
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
 
             //send time to nodesim for calculation
             if (NS_GetInterface(CAN, (void**) &pNodeSim) == S_OK)
@@ -7954,7 +8259,8 @@ void CMainFrame::OnFileConnect()
                           eWINID_STOP_READ, 0);
 
 
-
+            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
             //m_n64TimeElapsedSinceConnection =0;
 
             //send time to nodesim for calculation
@@ -7992,9 +8298,38 @@ void CMainFrame::OnFileConnect()
                 bReturn = TRUE;
             }
         }
+        //// Use HI layer function to Connect/Disconnect
+        //      if (bConnected == TRUE)
+        //      {
+        //          CWaitIndicator ouWaitIndicator;
+        //          ouWaitIndicator.DisplayWindow(
+        //              _T(_("Trying to connect the LINhardware ... Please wait")), this);
+        //          {
+        //              if (g_pouDIL_LIN_Interface->DILL_StartHardware() == S_OK)
+        //              {
+        //                  ouWaitIndicator.SetWindowText(_T(_("LIN Connected... ")));
+        //                  bReturn = TRUE;
+        //              }
+        //              else
+        //              {
+        //                  ouWaitIndicator.SetWindowText(_T(_("Failed to connect the LIN hardware... ")));
+        //                  theApp.bWriteIntoTraceWnd(_("Failed to start the LIN hardware"));
+        //              }
+        //          }
+        //          // Commented to avoid Timedelay in log file
+        //          //Sleep (200);
+        //          ouWaitIndicator.CloseWindow();
+        //      }
+        //      else
+        //      {
+        //          if (g_pouDIL_LIN_Interface->DILL_StopHardware() == S_OK)
+        //          {
+        //              bReturn = TRUE;
+        //          }
+        //      }
         if(bReturn == TRUE )
         {
-            BOOL bLogIsON = FALSE, bJ1939LogON = FALSE;
+            BOOL bLogIsON = FALSE, bJ1939LogON = FALSE, bLinLogON = FALSE;
 
             CFlags* pFlagLog = theApp.pouGetFlagsPtr();
             if(pFlagLog != NULL)
@@ -8025,7 +8360,7 @@ void CMainFrame::OnFileConnect()
                     }
                     sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
 
-                    BYTE bytTbrItemIndex = 2;
+                    BYTE bytTbrItemIndex = 3;
                     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
                 }
 
@@ -8072,6 +8407,10 @@ void CMainFrame::OnFileConnect()
                         }
                     }
                 }
+                /*if(bLinLogON == TRUE || m_abLogOnConnect[LIN] == TRUE)
+                {
+                    m_unLinTimerSBLog = SetTimer(TIMER_REFRESH_LIN_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
+                }*/
                 if(bJ1939LogON == TRUE || m_abLogOnConnect[J1939] == TRUE)
                 {
                     m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
@@ -8132,8 +8471,11 @@ void CMainFrame::OnFileConnect()
                 pouFlags->vSetFlagStatus( SENDMESG, FALSE );
 
                 // Enable the user to load or create another cfg file
-                m_bCfgLoadMenuOption    = TRUE;
-                m_bCfgNewMenuOption     = TRUE;
+                if(pouFlags->nGetFlagStatus(FLEX_CONNECTED) == FALSE)
+                {
+                    m_bCfgLoadMenuOption    = TRUE;
+                    m_bCfgNewMenuOption     = TRUE;
+                }
             }
             else
             {
@@ -8149,7 +8491,7 @@ void CMainFrame::OnFileConnect()
             // Load the required bitmap to
             // show connect/disconnect state
             /* Modify connect icon accordingly in Main toolbar*/
-            BYTE bytTbrItemIndex = 3;
+            BYTE bytTbrItemIndex = 1;
             vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
 
             // Press / Unpress the button if Connected / Disconnected
@@ -8193,6 +8535,123 @@ void CMainFrame::OnFileConnect()
         }
     }
 }
+
+void CMainFrame::OnLINConnect()
+{
+    HRESULT hResult = S_OK;
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+
+    /* Toggle connect/disconnect flag */
+    BOOL bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
+    bConnected = !bConnected;
+
+    m_objTxHandlerLin.vShowConfigureMsgWindow((void*)this, SW_HIDE);
+
+    if(m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+    {
+        // Send Message to Indicate connection change
+        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eCONNECTCMD,bConnected);
+        // Send message to indicate message transmission stop event if
+        // the tool is disconnected
+        if( bConnected == FALSE )
+        {
+            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eTXMSGCMD, 0 );
+            m_objTxHandlerLin.vStopTransmission(0);
+        }
+    }
+    else
+    {
+        // Send Message to Indicate connection change
+        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eCONNECTCMD,bConnected);
+    }
+
+
+    /* If connecton is required */
+    if ( bConnected )
+    {
+        hResult = g_pouDIL_LIN_Interface->DILL_StartHardware();
+
+        /* If connect fails, return from here */
+        if ( hResult == S_FALSE )
+        {
+            return;
+        }
+
+        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_NOTIFICATION_FROM_OTHER,
+                      eWINID_START_READ, 0);
+        // Clear message window on connect
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
+        if(NULL != hWnd)
+        {
+            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+            ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
+        }
+    }
+    /* If disconnecton is required */
+    else
+    {
+        g_pouDIL_LIN_Interface->DILL_ResetSlaveRespData();
+        hResult = g_pouDIL_LIN_Interface->DILL_StopHardware();
+        //m_objLINTxHandler.vStopTransmission(0);
+        if (NULL != m_podMsgWndThread)
+        {
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_STOP_READ, 0);
+        }
+    }
+    //added to disable loading config while LIN transmission
+
+    if(bConnected)
+    {
+        m_bCfgLoadMenuOption    = FALSE;
+        m_bCfgNewMenuOption     = FALSE;
+    }
+    else
+    {
+        if(pouFlag->nGetFlagStatus(CONNECTED) == FALSE)
+        {
+            m_bCfgLoadMenuOption    = TRUE;
+            m_bCfgNewMenuOption     = TRUE;
+        }
+    }
+    pouFlag->vSetFlagStatus(LIN_CONNECTED, bConnected);
+    BYTE bytTbrItemIndex = 1;
+    vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
+}
+
+void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
+{
+    // Select the current menu text based on which one between Connect
+    // or Disconnect is currently selected. The menu text should show
+    // the next available state i.e., if currently "Connect" is displayed,
+    // next available state is Disconnect and vice versa. Texts are taken from
+    // the string table
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+    if(pouFlag != NULL)
+    {
+        BOOL bConnected  = pouFlag->nGetFlagStatus(LIN_CONNECTED);
+        UINT unConnected = bConnected ? IDS_DISCONNECT_LIN : IDS_CONNECT_LIN;
+
+        // And initialise a CString with the string.
+        CString omMenuItemText("");
+        omMenuItemText.Format(unConnected);
+
+        // And finally set the menu text.
+        if(pCmdUI !=NULL)
+        {
+            pCmdUI->SetText(omMenuItemText);
+        }
+    }
+    if ( m_dwLINDriverId != DAL_NONE )
+    {
+        pCmdUI->Enable();
+    }
+    else
+    {
+        pCmdUI->Enable(0);
+    }
+}
+
 /******************************************************************************/
 /*  Function Name    :  OnUpdateFileConnect                                   */
 /*  Input(s)         :  CCmdUI* pCmdUI                                        */
@@ -8460,6 +8919,28 @@ void CMainFrame::OnNewConfigFile()
         pouFlags = theApp.pouGetFlagsPtr();
         pouFlags->vSetFlagStatus(REPLAYFILTER, FALSE);
         ApplyReplayFilter();
+        // Clear message window on connect
+        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY);
+        if(NULL != hWnd)
+        {
+            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+            ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
+        }
+        // Close the J1939 and FlexRay message windows
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+
+        /*Unload FLEXRAY DIL */
+        m_shFLEXRAYDriverId = DAL_NONE;
+        InitializeFLEXRAYDIL();
+        m_ouFlexConfig.InitialiseConfig();
+
+        /* Clear FlexRay Database/configuration files */
+        m_acFlexDBConfigInfo.m_acConfigFileName[0] = "";
+        m_acFlexDBConfigInfo.m_acConfigFileName[1] = "";
+        m_acFlexDBConfigInfo.m_nFilesCount = 0;
+        m_acFlexDBConfigInfo.m_nSelectedIndex = 0;
     }
 }
 void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
@@ -8712,11 +9193,26 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
 
         // Check connection status
         bConnect    = pouFlag->nGetFlagStatus(CONNECTED);
+        BOOL bFlexConnect =  pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+        BOOL bFlexConfigShown = FALSE;
+        if(m_objFlexTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bFlexConfigShown = TRUE;
+        }
+
+        BOOL bLINConnect =  pouFlag->nGetFlagStatus(LIN_CONNECTED);
+        BOOL bLINTxConfigWndShown = FALSE;
+        if (m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+        {
+            bLINTxConfigWndShown = TRUE;
+        }
         // Disable menu if the tool is connected or Tx msg window is active or
         // MRU list is empty
         if( bConnect == TRUE ||
                 bSendMsgDialog == TRUE ||
-                m_omStrMRU_ConfigurationFiles[0] == _(defSTR_DEFAULT_MRU_ITEM) )
+                m_omStrMRU_ConfigurationFiles[0] == _(defSTR_DEFAULT_MRU_ITEM) ||
+                bFlexConnect == TRUE || bFlexConfigShown == TRUE ||
+                bLINConnect == TRUE || bLINTxConfigWndShown == TRUE)
         {
             pCmdUI->Enable(FALSE);
         }
@@ -8842,6 +9338,14 @@ void CMainFrame::OnUpdateConfigLoad(CCmdUI* pCmdUI)
         {
             bSendMsgDialog = TRUE;
         }
+        if(m_objFlexTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+        if (m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
 
         // Enable only if Tx window is not present
         bEnable = m_bCfgLoadMenuOption && !bSendMsgDialog;
@@ -8869,6 +9373,14 @@ void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI)
         BOOL bSendMsgDialog = FALSE;;
 
         if(m_objTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+        if(m_objFlexTxHandler.hConfigWindowShown() == S_OK)
+        {
+            bSendMsgDialog = TRUE;
+        }
+        if (m_objTxHandlerLin.hConfigWindowShown() == S_OK)
         {
             bSendMsgDialog = TRUE;
         }
@@ -9170,6 +9682,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
                 // network statistics window
                 m_podBusStatistics->SendMessage(WM_DISPLAY_MESSAGE, 1, 0);
             }
+
             // Get Present error counter value and take
             // appropriate actions for error handler execution
             // Get the number of channels available
@@ -9283,6 +9796,17 @@ void CMainFrame::OnTimer(UINT nIDEvent)
         else
         {
             m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
+        }
+    }
+    if(nIDEvent == m_unFlexRayNSTimer)
+    {
+        // Update the bus statistics window if it exists.
+        if ( m_podFlexRayBusStatistics != NULL &&
+                m_podFlexRayBusStatistics->IsWindowVisible( ) == TRUE )
+        {
+            // Perform network statistics calculation and update of
+            // network statistics window
+            m_podFlexRayBusStatistics->SendMessage(WM_HW_FLEXRAY_NETWORK_STATISTICS, 1, 0);
         }
     }
     // Call Parent class member for default action
@@ -9630,6 +10154,79 @@ void CMainFrame::OnUpdateNetworkStatisticsWnd(CCmdUI* pCmdUI)
         }
     }
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnFlexRayNetworkStatisticsWnd                         */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user selects to      */
+/*                      Display statistics window.                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Ashwin R Uchil                                        */
+/*  Date Created     :  13.08.2013                                            */
+/******************************************************************************/
+void CMainFrame::OnFlexRayNetworkStatisticsWnd()
+{
+    // If statistics dialog is not created
+    if (m_bIsFlexRayStatWndCreated == FALSE)
+    {
+        m_podFlexRayBusStatistics = new CFlexRayNetworkStatsDlg(GetIFlexRayBusStat(), this);
+        int nReturn = m_podFlexRayBusStatistics->Create(IDD_DLG_FLEXRAY_NETWORK_STATISTICS, this);
+        if(nReturn != 0 )
+        {
+            // Update the statistics dialog creation status
+            m_bIsFlexRayStatWndCreated = TRUE;
+
+
+        }
+        else
+        {
+            // Show the error information to the user
+            if(theApp.m_bFromAutomation == FALSE)
+            {
+                AfxMessageBox( _(defSTR_STAT_WINDOW_CREATION_FAILED) );
+            }
+        }
+    }
+    else
+    {
+        int nShowMode = m_podFlexRayBusStatistics->IsWindowVisible() ? SW_HIDE : SW_SHOW;
+        m_podFlexRayBusStatistics->ShowWindow(nShowMode);
+    }
+}
+/******************************************************************************/
+/*  Function Name    :  OnUpdateFlexRayNetworkStatisticsWnd                   */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Ashwin R Uchil                                        */
+/*  Date Created     :  13.08.2013                                            */
+/******************************************************************************/
+void CMainFrame::OnUpdateFlexRayNetworkStatisticsWnd(CCmdUI* pCmdUI)
+{
+    if(pCmdUI != NULL)
+    {
+        // Check for window cration
+        if( m_podBusStatistics != NULL &&
+                m_podBusStatistics->IsWindowVisible() == TRUE )
+        {
+            pCmdUI->SetCheck(TRUE);
+        }
+        else
+        {
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
+}
+
+
+
 /******************************************************************************
     Function Name    :  bEnableDisableLog
     Input(s)         :  bStart, indicating Start\Stop of Logging
@@ -11841,6 +12438,214 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
     xmlFreeNode(pJ1939SimSys);
 }
 
+HRESULT CMainFrame::InitializeFLEXRAYDIL()
+{
+    HRESULT hResult = S_OK;
+    m_bNoHardwareFound = true;
+    string  strLastError;
+    HRESULT hLastError;
+    static char chError[256]; //TODO::For trace window
+    if (g_pouDIL_FLEXRAY_Interface == NULL)
+    {
+        hResult = DIL_GetInterface(FLEXRAY, (void**)&g_pouDIL_FLEXRAY_Interface);
+    }
+    else
+    {
+        g_pouDIL_FLEXRAY_Interface->DILF_PerformClosureOperations();
+        //m_objFlexTxHandler.vFlexFileChanged();
+    }
+    if (hResult == S_OK)
+    {
+        if ((hResult = g_pouDIL_FLEXRAY_Interface->DILF_SelectDriver(m_shFLEXRAYDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
+        {
+            if ( ( hResult = g_pouDIL_FLEXRAY_Interface->DILF_ListHwInterfaces( m_sSelFlxHwInterface[0], m_acFlexDBConfigInfo )) == S_OK )
+            {
+                if ( ( hResult = g_pouDIL_FLEXRAY_Interface->DILF_SelectHwInterfaces( m_sSelFlxHwInterface )) == S_OK )
+                {
+                    hResult = g_pouDIL_FLEXRAY_Interface->DILF_SetConfigData(m_ouFlexConfig.m_ouFlexChannelConfig[0]) ;
+
+
+                    if ( hResult == S_OK )
+                    {
+                        /* Register the Monitor client buffer */
+                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, _T("CAN_MONITOR"));
+
+                        // Create the message window
+                        m_podMsgWndThread->vUpdateClientID(FLEXRAY, m_dwFLEXClientID);
+                        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)FLEXRAY);
+                        m_objFlexTxHandler.vSetDILInterfacePtr();
+                        vInitializeBusStatFlexRay();
+                        //string strConfigName = (PCHAR)m_acFlexDBConfigInfo.m_acConfigFileName[m_acFlexDBConfigInfo.m_nSelectedIndex];
+                        m_objFlexTxHandler.vFlexFileChanged();
+                        //bCreateFlexRayMsgWindow();
+                    }
+                    else
+                    {
+                        g_pouDIL_FLEXRAY_Interface->DILF_GetLastErrorString(strLastError, hLastError);
+                        sprintf_s(chError, "Error From Driver :: 0x%X", hLastError);
+                        theApp.bWriteIntoTraceWnd("FLEXRAY DIL: Setting Initialization configuration failed!");
+                        theApp.bWriteIntoTraceWnd(chError);
+                    }
+                }
+                else
+                {
+                    g_pouDIL_FLEXRAY_Interface->DILF_GetLastErrorString(strLastError, hLastError);
+                    sprintf_s(chError, "Error From Driver :: 0x%X", hLastError);
+                    theApp.bWriteIntoTraceWnd("FLEXRAY DIL: Selection of Hardware Interface failed!");
+                    theApp.bWriteIntoTraceWnd(chError);
+                }
+            }
+            else
+            {
+                g_pouDIL_FLEXRAY_Interface->DILF_GetLastErrorString(strLastError, hLastError);
+                sprintf_s(chError, "Error From Driver :: 0x%X", hLastError);
+                theApp.bWriteIntoTraceWnd("FLEXRAY DIL: Channel selection failed. Please check if your hardware is connected.");
+                theApp.bWriteIntoTraceWnd(chError);
+            }
+        }
+        else
+        {
+            if ( m_shFLEXRAYDriverId != DAL_NONE && m_shFLEXRAYDriverId !=FLEXRAY_DRIVER_STUB )
+            {
+                g_pouDIL_FLEXRAY_Interface->DILF_GetLastErrorString(strLastError, hLastError);
+                sprintf_s(chError, "Error From Driver :: 0x%X", hLastError);
+                theApp.bWriteIntoTraceWnd("FLEXRAY DIL: Driver selection failed. Please check the Hardware support wiki page on https://github.com/rbei-etas/busmaster/wiki/Hardware-support ");
+                theApp.bWriteIntoTraceWnd(chError);
+            }
+        }
+    }
+    else
+    {
+        g_pouDIL_FLEXRAY_Interface->DILF_GetLastErrorString(strLastError, hLastError);
+        sprintf_s(chError, "Error From Driver :: 0x%X", hLastError);
+        theApp.bWriteIntoTraceWnd("FLEXRAY DIL: Failed to get DIL Interface object!");
+        theApp.bWriteIntoTraceWnd(chError);
+
+    }
+    return hResult;
+}
+void CMainFrame::OnFlexRayConnect()
+{
+    if ( !m_bFlxDILChanging )
+    {
+        char chError[256];
+        HRESULT hResult = S_OK;
+        HRESULT hLastError;
+        string strLastError;
+        CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+
+        /* Toggle connect/disconnect flag */
+        BOOL bConnected = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+        bConnected = !bConnected;
+
+        /* If connecton is required */
+        if ( bConnected )
+        {
+            hResult = g_pouDIL_FLEXRAY_Interface->DILF_SetConfigData(m_ouFlexConfig.m_ouFlexChannelConfig[0]) ;
+
+            if ( hResult != S_OK )
+            {
+                g_pouDIL_FLEXRAY_Interface->DILF_GetLastErrorString(strLastError, hLastError);
+                sprintf_s(chError, "Error From Driver :: 0x%X", hLastError);
+                theApp.bWriteIntoTraceWnd("FLEXRAY DIL: Setting configuration failed!");
+                theApp.bWriteIntoTraceWnd(chError);
+                return;
+            }
+            //CTimeManager::vInitAbsoluteTime();
+            hResult = g_pouDIL_FLEXRAY_Interface->DILF_StartHardware();
+
+            /* If connect fails, return from here */
+            if ( hResult == S_FALSE )
+            {
+                return;
+            }
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY), WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_START_READ, 0);
+            // Clear message window on connect
+            HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY);
+            if(NULL != hWnd)
+            {
+                ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+                ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
+            }
+            m_objFlexTxHandler.vBusStatusChanged(true);
+
+            theApp.pouGetFlagsPtr()->vSetFlagStatus( FLEXRAYSENDMSG, FALSE );
+        }
+        /* If disconnecton is required */
+        else
+        {
+            if(g_pouDIL_FLEXRAY_Interface != NULL)
+            {
+                hResult = g_pouDIL_FLEXRAY_Interface->DILF_StopHardware();
+            }
+            m_objFlexTxHandler.vStopTransmission(0);
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY), WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_STOP_READ, 0);
+            m_objFlexTxHandler.vBusStatusChanged(false);
+        }
+        //added to disable loading config while flexray transmission
+
+        if(bConnected)
+        {
+            m_bCfgLoadMenuOption    = FALSE;
+            m_bCfgNewMenuOption     = FALSE;
+            m_unFlexRayNSTimer = SetTimer(TIMER_REFRESH_FLEXRAY_STATUS, STSBAR_REFRESH_TIME_PERIOD, NULL);
+        }
+        else
+        {
+            if(pouFlag->nGetFlagStatus(CONNECTED) == FALSE)
+            {
+                m_bCfgLoadMenuOption    = TRUE;
+                m_bCfgNewMenuOption     = TRUE;
+            }
+        }
+        pouFlag->vSetFlagStatus(FLEX_CONNECTED, bConnected);
+        // Get reference to toolbar control
+        CToolBarCtrl& omRefToolBarCtrl = m_wndToolbarFlexRay.GetToolBarCtrl();
+
+        // Load the required bitmap to
+        // show connect/disconnect state
+        /* Modify connect icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 1;
+        vModifyToolbarIcon( m_wndToolbarFlexRay, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
+
+        // Press / Unpress the button if Connected / Disconnected
+        omRefToolBarCtrl.PressButton(ID_FLEXRAY_CONNECT, bConnected);
+    }
+}
+void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
+{
+    // Select the current menu text based on which one between Connect
+    // or Disconnect is currently selected. The menu text should show
+    // the next available state i.e., if currently "Connect" is displayed,
+    // next available state is Disconnect and vice versa. Texts are taken from
+    // the string table
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+    if(pouFlag != NULL)
+    {
+        BOOL bConnected  = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+        UINT unConnected = bConnected ? IDS_DISCONNECT_FLEXRAY : IDS_CONNECT_FLEXRAY;
+
+        // And initialise a CString with the string.
+        CString omMenuItemText("");
+        omMenuItemText.Format(unConnected);
+        // And finally set the menu text.
+        if(pCmdUI !=NULL)
+        {
+            pCmdUI->SetText(omMenuItemText);
+        }
+    }
+    if ( m_shFLEXRAYDriverId != DAL_NONE )
+    {
+        pCmdUI->Enable();
+    }
+    else
+    {
+        pCmdUI->Enable(0);
+    }
+}
 HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 {
     HRESULT hResult = S_OK;
@@ -11950,6 +12755,122 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
         m_objTxHandler.vSetDILInterfacePtr((void*)g_pouDIL_CAN_Interface);
         m_objTxHandler.vSetClientID(g_dwClientID);
         vUpdateChannelInfo();
+    }
+    return hResult;
+}
+
+HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
+{
+    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
+    HRESULT hResult = S_OK;
+    m_bNoHardwareFound = true;
+    if (g_pouDIL_LIN_Interface == NULL)
+    {
+        hResult = DIL_GetInterface(LIN, (void**)&g_pouDIL_LIN_Interface);
+    }
+    else
+    {
+        //g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
+        //DeselectJ1939Interfaces();
+    }
+    if (hResult == S_OK)
+    {
+        if ((hResult = g_pouDIL_LIN_Interface->DILL_SelectDriver(m_dwLINDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
+        {
+            g_pouDIL_LIN_Interface->DILL_PerformInitOperations();
+            INT nCount = unDefaultChannelCnt;
+            if ((hResult = g_pouDIL_LIN_Interface->DILL_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
+            {
+                //DeselectJ1939Interfaces();
+                HRESULT hResult = g_pouDIL_LIN_Interface->DILL_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+                if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
+                {
+                    hResult = g_pouDIL_LIN_Interface->DILL_RegisterClient(TRUE, g_dwClientID, _T("LIN_MONITOR"));
+                    if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
+                    {
+                        m_bNoHardwareFound = false;
+                        g_pouDIL_LIN_Interface->DILL_SetConfigData(m_asControllerDetails, nCount);
+                        bInitFrameProcLIN(); // Initialize logger module
+                        //vReRegisterAllLINNodes();//Reinitialize node simulation
+                        if (sg_pouSWInterface[LIN] == NULL)//Signal watch
+                        {
+                            if (SW_GetInterface(LIN, (void**)&sg_pouSWInterface[LIN]) == S_OK)
+                            {
+                                sg_pouSWInterface[LIN]->SW_DoInitialization();
+                            }
+                        }
+                        else
+                        {
+                            sg_pouSWInterface[LIN]->SW_DoInitialization();
+                        }
+                        m_podMsgWndThread->vUpdateClientID(LIN, g_dwClientID);
+                        if (m_podMsgWndThread != NULL)//Msg window
+                        {
+                            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                                          eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
+                        }
+                        //initialize graph window read buffer
+                        /*vInitializeGraphWndReadBuffer();*/
+                        //re initialize statistics module
+                        /*vInitializeBusStatLIN();*/
+                        //venkat - Initialize Read Thread of TSExecutor.
+                        m_objTSExecutorHandler.vDoInitailization(LIN);
+
+                        /* Updates the number of channels selected */
+                        m_nNumChannelsLIN = nCount;
+
+                        /*Update hardware info in status bar*/
+                        vUpdateHWStatusInfo();
+
+                        //Update TxWindow
+                        eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
+                        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+
+                        // Enable the Deactivate menu as a valid driver is selected
+                        m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, true);
+                    }
+                    else
+                    {
+                        //theApp.bWriteIntoTraceWnd(_("registering client failed"));
+                        //m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                        //IntializeDIL();
+                    }
+                }
+                else
+                {
+                    //theApp.bWriteIntoTraceWnd(_("Selecting hardware interface failed"));
+                    //m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                    //IntializeDIL();
+                }
+            }
+            else
+            {
+                if ( hResult == HW_INTERFACE_NO_SEL )
+                {
+                    theApp.bWriteIntoTraceWnd(_("hardware selection Cancelled. Retaining previous hardware settings.."));
+                    /* Retain previous DIL selection */
+                    m_dwDriverId = g_pouDIL_LIN_Interface->DILL_GetSelectedDriver();
+                    m_bNoHardwareFound = false;
+                }
+                else
+                {
+                    //theApp.bWriteIntoTraceWnd(_("Listing hardware interfaces failed"));
+                    //m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
+                    //IntializeDIL();
+                }
+            }
+        }
+        else
+        {
+            if (m_dwDriverId == 0) // Dummy Driver for Deactvation
+            {
+                m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+                // Disable the Deactivate menu as a valid driver is selected
+                m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, false);
+            }
+        }
+        m_objTxHandlerLin.vSetDILInterfacePtr((void*)g_pouDIL_LIN_Interface);
+        m_objTxHandlerLin.vSetClientID(g_dwClientID);
     }
     return hResult;
 }
@@ -12082,6 +13003,28 @@ BOOL CMainFrame::bInitFrameProcCAN(void)
         sCANProcParams.m_pILog = &m_ouWrapperLogger;
 
         if (sg_pouFrameProcCAN->FPC_DoInitialisation(&sCANProcParams) == S_OK)
+        {
+            bReturn = TRUE;
+        }
+    }
+    return bReturn;
+}
+
+BOOL CMainFrame::bInitFrameProcLIN(void)
+{
+    BOOL bReturn = FALSE;
+    if (FP_GetInterface(FRAMEPROC_LIN, (void**)&sg_pouFrameProcLIN) == S_OK)
+    {
+        CString omVerStr("");
+        SLINPROC_PARAMS sLINProcParams;
+
+        omVerStr.Format(IDS_VERSION);
+        strncpy_s(sLINProcParams.m_acVersion, 64, omVerStr, omVerStr.GetLength());
+        sLINProcParams.dwClientID = g_dwClientID;
+        sLINProcParams.m_pouLINBuffer = &g_ouLINBufFSE;
+        sLINProcParams.m_pILog = &m_ouWrapperLogger;
+
+        if (sg_pouFrameProcLIN->FPL_DoInitialisation(&sLINProcParams) == S_OK)
         {
             bReturn = TRUE;
         }
@@ -12997,6 +13940,96 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
         }
         break;
+        case MSGWND_SECTION_LIN_ID:
+        {
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
+            CMessageAttrib::ouGetHandle(LIN).vGetMessageAttribData(sMsgAttrib);
+            UINT nCount = sMsgAttrib.m_usMsgCount;
+            SFILTERAPPLIED_LIN sMsgWndFilter;
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+
+            xmlNodePtr pLINMsgWindow = xmlNewNode(NULL, BAD_CAST DEF_LIN_MESS_WINDOW);
+            xmlAddChild(pNodePtr, pLINMsgWindow);
+
+            INT nAppndBuffrSize = m_anMsgBuffSize[defAPPEND_DATA_INDEX];
+            INT nOverwritBffrSize = m_anMsgBuffSize[defOVERWRITE_DATE_INDEX];
+            INT nDisplayUpdateTime = m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX];
+
+            CString strAppndBffrSize = "";
+            strAppndBffrSize.Format("%d", nAppndBuffrSize);
+
+            CString strOverwritBffrSize = "";
+            strOverwritBffrSize.Format("%d", nOverwritBffrSize);
+
+            CString strDisplayUpdateTime = "";
+            strDisplayUpdateTime.Format("%d", nDisplayUpdateTime);
+
+            xmlNodePtr pAppndBffrPtr = xmlNewChild(pLINMsgWindow, NULL, BAD_CAST DEF_APPEND_BUFFER_SIZE, BAD_CAST strAppndBffrSize.GetBuffer(strAppndBffrSize.GetLength()));
+            xmlAddChild(pLINMsgWindow, pAppndBffrPtr);
+
+            xmlNodePtr pOvrwriteBffrPtr = xmlNewChild(pLINMsgWindow, NULL, BAD_CAST DEF_OVERWRITE_BUFFER_SIZE, BAD_CAST strOverwritBffrSize.GetBuffer(strOverwritBffrSize.GetLength()));
+            xmlAddChild(pLINMsgWindow, pOvrwriteBffrPtr);
+
+            xmlNodePtr pDispBffrPtr = xmlNewChild(pLINMsgWindow, NULL, BAD_CAST DEF_DISPLAY_UPDATE_TIME, BAD_CAST strDisplayUpdateTime.GetBuffer(strDisplayUpdateTime.GetLength()));
+            xmlAddChild(pLINMsgWindow, pDispBffrPtr);
+
+            const char* omcVarChar ;
+
+            for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+            {
+                if ( sMsgAttrib.m_psMsgAttribDetails[i].sColor != RGB(0,0,0))
+                {
+                    xmlNodePtr pLINMsgAttribute = xmlNewNode(NULL, BAD_CAST DEF_MSG_ATTRIBUTE);
+                    xmlAddChild(pLINMsgWindow, pLINMsgAttribute);
+
+                    omcVarChar = sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname;
+                    xmlNodePtr pMsgName = xmlNewChild(pLINMsgAttribute, NULL, BAD_CAST DEF_NAME,BAD_CAST omcVarChar);
+                    xmlAddChild(pLINMsgAttribute, pMsgName);
+
+                    CString     csMsgID;
+                    csMsgID.Format("%u",sMsgAttrib.m_psMsgAttribDetails[i].unMsgID);
+                    omcVarChar = csMsgID;
+                    xmlNodePtr pMsgID = xmlNewChild(pLINMsgAttribute, NULL, BAD_CAST DEF_MSG_ID,BAD_CAST omcVarChar);
+                    xmlAddChild(pLINMsgAttribute, pMsgID);
+
+                    CString csColor;
+                    int nR, nB, nG;
+                    nR = GetRValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                    nG = GetGValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                    nB = GetBValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                    //csColor.Format("%x%x%x",nR,nG,nB);
+
+                    char ch[10];
+
+                    sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+
+
+                    omcVarChar = csColor;
+                    xmlNodePtr pMsgColor = xmlNewChild(pLINMsgAttribute, NULL, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
+                    xmlAddChild(pLINMsgAttribute, pMsgColor);
+                }
+            }
+
+            CString     csFilter;
+            for(int iCnt=0; iCnt < sMsgWndFilter.m_ushTotal; iCnt++)
+            {
+                csFilter.Format("%s",((sMsgWndFilter.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
+                omcVarChar = csFilter;
+                xmlNodePtr pFilter = xmlNewChild(pLINMsgWindow, NULL, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
+                xmlAddChild(pLINMsgWindow, pFilter);
+            }
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                          WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_MSG_WND_GET_CONFIG_DATA,
+                          (LPARAM)pLINMsgWindow);
+
+            DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+        }
+        break;
         case MSGWND_SECTION_J1939_ID:
         {
             SMESSAGE_ATTRIB sMsgAttrib;
@@ -13458,6 +14491,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             m_objTxHandler.vGetTxWndConfigData(pCANTxPtr);
         }
         break;
+        case TXWND_SECTION_LIN_ID:
+        {
+            //changes done for XML configuration
+            xmlNodePtr pLINTxPtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_TX_WINDOW);
+            xmlAddChild(pNodePtr, pLINTxPtr);
+            m_objTxHandlerLin.vGetTxWndConfigData(pLINTxPtr);
+        }
+        break;
         case FILTER_SECTION_ID:
         {
             nSize = m_sFilterAppliedCAN.unGetSize();
@@ -13582,19 +14623,86 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 }
             }
 
-            //nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
-            //pbyConfigData = new BYTE[nSize];
+        }
+        break;
+        case FLEXRAY_CLUSTER_CONFIG:
+        {
+            if(pNodePtr != NULL)
+            {
+                //xmlNodePtr pNodeDBFilePtr = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_CAN_DATABASE_FILES, BAD_CAST "");
 
-            //if (pbyConfigData != NULL)
-            //{
-            //    BYTE* pbyTemp = pbyConfigData;
+                xmlNodePtr pNodeDBFilePtr = xmlNewNode(NULL, BAD_CAST DEF_FLEXRAY_CLUSTER_CONFIG);
 
-            //    BYTE byVersion = 0x1;
-            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-            //    //CAN DB NAMES
-            //    UINT unCount = omDbNames.GetSize();
-            //    COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
-            //    for (UINT i = 0; i < unCount; i++)
+
+
+                if(pNodeDBFilePtr != NULL)
+                {
+                    for ( int i = 0; i < 1; i++ )
+                    {
+
+                        //Channel
+                        xmlNodePtr pNodeChannelPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_CHANNEL);
+
+
+                        char chValue[256];
+
+                        //Index
+                        sprintf(chValue, "%d", i);
+                        xmlNodePtr pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_INDEX ,BAD_CAST chValue);
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //HWUri
+
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_HWURI ,BAD_CAST "Hardware" );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //DbPath
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_DBPATH, BAD_CAST  m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strFibexPath.c_str() );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //ClusterId
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_CLUSTERID, BAD_CAST  m_ouFlexConfig.m_ouFlexChannelConfig[i].m_ouClusterInfo.m_strName.c_str() );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //ECU
+                        xmlNodePtr pNodeECUPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_ECU);
+                        list<string>::iterator itrList;
+                        for ( itrList = m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strSlectedEculist.begin();
+                                itrList != m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strSlectedEculist.end(); itrList++)
+                        {
+                            pIndex= xmlNewChild(pNodeECUPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_NAME, BAD_CAST  itrList->c_str() );
+                        }
+                        xmlAddChild(pNodeChannelPtr, pNodeECUPtr);
+
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+
+
+                    }
+                }
+                xmlAddChild(pNodePtr, pNodeDBFilePtr);
+            }
+        }
+        break;
+        case DATABASE_SECTION_FLEXRAY:
+        {
+            /*if(pNodePtr != NULL)
+            {
+                xmlNodePtr pNodeDBFilePtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_DATABASE);
+                xmlAddChild(pNodePtr, pNodeDBFilePtr);
+                if(pNodeDBFilePtr != NULL)
+                {
+                    const char* strFilePath = (m_acFlexDBConfigInfo.m_acConfigFileName[0]).c_str();
+                    xmlChar* pDBFFilePath = (xmlChar*)strFilePath;
+                    xmlNodePtr pNewChildPtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST pDBFFilePath);
+                    xmlAddChild(pNodeDBFilePtr, pNewChildPtr);
+
+                    strFilePath = (m_acFlexDBConfigInfo.m_acConfigFileName[1]).c_str();
+                    pDBFFilePath = (xmlChar*)strFilePath;
+                    pNewChildPtr = xmlNewChild(pNodeDBFilePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST pDBFFilePath);
+                    xmlAddChild(pNodeDBFilePtr, pNewChildPtr);
+                }
+            }*/
             //    {
             //        CString omDbName = omDbNames.GetAt(i);
             //        char acName[MAX_PATH] = {_T('\0')};
@@ -13650,6 +14758,75 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             xmlNodePtr pNodeExecutor = NULL;
             m_objTSExecutorHandler.vGetConfigurationData(pNodeExecutor);
             xmlAddChild(pNodePtr, pNodeExecutor);
+        }
+        break;
+        case FLEXRAY_TXWND:
+        {
+            xmlNodePtr pFLEXTxPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_TX_WINDOW);
+            xmlAddChild(pNodePtr, pFLEXTxPtr);
+            m_objFlexTxHandler.vGetTxWndConfigData(pFLEXTxPtr);
+        }
+        break;
+        case MSGWND_SECTION_FLEXRAY_ID:
+        {
+            // Save FlexRay Message Window contents
+            SMESSAGE_ATTRIB sMsgAttrib;
+            sMsgAttrib.m_psMsgAttribDetails = NULL;
+            sMsgAttrib.m_usMsgCount = 0;
+            CMessageAttrib::ouGetHandle(FLEXRAY).vGetMessageAttribData(sMsgAttrib);
+            UINT nCount = sMsgAttrib.m_usMsgCount;
+            UINT unMsgFrmtWndCfgSize = 0;
+            ASSERT(m_podMsgWndThread != NULL);
+
+            if(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY))
+            {
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                              WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
+            }
+            //CALC SIZE ENDS
+            xmlNodePtr pFlexRayMsgWindow = xmlNewNode(NULL, BAD_CAST DEF_FLEXRAY_MESS_WINDOW);
+            xmlAddChild(pNodePtr, pFlexRayMsgWindow);
+
+            const char* omcVarChar ;
+
+            for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+            {
+                if( sMsgAttrib.m_psMsgAttribDetails[i].sColor != RGB( 0, 0, 0 ) )
+                {
+                    xmlNodePtr pFlexRayMsgAttribute = xmlNewNode(NULL, BAD_CAST DEF_MSG_ATTRIBUTE);
+                    xmlAddChild(pFlexRayMsgWindow, pFlexRayMsgAttribute);
+
+                    omcVarChar = sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH);
+                    xmlNodePtr pMsgName = xmlNewChild(pFlexRayMsgAttribute, NULL, BAD_CAST DEF_NAME,BAD_CAST omcVarChar);
+                    xmlAddChild(pFlexRayMsgAttribute, pMsgName);
+
+                    CString     csMsgID;
+                    csMsgID.Format("%u",sMsgAttrib.m_psMsgAttribDetails[i].unMsgID);
+                    omcVarChar = csMsgID.GetBuffer(MAX_PATH);
+                    xmlNodePtr pMsgID = xmlNewChild(pFlexRayMsgAttribute, NULL, BAD_CAST DEF_MSG_ID,BAD_CAST omcVarChar);
+                    xmlAddChild(pFlexRayMsgAttribute, pMsgID);
+
+                    CString     csColor;
+                    int nR, nB, nG;
+                    nR = GetRValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                    nG = GetGValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                    nB = GetBValue(sMsgAttrib.m_psMsgAttribDetails[i].sColor);
+                    //csColor.Format("%2x%2x%2x",nR,nG,nB);
+
+                    char ch[7] = {0};
+
+                    sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+
+                    omcVarChar = csColor.GetBuffer(MAX_PATH);
+                    xmlNodePtr pMsgColor = xmlNewChild(pFlexRayMsgAttribute, NULL, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
+                    xmlAddChild(pFlexRayMsgAttribute, pMsgColor);
+                }
+            }
+
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                          WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_MSG_WND_GET_CONFIG_DATA,
+                          (LPARAM)pFlexRayMsgWindow);
         }
         break;
         default:
@@ -14102,7 +15279,188 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
             }
             break;
+            case FLEXRAY_CLUSTER_CONFIG:
+            {
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FLEX_Cluster_Config/CHANNEL";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                m_ouFlexConfig.m_nChannelsConfigured = 0;
 
+
+                for ( int i = 0; i < m_ouFlexConfig.m_nChannelsConfigured; i++ )
+                {
+                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_nKetSlot = -1;
+                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_nSecondKeySlot = -1;
+                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strFibexPath = "";
+                    //m_ouFlexConfig.m_ouFlexChannelConfig[i].m_ouClusterInfo.clear();
+                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strSlectedEculist.clear();
+                }
+
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlNodePtr xmlChannel = pNodeSet->nodeTab[i]->xmlChildrenNode;
+                            if (NULL != pNodeSet->nodeTab[i] )
+                            {
+                                xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                                sFibexConfigContainer ouFibexContainer;
+                                INT nCount = 0;
+                                while ( pNodePtr != NULL )
+                                {
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Index")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_nChannel = atoi((char*)key);
+                                            nCount++;
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"HWUri")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_strHWUri = (char*)key;
+                                            nCount++;
+                                        }
+                                    }
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"DbPath")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_strDbPath = (char*)key;
+                                            nCount++;
+
+                                        }
+                                    }
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"ClusterId")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_strClusterId = (char*)key;
+                                            nCount++;
+
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Key_Slot")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_nKeySlot = atoi((char*)key);
+                                            nCount++;
+
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Second_Key_Slt")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_nSecondKeySlot = atoi((char*)key);
+                                            nCount++;
+
+                                        }
+                                    }
+
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"ECU")))
+                                    {
+                                        //Nodes
+                                        xmlChar* pchPath = (xmlChar*)"Name";
+                                        pPathObject = xmlUtils::pGetChildNodes(pNodePtr, pchPath);
+                                        if( NULL != pPathObject )
+                                        {
+                                            xmlNodeSetPtr pNodeSetEcu = pPathObject->nodesetval;
+                                            if(NULL != pNodeSetEcu)
+                                            {
+                                                nCount++;
+
+                                                for(int i=0; i < pNodeSetEcu->nodeNr; i++)
+                                                {
+                                                    xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodeSetEcu->nodeTab[i]->xmlChildrenNode , 1);
+                                                    ouFibexContainer.m_strECUList.push_back((char*)key);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    pNodePtr = pNodePtr->next;
+                                }   //while
+
+                                vVlaidateAndLoadFibexConfig(ouFibexContainer);
+
+                            }   //If
+
+                        }   //Channel Configurations
+
+
+                    }
+                }
+                else
+                {
+
+                }
+
+                m_objFlexTxHandler.SetFibexConfig(m_ouFlexConfig);
+                m_objFlexTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                              WM_NOTIFICATION_FROM_OTHER,
+                              eLOAD_DATABASE,
+                              (LPARAM)&m_ouFlexConfig);
+
+            }
+            break;
+            case DATABASE_SECTION_FLEXRAY:
+            {
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FLEX_Database/FilePath";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        m_acFlexDBConfigInfo.m_nFilesCount = 0;
+                        if ( pNodeSet->nodeNr == 2 )
+                        {
+                            m_acFlexDBConfigInfo.m_nSelectedIndex = 1;
+                        }
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            if (NULL != pNodeSet->nodeTab[i]->xmlChildrenNode )
+                            {
+                                xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+                                if ( NULL != ptext )
+                                {
+                                    m_acFlexDBConfigInfo.m_acConfigFileName[i] = (char*)ptext;
+                                    m_acFlexDBConfigInfo.m_nFilesCount++;
+                                    nRetValue = S_OK;
+                                    xmlFree(ptext);
+                                }
+                            }
+                        }
+                        xmlXPathFreeObject (pPathObject);
+                    }
+                    else
+                    {
+                        nRetValue = S_OK ;
+                    }
+                }
+                else
+                {
+                    nRetValue = S_OK;
+                }
+            }
+            break;
             case DIL_SECTION_ID:
             {
 
@@ -14439,6 +15797,183 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
             }
             break;
+            case MSGWND_SECTION_LIN_ID:
+            {
+                BYTE byVersion = 0;
+
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
+
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Message_Attribute";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        // Get the Message Count from xml
+                        sMsgAttrib.m_usMsgCount = pNodeSet->nodeNr;
+                        PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                        {
+                            xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                            while(pNodePtr != NULL)
+                            {
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Name"))))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        pMessageAtt[i].omStrMsgname = ((CString)ptext);
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Message_ID"))))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        pMessageAtt[i].unMsgID = atoi(((CString)ptext));
+                                        xmlFree(ptext);
+                                    }
+                                }
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Color"))))
+                                {
+                                    xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                                    if(NULL != ptext)
+                                    {
+                                        CString strColor = ptext;
+                                        DWORD dwColor = strtoul(strColor, NULL, 16);
+
+                                        COLORREF rgbTreeItem = RGB(GetBValue(dwColor),GetGValue(dwColor),GetRValue(dwColor));
+
+                                        pMessageAtt[i].sColor = rgbTreeItem;
+                                        xmlFree(ptext);
+                                    }
+                                }
+
+                                pNodePtr = pNodePtr->next;
+                            }
+                        }
+                        sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                        CMessageAttrib::ouGetHandle(LIN).vSetMessageAttribData(&sMsgAttrib);
+                        //theApp.vPopulateLINIDList();
+                    }
+                }
+
+                // Copying Message Buffer Details
+                /* Append buffer size */
+                xmlChar* pchAppBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Append_Buffer_Size";
+
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchAppBuffSizePath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                            if ( ( NULL != ptext ))
+                            {
+                                CString strAppndBufferSize = ptext;
+                                m_anMsgBuffSize[defAPPEND_DATA_INDEX] = atoi(strAppndBufferSize);
+                                xmlFree(ptext);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+
+                /* Overwrite buffer size */
+                xmlChar* pchOvrBuffSizePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Overwrite_Buffer_Size";
+
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchOvrBuffSizePath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                            if ( ( NULL != ptext ))
+                            {
+                                CString strOvrwriteBufferSize = ptext;
+                                m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = atoi(strOvrwriteBufferSize);
+                                xmlFree(ptext);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+
+                /* Display update time */
+                xmlChar* pchDispUpTimePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Display_Update_Time";
+
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchDispUpTimePath);
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
+
+                            if ( ( NULL != ptext ))
+                            {
+                                CString strDispUpdTimeSize = ptext;
+                                m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = atoi(strDispUpdTimeSize);
+                                xmlFree(ptext);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+
+                if(NULL != m_xmlConfigFiledoc)
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA_LIN_XML,
+                                  (LPARAM)m_xmlConfigFiledoc);
+
+
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eLOAD_DATABASE,
+                                  (LPARAM)&(theApp.m_pouMsgSignal));
+                }
+
+                if(sMsgAttrib.m_usMsgCount > 0)
+                {
+                    //clear msg attributes
+                    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                    sMsgAttrib.m_usMsgCount = 0;
+                }
+            }
+            break;
             case LOG_SECTION_ID:
             {
                 INT nRetVal = S_OK;
@@ -14665,6 +16200,11 @@ int CMainFrame::nLoadXMLConfiguration()
             case TXWND_SECTION_ID:
             {
                 m_objTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
+            }
+            break;
+            case TXWND_SECTION_LIN_ID:
+            {
+                m_objTxHandlerLin.vSetTxWndConfigData(m_xmlConfigFiledoc);
             }
             break;
             case MSGWND_SECTION_J1939_ID:
@@ -14978,11 +16518,81 @@ int CMainFrame::nLoadXMLConfiguration()
                 vPostConfigChangeCmdToSigGrphWnds();
                 break;
             }
+            case FLEXRAY_TXWND:
+            {
+                //called from fibex config
+                //m_objFlexTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
+            }
+            break;
+            case MSGWND_SECTION_FLEXRAY_ID:
+            {
+                // Load FlexRay Message Window contents
+                xmlNodePtr pNode = NULL;
+                xmlNodePtr pMsgAttibNode = NULL;
+                xmlNodePtr pChildNode = NULL;
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
+
+                if(m_xmlConfigFiledoc != NULL)
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA_FLEXRAY_XML,
+                                  (LPARAM)m_xmlConfigFiledoc);
+
+                    list<Cluster> ouCluster;
+                    m_pouMsgSigFLEXRAY->hLoadFibexDBFile(m_acFlexDBConfigInfo.m_acConfigFileName[0].c_str(), ouCluster);
+
+                    /* ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                                   WM_NOTIFICATION_FROM_OTHER,
+                                   eLOAD_DATABASE,
+                                   (LPARAM)&(m_pouMsgSigFLEXRAY));*/
+                }
+            }
+            break;
         } //switch(eSecId)
         eSecId = static_cast<eSECTION_ID>(eSecId + 1);
     }//for
     nRetValue = S_OK;
     return nRetValue;
+}
+
+void CMainFrame::vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexContainer)
+{
+    if ( m_pouMsgSigFLEXRAY != NULL && ouFibexContainer.m_nChannel >= 0 && ouFibexContainer.m_nChannel < CHANNEL_ALLOWED )
+    {
+        bool bValid = false;
+        FLEXRAY_CHANNEL_CONFIG ouFlexChannel;
+        std::list<Cluster> ouClusterList;
+        if ( S_OK == m_pouMsgSigFLEXRAY->hLoadFibexDBFile(ouFibexContainer.m_strDbPath.c_str(), ouClusterList) )
+        {
+            list<Cluster>::iterator itrCluster;
+            for ( itrCluster = ouClusterList.begin(); itrCluster != ouClusterList.end(); itrCluster++ )
+            {
+                if ( itrCluster->m_strName == ouFibexContainer.m_strClusterId )
+                {
+                    ouFlexChannel.m_strFibexPath = ouFibexContainer.m_strDbPath;
+                    ouFlexChannel.m_strSlectedEculist = ouFibexContainer.m_strECUList;
+                    ouFlexChannel.m_ouClusterInfo = *itrCluster;
+                    ouFlexChannel.m_nKetSlot = ouFibexContainer.m_nKeySlot;
+                    ouFlexChannel.m_nSecondKeySlot = ouFibexContainer.m_nSecondKeySlot;
+                    bValid = true;
+                    break;
+                }
+            }
+            if ( true == bValid )
+            {
+                m_ouFlexConfig.m_ouFlexChannelConfig[ouFibexContainer.m_nChannel] = ouFlexChannel;
+                m_ouFlexConfig.m_nChannelsConfigured++;
+            }
+            else
+            {
+                //TODO::
+            }
+        }
+    }
 }
 void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlNodePtr& pNodePtr)
 {
@@ -15285,6 +16895,10 @@ void CMainFrame::vSetCurrProjInfo(float fAppVersion)
 INT CMainFrame::SaveConfiguration(void)
 {
     INT nReturn = defCONFIG_FILE_SUCCESS;
+    // Save Node Simulation changes
+    GetICANNodeSim()->NS_SaveSimulationSystem();
+    GetIJ1939NodeSim()->NS_SaveSimulationSystem();
+
     vSetCurrProjInfo((FLOAT)BUSMASTER_APPN_VERSION_LATEST);
 
     vSaveXMLConfiguration();
@@ -15472,6 +17086,10 @@ BOOL CMainFrame::bIsConfigurationModified(void)
         strTempPath +=  "\\busmaster.tempcfx";
         vSaveXMLConfiguration(strTempPath);
         bResult = CompareFile(strTempPath, oCfgFilename);
+
+        bResult |= GetICANNodeSim()->NS_IsSimSysConfigChanged();
+        bResult |= GetIJ1939NodeSim()->NS_IsSimSysConfigChanged();
+
     }
 
     return bResult;
@@ -15703,6 +17321,156 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                               eWINID_MSG_WND_SET_CONFIG_DATA,
                               NULL);
                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                              WM_NOTIFICATION_FROM_OTHER,
+                              eLOAD_DATABASE,
+                              (LPARAM)&(theApp.m_pouMsgSignal));
+            }
+        }
+        break;
+        case MSGWND_SECTION_FLEXRAY_ID:
+        {
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
+                COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
+                PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                {
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
+                    pMessageAtt[i].omStrMsgname.Format("%s", acName);
+
+                    COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
+                    COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
+                }
+                sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                CMessageAttrib::ouGetHandle(CAN).vSetMessageAttribData(&sMsgAttrib);
+                theApp.vPopulateCANIDList();
+                //Msg buffer size
+                COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
+
+                //Msg Filter
+                bool bResult = false;
+                SFILTERAPPLIED_CAN sMsgWndFilter;
+                pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
+
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                              WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+                //Msg FormatWnd Details
+
+                if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA,
+                                  (LPARAM)pbyTemp);
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eLOAD_DATABASE,
+                                  (LPARAM)&(theApp.m_pouMsgSignal));
+                }
+                //clear msg attributes
+                DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                sMsgAttrib.m_usMsgCount = 0;
+            }
+            else
+            {
+                CMessageAttrib::ouGetHandle(FLEXRAY).vSetMessageAttribData(NULL);
+                m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+
+                /* SFILTERAPPLIED_CAN sMsgWndFilter;
+                 sMsgWndFilter.vClear();
+                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                               WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);*/
+
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                              WM_NOTIFICATION_FROM_OTHER,
+                              eWINID_MSG_WND_SET_CONFIG_DATA,
+                              NULL);
+            }
+        }
+        break;
+        case MSGWND_SECTION_LIN_ID:
+        {
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0;
+                COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
+
+                //Msg Attributes
+                SMESSAGE_ATTRIB sMsgAttrib;
+                sMsgAttrib.m_psMsgAttribDetails = NULL;
+                sMsgAttrib.m_usMsgCount = 0;
+                COPY_DATA_2(&(sMsgAttrib.m_usMsgCount), pbyTemp, sizeof(UINT));
+                PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
+                for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
+                {
+                    char acName[MAX_PATH] = {_T('\0')};
+                    COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
+                    pMessageAtt[i].omStrMsgname.Format("%s", acName);
+
+                    COPY_DATA_2(&(pMessageAtt[i].unMsgID), pbyTemp, sizeof(UINT));
+                    COPY_DATA_2(&(pMessageAtt[i].sColor), pbyTemp, sizeof(COLORREF));
+                }
+                sMsgAttrib.m_psMsgAttribDetails = pMessageAtt;
+                CMessageAttrib::ouGetHandle(LIN).vSetMessageAttribData(&sMsgAttrib);
+                //theApp.vPopulateLINIDList();
+                //Msg buffer size
+                COPY_DATA_2(m_anMsgBuffSize, pbyTemp, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
+
+                //Msg Filter
+                bool bResult = false;
+                SFILTERAPPLIED_LIN sMsgWndFilter;
+                pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
+
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                              WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+                //Msg FormatWnd Details
+
+                if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                {
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eWINID_MSG_WND_SET_CONFIG_DATA,
+                                  (LPARAM)pbyTemp);
+                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                                  WM_NOTIFICATION_FROM_OTHER,
+                                  eLOAD_DATABASE,
+                                  (LPARAM)&(theApp.m_pouMsgSignal));
+                }
+                //clear msg attributes
+                DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
+                sMsgAttrib.m_usMsgCount = 0;
+            }
+            else
+            {
+                CMessageAttrib::ouGetHandle(LIN).vSetMessageAttribData(NULL);
+                m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+                m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+                m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+
+                SFILTERAPPLIED_LIN sMsgWndFilter;
+                sMsgWndFilter.vClear();
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                              WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
+
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                              WM_NOTIFICATION_FROM_OTHER,
+                              eWINID_MSG_WND_SET_CONFIG_DATA,
+                              NULL);
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
                               WM_NOTIFICATION_FROM_OTHER,
                               eLOAD_DATABASE,
                               (LPARAM)&(theApp.m_pouMsgSignal));
@@ -16004,6 +17772,18 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+        case TXWND_SECTION_LIN_ID:
+        {
+            if (pbyConfigData != NULL)
+            {
+                m_objTxHandlerLin.vSetTxWndConfigData(pbyConfigData, nSize);
+            }
+            else
+            {
+                m_objTxHandlerLin.vSetTxWndConfigData(NULL);
+            }
+        }
+        break;
         case FILTER_SECTION_ID:
         {
             if (pbyConfigData != NULL)
@@ -16150,6 +17930,18 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             m_objTSEditorHandler.vSetConfigurationData(pbyConfigData, nSize);
         }
         break;
+        case FLEXRAY_TXWND:
+        {
+            if (pbyConfigData != NULL)
+            {
+                m_objFlexTxHandler.vSetTxWndConfigData(pbyConfigData, nSize);
+            }
+            else
+            {
+                m_objFlexTxHandler.vSetTxWndConfigData(NULL);
+            }
+        }
+        break;
         case TEST_SUITE_EXECUTOR_SECTION_ID:
         {
             m_objTSExecutorHandler.vSetConfigurationData(pbyConfigData, nSize);
@@ -16167,528 +17959,78 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 {
     switch (eSecId)
     {
-            //case MAINFRAME_SECTION_ID:
-            //{
-            //    nSize += sizeof(BYTE); //Configuration version
-            //    nSize += (sizeof(char) * MAX_PATH) + sizeof(STOOLBARINFO) + sizeof(WINDOWPLACEMENT) + sizeof (BOOL) * BUS_TOTAL;
-            //    pbyConfigData = new BYTE[nSize];
-
-
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        BYTE byVersion = 0x2;
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            //        char acName[MAX_PATH] = {_T('\0')};
-            //        strcpy_s(acName, MAX_PATH, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
-            //        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-
-
-            //        theApp.pouGetFlagsPtr()->vGetToolbarButtonStatus(&m_sToolBarInfo);
-            //        COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
-
-            //        if (m_podUIThread != NULL)
-            //        {
-            //            m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, FALSE);
-            //        }
-
-            //        COPY_DATA(pbyTemp, &m_sNotificWndPlacement, sizeof(WINDOWPLACEMENT));
-            //        COPY_DATA(pbyTemp, m_abLogOnConnect, sizeof (BOOL) * BUS_TOTAL)
-            //    }
-
-            //}
-            //break;
-            //case LOG_SECTION_J1939_ID:
-            //{
-            //    if (GetIJ1939Logger() != NULL)
-            //    {
-            //        GetIJ1939Logger()->FPJ1_GetConfigData(&pbyConfigData, nSize);
-            //    }
-            //}
-            //break;
-            //case LOG_SECTION_ID:
-            //{
-            //    if (sg_pouFrameProcCAN != NULL)
-            //    {
-            //        sg_pouFrameProcCAN->FPC_GetConfigData(&pbyConfigData, nSize);
-            //    }
-            //}
-            //break;
-            //case SIMSYS_SECTION_ID:
-            //{
-            //    int nConfigSize = 0;
-            //    GetICANNodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
-            //    nSize = nConfigSize;
-            //}
-            //break;
-            //case SIMSYS_SECTION_J1939_ID:
-            //{
-            //    int nConfigSize = 0;
-            //    GetIJ1939NodeSim()->NS_GetSimSysConfigData(pbyConfigData, nConfigSize);
-            //    nSize = nConfigSize;
-            //}
-            //break;
-            //case REPLAY_SECTION_ID:
-            //{
-            //    int nCfgSize = 0;
-            //   // vREP_GetReplayConfigData(pbyConfigData, nCfgSize);
-            //    nSize = nCfgSize;
-            //}
-            //break;
-            //case MSGWND_SECTION_ID:
-            //{
-            //    //FIRST CALC SIZE
-            //    nSize += sizeof(BYTE); // Configuration version
-
-            //    nSize += sizeof (UINT);// To store count of MsgAttribs
-            //    SMESSAGE_ATTRIB sMsgAttrib;
-            //    sMsgAttrib.m_psMsgAttribDetails = NULL;
-            //    sMsgAttrib.m_usMsgCount = 0;
-            //    CMessageAttrib::ouGetHandle(CAN).vGetMessageAttribData(sMsgAttrib);
-            //    UINT nCount = sMsgAttrib.m_usMsgCount;
-            //    //Count             To store Msg Name         MsgId        Msg Color
-            //    nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
-            //    //Msg Buffer size
-            //    nSize += (sizeof (INT) * defDISPLAY_CONFIG_PARAM);
-            //    //Msg Filter size
-            //    SFILTERAPPLIED_CAN sMsgWndFilter;
-            //    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_GET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
-            //    nSize += sMsgWndFilter.unGetSize();
-            //    //MsgFormat window config data
-
-            //    UINT unMsgFrmtWndCfgSize = 0;
-            //    ASSERT(m_podMsgWndThread != NULL);
-
-            //    if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
-            //    {
-            //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-            //                      WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
-            //        nSize += unMsgFrmtWndCfgSize;
-            //    }
-            //    //CALC SIZE ENDS
-
-            //    pbyConfigData = new BYTE[nSize];
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        BYTE byVersion = 0x1;
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            //        //Msg Attributes
-            //        UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
-            //        COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
-            //        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
-            //        {
-            //            char acName[MAX_PATH] = {_T('\0')};
-
-            //            strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_PATH));
-            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-
-            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
-            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
-            //        }
-
-            //        //Msg buffer size
-            //        COPY_DATA(pbyTemp, m_anMsgBuffSize, sizeof(UINT) * defDISPLAY_CONFIG_PARAM);
-
-            //        //Msg Filter
-            //        //bool bResult = false;
-            //        pbyTemp = sMsgWndFilter.pbGetConfigData(pbyTemp);
-
-            //        if(m_podMsgWndThread->hGetHandleMsgWnd(CAN))
-            //        {
-            //            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
-            //                          WM_NOTIFICATION_FROM_OTHER,
-            //                          eWINID_MSG_WND_GET_CONFIG_DATA,
-            //                          (LPARAM)pbyTemp);
-            //        }
-            //    }
-            //    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-            //}
-            //break;
-            //case MSGWND_SECTION_J1939_ID:
-            //{
-            //    //FIRST CALC SIZE
-            //    nSize += sizeof(BYTE); // Configuration version
-
-            //    nSize += sizeof (UINT);// To store count of MsgAttribs
-            //    SMESSAGE_ATTRIB sMsgAttrib;
-            //    sMsgAttrib.m_psMsgAttribDetails = NULL;
-            //    sMsgAttrib.m_usMsgCount = 0;
-            //    CMessageAttrib::ouGetHandle(J1939).vGetMessageAttribData(sMsgAttrib);
-            //    UINT nCount = sMsgAttrib.m_usMsgCount;
-            //    //Count             To store Msg Name         MsgId        Msg Color
-            //    nSize += (nCount * ((sizeof (char) * MAX_PATH) + sizeof(UINT) + sizeof (COLORREF)));
-            //    //MsgFormat window config data
-            //    UINT unMsgFrmtWndCfgSize = 0;
-            //    ASSERT(m_podMsgWndThread != NULL);
-
-            //    if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
-            //    {
-            //        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
-            //                      WM_NOTIFICATION_FROM_OTHER, eWINID_MSG_WND_GET_CONFIG_SIZE, (LPARAM)&unMsgFrmtWndCfgSize);
-            //        nSize += unMsgFrmtWndCfgSize;
-            //    }
-            //    //CALC SIZE ENDS
-
-            //    pbyConfigData = new BYTE[nSize];
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        //Version
-            //        BYTE byVersion = 0x1;
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            //        //Msg Attributes
-            //        UINT unTempMsgCount = sMsgAttrib.m_usMsgCount;
-            //        COPY_DATA(pbyTemp, &unTempMsgCount, sizeof(UINT));
-
-            //        for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
-            //        {
-            //            char acName[MAX_PATH] = {_T('\0')};
-
-            //            strcpy_s(acName, MAX_PATH, sMsgAttrib.m_psMsgAttribDetails[i].omStrMsgname.GetBuffer(MAX_CHAR));
-            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].unMsgID), sizeof(UINT));
-            //            COPY_DATA(pbyTemp, &(sMsgAttrib.m_psMsgAttribDetails[i].sColor), sizeof(COLORREF));
-            //        }
-
-            //        //Msg Format Data
-            //        if(m_podMsgWndThread->hGetHandleMsgWnd(J1939))
-            //        {
-            //            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
-            //                          WM_NOTIFICATION_FROM_OTHER,
-            //                          eWINID_MSG_WND_GET_CONFIG_DATA,
-            //                          (LPARAM)pbyTemp);
-            //        }
-            //    }
-            //    DELETE_ARRAY(sMsgAttrib.m_psMsgAttribDetails);
-            //}
-            //break;
-            //case SIGWATCH_SECTION_J1939_ID:
-            //{
-            //    CMainEntryList odMainEntryList;
-            //    vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
-
-            //    //CALCULATE SIZE REQUIRED
-            //    nSize += sizeof(BYTE); //Configuration version
-
-            //    POSITION pos = odMainEntryList.GetHeadPosition();
-            //    nSize += sizeof (UINT); //To store the count of main entry
-            //    while (pos)
-            //    {
-            //        nSize += sizeof (UINT);
-            //        nSize += (sizeof (char) * MAX_PATH);
-            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-            //        nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
-
-            //        for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
-            //        {
-            //            nSize += sizeof (UINT);
-            //            nSize += (sizeof (char) * MAX_PATH);
-            //        }
-            //    }
-            //    //BYTE* pbySWWndPlacement = NULL;
-            //    //UINT unSWSize = 0;
-            //    nSize += sg_pouSWInterface[J1939]->SW_GetConfigSize();
-            //    //ALLOCATE MEMORY
-            //    pbyConfigData = new BYTE[nSize];
-            //    BYTE* pbyTemp = pbyConfigData;
-
-            //    //UPDATE THE DATA NOW
-            //    BYTE byVersion = 0x1;
-            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            //    pos = odMainEntryList.GetHeadPosition();
-            //    UINT nMainCount = odMainEntryList.GetCount();
-
-            //    COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
-
-            //    while (pos)
-            //    {
-            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-            //        COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-            //        char acName[MAX_PATH] = {_T('\0')};
-            //        strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
-            //        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-            //        UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
-            //        COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
-            //        POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-            //        while (SelPos != NULL)
-            //        {
-            //            SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
-            //            COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-            //            strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_CHAR));
-            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-            //        }
-            //    }
-
-            //    if (sg_pouSWInterface[J1939] != NULL)
-            //    {
-            //        UINT nSWSize = 0;
-            //        sg_pouSWInterface[J1939]->SW_GetConfigData((void*)pbyTemp);
-            //        pbyTemp += nSWSize;
-            //    }
-            //}
-            //break;
-            //case SIGWATCH_SECTION_ID:
-            //{
-            //    CMainEntryList odMainEntryList;
-            //    vPopulateMainEntryList(&odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
-
-            //    //CALCULATE SIZE REQUIRED
-            //    nSize += sizeof(BYTE); //Configuration version
-
-            //    POSITION pos = odMainEntryList.GetHeadPosition();
-            //    nSize += sizeof (UINT); //To store the count of main entry
-            //    while (pos)
-            //    {
-            //        nSize += sizeof (UINT);
-            //        nSize += (sizeof (char) * MAX_PATH);
-            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-            //        nSize += (sizeof (char) * MAX_PATH);//To store number of selected entries
-
-            //        for (UINT nSelIndex = 0; nSelIndex < (UINT)sMainEntry.m_odSelEntryList.GetCount(); nSelIndex++)
-            //        {
-            //            nSize += sizeof (UINT);
-            //            nSize += (sizeof (char) * MAX_PATH);
-            //        }
-            //    }
-            //    //BYTE* pbySWWndPlacement = NULL;
-            //    //UINT unSWSize = 0;
-            //    nSize += sg_pouSWInterface[CAN]->SW_GetConfigSize();
-            //    //ALLOCATE MEMORY
-            //    pbyConfigData = new BYTE[nSize];
-            //    BYTE* pbyTemp = pbyConfigData;
-
-            //    //UPDATE THE DATA NOW
-            //    BYTE byVersion = 0x1;
-            //    COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            //    pos = odMainEntryList.GetHeadPosition();
-            //    UINT nMainCount = odMainEntryList.GetCount();
-
-            //    COPY_DATA(pbyTemp, &nMainCount, sizeof(UINT));
-
-            //    while (pos)
-            //    {
-            //        SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
-            //        COPY_DATA(pbyTemp, &(sMainEntry.m_unMainEntryID), sizeof(UINT));
-            //        char acName[MAX_PATH] = {_T('\0')};
-            //        strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_PATH));
-            //        COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-
-            //        UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
-            //        COPY_DATA(pbyTemp, &unSelCount, sizeof(UINT));
-            //        POSITION SelPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-            //        while (SelPos != NULL)
-            //        {
-            //            SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SelPos);
-            //            COPY_DATA(pbyTemp, &(sSubEntry.m_unSubEntryID), sizeof(UINT));
-            //            strcpy_s(acName, MAX_PATH, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-            //            COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-            //        }
-            //    }
-
-            //    if (sg_pouSWInterface[CAN] != NULL)
-            //    {
-            //        UINT nSWSize = 0;
-            //        sg_pouSWInterface[CAN]->SW_GetConfigData((void*)pbyTemp);
-            //        pbyTemp += nSWSize;
-            //    }
-            //}
-            //break;
-            //case DIL_SECTION_ID:
-            //{
-            //    nSize = sizeof(BYTE);//configuration version
-            //    nSize += sizeof(DWORD);// Driver Id
-            //    nSize += sizeof(BYTE); // Controller mode
-
-            //    //nSize += sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED;
-            //    for(int i = 0; i < CHANNEL_ALLOWED; i++)
-            //    {
-            //        int nTemp = 0;
-            //        m_asControllerDetails[i].GetControllerConfigSize(nTemp);
-            //        nSize += nTemp;
-            //    }
-
-            //    pbyConfigData = new BYTE[nSize];
-
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        BYTE byVersion = DIL_CFX_CURRENT_VERSION;
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-            //        COPY_DATA(pbyTemp, &m_dwDriverId, sizeof(DWORD));
-            //        COPY_DATA(pbyTemp, &m_byControllerMode, sizeof(BYTE));
-            //        //COPY_DATA(pbyTemp, m_asControllerDetails, (sizeof(SCONTROLLER_DETAILS) * CHANNEL_ALLOWED));
-            //        for(int i = 0; i < CHANNEL_ALLOWED; i++)
-            //        {
-            //            INT nsize = 0;
-            //            m_asControllerDetails[i].GetControllerConfigData(pbyTemp, nsize);
-            //        }
-            //    }
-            //}
-            //break;
-            //case GRAPH_SECTION_ID:
-            //{
-            //    BYTE byVersion = 0x2;
-            //    nSize = sizeof(BYTE);//configuration version
-
-            //    for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
-            //    {
-            //        nSize += m_odGraphList[nBUSID].unGetConfigSize(byVersion);
-            //        nSize += sizeof(WINDOWPLACEMENT)+ sizeof(SGRAPHSPLITTERDATA);
-            //    }
-
-            //    pbyConfigData = new BYTE[nSize];
-
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-
-            //        for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
-            //        {
-            //            pbyTemp = m_odGraphList[nBUSID].pbyGetConfigData(pbyTemp, byVersion);
-            //            m_objSigGrphHandler.GetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
-            //                    m_sGraphSplitterPos[nBUSID]);
-            //            COPY_DATA(pbyTemp, &m_sGraphWndPlacement[nBUSID], sizeof(WINDOWPLACEMENT));
-            //            COPY_DATA(pbyTemp, &m_sGraphSplitterPos[nBUSID], sizeof(SGRAPHSPLITTERDATA));
-            //        }
-            //    }
-            //}
-            //break;
-            //case TXWND_SECTION_ID:
-            //{
-            //    int nCfgSize = 0;
-            //    m_objTxHandler.vGetTxWndConfigData(pbyConfigData, nCfgSize);
-            //    nSize = nCfgSize;
-            //}
-            //break;
-            //case FILTER_SECTION_ID:
-            //{
-            //    nSize = m_sFilterAppliedCAN.unGetSize();
-            //    pbyConfigData = new BYTE[nSize];
-
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-            //        //bool bResult = false;
-            //        pbyTemp = m_sFilterAppliedCAN.pbGetConfigData(pbyTemp);
-            //    }
-            //}
-            //break;
-            //case DATABASE_SECTION_J1939_ID:
-            //{
-            //    nSize += sizeof(BYTE);//configuration version
-
-            //    CStringArray omDbNames;
-            //    if (m_pouMsgSigJ1939 != NULL)
-            //    {
-            //        m_pouMsgSigJ1939->vGetDataBaseNames(&omDbNames);
-            //    }
-
-            //    nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
-            //    pbyConfigData = new BYTE[nSize];
-
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        BYTE byVersion = 0x1;
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-            //        //CAN DB NAMES
-            //        UINT unCount = omDbNames.GetSize();
-            //        COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
-            //        for (UINT i = 0; i < unCount; i++)
-            //        {
-            //            CString omDbName = omDbNames.GetAt(i);
-            //            char acName[MAX_PATH] = {_T('\0')};
-            //            strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_CHAR));
-            //            COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
-            //        }
-            //    }
-            //}
-            //break;
-            //case DATABASE_SECTION_ID:
-            //{
-            //    nSize += sizeof(BYTE);//configuration version
-
-            //    CStringArray omDbNames;
-            //    if (theApp.m_pouMsgSignal != NULL)
-            //    {
-            //        theApp.m_pouMsgSignal->vGetDataBaseNames(&omDbNames);
-            //    }
-
-            //    nSize += sizeof(UINT) + ((sizeof(char) * MAX_PATH) * omDbNames.GetSize());
-            //    pbyConfigData = new BYTE[nSize];
-
-            //    if (pbyConfigData != NULL)
-            //    {
-            //        BYTE* pbyTemp = pbyConfigData;
-
-            //        BYTE byVersion = 0x1;
-            //        COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
-            //        //CAN DB NAMES
-            //        UINT unCount = omDbNames.GetSize();
-            //        COPY_DATA(pbyTemp, &unCount,  sizeof (UINT));
-            //        for (UINT i = 0; i < unCount; i++)
-            //        {
-            //            CString omDbName = omDbNames.GetAt(i);
-            //            char acName[MAX_PATH] = {_T('\0')};
-            //            strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_PATH));
-            //            COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
-            //        }
-            //    }
-            //}
-            //break;
-            //case WAVEFORMDATA_SECTION_ID:
-            //{
-            //    m_objWaveformDataHandler.GetConfigData(&pbyConfigData, nSize);
-            //}
-            //break;
-            //case BUS_STATISTICS_SECTION_ID:
-            //{
-            //    if(m_bIsStatWndCreated)
-            //    {
-            //        nSize += m_podBusStatistics->nGetBusStatsDlgConfigSize();
-            //        pbyConfigData = new BYTE[nSize];
-
-            //        if (pbyConfigData != NULL)
-            //        {
-            //            BYTE* pbyTemp = pbyConfigData;
-            //            m_podBusStatistics->GetConfigData(pbyTemp);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        CBusStatisticsDlg::vGetDataFromStore(&pbyConfigData, nSize);
-            //    }
-            //}
-            //break;
-            ////venkat
-            //case TEST_SETUP_EDITOR_SECTION_ID:
-            //{
-            //    m_objTSEditorHandler.vGetConfigurationData(pbyConfigData, nSize);
-            //}
-            //break;
-            //case TEST_SUITE_EXECUTOR_SECTION_ID:
-            //{
-            //    m_objTSExecutorHandler.vGetConfigurationData(pbyConfigData, nSize);
-            //}
-            //break;
-            //default:
-            //{
-            //    ASSERT(FALSE);
-            //}
-            //break;
+    }
+}
+
+void CMainFrame::OnSelectFLEXRAYDriver(UINT nID)
+{
+    m_bFlxDILChanging = TRUE;
+    FLEXRAY_DILINFO* psCurrDIL = psGetFLEXRAYDILEntry(nID);
+
+    //TODO::FIBEX Validation is Required
+    if ( m_ouFlexConfig.m_nChannelsConfigured < 0 ||m_ouFlexConfig.m_ouFlexChannelConfig[0].m_strFibexPath.empty())
+    {
+        int nSelection = MessageBox("Please Configure the Cluster Parameters", "Invalid Cluster Configuration", MB_OK);
+        if ( nSelection == IDOK )
+        {
+            OnFlexRayDBAssociate();
+        }
+    }
+
+    if ( m_ouFlexConfig.m_nChannelsConfigured < 0 ||m_ouFlexConfig.m_ouFlexChannelConfig[0].m_strFibexPath.empty())
+    {
+        return;
+    }
+
+    if (psCurrDIL != NULL)
+    {
+        m_shFLEXRAYDriverId =  psCurrDIL->m_dwDriverID;
+
+        HRESULT hResult = InitializeFLEXRAYDIL();
+
+        if ( hResult != S_OK )
+        {
+
+            /* Resetting DIL to NONE */
+            if ( g_pouDIL_FLEXRAY_Interface )
+            {
+                m_shFLEXRAYDriverId = DAL_NONE;
+                g_pouDIL_FLEXRAY_Interface->DILF_SelectDriver(m_shFLEXRAYDriverId, m_hWnd, &m_ouWrapperLogger);
+            }
+        }
+    }
+    m_bFlxDILChanging = FALSE;
+}
+
+void CMainFrame::OnUpdateSelectFLEXRAYDriver(CCmdUI* pCmdUI)
+{
+    BOOL bSelected = FALSE;
+    // Search for the associated item in the DIL list
+    FLEXRAY_DILINFO* psCurrDIL = psGetFLEXRAYDILEntry(pCmdUI->m_nID);
+    if (psCurrDIL != NULL)
+    {
+        if (g_pouDIL_FLEXRAY_Interface != NULL)
+        {
+            bSelected = (psCurrDIL->m_dwDriverID == g_pouDIL_FLEXRAY_Interface->DILF_GetSelectedDriver());
+        }
+    }
+    CFlags* pFlag = theApp.pouGetFlagsPtr();
+    if (pFlag != NULL)
+    {
+        BOOL bConnected = pFlag->nGetFlagStatus(FLEX_CONNECTED);
+        if (bConnected == FALSE)
+        {
+            pCmdUI->Enable(!bSelected);
+        }
+        else
+        {
+            pCmdUI->Enable(FALSE);
+        }
+    }
+
+    if(psCurrDIL->m_dwDriverID != FLEXRAY_DAL_NONE)
+    {
+        pCmdUI->SetCheck(bSelected);
     }
 }
 
@@ -16722,6 +18064,19 @@ void CMainFrame::OnSelectDriver(UINT nID)
     }
 }
 
+void CMainFrame::OnSelectLINDriver(UINT nID)
+{
+    DILINFO* psCurrDIL = psGetDILLINEntry(nID);
+    // Above lines have to be changed.
+
+
+    if (psCurrDIL != NULL)
+    {
+        m_dwLINDriverId =  psCurrDIL->m_dwDriverID;
+
+        HRESULT hResult = IntializeDILL();
+    }
+}
 void CMainFrame::OnUpdateSelectDriver(CCmdUI* pCmdUI)
 {
     BOOL bSelected = FALSE;
@@ -16751,6 +18106,91 @@ void CMainFrame::OnUpdateSelectDriver(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(bSelected);
 }
 
+void CMainFrame::OnUpdateSelectLINDriver(CCmdUI* pCmdUI)
+{
+    BOOL bSelected = FALSE;
+    // Search for the associated item in the DIL list
+    DILINFO* psCurrDIL = psGetDILLINEntry(pCmdUI->m_nID);
+    if (psCurrDIL != NULL)
+    {
+        if (g_pouDIL_LIN_Interface != NULL)
+        {
+            bSelected = (psCurrDIL->m_dwDriverID == g_pouDIL_LIN_Interface->DILL_GetSelectedDriver());
+        }
+    }
+    CFlags* pFlag = theApp.pouGetFlagsPtr();
+    if (pFlag != NULL)
+    {
+        BOOL bConnected = pFlag->nGetFlagStatus(LIN_CONNECTED);
+        if (bConnected == FALSE)
+        {
+            pCmdUI->Enable(!bSelected);
+        }
+        else
+        {
+            pCmdUI->Enable(FALSE);
+        }
+    }
+
+    pCmdUI->SetCheck(bSelected);
+}
+
+BOOL CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
+{
+    USES_CONVERSION;
+
+    BOOL bResult = TRUE;
+
+    if (m_pFlxDILSubMenu == NULL)
+    {
+        /* Create a new popup Menu */
+        if (bResult == ((m_pFlxDILSubMenu = new CMenu()) != NULL))
+        {
+            if ((bResult = m_pFlxDILSubMenu->CreatePopupMenu()) == TRUE)
+            {
+                // Add the FlexRay DIL list
+                for (int i = 0; (i < m_nFlexRayDILCount) && bResult; i++)
+                {
+                    bResult = m_pFlxDILSubMenu->AppendMenu(MF_STRING,
+                                                           IDC_SELECT_FLEX_DRIVER + i, _((char*)m_ouFlexRayList[i].m_acName.c_str()));
+                    if (bResult == TRUE)
+                    {
+                        m_ouFlexRayList[i].m_ResourceID = IDC_SELECT_FLEX_DRIVER + i;
+                    }
+                }
+            }
+            else
+            {
+                theApp.bWriteIntoTraceWnd(_("bUpdatePopupMenuFLEXRAYDIL for driver selection failed!"));
+            }
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd(_("new CMenu() for FlexRay failed!"));
+            ASSERT(FALSE);
+        }
+    }
+
+    if (bResult == TRUE)
+    {
+        CMenu* pConfigMenu = GetSubMenu(_T(_("Flex&Ray"))); // Get the Menu "F&LEXRAY"
+        ASSERT(pConfigMenu != NULL);
+        if (pConfigMenu == NULL)
+        {
+            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"Flex&Ray\") failed"));
+        }
+        if(pConfigMenu != NULL)
+        {
+            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pFlxDILSubMenu->m_hMenu), _T(_("Dri&ver Selection")));
+        }
+    }
+    if (bResult == FALSE)
+    {
+        theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
+    }
+
+    return bResult;
+}
 
 BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 {
@@ -16811,6 +18251,95 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
 
     return bResult;
 }
+FLEXRAY_DILINFO* CMainFrame::psGetFLEXRAYDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
+{
+    FLEXRAY_DILINFO* psResult = NULL;
+    for (int i = 0; i < m_nFlexRayDILCount; i++)
+    {
+        if (bKeyMenuItem == TRUE)
+        {
+            if (m_ouFlexRayList[i].m_ResourceID == unKeyID)
+            {
+                psResult = &(m_ouFlexRayList[i]);
+                break;
+            }
+        }
+        else
+        {
+            if (m_ouFlexRayList[i].m_dwDriverID == unKeyID)
+            {
+                psResult = &(m_ouFlexRayList[i]);
+                break;
+            }
+        }
+    }
+    return psResult;
+}
+
+BOOL CMainFrame::bUpdatePopupMenuDILL(void)
+{
+    USES_CONVERSION;
+
+    BOOL bResult = TRUE;
+
+    if (m_pDILSubMenuLin == NULL)
+    {
+        /* Create a new popup Menu */
+        if (bResult == ((m_pDILSubMenuLin = new CMenu()) != NULL))     //venkat
+        {
+            if ((bResult = m_pDILSubMenuLin->CreatePopupMenu()) == TRUE)
+            {
+                // Add the DIL list
+                for (int i = 0; (i < m_nDILCountLin) && bResult; i++)
+                {
+                    bResult = m_pDILSubMenuLin->AppendMenu(MF_STRING,
+                                                           IDC_SELECT_LIN_DRIVER + i, _((char*)m_ouListLin[i].m_acName.c_str()));
+                    if (bResult == TRUE)
+                    {
+                        m_ouListLin[i].m_ResourceID = IDC_SELECT_LIN_DRIVER + i;
+                        if (i == 0) //Disable the Deactivate menu item by default
+                        {
+                            m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + i, false);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                theApp.bWriteIntoTraceWnd(_("CreatePopupMenu for driver selection failed"));
+            }
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd(_("new CMenu() failed"));
+            ASSERT(FALSE);
+        }
+    }
+
+    if (bResult == TRUE)
+    {
+        CMenu* pConfigMenu = GetSubMenu(_T(_("&LIN"))); // Get the Menu "&Hardware"
+        ASSERT(pConfigMenu != NULL);
+        if (pConfigMenu == NULL)
+        {
+            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&LIN\") failed"));
+        }
+        /*  PTV[1.6.4] */
+        // Added shortcut key
+
+        if(pConfigMenu != NULL)
+        {
+            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuLin->m_hMenu), _T(_("&Driver Selection")));
+        }
+    }
+    if (bResult == FALSE)
+    {
+        theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
+    }
+
+    return bResult;
+}
+
 DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
 {
     DILINFO* psResult = NULL;
@@ -16829,6 +18358,30 @@ DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
             if (m_ouList[i].m_dwDriverID == unKeyID)
             {
                 psResult = &(m_ouList[i]);
+                break;
+            }
+        }
+    }
+    return psResult;
+}
+DILINFO* CMainFrame::psGetDILLINEntry(UINT unKeyID, BOOL bKeyMenuItem)
+{
+    DILINFO* psResult = NULL;
+    for (int i = 0; i < m_nDILCountLin; i++)
+    {
+        if (bKeyMenuItem == TRUE)
+        {
+            if (m_ouListLin[i].m_ResourceID == unKeyID)
+            {
+                psResult = &(m_ouListLin[i]);
+                break;
+            }
+        }
+        else
+        {
+            if (m_ouListLin[i].m_dwDriverID == unKeyID)
+            {
+                psResult = &(m_ouListLin[i]);
                 break;
             }
         }
@@ -17034,12 +18587,27 @@ void CMainFrame::vInitializeBusStatCAN(void)
     GetICANBusStat()->BSC_DoInitialization();
     for (int i = 0; i < defNO_OF_CHANNELS; i++)
     {
-#ifdef CAN_FD_VERSION
+#ifdef BOA_FD_VERSION
         GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
 #else
         GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
 #endif
     }
+}
+
+
+//initializes FlexRay Busstatistics for can where user selects different driver.
+void CMainFrame::vInitializeBusStatFlexRay(void)
+{
+    GetIFlexRayBusStat()->BSC_DoInitialization();
+    /*for (int i = 0; i < defNO_OF_CHANNELS; i++)
+    {
+    #ifdef BOA_FD_VERSION
+        GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
+    #else
+        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+    #endif
+    }*/
 }
 
 void CMainFrame::vInitializeGraphWndReadBuffer()
@@ -17154,7 +18722,7 @@ void CMainFrame::OnActivateJ1939()
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
     }
     /* Modify filter icon accordingly in J1939 toolbar*/
-    BYTE bytTbrItemIndex = 0;
+    BYTE bytTbrItemIndex = 1;
     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );
 
     /* If J1939 is deactivated, retain the old icon set and hide J1939 Tx window */
@@ -17212,7 +18780,7 @@ void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI* pCmdUI)
 void CMainFrame::OnActionJ1939Online()
 {
     bool bOnlineStatus = false;
-    if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == FALSE)
+    if (NULL != sg_pouIJ1939DIL && sg_pouIJ1939DIL->DILIJ_bIsOnline() == FALSE)
     {
         if (sg_pouIJ1939DIL->DILIJ_GoOnline() == S_OK)
         {
@@ -17248,7 +18816,7 @@ void CMainFrame::OnActionJ1939Online()
             ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
                           WM_CONNECT_CHANGE, (WPARAM)FALSE, 0);
         }
-        if (sg_pouIJ1939DIL->DILIJ_GoOffline() == S_OK)
+        if (NULL != sg_pouIJ1939DIL && sg_pouIJ1939DIL->DILIJ_GoOffline() == S_OK)
         {
             theApp.bWriteIntoTraceWnd(_("DIL.J1939 network stopped..."));
         }
@@ -17348,7 +18916,7 @@ void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
     /* Modify filter icon accordingly in J1939 toolbar*/
-    BYTE bytTbrItemIndex = 2;
+    BYTE bytTbrItemIndex = 3;
     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
@@ -17388,7 +18956,35 @@ void CMainFrame::OnUpdateToolbarJ1939(CCmdUI* pCmdUI)
 }
 
 // END J1939 RELATED HANDLERS
+void CMainFrame::OnToolbarFlexRay()
+{
+    ToggleView(m_wndToolbarFlexRay);
+}
 
+void CMainFrame::OnUpdateToolbarFlexRay(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarFlexRay));
+}
+
+void CMainFrame::OnToolbarConfiguration()
+{
+    ToggleView(m_wndToolbarConfiguration);
+}
+
+void CMainFrame::OnUpdateToolbarConfiguration(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarConfiguration));
+}
+
+void CMainFrame::OnToolbarLIN()
+{
+    ToggleView(m_wndToolbarLIN);
+}
+
+void CMainFrame::OnUpdateToolbarLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarLIN));
+}
 
 // START J1939 RELATED HELPER FUNCTIONS
 HRESULT CMainFrame::ProcessJ1939Interfaces(void)
@@ -18271,25 +19867,18 @@ void CMainFrame::OnConfigureMessagedisplayJ1939()
     omAllMessages.AddPage(&odNDBMsg);
 
     omAllMessages.DoModal();
+}
 
-    // Show display configuration only if it is not connected
-    /*if( bConnected == FALSE )
-    {
-        CMsgBufferConfigPage obMsgBuffConf;
-        obMsgBuffConf.vSetBufferSize(m_anMsgBuffSize);
-        omAllMessages.AddPage(&obMsgBuffConf);
-        omAllMessages.DoModal();
+void CMainFrame::OnConfigureMessageDisplayFlexRay()
+{
+    CPropertySheet omAllMessages(_("Configure Message Display - FlexRay"));
+    CConfigMsgDispPropPg odMsgDisplay;
 
-        if (m_podMsgWndThread != NULL)//Msg window
-        {
-            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                            eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize);
-        }
-    }
-    else
-    {
-        omAllMessages.DoModal();
-    }*/
+    omAllMessages.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+    omAllMessages.m_psh.dwFlags &= ~PSH_HASHELP;
+
+    omAllMessages.AddPage(&odMsgDisplay);
+    omAllMessages.DoModal();
 }
 
 void CMainFrame::OnToolbarCandatabase()
@@ -18306,6 +19895,75 @@ void CMainFrame::OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI)
 void CMainFrame::OnAutomationTSEditor(void)
 {
     m_objTSEditorHandler.vShowTSEditorWindow((void*)this);
+}
+void CMainFrame::OnFlexRayTxWindow()
+{
+    m_objFlexTxHandler.vShowConfigureMsgWindow(this);
+}
+void CMainFrame::OnUpdateFlexrayAssociate(CCmdUI* pCmdUI)
+{
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+    if ( (pouFlag!= NULL) && (TRUE == pouFlag->nGetFlagStatus(FLEX_CONNECTED)))
+    {
+        pCmdUI->Enable(FALSE);
+    }
+    else
+    {
+        pCmdUI->Enable(TRUE);
+    }
+}
+
+void CMainFrame::OnFlexRayDBAssociate()
+{
+    string          strFilePath;
+    CStringArray strFilePathArray;
+    strFilePath = m_acFlexDBConfigInfo.m_acConfigFileName[0];
+
+
+    CFibexConfigDlg* ouConfig = new CFibexConfigDlg(m_pouMsgSigFLEXRAY,m_ouFlexConfig.m_ouFlexChannelConfig , m_nMaxFlexChannels , NULL);
+
+    if ( ouConfig == NULL )
+    {
+        return;
+    }
+
+    if ( ouConfig->DoModal() == IDOK)
+    {
+        m_ouFlexConfig.m_nChannelsConfigured = 1;
+        for ( int i = 0 ; i < CHANNEL_ALLOWED; i++ )
+        {
+            m_ouFlexConfig.m_ouFlexChannelConfig[i] = ouConfig->m_ouFlexrayChannelConfig[i];
+
+        }
+        delete ouConfig;
+        m_objFlexTxHandler.SetFibexConfig(m_ouFlexConfig);
+
+
+        //Venkat
+        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                      WM_NOTIFICATION_FROM_OTHER,
+                      eLOAD_DATABASE,
+                      (LPARAM)&m_ouFlexConfig);
+
+    }
+
+}
+
+void CMainFrame::OnFlexRayDBDisociate()
+{
+    CFlexRayDatabaseDissociateDlg odDBDialog(m_acFlexDBConfigInfo);
+    odDBDialog.DoModal();
+
+    if ( m_acFlexDBConfigInfo.m_acConfigFileName[0].empty() )
+    {
+        m_pouMsgSigFLEXRAY->vClearFIBEXContainers();
+        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                      WM_NOTIFICATION_FROM_OTHER,
+                      eLOAD_DATABASE,
+                      (LPARAM)&(m_pouMsgSigFLEXRAY));
+        /* Update message window */
+        vUpdateAllMsgWndInterpretStatus(FALSE);
+    }
 }
 void CMainFrame::OnAutomationTSExecutor(void)
 {
@@ -18447,8 +20105,11 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
         if(pouFlag != NULL)
         {
             BOOL bConnected = FALSE;
+            BOOL bConnectedFlexRay = FALSE;
             // Get the current status of Connected/Disconnected state
             bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
+            // Get the current status of Connected/Disconnected state for FlexRay
+            bConnectedFlexRay  = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
             //Procees the key "F2" and "ESC"
             if (pMsg->wParam == VK_F2)
             {
@@ -18465,6 +20126,18 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
                         m_pomMsgSgTreeViews[CAN]->SendMessage(WM_COMMAND, IDM_EDIT_MSG,0);
                     }
                 }
+                //else if(m_podMsgSgWndLin == pFrmWnd)//check for LIN Database
+                //            {
+                //                CWnd* pViewWnd = m_podMsgSgWndLin->GetWorkingView();
+                //                if(m_pomMsgSgDetViews[LIN] == pViewWnd)//check for Signal view
+                //                {
+                //                    m_pomMsgSgDetViews[LIN]->vEditSignalName();
+                //                }
+                //                else if(m_pomMsgSgTreeViews[LIN] == pViewWnd)//check for Treeview
+                //                {
+                //                    m_pomMsgSgTreeViews[LIN]->SendMessage(WM_COMMAND, IDM_EDIT_MSG,0);
+                //                }
+                //            }
                 else if (m_podMsgSgWndJ1939 == pFrmWnd)//check for J1939 Database
                 {
                     //if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)
@@ -18489,6 +20162,21 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
                 if(bConnected == TRUE)
                 {
                     OnFileConnect();
+                }
+            }//else if (pMsg->wParam == VK_ESCAPE)
+            //Procees the key "F3" and "F12" for FlexRay
+            else if (pMsg->wParam == VK_F3)
+            {
+                if( m_shFLEXRAYDriverId != DAL_NONE && bConnectedFlexRay == FALSE )
+                {
+                    OnFlexRayConnect();
+                }
+            }
+            else if (pMsg->wParam == VK_F12)
+            {
+                if( m_shFLEXRAYDriverId != DAL_NONE && bConnectedFlexRay == TRUE )
+                {
+                    OnFlexRayConnect();
                 }
             }//else if (pMsg->wParam == VK_ESCAPE)
         }
@@ -18584,3 +20272,255 @@ BOOL CMainFrame::bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMa
     }
     return bProper;
 }
+
+// START LIN RELATED HANDLERS
+
+
+/******************************************************************************/
+/*  Function Name    :  OnConfigBaudrateLin                                   */
+/*  Input(s)         :                                                        */
+/*  Output           :  baudrate                                              */
+/*  Functionality    :  This function is called to invoke the CChangeRegisters*/
+/*                   dialog box. On selection of menu, this function is called*/
+/*  Member of        :  CChangeRegisters                                      */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Manohar H                                             */
+/*  Date Created     :  02.05.2013                                            */
+/*  Modifications    :                                                        */
+/******************************************************************************/
+void CMainFrame::OnConfigBaudrateLIN()
+{
+    PCHAR pInitData = (PCHAR)m_asControllerDetailsLIN;
+    int nSize = sizeof(SCONTROLLER_DETAILS_LIN) * defNO_OF_LIN_CHANNELS;
+    if (g_pouDIL_LIN_Interface->DILL_DisplayConfigDlg(m_asControllerDetailsLIN, nSize) == S_OK)
+    {
+        //Set Controller to ConfigDetails
+        //memcpy(m_asControllerDetails, pInitData, nSize);
+    }
+    //Update hardware info in status bar
+    vUpdateHWStatusInfo();
+
+    //update baudrate details in global statistics buffer
+    /* for (int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
+    {
+        GetILINBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
+    } */
+}
+
+
+/**
+* \brief         This function pops out the hardware selection dialog
+* \param         void
+* \return        void
+* \authors       Arunkumar Karri
+* \date          13.12.2011 Created
+*/
+void CMainFrame::OnConfigChannelSelectionLIN()
+{
+    INT nCount = CHANNEL_ALLOWED;
+    HRESULT hResult = S_FALSE;
+
+    /* Deselect hardware interfaces if selected */
+    hResult = g_pouDIL_LIN_Interface->DILL_DeselectHwInterfaces();
+
+    if (g_pouDIL_LIN_Interface->DILL_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
+    {
+        hResult = g_pouDIL_LIN_Interface->DILL_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+        if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
+        {
+            /* Updates the number of channels selected */
+            m_nNumChannels = nCount;
+
+            //Update hardware info in status bar
+            vUpdateHWStatusInfo();
+
+            //Update NW statistics window channel information
+            vUpdateChannelInfo();
+
+            // Update controller information
+            g_pouDIL_LIN_Interface->DILL_SetConfigData(m_asControllerDetails, nCount);
+        }
+    }
+    else
+    {
+        /* Select previously available channels */
+        g_pouDIL_LIN_Interface->DILL_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+    }
+}
+//void CMainFrame::OnActivateLIN()
+//{
+//    HRESULT Result = S_FALSE;
+//    bool bActivateStatus = false;
+//    if ((NULL == sg_pouLinDIL) && (NULL == sg_pouLinLogger))
+//    {
+//        Result = ProcessLINInterfaces();
+//        GetILINNodeSim()->NS_SetLINActivationStatus(true);
+//        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
+//        bActivateStatus = true;
+//    }
+//    else
+//    {
+//        Result = DeselectLINInterfaces();
+//        GetILINNodeSim()->NS_SetLINActivationStatus(false);
+//        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+//    }
+//    /* Modify filter icon accordingly in LIN toolbar*/
+//    BYTE bytTbrItemIndex = 0;
+//    vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bActivateStatus, IDI_ICON_LIN_DEACTIVATE, IDI_ICON_LIN_ACTIVATE );
+//
+//    ASSERT(Result == S_OK);
+//}
+
+void CMainFrame::OnSendMessageLIN()
+{
+    // Check for SENDMESG flag, If true,
+    // make it false and stop sending messages
+    // If false, make it true and start sending messages
+    CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
+    // Use of this flag can be avoided by using "g_bStopSendMultMsg"
+    if ( !theApp.pouGetFlagsPtr()->nGetFlagStatus( SENDMESGLIN ) )
+    {
+
+        // Now start sending messages, update flag
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESGLIN, TRUE );
+
+        // Set the tool bar button to pressed state
+        omRefToolBarCtrl.PressButton(ID_TRANSMIT_ACTIVATE_LIN, TRUE);
+
+        m_objTxHandlerLin.vSetTxStopFlag(FALSE);
+        //g_bStopMsgBlockTx       = FALSE;
+        // Call Message Manager function to start message transmission
+        //m_podTxMsgManager->vStartTransmission(0);
+        m_objTxHandlerLin.vStartTransmission(0);
+    }
+    else // Started, Stop the same
+    {
+        //m_objTxHandler.vSetTxStopFlag(TRUE);
+        m_objTxHandlerLin.vStopTransmission(0);
+        //g_bStopMsgBlockTx       = TRUE;
+        theApp.vDestroyUtilThreads(500, BIT_MULTI_MSG_THREAD );
+        // Now start sending messages, update flag
+        theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESGLIN, FALSE );
+        // ReSet the tool bar button to pressed state
+        omRefToolBarCtrl.PressButton(ID_TRANSMIT_ACTIVATE_LIN, FALSE);
+        // PTV [1.6.4]
+        // Disabling Data logging Flag
+        /*if (NULL != sg_pouFrameProcCAN)
+        {
+            sg_pouFrameProcCAN->FPC_DisableDataLogFlag();
+        }*/
+    }
+    // Inform Tx Window about message transmission start if it exists
+    if(m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+    {
+        CFlags* pouFlag = theApp.pouGetFlagsPtr();
+        BOOL bTxON = FALSE;
+        if(pouFlag != NULL )
+        {
+            bTxON = static_cast<BOOL> (pouFlag->nGetFlagStatus(SENDMESGLIN));
+        }
+        eUSERSELCTION eUserSel     = eTXMSGCMD;
+        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxON);
+    }
+}
+
+/******************************************************************************
+    Function Name    :  OnCfgSendMsgsLIN
+
+    Input(s)         :  -
+    Output           :  void
+    Functionality    :  Called by the framework when user wants to configure
+                        messages to send the same on the LIN-bus
+    Member of        :  CMainFrame
+    Friend of        :      -
+    Author(s)        :  Manohar H
+    Date Created     :  29.07.2013
+******************************************************************************/
+void CMainFrame::OnCfgSendMsgsLIN()
+{
+    BOOL bFirstTime = !(m_objTxHandlerLin.hConfigWindowShown() == S_OK);
+    m_objTxHandlerLin.vShowConfigureMsgWindow((void*)this, SW_SHOW);
+    m_objTxHandlerLin.vSetMsgDBPtrInDetailsView((void*)theApp.m_pouMsgSignal);
+    if(bFirstTime == TRUE)
+    {
+        eUSERSELCTION eUserSel;
+        //Inform the connect status
+        CFlags* pouFlags   = theApp.pouGetFlagsPtr();
+        if(pouFlags != NULL)
+        {
+            // Toggle connect/disconnect flag
+            eUserSel = eCONNECTCMD;
+            BOOL bConnected = pouFlags->nGetFlagStatus(LIN_CONNECTED);
+            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bConnected );
+            // Hex/Dec format
+            BOOL bHexON = pouFlags->nGetFlagStatus(HEX);
+            eUSERSELCTION eUserSel = eHEXDECCMD;
+            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+            // Check for transmission on/off
+            BOOL bTxOn = pouFlags->nGetFlagStatus(SENDMESG);
+            eUserSel     = eTXMSGCMD;
+            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxOn);
+        }
+        // Inform about the database change.
+        eUserSel = eDATABASEIMPORTCMD;
+        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+    }
+}
+
+// START LIN RELATED HELPER FUNCTIONS
+HRESULT CMainFrame::ProcessLINInterfaces(void)
+{
+    HRESULT Result = S_FALSE;
+
+    return Result;
+}
+
+HRESULT CMainFrame::DeselectLINInterfaces(void)
+{
+    HRESULT Result = S_OK;
+
+    return Result;
+}
+
+// END LIN RELATED HELPER FUNCTIONS
+#ifdef _FLEXRAY_
+/******************************************************************************
+    Function Name    :  bCreateFlexRayMsgWindow
+
+    Input(s)         :      -
+    Output           :  BOOL
+    Functionality    :  Creates the message window (an object of
+                        CMsgMDIChildWnd class)
+    Member of        :  CMainFrame
+    Friend of        :      -
+
+    Author(s)        :  Saravanan
+    Date Created     :  20.03.2013
+    Modifications    :
+******************************************************************************/
+BOOL CMainFrame::bCreateFlexRayMsgWindow()
+{
+    BOOL bReturn = TRUE;
+
+    if (m_podMsgWndThread == NULL)
+    {
+        m_podMsgWndThread = new CMsgWndThread;
+    }
+
+    if (m_podMsgWndThread != NULL)
+    {
+        //FlexRay Message Window
+        m_podMsgWndThread->CreateMsgWnd(m_hWnd, FLEXRAY,
+                                        0, NULL);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
+
+        //m_podMsgWndThread->vUpdateClientID(FLEXRAY, 0);
+    }
+    else
+    {
+        bReturn = FALSE;
+    }
+
+    return TRUE;
+}
+#endif

@@ -20,9 +20,10 @@
  */
 #include "stdafx.h"             // Standard include header
 #include "BusStatisticCAN.h"
+#include "FlexRayNetworkStats.h"
 #include "BusStatistics.h"
 static CBusStatisticCAN* sg_pouBS_CAN = NULL;
-
+static CFlexRayNetworkStats*  sg_pouBS_FlexRay = NULL;
 /**
  * \param[in] eBus specifies the Type of bus,Either CAN or FRAME
  * \param[in] ppvInterface on function return it will have the pointer of BusStatistics.
@@ -52,7 +53,20 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
             *ppvInterface = (void*) sg_pouBS_CAN;
         }
         break;
+        case FLEXRAY:
+        {
+            if (NULL == sg_pouBS_FlexRay)
+            {
+                if ((sg_pouBS_FlexRay = new CFlexRayNetworkStats) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+            }
 
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouBS_FlexRay;
+        }
         case MCNET:
         case J1939:
         {

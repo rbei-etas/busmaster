@@ -24,6 +24,9 @@
 #define IDI_ICON_MSG_FILTER_ON          119
 #define IDI_ICON_REPLAY_FILTER_ON       120
 #define IDI_ICON_SIGNALWATCH            121
+#define IDB_LIN_IMG                     334
+#define IDB_LIN_IMGHOT                  335
+#define IDB_LIN_IMGDISABLED             336
 #define IDI_ICO_REPLAY                  153
 #define IDI_ICO_TX_WINDOW               17004
 #define IDI_ICON_NETWORKSTAT            3007
@@ -48,6 +51,14 @@
 #define IDB_TLB_J1939                   321
 #define IDB_TLB_J1939_HOT               322
 #define IDB_TLB_J1939_DISABLED          323
+#define IDB_TLB_FLEXRAY                 324
+#define IDB_TLB_FLEXRAY_HOT             325
+#define IDB_TLB_FLEXRAY_DISABLED        326
+#define IDR_CONFIG_TOOLBAR              328
+#define IDR_CONFIG_TOOLBAR_HOT          329
+#define IDR_CONFIG_TOOLBAR_DISABLED     330
+//#define IDB_LIN_IMGDISABLED             10006
+//#define IDB_LIN_IMGHOT                  10007
 #define IDC_BTN_BROWSE                  1001
 #define IDC_BTN_FILTER                  1002
 #define IDC_LSTC_SELECTED_FILTERS       1002
@@ -67,12 +78,13 @@
 #define IDC_LSTC_FILTER_LIST            1258
 #define IDC_BTN_ADD_FILE                1262
 #define IDC_COMBO_MSG_TYPE              1266
+#define IDC_FLEXRAY_LOGO                3008
 
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        121
+#define _APS_NEXT_RESOURCE_VALUE        122
 #define _APS_NEXT_COMMAND_VALUE         40001
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

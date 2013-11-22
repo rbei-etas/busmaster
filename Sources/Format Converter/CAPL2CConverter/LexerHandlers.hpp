@@ -191,7 +191,11 @@ void vStoreTimers()
 			    //omStrTemp.Empty();
 				//vTokenize(omStrTimers, ",;", omStrTemp, nStart);
 		    }
-    		
+			if (NULL != chTemp)
+			{
+				delete[] chTemp;
+				chTemp = NULL;
+			}
 	    }
     }
     else

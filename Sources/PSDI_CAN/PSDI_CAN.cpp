@@ -25,7 +25,9 @@
 #include "PSDI_CAN/stdafx_CAN.h"
 #include "PSDI_CAN.h"
 #include "MsgContainer_CAN.h"
+#include "MsgContainer_LIN.h"
 #include "MsgContainer_J1939.h"
+#include "MsgContainer_FlexRay.h"
 
 #define USAGE_EXPORT
 #include "Application/PSDI_Extern.h"
@@ -82,7 +84,9 @@ BOOL CPSDI_CANApp::InitInstance()
     return TRUE;
 }
 static CMsgContainerCAN* sg_pouMsgContainer_CAN = NULL;
+static CMsgContainerLIN* sg_pouMsgContainer_LIN = NULL;
 static CMsgContainerJ1939* sg_pouMsgContainer_J1939 = NULL;
+static CMsgContainerFlexRay* sg_pouMsgContainer_FlexRay = NULL;
 
 USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
 {
@@ -105,6 +109,21 @@ USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
 if sg_pouMsgContainer_CAN is null */
         }
         break;
+        case LIN:
+        {
+            if (NULL == sg_pouMsgContainer_LIN)
+            {
+                if ((sg_pouMsgContainer_LIN = new CMsgContainerLIN) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouMsgContainer_LIN; /* Doesn't matter even
+if sg_pouMsgContainer_LIN is null */
+        }
+        break;
         case J1939:
         {
             if (NULL == sg_pouMsgContainer_J1939)
@@ -118,6 +137,20 @@ if sg_pouMsgContainer_CAN is null */
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouMsgContainer_J1939; /* Doesn't matter even
 if sg_pouMsgContainer_J1939 is null */
+        }
+        break;
+        case FLEXRAY:
+        {
+            if (NULL == sg_pouMsgContainer_FlexRay)
+            {
+                if ((sg_pouMsgContainer_FlexRay = new CMsgContainerFlexRay) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouMsgContainer_FlexRay;
         }
         break;
         default:

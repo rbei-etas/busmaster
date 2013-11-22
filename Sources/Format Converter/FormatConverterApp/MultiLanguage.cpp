@@ -180,7 +180,7 @@ LANGID CMultiLanguage::DetectUILanguage()
             if (nResult == ERROR_SUCCESS)
             {
                 DWORD dwType;
-                TCHAR szValue[16];
+                TCHAR szValue[16] = "";
                 ULONG nBytes = sizeof( szValue );
                 nResult = ::RegQueryValueEx(hKey, NULL, NULL, &dwType,
                                             LPBYTE( szValue ), &nBytes );

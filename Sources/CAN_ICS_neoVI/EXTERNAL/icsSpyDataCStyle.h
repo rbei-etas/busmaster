@@ -32,41 +32,41 @@ Public Type icsSpyMessage
     AckBytes(1 To 8) As Byte 'new '8
     Value As Single ' 4
     MiscData As Byte
-  
+
 End Type */
 
 typedef struct _icsSpyMessage // matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;
-	unsigned char Protocol;
-	unsigned char MessagePieceID;	// 1
-	unsigned char ExtraDataPtrEnabled;			// 1
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;
+    unsigned char Protocol;
+    unsigned char MessagePieceID;   // 1
+    unsigned char ExtraDataPtrEnabled;          // 1
     unsigned char NumberBytesHeader;// 1
     unsigned char NumberBytesData;  // 1
-	short DescriptionID;			// 2
-    long ArbIDOrHeader;				// 4
+    short DescriptionID;            // 2
+    long ArbIDOrHeader;             // 4
     unsigned char Data[8];
     union
     {
-    	struct
+        struct
         {
-	    	unsigned long StatusBitField3;
-	    	unsigned long StatusBitField4;
+            unsigned long StatusBitField3;
+            unsigned long StatusBitField4;
         };
-	unsigned char AckBytes[8];
+        unsigned char AckBytes[8];
     };
     unsigned int ExtraDataPtr;
-	unsigned char MiscData;
-    }  icsSpyMessage;
+    unsigned char MiscData;
+}  icsSpyMessage;
 
 /*
 Public Type icsSpyMessageLong
@@ -92,42 +92,42 @@ Public Type icsSpyMessageLong
     AckBytes(1 To 8) As Byte 'new '8
     Value As Single
     MiscData As Byte
-    
+
 End Type*/
 
 typedef struct _icsSpyMessageLong// matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;	// 1
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;			// 1
-	unsigned char Protocol;			// 1
-	unsigned char MessagePieceID;	// 1
-	unsigned char ExtraDataPtrEnabled;			// 1
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;    // 1
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;           // 1
+    unsigned char Protocol;         // 1
+    unsigned char MessagePieceID;   // 1
+    unsigned char ExtraDataPtrEnabled;          // 1
     unsigned char NumberBytesHeader;// 1
     unsigned char NumberBytesData;  // 1
-	short DescriptionID;			// 2
-    long ArbIDOrHeader;				// 4
+    short DescriptionID;            // 2
+    long ArbIDOrHeader;             // 4
     unsigned long DataMsb;
-	unsigned long DataLsb;
-	unsigned char AckBytes[8];
+    unsigned long DataLsb;
+    unsigned char AckBytes[8];
     unsigned int ExtraDataPtr;
-	unsigned char MiscData;
+    unsigned char MiscData;
 
-        /*  THIS IS NOT ALLOWED IN C - DAVER
-        icsSpyMessageLong_struct() {
-                ExtraDataPtrEnabled = false;
-                NumberBytesData = 0;
-                ExtraDataPtr = 0;
-        } */
+    /*  THIS IS NOT ALLOWED IN C - DAVER
+    icsSpyMessageLong_struct() {
+            ExtraDataPtrEnabled = false;
+            NumberBytesData = 0;
+            ExtraDataPtr = 0;
+    } */
 
-    }  icsSpyMessageLong;
+}  icsSpyMessageLong;
 
 
 
@@ -157,37 +157,37 @@ Public Type icsSpyMessageJ1850
 End Type */
 
 typedef struct _icsSpyMessageJ1850// matching C structure
-    {
-    unsigned long StatusBitField;	// 4
-	unsigned long StatusBitField2;	// 4
-    unsigned long TimeHardware;		// 4
-	unsigned long TimeHardware2;	// 4
-    unsigned long TimeSystem;		// 4
-	unsigned long TimeSystem2;		// 4
-	unsigned char TimeStampHardwareID;		// 1
-	unsigned char TimeStampSystemID;	// 1
-	unsigned char NetworkID;		// 1
-	unsigned char NodeID;			// 1
-	unsigned char Protocol;			// 1
-	unsigned char MessagePieceID;	// 1
-	unsigned char ExtraDataPtrEnabled;			// 1
+{
+    unsigned long StatusBitField;   // 4
+    unsigned long StatusBitField2;  // 4
+    unsigned long TimeHardware;     // 4
+    unsigned long TimeHardware2;    // 4
+    unsigned long TimeSystem;       // 4
+    unsigned long TimeSystem2;      // 4
+    unsigned char TimeStampHardwareID;      // 1
+    unsigned char TimeStampSystemID;    // 1
+    unsigned char NetworkID;        // 1
+    unsigned char NodeID;           // 1
+    unsigned char Protocol;         // 1
+    unsigned char MessagePieceID;   // 1
+    unsigned char ExtraDataPtrEnabled;          // 1
     unsigned char NumberBytesHeader;// 1
     unsigned char NumberBytesData;  // 1
-	short DescriptionID;			// 2
-    unsigned char Header[4];		// 4
+    short DescriptionID;            // 2
+    unsigned char Header[4];        // 4
     unsigned char Data[8];
     union
     {
-    	struct
+        struct
         {
-	    	unsigned long StatusBitField3;
-	    	unsigned long StatusBitField4;
+            unsigned long StatusBitField3;
+            unsigned long StatusBitField4;
         };
-	unsigned char AckBytes[8];
-    };			
+        unsigned char AckBytes[8];
+    };
     unsigned int ExtraDataPtr;
-	unsigned char MiscData;
-    }  icsSpyMessageJ1850;
+    unsigned char MiscData;
+}  icsSpyMessageJ1850;
 
 
 

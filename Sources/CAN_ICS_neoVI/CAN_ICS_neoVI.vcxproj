@@ -102,14 +102,13 @@
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)CAN_ICS_neoVI.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,7 +151,6 @@
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)CAN_ICS_neoVI.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
@@ -192,7 +190,6 @@
       </DataExecutionPrevention>
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)CAN_ICS_neoVI.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -216,11 +213,7 @@
     <ClInclude Include="ChangeRegisters_CAN_ICS_neoVI.h" />
     <ClInclude Include="ContrConfigPeakUsbDefs.h" />
     <ClInclude Include="HardwareListing.h" />
-    <ClInclude Include="EXTERNAL\icsnVC40.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CAN_ICS_neoVI_Resource.hm" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_ICS_neoVI.rc" />
@@ -234,6 +227,9 @@
       <Project>{4a20171c-51db-4e82-bce0-5e3eeb070566}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAN_ICS_neoVI_Resource.hm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,164 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "TxWindowFlexRay_resource.h"
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+#include "afxres.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "TXWindow.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "TXWindow.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+
+
+IDD_FRM_TRANSMIT_MSG DIALOGEX 0, 0, 553, 372
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CAPTION
+EXSTYLE WS_EX_STATICEDGE
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_LSTC_TRANSMIT_MSG,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,12,16,522,110,WS_EX_STATICEDGE
+    PUSHBUTTON      "Add &New Frame",IDC_CBTN_ADDNEW,356,131,61,15
+    GROUPBOX        "Tx Frame List",IDC_STATIC,9,7,537,142
+    CONTROL         "",IDC_SIGNAL_FLEXLIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,12,189,522,110,WS_EX_STATICEDGE
+    GROUPBOX        "Data",IDC_STATIC,9,153,537,182
+    PUSHBUTTON      "&Update",IDC_BT_UPDATE,485,312,49,15
+    PUSHBUTTON      "Delete A&ll",IDC_BT_DEL_ALL,485,131,49,15,WS_DISABLED
+    PUSHBUTTON      "&Close",IDC_CLOSE,485,341,49,15
+    PUSHBUTTON      "D&elete",IDC_DEL_FRAME,426,131,50,15
+    COMBOBOX        IDC_COMBO_CHANNEL_SEL,314,132,32,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Byte View (HEX)",IDC_RADIO_BYTE_VIEW,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,170,67,10
+    CONTROL         "Signal View",IDC_RADIO_SIGNAL_VIEW,"Button",BS_AUTORADIOBUTTON,88,170,51,10
+END
+
+IDD_FLEXRAYMSGHANDLER_DIALOG DIALOGEX 0, 0, 320, 194
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "BUSMASTER - Flexray Message List"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LSTC_MSG_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,8,307,151
+    PUSHBUTTON      "&Cancel",IDC_CBTN_CANCEL_MSG_SEL,263,168,50,14
+    PUSHBUTTON      "&OK",IDC_CBTN_SEL_MSG,207,168,50,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_FRM_TRANSMIT_MSG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 546
+        BOTTOMMARGIN, 367
+    END
+END
+#endif    // APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
+IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

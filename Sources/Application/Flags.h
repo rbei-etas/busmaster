@@ -53,15 +53,18 @@ typedef enum eCANMONITORFLAG
     DISPLAYTIMEMODE,
     SCROLLING,
     SENDMESG,
+    SENDMESGLIN,
     OVERWRITE,
     TIME_DELAY_REPLAY_FILE,
     PASS_STOP_FILTER,
     CONNECTED,
+    LIN_CONNECTED,
     KEY_HANDLER_ON,
     ERROR_HANDLER,
     DLL_HANDLER,
     ALL_HANDLER,
     CONTROLLER_MODE,
+    PARALLEL_PORT_EPP,
     LOGHEXON,
     LOGTIMEMODE,
     eLOGOVERWRITEMODEON,
@@ -69,6 +72,11 @@ typedef enum eCANMONITORFLAG
     SEND_SIGNAL_MSG,
     ACTIVATED_J1939,
     REPLAYFILTER,
+    FLEXRAYSENDMSG
+};
+typedef enum eFLEXRAYMONITORFLAG
+{
+    FLEX_CONNECTED = 0,
 };
 
 class CFlags
@@ -78,6 +86,8 @@ public:
     void vGetToolbarButtonStatus( PSTOOLBARINFO psToolBarInfo );
     int nGetFlagStatus(eCANMONITORFLAG WhichFlag);
     VOID vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
+    int nGetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag);
+    void vSetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag, int nValue);
     void vInitializeFlags();
     //CFlags(PSTOOLBARINFO psToolBarInfo);
     //CFlags();
@@ -86,6 +96,7 @@ public:
 
 private:
     CCriticalSection m_omCriticalSec;
+    CCriticalSection m_omCriticalSecFlex;
     BOOL m_bLogToWindow;
     BOOL m_bLogEnable;
     BOOL m_bLogFilterOn;
@@ -108,23 +119,29 @@ private:
     BOOL m_bScrolling;
     BOOL m_bDisplayHexON;
     BOOL m_bMessageSelected;
+    BOOL m_bMessageSelectedLin;
     BOOL m_bOverwriteEnable;
     BOOL m_bReplayFileSelected;
     BOOL m_bTimeDelayReplayFile;
     BOOL m_bStopFilter;
     BOOL m_bConnected;
+    BOOL m_bConnectedLin;
     BOOL m_bKeyHandlerOn;
     WORD m_wControllerMode;
     BOOL m_bErrorHandlerOn;
     BOOL m_bDLLHandlerOn;
     BOOL m_bALLHandler;
+    BOOL m_bParallelPortEPP;
     BOOL m_bLogHexON;
     WORD m_wLogTimeMode;
     int m_nReplayMsgType;
     BOOL m_bLogOverWriteON;
     BOOL m_bSendSignalMSg;
     BOOL m_bActivatedJ1939;     // Current active bus for configuration.
+    BOOL m_bFlexRaySendMsg;
 
+    /* FLEXRAY Flags */
+    BOOL m_bFlexConnected;
     // Private constructors to make singleton class
     CFlags();
     CFlags(PSTOOLBARINFO psToolBarInfo);

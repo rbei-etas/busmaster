@@ -29,10 +29,15 @@
 #include "HashDefines.h"    // #defines definitions    
 #include "TreeItemParam.h"
 #include "Datatypes/MsgSignal_Datatypes.h"
+#include <list>
+//#include "FibexClass/BasePARSER_FIBEX.h"
+#include "FibexClass.h"
 #include "UIThread.h"
-
+#include "DataTypes\Cluster.h"
 #include "NodeSimEx/NodeSimEx_Struct.h"     //CAPL_DB_NAME_CHANGE
-
+//
+//typedef HRESULT (__stdcall* GETPARSER_FIBEX)(void** ppvInterface);
+//static GETPARSER_FIBEX pfGetParser_FIBEX;
 
 class CMsgSignal
 {
@@ -280,6 +285,36 @@ private:
     BOOL bFormSigNameAndLengthJ1939(const UINT* punStartBit,
                                     CStringArray& omStrArraySigName,
                                     const INT nIndex );
+    /* FLEXRAY related */
+public:
+    HRESULT     hLoadFibexDBFile(CString omDBFile, list<Cluster>& ouClusterList);
+
+    //Simulation
+    HRESULT     hSimulateFibexCluster(CString strFilename, list<Cluster>& ouClusterList);
+    HRESULT     hSimulateFillClusterInfo(CString strName, Cluster& ouCluster);
+    HRESULT     hSimulateFillClusterInfo(ABS_FLEXRAY_SPEC_CNTLR& ouController);
+
+    CFrameMap&  GetFlexRayFrameMap();
+    void        vClearFIBEXContainers();
+    ABS_FIBEX_CONTAINER m_AbsFibexContainer;
+
+    list<FLEXRAY_CHANNEL_CONFIG> m_ouFlexrayChannelConfig;
+
+    int         nGetDeviceConfig(ABS_DEVICE_CONFIG& ouDeviceConfig);
+
+    // TODO::
+    AbsCECUList         m_omECUList;
+
+private:
+    HMODULE m_hFIBEXParserDll;
+    // CBasePARSER_FIBEX*  m_pBasePARSER_FIBEX;
+
+    CFrameMap           m_ouFrameDataSet;
+
+    //void                vGetSIgnalDetails( CSignalDefArray& ouSignalDefArray, AbsCSigInstanceList& odSignalInstList);
+    //void                sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, ABS_COMPU_INTERNAL_TO_PHYS& ouCompuInToPhys);
+    COMPU_EXPRESSION_MSGSIG    sCopyCompuType(CString ouCompuType);
+    RANGE_VALID         eGetRangeValid(CString omValidity);
 };
 
 void vReplaceChar(char str[], char chOld, char chNew);

@@ -27,15 +27,22 @@
 #define MSGBUFALL_DATATYPES_H__INCLUDED_
 
 #include "include/Struct_CAN.h"
+#include "include/Struct_LIN.h"
 #include "include/BaseDefs.h"
 #include "DataTypes/J1939_DataTypes.h"
+#include "Base_FlexRay_Buffer.h"
 
 #include "MsgBufFSE.h"
 #include "MsgBufVFSE.h"
 
 typedef CBaseMsgBufFSE<STCANDATA> CBaseCANBufFSE;
 typedef CMsgBufFSE<STCANDATA> CCANBufFSE;
+typedef CMsgBufFSE<STLINDATA> CLINBufFSE;
 typedef CMsgBufVFSE<STJ1939_MSG> CJ1939BufVFSE;
+typedef CBaseMsgBufFSE<STLINDATA> CBaseLINBufFSE;
+typedef CMsgBufFSE<STLINDATA> CLINBufFSE;
 //typedef CMsgBufCANVFSE<STCANDATA> CCANBufCANVFSE;
+typedef CBaseMsgBufFSE<s_FLXMSG> CBaseFLEXBufFSE;
+typedef CMsgBufFSE<s_FLXMSG>     CFLEXBufFSE;
 
 #endif // MSGBUFALL_DATATYPES_H__INCLUDED_

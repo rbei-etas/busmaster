@@ -41,6 +41,10 @@ const int CAN_MONITOR_CLIENT_ID  = 1;
 #define J1939_MONITOR_NODE "J1939_MONITOR"
 const UINT64 J1939_ECU_NAME     = 0x8000000000000001;
 
+#define LIN_MONITOR_NODE "LIN_MONITOR"
+const int LIN_MONITOR_NODE_INDEX = 0;
+const int LIN_MONITOR_CLIENT_ID  = 1;
+
 const BYTE MSGBUF_ADD = 0x1;
 const BYTE MSGBUF_CLEAR = 0x0;
 
@@ -90,8 +94,17 @@ enum
     DRIVER_CAN_IXXAT,
     DRIVER_CAN_VSCOM,
     DRIVER_CAN_IVIEW,
+    DRIVER_CAN_ISOLAR,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
     DAL_NONE            = ~0x0
+};
+
+enum
+{
+    DRIVER_LIN_ISOLAR_EVE_VLIN = 0,
+    DRIVER_LIN_DEACTIVATE_VLIN,
+    DIL_LIN_TOTAL,
+    DAL_LIN_NONE            = ~0x0
 };
 
 typedef enum FILTER_TYPE
@@ -114,12 +127,13 @@ class INTERFACE_HW
 {
     //Tobias - venkat
 public:
-    unsigned long  m_dwIdInterface;
-    unsigned long  m_dwVendor;
-    unsigned char  m_bytNetworkID;
-    string         m_acNameInterface;
-    string         m_acDescription;
-    string         m_acDeviceName;
+    unsigned long   m_dwIdInterface;
+    unsigned long   m_dwVendor;
+    unsigned char   m_bytNetworkID;
+    string          m_acNameInterface;
+    string          m_acDescription;
+    string          m_acDeviceName;
+    string          m_acAdditionalInfo;
     INTERFACE_HW()
     {
         m_dwIdInterface = 0;

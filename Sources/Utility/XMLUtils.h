@@ -109,16 +109,16 @@ public:
     {
         xmlChar* xmlNodeName = (xmlChar* )cstrNodeName;
 
-        xmlChar* xmlData;
         //char*  cData = NULL;
-        CString     csData = "";
-        strData = "";
+        strData.clear();
         if (!xmlStrcmp(pNodePtr->name, xmlNodeName))
         {
-            xmlData = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
-            csData.Format( "%s",xmlData);
-            xmlFree(xmlData);
-            strData = csData.GetBuffer(0);
+            xmlChar* xmlData = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
+            if(NULL != xmlData)
+            {
+                strData = (char*)xmlData;
+                xmlFree(xmlData);
+            }
             return true;
         }
         return false;

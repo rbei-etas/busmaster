@@ -242,17 +242,23 @@ static CRITICAL_SECTION sg_DIL_CriticalSection;
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 
-/* Timer variables */
+/**
+ * Timer variables
+ */
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
 static LARGE_INTEGER sg_lnFrequency;
 
-/* Required libraries */
+/**
+ * Required libraries
+ */
 static HMODULE sg_hLibCSI = NULL;
 static HMODULE sg_hLibOCI = NULL;
 
-/* Declarations of CSI API pointers */
+/**
+ * Declarations of CSI API pointers
+ */
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC1)(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC2)(CSI_Tree* tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC3)(CSI_Tree* tree, const BOA_UuidVersion* uuid, OCI_URIName uriName[], int size, int* count);
@@ -2438,14 +2444,14 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StartHardware(void)
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
         if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.getCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                &(sg_asChannel[i].m_OCI_CntrlProp))))
+                          &(sg_asChannel[i].m_OCI_CntrlProp))))
         {
             if ((sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_SUSPENDED)
                     || (sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_RUNNING))
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_RUNNING;
                 if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.setCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CntrlProp))))
+                                  &(sg_asChannel[i].m_OCI_CntrlProp))))
                 {
                     hResult |= S_OK;
                 }
@@ -2502,13 +2508,13 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_StopHardware(void)
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
         if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.getCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                &(sg_asChannel[i].m_OCI_CntrlProp))))
+                          &(sg_asChannel[i].m_OCI_CntrlProp))))
         {
             if (sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_RUNNING)
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
                 if (BOA_SUCCEEDED((*(sBOA_PTRS.m_sOCI.setCANControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CntrlProp))))
+                                  &(sg_asChannel[i].m_OCI_CntrlProp))))
                 {
                     hResult |= S_OK;
                 }
@@ -2559,14 +2565,14 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
-    EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
+
     if (bClientIdExist(dwClientID))
     {
         if (sCanTxMsg.m_ucChannel <= sg_nNoOfChannels)
         {
-            static OCI_CANMessage sOciCanMsg;
-            static OCI_CANTxMessage sOciTxCanMsg;
-            static SACK_MAP sAckMap;
+            OCI_CANMessage sOciCanMsg;
+            OCI_CANTxMessage sOciTxCanMsg;
+            SACK_MAP sAckMap;
             vCopy_2_OCI_CAN_Data(sOciTxCanMsg, sCanTxMsg);
             sOciCanMsg.type = OCI_CAN_TX_MESSAGE;
             sOciCanMsg.reserved = 0;
@@ -2575,16 +2581,18 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
             sAckMap.m_ClientID = dwClientID;
             sAckMap.m_Channel  = sCanTxMsg.m_ucChannel;
             sAckMap.m_MsgID    = sOciCanMsg.data.txMessage.frameID;
+            EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
             if ( sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_CANConfig.selfReceptionMode == OCI_SELF_RECEPTION_ON )
             {
                 vMarkEntryIntoMap(sAckMap);
             }
-            BOA_ResultCode ErrCode;
+            LeaveCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
+
 #ifdef BOA_VERSION_1_5_FD
             if(sCanTxMsg.m_bCANFD == false)
             {
-                ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
-                          (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
+                BOA_ResultCode ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
+                                         (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
             }
             else
             {
@@ -2599,6 +2607,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
                                          (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
             }
 #else
+            BOA_ResultCode ErrCode;
             ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.writeCANData))
                       (sg_asChannel[sCanTxMsg.m_ucChannel - 1].m_OCI_TxQueueHandle, OCI_NO_TIME, &sOciCanMsg, 1, &nRemaining);
 #endif
@@ -2620,7 +2629,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
     {
         hResult = ERR_NO_CLIENT_EXIST;
     }
-    LeaveCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
+
     return hResult;
 }
 

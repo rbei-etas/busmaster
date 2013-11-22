@@ -24,10 +24,10 @@
 
 #pragma once
 
-#include "Include/Basedefs.h"
+#include "DataTypes/Base_FlexRay_Buffer.h"
 #include "Datatypes/SigWatch_datatypes.h" // Signal list selected
 #include "Datatypes/MsgSignal_Datatypes.h"
-
+#include "DataTypes/Cluster.h"
 
 class CMsgInterpretationJ1939
 {
@@ -121,3 +121,26 @@ public:
     void vCopy(CMsgInterpretation* pDest) const;
     void vClear();
 };
+class CMsgInterpretationFlexRay
+{
+public:
+    FlexConfig  m_ouFlexConfig;
+private:
+    CFrameMap   m_ouDataSet;
+    EFORMAT     m_eNumFormat;
+public:
+    CMsgInterpretationFlexRay();
+    ~CMsgInterpretationFlexRay();
+
+    void vSetFlexRayClusterInfo(FlexConfig* ouConfig);
+
+    void vSetFlexRayDatabase(const CFrameMap& ouFrameDataSet);
+    // Get signal value
+    //__int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
+
+    BOOL bInterpretMsgs(s_FLXMSG* pMsg, SSignalInfoArray& SigInfoArray);
+
+    //void vCopy(CMsgInterpretation* pDest) const;
+    //void vClear();
+};
+

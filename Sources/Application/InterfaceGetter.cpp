@@ -126,6 +126,20 @@ CBaseBusStatisticCAN* GetICANBusStat(void)
     return Result;
 }
 
+CFlexRayNetworkStats* GetIFlexRayBusStat(void)
+{
+    CFlexRayNetworkStats* Result = NULL;
+    if (BS_GetInterface(FLEXRAY, (void**) &Result) == S_OK)
+    {
+        ASSERT(NULL != Result);
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+    return Result;
+}
+
 CMsgSignal* GetIMsgDB(void)
 {
     return theApp.m_pouMsgSignal;
@@ -142,6 +156,16 @@ CBaseNodeSim* GetICANNodeSim(void)
 {
     CBaseNodeSim* Result = NULL;
     if (NS_GetInterface(CAN, (void**) &Result) == S_OK)
+    {
+        // Nothing to do at this moment
+    }
+    ASSERT(NULL != Result);
+    return Result;
+}
+CBaseNodeSim* GetILINNodeSim(void)
+{
+    CBaseNodeSim* Result = NULL;
+    if (NS_GetInterface(LIN, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }

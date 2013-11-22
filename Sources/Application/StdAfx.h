@@ -71,6 +71,16 @@ const float PI = (float) 3.14159265358979323846;
 #include "include/BaseDefs.h"
 #include "include/Error.h"
 
-const BYTE VERSION_MAJOR    = 1;
-const BYTE VERSION_MINOR    = 9;
+#include <afx.h>
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
+
+#include <atlcomcli.h>
+
+#include <shlwapi.h>
+#include <comutil.h>
+#import <msxml6.dll>
+using namespace MSXML2;
+const BYTE VERSION_MAJOR    = 2;
+const BYTE VERSION_MINOR    = 0;
 const BYTE VERSION_BUILD    = 0;

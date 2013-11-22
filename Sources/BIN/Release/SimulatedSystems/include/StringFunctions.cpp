@@ -104,7 +104,7 @@ long strstr_off_CAPL(char s1[], long offset, char s2[])
 
 void substr_cpy_CAPL(char dest[], char src[], long srcStart, long len, long max)
 {
-    char* pchTemp;
+    char* pchTemp = "";
     if (-1 == len )
     {
         strcpy(dest, src+srcStart);//, strlen(src);
@@ -114,6 +114,7 @@ void substr_cpy_CAPL(char dest[], char src[], long srcStart, long len, long max)
         pchTemp = (char*)malloc( ( len ) * sizeof(char) );
         strncpy(pchTemp, src+srcStart, len);
         strcpy(dest, pchTemp);
+        dest[len] = '\0';
     }
     free(pchTemp);
 }

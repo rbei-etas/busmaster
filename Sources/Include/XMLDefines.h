@@ -35,6 +35,15 @@
 #define DEF_FILE_PATH               "File_Path"
 #define DEF_TRGR_STRT_ID            "Trigger_Start_ID"
 #define DEF_TRGR_STP_ID             "Trigger_Stop_ID"
+////Shailesh +
+//#define DEF_IS_LOGON_TRANS            "IsLogOnTransmission"
+//#define DEF_IS_LOGON_SIZE         "IsLogOnSize"
+//#define DEF_LOGON_SIZE            "LogOnSize"
+//#define DEF_IS_LOGON_TIME         "IsLogOnTime"
+//#define DEF_LOGON_TIME            "LogOnTime"
+//#define DEF_CURRENT_FILECOUNT     "FileCount"
+////Shailesh -
+
 //#define DEF_FILTER                    "Filter"
 #define DEF_CANFILTERS              "CAN_Filters"
 #define DEF_MCNETFILTERS            "MCNET_Filters"
@@ -129,6 +138,7 @@
 #define DEF_MSGID                   "Id"
 //TX window
 #define DEF_CAN_TX_WINDOW           "CAN_Tx_Window"
+#define DEF_LIN_TX_WINDOW           "LIN_Tx_Window"
 #define DEF_MSG_BLOCK               "Message_Block"
 #define DEF_BLOCK_NAME              "Block_Name"
 #define DEF_MSG_ENABLED             "IsEnabled"
@@ -196,6 +206,9 @@
 #define DEF_RIGHT                   "Right"
 
 #define DEF_J1939_MESS_WINDOW       "J1939_Message_Window"
+#define DEF_FLEXRAY_MESS_WINDOW     "FlexRay_Message_Window"
+
+#define DEF_LIN_MESS_WINDOW         "LIN_Message_Window"
 
 #define DEF_SYS_PATH                "Sym_Path"
 
@@ -242,3 +255,40 @@
 #define DEF_APPEND_BUFFER_SIZE      "Append_Buffer_Size"
 #define DEF_OVERWRITE_BUFFER_SIZE   "Overwrite_Buffer_Size"
 #define DEF_DISPLAY_UPDATE_TIME     "Display_Update_Time"
+#define DEF_FLEX_DATABASE               "FLEX_Database"
+#define DEF_FLEX_TX_WINDOW              "FLEX_Tx_Window"
+#define DEF_FLEXRAY_MSG_BLOCK           "FLEX_Message_Block"
+#define DEF_FLEXRAY_BLOCK_NAME          "FLEX_Block_Name"
+#define DEF_FLEXRAY_MSG_ENABLED         "FLEX_IsEnabled"
+#define DEF_FLEXRAY_TIME_INTERVAL       "FLEX_Time_Interval"
+#define DEF_FLEXRAY_MSG_IS_CYCLIC       "FLEX_IsCyclic"
+#define DEF_FLEX_MSGS                   "FLEX_MESSAGES"
+#define DEF_FLEX_MSG_ID                 "FLEX_Msg_ID"
+#define DEF_FLEX_CYCLE_NO               "FLEX_Cycle_No"
+#define DEF_FLEX_DATA_LENGTH            "FLEX_Data_Length"
+#define DEF_FLEX_HEADER_INFO_FLAGS      "FLEX_HeaderInfoFlags"
+#define DEF_FLEX_DATABYTES              "FLEX_Databytes"
+#define DEF_FLEX_BYTE                   "FLEX_Byte"
+#define DEF_FLEX_CHANGABLE              "FLEX_Changable"
+#define DEF_FLEX_FIRST_DYN_SLOT_ID      "FLEX_FirstDynSlotID"
+#define DEF_FLEX_LAST_DYN_SLOT_ID       "FLEX_LastDynSlotID"
+#define DEF_FLEX_DYN_DATA_LEN_MAX       "FLEX_DynDataLenMax"
+#define DEF_FLEX_MSG_INDEX              "FLEX_MsgIndex"
+#define DEF_FLEX_TO_TRANSMIT            "FLEX_ToTransmit"
+
+//Flexary Channel config
+#define DEF_FLEX_CHANNEL_CHANNEL        "CHANNEL"
+#define DEF_FLEX_CHANNEL_INDEX          "Index"
+#define DEF_FLEX_CHANNEL_HWURI          "HWUri"
+#define DEF_FLEX_CHANNEL_DBPATH         "DbPath"
+#define DEF_FLEX_CHANNEL_CLUSTERID      "ClusterId"
+#define DEF_FLEX_CHANNEL_ECU            "ECU"
+#define DEF_FLEX_CHANNEL_NAME           "Name"
+
+//Flexary Tx Window
+#define DEF_CHANNEL_MSG_NAME            "Channel_Msg_List"
+#define DEF_SLOT                        "Slot_Id"
+#define DEF_BASECYCLE                   "BaseCycle"
+#define DEF_REPETION                    "Repetion"
+
+

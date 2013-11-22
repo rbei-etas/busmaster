@@ -32,6 +32,7 @@
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 
+
 class CFrameProcessor_CAN : public CBaseFrameProcessor_CAN, CFrameProcessor_Common
 {
 private:
@@ -158,6 +159,10 @@ public:
     // To update the channel baud rate info to logger
     HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
                                           int nNumChannels);
+
+    //Shailesh +
+    //void IncrementConnectionCount();
+    //Shailesh -
 
     /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };

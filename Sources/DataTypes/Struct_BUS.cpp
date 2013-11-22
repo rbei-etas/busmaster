@@ -20,11 +20,16 @@
  */
 #include "DataTypes_stdafx.h"
 #include "include/Struct_CAN.h"
+#include "DataTypes/Base_FlexRay_Buffer.h"
+#include "include/Struct_LIN.h"
 #include "application/hashdefines.h"
 #include "application/Common.h"
 
 int sTCANDATA::m_nSortField = 0;
 int sTCANDATA::m_nMFactor = 1;
+
+int sTLINDATA::m_nSortField = 0;
+int sTLINDATA::m_nMFactor = 1;
 
 void sTCANDATA::vSetSortField(int nField)
 {
@@ -111,3 +116,107 @@ __int64 sTCANDATA::GetSlotID(sTCANDATA& pDatCAN)
     return n64MapIndex;
 };
 
+/*----------------------------- FlexRay Implementation -----------------------------*/
+void s_FLXMSG::vSetSortField(int nField)
+{
+    //m_nSortField = nField;
+}
+
+void s_FLXMSG::vSetSortAscending(bool bAscending)
+{
+    //m_nMFactor = bAscending ? 1 : -1;
+};
+
+int s_FLXMSG::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
+{
+    int Result = 0;
+    //}
+    return Result;
+};
+
+__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG& pDatFLEX)
+{
+    return 0;
+};
+
+void sTLINDATA::vSetSortField(int nField)
+{
+    m_nSortField = nField;
+}
+
+void sTLINDATA::vSetSortAscending(bool bAscending)
+{
+    m_nMFactor = bAscending ? 1 : -1;
+};
+
+int sTLINDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
+{
+    int Result = 0;
+
+    sTLINDATA* pDatLIN1 = (sTLINDATA*) pEntry1;
+    sTLINDATA* pDatLIN2 = (sTLINDATA*) pEntry2;
+
+    switch (m_nSortField)
+    {
+        case 6: // Sort by message name
+        {
+            CString str1, str2;
+            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucMsgID, (LPARAM)&str1);
+            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucMsgID, (LPARAM)&str2);
+
+            Result = (int) (str1.CompareNoCase(str2));
+            Result *= m_nMFactor;
+
+            if (Result != 0)
+            {
+                break;
+            }
+        }
+        case 5: // Sort by LIN id
+        {
+            Result = (int) (pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucMsgID - pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucMsgID);
+            Result *= m_nMFactor;
+            if (Result != 0)
+            {
+                break;
+            }
+        }
+        case 3: // Sort by channel
+        {
+            Result = (int) (pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucChannel - pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucChannel);
+            Result *= m_nMFactor;
+            if (Result != 0)
+            {
+                break;
+            }
+        }
+        case 1: // Sort by time stamp
+        {
+            Result = (int) (pDatLIN1->m_lTickCount.QuadPart - pDatLIN2->m_lTickCount.QuadPart);
+            Result *= m_nMFactor;
+        }
+        break;
+        default:
+        {
+            ASSERT(FALSE);
+        }
+        break;
+    }
+    return Result;
+};
+
+__int64 sTLINDATA::GetSlotID(sTLINDATA& pDatLIN)
+{
+    STLIN_MSG& sMsg = pDatLIN.m_uDataInfo.m_sLINMsg;
+    // Form message to get message index in the CMap
+    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_ucMsgID,
+                                     IS_RX_MESSAGE(pDatLIN.m_ucDataType));
+
+    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
+    // For extended message
+
+    // Apply Channel Information
+    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
+                          sMsg.m_ucChannel );
+    return n64MapIndex;
+};

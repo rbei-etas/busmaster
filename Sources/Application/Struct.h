@@ -25,6 +25,7 @@
 #pragma once
 
 #include "include/Struct_CAN.h"
+#include "include/Struct_LIN.h"
 #include "HashDefines.h"
 //#include "canapi2.h"
 #include "include/Basedefs.h"
@@ -224,6 +225,24 @@ struct sTXCANMSGLIST
 };
 typedef sTXCANMSGLIST STXCANMSGLIST;
 typedef sTXCANMSGLIST* PSTXCANMSGLIST;
+
+struct sTXLINMSGDETAILS
+{
+    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
+    // bytes value instead of signal value.
+    BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
+    STLIN_MSG m_sTxMsg;
+};
+typedef sTXLINMSGDETAILS STXLINMSGDETAILS;
+typedef sTXLINMSGDETAILS* PSTXLINMSGDETAILS;
+
+struct sTXLINMSGLIST
+{
+    STXLINMSGDETAILS m_sTxMsgDetails;
+    struct sTXLINMSGLIST* m_psNextMsgDetails;
+};
+typedef sTXLINMSGLIST STXLINMSGLIST;
+typedef sTXLINMSGLIST* PSTXLINMSGLIST;
 
 struct sMSGBLOCKLIST
 {
@@ -589,6 +608,19 @@ typedef tagFilterDisplayInfo sFilterDisplayInfo;
 typedef sFilterDisplayInfo sFilterDisplayInfo;
 typedef sFilterDisplayInfo SFILTERDISPLAYINFO;
 typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
+
+struct tagFibexConfigContainer
+{
+    INT m_nKeySlot;
+    INT m_nSecondKeySlot;
+    INT m_nChannel;
+    string m_strHWUri;
+    string m_strDbPath;
+    string m_strClusterId;
+    list<string> m_strECUList;
+};
+
+typedef tagFibexConfigContainer sFibexConfigContainer;
 
 //
 //class CExecuteFunc;

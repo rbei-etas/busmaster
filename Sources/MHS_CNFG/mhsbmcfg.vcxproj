@@ -114,7 +114,7 @@
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>.\src\mhsbmcfg.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/MHS_CNFG.pdb</ProgramDatabaseFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -168,7 +168,7 @@
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug/MHS_CNFG.pdb</ProgramDatabaseFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
@@ -219,7 +219,7 @@
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>.\src\mhsbmcfg.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/MHS_CNFG.pdb</ProgramDatabaseFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>

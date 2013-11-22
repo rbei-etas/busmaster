@@ -28,7 +28,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -114,13 +114,12 @@ del "%25TMP%25\canlib32.lib"
       <OutputFile>$(SolutionDir)/bin/$(OutDir)CAN_NSI.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile />
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)CAN_Kvaser_CAN.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -171,7 +170,6 @@ del "%25TMP%25\canlib32.lib"
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)CAN_NSI.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
@@ -222,7 +220,6 @@ del "%25TMP%25\canlib32.lib"
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)CAN_NSI.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

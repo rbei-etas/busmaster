@@ -1,7 +1,7 @@
 ;=== Test Cases/Test Data ===
 ; UseCase 1:		Configure Tx message
 ; Critical (C):		Y
-; TestCase No.:		TS_TxWin_15
+; TestCase No.:		TS_TxWin_16
 ; Test Cases:		Tx messages
 ; Test Strategy:	Black Box
 ; Test Data:		-
@@ -9,144 +9,93 @@
  WinActivate($mWin)
 Sleep(1000)
 
-;~ _loadConfig("TestcaseTx7")
- sleep(500)
- _TxWindowOpen()
+ ConsoleWrite(@CRLF)
+ConsoleWrite("****Start : TS_TxWin_15.au3****"&@CRLF)
+  _launchApp()
 
-$timemsglisthWnd=ControlGetHandle ($mWin,"",$msglistInst)								;handler for tx wimdow
-    $msg1=_GUICtrlListView_GetItemCount($timemsglisthWnd)								;To get the listview count
- 	ConsoleWrite("$msg1 : " &$msg1 &@CRLF)
+WinActivate($WIN_BUSMASTER)
+Local $Data_before=0,$Data_after=0
+if winexists($WIN_BUSMASTER) then
+    _loadConfig("TS_TxWin_01.cfx")
+	Sleep(1000)
+ 	_TxMsgMenu()																				    ; Select CAN->Transmit->Configure menu
+     sleep(1000)
+ 	_EnableAutoUpdate()                                                                             ;Enable Auto update
+ 	sleep(1000)
+	_DeleteMsgBlock()                                                                               ;Delete message blocks if there are any
+	sleep(1000)
+	_ConfigCANTXBlockDetails("Cyclic","No","","Yes","a","All","No","")
+	_AddMsg2TxList(0)
+	_AddMsg2TxList(1)
 
-For  $i = 0 To $msg1
-																						;~  TO delete all the message block
- ControlCommand($mWin,"",$delbutmsg,"IsEnabled")
-		; click on delete button
-		ControlClick($mWin,"",$delbutmsg)
-
-		;click on confirmation button for deletion
-		ControlClick($mWin,"",$yesbtndel)
-Next
-
-	 ;~ 	For  Enabling Auto update
-	if (ControlCommand($mWin,"",$updatectrlID,"IsChecked")=0) Then
-		ControlCommand($mWin,"",$updatectrlID,"Check")
-	EndIf
-
-    Sleep(500)
-ControlClick($mWin,"",$AddblckctrlID)													;Adding the Block
-Sleep(500)
-
-if (ControlCommand($mWin,"",$timedelayBtwblckCtrlID,"IsChecked")=1) then				;to check the time delay between message block
-	ControlCommand($mWin,"",$timedelayBtwblckCtrlID,"UnCheck")
-EndIf
-Sleep(1000)
-
-; Enabling Key Trigger
-  If (ControlCommand($mWin,"",$keyctrlID,"IsChecked")=0) Then
-	ControlCommand($mWin,"",$keyctrlID,"Check")
+    _ConfigCANTXBlockDetails("Monoshot","Yes",1000,"No","","","No","")
+    _AddMsg2TxList(2)
+	_AddMsg2TxList(3)
+	Sleep(500)
+ 	_CloseTxWindow()
+ 	_ConnectDisconnect()																		                      ; Connect the tool
+	_TransmitMsgsMenu()
+	sleep(3000)
+	send("{a}")                                                                                     ;Press key 'c'
 	sleep(500)
+	_ConnectDisconnect()
+	;_DisableOverwriteMode()
+	_EnableOverwritemode()
+	$rCount=_GetCANMsgWinItemCount()
+	If $rCount>=7 Then
+    	$Data1_all=_GetMsgWinCANInfo(0)                                                             ;Fetch messages from message window
+    	$Data2_all=_GetMsgWinCANInfo(1)
+    	$Data3_all=_GetMsgWinCANInfo(2)
+    	$Data4_all=_GetMsgWinCANInfo(3)
+    	$Data5_all=_GetMsgWinCANInfo(4)
+    	$Data6_all=_GetMsgWinCANInfo(5)
+    	$Data7_all=_GetMsgWinCANInfo(6)
+    	$Data8_all=_GetMsgWinCANInfo(7)
+;~     	$Data9_all=_GetMsgWinCANInfo(8)
+;~     	$Data10_all=_GetMsgWinCANInfo(9)
+;~     	$Data11_all=_GetMsgWinCANInfo(10)
+;~     	$Data12_all=_GetMsgWinCANInfo(11)
+    	For $i=0 to 7                                                                                  ;Write messages with all information like(time,Channel,ID) to console
+	    	ConsoleWrite("Data1 :" &$Data1_all[$i] & @CRLF)
+	    	ConsoleWrite("Data2 :" &$Data2_all[$i] & @CRLF)
+	    	ConsoleWrite("Data3 :" &$Data3_all[$i] & @CRLF)
+	    	ConsoleWrite("Data4 :" &$Data4_all[$i] & @CRLF)
+	    	ConsoleWrite("Data5 :" &$Data5_all[$i] & @CRLF)
+	    	ConsoleWrite("Data6 :" &$Data6_all[$i] & @CRLF)
+	    	ConsoleWrite("Data7 :" &$Data7_all[$i] & @CRLF)
+	    	ConsoleWrite("Data8 :" &$Data8_all[$i] & @CRLF)
+;~ 	    	ConsoleWrite("Data9 :" &$Data9_all[$i] & @CRLF)
+;~ 	    	ConsoleWrite("Data10 :" &$Data10_all[$i] & @CRLF)
+        next
+		_EnableOverwritemode()
+        If ($Data1_all[4]=0x015  And $Data3_all[4]=0x020) Then                                      ; Verify for Id
+	    	$Data_before=1
+	    Else
+	    	$Data_before=0
+    	EndIf
+        If($Data5_all[4]=0x025 And $Data7_all[4]=0x066) Then
+			$Data_after=1
+    	 Else
+			$Data_after=0
+	    EndIf
+	EndIf
+	ConsoleWrite("Data before" & $Data_before & @CRLF)
+	ConsoleWrite("Data after" & $Data_after & @CRLF)
+	If($Data_before=1 And $Data_after=1) Then
+		_WriteResult("Pass","TS_Tx_15")
+	Else
+		_WriteResult("Fail","TS_Tx_15")
+	EndIf
 EndIf
 
-if (ControlCommand($mWin,"",$timdeltrg,"IsChecked")=1) then						;to uncheck the time delay between trigger
-	ControlCommand($mWin,"",$timdeltrg,"UnCheck")
+$isAppNotRes=_CloseApp()														; Close the app
 
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_Tx_15")
 EndIf
 
-ControlSend($mWin,"",$keyeditCtrlID,"a")
- sleep(1000)
-
- ControlCommand($mWin,"","ComboBox3","SelectString","All")				;selecting "Single"messsage type
-
- ControlClick($mWin,"",$txmodemonoshotCtrlID)							;to select monoshot
-
- ControlSetText($mWin,"",$msgnamesCtrlID,14)   									; Enter Non Db msg 14
-    ControlClick($mWin, "",$addmsgCtrlID)											;~ ; Click on Add message button
-
-ControlSetText($mWin,"",$msgnamesCtrlID,15)   									; Enter Non Db msg 15
-    ControlClick($mWin, "",$addmsgCtrlID)											;~ ; Click on Add message button
-
-Sleep(500)
-ControlClick($mWin,"",$AddblckctrlID)													;Adding the message Block
-Sleep(500)
-
-
-if (ControlCommand($mWin,"",$timdeltrg,"IsChecked")=0) then						;to uncheck the time delay between trigger
-	ControlCommand($mWin,"",$timdeltrg,"Check")
-
-EndIf
-
-Sleep(500)
-ControlClick($mWin,"",$txmodemonoshotCtrlID)									;to select monoshot
- ControlSetText($mWin,"",$msgnamesCtrlID,16)   									; Enter Non Db msg 14
-ControlClick($mWin, "",$addmsgCtrlID)											;~  Click on Add message button
-
-ControlSetText($mWin,"",$msgnamesCtrlID,17)   									; Enter Non Db msg 15
-ControlClick($mWin, "",$addmsgCtrlID)											;~  Click on Add message button
-
-Sleep(500)
-$cntToolhWd=ControlGetHandle($mWin,"",$connectid)								; Get handle of tollbar
-$conn=_GUICtrlToolbar_ClickIndex($cntToolhWd,4)							; Click on 'Connect' icon
-
-sleep(500)
-
-WinMenuSelectItem($mWin,"",$fuctions,$transmit,$normalbock)						; Click on 'Transmit normal blocks' icon for transmiting
-;~ sleep(500)
-send("a")
-sleep(100)
-$cntToolhWd=ControlGetHandle($mWin,"",$connectid)												; Get handle of toolbar
-$conn=_GUICtrlToolbar_ClickIndex($cntToolhWd,4)										; Click on 'DisConnect' icon
-sleep(1000)
-
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msg15a=_GUICtrlListView_GetItemTextString($timhWnd, 0)									;selecting  1st elment in message window
-ConsoleWrite("$msg15a:" &$msg15a & @CRLF)
-
-$sTime15a=StringSplit($msg15a,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime15a:" &$sTime15a[6] & @CRLF)														;Time of msg 1st sent
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msg15b=_GUICtrlListView_GetItemTextString($timhWnd, 1)									;selecting 3rd elment in message window
-ConsoleWrite("$msg15b:" &$msg15b & @CRLF)
-
-$sTime15b=StringSplit($msg15b,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime15b:" &$sTime15b[6] & @CRLF)														;Time of msg 1st sent
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msg15c=_GUICtrlListView_GetItemTextString($timhWnd, 2)									;selecting last elment in message window
-ConsoleWrite("$msg15c:" &$msg15c & @CRLF)
-
-$sTime15c=StringSplit($msg15c,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime15c:" &$sTime15c[6] & @CRLF)														;Time of msg 1st sent
-
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msg15d=_GUICtrlListView_GetItemTextString($timhWnd, 3)									;selecting last elment in message window
-ConsoleWrite("$msg15d:" &$msg15d & @CRLF)
-
-$sTime15d=StringSplit($msg15d,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime15d:" &$sTime15d[6] & @CRLF)														;Time of msg 1st sent
-
-
-$timhWnd=ControlGetHandle ($mWin,"",$msgwin)								;handler for tx wimdow
-$msg15e=_GUICtrlListView_GetItemTextString($timhWnd, 4)									;selecting last elment in message window
-ConsoleWrite("$msg15e:" &$msg15e & @CRLF)
-
-$sTime15e=StringSplit($msg15e,"|")														;splitting 1st elements into column
-ConsoleWrite("$sTime15e:" &$sTime15e[6] & @CRLF)														;Time of msg 1st sent
-
-
-If ($sTime15a[6]=0016 And $sTime15b[6]=0017 And $sTime15c[6]=0014 And $sTime15d[6]=0015 And $sTime15e[6]=0) Then
-
-	_ExcelWriteCell($oExcel,"pass",20,2)
-
-    Else
-	  _ExcelWriteCell($oExcel,"Fail",20,2)
-
-EndIf
-
-
-
+ConsoleWrite("****End : TS_TxWin_15.au3****"&@CRLF)
+ConsoleWrite(@CRLF)
 
 
 

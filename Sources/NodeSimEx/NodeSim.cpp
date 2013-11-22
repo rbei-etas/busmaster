@@ -372,6 +372,7 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
         memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
         CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize = nBuffSize;
     }
+
     //Update Internal Data
     CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig();
     if(pSrcBuffer == NULL)
@@ -464,4 +465,14 @@ HRESULT CNodeSim::FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMai
 BOOL CNodeSim::InitInstance(void)
 {
     return TRUE;
+}
+
+void CNodeSim::NS_SaveSimulationSystem()
+{
+    CSimSysManager::ouGetSimSysManager(m_eBus).vSaveAllSimSys();
+}
+
+void CNodeSim::NS_PerformApplicationClosureOperation(bool bSave)
+{
+    CSimSysManager::ouGetSimSysManager(m_eBus).vApplicationClosing(bSave);
 }

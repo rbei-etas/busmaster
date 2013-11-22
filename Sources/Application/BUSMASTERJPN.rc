@@ -644,13 +644,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 1.9.0"
+            VALUE "FileVersion", "Ver 2.0.0Beta"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 1.9.0"
+            VALUE "ProductVersion", "Ver 2.0.0Beta"
         END
     END
     BLOCK "VarFileInfo"
@@ -870,6 +870,9 @@ IDR_CAN_DATABASE        BITMAP                  "res\\CANDatabase.bmp"
 IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
 IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
 IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
+IDB_TLB_FLEXRAY         BITMAP                  "res\\FlexRay_Toolbar.bmp"
+IDB_TLB_FLEXRAY_HOT     BITMAP                  "res\\FlexRay_Toolbar_Hot.bmp"
+IDB_TLB_FLEXRAY_DISABLED BITMAP                  "res\\FlexRay_Toolbar_Disabled.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1168,6 +1171,35 @@ BEGIN
             MENUITEM "すべての&ハンドラ",                   ID_EXECUTE_ALLHANDLERS, CHECKED
         END
     END
+     POPUP "F&lexRay"
+    BEGIN
+        MENUITEM "&Connect",                    ID_FLEXRAY_CONNECT
+		MENUITEM "C&luster Configuration"		ID_FLEXRAY_CLUSTER_CONFIG
+        MENUITEM SEPARATOR
+        POPUP "&メッセージウィンドウ"
+        BEGIN
+            MENUITEM "&活性化する",                      ID_SHOWMESSAGEWINDOW_FLEXRAY, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&設定",                         ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY
+            MENUITEM SEPARATOR
+            POPUP "&タイムモード"
+            BEGIN
+                MENUITEM "&システムタイム",                    IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
+                MENUITEM "&絶対タイム",                      IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
+                MENUITEM "&相対タイム",                      IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+            END
+            MENUITEM "&上書き",                        IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
+            MENUITEM "&解析",                         IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
+            MENUITEM "&コラムのリセット",                   IDM_MSGWND_RESET_COLUMNS
+        END
+        MENUITEM SEPARATOR
+        POPUP "&送信"
+        BEGIN
+            MENUITEM "&有効にする",                      IDR_TOOL_FLEX_SENDMSG, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&設定",                         IDM_FLEX_CFGN_SEND_MSGS
+        END
+    END
     POPUP "&眺める"
     BEGIN
         MENUITEM "&トレースウィンドウ",                  IDM_TRACE_WND, CHECKED
@@ -1181,6 +1213,7 @@ BEGIN
             MENUITEM "メ&ッセージウィンドウ",                 ID_DISPLAY_MSG_WND, CHECKED
             MENUITEM "&ノードシミュレーション",                ID_DISPLAY_NODE_SIMULATION, CHECKED
             MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED            
+            MENUITEM "FlexRay",                     ID_FLEXRAY_TOOLBAR, CHECKED
         END
         MENUITEM "&ステータスバー",                    ID_VIEW_STATUS_BAR
     END
@@ -1248,6 +1281,7 @@ IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
+ID_CONNECT              ICON                    "Res\\Connect.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1379,6 +1413,12 @@ BEGIN
     BUTTON      IDM_REPLAY_STOP
 END
 
+IDR_CONFIG_TOOLBAR TOOLBAR 32, 32
+BEGIN
+    BUTTON      32902
+    BUTTON      IDM_CONFIG_LOAD
+    BUTTON      IDM_SAVE_CONFIG
+END
 IDR_MSG_WND TOOLBAR  32, 32
 BEGIN
     BUTTON      IDM_CLEAR_MSG_WINDOW
@@ -1391,6 +1431,7 @@ END
 
 IDR_NODE_SIMULATION TOOLBAR  32, 32
 BEGIN
+    BUTTON      ID_CAN_LOGO
     BUTTON      IDM_DLL_LOADALLDLL
     BUTTON      IDM_DLL_UNLOAD_ALL
     BUTTON      IDM_DLL_BUILDLOAD_ALL
@@ -1405,6 +1446,7 @@ END
 
 IDR_FUNCTIONS_J1939 TOOLBAR 32, 32
 BEGIN
+    BUTTON      ID_CAN_LOGO
     BUTTON      33056
     SEPARATOR
     BUTTON      33062
@@ -1414,6 +1456,7 @@ END
 
 IDR_TLB_CONFIGURE TOOLBAR  32, 32
 BEGIN
+    BUTTON      ID_CAN_LOGO
     BUTTON      32811
     BUTTON      32809
     BUTTON      32956
@@ -1428,12 +1471,23 @@ END
 
 IDR_CAN_DATABASE TOOLBAR  32, 32
 BEGIN
+    BUTTON      ID_CAN_LOGO
     BUTTON      32815
     BUTTON      32817
     BUTTON      32864
     BUTTON      33010
     SEPARATOR
     BUTTON      32860
+END
+IDB_TLB_FLEXRAY TOOLBAR 32, 32
+BEGIN
+    BUTTON      IDB_TLB_FLEXRAY
+    BUTTON      ID_FLEXRAY_CONNECT
+    BUTTON      IDR_TOOL_FLEX_SENDMSG
+    SEPARATOR
+    BUTTON      ID_FLEXRAY_CLUSTER_CONFIG
+    SEPARATOR
+    BUTTON      IDM_FLEX_CFGN_SEND_MSGS
 END
 
 
@@ -1612,7 +1666,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 1.9.0"
+    IDS_VERSION             "Ver 2.0.0"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
@@ -1620,6 +1674,23 @@ BEGIN
 END
 
 STRINGTABLE 
+BEGIN
+    IDS_PPAGE_TITLE_MSG_FILTER "チャンネル"
+    IDS_ERR_BSTR2CHAR       "BSTRからCHARの変換にエラー"
+    IDS_ERR_ERRLOGGER_EVENT "エラーログ: イベントを開けません。"
+    IDS_ERR_ERRLOGGER_REGISTER "エラーログ: クライアント登録に失敗"
+    ID_LOG_RECORD_STATUS    "CAN"
+    ID_LOG_RECORD_CAN_ICON  "CAN記録..."
+    ID_LOG_RECORD_J1939_ICON "J1939記録..."
+    ID_FLEXRAY_CONNECT      "Connect/Disconnect\nConnect/Disconnect"
+    ID_FLEXRAY_CLUSTER_CONFIG "Associate/Dissociate FlexRay Database\nAssociate/Dissociate FlexRay Database"
+    IDS_CONNECT_FLEXRAY     "&Connect\tF3"
+END
+STRINGTABLE
+BEGIN
+    IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
+END
+STRINGTABLE
 BEGIN
     IDS_MESSAGE_ID          "メッセージID"
     IDM_NETWORK_STATISTICS_WND "ネットワーク統計ウィンドウを表示/非表示\nネットワーク統計ウィンドウの表示/非表示"
@@ -1726,6 +1797,7 @@ BEGIN
     IDM_CONFIGURE_DATABASE_SAVE "データベースファイルに保存\nデータベースファイルに保存"
     32869                   "BUSMASTERバージョンと著作権の情報\nBUSMASTERバージョンと著作権の情報"
     IDR_TOOL_SENDMSG        "メッセージ送信を開始または停止\nメッセージ送信の開始または停止"
+    IDR_TOOL_FLEX_SENDMSG   "Start/Stop Sending FlexRay messages\nStart/Stop Sending FlexRay messages"
     IDM_EXECUTE_MESSAGEHANDLERS_BUTTON "すべてのメッセージハンドラを実行\nすべてのメッセージハンドラの実行"
     IDM_FILTER_MESSAGEFILTEROFF_BUTTON "表示フィルタを有効化または無効化\n表示フィルタの有効化または無効化"
     IDM_FILTER_LOGFILTEROFF_BUTTON "ログフィルタを有効化または無効化\nログフィルタの有効化または無効化"
@@ -1755,6 +1827,7 @@ BEGIN
     IDM_SEND_SEL_MSG        "CANバスに選択したメッセージを送信する"
     IDM_DELETE_ALL_SEL_MSG  "選択したすべてのメッセージをリストから削除する"
     IDM_EXECUTE_KEYHANDLERS "すべてのキーハンドラの実行を有効化または無効化\nすべてのキーハンドラの有効化/無効化"
+    IDM_FLEX_CFGN_SEND_MSGS "FlexRay Message Configuration\nFlexRay Message Configuration"
     IDM_CONFIG_NEW          "新しいファンクションファイルを生成\n新しいファンクションファイルの生成"
     IDM_CONFIG_LOAD         "設定ファイルをロード\n設定ファイルのロード"
     IDM_SAVE_CONFIG         "設定ファイルを保存\n設定ファイルの保存"
@@ -1778,17 +1851,6 @@ BEGIN
     IDS_HIDE                "&非表示"
     IDS_PPAGE_TITLE_BUFFER  "バッファ"
     IDS_CHANNELS            "チャンネル"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_PPAGE_TITLE_MSG_FILTER "チャンネル"
-    IDS_ERR_BSTR2CHAR       "BSTRからCHARの変換にエラー"
-    IDS_ERR_ERRLOGGER_EVENT "エラーログ: イベントを開けません。"
-    IDS_ERR_ERRLOGGER_REGISTER "エラーログ: クライアント登録に失敗"
-    ID_LOG_RECORD_STATUS    "CAN"
-    ID_LOG_RECORD_CAN_ICON  "CAN記録..."
-    ID_LOG_RECORD_J1939_ICON "J1939記録..."
 END
 
 STRINGTABLE 
@@ -1827,16 +1889,6 @@ END
 
 STRINGTABLE 
 BEGIN
-    ID_ACTIVEBUS_J1939      "J1939インタフェースを活性化/非活性化\nJ1939インタフェースの活性化/非活性化"
-    ID_J1939_CONFIG_LOG     "J1939メッセージロギングを設定\nJ1939ロギング"
-    ID_ACTION_J1939_LOG     "J1939メッセージロギングを開始/終了\nJ1939ロギングの開始/終了"
-    ID_ACTION_J1939_TX_MESSAGE "J1939メッセージを送信\nJ1939メッセージの送信"
-    ID_ACTION_J1939_ONLINE  "J1939バスをオンライン/オフラインにする\nJ1939バスのオンライン/オフライン"
-    ID_TOOLBAR_J1939        "J1939ツールバーを表示/非表示\nJ1939ツールバーの表示/非表示"
-END
-
-STRINGTABLE 
-BEGIN
     33073                   "設定ツールバーを表示/非表示\n設定ツールバーの表示/非表示"
     ID_CONFIGURE_TIMEOUTS   "フローコントロールのタイムアウトを設定\nフローコントロールのタイムアウト"
 END
@@ -1862,11 +1914,11 @@ BEGIN
     ID_DATABASE_SAVE        "J1939データベースの保存"
 END
 
-STRINGTABLE
+STRINGTABLE 
 BEGIN
-    IDM_SAVE_IMPORT_J1939   "Save and import database file\nSave and import database file"
+    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
+                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
 END
-
 #endif    // Japanese resources
 /////////////////////////////////////////////////////////////////////////////
 

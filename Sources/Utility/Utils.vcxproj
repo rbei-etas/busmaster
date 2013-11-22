@@ -136,6 +136,7 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClCompile Include="FlexListCtrl.cpp" />
     <ClCompile Include="FlickerFreeListCtrl.cpp" />
     <ClCompile Include="FlickerFreeTree.cpp" />
+    <ClCompile Include="KeyNumEdit.cpp" />
     <ClCompile Include="MsgInterpretation.cpp" />
     <ClCompile Include="MultiLanguageSupport.cpp" />
     <ClCompile Include="NumEdit.cpp" />
@@ -165,6 +166,7 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClInclude Include="FlexListCtrl.h" />
     <ClInclude Include="FlickerFreeListCtrl.h" />
     <ClInclude Include="FlickerFreeTree.h" />
+    <ClInclude Include="KeyNumEdit.h" />
     <ClInclude Include="MsgInterpretation.h" />
     <ClInclude Include="MultiLanguageSupport.h" />
     <ClInclude Include="Network_McNet.h" />

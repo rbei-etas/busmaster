@@ -243,6 +243,25 @@ Function UpdateIcsneo40
     icsneo40_done:
 FunctionEnd
 
+;Checks for the version if it is already installed
+Function CheckVersion
+	;Read the BUSMASTER version installed
+	ReadRegStr $1 HKLM "SOFTWARE\Wow6432Node" BUSMASTER_v${VERSION}"
+	StrCmp $1 "v${VERSION}" 0 Confirm ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]	
+Confirm:
+	;If the version is already installed, get the the installtion path
+	ReadRegStr $1 HKLM "SOFTWARE\Wow6432Node\BUSMASTER_v${VERSION}" Install_Dir		
+	StrCmp $1 $INSTDIR 0 Exit
+	MessageBox MB_YESNO|MB_ICONEXCLAMATION  'BUSMASTER_v${VERSION} is already installed. Do you wish to overwrite ?' IDYES Install
+	Quit
+Exit:
+	StrCmp $1 "" Install Stop
+Stop:	
+	MessageBox MB_OK|MB_ICONSTOP 'BUSMASTER_v${VERSION} is already installed in a different path. Please uninstall the previous version. Installation will be aborted.'
+	Quit
+Install:	
+FunctionEnd
+
 ; Pages
 Page license
 Page components
@@ -262,8 +281,10 @@ LicenseData ../COPYING.LESSER.txt
 
 SectionGroup "Main"
 Section "BUSMASTER"
+	Call CheckVersion
     SectionIn RO 1 2 3
     SetOutPath $INSTDIR
+	
 	
 	; If the file exists delete it before installing
 	; PTV
@@ -312,7 +333,17 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\CAN_ETAS_BOA_1_5.dll bCanEtas15bExists
 	bCanEtas15bExists:
 			Delete "$INSTDIR\CAN_ETAS_BOA_1_5.dll"
+			
+	; Deleting If FLEXRAY_ETAS_BOA.dll exists
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA.dll bFlexEtasbExists
+	bFlexEtasbExists:
+			Delete "$INSTDIR\FLEXRAY_ETAS_BOA.dll"
 
+			; Deleting If TXWindowFlexRay.dll exists
+	IfFileExists $INSTDIR\TXWindowFlexRay.dll bTxWndFlexEtasbExists
+	bTxWndFlexEtasbExists:
+			Delete "$INSTDIR\TXWindowFlexRay.dll"
+			
 	; Deleting If CAN_ICS_neoVI.dll exists
 	IfFileExists $INSTDIR\CAN_ICS_neoVI.dll bCanneoVIbExists
 	bCanneoVIbExists:
@@ -350,8 +381,13 @@ Section "BUSMASTER"
 	; Deleting If CAN_VSCOM.dll exists
 	IfFileExists $INSTDIR\CAN_VSCOM.dll bCanVSCOMbExists
 	bCanVSCOMbExists:
-			Delete "$INSTDIR\CAN_VSCOM.dll"		
+			Delete "$INSTDIR\CAN_VSCOM.dll"	
 
+	; Deleting If CAN_ISOLAR_EVE_VCAN.dll exists
+	IfFileExists $INSTDIR\CAN_ISOLAR_EVE_VCAN.dll bCanETASIsolarExists
+	bCanETASIsolarExists:
+			Delete "$INSTDIR\CAN_ISOLAR_EVE_VCAN.dll"	
+			
 	; Deleting If CAN_i-VIEW.dll exists
 	IfFileExists $INSTDIR\CAN_i-VIEW.dll biViewCANExists
 	biViewCANExists:
@@ -693,6 +729,25 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\AdvancedUIPlugIn.dll bAdvancedUIDllExists
 	bAdvancedUIDllExists:
 			Delete "$INSTDIR\AdvancedUIPlugIn.dll"			
+			
+	IfFileExists $INSTDIR\LINiSolarEveDIL.dll bLINiSolarEveDILExists
+	bLINiSolarEveDILExists:
+			Delete "$INSTDIR\LIN_ISOLAR_EVE_VLIN.dll"			
+	
+	IfFileExists $INSTDIR\TXWindowLIN.dll bLinTxDllExists
+	bLinTxDllExists:
+			Delete "$INSTDIR\TXWindowLIN.dll"		
+
+	; Deleting If Controller_0.dll exists
+	IfFileExists $INSTDIR\Controller_0.dll bController0Exists
+	bController0Exists:
+			Delete "$INSTDIR\Controller_0.dll"	
+
+	; Deleting If Controller_1.dll exists
+	IfFileExists $INSTDIR\Controller_1.dll bController1Exists
+	bController1Exists:
+			Delete "$INSTDIR\Controller_1.dll"	
+			
 	; PTV END
 	
 	
@@ -727,6 +782,12 @@ Section "BUSMASTER"
 	File ..\Sources\BIN\Release\libxml2.dll
 	File ..\Sources\BIN\Release\zlib1.dll
 	File ..\Sources\BIN\Release\intl.dll
+	File ..\Sources\BIN\Release\LIN_ISOLAR_EVE_VLIN.dll
+	File ..\Sources\BIN\Release\TXWindowLIN.dll
+	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA.dll
+	File ..\Sources\BIN\Release\TXWindowFlexRay.dll
+	File ..\Sources\BIN\Release\Controller_0.dll
+	File ..\Sources\BIN\Release\Controller_1.dll
 
     ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
@@ -763,10 +824,17 @@ Section "BUSMASTER"
     ; Readme
     File ..\Readme.txt
 	
+	
+	
+	; Check if Visual Studio 2012 redistributable is already installed
+	ReadRegStr $1 HKLM "Software\Microsoft\DevDiv\vc\Servicing\11.0\RuntimeMinimum" Install
+	StrCmp $1 "1" NoInstall Install
+Install:
 	; Install Visual Studio 2012 Redistributable
 	File "..\Tools\VC++ 2012 Redistributable\vcredist_x86.exe"
-	ExecWait vcredist_x86.exe
-	
+	ExecWait '"vcredist_x86.exe" /s /v" /qn"'
+
+NoInstall:	
 	IfFileExists $INSTDIR\vcredist_x86.exe bVS2012Exists
 	bVS2012Exists:
 			Delete "$INSTDIR\vcredist_x86.exe"
@@ -774,7 +842,6 @@ Section "BUSMASTER"
 	; create desktop shortcut
 	CreateShortCut "$DESKTOP\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" ""
 	
-
     ; Registry entries
     WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir" "$INSTDIR"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayName" "BUSMASTER Ver ${VERSION}(remove only)"
@@ -784,15 +851,22 @@ Section "BUSMASTER"
     ; Compatibility settings for Windows 7
     ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
     StrCmp $1 "6.1" 0 lbl ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]
-    WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "WINXPSP3"
+    ; WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "WINXPSP3"
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe" "WINXPSP3"
     WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\FormatConverter.exe" "WINXPSP3"
+	WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "RUNASADMIN"
+	
+	; Admin Rights
+	; AccessControl::GrantOnFile "$INSTDIR\BUSMASTER.exe" "(BU)" "FullAccess"
+	
     lbl:	
 	
     ; Server registration
     ExecWait 'BusEmulation.exe /regserver'
     ExecWait 'BUSMASTER.exe /regserver'
 
+	
+	
 	SetShellVarContext all
 		
 	; Start menu entries
@@ -864,6 +938,14 @@ Section "Vision Systems GmbH VSCAN API"
     File ..\Sources\BIN\Release\CAN_VSCOM.dll
     File ..\Sources\BIN\Release\vs_can_api.dll
 SectionEnd
+
+Section "ETAS ISOLAR-CAN"
+    SectionIn 1 2
+    SetOutPath $INSTDIR
+    File ..\Sources\BIN\Release\CAN_ISOLAR_EVE_VCAN.dll
+SectionEnd
+
+
 Section "SPX DS API"
     SectionIn 1 2
     SetOutPath $INSTDIR
@@ -945,5 +1027,4 @@ Section "Uninstall"
 	IfFileExists "$SMPROGRAMS\BUSMASTER v${VERSION}" bSSBMDirExists
 	bSSBMDirExists:
 			RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}"
-  
 SectionEnd

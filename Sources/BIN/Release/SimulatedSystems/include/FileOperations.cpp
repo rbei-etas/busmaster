@@ -58,7 +58,6 @@ UINT openfileread_CAPL (char pchFileName[], UINT dwMode)
     if(dwMode == 0)
     {
         pFile = fopen(pchFileName, "r");
-        pFile = fopen(pchFileName, "r");
         strcpy(pchFileMode, "r");
     }
     else if(dwMode == 1)
@@ -201,7 +200,7 @@ long fileputstring_CAPL (char pchBuffer[], long lBuffSize, UINT dwFileHandle)
 /* Return Value: If an error occurs the return value is 0, else 1.          */
 long filerewind_CAPL (UINT dwFileHandle)
 {
-    int nRetVal;
+    int nRetVal = 0;
     if( NULL != (void*)dwFileHandle )
     {
         nRetVal = fseek((FILE*)dwFileHandle, 0, SEEK_SET);

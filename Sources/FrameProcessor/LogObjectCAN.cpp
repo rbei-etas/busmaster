@@ -27,7 +27,7 @@
 #include "LogObjectCAN.h"            // For CLogObjectCAN class declaration
 
 
-#define CAN_VERSION           "***BUSMASTER Ver 1.7.3***"
+#define CAN_VERSION           "***BUSMASTER Ver 2.0.0***"
 #define CAN_LOG_HEADER        "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
 #define CAN_LOG_START         "***[START LOGGING SESSION]***"
 #define CAN_LOG_STOP          "***[STOP LOGGING SESSION]***"
@@ -123,13 +123,29 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
         case HEXADECIMAL:
         {
             pId = (char*) (sDataCAN.m_acMsgIDHex);
-            pData = (char*) (sDataCAN.m_acDataHex);
+            // Data bytes of RTR messages need not be logged
+            if (strcmp(sDataCAN.m_acType, "sr") == 0 || strcmp(sDataCAN.m_acType, "xr") == 0)
+            {
+                pData = "";
+            }
+            else
+            {
+                pData = (char*) (sDataCAN.m_acDataHex);
+            }
         }
         break;
         case DEC:
         {
             pId = (char*) (sDataCAN.m_acMsgIDDec);
-            pData = (char*) (sDataCAN.m_acDataDec);
+            // Data bytes of RTR messages need not be logged
+            if (strcmp(sDataCAN.m_acType, "sr") == 0 || strcmp(sDataCAN.m_acType, "xr") == 0)
+            {
+                pData = "";
+            }
+            else
+            {
+                pData = (char*) (sDataCAN.m_acDataDec);
+            }
         }
         break;
 

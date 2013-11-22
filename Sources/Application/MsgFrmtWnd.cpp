@@ -27,13 +27,17 @@
 #include "common.h"
 #include "MsgFrmtWnd.h"
 #include "Include/CAN_Error_Defs.h"
+#include "Include/LIN_Error_Defs.h"
 // Time calculation related functionality
 #include "TimeManager.h"
+#include "../Datatypes/Base_FlexRay_Buffer.h"
+#include "../DIL_Interface/BaseDIL_FLEXRAY.h"
 
 
 // CMsgFrmtWnd
 
 const int SIZE_APP_CAN_BUFFER       = 5000;
+const int SIZE_APP_LIN_BUFFER       = 5000;
 /* Error message related definitions and declarations : BEGIN */
 static CString sg_omColmStr;
 const DWORD COLOUR_ERROR_MSG    = RGB(255, 0, 0);
@@ -122,6 +126,8 @@ CMenu CMsgFrmtWnd::menu;
 extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS ];
 extern CCANMonitorApp theApp;
 extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
+extern CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface;
+extern CBaseDIL_LIN* g_pouDIL_LIN_Interface;
 // DIL CAN interface
 
 #define defDEF_DISPLAY_UPDATE_TIME          100
@@ -130,6 +136,7 @@ extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 #define MAX_LINE_LENGTH_TOOL_TIP            624
 
 STCAN_MSG sDummy0002;
+STLIN_MSG sDummy0002LIN;
 
 extern HWND g_hMainGUI;
 
@@ -390,6 +397,17 @@ int CMsgFrmtWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
         m_podMsgIntprtnDlg->vSetCaption("PGN");
     }
 
+    if (m_eBusType == FLEXRAY)
+    {
+        //TODO FLEX::Test the use case
+        m_podMsgIntprtnDlg->vSetCaption("FlexRay");
+    }
+
+    if (m_eBusType == LIN)
+    {
+        //TODO FLEX::Test the use case
+        m_podMsgIntprtnDlg->vSetCaption("LIN");
+    }
     m_objToolTip.Create(this);
     m_objToolTip.Activate(TRUE);
     m_objToolTip.SetMaxTipWidth(MAX_LINE_LENGTH_TOOL_TIP);
@@ -445,6 +463,16 @@ void CMsgFrmtWnd::vFitListCtrlToWindow()
         int ClientWidth = abs(sClientRect.left - sClientRect.right);
 
         if (m_eBusType == CAN)
+        {
+            int nTotalWidth = 0;
+            for (int nIdx = 0; nIdx < 8; nIdx++ )
+            {
+                nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
+            }
+            int nLastColWidth = ClientWidth - nTotalWidth;
+            m_lstMsg.SetColumnWidth(8, nLastColWidth);
+        }
+        else if (m_eBusType == LIN)
         {
             int nTotalWidth = 0;
             for (int nIdx = 0; nIdx < 8; nIdx++ )
@@ -906,6 +934,17 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
                     {
                         pomContextMenu->EnableMenuItem( IDM_MESSAGE_SEND,
                                                         MF_DISABLED |MF_GRAYED);
+
+                    }
+
+                    // If it is connected to flexray then disable send in menu
+                    if( bConnected == TRUE )
+                    {
+                        if(m_eBusType == FLEXRAY)
+                        {
+                            pomContextMenu->EnableMenuItem( IDM_MESSAGE_SEND,
+                                                            MF_DISABLED |MF_GRAYED);
+                        }
                     }
 
                     if (pomSubMenu != NULL)
@@ -937,6 +976,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
  Date Created   :   09/09/2010
 ******************************************************************************/
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
+const int SIZE_STLIN_MSG = sizeof(STLIN_MSG);
 void CMsgFrmtWnd::OnSendSelectedMessageEntry()
 {
     POSITION Pos = m_lstMsg.GetFirstSelectedItemPosition();
@@ -968,6 +1008,29 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
                 g_pouDIL_CAN_Interface->DILC_SendMsg(m_dwClientID, sInfo.m_uDataInfo.m_sCANMsg);
             }
         }
+        //For LIN Messages
+        else if(m_eBusType == LIN)
+        {
+            STLINDATA sInfoLin;
+
+            HRESULT hResult;
+            if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
+            {
+                hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sInfoLin, nItem);
+
+            }
+            else
+            {
+                __int64 nMsgKey = m_omMgsIndexVec[nItem];
+                hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sInfoLin, nMsgKey);
+            }
+            // Send only valid messages
+            if( hResult == S_OK && IS_A_MESSAGE( sInfoLin.m_ucDataType ) )
+            {
+                //HRESULT hRet =
+                g_pouDIL_LIN_Interface->DILL_SendMsg(m_dwClientID, sInfoLin.m_uDataInfo.m_sLINMsg);
+            }
+        }
         //For J1939 Messages
         else if(m_eBusType == J1939)
         {
@@ -997,6 +1060,33 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
                                                        sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress,
                                                        sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Specific);
 
+            }
+        }
+        else if(m_eBusType == FLEXRAY)
+        {
+            s_FLXMSG sInfo;
+
+            HRESULT hResult;
+            if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
+            {
+                hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sInfo, nItem);
+
+            }
+            else
+            {
+                __int64 nMsgKey = m_omMgsIndexVec[nItem];
+                hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sInfo, nMsgKey);
+            }
+            // Send only valid messages
+            if( hResult == S_OK && (sInfo.m_eMessageType == FLXMSGTYPE_DATA) )
+            {
+                //TODO FLEX::Test his functionality for status message
+                if (NULL != g_pouDIL_FLEXRAY_Interface)
+                {
+                    //TODO FLEX::Implementation pending
+                    //s_FLXTXMSG sFlexTsMsg;
+                    //g_pouDIL_FLEXRAY_Interface->DILF_SendFlxMsg(&sInfo);
+                }
             }
         }
     }
@@ -1092,7 +1182,16 @@ void CMsgFrmtWnd::OnTimer(UINT nIDEvent)
                 vGetSignalInfoArray(m_unCurrInterpretedMapIndex, SigInfoArray);
 
                 CString strName;
-                strName = strGetMsgNameOrCode(m_unCurrInterpretedMsgID);
+                if (this->m_eBusType == FLEXRAY )
+                {
+                    strName = strGetMsgNameOrCode(m_unCurrInterpretedMapIndex);
+                }
+                else
+                {
+                    strName = strGetMsgNameOrCode(m_unCurrInterpretedMsgID);
+                }
+
+
 
                 int nCnt = SigInfoArray.GetSize();
                 SSignalInfo sTempSignal;
@@ -1168,11 +1267,19 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
 
             if(m_eBusType == J1939 && m_ppMsgDB != NULL)
             {
+
                 SMSGENTRY* psMsgEntry = NULL;
                 vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
                 m_ouMsgInterpretJ1939.vClear();
                 m_ouMsgInterpretJ1939.vSetJ1939Database(psMsgEntry);
                 vExpandContractAllEntries(FALSE, TRUE);
+            }
+            if(m_eBusType == FLEXRAY)
+            {
+                m_ppMsgDB = NULL;
+                FlexConfig* uoFlexConfig = (FlexConfig*)lParam;
+
+                m_ouMsgInterpretFlexRay.vSetFlexRayClusterInfo(uoFlexConfig);
             }
         }
         break;
@@ -1231,6 +1338,24 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
             if(pNodePtr != NULL)
             {
                 SetConfigDataJ1939(pNodePtr);
+            }
+        }
+        break;
+        case eWINID_MSG_WND_SET_CONFIG_DATA_FLEXRAY_XML:
+        {
+            xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
+            if(pNodePtr != NULL)
+            {
+                SetConfigDataFlexRay(pNodePtr);
+            }
+        }
+        break;
+        case eWINID_MSG_WND_SET_CONFIG_DATA_LIN_XML:
+        {
+            xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
+            if(pNodePtr != NULL)
+            {
+                SetConfigDataLIN(pNodePtr);
             }
         }
         break;
@@ -1341,11 +1466,31 @@ LRESULT CMsgFrmtWnd::OnListCtrlMsgDblClick(WPARAM wParam, LPARAM lParam)
             m_pouMsgContainerIntrf->nCreateMapIndexKey((LPVOID)&sCANMsg);
 
         }
+        else if(m_eBusType == LIN)
+        {
+            static STLINDATA sLINMsg;
+            m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sLINMsg, (int)wParam);
+            m_pouMsgContainerIntrf->nCreateMapIndexKey((LPVOID)&sLINMsg);
+        }
         else if(m_eBusType == J1939)
         {
             static STJ1939_MSG sJ1939Msg;
             m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sJ1939Msg, (int)wParam);
             m_pouMsgContainerIntrf->nCreateMapIndexKey((LPVOID)&sJ1939Msg);
+        }
+        else if (m_eBusType == FLEXRAY)
+        {
+            static s_FLXMSG sFlexMsg;
+            static FRAME_STRUCT ouFrame;
+            sFlexMsg.stcDataMsg.m_nBaseCycle = 0;
+            if ( S_OK == this->m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].GetFrame(sFlexMsg.stcDataMsg.m_nSlotID, sFlexMsg.stcDataMsg.m_ucCycleNumber, sFlexMsg.stcDataMsg.m_eChannel, ouFrame) )
+            {
+                sFlexMsg.stcDataMsg.m_nBaseCycle = ouFrame.m_nBaseCycle;
+            }
+
+
+            m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sFlexMsg, (int)wParam);
+            m_pouMsgContainerIntrf->nCreateMapIndexKey((LPVOID)&sFlexMsg);
         }
     }
     else
@@ -1372,14 +1517,14 @@ LRESULT CMsgFrmtWnd::OnListCtrlMsgDblClick(WPARAM wParam, LPARAM lParam)
 *******************************************************************************/
 void CMsgFrmtWnd::vShowUpdateMsgIntrpDlg(__int64 nMapIndex)
 {
-    int nMsgCode;
-    nMsgCode = nGetCodefromMapKey(nMapIndex);
+    int nMsgCode = nMapIndex & 0xFFFF;
+    //nMsgCode = nGetCodefromMapKey(nMapIndex);
 
     SSignalInfoArray SigInfoArray;
     vGetSignalInfoArray(nMapIndex, SigInfoArray);
 
     CString strName;
-    strName = strGetMsgNameOrCode(nMsgCode);
+    strName = strGetMsgNameOrCode(nMapIndex);
 
     int nCnt = SigInfoArray.GetSize();
     SSignalInfo sTempSignal;
@@ -1466,7 +1611,23 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
                 }
                 else
                 {
-                    m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
+                    /*if ( m_eBusType == FLEXRAY )
+                    {
+                        static s_FLXMSG sFlexMsg;
+                        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, nMsgKey);
+                        if ( sFlexMsg.stcDataMsg.m_nSlotID > m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].m_ouClusterInfo.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS )
+                        {
+                            m_lstMsg.vSetMsgColor(RGB(128, 128, 128));
+                        }
+                        else
+                        {
+                            m_lstMsg.vSetMsgColor(RGB(255, 128, 128));
+                        }
+                    }
+                    else*/
+                    {
+                        m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
+                    }
                 }
             }
         }
@@ -1793,8 +1954,22 @@ void CMsgFrmtWnd::vUpdateStatistics( char cTxMode )
 CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
 {
     CString omName = "";
+    if ( m_eBusType == FLEXRAY)
+    {
+        FRAME_STRUCT ouFrame;
 
-    if (NULL != m_ppMsgDB)
+        UINT unSlot = LOWORD(nMsgCode);
+        UINT unCycleChannel = HIWORD(nMsgCode);
+        UINT unCycle = LOBYTE(unCycleChannel);
+        ECHANNEL oeChannel = (ECHANNEL)HIBYTE(unCycleChannel);
+
+        if ( S_OK == m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].GetFrame(unSlot, unCycle, oeChannel, ouFrame) )
+        {
+            omName = ouFrame.m_strFrameName.c_str();
+        }
+    }
+
+    else if (NULL != m_ppMsgDB)
     {
         if ( !(*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, omName))
         {
@@ -1872,6 +2047,61 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
         break;
         case FLEXRAY:
         {
+            int nColCount = 10;
+            sHdrCtrlPos.m_byTimePos     = 0;
+            sHdrCtrlPos.m_byRxTxPos     = 1;
+            sHdrCtrlPos.m_byIDPos       = 2;
+            sHdrCtrlPos.m_byFrameTypePos= 3;
+            sHdrCtrlPos.m_bySlotTypePos = 4;
+            sHdrCtrlPos.m_byCodeNamePos = 5;
+            sHdrCtrlPos.m_byCycleNoPos  = 6;
+            sHdrCtrlPos.m_byChannel     = 7;
+            sHdrCtrlPos.m_byDLCPos      = 8;
+            sHdrCtrlPos.m_byDataPos     = 9;
+
+            //Set the col string
+            somArrColTitle[sHdrCtrlPos.m_byTimePos]     = _("Time              ");
+            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = _("Tx/Rx          ");
+            somArrColTitle[sHdrCtrlPos.m_byIDPos]     = _("Frame Id         ");
+            somArrColTitle[sHdrCtrlPos.m_byFrameTypePos]     = _("Frame Type    ");
+            somArrColTitle[sHdrCtrlPos.m_bySlotTypePos]     = _("Slot Type    ");
+            somArrColTitle[sHdrCtrlPos.m_byCodeNamePos]  = _("Description         ");
+            somArrColTitle[sHdrCtrlPos.m_byCycleNoPos]       = _("Cycle No    ");
+            somArrColTitle[sHdrCtrlPos.m_byChannel] = _("Channel    ");
+            somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = _("DLC    ");
+            somArrColTitle[sHdrCtrlPos.m_byDataPos]     = _("Data Byte(s)                                     ");
+            m_MsgHdrInfo.vInitializeColDetails(sHdrCtrlPos, somArrColTitle, nColCount);
+            vRearrangeCols();
+        }
+        break;
+        case LIN:
+        {
+            int nColCount = 9;
+            //Set the positions for coloumns
+            sHdrCtrlPos.m_byTimePos     = 0;
+            sHdrCtrlPos.m_byRxTxPos     = 2;
+            sHdrCtrlPos.m_byChannel     = 3;
+            sHdrCtrlPos.m_byMsgTypePos  = 8;
+            sHdrCtrlPos.m_byIDPos       = 5;
+            sHdrCtrlPos.m_byCodeNamePos = 1;
+            sHdrCtrlPos.m_byDLCPos      = 4;
+            sHdrCtrlPos.m_byDataPos     = 6;
+            sHdrCtrlPos.m_byChecksumPos = 7;
+
+            //Set the col string
+            somArrColTitle[sHdrCtrlPos.m_byTimePos]     = _("Time              ");
+            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = _("Tx/Rx ");
+            somArrColTitle[sHdrCtrlPos.m_byChannel]     = _("Channel ");
+            somArrColTitle[sHdrCtrlPos.m_byIDPos]       = _("PID  ");
+            somArrColTitle[sHdrCtrlPos.m_byCodeNamePos] = _("Message        ");
+            somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = _("Message Type");
+            somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = _("DLC ");
+            somArrColTitle[sHdrCtrlPos.m_byDataPos]     = _("Data Byte(s)                                     ");
+            somArrColTitle[sHdrCtrlPos.m_byChecksumPos] = _("Checksum ");
+
+            m_MsgHdrInfo.vInitializeColDetails(sHdrCtrlPos, somArrColTitle, nColCount);
+
+            vRearrangeCols();
         }
         break;
         case MCNET:
@@ -2119,9 +2349,42 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
     __int64 dwTimeStamp = 0;
     __int64 dwMapIndex  = 0;
     PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
-
+    EINTERPRET_MODE eFlexRayInterprete;
     SMSGDISPMAPENTRY sDispEntry;
     int nBufIndex = 0;
+    if ( m_eBusType == FLEXRAY )
+    {
+        s_FLXMSG* pouFLEXData = (s_FLXMSG*)pMsg;
+        FRAME_STRUCT ouFrame;
+        eFlexRayInterprete = MODE_NONE;
+        int nCount = 0;
+        if ( S_OK == m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].GetFrame(pouFLEXData->stcDataMsg.m_nSlotID, pouFLEXData->stcDataMsg.m_ucCycleNumber, pouFLEXData->stcDataMsg.m_eChannel, ouFrame))
+        {
+            ouFrame.GetSignalCount(nCount);
+            if ( nCount > 0 )
+            {
+                eFlexRayInterprete = INTERPRETABLE;
+            }
+
+            pouFLEXData->stcDataMsg.m_nBaseCycle = ouFrame.m_nBaseCycle;
+            pouFLEXData->stcDataMsg.m_ucRepetition = ouFrame.m_nReptition;
+            if ( ouFrame.m_eSlotType == DYNAMIC )
+            {
+                pouFLEXData->stcDataMsg.m_lHeaderInfoFlags = pouFLEXData->stcDataMsg.m_lHeaderInfoFlags| RBIN_FLXHDRINFO_FRAMETYPE_DYNAMIC;
+            }
+        }
+        else
+        {
+            pouFLEXData->stcDataMsg.m_nBaseCycle = 0;
+            pouFLEXData->stcDataMsg.m_ucRepetition = 0;
+            if ( pouFLEXData->stcDataMsg.m_nSlotID > m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].m_ouClusterInfo.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS )
+            {
+                pouFLEXData->stcDataMsg.m_lHeaderInfoFlags = pouFLEXData->stcDataMsg.m_lHeaderInfoFlags| RBIN_FLXHDRINFO_FRAMETYPE_DYNAMIC;
+            }
+        }
+
+    }
+
     m_pouMsgContainerIntrf->vSaveOWandGetDetails(pMsg, dwMapIndex, dwTimeStamp, nMsgCode, nBufIndex);
     //EnterCriticalSection(&m_omCritSecForMapArr);
     if (m_omMsgDispMap.Lookup(dwMapIndex, sDispEntry))
@@ -2144,6 +2407,12 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
                 sDispEntry.m_eInterpretMode = INTERPRETABLE;
             }
         }
+        //TODO::Venkat
+        if ( m_eBusType == FLEXRAY )
+        {
+            sDispEntry.m_eInterpretMode = eFlexRayInterprete;
+        }
+
         //Both times will be same so that rel. time = 0
         sDispEntry.m_nTimeOffset = dwTimeStamp;
         sDispEntry.m_nTimeStamp  = dwTimeStamp;
@@ -2159,6 +2428,33 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
         static STJ1939_MSG sJ1939Msg;
         //HRESULT hResult =
         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, dwMapIndex);
+        m_bUpdate = TRUE;
+        return;
+    }
+    else if (m_eBusType == FLEXRAY)
+    {
+        //static s_FLXMSG* pFLEXMsg = (s_FLXMSG*)pMsg;
+        //static s_FLXSTATUSMSG sFLEXStatusMsg;
+        //static s_FLXDATAMSG sFLEXDataMsg;
+        //if (pFLEXMsg->wMessageType == 1) // Status Msg
+        //{
+        //  m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, dwMapIndex);
+        //}
+        //else if (pFLEXMsg->wMessageType == 2) // data Msg
+        //{
+        //}
+
+        static s_FLXMSG sFLEXMsg;
+        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFLEXMsg, dwMapIndex);
+        m_bUpdate = TRUE;
+        return;
+    }
+
+    if(m_eBusType == LIN)
+    {
+        static STLINDATA sLINMsg;
+        //HRESULT hResult =
+        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, dwMapIndex);
         m_bUpdate = TRUE;
         return;
     }
@@ -2696,6 +2992,57 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
             }
         }
     }
+    else if(m_eBusType == FLEXRAY)
+    {
+        static EFORMAT eNumFormat;
+        static s_FLXMSG sFlexData;
+        static s_FLXDATAMSG sFlexMsg;
+        CString strMsgName;
+        SigInfoArray.RemoveAll();
+        UINT nID = nGetCodefromMapKey(nMapIndex);
+
+        //if (NULL != m_ppMsgDB)
+        {
+            if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
+            {
+                eNumFormat = HEXADECIMAL;
+            }
+            else
+            {
+                eNumFormat = DEC;
+            }
+
+            PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
+            if(IS_MODE_APPEND(m_bExprnFlag_Disp))
+            {
+                int nBuffMsgCnt;
+                nBuffMsgCnt = m_nIndex;
+
+                HRESULT hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sFlexData, nBuffMsgCnt);
+                if(sFlexData.stcDataMsg.m_nSlotID == (UINT)nID && hResult == S_OK)
+                {
+                    m_ouMsgInterpretFlexRay.bInterpretMsgs(&sFlexData, SigInfoArray);
+                }
+                else if( (theApp.pouGetFlagsPtr()->nGetFlagStatus( SENDMESG )
+                          && sFlexData.stcDataMsg.m_nSlotID != (UINT)nID) )
+                {
+                    HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexData, nMapIndex);
+                    if(hResult == S_OK)
+                    {
+                        m_ouMsgInterpretFlexRay.bInterpretMsgs(&sFlexData, SigInfoArray);
+                    }
+                }
+            }
+            else
+            {
+                HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexData, nMapIndex);
+                if(hResult == S_OK)
+                {
+                    m_ouMsgInterpretFlexRay.bInterpretMsgs(&sFlexData, SigInfoArray);
+                }
+            }
+        }
+    }
 }
 
 /*******************************************************************************
@@ -2782,12 +3129,25 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY& sEntry,
             m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMsgKey);
             rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
         }
+        else if(m_eBusType == LIN)
+        {
+            static STLINDATA sLINMsg;
+            m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, nMsgKey);
+            rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+        }
         else if(m_eBusType == J1939)
         {
             static STJ1939_MSG sJ1939Msg;
             m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMsgKey);
             rgbTreeItem =m_ouMsgAttr.GetCanIDColour(
                              sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
+        }
+        else if (m_eBusType == FLEXRAY)
+        {
+            //TODO FLEX::Test this functionality
+            static s_FLXMSG sFlexMsg;
+            m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, nMsgKey);
+            rgbTreeItem = m_ouMsgAttr.GetCanIDColour(sFlexMsg.stcDataMsg.m_nSlotID);
         }
     }
     else
@@ -3269,6 +3629,7 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
     __int64 n64Temp = 0;
     int nSize = m_omMgsIndexVec.size();
     static STCANDATA sCANMsg;
+    static STLINDATA sLINMsg;
     for (int i = 0; i < nSize; i++)
     {
         n64Temp = m_omMgsIndexVec[i];
@@ -3286,12 +3647,24 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
                         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, n64Temp);
                         rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
                     }
+                    else if(m_eBusType == LIN)
+                    {
+                        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, n64Temp);
+                        rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+                    }
                     else if(m_eBusType == J1939)
                     {
                         static STJ1939_MSG sJ1939Msg;
                         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, n64Temp);
                         rgbTreeItem =m_ouMsgAttr.GetCanIDColour(
                                          sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
+                    }
+                    else if (m_eBusType == FLEXRAY)
+                    {
+                        //TODO FLEX::Test this functionality
+                        static s_FLXMSG sFlexMsg;
+                        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, n64Temp);
+                        rgbTreeItem = m_ouMsgAttr.GetCanIDColour(sFlexMsg.stcDataMsg.m_nSlotID);
                     }
                 }
                 else
@@ -3346,12 +3719,25 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
                     m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
                     rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID);
                 }
+                else if(m_eBusType == LIN)
+                {
+                    static STLINDATA sLINMsg;
+                    m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, nMapIndex);
+                    rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+                }
                 else if(m_eBusType == J1939)
                 {
                     static STJ1939_MSG sJ1939Msg;
                     m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, nMapIndex);
                     rgbTreeItem =m_ouMsgAttr.GetCanIDColour(
                                      sJ1939Msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
+                }
+                else if (m_eBusType == FLEXRAY)
+                {
+                    //TODO FLEX::Test this functionality
+                    static s_FLXMSG sFlexMsg;
+                    m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, nMapIndex);
+                    rgbTreeItem = m_ouMsgAttr.GetCanIDColour(sFlexMsg.stcDataMsg.m_nSlotID);
                 }
             }
             else                            //may not be required
@@ -3475,6 +3861,38 @@ void CMsgFrmtWnd::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
             }
         }
         break;
+        case ID_FLEXRAY_MESSAGEWINDOW:
+        {
+            if(m_eBusType == FLEXRAY)
+            {
+                if(IsWindowVisible())
+                {
+                    pCmdUI->SetCheck(1);
+                }
+                else
+                {
+                    pCmdUI->SetCheck(0);
+                }
+            }
+        }
+        break;
+
+        case ID_SHOWMESSAGEWINDOW_LIN:
+        {
+            if(m_eBusType == LIN)
+            {
+                if(IsWindowVisible())
+                {
+                    pCmdUI->SetCheck(1);
+                }
+                else
+                {
+                    pCmdUI->SetCheck(0);
+                }
+            }
+        }
+        break;
+
         default:
         {
             ASSERT(FALSE);
@@ -4231,11 +4649,1080 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
     return S_OK;
 }
 
-HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
+HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 {
     xmlNodeSetPtr pColMsgWnd = NULL;
     xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
 
+    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/COLUMN";
+    xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+    if( NULL != pPathObject )
+    {
+        pColMsgWnd = pPathObject->nodesetval;
+    }
+    if(pColMsgWnd != NULL)
+    {
+        ColumnInfoMap InfoMap;
+
+        INT nRetVal = S_OK;
+        nRetVal = xmlUtils::parseColumnInfoNode(pColMsgWnd, InfoMap);
+        //Reading Version.
+        BYTE byVer = 0;
+        //COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+        UINT nSize= 0;
+
+        if(nRetVal == S_OK)
+        {
+            //Reading column Header Positions.
+            CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+            if (pHeaderCtrl != NULL)
+            {
+                int  nColumnCount=0;
+
+                nColumnCount = pColMsgWnd->nodeNr;
+
+                //Reading column count.
+                //COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+
+                LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+
+                for (int i = 0 ; i < nColumnCount; i++)
+                {
+                    xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        CString strName = pNodePtr->name;
+
+                        if(strName == "ID")
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+
+                            strName = ptext;
+
+                            ColumnInfoMap::iterator itr = InfoMap.find(strName.GetBuffer(strName.GetLength()));
+
+                            if(itr != InfoMap.end())
+                            {
+                                INT nOrder = itr->second.nOrder;
+                                pnOrder[i] = itr->second.nOrder;
+                                m_lstMsg.ShowColumn(i, itr->second.isVisble);
+                                m_lstMsg.SetColumnWidth(i, itr->second.nWidth);
+                            }
+                            break;
+                        }
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+                m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+                free(pnOrder);
+            }
+
+            bool bHexDec = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/IsHex";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsHex = ptext;
+                            if(strIsHex == "TRUE" || strIsHex == "1")
+                            {
+                                bHexDec = true;
+                            }
+                            else
+                            {
+                                bHexDec = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //Reading Hex/Dec Display.
+
+            //COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
+
+            // commented as IsHex is conflicting with global
+            // DisplayNumericMode
+            CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+            //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+            if(bHexDec)
+            {
+                SET_NUM_HEX(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_NUM_DEC(m_bExprnFlag_Disp);
+            }
+
+            //Reading Overwrite/Append Mode.
+            bool bOvrwAppend = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/IsAppend";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsAppend = ptext;
+                            if(strIsAppend == "TRUE" || strIsAppend == "1")
+                            {
+                                bOvrwAppend = true;
+                            }
+                            else
+                            {
+                                bOvrwAppend = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
+            if(bOvrwAppend)
+            {
+                SET_MODE_APPEND(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_MODE_OVER(m_bExprnFlag_Disp);
+            }
+
+            //Reading Interpret Status if in overwrite Mode.
+            //COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/IsInterpret";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsInterpret = ptext;
+                            if(strIsInterpret == "TRUE" || strIsInterpret == "1")
+                            {
+                                m_bInterPretMsg = TRUE;
+                            }
+                            else
+                            {
+                                m_bInterPretMsg = FALSE;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            if(m_bInterPretMsg)
+            {
+                SET_MODE_INTRP(m_bExprnFlag_Disp);
+            }
+
+            //Reading Time Display.
+            BYTE byTimeDisplay = 0;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/Time_Mode";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsTimemode = ptext;
+                            if(strIsTimemode == "ABSOLUTE")
+                            {
+                                byTimeDisplay = BIT_TM_ABS;
+                            }
+                            else if(strIsTimemode == "SYSTEM")
+                            {
+                                byTimeDisplay = BIT_TM_SYS;
+                            }
+                            else if(strIsTimemode == "RELATIVE")
+                            {
+                                byTimeDisplay = BIT_TM_REL;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+            CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+            if(byTimeDisplay == BIT_TM_ABS)
+            {
+                SET_TM_ABS(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_REL)
+            {
+                SET_TM_REL(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_SYS)
+            {
+                SET_TM_SYS(m_bExprnFlag_Disp);
+            }
+
+            WINDOWPLACEMENT sMsgWndPlacement;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            xmlNodeSetPtr pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pvisibility = ptext;
+                                sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pWindowPlacement = ptext;
+                                sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                sMsgWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                sMsgWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                sMsgWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                sMsgWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+
+            //COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+
+            //Save the window visibility status.
+            BOOL bVisible = IsWindowVisible();
+
+            //SetWindowPlacement function call makes the window visible.
+            SetWindowPlacement(&sMsgWndPlacement);
+
+            //Regain the window's visibility status.
+            if(!bVisible)
+            {
+                ShowWindow(SW_HIDE);
+            }
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/Interpretation_Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVisibilty = ptext;
+                                m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVWindowPlacement = ptext;
+                                m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+            //COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+        }
+        else
+        {
+            //load default values
+            vSetDefaultConfigValues();
+            vSetDefaultPlacement();
+        }
+    }
+    else
+    {
+        //load default values
+        vSetDefaultConfigValues();
+        vSetDefaultPlacement();
+    }
+    vUpdatePtrInLstCtrl();
+    m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    //Clear all the previous messages.
+    OnEditClearAll();
+
+    //BYTE* pByteSrc = NULL;
+    //pByteSrc = pvDataStream;
+
+    //if (pByteSrc != NULL)
+    //{
+    //    //Reading Version.
+    //    BYTE byVer = 0;
+    //    COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
+    //    UINT nSize= 0;
+    //    //Reading Buffer Size.
+    //    COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
+    //    if ((byVer == MSG_FRMT_WND_VERSION) && (nSize > 0))
+    //    {
+    //        //Reading column Header Positions.
+    //        CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+    //        if (pHeaderCtrl != NULL)
+    //        {
+    //            int  nColumnCount=0;
+    //            //Reading column count.
+    //            COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
+
+    //            LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+    //            for (int i = 0 ; i < nColumnCount; i++)
+    //            {
+    //                COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
+    //                bool bColumnVisible = false;
+    //                COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
+    //                m_lstMsg.ShowColumn(i, bColumnVisible);
+
+    //                INT nColWidth = 0;
+    //                COPY_DATA_2(&nColWidth, pByteSrc, sizeof(INT));
+    //                m_lstMsg.SetColumnWidth(i, nColWidth);
+    //            }
+    //            m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+    //            free(pnOrder);
+    //        }
+
+
+    //        //Reading Hex/Dec Display.
+    //        bool bHexDec = false;
+    //        COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
+
+    //        CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+    //        //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
+    //        if(bHexDec)
+    //        {
+    //            SET_NUM_HEX(m_bExprnFlag_Disp);
+    //        }
+    //        else
+    //        {
+    //            SET_NUM_DEC(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Overwrite/Append Mode.
+    //        bool bOvrwAppend = false;
+    //        COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
+    //        if(bOvrwAppend)
+    //        {
+    //            SET_MODE_APPEND(m_bExprnFlag_Disp);
+    //        }
+    //        else
+    //        {
+    //            SET_MODE_OVER(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Interpret Status if in overwrite Mode.
+    //        COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
+
+    //        if(m_bInterPretMsg)
+    //        {
+    //            SET_MODE_INTRP(m_bExprnFlag_Disp);
+    //        }
+
+    //        //Reading Time Display.
+    //        BYTE byTimeDisplay;
+    //        COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
+    //        CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+    //        if(byTimeDisplay == BIT_TM_ABS)
+    //        {
+    //            SET_TM_ABS(m_bExprnFlag_Disp);
+    //        }
+    //        else if(byTimeDisplay == BIT_TM_REL)
+    //        {
+    //            SET_TM_REL(m_bExprnFlag_Disp);
+    //        }
+    //        else if(byTimeDisplay == BIT_TM_SYS)
+    //        {
+    //            SET_TM_SYS(m_bExprnFlag_Disp);
+    //        }
+
+    //        WINDOWPLACEMENT sMsgWndPlacement;
+
+    //        COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+
+    //        //Save the window visibility status.
+    //        BOOL bVisible = IsWindowVisible();
+
+    //        //SetWindowPlacement function call makes the window visible.
+    //        SetWindowPlacement(&sMsgWndPlacement);
+
+    //        //Regain the window's visibility status.
+    //        if(!bVisible)
+    //        {
+    //            ShowWindow(SW_HIDE);
+    //        }
+
+    //        COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
+    //    }
+    //    else
+    //    {
+    //        //load default values
+    //        vSetDefaultConfigValues();
+    //        vSetDefaultPlacement();
+    //    }
+    //}
+    //else
+    //{
+    //    //load default values
+    //    vSetDefaultConfigValues();
+    //    vSetDefaultPlacement();
+    //}
+    //vUpdatePtrInLstCtrl();
+    //m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    ////Clear all the previous messages.
+    //OnEditClearAll();
+
+    return S_OK;
+}
+
+HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
+{
+    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
+
+    xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/COLUMN";
+    xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+    if( NULL != pPathObject )
+    {
+        pColMsgWnd = pPathObject->nodesetval;
+    }
+    if(pColMsgWnd != NULL)
+    {
+        ColumnInfoMap InfoMap;
+
+        INT nRetVal = S_OK;
+        nRetVal = xmlUtils::parseColumnInfoNode(pColMsgWnd, InfoMap);
+        //Reading Version.
+        BYTE byVer = 0;
+        UINT nSize= 0;
+
+        if(nRetVal == S_OK)
+        {
+            //Reading column Header Positions.
+            CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
+            if (pHeaderCtrl != NULL)
+            {
+                int  nColumnCount=0;
+
+                nColumnCount = pColMsgWnd->nodeNr;
+
+                //Reading column count.
+                LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
+
+                for (int i = 0 ; i < nColumnCount; i++)
+                {
+                    xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        CString strName = pNodePtr->name;
+
+                        if(strName == "ID")
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+
+                            strName = ptext;
+
+                            ColumnInfoMap::iterator itr = InfoMap.find(strName.GetBuffer(strName.GetLength()));
+
+                            if(itr != InfoMap.end())
+                            {
+                                INT nOrder = itr->second.nOrder;
+                                pnOrder[i] = itr->second.nOrder;
+                                m_lstMsg.ShowColumn(i, itr->second.isVisble);
+                                m_lstMsg.SetColumnWidth(i, itr->second.nWidth);
+                            }
+                            break;
+                        }
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+                m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
+                free(pnOrder);
+            }
+
+            bool bHexDec = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/IsHex";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsHex = ptext;
+                            if(strIsHex == "TRUE" || strIsHex == "1")
+                            {
+                                bHexDec = true;
+                            }
+                            else
+                            {
+                                bHexDec = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            //Reading Hex/Dec Display.
+
+            CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
+            if(bHexDec)
+            {
+                SET_NUM_HEX(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_NUM_DEC(m_bExprnFlag_Disp);
+            }
+
+            //Reading Overwrite/Append Mode.
+            bool bOvrwAppend = false;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/IsAppend";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsAppend = ptext;
+                            if(strIsAppend == "TRUE" || strIsAppend == "1")
+                            {
+                                bOvrwAppend = true;
+                            }
+                            else
+                            {
+                                bOvrwAppend = false;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+            if(bOvrwAppend)
+            {
+                SET_MODE_APPEND(m_bExprnFlag_Disp);
+            }
+            else
+            {
+                SET_MODE_OVER(m_bExprnFlag_Disp);
+            }
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/IsInterpret";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsInterpret = ptext;
+                            if(strIsInterpret == "TRUE")
+                            {
+                                m_bInterPretMsg = TRUE;
+                            }
+                            else
+                            {
+                                m_bInterPretMsg = FALSE;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+
+            if(m_bInterPretMsg)
+            {
+                SET_MODE_INTRP(m_bExprnFlag_Disp);
+            }
+
+            //Reading Time Display.
+            BYTE byTimeDisplay = 0;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Time_Mode";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+            if( NULL != pPathObject )
+            {
+                xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
+
+                if(NULL != pIsHexPtr)
+                {
+                    for(int i=0; i < pIsHexPtr->nodeNr; i++)
+                    {
+                        xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
+                        if ( NULL != ptext )
+                        {
+                            CString strIsTimemode = ptext;
+                            if(strIsTimemode == "ABSOLUTE")
+                            {
+                                byTimeDisplay = BIT_TM_ABS;
+                            }
+                            else if(strIsTimemode == "SYSTEM")
+                            {
+                                byTimeDisplay = BIT_TM_SYS;
+                            }
+                            else if(strIsTimemode == "RELATIVE")
+                            {
+                                byTimeDisplay = BIT_TM_REL;
+                            }
+                            xmlFree(ptext);
+                        }
+                    }
+                    xmlXPathFreeObject (pPathObject);
+                }
+            }
+            CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
+
+            if(byTimeDisplay == BIT_TM_ABS)
+            {
+                SET_TM_ABS(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_REL)
+            {
+                SET_TM_REL(m_bExprnFlag_Disp);
+            }
+            else if(byTimeDisplay == BIT_TM_SYS)
+            {
+                SET_TM_SYS(m_bExprnFlag_Disp);
+            }
+
+            WINDOWPLACEMENT sMsgWndPlacement;
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            xmlNodeSetPtr pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pvisibility = ptext;
+                                sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString pWindowPlacement = ptext;
+                                sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                sMsgWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                sMsgWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                sMsgWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                sMsgWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+            //Save the window visibility status.
+            BOOL bVisible = IsWindowVisible();
+
+            //SetWindowPlacement function call makes the window visible.
+            SetWindowPlacement(&sMsgWndPlacement);
+
+            //Regain the window's visibility status.
+            if(!bVisible)
+            {
+                ShowWindow(SW_HIDE);
+            }
+
+            pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Interpretation_Window_Position";
+            pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+            pWndPos = NULL;
+
+            if( NULL != pPathObject )
+            {
+                pWndPos = pPathObject->nodesetval;
+            }
+            if(pWndPos != NULL)
+            {
+                for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
+                {
+                    xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
+
+                    while(pNodePtr != NULL)
+                    {
+                        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVisibilty = ptext;
+                                m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString stVWindowPlacement = ptext;
+                                m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strTop = ptext;
+                                INT nTop = atoi(strTop);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.top =  nTop;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strLeft = ptext;
+                                INT nLeft = atoi(strLeft);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.left =  nLeft;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strBttm = ptext;
+                                INT nBttm = atoi(strBttm);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.bottom =  nBttm;
+
+                                xmlFree(ptext);
+                            }
+                        }
+                        else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
+                        {
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+                            if(NULL != ptext)
+                            {
+                                CString strRight = ptext;
+                                INT nRight = atoi(strRight);
+
+                                m_sMsgIntrpWndPlacement.rcNormalPosition.right =  nRight;
+
+                                xmlFree(ptext);
+                            }
+                        }
+
+                        pNodePtr = pNodePtr->next;
+                    }
+                }
+            }
+        }
+        else
+        {
+            //load default values
+            vSetDefaultConfigValues();
+            vSetDefaultPlacement();
+        }
+    }
+    else
+    {
+        //load default values
+        vSetDefaultConfigValues();
+        vSetDefaultPlacement();
+    }
+    vUpdatePtrInLstCtrl();
+    m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
+
+    //Clear all the previous messages.
+    OnEditClearAll();
+
+    return S_OK;
+}
+
+HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
+{
+    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
     xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/COLUMN";
     xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
     if( NULL != pPathObject )
@@ -4708,134 +6195,6 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 
     //Clear all the previous messages.
     OnEditClearAll();
-
-    //BYTE* pByteSrc = NULL;
-    //pByteSrc = pvDataStream;
-
-    //if (pByteSrc != NULL)
-    //{
-    //    //Reading Version.
-    //    BYTE byVer = 0;
-    //    COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
-    //    UINT nSize= 0;
-    //    //Reading Buffer Size.
-    //    COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
-    //    if ((byVer == MSG_FRMT_WND_VERSION) && (nSize > 0))
-    //    {
-    //        //Reading column Header Positions.
-    //        CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-    //        if (pHeaderCtrl != NULL)
-    //        {
-    //            int  nColumnCount=0;
-    //            //Reading column count.
-    //            COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
-
-    //            LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-    //            for (int i = 0 ; i < nColumnCount; i++)
-    //            {
-    //                COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
-    //                bool bColumnVisible = false;
-    //                COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
-    //                m_lstMsg.ShowColumn(i, bColumnVisible);
-
-    //                INT nColWidth = 0;
-    //                COPY_DATA_2(&nColWidth, pByteSrc, sizeof(INT));
-    //                m_lstMsg.SetColumnWidth(i, nColWidth);
-    //            }
-    //            m_lstMsg.SetColumnOrderArray(nColumnCount, pnOrder);
-    //            free(pnOrder);
-    //        }
-
-
-    //        //Reading Hex/Dec Display.
-    //        bool bHexDec = false;
-    //        COPY_DATA_2(&bHexDec, pByteSrc, sizeof(bool));
-
-    //        CLEAR_EXPR_NUM_BITS(m_bExprnFlag_Disp);
-    //        //m_bExprnFlag_Disp |= (wArguments & BITS_NUM);
-    //        if(bHexDec)
-    //        {
-    //            SET_NUM_HEX(m_bExprnFlag_Disp);
-    //        }
-    //        else
-    //        {
-    //            SET_NUM_DEC(m_bExprnFlag_Disp);
-    //        }
-
-    //        //Reading Overwrite/Append Mode.
-    //        bool bOvrwAppend = false;
-    //        COPY_DATA_2(&bOvrwAppend, pByteSrc, sizeof(bool));
-    //        if(bOvrwAppend)
-    //        {
-    //            SET_MODE_APPEND(m_bExprnFlag_Disp);
-    //        }
-    //        else
-    //        {
-    //            SET_MODE_OVER(m_bExprnFlag_Disp);
-    //        }
-
-    //        //Reading Interpret Status if in overwrite Mode.
-    //        COPY_DATA_2(&m_bInterPretMsg, pByteSrc, sizeof(bool));
-
-    //        if(m_bInterPretMsg)
-    //        {
-    //            SET_MODE_INTRP(m_bExprnFlag_Disp);
-    //        }
-
-    //        //Reading Time Display.
-    //        BYTE byTimeDisplay;
-    //        COPY_DATA_2(&byTimeDisplay, pByteSrc, sizeof(bool));
-    //        CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp);
-
-    //        if(byTimeDisplay == BIT_TM_ABS)
-    //        {
-    //            SET_TM_ABS(m_bExprnFlag_Disp);
-    //        }
-    //        else if(byTimeDisplay == BIT_TM_REL)
-    //        {
-    //            SET_TM_REL(m_bExprnFlag_Disp);
-    //        }
-    //        else if(byTimeDisplay == BIT_TM_SYS)
-    //        {
-    //            SET_TM_SYS(m_bExprnFlag_Disp);
-    //        }
-
-    //        WINDOWPLACEMENT sMsgWndPlacement;
-
-    //        COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
-
-    //        //Save the window visibility status.
-    //        BOOL bVisible = IsWindowVisible();
-
-    //        //SetWindowPlacement function call makes the window visible.
-    //        SetWindowPlacement(&sMsgWndPlacement);
-
-    //        //Regain the window's visibility status.
-    //        if(!bVisible)
-    //        {
-    //            ShowWindow(SW_HIDE);
-    //        }
-
-    //        COPY_DATA_2(&m_sMsgIntrpWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
-    //    }
-    //    else
-    //    {
-    //        //load default values
-    //        vSetDefaultConfigValues();
-    //        vSetDefaultPlacement();
-    //    }
-    //}
-    //else
-    //{
-    //    //load default values
-    //    vSetDefaultConfigValues();
-    //    vSetDefaultPlacement();
-    //}
-    //vUpdatePtrInLstCtrl();
-    //m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
-
-    ////Clear all the previous messages.
-    //OnEditClearAll();
 
     return S_OK;
 }

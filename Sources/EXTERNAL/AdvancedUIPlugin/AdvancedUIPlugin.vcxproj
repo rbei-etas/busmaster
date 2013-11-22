@@ -65,6 +65,10 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     </LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
+    <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(SolutionDir)\EXTERNAL\zlib\include;$(SolutionDir)\EXTERNAL\libxml2\include;$(SolutionDir)\EXTERNAL\iconv\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -82,7 +86,6 @@
       <SubSystem>Windows</SubSystem>
       <NoEntryPoint>true</NoEntryPoint>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,7 +108,6 @@
       <NoEntryPoint>true</NoEntryPoint>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
@@ -127,7 +129,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <NoEntryPoint>true</NoEntryPoint>
       <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile>$(SolutionDir)/bin/Release/$(TargetName).pdb</ProgramDatabaseFile>
+      <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

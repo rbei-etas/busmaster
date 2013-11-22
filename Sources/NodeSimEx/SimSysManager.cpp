@@ -52,17 +52,14 @@ CSimSysManager::~CSimSysManager(void)
     m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
 }
 
-void CSimSysManager::vApplicationClosing()
+void CSimSysManager::vApplicationClosing(bool bSave)
 {
-    if (m_ouSimSysNodeInfo.bIsAnySimSysModified())
+    if (bSave && m_ouSimSysNodeInfo.bIsAnySimSysModified())
     {
-        int nReturn = AfxMessageBox(ASK_SIMSYS_SAVE_PROMPT,
-                                    MB_YESNO|MB_ICONQUESTION);
-        if ((nReturn == IDYES) && (m_pomSimSysTreeView != NULL))
-        {
-            vSaveAllSimSys();
-        }
+        vSaveAllSimSys();
     }
+
+    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
 }
 void CSimSysManager::vSaveAllSimSys()
 {
@@ -778,5 +775,14 @@ BOOL CSimSysManager :: bIsConfigChanged()
         //
         //delete SrcBuffer;
     }
+    else
+    {
+        CSimSysNodeInfo* pSimSysNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+        if (NULL != pSimSysNodeInfo)
+        {
+            return pSimSysNodeInfo->bIsAnySimSysModified();
+        }
+    }
+
     return !bReturn;
 }

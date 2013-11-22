@@ -412,6 +412,8 @@ BOOL CCANMonitorApp::InitInstance()
     //::PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, NULL, NULL );
     // ********  Filter workaround  ********
     pMainFrame->bUpdatePopupMenuDIL();
+    pMainFrame->bUpdatePopupMenuFLEXRAYDIL();
+    pMainFrame->bUpdatePopupMenuDILL(); //LIN modify
     // Start Logging if is enabled
     // Get the Flag Pointer
     CFlags* pomFlag =  pouGetFlagsPtr();

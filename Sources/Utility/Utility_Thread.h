@@ -32,6 +32,7 @@ enum eTHREAD_ACTION
     INVOKE_FUNCTION,
     CREATE_TIME_MAP,
     INACTION,
+    SUSPEND,
     IDLE
 };
 #endif
