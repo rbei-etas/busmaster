@@ -34,15 +34,15 @@
 #define IDI_ICON_J1939_TRANSMIT_DISABLED 111
 #define IDR_CAN_MONITOR                 111
 #define IDI_ICON_CAN_CONNECT            112
-#define IDI_ICON_LOG_FILTER_ON          118
-#define IDI_ICON_MSG_FILTER_ON          119
-#define IDI_ICON_REPLAY_FILTER_ON       120
 #define IDR_BUSMASTERINTERFACE          112
 #define IDI_ICON_FILTER_ON              113
 #define IDI_ICON_LOG_FILTER             114
 #define IDI_ICON_MSG_FILTER             115
 #define IDI_ICON_REPLAY_FILTER          116
 #define IDI_ICON_CAN_DISCONNECT         117
+#define IDI_ICON_LOG_FILTER_ON          118
+#define IDI_ICON_MSG_FILTER_ON          119
+#define IDI_ICON_REPLAY_FILTER_ON       120
 #define IDR_MAINFRAME                   128
 #define IDR_NEWEDTYPE                   129
 #define IDR_PGM_EDTYPE                  129
@@ -202,7 +202,7 @@
 #define IDR_CONFIG_TOOLBAR              328
 #define IDR_CONFIG_TOOLBAR_HOT          329
 #define IDR_CONFIG_TOOLBAR_DISABLED     330
-#define IDD_DLG_FLEXRAY_NETWORK_STATISTICS      331
+#define IDD_DLG_FLEXRAY_NETWORK_STATISTICS 331
 #define IDR_TLB_LIN                     332
 #define IDB_BITMAP9                     333
 #define IDB_LIN_IMG                     334
@@ -211,7 +211,7 @@
 #define IDC_EDIT_SIGNALNAME             1000
 #define IDC_EDIT_BAUD_RATE              1000
 #define IDC_EDIT_SGNAME                 1000
-//#define IDC_STATIC_MB                   1000
+#define IDC_STATIC_CLUSTER_INFO         1000
 #define IDC_STAT_SIGANLNAME             1001
 #define IDC_EDIT_BTR0                   1001
 #define IDC_SPIN_SGLENGTH               1001
@@ -220,7 +220,7 @@
 #define IDC_BTN_BROWSE                  1001
 #define IDC_BUTTON_OPENFILE             1001
 #define IDC_OK                          1001
-//#define IDC_STATIC_HOUR                 1001
+#define IDC_STATIC_EXTRA_CONFIG         1001
 #define IDC_STAT_SIGNALLENGTH           1002
 #define IDC_EDIT_BTR1                   1002
 #define IDC_SPIN_BYINDEX                1002
@@ -231,7 +231,7 @@
 #define IDC_BTN_FILTER                  1002
 #define IDC_EDIT_LOG_FILE_NAME          1002
 #define IDC_BUTTON_EDITFILE             1002
-//#define IDC_STATIC_MINUTES              1002
+#define IDC_STATIC_DATABASE_INFO        1002
 #define IDC_SPIN_LENGTH                 1003
 #define IDC_EDIT_FACTOR                 1003
 #define IDC_BUTTON18                    1003
@@ -240,7 +240,7 @@
 #define IDC_BTN_LOG_BROWSE              1003
 #define IDC_BUTTON_BUILD                1003
 #define IDC_STATIC_BMP                  1003
-//#define IDC_STATIC_NO_OF_FILES          1003
+#define IDC_STATIC_LIN_PROTOCOL         1003
 #define IDC_EDIT_LENGTH                 1004
 #define IDC_EDIT_UNIT                   1004
 #define IDC_BTN_RIGHT                   1004
@@ -250,12 +250,13 @@
 #define IDC_LST_SELECTED                1004
 #define IDC_BUTTON_BUILDANDLOAD         1004
 #define IDB_PICCTRL                     1004
-//#define IDC_EDIT_LOG_COMMENT            1004
+#define IDC_STATIC_LIN_BAUDRATE         1004
 #define IDC_STAT_BYTE_INDEX             1005
 #define IDC_EDIT_MAX                    1005
 #define IDC_BTN_SELECT                  1005
 #define IDC_BUTTON_LOAD                 1005
 #define IDC_LOCKING_KEY                 1005
+#define IDC_STATIC_DBNAME               1005
 #define IDC_STAT_STARTBIT               1006
 #define IDC_EDIT_MIN                    1006
 #define IDC_BUTTON3                     1006
@@ -298,6 +299,7 @@
 #define IDC_STATIC_LOCK1                1009
 #define IDC_CMD_ADDRESS                 1009
 #define IDC_CHECK_BROADCAST             1009
+#define IDC_CHECK_OVERWRITE_SETTINGS    1009
 #define IDC_STAT_MASK                   1010
 #define IDC_COMBO_BUS_TYPE              1010
 #define IDC_EDIT_VALUE_DESC             1010
@@ -313,6 +315,7 @@
 #define IDC_COMBO_MSGS                  1010
 #define IDC_COMBO_NODE                  1010
 #define IDC_EDIT_RESPONSE               1010
+#define IDC_COMBO_LIN_PROTOCOL          1010
 #define IDC_STAT_MASK2                  1011
 #define IDC_LSTC_SIGNAL_DETAILS         1011
 #define IDC_EDIT_VAL                    1011
@@ -487,16 +490,11 @@
 #define IDC_EDIT_LOGFILENAME            1062
 #define IDC_EDIT_LOGFILEPATH            1062
 #define IDC_STAT_REPLAY_FILE            1063
-//#define IDC_EDIT_FILE_SIZE              1063
 #define IDC_EDIT_REPLAY_FILE            1064
-//#define IDC_EDIT_HOURS                  1064
 #define IDC_STAT_7                      1065
 #define IDC_STAT_REPLAY_MODE            1065
-//#define IDC_EDIT_MINUTES                1065
 #define IDC_STAT_6                      1066
 #define IDC_RBTN_SINGLE                 1066
-//#define IDC_EDIT_FILE_SIZE2             1066
-//#define IDC_EDIT_NO_OF_FILES            1066
 #define IDC_STAT_5                      1067
 #define IDC_RBTN_CYCLIC                 1067
 #define IDC_LSTB_MSGID_LIST             1068
@@ -607,20 +605,14 @@
 #define IDC_LOGTRIGGER_GROUP            1119
 #define IDC_STAT_RECT                   1120
 #define IDC_STAT_LINE4                  1120
-//#define IDC_LOGTRIGGER_GROUP2           1120
 #define IDC_CBTN_NEW_CONTROLS           1121
 #define IDC_LOG_FILTER                  1121
 #define IDC_CBTN_UPDATE_MSG             1122
 #define IDC_STAT_HEADER                 1122
 #define IDC_CBTN_ADD_MSG                1122
 #define IDC_CBTN_LOGFILEPATH            1122
-//#define IDC_CHKB_ON_TRANSMISSION        1123
 #define IDC_STAT_HEADER2                1124
-//#define IDC_CHKB_STARTTRIGGER3          1124
-//#define IDC_CHKB_LOG_FILE_SIZE          1124
 #define IDC_EDIT_DLC                    1125
-//#define IDC_CHKB_STARTTRIGGER4          1125
-//#define IDC_CHKB_LOG_ON_TIME            1125
 #define IDC_EDIT_DB1                    1126
 #define IDC_EDIT_DB2                    1127
 #define IDC_EDIT_DB3                    1128
@@ -700,6 +692,7 @@
 #define IDC_EDIT_BUFFER_SIZE            1181
 #define IDC_EDIT_TO                     1181
 #define IDC_EDIT_BROADCAST              1181
+#define IDC_EDIT_LIN_BAUDRATE           1181
 #define IDC_EDIT_OVERWRITE_SIZE         1182
 #define IDC_EDIT_X_GRIDS                1182
 #define IDC_EDIT_DISPLAY_UPDATE         1183
@@ -883,8 +876,6 @@
 #define IDC_RBTN_OVERWRITE              1351
 #define IDC_CHECK_RESET_TIMESTAMP       1352
 #define IDC_STAT_RANGE                  1353
-#define IDC_SELECT_LIN_DRIVER           1380
-#define IDC_SELECT_LIN_DRIVER_END       1385
 #define IDC_SELECT_FLEX_DRIVER          1354
 #define IDC_SELECT_FLEX_DRIVER_END      1370
 #define IDC_STAT_NULLFRAME_COLOR        1371
@@ -895,17 +886,17 @@
 #define IDC_STATICFRAME_COLOR_STAT      1373
 #define IDC_STAT_DYNAMICFRAME_COLOR     1374
 #define IDC_DYNAMICFRAME_COLOR_STAT     1374
-#define IDC_LSTC_FLEXRAY_NETWORK_STATISTICS     1375
+#define IDC_LSTC_FLEXRAY_NETWORK_STATISTICS 1375
 #define IDI_ICON_FLEXRAY_CHANNEL        1376
-#define IDR_FLEX_NETWORKSTATISTICS_WINDOW_TEXT  1377
+#define IDR_FLEX_NETWORKSTATISTICS_WINDOW_TEXT 1377
 #define IDC_BUTTON_FIBEXPATH            1378
 #define IDC_EDIT_FIBEX_PATH             1379
+#define IDC_SELECT_LIN_DRIVER           1380
 #define IDC_LIST_ECU                    1380
+#define IDC_SELECT_LIN_DRIVER_END       1385
 #define IDI_ICON_NETWORKSTAT            3007
 #define IDC_FLEXRAY_LOGO                3008
 #define IDB_J1939TXMSG                  10004
-//#define IDB_LIN_IMGHOT                  10006
-//#define IDB_LIN_IMGDISABLED             10007
 #define DLG_TEMPLATE_LOCKING_KEY        13030
 #define IDR_TOOL_BUTTON_SIGNAL_WATCH    32784
 #define IDR_TOOL_BUTTON_SKIP            32785
@@ -1013,7 +1004,6 @@
 #define IDS_MESSAGE_ID                  32915
 #define IDM_EDIT_SIGNAL                 32916
 #define IDM_NETWORK_STATISTICS_WND      32918
-
 #define IDM_CONFIGURE_SELF_TEST         32919
 #define IDM_CONFIGURE_PASSIVE           32920
 #define IDM_CONFIGURE_ACTIVE            32921
@@ -1121,9 +1111,6 @@
 #define ID_FUNCTION_EXPORTLOG           33102
 #define ID_CONFIGURE_MESSAGEDISPLAY     33103
 #define ID_CONFIGURE_MESSAGEDISPLAY_J1939 33104
-
-
-
 #define ID_NODESIMULATION_EXECUTE       33107
 #define ID_J1939_VIEW                   33108
 #define ID_FILE_UTILITIES               33109
@@ -1134,23 +1121,29 @@
 #define ID_FUNCTIONS_TESTAUTOMATION     33118
 #define ID_TESTAUTOMATION_EDITOR        33119
 #define ID_TESTAUTOMATION_EXECUTOR      33120
-#define ID_CONFIGURE_CHANNELSELECTION   33121
 #define ID_UTILITIES_FILECONVERTERS     33122
 #define ID_DATABASE_SAVE                33123
 #define ID_EXECUTE_ALLEVENTHANDLERS     33124
 #define ID_TOOLBAR_LIN                  33126
-
-
 #define ID_SHOWMESSAGEWINDOW_CAN        33127
 #define ID_SHOWMESSAGEWINDOW_J1939      33128
 #define ID_SHOWMESSAGEWINDOW_FLEXRAY    33129
 #define ID_SHOWMESSAGEWINDOW_LIN        33130
-
 #define ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 40010
 #define ID_CONFIGURE_CHANNELSELECTION   40011
 #define ID_Menu40012                    40012
 #define ID_Menu40013                    40013
-//#define ID_TOOLBAR_LIN                  40004
+#define IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN 40014
+#define IDM_DLL_LOADALLDLL_LIN          40015
+#define IDM_DLL_UNLOAD_ALL_LIN          40016
+#define IDM_DLL_BUILDLOAD_ALL_LIN       40017
+#define IDM_DLL_BUILD_ALL_LIN           40018
+#define IDM_EXECUTE_MESSAGEHANDLERS_LIN 40019
+#define IDM_EXECUTE_TIMERHANDLER_LIN    40020
+#define IDM_EXECUTE_KEYHANDLERS_LIN     40021
+#define IDM_EXECUTE_ERROR_HANDLERS_LIN  40022
+#define IDM_EXECUTE_ALL_HANDLERS_LIN    40023
+#define ID_CONFIGURE_MESSAGEDISPLAY_LIN 40024
 #define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
@@ -1192,13 +1185,12 @@
 #define ID_CAN_LOGO                     62478
 #define IDS_CONNECT_FLEXRAY             62479
 #define IDS_DISCONNECT_FLEXRAY          62480
-
 #define ID_HARDWAREINTERFACE_CUBASLIN   62481
 #define ID_TRANSMIT_ACTIVATE_LIN        62482
 #define ID_TRANSMIT_CONFIGURE_LIN       62483
-
 #define IDM_CONFIGURE_LIN_CHANNEL       62485
 #define IDM_LIN_CONNECT                 62486
+#define ID_LIN_CLUSTER_CONFIG           62487
 
 // Next default values for new objects
 //
@@ -1206,7 +1198,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        112
 #define _APS_NEXT_COMMAND_VALUE         40014
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

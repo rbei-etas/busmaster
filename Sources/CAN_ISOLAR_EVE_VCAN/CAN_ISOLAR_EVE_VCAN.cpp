@@ -814,7 +814,10 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_StartHardware(void)
 HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_StopHardware(void)
 {
     //Terminate the read thread
-    sg_sParmRThread.bTerminateThread();
+    //sg_sParmRThread.bTerminateThread();
+
+    sg_sParmRThread.m_unActionCode = EXIT_THREAD;
+    SetEvent(sg_sParmRThread.m_hActionEvent);
 
     return S_OK;
 }
@@ -910,7 +913,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetControllerParams(LONG& lParam, UINT nChanne
     {
         case NUMBER_HW:
         {
-            lParam = 0;
+            lParam = 1;
         }
         break;
         case NUMBER_CONNECTED_HW:

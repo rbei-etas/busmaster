@@ -28,7 +28,9 @@
 #include "Utility/Utility_Structs.h"                 // For data struct definition
 #include "Utility/ComboItem.h"
 #include "Utility/KeyNumEdit.h"
+#include "Utility/NumEdit.h"
 #include "Utility/FFListCtrl.h"
+#include "Utility/AlphaChar.h"
 /////////////////////////////////////////////////////////////////////////////
 // CFlexListCtrl window
 #define         WM_DATA_UPDATED     WM_USER+50
@@ -81,7 +83,10 @@ public:
     // This function will create a editbox.
     CEdit* pomEditItem(int nItem, int nSubItem);
     // This function will create a numeric editbox.
-    CKeyNumEdit* pomNumItem(int nItem, int nSubItem, const SNUMERICINFO& sInfo);
+    CKeyNumEdit* pomKeyNumItem(int nItem, int nSubItem, const SNUMERICINFO& sInfo);
+    CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem, const SNUMERICINFO& sInfo);
+    CAlphaCharEdit* pomAlphaNumericChar( int nItem, int nSubItem);
+
     // This will set the user program informatrion of a column
     void vSetUserProgInfo( int nRow, int nColunm,
                            const SUSERPROGINFO& sUSerProgInfo);
@@ -105,6 +110,8 @@ private:
     CListTypes      m_omListItemType;
     // CMap for numeric parameters
     CNumericInfo    m_omNumDetails;
+
+
     // CMap for User Program information
     CUserProgList   m_omUserProg;
     // Structure to store last modified information

@@ -54,6 +54,7 @@
 #define DEF_CAN_LOG                 "CAN_Log"
 #define DEF_CAN_SIM_SYS             "CAN_Simulated_Systems"
 #define DEF_J1939_SIM_SYS           "J1939_Simulated_Systems"
+#define DEF_LIN_SIM_SYS             "LIN_Simulated_Systems"
 #define DEF_J1939_LOG               "J1939_Log"
 #define DEF_FILTER                  "Filter"
 #define DEF_NAME                    "Name"
@@ -291,4 +292,20 @@
 #define DEF_BASECYCLE                   "BaseCycle"
 #define DEF_REPETION                    "Repetion"
 
+
+//LIN Specific
+#define DEF_LIN_BAUDRATE                "BaudRate"
+#define DEF_LIN_PROTOCOLVER             "ProtocolVersion"
+#define DEF_LIN_OVERWRITE_SETTINGS      "Overwrite_Settings"
+#define DEF_LIN_TX_WINDOW               "LIN_Tx_Window"
+
+//      DEF_MSG_ID                                                  //m_ucMsgID
+//      DEF_MSGTYPE                                                 //m_ucMsgTyp
+//      DEF_CHANNEL                                                 //m_ucChannel
+//      DEF_DLC                                                     //m_ucDataLen
+//      DEF_DATABYTES                                               //m_ucData
+#define DEF_LIN_MESSAGE_CHECKSUM        "Checksum_Type"             //m_ucChksumTyp
+#define DEF_REPETITION_ENABLED          "Repetition_Enabled"
+#define DEF_KEY_ENABLED                 "Key_Enabled"
+#define DEF_MESSAGE_TYPE                "Message_Type"
 

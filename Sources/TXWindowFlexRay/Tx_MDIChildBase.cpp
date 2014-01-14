@@ -26,6 +26,7 @@
 #include "TxWindowFlexRay_stdafx.h"             // For Standard Includes
 #include "Tx_MDIChildBase.h"       // For MDI Base class definition
 #include "TxFlexRayDataStore.h"    // For Tx Window Configuration
+#include "TxLinDataStore.h"    // For Tx Window Configuration
 
 IMPLEMENT_DYNCREATE(CMDIChildBase, CMDIChildWnd)
 
@@ -58,9 +59,9 @@ CMDIChildBase::CMDIChildBase()
   Date Created   : 15.4.2005
   Modifications  :
 *******************************************************************************/
-CMDIChildBase::CMDIChildBase(eCONFIGDETAILS eWindowIdentity)
+CMDIChildBase::CMDIChildBase(ETYPE_BUS eBusType)
 {
-    m_eWindowIdentity =  eWindowIdentity;
+    m_eBusType =  eBusType;
 }
 
 /*******************************************************************************
@@ -178,7 +179,14 @@ void CMDIChildBase::vSaveWinStatus()
         // Set flag to restore minimised postion also
         m_sWindowPlacement.flags |= WPF_SETMINPOSITION;
         // Update configuration module
-        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetTxData(TX_WINDOW_PLACEMENT, &m_sWindowPlacement);
+        if ( m_eBusType == FLEXRAY )
+        {
+            CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetTxData(TX_WINDOW_PLACEMENT, &m_sWindowPlacement);
+        }
+        else
+        {
+            CTxLINDataStore::ouGetTxLINDataStoreObj().bSetTxData(TX_WINDOW_PLACEMENT, &m_sWindowPlacement);
+        }
     }
 }
 

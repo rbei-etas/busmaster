@@ -45,6 +45,7 @@ const int RX_MESSAGE = 0xdfffffff;  // bitwise AND to make it a Rx message
 #define MAKE_DEFAULT_MESSAGE_TYPE(MSGID)     (MSGID & 0x3fffffff)
 #define MAKE_RX_TX_MESSAGE(MSGID, MSGTYPE)   ((MSGTYPE) ? (MSGID) : ((MSGID) | TX_MESSAGE))
 #define MAKE_CHANNEL_SPECIFIC_MESSAGE(MSGID, CHANNELID) ( ((unsigned __int64)((UINT)(MSGID))) | (((__int64)(CHANNELID)) << nBitsIn4Bytes) )
+#define MAKELONGLONG(HINT, LINT) ( ((unsigned __int64)((UINT)(HINT))) | (((__int64)(LINT)) << nBitsIn4Bytes) )
 #define MAKE_ERROR_MESSAGE_TYPE(ERRID)    (ERRID | 0x40000000)
 
 /******************************************************************************
@@ -118,27 +119,10 @@ __int64 CMsgContainerLIN::nCreateMapIndexKey( LPVOID pMsgData )
     STLINDATA* pouLINData = (STLINDATA*)pMsgData;
     STLIN_MSG& sMsg = pouLINData->m_uDataInfo.m_sLINMsg;
 
-    // Form message to get message index in the CMap
-    int nMsgID = 0;
-    if (IS_ERR_MESSAGE(pouLINData->m_ucDataType))
-    {
-        nMsgID = MAKE_RX_TX_MESSAGE( usProcessCurrErrorEntry(pouLINData->m_uDataInfo.m_sErrInfo),
-                                     IS_RX_MESSAGE(pouLINData->m_ucDataType));
-    }
-    else
-    {
-        nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_ucMsgID,
-                                     IS_RX_MESSAGE(pouLINData->m_ucDataType));
-    }
-
-    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
-    // For extended message
-
-    // Apply Channel Information
-    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
-                          sMsg.m_ucChannel );
-    return n64MapIndex;
+    return n64CreateMapIDForLinEvevnt(pouLINData);
 }
+
+
 
 //converts STLINDATA into SFRAMEINFO_BASIC_LIN
 static void vFormatLINDataMsg(STLINDATA* pMsgLIN,
@@ -613,16 +597,18 @@ HRESULT CMsgContainerLIN::hUpdateFormattedMsgStruct(int nListIndex,
         m_ouFormatLIN.vFormatLINDataMsg(&sLINCurrData,
                                         &m_sOutFormattedData,
                                         bExprnFlag_Disp);
-
+        nMsgCode = n64CreateMapIDForLinEvevnt( &sLINCurrData) ;
         //If Message is erroneous, return S_FALSE
-        if(IS_ERR_MESSAGE(sLINCurrData.m_ucDataType))
-        {
-            nMsgCode = usProcessCurrErrorEntry(sLINCurrData.m_uDataInfo.m_sErrInfo);
-            return S_FALSE;
-        }
-
-        //Now add the name of message if present in database else show the code
-        nMsgCode = sLINCurrData.m_uDataInfo.m_sLINMsg.m_ucMsgID;
+        //if(sLINCurrData.m_eLinMsgType == LIN_EVENT)
+        //      {
+        //  nMsgCode = n64CreateMapIDForLinEvevnt( &sLINCurrData) ;//usProcessCurrErrorEntry(sLINCurrData.m_uDataInfo.m_sErrInfo);
+        //          return S_FALSE;
+        //      }
+        //if(sLINCurrData.m_eLinMsgType == LIN_MSG)
+        //{
+        //  //Now add the name of message if present in database else show the code
+        //  nMsgCode = sLINCurrData.m_uDataInfo.m_sLINMsg.m_ucMsgID;
+        //}
     }
     else
     {
@@ -632,6 +618,7 @@ HRESULT CMsgContainerLIN::hUpdateFormattedMsgStruct(int nListIndex,
 
     return hResult;
 }
+
 
 /******************************************************************************
     Function Name    :  vSetCurrMsgName
@@ -681,33 +668,41 @@ USHORT CMsgContainerLIN::usProcessCurrErrorEntry(SERROR_INFO_LIN& sErrInfo)
 
     // Decide which module(s) to notify by analysing the error code
     // Accordingly notify the modules by sending/posting message
-    if (sErrInfo.m_ucErrType == ERROR_BUS)
-    {
-        usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
-    }
-    else if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
-    {
-        // Reaching warning limit isn't considered as an error.
-        // In case of this interrupt there is no need for display to
-        // be updated.
-        // Use Channel ID as High Byte of WPARAM
-        usErrorID = ERROR_UNKNOWN;
-    }
-    // Handle interrupts. This is not error message and assign error code
-    // to unknown
-    // Interrupts are state transition indicators but not real error message
-    else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)
-    {
-        // Use Channel ID as High Byte of WPARAM
-        usErrorID = ERROR_UNKNOWN;
-    }
-    else
-    {
-        usErrorID = sErrInfo.m_ucErrType;
-    }
+
+    usErrorID = sErrInfo.m_eEventType;
 
     return usErrorID;
 }
+
+__int64 CMsgContainerLIN::n64CreateMapIDForLinEvevnt(STLINDATA* psLinData)
+{
+    if ( psLinData == NULL )
+    {
+        return -1;
+    }
+
+    __int64 n64MapIndex = -1;
+    if  ( psLinData->m_eLinMsgType == LIN_MSG )
+    {
+        WORD wTxId = MAKEWORD(psLinData->m_ucDataType, psLinData->m_uDataInfo.m_sLINMsg.m_ucMsgID);
+        WORD wEventType = MAKEWORD( LIN_MSG, 0 );
+        INT nMsgAttrib = MAKELONG ( wEventType, wTxId);
+        //n64MapIndex = MAKELONGLONG(psLinData->m_uDataInfo.m_sLINMsg.m_ucChannel - 1, nMsgAttrib );
+        n64MapIndex = MAKELONGLONG(nMsgAttrib, psLinData->m_uDataInfo.m_sLINMsg.m_ucChannel - 1 );
+    }
+    else if ( psLinData->m_eLinMsgType == LIN_EVENT )
+    {
+        WORD wTxId = MAKEWORD(psLinData->m_ucDataType, psLinData->m_uDataInfo.m_sErrInfo.m_ucId);
+        WORD wEventType = MAKEWORD( LIN_EVENT, psLinData->m_uDataInfo.m_sErrInfo.m_eEventType );
+        INT nMsgAttrib = MAKELONG ( wEventType, wTxId);
+        //n64MapIndex = MAKELONGLONG(psLinData->m_uDataInfo.m_sLINMsg.m_ucChannel - 1, nMsgAttrib );
+        n64MapIndex = MAKELONGLONG(nMsgAttrib, psLinData->m_uDataInfo.m_sLINMsg.m_ucChannel - 1 );
+    }
+
+
+    return n64MapIndex;
+}
+
 
 /******************************************************************************
     Function Name    :  vClearFormattedMsgStruct

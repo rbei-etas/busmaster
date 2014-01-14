@@ -104,6 +104,7 @@
 #define IDD_DLG_BUSEV_HANDLER           4002
 #define IDC_STATIC_ADDRESS              4003
 #define IDC_STATIC_MSG_ID               4004
+#define IDD_DLG_ERR_HANDLER_LIN         4004
 #define IDC_STATIC_MSG_ID_RANGE         4005
 #define IDC_STATIC_DB_MSG_LIST          4006
 #define IDC_CHECK_DATA_CONF             4007
@@ -111,8 +112,20 @@
 #define IDC_STATIC_PREF_ADRES           4009
 #define IDC_EDIT_ECUNAME                4010
 #define IDC_CHKB_BUSEV_CONNECT_HANDLER  4011
+#define IDOK_LIN                        4011
 #define IDC_CHKB_BUSEV_DISCONNECT_HANDLER 4012
-#define IDC_CHECK1                      4013
+#define IDC_CHKB_BUSEV_PRECONNECT_HANDLER 4013
+#define IDCANCEL_LIN                    4014
+#define IDC_CHECK1                      4015
+#define IDC_CHK_ERR_CHECKSUM_LIN        4015
+#define IDC_CMB_CHANNEL                 4015
+#define IDC_CHK_ERR_FRAME_LIN           4016
+#define IDC_COMBO1                      4016
+#define IDC_CMB_CHANNEL_SEL             4016
+#define IDC_STATIC_CHANNEL              4020
+#define IDC_CHK_ERR_SLAVE_NO_RESP_LIN   4017
+#define IDC_CHK_ERR_Sync                4018
+#define IDC_CHK_ERR_SLAVE_TIMEOUT_LIN   4019
 #define IDD_MSG_SG_DLG                  5000
 #define ID_FUNCTIONEDITOR_SAVE          32772
 #define ID_RYUJ_SJ                      32778
@@ -144,6 +157,7 @@
 #define IDM_SIMSYS_LOADALL              33002
 #define IDM_SIMSYS_UNLOADALL            33004
 #define IDM_SAVE_ALL_SIMSYS             33006
+#define IDC_STATIC_CHANNEL              33007
 #define IDM_CONTEXT_INSERTFUNCTION      61449
 #define IDM_CONTEXT_INSERTMESSAGE       61450
 #define IDM_CONTEXT_INSERTSIGNAL        61451
@@ -152,9 +166,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        4002
+#define _APS_NEXT_RESOURCE_VALUE        4006
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         4011
+#define _APS_NEXT_CONTROL_VALUE         4017
 #define _APS_NEXT_SYMED_VALUE           4000
 #endif
 #endif

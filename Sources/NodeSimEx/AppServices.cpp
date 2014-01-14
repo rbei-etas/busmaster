@@ -622,7 +622,7 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
     //CAPL_NEW_ADDITIONS
     strcpy(pBuffer, "");
     ETYPE_BUS m_eBus = (ETYPE_BUS)dContext;     //set the network name
-    if(!((m_eBus == CAN)||(m_eBus == J1939)))
+    if(!((m_eBus == CAN)||(m_eBus == J1939) || (m_eBus == LIN)))
     {
         //CString    omErrorStr("Invalid channel");
         //MessageBox(omErrorStr);

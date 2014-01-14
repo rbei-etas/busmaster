@@ -30,6 +30,7 @@
 #include "DefineTimerHandler.h" // Dialog class for adding new timer handler
 #include "IncludeHeaderDlg.h"   // Dialog class for adding new include header
 #include "ErrHandlerDlg.h"      // Dialog class for error handlers
+#include "ErrHandlerDlgLIN.h"      // Dialog class for error handlers
 #include "DLLHandlerDlg.h"      // Dialog class for dll handlers
 #include "BusEventHandlerDlg.h" // Dialog class for BusEvent Handler
 #include "MsgHandlerDlg.h"      // Dialog class for message handlers
@@ -197,7 +198,7 @@ BOOL CFnsTreeView::bPopulateTree()
             hErr = omTree.InsertItem( ERROR_HANDLERS, hItem );
         }
         HTREEITEM hEvenInd = NULL;
-        if (m_eBus != CAN)
+        if (m_eBus != CAN && m_eBus != LIN)
         {
             hEvenInd = omTree.InsertItem( EVENTIND_HANDLERS, hItem );
         }
@@ -1787,78 +1788,195 @@ void CFnsTreeView::vOnNewErrorHandler()
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
-        // Update key handler array
-        CStringArray* pErrorArray =
-            pDoc->pomStrGetErrorHandlerPrototypes();
-        if ( pErrorArray != NULL )
+
+        if(sBusSpecInfo.m_eBus == CAN)
         {
-            if(pErrorArray->GetSize()< 5 )
+            // Update key handler array
+            CStringArray* pErrorArray =
+                pDoc->pomStrGetErrorHandlerPrototypes();
+            if ( pErrorArray != NULL )
             {
-                CErrHandlerDlg od_Dlg(NULL, FALSE);
-
-                if ( od_Dlg.DoModal() == IDOK )
+                if(pErrorArray->GetSize()< 5 )
                 {
-                    int nCount = (COMMANINT)od_Dlg.m_omStrArrayErrorHandler.GetSize();
-                    for( int i = 0; i <nCount ; i++)
+                    CErrHandlerDlg od_Dlg(NULL, FALSE);
+
+                    if ( od_Dlg.DoModal() == IDOK )
                     {
-                        // Construct Function name
-                        CString omStrFuncName = defERROR_HANDLER_FN;
-                        omStrFuncName.Insert( omStrFuncName.GetLength(),
-                                              od_Dlg.m_omStrArrayErrorHandler.GetAt(i));
+                        int nCount = (COMMANINT)od_Dlg.m_omStrArrayErrorHandler.GetSize();
+                        for( int i = 0; i <nCount ; i++)
+                        {
+                            // Construct Function name
+                            CString omStrFuncName = defERROR_HANDLER_FN;
+                            omStrFuncName.Insert( omStrFuncName.GetLength(),
+                                                  od_Dlg.m_omStrArrayErrorHandler.GetAt(i));
 
-                        // Construct Function definiton
-                        CString omStrFuncPrototype = omStrFuncName;
-                        omStrFuncPrototype.Insert( 0, SPACE );
-                        omStrFuncPrototype.Insert( 0, defVOID );
-                        omStrFuncPrototype.Insert(
-                            omStrFuncPrototype.GetLength(), "(SCAN_ERR ErrorMsg)" );
+                            // Construct Function definiton
+                            CString omStrFuncPrototype = omStrFuncName;
+                            omStrFuncPrototype.Insert( 0, SPACE );
+                            omStrFuncPrototype.Insert( 0, defVOID );
+                            omStrFuncPrototype.Insert(
+                                omStrFuncPrototype.GetLength(), "(SCAN_ERR ErrorMsg)" );
 
-                        // Form the function header
-                        CString omStrHdr = BUS_FN_HDR;
-                        omStrHdr.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
-                        omStrHdr.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
-                                          omStrFuncName );
+                            // Form the function header
+                            CString omStrHdr = BUS_FN_HDR;
+                            omStrHdr.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+                            omStrHdr.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                              omStrFuncName );
 
-                        // Form the function footer
-                        CString omStrFooter = BUS_FN_FOOTER;
-                        omStrFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
-                        omStrFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
-                                             omStrFuncName );
-                        pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
-                        // Add fn definition
-                        pDoc->m_omSourceCodeTextList.AddTail(
-                            omStrFuncPrototype );
+                            // Form the function footer
+                            CString omStrFooter = BUS_FN_FOOTER;
+                            omStrFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+                            omStrFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                                 omStrFuncName );
+                            pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
+                            // Add fn definition
+                            pDoc->m_omSourceCodeTextList.AddTail(
+                                omStrFuncPrototype );
 
-                        // Insert the prototype into the tree under
-                        // error handler header
-                        CTreeCtrl& omTree = GetTreeCtrl();
-                        HTREEITEM hNew =
-                            omTree.InsertItem( omStrFuncPrototype,
-                                               5, 5,
-                                               omTree.GetSelectedItem());
+                            // Insert the prototype into the tree under
+                            // error handler header
+                            CTreeCtrl& omTree = GetTreeCtrl();
+                            HTREEITEM hNew =
+                                omTree.InsertItem( omStrFuncPrototype,
+                                                   5, 5,
+                                                   omTree.GetSelectedItem());
 
-                        pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
-                        omTree.SelectItem( hNew );
+                            pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
+                            omTree.SelectItem( hNew );
 
-                        // Add body of the fn
-                        pDoc->m_omSourceCodeTextList.AddTail( "{" );
-                        pDoc->m_omSourceCodeTextList.AddTail( defTODO );
-                        // Add footer
-                        pDoc->m_omSourceCodeTextList.AddTail( omStrFooter );
+                            // Add body of the fn
+                            pDoc->m_omSourceCodeTextList.AddTail( "{" );
+                            pDoc->m_omSourceCodeTextList.AddTail( defTODO );
+                            // Add footer
+                            pDoc->m_omSourceCodeTextList.AddTail( omStrFooter );
 
-                        pErrorArray->Add(omStrFuncPrototype);
+                            pErrorArray->Add(omStrFuncPrototype);
 
+                        }
+                        if(nCount >0)
+                        {
+                            pDoc->UpdateAllViews( NULL );
+                            pDoc->SetModifiedFlag( TRUE );
+                        }
                     }
-                    if(nCount >0)
+                }
+            }
+        }
+        else if(sBusSpecInfo.m_eBus == LIN)
+        {
+            // Update key handler array
+            CStringArray* pErrorArray =
+                pDoc->pomStrGetErrorHandlerPrototypes();
+            if ( pErrorArray != NULL )
+            {
+                if(pErrorArray->GetSize()< defERROR_HANDLER_NUMBER_LIN )
+                {
+                    CErrHandlerDlgLIN od_Dlg(pDoc, FALSE);
+
+                    if ( od_Dlg.DoModal() == IDOK )
                     {
-                        pDoc->UpdateAllViews( NULL );
-                        pDoc->SetModifiedFlag( TRUE );
+                        int nCount = (COMMANINT)od_Dlg.m_omStrArrayErrorHandler.GetSize();
+                        for( int i = 0; i <nCount ; i++)
+                        {
+                            // Construct Function name
+                            CString omStrFuncName = defERROR_HANDLER_FN;
+                            omStrFuncName.Insert( omStrFuncName.GetLength(),
+                                                  od_Dlg.m_omStrArrayErrorHandler.GetAt(i));
+
+                            // Construct Function definiton
+                            CString omStrFuncPrototype = omStrFuncName;
+                            omStrFuncPrototype.Insert( 0, SPACE );
+                            omStrFuncPrototype.Insert( 0, defVOID );
+
+                            string strArgType;
+                            if ( nGetLinEventTypeFromName(omStrFuncName, strArgType) != S_OK)
+                            {
+                                return;
+                            }
+
+                            CString strTemp = "(";
+                            strTemp += strArgType.c_str();
+                            strTemp += ")";
+
+                            omStrFuncPrototype.Insert(
+                                omStrFuncPrototype.GetLength(), strTemp );
+
+                            // Form the function header
+                            CString omStrHdr = BUS_FN_HDR;
+                            omStrHdr.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+                            omStrHdr.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                              omStrFuncName );
+
+                            // Form the function footer
+                            CString omStrFooter = BUS_FN_FOOTER;
+                            omStrFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
+                            omStrFooter.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
+                                                 omStrFuncName );
+                            pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
+                            // Add fn definition
+                            pDoc->m_omSourceCodeTextList.AddTail(
+                                omStrFuncPrototype );
+
+                            // Insert the prototype into the tree under
+                            // error handler header
+                            CTreeCtrl& omTree = GetTreeCtrl();
+                            HTREEITEM hNew =
+                                omTree.InsertItem( omStrFuncPrototype,
+                                                   5, 5,
+                                                   omTree.GetSelectedItem());
+
+                            pDoc->bAddFunctionPrototype(omStrFuncPrototype, TRUE);
+                            omTree.SelectItem( hNew );
+
+                            // Add body of the fn
+                            pDoc->m_omSourceCodeTextList.AddTail( "{" );
+                            pDoc->m_omSourceCodeTextList.AddTail( defTODO );
+                            // Add footer
+                            pDoc->m_omSourceCodeTextList.AddTail( omStrFooter );
+
+                            pErrorArray->Add(omStrFuncPrototype);
+
+                        }
+                        if(nCount >0)
+                        {
+                            pDoc->UpdateAllViews( NULL );
+                            pDoc->SetModifiedFlag( TRUE );
+                        }
                     }
                 }
             }
         }
     }
 }
+
+
+
+INT CFnsTreeView::nGetLinEventTypeFromName(CString strName, string& strEventName)
+{
+    HRESULT hResult = S_OK;
+    if(strName.Find("Error_Checksum") != -1)
+    {
+        strEventName = "SEVENT_CHECKSUM_LIN ErrorMsg";
+    }
+    else if(strName.Find("Error_Receive_Frame") != -1)
+    {
+        strEventName = "SEVENT_RECEIVE_LIN ErrorMsg";
+    }
+    else if(strName.Find("Error_Slave_No_Response") != -1)
+    {
+        strEventName = "SEVENT_SLAVE_NORESP_LIN ErrorMsg";
+    }
+    else if(strName.Find("Error_Sync") != -1)
+    {
+        strEventName = "SEVENT_SYNC_LIN ErrorMsg";
+    }
+    else
+    {
+        hResult = S_FALSE;
+    }
+    return hResult;
+}
+
 void CFnsTreeView::vAddDeleteDllHandler(BOOL bDllLoad, BOOL bToAdd)
 {
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*) CView::GetDocument();
@@ -2021,7 +2139,7 @@ void CFnsTreeView::vOnNewBusEventHandler()
         CStringArray* pDLLArray = pDoc->pomStrGetBusEventHandlerPrototypes();
         if ( pDLLArray != NULL )
         {
-            if(pDLLArray->GetSize()< 2 )
+            if(pDLLArray->GetSize()< defBUSEV_HANDLER_NUMBER )
             {
                 CBusEventHandlerDlg od_Dlg(pDoc);
                 if ( od_Dlg.DoModal() == IDOK )

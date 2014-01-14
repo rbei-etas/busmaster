@@ -655,7 +655,7 @@ struct FRAME_STRUCT_SORT
     }
 };
 
-static BOOL bLoadDataFromContr(FLEXRAY_CHANNEL_CONFIG&  asDeviceConfig)
+static BOOL bLoadDataFromContr(CHANNEL_CONFIG&  asDeviceConfig)
 {
     BOOL bReturn = FALSE;
     // If successful
@@ -717,7 +717,7 @@ static BOOL bLoadDataFromContr(FLEXRAY_CHANNEL_CONFIG&  asDeviceConfig)
 
         //For Debugging
         sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pKeySlotId               = 0;//(uint32)asDeviceConfig.m_nKetSlot;
-        sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pSecondKeySlotId         = (uint32)asDeviceConfig.m_nSecondKeySlot;
+        sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pSecondKeySlotId         = (uint32)asDeviceConfig.m_ouFlexRayParams.m_nSecondKeySlot;
         sg_asChannel[nChannel].m_OCI_FlexRayConfig.advanced.exclusiveAccess     = false;                                    // The client requests exclusive access to the controller.
 
 
@@ -1293,7 +1293,7 @@ public:
     HRESULT FLEXRAY_SelectHwInterface(const FLEXRAY_INTERFACE_HW_LIST& sSelHwInterface) ;
     HRESULT FLEXRAY_DeselectHwInterface(void) ;
     HRESULT FLEXRAY_DisplayConfigDlg(PCHAR& InitData, int& Length) ;
-    HRESULT FLEXRAY_SetConfigData(FLEXRAY_CHANNEL_CONFIG& ouAbsSFibexContainer) ;
+    HRESULT FLEXRAY_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer) ;
     HRESULT FLEXRAY_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) ;
     HRESULT FlexRAY_GetControllerCapabilities(s_FLXControllerCapabilities& ouFlexRayCapabilities);
     //HRESULT FLEXRAY_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseFLEXBufFSE* pBufObj) ;
@@ -2048,7 +2048,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DisplayConfigDlg(PCHAR& InitData, int& Le
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SetConfigData(FLEXRAY_CHANNEL_CONFIG& ouAbsSFibexContainer)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer)
 {
     HRESULT hResult = WARNING_NOTCONFIRMED;
     m_mapSlotClient.clear();

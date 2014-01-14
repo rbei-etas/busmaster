@@ -99,6 +99,7 @@ PLACE_HODLER_FOR_FUNCTIONNAME */")
 #define PROTOCOL_TAB            _T("PROTOCOL")
 #define DATABASE_PROTOCOL_CAN   _T("CAN")
 #define DATABASE_PROTOCOL_J1939 _T("J1939")
+#define DATABASE_PROTOCOL_LIN   _T("LIN")
 #define UTILS_PREFIX            _T("Utils_")
 #define OPEN_PARENTHESIS        _T("(")
 #define NO_OF_CHAR_IN_UTILS     6
@@ -163,6 +164,10 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defMSG_IDRANGE_HANDLER     _T("IDRange_")
 #define defMSG_IDLIST_HANDLER      _T("IDList_")
 #define defMSGID_NAME_START_CHAR   '['
+#define defERR_CHECKSUM_HANDLER_FN _T("OnError_Checksum")
+#define defERR_RX_FRM_HANDLER_FN   _T("OnError_Receive_Frame")
+#define defERR_SLAVENOANS_HANDLER_FN _T("OnError_Slave_No_Response")
+#define defERR_SYNC_HANDLER_FN _T("OnError_Sync")
 
 #define WM_LOAD_UNLOAD              (WM_USER + 39) //If you are changing this change in McNet/CommonDefs.h accordingly
 // Prefix of a handler
@@ -189,8 +194,9 @@ Are you sure you want to delete?")
 #define defDEFAULT_TIMER_HANDLER_CODE _T("void OnTimer_TIMERNAME_TIMERVALUE( )")
 
 #define defERROR_HANDLER_NUMBER  5
+#define defERROR_HANDLER_NUMBER_LIN  4
 #define defDLL_HANDLER_NUMBER    2
-#define defBUSEV_HANDLER_NUMBER    2
+#define defBUSEV_HANDLER_NUMBER    3
 #define defERROR_HANDLER_TEXT_ADD _T("Add Error Handler(s)")
 #define defERROR_HANDLER_TEXT_DEL _T("Delete Error Handler(s)")
 #define defDLL_HANDLER_TEXT_ADD   _T("Add DLL Handler(s)")
@@ -229,6 +235,7 @@ Are you sure you want to delete?")
 #define defMSG_INIT_FORMAT_CAN       _T("= { 0x%X, %d, %d, %d, %c")
 #define defMSG_INIT_FORMAT_MCNET       _T("= { %d, 0x%X, %d, %d, %d, %d")
 #define defMSG_INIT_FORMAT_J1939       _T("= { {%d, %c, %s, %s, 0x%X}, %d")
+#define defMSG_INIT_FORMAT_LIN      _T("= { %d, %d, 0x%X,  0x%X")
 
 #define defMSG_TYPECAST_CODE    _T("%s *pMsg = (%s*) RxMsg;")
 
@@ -304,8 +311,25 @@ typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
 };
 typedef sTCAN_TIME_MSG STCAN_TIME_MSG;
 typedef sTCAN_TIME_MSG* PSTCAN_TIME_MSG;
+
+
+typedef struct sTLIN_TIME_MSG   //added so da typedefine below can use it
+{
+    unsigned char m_ucMsgTyp;       // Message Type (0 - Header / 1 - Response)
+    unsigned char m_ucChksumTyp;    // Checksum Type (0 - Classical / 1 - Enhanced)
+    unsigned char m_ucChannel;      // Channel Number
+    unsigned char m_ucDataLen;      // Data len (0..8)
+    unsigned char m_ucMsgID;        // Protected Identifier
+    unsigned char m_ucData[8];      // Databytes 0..8
+    unsigned char m_ucChksum;       // Checksum
+    ULONG m_ulTimeStamp;
+};
+typedef sTLIN_TIME_MSG STLIN_TIME_MSG;
+typedef STLIN_TIME_MSG* PSTLIN_TIME_MSG;
+
 // All function prototype is used in function editor.
 typedef VOID (__cdecl* PFMSG_HANDLER_CAN)(STCAN_TIME_MSG Rx_Msg);
+typedef VOID (__cdecl* PFMSG_HANDLER_LIN)(STLIN_TIME_MSG Rx_Msg);
 typedef VOID (__cdecl* PFMSG_HANDLER)(void* pRxMsg);
 typedef VOID (__cdecl* PFTIMER_HANDLER)();
 typedef VOID (__cdecl* PFKEY_HANDLER)(UCHAR ucKeyVal);
@@ -405,6 +429,18 @@ struct sERRORHANDLER
 typedef sERRORHANDLER  SERRORHANDLER;
 typedef sERRORHANDLER* PSERRORHANDLER;
 
+
+struct sEVENTHANDLERLIN
+{
+    eLinBusEventType    m_eLinEventCode;         // Error value
+    PFEVENT_HANDLER m_pfEventHandlersLin;    // Long pointer to the function to be  executed on error condition
+    CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
+    sERROR_INFO_LIN m_ouLinEventInfo;
+};
+typedef sEVENTHANDLERLIN  SEVENTHANDLERLIN;
+typedef sEVENTHANDLERLIN* PSEVENTHANDLERLIN;
+
+
 // This structure stores the event handler info and pointer to its corresponding function
 // to be executed.
 struct sEVENTHANDLER
@@ -486,6 +522,15 @@ typedef sMSGID_RANGE_HANDLER_CAN SMSGID_RANGE_HANDLER_CAN;
 typedef sMSGID_RANGE_HANDLER_CAN* PSMSGID_RANGE_HANDLER_CAN;
 //VENKATNARAYANA
 
+struct sMSGID_RANGE_HANDLER_LIN
+{
+    SMSG_RANGE m_sMsgIDRange;
+    PFMSG_HANDLER_LIN m_pFMsgHandler;
+};
+
+typedef sMSGID_RANGE_HANDLER_LIN SMSGID_RANGE_HANDLER_LIN;
+typedef SMSGID_RANGE_HANDLER_LIN* PSMSGID_RANGE_HANDLER_LIN;
+
 struct sMSGID_LIST_HANDLER_CAN
 {
     CList<UINT, UINT&> m_listMsgId;
@@ -493,6 +538,14 @@ struct sMSGID_LIST_HANDLER_CAN
 };
 typedef sMSGID_LIST_HANDLER_CAN SMSGID_LIST_HANDLER_CAN;
 typedef sMSGID_LIST_HANDLER_CAN* PSMSGID_LIST_HANDLER_CAN;
+
+struct sMSGID_LIST_HANDLER_LIN
+{
+    CList<UINT, UINT&> m_listMsgId;
+    PFMSG_HANDLER_LIN m_pFMsgHandler;
+};
+typedef sMSGID_LIST_HANDLER_LIN SMSGID_LIST_HANDLER_LIN;
+typedef SMSGID_LIST_HANDLER_LIN* PSMSGID_LIST_HANDLER_LIN;
 
 //This is used for all the buses except CAN
 struct sMSGID_RANGE_HANDLER
@@ -512,6 +565,15 @@ struct sEXECUTE_MSG_HANDLER_CAN
 };
 typedef sEXECUTE_MSG_HANDLER_CAN SEXECUTE_MSG_HANDLER_CAN;
 typedef sEXECUTE_MSG_HANDLER_CAN* PSEXECUTE_MSG_HANDLER_CAN;
+
+struct sEXECUTE_MSG_HANDLER_LIN
+{
+    STLIN_TIME_MSG m_sRxMsg;
+    PFMSG_HANDLER_LIN m_pFMsgHandler;
+    CExecuteFunc* m_pCExecuteFunc;
+};
+typedef sEXECUTE_MSG_HANDLER_LIN SEXECUTE_MSG_HANDLER_LIN;
+typedef sEXECUTE_MSG_HANDLER_LIN* PSEXECUTE_MSG_HANDLER_LIN;
 
 //This is used for all the buses except CAN
 struct sEXECUTE_MSG_HANDLER
@@ -559,6 +621,34 @@ struct sMsgHandlerDataCan
 // typedef for sMsgHandlerData and pointer to sMsgHandlerData
 typedef sMsgHandlerDataCan SMSGHANDLERDATA_CAN;
 typedef SMSGHANDLERDATA_CAN* PSMSGHANDLERDATA_CAN;
+
+struct sMsgHandlerDataLin
+{
+    WORD wMsgCode;
+    PFMSG_HANDLER_LIN m_pFMsgHandler; // Pointer to Message Handler function
+    UINT unDLC;                   // Data Length Count
+    int nMsgFormat;               // Big/Little Endian
+    sMsgHandlerDataLin()             // To init pointers and data members
+    {
+        wMsgCode = 0;
+        m_pFMsgHandler = NULL;
+        unDLC = 0;
+        nMsgFormat = -1;
+    }
+    BOOL operator==(const sMsgHandlerDataLin& RefObj) const
+    {
+        BOOL bReturn = FALSE;
+        if (RefObj.wMsgCode == wMsgCode)
+        {
+            bReturn = TRUE;
+        }
+        return bReturn;
+    }
+
+};
+// typedef for sMsgHandlerData and pointer to sMsgHandlerData
+typedef sMsgHandlerDataLin SMSGHANDLERDATA_LIN;
+typedef SMSGHANDLERDATA_LIN* PSMSGHANDLERDATA_LIN;
 
 struct sMsgHandlerData
 {
@@ -621,6 +711,7 @@ typedef SMSGHANDLERDATA* PSMSGHANDLERDATA;
 #define defSTR_ERROR_IN_DLL_UNLOAD "Exception occured in DLL UnLoad Handler"
 #define defSTR_ERROR_IN_TIMER_PROG "Exception occured in Timer Handler \"%s\""
 #define defSTR_ERROR_IN_BUS_CONNECT "Exception occured in Bus Connect Handler \"%s\""
+#define defSTR_ERROR_IN_BUS_PRE_CONNECT "Exception occured in Bus Pre-Connect Handler \"%s\""
 #define defSTR_ERROR_IN_BUS_DISCONNECT "Exception occured in Bus Disconnect Handler \"%s\""
 const BYTE BIT_MSG_HANDLER_THREAD       = 0x01; // First bit
 const BYTE BIT_KEY_HANDLER_THREAD       = 0x02; // Second bit

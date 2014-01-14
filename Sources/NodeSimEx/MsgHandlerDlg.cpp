@@ -27,6 +27,7 @@
 #include "GlobalObj.h"
 #include "MsgHandlerDlg.h"
 #include "Utility\MultiLanguageSupport.h"
+#include "Utility\UtilFunctions.h"
 //#include "../Application/GettextBusmaster.h"
 
 #ifdef _DEBUG
@@ -207,7 +208,7 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
             }
             CString omStrParamtype;
 
-            if (bIsMsgSpecificHandler == TRUE && (m_eBus == CAN))
+            if (bIsMsgSpecificHandler == TRUE && (m_eBus == CAN || m_eBus == LIN))
             {
                 omStrParamtype = omMsgHandlerType;
             }
@@ -215,7 +216,17 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
             {
                 omStrParamtype = CGlobalObj::ouGetObj(m_eBus).m_omMsgStructName;
             }
-            CString omFormatString = m_eBus == CAN ? defDEFAULT_MSG_HANDLER_CODE_CAN : defDEFAULT_MSG_HANDLER_CODE;
+            CString omFormatString = "";
+
+            if(m_eBus == CAN || m_eBus == LIN)
+            {
+                omFormatString = defDEFAULT_MSG_HANDLER_CODE_CAN;
+            }
+            else
+            {
+                omFormatString = defDEFAULT_MSG_HANDLER_CODE;
+            }
+
             omSelectedText.Format(  omFormatString,
                                     CGlobalObj::omGetBusSpecMsgHndlrName(sBusSpecInfo.m_eBus),
                                     omSelectedText,   // Fun name
@@ -340,6 +351,22 @@ void CMsgHandlerDlg::OnRbtnMsgName()
     m_omButtonApply.EnableWindow(FALSE);
 
     m_omListMsgName.SetCurSel(-1);
+
+    if(m_eBus == LIN)
+    {
+        GetDlgItem(IDC_CMB_CHANNEL)->EnableWindow(TRUE);
+
+        CString strChnlNum;
+        ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetWindowTextA(strChnlNum);
+        list<FRAME_STRUCT> lstMsgNames;
+        CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[atoi(strChnlNum)].m_ouClusterInfo.GetFrames(lstMsgNames);
+        CStringArray* pomStrArray = NULL;
+        list<FRAME_STRUCT>::iterator itrLstMsg;
+        for(itrLstMsg = lstMsgNames.begin(); itrLstMsg != lstMsgNames.end(); itrLstMsg++)
+        {
+            bAddMessageNameInListBox(pomStrArray, itrLstMsg->m_strFrameName.c_str());
+        }
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  OnRbtnMsgRange                                        */
@@ -433,19 +460,52 @@ BOOL CMsgHandlerDlg::OnInitDialog()
     {
         pomStrArray = pDoc->omStrGetMessageHandlerPrototypes();
     }
-    if(pomStrArray != NULL )
+
+    if(m_eBus != LIN)
     {
-        POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
-        //UINT unNoOfMessages = ouGetMsgSignal().unGetNumerOfMessages();
-        while (pos != NULL)
+        if(pomStrArray != NULL )
         {
-            SDB_NAME_MSG&  oDbNameMsg = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetNext(pos);
-            POSITION posMess = oDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
-            while (posMess != NULL)
+            POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
+            //UINT unNoOfMessages = ouGetMsgSignal().unGetNumerOfMessages();
+            while (pos != NULL)
             {
-                SMSG_NAME_CODE& sMsgNameCode = oDbNameMsg.m_oMsgNameMsgCodeList.GetNext(posMess);
-                bAddMessageNameInListBox(pomStrArray, sMsgNameCode.m_omMsgName);
+                SDB_NAME_MSG&  oDbNameMsg = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetNext(pos);
+                POSITION posMess = oDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
+                while (posMess != NULL)
+                {
+                    SMSG_NAME_CODE& sMsgNameCode = oDbNameMsg.m_oMsgNameMsgCodeList.GetNext(posMess);
+                    bAddMessageNameInListBox(pomStrArray, sMsgNameCode.m_omMsgName);
+                }
             }
+        }
+    }
+
+    if(m_eBus == LIN)
+    {
+        INT unChnlConfig = CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_nChannelsConfigured;
+        char chString[MAX_PATH] = "";
+        for(INT unIndex = 0; unIndex < unChnlConfig; unIndex++)
+        {
+            sprintf(chString, "%d", unIndex+1);
+            ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->AddString(chString);
+        }
+
+        if(((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetCount() > 0)
+        {
+            ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->SetCurSel(0);
+        }
+
+        CString strChnlNum;
+        ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetWindowTextA(strChnlNum);
+        list<FRAME_STRUCT> lstMsgNames;
+        INT unChannelNum = atoi(strChnlNum) - 1;
+        CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChannelNum].m_ouClusterInfo.GetFrames(lstMsgNames);
+
+        list<FRAME_STRUCT>::iterator itrLstMsg = lstMsgNames.begin();
+        while(itrLstMsg != lstMsgNames.end())
+        {
+            bAddMessageNameInListBox(pomStrArray, itrLstMsg->m_strFrameName.c_str());
+            itrLstMsg++;
         }
     }
 
@@ -483,6 +543,21 @@ BOOL CMsgHandlerDlg::OnInitDialog()
         //    }
         //}
     }
+
+    if(m_eBus != LIN )
+    {
+        // Disable channel selection combo for other protocols
+        // other than LIN
+        GetDlgItem(IDC_STATIC_CHANNEL)->ShowWindow(FALSE);
+        GetDlgItem(IDC_CMB_CHANNEL)->ShowWindow(FALSE);
+    }
+    else
+    {
+        GetDlgItem(IDC_STATIC_CHANNEL)->ShowWindow(TRUE);
+        GetDlgItem(IDC_CMB_CHANNEL)->ShowWindow(TRUE);
+        GetDlgItem(IDC_CMB_CHANNEL)->EnableWindow(FALSE);
+    }
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }

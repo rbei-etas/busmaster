@@ -83,6 +83,65 @@ UINT unKeyHandlerProc(LPVOID pParam)
     }
     return 0;
 }
+UINT unErrorHandlerProcLin(LPVOID pParam)
+{
+    if (pParam != NULL)
+    {
+        PSEVENTHANDLERLIN pErrorHandler = (PSEVENTHANDLERLIN) pParam; //ell2kor
+        // There is no memory allocation is this thread. So initialise it to NULL
+        pErrorHandler->m_pCExecuteFunc->
+        m_asUtilThread[defERROR_HANDLER_THREAD].m_pvThread = NULL;
+        // Reset the event signaled
+        pErrorHandler->m_pCExecuteFunc->
+        m_aomState[defERROR_HANDLER_THREAD].ResetEvent();
+        try
+        {
+            switch ( pErrorHandler->m_ouLinEventInfo.m_eEventType )
+            {
+                case EVENT_LIN_ERRCRC:
+                {
+                    SEVENT_CHECKSUM_LIN ouCrcInfo;
+                    ouCrcInfo.m_ucChannel = pErrorHandler->m_ouLinEventInfo.m_ucChannel;
+                    ouCrcInfo.m_ucCrc = pErrorHandler->m_ouLinEventInfo.m_ucCrc;
+                    ouCrcInfo.m_ucId = pErrorHandler->m_ouLinEventInfo.m_ucId;
+                    ouCrcInfo.m_ulTime = (ULONG)pErrorHandler->m_ouLinEventInfo.m_ulTimeStamp;
+                    pErrorHandler->m_pfEventHandlersLin(ouCrcInfo);
+                }
+                break;
+                case EVENT_LIN_ERRNOANS:
+                {
+                    SEVENT_SLAVE_NORESP_LIN ouSlaveInfo;
+                    ouSlaveInfo.m_ucChannel = pErrorHandler->m_ouLinEventInfo.m_ucChannel;
+                    ouSlaveInfo.m_ucId = pErrorHandler->m_ouLinEventInfo.m_ucId;
+                    ouSlaveInfo.m_ulTime = (ULONG)pErrorHandler->m_ouLinEventInfo.m_ulTimeStamp;
+                    pErrorHandler->m_pfEventHandlersLin(ouSlaveInfo);
+                }
+                break;
+                case EVENT_LIN_ERRSYNC:
+                {
+                    SEVENT_SYNC_LIN ouSyncLin;
+                    ouSyncLin.m_ucChannel = pErrorHandler->m_ouLinEventInfo.m_ucChannel;
+                    ouSyncLin.m_ulTime = (ULONG)pErrorHandler->m_ouLinEventInfo.m_ulTimeStamp;
+                    pErrorHandler->m_pfEventHandlersLin(ouSyncLin);
+                }
+                break;
+            }
+        }
+        catch(...)
+        {
+            // Display the error information in the Trace window
+            gbSendStrToTrace(_(defSTR_ERROR_IN_ERR_PROG));
+        }
+        // Reinitialise the Thread handle before terminating it.
+        pErrorHandler->m_pCExecuteFunc->m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread = NULL;
+
+
+        // Set the event to indicate termination of this thread.
+        pErrorHandler->m_pCExecuteFunc->
+        m_aomState[defERROR_HANDLER_THREAD].SetEvent();
+    }
+    return 0;
+}
 
 /******************************************************************************
     Function Name    :  unErrorHandlerProc
@@ -283,6 +342,44 @@ UINT unDLLloadHandlerProc(LPVOID pParam)
     }
     return 0;
 }
+
+UINT unBusPreConnectHandlerProc(LPVOID pParam)
+{
+    //USES_CONVERSION;
+    if (pParam != NULL)
+    {
+        PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=(PSEXECUTE_BUSEVENT_HANDLER) pParam;
+        // Reset the event signaled
+        if(psExecuteBusEventHandler->m_pCExecuteFunc!=NULL)
+        {
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_aomState[defBUSEVENT_HANDLER_THREAD].ResetEvent();
+            try
+            {
+                psExecuteBusEventHandler->pFBusEventHandler();
+            }
+            catch(...)
+            {
+                // Display the error information in the Trace window
+                gbSendStrToTrace(_(defSTR_ERROR_IN_BUS_PRE_CONNECT));
+            }
+            // There is no memory allocation is this thread. So initialise it to NULL
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+            // Reinitialise the Thread handle before terminating it.
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = NULL;
+            // Set the event to indicate termination of this thread.
+            psExecuteBusEventHandler->m_pCExecuteFunc->
+            m_aomState[defBUSEVENT_HANDLER_THREAD].SetEvent();
+            delete psExecuteBusEventHandler;
+            psExecuteBusEventHandler=NULL;
+        }
+    }
+
+    return 0;
+}
+
 UINT unBusConnectHandlerProc(LPVOID pParam)
 {
     //USES_CONVERSION;
@@ -390,6 +487,48 @@ UINT unReadNodeMsgHandlerBuffer(LPVOID pParam)
                 STCAN_TIME_MSG sCanMsg=pCExecuteFunc->sReadFromQMsg();
                 pCExecuteFunc->vExecuteOnMessageHandlerCAN(sCanMsg);
                 unMsgCnt=pCExecuteFunc->unGetBufferMsgCnt();
+            }
+        }
+        pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].SetEvent( );
+    }
+    return 0;
+}
+
+/******************************************************************************
+    Function Name    :  unReadNodeMsgHandlerBuffer
+    Input(s)         :  pParam - Typecasted address CExecuteFunc object
+    Output           :  Zero
+    Functionality    :  This is a thread control function to process
+                        reading of CExecutFunc's buffer
+    Member of        :  Global Thread Function
+    Friend of        :      -
+    Author(s)        :  Anish kumar
+    Date Created     :  22.12.2005
+    Modification By  :  Anish Kumar
+    Modification on  :  29.01.07, Removed memory leak due to msg handler thread
+                        termination
+******************************************************************************/
+UINT unReadNodeMsgHandlerBufferLIN(LPVOID pParam)
+{
+    if(pParam != NULL)
+    {
+        CExecuteFunc* pCExecuteFunc=(CExecuteFunc*)pParam;
+        pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].ResetEvent();
+        //if dll is unloaded exit loop and end thread
+        //BOOL bDllLoaded=pCExecuteFunc->bIsDllLoaded();
+        while(pCExecuteFunc->bIsDllLoaded())
+        {
+            WaitForSingleObject( pCExecuteFunc->m_omReadFromQEventLIN,INFINITE);
+            //wait for event set by write thread
+            pCExecuteFunc->m_omReadFromQEventLIN.ResetEvent();
+            UINT unMsgCnt=pCExecuteFunc->unGetBufferMsgCntLIN();
+            //if buffer is empty wait for read event
+            while( unMsgCnt>0 && pCExecuteFunc->bIsDllLoaded() &&
+                    !(pCExecuteFunc->m_bStopMsgHandlers) )
+            {
+                STLIN_TIME_MSG sLinMsg=pCExecuteFunc->sReadFromQMsgLIN();
+                pCExecuteFunc->vExecuteOnMessageHandlerLIN(sLinMsg);
+                unMsgCnt=pCExecuteFunc->unGetBufferMsgCntLIN();
             }
         }
         pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].SetEvent( );

@@ -1,7 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "TxWindowFlexRay_resource.h"
-#define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 #include "afxres.h"
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -57,8 +56,6 @@ END
 // Dialog
 //
 
-
-
 IDD_FRM_TRANSMIT_MSG DIALOGEX 0, 0, 553, 372
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CAPTION
 EXSTYLE WS_EX_STATICEDGE
@@ -87,6 +84,56 @@ BEGIN
     CONTROL         "",IDC_LSTC_MSG_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,5,8,307,151
     PUSHBUTTON      "&Cancel",IDC_CBTN_CANCEL_MSG_SEL,263,168,50,14
     PUSHBUTTON      "&OK",IDC_CBTN_SEL_MSG,207,168,50,14
+END
+
+IDD_LIN_TRANSMIT_MSG DIALOGEX 0, 0, 550, 345
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CAPTION
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LSTC_TRANSMIT_MSG,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,18,16,516,110,WS_EX_STATICEDGE
+    GROUPBOX        "Tx Frame List",IDC_STATIC,9,7,537,142
+    COMBOBOX        IDC_COMB_MSG_ID_NAME,18,170,105,65,CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_DLC,126,170,15,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB1,144,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB2,171,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB3,198,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB4,224,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB5,250,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB6,276,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB7,302,170,23,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DB8,328,170,23,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMB_CHANNEL_ID,355,170,27,40,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Header",IDC_LIN_MSGTYPE_HEADER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,392,169,36,10
+    CONTROL         "Response",IDC_LIN_MSGTYPE_SLAVE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,434,169,48,10
+    PUSHBUTTON      "Add &Message",IDC_CBTN_ADD_MSG_LIN,480,168,63,14
+    CONTROL         "",IDC_LSTC_SIG_DETAILS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,18,208,377,98
+    LTEXT           "Message ID/Name",IDC_STAT_HEADER2,17,159,61,8
+    CTEXT           "DLC ",IDC_STATIC,126,159,16,8
+    GROUPBOX        "",IDC_STATIC,10,151,536,35
+    GROUPBOX        "Signal Details",IDC_STATIC,10,192,536,126
+    GROUPBOX        "Type",IDC_STATIC,387,158,93,26
+    CTEXT           "Channel",IDC_STATIC,356,159,26,8
+    CTEXT           "6",IDC_STAT_8,411,283,8,8
+    CTEXT           "0",IDC_STAT_7,411,210,8,8
+    CTEXT           "1",IDC_STAT_6,411,222,8,8
+    CTEXT           "2",IDC_STAT_5,411,234,8,8
+    CTEXT           "3",IDC_STAT_4,411,246,8,8
+    CTEXT           "4",IDC_STAT_3,411,258,8,8
+    CTEXT           "5",IDC_STAT_2,411,270,8,8
+    CTEXT           "7",IDC_STAT_15,411,295,8,8
+    CTEXT           "7",IDC_STAT_9,425,197,8,8
+    CTEXT           "6",IDC_STAT_10,439,197,8,8
+    CTEXT           "5",IDC_STAT_11,453,197,8,8
+    CTEXT           "4",IDC_STAT_12,467,197,8,8
+    CTEXT           "3",IDC_STAT_16,481,197,8,8
+    CTEXT           "2",IDC_STAT_14,495,197,8,8
+    CTEXT           "1",IDC_STAT_151,509,197,8,8
+    CTEXT           "0",IDC_STAT_161,523,197,8,8
+    CONTROL         "",IDC_STAT_MATRIX_RECT,"Static",SS_BLACKFRAME,422,206,114,102,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "Delete A&ll",IDC_BT_DEL_ALL,487,131,49,15,WS_DISABLED
+    PUSHBUTTON      "D&elete",IDC_DEL_FRAME,426,131,50,15
+    CTEXT           "|------------------------------Data Bytes-------------------------------|",IDC_STATIC,146,159,204,8
+    LTEXT           "",IDC_STAT_STATUS_LIN,10,321,161,9,0,WS_EX_STATICEDGE
 END
 
 
@@ -128,15 +175,24 @@ BEGIN
         RIGHTMARGIN, 546
         BOTTOMMARGIN, 367
     END
+
+    IDD_LIN_TRANSMIT_MSG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 543
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 338
+    END
 END
 #endif    // APSTUDIO_INVOKED
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
-IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 
-/////////////////////////////////////////////////////////////////////////////
+IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -148,8 +204,15 @@ IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
 IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
+
 
 
 #ifndef APSTUDIO_INVOKED

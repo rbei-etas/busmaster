@@ -296,8 +296,8 @@ void CNumEdit::OnKillFocus(CWnd* pNewWnd)
 {
     CRadixEdit::OnKillFocus(pNewWnd);
     CWnd* m_pMainWnd = AfxGetMainWnd();
-    if( pNewWnd != NULL                   // NULL condition - Minimize condition
-            && pNewWnd != m_pMainWnd ) // For Dialog Close
+    //if( pNewWnd != NULL                   // NULL condition - Minimize condition
+    //        && pNewWnd != m_pMainWnd ) // For Dialog Close
     {
         CString omStr;
         // Get the textbox content

@@ -25,6 +25,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 public:
     BOOL m_bChkBusEventConnect;
+    BOOL m_bChkBusEventPreConnect;
     BOOL m_bChkBusEventDisConnect;
     virtual BOOL OnInitDialog();
     afx_msg void OnBnClickedOk();

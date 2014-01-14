@@ -241,6 +241,7 @@
     <ClCompile Include="AppServices.cpp" />
     <ClCompile Include="AppServicesCAN.cpp" />
     <ClCompile Include="AppServicesJ1939.cpp" />
+    <ClCompile Include="AppServicesLIN.cpp" />
     <ClCompile Include="BuildProgram.cpp" />
     <ClCompile Include="BusEventHandlerDlg.cpp" />
     <ClCompile Include="..\Utility\ComputeCheckSum.cpp">
@@ -255,6 +256,7 @@
     <ClCompile Include="DLLHandlerDlg.cpp" />
     <ClCompile Include="EditFrameWnd.cpp" />
     <ClCompile Include="ErrHandlerDlg.cpp" />
+    <ClCompile Include="ErrHandlerDlgLIN.cpp" />
     <ClCompile Include="EventHandlerDlg.cpp" />
     <ClCompile Include="ExecuteFunc.cpp" />
     <ClCompile Include="ExecuteManager.cpp" />
@@ -310,6 +312,7 @@
     <ClInclude Include="AppServices.h" />
     <ClInclude Include="AppServicesCAN.h" />
     <ClInclude Include="AppServicesJ1939.h" />
+    <ClInclude Include="AppServicesLIN.h" />
     <ClInclude Include="BaseNodeSim.h" />
     <ClInclude Include="BuildProgram.h" />
     <ClInclude Include="BusEventHandlerDlg.h" />
@@ -318,6 +321,7 @@
     <ClInclude Include="DLLHandlerDlg.h" />
     <ClInclude Include="EditFrameWnd.h" />
     <ClInclude Include="ErrHandlerDlg.h" />
+    <ClInclude Include="ErrHandlerDlgLIN.h" />
     <ClInclude Include="EventHandlerDlg.h" />
     <ClInclude Include="ExecuteFunc.h" />
     <ClInclude Include="ExecuteManager.h" />

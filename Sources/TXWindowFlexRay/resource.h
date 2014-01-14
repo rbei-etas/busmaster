@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by TXWindowFlexRay.rc
+// Used by TXWindowFlexRay - Copy.rc
 //
 #define ID_SEPARATOR                    0
 #define VS_VERSION_INFO                 1
@@ -8,14 +8,14 @@
 #define IDD_FRM_TRANSMIT_MSG            101
 #define IDR_TRANSMIT_WINDOW_TEXT        101
 #define AFX_IDC_CHANGE                  101
-#define IDD_FLEXRAYMSGHANDLER_DIALOG    102
 #define AFX_IDC_BROWSER                 102
 #define AFX_IDC_PRINT_DOCNAME           201
 #define AFX_IDC_PRINT_PRINTERNAME       202
 #define AFX_IDC_PRINT_PORTNAME          203
 #define AFX_IDC_PRINT_PAGENUM           204
+#define IDD_LIN_TRANSMIT_MSG            241
+#define IDR_BMP_CHECKBOX                999
 #define IDC_SIGNAL_FLEXLIST             1000
-#define IDC_LSTC_MSG_LIST               1000
 #define ID_MFCLOC_MANIFEST              1000
 #define AFX_IDC_FONTPROP                1000
 #define IDC_CLOSE                       1001
@@ -31,6 +31,7 @@
 #define IDC_CBTN_CANCEL_MSG_SEL         1005
 #define AFX_IDC_UNDERLINE               1005
 #define AFX_IDC_SAMPLEBOX               1006
+#define IDC_COMB_CHANNEL_ID             1010
 #define IDC_CBTN_ADDNEW                 1017
 #define IDC_BT_DEL_ALL                  1018
 #define IDC_BT_SEND                     1019
@@ -45,12 +46,16 @@
 #define IDC_COMBO_CHANNEL_SEL           1055
 #define IDC_RADIO2                      1056
 #define IDC_RADIO_SIGNAL_VIEW           1056
+#define IDC_BT_UPDATE_LIN               1057
+#define IDC_CLOSE_LIN                   1058
 #define IDC_BT_UPDATE                   1066
 #define IDC_BT_MODIFY_BLK               1067
 #define IDC_BT_ADD_BLK                  1068
 #define IDC_BT_DEL_BLK                  1069
+#define IDC_STAT_15                     1076
 #define IDC_CHKB_ON_TIME_TRIGGER        1079
 #define IDC_STAT_WORD_POS               1082
+#define IDC_STAT_16                     1088
 #define AFX_IDC_COLOR_BLACK             1100
 #define AFX_IDC_COLOR_WHITE             1101
 #define AFX_IDC_COLOR_RED               1102
@@ -69,6 +74,18 @@
 #define AFX_IDC_COLOR_DARKCYAN          1115
 #define AFX_IDC_COLORPROP               1116
 #define AFX_IDC_SYSTEMCOLORS            1117
+#define IDC_CBTN_ADD_MSG                1122
+#define IDC_CBTN_ADD_MSG_LIN            1122
+#define IDC_STAT_HEADER2                1124
+#define IDC_EDIT_DLC                    1125
+#define IDC_EDIT_DB1                    1126
+#define IDC_EDIT_DB2                    1127
+#define IDC_EDIT_DB3                    1128
+#define IDC_EDIT_DB4                    1129
+#define IDC_EDIT_DB5                    1130
+#define IDC_EDIT_DB6                    1131
+#define IDC_EDIT_DB7                    1132
+#define IDC_EDIT_DB8                    1133
 #define IDC_CHKB_BIT0                   1200
 #define AFX_IDC_PROPNAME                1201
 #define IDC_CHKB_BIT2                   1202
@@ -86,8 +103,33 @@
 #define IDC_CHKB_BIT11                  1211
 #define IDC_CHKB_BIT12                  1212
 #define IDC_CHKB_BIT13                  1213
+#define IDC_RBTN_MSGTYPE_EXTD           1213
 #define IDC_CHKB_BIT14                  1214
 #define IDC_CHKB_BIT15                  1215
+#define IDC_RBTN_MSGTYPE_STD            1215
+#define IDD_FLEXRAYMSGHANDLER_DIALOG    1216
+#define IDC_STAT_MATRIX_RECT            1216
+#define IDC_CHKB_MSGTYPE_RTR            1216
+#define IDC_LSTC_MSG_LIST               1217
+#define IDC_STAT_9                      1217
+#define IDC_STAT_10                     1218
+#define IDC_STAT_11                     1219
+#define IDC_STAT_12                     1220
+#define IDC_STAT_13                     1221
+#define IDC_COMB_MSG_ID_NAME            1221
+#define IDC_STAT_14                     1222
+#define IDC_STAT_151                    1223
+#define IDC_STAT_161                    1224
+#define IDC_STAT_8                      1225
+#define IDC_STAT_7                      1226
+#define IDC_STAT_6                      1227
+#define IDC_STAT_5                      1228
+#define IDC_STAT_4                      1229
+#define IDC_STAT_3                      1230
+#define IDC_STAT_2                      1231
+#define IDC_STAT_1                      1232
+#define IDC_LSTC_SIG_DETAILS            1232
+#define IDC_STAT_MATRIX_RECT2           1249
 #define AFX_IDC_TAB_CONTROL             0x3020
 #define ID_APPLY_NOW                    0x3021
 #define ID_WIZBACK                      0x3023

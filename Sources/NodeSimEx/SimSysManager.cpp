@@ -503,6 +503,11 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
         pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems";
         pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
     }
+    else if(eBus == LIN)
+    {
+        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Simulated_Systems";
+        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
+    }
 
     if(m_CopyJ1939SimNode != NULL && (eBus == J1939))
     {
@@ -785,4 +790,14 @@ BOOL CSimSysManager :: bIsConfigChanged()
     }
 
     return !bReturn;
+}
+
+void CSimSysManager::vSetDatabaseConfiguration(ClusterConfig* ouLINConfig)
+{
+    CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig = ouLINConfig;
+    /*string strDbName;
+    for(INT nIndex = 0; nIndex < ouLINConfig.m_nChannelsConfigured;nIndex++)
+    {
+        strDbName = ouLINConfig.m_ouFlexChannelConfig[nIndex].m_strDataBasePath;
+    }*/
 }

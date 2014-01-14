@@ -234,9 +234,6 @@
     <ClCompile Include="FlexRayNetworkStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TxHandlerLIN.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FibexConfigurationDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -247,6 +244,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NodeUtil_Flexray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LDFLexer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ldfparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParserHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -504,9 +510,6 @@
     <ClInclude Include="FlexRayNetworkStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TxHandlerLIN.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FibexConfigurationDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -523,6 +526,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NodeUtil_Flexray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ldfparser.cpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParserHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -857,5 +866,9 @@
     <None Include="Res\write.ico">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="LDFLexer.l" />
+    <CustomBuild Include="LDFParser.y" />
   </ItemGroup>
 </Project>

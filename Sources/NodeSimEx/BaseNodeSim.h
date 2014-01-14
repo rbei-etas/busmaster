@@ -27,6 +27,7 @@
 #include "DataTypes/BaseAppServices.h"
 #include "BaseNodeSim.h"
 #include "include/BaseDefs.h"
+#include "DataTypes\Cluster.h"
 
 class CBaseNodeSim
 {
@@ -74,5 +75,8 @@ public:
     // Application closure operations
     virtual void NS_PerformApplicationClosureOperation(bool bSave) = 0;
     //INTERFACE FUNCTIONS ENDS
+
+    // FOR Passing Cluster Config
+    virtual void NS_SetLINConfig(ClusterConfig& ouLINConfig) = 0;
 };
 #endif //BASENODESIM_H__INCLUDED_

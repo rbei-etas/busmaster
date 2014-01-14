@@ -29,6 +29,13 @@
 #include <shlwapi.h>
 #include <cstringt.h>
 
+typedef enum eFORMAT_DATA
+{
+    DATA_FORMAT_MOTOROLA = 0,
+    DATA_FORMAT_INTEL
+} EFORMAT_DATA;
+
+
 #define defBASE_DEC                 10
 #define defBASE_HEX                 16
 #define defMAX_BITS                 64
@@ -298,7 +305,7 @@ bool bGetSystemErrorString(char acErrStr[256])
 #endif
 
 // To copy the text into the clipboard
-BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd = NULL)
+BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd )
 {
     HGLOBAL hGlobal;    // Global memory handle
     //TCHAR* lpszData;    // Pointer to clipboard data
@@ -700,4 +707,86 @@ __int64 gnGetCpuClocks()
     // Return result
     return *(__int64*)(&counter);
 
+}
+
+/* Helper function to calculate how many bytes the signal consumes */
+UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
+{
+    ASSERT(nSigLen > 0);
+    UINT nBytesToRead = 1; //Consider first byte
+
+    INT nRemainingLength = nSigLen - (8 - nBitNum);
+
+    if (nRemainingLength > 0)
+    {
+        // Add te number of bytes totally it consumes.
+        nBytesToRead += (INT)(nRemainingLength / 8);
+
+        // Check for extra bits which traverse to the next byte.
+        INT nTotalBitsConsidered = ((nBytesToRead - 1) * 8) +
+                                   (8 - nBitNum);
+        if ((UINT)nTotalBitsConsidered < nSigLen)
+        {
+            nBytesToRead++;
+        }
+    }
+
+    return nBytesToRead;
+}
+/* checks whether signal cross array boundary or not */
+BOOL bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
+                     UINT nLength, EFORMAT_DATA bDataFormat)
+{
+    BOOL bValid = TRUE;
+    UINT nBytesToRead = nGetNoOfBytesToRead(nBitNum, nLength);
+    bValid = (bDataFormat == DATA_FORMAT_INTEL)?
+             (INT)(nByteNum + nBytesToRead - 1) <= nDLC :
+             (INT)(nByteNum - nBytesToRead) >= 0;
+    return bValid;
+}
+/* Helper function to calculate the bit mask of a signal */
+BOOL bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
+                        UINT nByteNum, UINT nBitNum, UINT nLength,
+                        EFORMAT_DATA bDataFormat)
+{
+    BOOL bValid = TRUE;
+    //Reset the Byte array
+    memset(pbyMaskByte, 0, sizeof(BYTE) * unArrayLen);
+
+    // Calculate how many bytes the signal occupies
+    UINT nBytesToRead = nGetNoOfBytesToRead(nBitNum, nLength);
+
+    UINT CurrBitNum = nBitNum;
+    /* If the Byte order is the motorola Bit mask has to be updated in
+    the reverse order */
+    INT nByteOrder = (bDataFormat == DATA_FORMAT_INTEL) ? 1: -1;
+    bValid = bValidateSignal(unArrayLen, nByteNum, nBitNum, nLength, bDataFormat);
+
+    if (bValid == TRUE)
+    {
+        UINT nBitsRead = 0;
+
+        for (UINT i = 0; i < nBytesToRead; i++)
+        {
+            BYTE byMsgByteVal = 0xFF; //Mask
+            if (CurrBitNum != 0)
+            {
+                byMsgByteVal <<= CurrBitNum; //Set the bits high after the bit number
+            }
+            // Check for the extra bits at the end and set them low.
+            INT ExtraBits = (8 - CurrBitNum) - (nLength - nBitsRead);
+            BYTE nMask = (BYTE)((ExtraBits > 0) ? 0xFF >> ExtraBits : 0xFF);
+            byMsgByteVal &= nMask;
+
+            //Calculate the bits read for each time
+            nBitsRead += min (8 - CurrBitNum, nLength - nBitsRead);
+            /*Reset the current bit num since bit number always starts from
+            the zero after the first byte has been read*/
+            CurrBitNum = 0;
+            //Update the mask in the corresponding byte of the array
+            pbyMaskByte[(nByteNum - 1) + (i * nByteOrder)] = byMsgByteVal;
+        }
+    }
+
+    return bValid;
 }

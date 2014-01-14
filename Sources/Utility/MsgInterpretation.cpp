@@ -1597,12 +1597,37 @@ void CMsgInterpretationFlexRay::vSetFlexRayDatabase(const CFrameMap& ouFrameData
 {
     vCopyFrameData( m_ouDataSet, ouFrameDataSet );
 }
-void CMsgInterpretationFlexRay::vSetFlexRayClusterInfo(FlexConfig* ouConfig)
+void CMsgInterpretationFlexRay::vSetFlexRayClusterInfo(ClusterConfig* ouConfig)
 {
     m_ouFlexConfig = *ouConfig;
 }
 
 
+BOOL CMsgInterpretationLIN::bInterpretMsgs( EFORMAT eNumFormat, STLIN_MSG* pMsg, SSignalInfoArray& SigInfoArray)
+{
+    //if ( pMsg-> == FLXMSGTYPE_DATA )
+    {
+        FRAME_STRUCT ouFrame;
+        if ( S_OK == m_ouLINConfig->m_ouFlexChannelConfig[0].GetFrame(pMsg->m_ucMsgID, ouFrame) )
+        {
+            list<Flexray_SSIGNALINFO> ouFlexSignalInfo;
+            bGetSignalInfo(ouFrame, pMsg->m_ucData, pMsg->m_ucDataLen, ouFlexSignalInfo);
+
+for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
+            {
+                SSignalInfo ouSignal;
+                ouSignal.m_omEnggValue = ouSignalInfo.m_omEnggValue.c_str();
+                ouSignal.m_omRawValue = ouSignalInfo.m_omRawValue.c_str();
+                ouSignal.m_omSigName = ouSignalInfo.m_omSigName.c_str();
+                ouSignal.m_omUnit = ouSignalInfo.m_omUnit.c_str();
+                SigInfoArray.Add(ouSignal);
+            }
+
+        }
+
+    }
+    return TRUE;
+}
 BOOL CMsgInterpretationFlexRay::bInterpretMsgs(s_FLXMSG* pMsg, SSignalInfoArray& SigInfoArray)
 {
     if ( pMsg->m_eMessageType == FLXMSGTYPE_DATA )
@@ -1640,3 +1665,19 @@ for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
     //    }
     //    return TRUE;
 }
+
+
+CMsgInterpretationLIN::CMsgInterpretationLIN()
+{
+    m_ouLINConfig = NULL;
+}
+
+CMsgInterpretationLIN::~CMsgInterpretationLIN()
+{
+
+}
+void CMsgInterpretationLIN::vSetLINClusterInfo(ClusterConfig* ouConfig)
+{
+    m_ouLINConfig = ouConfig;
+}
+

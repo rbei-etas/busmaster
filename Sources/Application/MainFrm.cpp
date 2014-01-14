@@ -213,11 +213,17 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_REPLAY_STOP, OnReplayStop)
     ON_COMMAND(IDM_REPLAY_GO, OnReplayGo)
     ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS, OnActivateMessageHandler)
+    ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_LIN, OnActivateMessageHandlerLIN)
     ON_COMMAND(IDM_EXECUTE_TIMERHANDLER, OnActivateTimerHandler)
+    ON_COMMAND(IDM_EXECUTE_TIMERHANDLER_LIN, OnActivateTimerHandlerLIN)
     ON_COMMAND(IDM_DLL_BUILDLOAD_ALL, OnDLLBuildLoad)
+    ON_COMMAND(IDM_DLL_BUILDLOAD_ALL_LIN, OnDLLBuildLoadLIN)
     ON_COMMAND(IDM_DLL_BUILD_ALL, OnDLLBuild)
+    ON_COMMAND(IDM_DLL_BUILD_ALL_LIN, OnDLLBuildLIN)
     ON_COMMAND(IDM_DLL_LOADALLDLL, OnDllLoad)
+    ON_COMMAND(IDM_DLL_LOADALLDLL_LIN, OnDllLoadLIN)
     ON_COMMAND(IDM_DLL_UNLOAD_ALL, OnDllUnload)
+    ON_COMMAND(IDM_DLL_UNLOAD_ALL_LIN, OnDllUnloadLIN)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilterButton)
@@ -237,6 +243,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_WM_CLOSE()
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnUpdateMessageInterpret)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS, OnUpdateExecuteMessagehandlers)
+    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_LIN, OnUpdateExecuteMessagehandlersLIN)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_REPLAYFILTEROFF, OnUpdateReplayFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilterButton)
@@ -252,11 +259,15 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnUpdateMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_TIMERHANDLER, OnUpdateExecuteTimerhandler)
+    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_TIMERHANDLER_LIN, OnUpdateExecuteTimerhandlerLIN)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, OnDisplayMessagewindowOverwrite)
     ON_COMMAND(IDM_CLEAR_MSG_WINDOW, OnClearMsgWindow)
     ON_UPDATE_COMMAND_UI(IDM_DLL_BUILD_ALL, OnUpdateDllBuildAll)
+    ON_UPDATE_COMMAND_UI(IDM_DLL_BUILD_ALL_LIN, OnUpdateDllBuildAllLIN)
     ON_UPDATE_COMMAND_UI(IDM_DLL_BUILDLOAD_ALL, OnUpdateDllBuildloadAll)
+    ON_UPDATE_COMMAND_UI(IDM_DLL_BUILDLOAD_ALL_LIN, OnUpdateDllBuildloadAllLIN)
     ON_UPDATE_COMMAND_UI(IDM_DLL_UNLOAD_ALL, OnUpdateDllUnloadAll)
+    ON_UPDATE_COMMAND_UI(IDM_DLL_UNLOAD_ALL_LIN, OnUpdateDllUnloadAllLIN)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, OnUpdateDisplayMessagewindowOverwrite)
     ON_UPDATE_COMMAND_UI(IDR_TOOL_HEXDEC, OnUpdateToolHexdec)
     ON_UPDATE_COMMAND_UI(IDM_LOG_ON_OFF, OnUpdateLogOnOff)
@@ -282,6 +293,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_LIN_CONNECT, OnUpdateLINConnect)
     ON_COMMAND(IDM_EXECUTE_KEYHANDLERS, OnExecuteKeyhandlers)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_KEYHANDLERS, OnUpdateExecuteKeyhandlers)
+    ON_COMMAND(IDM_EXECUTE_KEYHANDLERS_LIN, OnExecuteKeyhandlersLIN)
+    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_KEYHANDLERS_LIN, OnUpdateExecuteKeyhandlersLIN)
     ON_COMMAND(IDM_CONFIG_LOAD, OnLoadConfigFile)
     ON_COMMAND(IDM_CONFIG_NEW, OnNewConfigFile)
     ON_COMMAND(IDM_SAVE_CONFIG, OnSaveConfigFile)
@@ -294,8 +307,12 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_WM_DROPFILES()
     ON_COMMAND(IDM_EXECUTE_ALL_HANDLERS, OnExecuteAllHandlers)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ALL_HANDLERS, OnUpdateExecuteAllHandlers)
+    ON_COMMAND(IDM_EXECUTE_ALL_HANDLERS_LIN, OnExecuteAllHandlersLIN)
+    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ALL_HANDLERS_LIN, OnUpdateExecuteAllHandlersLIN)
     ON_COMMAND(IDM_EXECUTE_ERROR_HANDLERS, OnExecuteErrorHandlers)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ERROR_HANDLERS, OnUpdateExecuteErrorHandlers)
+    ON_COMMAND(IDM_EXECUTE_ERROR_HANDLERS_LIN, OnExecuteErrorHandlersLIN)
+    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ERROR_HANDLERS_LIN, OnUpdateExecuteErrorHandlersLIN)
     ON_COMMAND(IDM_CONFIGURE_ACTIVE, OnConfigureModeActive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_ACTIVE, OnUpdateConfigureModeActive)
     ON_WM_TIMER()
@@ -323,7 +340,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_REPLAY, OnUpdateCfgnReplay)
     ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS, OnConfigureSimulatedsystems)
+    ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN, OnConfigureSimulatedsystemsLin)
     ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL, OnUpdateDllLoadAll)
+    ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL_LIN, OnUpdateLINDllLoadAll)
     ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnSelectDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnUpdateSelectDriver)
     ON_COMMAND_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnSelectFLEXRAYDriver)
@@ -437,6 +456,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)
     ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_FLEXRAY, OnShowHideMessageWindow)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_FLEXRAY, OnUpdateShowHideMessageWindow)
+    ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_LIN, OnShowHideMessageWindow)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_LIN, OnUpdateShowHideMessageWindow)
+
 
     //ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_J1939, OnUpdateShowHideMessageWindow)
     ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
@@ -462,6 +484,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_HARDWAREINTERFACE_CUBASLIN, OnConfigBaudrateLIN)
     //ON_COMMAND(ID_TRANSMIT_ACTIVATE_LIN, OnActivateLIN)
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
+
+    ON_COMMAND(ID_LIN_CLUSTER_CONFIG, OnLinClusterConfig)
+    ON_UPDATE_COMMAND_UI(ID_LIN_CLUSTER_CONFIG, OnUpdateLinClusterConfig)
 
 END_MESSAGE_MAP()
 
@@ -523,6 +548,7 @@ CMainFrame::CMainFrame()
 {
     GetCurrentDirectory(MAX_PATH, theApp.m_acApplicationDirectory);// Get application directory
     m_nMaxFlexChannels = 1;
+    m_nMaxLinChannels = 1;
     m_podMsgSgWnd                   = NULL;
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
@@ -627,7 +653,7 @@ CMainFrame::CMainFrame()
     m_pouMsgInterpretBuffer = NULL;
     m_objTxHandler.vLoadTx_DLL();
     m_objFlexTxHandler.vLoadTx_DLL();
-    m_objTxHandlerLin.vLoadTx_DLL();
+    //m_objTxHandlerLin.vLoadTx_DLL();
     m_objSigGrphHandler.vLoadSigGrph_DLL();
     m_pouMsgInterpretBuffer = m_objSigGrphHandler.vGetGraphBuffer();
 
@@ -689,10 +715,11 @@ CMainFrame::CMainFrame()
 
     /* Initialize FlexRay DB object */
     m_pouMsgSigFLEXRAY = new CMsgSignal(sg_asDbParams[FLEXRAY], FALSE);
+    m_pouMsgSigLIN = new CMsgSignal(sg_asDbParams[LIN], FALSE);
 
     m_bFlxDILChanging = FALSE;
 
-    m_dwLINDriverId = DAL_NONE;
+    m_shLINDriverId = DAL_NONE;
 
 
 }
@@ -1146,6 +1173,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     // Setting Hex Mode by default
     bSetHexDecFlags(TRUE);
     //theApp.pouGetFlagsPtr()->vSetFlagStatus(HEX,TRUE);
+    //m_objFlexTxHandler.SetFibexConfig(FLEXRAY, m_ouClusterConfig[FLEXRAY]);
+
+
+    vInitialiaseLINConfig(1);
+    m_objFlexTxHandler.SetFibexConfig(LIN, m_ouClusterConfig[LIN]);
 
 
 
@@ -2964,6 +2996,15 @@ void CMainFrame::OnActivateMessageHandler()
     //Change the status of handler
     GetICANNodeSim()->NS_EnableAllMessageHandler( !bEnable );
 }
+
+void CMainFrame::OnActivateMessageHandlerLIN()
+{
+    //Get present status
+    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
+    //Change the status of handler
+    GetILINNodeSim()->NS_EnableAllMessageHandler( !bEnable );
+}
+
 /******************************************************************************/
 /*  Function Name    :  OnActivateTimerHandler                                */
 /*  Input(s)         :                                                        */
@@ -2991,6 +3032,32 @@ void CMainFrame::OnActivateTimerHandler()
     GetICANNodeSim()->NS_EnableAllTimers( !bEnable );
 }
 
+/******************************************************************************/
+/*  Function Name    :  OnActivateTimerHandler                                */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by frame work when user select to activate     */
+/*                      timer handler                                         */
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  14.03.2002                                            */
+/*  Modification By  :  Amitesh Bharti                                        */
+/*  Modification on  :  07.10.2003, The flag is 'm_bTimerInvokedOnce'         */
+/*                      introduced due to change from model dialog to         */
+/*                      modelless dialog.                                     */
+/*  Modification By  :  Anish kumar                                           */
+/*  Modification on  :  27.12.2005,                                           */
+/*                   :   Inserted CExecute manger for activating flags        */
+/******************************************************************************/
+void CMainFrame::OnActivateTimerHandlerLIN()
+{
+    //Get present status
+    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON);
+    //Change the status of handler
+    GetILINNodeSim()->NS_EnableAllTimers( !bEnable );
+}
 
 
 /******************************************************************************/
@@ -3026,6 +3093,41 @@ void CMainFrame::OnDLLBuildLoad()
         AfxMessageBox(omStrErrorMsg);
     }
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnDLLBuildLoad                                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by frame work when user want to build and load */
+/*                       all the DLL under the configuration.                 */
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
+/******************************************************************************/
+void CMainFrame::OnDLLBuildLoadLIN()
+{
+    CStringArray omStrBuildFiles;
+
+    BOOL bSucces = GetILINNodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
+    if(!bSucces)  // if the build is not successfull
+    {
+        int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T(_("Following file(s) are either not properly build or loaded:"));
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
+        {
+
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
 
 /******************************************************************************/
 /*  Function Name    :  bDLLBuildLoad                                         */
@@ -3172,6 +3274,41 @@ void CMainFrame::OnDLLBuild()
 
 
 /******************************************************************************/
+/*  Function Name    :  OnDLLBuild                                            */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by frame-work when user wants to build         */
+/*                      all the C files associated with all the simulated
+/*                      systems.                                              */
+/*
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :
+/******************************************************************************/
+void CMainFrame::OnDLLBuildLIN()
+{
+    CStringArray omStrBuildFiles;
+
+    BOOL bSucces = GetILINNodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
+    if(!bSucces)  // if the build is not successfull
+    {
+        int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T(_("Following file(s) are not properly build:"));
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
+        {
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
+/******************************************************************************/
 /*  Function Name    :  bDLLBuild                                             */
 /*  Input(s)         :                                                        */
 /*  Output           :                                                        */
@@ -3309,6 +3446,42 @@ void CMainFrame::OnDllLoad()
     }
 
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnDllLoad                                             */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by frame work when user want to  load          */
+/*                       all the DLLs under the configuration.                */
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :                                            */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
+/******************************************************************************/
+void CMainFrame::OnDllLoadLIN()
+{
+    CStringArray omStrBuildFiles;
+
+    BOOL bSucces = GetILINNodeSim()->NS_DllLoadAll(&omStrBuildFiles);
+    if(bSucces!=TRUE)  // if the load is not successfull
+    {
+        int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T(_("Following file(s) are not properly loaded:"));
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
+        {
+
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    }
+
+}
+
 
 
 /******************************************************************************/
@@ -3496,6 +3669,39 @@ void CMainFrame::OnDllUnload()
 {
     CStringArray omStrBuildFiles;
     BOOL bSucces = GetICANNodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
+    if(bSucces!=TRUE)  // if the unload is not successfull
+    {
+        int nFailure = omStrBuildFiles.GetSize();
+        CString omStrErrorMsg =_T(_("Following file(s) are not properly unloaded:"));
+        CString omStrErrorMsgDummy="";
+
+        for(int i = 0 ; i < nFailure; i++)
+        {
+
+            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsg += omStrErrorMsgDummy;
+        }
+        AfxMessageBox(omStrErrorMsg);
+    }
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnDllUnload                                           */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by frame work when user want to  unload        */
+/*                       all the DLLs under the configuration.                */
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :  20.01.2006                                            */
+/*  Modification By  :                                                        */
+/******************************************************************************/
+void CMainFrame::OnDllUnloadLIN()
+{
+    CStringArray omStrBuildFiles;
+    BOOL bSucces = GetILINNodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
     if(bSucces!=TRUE)  // if the unload is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
@@ -5082,6 +5288,9 @@ void CMainFrame::OnClose()
     //GetIJ1939NodeSim()->NS_SetSimSysConfigData(NULL, 0);
     GetIJ1939NodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
 
+    OnDllUnloadLIN();
+    GetILINNodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
+
     if(m_unTimerSB != 0)
     {
         ::KillTimer(NULL, m_unTimerSB);
@@ -5762,6 +5971,11 @@ BOOL CMainFrame::bCreateMsgWindow()
                                             0, NULL);
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
 
+            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                          WM_NOTIFICATION_FROM_OTHER,
+                          eLOAD_DATABASE,
+                          (LPARAM)&(m_ouClusterConfig[LIN]));
+
             //J1939 Message Window
             m_podMsgWndThread->CreateMsgWnd(m_hWnd, J1939,
                                             0, NULL);
@@ -5854,6 +6068,7 @@ void CMainFrame::OnHex_DecButon()
         m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
     }
     m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
+    m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
     if (sg_pouSWInterface[CAN] != NULL)
     {
         sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
@@ -5914,6 +6129,7 @@ void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
     }
     //Flexray Window.
     m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
+
 
     if (sg_pouSWInterface[CAN] != NULL)
     {
@@ -6108,7 +6324,8 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
 
         if (aomstrTempDBFilesCAN.GetSize() > 0 ||
                 aomstrTempDBFilesJ1939.GetSize() > 0 ||
-                m_ouFlexConfig.m_nChannelsConfigured > 0)
+                m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured > 0||
+                m_ouClusterConfig[LIN].m_nChannelsConfigured > 0)
             //!m_acFlexDBConfigInfo.m_acConfigFileName[0].empty() )
         {
             //If fil epresent then check for other status
@@ -6160,6 +6377,30 @@ void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
+    pCmdUI->Enable(bEnable);
+}
+
+/******************************************************************************
+    Function Name    :  OnUpdateExecuteMessagehandlers
+
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :      -
+    Functionality    :  Enable or disable execute message handler
+                        menu item
+    Member of        :  CMainFrame
+    Friend of        :      -
+
+    Author(s)        :  Amarnath Shastry
+    Date Created     :  23.03.2002
+    Modification By  :  Amitesh Bharti
+    Modification on  :  23.10.2002,Enable menu/button if tool is connected
+    Modification By  :  Amitesh Bharti
+    Modification on  :  31.10.2002,Review comment incorporated.
+/******************************************************************************/
+void CMainFrame::OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
+    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 /******************************************************************************
@@ -6573,6 +6814,30 @@ void CMainFrame::OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI)
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
+
+/******************************************************************************
+    Function Name    :  OnUpdateExecuteTimerhandler
+
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :      -
+    Functionality    :  Enable or disable execute timer handler
+                        menu item
+    Member of        :  CMainFrame
+    Friend of        :      -
+
+    Author(s)        :  Amarnath Shastry
+    Date Created     :  23.03.2002
+    Modification By  :  Amitesh Bharti
+    Modification on  :  23.10.2002,Enable menu/button if tool is connected
+    Modification By  :  Amitesh Bharti
+    Modification on  :  31.10.2002,Review comment incorporated.
+/******************************************************************************/
+void CMainFrame::OnUpdateExecuteTimerhandlerLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
+    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
+    pCmdUI->Enable(bEnable);
+}
 /******************************************************************************
     Function Name    :  OnClearMsgWindow
 
@@ -6743,6 +7008,25 @@ void CMainFrame::OnUpdateDllBuildAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
 }
+
+/******************************************************************************
+    Function Name    :  OnUpdateDllBuildAll
+
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :  -
+    Functionality    :  Enables or Disables the menu option
+                        depending on the FUNCEDITOR flag.
+    Member of        :  CMainFrame
+    Friend of        :      -
+
+    Author(s)        :  Amarnath Shastry
+    Date Created     :  29.03.2002
+    Modifications    :
+******************************************************************************/
+void CMainFrame::OnUpdateDllBuildAllLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
+}
 /******************************************************************************
     Function Name    :  OnUpdateDllBuildloadAll
 
@@ -6760,6 +7044,25 @@ void CMainFrame::OnUpdateDllBuildAll(CCmdUI* pCmdUI)
 void CMainFrame::OnUpdateDllBuildloadAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
+}
+
+/******************************************************************************
+    Function Name    :  OnUpdateDllBuildloadAll
+
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :  -
+    Functionality    :  Enables or Disables the menu option
+                        depending on the FUNCEDITOR flag
+    Member of        :  CMainFrame
+    Friend of        :      -
+
+    Author(s)        :  Amarnath Shastry
+    Date Created     :  29.03.2002
+    Modifications    :
+******************************************************************************/
+void CMainFrame::OnUpdateDllBuildloadAllLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
 }
 /******************************************************************************
     Function Name    :  poGetSignalPointer
@@ -6840,6 +7143,25 @@ sSIGNALS* CMainFrame::poGetSignalPointer(
 void CMainFrame::OnUpdateDllUnloadAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
+}
+
+/******************************************************************************
+    Function Name    :  OnUpdateDllUnloadAll
+
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :  -
+    Functionality    :  Enables the menu if a DLL is loaded
+                        and vice-versa
+    Member of        :  CMainFrame
+    Friend of        :      -
+
+    Author(s)        :  Amarnath Shastry
+    Date Created     :  29.03.2002
+    Modifications    :
+******************************************************************************/
+void CMainFrame::OnUpdateDllUnloadAllLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplayMessagewindowOverwrite
@@ -8261,6 +8583,8 @@ void CMainFrame::OnFileConnect()
 
             GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
             GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+
+
             //m_n64TimeElapsedSinceConnection =0;
 
             //send time to nodesim for calculation
@@ -8545,12 +8869,14 @@ void CMainFrame::OnLINConnect()
     BOOL bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
     bConnected = !bConnected;
 
-    m_objTxHandlerLin.vShowConfigureMsgWindow((void*)this, SW_HIDE);
+    //m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, bConnected);
 
-    if(m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+    //m_objTxHandlerLin.vShowConfigureMsgWindow((void*)this, SW_HIDE);
+
+    /*if(m_objTxHandlerLin.hConfigWindowShown() == S_OK)
     {
         // Send Message to Indicate connection change
-        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eCONNECTCMD,bConnected);
+       // m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eCONNECTCMD,bConnected);
         // Send message to indicate message transmission stop event if
         // the tool is disconnected
         if( bConnected == FALSE )
@@ -8563,20 +8889,37 @@ void CMainFrame::OnLINConnect()
     {
         // Send Message to Indicate connection change
         m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD,(WPARAM)eCONNECTCMD,bConnected);
-    }
+    }*/
 
-
+    CBaseNodeSim* pNodeSim = NULL;
     /* If connecton is required */
     if ( bConnected )
     {
+        hResult = g_pouDIL_LIN_Interface->DILL_SetConfigData(m_ouClusterConfig[LIN]);
+        hResult = g_pouDIL_LIN_Interface->DILL_PreStartHardware();
+
+        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
+        GetILINNodeSim()->NS_ManageBusEventHandler(BUS_PRE_CONNECT);
+        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_PRE_CONNECT);
+
         hResult = g_pouDIL_LIN_Interface->DILL_StartHardware();
 
         /* If connect fails, return from here */
         if ( hResult == S_FALSE )
         {
+            m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_DISCONNECTED);
+
+            m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_DISCONNECTED);
+
+            theApp.bWriteIntoTraceWnd("Error while accessing Hardware.");
+
             return;
         }
 
+        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
+
+        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_CONNECTED);
+        GetILINNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_NOTIFICATION_FROM_OTHER,
                       eWINID_START_READ, 0);
         // Clear message window on connect
@@ -8586,17 +8929,31 @@ void CMainFrame::OnLINConnect()
             ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
             ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
         }
+
+
+        if (NS_GetInterface(LIN, (void**) &pNodeSim) == S_OK)
+        {
+            pNodeSim->NS_nOnBusConnected(TRUE);
+        }
     }
     /* If disconnecton is required */
     else
     {
         g_pouDIL_LIN_Interface->DILL_ResetSlaveRespData();
         hResult = g_pouDIL_LIN_Interface->DILL_StopHardware();
+        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_DISCONNECTED);
+        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_DISCONNECTED);
         //m_objLINTxHandler.vStopTransmission(0);
         if (NULL != m_podMsgWndThread)
         {
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_NOTIFICATION_FROM_OTHER,
                           eWINID_STOP_READ, 0);
+        }
+        GetILINNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+
+        if (NS_GetInterface(LIN, (void**) &pNodeSim) == S_OK)
+        {
+            pNodeSim->NS_nOnBusConnected(FALSE);
         }
     }
     //added to disable loading config while LIN transmission
@@ -8642,7 +8999,7 @@ void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
             pCmdUI->SetText(omMenuItemText);
         }
     }
-    if ( m_dwLINDriverId != DAL_NONE )
+    if ( m_shLINDriverId != DAL_NONE )
     {
         pCmdUI->Enable();
     }
@@ -8716,6 +9073,30 @@ void CMainFrame::OnExecuteKeyhandlers()
     //Change the status of handler
     GetICANNodeSim()->NS_EnableAllKeyHandler( !bEnable );
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnExecuteKeyhandlers                                  */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function is called by framework when user select */
+/*                      toolbar button/menu for key handlers                  */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  24.10.2002                                            */
+/*  Modification By  :  Amitesh Bharti                                        */
+/*  Modification on  :  31.10.2002, Review comment incorporated               */
+/*  Modification By  :  Anish kumar                                           */
+/*  Modification on  :   05/01/06                                             */
+/*                   :  Inserted CExecute manger for executing handlers       */
+/******************************************************************************/
+void CMainFrame::OnExecuteKeyhandlersLIN()
+{
+    //Get present status
+    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON);
+    //Change the status of handler
+    GetILINNodeSim()->NS_EnableAllKeyHandler( !bEnable );
+}
 /******************************************************************************/
 /*  Function Name    :  OnUpdateExecuteKeyhandlers                            */
 /*  Input(s)         :  CCmdUI* pCmdU                                         */
@@ -8735,6 +9116,28 @@ void CMainFrame::OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
+    pCmdUI->Enable(bEnable);
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnUpdateExecuteKeyhandlers                            */
+/*  Input(s)         :  CCmdUI* pCmdU                                         */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  24.10.2002                                            */
+/*  Modification By  :  Amitesh Bharti                                        */
+/*  Modification on  :  31.10.2002, Review comment incorporated               */
+/******************************************************************************/
+void CMainFrame::OnUpdateExecuteKeyhandlersLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
+    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 
@@ -8808,6 +9211,12 @@ void CMainFrame::OnLoadConfigFile()
         // get the name of the selected file
         CString oCfgFilename = oCfgFileDlg.GetPathName();
         nLoadConfigFile(oCfgFilename);
+
+        // Close the J1939 and FlexRay message windows
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+
 
     }
 }
@@ -8926,15 +9335,24 @@ void CMainFrame::OnNewConfigFile()
             ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
             ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
         }
+
+        /*Unload FLEXRAY DIL */
+        m_shFLEXRAYDriverId = DAL_NONE;
+        InitializeFLEXRAYDIL();
+        m_ouClusterConfig[FLEXRAY].InitialiseConfig();
+
+        /*LIN*/
+        m_shLINDriverId = DAL_LIN_NONE;
+        IntializeDILL();
+        m_ouClusterConfig[LIN].InitialiseConfig();
+
         // Close the J1939 and FlexRay message windows
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
 
-        /*Unload FLEXRAY DIL */
-        m_shFLEXRAYDriverId = DAL_NONE;
-        InitializeFLEXRAYDIL();
-        m_ouFlexConfig.InitialiseConfig();
+
+
 
         /* Clear FlexRay Database/configuration files */
         m_acFlexDBConfigInfo.m_acConfigFileName[0] = "";
@@ -8943,6 +9361,25 @@ void CMainFrame::OnNewConfigFile()
         m_acFlexDBConfigInfo.m_nSelectedIndex = 0;
     }
 }
+void CMainFrame::vInitialiaseLINConfig(int nChannel)
+{
+    IntializeDILL();
+    m_ouClusterConfig[LIN].InitialiseConfig();
+    m_ouClusterConfig[LIN].m_nChannelsConfigured = nChannel;
+    for ( int i = 0 ; i < nChannel; i++ )
+    {
+        m_ouClusterConfig[LIN].m_nChannelsConfigured = 1;
+        m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_bOverWriteSettings = true;
+        m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate = 19200;
+        m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion = "LIN 2.0";
+    }
+    m_shLINDriverId = DAL_LIN_NONE;
+
+
+
+}
+
+
 void CMainFrame::vGetLoadedCfgFileName(CString& omFileName)
 {
     DATASTORAGEINFO sDataStorageInfo;
@@ -9195,14 +9632,14 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
         bConnect    = pouFlag->nGetFlagStatus(CONNECTED);
         BOOL bFlexConnect =  pouFlag->nGetFlagStatus(FLEX_CONNECTED);
         BOOL bFlexConfigShown = FALSE;
-        if(m_objFlexTxHandler.hConfigWindowShown() == S_OK)
+        if(m_objFlexTxHandler.hConfigWindowShown(FLEXRAY) == S_OK)
         {
             bFlexConfigShown = TRUE;
         }
 
         BOOL bLINConnect =  pouFlag->nGetFlagStatus(LIN_CONNECTED);
         BOOL bLINTxConfigWndShown = FALSE;
-        if (m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+        if (m_objFlexTxHandler.hConfigWindowShown(LIN)== S_OK)
         {
             bLINTxConfigWndShown = TRUE;
         }
@@ -9338,11 +9775,11 @@ void CMainFrame::OnUpdateConfigLoad(CCmdUI* pCmdUI)
         {
             bSendMsgDialog = TRUE;
         }
-        if(m_objFlexTxHandler.hConfigWindowShown() == S_OK)
+        if(m_objFlexTxHandler.hConfigWindowShown(FLEXRAY) == S_OK)
         {
             bSendMsgDialog = TRUE;
         }
-        if (m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+        if (m_objFlexTxHandler.hConfigWindowShown(LIN) == S_OK)
         {
             bSendMsgDialog = TRUE;
         }
@@ -9376,11 +9813,11 @@ void CMainFrame::OnUpdateConfigNew(CCmdUI* pCmdUI)
         {
             bSendMsgDialog = TRUE;
         }
-        if(m_objFlexTxHandler.hConfigWindowShown() == S_OK)
+        if(m_objFlexTxHandler.hConfigWindowShown(FLEXRAY) == S_OK)
         {
             bSendMsgDialog = TRUE;
         }
-        if (m_objTxHandlerLin.hConfigWindowShown() == S_OK)
+        if (m_objFlexTxHandler.hConfigWindowShown(LIN) == S_OK)
         {
             bSendMsgDialog = TRUE;
         }
@@ -9896,6 +10333,42 @@ void CMainFrame::OnExecuteAllHandlers()
     //Change the status of handler
     GetICANNodeSim()->NS_EnableAllHandlers( !bEnable );
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnExecuteAllHandlers                                  */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user selects all     */
+/*                      handler menu item / toolbar button. The all handler   */
+/*                      will be enable/disable based on the state of this menu*/
+/*                      /toolbar. if handlers are already enable and the req. */
+/*                      is to enable again will have no effect. Similarly the */
+/*                      vice versa.                                           */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  03.03.2003                                            */
+/*  Modification By  :  Raja N                                                */
+/*  Modification on  :  05.02.2004.Added function call vEnableDisalbeAllTimers*/
+/*                      to toogle timers when all handlers activated or       */
+/*                      deactivated                                           */
+/*  Modification By  :  Raja N                                                */
+/*  Modification on  :  29.04.2004 Replaced PostMessage with direct assignment*/
+/*                      of global variable g_bMsgHandlerON Msg Handler Enable */
+/*                      flag
+/*  Modification By  :  Anish kumar                                           */
+/*  Modification on  :   05/01/06                                             */
+/*                   :  Inserted CExecute manger for executing handlers       */
+/******************************************************************************/
+void CMainFrame::OnExecuteAllHandlersLIN()
+{
+    //Get present status
+    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER);
+    //Change the status of handler
+    GetILINNodeSim()->NS_EnableAllHandlers( !bEnable );
+}
+
 /******************************************************************************/
 /*  Function Name    :  OnUpdateExecuteAllHandlers                            */
 /*  Input(s)         :  CCmdUI* pCmdUI                                        */
@@ -9915,6 +10388,28 @@ void CMainFrame::OnUpdateExecuteAllHandlers(CCmdUI* pCmdUI)
 {
     pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
+    pCmdUI->Enable(bEnable);
+}
+
+/******************************************************************************/
+/*  Function Name    :  OnUpdateExecuteAllHandlers                            */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  03.03.2003                                            */
+/*  Modification By  :                                                        */
+/*  Modification on  :                                                        */
+/******************************************************************************/
+void CMainFrame::OnUpdateExecuteAllHandlersLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
+    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
 /******************************************************************************/
@@ -9942,6 +10437,33 @@ void CMainFrame::OnExecuteErrorHandlers()
     //Change the status of handler
     GetICANNodeSim()->NS_EnableAllErrorHandler( !bEnable );
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnExecuteErrorHandlers                                */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user selects Error   */
+/*                      handler menu item / toolbar button. The error handler */
+/*                      will be enable/disable based on the state of this menu*/
+/*                      /toolbar. if handlers are already enable it will be   */
+/*                      disable and vice versa.                               */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  03.03.2003                                            */
+/*  Modification By  :  Anish kumar                                           */
+/*  Modification on  :   05/01/06                                             */
+/*                   :  Inserted CExecute manger for executing handlers       */
+/******************************************************************************/
+void CMainFrame::OnExecuteErrorHandlersLIN()
+{
+    //Get present status
+    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER);
+    //Change the status of handler
+    GetILINNodeSim()->NS_EnableAllErrorHandler( !bEnable );
+}
+
 /******************************************************************************/
 /*  Function Name    :  OnUpdateExecuteErrorHandlers                          */
 /*  Input(s)         :  CCmdUI* pCmdUI                                        */
@@ -9963,6 +10485,29 @@ void CMainFrame::OnUpdateExecuteErrorHandlers(CCmdUI* pCmdUI)
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnUpdateExecuteErrorHandlers                          */
+/*  Input(s)         :  CCmdUI* pCmdUI                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the current GUI state of */
+/*                      the menu item / toolbar button needs to be updated,   */
+/*                      either as a result of pulling down the menu item or   */
+/*                      whatever else.                                        */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  03.03.2003                                            */
+/*  Modification By  :                                                        */
+/*  Modification on  :                                                        */
+/******************************************************************************/
+void CMainFrame::OnUpdateExecuteErrorHandlersLIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER));
+    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
+    pCmdUI->Enable(bEnable);
+}
+
 /******************************************************************************/
 /*  Function Name    :  OnConfigureModeActive                                 */
 /*  Input(s)         :                                                        */
@@ -10668,7 +11213,7 @@ LRESULT CMainFrame::vKeyPressedInMsgWnd(WPARAM wParam, LPARAM )
         {
             m_objTxHandler.vStartTransmission((UCHAR)wParam);
         }
-
+        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eKeyPress, (UCHAR)wParam);
     }
     return 0;
 }
@@ -12012,6 +12557,113 @@ void CMainFrame::OnConfigureSimulatedsystems()
     vInitCFileFunctPtrs();
     GetICANNodeSim()->FE_CreateFuncEditorTemplate(this->GetSafeHwnd(), m_sExFuncPtr[CAN]);
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnConfigureSimulatedsystemsLin                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Called by the framework when the user selects Simulated */
+/*                      system menu item.                                     */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :                                                        */
+/*  Modifications    :                                                        */
+/******************************************************************************/
+void CMainFrame::OnConfigureSimulatedsystemsLin()
+{
+    vNS_LINInitCFileFunctPtrs();
+    GetILINNodeSim()->FE_CreateFuncEditorTemplate(this->GetSafeHwnd(), m_sExFuncPtr[LIN]);
+}
+
+/******************************************************************************/
+/*  Function Name    :  App_SendMsgLIN                                        */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Transmitting Lin message, directing to resp. DIL      */
+/*                      system menu item.                                     */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :                                                        */
+/*  Modifications    :                                                        */
+/******************************************************************************/
+static int App_SendMsgLIN(void* pMsg, HMODULE /*hModule*/)
+{
+    STLIN_MSG* psMsg = (STLIN_MSG*)pMsg;
+    return g_pouDIL_LIN_Interface->DILL_SendMsg(g_dwClientID,*psMsg);
+}
+
+/******************************************************************************/
+/*  Function Name    :  vNS_LINInitCFileFunctPtrs                             */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  Transmitting Lin message, directing to resp. DIL      */
+/*                      system menu item.                                     */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Harika M                                              */
+/*  Date Created     :                                                        */
+/*  Modifications    :                                                        */
+/******************************************************************************/
+void CMainFrame::vNS_LINInitCFileFunctPtrs()
+{
+    //vSetAppService((CBaseAppServices *) &sg_ouAppServiceObj);
+
+    m_sExFuncPtr[LIN].m_hWmdMDIParentFrame = this->GetSafeHwnd();
+    //m_sExFuncPtr.m_pouTraceWnd = m_podUIThread;
+    m_sExFuncPtr[LIN].m_omAPIList.RemoveAll();
+    for (int i = 0; i < TOTAL_API_COUNT_LIN; i++)
+    {
+        m_sExFuncPtr[LIN].m_omAPIList.Add(sg_omAPIFuncListLIN[i]);
+    }
+
+    m_sExFuncPtr[LIN].m_omAPINames.RemoveAll();
+    for (int i = 0; i < TOTAL_API_COUNT_LIN; i++)
+    {
+        m_sExFuncPtr[LIN].m_omAPINames.Add(sg_omAPIFuncNamesLIN[i]);
+    }
+
+    m_sExFuncPtr[LIN].m_omErrorHandlerList.RemoveAll();
+    for (int i = 0; i < TOTAL_ERROR_COUNT; i++)
+    {
+        m_sExFuncPtr[LIN].m_omErrorHandlerList.Add(sg_omMcNetErrorHandlerList[i]);
+    }
+
+    m_sExFuncPtr[LIN].m_omDefinedMsgHeaders.RemoveAll();
+    CStringArray omDatabaseNames;
+    // TODO: LIN Commented generation of unions.h file
+    /*if( NULL != m_pouMsgSigLIN)
+    {
+        m_pouMsgSigLIN->vGetDataBaseNames(&omDatabaseNames);
+    }*/
+
+    //theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
+    GetILINNodeSim()->NS_SetLINConfig(m_ouClusterConfig[LIN]);
+
+    for (int i = 0; i < m_ouClusterConfig[LIN].m_nChannelsConfigured; i++)
+    {
+        CString omHeaderPath = omStrGetUnionFilePath(m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath.c_str());
+        m_sExFuncPtr[LIN].m_omDefinedMsgHeaders.Add(omHeaderPath);
+    }
+
+    // vUpdateMsgNameCodeList(theApp.m_pouMsgSignal, m_sExFuncPtr[LIN].m_odMsgNameMsgCodeListDB);
+    // Send KeyPanel list pointer
+    //m_sExFuncPtr.m_podNodeToDllMap = &g_odNodeToDllMap;
+    //m_sExFuncPtr.m_podKeyPanelEntryList = &g_odKeyPanelEntryList;
+    m_sExFuncPtr[LIN].m_omAppDirectory = m_omAppDirectory;
+    m_sExFuncPtr[LIN].m_omObjWrapperName = WRAPPER_NAME_LIN;
+    m_sExFuncPtr[LIN].m_omStructFile = STRUCT_FILE_LIN;
+    m_sExFuncPtr[LIN].m_omStructName = MSG_STRUCT_NAME_LIN;
+    m_sExFuncPtr[LIN].Send_Msg = App_SendMsgLIN;
+    m_sExFuncPtr[LIN].DisConnectTool = NULL;
+    m_sExFuncPtr[LIN].EnDisableLog = NULL;
+    m_sExFuncPtr[LIN].WriteToLog = NULL;
+    m_sExFuncPtr[LIN].RestController = NULL;
+    m_sExFuncPtr[LIN].m_pouITraceWndPtr = &sg_ouAppServiceObj;
+    //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
+
+}
 /******************************************************************************
     Function Name    :  OnUpdateDllLoadAll
 
@@ -12030,6 +12682,12 @@ void CMainFrame::OnUpdateDllLoadAll(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
 }
+
+void CMainFrame::OnUpdateLINDllLoadAll(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
+}
+
 /******************************************************************************
     Function Name    :  OnHelpInfo
 
@@ -12425,6 +13083,18 @@ void CMainFrame::vReRegisterAllCANNodes(void)
     GetICANNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[CAN]), UPDATE_ALL);
     xmlFreeNode(pCANSimSys);
 }
+void CMainFrame::vReRegisterAllLINNodes(void)
+{
+    xmlNodePtr pLinSimSys = NULL;
+    GetILINNodeSim()->NS_GetSimSysConfigData(pLinSimSys);
+    CStringArray pomErrorFiles;
+    GetILINNodeSim()->NS_DllUnloadAll(&pomErrorFiles);
+    GetILINNodeSim()->NS_SetSimSysConfigData(pLinSimSys);
+    vInitCFileFunctPtrs();
+    GetILINNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[LIN]), UPDATE_ALL);
+    xmlFreeNode(pLinSimSys);
+}
+
 void CMainFrame::vReRegisterAllJ1939Nodes(void)
 {
     xmlNodePtr pJ1939SimSys = NULL;
@@ -12437,7 +13107,6 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
     GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939]), UPDATE_ALL);
     xmlFreeNode(pJ1939SimSys);
 }
-
 HRESULT CMainFrame::InitializeFLEXRAYDIL()
 {
     HRESULT hResult = S_OK;
@@ -12462,7 +13131,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
             {
                 if ( ( hResult = g_pouDIL_FLEXRAY_Interface->DILF_SelectHwInterfaces( m_sSelFlxHwInterface )) == S_OK )
                 {
-                    hResult = g_pouDIL_FLEXRAY_Interface->DILF_SetConfigData(m_ouFlexConfig.m_ouFlexChannelConfig[0]) ;
+                    hResult = g_pouDIL_FLEXRAY_Interface->DILF_SetConfigData(m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[0]) ;
 
 
                     if ( hResult == S_OK )
@@ -12473,7 +13142,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
                         // Create the message window
                         m_podMsgWndThread->vUpdateClientID(FLEXRAY, m_dwFLEXClientID);
                         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)FLEXRAY);
-                        m_objFlexTxHandler.vSetDILInterfacePtr();
+                        m_objFlexTxHandler.vSetDILInterfacePtr(FLEXRAY, NULL);
                         vInitializeBusStatFlexRay();
                         //string strConfigName = (PCHAR)m_acFlexDBConfigInfo.m_acConfigFileName[m_acFlexDBConfigInfo.m_nSelectedIndex];
                         m_objFlexTxHandler.vFlexFileChanged();
@@ -12541,7 +13210,7 @@ void CMainFrame::OnFlexRayConnect()
         /* If connecton is required */
         if ( bConnected )
         {
-            hResult = g_pouDIL_FLEXRAY_Interface->DILF_SetConfigData(m_ouFlexConfig.m_ouFlexChannelConfig[0]) ;
+            hResult = g_pouDIL_FLEXRAY_Interface->DILF_SetConfigData(m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[0]) ;
 
             if ( hResult != S_OK )
             {
@@ -12569,7 +13238,7 @@ void CMainFrame::OnFlexRayConnect()
                 ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
                 ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
             }
-            m_objFlexTxHandler.vBusStatusChanged(true);
+            m_objFlexTxHandler.vBusStatusChanged(FLEXRAY, BUS_CONNECTED);
 
             theApp.pouGetFlagsPtr()->vSetFlagStatus( FLEXRAYSENDMSG, FALSE );
         }
@@ -12583,7 +13252,7 @@ void CMainFrame::OnFlexRayConnect()
             m_objFlexTxHandler.vStopTransmission(0);
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY), WM_NOTIFICATION_FROM_OTHER,
                           eWINID_STOP_READ, 0);
-            m_objFlexTxHandler.vBusStatusChanged(false);
+            m_objFlexTxHandler.vBusStatusChanged(FLEXRAY, BUS_DISCONNECTED);
         }
         //added to disable loading config while flexray transmission
 
@@ -12761,7 +13430,10 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 
 HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
 {
-    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
+    if ( m_podMsgWndThread != NULL )
+    {
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
+    }
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
     if (g_pouDIL_LIN_Interface == NULL)
@@ -12775,7 +13447,7 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
     }
     if (hResult == S_OK)
     {
-        if ((hResult = g_pouDIL_LIN_Interface->DILL_SelectDriver(m_dwLINDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
+        if ((hResult = g_pouDIL_LIN_Interface->DILL_SelectDriver(m_shLINDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
         {
             g_pouDIL_LIN_Interface->DILL_PerformInitOperations();
             INT nCount = unDefaultChannelCnt;
@@ -12789,9 +13461,9 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {
                         m_bNoHardwareFound = false;
-                        g_pouDIL_LIN_Interface->DILL_SetConfigData(m_asControllerDetails, nCount);
+                        g_pouDIL_LIN_Interface->DILL_SetConfigData(m_ouClusterConfig[LIN]);
                         bInitFrameProcLIN(); // Initialize logger module
-                        //vReRegisterAllLINNodes();//Reinitialize node simulation
+                        vReRegisterAllLINNodes();//Reinitialize node simulation
                         if (sg_pouSWInterface[LIN] == NULL)//Signal watch
                         {
                             if (SW_GetInterface(LIN, (void**)&sg_pouSWInterface[LIN]) == S_OK)
@@ -12831,16 +13503,18 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                     }
                     else
                     {
-                        //theApp.bWriteIntoTraceWnd(_("registering client failed"));
-                        //m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
-                        //IntializeDIL();
+                        theApp.bWriteIntoTraceWnd(_("registering client failed"));
+                        m_shLINDriverId = DAL_NONE;          //select simulation
+                        IntializeDILL();
+                        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
                     }
                 }
                 else
                 {
-                    //theApp.bWriteIntoTraceWnd(_("Selecting hardware interface failed"));
-                    //m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
-                    //IntializeDIL();
+                    theApp.bWriteIntoTraceWnd(_("Selecting hardware interface failed"));
+                    m_shLINDriverId = DAL_NONE;          //select simulation
+                    IntializeDILL();
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
                 }
             }
             else
@@ -12849,28 +13523,36 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                 {
                     theApp.bWriteIntoTraceWnd(_("hardware selection Cancelled. Retaining previous hardware settings.."));
                     /* Retain previous DIL selection */
-                    m_dwDriverId = g_pouDIL_LIN_Interface->DILL_GetSelectedDriver();
+                    m_shLINDriverId = g_pouDIL_LIN_Interface->DILL_GetSelectedDriver();
                     m_bNoHardwareFound = false;
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
                 }
                 else
                 {
-                    //theApp.bWriteIntoTraceWnd(_("Listing hardware interfaces failed"));
-                    //m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
-                    //IntializeDIL();
+                    theApp.bWriteIntoTraceWnd(_("Listing hardware interfaces failed"));
+                    m_shLINDriverId = DAL_NONE;          //select simulation
+                    IntializeDILL();
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
                 }
             }
         }
         else
         {
-            if (m_dwDriverId == 0) // Dummy Driver for Deactvation
+            if (m_shLINDriverId <= 0) // Dummy Driver for Deactvation
             {
-                m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+                if ( m_podMsgWndThread != NULL )
+                {
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+                }
                 // Disable the Deactivate menu as a valid driver is selected
-                m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, false);
+                if ( m_pDILSubMenuLin != NULL )
+                {
+                    m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, false);
+                }
             }
         }
-        m_objTxHandlerLin.vSetDILInterfacePtr((void*)g_pouDIL_LIN_Interface);
-        m_objTxHandlerLin.vSetClientID(g_dwClientID);
+        m_objFlexTxHandler.vSetDILInterfacePtr(LIN, (void*)g_pouDIL_LIN_Interface);
+        m_objFlexTxHandler.vSetClientID(LIN, g_dwClientID);
     }
     return hResult;
 }
@@ -13163,8 +13845,12 @@ void CMainFrame::COM_EnableAllHandlers(BOOL /*bEnable*/)
 /*  function to get _Unions.h header filename from Database name*/
 CString CMainFrame::omStrGetUnionFilePath(CString omStrTemp)
 {
-    CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
-    omStrHeaderFileName += defHEADER_FILE_NAME;
+    CString omStrHeaderFileName = "";
+    if(omStrTemp.IsEmpty() == FALSE)
+    {
+        omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
+        omStrHeaderFileName += defHEADER_FILE_NAME;
+    }
     return omStrHeaderFileName;
 }
 static int App_SendMsg(void* pMsg, HMODULE /*hModule*/)
@@ -13405,6 +14091,12 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             ApplyMessagewindowOverwrite();
             nRetValue = S_OK;
             vCreateMRU_Menus();
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+
+
+
         }
         //~MVN
         else                            //2. Load as a Binary File
@@ -13449,6 +14141,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             eSecId = static_cast<eSECTION_ID>(eSecId + 1);
         }
         bCreateTraceWindow();
+
     }
     return nRetValue;
 }
@@ -13833,6 +14526,13 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             xmlNodePtr pCanSimSys = NULL;
             GetICANNodeSim()->NS_GetSimSysConfigData(pCanSimSys);
             xmlAddChild(pNodePtr, pCanSimSys);
+        }
+        break;
+        case SIMSYS_SECTION_LIN_ID:
+        {
+            xmlNodePtr pLinSimSys = NULL;
+            GetILINNodeSim()->NS_GetSimSysConfigData(pLinSimSys);
+            xmlAddChild(pNodePtr, pLinSimSys);
         }
         break;
         case SIMSYS_SECTION_J1939_ID:
@@ -14491,14 +15191,6 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             m_objTxHandler.vGetTxWndConfigData(pCANTxPtr);
         }
         break;
-        case TXWND_SECTION_LIN_ID:
-        {
-            //changes done for XML configuration
-            xmlNodePtr pLINTxPtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_TX_WINDOW);
-            xmlAddChild(pNodePtr, pLINTxPtr);
-            m_objTxHandlerLin.vGetTxWndConfigData(pLINTxPtr);
-        }
-        break;
         case FILTER_SECTION_ID:
         {
             nSize = m_sFilterAppliedCAN.unGetSize();
@@ -14625,6 +15317,81 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
         }
         break;
+        case LIN_CLUSTER_CONFIG:
+        {
+            if(pNodePtr != NULL)
+            {
+                //xmlNodePtr pNodeDBFilePtr = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_CAN_DATABASE_FILES, BAD_CAST "");
+
+                xmlNodePtr pNodeDBFilePtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_CLUSTER_CONFIG);
+
+
+
+                if(pNodeDBFilePtr != NULL)
+                {
+                    for ( int i = 0; i < 1; i++ )
+                    {
+
+                        //Channel
+                        xmlNodePtr pNodeChannelPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_CHANNEL);
+
+
+                        char chValue[256];
+
+                        //Index
+                        sprintf(chValue, "%d", i);
+                        xmlNodePtr pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_INDEX ,BAD_CAST chValue);
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //HWUri
+
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_HWURI ,BAD_CAST "Hardware" );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //DbPath
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_DBPATH, BAD_CAST  m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath.c_str() );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //ClusterId
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_CLUSTERID, BAD_CAST  m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouClusterInfo.m_strName.c_str() );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //BaudRate
+                        sprintf(chValue, "%d", m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate);
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_LIN_BAUDRATE, BAD_CAST chValue  );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+                        //ProtocolVersion
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_LIN_PROTOCOLVER, BAD_CAST m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion.c_str());
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+
+                        sprintf(chValue, "%d", m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_bOverWriteSettings);
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_LIN_OVERWRITE_SETTINGS, BAD_CAST chValue );
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+
+
+                        //ECU
+                        xmlNodePtr pNodeECUPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_ECU);
+                        list<string>::iterator itrList;
+                        for ( itrList = m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strSlectedEculist.begin();
+                                itrList != m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strSlectedEculist.end(); itrList++)
+                        {
+                            pIndex= xmlNewChild(pNodeECUPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_NAME, BAD_CAST  itrList->c_str() );
+                        }
+                        xmlAddChild(pNodeChannelPtr, pNodeECUPtr);
+
+                        xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
+
+
+
+                    }
+                }
+                xmlAddChild(pNodePtr, pNodeDBFilePtr);
+            }
+        }
+        break;
         case FLEXRAY_CLUSTER_CONFIG:
         {
             if(pNodePtr != NULL)
@@ -14657,18 +15424,18 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
                         //DbPath
-                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_DBPATH, BAD_CAST  m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strFibexPath.c_str() );
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_DBPATH, BAD_CAST  m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strDataBasePath.c_str() );
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
                         //ClusterId
-                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_CLUSTERID, BAD_CAST  m_ouFlexConfig.m_ouFlexChannelConfig[i].m_ouClusterInfo.m_strName.c_str() );
+                        pIndex= xmlNewChild(pNodeChannelPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_CLUSTERID, BAD_CAST  m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouClusterInfo.m_strName.c_str() );
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
                         //ECU
                         xmlNodePtr pNodeECUPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_ECU);
                         list<string>::iterator itrList;
-                        for ( itrList = m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strSlectedEculist.begin();
-                                itrList != m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strSlectedEculist.end(); itrList++)
+                        for ( itrList = m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strSlectedEculist.begin();
+                                itrList != m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strSlectedEculist.end(); itrList++)
                         {
                             pIndex= xmlNewChild(pNodeECUPtr, NULL, BAD_CAST DEF_FLEX_CHANNEL_NAME, BAD_CAST  itrList->c_str() );
                         }
@@ -14764,9 +15531,16 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
         {
             xmlNodePtr pFLEXTxPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_TX_WINDOW);
             xmlAddChild(pNodePtr, pFLEXTxPtr);
-            m_objFlexTxHandler.vGetTxWndConfigData(pFLEXTxPtr);
+            m_objFlexTxHandler.vGetTxWndConfigData( FLEXRAY, pFLEXTxPtr);
         }
         break;
+        case LIN_TXWND:
+        {
+            xmlNodePtr pFLEXTxPtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_TX_WINDOW);
+            xmlAddChild(pNodePtr, pFLEXTxPtr);
+            m_objFlexTxHandler.vGetTxWndConfigData(LIN, pFLEXTxPtr);
+        }
+
         case MSGWND_SECTION_FLEXRAY_ID:
         {
             // Save FlexRay Message Window contents
@@ -15178,6 +15952,13 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
             }
             break;
+            case DIL_SECTION_LIN_ID:
+            {
+                m_shLINDriverId = DAL_LIN_NONE;
+                IntializeDILL();
+                m_ouClusterConfig[LIN].InitialiseConfig();
+            }
+            break;
             case DATABASE_SECTION_ID:
             {
                 vClearDbInfo(CAN);
@@ -15279,20 +16060,188 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
             }
             break;
+            case LIN_CLUSTER_CONFIG:
+            {
+                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Cluster_Config/CHANNEL";
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
+
+
+                /*LIN*/
+                vInitialiaseLINConfig(1);
+
+
+
+
+
+                for ( int i = 0; i < m_ouClusterConfig[LIN].m_nChannelsConfigured; i++ )
+                {
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_eBusChannelType = LIN;
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate = 19200;
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion = "LIN 2.1";
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath = "";
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_bOverWriteSettings = true;
+                    //m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouClusterInfo.clear();
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strSlectedEculist.clear();
+                }
+
+                if( NULL != pPathObject )
+                {
+                    pNodeSet = pPathObject->nodesetval;
+                    if(NULL != pNodeSet)
+                    {
+                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        {
+                            xmlNodePtr xmlChannel = pNodeSet->nodeTab[i]->xmlChildrenNode;
+                            if (NULL != pNodeSet->nodeTab[i] )
+                            {
+                                xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
+
+                                sLinConfigContainer ouFibexContainer;
+                                INT nCount = 0;
+                                while ( pNodePtr != NULL )
+                                {
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Index")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_nChannel = atoi((char*)key);
+                                            nCount++;
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"HWUri")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_strHWUri = (char*)key;
+                                            nCount++;
+                                        }
+                                    }
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"DbPath")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_strDbPath = (char*)key;
+                                            nCount++;
+
+                                        }
+                                    }
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"ClusterId")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_strClusterId = (char*)key;
+                                            nCount++;
+
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"BaudRate")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_nBaudRate = atoi((char*)key);
+                                            nCount++;
+
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"ProtocolVersion")))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_srtProtocolVerson = (char*)key;
+                                            nCount++;
+
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)DEF_LIN_OVERWRITE_SETTINGS)))
+                                    {
+                                        xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                                        if(NULL != key)
+                                        {
+                                            ouFibexContainer.m_bOverwrite = atoi((char*)key);
+                                            nCount++;
+                                        }
+                                    }
+
+                                    if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"ECU")))
+                                    {
+                                        //Nodes
+                                        xmlChar* pchPath = (xmlChar*)"Name";
+                                        pPathObject = xmlUtils::pGetChildNodes(pNodePtr, pchPath);
+                                        if( NULL != pPathObject )
+                                        {
+                                            xmlNodeSetPtr pNodeSetEcu = pPathObject->nodesetval;
+                                            if(NULL != pNodeSetEcu)
+                                            {
+                                                nCount++;
+
+                                                for(int i=0; i < pNodeSetEcu->nodeNr; i++)
+                                                {
+                                                    xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodeSetEcu->nodeTab[i]->xmlChildrenNode , 1);
+                                                    ouFibexContainer.m_strECUList.push_back((char*)key);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    pNodePtr = pNodePtr->next;
+                                }   //while
+
+                                vVlaidateAndLoadFibexConfig(ouFibexContainer);
+
+                            }   //If
+
+                        }   //Channel Configurations
+
+
+                    }
+                }
+                else
+                {
+
+                }
+                m_objFlexTxHandler.SetFibexConfig(LIN, m_ouClusterConfig[LIN]);
+
+                m_objFlexTxHandler.vSetTxWndConfigData( LIN, m_xmlConfigFiledoc);
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
+                              WM_NOTIFICATION_FROM_OTHER,
+                              eLOAD_DATABASE,
+                              (LPARAM)&m_ouClusterConfig[FLEXRAY]);
+
+
+
+
+
+
+            }
+            break;
             case FLEXRAY_CLUSTER_CONFIG:
             {
                 xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FLEX_Cluster_Config/CHANNEL";
                 pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-                m_ouFlexConfig.m_nChannelsConfigured = 0;
+                m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured = 0;
+
+                /*Unload FLEXRAY DIL */
+                m_shFLEXRAYDriverId = DAL_NONE;
+                InitializeFLEXRAYDIL();
+                m_ouClusterConfig[FLEXRAY].InitialiseConfig();
 
 
-                for ( int i = 0; i < m_ouFlexConfig.m_nChannelsConfigured; i++ )
+                for ( int i = 0; i < m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured; i++ )
                 {
-                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_nKetSlot = -1;
-                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_nSecondKeySlot = -1;
-                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strFibexPath = "";
-                    //m_ouFlexConfig.m_ouFlexChannelConfig[i].m_ouClusterInfo.clear();
-                    m_ouFlexConfig.m_ouFlexChannelConfig[i].m_strSlectedEculist.clear();
+                    m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouFlexRayParams.m_nKetSlot = -1;
+                    m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouFlexRayParams.m_nSecondKeySlot = -1;
+                    m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strDataBasePath = "";
+                    //m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouClusterInfo.clear();
+                    m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strSlectedEculist.clear();
                 }
 
                 if( NULL != pPathObject )
@@ -15411,12 +16360,12 @@ int CMainFrame::nLoadXMLConfiguration()
 
                 }
 
-                m_objFlexTxHandler.SetFibexConfig(m_ouFlexConfig);
-                m_objFlexTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
+                m_objFlexTxHandler.SetFibexConfig(FLEXRAY, m_ouClusterConfig[FLEXRAY]);
+                m_objFlexTxHandler.vSetTxWndConfigData( FLEXRAY, m_xmlConfigFiledoc);
                 ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
                               WM_NOTIFICATION_FROM_OTHER,
                               eLOAD_DATABASE,
-                              (LPARAM)&m_ouFlexConfig);
+                              (LPARAM)&m_ouClusterConfig[FLEXRAY]);
 
             }
             break;
@@ -15590,6 +16539,13 @@ int CMainFrame::nLoadXMLConfiguration()
                 if (GetIJ1939NodeSim() != NULL)
                 {
                     GetIJ1939NodeSim()->NS_SetSimSysConfigData(m_xmlConfigFiledoc);
+                }
+            }
+            case SIMSYS_SECTION_LIN_ID:
+            {
+                if (GetILINNodeSim() != NULL)
+                {
+                    GetILINNodeSim()->NS_SetSimSysConfigData(m_xmlConfigFiledoc);
                 }
             }
             break;
@@ -15960,10 +16916,10 @@ int CMainFrame::nLoadXMLConfiguration()
                                   (LPARAM)m_xmlConfigFiledoc);
 
 
-                    ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                    /*::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
                                   WM_NOTIFICATION_FROM_OTHER,
                                   eLOAD_DATABASE,
-                                  (LPARAM)&(theApp.m_pouMsgSignal));
+                                  (LPARAM)&(theApp.m_pouMsgSignal));*/
                 }
 
                 if(sMsgAttrib.m_usMsgCount > 0)
@@ -16202,11 +17158,7 @@ int CMainFrame::nLoadXMLConfiguration()
                 m_objTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
             }
             break;
-            case TXWND_SECTION_LIN_ID:
-            {
-                m_objTxHandlerLin.vSetTxWndConfigData(m_xmlConfigFiledoc);
-            }
-            break;
+
             case MSGWND_SECTION_J1939_ID:
             {
                 xmlNodePtr pNode = NULL;
@@ -16558,13 +17510,50 @@ int CMainFrame::nLoadXMLConfiguration()
     nRetValue = S_OK;
     return nRetValue;
 }
+void CMainFrame::vVlaidateAndLoadFibexConfig(sLinConfigContainer& ouFibexContainer)
+{
+    if ( m_pouMsgSigLIN != NULL && ouFibexContainer.m_nChannel >= 0 && ouFibexContainer.m_nChannel < CHANNEL_ALLOWED )
+    {
+        bool bValid = false;
+        CHANNEL_CONFIG ouFlexChannel;
+        std::list<Cluster> ouClusterList;
+        std::list<LinChannelParam> ouLinParams;
+        if ( S_OK == m_pouMsgSigFLEXRAY->hLoadLdfFile(ouFibexContainer.m_strDbPath.c_str(), ouClusterList, ouLinParams) )
+        {
+            list<Cluster>::iterator itrCluster;
+            for ( itrCluster = ouClusterList.begin(); itrCluster != ouClusterList.end(); itrCluster++ )
+            {
+                if ( itrCluster->m_strName == ouFibexContainer.m_strClusterId )
+                {
+                    ouFlexChannel.m_strDataBasePath = ouFibexContainer.m_strDbPath;
+                    ouFlexChannel.m_strSlectedEculist = ouFibexContainer.m_strECUList;
+                    ouFlexChannel.m_ouClusterInfo = *itrCluster;
+                    ouFlexChannel.m_ouLinParams.m_nBaudRate = ouFibexContainer.m_nBaudRate;
+                    ouFlexChannel.m_ouLinParams.m_strProtocolVersion = ouFibexContainer.m_srtProtocolVerson;
+                    ouFlexChannel.m_ouLinParams.m_bOverWriteSettings = ouFibexContainer.m_bOverwrite;
+                    bValid = true;
+                    break;
+                }
+            }
+            if ( true == bValid )
+            {
+                m_ouClusterConfig[LIN].m_ouFlexChannelConfig[ouFibexContainer.m_nChannel] = ouFlexChannel;
+                //m_ouClusterConfig[LIN].m_nChannelsConfigured++;
+            }
+            else
+            {
+                //TODO::
+            }
+        }
+    }
+}
 
 void CMainFrame::vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexContainer)
 {
     if ( m_pouMsgSigFLEXRAY != NULL && ouFibexContainer.m_nChannel >= 0 && ouFibexContainer.m_nChannel < CHANNEL_ALLOWED )
     {
         bool bValid = false;
-        FLEXRAY_CHANNEL_CONFIG ouFlexChannel;
+        CHANNEL_CONFIG ouFlexChannel;
         std::list<Cluster> ouClusterList;
         if ( S_OK == m_pouMsgSigFLEXRAY->hLoadFibexDBFile(ouFibexContainer.m_strDbPath.c_str(), ouClusterList) )
         {
@@ -16573,19 +17562,19 @@ void CMainFrame::vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexConta
             {
                 if ( itrCluster->m_strName == ouFibexContainer.m_strClusterId )
                 {
-                    ouFlexChannel.m_strFibexPath = ouFibexContainer.m_strDbPath;
+                    ouFlexChannel.m_strDataBasePath = ouFibexContainer.m_strDbPath;
                     ouFlexChannel.m_strSlectedEculist = ouFibexContainer.m_strECUList;
                     ouFlexChannel.m_ouClusterInfo = *itrCluster;
-                    ouFlexChannel.m_nKetSlot = ouFibexContainer.m_nKeySlot;
-                    ouFlexChannel.m_nSecondKeySlot = ouFibexContainer.m_nSecondKeySlot;
+                    ouFlexChannel.m_ouFlexRayParams.m_nKetSlot = ouFibexContainer.m_nKeySlot;
+                    ouFlexChannel.m_ouFlexRayParams.m_nSecondKeySlot = ouFibexContainer.m_nSecondKeySlot;
                     bValid = true;
                     break;
                 }
             }
             if ( true == bValid )
             {
-                m_ouFlexConfig.m_ouFlexChannelConfig[ouFibexContainer.m_nChannel] = ouFlexChannel;
-                m_ouFlexConfig.m_nChannelsConfigured++;
+                m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[ouFibexContainer.m_nChannel] = ouFlexChannel;
+                m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured++;
             }
             else
             {
@@ -17245,6 +18234,14 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+        case SIMSYS_SECTION_LIN_ID:
+        {
+            if (GetILINNodeSim() != NULL)
+            {
+                GetILINNodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
+            }
+        }
+        break;
         case REPLAY_SECTION_ID:
         {
             vREP_SetReplayConfigData(pbyConfigData, nSize);
@@ -17470,10 +18467,10 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                               WM_NOTIFICATION_FROM_OTHER,
                               eWINID_MSG_WND_SET_CONFIG_DATA,
                               NULL);
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
+                /*::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
                               WM_NOTIFICATION_FROM_OTHER,
                               eLOAD_DATABASE,
-                              (LPARAM)&(theApp.m_pouMsgSignal));
+                              (LPARAM)&(theApp.m_pouMsgSignal));*/
             }
         }
         break;
@@ -17772,18 +18769,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
-        case TXWND_SECTION_LIN_ID:
-        {
-            if (pbyConfigData != NULL)
-            {
-                m_objTxHandlerLin.vSetTxWndConfigData(pbyConfigData, nSize);
-            }
-            else
-            {
-                m_objTxHandlerLin.vSetTxWndConfigData(NULL);
-            }
-        }
-        break;
+
         case FILTER_SECTION_ID:
         {
             if (pbyConfigData != NULL)
@@ -17938,13 +18924,40 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
             else
             {
-                m_objFlexTxHandler.vSetTxWndConfigData(NULL);
+                m_objFlexTxHandler.vSetTxWndConfigData(FLEXRAY, NULL);
             }
         }
         break;
+        case LIN_TXWND:
+        {
+            m_objFlexTxHandler.vSetTxWndConfigData(LIN, NULL);
+        }
         case TEST_SUITE_EXECUTOR_SECTION_ID:
         {
             m_objTSExecutorHandler.vSetConfigurationData(pbyConfigData, nSize);
+        }
+        break;
+        case FLEXRAY_CLUSTER_CONFIG:
+        {
+            /*Unload FLEXRAY DIL */
+            m_shFLEXRAYDriverId = DAL_NONE;
+            InitializeFLEXRAYDIL();
+            m_ouClusterConfig[FLEXRAY].InitialiseConfig();
+
+
+            for ( int i = 0; i < m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured; i++ )
+            {
+                m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouFlexRayParams.m_nKetSlot = -1;
+                m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouFlexRayParams.m_nSecondKeySlot = -1;
+                m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strDataBasePath = "";
+                //m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_ouClusterInfo.clear();
+                m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strSlectedEculist.clear();
+            }
+        }
+        break;
+        case LIN_CLUSTER_CONFIG:
+        {
+            vInitialiaseLINConfig(1);
         }
         break;
         default:
@@ -17968,7 +18981,7 @@ void CMainFrame::OnSelectFLEXRAYDriver(UINT nID)
     FLEXRAY_DILINFO* psCurrDIL = psGetFLEXRAYDILEntry(nID);
 
     //TODO::FIBEX Validation is Required
-    if ( m_ouFlexConfig.m_nChannelsConfigured < 0 ||m_ouFlexConfig.m_ouFlexChannelConfig[0].m_strFibexPath.empty())
+    if ( m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured < 0 ||m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[0].m_strDataBasePath.empty())
     {
         int nSelection = MessageBox("Please Configure the Cluster Parameters", "Invalid Cluster Configuration", MB_OK);
         if ( nSelection == IDOK )
@@ -17977,7 +18990,7 @@ void CMainFrame::OnSelectFLEXRAYDriver(UINT nID)
         }
     }
 
-    if ( m_ouFlexConfig.m_nChannelsConfigured < 0 ||m_ouFlexConfig.m_ouFlexChannelConfig[0].m_strFibexPath.empty())
+    if ( m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured < 0 ||m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[0].m_strDataBasePath.empty())
     {
         return;
     }
@@ -18066,16 +19079,53 @@ void CMainFrame::OnSelectDriver(UINT nID)
 
 void CMainFrame::OnSelectLINDriver(UINT nID)
 {
-    DILINFO* psCurrDIL = psGetDILLINEntry(nID);
+    //DILINFO* psCurrDIL = psGetDILLINEntry(nID);
     // Above lines have to be changed.
 
 
-    if (psCurrDIL != NULL)
+    /*if (psCurrDIL != NULL)
     {
         m_dwLINDriverId =  psCurrDIL->m_dwDriverID;
 
         HRESULT hResult = IntializeDILL();
+    }*/
+
+    //m_bFlxDILChanging = TRUE;
+    DILINFO* psCurrDIL = psGetDILLINEntry(nID);
+
+    //TODO::FIBEX Validation is Required
+    if ( m_ouClusterConfig[LIN].m_nChannelsConfigured < 0 ||( m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() && m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_ouLinParams.m_bOverWriteSettings == false ) )
+    {
+        int nSelection = MessageBox("Please Configure the Cluster Parameters", "Invalid Cluster Configuration", MB_OK);
+        if ( nSelection == IDOK )
+        {
+            OnLinClusterConfig();
+        }
     }
+
+    if ( m_ouClusterConfig[LIN].m_nChannelsConfigured < 0 ||( m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() && m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_ouLinParams.m_bOverWriteSettings == false ) )
+    {
+        return;
+    }
+
+    if (psCurrDIL != NULL)
+    {
+        m_shLINDriverId =  psCurrDIL->m_dwDriverID;
+
+        HRESULT hResult = IntializeDILL();
+
+        if ( hResult != S_OK )
+        {
+
+            /* Resetting DIL to NONE */
+            if ( g_pouDIL_LIN_Interface )
+            {
+                m_shLINDriverId = DAL_NONE;
+                g_pouDIL_LIN_Interface->DILL_SelectDriver(m_shLINDriverId, m_hWnd, &m_ouWrapperLogger);
+            }
+        }
+    }
+    // m_bFlxDILChanging = FALSE;
 }
 void CMainFrame::OnUpdateSelectDriver(CCmdUI* pCmdUI)
 {
@@ -18132,7 +19182,11 @@ void CMainFrame::OnUpdateSelectLINDriver(CCmdUI* pCmdUI)
         }
     }
 
-    pCmdUI->SetCheck(bSelected);
+    if(psCurrDIL->m_dwDriverID != DAL_LIN_NONE)
+    {
+        pCmdUI->SetCheck(bSelected);
+    }
+
 }
 
 BOOL CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
@@ -18278,6 +19332,7 @@ FLEXRAY_DILINFO* CMainFrame::psGetFLEXRAYDILEntry(UINT unKeyID, BOOL bKeyMenuIte
 
 BOOL CMainFrame::bUpdatePopupMenuDILL(void)
 {
+
     USES_CONVERSION;
 
     BOOL bResult = TRUE;
@@ -18329,7 +19384,7 @@ BOOL CMainFrame::bUpdatePopupMenuDILL(void)
 
         if(pConfigMenu != NULL)
         {
-            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuLin->m_hMenu), _T(_("&Driver Selection")));
+            pConfigMenu->InsertMenu(2, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuLin->m_hMenu), _T(_("&Driver Selection")));
         }
     }
     if (bResult == FALSE)
@@ -18534,6 +19589,19 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
                 if (bRequest != bConnect)
                 {
                     OnFileConnect();
+                }
+            }
+        }
+        break;
+        case LIN_DIS_CONNECT:
+        {
+            if (pouFlags != NULL)
+            {
+                BOOL bConnect = pouFlags->nGetFlagStatus(LIN_CONNECTED);
+                BOOL bRequest = (BOOL)lParam;
+                if (bRequest != bConnect)
+                {
+                    OnLINConnect();
                 }
             }
         }
@@ -19898,7 +20966,7 @@ void CMainFrame::OnAutomationTSEditor(void)
 }
 void CMainFrame::OnFlexRayTxWindow()
 {
-    m_objFlexTxHandler.vShowConfigureMsgWindow(this);
+    m_objFlexTxHandler.vShowConfigureMsgWindow(this, FLEXRAY);
 }
 void CMainFrame::OnUpdateFlexrayAssociate(CCmdUI* pCmdUI)
 {
@@ -19920,7 +20988,7 @@ void CMainFrame::OnFlexRayDBAssociate()
     strFilePath = m_acFlexDBConfigInfo.m_acConfigFileName[0];
 
 
-    CFibexConfigDlg* ouConfig = new CFibexConfigDlg(m_pouMsgSigFLEXRAY,m_ouFlexConfig.m_ouFlexChannelConfig , m_nMaxFlexChannels , NULL);
+    CFibexConfigDlg* ouConfig = new CFibexConfigDlg(m_pouMsgSigFLEXRAY,m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig , m_nMaxFlexChannels , FLEXRAY, NULL);
 
     if ( ouConfig == NULL )
     {
@@ -19929,25 +20997,26 @@ void CMainFrame::OnFlexRayDBAssociate()
 
     if ( ouConfig->DoModal() == IDOK)
     {
-        m_ouFlexConfig.m_nChannelsConfigured = 1;
+        m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured = 1;
         for ( int i = 0 ; i < CHANNEL_ALLOWED; i++ )
         {
-            m_ouFlexConfig.m_ouFlexChannelConfig[i] = ouConfig->m_ouFlexrayChannelConfig[i];
+            m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i] = ouConfig->m_ouFlexrayChannelConfig[i];
 
         }
         delete ouConfig;
-        m_objFlexTxHandler.SetFibexConfig(m_ouFlexConfig);
+        m_objFlexTxHandler.SetFibexConfig(FLEXRAY, m_ouClusterConfig[FLEXRAY]);
 
 
         //Venkat
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
                       WM_NOTIFICATION_FROM_OTHER,
                       eLOAD_DATABASE,
-                      (LPARAM)&m_ouFlexConfig);
+                      (LPARAM)&m_ouClusterConfig[FLEXRAY]);
 
     }
-
 }
+
+
 
 void CMainFrame::OnFlexRayDBDisociate()
 {
@@ -20021,6 +21090,7 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
             // Execute key hanlder only if execution is selected by user
             GetICANNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
             GetIJ1939NodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
+            GetILINNodeSim()->NS_ManageOnKeyHandler((UCHAR)pMsg->wParam);
             PostMessage(WM_KEY_PRESSED_MSG_WND,
                         pMsg->wParam, 0);
 
@@ -20106,10 +21176,13 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
         {
             BOOL bConnected = FALSE;
             BOOL bConnectedFlexRay = FALSE;
+            BOOL bConnectedLIN = FALSE;
             // Get the current status of Connected/Disconnected state
             bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
             // Get the current status of Connected/Disconnected state for FlexRay
             bConnectedFlexRay  = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+
+            bConnectedLIN  = pouFlag->nGetFlagStatus(LIN_CONNECTED);
             //Procees the key "F2" and "ESC"
             if (pMsg->wParam == VK_F2)
             {
@@ -20178,7 +21251,22 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
                 {
                     OnFlexRayConnect();
                 }
-            }//else if (pMsg->wParam == VK_ESCAPE)
+            }
+            // For LIN F4 - Connect and F11 - Disconnect
+            else if (pMsg->wParam == VK_F4)
+            {
+                if( m_shLINDriverId != DAL_NONE && bConnectedLIN == FALSE )
+                {
+                    OnLINConnect();
+                }
+            }
+            else if (pMsg->wParam == VK_F11)
+            {
+                if( m_shLINDriverId != DAL_NONE && bConnectedLIN == TRUE )
+                {
+                    OnLINConnect();
+                }
+            }
         }
     }
 }
@@ -20338,13 +21426,13 @@ void CMainFrame::OnConfigChannelSelectionLIN()
             vUpdateChannelInfo();
 
             // Update controller information
-            g_pouDIL_LIN_Interface->DILL_SetConfigData(m_asControllerDetails, nCount);
+            // g_pouDIL_LIN_Interface->DILL_SetConfigData(m_asControllerDetails, nCount);
         }
     }
     else
     {
         /* Select previously available channels */
-        g_pouDIL_LIN_Interface->DILL_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+        // g_pouDIL_LIN_Interface->DILL_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
     }
 }
 //void CMainFrame::OnActivateLIN()
@@ -20438,33 +21526,35 @@ void CMainFrame::OnSendMessageLIN()
 ******************************************************************************/
 void CMainFrame::OnCfgSendMsgsLIN()
 {
-    BOOL bFirstTime = !(m_objTxHandlerLin.hConfigWindowShown() == S_OK);
-    m_objTxHandlerLin.vShowConfigureMsgWindow((void*)this, SW_SHOW);
-    m_objTxHandlerLin.vSetMsgDBPtrInDetailsView((void*)theApp.m_pouMsgSignal);
-    if(bFirstTime == TRUE)
-    {
-        eUSERSELCTION eUserSel;
-        //Inform the connect status
-        CFlags* pouFlags   = theApp.pouGetFlagsPtr();
-        if(pouFlags != NULL)
-        {
-            // Toggle connect/disconnect flag
-            eUserSel = eCONNECTCMD;
-            BOOL bConnected = pouFlags->nGetFlagStatus(LIN_CONNECTED);
-            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bConnected );
-            // Hex/Dec format
-            BOOL bHexON = pouFlags->nGetFlagStatus(HEX);
-            eUSERSELCTION eUserSel = eHEXDECCMD;
-            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
-            // Check for transmission on/off
-            BOOL bTxOn = pouFlags->nGetFlagStatus(SENDMESG);
-            eUserSel     = eTXMSGCMD;
-            m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxOn);
-        }
-        // Inform about the database change.
-        eUserSel = eDATABASEIMPORTCMD;
-        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
-    }
+    m_objFlexTxHandler.vShowConfigureMsgWindow(this, LIN);
+
+    //BOOL bFirstTime = !(m_objTxHandlerLin.hConfigWindowShown() == S_OK);
+    //m_objTxHandlerLin.vShowConfigureMsgWindow((void*)this, SW_SHOW);
+    //m_objTxHandlerLin.vSetMsgDBPtrInDetailsView((void*)theApp.m_pouMsgSignal);
+    //if(bFirstTime == TRUE)
+    //{
+    //    eUSERSELCTION eUserSel;
+    //    //Inform the connect status
+    //    CFlags* pouFlags   = theApp.pouGetFlagsPtr();
+    //    if(pouFlags != NULL)
+    //    {
+    //        // Toggle connect/disconnect flag
+    //        eUserSel = eCONNECTCMD;
+    //        BOOL bConnected = pouFlags->nGetFlagStatus(LIN_CONNECTED);
+    //        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bConnected );
+    //        // Hex/Dec format
+    //        BOOL bHexON = pouFlags->nGetFlagStatus(HEX);
+    //        eUSERSELCTION eUserSel = eHEXDECCMD;
+    //        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bHexON);
+    //        // Check for transmission on/off
+    //        BOOL bTxOn = pouFlags->nGetFlagStatus(SENDMESG);
+    //        eUserSel     = eTXMSGCMD;
+    //        m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, bTxOn);
+    //    }
+    //    // Inform about the database change.
+    //    eUserSel = eDATABASEIMPORTCMD;
+    //    m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+    //}
 }
 
 // START LIN RELATED HELPER FUNCTIONS
@@ -20480,6 +21570,39 @@ HRESULT CMainFrame::DeselectLINInterfaces(void)
     HRESULT Result = S_OK;
 
     return Result;
+}
+void CMainFrame::OnUpdateLinClusterConfig(CCmdUI* pCmdUI)
+{
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+    if ( (pouFlag!= NULL) && (TRUE == pouFlag->nGetFlagStatus(LIN_CONNECTED)))
+    {
+        pCmdUI->Enable(FALSE);
+    }
+    else
+    {
+        pCmdUI->Enable(TRUE);
+    }
+}
+
+void CMainFrame::OnLinClusterConfig()
+{
+    string          strFilePath;
+    CStringArray strFilePathArray;
+    strFilePath = m_acFlexDBConfigInfo.m_acConfigFileName[0];
+
+
+    CFibexConfigDlg ouConfig(m_pouMsgSigLIN,m_ouClusterConfig[LIN].m_ouFlexChannelConfig , m_nMaxFlexChannels , LIN, NULL);
+
+    if ( ouConfig.DoModal() == IDOK)
+    {
+
+        m_ouClusterConfig[LIN].m_nChannelsConfigured = 1;
+        for ( int i = 0 ; i < CHANNEL_ALLOWED; i++ )
+        {
+            m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i] = ouConfig.m_ouFlexrayChannelConfig[i];
+        }
+        m_objFlexTxHandler.SetFibexConfig(LIN, m_ouClusterConfig[LIN]);
+    }
 }
 
 // END LIN RELATED HELPER FUNCTIONS

@@ -647,6 +647,11 @@ void CSimSysDetView::OnButtonOpenfile()
                         // If J1939
                         omstrBusName = "J1939";
                     }
+                    else if(m_eBus == LIN)
+                    {
+                        // If LIN
+                        omstrBusName = "LIN";
+                    }
 
                     // If Bus is selected
                     if(omstrBusName.IsEmpty() == FALSE)
@@ -670,7 +675,7 @@ void CSimSysDetView::OnButtonOpenfile()
                                 omstrProtocolValue = omstrProtocolValue.Mid(nPlaceLeftParanth+1, (nPlaceRightParanth - nPlaceLeftParanth -1));
 
                                 // If CAN protocol is selected
-                                if(omstrProtocolValue == "CAN")
+                                if(omstrProtocolValue == "CAN" || omstrProtocolValue == "LIN")
                                 {
                                     if(m_eBus == J1939)
                                     {
@@ -681,13 +686,25 @@ void CSimSysDetView::OnButtonOpenfile()
                                 }
 
                                 // If J1939 protocol is selected
-                                if(omstrProtocolValue == "J1939")
+                                if(omstrProtocolValue == "J1939" || omstrProtocolValue == "LIN")
                                 {
                                     // If CAN protocol is selected
                                     if(m_eBus == CAN)
                                     {
                                         // If the .c file is not related to CAN
                                         AfxMessageBox("File " + omStrNewCFileName + " is not created for CAN.\r\nPlease open the .c file created for CAN.");
+                                        return;
+                                    }
+                                }
+
+                                // If LIN protocol is selected
+                                if(omstrProtocolValue == "CAN" || omstrProtocolValue == "J1939")
+                                {
+                                    // If Lin protocol is slected
+                                    if(m_eBus == LIN)
+                                    {
+                                        // If the .c file is not related to LIN
+                                        AfxMessageBox("File " + omStrNewCFileName + " is not created for LIN.\r\nPlease open the .c file created for LIN.");
                                         return;
                                     }
                                 }
@@ -730,6 +747,13 @@ void CSimSysDetView::OnButtonOpenfile()
                                 {
                                     // If the .c file is not related to J1939
                                     AfxMessageBox("File " + omStrNewCFileName + " s not created for J1939.\r\nPlease open the .c file created for J1939.");
+                                    return;
+                                }
+                                // If LIN protocol is selected
+                                else if(m_eBus == LIN)
+                                {
+                                    // If the .c file is not related to LIN
+                                    AfxMessageBox("File " + omStrNewCFileName + " s not created for LIN.\r\nPlease open the .c file created for LIN.");
                                     return;
                                 }
                             }
@@ -1073,6 +1097,11 @@ void CSimSysDetView::OnInitialUpdate()
         if (m_eBus == J1939)
         {
             m_omListCtrlHanDet.DeleteItem(3);
+        }
+        if(m_eBus == LIN)
+        {
+            // ToDo: LIN
+            m_omListCtrlHanDet.DeleteItem(4);
         }
     }
 
@@ -1425,6 +1454,14 @@ void CSimSysDetView::vSetNodeInfoEDHanStatus( int nSelItem , BOOL bIsEnabled )
                         m_psNodeInfo->m_omStrNodeName , bIsEnabled);
                 vChangeEDHanButtonText( bIsEnabled );
             }
+            else if ( m_eBus == LIN )
+            {
+                m_bIsErrorHanEnabled = bIsEnabled;
+                m_psNodeInfo->m_bErrorHandlersEnabled = bIsEnabled;
+                pSimSysNodeInf->vSetEnableNodeErrorHandlers(STR_EMPTY ,
+                        m_psNodeInfo->m_omStrNodeName , bIsEnabled);
+                vChangeEDHanButtonText( bIsEnabled );
+            }
         }
         break;
         default :
@@ -1651,6 +1688,19 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
                     }
                     vChangeEDHanButtonText( m_bIsEventHanEnabled );
                 }
+                else if ( m_eBus == LIN )
+                {
+                    int i = 0;
+                    m_bIsErrorHanEnabled = m_psNodeInfo->m_bErrorHandlersEnabled;
+                    // fill the handler value list with the fun names and its value
+                    int nErrorCount = (COMMANINT)m_psNodeInfo->m_omStrArrayErrorHandlers.GetSize();
+                    for ( i=0 ; i < nErrorCount ; i++ )
+                    {
+                        omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(i);
+                        m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    }
+                    vChangeEDHanButtonText( m_bIsErrorHanEnabled );
+                }
             }
             break;
             default :
@@ -1746,6 +1796,13 @@ void CSimSysDetView::vAddItemToHanDetList( sNODEINFO* pNode )
                                      (COMMANINT)pNode->m_omStrArrayEventHandlers.GetSize(),
                                      pNode->m_bEventHandlersEnabled);
         }
+        if ( m_eBus == LIN )
+        {
+            // for Error handlers
+            vSetHandlerDetailRowText(3,
+                                     (COMMANINT)pNode->m_omStrArrayErrorHandlers.GetSize(),
+                                     pNode->m_bErrorHandlersEnabled);
+        }
     }
     m_omListCtrlHanDet.SetItemState(0, LVIS_SELECTED, LVIS_SELECTED);
     vUpDownArrowKeySelection(0);
@@ -1817,6 +1874,10 @@ void CSimSysDetView::vUpdateHandlerEnableDisableStatus(int nItem, BOOL bEnableHa
             else if ( m_eBus == J1939 )
             {
                 ouFlag.vSetFlagStatus(H_EVENT_HANDLER, bEnableHandler);
+            }
+            else if ( m_eBus == LIN )
+            {
+                ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bEnableHandler);
             }
         }
     }

@@ -734,7 +734,7 @@ BOOL CTxMsgDetailsView::bUpdateMessageDetail(STLIN_MSG* psMsgDetails)
     psMsgDetails->m_ucMsgID = nGetMessageID();
 
     psMsgDetails->m_ucMsgTyp = LIN_SLAVE_RESPONSE;
-    psMsgDetails->m_ucChksumTyp = CLASSIC_CHECKSUM;
+    psMsgDetails->m_ucChksumTyp = LIN_CHECKSUM_CLASSIC;
 
     psMsgDetails->m_ucDataLen  = static_cast<UCHAR>(m_odDLC.lGetValue());
 

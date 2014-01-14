@@ -18,10 +18,29 @@
 #include "FibexClass_extern.h"
 #include "Utility\WaitIndicator.h"
 
+
+struct LinProcolBaudRate
+{
+    string m_strProtocol;
+    int m_nBaudRate;
+};
+
+static LinProcolBaudRate sg_LINPROTOCOL_BAUD[] =
+{
+    {"LIN 2.2", 19200},
+    {"LIN 2.1", 19200},
+    {"LIN 2.0", 19200},
+    {"LIN 1.3", 9600},
+    {"LIN 1.2", 9600},
+    {"LIN 1.1", 9600},
+};
+
+
 IMPLEMENT_DYNAMIC(CFibexConfigDlg, CDialog)
-CFibexConfigDlg::CFibexConfigDlg(CMsgSignal*& pMsgSignal ,FLEXRAY_CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& nChannelConfigured, CWnd* pParent /*=NULL*/)
+CFibexConfigDlg::CFibexConfigDlg(CMsgSignal*& pMsgSignal ,CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& nChannelConfigured, ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
     : CDialog(CFibexConfigDlg::IDD, pParent)
 {
+    m_eBusType = eBusType;
     m_nChannelConfigured = nChannelConfigured;
     m_pMsgSignal = pMsgSignal;
     for ( int i = 0 ; i < nChannelConfigured; i++ )
@@ -43,6 +62,9 @@ void CFibexConfigDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMBO_CHANNEL, m_ComboChannelSelect);
     DDX_Control(pDX, IDC_LIST_ECU, m_omEcuList);
     DDX_Control(pDX, IDC_COMBO_CLUSTER, m_omComboCluster);
+    DDX_Control(pDX, IDC_COMBO_LIN_PROTOCOL, m_omComboLinProtocol);
+    DDX_Text(pDX, IDC_EDIT_LIN_BAUDRATE, m_nLinBaudRate);
+    DDV_MinMaxInt(pDX, m_nLinBaudRate, 200, 30000);
 }
 
 
@@ -54,8 +76,18 @@ BEGIN_MESSAGE_MAP(CFibexConfigDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_FIBEXPATH, OnBnClickedButtonFibexpath)
     ON_CBN_SELCHANGE(IDC_COMBO_CLUSTER, OnCbnSelchangeComboCluster)
     ON_CBN_SELCHANGE(IDC_COMBO_CHANNEL, OnCbnSelchangeComboChannel)
+    ON_CBN_SELCHANGE(IDC_COMBO_LIN_PROTOCOL, OnCbnSelchangeComboProtocol)
     ON_BN_CLICKED(IDOK, onBtnOk)
+    ON_BN_CLICKED(IDC_CHECK_OVERWRITE_SETTINGS, OnOverwriteCheckBoxClick)
 END_MESSAGE_MAP()
+
+void CFibexConfigDlg::OnOverwriteCheckBoxClick()
+{
+    bool bCheck = ((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->GetCheck();
+
+    GetDlgItem(IDC_COMBO_LIN_PROTOCOL)->EnableWindow(bCheck);
+    GetDlgItem(IDC_EDIT_LIN_BAUDRATE)->EnableWindow(bCheck);
+}
 
 BOOL CFibexConfigDlg::OnInitDialog()
 {
@@ -64,6 +96,11 @@ BOOL CFibexConfigDlg::OnInitDialog()
     CDialog::OnInitDialog();
 
 
+    //Validate The Bus Type - FLEXRAY, LIN
+    if ( m_eBusType != FLEXRAY && m_eBusType != LIN )
+    {
+        return S_FALSE;
+    }
 
 
     //Controls Initialisation
@@ -92,34 +129,186 @@ BOOL CFibexConfigDlg::OnInitDialog()
     m_nCurrentChannel = -1;
     m_ComboChannelSelect.SetCurSel(0);
     OnCbnSelchangeComboChannel();
-    /*list<FLEXRAY_CHANNEL_CONFIG>::iterator itrFlexrayChannelConfig = m_ouFlexrayChannelConfig.begin();
+
+    nUpdateLinSettings();
+
+    nDisplayProtocolSettings(0);
+    nEnableControls(m_eBusType);
+
+
+
+    /*list<CHANNEL_CONFIG>::iterator itrFlexrayChannelConfig = m_ouFlexrayChannelConfig.begin();
     if ( itrFlexrayChannelConfig != m_ouFlexrayChannelConfig.end() )
     {
         list<Cluster> ouClusterList;
-        if ( itrFlexrayChannelConfig->m_strFibexPath.c_str() != "")
+        if ( itrFlexrayChannelConfig->m_strDataBasePath.c_str() != "")
         {
-            m_pMsgSignal->hLoadFibexDBFile(itrFlexrayChannelConfig->m_strFibexPath.c_str(), ouClusterList);
+            m_pMsgSignal->hLoadFibexDBFile(itrFlexrayChannelConfig->m_strDataBasePath.c_str(), ouClusterList);
             m_ouCurrentChannelCluster = ouClusterList;
         }
 
     }*/
 
+
     return TRUE;
+}
+
+
+
+int CFibexConfigDlg::nUpdateLinSettings()
+{
+    char chString[MAX_PATH];
+    CComboBox* pomCombo = (CComboBox*)GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
+
+    if ( pomCombo != NULL )
+    {
+        for ( int i = 0 ; i < ( sizeof(sg_LINPROTOCOL_BAUD)/ sizeof(sg_LINPROTOCOL_BAUD[0])); i++ )
+        {
+            pomCombo->InsertString(i, sg_LINPROTOCOL_BAUD[i].m_strProtocol.c_str());
+            sprintf_s(chString, "%d", sg_LINPROTOCOL_BAUD[i].m_nBaudRate );
+        }
+        pomCombo->SetCurSel(0);
+    }
+
+    m_nLinBaudRate = 1900;
+    UpdateData(FALSE);
+    OnOverwriteCheckBoxClick();
+
+    return 0;
+}
+
+
+int CFibexConfigDlg::nEnableControls( ETYPE_BUS eBusType)
+{
+    CWnd* pWnd = NULL;
+    if ( eBusType == FLEXRAY )
+    {
+        pWnd = GetDlgItem(IDC_STATIC_DATABASE_INFO);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("Import Flexray Database (FIBEX)");
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_CLUSTER_INFO);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("Select Flexray Cluster:");
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_EXTRA_CONFIG);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("Key Slot Configuration");
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_DBNAME);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("Fibex:");
+        }
+
+        pWnd = GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_LIN_PROTOCOL);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_LIN_BAUDRATE);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+
+        pWnd = GetDlgItem(IDC_EDIT_LIN_BAUDRATE);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+
+        pWnd = GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+    }
+    else if ( eBusType == LIN )
+    {
+        pWnd = GetDlgItem(IDC_STATIC_DATABASE_INFO);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("Import LIN Database (LDF)");
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_CLUSTER_INFO);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("Select LIN Cluster:");
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_EXTRA_CONFIG);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("LIN Network Settings");
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_DBNAME);
+        if ( pWnd != NULL )
+        {
+            pWnd->SetWindowText("LDF:");
+        }
+
+        pWnd = GetDlgItem(IDC_COMBO_CLUSTER);
+        if ( pWnd != NULL )
+        {
+            pWnd->EnableWindow(FALSE);
+        }
+    }
+
+    return S_OK;
 }
 
 void CFibexConfigDlg::OnBnClickedButtonFibexpath()
 {
-    CFileDialog omFibexDlg(TRUE, ".xml", 0, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, "FIBEX Files (*.xml)|*.xml||", this);
-    omFibexDlg.m_ofn.lpstrTitle = "Select A FIBEX File";
-
-    if ( omFibexDlg.DoModal() == IDOK )
+    CFileDialog* pomFibexDlg = NULL;
+    string strWaitText;
+    if ( m_eBusType == FLEXRAY )
     {
-        CString strPath = omFibexDlg.GetPathName();
-        list<Cluster> ouClusterList;
-        CWaitIndicator ouWaitIndicator;
-        ouWaitIndicator.DisplayWindow("Parsing Fibex File. Please Wait...", this);
+        pomFibexDlg = new CFileDialog(TRUE, ".xml", 0, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, "FIBEX Files (*.xml)|*.xml||", this);
+        pomFibexDlg->m_ofn.lpstrTitle = "Select A FIBEX File";
+        strWaitText = "Parsing Fibex File. Please Wait...";
+    }
+    else if ( m_eBusType == LIN )
+    {
+        pomFibexDlg = new CFileDialog(TRUE, ".xml", 0, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, "LDF Files (*.ldf)|*.ldf||", this);
+        pomFibexDlg->m_ofn.lpstrTitle = "Select A LDF File";
+        strWaitText = "Parsing LDF File. Please Wait...";
+    }
 
-        int nResult = m_pMsgSignal->hLoadFibexDBFile(strPath, ouClusterList);
+    if ( ( pomFibexDlg != NULL ) && ( pomFibexDlg->DoModal() == IDOK ) )
+    {
+        CString strPath = pomFibexDlg->GetPathName();
+        list<Cluster> ouClusterList;
+        list<LinChannelParam> ouLinChannelParams;
+        CWaitIndicator ouWaitIndicator;
+        ouWaitIndicator.DisplayWindow(strWaitText.c_str(), this);
+
+        int nResult = FCLASS_FAILURE;
+
+        if ( m_eBusType == FLEXRAY )
+        {
+            nResult = m_pMsgSignal->hLoadFibexDBFile(strPath, ouClusterList);
+        }
+        else if ( m_eBusType == LIN )
+        {
+            nResult = m_pMsgSignal->hLoadLdfFile((LPCSTR)strPath, ouClusterList, ouLinChannelParams);
+
+        }
 
         ouWaitIndicator.CloseWindow();
         m_nCurrentChannel = m_ComboChannelSelect.GetCurSel();
@@ -127,11 +316,12 @@ void CFibexConfigDlg::OnBnClickedButtonFibexpath()
         if ( nResult == FCLASS_SUCCESS && ouClusterList.size() > 0 )
         {
             m_omComboCluster.ResetContent();
-            //list<FLEXRAY_CHANNEL_CONFIG>::iterator itrChannelConfig = m_ouFlexrayChannelConfig.begin();
+            //list<CHANNEL_CONFIG>::iterator itrChannelConfig = m_ouFlexrayChannelConfig.begin();
             //advance(itrChannelConfig, m_nCurrentChannel );
             //if ( itrChannelConfig != m_ouFlexrayChannelConfig.end() )
             {
                 m_ouCurrentChannelCluster = ouClusterList;
+                m_ouLinChannelParams = ouLinChannelParams;
                 list<Cluster>::iterator itrCluster = ouClusterList.begin();
                 //itrChannelConfig->m_ouClusterInfo = *itrCluster;
 
@@ -140,7 +330,15 @@ void CFibexConfigDlg::OnBnClickedButtonFibexpath()
                     m_omComboCluster.AddString(itrCluster->m_strName.c_str());
                 }
                 m_omComboCluster.SetCurSel(0);
+
+                if ( m_omComboCluster.GetCount() <=1 )
+                {
+                    m_omComboCluster.EnableWindow(FALSE);
+                }
+
+
                 nUpdateEcuList(0, 0);
+                nUpdateLinParams(0,0);
                 m_strFibexFilePath = strPath;
             }
         }
@@ -152,7 +350,7 @@ void CFibexConfigDlg::OnBnClickedButtonFibexpath()
             }
             else
             {
-                MessageBox("Invalid FIBEX File", "Error", MB_OK | MB_ICONERROR );
+                MessageBox("Invalid Input File", "Error", MB_OK | MB_ICONERROR );
             }
         }
         UpdateData(FALSE);
@@ -165,6 +363,18 @@ void CFibexConfigDlg::OnCbnSelchangeComboCluster()
     // TODO: Add your control notification handler code here
 
     //  nUpdateEcuList(0, 0);
+}
+void CFibexConfigDlg::OnCbnSelchangeComboProtocol()
+{
+    int nSel = m_omComboLinProtocol.GetCurSel();
+
+    if ( nSel >= 0 )
+    {
+        m_nLinBaudRate = sg_LINPROTOCOL_BAUD[nSel].m_nBaudRate;
+        UpdateData(FALSE);
+    }
+
+    return;
 }
 
 void CFibexConfigDlg::OnCbnSelchangeComboChannel()
@@ -208,7 +418,7 @@ void CFibexConfigDlg::OnCbnSelchangeComboChannel()
                 }
 
                 //3. Fibex Path
-                m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strFibexPath = m_strFibexFilePath;
+                m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strDataBasePath = m_strFibexFilePath;
 
             }
         }
@@ -224,7 +434,7 @@ void CFibexConfigDlg::OnCbnSelchangeComboChannel()
     m_omEcuList.DeleteAllItems();
     if ( nSelcetedIndex < m_nChannelConfigured )// m_ouFlexrayChannelConfig.size())
     {
-        m_strFibexFilePath = m_ouFlexrayChannelConfig[nSelcetedIndex].m_strFibexPath.c_str();
+        m_strFibexFilePath = m_ouFlexrayChannelConfig[nSelcetedIndex].m_strDataBasePath.c_str();
 
         m_ouCurrentChannelCluster.push_back(m_ouFlexrayChannelConfig[nSelcetedIndex].m_ouClusterInfo);
 
@@ -253,9 +463,50 @@ void CFibexConfigDlg::OnCbnSelchangeComboChannel()
             }
             nIndex++;
         }
+        nDisplayProtocolSettings(nSelcetedIndex);
     }
     UpdateData(FALSE);
 }
+
+int CFibexConfigDlg::nDisplayProtocolSettings(int nChannelIndex)
+{
+    if ( m_eBusType == LIN )
+    {
+        BOOL bOverrite = m_ouFlexrayChannelConfig[nChannelIndex].m_ouLinParams.m_bOverWriteSettings;
+
+        ((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->SetCheck(bOverrite);
+
+        CComboBox* pomCombo = (CComboBox*)GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
+        pomCombo->EnableWindow(bOverrite);
+
+        GetDlgItem(IDC_EDIT_LIN_BAUDRATE)->EnableWindow(bOverrite);
+        char chBaudText[MAX_PATH];
+
+        m_nLinBaudRate = 19200;
+        pomCombo->SetCurSel(0);
+        for ( int i = 0 ; i < ( sizeof(sg_LINPROTOCOL_BAUD)/ sizeof(sg_LINPROTOCOL_BAUD[0])); i++ )
+        {
+            if ( m_ouFlexrayChannelConfig[nChannelIndex].m_ouLinParams.m_strProtocolVersion == sg_LINPROTOCOL_BAUD[i].m_strProtocol )
+            {
+                pomCombo->SetCurSel(i);
+                if ( bOverrite == false )
+                {
+                    m_nLinBaudRate = sg_LINPROTOCOL_BAUD[i].m_nBaudRate;
+                }
+                else
+                {
+                    m_nLinBaudRate =  m_ouFlexrayChannelConfig[nChannelIndex].m_ouLinParams.m_nBaudRate;
+                }
+
+                break;
+            }
+        }
+        UpdateData(FALSE);
+    }
+    return 0;
+}
+
+
 bool CFibexConfigDlg::bIsEcuSlected(list<string>& ouEcuList, string strEcuName)
 {
     bool bFound = false;
@@ -270,6 +521,26 @@ bool CFibexConfigDlg::bIsEcuSlected(list<string>& ouEcuList, string strEcuName)
     return bFound;
 }
 
+INT CFibexConfigDlg::nUpdateLinParams( INT nChannelIndex, INT nClusterIndex)
+{
+    INT nResult = S_OK;
+    //todo::
+    list<LinChannelParam>::iterator itrCluster =  m_ouLinChannelParams.begin();
+    advance(itrCluster, nClusterIndex);
+    if ( itrCluster != m_ouLinChannelParams.end() )
+    {
+        char chText[MAX_PATH];
+        sprintf(chText, "%d", itrCluster->m_nBaudRate);
+        GetDlgItem(IDC_EDIT_LIN_BAUDRATE)->SetWindowText(chText);
+
+        int nIndex = m_omComboLinProtocol.FindString(0, itrCluster->m_strProtocolVersion.c_str());
+        if ( nIndex != 0 )
+        {
+            m_omComboLinProtocol.SetCurSel(nIndex);
+        }
+    }
+    return 0;
+}
 
 INT CFibexConfigDlg::nUpdateEcuList( INT nChannelIndex, INT nClusterIndex )
 {
@@ -311,6 +582,32 @@ INT CFibexConfigDlg::nUpdateEcuList( Cluster& ouCluster )
 
     return nResult;
 }
+int CFibexConfigDlg::nSaveProtocolSettings(int nIndex)
+{
+    UpdateData(TRUE);
+    if ( m_eBusType == LIN )
+    {
+        int nSel = ((CComboBox*)GetDlgItem(IDC_COMBO_LIN_PROTOCOL))->GetCurSel();
+        if ( nSel >= 0)
+        {
+            m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_strProtocolVersion = sg_LINPROTOCOL_BAUD[nSel].m_strProtocol;
+            m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_nBaudRate = m_nLinBaudRate;
+            m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_bOverWriteSettings = ((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->GetCheck();
+        }
+
+
+        m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strDataBasePath = m_strFibexFilePath;
+
+
+    }
+    else
+    {
+
+    }
+    return 0;
+}
+
+
 void CFibexConfigDlg::onBtnOk()
 {
     //Save Current Values to the old Channel
@@ -352,8 +649,10 @@ void CFibexConfigDlg::onBtnOk()
                 }
 
                 //3. Fibex Path
-                m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strFibexPath = m_strFibexFilePath;
+                m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strDataBasePath = m_strFibexFilePath;
 
+                //Protocol;
+                nSaveProtocolSettings(m_nCurrentChannel);
             }
         }
     }

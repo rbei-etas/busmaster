@@ -44,6 +44,9 @@ class CMsgSignal
 public:
     CMsgSignal(const SDBPARAMS& sDbParams, BOOL bInAutoSrvMode);
     virtual ~CMsgSignal();
+
+
+
 public:
 
 
@@ -287,8 +290,9 @@ private:
                                     const INT nIndex );
     /* FLEXRAY related */
 public:
-    HRESULT     hLoadFibexDBFile(CString omDBFile, list<Cluster>& ouClusterList);
-
+    HRESULT hLoadFibexDBFile(CString omDBFile, list<Cluster>& ouClusterList);
+    //todo::has to be redesigned.
+    static HRESULT  hLoadLdfFile(string strDBFile, list<Cluster>& ouClusterList, list<LinChannelParam>& ouLinParams);
     //Simulation
     HRESULT     hSimulateFibexCluster(CString strFilename, list<Cluster>& ouClusterList);
     HRESULT     hSimulateFillClusterInfo(CString strName, Cluster& ouCluster);
@@ -298,7 +302,7 @@ public:
     void        vClearFIBEXContainers();
     ABS_FIBEX_CONTAINER m_AbsFibexContainer;
 
-    list<FLEXRAY_CHANNEL_CONFIG> m_ouFlexrayChannelConfig;
+    list<CHANNEL_CONFIG> m_ouFlexrayChannelConfig;
 
     int         nGetDeviceConfig(ABS_DEVICE_CONFIG& ouDeviceConfig);
 

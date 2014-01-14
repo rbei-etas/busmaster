@@ -35,6 +35,10 @@ private:
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
     USHORT usProcessCurrErrorEntryLin(SERROR_INFO_LIN& sErrorInfo);
     char* vFormatCurrErrorEntry(USHORT usErrorID);
+    void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, string& strDesc);
+
+
+
 public:
     CFormatMsgLIN(void);
     ~CFormatMsgLIN(void);

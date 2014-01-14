@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>LIN Message Window</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>FlexRay Transmit Window</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>On-line LIN Network Monitoring can be done using FlexRay Message window.</p>
+    <p><b>Activation:</b></p>
+    <p>Use <b>LIN-&gt;Message Window-&gt;Activate</b> menu to Activate the Message window.This will display Message Window as shown in following figure.</p>
+    <p><image href="../images/LIN_MessageWindow_Empty.bmp"/></p>
+    <p>Once the BUSMASTER is connected to LIN Network the Message window will display all the Messages Transmitted on the network.Also the Message window will display the LIN Error Messages &amp; other LIN Events.Currently the following Error or Event messages were supported.</p>
+    <p><ul>
+        <li>CRC Error</li>
+      </ul></p>
+    <p><ul>
+        <li>Sync Error</li>
+      </ul></p>
+    <p><ul>
+        <li>Slave Not Responding Error</li>
+      </ul></p>
+    <p><ul>
+        <li>Sleep Event</li>
+      </ul></p>
+    <p> </p>
+    <p><b>Enabling Interpretation:</b></p>
+    <p>The Signal values of LIN Messages can be analysed using Interpretation mode.To enable the interpretation the Message window should be in overwrite mode.Use <b>LIN-&gt;Message Window-&gt;Overwrite</b>. menu to enable the overwrite mode.After this use <b>LIN-&gt;Message Window-&gt;Interpret.</b></p>
+    <p/>
+    <p>The below figure shows Message window when it BUSMASTER is connected to LIN Network.</p>
+    <image href="../images/LIN_MessageWindow_Online.jpg"/>
+    <p>The Following section will explain  the Columns Displayed in Message window with explanation.</p>
+    <p><table frame="all">
+        <title/>
+        <tgroup cols="2">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <thead>
+            <row>
+              <entry>Column</entry>
+              <entry>Explanation</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>
+                <b>Time</b>
+              </entry>
+              <entry>This Will display the time at which message is received\Sent on LIN BUS.The time mode can be changed to Absolute\System\Relative Mode using <b>LIN-&gt;Message Window-&gt;Time Mode</b> menu</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Tx/Rx</b>
+              </entry>
+              <entry>This Menu will display weather the message is received or sent from BUSMASTER.Tx Represents the message is sent From BUSMASTER.Rx Represent Message is received in BUSMASTER</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Message</b>
+              </entry>
+              <entry>Displays the Name of message if available in LDF file</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Message Type</b>
+              </entry>
+              <entry>This Column will tell the Frame type.The following are the Frame types displayed in this column. <ul>
+                  <li>LIN Frame</li>
+                  <li>Error - Slave No Response</li>
+                  <li>Error - CRC Error</li>
+                  <li>Event - Sleep</li>
+                  <li>Event - Wakeup</li>
+                </ul></entry>
+            </row>
+            <row>
+              <entry>
+                <b>ID</b>
+              </entry>
+              <entry>
+                <p>Displays the LIN Message ID.</p>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <p><b>Checksum</b></p>
+              </entry>
+              <entry>This column will give the Checksum value and Checksum type.</entry>
+            </row>
+            <row>
+              <entry>
+                <b>Channel</b>
+              </entry>
+              <entry>This column will display on which channel ( A, B or AB ) the message was received.</entry>
+            </row>
+            <row>
+              <entry>DLC</entry>
+              <entry>This column will display the Length of Frame in Bytes.</entry>
+            </row>
+            <row>
+              <entry>
+                <b>
+                  <b>Data Byte (s)</b>
+                </b>
+              </entry>
+              <entry>This column will display the Data Bytes received\Transmitted of the Frame</entry>
+            </row>
+            <row>
+              <entry/>
+              <entry/>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p><b>Message Interpretation window:</b></p>
+    <p>It is possible to Monitor the interpretation of a single message in separate window called <b>Message Interpretation.</b>Double click on any message in Message window to Activate the Message Interpretation window.An Instance of this window is shown in following figure.</p>
+    <p><image href="../images/LIN_MessageInterpretation.jpg"/></p>
+  </body>
+</topic>

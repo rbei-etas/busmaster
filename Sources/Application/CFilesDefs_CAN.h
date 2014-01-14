@@ -23,11 +23,15 @@
 
 #define STRUCT_FILE                    _T("CANIncludes.h")
 #define MSG_STRUCT_NAME                _T("STCAN_MSG");
+#define MSG_STRUCT_NAME_LIN            _T("STLIN_MSG");
 #define WRAPPER_NAME                   _T("Wrapper.o");
 #define STRUCT_FILE_J1939              _T("J1939Includes.h")
+#define STRUCT_FILE_LIN                _T("LINIncludes.h")
 #define MSG_STRUCT_NAME_J1939          _T("STJ1939_MSG");
 #define WRAPPER_NAME_J1939             _T("Wrapper_J1939.o");
+#define WRAPPER_NAME_LIN             _T("Wrapper_LIN.o");
 #define TOTAL_API_COUNT                18
+#define TOTAL_API_COUNT_LIN            11
 #define TOTAL_ERROR_COUNT              5
 
 static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
@@ -67,6 +71,36 @@ static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
     "EnableErrorHandlers",
     "EnableKeyHandlers",
     "EnableDisableMsgTx",
+    "SendMsg",
+    "GetDllHandle",
+    "Trace"
+};
+
+static const CString sg_omAPIFuncListLIN[TOTAL_API_COUNT_LIN] =
+{
+    "UINT Connect(DWORD)",
+    "UINT Disconnect(DWORD)",
+    "UINT StartTimer(char*, UINT)",
+    "UINT StopTimer(char*)",
+    "BOOL SetTimerVal(char*, UINT)",
+    "BOOL EnableMsgHandlers(BOOL)",
+    "BOOL EnableErrorHandlers(BOOL)",
+    "BOOL EnableKeyHandlers(BOOL)",
+    "UINT SendMsg(STLIN_MSG)",
+    "HMODULE GetDllHandle(char*)",
+    "UINT Trace(char*, ...)"
+};
+
+static const CString sg_omAPIFuncNamesLIN[TOTAL_API_COUNT_LIN] =
+{
+    "Connect",
+    "Disconnect",
+    "StartTimer",
+    "StopTimer",
+    "SetTimerVal",
+    "EnableMsgHandlers",
+    "EnableErrorHandlers",
+    "EnableKeyHandlers",
     "SendMsg",
     "GetDllHandle",
     "Trace"

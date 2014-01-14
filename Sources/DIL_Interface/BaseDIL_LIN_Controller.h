@@ -24,6 +24,10 @@
 
 #if !defined BASEDIL_LIN_CONTROLLER_H__INCLUDED_
 #define BASEDIL_LIN_CONTROLLER_H__INCLUDED_
+#include "DataTypes\Cluster.h"
+#include "DataTypes\DIL_Datatypes.h"
+#include "DataTypes\MsgBufAll_DataTypes.h"
+#include "DataTypes\Base_WrapperErrorLogger.h"
 
 class CBaseDIL_LIN_Controller
 {
@@ -35,14 +39,16 @@ public:
     virtual HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
     virtual HRESULT LIN_DeselectHwInterface(void) = 0;
     virtual HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length) = 0;
-    virtual HRESULT LIN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length) = 0;
+    virtual HRESULT LIN_SetConfigData(ClusterConfig& ouConfig) = 0;
     virtual HRESULT LIN_StartHardware(void) = 0;
+    virtual HRESULT LIN_PreStartHardware(void) = 0;
     virtual HRESULT LIN_StopHardware(void) = 0;
     virtual HRESULT LIN_ResetHardware(void) = 0;
     virtual HRESULT LIN_GetCurrStatus(s_STATUSMSG& StatusData) = 0;
     virtual HRESULT LIN_SendMsg(DWORD dwClientID, STLIN_MSG& sCanTxMsg) = 0;
     virtual HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg) = 0;
     virtual HRESULT LIN_ResetSlaveRespData(void) = 0;
+    virtual HRESULT LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage) = 0;
     virtual HRESULT LIN_GetLastErrorString(string& acErrorStr) = 0;
     virtual HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
     //MVN

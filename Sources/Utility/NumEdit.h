@@ -63,6 +63,8 @@ protected:
     afx_msg void OnNcDestroy();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+
     //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()

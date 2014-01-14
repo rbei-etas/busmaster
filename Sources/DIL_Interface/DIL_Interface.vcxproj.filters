@@ -19,11 +19,24 @@
     <ClCompile Include="DIL_FLEXRAY.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientBuffer.cpp" />
-    <ClCompile Include="ClientList.cpp" />
-    <ClCompile Include="CommanDIL_Flexray.cpp" />
-    <ClCompile Include="DIL_LIN.cpp" />
-    <ClCompile Include="DILL_Dummy.cpp" />
+    <ClCompile Include="ClientBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommanDIL_Flexray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DIL_LIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DILL_Dummy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommanDIL_LIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDIL_CAN.h">
@@ -62,11 +75,24 @@
     <ClInclude Include="DIL_FLEXRAY.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientBuffer.h" />
-    <ClInclude Include="ClientList.h" />
-    <ClInclude Include="CommanDIL_Flexray.h" />
-    <ClInclude Include="DIL_LIN.h" />
-    <ClInclude Include="DILL_Dummy.h" />
+    <ClInclude Include="DILL_Dummy.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommanDIL_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DIL_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommanDIL_Flexray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

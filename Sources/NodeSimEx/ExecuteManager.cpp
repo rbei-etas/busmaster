@@ -710,6 +710,37 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
     LeaveCriticalSection(&m_CritSectPsNodeObject);
 }
 
+/***************************************************************************************
+    Function Name    :  vManageOnMessageHandlerLIN_
+    Input(s)         :  Message structure
+    Output           :
+    Functionality    :  Calls all Message handlers for a Message
+    Member of        :  CExecuteManager
+    Author(s)        :  Anish kumar
+    Date Created     :  19.12.05
+***************************************************************************************/
+void CExecuteManager::vManageOnMessageHandlerLIN_(PSTLIN_TIME_MSG sRxMsgInfo, DWORD& dwClientId)
+{
+    int i = 0;
+    EnterCriticalSection(&m_CritSectPsNodeObject);
+    PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
+    while(psTempNodeObject != NULL)
+    {
+        if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE)
+        {
+
+            sNODEINFO* sNodeInfo = new sNODEINFO(m_eBus);
+            psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(*sNodeInfo);
+            if (sNodeInfo->m_dwClientId == dwClientId)
+            {
+                psTempNodeObject->m_psExecuteFunc->vWriteInQMsgLIN(*sRxMsgInfo);
+            }
+            delete sNodeInfo;
+        }
+        psTempNodeObject = psTempNodeObject->m_psNextNode;
+    }
+    LeaveCriticalSection(&m_CritSectPsNodeObject);
+}
 
 /**************************************************************************************
     Function Name    :  vManageOnMessageHandler
@@ -740,6 +771,35 @@ void CExecuteManager::vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR 
         psTempNodeObject=psTempNodeObject->m_psNextNode;
     }
 }
+
+/**************************************************************************************
+    Function Name    :  vManageOnErrorHandlerLIN
+    Input(s)         :  Error Message structure and code
+    Output           :
+    Functionality    :  Calls all Error handlers for a Error
+    Member of        :
+    Author(s)        :
+    Date Created     :
+***************************************************************************************/
+void CExecuteManager::vManageOnErrorHandlerLIN(SERROR_INFO_LIN ouErrorInfo, DWORD dwClientId)
+{
+    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
+    while(psTempNodeObject!=NULL)
+    {
+        sNODEINFO sNodeInfo(m_eBus);
+        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
+        if (sNodeInfo.m_dwClientId == dwClientId)
+        {
+            if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXERROR_HANDLER) == TRUE)
+            {
+                psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandlerLIN( ouErrorInfo);
+
+            }
+        }
+        psTempNodeObject=psTempNodeObject->m_psNextNode;
+    }
+}
+
 /**************************************************************************************
     Function Name    :  vManageOnDataConfHandler
     Input(s)         :

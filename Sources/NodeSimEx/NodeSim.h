@@ -23,6 +23,8 @@
 #define NODESIM_H__INCLUDED_
 
 #include "BaseNodeSim.h"
+#include "DataTypes\Cluster.h"
+
 class CNodeSim : public CBaseNodeSim
 {
 public:
@@ -73,6 +75,8 @@ public:
     // Save simulation file
     void NS_SaveSimulationSystem();
     void NS_PerformApplicationClosureOperation(bool bSave);
+
+    void NS_SetLINConfig(ClusterConfig& ouLINConfig);
     //INTERFACE FUNCTIONS ENDS
 private:
     ETYPE_BUS m_eBus;

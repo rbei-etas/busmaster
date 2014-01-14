@@ -228,7 +228,7 @@ private:
     void vGetStringFromValue(int nValue, string& strValue);
     BYTE m_bDisplayColumns; // Columns to be displayed
     //temporary blockmanager
-    CMSGBLOCKMANAGER m_omMsgBlockMan;
+    //CMSGBLOCKMANAGER m_omMsgBlockMan;
 
 
 public:

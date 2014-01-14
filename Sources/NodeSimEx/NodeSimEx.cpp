@@ -34,6 +34,8 @@
 
 static CNodeSim* sg_pouNS_CAN = NULL;
 static CNodeSim* sg_pouNS_J1939 = NULL;
+static CNodeSim* sg_pouNS_LIN = NULL;
+
 static CDynLinkLibrary* sg_pomDynLinkLib = NULL;
 
 static AFX_EXTENSION_MODULE NodeSimExDLL = { NULL, NULL };
@@ -109,6 +111,12 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
             delete sg_pouNS_J1939;
             sg_pouNS_J1939 = NULL;
         }
+        if(sg_pouNS_LIN != NULL)
+        {
+            sg_pouNS_LIN->ExitInstance();
+            delete sg_pouNS_LIN;
+            sg_pouNS_LIN = NULL;
+        }
         if (NULL != sg_pomDynLinkLib)
         {
             delete sg_pomDynLinkLib;
@@ -175,6 +183,25 @@ if sg_pouFP_CAN is null */
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouNS_J1939; /* Doesn't matter even
 if sg_pouFP_J1939 is null */
+        }
+        break;
+        case LIN:
+        {
+            if (NULL == sg_pouNS_LIN)
+            {
+                if ((sg_pouNS_LIN = new CNodeSim(LIN)) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouNS_LIN->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouNS_LIN; /* Doesn't matter even
+if sg_pouNS_LIN is null */
         }
         break;
         default:

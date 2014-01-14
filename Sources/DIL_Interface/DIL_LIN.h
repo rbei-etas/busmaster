@@ -27,6 +27,7 @@
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/DIL_Datatypes.h"
+#include "DataTypes/Cluster.h"
 #include "Include/Basedefs.h"
 #include "BaseDIL_LIN.h"
 #include "BaseDIL_LIN_Controller.h"
@@ -146,13 +147,18 @@ public:
      * To set the configuration data for the currently selected DIL. Caller must
      * release the memory.
      */
-    HRESULT DILL_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
+    HRESULT DILL_SetConfigData( ClusterConfig& ouConfig);
+    //HRESULT DILL_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
 
     /**
      * Start the controller
      */
     HRESULT DILL_StartHardware(void);
 
+    /**
+     * Pre Start Controller - Used to set the Buffers before activating channel
+     */
+    HRESULT DILL_PreStartHardware(void);
     /**
      * Stop the controller
      */
@@ -171,7 +177,7 @@ public:
 
     HRESULT DILL_SetSlaveRespData(const STLIN_MSG stRespMsg);
     HRESULT DILL_ResetSlaveRespData(void);
-
+    HRESULT DILL_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage);
     /**
      * Call to get descriptive string of the last error occurred
      */

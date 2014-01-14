@@ -38,6 +38,10 @@ UINT unDLLloadHandlerProc(LPVOID pParam);
 
 // protoype of the Error Handler thread function
 UINT unErrorHandlerProc(LPVOID pParam);
+
+// protoype of the Error Handler thread function
+UINT unErrorHandlerProcLin(LPVOID pParam);
+
 // protoype of the Event Handler thread function
 UINT unEventHandlerProc(LPVOID pParam);
 // prototype of fuontion having common processing of timer call back func.
@@ -45,6 +49,8 @@ UINT unEventHandlerProc(LPVOID pParam);
 UINT unTimerHandlerProc(LPVOID pParam);
 // to read node buffer of message queue
 UINT unReadNodeMsgHandlerBuffer(LPVOID pParam);
+
+UINT unReadNodeMsgHandlerBufferLIN(LPVOID pParam);
 // to read ExecuteManager buffer of message queue
 UINT unReadDllMsgBuffer(LPVOID pParam);
 

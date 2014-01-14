@@ -57,6 +57,7 @@ struct sUserProgInfo
 {
     PFCTRLHANDLER   m_pfHandler;
     void*           m_pUserParam;
+    bool            m_bIcon;
 };
 
 typedef sUserProgInfo   SUSERPROGINFO;
@@ -66,12 +67,14 @@ enum eListTypes
 {
     eText,
     eNumber,
+    eKeyBuddy,
     eBuddy,
-    eComboList, // Editable
-    eComboItem,  // Non- Editable
+    eComboList,     // Editable
+    eComboItem,     // Non- Editable
     eBool,
-    eUser,       // User function will be called
+    eUser,          // User function will be called
     eBrowser,
+    eAlphaNumericType,
     eNoControl
 };
 typedef eListTypes LIST_TYPES;
@@ -105,6 +108,7 @@ struct sNumericInfo
     BYTE    m_byFlag;                       //Type flag Float, Buddy & Signed
     short int m_nTextLimit;                 //Allowed Text width
     short int m_nSigLength;                 //Length of the num representation.
+
     //This is required for 2s complement
     sNumericInfo() : m_byBase(10),
         m_byFlag(0),
@@ -116,6 +120,7 @@ struct sNumericInfo
         m_uDelta.m_n64Value = 0;
     }
 };
+
 
 typedef sNumericInfo  SNUMERICINFO;
 typedef CMap<int,int, SNUMERICINFO, SNUMERICINFO>   CNumericInfo;

@@ -126,6 +126,8 @@ private:
     // Populate tree with function prototypes
     // and global variables
     BOOL bPopulateTree();
+
+    INT nGetLinEventTypeFromName(CString strName, string& strEventName);
 public:
     afx_msg void OnFunctionEditorSave();
 };

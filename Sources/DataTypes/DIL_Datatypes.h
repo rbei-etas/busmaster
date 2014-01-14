@@ -102,7 +102,7 @@ enum
 enum
 {
     DRIVER_LIN_ISOLAR_EVE_VLIN = 0,
-    DRIVER_LIN_DEACTIVATE_VLIN,
+    DRIVER_LIN_VECTOR_XL,
     DIL_LIN_TOTAL,
     DAL_LIN_NONE            = ~0x0
 };

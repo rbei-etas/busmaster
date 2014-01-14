@@ -20,7 +20,7 @@
       <ul>
         <li>Download and install IXXAT VCI drivers from the following link <xref href="http://www.ixxat.com/download_vci_v3_en.html" scope="external" class="- topic/xref "/></li>
         <li>Set Windows environment variable &apos;IXXAT_VCI_SDK&apos; with the path to the VCI header files (e.g. IXXAT_VCI_SDK = &quot;C:\Program Files\IXXAT\VCI 3.5\sdk\Microsoft_VisualC&quot;).</li>
-        <li>Restart the machine after performing the above two steps</li>
+        <li>Restart the computer after performing the above two steps</li>
       </ul>
     </section>
     <section>
@@ -30,12 +30,22 @@
         <li>Download and Copy libxml2-2.7.8.win32, iconv-1.9.2.win32 and zlib-1.2.5.win32 from the following link <xref href="ftp://xmlsoft.org/libxml2/win32/" scope="external"/> to C: drive</li>
       </ul>
       <ul>
-        <li>Include libxml2, iconv and zlib binaries, libraries and include file in VC++ directory in Visual Studio Tools options.This can be done by selecting the Options... menu item occurring under the Tools menu, as shown in the image below:</li>
+        <li>Add libxml2, iconv and zlib binaries, libraries and include files in VC++ directories in Visual Studio <b>
+            <b>
+              <b>
+                <b>Properties</b>
+              </b>
+            </b>
+          </b> page for each project. This can be done by selecting the <b>Properties</b> menu item displayed on right click of a project in <b>Solution Explorer</b> as shown in the image below:</li>
       </ul>
-      <image href="../images/vc_options.png" placement="break"/>
-      <p>Clicking the menu item Options... will result in the following dialog box:</p>
+      <image href="../images/vc_options.png"/>
+      <p>Clicking the menu item <b>Properties</b> will display the properties window as shown below:</p>
+      <image href="../images/libxml2Settings - edit.png"/>
+      <p>To add executable path for libxml2, select the <b>Executable Directories</b> option and select the combo box and click the <b>Edit...</b> option. Properties window will be displayed. Add the path for <b>bin</b> as shown below:</p>
       <image href="../images/libxml2Settings.png" placement="break"/>
+      <p>To add include path for libxml2, select the <b>Include Directories</b> option and select the combo box and click the <b>Edit...</b> option. Properties window will be displayed. Add the path for <b>include</b> as shown below:</p>
       <image href="../images/libxml2IncludeSettings.png" placement="break"/>
+      <p>To add library path for libxml2, select the <b>Library Directories</b> and select the combo box and click the <b>Edit...</b> option. Properties window will be displayed. Add the path for <b>lib</b> as shown below:</p>
       <image href="../images/libxml2LibrarySettings.png" placement="break"/>
     </section>
     <section>

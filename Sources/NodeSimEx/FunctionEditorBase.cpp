@@ -52,6 +52,13 @@ BOOL CFunctionEditorBase::bInitBusInfo(SBUS_SPECIFIC_INFO& sInfo, eTYPE_BUS eBus
             sInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(sInfo.m_eBus).m_omMsgStructFile;
         }
         break;
+        case LIN:
+        {
+            sInfo.m_eBus = LIN;
+            sInfo.m_omBusName = "LIN";
+            sInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(sInfo.m_eBus).m_omMsgStructFile;
+        }
+        break;
     }
     return bReturn;
 

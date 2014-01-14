@@ -91,6 +91,7 @@ BEGIN_MESSAGE_MAP(CExploreMsgSg, CDialog)
     ON_BN_CLICKED(IDC_CBTN_CANCEL, OnCbtnCancel)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_MSGS, OnItemchangedLstcMsgs)
     ON_NOTIFY(NM_CLICK, IDC_LSTC_MSGS, OnClickLstcMsgs)
+    //ON_CBN_SELCHANGE(IDC_CMB_CHANNEL_SEL, OnSelChangeChnlCombo)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -235,10 +236,18 @@ void CExploreMsgSg::OnSelect()
                     m_omStrMessageName = m_omStrSelectedItemText;
                 }
 
+                INT unChnlSel = 1;
+                if(m_eBus == LIN)
+                {
+                    CString strChnlSel = "";
+                    ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->GetWindowText(strChnlSel);
+                    unChnlSel = atoi(strChnlSel);
+                }
+
                 CString omStrMsgStructure =
                     pDoc->omStrGetInitialisedMessage(unMsgID,
                                                      m_omStrSelectedItemText,
-                                                     MSG_STRUCT_VAR,TRUE,ucChannelId);
+                                                     MSG_STRUCT_VAR,TRUE,ucChannelId, unChnlSel);
                 m_omStrSelectedItemText = omStrMsgStructure;
             }
         }
@@ -411,30 +420,67 @@ BOOL CExploreMsgSg::OnInitDialog()
 
     // Init last selection to -1
     m_nMsgIndex = -1;
-    if (m_odMsgNameCodeListDb.GetCount() > 0)                           //CAPL_DB_NAME_CHANGE
+    if(m_eBus != LIN)
     {
-        for(int nItr =0; nItr < m_odMsgNameCodeListDb.GetCount(); nItr++)
+        if (m_odMsgNameCodeListDb.GetCount() > 0)                           //CAPL_DB_NAME_CHANGE
         {
-            POSITION posMsg = m_odMsgNameCodeListDb.FindIndex(nItr);
-            SDB_NAME_MSG& sDbNameMsg = m_odMsgNameCodeListDb.GetAt(posMsg);
-            POSITION pos = sDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
-            int nIndex = 0;
-            while (pos != NULL)
+            for(int nItr =0; nItr < m_odMsgNameCodeListDb.GetCount(); nItr++)
             {
-                SMSG_NAME_CODE& sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetNext(pos);
-                CString omMsgWithId;
-                omMsgWithId.Format("%s[0x%x]", sMsgNameCode.m_omMsgName, sMsgNameCode.m_dwMsgCode);
-                int nInsertedIndex = m_omMsgList.InsertItem( nIndex++, omMsgWithId);
-                m_omMsgList.SetItemData(nInsertedIndex, sMsgNameCode.m_dwMsgCode);
+                POSITION posMsg = m_odMsgNameCodeListDb.FindIndex(nItr);
+                SDB_NAME_MSG& sDbNameMsg = m_odMsgNameCodeListDb.GetAt(posMsg);
+                POSITION pos = sDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
+                int nIndex = 0;
+                while (pos != NULL)
+                {
+                    SMSG_NAME_CODE& sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetNext(pos);
+                    CString omMsgWithId;
+                    omMsgWithId.Format("%s[0x%x]", sMsgNameCode.m_omMsgName, sMsgNameCode.m_dwMsgCode);
+                    int nInsertedIndex = m_omMsgList.InsertItem( nIndex++, omMsgWithId);
+                    m_omMsgList.SetItemData(nInsertedIndex, sMsgNameCode.m_dwMsgCode);
+                }
+                m_nMsgIndex = 0;
+                m_omMsgList.SetItemState(m_nMsgIndex, LVIS_SELECTED|LVIS_FOCUSED,
+                                         LVIS_SELECTED|LVIS_FOCUSED);
             }
-            m_nMsgIndex = 0;
-            m_omMsgList.SetItemState(m_nMsgIndex, LVIS_SELECTED|LVIS_FOCUSED,
-                                     LVIS_SELECTED|LVIS_FOCUSED);
         }
     }
+
     //Set Default channel as Channel 1
     CButton* pButtn=(CButton*)GetDlgItem(IDC_RBTN_CHANNEL1);
     pButtn->SetCheck(BST_CHECKED);
+
+    if(m_eBus == LIN)
+    {
+        INT unChnlConfig = CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_nChannelsConfigured;
+        char chString[MAX_PATH] = "";
+        for(INT unIndex = 0; unIndex < unChnlConfig; unIndex++)
+        {
+            sprintf(chString, "%d", unIndex+1);
+            ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->AddString(chString);
+        }
+
+        if(((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->GetCount() > 0)
+        {
+            ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->SetCurSel(0);
+        }
+
+        CString strChnlNum;
+        ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->GetWindowTextA(strChnlNum);
+        list<FRAME_STRUCT> lstMsgNames;
+        INT unChannelNum = atoi(strChnlNum) - 1;
+        CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChannelNum].m_ouClusterInfo.GetFrames(lstMsgNames);
+
+        list<FRAME_STRUCT>::iterator itrLstMsg = lstMsgNames.begin();
+        int nIndex = 0;
+        while(itrLstMsg != lstMsgNames.end())
+        {
+            CString omMsgWithId;
+            omMsgWithId.Format("%s[0x%x]", itrLstMsg->m_strFrameName.c_str(), (itrLstMsg->m_nSlotId));
+            int nInsertedIndex = m_omMsgList.InsertItem( nIndex++, omMsgWithId);
+            m_omMsgList.SetItemData(nInsertedIndex, (itrLstMsg->m_nSlotId));
+            itrLstMsg++;
+        }
+    }
 
     return FALSE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -501,45 +547,100 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
                 // Get selected message name
                 m_omStrMessageName = m_omMsgList.GetItemText( hSelItem, 0 );
                 DWORD dwMsgCode = (COMMANDWORD)m_omMsgList.GetItemData(hSelItem);
-                vGetSigNamesFromMsgCode(dwMsgCode, omSignalNames);
-                // Add signal names into the list box
-                POSITION pos = omSignalNames.GetHeadPosition();
 
-                while ( pos != NULL )
+                if(m_eBus == LIN)
                 {
-                    m_omSignalListBox.AddString( omSignalNames.GetNext(pos));
-                }
+                    CString strChnlNum;
+                    ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->GetWindowTextA(strChnlNum);
+                    list<FRAME_STRUCT> lstMsgNames;
+                    INT unChannelNum = atoi(strChnlNum) - 1;
+                    FRAME_STRUCT ouframeStrct;
+                    CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChannelNum].GetFrame(dwMsgCode, ouframeStrct);
 
-                m_omSignalListBox.SetCurSel( 0 );
+                    list<Flexray_SSIGNALINFO> lstSignalInfo;
+                    unsigned char uchBytes[254];
+                    bGetSignalInfo(ouframeStrct,uchBytes,  ouframeStrct.m_nLength, lstSignalInfo);
+                    CStringList  omSignalNames;
+                    GetSignalNames(lstSignalInfo, omSignalNames);
 
-                // Set horizontal extent of the list
-                // box to max string availaable
-                // so that user can scroll
-                CSize   sz;
-                CString omStrText;
-                CDC*  pDC = m_omSignalListBox.GetDC();
-                if ( pDC != NULL)
-                {
-                    int nDx = 0;
-                    for (int nCount = 0;
-                            nCount < m_omSignalListBox.GetCount();
-                            nCount++)
+                    POSITION pos = omSignalNames.GetHeadPosition();
+
+                    while ( pos != NULL )
                     {
-                        m_omSignalListBox.GetText( nCount, omStrText );
-                        // remove space
-                        omStrText.TrimRight();
-                        sz = pDC->GetTextExtent(omStrText);
-                        if (sz.cx > nDx)
-                        {
-                            nDx = sz.cx;
-                        }
+                        m_omSignalListBox.AddString( omSignalNames.GetNext(pos));
                     }
-                    m_omSignalListBox.ReleaseDC(pDC);
-                    // Set the horizontal extent so every character of all
-                    // strings can be scrolled to.
-                    m_omSignalListBox.SetHorizontalExtent(nDx);
-                }
 
+                    m_omSignalListBox.SetCurSel( 0 );
+
+                    // Set horizontal extent of the list
+                    // box to max string availaable
+                    // so that user can scroll
+                    CSize   sz;
+                    CString omStrText;
+                    CDC*  pDC = m_omSignalListBox.GetDC();
+                    if ( pDC != NULL)
+                    {
+                        int nDx = 0;
+                        for (int nCount = 0;
+                                nCount < m_omSignalListBox.GetCount();
+                                nCount++)
+                        {
+                            m_omSignalListBox.GetText( nCount, omStrText );
+                            // remove space
+                            omStrText.TrimRight();
+                            sz = pDC->GetTextExtent(omStrText);
+                            if (sz.cx > nDx)
+                            {
+                                nDx = sz.cx;
+                            }
+                        }
+                        m_omSignalListBox.ReleaseDC(pDC);
+                        // Set the horizontal extent so every character of all
+                        // strings can be scrolled to.
+                        m_omSignalListBox.SetHorizontalExtent(nDx);
+                    }
+                }
+                else
+                {
+                    vGetSigNamesFromMsgCode(dwMsgCode, omSignalNames);
+                    // Add signal names into the list box
+                    POSITION pos = omSignalNames.GetHeadPosition();
+
+                    while ( pos != NULL )
+                    {
+                        m_omSignalListBox.AddString( omSignalNames.GetNext(pos));
+                    }
+
+                    m_omSignalListBox.SetCurSel( 0 );
+
+                    // Set horizontal extent of the list
+                    // box to max string availaable
+                    // so that user can scroll
+                    CSize   sz;
+                    CString omStrText;
+                    CDC*  pDC = m_omSignalListBox.GetDC();
+                    if ( pDC != NULL)
+                    {
+                        int nDx = 0;
+                        for (int nCount = 0;
+                                nCount < m_omSignalListBox.GetCount();
+                                nCount++)
+                        {
+                            m_omSignalListBox.GetText( nCount, omStrText );
+                            // remove space
+                            omStrText.TrimRight();
+                            sz = pDC->GetTextExtent(omStrText);
+                            if (sz.cx > nDx)
+                            {
+                                nDx = sz.cx;
+                            }
+                        }
+                        m_omSignalListBox.ReleaseDC(pDC);
+                        // Set the horizontal extent so every character of all
+                        // strings can be scrolled to.
+                        m_omSignalListBox.SetHorizontalExtent(nDx);
+                    }
+                }
             }
 
         }
@@ -603,4 +704,10 @@ void CExploreMsgSg::vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSign
             }
         }
     }
+}
+
+void CExploreMsgSg::vSetFrameList(ClusterConfig* ouClusterConfig, ETYPE_BUS eBus)
+{
+    m_ouClusterConfig = ouClusterConfig;
+    m_eBus = eBus;
 }

@@ -23,7 +23,7 @@
  */
 #pragma once
 #include "TxWindowFlexRay/TxWndFlexRay_Extern.h"
-
+#include "MsgSignal.h"
 class CFlexTxHandler
 {
 private:
@@ -34,27 +34,31 @@ public:
     CFlexTxHandler(void);
     ~CFlexTxHandler(void);
     void vLoadTx_DLL();
-    void vBusStatusChanged(bool bChanged);
+    void vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatus);
     void vSetMsgDBPtrInDetailsView(void* pMsgDB);
-    void vShowConfigureMsgWindow(VOID* pParentWnd);
-    void vSetClientID(DWORD dwClientID);
-    void vSetDILInterfacePtr();
+    void vShowConfigureMsgWindow(VOID* pParentWnd, ETYPE_BUS eBUS);
+    void vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID);
+    void vSetDILInterfacePtr(ETYPE_BUS eBusType, void*);
     void vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);
-    HRESULT hConfigWindowShown();
+    HRESULT hConfigWindowShown(ETYPE_BUS eBusType);
     void vStartTransmission(UCHAR ucKeyVal);
     HRESULT hAllocateMemoryForGlobalTxList();
     void vAssignMsgBlockList();
     void vDeleteTxBlockMemory();
     void vStopTransmission(UINT unMaxWaitTime);
     void vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
-    void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
+    void vGetTxWndConfigData( ETYPE_BUS eBusType, xmlNodePtr pxmlNodePtr);
     void vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
-    void vSetTxWndConfigData(xmlDocPtr pDoc);
+    void vSetTxWndConfigData( ETYPE_BUS eBusType, xmlDocPtr pDoc);
     HRESULT hIsTxWndConfigChanged();
     UINT unGetTxBlockCount(void);
     void vSetTxStopFlag(BOOL bStartStop);
     BOOL bGetTxStopFlag(void);
     void vFlexFileChanged();
 
-    HRESULT SetFibexConfig(FlexConfig& ouFlexConfig);
+    HRESULT SetFibexConfig(ETYPE_BUS eBusType, ClusterConfig& ouFlexConfig);
+
+
+    //LIN
+    HRESULT SetChannelConfig(ETYPE_BUS eBus, ClusterConfig* ouFlexConfig);
 };

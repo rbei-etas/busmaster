@@ -172,6 +172,7 @@
     <ClCompile Include="ClientBuffer.cpp" />
     <ClCompile Include="ClientList.cpp" />
     <ClCompile Include="CommanDIL_Flexray.cpp" />
+    <ClCompile Include="CommanDIL_LIN.cpp" />
     <ClCompile Include="DILL_Dummy.cpp" />
     <ClCompile Include="DIL_CAN.cpp" />
     <ClCompile Include="DIL_FLEXRAY.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="ClientBuffer.h" />
     <ClInclude Include="ClientList.h" />
     <ClInclude Include="CommanDIL_Flexray.h" />
+    <ClInclude Include="CommanDIL_LIN.h" />
     <ClInclude Include="DILL_Dummy.h" />
     <ClInclude Include="DIL_CAN.h" />
     <ClInclude Include="DIL_FLEXRAY.h" />

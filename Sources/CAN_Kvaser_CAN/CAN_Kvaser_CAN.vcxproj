@@ -212,7 +212,7 @@ del "%TMP%\canlib32.lib"
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib"
  %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>$(SolutionDir)/BIN/Libs/Release/canlib32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>EXTERNAL/Lib/MS/canlib32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)CAN_Kvaser_CAN.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>

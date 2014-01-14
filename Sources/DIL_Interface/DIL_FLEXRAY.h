@@ -122,7 +122,7 @@ public:
     /* To set the configuration data for the currently selected DIL. Caller must
     release the memory. */
     //HRESULT DILF_SetConfigData(PCHAR pInitData,  ABS_CLUSTER_INFO   asClusterinfo, int Length, ABS_DEVICE_CONFIG  asDeviceConfig) ;
-    HRESULT DILF_SetConfigData(FLEXRAY_CHANNEL_CONFIG& ouAbsSFibexContainer);
+    HRESULT DILF_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer);
     /* Start the controller*/
     HRESULT DILF_StartHardware(void) ;
 

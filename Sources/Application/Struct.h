@@ -201,7 +201,8 @@ typedef enum eUSERSELCTION
     eCONNECTCMD,
     eDATABASEIMPORTCMD,
     eCONFIGCHANGECMD,
-    eCHANNELCOUNTUPDATED
+    eCHANNELCOUNTUPDATED,
+    eKeyPress
 };
 typedef enum eTXMSGTRIGGERTYPE
 {
@@ -609,18 +610,33 @@ typedef sFilterDisplayInfo sFilterDisplayInfo;
 typedef sFilterDisplayInfo SFILTERDISPLAYINFO;
 typedef SFILTERDISPLAYINFO* PSFILTERDISPLAYINFO;
 
-struct tagFibexConfigContainer
+class ConfigContainer
 {
-    INT m_nKeySlot;
-    INT m_nSecondKeySlot;
-    INT m_nChannel;
+public:
+    int m_nChannel;
     string m_strHWUri;
     string m_strDbPath;
     string m_strClusterId;
     list<string> m_strECUList;
 };
 
-typedef tagFibexConfigContainer sFibexConfigContainer;
+class sFibexConfigContainer:public ConfigContainer
+{
+public:
+    INT m_nKeySlot;
+    INT m_nSecondKeySlot;
+
+
+};
+
+struct sLinConfigContainer:public ConfigContainer
+{
+public:
+    int m_nBaudRate;
+    string m_srtProtocolVerson;
+    bool m_bOverwrite;
+};
+
 
 //
 //class CExecuteFunc;

@@ -30,8 +30,11 @@
 // CAlphanumiricEdit
 
 IMPLEMENT_DYNAMIC(CAlphanumiricEdit, CEdit)
-CAlphanumiricEdit::CAlphanumiricEdit()
+CAlphanumiricEdit::CAlphanumiricEdit(int nItem, int nSubItem)
 {
+    m_nRow = nItem;
+    m_nColumn = nSubItem;
+    m_bVK_ESCAPE = FALSE;
 }
 
 CAlphanumiricEdit::~CAlphanumiricEdit()
@@ -41,6 +44,7 @@ CAlphanumiricEdit::~CAlphanumiricEdit()
 
 BEGIN_MESSAGE_MAP(CAlphanumiricEdit, CEdit)
     ON_WM_CHAR()
+    ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
 
@@ -65,6 +69,45 @@ void CAlphanumiricEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 
     if(nChar=='_' || isalnum(nChar)!= 0 || nChar == BACK_SPACE || (nChar>=0 && nChar <=32) )
     {
+        if( nChar == VK_ESCAPE)
+        {
+            m_bVK_ESCAPE = TRUE;
+        }
         CEdit::OnChar(nChar, nRepCnt, nFlags);
+    }
+}
+
+void CAlphanumiricEdit::OnKillFocus(CWnd* pNewWnd)
+{
+
+    CEdit::OnKillFocus(pNewWnd);
+
+
+    if( m_nRow != -1 || m_nColumn != -1 )//For Dialog Close using X Button
+    {
+        CString omStr;
+        // As it is non editable Get the window text to get the selected
+        // item text
+        GetWindowText(omStr);
+        // Send Notification to parent of ListView ctrl
+        LV_DISPINFO lvDispinfo;
+        lvDispinfo.hdr.hwndFrom = GetParent()->m_hWnd;
+        lvDispinfo.hdr.idFrom = GetDlgCtrlID();//that's us
+        lvDispinfo.hdr.code = LVN_ENDLABELEDIT;
+        lvDispinfo.item.mask = LVIF_TEXT | LVIF_PARAM;
+        lvDispinfo.item.iItem = m_nRow;
+        lvDispinfo.item.iSubItem = m_nColumn;
+        lvDispinfo.item.pszText =
+            m_bVK_ESCAPE ? LPTSTR((LPCTSTR)omStr) : LPTSTR((LPCTSTR)omStr);
+        lvDispinfo.item.cchTextMax = omStr.GetLength();
+
+        // For non editable the selection should not be -1
+        PostMessage(WM_CLOSE);
+        GetParent()->GetParent()->SendMessage( WM_NOTIFY,
+                                               GetParent()->GetDlgCtrlID(),
+                                               (LPARAM)&lvDispinfo);
+        GetParent()->SendMessage( WM_NOTIFY,
+                                  GetParent()->GetDlgCtrlID(),
+                                  (LPARAM)&lvDispinfo);
     }
 }

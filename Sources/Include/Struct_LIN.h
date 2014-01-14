@@ -49,24 +49,95 @@ typedef struct sTLIN_MSG
 {
     unsigned char m_ucMsgTyp;       // Message Type (0 - Header / 1 - Response)
     unsigned char m_ucChksumTyp;    // Checksum Type (0 - Classical / 1 - Enhanced)
-    unsigned char m_ucChannel;      // Channel Number
     unsigned char m_ucDataLen;      // Data len (0..8)
     unsigned char m_ucMsgID;        // Protected Identifier
     unsigned char m_ucData[8];      // Databytes 0..8
+    unsigned long m_ulTimeStamp;
+    unsigned char m_ucChannel;      // Channel Number
     unsigned char m_ucChksum;       // Checksum
 } STLIN_MSG, *PSTLIN_MSG;
 //typedef sTLIN_MSG* PSTLIN_MSG;
 
+enum eLinBusEventType
+{
+    EVENT_LIN_ERRMSG,
+    EVENT_LIN_ERRSYNC,
+    EVENT_LIN_ERRNOANS,
+    EVENT_LIN_ERRCRC,
+    EVENT_LIN_WAKEUP,
+    EVENT_LIN_SLEEP,
+    EVENT_LIN_CRCINFO,
+    EVENT_LIN_NONE
+};
+enum eLinSleepEvent
+{
+    LIN_SLEEPMODE_SET,
+    LIN_SLEEPMODE_WAKEUP,
+    LIN_SLEEPMODE_STAYALIVE,
+};
+enum eCheckSumType
+{
+    CHECKSUM_CLASSIC,
+    CHECKSU_ENHANCED
+};
+enum eLinMsgType
+{
+    LIN_MSG,
+    LIN_EVENT
+};
+
+struct SEVENT_CHECKSUM_LIN
+{
+    unsigned char m_ucId;
+    unsigned char m_ucCrc;
+    unsigned char m_ucChannel;
+    unsigned int  m_ulTime;
+} ;
+
+struct SEVENT_RECEIVE_LIN
+{
+    unsigned int  m_ulTime;
+};
+
+struct SEVENT_SLAVE_NORESP_LIN
+{
+    unsigned char m_ucId;
+    unsigned char m_ucChannel;
+    unsigned int  m_ulTime;
+
+};
+
+typedef struct SEVENT_SYNC_LIN
+{
+    unsigned char m_ucChannel;
+    unsigned int  m_ulTime;
+
+};
+
+//typedef union sEVENT_INFO_LIN
+//{
+//  SEVENT_CHECKSUM ouChecksumEvent;
+//  SEVENT_RECEIVE  ouReceiveEvent;
+//  SEVENT_SLAVE_NORESP ouSlaveNoRespEvent;
+//  SEVENT_SYNC         ouSyncEvent;
+//} SEVENT_INFO_LIN;
+
 // This structure holds Error info
 struct sERROR_INFO_LIN
 {
-    unsigned char m_ucErrType;    // ERROR_BUS, ERROR_DEVICE_BUFF_OVERFLOW
-    // ERROR_DRIVER_BUFF_OVERFLOW, ERROR_UNKNOWN
+    unsigned char m_ucId;       // Msg Id - Useful in case of NoAns
+    unsigned char m_ucCrc;
+    eLinBusEventType m_eEventType;
+    //SEVENT_INFO_LIN  m_eEventInfo;
+    eLinSleepEvent m_eSleepEvent;
+    eCheckSumType m_eCheckSumType;
+
     unsigned char m_ucReg_ErrCap; // Stores the value of err capture register in
     // case of bus error
     unsigned char m_ucTxErrCount;
     unsigned char m_ucRxErrCount;
     unsigned char m_ucChannel;
+    ULONGLONG m_ulTimeStamp;
     int           m_nSubError;   //added for providing Error bit details
 };
 typedef sERROR_INFO_LIN SERROR_INFO_LIN;
@@ -230,7 +301,7 @@ typedef sCONTROLLERDETAILSLIN*  PSCONTROLLER_DETAILS_LIN;
 
 /*****************************************************************************/
 /*This structure is used for communicating between Driver & LIN Application*/
-union sTLINDATAINFO
+struct sTLINDATAINFO
 {
     STLIN_MSG         m_sLINMsg;      //The received / transmitted message
     SERROR_INFO_LIN   m_sErrInfo;
@@ -251,6 +322,7 @@ private:
     static int  m_nMFactor;     // Multiplication factor
 
 public:
+    eLinMsgType     m_eLinMsgType;
     unsigned char    m_ucDataType;  //Type of the message
     LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
     //QueryPerf..Counter()
@@ -280,8 +352,8 @@ enum eLIN_MSG_TYPE
 
 enum eLIN_CHECKSUM_TYPE
 {
-    CLASSIC_CHECKSUM = 0,
-    ENHANCED_CHECKSUM,
+    LIN_CHECKSUM_CLASSIC = 0,
+    LIN_CHECKSUM_ENHANCED,
 };
 
 const string sg_ListDIL_MSG_TYPE[LIN_MSG_TYPE_MAX] =

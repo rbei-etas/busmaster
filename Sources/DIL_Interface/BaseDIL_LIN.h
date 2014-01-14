@@ -27,6 +27,7 @@
 #include "DataTypes/DIL_DataTypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "Datatypes/Base_WrapperErrorLogger.h"
+#include "Datatypes/Cluster.h"
 
 class CBaseDIL_LIN
 {
@@ -133,12 +134,15 @@ public:
      * To set the configuration data for the currently selected DIL. Caller must
      * release the memory.
      */
-    virtual HRESULT DILL_SetConfigData(PSCONTROLLER_DETAILS pInitData, int Length) = 0;
+    virtual HRESULT DILL_SetConfigData( ClusterConfig& ouConfig) = 0;
+    //virtual HRESULT DILL_SetConfigData(PSCONTROLLER_DETAILS pInitData, int Length) = 0;
 
     /**
      * Start the controller
      */
     virtual HRESULT DILL_StartHardware(void) = 0;
+
+    virtual HRESULT DILL_PreStartHardware(void) = 0;
 
     /**
      * Stop the controller
@@ -155,7 +159,7 @@ public:
     */
     virtual HRESULT DILL_SetSlaveRespData(const STLIN_MSG stRespMsg) = 0;
     virtual HRESULT DILL_ResetSlaveRespData(void)=0;
-
+    virtual HRESULT DILL_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage) = 0;
     /**
      * Send messages
      */

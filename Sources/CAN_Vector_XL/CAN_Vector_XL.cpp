@@ -883,7 +883,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
             ostringstream oss;
             oss << dec << serialNumber;
-            asSelHwInterface[i].m_acDescription = oss.str();
+            string strTemp =  oss.str();
+            asSelHwInterface[i].m_acDescription = strTemp;
             //_stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
             ostringstream oss1;
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
@@ -2426,7 +2427,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        MessageBox(NULL,sg_omErrStr, NULL, MB_OK | MB_ICONERROR);
+        //MessageBox(NULL,sg_omErrStr, NULL, MB_OK | MB_ICONERROR);
         nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */

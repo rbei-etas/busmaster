@@ -30,6 +30,7 @@
 #include "ExecuteFunc.h"
 #include "AppServicesCAN.h"
 #include "AppServicesJ1939.h"
+#include "AppServicesLIN.h"
 #include "GlobalObj.h"
 //defination of exported class to DLL
 #include "Export_UserDllCAN.h"
@@ -49,6 +50,7 @@ using namespace std;
 
 extern UINT unKeyHandlerProc(LPVOID);
 extern UINT unErrorHandlerProc(LPVOID);
+extern UINT unErrorHandlerProcLin(LPVOID);
 extern UINT unEventHandlerProc(LPVOID);
 // DLL Unload Handler
 extern UINT unDLLUnloadHandlerProc(LPVOID);
@@ -56,6 +58,7 @@ extern UINT unDLLUnloadHandlerProc(LPVOID);
 extern UINT unDLLloadHandlerProc(LPVOID);
 //begin execution of timer thread
 extern UINT unBusConnectHandlerProc(LPVOID);
+extern UINT unBusPreConnectHandlerProc(LPVOID);
 extern UINT unBusDisConnectHandlerProc(LPVOID);
 extern UINT unTimerHandlerProc(LPVOID pParam);
 
@@ -63,6 +66,7 @@ extern UINT unTimerHandlerProc(LPVOID pParam);
 extern UINT gunWriteToTrace(CHAR* pcOutStrTrace);
 //thread function from utility file
 UINT unReadNodeMsgHandlerBuffer(LPVOID pParam);
+UINT unReadNodeMsgHandlerBufferLIN(LPVOID pParam);
 //send msg API
 //extern int gnSendFlexMsg(sTCANDATA sTxMsg,HMODULE hModule);
 extern BOOL gbMsgTransmissionOnOff(BOOL bOnOff,HMODULE hModule);
@@ -73,6 +77,9 @@ extern int sg_KeyPressed();
 extern int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
 extern long sg_TimeNow();
 extern DWORD gdGetFirstCANdbName(char cBuffer[], DWORD size);
+
+
+const int LINMSG_STRUCT_SIZE    = sizeof(sTLINDATA);
 //TODO:CAPL_NEW_ADDITIONS
 
 /******************************************************************************/
@@ -101,6 +108,7 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_psOnMsgIDRangeHandlers(NULL),
     m_pFGenericMsgHandlerCAN(NULL),
     m_pFGenericMsgHandler(NULL),
+    m_pFGenericMsgHandlerLIN(NULL),
     m_psOnKeyHandlers(NULL),
     m_psOnErrorHandlers(NULL),
     m_psOnEventHandlers(NULL),
@@ -115,11 +123,14 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_unQMsgCount(0),
     m_unReadQMsgIndex(0),
     m_unWriteQMsgIndex(0),
+    m_unReadQMsgIndexLIN(0),
+    m_unWriteQMsgIndexLIN(0),
     m_bStopKeyHandlers(TRUE),
     m_bStopErrorHandlers(TRUE),
     m_bStopEventHandlers(TRUE),
     m_bStopDLLHandlers(TRUE),
     m_pomMsgHandlerThrd(NULL),
+    m_pomMsgHandlerThrdLIN(NULL),
     m_psFirstTimerStrList(NULL),
     m_psLastTimerStrList(NULL),
     m_bTimerThreadStarted(FALSE),
@@ -144,6 +155,12 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     {
         memset(&m_asQMsg[m_unWriteQMsgIndex], 0, CANMSG_STRUCT_SIZE);
     }
+
+    //initialization of buffer
+    for(int nBufferCnt=0; nBufferCnt<defMAX_FUNC_MSG; nBufferCnt++)
+    {
+        memset(&m_asQMsgLIN[m_unWriteQMsgIndexLIN], 0, LINMSG_STRUCT_SIZE);
+    }
     // All void pointer for memory allocated inside is initialised to NULL
     for(UINT i=0; i<defEVENT_EXFUNC_TOTAL; i++)
     {
@@ -161,9 +178,10 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_omMsgHandlerMap.InitHashTable(def_MSG_MAP_HASH_SIZE);
     // Initialise critical section used in buffer access
     InitializeCriticalSection(&m_CritSectForFuncBuf);
+    InitializeCriticalSection(&m_CritSectForFuncBufLIN);
     //creating read and execute message handler thread
     m_pomMsgHandlerThrd=AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
-
+    m_pomMsgHandlerThrdLIN=AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
 }
 /******************************************************************************/
 /*  Function Name    :  ~CExecuteFunc                                         */
@@ -256,6 +274,7 @@ CExecuteFunc::~CExecuteFunc()
     }
     // Free Cirical Section Resource
     DeleteCriticalSection(&m_CritSectForFuncBuf);
+    DeleteCriticalSection(&m_CritSectForFuncBufLIN);
 
 }
 /******************************************************************************/
@@ -303,6 +322,10 @@ BOOL CExecuteFunc::bInitStruct(CStringArray& omErrorArray)
             if (m_eBus == CAN)
             {
                 bReturn = bInitErrorStruct(omErrorArray);
+            }
+            if (m_eBus == LIN)
+            {
+                bReturn = bInitEventStructLIN(omErrorArray);
             }
         }
         if (bReturn == TRUE)
@@ -504,7 +527,102 @@ VOID CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo)
             gbSendStrToTrace(acError);
         }
     }
+}
 
+/******************************************************************************/
+/*  Function Name    :  vExecuteOnMessageHandlerLIN                           */
+/*  Input(s)         :  Message ID                                            */
+/*  Output           :                                                        */
+/*  Functionality    :  Excutes message handler corresponding to message ID   */
+/*                      passed as parameter                                   */
+/*  Member of        :  CExecuteFunc                                          */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  28.02.2002                                            */
+/******************************************************************************/
+
+VOID CExecuteFunc::vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo)
+{
+    sEXECUTE_MSG_HANDLER_LIN sExecuteMsgHandler;
+    memcpy(&sExecuteMsgHandler.m_sRxMsg, &sRxMsgInfo, sizeof (sRxMsgInfo));
+    //vCopy_s_FLXMSG_to_sTCANDATA( sExecuteMsgHandler.m_sRxMsg, sRxMsgInfo);
+
+    // Search for msg name and msg ID handler matching the message ID.
+    UCHAR unMsgID = sExecuteMsgHandler.m_sRxMsg.m_ucMsgID;
+
+    // Check for Id in Name/Id specific Handler
+    SMSGHANDLERDATA_LIN sMsgData = m_omMsgHandlerMapLIN[unMsgID];
+
+    // If not found
+    if ( sMsgData.m_pFMsgHandler == NULL )
+    {
+        sMsgData.m_pFMsgHandler = pFSearchMsgIdListHandlerLIN(unMsgID);
+        if( sMsgData.m_pFMsgHandler == NULL )
+        {
+            // Find the Id in the Range Handlers
+            sMsgData.m_pFMsgHandler = pFSearchMsgIdRangeHandlerLIN(unMsgID);
+            // If not found
+            if(sMsgData.m_pFMsgHandler == NULL)
+            {
+                // Check for generic Handler
+                if(m_pFGenericMsgHandlerLIN != NULL )
+                {
+                    sMsgData.m_pFMsgHandler = m_pFGenericMsgHandlerLIN;
+                    // Add Generic Message Handler Proc Address in to the CMap
+                    // This will avoid search for this ID next time
+                    m_omMsgHandlerMapLIN[unMsgID] = sMsgData;
+                }
+            }
+        }
+        // The ID comes under a range. Store the Range Handler in the CMap
+        else
+        {
+            // This will avoide search for the same message ID next time
+            m_omMsgHandlerMapLIN[unMsgID] = sMsgData;
+        }
+    }
+    // The ID comes from a List. Store the Range Handler in the CMap
+    else
+    {
+        // This will avoide search for the same message ID next time
+        m_omMsgHandlerMapLIN[unMsgID] = sMsgData;
+    }
+    // If the handler found then proceed further
+    if(sMsgData.m_pFMsgHandler != NULL)
+    {
+        m_bStopMsgHandlers = FALSE;
+        // Check for Message Type Big or Little Endian
+        // and reverse data bytes if it is not in intel format
+        if( sMsgData.nMsgFormat != -1 && sMsgData.nMsgFormat != DATA_FORMAT_INTEL)
+        {
+            register BYTE byTmp;
+            register BYTE* pbyMsgData = sExecuteMsgHandler.m_sRxMsg.m_ucData;
+            register UINT unLimit = sMsgData.unDLC / 2;
+
+            for ( register UINT nIndex = 0; nIndex < unLimit; nIndex++)
+            {
+                register UINT unTempIndex = sMsgData.unDLC - 1 - nIndex;
+                byTmp = pbyMsgData[nIndex];
+                pbyMsgData[nIndex] = pbyMsgData[unTempIndex];
+                pbyMsgData[unTempIndex] = byTmp;
+            }
+        }
+        sExecuteMsgHandler.m_pFMsgHandler = sMsgData.m_pFMsgHandler;
+        // Catch user program errors here
+        try
+        {
+            sExecuteMsgHandler.m_pFMsgHandler(sExecuteMsgHandler.m_sRxMsg);
+        }
+        catch(...)
+        {
+            char acError[256];
+            sprintf( acError,
+                     _(defSTR_ERROR_IN_MSG_PROG),
+                     sExecuteMsgHandler.m_sRxMsg.m_ucMsgID );
+            // Display the error information in the Trace window
+            gbSendStrToTrace(acError);
+        }
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  vExecuteOnKeyHandler                                  */
@@ -718,6 +836,47 @@ void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE by
     }
 }
 /* Executes data confirmation event */
+
+
+void CExecuteFunc::vExecuteOnErrorHandlerLIN( SERROR_INFO_LIN ouLinEventInfo )
+{
+    UINT unErrorHandlerCount   = 0;
+    BOOL bErrorHandlerExecuted = FALSE;
+
+    unErrorHandlerCount        = (COMMANUINT)m_omStrArrayErrorHandlers.GetSize();
+
+    if(m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread == NULL )
+    {
+        UINT unErrorCount = 0;
+        while(unErrorCount<unErrorHandlerCount && bErrorHandlerExecuted != TRUE)
+        {
+            if(ouLinEventInfo.m_eEventType == m_psOnEventHandlersLin[unErrorCount].m_eLinEventCode)
+            {
+                if(m_psOnEventHandlersLin[unErrorCount].m_pfEventHandlersLin!=NULL)
+                {
+                    m_psOnEventHandlersLin[unErrorCount].m_ouLinEventInfo = ouLinEventInfo;
+                    //pass the pointer to this object to access thread
+                    m_psOnEventHandlersLin[unErrorCount].m_pCExecuteFunc=this;
+                    // Get handle of thread and assign it to pulic data member
+                    // in app class. This will be used to terminate the thread.
+
+                    CWinThread* pomThread = NULL ;
+                    pomThread = AfxBeginThread(unErrorHandlerProcLin,
+                                               &m_psOnEventHandlersLin[unErrorCount] );
+                    if(pomThread != NULL )
+                    {
+                        //m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread
+                        //    = pomThread->m_hThread;
+                    }
+                }
+                bErrorHandlerExecuted = TRUE;
+            }
+            unErrorCount++;
+        }
+    }
+
+}
+
 VOID CExecuteFunc::vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)
 {
     vExecuteOnEventHandlerJ1939(unPGN, bySrc, byDest, bSuccess, 0x0);
@@ -845,7 +1004,41 @@ VOID CExecuteFunc::vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler)
             {
 
                 CWinThread* pomThread = NULL ;
-                if(eBusEventHandler ==  BUS_CONNECT&&
+                if(eBusEventHandler ==  BUS_PRE_CONNECT&&
+                        m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread == NULL )
+                {
+                    //to pass this object and pointer to dll handler
+                    PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=
+                        new sEXECUTE_BUSEVENT_HANDLER;
+                    if(psExecuteBusEventHandler!=NULL)
+                    {
+                        psExecuteBusEventHandler->pFBusEventHandler =
+                            m_psOnBusEventHandlers[unDLLHandlerCount].m_pFBusEvHandlers;
+                        psExecuteBusEventHandler->m_pCExecuteFunc=this;
+                        // Get handle of thread and assign it to pulic data
+                        // member in app class. This will be used to terminate
+                        // the thread.
+                        psExecuteBusEventHandler->pFBusEventHandler();
+                        /*pomThread = AfxBeginThread(unBusPreConnectHandlerProc,
+                                                   psExecuteBusEventHandler);*/
+                        Sleep(0);
+                        if(pomThread != NULL )
+                        {
+                            m_asUtilThread
+                            [defBUSEVENT_HANDLER_THREAD].m_hThread =
+                                pomThread->m_hThread;
+                            m_asUtilThread
+                            [defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+
+                        }
+                    }
+                    else
+                    {
+                        delete psExecuteBusEventHandler;
+                        psExecuteBusEventHandler=NULL;
+                    }
+                }
+                else if(eBusEventHandler ==  BUS_CONNECT&&
                         m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread == NULL )
                 {
                     //to pass this object and pointer to dll handler
@@ -1121,6 +1314,19 @@ BOOL CExecuteFunc::bInitMSGStruct(CStringArray& omErrorArray)
                             (PFMSG_HANDLER_CAN)GetProcAddress(m_hDllModule,
                             LPCSTR(m_omStrGenericHandlerName.GetBuffer(MAX_PATH)));
                             if(m_pFGenericMsgHandlerCAN != NULL )
+                            {
+                                m_psMsgHandlersInfo->m_bGenericHandlerON = TRUE;
+                            }
+                            else
+                            {
+                                bReturn = FALSE ;
+                            }
+                        }
+                        else if(m_eBus == LIN)
+                        {
+                            m_pFGenericMsgHandlerLIN = (PFMSG_HANDLER_LIN)GetProcAddress(m_hDllModule,
+                                                       LPCSTR(m_omStrGenericHandlerName.GetBuffer(MAX_PATH)));
+                            if(m_pFGenericMsgHandlerLIN != NULL )
                             {
                                 m_psMsgHandlersInfo->m_bGenericHandlerON = TRUE;
                             }
@@ -1531,6 +1737,109 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray& omErrorArray)
     return bReturn;
 }
 
+
+/******************************************************************************/
+/*  Function Name    :  bInitErrorStructLIN                                      */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :                                                        */
+
+/*  Member of        :  CExecuteFunc                                          */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :                                                         */
+/*  Date Created     :                                                          */
+/*  Modification By  :                                                     */
+/*  Modification on  :                                                       */
+/*                                                                           */
+/******************************************************************************/
+BOOL CExecuteFunc::bInitEventStructLIN(CStringArray& omErrorArray)
+{
+    UINT unErrorHandlerCount = 0;
+    BOOL bReturn     = TRUE;
+    unErrorHandlerCount = (COMMANUINT)m_omStrArrayErrorHandlers.GetSize();
+    if(unErrorHandlerCount>0)
+    {
+        if(m_psOnEventHandlersLin != NULL )
+        {
+            delete []m_psOnEventHandlersLin ;
+            m_psOnEventHandlersLin = NULL;
+        }
+        else
+        {
+            m_psOnEventHandlersLin = new  SEVENTHANDLERLIN[unErrorHandlerCount];
+        }
+        if(m_psOnEventHandlersLin !=NULL)
+        {
+            for(    UINT unErrorCount = 0;
+                    unErrorCount < unErrorHandlerCount;
+                    unErrorCount++    )
+            {
+                eLinBusEventType eEventCode  = EVENT_LIN_NONE;
+                CString omStrErrorHandlerName = "";
+                omStrErrorHandlerName =
+                    m_omStrArrayErrorHandlers.GetAt(unErrorCount);
+                TRY
+                {
+                    m_psOnEventHandlersLin[unErrorCount].m_pfEventHandlersLin
+                    = (PFEVENT_HANDLER)GetProcAddress(m_hDllModule,
+                    /*T2A*/(omStrErrorHandlerName.GetBuffer(MAX_PATH)));
+                    if(m_psOnEventHandlersLin[unErrorCount].m_pfEventHandlersLin == NULL)
+                    {
+                        bReturn = FALSE;
+                    }
+                    if(omStrErrorHandlerName.Find("Error_Checksum") != -1)
+                    {
+                        eEventCode = EVENT_LIN_ERRCRC;
+                    }
+                    else if(omStrErrorHandlerName.Find("Error_Receive_Frame") != -1)
+                    {
+                        eEventCode = EVENT_LIN_ERRMSG;
+                    }
+                    else if(omStrErrorHandlerName.Find("Error_Slave_No_Response") != -1)
+                    {
+                        eEventCode = EVENT_LIN_ERRNOANS ;
+                    }
+                    else if(omStrErrorHandlerName.Find("Error_Sync") != -1)
+                    {
+                        eEventCode = EVENT_LIN_ERRSYNC;
+                    }
+
+                    m_psOnEventHandlersLin[unErrorCount].m_eLinEventCode = eEventCode;
+                }
+                CATCH_ALL(pomException)
+                {
+                    if(pomException != NULL )
+                    {
+                        char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+
+                        // PTV CPP
+                        //acErrorMsg[defSIZE_OF_ERROR_BUFFER];
+                        CString omStrErrorMessage ="";
+                        // Get the exception error message
+                        pomException->GetErrorMessage(acErrorMsg,
+                                                      sizeof(acErrorMsg));
+                        omStrErrorMessage.Format( _(defSTR_ERROR_LOADING_HANDLER),
+                                                  _(defSTR_ERROR_HANDLER),
+                                                  acErrorMsg );
+                        //Display the error
+                        /*AfxMessageBox( omStrErrorMessage ,
+                                       MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);*/
+                        omErrorArray.Add(omStrErrorMessage);
+                        pomException->Delete();
+                    }
+                    bReturn = FALSE;
+                }
+                END_CATCH_ALL
+            }
+        }
+        else
+        {
+            bReturn = FALSE;
+        }
+    }
+    return bReturn;
+}
+
 /******************************************************************************/
 /*  Function Name    :  bInitEventStruct                                      */
 /*  Input(s)         :                                                        */
@@ -1745,7 +2054,11 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
                     {
                         bReturn = FALSE;
                     }
-                    if(omStrBusEvHandlerName.Find(_T("Connect")) != -1)
+                    if(omStrBusEvHandlerName.Find(_T("Pre_Connect")) != -1)
+                    {
+                        eBusEventCode = BUS_PRE_CONNECT ;
+                    }
+                    else if(omStrBusEvHandlerName.Find(_T("Connect")) != -1)
                     {
                         eBusEventCode = BUS_CONNECT ;
                     }
@@ -1753,6 +2066,7 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
                     {
                         eBusEventCode = BUS_DISCONNECT ;
                     }
+
                     m_psOnBusEventHandlers[unBusEventCount].m_eBusEvHandler = eBusEventCode;
                 }
                 CATCH_ALL(pomException)
@@ -1951,6 +2265,28 @@ BOOL CExecuteFunc::bAllocateMemory(UINT unMsgRangeCount)
                 bReturn = FALSE;
             }
         }
+        else if(m_eBus == LIN)
+        {
+            if(m_psOnMsgIDRangeHandlersLIN != NULL )
+            {
+                delete []m_psOnMsgIDRangeHandlersLIN;
+                m_psOnMsgIDRangeHandlersLIN = NULL;
+            }
+            // Allocate memory for message Id range handlers
+            if(m_psOnMsgIDRangeHandlersLIN == NULL)
+            {
+                m_psOnMsgIDRangeHandlersLIN =
+                    new SMSGID_RANGE_HANDLER_LIN[unMsgRangeCount];
+                if(m_psOnMsgIDRangeHandlersLIN == NULL )
+                {
+                    bReturn = FALSE;
+                }
+            }
+            else
+            {
+                bReturn = FALSE;
+            }
+        }
         else //If its any other bus use generics structure
         {
             if(m_psOnMsgIDRangeHandlers != NULL )
@@ -2028,21 +2364,42 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
             {
                 SMSG_NAME_CODE sMsgCode;
                 sMsgCode.m_omMsgName = omStrMsgNameOrID;
-                POSITION    pos = NULL, MainPos = NULL;
-                MainPos =  CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
 
-                while(MainPos != NULL)
+                if(m_eBus != LIN)
                 {
-                    SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_eBus).
-                                                m_odMsgNameMsgCodeListDb.GetNext(MainPos);
-                    sMsgCode.m_dwMsgCode = -1;
-                    pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgCode);
-                    if(pos != NULL)         //if present stop searching
+                    POSITION    pos = NULL, MainPos = NULL;
+                    MainPos =  CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
+                    while(MainPos != NULL)
                     {
-                        sMsgCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos);
-                        //sMsgCode = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetAt(pos);
-                        nMsgID = sMsgCode.m_dwMsgCode;
-                        break;
+                        SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_eBus).
+                                                    m_odMsgNameMsgCodeListDb.GetNext(MainPos);
+                        sMsgCode.m_dwMsgCode = -1;
+                        pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgCode);
+                        if(pos != NULL)         //if present stop searching
+                        {
+                            sMsgCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos);
+                            //sMsgCode = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetAt(pos);
+                            nMsgID = sMsgCode.m_dwMsgCode;
+                            break;
+                        }
+                    }
+                }
+                else if(m_eBus == LIN)
+                {
+                    list<FRAME_STRUCT> lstMsgNames;
+                    CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[m_sNodeInfo.m_unChannel].m_ouClusterInfo.GetFrames(lstMsgNames);
+
+                    list<FRAME_STRUCT>::iterator itrLstMsg;
+                    for(itrLstMsg = lstMsgNames.begin(); itrLstMsg != lstMsgNames.end(); itrLstMsg++)
+                    {
+                        if(omStrMsgNameOrID.CompareNoCase(itrLstMsg->m_strFrameName.c_str()) == 0)
+                        {
+                            sMsgCode.m_dwMsgCode = itrLstMsg->m_nSlotId;
+                            nMsgID = sMsgCode.m_dwMsgCode;
+                            sMsgCode.m_unMsgLen = itrLstMsg->m_nLength;
+                            itrLstMsg->GetSignalNames(sMsgCode.m_omSignalNames);
+                            break;
+                        }
                     }
                 }
             }
@@ -2066,6 +2423,22 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                         // Assign Proc Address
                         sMsgHandler.m_pFMsgHandler = pfTemp;
                         m_omMsgHandlerMapCAN[nMsgID] = sMsgHandler;
+                    }
+                    else
+                    {
+                        bReturn = FALSE;
+                    }
+                }
+                else if (m_eBus == LIN) //If CAN use separate structure
+                {
+                    PFMSG_HANDLER_LIN pfTemp = ( PFMSG_HANDLER_LIN)
+                                               GetProcAddress(m_hDllModule,omStrFuncName.GetBuffer(MAX_PATH));
+                    if( pfTemp != NULL)
+                    {
+                        SMSGHANDLERDATA_LIN sMsgHandler;
+                        // Assign Proc Address
+                        sMsgHandler.m_pFMsgHandler = pfTemp;
+                        m_omMsgHandlerMapLIN[nMsgID] = sMsgHandler;
                     }
                     else
                     {
@@ -2172,6 +2545,24 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
                     if(   m_psOnMsgIDRangeHandlersCAN[i].m_pFMsgHandler == NULL
                     || unMsgIDFrom < 0
                     || unMsgIDTo   < 0  )
+                    {
+                        bReturn = FALSE;
+                    }
+                }
+                else if (m_eBus == LIN) // Use a separate structure 'm_psOnMsgIDRangeHandlersCAN'
+                {
+                    // Assign proc address to correct index
+                    m_psOnMsgIDRangeHandlersLIN[i].m_pFMsgHandler =
+                        (PFMSG_HANDLER_LIN)GetProcAddress(m_hDllModule,
+                                                          LPTSTR(omStrFuncName.GetBuffer(MAX_PATH)));
+                    m_psOnMsgIDRangeHandlersLIN[i].m_sMsgIDRange.m_unFrom =
+                        unMsgIDFrom;
+                    m_psOnMsgIDRangeHandlersLIN[i].m_sMsgIDRange.m_unTo = unMsgIDTo;
+                    m_psMsgHandlersInfo->m_psRange[i].m_unFrom = unMsgIDFrom;
+                    m_psMsgHandlersInfo->m_psRange[i].m_unTo   = unMsgIDTo;
+                    if(   m_psOnMsgIDRangeHandlersLIN[i].m_pFMsgHandler == NULL
+                            || unMsgIDFrom < 0
+                            || unMsgIDTo   < 0  )
                     {
                         bReturn = FALSE;
                     }
@@ -2359,6 +2750,41 @@ PFMSG_HANDLER_CAN CExecuteFunc::pFSearchMsgIdListHandlerCAN(UINT unMsgId)
     return pFMsgHandler;
 }
 /******************************************************************************/
+/*  Function Name    :  pFSearchMsgIdListHandlerLIN                             */
+/*  Input(s)         :  unMsgID:Message Id                                    */
+/*  Output           :  PFMSG_HANDLER: Pointer to message handler function    */
+/*  Functionality    :  This function is called to initialise get the matching*/
+/*                      message id range handlers corresponding to message ID */
+/*                      passed as parameter. Only LIN                         */
+/*  Member of        :  CExecuteFunc                                          */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :                                                        */
+/*  Modification By  :                                                        */
+/*  Modification on  :                                                        */
+/******************************************************************************/
+PFMSG_HANDLER_LIN CExecuteFunc::pFSearchMsgIdListHandlerLIN(UINT unMsgId)
+{
+    UINT unMsgHandlerCount   = 0;
+    PFMSG_HANDLER_LIN pFMsgHandler = NULL;
+
+    unMsgHandlerCount = (COMMANUINT)m_omStrArrayMsgList.GetSize();
+    UINT unMsgCount = 0;
+    while (unMsgCount < unMsgHandlerCount )
+    {
+
+        POSITION pos = m_psOnMsgIDListHandlersLIN[unMsgCount].m_listMsgId.Find(unMsgId);
+        if(pos != NULL)
+        {
+            pFMsgHandler = m_psOnMsgIDListHandlersLIN[unMsgCount].m_pFMsgHandler;
+            break;
+        }
+        unMsgCount++;
+    }
+
+    return pFMsgHandler;
+}
+/******************************************************************************/
 /*  Function Name    :  pFSearchMsgIdRangeHandlerCAN                             */
 /*  Input(s)         :  unMsgID:Message Id                                    */
 /*  Output           :  PFMSG_HANDLER: Pointer to message handler function    */
@@ -2394,6 +2820,53 @@ PFMSG_HANDLER_CAN CExecuteFunc::pFSearchMsgIdRangeHandlerCAN(UINT unMsgID)
             {
                 pFMsgHandler =
                     m_psOnMsgIDRangeHandlersCAN[unMsgCount].m_pFMsgHandler;
+            }
+            bMsgHandlerExecuted = TRUE;
+        }
+        unMsgCount++;
+    }
+
+    return pFMsgHandler;
+}
+
+
+
+/******************************************************************************/
+/*  Function Name    :  pFSearchMsgIdRangeHandlerLIN                             */
+/*  Input(s)         :  unMsgID:Message Id                                    */
+/*  Output           :  PFMSG_HANDLER: Pointer to message handler function    */
+/*  Functionality    :  This function is called to initialise get the matching*/
+/*                      message id range handlers corresponding to message ID */
+/*                      passed as parameter. Only CAN                                  */
+/*  Member of        :  CExecuteFunc                                          */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  05.03.2003                                            */
+/*  Modification By  :                                                        */
+/*  Modification on  :                                                        */
+/******************************************************************************/
+PFMSG_HANDLER_LIN CExecuteFunc::pFSearchMsgIdRangeHandlerLIN(UINT unMsgID)
+{
+    UINT unMsgHandlerCount   = 0;
+    BOOL bMsgHandlerExecuted = FALSE;
+    UINT unMsgIDFrom         = 0;
+    UINT unMsgIDTo           = 0;
+    PFMSG_HANDLER_LIN pFMsgHandler = NULL;
+
+    unMsgHandlerCount = (COMMANUINT)m_omStrArrayMsgRange.GetSize();
+    UINT unMsgCount = 0;
+    while (unMsgCount < unMsgHandlerCount && bMsgHandlerExecuted != TRUE)
+    {
+        unMsgIDTo   =
+            m_psOnMsgIDRangeHandlersLIN[unMsgCount].m_sMsgIDRange.m_unTo;
+        unMsgIDFrom =
+            m_psOnMsgIDRangeHandlersLIN[unMsgCount].m_sMsgIDRange.m_unFrom;
+        if (unMsgID >=unMsgIDFrom  && unMsgID <= unMsgIDTo)
+        {
+            if (m_psOnMsgIDRangeHandlersLIN[unMsgCount].m_pFMsgHandler != NULL)
+            {
+                pFMsgHandler =
+                    m_psOnMsgIDRangeHandlersLIN[unMsgCount].m_pFMsgHandler;
             }
             bMsgHandlerExecuted = TRUE;
         }
@@ -2570,6 +3043,16 @@ BOOL CExecuteFunc::bActivateDeactivateHandlers(BOOL bCurrStatus)
     {
         m_pomMsgHandlerThrd=AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
     }
+    if(psNodeInfo != NULL)
+    {
+        if(psNodeInfo->m_eBus == LIN)
+        {
+            if(m_pomMsgHandlerThrdLIN == NULL)
+            {
+                m_pomMsgHandlerThrdLIN=AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
+            }
+        }
+    }
     return true;
 
 }
@@ -2717,6 +3200,10 @@ BOOL CExecuteFunc::bEnableDisableMsgHandlers(BOOL bEnable)
     {
         m_pomMsgHandlerThrd = AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
     }
+    if((TRUE == bEnable) && (m_pomMsgHandlerThrdLIN == NULL))
+    {
+        m_pomMsgHandlerThrdLIN = AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
+    }
     return true;
 }
 
@@ -2850,6 +3337,27 @@ VOID CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
         }
     }
 
+    // if key handler thread exists
+    if ( bySelectThread != 0 && m_pomMsgHandlerThrdLIN != NULL &&
+            (m_pomMsgHandlerThrdLIN->m_hThread != NULL ))
+    {
+        // Set the flag to exit from thread.
+        m_bStopMsgHandlers = TRUE;
+        // Wait for thread to exit.
+        dwResult = WaitForSingleObject(m_aomState[defMSG_HANDLER_THREAD],
+                                       unMaxWaitTime);
+        // If time out, come to begining of buffer there
+        // will not be read or write operation,thread will be in
+        //waiting state
+        if( dwResult == WAIT_TIMEOUT )
+        {
+            m_unReadQMsgIndexLIN=0;
+            m_unWriteQMsgIndexLIN=0;
+            TerminateThread(m_pomMsgHandlerThrdLIN->m_hThread,0);
+            //delete m_pomMsgHandlerThrd ;
+            m_pomMsgHandlerThrdLIN = NULL;
+        }
+    }
     bySelectThread  =
         static_cast<UCHAR>( byThreadCode & BIT_KEY_HANDLER_THREAD );
     // if key handler thread exists
@@ -2982,6 +3490,7 @@ BOOL CExecuteFunc::bUnloadDll()
     // Set the flag to exit from thread.
     m_bDllLoaded = FALSE;
     m_omReadFromQEvent.SetEvent();
+    m_omReadFromQEventLIN.SetEvent();
     vDestroyUtilityThreads(
         defWAIT_DELAY_FOR_DLL_UNLOAD,
         BIT_MSG_HANDLER_THREAD );
@@ -3105,6 +3614,67 @@ void CExecuteFunc::vWriteInQMsg(STCAN_TIME_MSG sRxMsgInfo)
 
 
 /****************************************************************************************
+    Function Name    :  vWriteInQMsg
+    Input(s)         :  sTCANDATA / message structure
+    Output           :
+    Functionality    :  This function write into message handler buffer associated to
+                        each object.
+    Member of        :  CExecuteFunc
+    Author(s)        :  Anish kumar
+    Date Created     :  16.12.05
+****************************************************************************************/
+void CExecuteFunc::vWriteInQMsgLIN(STLIN_TIME_MSG sRxMsgInfo)
+{
+    if(m_bStopMsgHandlers==FALSE)
+    {
+        if(m_unQMsgCountLIN<1000)
+        {
+            EnterCriticalSection(&m_CritSectForFuncBufLIN);
+            CBaseDIL_LIN* pBaseDIL_LIN = CGlobalObj::GetILINDIL();
+            if(pBaseDIL_LIN)
+            {
+                SYSTEMTIME CurrSysTime;
+                UINT64 unAbsTime;
+                pBaseDIL_LIN->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime);
+                sRxMsgInfo.m_ulTimeStamp -= (ULONG)unAbsTime;
+            }
+            m_asQMsgLIN[m_unWriteQMsgIndexLIN] = sRxMsgInfo;
+            LeaveCriticalSection(&m_CritSectForFuncBufLIN);
+            m_unQMsgCountLIN++;
+            //for circular buffer
+            m_unWriteQMsgIndexLIN=(m_unWriteQMsgIndexLIN+1)%defMAX_FUNC_MSG;
+            //set event for read thread
+            m_omReadFromQEventLIN.SetEvent();
+        }
+        else
+        {
+            //COMMENTED BY AK********
+            //::PostMessage(g_hMainGUI,WM_ERROR,ERROR_DLLMSG_BUFF_OVERFLOW,0);
+        }
+    }
+}
+
+/****************************************************************************************
+    Function Name    :  sReadFromQMsg
+    Input(s)         :
+    Output           :  message structure
+    Functionality    :  This function read fron message queue
+    Member of        :  CExecuteFunc
+    Author(s)        :  Anish kumar
+    Date Created     :  16.12.05
+****************************************************************************************/
+STLIN_TIME_MSG CExecuteFunc::sReadFromQMsgLIN()
+{
+    STLIN_TIME_MSG sRxMsgInfo;
+    EnterCriticalSection(&m_CritSectForFuncBufLIN);
+    sRxMsgInfo = m_asQMsgLIN[m_unReadQMsgIndexLIN];
+    LeaveCriticalSection(&m_CritSectForFuncBufLIN);
+    m_unQMsgCountLIN--;
+    m_unReadQMsgIndexLIN=(m_unReadQMsgIndexLIN+1)%defMAX_FUNC_MSG;
+    return sRxMsgInfo;
+}
+
+/****************************************************************************************
     Function Name    :  sReadFromQMsg
     Input(s)         :
     Output           :  message structure
@@ -3138,6 +3708,22 @@ UINT CExecuteFunc::unGetBufferMsgCnt()
     return m_unQMsgCount;
 }
 
+
+/****************************************************************************************
+    Function Name    :  unGetBufferMsgCntLIN
+    Input(s)         :
+    Output           :  no. of messages in message queue/buffer
+    Functionality    :  Returns no. of messages in message queue/buffer
+    Member of        :  CExecuteFunc
+    Author(s)        :  Anish kumar
+    Date Created     :  16.12.05
+****************************************************************************************/
+UINT CExecuteFunc::unGetBufferMsgCntLIN()
+{
+    return m_unQMsgCountLIN;
+}
+
+
 void CExecuteFunc::vInitialiseInterfaceFnPtrs(HMODULE hLib)
 {
     switch (m_eBus)
@@ -3150,6 +3736,11 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrs(HMODULE hLib)
         case J1939:
         {
             vInitialiseInterfaceFnPtrsJ1939(hLib);
+        }
+        break;
+        case LIN:
+        {
+            vInitialiseInterfaceFnPtrsLIN(hLib);
         }
         break;
     }
@@ -3534,6 +4125,196 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsCAN(HMODULE hModuleHandle)
 }
 
 
+/******************************************************************************/
+/*  Function Name    :  vInitialiseInterfaceFnPtrslin                         */
+/*  Input(s)         :                                                        */
+/*  Output           :                                                        */
+/*  Functionality    :  This function will be called during dll load to init  */
+/*                      Interface functions                                   */
+/*                                                                            */
+/*  Member of        :  CExecuteManager                                       */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Amitesh Bharti                                        */
+/*  Date Created     :  22.07.2004                                            */
+/*  Modification by  :  Anish kumar
+    Modification on  :  19.12.05,Message enable/disable API initialization
+                        is added(DllMsgOnOff),moved from CmainFrame,
+/******************************************************************************/
+void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
+{
+    // For sending message, the DLL should call nWriteToCAN
+    // function defined in the application. This is possible
+    // only when the DLL has address of nWriteToCAN. The DLL
+    // exports a function which the application must call to
+    // pass address of nWriteToCAN. This same concept is used
+    // all interface functions.
+    DLLFUNCPROC DllFuncProc = (DLLFUNCPROC) GetProcAddress(
+                                  hModuleHandle, (char*) NAME_FUNC_USERDLL);
+    if (DllFuncProc != NULL)
+    {
+        (*DllFuncProc)((APPFUNCPROC)gunSendMsg_LIN);
+    }
+
+    DLLLOGPROC DllLogEnableProc = (DLLLOGPROC)
+                                  GetProcAddress(hModuleHandle,
+                                          (char*) NAME_FUNC_LOG_ENABLE);
+    if (DllLogEnableProc != NULL)
+    {
+        (*DllLogEnableProc)((LOGENABLE)gbEnableDisableLog);
+    }
+
+    DLLLOGPROC DllLogDisableProc = (DLLLOGPROC)
+                                   GetProcAddress(hModuleHandle,
+                                           (char*) NAME_FUNC_LOG_DISABLE);
+    if (DllLogDisableProc != NULL)
+    {
+        (*DllLogDisableProc)((LOGENABLE)gbEnableDisableLog);
+    }
+
+    DLLLOGFILEPROC DllLogFileProc = (DLLLOGFILEPROC)
+                                    GetProcAddress(hModuleHandle,
+                                            (char*) NAME_FUNC_LOG_FILE);
+    if (DllLogFileProc != NULL)
+    {
+        (*DllLogFileProc)((WRITETOLOGFILE)gbWriteToLog);
+    }
+
+    DLLTRACEPROC DllTraceFileProc = (DLLTRACEPROC)
+                                    GetProcAddress(hModuleHandle,
+                                            (char*) NAME_FUNC_TRACE);
+    if (DllTraceFileProc != NULL)
+    {
+        (*DllTraceFileProc)((WRITETOTRACE)gbSendStrToTrace);
+    }
+
+    DLLCONTROLLERMODEPROC DllControllerModeProc =
+        (DLLCONTROLLERMODEPROC) GetProcAddress(hModuleHandle,
+                (char*) NAME_FUNC_CONTROLLER_MODE);
+    if (DllControllerModeProc != NULL)
+    {
+        (*DllControllerModeProc)(gvSetControllerMode_LIN);
+    }
+    DLLONLINEOFFLINEPROC DllOnlineProc =
+        (DLLONLINEOFFLINEPROC) GetProcAddress(hModuleHandle,
+                (char*) NAME_FUNC_ONLINE);
+    if (DllOnlineProc != NULL)
+    {
+        (*DllOnlineProc)(gbActivateDeactivateHandlers);
+    }
+
+    DLLONLINEOFFLINEPROC DllOfflineProc =
+        (DLLONLINEOFFLINEPROC) GetProcAddress(hModuleHandle,
+                (char*) NAME_FUNC_OFFLINE);
+    if (DllOfflineProc != NULL)
+    {
+        (*DllOfflineProc)(gbActivateDeactivateHandlers);
+    }
+
+    DLLDISCONNECTPROC DllDisconnectProc = (DLLDISCONNECTPROC)
+                                          GetProcAddress(hModuleHandle,
+                                                  (char*) NAME_FUNC_DISCONNECT);
+    if (DllDisconnectProc != NULL)
+    {
+        (*DllDisconnectProc)((DISCONNECT)gbStartStopHardware_LIN) ;
+    }
+
+    DLLDISCONNECTPROC DllConnectProc = (DLLDISCONNECTPROC)
+                                       GetProcAddress(hModuleHandle,
+                                               (char*) NAME_FUNC_CONNECT);
+    if (DllConnectProc != NULL)
+    {
+        (*DllConnectProc)((DISCONNECT)gbStartStopHardware_LIN) ;
+    }
+
+
+    DLLSTARTSTOPTIMERPROC DllStartProc =
+        (DLLSTARTSTOPTIMERPROC) GetProcAddress(hModuleHandle,
+                (char*) NAME_FUNC_START_TIMER);
+    if (DllStartProc != NULL)
+    {
+        (*DllStartProc)(gbSetResetTimer) ;
+    }
+
+    DLLSTARTSTOPTIMERPROC DllStopProc =
+        (DLLSTARTSTOPTIMERPROC) GetProcAddress(hModuleHandle,
+                (char*) NAME_FUNC_STOP_TIMER);
+    if (DllStopProc != NULL)
+    {
+        (*DllStopProc)(gbSetResetTimer) ;
+    }
+
+    DLLSETTIMERVAL pFDllSetTimerValProc =
+        (DLLSETTIMERVAL) GetProcAddress(hModuleHandle,
+                                        (char*) defNAME_FUNC_SET_TIMER_VAL);
+    if (pFDllSetTimerValProc != NULL)
+    {
+        (*pFDllSetTimerValProc)(gbSetTimerVal) ;
+    }
+
+    DLLENABLEDISABLEMSGHANDLERS pFDllSetMsgHandlersProc =
+        (DLLENABLEDISABLEMSGHANDLERS) GetProcAddress(hModuleHandle,
+                (char*) defNAME_FUNC_MSG_HANDLERS);
+    if (pFDllSetMsgHandlersProc != NULL)
+    {
+        (*pFDllSetMsgHandlersProc)(gbEnableDisableMsgHandlers) ;
+    }
+
+    DLLENABLEDISABLEKEYHANDLERS pFDllSetKeyHandlersProc =
+        (DLLENABLEDISABLEKEYHANDLERS) GetProcAddress(hModuleHandle,
+                (char*) defNAME_FUNC_KEY_HANDLERS);
+    if (pFDllSetKeyHandlersProc != NULL)
+    {
+        (*pFDllSetKeyHandlersProc)(gbEnableDisableKeyHandlers) ;
+    }
+
+    DLLENABLEDISABLEERRORHANDLERS pFDllSetErrorHandlersProc =
+        (DLLENABLEDISABLEERRORHANDLERS) GetProcAddress(hModuleHandle,
+                (char*) defNAME_FUNC_ERROR_HANDLERS);
+    if (pFDllSetErrorHandlersProc != NULL)
+    {
+        (*pFDllSetErrorHandlersProc)(gbEnableDisableErrorHandlers) ;
+    }
+    DLLMSGTXONOFF DllMsgOnOff = (DLLMSGTXONOFF) GetProcAddress(
+                                    hModuleHandle, (char*) NAME_FUNC_MSGTX_ON_OFF);
+    if (DllMsgOnOff != NULL)
+    {
+        (*DllMsgOnOff)(gbMsgTransmissionOnOff);
+    }
+    DLLGETNODEHANDLER DllGetNodeHandler = (DLLGETNODEHANDLER)GetProcAddress(
+            hModuleHandle,(char*) NAME_FUNC_SETDLLHANDLE);
+    if(DllGetNodeHandler != NULL)
+    {
+        (*DllGetNodeHandler)(ghGetNodeDllHandler);
+    }
+    SETKEYPRESSED pfSetKeyPressed = (SETKEYPRESSED)GetProcAddress(hModuleHandle, (char*)NAME_FUNC_KEYPRESSED);
+    if( NULL != pfSetKeyPressed )
+    {
+        pfSetKeyPressed(sg_KeyPressed);
+    }
+
+    DLLGETMESSAGENAME pfGetMessageName = (DLLGETMESSAGENAME)GetProcAddress(
+            hModuleHandle,(char*)NAME_FUNC_GETMESSAGENAME);
+    if( NULL != pfGetMessageName )
+    {
+        (*pfGetMessageName)(sg_GetMessageName);
+    }
+
+    DLLTIMENOW pfTimeNow = (DLLTIMENOW)GetProcAddress(
+                               hModuleHandle,(char*)NAME_FUNC_TIMENOW);
+    if( NULL != pfTimeNow )
+    {
+        (*pfTimeNow)(sg_TimeNow);
+    }
+
+    DLLGETFIRSTCANDBNAME pfGetFirstCANdbName = (DLLGETFIRSTCANDBNAME)GetProcAddress(
+                hModuleHandle,(char*)NAME_FUNC_GETFIRSTCANDBNAME);
+    if( NULL != pfGetFirstCANdbName )
+    {
+        (*pfGetFirstCANdbName)(gdGetFirstCANdbName);
+    }
+    //TODO::CAPL_NEW_ADDITIONS
+    //Initialise function pointer
+}
 /******************************************************************************
     Function Name    :  bIsDllLoaded
     Input(s)         :

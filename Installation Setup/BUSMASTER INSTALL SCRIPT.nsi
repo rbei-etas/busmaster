@@ -343,7 +343,12 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\TXWindowFlexRay.dll bTxWndFlexEtasbExists
 	bTxWndFlexEtasbExists:
 			Delete "$INSTDIR\TXWindowFlexRay.dll"
-			
+	
+	; Deleting If LIN_Vector_XL.dll exists
+	IfFileExists $INSTDIR\LIN_Vector_XL.dll bTxWndLINEtasbExists
+	bTxWndLINEtasbExists:
+			Delete "$INSTDIR\LIN_Vector_XL.dll"	
+				
 	; Deleting If CAN_ICS_neoVI.dll exists
 	IfFileExists $INSTDIR\CAN_ICS_neoVI.dll bCanneoVIbExists
 	bCanneoVIbExists:
@@ -432,6 +437,11 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\GCCDLLMakeTemplate_J1939 bGCCJbExists
 	bGCCJbExists:
 			Delete "$INSTDIR\GCCDLLMakeTemplate_J1939"
+			
+	; Deleting If GCCDLLMakeTemplate_LIN exists
+	IfFileExists $INSTDIR\GCCDLLMakeTemplate_LIN bGCCLbExists
+	bGCCLbExists:
+			Delete "$INSTDIR\GCCDLLMakeTemplate_LIN"
 			
 	; Deleting If mhsbmcfg.dll exists
 	IfFileExists $INSTDIR\mhsbmcfg.dll bmhscfgbExists
@@ -748,7 +758,12 @@ Section "BUSMASTER"
 	bController1Exists:
 			Delete "$INSTDIR\Controller_1.dll"	
 			
-	; PTV END
+	; Deleting If LIN_Vector_XL.dll exists
+	IfFileExists $INSTDIR\LIN_Vector_XL.dll bLinVctrbExists
+	bLinVctrbExists:
+			Delete "$INSTDIR\LIN_Vector_XL.dll"
+
+			; PTV END
 	
 	
     ; BUSMASTER
@@ -765,6 +780,7 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\Filter.dll
     File ..\Sources\BIN\Release\FrameProcessor.dll
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN
+	File ..\Sources\BIN\Release\GCCDLLMakeTemplate_LIN
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_J1939
     File ..\Sources\BIN\Release\mhsbmcfg.dll
     File ..\Sources\BIN\Release\NodeSimEx.dll
@@ -783,11 +799,11 @@ Section "BUSMASTER"
 	File ..\Sources\BIN\Release\zlib1.dll
 	File ..\Sources\BIN\Release\intl.dll
 	File ..\Sources\BIN\Release\LIN_ISOLAR_EVE_VLIN.dll
-	File ..\Sources\BIN\Release\TXWindowLIN.dll
 	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA.dll
 	File ..\Sources\BIN\Release\TXWindowFlexRay.dll
 	File ..\Sources\BIN\Release\Controller_0.dll
 	File ..\Sources\BIN\Release\Controller_1.dll
+	File ..\Sources\BIN\Release\LIN_Vector_XL.dll
 
     ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins
@@ -804,15 +820,18 @@ Section "BUSMASTER"
 	SetOutPath "$INSTDIR\SimulatedSystems\include\"
 	; Simulated Systems Include files
 	File ..\Sources\BIN\Release\SimulatedSystems\include\CANIncludes.h 
+	File ..\Sources\BIN\Release\SimulatedSystems\include\LINIncludes.h
 	File ..\Sources\BIN\Release\SimulatedSystems\include\CAPLWrapper.h
 	File ..\Sources\BIN\Release\SimulatedSystems\include\Common.h
 	File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_CAN.h
+	File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_LIN.h
 	File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_J1939.h
 	File ..\Sources\BIN\Release\SimulatedSystems\include\J1939Includes.h
 	
 	SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
 	; Simulated Systems Library files
 	File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_CAN.a
+	File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_LIN.a
 	File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_J1939.a
 
 	SetOutPath $INSTDIR\

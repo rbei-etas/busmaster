@@ -49,9 +49,9 @@ static ENTRY_DIL sg_ListDIL[] =
     /* PTV[1.6.4] */
     // Added Short cut keys
     /* simulation should be the first entry... */
-    {DRIVER_LIN_DEACTIVATE_VLIN, "&Deactivate"},
-    {DRIVER_LIN_ISOLAR_EVE_VLIN, "ETAS &ISOLAR-EVE"},
-
+    {DAL_LIN_NONE, "&Deactivate"},
+    {DRIVER_LIN_ISOLAR_EVE_VLIN,"ETAS &ISOLAR-EVE"},
+    {DRIVER_LIN_VECTOR_XL, "&Vector XL"},
 };
 
 CDIL_LIN::CDIL_LIN()
@@ -198,7 +198,9 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                      pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("LIN not Active..."));
                  }
                      return hResult;*/
-
+            case DRIVER_LIN_VECTOR_XL:
+                m_hDll = LoadLibrary("LIN_Vector_XL.dll");
+                break;
             default:
                 vSelectInterface_Dummy();
                 m_dwDriverID = DAL_NONE;
@@ -443,10 +445,11 @@ HRESULT CDIL_LIN::DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Leng
  * To set the configuration data for the currently selected DIL. Caller must
  * release the memory.
  */
-HRESULT CDIL_LIN::DILL_SetConfigData(PSCONTROLLER_DETAILS pInitData, int Length)
+HRESULT CDIL_LIN::DILL_SetConfigData( ClusterConfig& ouConfig)
 {
+    PSCONTROLLER_DETAILS pInitData;
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
-    return m_pBaseDILLIN_Controller->LIN_SetConfigData(pInitData, Length);
+    return m_pBaseDILLIN_Controller->LIN_SetConfigData(ouConfig);
 }
 
 /**
@@ -467,6 +470,19 @@ HRESULT CDIL_LIN::DILL_StartHardware(void)
         return S_FALSE;
     }
 }
+
+HRESULT CDIL_LIN::DILL_PreStartHardware(void)
+{
+    if ( m_pBaseDILLIN_Controller )
+    {
+        return m_pBaseDILLIN_Controller->LIN_PreStartHardware();
+    }
+    else
+    {
+        return S_FALSE;
+    }
+}
+
 
 /**
  * \brief     Stop the controller
@@ -518,6 +534,13 @@ HRESULT CDIL_LIN::DILL_ResetSlaveRespData(void)
 {
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
     return m_pBaseDILLIN_Controller->LIN_ResetSlaveRespData();
+}
+
+HRESULT CDIL_LIN::DILL_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_DisableSlaveRespData(dwClientID, sMessage);
+
 }
 
 /**

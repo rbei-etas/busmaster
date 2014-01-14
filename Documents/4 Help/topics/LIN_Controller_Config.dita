@@ -11,20 +11,21 @@
     </copyright>
     <metadata>
       <keywords>
-        <indexterm>FlexRay Transmit Window</indexterm>
+        <indexterm>LIN Transmit Window</indexterm>
       </keywords>
     </metadata>
   </prolog>
   <body>
     <p><b>Introduction:</b></p>
     <p>BUSMASTER Can be connected to LIN physical channel using LIN Controller.</p>
-    <p>Currently BUSMASTER Supports the following FlexRay Controllers.</p>
+    <p>Currently BUSMASTER Supports the following LIN Controllers.</p>
     <p><ol>
-        <li> ETAS ISOLAR-EVE.</li>
+        <li>ETAS ISOLAR-EVE.</li>
+        <li>Vector XL</li>
       </ol></p>
     <p><b>Selecting Controller:</b></p>
     <p>To select controller use LIN-&gt;Driver Selection-&gt;<i>{Driver}</i> For example to select ETAS ISOLAR EVE Driver use <b>LIN-&gt;Driver Selection-&gt;ETAS ISOLAR-EVE.</b></p>
     <p/>
-    <p>Once the  Controller is configured BUSMASTER Can be connected to LIN network using <b>LIN-&gt;Connect</b> Menu..</p>
+    <p>Once the  Controller is configured BUSMASTER Can be connected to LIN network using <b>LIN-&gt;Connect</b> Menu.</p>
   </body>
 </topic>

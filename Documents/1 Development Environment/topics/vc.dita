@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
 <topic id="vc" xml:lang="en-us">
-  <title>MS Visual C++ Express 2008 - Compiler and IDE</title>
+  <title>MS Visual C++ Express 2012 - Compiler and IDE</title>
   <prolog>
     <author>Ratnadip Choudhury</author>
     <copyright>
@@ -12,7 +12,7 @@
   <body>
     <section>
       <title>Description</title>
-      <p>The MS Visual Studio is a common build environment and IDE on the Windows platform. MS provides cost-free Express editions that are missing the necessary MFC+ATL libraries. This topic mainly describes how to setup a Visual C++ Express 2008 environment and add the necessary MFC+ATL libraries.</p>
+      <p>The MS Visual Studio is a common build environment and IDE on the Windows platform. MS provides cost-free Express editions that are missing the necessary MFC and ATL libraries. This topic mainly describes how to setup a Visual C++ Express 2012 environment and add the necessary MFC and ATL libraries.</p>
       <p>With the more feature-rich versions, the compilation should work out-of-the-box.</p>
     </section>
     <section>
@@ -66,12 +66,11 @@
       </ul>
       <p>The BUSMASTER project files and the solution file should automatically use WinDDK if it is installed in the standard installation folder. You need to adjust it if necessary.</p>
       <p>If the usual registration does not work for you, read on and learn how to register WinDDK manually in your Visual C++ 2008 environment.</p>
-      <p>A couple of directory paths from WinDDK are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the <uicontrol>Options...</uicontrol> menu item occurring under the <uicontrol>Tools</uicontrol> menu, like shown in the image below:</p>
+      <p>A couple of directory paths from WinDDK are need to be added to the project configuration, to instruct Visual C++ where the MFC related files are found. This can be done by selecting the project <b>Properties</b>  menu item displayed when right clicked on the project in <b>Solution Explorer </b>view like shown in the image below. The properties are set by default. Please verify with the paths added. This has to be checked for all the projects in the Solution Explorer.</p>
       <image href="../images/vc_options.png" placement="break"/>
-      <p>Clicking the menu item <uicontrol>Options...</uicontrol> will result in the following dialog box:</p>
-      <image href="../images/vc_include_files.png" placement="break"/>
-      <p>Please select the node <uicontrol>VC++ Directories</uicontrol> under its parent node <uicontrol>Projects and Solutions</uicontrol> occurring under the left pane. Please select <uicontrol>Include files</uicontrol> entry from the drop-down combo box <uicontrol>Show directories for</uicontrol>. As indicated in the picture, the following path entries need to be added:
-        <ul>
+      <p>Clicking the menu item <uicontrol>Properties</uicontrol> will display the properties window as shown below. Please select the node <uicontrol>VC++ Directories</uicontrol> under its parent node <uicontrol>Configuration Properties</uicontrol> occurring under the left pane. Please select <uicontrol>Include Directories</uicontrol> entry and then select the drop-down combo box and select <b>Edit...</b> as shown below.</p>
+      <image href="../images/vc_include_files_edit.png" placement="break"/>
+      <p>As indicated in the picture below, the following path entries should be listed. If not listed, please add the following entries.<ul>
           <li>
             <filepath>$(DDK_directory)\inc\mfc42</filepath>
           </li>
@@ -80,9 +79,10 @@
           </li>
         </ul></p>
       <p><filepath>$(DDK_directory)</filepath> indicates the directory where DDK has been installed (<filepath>C:\WinDDK\7600.16385.1</filepath> for example)</p>
-      <p>Next, similar procedure should be carried out for <uicontrol>Library files</uicontrol> entry in the already mentioned drop-down combo box, as shown below: </p>
+      <image href="../images/vc_include_files.png" placement="break"/>
+      <p>Next, similar procedure should be carried out for <uicontrol>Library files</uicontrol> entry as shown below: </p>
       <image href="../images/vc_library_files.png" placement="break"/>
-      <p>Please add there:<ul>
+      <p>As indicated in the picture above, the following path entries should be listed. If not listed, please add the following entries. Please add there:<ul>
           <li>
             <filepath>$(DDK_directory)\lib\mfc\i386</filepath>
           </li>

@@ -42,6 +42,7 @@
 typedef enum eBUSEVEHANDLER
 {
     BUS_CONNECT = 0,
+    BUS_PRE_CONNECT,
     BUS_DISCONNECT
 };
 
@@ -74,6 +75,15 @@ typedef enum eTYPE_BUS
     BUS_TOTAL,
     BUS_INVALID
 } ETYPE_BUS;
+
+typedef enum ESTATUS_BUS
+{
+    BUS_PRECONNECT,
+    BUS_CONNECTED,
+    BUS_IDLE,
+    BUS_DISCONNECTED
+};
+
 
 typedef enum eDirection
 {
@@ -188,7 +198,7 @@ const BYTE TYPE_MSG_LIN_FD          = 0x4;
 #define LENGTH_STR_ID_LIN               16
 #define LENGTH_STR_DESCRIPTION_LIN      256
 #define LENGTH_STR_DLC_LIN              3
-#define LENGTH_STR_CHKSUM_LIN           5
+#define LENGTH_STR_CHKSUM_LIN           24
 #define LENGTH_STR_MSGTYPE_LIN          32
 #define LENGTH_STR_CHANNEL_LIN          4
 #define LENGTH_STR_DIRECTION_LIN        4

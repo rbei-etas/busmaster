@@ -626,7 +626,7 @@ VOID CTxMsgManager::vDeleteTxBlockMemory()
 ******************************************************************************/
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
 UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
-{	
+{
     s_omState.ResetEvent();
     PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA> (pParam);
     if(psTxCanMsg != NULL)
@@ -644,7 +644,7 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
         }
         delete [](psTxCanMsg->m_psTxMsg);
         psTxCanMsg->m_psTxMsg = NULL;
-		delete psTxCanMsg;
+        delete psTxCanMsg;
         psTxCanMsg = NULL;
     }
     s_sUtilThread.m_pvThread = NULL;

@@ -8,6 +8,13 @@
 #include "Base_FlexRay_Buffer.h"
 #include "FEALData.h"
 
+typedef enum eTXWNDDETAILS
+{
+    TX_MSG_BLOCK_COUNT,    // Message Block count
+    TX_WND_SPLITTER_DATA,
+    TX_WINDOW_PLACEMENT,
+};
+
 enum
 {
     FLEXRAY_DRIVER_STUB         = 0x00,
@@ -25,17 +32,19 @@ typedef enum FLEX_CHANNEL
 } FLEX_CHANNEL;
 
 class CTxFlexRayDataStore;
+class CTxLINDataStore;
 typedef struct tagSCALCEXECTIMETHREAD
 {
     bool                    m_bThreadStop;
     CWinThread*             m_pomThreadPtr;
     CEvent                  m_omExitThreadEvent;
     CTxFlexRayDataStore*    m_pTxFlexRayDataStore;
+    CTxLINDataStore*        m_pTxLINDataStore;
     tagSCALCEXECTIMETHREAD()
     {
         m_bThreadStop  = FALSE;
         m_pomThreadPtr = NULL;
-        m_pTxFlexRayDataStore = NULL;
+        m_pTxLINDataStore = NULL;
     }
 } SCALCEXECTIMETHREAD,*PSCALCEXECTIMETHREAD;
 typedef enum MSGBUFTYPE

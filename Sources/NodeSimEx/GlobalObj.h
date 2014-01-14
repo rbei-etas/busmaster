@@ -32,6 +32,9 @@
 #include "Include/BaseDefs.h"
 #include "DIL_Interface/BaseDIL_Can.h"
 #include "DIL_Interface/BaseDIL_J1939.h"
+#include "DIL_Interface/BaseDIL_LIN.h"
+#include "DataTypes\Cluster.h"
+
 class CBaseAppServices;
 
 class CGlobalObj
@@ -41,6 +44,7 @@ private:
     CGlobalObj(ETYPE_BUS eBus);
     static CGlobalObj* sm_pThis[BUS_TOTAL];
     static CBaseDIL_CAN* sm_pouDilCanInterface;
+    static CBaseDIL_LIN* sm_pouDilLinInterface;
 public:
 
     ~CGlobalObj(void);
@@ -65,6 +69,7 @@ public:
     CFunctionEditorDoc* pGetDocPtrOfFile(CString);
     static CBaseDIL_CAN* GetICANDIL(void);
     static CBaseDILI_J1939* GetIJ1939DIL(void);
+    static CBaseDIL_LIN* GetILINDIL(void);
     CFunctionEditorDoc* podGetFunctionEditorDoc();
     bool bCloseFunctionEditorFrame();
     CFunctionView* podGetFunctionViewPtr();
@@ -85,6 +90,10 @@ public:
     //Store the SimSys Config detail data
     BYTE* m_pSimSysDataPtr;
     int   m_nSimSysDataSize;
+
+    // LIN configuration
+    ClusterConfig* m_ouClusterConfig;
+
     //static variables
     static CBaseAppServices* sm_pouITraceWndPtr;
     static HWND sm_hWndMDIParentFrame;

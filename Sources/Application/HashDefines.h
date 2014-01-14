@@ -225,16 +225,19 @@ typedef CList<int,int>      defomIntegerList;
 #define defEND_OF_STRUCT_DEF    "\n} %s;\n"
 #define defEND_OF_UNION_DEF     "\n\t} __attribute__((__packed__));\n}%s_;"
 #define defUNDERSCORE           "_"
-
+#define defCHECKSUM             "\tunsigned char m_ucCRCType         ;\n"
+#define defMSG_TYPE             "\tunsigned char m_ucMsgTyp         ;\n"
+#define defCHECKSUMVAL          "\tunsigned char m_ucCRC             ;\n"
 #define defUINT_LENGTH           32
 #define defUINT_SIZE             4
 #define defSIGNED_INTEGER       "int"
 #define defUNSIGNED_INTEGER     "unsigned int"
 #define defINTEGER64            "__int64"
 #define defUNION_FORMAT_STRING  "\t    %-12s %-16s : %2d ;\n"
-
+#define defDATATYPE_MSGID_LIN    "\tunsigned char m_unMsgID       ;\n"
 #define defDATA_BYTE_ARRAY_J1939   "\tunsigned char      m_aucData[%d];\n"
 #define defDATA_BYTE_ARRAY         "\tunsigned char      m_aucData[64];\n"
+#define defDATA_BYTE_ARRAY_LIN         "\tunsigned char      m_aucData[8];\n"
 #define defDATA_WORD_ARRAY         "\tunsigned short int m_auwData[4];\n"
 #define defDATA_LONG_ARRAY         "\tunsigned long  int m_aulData[2];\n"
 

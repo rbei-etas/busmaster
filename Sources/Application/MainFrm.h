@@ -108,7 +108,7 @@ public:
     BYTE m_byControllerMode;
     DWORD m_dwDriverId;
     SHORT m_shFLEXRAYDriverId;
-    DWORD m_dwLINDriverId;
+    SHORT m_shLINDriverId;
     WrapperErrorLogger m_ouWrapperLogger;
     // send toolbar button
     //BOOL m_bEnableSendToolbarButton;
@@ -211,11 +211,14 @@ public:
     DWORD m_dwFLEXClientID;
     /* To maintain associated FLEXRAY database/configuration list */
     FLEXRAY_CONFIG_FILES m_acFlexDBConfigInfo;
-    FlexConfig  m_ouFlexConfig;
+    ClusterConfig  m_ouClusterConfig[BUS_TOTAL];
+    ClusterConfig   m_ouLinConfig;
+
     bool m_bFRConfigModified;
 
     /* FIBEX database information */
     CMsgSignal* m_pouMsgSigFLEXRAY;
+    CMsgSignal* m_pouMsgSigLIN;
 
 
     /* Buffer for FLEXRAY */
@@ -391,11 +394,17 @@ protected:
     afx_msg void OnReplayStop();
     afx_msg void OnReplayGo();
     afx_msg void OnActivateMessageHandler();
+    afx_msg void OnActivateMessageHandlerLIN();
     afx_msg void OnActivateTimerHandler();
+    afx_msg void OnActivateTimerHandlerLIN();
     afx_msg void OnDLLBuildLoad();
+    afx_msg void OnDLLBuildLoadLIN();
     afx_msg void OnDLLBuild();
+    afx_msg void OnDLLBuildLIN();
     afx_msg void OnDllLoad();
+    afx_msg void OnDllLoadLIN();
     afx_msg void OnDllUnload();
+    afx_msg void OnDllUnloadLIN();
     afx_msg void OnDllUnloadJ1939();
     afx_msg void OnMessageInterpretation();
     afx_msg void OnAddSignalToSignalWindow();
@@ -412,6 +421,7 @@ protected:
     afx_msg void OnClose();
     afx_msg void OnUpdateMessageInterpret(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
     //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
@@ -426,12 +436,16 @@ protected:
     void ApplyMessageFilterButton();
     afx_msg void OnUpdateMessageFilterButton(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateExecuteTimerhandlerLIN(CCmdUI* pCmdUI);
     afx_msg void OnDisplayMessagewindowOverwrite();
     void ApplyMessagewindowOverwrite();
     afx_msg void OnClearMsgWindow();
     afx_msg void OnUpdateDllBuildAll(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateDllBuildAllLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateDllBuildloadAll(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateDllBuildloadAllLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateDllUnloadAll(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateDllUnloadAllLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI);
     afx_msg void OnUpdateToolHexdec(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogOnOff(CCmdUI* pCmdUI);
@@ -456,7 +470,9 @@ protected:
     afx_msg void OnLINConnect();
     afx_msg void OnUpdateLINConnect(CCmdUI* pCmdUI);
     afx_msg void OnExecuteKeyhandlers();
+    afx_msg void OnExecuteKeyhandlersLIN();
     afx_msg void OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateExecuteKeyhandlersLIN(CCmdUI* pCmdUI);
     afx_msg void OnLoadConfigFile();
     afx_msg void OnNewConfigFile();
     afx_msg void OnSaveConfigFile();
@@ -468,9 +484,13 @@ protected:
     afx_msg void OnFilePropeties();
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnExecuteAllHandlers();
+    afx_msg void OnExecuteAllHandlersLIN();
     afx_msg void OnUpdateExecuteAllHandlers(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateExecuteAllHandlersLIN(CCmdUI* pCmdUI);
     afx_msg void OnExecuteErrorHandlers();
+    afx_msg void OnExecuteErrorHandlersLIN();
     afx_msg void OnUpdateExecuteErrorHandlers(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateExecuteErrorHandlersLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateConfigureModeActive(CCmdUI* pCmdUI);
     afx_msg void OnTimer(UINT nIDEvent);
     afx_msg void OnNetworkStatisticsWnd();
@@ -500,6 +520,11 @@ protected:
     afx_msg void OnUpdateCfgnReplay(CCmdUI* pCmdUI);
     afx_msg void OnConfigureSimulatedsystems();
     afx_msg void OnUpdateDllLoadAll(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateLINDllLoadAll(CCmdUI* pCmdUI);
+
+    //LIN
+    afx_msg void OnConfigureSimulatedsystemsLin();
+    afx_msg void OnUpdateLinClusterConfig(CCmdUI* pCmdUI);
     //venkat
     afx_msg void OnAutomationTSEditor();
     afx_msg void OnAutomationTSExecutor();
@@ -507,6 +532,7 @@ protected:
     afx_msg void OnFlexRayTxWindow();
     afx_msg void OnFlexRayDBAssociate();
     afx_msg void OnUpdateFlexrayAssociate(CCmdUI* pCmdUI);
+
     afx_msg void OnFlexRayDBDisociate();
     afx_msg void OnConfigChannelSelection();
     afx_msg void OnConfigChannelSelectionLIN();
@@ -545,7 +571,7 @@ public:
     void vUpdateChannelInfo(void);
     void vUpdateHWStatusInfo(void);
     BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
-
+    void vInitialiaseLINConfig(int nChannel = 0);
 private:
     HMODULE m_hModAdvancedUILib;
     bool    m_bUseAdvancedUILib;
@@ -687,6 +713,7 @@ private:
     void vReRegisterAllCANNodes(void);
     void vReRegisterAllLINNodes(void);
     void vReRegisterAllJ1939Nodes(void);
+
     void vGetLoadedCfgFileName(CString& omFileName);
     BOOL bIsConfigurationModified(void);
     void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfig, UINT& nSize);
@@ -774,6 +801,8 @@ public:
     BOOL bUpdatePopupMenuFLEXRAYDIL(void);
     BOOL bUpdatePopupMenuDILL(void);
     CString omStrGetUnionFilePath(CString omStrTemp);
+
+    void vNS_LINInitCFileFunctPtrs();
     void vInitCFileFunctPtrs();
     void NS_InitJ1939SpecInfo();
     void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
@@ -895,7 +924,7 @@ public:
     //afx_msg void OnActivateLIN();
     afx_msg void OnCfgSendMsgsLIN();
     afx_msg void OnSendMessageLIN();
-
+    afx_msg void OnLinClusterConfig();
     void ApplyLogFilter();
     void ApplyReplayFilter();
     //MVN
@@ -905,5 +934,7 @@ public:
 
 private:
     void vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexContainer);
+    void vVlaidateAndLoadFibexConfig(sLinConfigContainer& ouFibexContainer);
     int m_nMaxFlexChannels;
+    int m_nMaxLinChannels;
 };

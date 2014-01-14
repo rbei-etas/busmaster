@@ -49,6 +49,7 @@ class CExecuteFunc
 public:
     void vEnableDisableAllTimers(BOOL);
     BOOL bInitErrorStruct(CStringArray& omErrorArray);
+    BOOL bInitEventStructLIN(CStringArray& omErrorArray);
     BOOL bInitEventStructJ1939(CStringArray& omErrorArray);
 
     // Execute key handlers
@@ -57,10 +58,14 @@ public:
     VOID vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo);
     VOID vExecuteOnPGNHandler(void* pRxMsg);
     VOID vExecuteOnErrorHandler(eERROR_STATE eErrorCode, SCAN_ERR sErrorVal );
+    VOID vExecuteOnErrorHandlerLIN( SERROR_INFO_LIN ouLinEventInfo );
     VOID vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess);
     VOID vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress);
     VOID vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler);
     VOID vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler);
+
+    // LIN handlers
+    VOID vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo);
 
     // Initialise all structure
     BOOL bInitStruct(CStringArray& omErrorArray);
@@ -88,10 +93,16 @@ public:
     CEvent  m_aomState[defEVENT_EXFUNC_TOTAL];
     //associated to handler thread
     void vWriteInQMsg(STCAN_TIME_MSG sRxMsgInfo);
+    void vWriteInQMsgLIN(STLIN_TIME_MSG sRxMsgInfo);
+    STLIN_TIME_MSG sReadFromQMsgLIN();
+
     STCAN_TIME_MSG sReadFromQMsg();
     CEvent m_omReadFromQEvent;       //event set after writing into buffer,for reading
+    CEvent m_omReadFromQEventLIN;       //event set after writing into buffer,for reading
     CRITICAL_SECTION m_CritSectForFuncBuf; //critical section for buffer
+    CRITICAL_SECTION m_CritSectForFuncBufLIN; //critical section for buffer
     UINT unGetBufferMsgCnt(); //called from read buffer thread
+    UINT unGetBufferMsgCntLIN();
     BOOL bIsDllLoaded() ;
     //made public to make it easily accessed by read msg handler thread
     BOOL m_bStopMsgHandlers;
@@ -121,8 +132,10 @@ private:
     ETYPE_BUS m_eBus;
     PFKEY_HANDLER m_pFGenericKeyHandler;
     PFMSG_HANDLER_CAN pFSearchMsgIdRangeHandlerCAN(UINT unMsgID);
+    PFMSG_HANDLER_LIN pFSearchMsgIdRangeHandlerLIN(UINT unMsgID);
     PFMSG_HANDLER pFSearchMsgIdRangeHandler(UINT unMsgId);
     PFMSG_HANDLER_CAN pFSearchMsgIdListHandlerCAN(UINT unMsgId);
+    PFMSG_HANDLER_LIN pFSearchMsgIdListHandlerLIN(UINT unMsgId);
     BOOL bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
                                     CStringArray& omErrorArray);
     BOOL bInitMsgListHandleStruct(UINT  unMsgIDandNameCount,
@@ -148,6 +161,7 @@ private:
 
     void vInitialiseInterfaceFnPtrsJ1939(HMODULE);
     void vInitialiseInterfaceFnPtrsCAN(HMODULE);
+    void vInitialiseInterfaceFnPtrsLIN(HMODULE);
     void vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess, BYTE byType);
     CStringArray m_omStrArrayTimerHandlers;
     CStringArray m_omStrArrayKeyHandlers;
@@ -162,16 +176,22 @@ private:
     PSMSGINFO_FOR_HANDLER  m_psMsgHandlersInfo;
     // Cmap for message ID & Message Handler Data association
     CMap<int,int, SMSGHANDLERDATA_CAN, SMSGHANDLERDATA_CAN> m_omMsgHandlerMapCAN;
+    CMap<int,int, SMSGHANDLERDATA_LIN, SMSGHANDLERDATA_LIN> m_omMsgHandlerMapLIN;
     CMap<int,int, SMSGHANDLERDATA, SMSGHANDLERDATA> m_omMsgHandlerMap;
     PSMSGID_RANGE_HANDLER_CAN m_psOnMsgIDRangeHandlersCAN;
+    PSMSGID_RANGE_HANDLER_LIN m_psOnMsgIDRangeHandlersLIN;
     PSMSGID_RANGE_HANDLER m_psOnMsgIDRangeHandlers;
     PSMSGID_LIST_HANDLER_CAN m_psOnMsgIDListHandlersCAN;
+    PSMSGID_LIST_HANDLER_LIN m_psOnMsgIDListHandlersLIN;
     PFMSG_HANDLER_CAN m_pFGenericMsgHandlerCAN;
+    PFMSG_HANDLER_LIN m_pFGenericMsgHandlerLIN;
     PFMSG_HANDLER m_pFGenericMsgHandler;
     PSDLLHANDLER   m_psOnDLLHandlers ;
     PSBUSEVHANDLER m_psOnBusEventHandlers;
     PSEVENTHANDLER m_psOnEventHandlers;
     PSERRORHANDLER m_psOnErrorHandlers;
+
+    PSEVENTHANDLERLIN m_psOnEventHandlersLin;
     CString m_omStrDllFileName;
 
     HMODULE m_hDllModule;
@@ -185,11 +205,16 @@ private:
 
     sNODEINFO m_sNodeInfo;
     UINT m_unQMsgCount;
+    UINT m_unQMsgCountLIN;
     STCAN_TIME_MSG m_asQMsg[ defMAX_FUNC_MSG ];     //for message handler msg array
+    STLIN_TIME_MSG m_asQMsgLIN[ defMAX_FUNC_MSG ];     //for message handler msg array
+
     UINT m_unReadQMsgIndex;         // index from which the message to be read
     UINT m_unWriteQMsgIndex;        //index at which message is to be written
 
 
+    UINT m_unReadQMsgIndexLIN;         // index from which the message to be read
+    UINT m_unWriteQMsgIndexLIN;        //index at which message is to be written
 
     BOOL m_bDllLoaded;
     BOOL m_bStopKeyHandlers;
@@ -197,6 +222,7 @@ private:
     BOOL m_bStopEventHandlers;
     BOOL m_bStopDLLHandlers;
     CWinThread* m_pomMsgHandlerThrd;
+    CWinThread* m_pomMsgHandlerThrdLIN;
     PSTIMERHANDLERLIST m_psFirstTimerStrList;
     PSTIMERHANDLERLIST m_psLastTimerStrList;
     BOOL m_bTimerThreadStarted;

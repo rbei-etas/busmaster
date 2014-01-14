@@ -26,6 +26,8 @@
 
 #include <cstringt.h>
 #include <atlstr.h>
+//#include "../Application/HashDefines.h"
+//#include "../Include/BaseDefs.h"
 
 #define UNUSED_DELIBERATELY(X)     X
 

@@ -272,6 +272,9 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 case J1939:
                     omGccMakeFileName += "_J1939";
                     break;
+                case LIN:
+                    omGccMakeFileName += "_LIN";
+                    break;
             }
 
             omStrMakeFileTemplateName += omGccMakeFileName;

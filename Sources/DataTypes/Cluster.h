@@ -42,6 +42,7 @@ public:
     char m_bDataType;
     //string m_omDataType;
     string  m_omUnit;
+    unsigned int m_unDefaultVal;
     //string  m_omPhylVal;
 
     //CSigConstraintsArray      m_ouSigConstrnt;
@@ -134,6 +135,7 @@ public:
     HRESULT GetPDUList ( list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetSignalList ( string omStrPduName, list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetSignalNames (CStringList& ouSignalList );
     HRESULT GetSignalCount ( int& nCount);
 };
 
@@ -159,9 +161,12 @@ public:
 public:
     HRESULT GetControllerParams(ABS_FLEXRAY_SPEC_CNTLR& ouControllerParams);
     HRESULT GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ouEDIRECTION );
+    HRESULT GetFrameList( list<FRAME_STRUCT>& ouFrameList);
+    HRESULT GetFrameNames( list<string>& ouFrameList);
     HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU_STRUCT>& ouPduList );
     HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetFrame(UINT unSlotId, UINT nBaseCycle, ECHANNEL& oeChannel, FRAME_STRUCT& ouFrame);
+    HRESULT GetFrame(UINT unSlotId, FRAME_STRUCT& ouFrame);
 
 };
 
@@ -183,6 +188,8 @@ public:
     //To Identify which slot to ECU instead of Looping every time
     map<SLOT, list<ECU_ID> > m_mapSlotEcu;
 
+    BOOL m_bAutoServerMode;
+
 public:
 
     void Clear();
@@ -193,47 +200,101 @@ public:
     HRESULT GetECU( string omECUStrId, ECU_Struct& ouEcu);
     HRESULT GetFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
     HRESULT GetTxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
+    HRESULT GetFrameNames(string omStrEcuName, list<string>& lstFrames);
     HRESULT GetRxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
     HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU_STRUCT>& ouPduList );
     HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetEcuChannel( ECHANNEL& ouChannelType );
+
+    CString bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus);
+    BOOL bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount);
+    BOOL bFormSigNameAndLength(UINT* punLength,
+                               UINT* punStartBit,
+                               CStringArray& omStrArraySigName,
+                               list<FRAME_STRUCT>::iterator itrFrame);
+    SIGNAL_STRUCT psGetSigPtr(UINT unStartBitSrc, list<SIGNAL_STRUCT> sigList);
+
+    BOOL bInsertBusSpecStructures(CStdioFile& omHeaderFile,
+                                  CString& omStrcommandLine,
+                                  CStringArray& omStrArraySigName,
+                                  list<FRAME_STRUCT>::iterator itrFrame, ETYPE_BUS eBUS);
+    HRESULT GetFrames(list<FRAME_STRUCT>& ouFrameList);
 };
 
-typedef struct tagFlexray_Channel_Config
+class FlexRayChannelParam
 {
-    Cluster m_ouClusterInfo;
-
-    list<string> m_strSlectedEculist;
-    string m_strFibexPath;
-
+public:
     int m_nKetSlot;
     int m_nSecondKeySlot;
-
-    tagFlexray_Channel_Config()
+    void vInitialiseConfig()
     {
-        m_strSlectedEculist.clear();
-        m_strFibexPath = "";
         m_nKetSlot = -1;
         m_nSecondKeySlot = -1;
     }
-    tagFlexray_Channel_Config(const tagFlexray_Channel_Config& ouRefObj)
+};
+
+class LinChannelParam
+{
+public:
+    int m_nBaudRate;
+    string m_strProtocolVersion;
+    bool m_bOverWriteSettings;
+    void vInitialiseConfig()
     {
+        m_nBaudRate = 19200;
+        m_strProtocolVersion = "LIN 2.0";
+        m_bOverWriteSettings = true;
+    }
+    LinChannelParam()
+    {
+        vInitialiseConfig();
+    }
+};
+
+
+
+typedef struct tag_Channel_Config
+{
+    Cluster m_ouClusterInfo;
+    ETYPE_BUS m_eBusChannelType;
+    list<string> m_strSlectedEculist;
+    string m_strDataBasePath;
+
+    FlexRayChannelParam m_ouFlexRayParams;
+    LinChannelParam     m_ouLinParams;
+
+    tag_Channel_Config(ETYPE_BUS eBusChannelType = BUS_INVALID)
+    {
+        m_eBusChannelType = eBusChannelType;
+        m_strSlectedEculist.clear();
+        m_strDataBasePath = "";
+        m_ouFlexRayParams.m_nKetSlot = -1;
+        m_ouFlexRayParams.m_nSecondKeySlot = -1;
+    }
+    tag_Channel_Config(const tag_Channel_Config& ouRefObj)
+    {
+        m_eBusChannelType = ouRefObj.m_eBusChannelType;
         m_ouClusterInfo = ouRefObj.m_ouClusterInfo;
         m_strSlectedEculist = ouRefObj.m_strSlectedEculist;
-        m_strFibexPath = ouRefObj.m_strFibexPath;
-        m_nKetSlot = ouRefObj.m_nKetSlot;
-        m_nSecondKeySlot = ouRefObj.m_nSecondKeySlot;
+        m_strDataBasePath = ouRefObj.m_strDataBasePath;
+        m_ouFlexRayParams.m_nKetSlot = ouRefObj.m_ouFlexRayParams.m_nKetSlot;
+        m_ouFlexRayParams.m_nSecondKeySlot = ouRefObj.m_ouFlexRayParams.m_nSecondKeySlot;
     }
 
-    tagFlexray_Channel_Config& operator=(tagFlexray_Channel_Config& ouRefObj)
+    tag_Channel_Config& operator=(tag_Channel_Config& ouRefObj)
     {
+        m_eBusChannelType = ouRefObj.m_eBusChannelType;
         m_ouClusterInfo = ouRefObj.m_ouClusterInfo;
         m_strSlectedEculist = ouRefObj.m_strSlectedEculist;
-        m_strFibexPath = ouRefObj.m_strFibexPath;
-        m_nKetSlot = ouRefObj.m_nKetSlot;
-        m_nSecondKeySlot = ouRefObj.m_nSecondKeySlot;
+        m_strDataBasePath = ouRefObj.m_strDataBasePath;
+        m_ouFlexRayParams.m_nKetSlot = ouRefObj.m_ouFlexRayParams.m_nKetSlot;
+        m_ouFlexRayParams.m_nSecondKeySlot = ouRefObj.m_ouFlexRayParams.m_nSecondKeySlot;
+        m_ouLinParams.m_bOverWriteSettings = ouRefObj.m_ouLinParams.m_bOverWriteSettings;
+        m_ouLinParams.m_nBaudRate = ouRefObj.m_ouLinParams.m_nBaudRate;
+        m_ouLinParams.m_strProtocolVersion = ouRefObj.m_ouLinParams.m_strProtocolVersion;
         return *this;
     }
+
 
     HRESULT GetSelectedECUTxFrames(list<FRAME_STRUCT>& ouFrameList)
     {
@@ -251,25 +312,61 @@ typedef struct tagFlexray_Channel_Config
         //TODO::
         int nCount = 0;
         list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
-        while( itrFrame != ouFrameTempList.end() && nCount < 128 )
+        while( itrFrame != ouFrameTempList.end())
         {
-            if ( itrFrame->m_eSlotType == STATIC )
-            {
-                ouFrameList.push_back(*itrFrame);
-                nCount++;
-            }
+            ouFrameList.push_back(*itrFrame);
+            nCount++;
+
             itrFrame++;
         }
 
-        itrFrame = ouFrameTempList.begin();
-        while( itrFrame != ouFrameTempList.end() && nCount < 128 )
+        return S_OK;
+    }
+
+    HRESULT GetSelectedECUFrames(list<FRAME_STRUCT>& ouFrameList)
+    {
+        list<string>::iterator itrEcuList;
+        list<FRAME_STRUCT> ouFrameTempList;
+        for ( itrEcuList =m_strSlectedEculist.begin(); itrEcuList != m_strSlectedEculist.end(); itrEcuList++ )
         {
-            if ( itrFrame->m_eSlotType == DYNAMIC )
-            {
-                ouFrameList.push_back(*itrFrame);
-                nCount++;
-            }
+            m_ouClusterInfo.GetFrameList(*itrEcuList, ouFrameTempList);
+        }
+        ouFrameTempList.sort();
+        ouFrameTempList.unique();
+        ouFrameTempList.erase (unique (ouFrameTempList.begin(), ouFrameTempList.end(), Compare_Frame_Structs ), ouFrameTempList.end());  //  2.72,  3.14, 12.15
+
+        //TODO::
+        int nCount = 0;
+        list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
+        while( itrFrame != ouFrameTempList.end())
+        {
+            ouFrameList.push_back(*itrFrame);
+            nCount++;
+
             itrFrame++;
+        }
+
+        return S_OK;
+    }
+
+    HRESULT GetSelectedECUTxFrameNames(list<string>& ouFrameTempList)
+    {
+        if(m_strDataBasePath != "" && m_strSlectedEculist.size() > 0)
+        {
+            list<string>::iterator itrEcuList = m_strSlectedEculist.begin();
+
+            if(itrEcuList != m_strSlectedEculist.end())
+            {
+                while ( itrEcuList != m_strSlectedEculist.end() )
+                {
+                    m_ouClusterInfo.GetFrameNames(*itrEcuList, ouFrameTempList);
+                    itrEcuList++;
+                }
+            }
+
+            ouFrameTempList.sort();
+            ouFrameTempList.unique();
+            // ouFrameTempList.erase (unique (ouFrameTempList.begin(), ouFrameTempList.end(), Compare_Frame_Structs ), ouFrameTempList.end());  //  2.72,  3.14, 12.15
         }
 
         return S_OK;
@@ -296,26 +393,71 @@ typedef struct tagFlexray_Channel_Config
         return S_FALSE;
     }
 
+    HRESULT GetFrame(UINT unSlotId, FRAME_STRUCT& ouFrame)
+    {
+        if ( m_ouClusterInfo.m_mapSlotEcu.size() > 0 )
+        {
+            map<SLOT, list<ECU_ID>>:: iterator itrSlotEcu = m_ouClusterInfo.m_mapSlotEcu.find(unSlotId);
+            if ( itrSlotEcu !=  m_ouClusterInfo.m_mapSlotEcu.end() )
+            {
+                list<ECU_ID>::iterator itrEcu = itrSlotEcu->second.begin();
+                while ( itrEcu !=  itrSlotEcu->second.end() )
+                {
+                    ECUMAP::iterator itrEcuStruct = m_ouClusterInfo.m_ouEcuList.find(*itrEcu);
+                    if ( itrEcuStruct != m_ouClusterInfo.m_ouEcuList.end() )
+                    {
+                        if  ( S_OK == itrEcuStruct->second.GetFrame(unSlotId, ouFrame) )
+                        {
+                            return S_OK;
+                        }
+                    }
+                    itrEcu++;
+                }
+            }
+            return S_FALSE;
+        }
+        return S_FALSE;
+    }
 
-} FLEXRAY_CHANNEL_CONFIG;
+
+} CHANNEL_CONFIG;
 
 typedef struct _FlexConfig
 {
-    FLEXRAY_CHANNEL_CONFIG m_ouFlexChannelConfig[CHANNEL_ALLOWED];
+    CHANNEL_CONFIG m_ouFlexChannelConfig[CHANNEL_ALLOWED];
+    INT m_nChannelsConfigured;
+    void InitialiseConfig()
+    {
+        m_nChannelsConfigured = 1;
+        for (int i = 0; i < CHANNEL_ALLOWED; i++ )
+        {
+            m_ouFlexChannelConfig[i].m_ouClusterInfo.Clear();
+            m_ouFlexChannelConfig[i].m_strDataBasePath = "";
+            m_ouFlexChannelConfig[i].m_strSlectedEculist.clear();
+            m_ouFlexChannelConfig[i].m_ouLinParams.vInitialiseConfig();
+            m_ouFlexChannelConfig[i].m_ouFlexRayParams.vInitialiseConfig();
+        }
+    }
+
+} ClusterConfig;
+
+/*typedef struct _LINConfig
+{
+    CHANNEL_CONFIG m_ouLINChannelConfig[CHANNEL_ALLOWED];
     INT m_nChannelsConfigured;
     void InitialiseConfig()
     {
         for (int i = 0; i < m_nChannelsConfigured; i++ )
         {
-            m_ouFlexChannelConfig[0].m_ouClusterInfo.Clear();
-            m_ouFlexChannelConfig[0].m_strFibexPath = "";
-            m_ouFlexChannelConfig[0].m_strSlectedEculist.clear();
+            m_ouLINChannelConfig[0].m_ouClusterInfo.Clear();
+            m_ouLINChannelConfig[0].m_strDataBasePath = "";
+            m_ouLINChannelConfig[0].m_strSlectedEculist.clear();
         }
 
 
     }
 
-} FlexConfig;
+} LINConfig;*/
 
 /*
 class Channel

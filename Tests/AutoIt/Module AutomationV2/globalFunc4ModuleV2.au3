@@ -536,9 +536,8 @@ EndFunc
 ;==========================================================================================================
 
 Func _saveCloseCANDB()
-	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$databaseMenu,$saveMenu)						; Select File->Database->Save
-	sleep(2000)
-	if winexists($WIN_BUSMASTER,$SaveDBImporttxt) Then
+	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$databaseMenu,$saveMenu)						; Select CAN->Database->Save
+	if WinWaitActive($WIN_BUSMASTER,$SaveDBImporttxt,3) Then
 		consolewrite("Dialog Exists"&@CRLF)
 		ControlClick($WIN_BUSMASTER,"",$BTN_Yes_BM)
 	EndIf
@@ -616,11 +615,12 @@ Func _DissociateCANDB($index)
 	send("!CDD")																				; Select CAN->Database->Dissociate
 	sleep(1000)
 	$DBFolderPath = _OutputDataPath()															; Set the DirPath to save the dbf file
-	if winexists($WIN_Dissociate_CANDB) Then
+	if WinExists($WIN_Dissociate_CANDB) Then
 		ConsoleWrite("Dissociate CAN DB window exists"&@CRLF)
 		$disDBlbHWD=ControlGetHandle($WIN_Dissociate_CANDB,"",$LSTB_DBFile_Dis_CANDB)			; Fetch the handle of dissociate Db list box
 		_GUICtrlListBox_ClickItem($disDBlbHWD,$index)											; Click on the specified index
-		controlclick($WIN_Dissociate_CANDB,"",$BTN_Dissoc_Dis_CANDB)							; Click on Dissociate button
+		controlclick($WIN_Dissociate_CANDB,"",$BTN_Dissoc_Dis_CANDB)							; Click on Dissociate button\
+		Sleep(1000)
 	EndIf
 EndFunc
 
@@ -945,7 +945,7 @@ EndFunc
 ;===============================================================================
 Func _En_Dis_FilterDisplay()
 	$cntToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_Con_Disconnect)						; Get handle of the 'Disable Msg Disp Filter' toolbar
-	_GUICtrlToolbar_ClickIndex($cntToolhWd,12)													; Click on 'Disable Msg Disp Filter' icon
+	_GUICtrlToolbar_ClickIndex($cntToolhWd,9)													; Click on 'Disable Msg Disp Filter' icon
 	sleep(750)
 EndFunc
 
@@ -995,6 +995,17 @@ Func _CANLogMenu()
 EndFunc
 
 ;===============================================================================
+;Function Name : _J1939LogMenu()
+;Functionality : Open J1939 Log Dialog
+;Input 		   :
+;Output 	   :
+;===============================================================================
+Func _J1939LogMenu()
+	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939LogMenu,$configureMenu)						; Select J1939->Logging->Configure
+	WinWaitActive($WIN_J1939Log,"",3)
+EndFunc
+
+;===============================================================================
 ;Function Name : _ConfigureCANLog()
 ;Functionality : Configure Logging for CAN
 ;Input 		   : Log File Name, Time Mode, Channel #, Numeric Format, File Mode, Start Rec MsgID, Stop Rec MsgID, Filters={True,False}
@@ -1037,7 +1048,7 @@ Func _ConfigureCANLog($logFileName,$TimeMode,$Channel,$NumFormat,$FileMode,$Star
 	if $Filters="True" Then
 		controlclick($WIN_CANLog,"",$BTN_Filter_ConfigLOG)										; Click on 'Filter' button
 		sleep(1000)
-		if winexists($WIN_FilterSelect) Then
+		if WinWaitActive($WIN_FilterSelect,"",3) Then
 			$fltSelhWd=controlgethandle($WIN_FilterSelect,"",$LSTC_ConfigFilter_FilterSelect)	; Get handle of filter selection list view
 			_GUICtrlListView_ClickItem($fltSelhWd,0)											; Click on the first filter
 			ControlClick($WIN_FilterSelect,"",$BTN_Add_FilterSelect)								; Click on Add button
@@ -1057,7 +1068,7 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _ConfigureJ1939Log($logFileName,$TimeMode,$Channel,$NumFormat,$FileMode,$Start_Rec,$Stop_Rec,$Filters)
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939LogMenu,$configureMenu)					; Select J1939->Logging->Configure
+	_J1939LogMenu()																					; Open Configure J1939 Logging
 	Sleep(1000)
 	ControlClick($WIN_J1939Log,"",$BTN_Add_ConfigLOG)												; Click on Add button
 	sleep(250)
@@ -1386,6 +1397,7 @@ EndFunc
 Func _GetCANMsgWinItemCount()
 	$HWD=_GetCANMsgWinHWD()
 	$ItemCount=_GUICtrlListView_GetItemCount($HWD)
+	ConsoleWrite("$ItemCount "&$ItemCount&@CRLF)
 	Return $ItemCount
 EndFunc
 ;===============================================================================
@@ -1395,7 +1407,9 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _GetJ1939MsgWinItemCount()
-	$HWD=_GetCANMsgWinHWD()
+	;$HWD=_GetCANMsgWinHWD()
+	$HWD=ControlGetHandle($WIN_BUSMASTER,"",$LVC_CID_CANMsgWin)									; Fetch the handle of Message window list view
+	ConsoleWrite("$HWD "&$HWD&@CRLF)
 	$ItemCount=_GUICtrlListView_GetItemCount($HWD)
 	Return $ItemCount
 EndFunc
@@ -1421,7 +1435,9 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _GetCANMsgWinHWD()
+	MouseClick("left", @DesktopWidth / 2, @DesktopHeight / 2)
 	$HWD=ControlGetHandle($WIN_BUSMASTER,"",$LVC_CID_CANMsgWin)									; Fetch the handle of Message window list view
+	ConsoleWrite("$HWD "&$HWD&@CRLF)
 	Return $HWD
 EndFunc
 
@@ -1438,27 +1454,16 @@ Func _DisableJ1939Win()
 	sleep(500)
 	send("{ESC}")
 	sleep(500)
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
+	ConsoleWrite("menu handle : "&$hMain& @CRLF)
 	if winexists($WIN_J1939MsgWind) Then
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
 		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 4)										; Fetch the handle of J1939 menu
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 4)									; Fetch the handle of J1939->Msg Window menu
-		ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
-		$res=_GUICtrlMenu_GetItemChecked($hSubmenu,0,True)									; Check whether J1939->Message Window->Activate is checked or not
-		$val=_GUICtrlMenu_GetItemText($hSubmenu,0,True)										; Fetch the text of first item in J1939->Message Window
-		ConsoleWrite("$res : "&$res& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res=True then																	; If J1939->View->Message Window is enabled then uncheck it
-			WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939MsgWinMenu,$J1939MsgWinAct)
-		EndIf
 	Else
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
 		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 3)
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
+	EndIf
 		$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 4)
 		ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
 		$res=_GUICtrlMenu_GetItemChecked($hSubmenu,0,True)
@@ -1468,7 +1473,6 @@ Func _DisableJ1939Win()
 		if $res=True then																	; If J1939->View->Message Window is enabled then uncheck it
 			WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939MsgWinMenu,$J1939MsgWinAct)
 		EndIf
-	EndIf
 	send("!W1")																				; Select Window->1 Message Window CAN
 	sleep(750)
 EndFunc
@@ -1487,40 +1491,25 @@ Func _DisableOverwriteMode()
 	send("{ESC}")
 	sleep(500)
 	sleep(500)
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												   ; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)                                                 ; Fetch the handle of the menu
 	if winexists($WIN_CANMsgWind) Then
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
 		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 2)										; Fetch the handle of CAN menu
-		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									; Fetch the handle of CAN->Msg Window menu
-		ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
-		$res=_GUICtrlMenu_GetItemChecked($hSubmenu,6)										; Check whether CAN->Message Window->Overwrite is checked or not
-		$val=_GUICtrlMenu_GetItemText($hSubmenu,6)											; Fetch the text of first item in CAN->Message Window
-		ConsoleWrite("$res : "&$res& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res=True then																	; If J1939->View->Message Window is enabled then uncheck it
-	$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)					; Get handle of the 'Connect/Disconnect' toolbar
-	_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,4)											; Click on 'Connect' icon
-	sleep(1000)
-		EndIf
 	Else
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
 		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 1)										; Fetch the handle of CAN menu
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									; Fetch the handle of CAN->Msg Window menu
-		ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
-		$res=_GUICtrlMenu_GetItemChecked($hSubmenu,6)										; Check whether CAN->Message Window->Overwrite is checked or not
-		$val=_GUICtrlMenu_GetItemText($hSubmenu,6)											; Fetch the text of first item in CAN->Message Window
-		ConsoleWrite("$res : "&$res& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res=True then																	; If J1939->View->Message Window is enabled then uncheck it
-			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Connect/Disconnect' toolbar
-			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,4)									; Click on 'Connect' icon
-			sleep(1000)
-		EndIf
+	EndIf
+
+	$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									   ; Fetch the handle of CAN->Msg Window menu
+	ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
+	$res=_GUICtrlMenu_GetItemChecked($hSubmenu,6)										   ; Check whether CAN->Message Window->Overwrite is checked or not
+	$val=_GUICtrlMenu_GetItemText($hSubmenu,6)											   ; Fetch the text of first item in CAN->Message Window
+	ConsoleWrite("$res : "&$res& @CRLF)
+	ConsoleWrite("$val : "&$val& @CRLF)
+	if $res=True then																	   ; If J1939->View->Message Window is enabled then uncheck it
+		$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			   ; Get handle of the 'Connect/Disconnect' toolbar
+		_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,4)									   ; Click on 'Connect' icon
+		sleep(1000)
 	EndIf
 EndFunc
 
@@ -1538,42 +1527,91 @@ Func _EnableOverwriteMode()
 	send("{ESC}")
 	sleep(500)
 	sleep(500)
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
+	ConsoleWrite("menu handle : "&$hMain& @CRLF)
 	if winexists($WIN_CANMsgWind) Then
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
 		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 2)										; Fetch the handle of CAN menu
-		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									; Fetch the handle of CAN->Msg Window menu
-		ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
-		$res=_GUICtrlMenu_GetItemChecked($hSubmenu,6)										; Check whether CAN->Message Window->Overwrite is checked or not
-		$val=_GUICtrlMenu_GetItemText($hSubmenu,6)											; Fetch the text of first item in CAN->Message Window
-		ConsoleWrite("$res : "&$res& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res=False then																	; If J1939->View->Message Window is enabled then uncheck it
-			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Connect/Disconnect' toolbar
-			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,4)									; Click on 'Connect' icon
-			sleep(1000)
-		EndIf
 	Else
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
 		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 1)										; Fetch the handle of CAN menu
-		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									; Fetch the handle of CAN->Msg Window menu
-		ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
-		$res=_GUICtrlMenu_GetItemChecked($hSubmenu,6)										; Check whether CAN->Message Window->Overwrite is checked or not
-		$val=_GUICtrlMenu_GetItemText($hSubmenu,6)											; Fetch the text of first item in CAN->Message Window
-		ConsoleWrite("$res : "&$res& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res=False then																	; If J1939->View->Message Window is enabled then uncheck it
-			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Connect/Disconnect' toolbar
-			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,4)									; Click on 'Connect' icon
-			sleep(1000)
-		EndIf
+	EndIf
+	$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									; Fetch the handle of CAN->Msg Window menu
+	ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
+	$res=_GUICtrlMenu_GetItemChecked($hSubmenu,6)										; Check whether CAN->Message Window->Overwrite is checked or not
+	$val=_GUICtrlMenu_GetItemText($hSubmenu,6)											; Fetch the text of first item in CAN->Message Window->Overwrite
+	ConsoleWrite("$res : "&$res& @CRLF)
+	ConsoleWrite("$val : "&$val& @CRLF)
+	if $res=False then																	; If J1939->View->Message Window is enabled then uncheck it
+		$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Connect/Disconnect' toolbar
+		_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,4)									; Click on 'Connect' icon
+		sleep(1000)
 	EndIf
 EndFunc
+
+
+
+Func _EnableInterpretMode()
+   _EnableOverwriteMode()
+	Sleep(1000)
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
+		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
+	 If winexists($WIN_CANMsgWind) Then
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 2)										; Fetch the handle of CAN menu
+		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
+	Else
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 1)									  ; Fetch the handle of CAN menu
+		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
+	EndIf
+	$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									 ; Fetch the handle of CAN->Msg Window menu
+	ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
+	$res=_GUICtrlMenu_GetItemChecked($hSubmenu,7)                                      ;Check whether Interpret mode is enabled
+	$text=_GUICtrlMenu_GetItemText($hSubmenu,7)
+	ConsoleWrite("$text"& $text & @CRLF)
+	ConsoleWrite("res1" & $res & @CRLF)
+	If($res=False) Then
+		$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Connect/Disconnect' toolbar
+		_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,2)									; Click on 'Interpret' icon
+		sleep(1000)
+	EndIf
+EndFunc
+
+
+Func _DisableInterpretMode()
+	Send("!CM")																				; Select CAN->Message Window from the menu
+	sleep(750)
+	send("{ESC}")
+	sleep(500)
+	send("{ESC}")
+	sleep(500)
+	sleep(500)
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
+	ConsoleWrite("menu handle : "&$hMain& @CRLF)
+	If winexists($WIN_CANMsgWind) Then
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 2)										; Fetch the handle of CAN menu
+		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
+	Else
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 1)										; Fetch the handle of CAN menu
+		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
+	EndIf
+	$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 9)									; Fetch the handle of CAN->Msg Window menu
+	ConsoleWrite("$hSubmenu handle : "&$hSubmenu& @CRLF)
+	$res=_GUICtrlMenu_GetItemChecked($hSubmenu,7)                                       ;Check whether Interpret mode is enabled
+	Sleep(1000)
+	$text=_GUICtrlMenu_GetItemText($hSubmenu,7)
+	ConsoleWrite("$text"& $text & @CRLF)
+	ConsoleWrite("res" & $res & @CRLF)
+	If($res=True) Then
+		$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Connect/Disconnect' toolbar
+		_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,2)									; Click on 'Connect' icon
+		sleep(1000)
+	EndIf
+EndFunc
+
+
+
+
+
 
 ;===============================================================================
 ;Function Name : _EnableHex
@@ -1585,39 +1623,25 @@ Func _EnableHex()
 	Send("!V")																				; Select View the menu
 	sleep(750)
 	send("{ESC}")
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
+	ConsoleWrite("menu handle : "&$hMain& @CRLF)
 	if winexists($WIN_CANMsgWind) Then
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
-		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 4)										; Fetch the handle of View menu
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 6)										; Fetch the handle of View menu
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$res1=_GUICtrlMenu_GetItemChecked($hFile,1)											; Check whether View->Hex is checked or not
-		$val=_GUICtrlMenu_GetItemText($hFile,1)												; Fetch the text of first item in View->Hex
-		ConsoleWrite("$res1 : "&$res1& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res1=False then																	; If View->Hex is disabled then check it
-			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the Message Display' toolbar
-			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,3)									; Click on 'Connect' icon
-			sleep(1000)
-		EndIf
 	Else
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
-		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 3)										; Fetch the handle of View menu
-		$item_txt=_GUICtrlMenu_GetItemText($hMain,3)
-		ConsoleWrite("item text :" & $item_txt)
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 5)										; Fetch the handle of View menu
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$res1=_GUICtrlMenu_GetItemChecked($hFile,1)											; Check whether View->Hex is checked or not
+	EndIf
+		$res=_GUICtrlMenu_GetItemChecked($hFile,1)											; Check whether View->Hex is checked or not
 		$val=_GUICtrlMenu_GetItemText($hFile,1)												; Fetch the text of first item in View->Hex
-		ConsoleWrite("$res1 : "&$res1& @CRLF)
+		ConsoleWrite("$res1 : "&$res& @CRLF)
 		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res1=False then																	; If View->Hex is disabled then check it
+		if $res=False then																	; If View->Hex is disabled then check it
 			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Message Display' toolbar
 			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,3)									; Click on 'Hex/Decimal Display' icon
 			sleep(1000)
 		EndIf
-	EndIf
 EndFunc
 
 
@@ -1632,39 +1656,25 @@ Func _DisableHex()
 	Send("!V")																				; Select View the menu
 	sleep(750)
 	send("{ESC}")
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
+	ConsoleWrite("menu handle : "&$hMain& @CRLF)
 	if winexists($WIN_CANMsgWind) Then
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
-		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 4)										; Fetch the handle of View menu
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 6)										; Fetch the handle of View menu
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$res1=_GUICtrlMenu_GetItemChecked($hFile,1)											; Check whether View->Hex is checked or not
-		$val=_GUICtrlMenu_GetItemText($hFile,1)												; Fetch the text of first item in View->Hex
-		ConsoleWrite("$res1 : "&$res1& @CRLF)
-		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res1=True then																	; If View->Hex is disabled then check it
-			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the Message Display' toolbar
-			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,3)									; Click on 'Connect' icon
-			sleep(1000)
-		EndIf
 	Else
-		$winhWnd = WinGetHandle($WIN_BUSMASTER)												; Fetch the window handle
-		$hMain = _GUICtrlMenu_GetMenu($winhWnd)												; Fetch the handle of the menu
-		ConsoleWrite("menu handle : "&$hMain& @CRLF)
-		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 3)										; Fetch the handle of View menu
-		$item_txt=_GUICtrlMenu_GetItemText($hMain,3)
-		ConsoleWrite("item text :" & $item_txt)
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 5)										; Fetch the handle of View menu
 		ConsoleWrite("Submenu handle : "&$hFile& @CRLF)
-		$res1=_GUICtrlMenu_GetItemChecked($hFile,1)											; Check whether View->Hex is checked or not
+	EndIf
+		$res=_GUICtrlMenu_GetItemChecked($hFile,1)											; Check whether View->Hex is checked or not
 		$val=_GUICtrlMenu_GetItemText($hFile,1)												; Fetch the text of first item in View->Hex
-		ConsoleWrite("$res1 : "&$res1& @CRLF)
+		ConsoleWrite("$res : "&$res& @CRLF)
 		ConsoleWrite("$val : "&$val& @CRLF)
-		if $res1=True then																	; If View->Hex is disabled then check it
+		if $res=True then																	; If View->Hex is disabled then check it
 			$OvrWriteToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_OverWrite)			; Get handle of the 'Message Display' toolbar
 			_GUICtrlToolbar_ClickIndex($OvrWriteToolhWd,3)									; Click on 'Hex/Decimal Display' icon
 			sleep(1000)
 		EndIf
-	EndIf
 EndFunc
 
 
@@ -1782,6 +1792,51 @@ Func _GetMsgWinCANInfo($Row)
 		$Data[6]=$MsgDLC_MsgWin
 		$Data[7]=$MsgDataRemSpace_MsgWin
 		Return $Data
+EndFunc
+
+Func _GetDBConfiMsgDisp($row)
+	Local $Data[5]=["","","","",""]
+	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANMsgWinMenu,$CANMsgDispConfigMenu)
+      Sleep(1000)
+	$hWndConfigMsgDisp=controlgethandle($WIN_MsgDisplay,"",$TabConfigMsgDisp)                    ;Get handle for configure message display
+	_GUICtrlTab_ClickTab($hWndConfigMsgDisp, 1)
+	$handle=ControlGetHandle($WIN_MsgDisplay,"",$LSTDBMsgs)                                      ;Get handle for DB message list view
+	$count=_GUICtrlListView_GetItemCount($handle)
+	$text=_GUICtrlListView_GetItemTextString($handle,$row)
+	ConsoleWrite("$text" & $text & @CRLF)
+	ConsoleWrite("$count"& $count & @CRLF)
+	$textTrim=StringTrimLeft($text,2)                                                        ; Remove the first two characters
+	$textRep=StringReplace($textTrim,"|"," ")
+	;ConsoleWrite("Replace text" & $textRep & @CRLF)
+	$textSplit=StringSplit($textRep," ")                                                     ;Fetch message id
+	$id=$textSplit[1]
+	$msgText=$textSplit[2]
+;	ConsoleWrite("id" & $id & @CRLF)
+;ConsoleWrite("$text" & $msgText & @CRLF)
+	$Data[0]=$id
+	$Data[1]=$msgText
+	Return $Data
+EndFunc
+
+
+Func _GetDBConfigMsgDispCount()
+	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANMsgWinMenu,$CANMsgDispConfigMenu)
+	Sleep(1000)
+	$hWndConfigMsgDisp=controlgethandle($WIN_MsgDisplay,"",$TabConfigMsgDisp)                    ;Get handle for configure message display
+	_GUICtrlTab_ClickTab($hWndConfigMsgDisp, 1)
+	$handle=ControlGetHandle($WIN_MsgDisplay,"",$LSTDBMsgs)                                  ;Get handle for DB message list view in configure message display
+	$count=_GUICtrlListView_GetItemCount($handle)                                           ;Get count of DB messages list view
+	Return $count
+EndFunc
+
+Func _GetNonDBConfigMsgDispCount()
+	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANMsgWinMenu,$CANMsgDispConfigMenu)
+	Sleep(1000)
+	$hWndConfigMsgDisp=controlgethandle($WIN_MsgDisplay,"",$TabConfigMsgDisp)                    ;Get handle for configure message display
+	_GUICtrlTab_ClickTab($hWndConfigMsgDisp, 2)
+	$handle=ControlGetHandle($WIN_MsgDisplay,"",$LSTNonDBMsgs)                                  ;Get handle for DB message list view in configure message display
+	$count=_GUICtrlListView_GetItemCount($handle)                                           ;Get count of DB messages list view
+	Return $count
 EndFunc
 
 ;===============================================================================
@@ -1999,6 +2054,30 @@ EndFunc
 ;=================================================================================
 Func _AddJ1939CppFile($CppFileName)
 	$CPPFilePath = _OutputDataPath()																; Fetch the path of the output data folder
+	ControlClick($WIN_BUSMASTER,"",$BTN_AddCppFile_ConfigJ1939NodeSim)								; Click on the "Add New File" button
+	If WinExists($WIN_BUSMASTER) Then
+			ControlClick($WIN_BUSMASTER,"","&Yes")
+	EndIf
+	WinWaitActive($WIN_AddCPPFile,"",5)																; Wait for the window to get active
+	if WinExists($WIN_AddCPPFile) Then																; If window exits then enter the file name
+		ControlSend($WIN_AddCPPFile,"",$TXT_FileName_AddCPPFile,$CPPFilePath&"\"&$CppFileName)   	; Enter Filename
+		sleep(1000)
+		ControlClick($WIN_AddCPPFile,"",$BTN_Open_AddCPPFile) 										; Click on Open button
+		sleep(1500)
+;~ 		If WinExists($WIN_BUSMASTER) Then
+;~ 			ControlClick($WIN_BUSMASTER,"","&Yes")
+;~ 		EndIf
+	EndIf
+	sleep(2000)
+	EndFunc
+;=================================================================================
+;Function Name : _AddJ1939CppFile()
+;Functionality : Adds the J1939 Cpp file in TestData folder
+;Input 		   : Cpp File Name
+;Output 	   : -
+;=================================================================================
+Func _AddJ1939CppFile1($CppFileName)
+	$CPPFilePath = _TestDataPath()																; Fetch the path of the output data folder
 	ControlClick($WIN_BUSMASTER,"",$BTN_AddCppFile_ConfigJ1939NodeSim)								; Click on the "Add New File" button
 	If WinExists($WIN_BUSMASTER) Then
 			ControlClick($WIN_BUSMASTER,"","&Yes")
@@ -2417,7 +2496,7 @@ EndFunc
 
 ;===============================================================================
 ;Function Name : Click_EnableHandler
-;Functionality : Clicks on 'Build and Load' button in Simulated System window
+;Functionality : Clicks on Enable Handler button in Simulated System window
 ;Input 		   :
 ;Output 	   :
 ;===============================================================================
@@ -3329,8 +3408,9 @@ Func _OthrConversionsFormatConv($TXT_ConvType,$InputFile,$OutputFile)
 		sleep(2000)
 		$hWndOthrConverters=controlgethandle($WIN_FormatConv,"",$TAB_OtherConvts)                       ;Get handle of the Format converter window
 	    _GUICtrlTab_ClickTab($hWndOthrConverters, 2)                                                     ; Select Other Converters tab
-	EndIf
+	sleep(2000)
 		ControlCommand($WIN_FormatConv,"",$COMBO_SelectConvType,"SelectString",$TXT_ConvType)		       ; Select 'DBC to DBF Conversion' from combo box
+		Sleep(1000)
         ControlClick($WIN_FormatConv,"",$BTN_Input)                                                        ; Click on "Input" button
 		sleep(1000)
 		WinWaitActive("", $Dlg_OpenOthrConv, 5)                                      						;wait for open dialog
@@ -3351,7 +3431,7 @@ Func _OthrConversionsFormatConv($TXT_ConvType,$InputFile,$OutputFile)
 		$Text=WinGetText($WIN_FormatConv)
 	    ConsoleWrite("$Text: " & $Text & @CRLF)
        Return $Text
-                                                                      ;Close Format Converter window
+     EndIf                                                                 ;Close Format Converter window
 EndFunc
 ;=================================================================================
 ;Function Name : _LogToExcelConversions
@@ -3418,6 +3498,35 @@ Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 	EndIf
 
 
+EndFunc
+
+
+;=================================================================================
+;Function Name : _GetPopUpMenuText
+;Functionality : Fetches the right click opup menu item texts
+;Input 		   : -
+;Output 	   : Returns all the items in the pop up menu
+;==================================================================================
+
+Func _GetPopUpMenuText()
+	Dim $aPopUp_Text[10]=["","","","","","","","","",""]
+    Local $aPopUp_List = _WinAPI_EnumWindowsPopup()
+    Local $hWnd = $aPopUp_List[1][0]
+    Local $sClass = $aPopUp_List[1][1]
+    If $sClass = "#32768" Then
+        $hMenu = _SendMessage($hWnd, $MN_GETHMENU, 0, 0)
+        If _GUICtrlMenu_IsMenu($hMenu) Then
+            $iCount = _GUICtrlMenu_GetItemCount($hMenu)
+            Local $aPopUp_Text[1] = [0]
+            For $j = 0 To $iCount - 1
+                $aPopUp_Text[0] += 1
+                ReDim $aPopUp_Text[$aPopUp_Text[0] + 1]
+                $aPopUp_Text[$aPopUp_Text[0]] = _GUICtrlMenu_GetItemText($hMenu, $j)
+				ConsoleWrite(" $aPopUp_Text[$aPopUp_Text[0]]: "& $aPopUp_Text[$aPopUp_Text[0]]&@CRLF )
+			Next
+        EndIf
+    EndIf
+	Return $aPopUp_Text
 EndFunc
 
 

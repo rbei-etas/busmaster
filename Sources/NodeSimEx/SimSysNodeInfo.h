@@ -38,6 +38,7 @@ struct sNODEINFO
 {
     CCANBufFSE m_ouCanBufFSE;
     CMsgBufVSE m_ouMsgBufVSE;
+    CLINBufFSE m_ouLinBufSE;
     DWORD m_dwClientId;
     BYTE m_byPrefAddress;
     UINT64 m_unEcuName;
@@ -47,6 +48,7 @@ struct sNODEINFO
     CString m_omStrDllName;                     // DLL Name
     HINSTANCE m_hModuleHandle;
     BOOL m_bIsDllLoaded;                        // Dll Loaded = 1, Dll Unloaded = 0.
+    UINT m_unChannel;
 
     BOOL m_bIsAllHandlersEnabled;               // All Handlers Enabled = 1; Disabled = 0.
     BOOL m_bDllHandlersEnabled;                 // Dll Handlers Enabled = 1, Disabled = 0.

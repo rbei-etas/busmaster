@@ -58,26 +58,27 @@
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-    USAGEMODE HRESULT TXFlexray_nSetFibexConfig(FlexConfig& ouFlexConfig);
+    USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlexConfig);
     USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void* pMsgDB);
-    USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd);
-    USAGEMODE HRESULT TXFlexRay_vSetClientID(DWORD dwClientID);
-    USAGEMODE HRESULT TXFlexRay_vSetDILInterfacePtr();
-    USAGEMODE HRESULT TXFlexRay_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);
-    USAGEMODE HRESULT TXFlexRay_hConfigWindowShown();
+    USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS);
+    USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID);
+    USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPointer);
+    USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);
+    USAGEMODE HRESULT TXComman_hConfigWindowShown(ETYPE_BUS eBusType);
     USAGEMODE HRESULT TXFlexRay_vStartTransmission(UCHAR ucKeyVal);
     USAGEMODE HRESULT TXFlexRay_bAllocateMemoryForGlobalTxList();
     USAGEMODE HRESULT TXFlexRay_vAssignMsgBlockList();
     USAGEMODE HRESULT TXFlexRay_vDeleteTxBlockMemory();
-    USAGEMODE HRESULT TXFlexRay_vBusStatusChanged(bool bConnected);
+    USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType,  ESTATUS_BUS eBusStatus);
 
-    USAGEMODE HRESULT TXFlexRay_vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
+    USAGEMODE HRESULT TXComman_vGetTxWndConfigData( ETYPE_BUS eBusType, xmlNodePtr pxmlNodePtr);
     USAGEMODE HRESULT TXFlexRay_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
-    USAGEMODE HRESULT TXFlexRay_vSetTxWndConfigDataXML(xmlDocPtr pDoc);
+    USAGEMODE HRESULT TXComman_vSetTxWndConfigDataXML(ETYPE_BUS eBusType, xmlDocPtr pDoc);
     USAGEMODE UINT    TXFlexRay_unGetTxBlockCount(void);
     USAGEMODE HRESULT TXFlexRay_vSetTxStopFlag(BOOL bStartStop);
     USAGEMODE BOOL    TXFlexRay_bGetTxStopFlag();
     USAGEMODE HRESULT TXFlexRay_vFlexFileChanged();
+
 
 
 #ifdef __cplusplus

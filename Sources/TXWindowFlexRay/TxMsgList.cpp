@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CTxMsgList, CFlickerFreeListCtrl)
     //ON_NOTIFY_REFLECT(NM_CLICK, OnNMClick)
     ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclk)
     ON_NOTIFY_REFLECT(LVN_ENDLABELEDIT, OnLvnEndlabeledit)
+
     ON_WM_MEASUREITEM_REFLECT()
 END_MESSAGE_MAP()
 ///**********************************************************************************
@@ -57,7 +58,7 @@ CTxMsgList::CTxMsgList(void)
     m_ptEditting.x = -1;
     m_ptEditting.y = -1;
     m_dwPrevEditFmt = ES_LEFT;
-
+    m_ouColumnPropMap.clear();
 #if 0
     CFRAME_BaseUIDoc* pDoc = NULL;
     CMDIChildWnd* pMDIActive = ((CMainFrame*)AfxGetMainWnd())->MDIGetActive();
@@ -259,7 +260,7 @@ void CTxMsgList::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
                     }
                     else
                     {
-                        pDC->FillSolidRect( &rctSubItem, ::GetSysColor(COLOR_BTNFACE)); // Fill in the background.
+                        pDC->FillSolidRect( &rctSubItem, ::GetSysColor(COLOR_GRAYTEXT)); // Fill in the background.
                     }
                     pDC->DrawText(szTabText, &rctSubItem, textFormat);
                     break;
@@ -357,9 +358,16 @@ void CTxMsgList::OnHdnBegintrack(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
     // TODO: Add your control notification handler code here
-
-    *pResult = 0;
-
+    map<int, ColumnProperty>::iterator itrValue = m_ouColumnPropMap.find(phdr->iItem);
+    BOOL bMovable = FALSE;
+    if ( itrValue != m_ouColumnPropMap.end() )
+    {
+        if ( itrValue->second.bMovable == false )
+        {
+            bMovable = TRUE;
+        }
+    }
+    *pResult = bMovable;
 }
 
 ///**********************************************************************************
@@ -780,14 +788,10 @@ int CTxMsgList::GetColumnCount(void) const
 //Date Created  :   19/09/2006
 //Modifications :   -
 //************************************************************************************/
-const CHeaderCtrl* CTxMsgList::GetHeaderCtrl() const
+CHeaderCtrl* CTxMsgList::GetHeaderCtrl() const
 {
-    // Yes, CListCtrl already provides "GetHeaderCtrl", but not const.
-    // I desperately need a "const" version of "GetHeaderCtrl" because that's the
-    // only way to make "GetColumnCount" const, which, in turn, is being called by
-    // A LOT of const member functions. So if "GetHeaderCtrl" is not const, there will
-    // be almost no const member function at all in this class. Terrible.
-    return (const CHeaderCtrl*)(CWnd::FromHandle(ListView_GetHeader(GetSafeHwnd())));
+
+    return (CHeaderCtrl*)(CWnd::FromHandle(ListView_GetHeader(GetSafeHwnd())));
 }
 
 ///**********************************************************************************
@@ -1269,6 +1273,12 @@ bool CTxMsgList::GetTextFont( LOGFONT* plgfnt)
     return true;
 }
 
+int CTxMsgList::InsertColumn(int nCol, const LVCOLUMN* pColumn, ColumnProperty ouColumnProperty)
+{
+    m_ouColumnPropMap.insert(map<int, ColumnProperty>::value_type(nCol, ouColumnProperty));
+    return CFlickerFreeListCtrl::InsertColumn(nCol, pColumn);
+}
+
 //********************************************************************************
 //  Function Name        : SetTextFont
 //  Input(s)             : const LOGFONT& lgfnt
@@ -1502,5 +1512,4 @@ void CTxMsgList::vDataFormat(CString& omDataBytes,int* nDataLength,bool bFlag)
         omDataBytes = omResult;
     }
 }
-
 

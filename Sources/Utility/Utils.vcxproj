@@ -126,6 +126,7 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlphaChar.cpp" />
     <ClCompile Include="AlphanumiricEdit.cpp" />
     <ClCompile Include="ButtonItem.cpp" />
     <ClCompile Include="ColorSelector.cpp" />
@@ -156,6 +157,7 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClCompile Include="WaitIndicator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlphaChar.h" />
     <ClInclude Include="AlphanumiricEdit.h" />
     <ClInclude Include="ButtonItem.h" />
     <ClInclude Include="ColorSelector.h" />

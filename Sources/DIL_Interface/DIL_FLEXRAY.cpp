@@ -292,7 +292,7 @@ HRESULT CDIL_FLEXRAY::DILF_DisplayConfigDlg(PCHAR& InitData, int& Length)
     return m_pBaseDILFLEXRAY_Controller->FLEXRAY_DisplayConfigDlg( InitData, Length );
 }
 
-HRESULT CDIL_FLEXRAY::DILF_SetConfigData(FLEXRAY_CHANNEL_CONFIG& ouAbsSFibexContainer )
+HRESULT CDIL_FLEXRAY::DILF_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer )
 {
     VALIDATE_FLEX_POINTER(m_pBaseDILFLEXRAY_Controller);
     return m_pBaseDILFLEXRAY_Controller->FLEXRAY_SetConfigData( ouAbsSFibexContainer );

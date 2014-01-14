@@ -312,6 +312,10 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                     {
                         omBusNameSel = "J1939";
                     }
+                    else if(m_eBus == LIN)
+                    {
+                        omBusNameSel = "LIN";
+                    }
 
                     if(m_omstrProtocolName != omBusNameSel)
                     {
@@ -323,6 +327,11 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                         else if(m_eBus == J1939)
                         {
                             AfxMessageBox("File " + omStrSimSysPath + " selected is not created for J1939.\r\nPlease load .sim file created for J1939.");
+                            return defCONFIG_FILE_OPEN_FAILED;
+                        }
+                        else if(m_eBus == LIN)
+                        {
+                            AfxMessageBox("File " + omStrSimSysPath + " selected is not created for LIN.\r\nPlease load .sim file created for LIN.");
                             return defCONFIG_FILE_OPEN_FAILED;
                         }
                     }
@@ -360,6 +369,12 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                     CString omStrJ1939Protocol = "J1939";
 
                     oSimCfgArchive << omStrJ1939Protocol;
+                }
+                else if(m_eBus == LIN)
+                {
+                    CString omstrLinProtocol = "LIN";
+
+                    oSimCfgArchive << omstrLinProtocol;
                 }
 
                 CString strVersion;

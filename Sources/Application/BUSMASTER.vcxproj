@@ -279,8 +279,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Filter.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)CommonClass.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)PSDI_CAN.lib"
-"$(SolutionDir)/BIN/Libs/$(OutDir)TXWindow.lib"
-"$(SolutionDir)/BIN/Libs/$(OutDir)SignalDefiner.lib" "$(SolutionDir)/BIN/Libs/$(OutDir)UDS_Protocol.lib" %(AdditionalOptions)</AdditionalOptions>
+"$(SolutionDir)/BIN/Libs/$(OutDir)TXWindow.lib" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>Winmm.lib;shlwapi.lib;htmlhelp.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)BUSMASTER.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -563,6 +562,12 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="J1939TimeOutCfg.cpp" />
+    <ClCompile Include="LDFLexer.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ldfparser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MainFrm.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -760,6 +765,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClCompile Include="NodeUtil_Flexray.cpp" />
     <ClCompile Include="NotificListbox.cpp" />
     <ClCompile Include="NotificWnd.cpp" />
+    <ClCompile Include="ParserHelper.cpp" />
     <ClCompile Include="PPageMessage.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -1024,6 +1030,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="HashDefines.h" />
     <ClInclude Include="InterfaceGetter.h" />
     <ClInclude Include="J1939TimeOutCfg.h" />
+    <ClInclude Include="ldfparser.cpp.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MDIChildBase.h" />
     <ClInclude Include="MessageAttrib.h" />
@@ -1044,6 +1051,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="NodeUtil_Flexray.h" />
     <ClInclude Include="NotificListbox.h" />
     <ClInclude Include="NotificWnd.h" />
+    <ClInclude Include="ParserHelper.h" />
     <ClInclude Include="PPageMessage.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PSDI_Extern.h" />
@@ -1074,6 +1082,24 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="WrapperErrorLogger.h" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="LDFLexer.l">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">..\..\Tools\flex\flex.exe -i -L -oLDFLexer.c "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">LDFLexer.c;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\Tools\flex\flex.exe -i -L -oLDFLexer.c "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LDFLexer.c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="LDFParser.y">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">set BISON_SIMPLE=..\..\Tools\bison\bison.simple
+..\..\Tools\bison\bison.exe  -l -v --debug -d --output=LDFParser.cpp "%(FullPath)"
+exit 0</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">LDFParser.cpp;LDFParser.h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">set BISON_SIMPLE=..\..\Tools\bison\bison.simple
+..\..\Tools\bison\bison.exe  -l -v --debug -d --output=LDFParser.cpp "%(FullPath)"
+exit 0</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LDFParser.cpp;LDFParser.h;%(Outputs)</Outputs>
+    </CustomBuild>
     <None Include="resource.hm" />
     <None Include="Res\About.ico" />
     <None Include="res\bitmap1.bmp" />

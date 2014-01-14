@@ -102,7 +102,7 @@
     <Link>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>$(SolutionDir)/BIN/Libs/$(OutDir)vs_can_api.lib;$(SolutionDir)/BIN/Libs/$(OutDir)mhsbmcfg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"$(SolutionDir)CAN_VSCOM\EXTERNAL\vs_can_api.lib"</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)CAN_VSCOM.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>
@@ -186,7 +186,7 @@
     <Link>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>$(SolutionDir)/BIN/Libs/$(OutDir)vs_can_api.lib;$(SolutionDir)/BIN/Libs/$(OutDir)mhsbmcfg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"$(SolutionDir)CAN_VSCOM\EXTERNAL\vs_can_api.lib";%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)CAN_VSCOM.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>

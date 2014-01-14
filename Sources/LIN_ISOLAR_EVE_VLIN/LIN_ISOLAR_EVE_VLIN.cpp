@@ -35,9 +35,7 @@
 /* Project includes */
 #include "LIN_ISOLAR_EVE_VLIN.h"
 #include "DIL_Interface/BaseDIL_LIN_Controller.h"
-#include "BusEmulation/BusEmulation.h"
-#include "BusEmulation/BusEmulation_i.c"
-
+#include "DataTypes\Cluster.h"
 #define USAGE_EXPORT
 #include "LIN_ISOLAR_EVE_VLIN_Extern.h"
 
@@ -101,8 +99,10 @@ public:
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
     HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
-    HRESULT LIN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
+    HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
     HRESULT LIN_StartHardware(void);
+    HRESULT LIN_PreStartHardware(void);
+
     HRESULT LIN_StopHardware(void);
     HRESULT LIN_ResetHardware(void);
     HRESULT LIN_GetCurrStatus(s_STATUSMSG& StatusData);
@@ -110,6 +110,8 @@ public:
     HRESULT LIN_SendMsg(DWORD dwClientID, STLIN_MSG& sLinTxMsg);
     HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg);
     HRESULT LIN_ResetSlaveRespData(void);
+    HRESULT LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage);
+
     HRESULT LIN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT LIN_GetLastErrorString(string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
@@ -730,7 +732,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_SetConfigData(ClusterConfig& ouConfig)
 {
 
     return S_OK;
@@ -758,6 +760,10 @@ static void vCreateTimeModeMapping()
         sg_TimeStampRef = (sg_lnCurrCounter.QuadPart
                            / sg_lnFrequency.QuadPart) * 10000;
     }
+}
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_PreStartHardware(void)
+{
+    return S_OK;
 }
 
 HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_StartHardware(void)
@@ -858,6 +864,11 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ResetSlaveRespData(void)
 
     return S_OK;
 }
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage)
+{
+    return S_OK;
+}
+
 HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetLastErrorString(string& acErrorStr)
 {
 

@@ -106,6 +106,7 @@ private:
     CBaseDILI_J1939** m_ppouIJ1939DIL; // DIL J1939 interface
     CMsgInterpretationJ1939 m_ouMsgInterpretJ1939;
     CMsgInterpretationFlexRay m_ouMsgInterpretFlexRay;
+    CMsgInterpretationLIN m_ouMsgInterpretLin;
     BOOL m_bInterPretMsg;
     CMsgSignal** m_ppMsgDB;
     CRITICAL_SECTION       m_omCritSecForMapArr;
@@ -123,6 +124,7 @@ private:
     void vFormatSignalInfo (const SSignalInfoArray& omSigInfoArray, CStringArray& omSigStrArray);
     int nGetMsgListIndexFromMapIndex(__int64 nMapIndex);
     int nGetCodefromMapKey(__int64 nKey);
+    int nGetLinCodefromMapKey(__int64 nKey);
     void vContractMsgEntry(SMSGDISPMAPENTRY& sEntry, int nMsgIndex);
     void vGetTreeRect(int nItem, int nCount, CRect& omTreeRect);
     void vExpandContractMsg(int nIndex,eTreeItemStates eTreeItemState = TREESTATE_TOGGLE);

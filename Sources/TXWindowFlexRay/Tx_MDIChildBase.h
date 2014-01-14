@@ -25,13 +25,13 @@
 #pragma once
 
 #include "hashdefines.h"
-
+#include "Include\BaseDefs.h"
 class CMDIChildBase : public CMDIChildWnd
 {
     DECLARE_DYNCREATE(CMDIChildBase)
 public:
     // Constructor with Window Identity
-    CMDIChildBase(eCONFIGDETAILS eWindowIdentity);
+    CMDIChildBase(ETYPE_BUS eBusType);
     // Default constructor
     CMDIChildBase();
     virtual ~CMDIChildBase();
@@ -64,4 +64,5 @@ protected:
     WINDOWPLACEMENT m_sWindowPlacement;
     // Set the window identity parameter
     eCONFIGDETAILS  m_eWindowIdentity;
+    ETYPE_BUS   m_eBusType;
 };

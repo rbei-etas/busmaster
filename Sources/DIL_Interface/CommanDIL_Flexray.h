@@ -32,7 +32,7 @@ public:
     virtual HRESULT FLEXRAY_SelectHwInterface(const FLEXRAY_INTERFACE_HW_LIST& sSelHwInterface) = 0;
     virtual HRESULT FLEXRAY_DeselectHwInterface(void) = 0;
     virtual HRESULT FLEXRAY_DisplayConfigDlg(PCHAR& InitData, int& Length) = 0;
-    virtual HRESULT FLEXRAY_SetConfigData(FLEXRAY_CHANNEL_CONFIG& ouAbsSFibexContainer) = 0;
+    virtual HRESULT FLEXRAY_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer) = 0;
     virtual HRESULT FLEXRAY_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) = 0;
     virtual HRESULT FLEXRAY_StartHardware(void) = 0;
     virtual HRESULT FLEXRAY_StopHardware(void) = 0;

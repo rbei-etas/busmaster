@@ -31,6 +31,10 @@
 
 #include "NodeSimEx_Struct.h"
 #include "FunctionEditorStruct.h"
+#include "DataTypes\MsgSignal_Datatypes.h"
+#include <list>
+
+using namespace std;
 
 class CFunctionEditorDoc : public CDocument
 {
@@ -64,7 +68,7 @@ public:
                                         const CString& omStrMsgName,
                                         const CString& omStrVarName,
                                         BOOL bInitData,
-                                        UCHAR ucChannelId);
+                                        UCHAR ucChannelId, INT unChannelSel = 1);
     CStringArray* pomStrGetErrorHandlerPrototypes();
     CStringArray* pomStrGetDLLHandlerPrototypes();
     CStringArray* pomStrGetBusEventHandlerPrototypes();
@@ -84,12 +88,14 @@ public:
     int nGetDocumentSize();
     const char* pcGetLine(POSITION& rPosition);
     DWORD dwGetLineCount();
+    void vInsertErrorMessageStruct();
     BOOL bInitBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
     BOOL bGetBusSpecificInfo(SBUS_SPECIFIC_INFO& sBusSpecInfo);
     BOOL bAddFunctionPrototype(CString omStrFunton, BOOL bGCCExport);
     BOOL bAddGCCExportPrototype(CString& omStrFunction);
     virtual ~CFunctionEditorDoc();
     BOOL bCreateNewDocument(CString& omPath);
+    void vInsertErrorMessageStruct(CString& omTextLine);
 
 #ifdef _DEBUG
     virtual void AssertValid() const;

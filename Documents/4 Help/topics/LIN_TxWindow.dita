@@ -15,44 +15,28 @@
     </metadata>
   </prolog>
   <body>
-    <p>Messages can be send over LIN-bus by following the steps given below. Select <b>LIN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog as shown is figure below.</p>
+    <p>Slave can respond to the Master request over LIN-bus using LIN Transmit Window. Use <b>LIN --&gt; Transmit --&gt; Configure</b> menu option, to open the LIN Transmission Window.</p>
     <section>
-      <title>Getting Started</title>
       <image href="../images/LIN_TxWindow.bmp" placement="break"/>
-      <ul>
-        <li>Add a message block and select the trigger as “On Time”. Select a name of message block and then enter appropriate message details in “Configure Message“.</li>
-        <li>Provide ID in Name/ID (in Hex) Combo box.Give the Data Bytes in Data bytes window.</li>
-        <li>Select Update button to save the changes and press the tool bar button shown in the figure below.</li>
-        <li>
-          <image href="../images/sendmessagetoolbar.bmp" placement="break"/>
-        </li>
-      </ul>
-      <p>The messages added in to the Tx message list can also be modified. Follow the steps given below.</p>
-      <ul>
-        <li>Select an entry in the message list. The selected detail will be unpacked and will be displayed in the edit controls below. If it is a database message then the signal details will be listed in the signal list with both physical and raw values.</li>
-        <li>Any modification in Message Name/ID, DLC, Data bytes, signal raw and physical values will directly reflect in the selected message entry in the message list. The signal matrix will also get updated to reflect the changes.</li>
-        <li>Selecting Apply or OK button will reflect message details change in transmission immediately if message transmission is on. </li>
-      </ul>
-      <p>User can delete a message frame entry from the list by following the steps given below.</p>
-      <ul>
-        <li>Select <b>LIN --&gt; Transmit --&gt; Configure</b> menu option. This will display the dialog box as shown below in figure (a).</li>
-        <li>Select an entry in the message frame list.</li>
-        <li>Select Delete button. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected item will be deleted from the list. Multiple items can be selected to delete multiple items in one shot.</li>
-        <li>Select Delete All button to delete all entries in the message block. A delete all confirmation will be displayed. Select Yes to confirm deletion. This will clear message block entries.</li>
-        <li>The other way of doing delete is Right click mouse button. This will display a pop-up menu Delete and Delete All. Select Delete pop-up menu. A delete confirmation will be displayed. Select Yes to confirm deletion. The selected message frame will be removed from the message frame list.</li>
-      </ul>
-      <p>The added messages can be directly transmitted instantaneously. The steps to do this is listed below</p>
-      <ul>
-        <li>Select a message entry or message entries from the message list.</li>
-        <li>Select Send button to transmit these messages.</li>
-        <li>The other way of doing this is right click on selected message entries. This will show a popup menu with Send option. Select Send to transmit selected messages once. </li>
-      </ul>
-      <note>
-        <ul>
-          <li>To send a message tool should be in connected state.</li>
-          <li>If more then one message are selected to send, all messages will be transmitted one after another without any delay. </li>
-        </ul>
-      </note>
+      <p><b>Configure Slave Responses:</b></p>
     </section>
+    <section>
+      <ul>
+        <li>Once a LDF File is imported the Messages( DB Messages ) in LDF file will be populated in <b>Message ID/Name</b> List Box as shown in above figure.It is also possible to add Non-db Messages by typing Message id in List Box. Once the Message is selected in List Box, Click on <b>Add Message</b> Button to add it in <b>Tx Frame List</b>.</li>
+        <li>The DLC and data byte values can be changed using DLC and Data Bytes edit box windows.</li>
+        <li>If the Message is a DB Messages and if it has signals associated, then they will be displayed in Signal List as shown in following figure.The Raw\Physical value of the signal can be changed by double clicking the corresponding cell.</li>
+      </ul>
+      <image href="../images/LIN_TxWindow_SignalDisplay.bmp"/>
+    </section>
+    <section/>
+    <section>
+      <b>Cyclic Transmission of Message:</b>
+    </section>
+    <section>The message can be transmitted periodically by Enabling Repetition.Cyclic Transmission will be useful to transmit the message with different data bytes periodically.</section>
+    <section/>
+    <section>
+      <b>Transmission on Event:</b>
+     </section>
+    <section>The Message can be sent to the controller on pressing key.Each message in Tx FrameList can be assigned an alpha-numeric key.</section>
   </body>
 </topic>

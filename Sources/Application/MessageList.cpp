@@ -470,6 +470,7 @@ LRESULT CMessageList::OnInsertColumn(WPARAM wParam, LPARAM lParam)
     return lReturn;
 }
 
+
 /*******************************************************************************
   Function Name  : OnHeaderEndDrag
   Input(s)       : pNMHDR, pResult

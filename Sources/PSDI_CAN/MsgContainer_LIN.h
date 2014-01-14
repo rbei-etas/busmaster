@@ -75,6 +75,7 @@ private:
                                BYTE byRxError,
                                BYTE byTxError );
     BOOL bTobeBlocked(STLINDATA& sLinData);
+    __int64 n64CreateMapIDForLinEvevnt(STLINDATA* sLinData);
     USHORT usProcessCurrErrorEntry(SERROR_INFO_LIN& sErrInfo);
 
     CRITICAL_SECTION m_sCritSecDataSync;

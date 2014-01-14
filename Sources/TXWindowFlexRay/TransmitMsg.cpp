@@ -15,7 +15,7 @@
 #include "Utility/Utility.h"
 #include "..\DIL_Interface\BaseDIL_FLEXRAY.h"
 #include "..\DIL_Interface\DIL_Interface_extern.h"
-#include "TxMsgFlexChildFrame.h"
+#include "TxMsgChildFrame.h"
 #include "TransmitMsg.h"
 #include "TxFlexrayMsgHandlerDlg.h"
 #include "ConfigDetails.h"
@@ -99,7 +99,7 @@ CTransmitMsg::CTransmitMsg()
     m_bStartEnabled = TRUE;
     m_bDisplayColumns = COLUMN_MSGID | COLUMN_DESCR | COLUMN_CYCLE |
                         COLUMN_CHANNEL | COLUMN_DATALEN | COLUMN_DATABYTE;
-    m_omMsgBlockMan.RemoveAll();
+    //m_omMsgBlockMan.RemoveAll();
     m_pouFlxTxMsgBuffer = NULL;
     m_bModified = FALSE;
     m_ouCurrentView = BYTE_VIEW;
@@ -177,7 +177,7 @@ void CTransmitMsg::vChangeDelButtonStatus(bool bStatus)
     CWnd* omBtWnd = (CWnd*)GetDlgItem(IDC_DEL_FRAME);
     if ( omBtWnd != NULL )
     {
-        if( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bBusConnected == false && m_lstMsg.GetItemCount() > 0 )
+        if( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_eBusStatus == BUS_DISCONNECTED && m_lstMsg.GetItemCount() > 0 )
         {
             omBtWnd->EnableWindow(TRUE);
         }
@@ -191,7 +191,7 @@ void CTransmitMsg::vChangeDelButtonStatus(bool bStatus)
     omBtWnd = (CWnd*)GetDlgItem(IDC_BT_DEL_ALL);
     if ( omBtWnd != NULL )
     {
-        if( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bBusConnected == false && m_lstMsg.GetItemCount() > 0 )
+        if( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_eBusStatus == BUS_DISCONNECTED && m_lstMsg.GetItemCount() > 0 )
         {
             omBtWnd->EnableWindow(TRUE);
         }
@@ -269,7 +269,7 @@ void CTransmitMsg::OnInitialUpdate()
     if( pParentWnd != NULL )
     {
         // Register this view pointer
-        ((CTxMsgFlexChildFrame*)pParentWnd)->m_pTransmitMsgView = this;
+        ((CTxMsgChildFrame*)pParentWnd)->m_pTransmitMsgView = this;
     }
 
     ResizeParentToFit(FALSE);
@@ -329,7 +329,8 @@ void CTransmitMsg::OnInitialUpdate()
     LVCOLUMN lvcolumn;
     memset(&lvcolumn, 0, sizeof(lvcolumn));
     lvcolumn.mask =  LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
-
+    ColumnProperty  ouProp;
+    ouProp.bMovable = true;
     // add columns
     for (int i = 0; i < (sizeof (acColData) / sizeof acColData[0]); i++)
     {
@@ -347,11 +348,10 @@ void CTransmitMsg::OnInitialUpdate()
         lvcolumn.iSubItem = i;
         lvcolumn.cx = (acColData[i + 1] == NULL) ? nColWidth - total_cx - 2 : (nColWidth * colwidths[i]) / 64;
         total_cx += lvcolumn.cx;
-        m_lstMsg.InsertColumn(i, &lvcolumn);
-
-        CHeaderCtrlEx::CItemData* pData = new CHeaderCtrlEx::CItemData(lvcolumn.cx, TRUE, TRUE);
-        m_wndHeader.SetItemData((int)i, (DWORD_PTR)pData);
+        m_lstMsg.InsertColumn(i, &lvcolumn, ouProp);
     }
+
+
 
     m_hTransmitWnd = m_hWnd;
 
@@ -378,7 +378,15 @@ void CTransmitMsg::OnInitialUpdate()
     UpdateTxView(CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_nChannelsConfigured);
     m_bInitDone = FALSE;
     InitFlexList(m_ouCurrentView);
-    vChangeDelButtonStatus(!CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bBusConnected);
+    if ( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_eBusStatus == BUS_CONNECTED )
+    {
+        vChangeDelButtonStatus(false);
+    }
+    else
+    {
+        vChangeDelButtonStatus(true);
+    }
+
     GetDlgItem(IDC_BT_UPDATE)->EnableWindow(FALSE);
 }
 
@@ -835,9 +843,8 @@ void CTransmitMsg::OnBnClickedBtUpdate()
     if (  m_lstMsg.GetCheck(nSlectedFrame) == true )
     {
         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().UpdateMessagetoDIL(*itrFrameData, false);
-        GetDlgItem(IDC_BT_UPDATE)->EnableWindow(FALSE);
     }
-
+    GetDlgItem(IDC_BT_UPDATE)->EnableWindow(FALSE);
 }
 
 
@@ -948,7 +955,7 @@ void CTransmitMsg::vLoadTxMsgConfig()
     BYTE* SectionBuffer = NULL;
     int nBufferLength = 0;
     //Remove all the TX msg block before copying from config file
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(m_omMsgBlockMan);
+    //  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(m_omMsgBlockMan);
     //CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);
     // First Get Tx Msg List
 
@@ -978,30 +985,30 @@ void CTransmitMsg::vRefreshTxMsgWindow()
     m_lstMsg.DeleteAllItems();
     //Remove all items from the list control
     m_omLctrMsgBlockName.DeleteAllItems();
-    int nBlockCount = m_omMsgBlockMan.GetSize();
-    if (nBlockCount > 0)
-    {
-        for (int i = 0; i < nBlockCount; i++)
-        {
-            SMSGBLOCK* pouCurrBlock = m_omMsgBlockMan.GetAt(i);
-            m_omLctrMsgBlockName.InsertItem(i, pouCurrBlock->m_omBlockName);
-            if (pouCurrBlock->m_bCyclic)
-            {
-                m_omLctrMsgBlockName.SetItemText(i, 1, defMSG_CYCLIC);
-            }
-            else
-            {
-                m_omLctrMsgBlockName.SetItemText(i, 1, defMSG_MONOSHOT);
-            }
-            //The timing value is valid for bot type of blocks
-            CString omTmpStr = _T("");
-            omTmpStr.Format("%d ms", pouCurrBlock->m_unTimeInterval);
-            m_omLctrMsgBlockName.SetItemText(i, 2, omTmpStr);
+    //int nBlockCount = m_omMsgBlockMan.GetSize();
+    //if (nBlockCount > 0)
+    //{
+    //    for (int i = 0; i < nBlockCount; i++)
+    //    {
+    //        SMSGBLOCK* pouCurrBlock = m_omMsgBlockMan.GetAt(i);
+    //        m_omLctrMsgBlockName.InsertItem(i, pouCurrBlock->m_omBlockName);
+    //        if (pouCurrBlock->m_bCyclic)
+    //        {
+    //            m_omLctrMsgBlockName.SetItemText(i, 1, defMSG_CYCLIC);
+    //        }
+    //        else
+    //        {
+    //            m_omLctrMsgBlockName.SetItemText(i, 1, defMSG_MONOSHOT);
+    //        }
+    //        //The timing value is valid for bot type of blocks
+    //        CString omTmpStr = _T("");
+    //        omTmpStr.Format("%d ms", pouCurrBlock->m_unTimeInterval);
+    //        m_omLctrMsgBlockName.SetItemText(i, 2, omTmpStr);
 
-            m_omLctrMsgBlockName.SetCheck(i, pouCurrBlock->m_bActive);
-        }
-        m_bInitDone = FALSE;
-    }
+    //        m_omLctrMsgBlockName.SetCheck(i, pouCurrBlock->m_bActive);
+    //    }
+    //    m_bInitDone = FALSE;
+    //}
 }
 
 
@@ -1042,7 +1049,7 @@ void CTransmitMsg::OnBtnClose()
     if( pWnd != NULL )
     {
         // This will invoked the InvokeClose function
-        ((CTxMsgFlexChildFrame*)pWnd)->PostMessage( WM_CLOSE );
+        ((CTxMsgChildFrame*)pWnd)->PostMessage( WM_CLOSE );
     }
 }
 
@@ -1090,6 +1097,10 @@ HRESULT CTransmitMsg::UpdateTxView(int& m_nChannelsConfigured)
         return S_FALSE;
     }
     m_lstMsg.DeleteAllItems();
+
+
+
+
     m_bDataModified = false;
     list<FLEXRAY_FRAME_DATA>& ouFrameDataList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel];
     list<FLEXRAY_FRAME_DATA>::iterator itFrameData = ouFrameDataList.begin();
@@ -1352,7 +1363,7 @@ void CTransmitMsg::SwitchView(DATA_VIEW ouViewType)
                 CString     omstrData;
                 SLISTINFO       sListInfo;
                 SNUMERICINFO    sNumInfo;
-                sListInfo.m_eType = eNumber;
+                sListInfo.m_eType = eKeyBuddy;
                 sNumInfo.m_uMaxVal.m_n64Value = 255;
                 sNumInfo.m_uMinVal.m_n64Value = 0;
                 sNumInfo.m_byFlag = SIGNED_VAL;

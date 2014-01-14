@@ -14,7 +14,8 @@ IMPLEMENT_DYNAMIC(CBusEventHandlerDlg, CDialog)
 CBusEventHandlerDlg::CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/, BOOL bIsDelete /*FALSE*/)
     : CDialog(CBusEventHandlerDlg::IDD, pParent)
     , m_bChkBusEventConnect(FALSE)
-    , m_bChkBusEventDisConnect(FALSE)
+    ,m_bChkBusEventPreConnect(FALSE)
+    ,m_bChkBusEventDisConnect(FALSE)
 {
     m_pDoc = pDoc;
     m_bIsDelete = bIsDelete;
@@ -67,6 +68,7 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
                         omStrHandlerName = pomStrArrayHandlerName->GetAt(j);
                         pomButton->GetWindowText(omStrControl);
                         omStrControl.Replace(' ','_');
+                        omStrControl.Replace('-','_');
                         // The find the control text in added handlers text
                         if( omStrHandlerName.Find(omStrControl) != -1 )
                         {
@@ -138,6 +140,7 @@ void CBusEventHandlerDlg::OnBnClickedOk()
             omStrControl.TrimLeft();
             omStrControl.TrimRight();
             omStrControl.Replace(' ','_');
+            omStrControl.Replace('-','_');
             omStrHandlerName = omStrControl;
             if(nCheck == 1 && bIsEnable != 0 )
             {

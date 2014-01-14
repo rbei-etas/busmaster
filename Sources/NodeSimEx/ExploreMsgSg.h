@@ -56,6 +56,8 @@ public:
     BOOL    m_bWantStructure;
     //}}AFX_DATA
 
+public:
+    void vSetFrameList(ClusterConfig* ouClusterConfig, ETYPE_BUS eBus);
 
     // Overrides
     // ClassWizard generated virtual function overrides
@@ -94,6 +96,8 @@ private:
     int m_nMsgIndex;
     //Get Signal Names from Message Id
     void vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSignalNames);
+    ClusterConfig* m_ouClusterConfig;
+    ETYPE_BUS m_eBus;
 };
 
 //{{AFX_INSERT_LOCATION}}

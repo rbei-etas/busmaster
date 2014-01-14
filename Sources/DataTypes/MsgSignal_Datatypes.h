@@ -271,7 +271,7 @@ typedef struct tagLinearCodeVarEx
 {
     SRange   m_sRange;
     double   m_dN0;   // AppValue =
-    double   m_dN1;   // (m_dN0 + m_dN1 * Trans. Val) / m_dD0
+    double   m_dN1;   // (m_dN0 // offset + m_dN1 //factor * Trans. Val) / m_dD0
     double   m_dD0;
 
     tagLinearCodeVarEx()
@@ -408,6 +408,7 @@ public:
     // To get the engineering value
     //CString omGetEnggValue(DWORD dwRawValue);
     bool omGetEnggValue(DWORD dwRawValue, CString& omEnggValue); // TO BE REMOVED CHOU
+    bool omGetRawValue(CString& omRawValue, double omEnggValue);
     BOOL bGetEnggValue(DWORD dwRawValue, CString& omEnggValue) const;
     CCompuMethodEx& operator=(const CCompuMethodEx& RefObj);
 };
@@ -541,7 +542,8 @@ struct FRAME_STRUCT;
 CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
 string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
 UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& pwData);
-bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, list<Flexray_SSIGNALINFO>& ouSignalInfoList);
+bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex = FALSE);
+void GetSignalNames(list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames);
 
 
 #endif

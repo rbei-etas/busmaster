@@ -383,10 +383,20 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
                     //database
                     if( CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetCount() == 0)
                     {
-                        pomCtxMenu->EnableMenuItem(
-                            IDM_CONTEXT_INSERTMESSAGE, nDisable );
-                        pomCtxMenu->EnableMenuItem(
-                            IDM_CONTEXT_INSERTSIGNAL, nDisable );
+                        if(m_eBus != LIN)
+                        {
+                            pomCtxMenu->EnableMenuItem(
+                                IDM_CONTEXT_INSERTMESSAGE, nDisable );
+                            pomCtxMenu->EnableMenuItem(
+                                IDM_CONTEXT_INSERTSIGNAL, nDisable );
+                        }
+                        else if( CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_nChannelsConfigured <= 0)
+                        {
+                            pomCtxMenu->EnableMenuItem(
+                                IDM_CONTEXT_INSERTMESSAGE, nDisable );
+                            pomCtxMenu->EnableMenuItem(
+                                IDM_CONTEXT_INSERTSIGNAL, nDisable );
+                        }
                     }
                     // Disable Insert Signal & Function in case of global
                     // variable section selected
@@ -747,6 +757,14 @@ void CFunctionView::OnInsertSignal()
     CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb,
                          TRUE, FNVIEW, SEL_SIGNAL );
 
+    if(m_eBus == LIN)
+    {
+        od_Dlg.vSetFrameList(CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig, m_eBus);
+    }
+    else
+    {
+        od_Dlg.vSetFrameList(NULL, m_eBus);
+    }
     if ( od_Dlg.DoModal() == IDOK )
     {
         // get reference to the RichEdit
@@ -790,6 +808,14 @@ void CFunctionView::OnInsertMessage()
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     CExploreMsgSg od_Dlg(pDoc, CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb,
                          TRUE, FNVIEW, eType);
+    if(m_eBus == LIN)
+    {
+        od_Dlg.vSetFrameList(CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig, m_eBus);
+    }
+    else
+    {
+        od_Dlg.vSetFrameList(NULL, m_eBus);
+    }
 
     if ( od_Dlg.DoModal() == IDOK )
     {

@@ -124,7 +124,7 @@ public:
 class CMsgInterpretationFlexRay
 {
 public:
-    FlexConfig  m_ouFlexConfig;
+    ClusterConfig  m_ouFlexConfig;
 private:
     CFrameMap   m_ouDataSet;
     EFORMAT     m_eNumFormat;
@@ -132,7 +132,7 @@ public:
     CMsgInterpretationFlexRay();
     ~CMsgInterpretationFlexRay();
 
-    void vSetFlexRayClusterInfo(FlexConfig* ouConfig);
+    void vSetFlexRayClusterInfo(ClusterConfig* ouConfig);
 
     void vSetFlexRayDatabase(const CFrameMap& ouFrameDataSet);
     // Get signal value
@@ -144,3 +144,25 @@ public:
     //void vClear();
 };
 
+class CMsgInterpretationLIN
+{
+public:
+    ClusterConfig*  m_ouLINConfig;
+private:
+    CFrameMap   m_ouDataSet;
+    EFORMAT     m_eNumFormat;
+public:
+    CMsgInterpretationLIN();
+    ~CMsgInterpretationLIN();
+
+    void vSetLINClusterInfo(ClusterConfig* ouConfig);
+
+    //void vSetFlexRayDatabase(const CFrameMap& ouFrameDataSet);
+    // Get signal value
+    //__int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
+
+    BOOL bInterpretMsgs( EFORMAT eNumFormat, STLIN_MSG* pMsg, SSignalInfoArray& SigInfoArray);
+
+    //void vCopy(CMsgInterpretation* pDest) const;
+    //void vClear();
+};

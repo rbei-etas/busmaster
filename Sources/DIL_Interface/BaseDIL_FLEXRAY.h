@@ -112,7 +112,7 @@ public:
     /* To set the configuration data for the currently selected DIL. Caller must
     release the memory. */
     //virtual HRESULT DILF_SetConfigData(PCHAR pInitData,  ABS_CLUSTER_INFO   asClusterinfo, int Length, ABS_DEVICE_CONFIG  asDeviceConfig) = 0;
-    virtual HRESULT DILF_SetConfigData(FLEXRAY_CHANNEL_CONFIG& ouAbsSFibexContainer) = 0;
+    virtual HRESULT DILF_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer) = 0;
 
     /* Start the controller*/
     virtual HRESULT DILF_StartHardware(void) = 0;

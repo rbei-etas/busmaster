@@ -27,6 +27,7 @@
 #include "HashDefines.h"
 #include "Flags.h"
 #include "Utility/XMLUtils.h"
+#include "DataTypes\Cluster.h"
 
 class CSimSysManager
 {
@@ -98,6 +99,8 @@ public:
     void vSaveAllSimSys();
     void vInitailizeSimSysInfo();
     void vSaveSimSys(CString omStrSimSysName);
+
+    void vSetDatabaseConfiguration(ClusterConfig* ouLINConfig);
 
     //Patch up for loading the simsys configuration
     CStringArray m_omSimsysInConfigFile;

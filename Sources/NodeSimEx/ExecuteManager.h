@@ -61,10 +61,14 @@ public:
     void vManageBusEventHandler(eBUSEVEHANDLER eBusEvent);
     void vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DWORD& dwClientId);
     void vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR sErrorVal, DWORD dwClientId);
+    void vManageOnErrorHandlerLIN(SERROR_INFO_LIN ouErrorInfo, DWORD dwClientId);
     void vManageOnDataConfHandlerJ1939(DWORD dwClientId, UINT32 unPGN,
                                        BYTE bySrc, BYTE byDest, BOOL bSuccess);
     void vManageOnAddressClaimHandlerJ1939(DWORD dwClientId, BYTE byAddress);
     void vExSetNodeInfo(const CString NodeName ,const PSNODEINFO psNodeInf);
+
+    void vManageOnMessageHandlerLIN_(PSTLIN_TIME_MSG sRxMsgInfo, DWORD& dwClientId);
+
     const HMODULE hReturnDllHandle(const CString NodeName);
     BOOL bDllLoaded;//if any one dll is loaded
     BOOL bExecuteDllBuildLoad(PSNODEINFO psNodeInfo);

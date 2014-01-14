@@ -31,6 +31,7 @@
 #include "Utility/numSpinCtrl.h"            // For the custom spin control
 #include "Utility/FFListctrl.h"             // For Flicker Free List class definition
 #include "Utility/KeyNumEdit.h"                // For Custom Numeric Edit control Impl
+#include "Utility/NumEdit.h"                // For Custom Numeric Edit control Impl
 #include "FlexListCtrl.h"           // Interface file for Flex List Control
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
@@ -304,15 +305,36 @@ void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
         NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
         // Call Handler Function with required parameters
-
         m_nRow = pNMListView->iItem;
         m_nColumn = pNMListView->iSubItem;
+
+        sUserProgInfo ouUserProg;
+        //TODO::Lot of If Statements has to reduced;
+        if( m_omUserProg.Lookup(lGetMapID(m_nRow, m_nColumn) , ouUserProg) == TRUE )
+        {
+            if ( ouUserProg.m_bIcon == true )
+            {
+                CRect omRect;
+                GetSubItemRect(m_nRow, m_nColumn, LVIR_ICON, omRect);
+                if ( true == omRect.PtInRect( pNMListView->ptAction ) )
+                {
+                    if ( ouUserProg.m_pfHandler != NULL )
+                    {
+                        ouUserProg.m_pfHandler(this, m_nRow, m_nColumn, ouUserProg.m_pUserParam);
+                        return;
+                    }
+                }
+            }
+        }
+
 
         m_nCurrentCell = pNMListView->iItem * GetHeaderCtrl()->GetItemCount() +  pNMListView->iSubItem ;
         // lGetMapID(pNMListView->iItem, pNMListView->iSubItem);
 
         vShowControl(pNMListView->iItem, pNMListView->iSubItem);
     }
+
+
 
     *pResult = 0;
 }
@@ -552,9 +574,12 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
             switch( sInfo.m_eType)
             {
                     // Numeric Edit box with or with out Spin Control
+                case eAlphaNumericType:
+                    pomAlphaNumericChar(nItem, nSubItem);
+                    break;
+
                 case eNumber:
                 case eBuddy:
-                    // Get the numeric control parameters
                     if( m_omNumDetails.Lookup( lGetMapID(nItem, nSubItem),
                                                sNumInfo ) == TRUE )
                     {
@@ -566,6 +591,22 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
                         ASSERT( FALSE );
                         // Call with default value
                         pomNumItem(nItem, nSubItem, sNumInfo);
+                    }
+                    break;
+
+                case eKeyBuddy:
+                    // Get the numeric control parameters
+                    if( m_omNumDetails.Lookup( lGetMapID(nItem, nSubItem),
+                                               sNumInfo ) == TRUE )
+                    {
+                        pomKeyNumItem(nItem, nSubItem, sNumInfo);
+                    }
+                    else
+                    {
+                        // Numeric info is not set
+                        ASSERT( FALSE );
+                        // Call with default value
+                        pomKeyNumItem(nItem, nSubItem, sNumInfo);
                     }
                     break;
                     // General Edit control
@@ -837,14 +878,15 @@ CComboItem* CFlexListCtrl::pomComboList( int nItem,
 CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
 {
     // Item rect and Client rect
-    CRect omRect, omClientRect;
+    CRect omRect, omClientRect, omRect2;
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
         return NULL;
     }
     // Get the item rect
-    GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
+    GetSubItemRect(nItem, nSubItem, LVIR_ICON , omRect);
+
     // Now scroll if we need to expose the column
     GetClientRect(omClientRect);
     if( omRect.left < 0 || omRect.left > omClientRect.right )
@@ -854,7 +896,7 @@ CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
         omRect.left -= size.cx;
     }
 
-    omRect.right = omRect.left + GetColumnWidth(nSubItem);
+    // omRect.right = omRect.left + GetColumnWidth(nSubItem);
     // If the size is bigger then the client size then resizes
     if(omRect.right > omClientRect.right)
     {
@@ -901,22 +943,100 @@ CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     return pomEdit;
 }
 
-/*******************************************************************************
- Function Name  : pomNumItem
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
-                  sInfo     - Numeric info like Min val, Max val, Base...
-                  Please see the structure definition to get all field info
- Output         : CEdit * - Pointer to the control
- Description    : This function will create and show a numeric edit control with
-                  or without spin control
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
-CKeyNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
-                                        const SNUMERICINFO& sInfo)
+
+CAlphaCharEdit* CFlexListCtrl::pomAlphaNumericChar( int nItem, int nSubItem)
+{
+    CRect omRect;
+    // Set the item to be visible
+    if(!EnsureVisible(nItem, TRUE))
+    {
+        return NULL;
+    }
+    // Get the item rect
+    GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
+
+    sUserProgInfo ouUserProg;
+    bool bIsIconAvail = false;
+    if( m_omUserProg.Lookup(lGetMapID(nItem, nSubItem) , ouUserProg) == TRUE )
+    {
+        bIsIconAvail = ouUserProg.m_bIcon;
+    }
+
+    if ( true == bIsIconAvail )
+    {
+        CRect omRect2;
+        GetSubItemRect(nItem, nSubItem, LVIR_ICON , omRect2);
+        omRect.left = omRect2.right;
+        //omRect.right = omRect2.right;
+    }
+    else
+    {
+        omRect.right = omRect.left + GetColumnWidth(nSubItem);
+    }
+
+    // Now scroll if we need to expose the column
+    CRect omClientRect;
+    GetClientRect(omClientRect);
+    if( omRect.left < 0 || omRect.left > omClientRect.right )
+    {
+        CSize size( omRect.left, 0 );
+        Scroll( size );
+        omRect.left -= size.cx;
+    }
+
+    if(omRect.right > omClientRect.right)
+    {
+        omRect.right = omClientRect.right;
+    }
+
+    // Get Column alignment
+    LV_COLUMN lvcol;
+    lvcol.mask = LVCF_FMT;
+    GetColumn(nSubItem, &lvcol);
+
+    DWORD dwStyle;
+    if((lvcol.fmt & LVCFMT_JUSTIFYMASK) == LVCFMT_LEFT)
+    {
+        dwStyle = ES_LEFT;
+    }
+    else if((lvcol.fmt & LVCFMT_JUSTIFYMASK) == LVCFMT_RIGHT)
+    {
+        dwStyle = ES_RIGHT;
+    }
+    else
+    {
+        dwStyle = ES_CENTER;
+    }
+    // Set the standard windows style
+    dwStyle |=WS_BORDER|WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
+    // Get the selected item text
+    CString omStrText = GetItemText(nItem, nSubItem);
+    // Create the control
+    CAlphaCharEdit* pomEdit2 = NULL;
+    SNUMERICINFO info;
+    info.m_uMaxVal.m_n64Value = 5;
+    info.m_uMaxVal.m_n64Value = 0;
+    omStrText = "";
+    CAlphaCharEdit* pomEdit = new CAlphaCharEdit(nItem, nSubItem, omStrText);
+    if( pomEdit != NULL )
+    {
+
+        pomEdit->Create(WS_BORDER|WS_CHILD | WS_VISIBLE, omRect, this, IDC_CONTROL);
+        pomEdit->SetLimitText(1);
+        pomEdit->SetFocus();
+    }
+    else
+    {
+        CString omStrErr;
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defNUM_ITEM );
+        AfxMessageBox( omStrErr );
+    }
+    // Return the window pointer
+    return pomEdit2;
+}
+
+CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
+                                     const SNUMERICINFO& sInfo)
 {
     CRect omRect;
     // Set the item to be visible
@@ -936,6 +1056,105 @@ CKeyNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
         omRect.left -= size.cx;
     }
     omRect.right = omRect.left + GetColumnWidth(nSubItem);
+    if(omRect.right > omClientRect.right)
+    {
+        omRect.right = omClientRect.right;
+    }
+
+    // Get Column alignment
+    LV_COLUMN lvcol;
+    lvcol.mask = LVCF_FMT;
+    GetColumn(nSubItem, &lvcol);
+
+    DWORD dwStyle;
+    if((lvcol.fmt & LVCFMT_JUSTIFYMASK) == LVCFMT_LEFT)
+    {
+        dwStyle = ES_LEFT;
+    }
+    else if((lvcol.fmt & LVCFMT_JUSTIFYMASK) == LVCFMT_RIGHT)
+    {
+        dwStyle = ES_RIGHT;
+    }
+    else
+    {
+        dwStyle = ES_CENTER;
+    }
+    // Set the standard windows style
+    dwStyle |=WS_BORDER|WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
+    // Get the selected item text
+    CString omStrText = GetItemText(nItem, nSubItem);
+    // Create the control
+    CNumEdit* pomEdit = NULL;
+    pomEdit = new CNumEdit(nItem, nSubItem, omStrText, sInfo);
+    if( pomEdit != NULL )
+    {
+        pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
+    }
+    else
+    {
+        CString omStrErr;
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defNUM_ITEM );
+        AfxMessageBox( omStrErr );
+    }
+    // Return the window pointer
+    return pomEdit;
+}
+
+/*******************************************************************************
+ Function Name  : pomNumItem
+ Inputs         : nRow      - Index of the Row
+                  nColumn   - Index of the Column
+                  sInfo     - Numeric info like Min val, Max val, Base...
+                  Please see the structure definition to get all field info
+ Output         : CEdit * - Pointer to the control
+ Description    : This function will create and show a numeric edit control with
+                  or without spin control
+ Member of      : CFlexListCtrl
+ Author(s)      : Raja N
+ Date Created   : 22.07.2004
+ Modifications  :
+*******************************************************************************/
+CKeyNumEdit* CFlexListCtrl::pomKeyNumItem( int nItem, int nSubItem,
+        const SNUMERICINFO& sInfo)
+{
+    CRect omRect;
+    // Set the item to be visible
+    if(!EnsureVisible(nItem, TRUE))
+    {
+        return NULL;
+    }
+    // Get the item rect
+    GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
+
+    sUserProgInfo ouUserProg;
+    bool bIsIconAvail = false;
+    if( m_omUserProg.Lookup(lGetMapID(nItem, nSubItem) , ouUserProg) == TRUE )
+    {
+        bIsIconAvail = ouUserProg.m_bIcon;
+    }
+
+    if ( true == bIsIconAvail )
+    {
+        CRect omRect2;
+        GetSubItemRect(nItem, nSubItem, LVIR_ICON , omRect2);
+        omRect.left = omRect2.right;
+        //omRect.right = omRect2.right;
+    }
+    else
+    {
+        omRect.right = omRect.left + GetColumnWidth(nSubItem);
+    }
+
+    // Now scroll if we need to expose the column
+    CRect omClientRect;
+    GetClientRect(omClientRect);
+    if( omRect.left < 0 || omRect.left > omClientRect.right )
+    {
+        CSize size( omRect.left, 0 );
+        Scroll( size );
+        omRect.left -= size.cx;
+    }
+
     if(omRect.right > omClientRect.right)
     {
         omRect.right = omClientRect.right;

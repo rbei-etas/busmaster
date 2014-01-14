@@ -35,8 +35,6 @@
 #include "Include/CAN_Error_Defs.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
-#include "BusEmulation/BusEmulation.h"
-#include "BusEmulation/BusEmulation_i.c"
 #include "DataTypes/DIL_DataTypes.h"
 #include "Utility/Utility_Thread.h"
 #include "Utility/Utility.h"

@@ -27,9 +27,10 @@
 //#include "../Application/GettextBusmaster.h"
 #define USAGE_EXPORT
 #include "TxWndFlexRay_Extern.h"
-#include "TxMsgFlexChildFrame.h"
+#include "TxMsgChildFrame.h"
 
-
+CTxMsgChildFrame* g_pomTxMsgFlexChildWindow = NULL;
+CTxMsgChildFrame* g_pomTxMsgLinChildWindow = NULL;
 
 static AFX_EXTENSION_MODULE TXFlexRayWindowDLL = { NULL, NULL };
 
@@ -71,7 +72,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     return 1;   // ok
 }
 
-CTxMsgFlexChildFrame* g_pomTxMsgFlexChildWindow = NULL;
+
 //Export Function Definitions.
 
 USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void* pMsgDB)
@@ -94,7 +95,7 @@ USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void* pMsgDB)
 
 void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
 {
-    sTxWndPlacement.flags = 1;
+    /*sTxWndPlacement.flags = 1;
     sTxWndPlacement.length = 44;
     sTxWndPlacement.ptMaxPosition.x = 0;
     sTxWndPlacement.ptMaxPosition.x = 0;
@@ -104,22 +105,37 @@ void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
     sTxWndPlacement.rcNormalPosition.bottom = 661;
     sTxWndPlacement.rcNormalPosition.left = 4;
     sTxWndPlacement.rcNormalPosition.right = 864;
-    sTxWndPlacement.showCmd = 1;
+    sTxWndPlacement.showCmd = 1;*/
 }
-
-USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd)
+int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
 {
-    //Place this code at the beginning of the export function.
-    //Save previous resource handle and switch to current one.
-    HINSTANCE hInst = AfxGetResourceHandle();
-    AfxSetResourceHandle(TXFlexRayWindowDLL.hResource);
-    //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-    if( g_pomTxMsgFlexChildWindow == NULL )
+    CTxMsgChildFrame* pFrameWindow = NULL;
+    string strTitle = "";       //Used for Title.
+    bool bValidBus = false;
+    if ( eBUS == FLEXRAY )
     {
-        // Create New Instance
-        g_pomTxMsgFlexChildWindow = new CTxMsgFlexChildFrame;
-        if( g_pomTxMsgFlexChildWindow != NULL )
+        pFrameWindow = g_pomTxMsgFlexChildWindow;
+        strTitle = "Configure Transmission Messages - FLEXRAY";
+        bValidBus = true;
+    }
+    else if ( eBUS == LIN )
+    {
+        pFrameWindow = g_pomTxMsgLinChildWindow;
+        strTitle = "Configure Transmission Messages - LIN";
+        bValidBus = true;
+    }
+
+
+    if ( bValidBus == false )
+    {
+        return S_FALSE;
+    }
+
+
+    if( pFrameWindow == NULL )
+    {
+        pFrameWindow = new CTxMsgChildFrame(eBUS);
+        if( pFrameWindow != NULL )
         {
             //// Register Window Class
             LPCTSTR strMDIClass = AfxRegisterWndClass(
@@ -131,9 +147,17 @@ USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd)
             WINDOWPLACEMENT sTxWndPlacement;
             SetDefaultWindowPos(sTxWndPlacement);
             WINDOWPLACEMENT* psTxWndPlacement = &sTxWndPlacement;
-            CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bGetTxData(TX_WINDOW_PLACEMENT, (void**)&psTxWndPlacement);
-            if (sTxWndPlacement.rcNormalPosition.top == -1 ||
-                    sTxWndPlacement.length == 0)//Load default configuration
+            bool bRetVal = false;
+            if ( eBUS == FLEXRAY )
+            {
+                bRetVal = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bGetTxData(TX_WINDOW_PLACEMENT, (void**)&psTxWndPlacement);
+            }
+            else if ( eBUS == LIN )
+            {
+                bRetVal = CTxLINDataStore::ouGetTxLINDataStoreObj().bGetTxData(TX_WINDOW_PLACEMENT, (void**)&psTxWndPlacement);
+            }
+
+            if ( bRetVal == false)//Load default configuration
             {
                 CRect omRect;
                 CWnd* pWnd = (CWnd*)pParentWnd;
@@ -161,20 +185,28 @@ USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd)
 
             // Create Tx Message Configuration window
             //CRect omRect(0,0,200,200);
-            if( g_pomTxMsgFlexChildWindow->Create( strMDIClass,
-                                                   "Configure Transmission Messages - FLEXRAY",
-                                                   WS_CHILD | WS_OVERLAPPEDWINDOW,
-                                                   omRect, (CMDIFrameWnd*)pParentWnd ) == TRUE )
+            if( pFrameWindow->Create( strMDIClass,
+                                      strTitle.c_str(),
+                                      WS_CHILD | WS_OVERLAPPEDWINDOW,
+                                      omRect, (CMDIFrameWnd*)pParentWnd ) == TRUE )
             {
                 // Show window and set focus
-                g_pomTxMsgFlexChildWindow->ShowWindow( SW_SHOW);
-                g_pomTxMsgFlexChildWindow->SetFocus();
+                pFrameWindow->ShowWindow( SW_SHOW);
+                pFrameWindow->SetFocus();
                 if (sTxWndPlacement.rcNormalPosition.top != -1 &&
                         sTxWndPlacement.length != 0)
                 {
-                    g_pomTxMsgFlexChildWindow->SetWindowPlacement(&sTxWndPlacement);
+                    pFrameWindow->SetWindowPlacement(&sTxWndPlacement);
                 }
 
+            }
+            if ( eBUS == FLEXRAY )
+            {
+                g_pomTxMsgFlexChildWindow = pFrameWindow;
+            }
+            else if ( eBUS == LIN )
+            {
+                g_pomTxMsgLinChildWindow = pFrameWindow;
             }
         }
         else
@@ -182,39 +214,57 @@ USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd)
             return S_FALSE;
         }
     }
-    // If already exist then activate and set the focus
     else
     {
-        g_pomTxMsgFlexChildWindow->ShowWindow( SW_RESTORE );
-        g_pomTxMsgFlexChildWindow->MDIActivate();
-        g_pomTxMsgFlexChildWindow->SetActiveWindow();
+        pFrameWindow->ShowWindow( SW_RESTORE );
+        pFrameWindow->MDIActivate();
+        pFrameWindow->SetActiveWindow();
     }
-    //Place this at the end of the export function.
-    //switch back to previous resource handle.
-    //   CWnd objParent;
-    //objParent.Attach(((CWnd*)pParentWnd)->m_hWnd);
 
-    //objParent.Detach();
+}
+
+USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS)
+{
+    //Place this code at the beginning of the export function.
+    //Save previous resource handle and switch to current one.
+    HINSTANCE hInst = AfxGetResourceHandle();
+    AfxSetResourceHandle(TXFlexRayWindowDLL.hResource);
+
+    int nRes = nShowTxWindow(pParentWnd, eBUS);
 
     AfxSetResourceHandle(hInst);
-    return S_OK;
+    return nRes;
 }
 
 
-USAGEMODE HRESULT TXFlexRay_vSetClientID(DWORD dwClientID)
+USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID)
 {
-    // CTxMsgManager::s_podGetTxMsgManager()->vSetClientID(dwClientID);
-    //g_txMsgManager.vSetClientID(dwClientID);
+    if ( eBusType == FLEXRAY )
+    {
+        //CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetDILInterfacePtr();
+    }
+    else if ( eBusType == LIN )
+    {
+        CTxLINDataStore::ouGetTxLINDataStoreObj().m_dwClientID = dwClientID;
+    }
     return S_OK;
 }
-USAGEMODE HRESULT TXFlexRay_vSetDILInterfacePtr()
+USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPointer)
 {
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetDILInterfacePtr();
+    if ( eBusType == FLEXRAY )
+    {
+        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetDILInterfacePtr();
+    }
+    else if ( eBusType == LIN )
+    {
+        CTxLINDataStore::ouGetTxLINDataStoreObj().bSetDILInterfacePtr((CBaseDIL_LIN*)pDilPointer);
+    }
+
     // CTxMsgManager::s_podGetTxMsgManager()->vSetDILInterfacePtr(ptrDILIntrf);
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexRay_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
+USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
     /*if(g_pomTxMsgChildWindow)
     {
@@ -223,6 +273,7 @@ USAGEMODE HRESULT TXFlexRay_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM 
     if ( wParam == 0 )  //eHEXDECCMD = 0;
     {
         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode = (bool)lParam;
+        CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode = (bool)lParam;
     }
 
 
@@ -230,18 +281,39 @@ USAGEMODE HRESULT TXFlexRay_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM 
     {
         g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->SendMessage(msg, wParam, lParam);
     }
+    if(g_pomTxMsgLinChildWindow != NULL)
+    {
+        g_pomTxMsgLinChildWindow->m_pLinTransmitMsgView->SendMessage(msg, wParam, lParam);
+    }
+
+    CTxLINDataStore::ouGetTxLINDataStoreObj().nHandleKeyEvent((char)lParam);
+
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexRay_hConfigWindowShown()
+USAGEMODE HRESULT TXComman_hConfigWindowShown(ETYPE_BUS eBusType)
 {
-    if(g_pomTxMsgFlexChildWindow)
+    if ( eBusType == FLEXRAY )
     {
-        return S_OK;
+        if(g_pomTxMsgFlexChildWindow)
+        {
+            return S_OK;
+        }
+        else
+        {
+            return S_FALSE;
+        }
     }
-    else
+    else if ( eBusType == LIN )
     {
-        return S_FALSE;
+        if(g_pomTxMsgLinChildWindow)
+        {
+            return S_OK;
+        }
+        else
+        {
+            return S_FALSE;
+        }
     }
     return S_OK;
 }
@@ -265,23 +337,31 @@ USAGEMODE HRESULT TXFlexRay_vAssignMsgBlockList()
 
 USAGEMODE HRESULT TXFlexRay_vDeleteTxBlockMemory()
 {
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
-        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);
+    /* CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
+         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);*/
     // CTxMsgManager::s_podGetTxMsgManager()->vDeleteTxBlockMemory();
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexRay_vBusStatusChanged(bool bConnected)
+USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatus)
 {
-    //  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vStopTxTimer();
-    //if(g_pomTxMsgFlexChildWindow != NULL)
+    if ( eBusType == FLEXRAY )
     {
-        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vSetBusStatus(bConnected);
+        //  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vStopTxTimer();
+        //if(g_pomTxMsgFlexChildWindow != NULL)
+        {
+            CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vSetBusStatus(eBusStatus);
+        }
+        if(g_pomTxMsgFlexChildWindow != NULL)
+        {
+            g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->SendMessage(WM_USER+44, 1, eBusStatus);
+        }
     }
-    if(g_pomTxMsgFlexChildWindow != NULL)
+    else if ( eBusType == LIN )
     {
-        g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->SendMessage(WM_USER+44, 1, bConnected);
+        CTxLINDataStore::ouGetTxLINDataStoreObj().vSetBusStatus(eBusStatus);
     }
+
     //CTxMsgManager::s_podGetTxMsgManager()->vStopTransmission(unMaxWaitTime);
     return S_OK;
 }
@@ -295,26 +375,39 @@ USAGEMODE HRESULT TXFlexRay_vBusStatusChanged(bool bConnected)
 //    CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
 //    return S_OK;
 //}
-USAGEMODE HRESULT TXFlexRay_vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
+USAGEMODE HRESULT TXComman_vGetTxWndConfigData( ETYPE_BUS eBusType, xmlNodePtr pxmlNodePtr)
 {
-    if(g_pomTxMsgFlexChildWindow)
+    if ( eBusType == FLEXRAY )
     {
-        g_pomTxMsgFlexChildWindow->vUpdateWndCo_Ords();
+        if(g_pomTxMsgFlexChildWindow)
+        {
+            g_pomTxMsgFlexChildWindow->vUpdateWndCo_Ords();
+        }
+        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bGetConfigData(pxmlNodePtr);
     }
-    ////CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bGetConfigData(pxmlNodePtr);
+    else
+    {
+        if(g_pomTxMsgLinChildWindow)
+        {
+            g_pomTxMsgLinChildWindow->vUpdateWndCo_Ords();
+        }
+        CTxLINDataStore::ouGetTxLINDataStoreObj().bGetConfigData(pxmlNodePtr);
+    }
+
     return S_OK;
 }
 
 
-USAGEMODE HRESULT TXFlexRay_vSetTxWndConfigDataXML(xmlDocPtr pDoc)
+USAGEMODE HRESULT TXComman_vSetTxWndConfigDataXML( ETYPE_BUS eBusType, xmlDocPtr pDoc)
 {
-    if(g_pomTxMsgFlexChildWindow != NULL)
+    if ( eBusType == FLEXRAY )
     {
-        //g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->StartStopCyclicTx(FALSE, NULL);
+        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetConfigData(pDoc);
     }
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetConfigData(pDoc);
-    // CTxMsgManager::s_podGetTxMsgManager()->vSetTxWndConfigData(pDoc);
+    else if ( eBusType == LIN )
+    {
+        CTxLINDataStore::ouGetTxLINDataStoreObj().bSetConfigData(pDoc);
+    }
     return S_OK;
 }
 /*USAGEMODE HRESULT TX_bIsTxWndConfigChanged()
@@ -339,31 +432,44 @@ USAGEMODE BOOL TXFlexRay_bGetTxStopFlag()
 
 USAGEMODE UINT TXFlexRay_unGetTxBlockCount()
 {
-
-    return CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().nGetBlockCount();
+    return 0;
+    //return CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().nGetBlockCount();
     //return CTxMsgManager::s_podGetTxMsgManager()->nGetBlockCount();
 }
 
 USAGEMODE HRESULT TXFlexRay_vFlexFileChanged()
 {
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
-        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);
-    if(g_pomTxMsgFlexChildWindow != NULL)
-    {
-        //g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->vClearInitialisationFileContents();
-    }
+    //CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
+    //    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);
+    //if(g_pomTxMsgFlexChildWindow != NULL)
+    //{
+    //    //g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->vClearInitialisationFileContents();
+    //}
 
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexray_nSetFibexConfig(FlexConfig& ouFlexConfig)
+USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlexConfig)
 {
-    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
-        CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);
-    HRESULT hr = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().SetFlexRayConfig(ouFlexConfig);
-    if(g_pomTxMsgFlexChildWindow != NULL && hr == S_OK)
+    /* CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
+         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);*/
+    HRESULT hr = S_FALSE;
+    if ( eBus == FLEXRAY )
     {
-        g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->UpdateTxView(ouFlexConfig.m_nChannelsConfigured);
+        hr = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().SetFlexRayConfig(ouFlexConfig);
+        if(g_pomTxMsgFlexChildWindow != NULL && hr == S_OK)
+        {
+            g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->UpdateTxView(ouFlexConfig.m_nChannelsConfigured);
+        }
     }
-    return S_FALSE;
+    else if ( eBus == LIN )
+    {
+        hr = CTxLINDataStore::ouGetTxLINDataStoreObj().SetFlexRayConfig(&ouFlexConfig);
+        if(g_pomTxMsgLinChildWindow != NULL && hr == S_OK)
+        {
+            g_pomTxMsgLinChildWindow->m_pLinTransmitMsgView->UpdateTxView(ouFlexConfig.m_nChannelsConfigured);
+        }
+    }
+
+    return hr;
 }

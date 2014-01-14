@@ -12,6 +12,8 @@
 
 #pragma once
 #include "Utility/flickerfreelistctrl.h"
+#include <map>
+using namespace std;
 //#include ".\Customization\CHexEdit\HexEdit.h"
 //#include ".\Customization\CCustomLabel\CustomLabel.h"
 
@@ -27,6 +29,12 @@
 
 //class CHexEdit;
 //class CCustomLabel;
+
+struct ColumnProperty
+{
+    bool bMovable;
+};
+
 class CTxMsgList :
     public CFlickerFreeListCtrl
 {
@@ -61,7 +69,7 @@ public:
     BOOL HasColumnHeader(void) const;
     int GetItemImage(int nItem, int nSubItem) const;
     int GetColumnCount(void) const;
-    const CHeaderCtrl* GetHeaderCtrl() const;
+    CHeaderCtrl* GetHeaderCtrl() const;
     CImageList* GetImageList() const;
     BOOL IsEditable() const; // Is Item text editable?
     void SetEditable(BOOL bSet = TRUE); // Allow item text editting
@@ -78,6 +86,7 @@ public:
     CPoint  m_ptSubItemPoint;
     CFont m_fntText;
 public:
+    int InsertColumn(int nCol, const LVCOLUMN* pColumn, ColumnProperty ouColumnProperty );
     bool GetTextFont( LOGFONT* plgfnt);
     bool SetFontBold(bool bBold);
     bool SetTextFont( const LOGFONT& lgfnt );
@@ -89,4 +98,6 @@ private:
     bool bIsChangeable(int nItem, int nSubItem);
     void vDataFormat(CString& omDataBytes,int* nDataLength,bool bFlag);
     bool bValidateDynamicLength(long lValue);
+
+    map<int, ColumnProperty> m_ouColumnPropMap;
 };

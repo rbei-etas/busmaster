@@ -143,38 +143,40 @@ void CFormatMsgLIN::vFormatDataAndId(BYTE bExprnFlag,
 {
     if (IS_NUM_HEX_SET(bExprnFlag))
     {
-        sprintf_s(CurrDataLIN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataLIN->m_dwMsgID);
-
+        strcpy(CurrDataLIN->m_acMsgIDHex, "");
+        if ( CurrDataLIN->m_dwMsgID != -1 )
         {
-            int j = 0;  // j declared outside
-
-            for (int i = 0; i < CurrDataLIN->m_byDataLength; i++)
-            {
-                BYTE CurrDat = CurrDataLIN->m_abData[i];
-                _stprintf(&(CurrDataLIN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
-                j += 3;
-            }
-            CurrDataLIN->m_acDataHex[j] = L'\0';
+            sprintf_s(CurrDataLIN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataLIN->m_dwMsgID);
         }
+        int j = 0;  // j declared outside
+
+        for (int i = 0; i < CurrDataLIN->m_byDataLength; i++)
+        {
+            BYTE CurrDat = CurrDataLIN->m_abData[i];
+            _stprintf(&(CurrDataLIN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+            j += 3;
+        }
+        CurrDataLIN->m_acDataHex[j] = L'\0';
     }
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
-        sprintf_s(CurrDataLIN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataLIN->m_dwMsgID);
-
+        strcpy(CurrDataLIN->m_acMsgIDDec, "");
+        if ( CurrDataLIN->m_dwMsgID != -1 )
         {
-            int j = 0;
-
-            for (int i = 0; i < CurrDataLIN->m_byDataLength; i++)
-            {
-                BYTE CurrDat = CurrDataLIN->m_abData[i];
-                _stprintf(&(CurrDataLIN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
-                j += 4;
-                CurrDataLIN->m_acDataDec[j-1] = L' ';
-            }
-
-            CurrDataLIN->m_acDataDec[j-1] = L'\0';
+            sprintf_s(CurrDataLIN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataLIN->m_dwMsgID);
         }
+        int j = 0;
+
+        for (int i = 0; i < CurrDataLIN->m_byDataLength; i++)
+        {
+            BYTE CurrDat = CurrDataLIN->m_abData[i];
+            _stprintf(&(CurrDataLIN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+            j += 4;
+            CurrDataLIN->m_acDataDec[j-1] = L' ';
+        }
+
+        CurrDataLIN->m_acDataDec[j-1] = L'\0';
     }
 }
 
@@ -192,24 +194,19 @@ USHORT CFormatMsgLIN::usProcessCurrErrorEntryLin(SERROR_INFO_LIN& sErrorInfo)
 {
     // Get the Error code
     USHORT usErrorID;
+    // Get the channel number
+    CHAR nChannel = sErrorInfo.m_ucChannel - 1;
+    if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
+    {
+        ASSERT( FALSE );
+        // Take prevension
+        nChannel = 0;
+    }
 
-    if (sErrorInfo.m_ucErrType == ERROR_BUS)
-    {
-        // Update Statistics information
-        usErrorID = sErrorInfo.m_ucReg_ErrCap /*& 0xE0*/;
-    }
-    else if (sErrorInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
-    {
-        usErrorID = ERROR_UNKNOWN;
-    }
-    else if (sErrorInfo.m_ucErrType == ERROR_INTERRUPT)
-    {
-        usErrorID = ERROR_UNKNOWN;
-    }
-    else
-    {
-        usErrorID = sErrorInfo.m_ucErrType;
-    }
+    // Decide which module(s) to notify by analysing the error code
+    // Accordingly notify the modules by sending/posting message
+
+    usErrorID = sErrorInfo.m_eEventType;
 
     return usErrorID;
 }
@@ -260,96 +257,158 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
                                       SFORMATTEDDATA_LIN* CurrDataLIN,
                                       BYTE bExprnFlag_Log)
 {
-    if (RX_FLAG == pMsgLIN->m_ucDataType)
+    if ( pMsgLIN->m_eLinMsgType == LIN_MSG )
     {
-        CurrDataLIN->m_eDirection = DIR_RX;
-        CurrDataLIN->m_acMsgDir[0] = _T('R');
-    }
-    else if (TX_FLAG == pMsgLIN->m_ucDataType)
-    {
-        CurrDataLIN->m_eDirection = DIR_TX;
-        CurrDataLIN->m_acMsgDir[0] = _T('T');
-    }
-    CurrDataLIN->m_acMsgDir[1] = _T('x');
-
-    TYPE_CHANNEL CurrChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;  // Assuming default LIN msg
-
-    if ((CurrChannel >= CHANNEL_LIN_MIN) && (CurrChannel <= CHANNEL_LIN_MAX ))
-    {
-        sprintf_s(CurrDataLIN->m_acChannel, "%d", CurrChannel);
-    }
-
-    memset(CurrDataLIN->m_acType,'\0',sizeof(CurrDataLIN->m_acType));
-
-    ///* Validate message type */
-    //pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp
-    //   {
-    //       CurrDataLIN->m_byIDType = TYPE_ID_LIN_STANDARD;
-    //       strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_DESCRIPTION_LIN, _("s"));
-    //   }
-
-    //sprintf_s(CurrDataLIN->m_acMsgType, "%s", sg_ListDIL_MSG_TYPE[pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp]);
-    strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_MSGTYPE_LIN, sg_ListDIL_MSG_TYPE[pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp].c_str());
-    /* If it is a LIN FD frame */
-    //if ( pMsgLIN->m_bLINFDMsg )
-    //{
-    //    _itoa_s(pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen, CurrDataLIN->m_acDataLen, 10);
-    //    strcpy_s(CurrDataLIN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_LIN, "Description");
-    //    CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;
-    //    CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_unMsgID;
-    //    CurrDataLIN->m_byDataLength = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen;
-
-    //    memcpy(CurrDataLIN->m_abData, pMsgLIN->m_uDataInfo.m_sLINMsg.m_aucLINFDData,
-    //           CurrDataLIN->m_byDataLength);
-    //}
-    //else
-    {
-        _itoa_s(pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen, CurrDataLIN->m_acDataLen, 10);
-        strcpy_s(CurrDataLIN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_LIN, "Description");
-        CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;
-        CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgID;
-        CurrDataLIN->m_byDataLength = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen;
-
-        if (IS_NUM_HEX_SET(bExprnFlag_Log))
+        if (RX_FLAG == pMsgLIN->m_ucDataType)
         {
-            sprintf(CurrDataLIN->m_acChecksum, "0x%X"/*FORMAT_STR_DATA_HEX*/, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);
+            CurrDataLIN->m_eDirection = DIR_RX;
+            CurrDataLIN->m_acMsgDir[0] = _T('R');
+        }
+        else if (TX_FLAG == pMsgLIN->m_ucDataType)
+        {
+            CurrDataLIN->m_eDirection = DIR_TX;
+            CurrDataLIN->m_acMsgDir[0] = _T('T');
+        }
+        CurrDataLIN->m_acMsgDir[1] = _T('x');
+
+        TYPE_CHANNEL CurrChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;  // Assuming default LIN msg
+
+        if ((CurrChannel >= CHANNEL_LIN_MIN) && (CurrChannel <= CHANNEL_LIN_MAX ))
+        {
+            sprintf_s(CurrDataLIN->m_acChannel, "%d", CurrChannel);
         }
 
-        if (IS_NUM_DEC_SET(bExprnFlag_Log))
+        memset(CurrDataLIN->m_acType,'\0',sizeof(CurrDataLIN->m_acType));
+
+        ///* Validate message type */
+        //pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp
+        //   {
+        //       CurrDataLIN->m_byIDType = TYPE_ID_LIN_STANDARD;
+        //       strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_DESCRIPTION_LIN, _("s"));
+        //   }
+
+        //sprintf_s(CurrDataLIN->m_acMsgType, "%s", sg_ListDIL_MSG_TYPE[pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp]);
+        //strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_MSGTYPE_LIN, sg_ListDIL_MSG_TYPE[pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp].c_str());
+        /* If it is a LIN FD frame */
+        //if ( pMsgLIN->m_bLINFDMsg )
+        //{
+        //    _itoa_s(pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen, CurrDataLIN->m_acDataLen, 10);
+        //    strcpy_s(CurrDataLIN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_LIN, "Description");
+        //    CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;
+        //    CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_unMsgID;
+        //    CurrDataLIN->m_byDataLength = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen;
+
+        //    memcpy(CurrDataLIN->m_abData, pMsgLIN->m_uDataInfo.m_sLINMsg.m_aucLINFDData,
+        //           CurrDataLIN->m_byDataLength);
+        //}
+        //else
         {
-            /*sprintf(CurrDataLIN->m_acChecksum, "%x", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);*/
-            //_stprintf(&(CurrDataLIN->m_acChecksum), FORMAT_STR_DATA_DEC, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);
-            sprintf(CurrDataLIN->m_acChecksum, FORMAT_STR_DATA_DEC, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);
-        }
+            _itoa_s(pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen, CurrDataLIN->m_acDataLen, 10);
+            strcpy_s(CurrDataLIN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_LIN, "Description");
+            CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;
+            CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgID;
+            CurrDataLIN->m_byDataLength = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen;
 
-        memcpy(CurrDataLIN->m_abData, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucData,
-               CurrDataLIN->m_byDataLength);
-    }
-
-    /*PROCESS ERROR MSGS: If Error Message type. Change the data and type fields. */
-    if(ERR_FLAG == pMsgLIN->m_ucDataType)
-    {
-        USHORT usErrCode = usProcessCurrErrorEntryLin(pMsgLIN->m_uDataInfo.m_sErrInfo);
-
-        if( usErrCode != ERROR_UNKNOWN )
-        {
-            // Format error message
-            char* ptrStrErrName = NULL;
-            ptrStrErrName = vFormatCurrErrorEntry(usErrCode);
-
-            if(ptrStrErrName)
+            strcpy(CurrDataLIN->m_acType, "LIN Message");
+            if ( CurrDataLIN->m_dwMsgID ==0x3c || CurrDataLIN->m_dwMsgID == 0x3D )
             {
-                strcpy_s(CurrDataLIN->m_acDataDec, LENGTH_STR_DATA_LIN, ptrStrErrName);
-                strcpy_s(CurrDataLIN->m_acDataHex, LENGTH_STR_DATA_LIN, ptrStrErrName);
+                strcpy(CurrDataLIN->m_acType, "Diagnostic Message");
             }
+
+            string str = "Classic";
+            if ( pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksumTyp == LIN_CHECKSUM_ENHANCED )
+            {
+                str = "Enhanced";
+            }
+
+            if (IS_NUM_HEX_SET(bExprnFlag_Log))
+            {
+                sprintf(CurrDataLIN->m_acChecksum, "0x%X \(\"%s\"\)"/*FORMAT_STR_DATA_HEX*/, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum, str.c_str());
+            }
+
+            if (IS_NUM_DEC_SET(bExprnFlag_Log))
+            {
+                /*sprintf(CurrDataLIN->m_acChecksum, "%x", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);*/
+                //_stprintf(&(CurrDataLIN->m_acChecksum), FORMAT_STR_DATA_DEC, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);
+                sprintf(CurrDataLIN->m_acChecksum, "%03d \(\"%s\"\)", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum, str.c_str());
+            }
+
+            memcpy(CurrDataLIN->m_abData, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucData,
+                   CurrDataLIN->m_byDataLength);
         }
 
-        CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgID;
-        sprintf_s(CurrDataLIN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataLIN->m_dwMsgID);
-        strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_TYPE_LIN, "ERR");
-    }
 
-    /* PROCESS ERROR MSGS ENDS */
+    }
+    else if ( pMsgLIN->m_eLinMsgType == LIN_EVENT )
+    {
+        /*PROCESS ERROR MSGS: If Error Message type. Change the data and type fields. */
+
+        string strText;
+        vGetLinEventDescription(pMsgLIN->m_uDataInfo.m_sErrInfo, strText);
+
+        strcpy(CurrDataLIN->m_acType, strText.c_str());
+
+
+
+        strcpy(CurrDataLIN->m_acDataLen,  "");
+        strcpy(CurrDataLIN->m_acMsgDesc,  "");
+        strcpy(CurrDataLIN->m_acChecksum,  "");
+        strcpy(CurrDataLIN->m_acMsgIDHex,  "");
+        strcpy(CurrDataLIN->m_acMsgIDDec,  "");
+        strcpy(CurrDataLIN->m_acDataHex,  "");
+        strcpy(CurrDataLIN->m_acDataDec,  "");
+
+        CurrDataLIN->m_dwMsgID = -1;
+        CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;
+        if ( pMsgLIN->m_uDataInfo.m_sErrInfo.m_eEventType == EVENT_LIN_ERRNOANS || pMsgLIN->m_uDataInfo.m_sErrInfo.m_eEventType == EVENT_LIN_ERRCRC )
+        {
+            CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sErrInfo.m_ucId;
+        }
+
+        CurrDataLIN->m_byDataLength = 0;
+        TYPE_CHANNEL CurrChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;  // Assuming default LIN msg
+        if ((CurrChannel >= CHANNEL_LIN_MIN) && (CurrChannel <= CHANNEL_LIN_MAX ))
+        {
+            sprintf_s(CurrDataLIN->m_acChannel, "%d", CurrChannel);
+        }
+
+    }
     vFormatTime(bExprnFlag_Log, CurrDataLIN);
     vFormatDataAndId(bExprnFlag_Log, CurrDataLIN);
+    /* PROCESS ERROR MSGS ENDS */
+
+
+}
+
+
+
+
+void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, string& strDesc)
+{
+    switch ( sLinErrorInfo.m_eEventType )
+    {
+        case EVENT_LIN_ERRSYNC:
+            strDesc ="Error - Sync";
+            break;
+        case EVENT_LIN_ERRNOANS:
+            strDesc ="Error - Slave Not Responding";
+            break;
+        case EVENT_LIN_ERRCRC:
+            strDesc ="Error - CRC Error";
+            break;
+        case EVENT_LIN_WAKEUP:
+            strDesc ="Event - Wake up";
+            break;
+        case EVENT_LIN_SLEEP:
+            strDesc ="Event - Sleep";
+            break;
+        case EVENT_LIN_CRCINFO:
+            strDesc ="";
+            break;
+        case EVENT_LIN_ERRMSG:
+        default:
+            strDesc ="Error - Unknown";
+            break;
+    }
+    return;
 }

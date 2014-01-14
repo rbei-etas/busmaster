@@ -23,13 +23,18 @@
 #include <IE.au3>
 #include <GuiTab.au3>
 #include <GuiButton.au3>
+#include <Array.au3>
+#include <WinAPI.au3>
+#include <GUIMenu.au3>
+#include <WindowsConstants.au3>
 
 
 Global $oExcel,$FilePath,$AppExePath
 Global $crashRes, $lConfig, $cConfig, $channelCount, $time
 
 ; $BusMasterExeFPath has to be updated everytime before running the script on a new version.
-$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v1.9.0"
+;$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v1.9.0"
+$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v2.0.0"
 
 $FilePath = @ScriptDir&"\Result\TestRunResults.xlsx" ; This file should already exist
 if FileExists($FilePath) Then
@@ -42,6 +47,7 @@ if FileExists($FilePath) Then
 		Exit
 	EndIf
 	_ExcelSheetActivate($oExcel, "1.9.0")
+	;_ExcelSheetActivate($oExcel, "2.0.0")
 EndIf
 
 ; If output folder exists in the script directory then delete it
@@ -75,9 +81,10 @@ _launchApp()
  #include <Message_Window_CAN\Message_Window_CAN.au3>
  #include <Signal_Watch_CAN\Signal_Watch_CAN.au3>
  #include <NodeSimulation_J1939\NodeSimulationJ1939.au3>
- #include <J1939_Functionality\J1939Functionality.au3>
- #include <Message_Window_J1939\Message_WindowJ1939.au3>
+#include <J1939_Functionality\J1939Functionality.au3>
+#include <Message_Window_J1939\Message_WindowJ1939.au3>
  #include <UserConfiguration\UserConfiguration.au3>
+  #include <Format Converters\FormatConverter.au3>
 _IEAction($oIE, "visible")									; Sets an object state to visible
 _IEDocWriteHTML($oIE, $sHTML)								; Replaces the HTML for the entire document.
 

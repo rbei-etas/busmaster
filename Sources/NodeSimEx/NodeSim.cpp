@@ -351,6 +351,10 @@ bool CNodeSim::NS_GetSimSysConfigData(xmlNodePtr& pNodePtr)
     {
         pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_J1939_SIM_SYS);
     }
+    else if( m_eBus == LIN )
+    {
+        pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_SIM_SYS);
+    }
     else
     {
         pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_SIM_SYS);
@@ -475,4 +479,9 @@ void CNodeSim::NS_SaveSimulationSystem()
 void CNodeSim::NS_PerformApplicationClosureOperation(bool bSave)
 {
     CSimSysManager::ouGetSimSysManager(m_eBus).vApplicationClosing(bSave);
+}
+
+void CNodeSim::NS_SetLINConfig(ClusterConfig& ouLINConfig)
+{
+    CSimSysManager::ouGetSimSysManager(m_eBus).vSetDatabaseConfiguration(&ouLINConfig);
 }

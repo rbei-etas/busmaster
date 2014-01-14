@@ -22,12 +22,12 @@ class CFibexConfigDlg : public CDialog
     DECLARE_DYNAMIC(CFibexConfigDlg)
 
 public:
-    CFibexConfigDlg( CMsgSignal*& pMsgSignal ,FLEXRAY_CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& m_nChannelConfigured, CWnd* pParent =NULL);
+    CFibexConfigDlg( CMsgSignal*& pMsgSignal ,CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& m_nChannelConfigured, ETYPE_BUS eBusType, CWnd* pParent =NULL);
     virtual ~CFibexConfigDlg();
 
     // Dialog Data
     enum { IDD = IDD_DLG_FIBEX_IMPORT };
-    FLEXRAY_CHANNEL_CONFIG m_ouFlexrayChannelConfig[CHANNEL_ALLOWED];
+    CHANNEL_CONFIG m_ouFlexrayChannelConfig[CHANNEL_ALLOWED];
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual BOOL OnInitDialog();
@@ -36,9 +36,10 @@ protected:
 private:
     INT m_nChannelConfigured;
     CMsgSignal* m_pMsgSignal;
-
+    ETYPE_BUS m_eBusType;
     list<Cluster> m_ouCurrentChannelCluster;
-
+    list<LinChannelParam> m_ouLinChannelParams;
+    int m_nLinBaudRate;
 
 
     //UI Related
@@ -47,16 +48,24 @@ private:
     CListCtrl m_omEcuList;
     INT m_nCurrentChannel;
     CComboBox m_omComboCluster;
+    CComboBox m_omComboLinProtocol;
     CEdit m_omFibexPath;
 
 public:
     afx_msg void OnBnClickedButtonFibexpath();
     afx_msg void OnCbnSelchangeComboCluster();
     afx_msg void OnCbnSelchangeComboChannel();
+    afx_msg void OnCbnSelchangeComboProtocol();
     afx_msg void onBtnOk();
+    afx_msg void OnOverwriteCheckBoxClick();
 
 private:
     INT nUpdateEcuList( INT nChannelIndex, INT nClusterIndex );
+    INT nUpdateLinParams( INT nChannelIndex, INT nClusterIndex);
     INT nUpdateEcuList( Cluster& ouCluster );
     bool bIsEcuSlected(list<string>& ouEcuList, string strEcuName);
+    int nEnableControls( ETYPE_BUS eBusType );
+    int nUpdateLinSettings();
+    int nDisplayProtocolSettings(int nChannelIndex);
+    int nSaveProtocolSettings(int nIndex);
 };

@@ -460,7 +460,20 @@ void CMsgFrmtWnd::vFitListCtrlToWindow()
     {
         RECT sClientRect;
         GetClientRect(&sClientRect);
-        int ClientWidth = abs(sClientRect.left - sClientRect.right);
+        int ClientWidth = 0;
+        if ( sClientRect.left - sClientRect.right < 0 )
+        {
+            ClientWidth = sClientRect.right - sClientRect.left;
+        }
+
+        else
+        {
+            ClientWidth = abs(sClientRect.left - sClientRect.right);
+        }
+
+
+
+
 
         if (m_eBusType == CAN)
         {
@@ -475,12 +488,12 @@ void CMsgFrmtWnd::vFitListCtrlToWindow()
         else if (m_eBusType == LIN)
         {
             int nTotalWidth = 0;
-            for (int nIdx = 0; nIdx < 8; nIdx++ )
+            for (int nIdx = 0; nIdx < 9; nIdx++ )
             {
                 nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
             }
             int nLastColWidth = ClientWidth - nTotalWidth;
-            m_lstMsg.SetColumnWidth(8, nLastColWidth);
+            m_lstMsg.SetColumnWidth(9, nLastColWidth);
         }
         else if (m_eBusType == J1939)
         {
@@ -940,7 +953,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
                     // If it is connected to flexray then disable send in menu
                     if( bConnected == TRUE )
                     {
-                        if(m_eBusType == FLEXRAY)
+                        if(m_eBusType == FLEXRAY || m_eBusType == LIN)
                         {
                             pomContextMenu->EnableMenuItem( IDM_MESSAGE_SEND,
                                                             MF_DISABLED |MF_GRAYED);
@@ -1182,7 +1195,7 @@ void CMsgFrmtWnd::OnTimer(UINT nIDEvent)
                 vGetSignalInfoArray(m_unCurrInterpretedMapIndex, SigInfoArray);
 
                 CString strName;
-                if (this->m_eBusType == FLEXRAY )
+                if (this->m_eBusType == FLEXRAY || this->m_eBusType == LIN )
                 {
                     strName = strGetMsgNameOrCode(m_unCurrInterpretedMapIndex);
                 }
@@ -1267,7 +1280,6 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
 
             if(m_eBusType == J1939 && m_ppMsgDB != NULL)
             {
-
                 SMSGENTRY* psMsgEntry = NULL;
                 vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
                 m_ouMsgInterpretJ1939.vClear();
@@ -1277,10 +1289,14 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
             if(m_eBusType == FLEXRAY)
             {
                 m_ppMsgDB = NULL;
-                FlexConfig* uoFlexConfig = (FlexConfig*)lParam;
-
-                m_ouMsgInterpretFlexRay.vSetFlexRayClusterInfo(uoFlexConfig);
+                m_ouMsgInterpretFlexRay.vSetFlexRayClusterInfo((ClusterConfig*)lParam);
             }
+            if ( m_eBusType == LIN )
+            {
+                m_ppMsgDB = NULL;
+                m_ouMsgInterpretLin.vSetLINClusterInfo((ClusterConfig*)lParam);
+            }
+
         }
         break;
         case eWINID_START_READ:
@@ -1520,6 +1536,11 @@ void CMsgFrmtWnd::vShowUpdateMsgIntrpDlg(__int64 nMapIndex)
     int nMsgCode = nMapIndex & 0xFFFF;
     //nMsgCode = nGetCodefromMapKey(nMapIndex);
 
+    if ( m_eBusType == LIN )
+    {
+        nMsgCode = nGetLinCodefromMapKey(nMapIndex);
+    }
+
     SSignalInfoArray SigInfoArray;
     vGetSignalInfoArray(nMapIndex, SigInfoArray);
 
@@ -1579,14 +1600,52 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
         HRESULT hResult = m_pouMsgContainerIntrf->hUpdateFormattedMsgStruct((int)wParam,
                           nMsgCode,
                           m_bExprnFlag_Disp);
+        if ( m_eBusType == LIN )
+        {
+            WORD wDirId  =  HIWORD(nMsgCode);
+            WORD wEventMsgType =  LOWORD(nMsgCode);
 
-        if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
+            int nEventType = LOBYTE(wEventMsgType);
+            int nMsgType = HIBYTE(wEventMsgType);
+            UINT unSlot =  HIBYTE(wDirId);
+
+            if ( nEventType == LIN_EVENT )
+            {
+                m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
+            }
+            else if ( nEventType == LIN_MSG && ( unSlot == 0X3C || unSlot == 0x3D ))
+            {
+                m_lstMsg.vSetMsgColor(RGB(0,125,0));
+            }
+            else
+            {
+                m_lstMsg.vSetMsgColor(RGB(0,0,0));
+            }
+        }
+
+        else if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
         {
             m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
         }
         else
         {
-            m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
+            /*if ( m_eBusType == FLEXRAY )
+            {
+                static s_FLXMSG sFlexMsg;
+                m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, nMsgKey);
+                if ( sFlexMsg.stcDataMsg.m_nSlotID > m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].m_ouClusterInfo.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS )
+                {
+                    m_lstMsg.vSetMsgColor(RGB(128, 128, 128));
+                }
+                else
+                {
+                    m_lstMsg.vSetMsgColor(RGB(255, 128, 128));
+                }
+            }
+            else*/
+            {
+                m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
+            }
         }
     }
     else if(m_omMgsIndexVec.size() > wParam)
@@ -1605,7 +1664,30 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
                                       nMsgCode,
                                       m_bExprnFlag_Disp);
 
-                if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
+                if ( m_eBusType == LIN )
+                {
+                    WORD wDirId  =  HIWORD(nMsgCode);
+                    WORD wEventMsgType =  LOWORD(nMsgCode);
+
+                    int nEventType = LOBYTE(wEventMsgType);
+                    int nMsgType = HIBYTE(wEventMsgType);
+                    UINT unSlot =  HIBYTE(wDirId);
+
+                    if ( nEventType == LIN_EVENT )
+                    {
+                        m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
+                    }
+                    else if ( nEventType == LIN_MSG && ( unSlot == 0X3C || unSlot == 0x3D ))
+                    {
+                        m_lstMsg.vSetMsgColor(RGB(0,125,0));
+                    }
+                    else
+                    {
+                        m_lstMsg.vSetMsgColor(RGB(0,0,0));
+                    }
+                }
+
+                else if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
                 {
                     m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
                 }
@@ -1742,7 +1824,11 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
                               nMsgCode,
                               m_bExprnFlag_Disp,
                               sDispEntry.m_nTimeOffset);
-                    if( hResult == S_FALSE && nMsgCode!= -1)
+                    if (  m_eBusType == LIN )
+                    {
+                        m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
+                    }
+                    else if( hResult == S_FALSE && nMsgCode!= -1)
                     {
                         //Handle Error Msg display
                         vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
@@ -1954,9 +2040,10 @@ void CMsgFrmtWnd::vUpdateStatistics( char cTxMode )
 CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
 {
     CString omName = "";
+    FRAME_STRUCT ouFrame;
     if ( m_eBusType == FLEXRAY)
     {
-        FRAME_STRUCT ouFrame;
+
 
         UINT unSlot = LOWORD(nMsgCode);
         UINT unCycleChannel = HIWORD(nMsgCode);
@@ -1966,6 +2053,44 @@ CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
         if ( S_OK == m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].GetFrame(unSlot, unCycle, oeChannel, ouFrame) )
         {
             omName = ouFrame.m_strFrameName.c_str();
+        }
+    }
+    else if ( m_eBusType == LIN )
+    {
+        /*WORD wEventMsgType =  HIWORD(nMsgCode);
+        WORD wDirId =  LOWORD(nMsgCode);
+
+        int nMsgType = LOBYTE(wEventMsgType);
+        int nEventType = HIBYTE(wEventMsgType);
+        UINT unSlot =  LOBYTE(wDirId);*/
+
+        WORD wDirId  =  HIWORD(nMsgCode);
+        WORD wEventMsgType =  LOWORD(nMsgCode);
+
+        int nEventType = LOBYTE(wEventMsgType);
+        int nMsgType = HIBYTE(wEventMsgType);
+        UINT unSlot =  HIBYTE(wDirId);
+
+        //todo channel number
+        if ( m_ouMsgInterpretLin.m_ouLINConfig != NULL )
+        {
+            if ( S_OK == m_ouMsgInterpretLin.m_ouLINConfig->m_ouFlexChannelConfig[0].GetFrame(unSlot, ouFrame) )
+            {
+                omName = ouFrame.m_strFrameName.c_str();
+            }
+            else if ( ( nMsgType == LIN_MSG ) || ( nMsgType == LIN_EVENT && nEventType == EVENT_LIN_ERRNOANS ) )
+            {
+                if (IS_NUM_DEC_SET(m_bExprnFlag_Disp))
+                {
+                    omName.Format("%d", unSlot);
+                }
+                else
+                {
+                    omName.Format("%X", unSlot);
+                    omName = "0x" + omName;
+                }
+            }
+
         }
     }
 
@@ -2079,25 +2204,27 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
             int nColCount = 9;
             //Set the positions for coloumns
             sHdrCtrlPos.m_byTimePos     = 0;
-            sHdrCtrlPos.m_byRxTxPos     = 2;
-            sHdrCtrlPos.m_byChannel     = 3;
-            sHdrCtrlPos.m_byMsgTypePos  = 8;
-            sHdrCtrlPos.m_byIDPos       = 5;
             sHdrCtrlPos.m_byCodeNamePos = 1;
-            sHdrCtrlPos.m_byDLCPos      = 4;
-            sHdrCtrlPos.m_byDataPos     = 6;
-            sHdrCtrlPos.m_byChecksumPos = 7;
+            sHdrCtrlPos.m_byMsgTypePos  = 2;
+            sHdrCtrlPos.m_byRxTxPos     = 3;
+            sHdrCtrlPos.m_byChannel     = 4;
+            sHdrCtrlPos.m_byDLCPos      = 5;
+            sHdrCtrlPos.m_byIDPos       = 6;
+            sHdrCtrlPos.m_byDataPos     = 7;
+            sHdrCtrlPos.m_byChecksumPos = 8;
+
 
             //Set the col string
             somArrColTitle[sHdrCtrlPos.m_byTimePos]     = _("Time              ");
-            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = _("Tx/Rx ");
-            somArrColTitle[sHdrCtrlPos.m_byChannel]     = _("Channel ");
-            somArrColTitle[sHdrCtrlPos.m_byIDPos]       = _("PID  ");
+            somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = _("Tx/Rx          ");
+            somArrColTitle[sHdrCtrlPos.m_byChannel]     = _("Channel     ");
+            somArrColTitle[sHdrCtrlPos.m_byIDPos]       = _("ID           ");
             somArrColTitle[sHdrCtrlPos.m_byCodeNamePos] = _("Message        ");
-            somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = _("Message Type");
-            somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = _("DLC ");
+            somArrColTitle[sHdrCtrlPos.m_byMsgTypePos]  = _("Message Type        ");
+            somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = _("DLC         ");
             somArrColTitle[sHdrCtrlPos.m_byDataPos]     = _("Data Byte(s)                                     ");
             somArrColTitle[sHdrCtrlPos.m_byChecksumPos] = _("Checksum ");
+
 
             m_MsgHdrInfo.vInitializeColDetails(sHdrCtrlPos, somArrColTitle, nColCount);
 
@@ -2384,6 +2511,32 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
         }
 
     }
+    if(m_eBusType == LIN)
+    {
+        STLINDATA* sLINMsg =  (STLINDATA*)pMsg;
+        //HRESULT hResult =
+        //m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, dwMapIndex);
+        m_bUpdate = TRUE;
+
+        FRAME_STRUCT ouFrame;
+        eFlexRayInterprete = MODE_NONE;
+        int nCount = 0;
+        if ( S_OK == m_ouMsgInterpretLin.m_ouLINConfig->m_ouFlexChannelConfig[0].GetFrame(sLINMsg->m_uDataInfo.m_sLINMsg.m_ucMsgID, ouFrame));
+        {
+            ouFrame.GetSignalCount(nCount);
+            if ( nCount > 0 )
+            {
+                eFlexRayInterprete = INTERPRETABLE;
+            }
+
+        }
+        if ( sLINMsg->m_eLinMsgType == LIN_EVENT )
+        {
+            eFlexRayInterprete = MODE_NONE;
+        }
+
+    }
+
 
     m_pouMsgContainerIntrf->vSaveOWandGetDetails(pMsg, dwMapIndex, dwTimeStamp, nMsgCode, nBufIndex);
     //EnterCriticalSection(&m_omCritSecForMapArr);
@@ -2408,7 +2561,7 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
             }
         }
         //TODO::Venkat
-        if ( m_eBusType == FLEXRAY )
+        if ( m_eBusType == FLEXRAY || m_eBusType == LIN )
         {
             sDispEntry.m_eInterpretMode = eFlexRayInterprete;
         }
@@ -2450,14 +2603,6 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
         return;
     }
 
-    if(m_eBusType == LIN)
-    {
-        static STLINDATA sLINMsg;
-        //HRESULT hResult =
-        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, dwMapIndex);
-        m_bUpdate = TRUE;
-        return;
-    }
 
     static STCANDATA sCANMsg;
     static char s_cTxMode;
@@ -3043,6 +3188,70 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
             }
         }
     }
+    if(m_eBusType == LIN)
+    {
+        static CMsgInterpretation ouMsgInterpret;
+        static EFORMAT eNumFormat;
+        static STLINDATA sLinMsg;
+        SigInfoArray.RemoveAll();
+
+        WORD wDirId  =  HIWORD(nMapIndex);
+        WORD wEventMsgType =  LOWORD(nMapIndex);
+
+        int nEventType = LOBYTE(wEventMsgType);
+        int nMsgType = HIBYTE(wEventMsgType);
+        UINT nID =  HIBYTE(wDirId);
+
+        //if (NULL != m_ppMsgDB)
+        {
+            //pMsg = (*m_ppMsgDB)->psGetMessagePointer(nID);
+
+            //if (NULL != pMsg)
+            {
+                if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
+                {
+                    eNumFormat = HEXADECIMAL;
+                }
+                else
+                {
+                    eNumFormat = DEC;
+                }
+
+                PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
+                if(IS_MODE_APPEND(m_bExprnFlag_Disp))
+                {
+                    int nBuffMsgCnt;
+                    nBuffMsgCnt = m_nIndex;
+
+                    HRESULT hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sLinMsg, nBuffMsgCnt);
+                    if(sLinMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID == (UINT)nID && hResult == S_OK)
+                    {
+                        m_ouMsgInterpretLin.bInterpretMsgs(eNumFormat, &sLinMsg.m_uDataInfo.m_sLINMsg, SigInfoArray);
+                        /*ouMsgInterpret.bInterpretMsgs(eNumFormat, pMsg,
+                                                      sCANMsg.m_uDataInfo.m_sCANMsg.m_ucData, SigInfoArray);*/
+                    }
+                    else if( (theApp.pouGetFlagsPtr()->nGetFlagStatus( SENDMESG )
+                              /*|| theApp.pouGetFlagsPtr()->nGetFlagStatus(SEND_SIGNAL_MSG)*/)
+                             && sLinMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID != (UINT)nID)
+                    {
+                        HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLinMsg, nMapIndex);
+                        if(hResult == S_OK)
+                        {
+                            m_ouMsgInterpretLin.bInterpretMsgs(eNumFormat, &sLinMsg.m_uDataInfo.m_sLINMsg, SigInfoArray);
+                        }
+                    }
+                }
+                else
+                {
+                    HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLinMsg, nMapIndex);
+                    if(hResult == S_OK)
+                    {
+                        m_ouMsgInterpretLin.bInterpretMsgs(eNumFormat, &sLinMsg.m_uDataInfo.m_sLINMsg, SigInfoArray);
+                    }
+                }
+            }
+        }
+    }
 }
 
 /*******************************************************************************
@@ -3270,6 +3479,19 @@ int CMsgFrmtWnd::nGetCodefromMapKey(__int64 nKey)
     int nID = (int)(nKey & 0x1FFFFFFF);
     return nID;
 }
+
+int CMsgFrmtWnd::nGetLinCodefromMapKey(__int64 nKey)
+{
+    WORD wDirId  =  HIWORD(nKey);
+    WORD wEventMsgType =  LOWORD(nKey);
+
+    int nEventType = LOBYTE(wEventMsgType);
+    int nMsgType = HIBYTE(wEventMsgType);
+    UINT unSlot =  HIBYTE(wDirId);
+
+    return unSlot;
+}
+
 
 /*******************************************************************************
   Function Name  : vContractMsgEntry

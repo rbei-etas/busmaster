@@ -83,6 +83,22 @@ BOOL bIsTransitionInState( UINT unChannel, BYTE byRxError, BYTE byTxError, eERRO
 
     return bIsTransition;
 }
+void vProcessCurrErrorEntryLin(  const SERROR_INFO_LIN& EventInfo, DWORD dwClientId )
+{
+    // Get the Error code
+    USHORT usErrorID;
+    // Get the channel number
+    CHAR nChannel = EventInfo.m_ucChannel - 1;
+    if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
+    {
+        ASSERT( FALSE );
+        // Take prevension
+        nChannel = 0;
+    }
+
+    CExecuteManager::ouGetExecuteManager(LIN).vManageOnErrorHandlerLIN(EventInfo, dwClientId);
+
+}
 
 void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)
 {
@@ -146,6 +162,9 @@ void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)
 }
 PSTCAN_TIME_MSG sCanTimeData=NULL;
 STCANDATA sCanData;//=NULL;
+
+PSTLIN_TIME_MSG sLinTimeData=NULL;
+STLINDATA sLinData;
 int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
 {
     ASSERT(psNodeInfo != NULL);
@@ -236,6 +255,52 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                             pExecFunc->vExecuteOnPGNHandler(&sJ1939Msg);
                         }
 
+                    }
+                }
+            }
+            break;
+            case LIN:
+            {
+                while (psNodeInfo->m_ouLinBufSE.GetMsgCount() > 0)
+                {
+                    sLinData.m_ucDataType = RX_FLAG;
+
+                    // PTV CPP
+                    if(psNodeInfo != NULL)
+                    {
+                        INT Result = psNodeInfo->m_ouLinBufSE.ReadFromBuffer(&sLinData);
+                        if (Result == ERR_READ_MEMORY_SHORT)
+                        {
+                            TRACE("ERR_READ_MEMORY_SHORT");
+                        }
+                        if (Result == EMPTY_APP_BUFFER)
+                        {
+                            TRACE("EMPTY_APP_BUFFER");
+                        }
+                        if ( sLinData.m_eLinMsgType == LIN_MSG && sLinData.m_ucDataType == RX_FLAG )
+                        {
+                            // Give the msg to NodeSimx for simulation
+                            if ( sLinTimeData == NULL )
+                            {
+                                sLinTimeData = new STLIN_TIME_MSG;
+                            }
+                            sLinTimeData->m_ucChannel    = sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel;
+                            memcpy(sLinTimeData->m_ucData, sLinData.m_uDataInfo.m_sLINMsg.m_ucData, sizeof(sLinTimeData->m_ucData));
+
+                            sLinTimeData->m_ucDataLen    = sLinData.m_uDataInfo.m_sLINMsg.m_ucDataLen;
+                            // sLinTimeData->m_ucEXTENDED   = sCanData.m_uDataInfo.m_sCANMsg.m_ucEXTENDED;
+                            // sLinTimeData->m_ucRTR        = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
+                            sLinTimeData->m_ulTimeStamp  = (ULONG)sLinData.m_lTickCount.QuadPart;
+                            sLinTimeData->m_ucMsgID      = sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID;
+                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerLIN_(sLinTimeData, psNodeInfo->m_dwClientId);
+                        }
+                        else if (sLinData.m_eLinMsgType == LIN_EVENT)
+                        {
+                            if (psNodeInfo->m_eBus == LIN)
+                            {
+                                vProcessCurrErrorEntryLin( sLinData.m_uDataInfo.m_sErrInfo, psNodeInfo->m_dwClientId);
+                            }
+                        }
                     }
                 }
             }
@@ -367,6 +432,7 @@ sNODEINFO::sNODEINFO(ETYPE_BUS eBus)
     m_omStrArrayMsgRange.RemoveAll();
     m_omStrArrayMsgIDandName.RemoveAll();
     m_omStrArrayMsgHandlers.RemoveAll();
+    m_unChannel = 0;
 }
 
 sNODEINFO::~sNODEINFO()
@@ -379,6 +445,11 @@ BOOL sNODEINFO::bStartThreadProc()
     {
         m_ThreadProc.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
     }
+    else if ( m_eBus == LIN )
+    {
+        m_ThreadProc.m_hActionEvent = m_ouLinBufSE.hGetNotifyingEvent();
+    }
+
     else //For any other bus
     {
         m_ThreadProc.m_hActionEvent = m_ouMsgBufVSE.hGetNotifyingEvent();

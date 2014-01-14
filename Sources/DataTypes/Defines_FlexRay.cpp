@@ -26,6 +26,7 @@
 #include "FEALData.h"
 #include "../Application/HashDefines.h"
 #include "..\Utility\MsgInterpretation.h"
+#include "..\Utility\\Utility.h"
 #include "Cluster.h"
 #include <stack>
 #include <queue>
@@ -60,6 +61,17 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
     {
         if (m_uMethod.m_LinearCode.m_sRange.bIsWithinRange(dwRawValue))
         {
+            double ApplValue = (m_uMethod.m_LinearCode.m_dN0
+                                + m_uMethod.m_LinearCode.m_dN1 * dwRawValue)
+                               / m_uMethod.m_LinearCode.m_dD0;
+
+
+            omEnggValue.Format("%lf", ApplValue);
+            bResult = true;
+        }
+        else
+        {
+            dwRawValue = m_uMethod.m_LinearCode.m_sRange.m_dwUpperLimit;
             double ApplValue = (m_uMethod.m_LinearCode.m_dN0
                                 + m_uMethod.m_LinearCode.m_dN1 * dwRawValue)
                                / m_uMethod.m_LinearCode.m_dD0;
@@ -165,6 +177,78 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
 
     return bResult;
 }
+
+// This function expects that the range check has already been done
+bool CCompuMethodEx::omGetRawValue(CString& omRawValue, double dwEnggValue)
+{
+    bool bResult = false;
+    //CString omResult = _T("");
+
+    if (m_eCompuType == LINEAR_ENUM)
+    {
+        //if (m_uMethod.m_LinearCode.m_sRange.bIsWithinRange(dwRawValue))
+        {
+            double dRawValue = ((dwEnggValue * m_uMethod.m_LinearCode.m_dD0) - m_uMethod.m_LinearCode.m_dN0) / m_uMethod.m_LinearCode.m_dN1;
+
+            UINT dwRawValue = static_cast<UINT>(dRawValue);
+            if (dRawValue - (UINT)(dRawValue) > 0.99990000)
+            {
+                dwRawValue = static_cast<UINT>(ceil(dRawValue));
+            }
+            else
+            {
+                dwRawValue = static_cast<UINT>(floor(dRawValue));
+            }
+
+            omRawValue.Format("%d", dwRawValue);
+            bResult = true;
+        }
+    }
+    else if (m_eCompuType == TEXTTABLE_ENUM)
+    {
+        OBJ_TEXTCODEVAR_EX::iterator itr = m_uMethod.m_objTextCode.begin();
+        while (itr != m_uMethod.m_objTextCode.end())
+        {
+            //if (itr->m_sRange.bIsWithinRange(dwRawValue))
+            {
+                //omEnggValue.Format("%lf", (DOUBLE)dwRawValue);
+
+                UINT unRawVal = dwEnggValue;
+                omRawValue.Format("%d", unRawVal);
+
+                //omEnggValue = itr->m_aTextName;
+                bResult = true;
+            }
+            itr++;
+        }
+
+    }
+    else if (m_eCompuType == TAB_NOINTP_ENUM)
+    {
+        //TODO
+    }
+    else if (m_eCompuType == IDENTICAL_ENUM)
+    {
+        //if (m_uMethod.m_IdenticalCode.m_sRange.bIsWithinRange(dwRawValue))
+        {
+            UINT unRawVal = dwEnggValue;
+            omRawValue.Format("%d", unRawVal);
+
+            bResult = true;
+        }
+    }
+    else if (m_eCompuType == SCALE_LINEAR_ENUM)
+    {
+        // TODO
+    }
+    else if (m_eCompuType == FORMULA_ENUM)// FORMULA
+    {
+        // TODO
+    }
+
+    return bResult;
+}
+
 
 tagCompuMethodEx::~tagCompuMethodEx()
 {
@@ -1065,7 +1149,7 @@ UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& omMsgByte)
 }
 
 
-bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, list<Flexray_SSIGNALINFO>& ouSignalInfoList)
+bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex)
 {
     BOOL bReturn = FALSE;
     list<SIGNAL_STRUCT> ouSignalList;
@@ -1094,7 +1178,23 @@ bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSi
 
         //Raw
         DWORD dwRawValue = (DWORD) un64GetRawValue(*itrSignalList, omByteArray);
-        sprintf_s(uchData, "%ld", dwRawValue);
+
+        if(bIsHex == FALSE)
+        {
+            if(itrSignalList->m_bDataType == CHAR_INT)
+            {
+                sprintf_s(uchData, "%d", dwRawValue);
+            }
+            else
+            {
+                sprintf_s(uchData, "%u", dwRawValue);
+            }
+        }
+        else
+        {
+            sprintf_s(uchData, "%X", dwRawValue);
+        }
+
         ouSignalInfo.m_omRawValue = uchData;
         //Eng
         ouSignalInfo.m_omEnggValue = omGetEnggValue (*itrSignalList,dwRawValue);
@@ -1104,4 +1204,15 @@ bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSi
         itrSignalList++;
     }
     return true;
+}
+
+void GetSignalNames(list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames)
+{
+    list<Flexray_SSIGNALINFO>::iterator itrSigInfo = lstSignalInfo.begin();
+
+    while(itrSigInfo != lstSignalInfo.end())
+    {
+        lstSignalNames.AddTail(itrSigInfo->m_omSigName.c_str());
+        itrSigInfo++;
+    }
 }

@@ -28,6 +28,7 @@
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/DIL_Datatypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
+#include "DataTypes/Cluster.h"
 
 HRESULT CDIL_LIN_DUMMY::LIN_PerformInitOperations(void)
 {
@@ -64,7 +65,7 @@ HRESULT CDIL_LIN_DUMMY::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS /*InitData*/, 
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_LIN_DUMMY::LIN_SetConfigData(PSCONTROLLER_DETAILS /*pInitData*/, int /*Length*/)
+HRESULT CDIL_LIN_DUMMY::LIN_SetConfigData(ClusterConfig& ouConfig)
 {
     return WARN_DUMMY_API;
 }
@@ -80,6 +81,11 @@ HRESULT CDIL_LIN_DUMMY::LIN_Disconnect(void)
 }*/
 
 HRESULT CDIL_LIN_DUMMY::LIN_StartHardware(void)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_LIN_DUMMY::LIN_PreStartHardware(void)
 {
     return WARN_DUMMY_API;
 }
@@ -115,6 +121,11 @@ HRESULT CDIL_LIN_DUMMY::LIN_ResetSlaveRespData(void)
 {
     return WARN_DUMMY_API;
 }
+HRESULT CDIL_LIN_DUMMY::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage)
+{
+    return WARN_DUMMY_API;
+}
+
 
 HRESULT CDIL_LIN_DUMMY::LIN_GetLastErrorString(string& /*acErrorStr*/)
 {

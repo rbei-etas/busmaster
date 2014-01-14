@@ -125,6 +125,10 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
         {
             omstrProtocol.Replace("PLACE_HOLDER_FOR_PROTOCOL_VALUE", DATABASE_PROTOCOL_J1939);
         }
+        else if(m_sBusSpecInfo.m_eBus == LIN)
+        {
+            omstrProtocol.Replace("PLACE_HOLDER_FOR_PROTOCOL_VALUE", DATABASE_PROTOCOL_LIN);
+        }
 
         // adding application version information
         omstrBusMasterVersion.Replace("PLACE_HOLDER_FOR_BUSMASTER_VERSION", omstrAppVersion);
@@ -458,15 +462,19 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                         //Only for Error Handling functions
                         if(omTextLine.Find("OnError") != -1)
                         {
-                            if(omTextLine.Find("SCAN_ERR") == -1 )
+                            if(omTextLine.Find("SCAN_ERR") == -1 && omTextLine.Find("_LIN") == -1)
                             {
-                                //Inserting the SCAN_ERR structure as parameter in the error handlers
-                                nLineLength = omTextLine.GetLength();
-                                omTextLine.Insert( ( nLineLength-1 ),"SCAN_ERR ErrorMsg");
-
+                                if(m_sBusSpecInfo.m_eBus == CAN)
+                                {
+                                    //Inserting the SCAN_ERR structure as parameter in the error handlers
+                                    nLineLength = omTextLine.GetLength();
+                                    omTextLine.Insert( ( nLineLength-1 ),"SCAN_ERR ErrorMsg");
+                                }
+                                else if(m_sBusSpecInfo.m_eBus == LIN)
+                                {
+                                    vInsertErrorMessageStruct(omTextLine);
+                                }
                             }
-
-
                         }
 
                         nLineLength = omTextLine.GetLength();
@@ -541,6 +549,31 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
             }
         }
         END_CATCH_ALL
+    }
+}
+
+void CFunctionEditorDoc::vInsertErrorMessageStruct(CString& omTextLine)
+{
+    INT nLineLength;
+    if(omTextLine.Find(defERR_CHECKSUM_HANDLER_FN) != -1)
+    {
+        nLineLength = omTextLine.GetLength();
+        omTextLine.Insert( ( nLineLength-1 ),"SEVENT_CHECKSUM_LIN ErrorMsg");
+    }
+    else if(omTextLine.Find(defERR_RX_FRM_HANDLER_FN) != -1)
+    {
+        nLineLength = omTextLine.GetLength();
+        omTextLine.Insert( ( nLineLength-1 ),"SEVENT_RECEIVE_LIN ErrorMsg");
+    }
+    else if(omTextLine.Find(defERR_SLAVENOANS_HANDLER_FN) != -1)
+    {
+        nLineLength = omTextLine.GetLength();
+        omTextLine.Insert( ( nLineLength-1 ),"SEVENT_SLAVE_NORESP_LIN ErrorMsg");
+    }
+    else if(omTextLine.Find(defERR_SYNC_HANDLER_FN) != -1)
+    {
+        nLineLength = omTextLine.GetLength();
+        omTextLine.Insert( ( nLineLength-1 ),"SEVENT_SYNC_LIN ErrorMsg");
     }
 }
 
@@ -1078,6 +1111,10 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
         {
             omstrProtocol.Replace("PLACE_HOLDER_FOR_PROTOCOL_VALUE", DATABASE_PROTOCOL_J1939);
         }
+        else if(m_sBusSpecInfo.m_eBus == LIN)
+        {
+            omstrProtocol.Replace("PLACE_HOLDER_FOR_PROTOCOL_VALUE", DATABASE_PROTOCOL_LIN);
+        }
 
         // adding application version information
         omstrBusMasterVersion.Replace("PLACE_HOLDER_FOR_BUSMASTER_VERSION", omstrAppVersion);
@@ -1364,7 +1401,7 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
         const CString&
         omStrVarName,
         BOOL bInitData,
-        UCHAR ucChannelId)
+        UCHAR ucChannelId, INT unChnlSel)
 {
     // Copy the input param as init statement
     CString omStrResult = omStrMsgName + defSPACE_STR + omStrVarName +
@@ -1379,25 +1416,57 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
     // Get the message from Active database
     SMSG_NAME_CODE sMsgNameCode;
     POSITION pos = NULL;
+    BOOL bIsMsgFound = FALSE;
     if( bInitByUser == FALSE)
     {
         sMsgNameCode.m_dwMsgCode = unMsgID;
-        POSITION        MainPos;
-        MainPos =  CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
-        while(MainPos != NULL)
+
+        if(m_sBusSpecInfo.m_eBus == LIN)
         {
-            SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).
-                                        m_odMsgNameMsgCodeListDb.GetNext(MainPos);
-            pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgNameCode);
-            if(pos != NULL)         //if present stop searching
+            if(CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_ouClusterConfig->m_nChannelsConfigured >= unChnlSel)
             {
-                sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos);
-                break;
+                list<FRAME_STRUCT> lstFrames;
+                CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChnlSel-1].GetSelectedECUFrames(lstFrames);
+
+                list<FRAME_STRUCT>::iterator itrFrame = lstFrames.begin();
+                while(itrFrame != lstFrames.end())
+                {
+                    short nMsgId = unMsgID;
+                    if(itrFrame->m_nSlotId == unMsgID)
+                    {
+                        sMsgNameCode.m_omMsgName = itrFrame->m_strFrameName.c_str();
+                        sMsgNameCode.m_unMsgLen = itrFrame->m_nLength;
+
+                        list<Flexray_SSIGNALINFO> lstSignalInfo;
+                        unsigned char uchBytes[254];
+                        bGetSignalInfo(*itrFrame,uchBytes,  sMsgNameCode.m_unMsgLen, lstSignalInfo);
+                        GetSignalNames(lstSignalInfo, sMsgNameCode.m_omSignalNames);
+                        bIsMsgFound = TRUE;
+                        break;
+                    }
+                    itrFrame++;
+                }
+            }
+        }
+        else
+        {
+            POSITION        MainPos;
+            MainPos =  CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
+            while(MainPos != NULL)
+            {
+                SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).
+                                            m_odMsgNameMsgCodeListDb.GetNext(MainPos);
+                pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgNameCode);
+                if(pos != NULL)         //if present stop searching
+                {
+                    sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos);
+                    break;
+                }
             }
         }
     }
     // If message found
-    if(pos != NULL)
+    if(pos != NULL || (bIsMsgFound == TRUE && m_sBusSpecInfo.m_eBus == LIN))
     {
         //sMsgNameCode = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeList.GetAt(pos);
         CString omStrTemp;
@@ -1524,6 +1593,50 @@ void CFunctionEditorDoc::vInitialiseBusSpecStructure(CString& omStrTemp, UCHAR u
                 //        }
                 omStrTemp += defCLOSE_PARENTHESIS;
             }*/
+
+        }
+        break;
+        case LIN:
+        {
+            UINT unMsgId = sMsgNameCode.m_dwMsgCode;
+
+            // Format Message ID, F RTR & DLC
+            omStrTemp.Format(defMSG_INIT_FORMAT_LIN,
+                             1, // Response
+                             0, // Classical
+                             sMsgNameCode.m_unMsgLen , //dlc
+                             unMsgId// Msg id
+                            ); // channel no
+
+            // Init data bytes if requested
+            if(bInitData == TRUE && sMsgNameCode.m_unMsgLen > 0)
+            {
+                omStrTemp += defOPEN_PARENTHESIS;
+                for( UINT unIndex = 0;
+                        unIndex < sMsgNameCode.m_unMsgLen;
+                        unIndex++)
+                {
+                    // Init to Zero
+                    omStrTemp += defFNS_INIT_VAL;
+                    // Check for Last zero
+                    if( unIndex + 1 != sMsgNameCode.m_unMsgLen)
+                    {
+                        omStrTemp += defFNS_COMMA;
+                    }
+
+                }
+
+                omStrTemp += defCLOSE_PARENTHESIS;
+            }
+            // Now form total init string
+            omStrTemp += defFNS_COMMA;
+            omStrTemp += defFNS_INIT_VAL; // Timestamp
+            omStrTemp += defFNS_COMMA;
+            omStrTemp += ucChannel; // Channel
+            omStrTemp += defFNS_COMMA;
+            omStrTemp += defFNS_INIT_VAL; // Checksum
+            omStrTemp += defCLOSE_PARENTHESIS;
+            omStrTemp += SEMI_COLON;
 
         }
         break;

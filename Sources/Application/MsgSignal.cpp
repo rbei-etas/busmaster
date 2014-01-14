@@ -40,6 +40,7 @@ static CHAR s_acTraceStr[1024] = {""};
 CUIThread* CMsgSignal::m_pUIThread = NULL;
 
 extern CCANMonitorApp theApp;       // Application object
+extern "C" int  nParseLDFFile(string fpInputFile, CHANNEL_CONFIG& ouCluster);
 
 
 /* Helper function to calculate how many bytes the signal consumes */
@@ -5438,11 +5439,48 @@ int CMsgSignal::nGetDeviceConfig(ABS_DEVICE_CONFIG& ouDeviceConfig)
 }
 
 /**
+* \brief         API to load the LDF file
+* \req           TODO - Importing of Fibex file
+* \param[in]     string containing the path for FIBEX File
+* \return        returns FCLASS_SUCCESS if successful, VERSION_NOT_SUPPORTED for Invalid File,
+                 FCLASS_FAILURE for other failures
+* \authors       Venkatanarayana Makam
+* \date          06.12.2013 Created
+*/
+
+HRESULT CMsgSignal::hLoadLdfFile(string strDBFile, list<Cluster>& ouClusterList, list<LinChannelParam>& ouLinParams)
+{
+    //Cluster ouCluster;
+    CHANNEL_CONFIG ouCluster;
+    int nRet = nParseLDFFile(strDBFile, ouCluster);
+    if ( nRet == S_OK )
+    {
+        if ( ouCluster.m_ouLinParams.m_nBaudRate < 200 || ouCluster.m_ouLinParams.m_nBaudRate > 30000 )
+        {
+            return FCLASS_FAILURE;
+        }
+        else
+        {
+            if(strDBFile.empty() == false)
+            {
+                ouCluster.m_ouClusterInfo.bWriteDBHeader(strDBFile.c_str(), LIN);
+            }
+            ouClusterList.push_back(ouCluster.m_ouClusterInfo);
+            ouLinParams.push_back(ouCluster.m_ouLinParams);
+            return FCLASS_SUCCESS;
+        }
+    }
+    return FCLASS_FAILURE;
+}
+
+/**
 * \brief         API to load the FIBEX file and fill the respective CFrameMap list
 * \req           RS_FLX_03 - Importing of Fibex file
 * \param[in]     string containing the path for FIBEX File
-* \return        returns S_OK if successful, else S_FALSE
+* \return        returns FCLASS_SUCCESS if successful, VERSION_NOT_SUPPORTED for Invalid File,
+                 FCLASS_FAILURE for other failures
 * \authors       Arunkumar Karri
+* \authors       Prathiba Bharathi
 * \date          16.04.2013 Created
 */
 HRESULT CMsgSignal::hLoadFibexDBFile(CString strFIBEXFile, list<Cluster>& ouClusterList)

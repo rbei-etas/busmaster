@@ -15,6 +15,16 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.1.0</b></p>
+    <p>LIN support added for slave node functionality. The tool can be used to respond back to master requests. It supports the following features :</p>
+    <ul>
+      <li>Support for LIN v1.3 and v2.0</li>
+      <li>Added LIN support for Vector XL library</li>
+      <li>LDF importing for cluster configuration and message interpretation</li>
+      <li>Modified Tx Window for DB and Non-DB frame configuration and data updation</li>
+      <li>Message Window with Error information and interpretation</li>
+      <li>Node Simulation for slave mode with message, timer, key and error handlers</li>
+    </ul>
     <p><b>2.0.0</b></p>
     <p>Added Support For Following CAN Controllers:</p>
     <p><ul>
@@ -34,7 +44,7 @@
     <ul>
       <li>Transmit Window</li>
     </ul>
-    <p>Added LIN Suppoer for Following Controllers</p>
+    <p>Added LIN Support for Following Controllers</p>
     <p><ul>
         <li>ETAS ISOLAR EVE LIN</li>
       </ul></p>
