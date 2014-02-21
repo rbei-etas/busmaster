@@ -15,6 +15,14 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.2.0</b></p>
+    <p>Following features are added:</p>
+    <ul>
+      <li>Support for LIN ETAS BOA</li>
+      <li>Support for LIN logging</li>
+      <li>Support for BOA 2.0 for CAN and CANFD</li>
+      <li>Bug Fixes</li>
+    </ul>
     <p><b>2.1.0</b></p>
     <p>LIN support added for slave node functionality. The tool can be used to respond back to master requests. It supports the following features :</p>
     <ul>
