@@ -53,10 +53,13 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define BUS_LOG_SYSMODE         "***SYSTEM MODE***"
 #define BUS_LOG_BAUDRATE        "***CHANNEL %d BAUD RATE %d kbps***"
 #define BUS_LOG_DATABASE_START  "***START DATABASE FILES (DBF/DBC)***"
-#define BUS_LOG_DATABASE_END    "***END DATABASE FILES (DBF/DBC)***"
+#define BUS_LOG_DATABASE_END    "***END OF DATABASE FILES (DBF/DBC)***"
+#define BUS_LOG_DATABASE_START_LIN  "***START OF LDF FILES***"
+#define BUS_LOG_DATABASE_END_LIN    "***END OF LDF FILES***"
 #define BUS_LOG_BAUDRATE_START  "***START CHANNEL BAUD RATE***"
 #define BUS_LOG_BAUDRATR_END    "***END CHANNEL BAUD RATE***"
 #define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s bps***"
+#define BUS_LOG_CHANNEL_LIN         "***CHANNEL %d - Protocol Version %s - Hardware %s - BaudRate %d bps***"
 //#define BUS_LOG_COMMENT_START "***START COMMENT***"   //arun
 //#define BUS_LOG_COMMENT_END       "***END COMMENT***"
 
@@ -774,6 +777,15 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
         omHeader += " J1939***";
         omHeader += L'\n';
     }
+
+    else if(eBus == LIN)
+    {
+        omHeader += PROTOCOL;
+        omHeader += " LIN***";
+        omHeader += L'\n';
+    }
+
+
     omHeader += BUS_LOG_HEADER;
     omHeader += L'\n';
     omHeader += BUS_LOG_START;
@@ -822,27 +834,53 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
             break;
     }
     omHeader += L'\n';
-
-    // Update the channel and its baudrate information
-    sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
-    int nNumChannels = 0;
-    GetChannelBaudRateDetails(controllerDetails, nNumChannels);
-    omHeader += BUS_LOG_BAUDRATE_START;
-    omHeader += L'\n';
-    CString strChannelNum = "";
-    for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
+    if(eBus == CAN || eBus == J1939)
     {
-        /* if baud rate is in kbps, convert to bps */
-        if ( controllerDetails[nChannelNum - 1].m_omStrBaudrate.size() < 4 )
+        // Update the channel and its baudrate information
+        sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
+        int nNumChannels = 0;
+        GetChannelBaudRateDetails(controllerDetails, nNumChannels);
+        omHeader += BUS_LOG_BAUDRATE_START;
+        omHeader += L'\n';
+        CString strChannelNum = "";
+        for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
         {
-            controllerDetails[nChannelNum - 1].m_omStrBaudrate+="000";
+            /* if baud rate is in kbps, convert to bps */
+            if ( controllerDetails[nChannelNum - 1].m_omStrBaudrate.size() < 4 )
+            {
+                controllerDetails[nChannelNum - 1].m_omStrBaudrate+="000";
+            }
+
+            strChannelNum.Format(BUS_LOG_CHANNEL, nChannelNum,
+                                 controllerDetails[nChannelNum - 1].m_omHardwareDesc.c_str(),
+                                 controllerDetails[nChannelNum - 1].m_omStrBaudrate.c_str());
+            omHeader += strChannelNum;
+            omHeader += L'\n';
         }
 
-        strChannelNum.Format(BUS_LOG_CHANNEL, nChannelNum,
-                             controllerDetails[nChannelNum - 1].m_omHardwareDesc.c_str(),
-                             controllerDetails[nChannelNum - 1].m_omStrBaudrate.c_str());
-        omHeader += strChannelNum;
+    }
+    else if(eBus == LIN)
+    {
+
+        sCONTROLLERDETAILSLIN controllerDetails[defNO_OF_LIN_CHANNELS];
+        int nNumChannels = 0;
+        GetChannelBaudRateDetails(controllerDetails, nNumChannels);
+        omHeader += BUS_LOG_BAUDRATE_START;
         omHeader += L'\n';
+        CString strChannelNum = "";
+
+        for (int nChannelNum = 1; nChannelNum <= nNumChannels ; nChannelNum++)
+        {
+            // if baud rate is in kbps, convert to bps
+
+            /*controllerDetails[nChannelNum].m_strProtocolVersion,
+                controllerDetails[nChannelNum].m_strHwUri,controllerDetails[nChannelNum].m_nBaudRate*/
+            strChannelNum.Format(BUS_LOG_CHANNEL_LIN, nChannelNum,controllerDetails[nChannelNum -1].m_strProtocolVersion.c_str()
+                                 ,controllerDetails[nChannelNum -1].m_strHwUri.c_str(),controllerDetails[nChannelNum -1].m_nBaudRate);
+            omHeader += strChannelNum;
+            omHeader += L'\n';
+        }
+
     }
     omHeader += BUS_LOG_BAUDRATR_END;
     omHeader += L'\n';
@@ -850,14 +888,32 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     //Update Baud Rate and Associated DBC and DBF files
     CStringArray aomList;
     GetDatabaseFiles(aomList);
-    omHeader += BUS_LOG_DATABASE_START;
+
+
+    if(eBus == LIN)
+    {
+        omHeader += BUS_LOG_DATABASE_START_LIN;
+    }
+    else
+    {
+        omHeader += BUS_LOG_DATABASE_START;
+    }
     omHeader += L'\n';
     for (int nIdx = 0; nIdx < aomList.GetSize(); nIdx++)
     {
         omHeader += "***" + aomList.GetAt(nIdx) + "***";
         omHeader += L'\n';
+
     }
-    omHeader += BUS_LOG_DATABASE_END;
+    if(eBus == LIN)
+    {
+        omHeader += BUS_LOG_DATABASE_END_LIN;
+    }
+
+    else
+    {
+        omHeader += BUS_LOG_DATABASE_END;
+    }
     omHeader += L'\n';
 }
 
@@ -887,17 +943,20 @@ void CBaseLogObject::SetDatabaseFiles(const CStringArray& omList)
     Der_SetDatabaseFiles(omList);
 }
 
+
+
+
 // Set the baud rate details for each channel
 void CBaseLogObject::Der_SetChannelBaudRateDetails
-(SCONTROLLER_DETAILS* controllerDetails,
+(void* controllerDetails,
  int nNumChannels)
 {
     Der_SetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }
 
 // To get the channel baud rate
-void CBaseLogObject::GetChannelBaudRateDetails
-(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
+void CBaseLogObject::GetChannelBaudRateDetails(void* controllerDetails, int& nNumChannels)
 {
     Der_GetChannelBaudRateDetails(controllerDetails, nNumChannels);
 }
+

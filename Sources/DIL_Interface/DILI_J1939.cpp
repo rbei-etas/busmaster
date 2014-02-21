@@ -199,6 +199,11 @@ HRESULT CDILI_J1939::DILIJ_GoOnline()
     return DILJ_GoOnline();
 }
 
+HRESULT CDILI_J1939::DILIJ_ClaimAdress()
+{
+    return DILJ_ClaimAdress();
+}
+
 /**
  * Stops J1939 network. All nodes stop sending msgs.
  */

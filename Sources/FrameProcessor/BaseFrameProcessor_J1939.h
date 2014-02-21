@@ -142,6 +142,6 @@ public:
 
     // To update the channel baud rate info to logger
     virtual HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-            int nNumChannels) = 0;
+            int nNumChannels,ETYPE_BUS eBus) = 0;
 
 };

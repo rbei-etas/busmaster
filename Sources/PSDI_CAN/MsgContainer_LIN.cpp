@@ -140,11 +140,11 @@ static void vFormatLINDataMsg(STLINDATA* pMsgLIN,
 
     CurrDataLIN->m_eChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;
 
-
+    /*
     {
         CurrDataLIN->m_byIDType = TYPE_ID_LIN_STANDARD;
     }
-
+    */
     CurrDataLIN->m_dwFrameID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgID;
 }
 

@@ -109,7 +109,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
 void CFormatMsgCommon::vFormatTimeStamp(DWORD dwTimeStamp, char acTime[])
 {
     // Static variables to reduce the creation time
-    static int nTemp, nMicSec, nSec, nMinute, nHour;
+    int nTemp, nMicSec, nSec, nMinute, nHour;
 
     nMicSec = dwTimeStamp % 10000;  // hundreds of microseconds left
     nTemp = dwTimeStamp / 10000;    // expressed in seconds

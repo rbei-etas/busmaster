@@ -33,6 +33,7 @@
 #include <string>
 #include <sstream>
 
+#include <Windows.h>
 using namespace std;
 const int MAX_STRING = 256;
 /**
@@ -148,16 +149,18 @@ private:
         m_ucControllerMode  = objRef.m_ucControllerMode;
         m_bSelfReception    = objRef.m_bSelfReception;
         m_bLowSpeed         = objRef.m_bLowSpeed;
+        m_unBTL_Cycles      = objRef.m_unBTL_Cycles;
 
         /* CAN FD related parameters */
         m_unDataBitRate                 = objRef.m_unDataBitRate;
         m_unDataSamplePoint             = objRef.m_unDataSamplePoint;
         m_unDataBTL_Cycles              = objRef.m_unDataBTL_Cycles;
         m_unDataSJW                     = objRef.m_unDataSJW;
-        m_bTxDelayCompensationON        = objRef.m_bTxDelayCompensationON;
-        m_unTxDelayCompensationQuanta   = objRef.m_unTxDelayCompensationQuanta;
-        m_bytRxCompatibility            = objRef.m_bytRxCompatibility;
-        m_bytTxCompatibility            = objRef.m_bytTxCompatibility;
+        m_bTxDelayCompensationControl        = objRef.m_bTxDelayCompensationControl;
+        m_unTxSecondarySamplePointOffset   = objRef.m_unTxSecondarySamplePointOffset;
+        m_bytCanRxMode            = objRef.m_bytCanRxMode;
+        m_bytCanFdRxMode            = objRef.m_bytCanFdRxMode;
+        m_bytCanFdTxConfig            = objRef.m_bytCanFdTxConfig;
 
         m_bDebug            = objRef.m_bDebug;
         m_bPassiveMode      = objRef.m_bPassiveMode;
@@ -194,16 +197,18 @@ public:
     int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
     int     m_bSelfReception;
     int     m_bLowSpeed;
+    UINT32  m_unBTL_Cycles;
 
     /* CAN FD related parameters */
     UINT32  m_unDataBitRate;
     UINT32  m_unDataSamplePoint;
     UINT32  m_unDataBTL_Cycles;
     UINT32  m_unDataSJW;
-    bool    m_bTxDelayCompensationON;
-    UINT32  m_unTxDelayCompensationQuanta;
-    BYTE    m_bytRxCompatibility;
-    BYTE    m_bytTxCompatibility;
+    bool    m_bTxDelayCompensationControl;
+    UINT32  m_unTxSecondarySamplePointOffset;
+    BYTE    m_bytCanRxMode;
+    BYTE    m_bytCanFdRxMode;
+    BYTE    m_bytCanFdTxConfig;
 
     int     m_bDebug;                            // debug mode for channel driver
     int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)
@@ -270,16 +275,18 @@ public:
         m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
         m_bSelfReception = TRUE;
         m_bLowSpeed = FALSE;
+        m_unBTL_Cycles = 10;
 
         /* CAN FD related parameters */
         m_unDataBitRate                 = 2000000;
         m_unDataSamplePoint             = 70;
         m_unDataBTL_Cycles              = 10;
         m_unDataSJW                     = 04;
-        m_bTxDelayCompensationON        = 0;    //OCI_CANFD_TX_DELAY_COMPENSATION_OFF
-        m_unTxDelayCompensationQuanta   = 0;
-        m_bytRxCompatibility            = 3;    //OCI_CANFD_RX_USE_RXFD_MESSAGE_PADDING
-        m_bytTxCompatibility            = 1;    //OCI_CANFD_TX_USE_DBR
+        m_bTxDelayCompensationControl        = 0;    //OCI_CANFD_TX_DELAY_COMPENSATION_OFF
+        m_unTxSecondarySamplePointOffset = 0;
+        m_bytCanRxMode                   = 2;   // OCI_CAN_RXMODE_CAN_FRAMES_USING_CAN_MESSAGE
+        m_bytCanFdRxMode                 = 8;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE_PADDING
+        m_bytCanFdTxConfig               = 4;   // OCI_CANFDTX_USE_CAN_AND_CANFD_FRAMES
     }
     //MVN
     void LoadControllerConfigData(xmlNodePtr& pNodePtr)

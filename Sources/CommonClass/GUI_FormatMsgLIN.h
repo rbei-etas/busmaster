@@ -16,7 +16,7 @@
 /**
  * \file      GUI_FormatMsgLIN.h
  * \brief     Definition of CFormatMsgLIN class
- * \author    Anish Kumar
+ * \author    Shashank Vernekar
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of CFormatMsgLIN class

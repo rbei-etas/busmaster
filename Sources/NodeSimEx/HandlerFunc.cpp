@@ -513,25 +513,29 @@ UINT unReadNodeMsgHandlerBufferLIN(LPVOID pParam)
     if(pParam != NULL)
     {
         CExecuteFunc* pCExecuteFunc=(CExecuteFunc*)pParam;
-        pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].ResetEvent();
-        //if dll is unloaded exit loop and end thread
-        //BOOL bDllLoaded=pCExecuteFunc->bIsDllLoaded();
-        while(pCExecuteFunc->bIsDllLoaded())
+
+        if(NULL != pCExecuteFunc)
         {
-            WaitForSingleObject( pCExecuteFunc->m_omReadFromQEventLIN,INFINITE);
-            //wait for event set by write thread
-            pCExecuteFunc->m_omReadFromQEventLIN.ResetEvent();
-            UINT unMsgCnt=pCExecuteFunc->unGetBufferMsgCntLIN();
-            //if buffer is empty wait for read event
-            while( unMsgCnt>0 && pCExecuteFunc->bIsDllLoaded() &&
-                    !(pCExecuteFunc->m_bStopMsgHandlers) )
+            pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].ResetEvent();
+            //if dll is unloaded exit loop and end thread
+            //BOOL bDllLoaded=pCExecuteFunc->bIsDllLoaded();
+            while(pCExecuteFunc->bIsDllLoaded())
             {
-                STLIN_TIME_MSG sLinMsg=pCExecuteFunc->sReadFromQMsgLIN();
-                pCExecuteFunc->vExecuteOnMessageHandlerLIN(sLinMsg);
-                unMsgCnt=pCExecuteFunc->unGetBufferMsgCntLIN();
+                WaitForSingleObject( pCExecuteFunc->m_omReadFromQEventLIN,INFINITE);
+                //wait for event set by write thread
+                pCExecuteFunc->m_omReadFromQEventLIN.ResetEvent();
+                UINT unMsgCnt=pCExecuteFunc->unGetBufferMsgCntLIN();
+                //if buffer is empty wait for read event
+                while( unMsgCnt>0 && pCExecuteFunc->bIsDllLoaded() &&
+                        !(pCExecuteFunc->m_bStopMsgHandlers) )
+                {
+                    STLIN_TIME_MSG sLinMsg=pCExecuteFunc->sReadFromQMsgLIN();
+                    pCExecuteFunc->vExecuteOnMessageHandlerLIN(sLinMsg);
+                    unMsgCnt=pCExecuteFunc->unGetBufferMsgCntLIN();
+                }
             }
+            pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].SetEvent( );
         }
-        pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].SetEvent( );
     }
     return 0;
 }

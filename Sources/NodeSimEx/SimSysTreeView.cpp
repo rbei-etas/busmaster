@@ -410,8 +410,20 @@ void CSimSysTreeView::vDisplayRootMenu()
     m_pomContextMenu->LoadMenu(IDM_SIMSYS_OPRNS);
     m_pomSubMenu = m_pomContextMenu->GetSubMenu(0);
 
-    m_pomSubMenu->EnableMenuItem(IDM_NEW_SIMSYS, MF_BYCOMMAND | MF_ENABLED );
-    m_pomSubMenu->EnableMenuItem(IDM_ADD_SIMSYS, MF_BYCOMMAND | MF_ENABLED );
+
+    if ( CExecuteManager::ouGetExecuteManager(m_eBus).m_eBusStatus == BUS_CONNECTED )
+    {
+        m_pomSubMenu->EnableMenuItem(IDM_ADD_SIMSYS,  MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
+        m_pomSubMenu->EnableMenuItem(IDM_NEW_SIMSYS,  MF_BYCOMMAND | MF_DISABLED | MF_GRAYED );
+
+    }
+    else
+    {
+        m_pomSubMenu->EnableMenuItem(IDM_ADD_SIMSYS, MF_BYCOMMAND | MF_ENABLED );
+        m_pomSubMenu->EnableMenuItem(IDM_NEW_SIMSYS, MF_BYCOMMAND | MF_ENABLED );
+    }
+
+
     m_pomSubMenu->EnableMenuItem(IDM_DELETE_ALL_SIMSYS, MF_BYCOMMAND |
                                  MF_DISABLED | MF_GRAYED );
     m_pomSubMenu->EnableMenuItem(IDM_SAVE_ALL_SIMSYS, MF_BYCOMMAND |
@@ -465,7 +477,17 @@ void CSimSysTreeView::vDisplaySimSysMenu()
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_SAVE, unEnableFlag );
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_SAVEAS, unEnableFlag );
     m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_DELETESIMULATEDSYSTEM, unEnableFlag );
-    m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ADDNODE, unEnableFlag );
+
+    if ( CExecuteManager::ouGetExecuteManager(m_eBus).m_eBusStatus == BUS_CONNECTED )
+    {
+        m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ADDNODE,  unDiasableFlag );
+    }
+    else
+    {
+        m_pomSubMenu->EnableMenuItem(IDM_SIMSYS_ADDNODE, unEnableFlag );
+    }
+
+
 
     CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
@@ -1310,6 +1332,7 @@ void CSimSysTreeView::OnAllNodeHandlers()
         pSimSysNodeInfo->vSetEnableNodeAllHandlers(omStrSimSysName ,
                 omStrNodeName , TRUE);
 
+
     }
     else if(omStrMenuText == "Disable All Handlers" )
     {
@@ -2016,10 +2039,16 @@ void CSimSysTreeView::OnSimsysAllErrorhandlers()
 
         pSimSysNodeInfo->vSetEnableAllSimSysErrorHandlers(omStrSimSysName , TRUE);
 
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_ERROR_HANDLER, TRUE);
+
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysErrorHandlers(omStrSimSysName , FALSE);
+
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_ERROR_HANDLER, FALSE);
 
     }
 
@@ -2056,11 +2085,24 @@ void CSimSysTreeView::OnSimsysAllhandlers()
 
         pSimSysNodeInfo->vSetEnableAllSimSysHandlers(omStrSimSysName , TRUE);
 
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_ALL_HANDLER, TRUE);
+        ouFlag.vSetFlagStatus(H_TIMERBUTTON, TRUE);
+        ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, TRUE);
+        ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, TRUE);
+        ouFlag.vSetFlagStatus(H_ERROR_HANDLER, TRUE);
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysHandlers(omStrSimSysName , FALSE);
 
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+
+        ouFlag.vSetFlagStatus(H_ALL_HANDLER, FALSE);
+        ouFlag.vSetFlagStatus(H_TIMERBUTTON, FALSE);
+        ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, FALSE);
+        ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, FALSE);
+        ouFlag.vSetFlagStatus(H_ERROR_HANDLER, FALSE);
     }
 
 
@@ -2097,10 +2139,16 @@ void CSimSysTreeView::OnSimsysAllKeyhandlers()
 
         pSimSysNodeInfo->vSetEnableAllSimSysKeyHandlers(omStrSimSysName , TRUE);
 
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, TRUE);
+
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysKeyHandlers(omStrSimSysName , FALSE);
+
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, FALSE);
 
     }
 
@@ -2138,12 +2186,15 @@ void CSimSysTreeView::OnSimsysAllMsghandlers()
         // when user wants to enable all handlers
 
         pSimSysNodeInfo->vSetEnableAllSimSysMsgHandlers(omStrSimSysName , TRUE);
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, TRUE);
 
     }
     else
     {
         pSimSysNodeInfo->vSetEnableAllSimSysMsgHandlers(omStrSimSysName , FALSE);
-
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, FALSE);
     }
 
 
@@ -2181,10 +2232,17 @@ void CSimSysTreeView::OnSimsysAllTimerhandlers()
 
         pSimSysNodeInfo->vSetEnableAllSimSysTimerHandlers(omStrSimSysName );
 
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_TIMERBUTTON, TRUE);
+
     }
     else
     {
         pSimSysNodeInfo->vSetDisableAllSimSysTimerHandlers(omStrSimSysName );
+
+        CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+        ouFlag.vSetFlagStatus(H_TIMERBUTTON, FALSE);
+
     }
 
 
@@ -2206,10 +2264,16 @@ void CSimSysTreeView::OnSimsysAllEventhandlers()
         if(omStrMenuText == "Enable All Event Handlers" )
         {
             pSimSysNodeInfo->vSetEnableAllSimSysEventHandlers(omStrSimSysName, TRUE );
+
+            CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+            ouFlag.vSetFlagStatus(H_EVENT_HANDLER, TRUE);
         }
         else
         {
             pSimSysNodeInfo->vSetEnableAllSimSysEventHandlers(omStrSimSysName, FALSE );
+
+            CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
+            ouFlag.vSetFlagStatus(H_EVENT_HANDLER, FALSE);
         }
     }
 }

@@ -33,7 +33,7 @@ private:
     void vFormatDataAndId(BYTE bExprnFlag, PSTJ1939_MSG psJ1939BData,
                           PSFORMATTEDATA_J1939 psJ1939FData);
 public:
-    CFormatMsgJ1939(void);
+    CFormatMsgJ1939(CRefTimeKeeper& ouRefTimeKeeper);
     ~CFormatMsgJ1939(void);
 
     void vInit(/*CJ1939MessageMap* podMsgMap*/);

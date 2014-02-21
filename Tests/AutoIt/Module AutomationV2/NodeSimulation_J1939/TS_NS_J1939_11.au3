@@ -44,7 +44,7 @@ if winexists($WIN_BUSMASTER) then
 	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "msg.m_sMsgProperties.m_eType = MSG_TYPE_DATA;          // Standard Message type" & @CRLF)
 	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "msg.m_sMsgProperties.m_eDirection = DIR_TX;              // Direction of the message" & @CRLF)
 	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "msg.m_sMsgProperties.m_uExtendedID.m_s29BitId.m_bySrcAddress = 10;// source address" & @CRLF)
-	;ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile,"msg.m_sMsgProperties.m_uExtendedID.m_unExtID =0x100; // PGN number" & @CRLF)
+	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile,"msg.m_sMsgProperties.m_uExtendedID.m_unExtID =0x100; // PGN number" & @CRLF)
 	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "msg.m_unDLC = 5;                                            // DLC" & @CRLF)
 	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "msg.m_pbyData = new BYTE[15];" & @CRLF)
 	ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "BYTE tmp[] = " & "{{}" & "12, 34, 45, 56, 78" & "{}}" & ";" & @CRLF )
@@ -81,7 +81,7 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect()																	; Connect the tool
 	Sleep(500)
 
-	_J1939tMsgWin("Data","[0x400]XBR",0,40)
+	_J1939tMsgWin("Data","[0x400]Msg_Data",0,40)
 	 sleep(1000)
 	 _ConnectDisconnect()
 	  _DisableOverwriteMode()
@@ -127,6 +127,7 @@ if winexists($WIN_BUSMASTER) then
         Else
 		    $Dlc=0
 	    EndIf
+
 		If($Data1[11]="1000000000000000" And $Data3[11]="0C222D384E" And $Data5[11]="0C222D384E") Then
 		    $DataBytes=1
 	    Else
@@ -137,6 +138,12 @@ if winexists($WIN_BUSMASTER) then
 	    Else
 		    $msgType=0
 	    EndIf
+		If($Data3[2]="0x140" And $Data5[2]="0x140") Then
+			$Canid=1
+		Else
+			$Canid=0
+		EndIf
+
 	EndIf
 
 
@@ -147,8 +154,9 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$Dlc" & $Dlc & @CRLF)
 	ConsoleWrite("$DataBytes" & $DataBytes & @CRLF)
 	ConsoleWrite("$msgType" & $msgType & @CRLF)
+	ConsoleWrite("$Canid" & $Canid & @CRLF)
 
-    If($SrcAddr=1 And $DestAddr=1 And $TxRx=1 And $Dlc=1 And $DataBytes=1 And $msgType=1) Then
+    If($SrcAddr=1 And $DestAddr=1 And $TxRx=1 And $Dlc=1 And $DataBytes=1 And $msgType=1 And $Canid=1) Then
 		_WriteResult("Pass","TS_J1939Node_11")
     Else
 		_WriteResult("Fail","TS_J1939Node_11")

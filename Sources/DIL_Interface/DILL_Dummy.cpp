@@ -60,7 +60,7 @@ HRESULT CDIL_LIN_DUMMY::LIN_DeselectHwInterface(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_LIN_DUMMY::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS /*InitData*/, int& /*Length*/)
+HRESULT CDIL_LIN_DUMMY::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN /*InitData*/, int& /*Length*/)
 {
     return WARN_DUMMY_API;
 }
@@ -156,6 +156,11 @@ HRESULT CDIL_LIN_DUMMY::LIN_GetControllerParams(LONG& /*lParam*/, UINT /*nChanne
 {
     return WARN_DUMMY_API;
 }
+HRESULT CDIL_LIN_DUMMY::LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], int&)
+{
+    return WARN_DUMMY_API;
+}
+
 //MVN
 HRESULT CDIL_LIN_DUMMY::LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {

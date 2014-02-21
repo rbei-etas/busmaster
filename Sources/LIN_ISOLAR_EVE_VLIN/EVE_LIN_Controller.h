@@ -13,6 +13,11 @@
 #include "include/Struct_CAN.h"
 #include "include/struct_LIN.h"
 
+#define NO_UDP_DATA             0x00
+#define RX_UDP_PID              0x01
+#define RX_UDP_DATA             0x02
+#define TX_LOOPBACK_UDP_DATA    0x03
+
 /**
  * This structure is used for sending/reciving messages to/from the LIN network
  */
@@ -31,7 +36,7 @@
 
 int InitializeLIN();
 void CleanUpLIN();
-int ReceiveLINMessageFromClient( sTLIN_FRAME* stLINFrame);
+int ReceiveLINMessageFromClient( sTLIN_FRAME* stLinFrame, int* udpReadSize);
 int SendLINMessageToClient( const sTLIN_FRAME* stLinFrame);
 
 #endif /* EVE_LIN_CONTROLLER_H_ */

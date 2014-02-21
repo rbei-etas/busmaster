@@ -18,6 +18,7 @@ SOCKET CreateSocketUDP();
 int InitializeParametersUDP(enum UDPSocketType socketType);
 int ReadUDPData(char* buffer, unsigned int bufferLength);
 int SendUDPData(char* buffer, unsigned int bufferLength);
+int ReadUDPLoopBack(char* buffer, unsigned int bufferLength);
 
 #endif   /* SOCKETUDP_H_ */
 

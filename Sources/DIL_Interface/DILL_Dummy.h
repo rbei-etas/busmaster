@@ -36,7 +36,7 @@ public:
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
-    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
+    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length);
     HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
     HRESULT LIN_StartHardware(void);
     HRESULT LIN_PreStartHardware(void);
@@ -52,6 +52,8 @@ public:
     HRESULT LIN_GetLastErrorString(string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+    HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
+
     //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     //~MVN

@@ -27,10 +27,7 @@ _launchApp()
 Local $Ver=""
 if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxLog_05")																; Load Configuration
-
-	WinMenuSelectItem($WIN_BUSMASTER,"",$HelpMenu,$AboutBusmaster)
-	$Ver=controlgettext($DLG_About,"",$Static_Version_About)									; Fetch version
-	$ToolVer="BUSMASTER " & $Ver
+	$ToolVer=_GetToolVersion()																; Fetch the Busmaster Version
 	ConsoleWrite("$ToolVer :" &$ToolVer&@CRLF)
 	ControlClick($DLG_About,"",$BTN_OK_About)
 	$GetLogFile_Path=_OutputDataPath()														; Fetch the Log file path

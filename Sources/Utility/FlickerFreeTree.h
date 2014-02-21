@@ -23,7 +23,7 @@
  */
 
 #pragma once
-
+#include "afxcmn.h"
 class CFlickerFreeTree : public CTreeCtrl
 {
 public:

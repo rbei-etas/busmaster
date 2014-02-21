@@ -14,25 +14,27 @@
  */
 
 /**
- * \file      RefTimeKeeper.h
- * \brief     Definition of CRefTimeKeeper class
- * \author    Anish kumar
+ * \file      LIN_ETAS_BOA.h
+ * \brief     Contains derived class for CWinApp application
+ * \author    Prathiba, Venkat
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
- * Definition of CRefTimeKeeper class
+ * Contains derived class for CWinApp application
  */
 
 #pragma once
 
-class CRefTimeKeeper
+/**
+ * See CLIN_ETAS_BOA.cpp for the implementation of this class
+ */
+class CLIN_ETAS_BOA : public CWinApp
 {
-private:
-    static UINT64   m_qwRefSysTime;
-    static UINT64   m_qwAbsBaseTime;
 public:
-    CRefTimeKeeper(void);
-    ~CRefTimeKeeper(void);
-    static void vSetTimeParams(SYSTEMTIME& CurrSysTime, UINT64 qwConnectTime);
+    CLIN_ETAS_BOA();
 
-    static void vGetTimeParams(UINT64& qwRefSysTime, UINT64& qwAbsBaseTime);
+    // Overrides
+public:
+    virtual BOOL InitInstance();
+
+    DECLARE_MESSAGE_MAP()
 };

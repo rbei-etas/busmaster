@@ -82,7 +82,7 @@ if winexists($WIN_BUSMASTER) then
 	 send("^{F4}")
 	_ConnectDisconnect()																	; Connect the tool
 	Sleep(500)
-	 _J1939tMsgWin("DATA","[0x400]XBR",0,20)
+	 _J1939tMsgWin("DATA","[0x400]Msg_Data",0,20)
 	 sleep(2000)
 	 _ConnectDisconnect()
 	  _DisableOverwriteMode()

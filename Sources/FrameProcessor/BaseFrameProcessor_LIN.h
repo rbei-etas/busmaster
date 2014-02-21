@@ -1,29 +1,14 @@
 
 /******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  BaseFrameProcessor_LIN.h
-  Description   :  Definition file for CBaseFrameProcessor_LIN class which
-                   describes the interface of LIN logging module.
-  $Log:   X:/Archive/Sources/FrameProcessor/BaseFrameProcessor_LIN.h_v  $
- *
- *    Rev 1.3   02 Dec 2011 20:16:48   rac2kor
- * Removed hard coding of version information
- * string in the log file by accepting it as a parameter
- * from the application / client.
- *
- *    Rev 1.2   15 Apr 2011 19:20:30   rac2kor
- * Inserted RBEI Copyright information text into the file header.
- *
- *    Rev 1.1   11 Dec 2010 15:43:30   rac2kor
- * Wrong constructor name was used.
- *
- *    Rev 1.0   06 Dec 2010 18:53:02   rac2kor
- *
 
-  Author(s)     :  Ratnadip Choudhury
-  Date Created  :  1.12.2010
-  Modified By   :
-  Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
+FileName      :  BaseFrameProcessor_LIN.h
+Description   :  Definition file for CBaseFrameProcessor_LIN class which
+describes the interface of LIN logging module.
+
+Author(s)     : Shashank Vernekar
+Date Created  : 29.01.2014
+Modified By   :
+Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
 #pragma once
@@ -33,7 +18,6 @@
 #include "DataTypes/Log_DataTypes.h"
 #include "DataTypes/Filter_DataTypes.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
-//#include "DataTypes/LIN_DataTypes.h"
 #include "Logger_CommonDataTypes.h"
 
 typedef struct tagLINPROC_PARAMS
@@ -41,7 +25,7 @@ typedef struct tagLINPROC_PARAMS
     char m_acVersion[MAX_PATH];        // Version info of the application suite
     CBaseLINBufFSE* m_pouLINBuffer;     // Client frame buffer to update
     Base_WrapperErrorLogger* m_pILog;   // Error logger module
-    //CNetworkStats* m_pouNetworkStat;    // Network statistics object
+    
     DWORD dwClientID;
     tagLINPROC_PARAMS()
     {
@@ -86,7 +70,7 @@ public:
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
+    //   virtual HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
 
     // Query function - current logging status (OFF/ON).
     virtual BOOL FPL_IsLoggingON(void) = 0;
@@ -102,7 +86,7 @@ public:
 
     // PTV [1.6.4]
     // Query function - current filtering status
-    virtual BOOL FPL_IsFilterON(void) = 0;
+    // virtual BOOL FPL_IsFilterON(void) = 0;
 
     // To log a string
     virtual HRESULT FPL_LogString(CString& omStr) = 0;
@@ -127,12 +111,12 @@ public:
                                         const SLOGINFO& sLogObject) = 0;
 
     // To modify the filtering scheme of a logging block
-    virtual HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
-            const SFILTERAPPLIED_LIN& sFilterObj) = 0;
+    //  virtual HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
+    //          const SFILTERAPPLIED_LIN& sFilterObj) = 0;
 
     // Getter for the filtering scheme of a logging block
-    virtual HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
-                                           SFILTERAPPLIED_LIN& sFilterObj) = 0;
+    //  virtual HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
+    //                                         SFILTERAPPLIED_LIN& sFilterObj) = 0;
 
     // Getter for the logging configuration data
     virtual HRESULT FPL_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
@@ -158,7 +142,6 @@ public:
     virtual HRESULT FPL_SetDatabaseFiles(const CStringArray& omList) = 0;
 
     // To update the channel baud rate info to logger
-    virtual HRESULT FPL_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-            int nNumChannels) = 0;
+    virtual HRESULT FPL_SetChannelBaudRateDetails(SCONTROLLER_DETAILS_LIN* controllerDetails, int nNumChannels,ETYPE_BUS eBus) = 0;
 
 };

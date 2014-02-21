@@ -75,6 +75,9 @@ public:
     //ani1
     void vSetNodeInfo(PSNODEINFO ps_TempNodeInfo);
     void vGetNodeInfo(sNODEINFO& psNodeInfo) const;
+
+    DWORD dwGetNodeClientId();
+
     void vInitialiseInterfaceFnPtrs(HMODULE);//from mainframe
 
     void vSetActivePassiveNode(BOOL ActiveNode); //used for Dll

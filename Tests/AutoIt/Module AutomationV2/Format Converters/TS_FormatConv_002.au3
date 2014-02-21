@@ -28,7 +28,8 @@ if winexists($WIN_BUSMASTER) then
 	Else
 		$ConvSuccess=0
 	EndIf
-	 If($Res[2]="Output File : D:\BUSMASTER_SVN\branches\BusMaster - v2.0.0\Tests\AutoIt\Module AutomationV2\Output\CAPL2CPP.cpp") Then
+	 ;If($Res[2]="Output File : D:\BUSMASTER_SVN\branches\BusMaster - v2.0.0\Tests\AutoIt\Module AutomationV2\Output\CAPL2CPP.cpp") Then
+	 If($Res[2]="Output File : "&$OutputFolderPath&"\"&"CAPL2CPP.cpp") Then
 		 $OutputFilePath1=1
 	 Else
 		 $OutputFilePath1=0

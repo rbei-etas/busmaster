@@ -196,6 +196,10 @@ public:
     USHORT vCheckValidLogFiles(USHORT iCount);
     BOOL bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks);
 
+
+    USHORT vCheckValidLogFiles_LIN(USHORT iCount);
+    BOOL bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks);
+
     //Get Message Window Thread
     inline CMsgWndThread* pGetMessageWndThread()
     {
@@ -213,7 +217,8 @@ public:
     FLEXRAY_CONFIG_FILES m_acFlexDBConfigInfo;
     ClusterConfig  m_ouClusterConfig[BUS_TOTAL];
     ClusterConfig   m_ouLinConfig;
-
+    sCONTROLLERDETAILSLIN m_sControllterlin[10];
+    INT nsize;
     bool m_bFRConfigModified;
 
     /* FIBEX database information */
@@ -324,15 +329,21 @@ public:
     BOOL bDllUnload(CStringArray* omStrBuildFiles) ;
     // To stop or start logging during configuration change
     inline void vStartStopLogging(BOOL bStart);
+
+    inline void vStartStopLogging_LIN(BOOL bStart);
     // To stop or start logging during configuration change
     inline void vJ1939StartStopLogging();
+
+
+
+
     // To set the associated database file names for logging
     void vSetAssociatedDatabaseFiles(ETYPE_BUS eBus);
     // To set the baudrate for the selected channels
     void vSetBaudRateInfo(ETYPE_BUS eBus);
     //Wrapper function around the inline function,to be called from com function
     void vComStartStopLog(BOOL bStart);
-
+    void vComStartStopLog_LIN(BOOL bStart);
     //Function takes the Root Menu and returns the SubMenu Pointer
     CMenu* GetSubMenu(CString MenuName);
 
@@ -449,6 +460,7 @@ protected:
     afx_msg void OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI);
     afx_msg void OnUpdateToolHexdec(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogOnOff(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateLogOnOff_LIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplayGo(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplaySkip(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplayStep(CCmdUI* pCmdUI);
@@ -458,6 +470,7 @@ protected:
     afx_msg void OnUpdateFileNew(CCmdUI* pCmdUI);
     afx_msg void OnUpdateFileOpen(CCmdUI* pCmdUI);
     afx_msg void OnCfgLogFile();
+    afx_msg void OnCfgLogFile_LIN();
     afx_msg void OnUpdateToolButtonMsgDisp(CCmdUI* pCmdUI);
     afx_msg void OnEndSession(BOOL bEnding);
     afx_msg void OnCfgSendMsgs();
@@ -604,12 +617,15 @@ private:
     SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 
     SCONTROLLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
-    SCONTROLLER_DETAILS m_asControllerDetailsLIN[defNO_OF_CHANNELS];
+    SCONTROLLER_DETAILS_LIN m_asControllerDetailsLIN[defNO_OF_LIN_CHANNELS];
+    //sCONTROLLERDETAILSLIN sControllerDetailsLIN[defNO_OF_LIN_CHANNELS];
 
     SFILTERAPPLIED_CAN m_sFilterAppliedCAN; // Filter applied struct for CAN
     SFILTERAPPLIED_J1939 m_sFilterAppliedJ1939; // Filter applied struct for J1939
+    SFILTERAPPLIED_LIN m_sFilterAppliedLIN;
     CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN
     CMsgInterpretationJ1939 m_ouMsgInterpretSW_J; //Msg interpretation object for signal watch CAN
+    CMsgInterpretation m_ouMsgInterpretSW_L;
     CString m_omStrSavedConfigFile;
     STCAN_MSG m_sRxMsgInfo;
     STLIN_MSG m_sRxMsgInfoLin;
@@ -666,6 +682,7 @@ private:
     // PTV [1.6.4]
     UINT_PTR m_unTimerSBLog;
     UINT_PTR m_unJ1939TimerSBLog;
+    UINT_PTR m_unLINTimerSBLog;
     // Transmission and reception error counters
     SERROR_CNT m_sErrorCount;
     // Flag to indicate which one between message ID and name is selected
@@ -834,9 +851,10 @@ public:
     afx_msg void OnConfigureModeActive();
     afx_msg void OnConfigurePassive();
     afx_msg void OnLogEnable();
+    afx_msg void OnLog_LIN_Enable();
     afx_msg void OnRestartController();
     afx_msg void OnUpdateCfgnLog(CCmdUI* pCmdUI);
-
+    afx_msg void OnUpdateCfgnLog_LIN(CCmdUI* pCmdUI);
     afx_msg void OnDisplayEdit();
     afx_msg void OnUpdateDisplayEdit(CCmdUI* pCmdUI);
     afx_msg void OnDisplayMain();
@@ -859,14 +877,17 @@ public:
     afx_msg void OnUpdateSignalgraphwindowMcnet(CCmdUI* pCmdUI);
     afx_msg void OnActivateJ1939();
     afx_msg void OnUpdateActivateJ1939(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateActivateLIN(CCmdUI* pCmdUI);
     afx_msg void OnJ1939ConfigLog();
     afx_msg void OnUpdateJ1939ConfigLog(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateLinConfigLog(CCmdUI* pCmdUI);
     afx_msg void OnActionJ1939Online();
     afx_msg void OnUpdateActionJ1939Online(CCmdUI* pCmdUI);
     afx_msg void OnActionJ1939TxMessage();
     afx_msg void OnUpdateActionJ1939TxMessage(CCmdUI* pCmdUI);
     afx_msg void OnActionJ1939Log();
     afx_msg void OnUpdateActionJ1939Log(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateActionLINLog(CCmdUI* pCmdUI);
     afx_msg void OnToolbarJ1939();
     afx_msg void OnUpdateToolbarJ1939(CCmdUI* pCmdUI);
     afx_msg void OnToolbarFlexRay();
@@ -920,6 +941,8 @@ public:
     afx_msg void OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI);
     afx_msg LRESULT OnMessageFromUserDllGetAbsoluteTime(WPARAM wParam, LPARAM lParam);
     afx_msg void OnFileConverter();
+
+    afx_msg void OnLINConfigLog();
 
     //afx_msg void OnActivateLIN();
     afx_msg void OnCfgSendMsgsLIN();

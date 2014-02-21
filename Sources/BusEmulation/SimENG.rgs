@@ -2,23 +2,23 @@ HKCR
 {
 	BusEmulation.SimENG.1 = s 'SimENG Class'
 	{
-		CLSID = s '{C6A31257-797A-4838-BFB5-8C7696DD0462}'
+		CLSID = s '{A3FE095B-99F7-4328-953F-8257825C55BD}'
 	}
 	BusEmulation.SimENG = s 'SimENG Class'
 	{
-		CLSID = s '{C6A31257-797A-4838-BFB5-8C7696DD0462}'
+		CLSID = s '{A3FE095B-99F7-4328-953F-8257825C55BD}'
 		CurVer = s 'BusEmulation.SimENG.1'
 	}
 	NoRemove CLSID
 	{
-		ForceRemove {C6A31257-797A-4838-BFB5-8C7696DD0462} = s 'SimENG Class'
+		ForceRemove {A3FE095B-99F7-4328-953F-8257825C55BD} = s 'SimENG Class'
 		{
 			ProgID = s 'BusEmulation.SimENG.1'
 			VersionIndependentProgID = s 'BusEmulation.SimENG'
 			ForceRemove 'Programmable'
 			LocalServer32 = s '%MODULE%'
 			val AppID = s '%APPID%'
-			'TypeLib' = s '{A14C2E9B-F091-4376-9CFE-E397B6E57103}'
+			'TypeLib' = s '{F9B8A5C8-3792-43AA-80CD-E36F8139E3D7}'
 		}
 	}
 }

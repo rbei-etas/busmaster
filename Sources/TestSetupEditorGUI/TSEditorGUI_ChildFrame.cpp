@@ -3440,8 +3440,15 @@ Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileExit(void)
 {
-    OnFileClose();
-    OnClose();
+    ShowWindow(SW_HIDE);
+    AfxGetMainWnd()->SetMenu(m_pMainMenu);
+
+    /* Make the next available MDI window active */
+    CWnd* pActivateWnd =   GetNextWindow();
+    pActivateWnd->SetForegroundWindow();
+    pActivateWnd->SetFocus();
+    //OnFileClose();
+    //OnClose();
 }
 /******************************************************************************
 Function Name  :  OnMDIActivate

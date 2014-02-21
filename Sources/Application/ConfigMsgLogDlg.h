@@ -104,6 +104,9 @@ private:
     CBaseFrameProcessor_J1939* m_pouLoggerJ1939;
     const SFILTERAPPLIED_CAN* m_psFilterConfigured;
     const SFILTERAPPLIED_J1939* m_psJ1939Filter;
+
+    CBaseFrameProcessor_LIN* m_pouLoggerLIN;
+    const SFILTERAPPLIED_LIN* m_psLINFilter;
     BOOL m_bEditingON;
     BOOL m_bLogON;
     UINT m_unDispUpdateTimerId;

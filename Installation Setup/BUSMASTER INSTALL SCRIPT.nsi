@@ -334,10 +334,20 @@ Section "BUSMASTER"
 	bCanEtas15bExists:
 			Delete "$INSTDIR\CAN_ETAS_BOA_1_5.dll"
 			
+	; Deleting If CAN_ETAS_BOA_2_0.dll exists
+	IfFileExists $INSTDIR\CAN_ETAS_BOA_2_0.dll bCanEtas2bExists
+	bCanEtas2bExists:
+			Delete "$INSTDIR\CAN_ETAS_BOA_2_0.dll"
+			
 	; Deleting If FLEXRAY_ETAS_BOA.dll exists
 	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA.dll bFlexEtasbExists
 	bFlexEtasbExists:
 			Delete "$INSTDIR\FLEXRAY_ETAS_BOA.dll"
+	
+	; Deleting If LIN_ETAS_BOA.dll exists
+	IfFileExists $INSTDIR\LIN_ETAS_BOA.dll bLINEtasbExists
+	bLINEtasbExists:
+			Delete "$INSTDIR\LIN_ETAS_BOA.dll"
 
 			; Deleting If TXWindowFlexRay.dll exists
 	IfFileExists $INSTDIR\TXWindowFlexRay.dll bTxWndFlexEtasbExists
@@ -800,6 +810,7 @@ Section "BUSMASTER"
 	File ..\Sources\BIN\Release\intl.dll
 	File ..\Sources\BIN\Release\LIN_ISOLAR_EVE_VLIN.dll
 	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA.dll
+	File ..\Sources\BIN\Release\LIN_ETAS_BOA.dll
 	File ..\Sources\BIN\Release\TXWindowFlexRay.dll
 	File ..\Sources\BIN\Release\Controller_0.dll
 	File ..\Sources\BIN\Release\Controller_1.dll
@@ -815,7 +826,10 @@ Section "BUSMASTER"
 	File /r ..\Sources\Localization
 	
     ; Help
-    File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
+    File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
+	
+	; Oxygen icons resource Dll
+	File ..\Sources\BIN\Release\AdvancedUIPlugIn.dll
 
 	SetOutPath "$INSTDIR\SimulatedSystems\include\"
 	; Simulated Systems Include files
@@ -915,6 +929,7 @@ Section "ETAS BOA"
     SetOutPath $INSTDIR    
     File ..\Sources\BIN\Release\CAN_ETAS_BOA_1_4.dll
     File ..\Sources\BIN\Release\CAN_ETAS_BOA_1_5.dll
+	File ..\Sources\BIN\Release\CAN_ETAS_BOA_2_0.dll
 SectionEnd
 Section "Intrepid neoVI"
     SectionIn 1 2
@@ -984,16 +999,16 @@ Section "BUSMASTER Reg Cleanup"
     File BUSMASTER_Cleanup_Registry.exe
 SectionEnd
 SectionGroupEnd
-SectionGroup "New Icon Set"
-Section "Oxygen Icons"
-    SectionIn 1 2
-    SetOutPath $INSTDIR
+;SectionGroup "New Icon Set"
+;Section "Oxygen Icons"
+;    SectionIn 1 2
+;    SetOutPath $INSTDIR
 	; Oxygen icons resource Dll
-	File ..\Sources\BIN\Release\AdvancedUIPlugIn.dll
+;	File ..\Sources\BIN\Release\AdvancedUIPlugIn.dll
 	 ; Help
-    File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
-SectionEnd
-SectionGroupEnd
+;   File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
+;SectionEnd
+;SectionGroupEnd
 SectionGroup "Examples"
 Section "COM Examples"
     SectionIn 1 2

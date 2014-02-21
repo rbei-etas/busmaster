@@ -20,7 +20,9 @@
  */
 
 #pragma once
-
+#include"DataType.h"
+#include"MsgSignal.h"
+#include "resource.h"
 class CPPageMessage : public CPropertyPage
 {
     DECLARE_DYNCREATE(CPPageMessage)

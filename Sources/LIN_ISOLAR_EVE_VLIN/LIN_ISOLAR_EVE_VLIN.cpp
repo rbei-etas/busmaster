@@ -98,7 +98,7 @@ public:
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
-    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
+    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length);
     HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
     HRESULT LIN_StartHardware(void);
     HRESULT LIN_PreStartHardware(void);
@@ -116,6 +116,8 @@ public:
     HRESULT LIN_GetLastErrorString(string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+    HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
+
     //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     //~MVN
@@ -239,7 +241,7 @@ static void vValidateReceivedLinPID(STLIN_MSG& RxMsg)
         RxMsg.m_ucMsgTyp = asLinTxMsg[RxMsg.m_ucMsgID].m_ucMsgTyp;
         RxMsg.m_ucDataLen =  asLinTxMsg[RxMsg.m_ucMsgID].m_ucDataLen;
 
-        sg_EVE_LINMsg.m_ucDataType = TX_FLAG;
+        //sg_EVE_LINMsg.m_ucDataType = TX_FLAG;
 
 
         for(int i=0; i<8; i++)
@@ -247,7 +249,7 @@ static void vValidateReceivedLinPID(STLIN_MSG& RxMsg)
             RxMsg.m_ucData[i] = asLinTxMsg[RxMsg.m_ucMsgID].m_ucData[i];
         }
 
-        ret_result = g_pouDIL_ISOLAR_EVE_VLIN->LIN_SendMsg(0,RxMsg);
+        ret_result = g_pouDIL_ISOLAR_EVE_VLIN->LIN_SetSlaveRespData(RxMsg);
     }
     //else if(asLinTxMsg[RxMsg.m_ucMsgID].m_ucMsgTyp == LIN_SLAVE_SLAVE)
     //{
@@ -329,9 +331,11 @@ DWORD WINAPI LinMsgReadThreadProc_LIN_ISolar_Eve(LPVOID pVoid)
             {
                 static STLIN_FRAME RxFrame;
                 static STLIN_MSG RxMsg;
-                RxMsg.m_ucDataLen = 0;
-                int iRxLength = ReceiveLINMessageFromClient(&RxFrame);
+                static int iRxLength;
                 int iChecksum = 0;
+                RxMsg.m_ucDataLen = 0;
+                unsigned int uiDataType = ReceiveLINMessageFromClient(&RxFrame, &iRxLength);
+
 
                 if (iRxLength == LIN_PID_LENGTH)
                 {
@@ -343,7 +347,7 @@ DWORD WINAPI LinMsgReadThreadProc_LIN_ISolar_Eve(LPVOID pVoid)
                     /*sg_EVE_LINMsg.m_ucDataType = TX_FLAG;*/
                     sg_EVE_LINMsg.m_uDataInfo.m_sLINMsg = RxMsg;
                     RxMsg.m_ucChannel = LIN_CHANNEL_1;
-                    vWriteIntoClientsBuffer(sg_EVE_LINMsg);
+                    //vWriteIntoClientsBuffer(sg_EVE_LINMsg);
                 }
                 else if (iRxLength > LIN_PID_LENGTH)
                 {
@@ -372,7 +376,17 @@ DWORD WINAPI LinMsgReadThreadProc_LIN_ISolar_Eve(LPVOID pVoid)
                         vValidateReceivedLinMsg(RxMsg);
                     }
 
-                    sg_EVE_LINMsg.m_ucDataType = RX_FLAG;
+                    if(uiDataType == TX_LOOPBACK_UDP_DATA)
+                    {
+                        sg_EVE_LINMsg.m_ucDataType = TX_FLAG;
+                    }
+                    else if((uiDataType == RX_UDP_PID)||(uiDataType == RX_UDP_DATA))
+                    {
+                        sg_EVE_LINMsg.m_ucDataType = RX_FLAG;
+                    }
+
+                    RxMsg.m_ucChannel = LIN_CHANNEL_1;
+
                     sg_EVE_LINMsg.m_uDataInfo.m_sLINMsg = RxMsg;
                     RxMsg.m_ucChannel = 1;
                     vWriteIntoClientsBuffer(sg_EVE_LINMsg);
@@ -726,7 +740,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DeselectHwInterface(void)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length)
 {
 
     return S_OK;
@@ -807,15 +821,36 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unC
 HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_SendMsg(DWORD dwClientID, STLIN_MSG& sLinTxMsg)
 {
     HRESULT ret_result = S_FALSE;
+    unsigned char ucMsgID;
 
+    ucMsgID = sLinTxMsg.m_ucMsgID;
+
+    asLinTxMsg[ucMsgID].m_ucChannel     = sLinTxMsg.m_ucChannel;
+    asLinTxMsg[ucMsgID].m_ucChksum      = sLinTxMsg.m_ucChksum;
+    asLinTxMsg[ucMsgID].m_ucChksumTyp   = sLinTxMsg.m_ucChksumTyp;
+    asLinTxMsg[ucMsgID].m_ucDataLen     = sLinTxMsg.m_ucDataLen;
+    asLinTxMsg[ucMsgID].m_ucMsgID       = sLinTxMsg.m_ucMsgID;
+    asLinTxMsg[ucMsgID].m_ucMsgTyp      = sLinTxMsg.m_ucMsgTyp;
+
+    for(int j=0; j < 8; j++)
+    {
+        asLinTxMsg[ucMsgID].m_ucData[j] = sLinTxMsg.m_ucData[j];
+    }
+
+    return ret_result;
+}
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_SetSlaveRespData(STLIN_MSG stRespMsg)
+{
+    HRESULT ret_result = S_FALSE;
     static STLIN_FRAME sLinTxFrame;
     int iChecksum = 0;
 
-    sLinTxFrame.m_ucMsgID  = sLinTxMsg.m_ucMsgID;
+    sLinTxFrame.m_ucMsgID  = stRespMsg.m_ucMsgID;
 
     for (int i=0; i<8; i++)
     {
-        sLinTxFrame.m_ucData[i] = sLinTxMsg.m_ucData[i];
+        sLinTxFrame.m_ucData[i] = stRespMsg.m_ucData[i];
         iChecksum =  iChecksum + sLinTxFrame.m_ucData[i];
         if (iChecksum > 255)
         {
@@ -824,32 +859,11 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_SendMsg(DWORD dwClientID, STLIN_MSG& sLinTxMsg
     }
 
     sLinTxFrame.m_ucChksum = 255 - iChecksum;
-    sLinTxMsg.m_ucChksum = sLinTxFrame.m_ucChksum;
+    stRespMsg.m_ucChksum = sLinTxFrame.m_ucChksum;
 
     if (SendLINMessageToClient(&sLinTxFrame) == 0 )
     {
         ret_result= S_OK;
-    }
-
-    return ret_result;
-}
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_SetSlaveRespData(const STLIN_MSG stRespMsg)
-{
-    HRESULT ret_result = S_FALSE;
-    unsigned char ucMsgID;
-
-    ucMsgID = stRespMsg.m_ucMsgID;
-
-    asLinTxMsg[ucMsgID].m_ucChannel     = stRespMsg.m_ucChannel;
-    asLinTxMsg[ucMsgID].m_ucChksum      = stRespMsg.m_ucChksum;
-    asLinTxMsg[ucMsgID].m_ucChksumTyp   = stRespMsg.m_ucChksumTyp;
-    asLinTxMsg[ucMsgID].m_ucDataLen     = stRespMsg.m_ucDataLen;
-    asLinTxMsg[ucMsgID].m_ucMsgID       = stRespMsg.m_ucMsgID;
-    asLinTxMsg[ucMsgID].m_ucMsgTyp      = stRespMsg.m_ucMsgTyp;
-
-    for(int j=0; j < 8; j++)
-    {
-        asLinTxMsg[ucMsgID].m_ucData[j] = stRespMsg.m_ucData[j];
     }
 
     return ret_result;
@@ -906,6 +920,19 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_OK;
 }
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetConfiguration(sCONTROLLERDETAILSLIN psControllerConfig[], INT& nSize)
+{
+    for ( int i = 0; i < 1; i++ )
+    {
+        psControllerConfig[i].m_strHwUri =  "ISOLAR EVE Channel 1";
+        psControllerConfig[i].m_nBaudRate =  9600;
+        psControllerConfig[i].m_strProtocolVersion = "LIN 1.3";
+    }
+    nSize = 1;
+
+    return S_OK;
+}
+
 
 /**
 * \brief         Gets the controller parametes of the channel based on the request.

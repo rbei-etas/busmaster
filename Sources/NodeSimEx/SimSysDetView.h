@@ -69,6 +69,10 @@ public:
     void vDisplayNodeInformation(PSNODEINFO pNodeInfo);
     void vEnableHandlerButtons( BOOL bIsEnabled );
     void vGetNodeInfo(PSNODEINFO psNodeInfo);
+
+    void vGetNode(PSNODEINFO psNodeInfo);
+    DWORD vGetNodeClientId();
+
     void vUpdateHandlerList();
     void vSetNodeAddress(BYTE byAddress);
     void vUpdateHandlerEnableDisableStatus(int nItem, BOOL bEnableHandler);

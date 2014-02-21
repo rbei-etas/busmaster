@@ -141,7 +141,7 @@ public:
      * as InitData. If it is null, the dialog box is uninitialised. This also contains
      * the user's choice as OUT parameter
      */
-    HRESULT DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
+    HRESULT DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length);
 
     /**
      * To set the configuration data for the currently selected DIL. Caller must
@@ -200,6 +200,9 @@ public:
      * Possible values for ECONTR_PARAM are ...
      */
     HRESULT DILL_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+
+    HRESULT DILL_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
+
     /**
      *
      *

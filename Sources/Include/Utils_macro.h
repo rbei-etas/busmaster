@@ -28,6 +28,8 @@
 #define FORMAT_STR_ID_DEC       _T("%04d")
 #define FORMAT_STR_DATA_HEX     _T("%02X ")
 #define FORMAT_STR_DATA_DEC     _T("%03d")
+#define FORMAT_STR_CHECKSUM_HEX     _T("0x%02X ")
+#define FORMAT_STR_CHECKSUM_DEC     _T("%03d")
 #define FORMAT_PGN_ID_HEX       _T("0x%06X")
 #define FORMAT_PGN_ID_DEC       _T("%06d")
 

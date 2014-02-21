@@ -57,7 +57,7 @@ typedef struct tagSFRAMEINFO_BASIC_LIN
     DWORD        m_dwFrameID;
     TYPE_CHANNEL m_eChannel;
     EDIRECTION   m_eDrctn;
-    BYTE         m_byIDType;
+    // BYTE         m_byIDType;
     BYTE         m_byMsgType;
 } SFRAMEINFO_BASIC_LIN;
 

@@ -15,7 +15,7 @@
 
 /**
  * \file      CAN_MHS_stdafx.cpp
- * \author    Saravanan
+ * \author    Klaus Demlehner
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 

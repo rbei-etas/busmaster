@@ -223,8 +223,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ISolar_Eve(LPVOID pVoid)
                             if (receiveResult > 0)
                             {
                                 sg_EVE_CANMsg.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
-                                sg_EVE_CANMsg.m_ucDataType = RX_FLAG;
+                                sg_EVE_CANMsg.m_ucDataType = receiveResult;
                                 sg_EVE_CANMsg.m_uDataInfo.m_sCANMsg = RxMsg;
+
                                 RxMsg.m_ucChannel = 1;
                                 vWriteIntoClientsBuffer(sg_EVE_CANMsg);
                             }

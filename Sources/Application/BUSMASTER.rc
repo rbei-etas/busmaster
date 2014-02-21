@@ -741,13 +741,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.1.0"
+            VALUE "FileVersion", "Ver 2.2.0Beta2"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.1.0"
+            VALUE "ProductVersion", "Ver 2.2.0Beta2"
         END
     END
     BLOCK "VarFileInfo"
@@ -1331,13 +1331,19 @@ BEGIN
             MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
 			MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
             MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+		END
+        POPUP "L&ogging"
+        BEGIN
+            MENUITEM "&Activate",                   IDM_LOG_LIN_ON_OFF
+        
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_CFGN_LIN_LOG
         END
         MENUITEM SEPARATOR
         POPUP "T&ransmit"
         BEGIN
             MENUITEM "Confi&gure",                  ID_TRANSMIT_CONFIGURE_LIN
         END
-        MENUITEM SEPARATOR
         POPUP "Node Sim&ulation"
         BEGIN
             MENUITEM "&Configure",                  IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
@@ -1652,6 +1658,8 @@ BEGIN
 	BUTTON		ID_LIN_CLUSTER_CONFIG
 	SEPARATOR
     BUTTON      ID_TRANSMIT_CONFIGURE_LIN
+	BUTTON      IDM_LOG_LIN_ON_OFF
+	BUTTON      IDM_CFGN_LIN_LOG
 END
 
 
@@ -1792,7 +1800,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 2.1.0"
+    IDS_VERSION             "Ver 2.2.0Beta2"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1819,13 +1827,16 @@ END
 STRINGTABLE 
 BEGIN
     IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
-    ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure FlexRay Network"
+    //ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure FlexRay Network"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_DISCONNECT_LIN      "D&isconnect\tF11"
     IDS_CONNECT_LIN         "&Connect\tF4"
+	IDM_LOG_LIN_ON_OFF     "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
+    IDM_CFGN_LIN_LOG      "Configure LIN message logging\nLIN logging"
+	IDM_LIN_CONNECT       "Connect/Disconnect\nConnect/Disconnect"
 END
 
 STRINGTABLE 
@@ -1981,7 +1992,10 @@ BEGIN
     IDM_DELETE_ALL_SEL_MSG  "Delete all selected message from the list"
     IDM_EXECUTE_KEYHANDLERS "Enable/Disable execution of all key handler(s)\nEnable/Disable all Key handler(s)"
     IDM_FLEX_CFGN_SEND_MSGS "FlexRay Message Configuration\nFlexRay Message Configuration"
-    IDM_CONFIG_NEW          "Create new configuration file\nCreate new configuration file"
+    ID_TRANSMIT_CONFIGURE_LIN "LIN Message Configuration\nLIN Message Configuration"  
+
+    ID_LIN_CLUSTER_CONFIG   "LIN Cluster Configuration\nLIN Cluster Configuration"
+	IDM_CONFIG_NEW          "Create new configuration file\nCreate new configuration file"
     IDM_CONFIG_LOAD         "Load configuration file\nLoad configuration file"
     IDM_SAVE_CONFIG         "Save configuration file\nSave configuration file"
     IDM_SAVEAS_CONFIG       "Save configuration file with a new name\nSave configuration file with a new name"

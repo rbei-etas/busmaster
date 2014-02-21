@@ -27,10 +27,12 @@
 // All forward declarations
 class CBaseFrameProcessor_CAN;
 class CBaseFrameProcessor_J1939;
+class CBaseFrameProcessor_LIN;
 class CMainFrame;
 class CFlags;
 class CBaseDIL_CAN;
 class CBaseDILI_J1939;
+class CBaseDIL_LIN;
 class CBaseBusStatisticCAN;
 class CBaseNodeSim;
 class CMsgSignal;
@@ -38,10 +40,12 @@ class CFlexRayNetworkStats;
 
 // External function prototypes
 extern CBaseFrameProcessor_CAN* GetICANLogger(void);
+extern CBaseFrameProcessor_LIN* GetILINLogger(void);
 extern CBaseFrameProcessor_J1939* GetIJ1939Logger(void);
 extern CMainFrame* GetIMainFrame(void);
 extern CFlags* GetIFlags(void);
 extern CBaseDIL_CAN* GetICANDIL(void);
+extern CBaseDIL_LIN* GetILINDIL(void);
 extern CBaseDILI_J1939* GetIJ1939DIL(void);
 extern CBaseBusStatisticCAN* GetICANBusStat(void);
 extern CFlexRayNetworkStats* GetIFlexRayBusStat(void);

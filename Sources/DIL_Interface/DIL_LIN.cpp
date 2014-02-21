@@ -50,6 +50,7 @@ static ENTRY_DIL sg_ListDIL[] =
     // Added Short cut keys
     /* simulation should be the first entry... */
     {DAL_LIN_NONE, "&Deactivate"},
+    {DRIVER_LIN_ETAS_BOA, "ETAS &BOA"},
     {DRIVER_LIN_ISOLAR_EVE_VLIN,"ETAS &ISOLAR-EVE"},
     {DRIVER_LIN_VECTOR_XL, "&Vector XL"},
 };
@@ -200,6 +201,9 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                      return hResult;*/
             case DRIVER_LIN_VECTOR_XL:
                 m_hDll = LoadLibrary("LIN_Vector_XL.dll");
+                break;
+            case DRIVER_LIN_ETAS_BOA:
+                m_hDll = LoadLibrary("LIN_ETAS_BOA.dll");
                 break;
             default:
                 vSelectInterface_Dummy();
@@ -431,7 +435,7 @@ HRESULT CDIL_LIN::DILL_DeselectHwInterfaces(void)
  * as InitData. If it is null, the dialog box is uninitialised. This also contains
  * the user's choice as OUT parameter
  */
-HRESULT CDIL_LIN::DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
+HRESULT CDIL_LIN::DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length)
 {
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
     return m_pBaseDILLIN_Controller->LIN_DisplayConfigDlg(InitData, Length);
@@ -600,6 +604,17 @@ HRESULT CDIL_LIN::DILL_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_P
     }
 }
 
+HRESULT CDIL_LIN::DILL_GetConfiguration(sCONTROLLERDETAILSLIN psControllerDeConfig[], INT& nSize)
+{
+    if ( m_pBaseDILLIN_Controller )
+    {
+        return m_pBaseDILLIN_Controller->LIN_GetConfiguration(psControllerDeConfig, nSize);
+    }
+    else
+    {
+        return S_FALSE;
+    }
+}
 /**
  * \brief     Get controller parameters
  *

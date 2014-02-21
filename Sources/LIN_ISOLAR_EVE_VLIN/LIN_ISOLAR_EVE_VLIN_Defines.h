@@ -121,7 +121,7 @@ static BOOL bRemoveClientBuffer(CBaseLINBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 #define  ENABLE_INTERRUPT 9
 #define  ENABLE_DISABLE_MSG_TX 10
 
-#define  LIN_PID_MAX      60
+#define  LIN_PID_MAX      63
 #define  DISCONNECT       2
 #define  RESET_CONTROLLER 3
 

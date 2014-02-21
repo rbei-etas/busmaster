@@ -194,7 +194,7 @@ const BYTE TYPE_MSG_LIN_FD          = 0x4;
 #define LENGTH_STR_TYPE_CAN             8
 
 #define LENGTH_STR_TIMESTAMP_LIN        16
-#define LENGTH_STR_DATA_LIN             8
+#define LENGTH_STR_DATA_LIN             256
 #define LENGTH_STR_ID_LIN               16
 #define LENGTH_STR_DESCRIPTION_LIN      256
 #define LENGTH_STR_DLC_LIN              3
@@ -255,9 +255,11 @@ typedef struct tagFormattedData_LIN
     TYPE_CHANNEL    m_eChannel;                     // Channel
     BYTE            m_byDataLength;                 // Data length count
     BYTE            m_abData[MAX_DATA_LEN_LIN];  // Message data
-    BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
+    BYTE            m_byIDType;                     // Type of the ID (MSG OR EVENT)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
-    /*BYTE            m_byChecksum;*/                   // Checksum of Lin frame
+    BYTE            m_byChecksum;                   // Checksum of Lin frame
+    BYTE            m_byChecksumType;               // Checksum Type (0 - Classical / 1 - Enhanced)
+
 
     char   m_acMsgDir[LENGTH_STR_DIRECTION_LIN];     // "Tx" or "Rx"
     char   m_acChannel[LENGTH_STR_CHANNEL_LIN];      // "1" or "2"

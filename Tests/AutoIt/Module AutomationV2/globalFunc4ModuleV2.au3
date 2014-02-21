@@ -1435,7 +1435,7 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _GetCANMsgWinHWD()
-	MouseClick("left", @DesktopWidth / 2, @DesktopHeight / 2)
+	MouseClick("left", @DesktopWidth / 2, @DesktopHeight / 4)
 	$HWD=ControlGetHandle($WIN_BUSMASTER,"",$LVC_CID_CANMsgWin)									; Fetch the handle of Message window list view
 	ConsoleWrite("$HWD "&$HWD&@CRLF)
 	Return $HWD
@@ -1930,6 +1930,7 @@ Func _GetTestExecutorInfo($Row)
 	ConsoleWrite("$RowInfo:"&$TExeRowInfo&@CRLF)
 	$SplitInfo=StringSplit($TExeRowInfo,"|")											; Split the text w.r.t delimiter '|'
 ;~ 	$TExeInfo[0]=StringStripWS($SplitInfo[1],8)											; Remove spaces from the "Parameter" row text
+	$TExeInfo[0]=$SplitInfo[1]
 	$TExeInfo[1]=$SplitInfo[2]
 	$TExeInfo[2]=$SplitInfo[3]
 	Return $TExeInfo																	; Return the Data to the calling script
@@ -2988,63 +2989,6 @@ Func _GoOffline()
 EndFunc
 
 
-
-;================================================================================
-;Function Name : _J1939tMsgWin
-;Functionality : Configures 'Transport Protocol Function' for J1939 transmission.
-;Input 		   : $msgType('R-Request PGN' or 'D-Data' or 'B-Broadcast') is passed from calling script.
-;Output 	   : returns return value of 'WinMenuSelectItem'
-
-;=================================================================================
-;~ Func _J1939tMsgWin($msgType,$PGN)
-;~ 	consolewrite("$msgType : "&$msgType&@CRLF)
-;~ 	if winexists($WIN_BUSMASTER) Then
-;~ 		sleep(1000)
-;~ 		WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939TransmitMenu)                                   	;Select J1939 Transmit window
-;~ 		ControlCommand($WIN_J1939Transmit,"",$CHKB_J1939Transport,"Check")                                    	;Select Transport Protocol Radio Button
-;~ 		if $msgType="Request PGN" then
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939PGNctrlID,"SelectString",$PGN)		                 	;Select Request PGN name
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939MsgtypeCtrlID,"SelectString",$msgType)                  	;Select Message type as Request PGN
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939PriorityCtrlID,6)                                       	;Set the priority
-;~ 		Elseif $msgType="Data" then
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939PGNctrlID,"SelectString",$PGN)		                  	;Select Data PGN name
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939MsgtypeCtrlID,"SelectString",$msgType)                  	;Select message type as DATA
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939DLC_CtrlID,8)                                           	;set DLC
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939DataCtrlID,"100000000000000000000000")                  	;Set Data bytes
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939PriorityCtrlID,7)                                        ;Set Priority
-;~ 		ElseIf $msgType="Broadcast" Then
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939PGNctrlID,"SelectString",$PGN)			                  ;Select Broadcast PGN
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939MsgtypeCtrlID,"SelectString",$msgType)                   ;Select message type as BROADCAST
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939FromAddCtrlID,0)                                         ;Set From Address
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939ToAddCtrlID,"AA")                                        ;Set To Address
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939DLC_CtrlID,9)                                            ;Set DLC
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939DataCtrlID,"100000000000000000000000000000000000")       ;Set Databytes
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939PriorityCtrlID,7)                                        ;Set Priority
-;~ 		ElseIf $msgType="Claim Address" Then
-;~ 		    ControlCommand($WIN_J1939Transmit,"",$J1939NMCtrlID,"Check")                                        ;Select Network Management Radio Button
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939NMAddCtrlID,"FE")                                        ;Set Claim Address
-;~ 		ElseIf $msgType="Request Address" Then
-;~ 			 sleep(1000)
-;~ 	        ControlCommand($WIN_J1939Transmit,"",$J1939NMCtrlID,"Check")                                       	;Select Network Management Radio Button
-;~ 		   ;sleep(1000)
-;~ 			ControlCommand($WIN_J1939Transmit,"",$CHKB_J1939ReqAdd,"Check")                                     ;Select Request Address Radio Button
-;~ 			sleep(1000)
-;~ 	    Else
-;~ 			sleep(1000)
-;~ 			ControlCommand($WIN_J1939Transmit,"",$J1939NMCtrlID,"Check")				                      	; Check 'Network Management' Radio Button
-;~ 			sleep(500)
-;~ 			ControlCommand($WIN_J1939Transmit,"",$CHKB_J1939CommAdd,"Check")				                  	; Check 'Command Address' Radio Button
-;~ 			ControlSetText($WIN_J1939Transmit,"",$J1939NMAddCtrlID,"AA")
-;~         EndIf
-;~ 		sleep(1000)
-;~ 		ControlClick($WIN_J1939Transmit,"",$BTN_J1939Transmit,"left")                                      		;Click on Transmit button
-;~ 		sleep(1000)
-;~ 		send("{TAB}")
-;~ 		send("{ENTER}")
-;~ 		sleep(1000)
-;~ 	EndIf
-;~ EndFunc
-
 ;==============================================================================================
 ;Function Name : _J1939tMsgWinForNodeSim
 ;Functionality : Configures 'Transport Protocol Function' for J1939 transmission.
@@ -3199,6 +3143,24 @@ Func _TestExeTreeMenu($Menu)
 EndFunc
 
 ;===============================================================================
+;Function Name : _AddTestExeFile
+;Functionality : Opens xml file for execution
+;Input 		   : Xml file name
+;Output 	   :
+;===============================================================================
+Func _AddTestExeFile($FName)
+	_TestExeTreeMenu($TestExe_AddMenu)																		; Select 'add' from right click menu
+	$XmlPath=_TestDataPath()
+	if WinWaitActive($WIN_TestExeOpen,"",3) Then
+		ControlSend($WIN_TestExeOpen,"",$TXT_XmlFPath_TestExeOpen,$XmlPath&"\"&$FName)						; Set the filename
+		sleep(500)
+		ControlClick($WIN_TestExeOpen,"",$BTN_Open_TestExeOpen)												; Click on Open button
+		sleep(1200)
+	EndIf
+EndFunc
+
+
+;===============================================================================
 ;Function Name : _GetIconComId
 ;Functionality : Retrieves the command identifier associated with the button
 ;Input 		   :
@@ -3309,7 +3271,9 @@ Func Capl2CppConversion($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFil
 		ConsoleWriteError("$ConversionRes[1] : " & $ConversionRes[1] & @CRLF)
 		ConsoleWriteError("$ConversionRes[2] : " & $ConversionRes[2] & @CRLF)
 		ConsoleWriteError("$ConversionRes[3] : " & $ConversionRes[3] & @CRLF)
+		Sleep(500)
 		WinClose($Capl2CppLogFile)                                                                                 ; closes log file
+		Sleep(500)
 		WinClose($WIN_FormatConv)                                                                                  ; Closes Format Converter window
 	EndIf
 	Return $ConversionRes
@@ -3423,7 +3387,7 @@ Func _OthrConversionsFormatConv($TXT_ConvType,$InputFile,$OutputFile)
         WinWaitActive("", $Dlg_OpenOthrConv, 5)                                     					   ; wait for open dialog
         $OutputFilePath= _OutputDataPath()
 		ControlSend($Dlg_OpenOthrConv,"",$TXT_Open_FilePath_OthrConv,$OutputFilePath &"\"& $OutputFile)    ;Send path of the input file
-        ControlClick($Dlg_OpenOthrConv,"",$BTN_Open_FilePath_LogToExcel)
+        ControlClick($Dlg_OpenOthrConv,"",$BTN_Open_FilePath_OthrConv)
         sleep(1000)
         ControlClick($WIN_FormatConv,"",$BTN_Convert_OtherConvts)                                          ; Click on "Convert" button
         sleep(4000)
@@ -3480,7 +3444,7 @@ Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 		ControlClick($WIN_SelectCSVFile,"",$BTN_SaveCSVFile)
 		sleep(1000)
 		If WinExists($WIN_ConfirmSaveAs) Then
-			ControlClick($WIN_ConfirmSaveAs,"",$BTN_Yes_SaveAs)                                          ;Click Yes button to replace the outfile if it already exists.
+			ControlClick($WIN_ConfirmSaveAs,"",$BTN_Yes_SaveAs)                                             ;Click Yes button to replace the outfile if it already exists.
 		EndIf
 		$handle=ControlGetHandle($WIN_FormatConv,"",$LSTB_AvailableFields)
 		_GUICtrlListBox_ClickItem($handle,0)
@@ -3490,7 +3454,7 @@ Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 		ControlClick($WIN_FormatConv,"",$BTN_Export)
 		Sleep(1000)
 		If WinExists($WIN_BUSMASTER) Then
-			$text=ControlGetText($WIN_BUSMASTER,"",65535)                                    ;Get the text associated with popup message
+			$text=ControlGetText($WIN_BUSMASTER,"",65535)                                                ;Get the text associated with popup message
 			ControlClick($WIN_BUSMASTER,"",$BTN_OK_LogToExcel)
 		EndIf
 		ConsoleWrite("$text " & $text & @CRLF)
@@ -3500,15 +3464,36 @@ Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 
 EndFunc
 
+;=================================================================================
+;Function Name : _ImportFibex
+;Functionality : Imports specifib fibex file from Test data path
+;Input 		   : Fibex file name
+;Output 	   :
+;==================================================================================
+Func _ImportFibex($FibexName)
+	ConsoleWrite("In Import Fibex function" & @CRLF)
+	WinMenuSelectItem($WIN_BUSMASTER,"",$FlexRayMenu,$ClusterConfigMenu)                                ;Select Cluster configurtation menu item
+    ControlClick($WIN_ClusterConfiguration,"",$BTN_SelectFibexFile)                                      ;Click on Browse button to select fibex file
+	Sleep(1000)
+	$DirPath =_TestDataPath()
+	ControlSend($WIN_SelectFibex,"",$TXT_SelectFibexPath,$DirPath&"\"&$FibexName)                        ;Enter path of the specified fibex file
+	Sleep(1000)
+    ControlClick($WIN_SelectFibex,"",$BTN_OpenFibex)                                                     ;click on OK button to add fibex file
+	;ControlClick($WIN_ClusterConfiguration,"",$BTN_OK_ClusterConfig)
+	Sleep(1000)
+EndFunc
+
 
 ;=================================================================================
 ;Function Name : _GetPopUpMenuText
 ;Functionality : Fetches the right click opup menu item texts
 ;Input 		   : -
-;Output 	   : Returns all the items in the pop up menu
+;Output 	   : Returns all the items in the pop up menu.
+;				$aPopUp_Text[0]=No. of items in the context menu
 ;==================================================================================
 
 Func _GetPopUpMenuText()
+	sleep(750)
 	Dim $aPopUp_Text[10]=["","","","","","","","","",""]
     Local $aPopUp_List = _WinAPI_EnumWindowsPopup()
     Local $hWnd = $aPopUp_List[1][0]
@@ -3529,12 +3514,159 @@ Func _GetPopUpMenuText()
 	Return $aPopUp_Text
 EndFunc
 
+;=================================================================================
+;Function Name : _GetTestEditorDetailsHWD
+;Functionality : Fetches the handle of test editor details
+;Input 		   : -
+;Output 	   : Returns the handle
+;==================================================================================
+
+Func _GetTestEditorDetailsHWD()
+	$HWD=ControlGetHandle($WIN_BUSMASTER,"",$LVC_TestAuto_TestEditor)								; Fetch the handle of test editor details
+	Return $HWD
+EndFunc
+
+;=================================================================================
+;Function Name : _ClickTestEditConfirmBTN
+;Functionality : Clicks the confirm button in Test Automation editor window
+;Input 		   : -
+;Output 	   :
+;==================================================================================
+
+Func _ClickTestEditConfirmBTN()
+	ControlClick($WIN_BUSMASTER,"",$BTN_Confirm_TEditor)											; Click on Confirm button
+	sleep(750)
+EndFunc
+
+;=================================================================================
+;Function Name : _SelectTestSetUpNode
+;Functionality : Select the test setup item in the tree view(Parent Item) of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectTestSetUpNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0")					; Select the test setup item in the tree view(Parent Item)
+	sleep(700)
+EndFunc
+
+;=================================================================================
+;Function Name : _SelectTestCaseNode
+;Functionality : Select the test case item in the tree view of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectTestCaseNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0|#0")				; Select the test case node
+	sleep(700)
+EndFunc
 
 
+;=================================================================================
+;Function Name : _SelectSendNode
+;Functionality : Select the send item in the tree view of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectSendNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0|#0|#0")			; Select the Send node
+	sleep(700)
+EndFunc
+
+;=================================================================================
+;Function Name : _SelectSendMsgNode
+;Functionality : Select the first msg in the send node of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectSendMsgNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0|#0|#0|#0")			; Select the Send msg node
+	sleep(700)
+EndFunc
+
+;=================================================================================
+;Function Name : _SelectWaitNode
+;Functionality : Select the Wait item in the tree view of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectWaitNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0|#0|#1")			; Select the Wait node
+	sleep(700)
+EndFunc
+
+;=================================================================================
+;Function Name : _SelectVerifyNode
+;Functionality : Select the Verify item in the tree view of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectVerifyNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0|#0|#2")			; Select the Verify node
+	sleep(700)
+EndFunc
+
+;=================================================================================
+;Function Name : _SelectVerifyMsgNode
+;Functionality : Select the first msg in the verify node of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _SelectVerifyMsgNode()
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor,"Select","#0|#0|#2|#0")			; Select the verify msg node
+	sleep(700)
+EndFunc
+
+;=================================================================================
+;Function Name : _ExpandTestEditorTreeView
+;Functionality : Expand the tree view in test editor window of Test Automation editor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
+
+Func _ExpandTestEditorTreeView()
+	$TVHWD= ControlGetHandle($WIN_BUSMASTER,"",$TVC_TestAuto_TestEditor)						; Fetch Test Editor tree view handle
+	_GUICtrlTreeView_Expand($TVHWD,"",True)														; Expand the tree view
+	sleep(1000)
+EndFunc
 
 
+;=================================================================================
+;Function Name : _ExpandTestExeTreeView
+;Functionality : Expand the tree view in test executor window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
 
+Func _ExpandTestExeTreeView()
+;~ 	$TVHWD= ControlGetHandle($WIN_BUSMASTER,"",$TVC_TestSuite_TestExecutor)						; Fetch Test Editor tree view handle
+;~ 	_GUICtrlTreeView_Expand($TVHWD,"",True)														; Expand the tree view
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestSuite_TestExecutor,"Expand","#0")
+	sleep(1000)
+	ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestSuite_TestExecutor,"Expand","#0|#0")
+	sleep(1000)
+EndFunc
 
+;=================================================================================
+;Function Name : _GetToolVersion()
+;Functionality : Retrieves BUSMASTER version from About window
+;Input 		   : -
+;Output 	   : -
+;==================================================================================
 
-
+Func _GetToolVersion()
+	WinMenuSelectItem($WIN_BUSMASTER,"",$HelpMenu,$AboutBusmaster)
+	WinWaitActive($DLG_About,"",3)
+	$Ver=controlgettext($DLG_About,"",$Static_Version_About)									; Fetch version
+	$BMVer="BUSMASTER " & $Ver
+	ConsoleWrite("$BMVer :" &$BMVer&@CRLF)
+	ControlClick($DLG_About,"",$BTN_OK_About)
+	Return $BMVer
+EndFunc
 

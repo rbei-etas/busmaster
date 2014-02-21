@@ -67,8 +67,17 @@ enum eLinBusEventType
     EVENT_LIN_WAKEUP,
     EVENT_LIN_SLEEP,
     EVENT_LIN_CRCINFO,
+    EVENT_LIN_DLC,
+    EVENT_LIN_ERRBIT,
+    EVENT_LIN_ERRHEADER,
+    EVENT_LIN_ERRTOUT, // For Timeout
+    EVENT_LIN_COLLISION,
+    EVENT_LIN_NO_MSTR_SCHED,
+    EVENT_LIN_NO_TX_DATA,
+    /*EVENT_LIN_TX_OK,*/
     EVENT_LIN_NONE
 };
+
 enum eLinSleepEvent
 {
     LIN_SLEEPMODE_SET,
@@ -131,12 +140,16 @@ struct sERROR_INFO_LIN
     //SEVENT_INFO_LIN  m_eEventInfo;
     eLinSleepEvent m_eSleepEvent;
     eCheckSumType m_eCheckSumType;
+    //shashank
+    unsigned char m_ucErrType;
 
     unsigned char m_ucReg_ErrCap; // Stores the value of err capture register in
     // case of bus error
     unsigned char m_ucTxErrCount;
     unsigned char m_ucRxErrCount;
     unsigned char m_ucChannel;
+    unsigned char m_ucDlc;
+    unsigned char m_ucDir;
     ULONGLONG m_ulTimeStamp;
     int           m_nSubError;   //added for providing Error bit details
 };
@@ -247,6 +260,13 @@ private:
         m_bHWTimestamps     = objRef.m_bHWTimestamps;
     }
 public:
+
+    string m_strHwUri;
+    int m_nBaudRate;
+    string  m_strProtocolVersion;
+
+
+
     int     m_nItemUnderFocus;                   // item number under focus
     int     m_nBTR0BTR1;                         // packed value of bit timing register 0
     // and bit timing register 1

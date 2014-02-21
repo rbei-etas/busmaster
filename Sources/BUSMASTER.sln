@@ -147,6 +147,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LIN_ISOLAR_EVE_VLIN", "LIN_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LIN_Vector_XL", "LIN_Vector_XL\LIN_Vector_XL.vcxproj", "{1B2A321C-FEEB-419F-9374-2D91A4B5EC35}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_ETAS_BOA_2_0", "CAN_ETAS_BOA\CAN_ETAS_BOA_2_0.vcxproj", "{E90E4BF3-5975-44B8-908D-834872DA367E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A20171C-51DB-4E82-BCE0-5E3EEB070566} = {4A20171C-51DB-4E82-BCE0-5E3EEB070566}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LIN_ETAS_BOA", "LIN_ETAS_BOA\LIN_ETAS_BOA.vcxproj", "{3765F36A-696A-4302-BED9-56F156280EA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		busmaster_debug|Win32 = busmaster_debug|Win32
@@ -718,6 +725,34 @@ Global
 		{1B2A321C-FEEB-419F-9374-2D91A4B5EC35}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{1B2A321C-FEEB-419F-9374-2D91A4B5EC35}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{1B2A321C-FEEB-419F-9374-2D91A4B5EC35}.Unicode Release|Win32.Build.0 = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Debug|Win32.Build.0 = Debug|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Release|Win32.ActiveCfg = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Release|Win32.Build.0 = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Template|Win32.ActiveCfg = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Template|Win32.Build.0 = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{E90E4BF3-5975-44B8-908D-834872DA367E}.Unicode Release|Win32.Build.0 = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Debug|Win32.Build.0 = Debug|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Release|Win32.ActiveCfg = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Release|Win32.Build.0 = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Template|Win32.ActiveCfg = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Template|Win32.Build.0 = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

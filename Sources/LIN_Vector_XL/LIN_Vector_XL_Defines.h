@@ -141,6 +141,8 @@ struct CChannel
     /* LIN Version */
     UINT  m_unLINVersion;
 
+    string m_strLinVersion;
+
     /* Acceptance Filter information for standard and extended envelopes*/
     SACC_FILTER_INFO     m_sFilter[2];
 

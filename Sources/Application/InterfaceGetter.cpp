@@ -29,10 +29,12 @@
 // For CAN DIL interface
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "DIL_Interface/BaseDIL_J1939.h"
+#include "DIL_Interface/BaseDIL_LIN.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
 // For CAN logger interface
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
 #include "FrameProcessor/BaseFrameProcessor_J1939.h"
+#include "FrameProcessor/BaseFrameProcessor_LIN.h"
 #include "FrameProcessor/FrameProcessor_extern.h"
 // For Bus statistic interface
 #include "BusStatistics.h"
@@ -59,6 +61,19 @@ CBaseFrameProcessor_CAN* GetICANLogger(void)
     return Result;
 }
 
+
+CBaseFrameProcessor_LIN* GetILINLogger(void)
+{
+    CBaseFrameProcessor_LIN* Result = NULL;
+    if (FP_GetInterface(FRAMEPROC_LIN, (void**) &Result) == S_OK)
+    {
+        // Nothing to do at this moment
+    }
+    ASSERT(NULL != Result);
+    return Result;
+}
+
+
 CBaseFrameProcessor_J1939* GetIJ1939Logger(void)
 {
     CBaseFrameProcessor_J1939* Result = NULL;
@@ -83,6 +98,22 @@ CFlags* GetIFlags(void)
     ASSERT(NULL != Result);
     return Result;
 }
+
+CBaseDIL_LIN* GetILINDIL(void)
+{
+    CBaseDIL_LIN* Result = NULL;
+    if (DIL_GetInterface(LIN, (void**) &Result) == S_OK)
+    {
+        ASSERT(NULL != Result);
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+    return Result;
+}
+
+
 
 CBaseDIL_CAN* GetICANDIL(void)
 {

@@ -304,6 +304,8 @@ public:
     virtual HRESULT DILIJ_SetCallBckFuncPtr(DWORD dwClientId, ETYPE_CLBCK_FN eClBckFnType,
                                             void* pvClBckFn) = 0;
 
+    virtual HRESULT DILIJ_ClaimAdress() = 0;
+
 };
 
 #endif //BASEDILI_J1939_H__INCLUDED_

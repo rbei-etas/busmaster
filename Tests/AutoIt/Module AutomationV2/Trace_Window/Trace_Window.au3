@@ -14,6 +14,6 @@
 ; Create the HTML table to save the result
 _StartoHTMLTable("Trace Window Module Test Report")
 
-;#include "TS_TraceWin_01.au3"
+#include "TS_TraceWin_01.au3"
 #include "TS_TraceWin_02.au3"
 _EndoHTMLTable()

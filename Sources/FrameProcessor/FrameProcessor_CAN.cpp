@@ -30,7 +30,7 @@
 #include "LogObjectCAN.h"
 
 
-CFrameProcessor_CAN::CFrameProcessor_CAN()
+CFrameProcessor_CAN::CFrameProcessor_CAN():m_ouFormatMsgCAN(m_ouRefTimer)
 {
     DIL_GetInterface(CAN, (void**)&m_pouDilCanInterface);
 
@@ -465,10 +465,10 @@ HRESULT CFrameProcessor_CAN::FPC_SetDatabaseFiles(const CStringArray& omList)
 // To update the channel baud rate info to logger
 HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
 (SCONTROLLER_DETAILS* controllerDetails,
- int nNumChannels)
+ int nNumChannels,ETYPE_BUS eBus)
 {
     HRESULT hResult = S_OK;
-    SetChannelBaudRateDetails(controllerDetails, nNumChannels);
+    SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
 

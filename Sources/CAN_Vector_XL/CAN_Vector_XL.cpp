@@ -613,6 +613,17 @@ HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, c
 
                     sg_asClientToBufMap[Index].dwClientID = ClientID;
                     sg_asClientToBufMap[Index].unBufCount = 0;
+
+                    if ( sg_bIsConnected == true )
+                    {
+                        // ------------------------------------
+                        // open ONE port PER each node including all channels
+                        // ------------------------------------
+                        XLstatus xlStatus = xlOpenPort(&g_xlPortHandle[Index], g_AppName, g_xlChannelMask, &g_xlPermissionMask,
+                                                       RX_QUEUE_SIZE, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN);
+                        int a =0;
+                    }
+
                 }
                 sg_unClientCnt++;
                 hResult = S_OK;

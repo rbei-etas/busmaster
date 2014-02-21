@@ -21,7 +21,7 @@ _StartoHTMLTable("CAN Message Window Module Test Report")
 
 ;---------------P2 test cases-------------------------------
 
-;"TS_MSGWIN_12" is covered in test case TS_MSGWIN_08 and "TS_MSGWIN_08"
+;~ ;"TS_MSGWIN_12" is covered in test case TS_MSGWIN_08 and "TS_MSGWIN_08"
 #include "TS_MSGWIN_04.au3"
 #include "TS_MSGWIN_05.au3"
 #include "TS_MSGWIN_06.au3"

@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stcan_struct" xml:lang="en-us">
+  <title>Responding to Master Request</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>STLIN_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>To respond to  the master request, slave response of the particular identifier needs to be pre-configured on Pre Connect Event.</p>
+    <p><b>Example:</b></p>
+    <p>For example to respond to the master request with an identifier 0x4, Pre-Connect event shall be configured as shown below:</p>
+    <p/>
+    <codeblock>void OnBus_Pre_Connect()
+{
+  STLIN_MSG sMsg;
+
+  sMsg.m_ucMsgTyp = 1; // Slave Response
+  sMsg.m_ucChksumTyp = 0; // Classic
+  sMsg.m_ucDataLen = 8;
+  sMsg.m_ucMsgID = <b>0x4</b>;  // Message Identifier
+  sMsg.m_sWhichBit.m_aulData[0] = 10;  // Lower 4 Bytes
+  sMsg.m_sWhichBit.m_aulData[1] = 20;  // Upper 4 Bytes
+  sMsg.m_ucChannel = 1;
+
+  // Send the message
+  SendMsg(sMsg);
+}</codeblock>
+    <p>Required Include header file is LINIncludes.h</p>
+  </body>
+</topic>

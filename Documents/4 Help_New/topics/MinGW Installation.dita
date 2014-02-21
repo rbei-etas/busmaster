@@ -24,7 +24,7 @@
       </ul>
       <image href="../images/GCC_Compiler_Selection.bmp" alt="GCC C++ Compiler Selection" placement="break"/>
       <ul>
-        <li>Set the environment variable path ‘C:\MinGW\bin’.</li>
+        <li>Set the environment variable ‘path’ as ‘C:\MinGW\bin’.</li>
       </ul>
     </section>
   </body>

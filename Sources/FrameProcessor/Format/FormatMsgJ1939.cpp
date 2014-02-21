@@ -34,7 +34,7 @@
 
 
 
-CFormatMsgJ1939::CFormatMsgJ1939(void)
+CFormatMsgJ1939::CFormatMsgJ1939(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
 {
     //m_podJ1939Rules = NULL;
 }

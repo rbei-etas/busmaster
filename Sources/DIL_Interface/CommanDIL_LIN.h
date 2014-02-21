@@ -22,6 +22,14 @@ typedef struct tagAckMap
     }
 } SACK_MAP;
 
+typedef struct tagCRC
+{
+    UINT unCrcType;
+    UCHAR ucData[8];
+    UINT unDlc;
+    UINT unID;
+} SLIN_CRC;
+
 typedef struct tagClientBufMap
 {
     DWORD dwClientID;
@@ -61,7 +69,7 @@ public:
     virtual HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
     virtual HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
     virtual HRESULT LIN_DeselectHwInterface(void) = 0;
-    virtual HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length) = 0;
+    virtual HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length) = 0;
     virtual HRESULT LIN_SetConfigData(ClusterConfig& ouConfig) = 0;
     virtual HRESULT LIN_StartHardware(void) = 0;
     virtual HRESULT LIN_PreStartHardware(void) = 0;
@@ -74,6 +82,7 @@ public:
 
     virtual HRESULT LIN_GetLastErrorString(string& acErrorStr) = 0;
     virtual HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
+    virtual HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize) = 0;
     //MVN
     virtual HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam) = 0;
     //~MVN
@@ -99,11 +108,15 @@ public:
 
 protected:
     void vWriteIntoClientsBuffer(STLINDATA& sLinData);
+
 public:
 
     void vMarkEntryIntoMap(const SACK_MAP& RefObj);
     bool vPeakMapEntry(const SACK_MAP& RefObj, UINT& ClientID, bool bRemove = false);
-
+    UCHAR ucChecksumCalculation(SLIN_CRC sCrc);
+    UCHAR ucCalculateClassicChecksum(SLIN_CRC);
+    UCHAR ucCalculateEnhancedChecksum(SLIN_CRC);
+    UCHAR ucCalculatePID(UCHAR ucId);
 
 public:
     CRITICAL_SECTION sg_CritSectForAckBuf;
@@ -117,7 +130,7 @@ public:
 
 
 private:
-    //CClientList     m_ClientList;               ///< List with all of registered clients
+
     CACK_MAP_LIST   sg_asAckMapBuf;
 protected:
     map< SLOT, list<int> > m_mapSlotClient;

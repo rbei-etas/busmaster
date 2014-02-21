@@ -407,6 +407,96 @@ void CCommanDIL_LIN::vWriteIntoClientsBuffer(STLINDATA& sLinData)
     }
 }
 
+UCHAR CCommanDIL_LIN::ucCalculateClassicChecksum(SLIN_CRC sCrc)
+{
+    /*sCrc.ucData[0] = 0x4A;
+    sCrc.ucData[1] = 0x55;
+    sCrc.ucData[2] = 0x93;
+    sCrc.ucData[3] = 0xE5;*/
+
+    UINT ucChecksum = sCrc.ucData[0];
+    UCHAR ucMask = 0xFF;
+    for(INT unIndex = 1; unIndex < sCrc.unDlc; unIndex++)
+    {
+        UCHAR ucDatabyte = sCrc.ucData[unIndex];
+
+        ucChecksum += ucDatabyte;
+        UCHAR ucCarry = ucChecksum / ucMask;
+
+        if(ucCarry != 0 )
+        {
+            ucChecksum = ucChecksum - ucMask;
+        }
+    }
+
+    ucChecksum = ~ucChecksum;
+    return ucChecksum;
+}
+
+UCHAR CCommanDIL_LIN::ucCalculatePID(UCHAR ucId)
+{
+    char chChecksum = ucId;
+    char chMask[8], byte[8];
+    for(INT nIndex = 0; nIndex < 8; nIndex++)
+    {
+        chMask[nIndex] = nIndex+1;
+        byte[nIndex] = ((chChecksum) >> nIndex) & 1;
+    }
+
+    char chP0, chP1;
+    // chP0 = ID0+ID1+ID2+ID4
+    chP0 = byte[0] ^ byte[1] ^ byte[2] ^ byte[4];
+
+
+    // chP1 = ID1+ID3+ID4+ID5
+    chP1 = byte[1] + byte[3] + byte[4] + byte[5];
+
+    chP1 = ~chP1;
+
+    //00010110 -> p00010110
+    chP0 = chP0 << 6;
+    chP1 = chP1 << 7;
+    chChecksum = chChecksum + chP0 + chP1;
+    ucId = chChecksum;
+    return ucId;
+}
+
+UCHAR CCommanDIL_LIN::ucCalculateEnhancedChecksum(SLIN_CRC sCrc)
+{
+    UINT ucChecksum = ucCalculatePID(sCrc.unID);
+    UCHAR ucMask = 0xFF;
+    for(INT unIndex = 0; unIndex < sCrc.unDlc; unIndex++)
+    {
+        UCHAR ucDatabyte = sCrc.ucData[unIndex];
+
+        ucChecksum += ucDatabyte;
+        UCHAR ucCarry = ucChecksum / ucMask;
+
+        if(ucCarry != 0 )
+        {
+            ucChecksum = ucChecksum - ucMask;
+        }
+    }
+
+    ucChecksum = ~ucChecksum;
+    return ucChecksum;
+}
+
+UCHAR CCommanDIL_LIN::ucChecksumCalculation(SLIN_CRC sCrc)
+{
+    UCHAR ucChecksum = 0;
+    switch(sCrc.unCrcType)
+    {
+        case LIN_CHECKSUM_CLASSIC:
+            ucChecksum = ucCalculateClassicChecksum(sCrc);
+            break;
+        case LIN_CHECKSUM_ENHANCED:
+
+            ucChecksum = ucCalculateEnhancedChecksum(sCrc);
+            break;
+    }
+    return ucChecksum;
+}
 
 void CCommanDIL_LIN::vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {

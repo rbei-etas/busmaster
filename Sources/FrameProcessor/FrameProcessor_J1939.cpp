@@ -75,7 +75,7 @@ USHORT CFrameProcessor_J1939::ushCalculateStrLen(bool bForHex, USHORT ushLength)
     return Result;
 }
 
-CFrameProcessor_J1939::CFrameProcessor_J1939()
+CFrameProcessor_J1939::CFrameProcessor_J1939():m_ouFormatMsgJ1939(m_ouRefTimer)
 {
     // Get hold of J1939 DIL interface
     HRESULT Result = DIL_GetInterface(J1939, (void**) &m_pouDIL_J1939);
@@ -497,10 +497,10 @@ HRESULT CFrameProcessor_J1939::FPJ1_SetDatabaseFiles(const CStringArray& omList)
 // To update the channel baud rate info to logger
 HRESULT CFrameProcessor_J1939::FPJ1_SetChannelBaudRateDetails
 (SCONTROLLER_DETAILS* controllerDetails,
- int nNumChannels)
+ int nNumChannels,ETYPE_BUS eBus)
 {
     HRESULT hResult = S_OK;
-    SetChannelBaudRateDetails(controllerDetails, nNumChannels);
+    SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
 

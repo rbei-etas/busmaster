@@ -142,11 +142,11 @@ if winexists($WIN_BUSMASTER) then
 	    ConsoleWrite("$Src" & $Src & @CRLF)
         ConsoleWrite("$Dest " & $Dest & @CRLF)
 
-;~ 	If($Data1[11]="1000000000000000" And $Data3[11]="0C222D384E0B2C37" And $Data5[11]="0D222D384E" And $Data7[11]="0C232D384E" And $Data9[11]="0C222E384E" And $Data11[11]="0C222D394E" And $Data13[11]="0C222D394E" And  $Data15[11]="0C242D384E" And $Data17[11]="0C222F384E" And $Data19[11]="0C222D3A4E" And $Data21[11]="0C222D3850") Then
-;~ 		$DataBytes=1
-;~ 	Else
-;~ 		$DataBytes=0
-;~ 	EndIf
+	If($Data1[11]="1000000000000000" And $Data3[11]="0C222D384E0B2C37" And $Data5[11]="0D222D384E" And $Data7[11]="0C232D384E" And $Data9[11]="0C222E384E" And $Data11[11]="0C222D394E" And $Data13[11]="0C222D394E" And  $Data15[11]="0C242D384E" And $Data17[11]="0C222F384E" And $Data19[11]="0C222D3A4E" And $Data21[11]="0C222D3850") Then
+		$DataBytes=1
+	Else
+		$DataBytes=0
+	EndIf
 
      If($CANid=1 And $DataAll=1 And $Src=1 And $Dest=1) Then
 		_WriteResult("Pass","TS_J1939Node_08")
@@ -154,11 +154,11 @@ if winexists($WIN_BUSMASTER) then
 	   _WriteResult("Fail","TS_J1939Node_08")
 	EndIf
 EndIf
-;$isAppNotRes=_CloseApp()															; Close the app
+$isAppNotRes=_CloseApp()															; Close the app
 
-;~ if $isAppNotRes=1 Then
-;~ 	_WriteResult("Warning","TS_J1939Node_08")
-;~ EndIf
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_J1939Node_08")
+EndIf
 
 
 ConsoleWrite("****End : TS_J1939Node_08.au3****"&@CRLF)

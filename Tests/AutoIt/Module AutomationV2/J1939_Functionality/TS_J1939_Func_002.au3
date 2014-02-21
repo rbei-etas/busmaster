@@ -417,12 +417,12 @@ EndIf
 
 
 
-;~ 	$isAppNotRes=_CloseApp()																			; Close the app
+	$isAppNotRes=_CloseApp()																			; Close the app
 
-;~ 	if $isAppNotRes=1 Then
-;~          _WriteResult("Warning","STS_J1939_002")
+	if $isAppNotRes=1 Then
+         _WriteResult("Warning","STS_J1939_002")
 
-;~ 	EndIf
+	EndIf
 
 	     ConsoleWrite("****End : TS_NS_J1939_Func_002****"&@CRLF)
 	    ConsoleWrite(@CRLF)

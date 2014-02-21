@@ -37,6 +37,7 @@ class CExecuteManager
 {
 
 public:
+    ESTATUS_BUS m_eBusStatus;
     CBuildProgram* m_pouBuildProgram;
     virtual ~CExecuteManager();
     static CExecuteManager& ouGetExecuteManager(ETYPE_BUS eBus);
@@ -67,7 +68,7 @@ public:
     void vManageOnAddressClaimHandlerJ1939(DWORD dwClientId, BYTE byAddress);
     void vExSetNodeInfo(const CString NodeName ,const PSNODEINFO psNodeInf);
 
-    void vManageOnMessageHandlerLIN_(PSTLIN_TIME_MSG sRxMsgInfo, DWORD& dwClientId);
+    void vManageOnMessageHandlerLIN(PSTLIN_TIME_MSG sRxMsgInfo, DWORD& dwClientId);
 
     const HMODULE hReturnDllHandle(const CString NodeName);
     BOOL bDllLoaded;//if any one dll is loaded

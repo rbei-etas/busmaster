@@ -34,7 +34,7 @@ Global $crashRes, $lConfig, $cConfig, $channelCount, $time
 
 ; $BusMasterExeFPath has to be updated everytime before running the script on a new version.
 ;$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v1.9.0"
-$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v2.0.0"
+$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v2.1.0"
 
 $FilePath = @ScriptDir&"\Result\TestRunResults.xlsx" ; This file should already exist
 if FileExists($FilePath) Then
@@ -81,10 +81,12 @@ _launchApp()
  #include <Message_Window_CAN\Message_Window_CAN.au3>
  #include <Signal_Watch_CAN\Signal_Watch_CAN.au3>
  #include <NodeSimulation_J1939\NodeSimulationJ1939.au3>
-#include <J1939_Functionality\J1939Functionality.au3>
-#include <Message_Window_J1939\Message_WindowJ1939.au3>
+ #include <J1939_Functionality\J1939Functionality.au3>
+ #include <Message_Window_J1939\Message_WindowJ1939.au3>
  #include <UserConfiguration\UserConfiguration.au3>
-  #include <Format Converters\FormatConverter.au3>
+ #include <Format Converters\FormatConverter.au3>
+ #include <TestFrameWork_CAN\Test_Automation_CAN.au3>
+
 _IEAction($oIE, "visible")									; Sets an object state to visible
 _IEDocWriteHTML($oIE, $sHTML)								; Replaces the HTML for the entire document.
 

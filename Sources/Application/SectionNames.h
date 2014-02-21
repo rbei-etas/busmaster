@@ -36,6 +36,7 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
     GRAPH_SECTION_ID,
     LOG_SECTION_ID,
     LOG_SECTION_J1939_ID,
+    LOG_SECTION_LIN_ID,
     SIMSYS_SECTION_ID,
     SIMSYS_SECTION_J1939_ID,
     REPLAY_SECTION_ID,

@@ -52,6 +52,7 @@
 #define DEF_LINFILTERS              "LIN_Filters"
 #define DEF_MOSTFILTERS             "MOST_Filters"
 #define DEF_CAN_LOG                 "CAN_Log"
+#define DEF_LIN_LOG                 "LIN_Log"
 #define DEF_CAN_SIM_SYS             "CAN_Simulated_Systems"
 #define DEF_J1939_SIM_SYS           "J1939_Simulated_Systems"
 #define DEF_LIN_SIM_SYS             "LIN_Simulated_Systems"
@@ -132,6 +133,7 @@
 #define DEF_DisplayNumericMode          "DisplayNumericMode"
 #define DEF_LogOnConnect_For_CAN        "LogOnConnect_CAN"
 #define DEF_LogOnConnect_For_J1939      "LogOnConnect_J1939"
+#define DEF_LogOnConnect_For_LIN      "LogOnConnect_LIN"
 //Common defines
 #define DEF_FILTER                  "Filter"
 #define DEF_MSG_ID                  "ID"

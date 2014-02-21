@@ -128,7 +128,7 @@ public:
      * as InitData. If it is null, the dialog box is uninitialised. This also contains
      * the user's choice as OUT parameter
      */
-    virtual HRESULT DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length) = 0;
+    //  virtual HRESULT DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length) ;
 
     /**
      * To set the configuration data for the currently selected DIL. Caller must
@@ -160,6 +160,8 @@ public:
     virtual HRESULT DILL_SetSlaveRespData(const STLIN_MSG stRespMsg) = 0;
     virtual HRESULT DILL_ResetSlaveRespData(void)=0;
     virtual HRESULT DILL_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage) = 0;
+
+    virtual HRESULT DILL_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize) = 0;
     /**
      * Send messages
      */

@@ -26,7 +26,7 @@
 #include "FormatMsgCAN.h"
 #include "include/Utils_macro.h"
 
-CFormatMsgCAN::CFormatMsgCAN(void)
+CFormatMsgCAN::CFormatMsgCAN(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
 {
 }
 

@@ -24,10 +24,10 @@
 
 #include "../FrameProcessor_stdafx.h"
 #include "FormatMsgCommon.h"
-#include "CommonClass/RefTimeKeeper.h"
+
 #include "include/Utils_Macro.h"
 
-CFormatMsgCommon::CFormatMsgCommon(void)
+CFormatMsgCommon::CFormatMsgCommon(CRefTimeKeeper& ouRefTimeKeeper):m_ouRefTimeKeeper(ouRefTimeKeeper)
 {
     m_qwRelBaseTime = 0;
     m_qwResTime = 0;
@@ -47,7 +47,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
 
     DWORD dwTSTmp = 0; // temporary time stamp
     UINT64 qwRefSysTime, qwAbsBaseTime;
-    CRefTimeKeeper::vGetTimeParams(qwRefSysTime, qwAbsBaseTime);
+    m_ouRefTimeKeeper.vGetTimeParams(qwRefSysTime, qwAbsBaseTime);
 
     if (IS_TM_SYS_SET(bExprnFlag))
     {

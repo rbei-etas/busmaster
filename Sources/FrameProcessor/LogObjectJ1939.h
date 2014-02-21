@@ -85,10 +85,10 @@ public:
         return S_OK;
     }
     // Set the baud rate details for each channel
-    void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+    void Der_SetChannelBaudRateDetails(void* controllerDetails,
                                        int nNumChannels);
     // To get the channel baud rate info for each channel
-    void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+    void Der_GetChannelBaudRateDetails(void* controllerDetails,
                                        int& nNumChannels);
 
 };

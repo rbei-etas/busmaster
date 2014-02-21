@@ -167,6 +167,15 @@ HMODULE CDIL_CAN::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     LONG lError = 0;
     HKEY sKey;
 
+    // Check for BOA 2.0
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\2", 0, KEY_READ, &sKey);
+    if(lError==ERROR_SUCCESS)
+    {
+        RegCloseKey(sKey);
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 2.0..."));
+        return LoadLibrary("CAN_ETAS_BOA_2_0.dll");
+    }
+
     // Check for BOA 1.5
     lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.5", 0, KEY_READ, &sKey);
     if(lError==ERROR_SUCCESS)

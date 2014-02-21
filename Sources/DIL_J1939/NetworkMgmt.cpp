@@ -377,15 +377,27 @@ HRESULT CNetworkMgmt::GoOnline(BOOL bStart)
     if ((bStart == TRUE) && (m_bOnline != TRUE))
     {
         vInitializeAllNodes();
-        if ((hResult = StartAdresClaimProc()) == S_OK)
-        {
-            m_bOnline = TRUE;
-        }
+        m_bOnline = TRUE;
+        /* if ((hResult = StartAdresClaimProc()) == S_OK)
+         {
+             m_bOnline = TRUE;
+         }*/
     }
     else if ((bStart == FALSE) && (m_bOnline == TRUE))
     {
         vUnInitializeAllNodes();
         m_bOnline = FALSE;
+    }
+    return hResult;
+}
+
+HRESULT CNetworkMgmt::vClaimAddress()
+{
+    HRESULT hResult = S_OK;
+    vInitializeAllNodes();
+    if ((hResult = StartAdresClaimProc()) == S_OK)
+    {
+        m_bOnline = TRUE;
     }
     return hResult;
 }

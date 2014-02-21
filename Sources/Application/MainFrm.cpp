@@ -232,6 +232,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_FILTER_MESSAGE_SELECTMESSAGES, OnSelectMessage)
     ON_COMMAND(IDM_APP_ABOUT, OnAboutApplication)
     ON_COMMAND(IDM_LOG_ON_OFF, OnLogEnable)
+
+
+    ON_COMMAND(IDM_LOG_LIN_ON_OFF, OnLog_LIN_Enable)
+    ON_UPDATE_COMMAND_UI(IDM_LOG_LIN_ON_OFF, OnUpdateLogOnOff_LIN)
+
     //ON_COMMAND(IDM_FILE_RESTART_CONTROLLER, OnRestartController)
     ON_COMMAND(IDR_TOOL_HEXDEC, OnHex_DecButon)
     ON_COMMAND(IDR_TOOL_BUTTON_MSG_DISP, OnButtonMsgDispButton)
@@ -280,6 +285,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_FILE_NEW, OnUpdateFileNew)
     ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, OnUpdateFileOpen)
     ON_COMMAND(IDM_CFGN_LOG, OnCfgLogFile)
+
+    ON_COMMAND(IDM_CFGN_LIN_LOG, OnCfgLogFile_LIN)
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_MSG_DISP, OnUpdateToolButtonMsgDisp)
     ON_WM_ENDSESSION()
     ON_COMMAND(IDM_CFGN_SEND_MSGS, OnCfgSendMsgs)
@@ -375,6 +382,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
     ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
+    ON_UPDATE_COMMAND_UI(IDM_CFGN_LIN_LOG, OnUpdateCfgnLog_LIN)
     ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
     ON_COMMAND(ID_DISPLAY_MSG_WND, OnDisplayMsgWnd)
@@ -1179,6 +1187,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     vInitialiaseLINConfig(1);
     m_objFlexTxHandler.SetFibexConfig(LIN, m_ouClusterConfig[LIN]);
 
+    //TODO::Venkat - Appropriate Place has to be decided.
+    bInitFrameProcLIN(); // Initialize logger module
+    //vInitializeBusStatLIN();
 
 
 
@@ -2370,12 +2381,12 @@ void CMainFrame::OnConfigBaudrate()
 
 void CMainFrame::OnConfigLinChannel()
 {
-    PCHAR pInitData = (PCHAR)m_asControllerDetails;
+    PCHAR pInitData = (PCHAR)m_asControllerDetailsLIN;
     int nSize = sizeof(SCONTROLLER_DETAILS_LIN) * defNO_OF_LIN_CHANNELS;
-    if (g_pouDIL_LIN_Interface->DILL_DisplayConfigDlg(m_asControllerDetails, nSize) == S_OK)
+    //   if (g_pouDIL_LIN_Interface->DILL_DisplayConfigDlg(m_asControllerDetailsLIN, nSize) == S_OK)
     {
-        //Set Controller to ConfigDetails
-        //memcpy(m_asControllerDetails, pInitData, nSize);
+        //    //Set Controller to ConfigDetails
+        //    //memcpy(m_asControllerDetails, pInitData, nSize);
     }
     //Update hardware info in status bar
     vUpdateHWStatusInfo();
@@ -4314,6 +4325,93 @@ void CMainFrame::OnLogEnable()
 
     vStartStopLogging( bLogON );
 }
+
+/******************************************************************************/
+/*  Function Name    :  OnLog_LIN_Enable                                      */
+/*  Input(s)         :  -                                                     */
+/*  Output           :  -                                                     */
+/*  Functionality    :  This function is called by framework when user wants  */
+/*                      a log file. This will set the status of corresponding
+                        toolbar button.
+                        Gets the log file from the registry.
+                        Post a thread message to perform logging to the specifi
+                        -ed log file name.
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Shashank Vernekar                                     */
+/*  Date Created     :  29.01.2014                                            */
+/******************************************************************************/
+
+void CMainFrame::OnLog_LIN_Enable()
+{
+    //shashank
+    // TODO: Add your command handler code here
+    BOOL bLogON = FALSE;
+    if (NULL != sg_pouFrameProcLIN )
+        //if (NULL != sg_pouFrameProcLIN)
+    {
+        bLogON = sg_pouFrameProcLIN->FPL_IsLoggingON();
+    }
+    bLogON = bLogON ? FALSE : TRUE;
+
+
+    // PTV [1.6.4]
+    if(bLogON == FALSE)
+    {
+        if (NULL != sg_pouFrameProcLIN)
+            //if (NULL != sg_pouFrameProcLIN)
+        {
+            sg_pouFrameProcLIN->FPL_DisableLINDataLogFlag();
+        }
+    }
+    // PTV [1.6.4]
+
+    // Set the status of logging
+    // PTV[1.6.4]
+    BOOL bIsConnected = FALSE;
+    // PTV[1.6.4]
+    CFlags* pouFlags = NULL;
+    pouFlags = theApp.pouGetFlagsPtr();
+    if (NULL != pouFlags)
+    {
+        pouFlags->vSetFlagStatus(LOGTOFILE_LIN, bLogON);
+        bIsConnected = pouFlags->nGetFlagStatus(LIN_CONNECTED);
+    }
+
+    // PTV[1.6.5]
+    // If Connected and Log is enabled
+    if(bLogON == TRUE && bIsConnected == TRUE)
+    {
+        //if(theApp.m_pouMsgSignal != NULL)
+        {
+            //if(theApp.m_pouMsgSignal->unGetNumerOfMessages() > 0)
+            //if (NULL != sg_pouFrameProcCAN)
+            {
+                //if(sg_pouFrameProcCAN->FPC_IsDataLogged() == TRUE)
+                {
+                    m_unTimerSBLog = SetTimer(TIMER_REFRESH_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
+                }
+            }
+        }
+    }
+    // PTV[1.6.5]
+    // If not connected or log is disabled
+    else
+    {
+        if(m_unTimerSBLog != NULL)
+        {
+            ::KillTimer(NULL, m_unTimerSBLog);
+            m_unTimerSBLog = NULL;
+            // Update Status bar
+            //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
+            //shashank
+            //m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+            m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_LIN_LOG_ICON, m_hLogOffIcon);
+        }
+    }
+
+    vStartStopLogging_LIN( bLogON );
+}
 void CMainFrame::OnButtonMsgDispButton()
 {
 
@@ -5355,6 +5453,20 @@ void CMainFrame::OnClose()
     {
         sg_pouIJ1939Logger->FPJ1_EnableLogging(FALSE);
     }
+
+
+
+    if (NULL != sg_pouFrameProcLIN)
+    {
+        bLogON = sg_pouFrameProcLIN->FPL_IsLoggingON();
+    }
+    if ( bLogON )
+    {
+        bLogON = bLogON ? FALSE : TRUE;
+        vStartStopLogging_LIN( bLogON );
+    }
+
+
 
     if (g_pouDIL_CAN_Interface != NULL)
     {
@@ -6501,7 +6613,7 @@ void CMainFrame::OnExecuteMessagehandlersButton()
     Output           :      -
     Functionality    :  Calls OnFilterLog function
     Member of        :  CMainFrame
-    Friend of        :      -
+    Friend of        :
 
     Author(s)        :  Amarnath Shastry
     Date Created     :  23.03.2002
@@ -7239,6 +7351,47 @@ void CMainFrame::OnUpdateLogOnOff(CCmdUI* pCmdUI)
     //pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE));
 }
 
+/******************************************************************************
+    Function Name    :  OnUpdateLogOnOff_LIN
+
+    Input(s)         :  CCmdUI* pCmdUI
+    Output           :  -
+    Functionality    :  Enables the menu if LOGTOFILE is true
+                        and vice-versa
+    Member of        :  CMainFrame
+    Friend of        :      -
+    Author(s)        :  Shashank Vernekar
+    Date Created     :  29.01.2014
+    Modifications    :
+******************************************************************************/
+
+void CMainFrame::OnUpdateLogOnOff_LIN(CCmdUI* pCmdUI)
+{
+    if (NULL != sg_pouFrameProcLIN)
+    {
+        //pCmdUI->SetCheck(sg_pouFrameProcCAN->FPC_IsLoggingON());
+        USHORT ushCount =  sg_pouFrameProcLIN->FPL_GetLoggingBlockCount();
+        ushCount = vCheckValidLogFiles_LIN(ushCount);
+        BOOL bEnableLogTB = bIsAtleastOneLoggingBlockEnabled_LIN(ushCount);
+        if(bEnableLogTB == TRUE )//log files found and if checked
+        {
+            pCmdUI->Enable(TRUE);
+            pCmdUI->SetCheck(sg_pouFrameProcLIN->FPL_IsLoggingON());
+        }
+        else //log files don't found
+        {
+            pCmdUI->Enable(FALSE);
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
+    else
+    {
+        //desable the menu item
+        pCmdUI->Enable(FALSE);
+        pCmdUI->SetCheck(FALSE);
+    }
+    //pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE));
+}
 BOOL FilePathExists(LPCTSTR szPath)
 {
     DWORD dwAttrib = GetFileAttributes(szPath);
@@ -7275,6 +7428,33 @@ USHORT CMainFrame::vCheckValidLogFiles(USHORT LogBlocks)
     return LogBlocks;
 }
 
+USHORT CMainFrame::vCheckValidLogFiles_LIN(USHORT LogBlocks)
+{
+    if (LogBlocks > 0)
+    {
+        for (USHORT i = 0; i < LogBlocks; i++)
+        {
+            SLOGINFO sLogObject;
+            HANDLE hFind;
+            WIN32_FIND_DATA FindData;
+            CStdioFile omStdiofile;
+
+            sg_pouFrameProcLIN->FPL_GetLoggingBlock(i, sLogObject);
+
+            // check for valid log file path
+            CString strTempLog = sLogObject.m_sLogFileName;
+
+            CString omLogFilePath = strTempLog.Left(strTempLog.ReverseFind('\\'));
+
+            if ( !FilePathExists(omLogFilePath) )//file path not found
+            {
+                sg_pouFrameProcLIN->FPL_RemoveLoggingBlock(i--); //remove the old log data
+                LogBlocks = sg_pouFrameProcLIN->FPL_GetLoggingBlockCount();; //refresh the log count
+            }
+        }
+    }
+    return LogBlocks;
+}
 BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
 {
     BOOL bEnabled = FALSE; // Assume no log files are configured or enabled
@@ -7295,6 +7475,26 @@ BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
     return bEnabled;
 }
 
+
+BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks)
+{
+    BOOL bEnabled = FALSE; // Assume no log files are configured or enabled
+
+    if (LogBlocks > 0)
+    {
+        for (USHORT i = 0; i < LogBlocks; i++)
+        {
+            SLOGINFO sLogObject;
+            sg_pouFrameProcLIN->FPL_GetLoggingBlock(i, sLogObject);
+            if (sLogObject.m_bEnabled == TRUE)
+            {
+                bEnabled = TRUE;
+                break;
+            }
+        }
+    }
+    return bEnabled;
+}
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
 /*  Input(s)         :                                                        */
@@ -7812,6 +8012,42 @@ void CMainFrame::OnCfgLogFile()
     }
 }
 
+/******************************************************************************/
+/*  Function Name    :  OnCfgLogFile_LIN                                      */
+/*  Input(s)         :                                                        */
+/*  Output           :  -                                                     */
+/*  Functionality    :  o Displays congiuration setting dialog for Log        */
+/*                      and Replay.                                           */
+/*                      o The selected log file if not empty                  */
+/*                      is put into the registry.                             */
+/*                                                                            */
+/*  Member of        :  CMainFrame                                            */
+/*  Friend of        :      -                                                 */
+/*  Author(s)        :  Shashank Vernekar                                     */
+/*  Date Created     :  30.04.2002                                            */
+/******************************************************************************/
+
+void CMainFrame::OnCfgLogFile_LIN()
+{
+    if (sg_pouFrameProcLIN != NULL)
+
+    {
+
+        //CConfigMsgLogDlg omDlg(this, sg_pouFrameProcCAN, &m_sFilterAppliedCAN);
+        CConfigMsgLogDlg omDlg(LIN, (void* ) sg_pouFrameProcLIN, m_abLogOnConnect[LIN], this,
+                               (void*) &m_sFilterAppliedLIN);
+        sg_pouFrameProcLIN->FPL_StartEditingSession(); // Start the editing session
+        omDlg.vSetLogFileONOFF(sg_pouFrameProcLIN->FPL_IsLoggingON());
+        BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+        sg_pouFrameProcLIN->FPL_StopEditingSession(bToConfirm);
+
+        if(bToConfirm == IDOK)
+        {
+            // Check if the filter for log is enabled
+            // ApplyLogFilter();
+        }
+    }
+}
 /******************************************************************************
 Function Name    :  OnUpdateCfgnLog
 Input(s)         :  pCmdUI
@@ -7835,6 +8071,40 @@ void CMainFrame::OnUpdateCfgnLog(CCmdUI* pCmdUI)
         }*/
 }
 
+/******************************************************************************
+Function Name    :  OnUpdateCfgnLog_LIN
+Input(s)         :  pCmdUI
+Output           :  -
+Functionality    :  Enable / disable log configuration button.
+Member of        :  CMainFrame
+Friend of        :  -
+Author(s)        :  Shashank Vernekar
+Date Created     :  29.01.2014
+******************************************************************************/
+
+
+void CMainFrame::OnUpdateCfgnLog_LIN(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(sg_pouFrameProcLIN != NULL);
+
+    /* if ( m_shLINDriverId != DAL_NONE )
+    {
+        pCmdUI->Enable();
+    }
+    else
+    {
+        pCmdUI->Enable(0);
+    }*/
+
+    /*if (NULL != sg_pouFrameProcLIN)
+       {
+           pCmdUI->Enable(!sg_pouFrameProcLIN->FPL_IsLoggingON());
+       }
+       else
+       {
+           pCmdUI->Enable(sg_pouFrameProcLIN != NULL);
+       }*/
+}
 
 /******************************************************************************/
 /*  Function Name    :  OnUpdateToolButtonMsgDisp
@@ -8426,15 +8696,22 @@ void CMainFrame::vUpdateGraphData(const STCANDATA& sCanData)
 /******************************************************************************/
 void CMainFrame::OnFileConnect()
 {
-    //UINT unID        = 0;// Id of the connect/disconnect button
-    //UINT unStyle     = 0;// Style of the connect/disconnect button
-    //int nImage       = 0;// Image Id of the connect/disconnect button
     CFlags* pouFlags = NULL;
 
     // Hour glass cursor
     CWaitCursor omWait;
 
     pouFlags   = theApp.pouGetFlagsPtr();
+	// If LIN or FlexRay is connected, stop connecting to the network and display information
+	if(pouFlags != NULL)
+	{
+        if (pouFlags->nGetFlagStatus(LIN_CONNECTED) || pouFlags->nGetFlagStatus(FLEX_CONNECTED))
+		{
+			theApp.bWriteIntoTraceWnd(_("Please disconnect LIN / FlexRay networks and connect CAN"));
+			return;
+		}
+	}
+
     if(pouFlags != NULL)
     {
         // Toggle connect/disconnect flag
@@ -8553,8 +8830,7 @@ void CMainFrame::OnFileConnect()
             }
             GetICANBusStat()->BSC_bStartUpdation(TRUE);
 
-            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
-            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+
 
             //send time to nodesim for calculation
             if (NS_GetInterface(CAN, (void**) &pNodeSim) == S_OK)
@@ -8581,8 +8857,7 @@ void CMainFrame::OnFileConnect()
                           eWINID_STOP_READ, 0);
 
 
-            GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
-            GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+
 
 
             //m_n64TimeElapsedSinceConnection =0;
@@ -8671,6 +8946,9 @@ void CMainFrame::OnFileConnect()
             {
                 vStartStopLogging(bLogIsON);
             }
+
+
+
 
             if (m_abLogOnConnect[J1939] == TRUE)
             {
@@ -8835,6 +9113,9 @@ void CMainFrame::OnFileConnect()
                 }
             }
 
+            //shashank
+
+
             if(NULL != sg_pouIJ1939Logger)
             {
                 //USHORT ushCount =   sg_pouFrameProcCAN->FPJ1_GetLoggingBlockCount();
@@ -8851,6 +9132,24 @@ void CMainFrame::OnFileConnect()
         {
             GetICANNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
             GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
+
+            BOOL bIsJ1939Active = theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939);
+
+            if(bIsJ1939Active == TRUE)
+            {
+                BOOL bIsAddClaimed = theApp.pouGetFlagsPtr()->nGetFlagStatus(ADRESSCLAIM_J1939);
+                if(bIsAddClaimed == FALSE)
+                {
+                    CFlags* pouFlags = theApp.pouGetFlagsPtr();
+                    if (pouFlags != NULL)
+                    {
+                        GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
+                                                               m_sJ1939ClientParam.m_dwClientId);
+                    }
+                    GetIJ1939DIL()->DILIJ_ClaimAdress();
+                    theApp.pouGetFlagsPtr()->vSetFlagStatus(ADRESSCLAIM_J1939, TRUE);
+                }
+            }
         }
         else
         {
@@ -8864,6 +9163,16 @@ void CMainFrame::OnLINConnect()
 {
     HRESULT hResult = S_OK;
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+
+	// If LIN or FlexRay is connected, stop connecting to the network and display information
+	if (NULL != pouFlag)
+	{
+        if (pouFlag->nGetFlagStatus(CONNECTED) || pouFlag->nGetFlagStatus(FLEX_CONNECTED))
+		{
+			theApp.bWriteIntoTraceWnd(_("Please disconnect CAN / FlexRay networks and connect LIN"));
+			return;
+		}
+	}
 
     /* Toggle connect/disconnect flag */
     BOOL bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
@@ -8897,6 +9206,8 @@ void CMainFrame::OnLINConnect()
     {
         hResult = g_pouDIL_LIN_Interface->DILL_SetConfigData(m_ouClusterConfig[LIN]);
         hResult = g_pouDIL_LIN_Interface->DILL_PreStartHardware();
+        g_pouDIL_LIN_Interface->DILL_GetConfiguration(m_sControllterlin,nsize);
+
 
         m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
         GetILINNodeSim()->NS_ManageBusEventHandler(BUS_PRE_CONNECT);
@@ -8915,6 +9226,26 @@ void CMainFrame::OnLINConnect()
 
             return;
         }
+
+        BOOL bLogIsON;
+
+        CFlags* pFlagLog = theApp.pouGetFlagsPtr();
+        if(pFlagLog != NULL)
+        {
+            bLogIsON = pFlagLog->nGetFlagStatus(LOGTOFILE_LIN);
+        }
+
+
+        if (m_abLogOnConnect[LIN] == TRUE)
+        {
+            vStartStopLogging_LIN(bConnected);
+        }
+        // PTV [1.6.6]
+        else if(bLogIsON == TRUE && bConnected == TRUE)
+        {
+            vStartStopLogging_LIN(bLogIsON);
+        }
+
 
         m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
 
@@ -8939,6 +9270,13 @@ void CMainFrame::OnLINConnect()
     /* If disconnecton is required */
     else
     {
+
+        if (NULL != sg_pouFrameProcLIN)
+        {
+            sg_pouFrameProcLIN->FPL_DisableLINDataLogFlag();
+        }
+
+
         g_pouDIL_LIN_Interface->DILL_ResetSlaveRespData();
         hResult = g_pouDIL_LIN_Interface->DILL_StopHardware();
         m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_DISCONNECTED);
@@ -8958,6 +9296,25 @@ void CMainFrame::OnLINConnect()
     }
     //added to disable loading config while LIN transmission
 
+    if(!bConnected)
+    {
+        if (NULL != sg_pouFrameProcLIN)
+        {
+            USHORT ushCount =   sg_pouFrameProcLIN->FPL_GetLoggingBlockCount();
+            if(ushCount>0)//check for log file count
+            {
+                if(sg_pouFrameProcLIN->FPL_IsLoggingON())//if logging is on
+                {
+
+                    vStartStopLogging_LIN(FALSE);
+
+
+                    sg_pouFrameProcLIN->FPL_vCloseLogFile();
+                }
+            }
+        }
+    }
+
     if(bConnected)
     {
         m_bCfgLoadMenuOption    = FALSE;
@@ -8965,12 +9322,10 @@ void CMainFrame::OnLINConnect()
     }
     else
     {
-        if(pouFlag->nGetFlagStatus(CONNECTED) == FALSE)
-        {
-            m_bCfgLoadMenuOption    = TRUE;
-            m_bCfgNewMenuOption     = TRUE;
-        }
+        m_bCfgLoadMenuOption    = TRUE;
+        m_bCfgNewMenuOption     = TRUE;
     }
+
     pouFlag->vSetFlagStatus(LIN_CONNECTED, bConnected);
     BYTE bytTbrItemIndex = 1;
     vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
@@ -9314,6 +9669,19 @@ void CMainFrame::OnNewConfigFile()
             vStartStopLogging( bLogON );
         }
 
+
+        BOOL bLogONl = FALSE;
+        if (NULL != sg_pouFrameProcLIN)
+        {
+            bLogONl = sg_pouFrameProcLIN->FPL_IsLoggingON();
+        }
+        if ( bLogONl )
+        {
+            bLogONl = bLogONl ? FALSE : TRUE;
+            vStartStopLogging_LIN( bLogONl );
+        }
+
+
         // setting by default Hex mode on new configuration
         bSetHexDecFlags(TRUE);
         // On New Configuration Stop Logging if it is enabled for J1939
@@ -9631,6 +9999,7 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
         // Check connection status
         bConnect    = pouFlag->nGetFlagStatus(CONNECTED);
         BOOL bFlexConnect =  pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+        //BOOL bLINConnect =  pouFlag->nGetFlagStatus(LIN_CONNECTED);
         BOOL bFlexConfigShown = FALSE;
         if(m_objFlexTxHandler.hConfigWindowShown(FLEXRAY) == S_OK)
         {
@@ -12405,6 +12774,40 @@ void CMainFrame::vStartStopLogging(BOOL bStart)
 }
 
 /*******************************************************************************
+  Function Name  : vStartStopLogging_LIN
+  Input(s)       : bStart - TRUE to start and FALSE to stop logging
+  Output         : -
+  Functionality  : To start/stop logging
+  Member of      : CMainFrame
+  Author(s)      : Shashank Vernekar
+  Date Created   : 29.01.2014
+  Modifications  :
+*******************************************************************************/
+//[RS_LIN_06_14]
+void CMainFrame::vStartStopLogging_LIN(BOOL bStart)
+{
+    // Enable Logging or stop logging
+    if (NULL != sg_pouFrameProcLIN)
+        //  if (NULL != sg_pouFrameProcLIN)
+    {
+        // To reduce the unwanted functional call incase of stop logging
+        if (bStart)
+        {
+            vSetAssociatedDatabaseFiles(LIN);   // Update the db file names associated
+
+            //  vSetAssociatedDatabaseFiles(LIN);
+
+            vSetBaudRateInfo(LIN);              // Update the baud rate details
+
+            //vSetBaudRateInfo(LIN);
+        }
+
+        sg_pouFrameProcLIN->FPL_EnableLogging(bStart);
+    }
+    //LogKadoor CLogManager::ouGetLogManager().vStartStopLogging( bStart );
+}
+
+/*******************************************************************************
   Function Name  : vSetAssociatedDatabaseFiles
   Input(s)       : -
   Output         : -
@@ -12418,6 +12821,9 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
 {
     // Get the list of files associated to the application
     CStringArray aomDataBaseFiles;
+
+
+
     if (CAN == eBus)
     {
         theApp.m_pouMsgSignal->vGetDataBaseNames(&aomDataBaseFiles);
@@ -12425,6 +12831,11 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
     else if (J1939 == eBus)
     {
         m_pouMsgSigJ1939->vGetDataBaseNames(&aomDataBaseFiles);
+    }
+    else if(LIN==eBus)
+    {
+
+        //m_pouMsgSigLIN->vGetDataBaseNames(&linLDF);
     }
 
     if (NULL != sg_pouFrameProcCAN)
@@ -12436,6 +12847,22 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
         else if (J1939 == eBus)
         {
             sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
+        }
+        else if (LIN == eBus)
+        {
+            CStringArray m_saLDFPaths;
+            string sLDFPath;
+
+            for(int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
+            {
+                sLDFPath=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath;
+                if((sLDFPath !=STR_EMPTY))
+                {
+                    m_saLDFPaths.Add(sLDFPath.c_str());
+                }
+            }
+
+            sg_pouFrameProcLIN->FPL_SetDatabaseFiles(m_saLDFPaths);
         }
     }
 }
@@ -12458,7 +12885,7 @@ void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
         {
             // Update the baudrate info and the number of channels used
             sg_pouFrameProcCAN->FPC_SetChannelBaudRateDetails
-            (m_asControllerDetails, m_nNumChannels);
+            (m_asControllerDetails, m_nNumChannels,eBus);
         }
     }
     else if (J1939 == eBus)
@@ -12467,8 +12894,24 @@ void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
         {
             // Update the baudrate info and the number of channels used
             sg_pouIJ1939Logger->FPJ1_SetChannelBaudRateDetails
-            (m_asControllerDetails, m_nNumChannels);
+            (m_asControllerDetails, m_nNumChannels,eBus);
         }
+    }
+
+    else if(LIN == eBus)
+    {
+        if(NULL != sg_pouFrameProcLIN)
+        {
+
+            if ( g_pouDIL_LIN_Interface != NULL )
+            {
+
+                int nCount = 0;
+                g_pouDIL_LIN_Interface->DILL_GetConfiguration(m_asControllerDetailsLIN, nCount);
+                sg_pouFrameProcLIN->FPL_SetChannelBaudRateDetails(m_asControllerDetailsLIN,nCount,eBus);
+            }
+        }
+
     }
 }
 
@@ -12486,6 +12929,11 @@ void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
 void CMainFrame::vComStartStopLog(BOOL bStart)
 {
     vStartStopLogging(bStart);
+}
+
+void CMainFrame::vComStartStopLog_LIN(BOOL bStart)
+{
+    vStartStopLogging_LIN(bStart);
 }
 
 /*******************************************************************************
@@ -12613,21 +13061,21 @@ void CMainFrame::vNS_LINInitCFileFunctPtrs()
     m_sExFuncPtr[LIN].m_hWmdMDIParentFrame = this->GetSafeHwnd();
     //m_sExFuncPtr.m_pouTraceWnd = m_podUIThread;
     m_sExFuncPtr[LIN].m_omAPIList.RemoveAll();
-    for (int i = 0; i < TOTAL_API_COUNT_LIN; i++)
+    for (int nIndex = 0; nIndex < TOTAL_API_COUNT_LIN; nIndex++)
     {
-        m_sExFuncPtr[LIN].m_omAPIList.Add(sg_omAPIFuncListLIN[i]);
+        m_sExFuncPtr[LIN].m_omAPIList.Add(sg_omAPIFuncListLIN[nIndex]);
     }
 
     m_sExFuncPtr[LIN].m_omAPINames.RemoveAll();
-    for (int i = 0; i < TOTAL_API_COUNT_LIN; i++)
+    for (int nIndex = 0; nIndex < TOTAL_API_COUNT_LIN; nIndex++)
     {
-        m_sExFuncPtr[LIN].m_omAPINames.Add(sg_omAPIFuncNamesLIN[i]);
+        m_sExFuncPtr[LIN].m_omAPINames.Add(sg_omAPIFuncNamesLIN[nIndex]);
     }
 
     m_sExFuncPtr[LIN].m_omErrorHandlerList.RemoveAll();
-    for (int i = 0; i < TOTAL_ERROR_COUNT; i++)
+    for (int nIndex = 0; nIndex < TOTAL_ERROR_COUNT; nIndex++)
     {
-        m_sExFuncPtr[LIN].m_omErrorHandlerList.Add(sg_omMcNetErrorHandlerList[i]);
+        m_sExFuncPtr[LIN].m_omErrorHandlerList.Add(sg_omMcNetErrorHandlerList[nIndex]);
     }
 
     m_sExFuncPtr[LIN].m_omDefinedMsgHeaders.RemoveAll();
@@ -12641,9 +13089,9 @@ void CMainFrame::vNS_LINInitCFileFunctPtrs()
     //theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
     GetILINNodeSim()->NS_SetLINConfig(m_ouClusterConfig[LIN]);
 
-    for (int i = 0; i < m_ouClusterConfig[LIN].m_nChannelsConfigured; i++)
+    for (int nIndex = 0; nIndex < m_ouClusterConfig[LIN].m_nChannelsConfigured; nIndex++)
     {
-        CString omHeaderPath = omStrGetUnionFilePath(m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath.c_str());
+        CString omHeaderPath = omStrGetUnionFilePath(m_ouClusterConfig[LIN].m_ouFlexChannelConfig[nIndex].m_strDataBasePath.c_str());
         m_sExFuncPtr[LIN].m_omDefinedMsgHeaders.Add(omHeaderPath);
     }
 
@@ -13195,6 +13643,17 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
 }
 void CMainFrame::OnFlexRayConnect()
 {
+	CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+	// If LIN or FlexRay is connected, stop connecting to the network and display information
+	if (NULL != pouFlag)
+	{
+        if (pouFlag->nGetFlagStatus(CONNECTED) || pouFlag->nGetFlagStatus(LIN_CONNECTED))
+		{
+			theApp.bWriteIntoTraceWnd(_("Please disconnect CAN / LIN networks and connect FlexRay"));
+			return;
+		}
+	}
+
     if ( !m_bFlxDILChanging )
     {
         char chError[256];
@@ -13500,6 +13959,23 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
 
                         // Enable the Deactivate menu as a valid driver is selected
                         m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, true);
+
+                        if(m_shLINDriverId == DRIVER_LIN_ETAS_BOA)
+                        {
+                            BOOL bIsLDFAssociated = FALSE;
+                            for(INT nChnlIndex = 0; nChnlIndex < m_ouClusterConfig[LIN].m_nChannelsConfigured; nChnlIndex++)
+                            {
+                                if(m_ouClusterConfig[LIN].m_ouFlexChannelConfig[nChnlIndex].m_strDataBasePath != "")
+                                {
+                                    bIsLDFAssociated = TRUE;
+                                }
+                            }
+
+                            if(bIsLDFAssociated == FALSE)
+                            {
+                                theApp.bWriteIntoTraceWnd(_("Information: To monitor messages associating LDF file is required for LIN ETAS BOA"));
+                            }
+                        }
                     }
                     else
                     {
@@ -14448,6 +14924,25 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                                             , BAD_CAST strLogOnConnectJ1939.GetBuffer(strLogOnConnectJ1939.GetLength()));
             xmlAddChild(pNodePtr, pLogOnConnectJ1939);
 
+
+            CString strLogOnConnectLIN = "";
+            if(m_abLogOnConnect[LIN] == TRUE)
+            {
+                strLogOnConnectLIN = _("TRUE");
+            }
+            else if(m_abLogOnConnect[LIN] == FALSE)
+            {
+                strLogOnConnectLIN = _("FALSE");
+            }
+
+            xmlNodePtr pLogOnConnectLIN = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_LogOnConnect_For_LIN
+                                          , BAD_CAST strLogOnConnectLIN.GetBuffer(strLogOnConnectLIN.GetLength()));
+            xmlAddChild(pNodePtr, pLogOnConnectLIN);
+
+
+
+
+
             //COPY_DATA(pbyTemp, &m_sToolBarInfo, sizeof(STOOLBARINFO));
 
             if (m_podUIThread != NULL)
@@ -14518,6 +15013,20 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 xmlAddChild(pNodePtr, pCanLogPtr);
 
                 sg_pouFrameProcCAN->FPC_GetConfigData(pCanLogPtr);
+            }
+        }
+        break;
+
+        case LOG_SECTION_LIN_ID:
+        {
+
+
+            if (sg_pouFrameProcLIN != NULL)
+            {
+                xmlNodePtr pLinLogPtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_LOG);
+                xmlAddChild(pNodePtr, pLinLogPtr);
+
+                sg_pouFrameProcLIN->FPL_GetConfigData(pLinLogPtr);
             }
         }
         break;
@@ -15824,6 +16333,28 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
                 xmlFree(ptext);
             }
         }
+
+
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"LogOnConnect_LIN")))
+        {
+            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != ptext)
+            {
+                CString strLogOnConnect = ptext;
+
+                if(strLogOnConnect == _("TRUE"))
+                {
+                    m_abLogOnConnect[LIN] = TRUE;
+                }
+                else if(strLogOnConnect == _("FALSE"))
+                {
+                    m_abLogOnConnect[LIN] = FALSE;
+                }
+                xmlFree(ptext);
+            }
+        }
+
+
         pNodePtr = pNodePtr->next;
     }
 }
@@ -16983,6 +17514,39 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
             }
             break;
+            case LOG_SECTION_LIN_ID:
+            {
+                INT nRetVal = S_OK;
+                if (m_xmlConfigFiledoc != NULL)
+                {
+                    if (sg_pouFrameProcLIN != NULL)
+                    {
+                        sg_pouFrameProcLIN->FPL_StartEditingSession();
+                        nRetVal = sg_pouFrameProcLIN->FPL_SetConfigData(m_xmlConfigFiledoc);
+                        sg_pouFrameProcLIN->FPL_StopEditingSession(TRUE);
+                    }
+                    //Start logging if toolbar status is enabled.
+                    BOOL bLogON = FALSE;
+                    CFlags* pFlag = theApp.pouGetFlagsPtr();
+                    if(pFlag != NULL)
+                    {
+                        bLogON = pFlag->nGetFlagStatus(LOGTOFILE_LIN);
+                        BOOL bFilterON = FALSE;
+                        // bFilterON = pFlag->nGetFlagStatus(LOGFILTER);
+                        vStartStopLogging_LIN( bLogON );
+                    }
+                }
+                else if ( (m_xmlConfigFiledoc != NULL) || (nRetVal == S_FALSE) )
+                {
+                    sg_pouFrameProcLIN = GetILINLogger();
+                    sg_pouFrameProcLIN->FPL_StartEditingSession();
+                    sg_pouFrameProcLIN->FPL_ClearLoggingBlockList();
+                    sg_pouFrameProcLIN->FPL_StopEditingSession(TRUE);
+                }
+            }
+            break;
+
+
             case SIGWATCH_SECTION_ID:
             {
 
@@ -18218,6 +18782,36 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
+        case LOG_SECTION_LIN_ID:
+        {
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
+                if (sg_pouFrameProcLIN != NULL)
+                {
+                    sg_pouFrameProcLIN->FPL_StartEditingSession();
+                    sg_pouFrameProcLIN->FPL_SetConfigData(pbyTemp, omVerStr);
+                    sg_pouFrameProcLIN->FPL_StopEditingSession(TRUE);
+                }
+                //Start logging if toolbar status is enabled.
+                BOOL bLogON = FALSE;
+                CFlags* pFlag = theApp.pouGetFlagsPtr();
+                if(pFlag != NULL)
+                {
+                    bLogON = pFlag->nGetFlagStatus(LOGTOFILE_LIN);
+                    vStartStopLogging_LIN( bLogON );
+                }
+            }
+            else
+            {
+                sg_pouFrameProcLIN = GetILINLogger();
+                sg_pouFrameProcLIN->FPL_StartEditingSession();
+                sg_pouFrameProcLIN->FPL_ClearLoggingBlockList();
+                sg_pouFrameProcLIN->FPL_StopEditingSession(TRUE);
+            }
+        }
+        break;
+
         case SIMSYS_SECTION_ID:
         {
             if (GetICANNodeSim() != NULL)
@@ -19835,14 +20429,46 @@ void CMainFrame::OnUpdateActivateJ1939(CCmdUI* pCmdUI)
     }
 }
 
+//shashank
+
+void CMainFrame::OnUpdateActivateLIN(CCmdUI* pCmdUI)
+{
+    /* Enable this menu item ONLY when LIN interface is available. The handler
+    is NOT to be invoked after successful querying of LIN interfaces. So
+    disable it if the former is successful */
+    if ((NULL == sg_pouLinDIL) && (NULL == sg_pouLinLogger))
+    {
+        pCmdUI->SetText(_T(_("&Activate")));
+    }
+    else
+    {
+        pCmdUI->SetText(_T(_("D&eactivate")));
+    }
+
+    pCmdUI->Enable(TRUE);
+
+
+}
+
 void CMainFrame::OnJ1939ConfigLog()
 {
     vConfigureLogFile(J1939);
 }
 
+void CMainFrame::OnLINConfigLog()
+{
+    vConfigureLogFile(LIN);
+}
+
 void CMainFrame::OnUpdateJ1939ConfigLog(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(NULL != sg_pouIJ1939Logger);
+}
+
+//shashank
+void CMainFrame::OnUpdateLinConfigLog(CCmdUI* pCmdUI)
+{
+    pCmdUI->Enable(NULL != sg_pouLinLogger);
 }
 
 void CMainFrame::OnActionJ1939Online()
@@ -19855,8 +20481,22 @@ void CMainFrame::OnActionJ1939Online()
             bOnlineStatus = true;
             theApp.bWriteIntoTraceWnd(_("DIL.J1939 network started..."));
 
-            GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
-                                                   m_sJ1939ClientParam.m_dwClientId);
+            CFlags* pouFlags = theApp.pouGetFlagsPtr();
+            BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+            if (bConnected == TRUE)
+            {
+                if (pouFlags != NULL)
+                {
+                    GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
+                                                           m_sJ1939ClientParam.m_dwClientId);
+                }
+
+                if(GetIFlags()->nGetFlagStatus(ADRESSCLAIM_J1939) == FALSE)
+                {
+                    GetIJ1939DIL()->DILIJ_ClaimAdress();
+                    GetIFlags()->vSetFlagStatus(ADRESSCLAIM_J1939, TRUE);
+                }
+            }
             if (m_pouTxMsgWndJ1939 != NULL)
             {
                 m_pouTxMsgWndJ1939->vSetJ1939ClientParam(m_sJ1939ClientParam);
@@ -19980,6 +20620,7 @@ void CMainFrame::vJ1939StartStopLogging()
 
 }
 
+
 void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
@@ -19988,6 +20629,8 @@ void CMainFrame::OnActionJ1939Log()
     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
     /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
 }
+
+
 
 void CMainFrame::OnUpdateActionJ1939Log(CCmdUI* pCmdUI)
 {
@@ -19998,6 +20641,31 @@ void CMainFrame::OnUpdateActionJ1939Log(CCmdUI* pCmdUI)
         {
             pCmdUI->Enable(TRUE); //enable the menu item
             pCmdUI->SetCheck(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
+        }
+        else//log file don't found
+        {
+            //desable the menu item
+            pCmdUI->Enable(FALSE);
+            pCmdUI->SetCheck(FALSE);
+        }
+    }
+    else
+    {
+        pCmdUI->Enable(FALSE);
+        pCmdUI->SetCheck(FALSE);
+    }
+}
+
+//shashank
+void CMainFrame::OnUpdateActionLINLog(CCmdUI* pCmdUI)
+{
+    if (NULL != sg_pouLinLogger)
+    {
+        USHORT ushCount = sg_pouLinLogger->FPL_GetLoggingBlockCount();
+        if(ushCount>0)//log file found
+        {
+            pCmdUI->Enable(TRUE); //enable the menu item
+            pCmdUI->SetCheck(sg_pouLinLogger->FPL_IsLoggingON());
         }
         else//log file don't found
         {
@@ -20196,6 +20864,7 @@ HRESULT CMainFrame::DeselectJ1939Interfaces(void)
         }
         // Update the global status and reset the inteface pointer to NULL.
         GetIFlags()->vSetFlagStatus(ACTIVATED_J1939, (int) FALSE);
+        GetIFlags()->vSetFlagStatus(ADRESSCLAIM_J1939, FALSE);
         sg_pouIJ1939DIL = NULL;
     }
 
@@ -20214,6 +20883,20 @@ void CMainFrame::vConfigureLogFile(ETYPE_BUS eCurrBus)
             omDlg.vSetLogFileONOFF(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
             BOOL bToConfirm = (omDlg.DoModal() == IDOK);
             sg_pouIJ1939Logger->FPJ1_StopEditingSession(bToConfirm);
+        }
+    }
+
+
+    if (LIN == eCurrBus)
+    {
+        if (NULL != sg_pouLinLogger )
+        {
+            CConfigMsgLogDlg omDlg(LIN, (void*) sg_pouLinLogger, m_abLogOnConnect[LIN], this,
+                                   (void*) &m_sFilterAppliedLIN);
+            sg_pouLinLogger->FPL_StartEditingSession(); // Start the editing session
+            omDlg.vSetLogFileONOFF(sg_pouLinLogger->FPL_IsLoggingON());
+            BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+            sg_pouLinLogger->FPL_StopEditingSession(bToConfirm);
         }
     }
 }
@@ -21380,11 +22063,11 @@ void CMainFrame::OnConfigBaudrateLIN()
 {
     PCHAR pInitData = (PCHAR)m_asControllerDetailsLIN;
     int nSize = sizeof(SCONTROLLER_DETAILS_LIN) * defNO_OF_LIN_CHANNELS;
-    if (g_pouDIL_LIN_Interface->DILL_DisplayConfigDlg(m_asControllerDetailsLIN, nSize) == S_OK)
-    {
-        //Set Controller to ConfigDetails
-        //memcpy(m_asControllerDetails, pInitData, nSize);
-    }
+    //if (g_pouDIL_LIN_Interface->DILL_DisplayConfigDlg(m_asControllerDetailsLIN, nSize) == S_OK)
+    //{
+    //    //Set Controller to ConfigDetails
+    //    //memcpy(m_asControllerDetails, pInitData, nSize);
+    //}
     //Update hardware info in status bar
     vUpdateHWStatusInfo();
 

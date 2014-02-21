@@ -28,7 +28,7 @@
 #include "Utility/Utility_Thread.h"
 #include "include/BaseDefs.h"
 #include "BaseLogObject.h"
-
+#include "CommonClass/RefTimeKeeper.h"
 const USHORT FOR_ALL = (USHORT) -1;
 
 typedef CArray<CBaseLogObject*, CBaseLogObject*&> CLogObjArray;
@@ -51,6 +51,7 @@ private:
     CLogObjArray* GetActiveLogObjArray(void);
 
 protected:
+    CRefTimeKeeper m_ouRefTimer;
     CPARAM_THREADPROC   m_sDataCopyThread;
     BOOL                m_bLogEnabled;
     BOOL                m_bResetAbsTime;
@@ -61,7 +62,7 @@ protected:
     // PTV [1.6.4]
     BOOL                m_bIsDataLogged;
     BOOL                m_bIsJ1939DataLogged;
-
+    BOOL                m_bIsLINDataLogged;
     BYTE     m_bExprnFlag_Log;
 
     HRESULT DoInitialisation(void);
@@ -88,9 +89,11 @@ public:
 
     void vCloseLogFile();
     BOOL IsJ1939DataLogged(void);
+    BOOL IsLINDataLogged(void);
     BOOL IsThreadBlocked(void);
     void DisableDataLogFlag(void);
     void DisableJ1939DataLogFlag(void);
+    void DisableLINDataLogFlag(void);
     // PTV [1.6.4]
     BOOL IsFilterON(void);
     HRESULT LogString(CString& omStr);
@@ -116,8 +119,12 @@ public:
     HRESULT StopEditingSession(BOOL bConfirm);
     HRESULT SetDatabaseFiles(const CStringArray& omList);
     void GetDatabaseFiles(CStringArray& omList);
-    void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-                                   int nNumChannels);
+    void SetChannelBaudRateDetails(void* controllerDetails,
+                                   int nNumChannels,ETYPE_BUS eBus);
+
+
+
+
     // Alias functions - end
 
     // Overrides

@@ -81,7 +81,7 @@ sMsgStruct.m_sWhichBit.Sig_2 = 20;
 sMsgStruct.m_sWhichBit.Sig_3 = 30;
 
 // Send the message now
-SendMsg(sMsgStruct);</codeblock></example>
+SendMsg(*((STCAN_MSG *)&amp;sMsgStruct));</codeblock></example>
     <note>Right click on edit area of function editor. Select &quot;Insert Message&quot; or &quot;Insert Signal&quot; option to insert message structure or signal structure. Select the option &quot;Yes, I want to declare selected message structure variable&quot; option in the &quot;Message and Signal List&quot; to initialise message with its struct definition.</note>
     <p>Required Include header file Unions.h</p>
     <note>

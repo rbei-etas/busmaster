@@ -19,7 +19,7 @@ _StartoHTMLTable("User Configuration Test Report")
  #include "TS_UserCfx_06.au3"
  #include "TS_UserCfx_07.au3"
  #include "TS_UserCfx_08.au3"
- ;---------P2 test cases-------------
+;~  ;---------P2 test cases-------------
  #include "TS_UserCfx_10.au3"
  #include "TS_UserCfx_11.au3"
  #include "TS_UserCfx_13.au3"

@@ -26,7 +26,7 @@
          Sleep(1000)
 		 ; _GoOnline()
 		 ; sleep(1000)
-		_J1939tMsgWin("DATA","[0x400]XBR","","")                                                                   ;Transmit Data
+		_J1939tMsgWin("DATA","[0x400]Msg_Data","","")                                                                   ;Transmit Data
          sleep(2000)
 		  _ConnectDisconnect()
 		  _EnableOverwriteMode()

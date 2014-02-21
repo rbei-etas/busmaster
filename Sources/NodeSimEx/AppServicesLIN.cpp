@@ -53,13 +53,10 @@ UINT gunSendMsg_LIN(STLIN_MSG* psTxMsg, HMODULE hModule)
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            PSNODEINFO psNode = new sNODEINFO(LIN);
-            pmCEexecuteFunc->vGetNodeInfo(*psNode);
-            if (CGlobalObj::GetILINDIL()->DILL_SendMsg(psNode->m_dwClientId, sMsg) == S_OK)
+            if (CGlobalObj::GetILINDIL()->DILL_SendMsg(pmCEexecuteFunc->dwGetNodeClientId(), sMsg) == S_OK)
             {
                 Return = 0;
             }
-            delete psNode;
         }
     }
     return Return;

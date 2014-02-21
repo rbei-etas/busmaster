@@ -371,9 +371,11 @@ void CLogObjectJ1939::Der_GetDatabaseFiles(CStringArray& omList)
 }
 
 void CLogObjectJ1939::Der_SetChannelBaudRateDetails
-(SCONTROLLER_DETAILS* controllerDetails,
+(void* controllerDetails,
  int nNumChannels)
 {
+    SCONTROLLER_DETAILS* pTempControllerDetails=(SCONTROLLER_DETAILS*)controllerDetails;
+
     if (NULL != m_pasControllerDetails)
     {
         delete[] m_pasControllerDetails;
@@ -384,7 +386,7 @@ void CLogObjectJ1939::Der_SetChannelBaudRateDetails
     for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
     {
         //venkat
-        m_pasControllerDetails[nIdx] = controllerDetails[nIdx];
+        m_pasControllerDetails[nIdx] = pTempControllerDetails[nIdx];
         //memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
     }
     m_nNumChannels = nNumChannels;
@@ -392,13 +394,15 @@ void CLogObjectJ1939::Der_SetChannelBaudRateDetails
 
 // To get the channel baud rate info for each channel
 void CLogObjectJ1939::Der_GetChannelBaudRateDetails
-(SCONTROLLER_DETAILS* controllerDetails, int& nNumChannels)
+(void* controllerDetails, int& nNumChannels)
 {
-    if (NULL != m_pasControllerDetails)
+    SCONTROLLER_DETAILS* pTempControllerDetails=(SCONTROLLER_DETAILS*)controllerDetails;
+
+    if (NULL != m_pasControllerDetails && NULL != pTempControllerDetails )
     {
         for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
         {
-            controllerDetails[nIdx] = m_pasControllerDetails[nIdx];
+            pTempControllerDetails[nIdx] = m_pasControllerDetails[nIdx];
             //memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
         }
         nNumChannels = m_nNumChannels;

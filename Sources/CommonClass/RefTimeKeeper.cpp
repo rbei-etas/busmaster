@@ -26,8 +26,11 @@
 #include "RefTimeKeeper.h"
 
 
-UINT64 CRefTimeKeeper::m_qwRefSysTime  = 0;
-UINT64 CRefTimeKeeper::m_qwAbsBaseTime = 0;
+CRefTimeKeeper::CRefTimeKeeper()
+{
+    m_qwRefSysTime = 0;
+    m_qwAbsBaseTime = 0;
+}
 
 void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& currentSystemTime, UINT64 connectTime)
 {

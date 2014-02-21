@@ -300,6 +300,63 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             }
         }
         break;
+
+        case LOG_SECTION_LIN_ID:
+        {
+            UINT unSize = 0;
+            BYTE* pbyConfigData = NULL;
+            SLOGCONFIGDETS* psLogConfigDets = NULL;
+
+            m_ouConfigDetails.bGetData(LOG_CONFIG_DETS, (void**)(&psLogConfigDets));
+
+            //FIRST CALCULATE SIZE REQUIRED
+            unSize += sizeof(BYTE);//Configuration version
+            if (psLogConfigDets != NULL)
+            {
+
+                //Filter info size
+                SFILTERAPPLIED_LIN* psFilterConfigured = NULL;
+                m_ouConfigDetails.bGetData(FILTER_CONFIG_DETS, (void**)(&psFilterConfigured));
+
+                unSize += sizeof (USHORT); // Log file count
+                for (UINT i = 0; i < psLogConfigDets->m_unCount; i++)
+                {
+                    //log info size
+                    SLOGINFO sLogInfo;
+                    unSize += sLogInfo.unGetSize();
+
+                    /* CModuleFilterArray* pModuleFilterArray =
+                         (&(psLogConfigDets->m_asLogFileDets[i].m_omFilter));
+                     unSize += unGetFilterSize(pModuleFilterArray, psFilterConfigured);*/
+                }
+                //CALCULATING SIZE ENDS
+
+                //NOW UPDATE THE VALUES
+                pbyConfigData = new BYTE[unSize];
+                BYTE* pbyTemp = pbyConfigData;
+
+                BYTE byVersion = 0x1;
+                COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
+
+                memcpy(pbyTemp, &(psLogConfigDets->m_unCount), sizeof (USHORT));
+                pbyTemp += sizeof (USHORT);
+
+                for (UINT i = 0; i < psLogConfigDets->m_unCount; i++)
+                {
+                    //log info
+                    SLOGINFO sLogInfo;
+                    vPopulateLogInfo(sLogInfo, psLogConfigDets->m_asLogFileDets[i]);
+                    pbyTemp = sLogInfo.pbGetConfigData(pbyTemp);
+                    //Filter info size
+                    /*CModuleFilterArray* pomFilterArray = &(psLogConfigDets->m_asLogFileDets[i].m_omFilter);
+                    pbyTemp = pbyGetFilterConfig(pbyTemp, pomFilterArray, psFilterConfigured);*/
+                }
+                //Now update the parameter out pointer
+                lpData = pbyConfigData;
+                nStreamLength = unSize;
+            }
+        }
+        break;
         case SIMSYS_SECTION_ID:
         {
 

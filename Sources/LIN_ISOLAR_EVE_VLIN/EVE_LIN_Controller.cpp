@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include "EVE_LIN_Controller.h"
 
+
 int InitializeLIN()
 {
     enum UDPSocketType socketType;
@@ -30,6 +31,14 @@ int InitializeLIN()
         printf("Initialize: Initialization failed \n");
         return -1;
     }
+
+    unsigned int portData_LoopBack = 51113;            // default UDP port for Transmission operations
+    socketType = socketData_LoopBack;
+    if (InitializeUDP(socketType, portData_LoopBack) < 0)
+    {
+        printf("Initialize: Initialization failed \n");
+        return -1;
+    }
     printf("Initialize: SocketUDP Initialization successfull... \n");
 
     return 0;
@@ -41,19 +50,39 @@ void CleanUpLIN()
     CleanUpUDP();
 }
 
-int ReceiveLINMessageFromClient( sTLIN_FRAME* stLinFrame)
+int ReceiveLINMessageFromClient( sTLIN_FRAME* stLinFrame, int* udpReadSize)
 {
     char udpBuffer[sizeof(sTLIN_FRAME)];
-    int udpReadSize = 0;
+    //    int udpReadSize = 0;
+    int retval = NO_UDP_DATA;
 
     /*************************  Get from BusmasterClient serialized CAN message **********************************/
-    udpReadSize = ReadUDPData(udpBuffer, sizeof(sTLIN_FRAME));
-    if (udpReadSize < 0)
+
+    *udpReadSize = ReadUDPLoopBack(udpBuffer, sizeof(sTLIN_FRAME));
+    retval = TX_LOOPBACK_UDP_DATA;
+
+    if (*udpReadSize <= 0)
     {
-        printf("ReadLINMessageFromClient: No UDP messages caught! \n");
-        return -1;
+        retval = NO_UDP_DATA;
+        *udpReadSize = ReadUDPData(udpBuffer, sizeof(sTLIN_FRAME));
+
+        if (*udpReadSize < 0)
+        {
+            printf("ReadCANMessageFromClient: No UDP messages caught! \n");
+            return -1;
+        }
+        else if(*udpReadSize == 1)
+        {
+            retval = RX_UDP_PID;
+
+        }
+        else
+        {
+            retval = RX_UDP_DATA;
+        }
     }
-    else if (udpReadSize > 0)
+
+    if (*udpReadSize > 0)
     {
         /********************** Parse CAN Msg *******************/
         memcpy((char*)stLinFrame, udpBuffer,sizeof(sTLIN_FRAME));
@@ -62,7 +91,8 @@ int ReceiveLINMessageFromClient( sTLIN_FRAME* stLinFrame)
     {
         return 0; // Timeout, no messages
     }
-    return udpReadSize;
+
+    return retval;
 }
 
 int SendLINMessageToClient( const sTLIN_FRAME* stLinFrame)

@@ -18,6 +18,7 @@
 enum UDPSocketType
 {
     socketData_Tx = 1,
-    socketData_Rx = 2
+    socketData_Rx = 2,
+    socketData_LoopBack = 3
 };
 #endif /* COMMON_H_ */

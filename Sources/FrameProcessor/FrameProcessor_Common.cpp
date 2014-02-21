@@ -120,6 +120,7 @@ CFrameProcessor_Common::CFrameProcessor_Common()
     // PTV [1.6.4]
     m_bIsDataLogged = FALSE;
     m_bIsJ1939DataLogged = FALSE;
+    m_bIsLINDataLogged = FALSE;
 }
 
 CFrameProcessor_Common::~CFrameProcessor_Common()
@@ -201,7 +202,7 @@ void CFrameProcessor_Common::InitTimeParams(void)
     SYSTEMTIME CurrSysTime;
     UINT64 unAbsTime;
     CreateTimeModeMapping(CurrSysTime, unAbsTime);
-    CRefTimeKeeper::vSetTimeParams(CurrSysTime, unAbsTime);
+    m_ouRefTimer.vSetTimeParams(CurrSysTime, unAbsTime);
 }
 
 
@@ -346,6 +347,10 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
     {
         m_bIsJ1939DataLogged = FALSE;
     }
+    else if(eBus == LIN)
+    {
+        m_bIsLINDataLogged = FALSE;
+    }
 
     USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
 
@@ -366,6 +371,11 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
             else if(eBus == J1939)
             {
                 m_bIsJ1939DataLogged = FALSE;
+            }
+
+            else if(eBus == LIN)
+            {
+                m_bIsLINDataLogged = FALSE;
             }
         }
         for (USHORT i = 0; i < ushBlocks; i++)
@@ -399,6 +409,11 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
         else if(eBus == J1939)
         {
             m_bIsJ1939DataLogged = FALSE;
+        }
+
+        else if(eBus == LIN)
+        {
+            m_bIsLINDataLogged = FALSE;
         }
     }
     return hResult;
@@ -607,6 +622,10 @@ HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
     {
         pchXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Log/Log_Block";
     }
+    else if(eBus == LIN)
+    {
+        pchXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Log/Log_Block";
+    }
     pXpathPtr = xmlUtils::pGetNodes(pDoc, pchXpath);
     xmlNodePtr pNodePtr;
 
@@ -694,6 +713,11 @@ BOOL CFrameProcessor_Common::IsDataLogged(void)
     return m_bIsDataLogged;
 }
 
+BOOL CFrameProcessor_Common::IsLINDataLogged(void)
+{
+    return m_bIsLINDataLogged;
+}
+
 BOOL CFrameProcessor_Common::IsJ1939DataLogged(void)
 {
     return m_bIsJ1939DataLogged;
@@ -712,6 +736,11 @@ void CFrameProcessor_Common::DisableDataLogFlag(void)
 void CFrameProcessor_Common::DisableJ1939DataLogFlag(void)
 {
     m_bIsJ1939DataLogged = FALSE;
+}
+
+void CFrameProcessor_Common::DisableLINDataLogFlag(void)
+{
+    m_bIsLINDataLogged = FALSE;
 }
 // PTV [1.6.4] END
 BOOL CFrameProcessor_Common::IsFilterON(void)
@@ -866,8 +895,8 @@ void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& omList)
 }
 
 void CFrameProcessor_Common::SetChannelBaudRateDetails
-(SCONTROLLER_DETAILS* controllerDetails,
- int nNumChannels)
+(void* controllerDetails,
+ int nNumChannels,ETYPE_BUS eBus)
 {
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
     if (NULL != pomCurrArray)

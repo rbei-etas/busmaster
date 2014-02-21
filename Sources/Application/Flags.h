@@ -32,6 +32,7 @@ typedef enum eCANMONITORFLAG
 {
     LOGTODISPLAY = 0,
     LOGTOFILE,
+    LOGTOFILE_LIN,
     REPLAYMODE,
     REPLAYFILESELECTED,
     LOGFILTER,
@@ -72,7 +73,8 @@ typedef enum eCANMONITORFLAG
     SEND_SIGNAL_MSG,
     ACTIVATED_J1939,
     REPLAYFILTER,
-    FLEXRAYSENDMSG
+    FLEXRAYSENDMSG,
+    ADRESSCLAIM_J1939
 };
 typedef enum eFLEXRAYMONITORFLAG
 {
@@ -139,6 +141,7 @@ private:
     BOOL m_bSendSignalMSg;
     BOOL m_bActivatedJ1939;     // Current active bus for configuration.
     BOOL m_bFlexRaySendMsg;
+    BOOL m_bJAddressClaimed;
 
     /* FLEXRAY Flags */
     BOOL m_bFlexConnected;

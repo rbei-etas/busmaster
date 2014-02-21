@@ -95,17 +95,17 @@ USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void* pMsgDB)
 
 void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
 {
-    /*sTxWndPlacement.flags = 1;
+    sTxWndPlacement.flags = 1;
     sTxWndPlacement.length = 44;
     sTxWndPlacement.ptMaxPosition.x = 0;
     sTxWndPlacement.ptMaxPosition.x = 0;
     sTxWndPlacement.ptMinPosition.x = 0;
     sTxWndPlacement.ptMinPosition.y = 0;
-    sTxWndPlacement.rcNormalPosition.top = 1;
-    sTxWndPlacement.rcNormalPosition.bottom = 661;
-    sTxWndPlacement.rcNormalPosition.left = 4;
-    sTxWndPlacement.rcNormalPosition.right = 864;
-    sTxWndPlacement.showCmd = 1;*/
+    sTxWndPlacement.rcNormalPosition.top = 3;
+    sTxWndPlacement.rcNormalPosition.bottom = 612;
+    sTxWndPlacement.rcNormalPosition.left = 11;
+    sTxWndPlacement.rcNormalPosition.right = 883;
+    sTxWndPlacement.showCmd = 1;
 }
 int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
 {
@@ -196,6 +196,12 @@ int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
                 if (sTxWndPlacement.rcNormalPosition.top != -1 &&
                         sTxWndPlacement.length != 0)
                 {
+                    pFrameWindow->SetWindowPlacement(&sTxWndPlacement);
+                }
+                else
+                {
+                    CTxLINDataStore::ouGetTxLINDataStoreObj().bSetTxData(TX_WINDOW_PLACEMENT, (void**)&sTxWndPlacement);
+                    // Set the defaul position
                     pFrameWindow->SetWindowPlacement(&sTxWndPlacement);
                 }
 

@@ -36,6 +36,9 @@ typedef queue<CString> CStringQueue;
 static CStringQueue sg_odStringQueue;
 
 extern CCANMonitorApp theApp;
+
+#define def_MAXIMUM_TRACE_LINES             5000
+
 /////////////////////////////////////////////////////////////////////////////
 // CNotificWnd
 
@@ -321,6 +324,10 @@ void CNotificWnd::vAddString(CString omStr)
     if (! omStr.IsEmpty())
     {
         LPLONG lpPreviousCount = NULL;
+        if ( m_omListBox.GetCount() > def_MAXIMUM_TRACE_LINES )
+        {
+            m_omListBox.DeleteString(0);
+        }
         m_omListBox.AddString(omStr);
         // Set horizontal extent of the list box to max string available
         // so that user can scroll

@@ -31,7 +31,7 @@
 
 // Application version is added in the version 1.1
 #define VERSIONLINE           "/************* Version 1.1 **************/"
-#define APPLICATION_VERSION   "/************* BUSMASTER [2.1.0] ************************/"
+#define APPLICATION_VERSION   "/************* BUSMASTER [2.2.0] ************************/"
 #define OLDVERSIONLINE           "/************* Version 1.0 **************/"
 #define PROJECT_TABLE_SIG     "  PROJECT_TABLE :: PROJECT_TABLE "
 #define DB_END_SIGNATURE      "/*********** FrameFileDB_END ************/"

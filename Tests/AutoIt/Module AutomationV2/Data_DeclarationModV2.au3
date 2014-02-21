@@ -122,6 +122,7 @@ $WIN_Signal_Details="Signal Details"
 $dlgsigDetails="Signal Details"
 $WIN_Signal_Desc="Enter Value Descriptor and Value"
 $dlgsigDesc="Enter Value Descriptor and Value"
+$WIN_DBSaveAs="Save As..."
 $WIN_J1939SaveAs="Save As"
 $TVC_DBFile_DBEditor="[CLASS:SysTreeView32; INSTANCE:1]"						; tree view instance in database editor window
 $tvInst1="[CLASS:SysTreeView32; INSTANCE:1]"						; tree view instance in database editor window
@@ -168,7 +169,11 @@ $BTN_DeleteSig_DBEditor=1077													; controlID for'Delete Signal' button i
 $sigDelctrlID=1077													; controlID for'Delete Signal' button in the Database Editor' window
 $BTN_Yes_CHGSigrange=6												; controlID for 'Yes' button in "changing signal range" warning pop up
 $sigRangeYesctrlID=6												; controlID for 'Yes' button in "changing signal range" warning pop up
+$BTN_Yes_SaveDB=6													; ControlID for 'Yes' button
 $BTN_No_SaveDB=7													; ControlID for 'No' button
+$RBTN_Motorola_SigDetails=1307										; Motorola radio button control ID
+$Edit_FName_SaveAsDB=1152											; Filename edit control ID in Save As window
+$BTN_SaveInst_SaveAsDB="[CLASS:Button; INSTANCE:2]"					; Save button control ID in Save As window
 $LVC_SigDet_DBeditor="[CLASS:SysListView32; INSTANCE:1]"					; List View instance for Signal Details in database editor window
 $sigDetlvInst1="[CLASS:SysListView32; INSTANCE:1]"					; List View instance for Signal Details in database editor window
 $LVC_SigDesc_SigDesc="[CLASS:SysListView32; INSTANCE:2]"					; List View instance for Signal Description in database editor window
@@ -190,8 +195,21 @@ $TXT_DupSigName_BM="Signal name already exists!"						; Duplicate signal name te
 $BTN_OKDupSigName_BM=2													; OK button control ID in Duplicate signal name warning dialog
 $TXT_DupStartBit_BM="Duplicate signal start bit value"					; Duplicate signal start bit text
 $BTN_DupStartBit_BM=2													; OK button control ID in Duplicate signal start bit warning dialog
+$TXT_InvStartBit="Please enter a valid number between 0 and 7."			; Invalid Start Bit text
+$BTN_OKInvStartBit_BM=2													; OK button control ID in  Invalid Start Bit warning dialog
 $TXT_InvSignalLen_BM="Please enter a valid number between 1 and 64."	; Invalid signal length text
 $BTN_InvSignalLen_BM=2													; OK button control ID in Invalid signal length warning dialog
+$TXT_InvEndBit_BM="End bit of signal is out of message length"			; Invalid end bit text
+$BTN_InvEndBit_BM=2														; OK button control ID in Invalid end bit warning dialog
+$TXT_EmptySigDesc_BM="Signal Description cannot be emtpy!"				; Empty signal description text
+$BTN_OKEmptySigDesc_BM=2												; OK button control ID in Empty signal description warning dialog
+$TXT_DupSigDesc_BM="Signal Descriptor already exists!"					; Duplicate signal descriptor text
+$BTN_OKDupSigDesc_BM=2													; Ok button control ID in Duplicate signal descriptor warning dialog
+$TXT_InvSigValRange_BM="Signal value is out of range!"					; Signal value out of range text
+$BTN_OKInvSigValRange_BM=2												; Ok button control ID in Signal value out of range warning dialog
+$TXT_ReduceMsgLen_BM="You have signals defined for this message for previous message length."	; Reducing message length warning dialog
+$BTN_YesReduceMsgLen_BM=6												; 'Yes' button control ID in reducing message length warning dialog
+$BTN_NoReduceMsgLen_BM=7												; 'No' button control ID in reducing message length warning dialog
 ;==============================================
 ; Hardware Selection
 ;==============================================
@@ -428,11 +446,11 @@ $TimeHandler_Index=1															; Time handler index in handler details list 
 $KeyHandler_Index=2																; Key handler index in handler details list view
 $ErrorHandler_Index=3															; Error handler index in handler details list view
 $ToolBar_NodeSim=238															; Control ID for Node Simulation tool bar
-$Icon_BuildLoadAll_Index=2														; Build and Load All index in Node Simulation tool bar
-$Icon_UnloadAll_Index=1															; Unload All index in Node Simulation tool bar
-$Icon_AllKeyHandlers_Index=7													; Enable/Disable All key Handlers index in Node Simulation tool bar
-$Icon_TimeHandlers_Index=6														; Enable/Disable Time Handlers index in Node Simulation tool bar
-$Icon_MsgHandlers_Index=5														; Enable/Disable Msg Handlers index in Node Simulation tool bar
+$Icon_BuildLoadAll_Index=3														; Build and Load All index in Node Simulation tool bar
+$Icon_UnloadAll_Index=2															; Unload All index in Node Simulation tool bar
+$Icon_AllKeyHandlers_Index=8													; Enable/Disable All key Handlers index in Node Simulation tool bar
+$Icon_TimeHandlers_Index=7														; Enable/Disable Time Handlers index in Node Simulation tool bar
+$Icon_MsgHandlers_Index=6														; Enable/Disable Msg Handlers index in Node Simulation tool bar
 $TXT_DelIncF="You are about to delete the #include."							; Text in the delete include file pop up message
 $BTN_Yes_DelIncF=6																; Control ID for 'Yes' button in the delete include file pop up message
 $WIN_EnterHeaderF="Enter Header File"											; Window title for Enter Header File
@@ -497,16 +515,27 @@ $LSTB_Details_TraceWinInfo="[CLASS:ListBox; INSTANCE:2]"
 $TestAutomationMenu="T&est Automation"
 $TestAutomationEditMenu="&Editor"
 $TestAutomationExeMenu="E&xecutor"
-$TestAutomationFile="&File"
+$TestAutomationFileMenu="&File"
+$TestAutomationNewMenu="&New"
 $TestAutomationVal="&Validate"
 $DLG_ValSuccess="Validation Success"
 $DLG_ValFail="Validation Failed"
 $BTN_OK_ValSuccess=2																; Control ID for 'OK' button in Validation success dialog
+$TVC_TestAuto_TestEditor="[CLASS:SysTreeView32; INSTANCE:1]"						; Tree viewe instance in test automation editor
+$LVC_TestAuto_TestEditor="[CLASS:SysListView32; INSTANCE:1]"						; List View instance of test editor details
 $TVC_TestSuite_TestExecutor="[CLASS:SysTreeView32; INSTANCE:1]"						; tree view instance in test suite executor window
 $TestExe_AddMenu="a"																; Add menu in test executor window
 $TestExe_ExecuteMenu="e"
 $LVC_TestCaseResult_TestExe="[CLASS:SysListView32; INSTANCE:1]"						; List View instance of text executor window
-
+$TEDBPathIndex=7																	; DB path index in the details list view
+$TEReportPathIndex=7																; Report file path index in the details list view
+$BTN_Confirm_TEditor=3004															; Confirm button Control ID
+$WIN_TestExeOpen="Open"
+$TXT_XmlFPath_TestExeOpen=1152														; File path control ID in open window
+$BTN_Open_TestExeOpen="[CLASS:Button; INSTANCE:2]"									; Open button instance
+$Win_TestSetup_TestEditor="New TestSetup File"
+$Edit_FName_NewTestSetupFile=1152
+$BTN_Save_NewTestSetupFile="[CLASS:Button; INSTANCE:2]"
 
 ;==============================================
 ;Message Interpretation Window
@@ -524,13 +553,13 @@ $BTN_OK_Error=2
 ;==============================================
 ;Toolbar
 ;==============================================
-$Icon_EnableLog_Index=9
+$Icon_EnableLog_Index=6
 ;$Icon_ConDiscon_Index=4
 $Icon_ConDiscon_Index=1
-$Icon_RplyStep_Index=18
-$Icon_RplySkip_Index=19
-$Icon_RplyStart_Index=20
-$Icon_RplyStop_Index=21
+$Icon_RplyStep_Index=15
+$Icon_RplySkip_Index=16
+$Icon_RplyStart_Index=17
+$Icon_RplyStop_Index=18
 ;==============================================
 ;Data declaration for Window/Dialog Title
 ;==============================================
@@ -618,6 +647,7 @@ $AssocCANDB="&Associate"
 $DissocCANDB="&Dissociate"
 $openMenu="&Open"
 $saveMenu="&Save"
+$DBSaveAsMenu="Sa&ve As"
 $closeMenu="&Close"
 $saveImportMenu="Save and Im&port"
 $configureMenu="&Configure"
@@ -840,7 +870,7 @@ $BTN_CPPOut_CAPL2CPP=1012
 $SelectDBC_CAPL2CPP="Select CANoe Database File"
 $WIN_SelctDBCWait_CAPL2CPP=2
 $SelectDBCFileCtrlId=2
-$Capl2CppLogFile="can_db_v4xlog.txt - Notepad"
+$Capl2CppLogFile="CAPL2CPPlog.txt - Notepad"
 $BTN_Add_DBC_CAPL2CPP=1004
 $BTN_Change_DBF_Path=1005
 $BTN_Convert_CAPL2CPP=1013
@@ -895,3 +925,22 @@ $BTN_SelectOne=1007                                                             
 $LSTB_SelectedFields=1005                                                                ;Control id for selected fields listbox
 $BTN_DeleteOneField=1008                                                                 ;Control id for deleting one field
 $BTN_DeleteAllField=1009                                                                 ;Control id for deleting all the field
+
+
+
+
+;=================================================================================================
+ ;Data Declaration for FlexRay
+;==================================================================================================
+$FlexRayMenu="Flex&Ray"                                                               ;FlexRay menu item
+$ClusterConfigMenu="C&luster Configuration"                                           ;Cluster Configuration menu item
+$WIN_ClusterConfiguration="Cluster Configuration"
+$BTN_SelectFibexFile=1378                                                             ;Browse button for Select Fibex file
+$WIN_SelectFibex="Select A FIBEX File"                                                ;Window for selecting fibex file
+$TXT_SelectFibexPath=1152                                                             ;control id for Edit path for file name in select fibex file
+$BTN_OpenFibex="[CLASS:Button; INSTANCE:2]"                                           ;Instance for Open button in select fibex file
+$LSTC_SelectECU=1380                                                                   ;Control id for ECU listview
+$TXT_EditFibexPath=1379                                                                ;Control id for Edit Fibex file path
+$BTN_OK_ClusterConfig=1                                                                ;Control id for OK Button
+
+

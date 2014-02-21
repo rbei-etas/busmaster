@@ -1191,6 +1191,9 @@
 #define IDM_CONFIGURE_LIN_CHANNEL       62485
 #define IDM_LIN_CONNECT                 62486
 #define ID_LIN_CLUSTER_CONFIG           62487
+#define IDM_CFGN_LIN_LOG                62488
+#define IDI_ICON_LIN_LOG_OFF            62490
+#define IDM_LOG_LIN_ON_OFF              62491
 
 // Next default values for new objects
 //

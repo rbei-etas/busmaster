@@ -312,6 +312,8 @@ public:
     HRESULT DILIJ_SetCallBckFuncPtr(DWORD dwClientId, ETYPE_CLBCK_FN eClBckFnType,
                                     void* pvClBckFn);
 
+    HRESULT DILIJ_ClaimAdress();
+
 };
 
 #endif //DILI_J1939_H__INCLUDED_

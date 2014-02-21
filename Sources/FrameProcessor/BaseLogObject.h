@@ -27,6 +27,9 @@
 #define BASELOGOBJECT_H__INCLUDED_
 
 #include "DataTypes/Log_Datatypes.h"
+#include "DataTypes\Cluster.h"
+#include "Application\FibexConfigurationDlg.h"
+
 
 class CBaseLogObject
 {
@@ -155,17 +158,19 @@ public:
     void SetDatabaseFiles(const CStringArray& omList);
 
     // To update the channel baud rate info to logger
-    virtual void Der_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-            int nNumChannels) = 0;
+    virtual void Der_SetChannelBaudRateDetails(void* controllerDetails,
+            int nNumChannels) ;
+
     // To update the channel baud rate info to logger
-    void SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-                                   int nNumChannels);
+    void SetChannelBaudRateDetails(void* controllerDetails,
+                                   int nNumChannels, ETYPE_BUS eBus);
     // To update the channel baud rate info to logger
-    virtual void Der_GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-            int& nNumChannels) = 0;
+    virtual void Der_GetChannelBaudRateDetails(void* controllerDetails,
+            int& nNumChannels) =0;
     // To get the channel baud rate
-    void GetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
+    void GetChannelBaudRateDetails(void* controllerDetails,
                                    int& nNumChannels);
+
 };
 
 #endif // BASELOGOBJECT_H__INCLUDED_

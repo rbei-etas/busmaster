@@ -65,6 +65,8 @@ CExecuteManager::CExecuteManager(ETYPE_BUS eBus):
     m_psLastNodeObject(NULL),
     m_odSetResetTimer(eBus)
 {
+    m_eBusStatus = BUS_DISCONNECTED;
+
     m_eBus = eBus;
     //for read dll msg thread
     g_bReadDllMsg = TRUE;
@@ -671,6 +673,12 @@ void CExecuteManager::vManageOnKeyHandler(UCHAR ucKey)
 
 void CExecuteManager::vManageBusEventHandler(eBUSEVEHANDLER eBusEvent)
 {
+    m_eBusStatus =BUS_DISCONNECTED;
+    if ( BUS_CONNECT == eBusEvent )
+    {
+        m_eBusStatus = BUS_CONNECTED;
+    }
+
     PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
     while(psTempNodeObject!=NULL)
     {
@@ -696,14 +704,11 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
     {
         if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE)
         {
-
-            sNODEINFO* sNodeInfo = new sNODEINFO(m_eBus);
-            psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(*sNodeInfo);
-            if (sNodeInfo->m_dwClientId == dwClientId)
+            if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
             {
                 psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*sRxMsgInfo);
             }
-            delete sNodeInfo;
+
         }
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }
@@ -711,7 +716,7 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
 }
 
 /***************************************************************************************
-    Function Name    :  vManageOnMessageHandlerLIN_
+    Function Name    :  vManageOnMessageHandlerLIN
     Input(s)         :  Message structure
     Output           :
     Functionality    :  Calls all Message handlers for a Message
@@ -719,23 +724,18 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
     Author(s)        :  Anish kumar
     Date Created     :  19.12.05
 ***************************************************************************************/
-void CExecuteManager::vManageOnMessageHandlerLIN_(PSTLIN_TIME_MSG sRxMsgInfo, DWORD& dwClientId)
+void CExecuteManager::vManageOnMessageHandlerLIN(PSTLIN_TIME_MSG sRxMsgInfo, DWORD& dwClientId)
 {
-    int i = 0;
     EnterCriticalSection(&m_CritSectPsNodeObject);
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
     while(psTempNodeObject != NULL)
     {
         if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE)
         {
-
-            sNODEINFO* sNodeInfo = new sNODEINFO(m_eBus);
-            psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(*sNodeInfo);
-            if (sNodeInfo->m_dwClientId == dwClientId)
+            if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
             {
                 psTempNodeObject->m_psExecuteFunc->vWriteInQMsgLIN(*sRxMsgInfo);
             }
-            delete sNodeInfo;
         }
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }
@@ -756,9 +756,7 @@ void CExecuteManager::vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR 
     PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
     while(psTempNodeObject!=NULL)
     {
-        sNODEINFO sNodeInfo(m_eBus);
-        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
-        if (sNodeInfo.m_dwClientId == dwClientId)
+        if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
         {
             if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXERROR_HANDLER) == TRUE)
             {
@@ -786,9 +784,7 @@ void CExecuteManager::vManageOnErrorHandlerLIN(SERROR_INFO_LIN ouErrorInfo, DWOR
     PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
     while(psTempNodeObject!=NULL)
     {
-        sNODEINFO sNodeInfo(m_eBus);
-        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
-        if (sNodeInfo.m_dwClientId == dwClientId)
+        if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
         {
             if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXERROR_HANDLER) == TRUE)
             {
@@ -816,9 +812,7 @@ void CExecuteManager::vManageOnDataConfHandlerJ1939(DWORD dwClientId, UINT32 unP
     while((psTempNodeObject != NULL) && (bContinue == TRUE))
     {
         //Since shRemoteLc indicates Receiver, compare the node LCN with it
-        sNODEINFO sNodeInfo(J1939);
-        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
-        if(dwClientId == sNodeInfo.m_dwClientId)
+        if(dwClientId == psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId())
         {
             psTempNodeObject->m_psExecuteFunc->vExecuteOnDataConfHandlerJ1939(unPGN, bySrc, byDest, bSuccess);
             bContinue = FALSE;
@@ -2117,9 +2111,7 @@ CExecuteFunc* CExecuteManager::pouGetExecuteFunc(DWORD dwClient)
     while((psTempNodeObject != NULL)
             && (psTempNodeObject->m_psExecuteFunc != NULL))
     {
-        sNODEINFO sNodeInfo(m_eBus);
-        psTempNodeObject->m_psExecuteFunc->vGetNodeInfo(sNodeInfo);
-        if (sNodeInfo.m_dwClientId == dwClient)
+        if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClient)
         {
             Result = psTempNodeObject->m_psExecuteFunc;
             break;

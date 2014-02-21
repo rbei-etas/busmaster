@@ -29,9 +29,9 @@
     <p/>
     <p><b>4. Connect to Network:</b></p>
     <p>Once the Cluster &amp; Controllers are properly configured BUSMASTER can be connected to Network using <b>LIN-&gt;Connect</b>. menu or the LIN Connect Tool bar Button as shown in following figure.</p>
-    <p><image href="../images/LIN_Connect.bmp"/></p>
-    <p/>
+    <p><image href="../images/LIN_Connect.PNG"/></p>
     <p><b>5. Monitoring Messages:</b></p>
     <p>BUSMASTER Message Window can be used to monitor the LIN messages of LIN Network.Refer <b>LIN Message Window</b> section for more information.</p>
+    <p/>
   </body>
 </topic>

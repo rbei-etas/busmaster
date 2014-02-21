@@ -37,7 +37,7 @@ private:
     void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_CAN* CurrDataCAN);
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_CAN* CurrDataCAN);
 public:
-    CFormatMsgCAN(void);
+    CFormatMsgCAN(CRefTimeKeeper& ouRefTimeKeeper);
     ~CFormatMsgCAN(void);
     void vFormatCANDataMsg(STCANDATA* pMsgCAN,
                            SFORMATTEDDATA_CAN* CurrDataCAN,

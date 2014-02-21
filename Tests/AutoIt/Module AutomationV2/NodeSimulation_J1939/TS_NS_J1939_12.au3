@@ -1,6 +1,6 @@
 ;==================================================================Test Cases/Test Data ===========================================================================
 ; Critical (C)		:		Y
-; TestCase No.		:		TS_NS_J1939_03
+; TestCase No.		:		TS_NS_J1939_012
 ; TestCases			:		Adding a message handler for the range of message Ids
 ; Test Data			:		cfxNSJ1939_12.cfx
 ; Test Setup		:		"A defined message sent across the J1939 Bus. Execute the message Handler"
@@ -19,6 +19,8 @@ Local $SrcAddr=0,$DestAddr=0,$Dlc=0,$DataBytes=0,$msgType=0,$TxRx=0
 if winexists($WIN_BUSMASTER) then
     _loadConfig("cfxNSJ1939_12.cfx")
 	sleep(1000)
+	_EnableHex()
+	Sleep(1000)
 	_ActivateJ1939()                                                                  ;Activate J1939 Message window
 	sleep(1000)
 	_J1939NodeSimConfigMenu()
@@ -82,7 +84,7 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect()																	; Connect the tool
 	Sleep(500)
 
-	_J1939tMsgWin("Data","[0x0]TSCee1",0,50)
+	_J1939tMsgWin("Data","[0x0]Msg_Rqst",0,50)
 	 sleep(2000)
 	 _ConnectDisconnect()
 	  _DisableOverwriteMode()
@@ -100,6 +102,7 @@ if winexists($WIN_BUSMASTER) then
 	    $Data5=_GetJ1939MsgWinInfo(4)
 	    $Data6=_GetJ1939MsgWinInfo(5)
 
+
         for $i=0 to 11
 			ConsoleWrite("Data1 " &$Data1[$i] & @CRLF)
 		    ConsoleWrite("Data2 " &$Data2[$i] & @CRLF)
@@ -108,59 +111,64 @@ if winexists($WIN_BUSMASTER) then
 		    ConsoleWrite("Data5 " &$Data5[$i] & @CRLF)
 	     Next
 
-;~      If($Data1[6]=00 And $Data3[6]=40 And $Data5[6]=40) Then
-;~ 		   $SrcAddr=1
-;~ 	    Else
-;~ 		  $SrcAddr=0
-;~ 	    EndIf
-;~ 	   If($Data1[7]=40) Then
-;~ 		  $DestAddr=1
-;~ 	   Else
-;~ 		 $DestAddr=0
-;~ 	   EndIf
+        If($Data1[6]=00 And $Data3[6]=50 And $Data5[6]=50) Then
+		   $SrcAddr=1
+	    Else
+		   $SrcAddr=0
+	    EndIf
+	    If($Data1[7]=50 And $Data3[7]=01 And $Data5[7]=01) Then
+			$DestAddr=1
+	    Else
+		    $DestAddr=0
+	    EndIf
 
-;~ 	   If($Data1[9]="Tx" And $Data3[9]="Rx" And $Data5[9]="Rx") Then
-;~ 		 $TxRx=1
-;~ 	   Else
-;~ 		 $TxRx=0
-;~     EndIf
-;~     If($Data1[10]=8 And $Data3[10]=5 And $Data5[10]=5) Then
-;~ 		 $Dlc=1
-;~ 	   Else
-;~ 		 $Dlc=0
-;~    EndIf
-;~ 	  If($Data1[11]="1000000000000000" And $Data3[11]="0C222D384E" And $Data5[11]="0C222D384E") Then
-;~ 		$DataBytes=1
-;~    Else
-;~ 		$DataBytes=0
-;~ 	  EndIf
-;~     If($Data1[5]="DATA" And $Data3[5]="DATA" And $Data5[5]="DATA") Then
-;~ 		$msgType=1
-;~ 	   Else
-;~ 		$msgType=0
-;~ 	  EndIf
- ;  EndIf
+	    If($Data1[9]="Tx" And $Data3[9]="Rx" And $Data5[9]="Rx") Then
+		    $TxRx=1
+	    Else
+		    $TxRx=0
+        EndIf
 
+		ConsoleWrite("$Data3[9]" & $Data3[9] & @CRLF)
+		ConsoleWrite("$Data5[9]" & $Data5[9] & @CRLF)
 
-;~ 	ConsoleWrite("$SrcAddr" & $SrcAddr & @CRLF)
-;~ 	ConsoleWrite("$DestAddr" & $DestAddr & @CRLF)
-;~ 	ConsoleWrite("$TxRx" & $TxRx & @CRLF)
-;~ 	ConsoleWrite("$Dlc" & $Dlc & @CRLF)
-;~ 	ConsoleWrite("$DataBytes" & $DataBytes & @CRLF)
-;~ 	ConsoleWrite("$msgType" & $msgType & @CRLF)
-
-;~  If($SrcAddr=1 And $DestAddr=1 And $TxRx=1 And $Dlc=1 And $DataBytes=1 And $msgType=1) Then
-;~ 		_WriteResult("Pass","TS_J1939Node_11")
-;~   Else
-;~ 	   _WriteResult("Fail","TS_J1939Node_11")
-;~ 	EndIf
-	EndIf
+        If($Data1[10]=8 And $Data3[10]=5 And $Data5[10]=5) Then
+			$Dlc=1
+	     Else
+		    $Dlc=0
+        EndIf
+	    If($Data1[11]="1000000000000000" And $Data3[11]="0C222D384E" And $Data5[11]="0C222D384E") Then
+		    $DataBytes=1
+        Else
+		    $DataBytes=0
+	    EndIf
+        If($Data1[5]="DATA" And $Data3[5]="DATA" And $Data5[5]="DATA") Then
+			$msgType=1
+		Else
+		    $msgType=0
+	    EndIf
+    EndIf
 EndIf
-;~ $isAppNotRes=_CloseApp()															; Close the app
 
-;~ if $isAppNotRes=1 Then
-;~ 	_WriteResult("Warning","TS_J1939Node_11")
-;~ EndIf
+
+
+	ConsoleWrite("$SrcAddr" & $SrcAddr & @CRLF)
+	ConsoleWrite("$DestAddr" & $DestAddr & @CRLF)
+	ConsoleWrite("$TxRx" & $TxRx & @CRLF)
+	ConsoleWrite("$Dlc" & $Dlc & @CRLF)
+	ConsoleWrite("$DataBytes" & $DataBytes & @CRLF)
+	ConsoleWrite("$msgType" & $msgType & @CRLF)
+
+ If($SrcAddr=1 And $DestAddr=1 And $TxRx=1 And $Dlc=1 And $DataBytes=1 And $msgType=1) Then
+		_WriteResult("Pass","TS_J1939Node_11")
+  Else
+	   _WriteResult("Fail","TS_J1939Node_11")
+ EndIf
+
+$isAppNotRes=_CloseApp()															; Close the app
+
+if $isAppNotRes=1 Then
+	_WriteResult("Warning","TS_J1939Node_11")
+EndIf
 
 
 ConsoleWrite("****End : TS_NS_J1939_12.au3****"&@CRLF)

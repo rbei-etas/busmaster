@@ -301,6 +301,16 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
         }
         break;
 
+        case LOGTOFILE_LIN:
+        {
+            if (m_bLogEnable != nValue)
+            {
+                theApp.vSetConfigurationModified();
+            }
+            m_bLogEnable    = nValue ;
+        }
+        break;
+
         case REPLAYMODE:
             m_wReplayMode = (WORD)nValue ;
             break;
@@ -477,6 +487,9 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
         case FLEXRAYSENDMSG:
             m_bFlexRaySendMsg = nValue;
             break;
+        case ADRESSCLAIM_J1939:
+            m_bJAddressClaimed = nValue;
+            break;
         default:
             ASSERT(FALSE); // Invalid flag enum value
     }
@@ -549,6 +562,10 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case LOGTOFILE :
             nRetValue = m_bLogEnable;
             break;
+        case LOGTOFILE_LIN :
+            nRetValue = m_bLogEnable;
+            break;
+
         case REPLAYMODE :
             nRetValue = m_wReplayMode;
             break;
@@ -662,6 +679,9 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case FLEXRAYSENDMSG:
             nRetValue = (int) m_bFlexRaySendMsg;
+            break;
+        case ADRESSCLAIM_J1939:
+            nRetValue = (int) m_bJAddressClaimed;
             break;
         default:
             // Invalid flag enum value

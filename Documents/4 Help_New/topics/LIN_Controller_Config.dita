@@ -20,7 +20,8 @@
     <p>BUSMASTER Can be connected to LIN physical channel using LIN Controller.</p>
     <p>Currently BUSMASTER Supports the following LIN Controllers.</p>
     <p><ol>
-        <li>ETAS ISOLAR-EVE.</li>
+        <li>ETAS BOA (To monitor messages associating LDF file is required for LIN ETAS BOA)</li>
+        <li>ETAS ISOLAR-EVE</li>
         <li>Vector XL</li>
       </ol></p>
     <p><b>Selecting Controller:</b></p>

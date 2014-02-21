@@ -139,6 +139,7 @@ public:
     HRESULT GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime);
     CBaseDIL_CAN* GetICANDIL(void);
     HRESULT GoOnline(BOOL bStart);
+    HRESULT vClaimAddress();
     BOOL bIsOnline(void);
 };
 

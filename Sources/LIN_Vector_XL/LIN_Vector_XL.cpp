@@ -90,7 +90,7 @@ public:
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
-    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
+    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length);
     HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
     HRESULT LIN_StartHardware(void);
     HRESULT LIN_PreStartHardware(void);
@@ -116,6 +116,8 @@ public:
     HRESULT LIN_GetLastErrorString(string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
+    HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
+
     //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     //~MVN
@@ -961,7 +963,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_DeselectHwInterface(void)
     return S_OK;
 }
 
-HRESULT CDIL_LIN_VectorXL::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
+HRESULT CDIL_LIN_VectorXL::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length)
 {
 
     return S_OK;
@@ -992,6 +994,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_SetConfigData(ClusterConfig& ouConfig)
     {
         sg_aodChannels[i].m_unBaudrate = ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate;
         sg_aodChannels[i].m_unLINVersion = nGetProtocolVersion(ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion);
+        sg_aodChannels[i].m_strLinVersion = ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion;
         sg_aodChannels[i].m_unLINMode = XL_LIN_SLAVE ;//XL_LIN_MASTER;
     }
 
@@ -1459,6 +1462,17 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetCurrStatus(s_STATUSMSG& StatusData)
 */
 HRESULT CDIL_LIN_VectorXL::LIN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
+    return S_OK;
+}
+HRESULT CDIL_LIN_VectorXL::LIN_GetConfiguration(sCONTROLLERDETAILSLIN psControllerConfig[], INT& nSize)
+{
+    for ( int i = 0; i < sg_nNoOfChannels; i++ )
+    {
+        psControllerConfig[i].m_strHwUri =  sg_HardwareIntr[i].m_acDescription.c_str();
+        psControllerConfig[i].m_nBaudRate =  sg_aodChannels[i].m_unBaudrate;
+        psControllerConfig[i].m_strProtocolVersion = sg_aodChannels[i].m_strLinVersion;
+    }
+    nSize = sg_nNoOfChannels;
     return S_OK;
 }
 

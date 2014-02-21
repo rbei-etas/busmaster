@@ -420,6 +420,11 @@ USAGEMODE HRESULT DILJ_GoOnline()
     return CNetworkMgmt::ouGetNWManagementObj().GoOnline(TRUE);
 }
 
+USAGEMODE HRESULT DILJ_ClaimAdress()
+{
+    return CNetworkMgmt::ouGetNWManagementObj().vClaimAddress();
+}
+
 /**
  * \brief Stops J1939 network.
  * \req RSI_26_009 - DILJ1939_GoOffline

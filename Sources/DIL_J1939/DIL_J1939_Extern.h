@@ -327,6 +327,8 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFnType,
             void* pvClBckFn);
 
+    USAGEMODE HRESULT DILJ_ClaimAdress();
+
 #ifdef __cplusplus
 }
 #endif

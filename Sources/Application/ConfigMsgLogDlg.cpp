@@ -24,6 +24,7 @@
 #include "Resource.h"
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
 #include "FrameProcessor/BaseFrameProcessor_J1939.h"
+#include "FrameProcessor/BaseFrameProcessor_LIN.h"
 #include "Datatypes/Filter_Datatypes.h"
 #include "DataTypes/Log_DataTypes.h"
 #include "Utility/RadixEdit.h"
@@ -32,6 +33,7 @@
 #include "ConfigMsgLogDlg.h"
 #include "InterfaceGetter.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
+#include "DIL_Interface/BaseDIL_LIN.h"
 #include ".\configmsglogdlg.h"
 //#include "GettextBusmaster.h"
 #include "Utility\MultiLanguageSupport.h"
@@ -41,6 +43,7 @@
 #define BUSMASTER_LOG_ALREADYEXISTS     "Log file: %s is already added to the log configuration list!"
 #define BUSMASTER_CAN_LOGFILENAME       "BUSMASTERLogFile%d.log"
 #define BUSMASTER_J1939_LOGFILENAME     "BUSMASTERLogFile_J1939_%d.log"
+#define BUSMASTER_LIN_LOGFILENAME     "BUSMASTERLogFile_LIN_%d.log"
 #define BUSMASTER_LOG_SELECTION_TITLE   "Select a Log file"
 #define BUSMASTER_LOG_FILTER            "*.log|*.log||"
 #define BUSMASTER_LOG_FILE_EXTENSION    "log"
@@ -94,6 +97,16 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
             m_omControlParam2 = _("Stop on Reception of PGN 0x");
         }
         break;
+        //Shashank
+        case LIN:
+        {
+            m_pouLoggerLIN=(CBaseFrameProcessor_LIN*) pouBaseLogger;
+            //              m_psLINFilter=(SFILTERAPPLIED_LIN*) psFilter;
+            m_strCurrWndText =_("Configure Logging for LIN");
+            m_omControlParam = _("Start on Reception of ID 0x");
+            m_omControlParam2 = _("Stop on Reception of ID 0x");
+
+        }
 
         default:
             ASSERT(FALSE);
@@ -399,7 +412,11 @@ CString CConfigMsgLogDlg::GetUniqueLogFilePath(void)
         {
             omNewLogFileName.Format(BUSMASTER_J1939_LOGFILENAME, Count);
         }
-
+        //Shashank
+        else if (LIN == m_eCurrBus)
+        {
+            omNewLogFileName.Format(BUSMASTER_LIN_LOGFILENAME, Count);
+        }
         PathCombine(acFilePath, acPathBuffer, omNewLogFileName.GetBuffer(MAX_PATH));
         omStrFullPath = acFilePath;
 
@@ -935,25 +952,53 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
     m_odStopMsgID.vSetSigned(false);
 
     vCreateFileList();
-    //Load channel combo box
-    m_omComboChannel.ResetContent();
-    if (NULL != GetICANDIL())
+    if(m_eCurrBus == CAN || m_eCurrBus == J1939)
     {
-        LPARAM lParam = 0;
-        if (S_OK == GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW))
+        //Load channel combo box
+        m_omComboChannel.ResetContent();
+        if (NULL != GetICANDIL())
         {
-            m_unChannelCount = (UINT)lParam;
+            LPARAM lParam = 0;
+            if (S_OK == GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW))
+            {
+                m_unChannelCount = (UINT)lParam;
+            }
         }
+
+        m_omComboChannel.InsertString(0, _("ALL"));
+        for (UINT i = 1; i <= m_unChannelCount; i++)
+        {
+            CString omChannel;
+            omChannel.Format("%d", i);
+            m_omComboChannel.InsertString(i, omChannel.GetBuffer(MAX_PATH));
+        }
+        m_omComboChannel.SetCurSel(0);
+
     }
 
-    m_omComboChannel.InsertString(0, _("ALL"));
-    for (UINT i = 1; i <= m_unChannelCount; i++)
+    else if(m_eCurrBus == LIN)
     {
-        CString omChannel;
-        omChannel.Format("%d", i);
-        m_omComboChannel.InsertString(i, omChannel.GetBuffer(MAX_PATH));
+
+        //Load channel combo box
+        m_omComboChannel.ResetContent();
+        if (NULL != GetILINDIL())
+        {
+            LPARAM lParam = 0;
+            if (S_OK == GetILINDIL()->DILL_GetControllerParams(lParam, NULL, NUMBER_HW))
+            {
+                m_unChannelCount = (UINT)lParam;
+            }
+        }
+
+        m_omComboChannel.InsertString(0, _("ALL"));
+        for (UINT i = 1; i <= m_unChannelCount; i++)
+        {
+            CString omChannel;
+            omChannel.Format("%d", i);
+            m_omComboChannel.InsertString(i, omChannel.GetBuffer(MAX_PATH));
+        }
+        m_omComboChannel.SetCurSel(0);
     }
-    m_omComboChannel.SetCurSel(0);
 
     USHORT LogBlocks = GetLoggingBlockCount();
     if (LogBlocks > 0)
@@ -1056,6 +1101,11 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         GetDlgItem(IDC_LOG_FILTER)->ShowWindow(1);
     }
     else if (J1939 == m_eCurrBus)
+    {
+        GetDlgItem(IDC_LOG_FILTER)->ShowWindow(0);
+    }
+    //Shashank
+    else if(LIN == m_eCurrBus)
     {
         GetDlgItem(IDC_LOG_FILTER)->ShowWindow(0);
     }
@@ -1252,6 +1302,11 @@ USHORT CConfigMsgLogDlg::GetLoggingBlockCount(void)
             Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlockCount();
             break;
 
+            //Shashank
+        case LIN:
+            Result = m_pouLoggerLIN->FPL_GetLoggingBlockCount();
+            break;
+
         default:
             ASSERT(FALSE);
     }
@@ -1269,6 +1324,10 @@ HRESULT CConfigMsgLogDlg::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject)
 
         case J1939:
             Result = m_pouLoggerJ1939->FPJ1_GetLoggingBlock(ushBlk, sLogObject);
+            break;
+
+        case LIN:
+            Result = m_pouLoggerLIN->FPL_GetLoggingBlock(ushBlk,sLogObject);
             break;
 
         default:
@@ -1289,6 +1348,11 @@ HRESULT CConfigMsgLogDlg::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObj
         case J1939:
             Result = m_pouLoggerJ1939->FPJ1_SetLoggingBlock(ushBlk, sLogObject);
             break;
+            //Shashank
+        case LIN:
+            Result = m_pouLoggerLIN->FPL_SetLoggingBlock(ushBlk, sLogObject);
+            break;
+
 
         default:
             ASSERT(FALSE);
@@ -1308,6 +1372,10 @@ HRESULT CConfigMsgLogDlg::AddLoggingBlock(const SLOGINFO& sLogObject)
         case J1939:
             Result = m_pouLoggerJ1939->FPJ1_AddLoggingBlock(sLogObject);
             break;
+            //Shashank
+        case LIN:
+            Result = m_pouLoggerLIN->FPL_AddLoggingBlock(sLogObject);
+            break;
 
         default:
             ASSERT(FALSE);
@@ -1326,6 +1394,10 @@ HRESULT CConfigMsgLogDlg::RemoveLoggingBlock(USHORT ushBlk)
 
         case J1939:
             Result = m_pouLoggerJ1939->FPJ1_RemoveLoggingBlock(ushBlk);
+            break;
+            //Shashank
+        case LIN:
+            Result = m_pouLoggerLIN->FPL_RemoveLoggingBlock(ushBlk);
             break;
 
         default:

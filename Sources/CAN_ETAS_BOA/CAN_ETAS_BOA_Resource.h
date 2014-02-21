@@ -26,9 +26,7 @@
 #define IDC_COMB_DATA_BTL               1025
 #define IDC_COMB_DATA_SJW               1026
 #define IDC_COMB_DELAY_COMPENSATION     1028
-#define IDC_COMB_TX_COMPATIBILITY       1029
 #define IDC_COMB_DELAY_COMPENSATION3    1030
-#define IDC_COMB_RX_COMPATIBILITY       1030
 #define IDC_ButtonOK                    1060
 #define IDC_STAT_LINE3                  1119
 #define IDC_EDIT_WARNING_LIMIT          1175

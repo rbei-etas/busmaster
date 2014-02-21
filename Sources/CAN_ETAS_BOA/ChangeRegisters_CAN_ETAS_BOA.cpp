@@ -34,36 +34,15 @@
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
-#ifdef BOA_VERSION_1_5_FD
-#include "EXTERNAL/BOA 1.5/Include/OCI/ocicanfd.h"
-#endif
 using namespace std;
+
 /* Structure definiions */
 class ENTRY_COMPATIBILITY
 {
 public:
     BYTE        m_bytComptID;
     string      m_acComptName;
-
 };
-
-#ifdef BOA_VERSION_1_5_FD
-static ENTRY_COMPATIBILITY sg_ListTxCompatibility[] =
-{
-    /* Tx Compatibility flags */
-    {OCI_CANFD_TX_USE_NBR,      "CANFD_TX_USE_NBR"       },
-    {OCI_CANFD_TX_USE_DBR,      "CANFD_TX_USE_DBR"       },
-};
-
-static ENTRY_COMPATIBILITY sg_ListRxCompatibility[] =
-{
-    /* Rx Compatibility flags */
-    {OCI_CANFD_RX_FILTER_NBR_ONLY,          "CANFD_RX_FILTER_NBR_ONLY"          },
-    {OCI_CANFD_RX_FILTER_DBR8,              "CANFD_RX_FILTER_DBR8"              },
-    {OCI_CANFD_RX_USE_RXFD_MESSAGE,         "CANFD_RX_USE_RXFD_MESSAGE"         },
-    {OCI_CANFD_RX_USE_RXFD_MESSAGE_PADDING, "CANFD_RX_USE_RXFD_MESSAGE_PADDING" },
-};
-#endif
 
 /**
  * \brief Constructor
@@ -112,8 +91,6 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NU
     m_omstrDataSJW                      = "";
     m_omstrTxDelayCompensationON        = "";
     m_omstrTxDelayCompensationQuanta    = "";
-    m_omstrRxCompatibility              = "";
-    m_omstrTxCompatibility              = "";
 }
 
 /******************************************************************************/
@@ -157,8 +134,6 @@ void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
     DDX_CBString(pDX,IDC_COMB_DATA_BTL, m_omstrDataBTL_Cycles);
     DDX_Text(pDX, IDC_EDIT_COMPENSATION_QUANTA, m_omstrTxDelayCompensationQuanta);
     DDX_CBString(pDX,IDC_COMB_DATA_SJW, m_omstrDataSJW);
-    DDX_CBString(pDX,IDC_COMB_RX_COMPATIBILITY, m_omstrRxCompatibility);
-    DDX_CBString(pDX,IDC_COMB_TX_COMPATIBILITY, m_omstrTxCompatibility);
 }
 
 
@@ -278,7 +253,6 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     if (pComboBTLCYCL != NULL)
     {
         pComboBTLCYCL->SetCurSel (0);
-        pComboBTLCYCL->EnableWindow(FALSE);
     }
     CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHECK_SELF_REC);
     if (pCheckSelfRec != NULL)
@@ -334,7 +308,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED);
 
-#ifdef BOA_VERSION_1_5_FD
+#if BOA_VERSION >= BOA_VERSION_2_0
     vEnableFDParameters(TRUE); /*Enable CANFD controller settings*/
 #else
     vEnableFDParameters(FALSE); /*Disable CANFD controller settings*/
@@ -365,8 +339,6 @@ void CChangeRegisters_CAN_ETAS_BOA::vEnableFDParameters(BOOL bEnable)
     GetDlgItem(IDC_COMB_DATA_SAMPOINT)->EnableWindow(bEnable);
     GetDlgItem(IDC_COMB_DATA_BTL)->EnableWindow(bEnable);
     GetDlgItem(IDC_COMB_DATA_SJW)->EnableWindow(bEnable);
-    GetDlgItem(IDC_COMB_TX_COMPATIBILITY)->EnableWindow(bEnable);
-    GetDlgItem(IDC_COMB_RX_COMPATIBILITY)->EnableWindow(bEnable);
 }
 /******************************************************************************/
 /*  Function Name    :  OnCancel                                              */
@@ -960,15 +932,16 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
 
     // TO BE FIXED LATER
     m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
+    m_omstrBTL_Cycles.Format("%d",  m_pControllerDetails[ nIndex ].m_unBTL_Cycles);
 
-#ifdef BOA_VERSION_1_5_FD
+#if BOA_VERSION >= BOA_VERSION_2_0
     /*Update CAN FD parameters */
     m_omstrDataBitRate.Format("%d",     m_pControllerDetails[ nIndex ].m_unDataBitRate/1000);
     m_omstrDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
     m_omstrDataBTL_Cycles.Format("%d",  m_pControllerDetails[ nIndex ].m_unDataBTL_Cycles);
     m_omstrDataSJW.Format("%d",         m_pControllerDetails[ nIndex ].m_unDataSJW);
 
-    if ( m_pControllerDetails[ nIndex ].m_bTxDelayCompensationON )
+    if ( m_pControllerDetails[ nIndex ].m_bTxDelayCompensationControl )
     {
         m_omstrTxDelayCompensationON.Format(defSTR_CANFD_TX_DELAY_COMPENSATION_ON);
         GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(TRUE);
@@ -978,11 +951,6 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
         m_omstrTxDelayCompensationON.Format(defSTR_CANFD_TX_DELAY_COMPENSATION_OFF);
         GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(FALSE);
     }
-    m_omstrTxDelayCompensationQuanta.Format("%d",   m_pControllerDetails[ nIndex ].m_unTxDelayCompensationQuanta);
-
-
-    m_omstrRxCompatibility = sg_ListRxCompatibility[m_pControllerDetails[ nIndex ].m_bytRxCompatibility].m_acComptName.c_str();
-    m_omstrTxCompatibility = sg_ListTxCompatibility[m_pControllerDetails[ nIndex ].m_bytTxCompatibility].m_acComptName.c_str();
 #endif
 
     UpdateData(FALSE);
@@ -1047,7 +1015,8 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = m_omStrSamplePoint.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_bSelfReception = m_bSelfReception;
-#ifdef BOA_VERSION_1_5_FD
+        m_pControllerDetails[m_nLastSelection].m_unBTL_Cycles = atoi((LPCTSTR)m_omstrBTL_Cycles);
+#if BOA_VERSION >= BOA_VERSION_2_0
         /*Update CAN FD parameters */
         m_pControllerDetails[ m_nLastSelection ].m_unDataBitRate        = atoi((LPCTSTR)m_omstrDataBitRate) * 1000;
         m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)m_omstrDataSamplePoint);
@@ -1056,29 +1025,11 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 
         if ( m_omstrTxDelayCompensationON == defSTR_CANFD_TX_DELAY_COMPENSATION_ON )
         {
-            m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationON = true;
+            m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationControl = true;
         }
         else
         {
-            m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationON = false;
-        }
-        m_pControllerDetails[ m_nLastSelection ].m_unTxDelayCompensationQuanta = atoi((LPCTSTR)m_omstrTxDelayCompensationQuanta);
-
-        for ( int i = 0; i < CANFD_COUNT_RX_COMPATIBILITY_MODES ; i++ )
-        {
-            if ( sg_ListRxCompatibility[i].m_acComptName.c_str() == m_omstrRxCompatibility )
-            {
-                m_pControllerDetails[ m_nLastSelection ].m_bytRxCompatibility = sg_ListRxCompatibility[i].m_bytComptID;
-                break;
-            }
-        }
-        for ( int i = 0; i < CANFD_COUNT_TX_COMPATIBILITY_MODES ; i++ )
-        {
-            if ( sg_ListTxCompatibility[i].m_acComptName.c_str() == m_omstrTxCompatibility )
-            {
-                m_pControllerDetails[ m_nLastSelection ].m_bytTxCompatibility = sg_ListTxCompatibility[i].m_bytComptID;
-                break;
-            }
+            m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationControl = false;
         }
 #endif
     }

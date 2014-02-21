@@ -292,7 +292,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                             // sLinTimeData->m_ucRTR        = sCanData.m_uDataInfo.m_sCANMsg.m_ucRTR;
                             sLinTimeData->m_ulTimeStamp  = (ULONG)sLinData.m_lTickCount.QuadPart;
                             sLinTimeData->m_ucMsgID      = sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID;
-                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerLIN_(sLinTimeData, psNodeInfo->m_dwClientId);
+                            CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).vManageOnMessageHandlerLIN(sLinTimeData, psNodeInfo->m_dwClientId);
                         }
                         else if (sLinData.m_eLinMsgType == LIN_EVENT)
                         {
@@ -309,8 +309,8 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
     }
     if (NULL != sCanTimeData)
     {
-        delete sCanTimeData;
-        sCanTimeData = NULL;
+        //delete sCanTimeData;
+        //sCanTimeData = NULL;
     }
     return 0;
 }

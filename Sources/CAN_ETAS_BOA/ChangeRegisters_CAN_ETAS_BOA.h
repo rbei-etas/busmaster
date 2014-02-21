@@ -71,6 +71,7 @@ protected:
     CString m_omStrSamplePoint;
     CString m_omStrSJW;
     //}}AFX_DATA
+    CString m_omstrBTL_Cycles;
     DOUBLE  m_dEditBaudRate;
     UINT    m_unCombClock;
     /*CAN FD Parameters */
@@ -80,8 +81,6 @@ protected:
     CString m_omstrDataSJW;
     CString m_omstrTxDelayCompensationON;
     CString m_omstrTxDelayCompensationQuanta;
-    CString m_omstrRxCompatibility;
-    CString m_omstrTxCompatibility;
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CChangeRegisters_CAN_ETAS_BOA)

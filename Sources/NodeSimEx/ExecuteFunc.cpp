@@ -537,8 +537,8 @@ VOID CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo)
 /*                      passed as parameter                                   */
 /*  Member of        :  CExecuteFunc                                          */
 /*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  28.02.2002                                            */
+/*  Author(s)        :  Prathiba                                              */
+/*  Date Created     :  28.10.2013                                            */
 /******************************************************************************/
 
 VOID CExecuteFunc::vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo)
@@ -3253,6 +3253,12 @@ void CExecuteFunc::vGetNodeInfo(sNODEINFO& sNodeInfo) const
     sNodeInfo.m_eBus                  = m_sNodeInfo.m_eBus;
     sNodeInfo.m_unEcuName             = m_sNodeInfo.m_unEcuName;
 }
+
+DWORD CExecuteFunc::dwGetNodeClientId()
+{
+    return m_sNodeInfo.m_dwClientId;
+}
+
 
 /****************************************************************************************
     Function Name    :  nGetFlagStatus

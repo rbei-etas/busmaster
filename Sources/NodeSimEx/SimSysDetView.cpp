@@ -1618,29 +1618,29 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
         {
             case 0 :
             {
-                int i=0;
+                int nIndex=0;
                 m_bIsMsgHanEnabled = m_psNodeInfo->m_bMsgHandlersEnabled ;
                 vChangeEDHanButtonText( m_bIsMsgHanEnabled );
                 // fill the handler value list with the fun names and its value
                 int nMsgCount = (COMMANINT)m_psNodeInfo->m_omStrArrayMsgHandlers.GetSize();
-                for ( i=0 ; i < nMsgCount ; i++ )
+                for ( nIndex=0 ; nIndex < nMsgCount ; nIndex++ )
                 {
-                    omStrTemp = m_psNodeInfo->m_omStrArrayMsgHandlers.ElementAt(i);
-                    m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    omStrTemp = m_psNodeInfo->m_omStrArrayMsgHandlers.ElementAt(nIndex);
+                    m_omListCtrlHanVal.InsertItem( nIndex , omStrTemp);
                 }
 
             }
             break;
             case 1 :
             {
-                int i = 0;
+                int nIndex = 0;
                 m_bIsTimerHanEnabled = m_psNodeInfo->m_bTimerHandlersEnabled;
                 // fill the handler value list with the fun names and its value
                 int nTimerCount = (COMMANINT)m_psNodeInfo->m_omStrArrayTimerHandlers.GetSize();
-                for ( i=0 ; i < nTimerCount ; i++ )
+                for ( nIndex=0 ; nIndex < nTimerCount ; nIndex++ )
                 {
-                    omStrTemp = m_psNodeInfo->m_omStrArrayTimerHandlers.ElementAt(i);
-                    m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    omStrTemp = m_psNodeInfo->m_omStrArrayTimerHandlers.ElementAt(nIndex);
+                    m_omListCtrlHanVal.InsertItem( nIndex , omStrTemp);
                 }
                 vChangeEDHanButtonText( m_bIsTimerHanEnabled );
 
@@ -1648,14 +1648,14 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
             break;
             case 2 :
             {
-                int i = 0;
+                int nIndex = 0;
                 m_bIsKeyHanEnabled = m_psNodeInfo->m_bKeyHandlersEnabled;
                 // fill the handler value list with the fun names and its value
                 int nKeyCount = (COMMANINT)m_psNodeInfo->m_omStrArrayKeyHandlers.GetSize();
-                for ( i=0 ; i < nKeyCount ; i++ )
+                for ( nIndex=0 ; nIndex < nKeyCount ; nIndex++ )
                 {
-                    omStrTemp = m_psNodeInfo->m_omStrArrayKeyHandlers.ElementAt(i);
-                    m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                    omStrTemp = m_psNodeInfo->m_omStrArrayKeyHandlers.ElementAt(nIndex);
+                    m_omListCtrlHanVal.InsertItem( nIndex , omStrTemp);
                 }
                 vChangeEDHanButtonText( m_bIsKeyHanEnabled );
             }
@@ -1664,40 +1664,40 @@ void CSimSysDetView::vUpDownArrowKeySelection(int nSel )// selected item index
             {
                 if ( m_eBus == CAN )
                 {
-                    int i = 0;
+                    int nIndex = 0;
                     m_bIsErrorHanEnabled = m_psNodeInfo->m_bErrorHandlersEnabled;
                     // fill the handler value list with the fun names and its value
                     int nErrorCount = (COMMANINT)m_psNodeInfo->m_omStrArrayErrorHandlers.GetSize();
-                    for ( i=0 ; i < nErrorCount ; i++ )
+                    for ( nIndex=0 ; nIndex < nErrorCount ; nIndex++ )
                     {
-                        omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(i);
-                        m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                        omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(nIndex);
+                        m_omListCtrlHanVal.InsertItem( nIndex , omStrTemp);
                     }
                     vChangeEDHanButtonText( m_bIsErrorHanEnabled );
                 }
                 else if ( m_eBus == J1939 )
                 {
-                    int i = 0;
+                    int nIndex = 0;
                     m_bIsEventHanEnabled = m_psNodeInfo->m_bEventHandlersEnabled;
                     // fill the handler value list with the fun names and its value
                     int nEventCount = (COMMANINT)m_psNodeInfo->m_omStrArrayEventHandlers.GetSize();
-                    for ( i=0 ; i < nEventCount ; i++ )
+                    for ( nIndex=0 ; nIndex < nEventCount ; nIndex++ )
                     {
-                        omStrTemp = m_psNodeInfo->m_omStrArrayEventHandlers.ElementAt(i);
-                        m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                        omStrTemp = m_psNodeInfo->m_omStrArrayEventHandlers.ElementAt(nIndex);
+                        m_omListCtrlHanVal.InsertItem( nIndex , omStrTemp);
                     }
                     vChangeEDHanButtonText( m_bIsEventHanEnabled );
                 }
                 else if ( m_eBus == LIN )
                 {
-                    int i = 0;
+                    int nIndex = 0;
                     m_bIsErrorHanEnabled = m_psNodeInfo->m_bErrorHandlersEnabled;
                     // fill the handler value list with the fun names and its value
                     int nErrorCount = (COMMANINT)m_psNodeInfo->m_omStrArrayErrorHandlers.GetSize();
-                    for ( i=0 ; i < nErrorCount ; i++ )
+                    for ( nIndex=0 ; nIndex < nErrorCount ; nIndex++ )
                     {
-                        omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(i);
-                        m_omListCtrlHanVal.InsertItem( i , omStrTemp);
+                        omStrTemp = m_psNodeInfo->m_omStrArrayErrorHandlers.ElementAt(nIndex);
+                        m_omListCtrlHanVal.InsertItem( nIndex , omStrTemp);
                     }
                     vChangeEDHanButtonText( m_bIsErrorHanEnabled );
                 }
@@ -1834,6 +1834,11 @@ void CSimSysDetView::vGetNodeInfo(PSNODEINFO psNodeInfo)
     psNodeInfo->m_omStrDllName = m_psNodeInfo->m_omStrDllName;
     //psNodeInfo->m_CurrLCN = m_psNodeInfo->m_CurrLCN;
 }
+DWORD CSimSysDetView::vGetNodeClientId()
+{
+    return m_psNodeInfo->m_dwClientId;
+}
+
 
 void CSimSysDetView::vUpdateHandlerList()
 {

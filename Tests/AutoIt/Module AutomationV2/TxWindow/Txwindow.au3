@@ -10,6 +10,7 @@
 
 ;Run all the Tx window module scripts
 _StartoHTMLTable("Tx Window Module Test Report")
+;-------------P1 test cases------------------------------
 #include "TS_TxWin_01.au3"
 #include "TS_TxWin_02.au3"
 #include "TS_TxWin_03.au3"
@@ -24,6 +25,9 @@ _StartoHTMLTable("Tx Window Module Test Report")
 #include "TS_TxWin_14.au3"
 #include "TS_TxWin_15.au3"
 #include "TS_TxWin_16.au3"
+
+
+;----------------P2 test cases---------------------------
 #include "TS_TxWin_22.au3"
 #include "TS_TxWin_24.au3"
 #include "TS_TxWin_26.au3"

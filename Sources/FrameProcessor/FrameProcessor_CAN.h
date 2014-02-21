@@ -158,7 +158,7 @@ public:
 
     // To update the channel baud rate info to logger
     HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
-                                          int nNumChannels);
+                                          int nNumChannels,ETYPE_BUS eBus);
 
     //Shailesh +
     //void IncrementConnectionCount();

@@ -58,9 +58,7 @@ UINT g_unSendMsg_J1939(STJ1939_MSG* psTxMsg, HMODULE hModule)
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(J1939);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetIJ1939DIL()->DILIJ_SendJ1939Msg(sNode.m_dwClientId,
+            if (CGlobalObj::GetIJ1939DIL()->DILIJ_SendJ1939Msg(pmCEexecuteFunc->dwGetNodeClientId(),
                     psTxMsg->m_sMsgProperties.m_byChannel,
                     psTxMsg->m_sMsgProperties.m_eType,
                     psTxMsg->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN(),
@@ -88,9 +86,7 @@ UINT g_unRequestPGN_J1939(UINT PGN, BYTE DestAdres, UINT Channel, HMODULE hModul
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(J1939);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetIJ1939DIL()->DILIJ_RequestPGN(sNode.m_dwClientId,
+            if (CGlobalObj::GetIJ1939DIL()->DILIJ_RequestPGN(pmCEexecuteFunc->dwGetNodeClientId(),
                     Channel, PGN, DEFAULT_PRIORITY, ADDRESS_NULL, DestAdres) == S_OK)
             {
                 Return = 1;
@@ -112,9 +108,7 @@ UINT g_unSendAckMsg_J1939(UINT PGN, BYTE AckType, BYTE DestAdres, UINT Channel,
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(J1939);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetIJ1939DIL()->DILIJ_SendAckMsg(sNode.m_dwClientId,
+            if (CGlobalObj::GetIJ1939DIL()->DILIJ_SendAckMsg(pmCEexecuteFunc->dwGetNodeClientId(),
                     Channel,
                     (ETYPE_ACK)AckType,
                     PGN, 0, DestAdres)
@@ -138,9 +132,7 @@ UINT g_unClaimAddress_J1939(BYTE Address, UINT Channel, HMODULE hModule)
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(J1939);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetIJ1939DIL()->DILIJ_NM_ClaimAddress(sNode.m_dwClientId,
+            if (CGlobalObj::GetIJ1939DIL()->DILIJ_NM_ClaimAddress(pmCEexecuteFunc->dwGetNodeClientId(),
                     Channel,Address)
                     == S_OK)
             {
@@ -162,9 +154,7 @@ UINT g_unRequestAddress_J1939(UINT Channel, HMODULE hModule)
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(J1939);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetIJ1939DIL()->DILIJ_NM_RequestAddress(sNode.m_dwClientId,
+            if (CGlobalObj::GetIJ1939DIL()->DILIJ_NM_RequestAddress(pmCEexecuteFunc->dwGetNodeClientId(),
                     Channel)
                     == S_OK)
             {
@@ -187,9 +177,7 @@ UINT g_unCommandAddress_J1939(UINT64 EcuName, BYTE NewAddress, UINT Channel,
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
         {
-            sNODEINFO sNode(J1939);
-            pmCEexecuteFunc->vGetNodeInfo(sNode);
-            if (CGlobalObj::GetIJ1939DIL()->DILIJ_NM_CommandAddress(sNode.m_dwClientId,
+            if (CGlobalObj::GetIJ1939DIL()->DILIJ_NM_CommandAddress(pmCEexecuteFunc->dwGetNodeClientId(),
                     Channel,
                     EcuName,
                     NewAddress)
