@@ -154,6 +154,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_ETAS_BOA_2_0", "CAN_ETA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LIN_ETAS_BOA", "LIN_ETAS_BOA\LIN_ETAS_BOA.vcxproj", "{3765F36A-696A-4302-BED9-56F156280EA2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAN_PEAK_USB", "CAN_PEAK_USB\CAN_PEAK_USB.vcxproj", "{D6199E74-D58C-4981-9B7B-E2E551163192}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		busmaster_debug|Win32 = busmaster_debug|Win32
@@ -753,6 +755,20 @@ Global
 		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{3765F36A-696A-4302-BED9-56F156280EA2}.Unicode Release|Win32.Build.0 = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.busmaster_debug|Win32.ActiveCfg = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.busmaster_debug|Win32.Build.0 = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Debug|Win32.Build.0 = Debug|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Release|Win32.ActiveCfg = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Release|Win32.Build.0 = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Template|Win32.ActiveCfg = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Template|Win32.Build.0 = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{D6199E74-D58C-4981-9B7B-E2E551163192}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
