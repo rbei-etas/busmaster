@@ -36,6 +36,15 @@
     <ClCompile Include="SigWatchDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CheckBoxTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalWatch_LIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgSignalSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseSignalWatch_CAN.h">
@@ -71,15 +80,27 @@
     <ClInclude Include="SignalWatchListBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SigWatchDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSignalWatch_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SigWatchAddDelDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SigWatchDlg.h">
+    <ClInclude Include="CheckBoxTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalWatch_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgSignalSelect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\Signalwatch.bmp">
+    <None Include="res\bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -87,5 +108,19 @@
     <ResourceCompile Include="SignalWatch.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\message.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\signal.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DB Editor.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Signalwatch.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

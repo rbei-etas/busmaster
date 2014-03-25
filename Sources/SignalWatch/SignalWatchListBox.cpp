@@ -30,6 +30,9 @@
 #include "SignalWatchDefs.h"
 #include "SignalWatchListBox.h"
 #include "..\Application\HashDefines.h"
+#include "SignalWatch_Extern.h"
+#include "BaseSignalWatch_CAN.h"
+#include "SigWatchDlg.h"
 
 extern HWND GUI_hDisplayWindow;
 /////////////////////////////////////////////////////////////////////////////
@@ -47,12 +50,28 @@ extern HWND GUI_hDisplayWindow;
 CSignalWatchListBox::CSignalWatchListBox()
 {
     m_hParentWnd = NULL;
+	m_hMainWnd = NULL;
+	m_eBus = CAN;
 }
+
+CSignalWatchListBox::CSignalWatchListBox(ETYPE_BUS eBus)
+{
+    m_hParentWnd = NULL;
+	m_hMainWnd = NULL;
+    m_eBus = eBus;
+}
+
 //
 void CSignalWatchListBox::vUpdateParentWnd(HWND hParentWnd)
 {
     m_hParentWnd = hParentWnd;
 }
+
+void CSignalWatchListBox::vUpdateMainWnd(HWND hMainWnd)
+{
+    m_hMainWnd = hMainWnd;
+}
+
 //
 /******************************************************************************
  Function Name  :   ~CSignalWatchListBox
@@ -72,6 +91,7 @@ BEGIN_MESSAGE_MAP(CSignalWatchListBox, CFFListCtrl)
     //{{AFX_MSG_MAP(CSignalWatchListBox)
     ON_WM_RBUTTONDOWN()
     ON_COMMAND(IDM_SG_WATCH_CLEAR, OnSgWatchClear)
+	ON_COMMAND(IDD_DLG_SIGNAL_WATCH_LIN,OnConfigure)
     ON_WM_CHAR()
     ON_WM_KEYDOWN()
     //}}AFX_MSG_MAP
@@ -99,38 +119,41 @@ END_MESSAGE_MAP()
  Modified on    :   22.07.2004, Modified the function call to refer ListCtrl
 ******************************************************************************/
 void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
-{
-    if (GetItemCount() > 0)
+ {    
+    CMenu* pomContextMenu = new CMenu;
+    if (pomContextMenu != NULL)
     {
-        CMenu* pomContextMenu = new CMenu;
-        if (pomContextMenu != NULL)
-        {
-            // Load the Menu from the resource
-            pomContextMenu->DestroyMenu();
-            pomContextMenu->LoadMenu(IDM_MENU_SIGNAL_WATCH);
-            CMenu* pomSubMenu = pomContextMenu->GetSubMenu(1);
+        // Load the Menu from the resource
+        pomContextMenu->DestroyMenu();
+        pomContextMenu->LoadMenu(IDM_MENU_SIGNAL_WATCH);
+        CMenu* pomSubMenu = pomContextMenu->GetSubMenu(1);
 
-            if (pomSubMenu != NULL)
+        if (pomSubMenu != NULL)
+        {
+            CPoint omSrcPt = omPoint;
+            ClientToScreen(&omSrcPt);
+            UINT unEnable = MF_BYCOMMAND | MF_ENABLED;
+            // If no item is selected, make "Delete" menu item disabled
+            if (GetSelectedCount() == -1)
             {
-                CPoint omSrcPt = omPoint;
-                ClientToScreen(&omSrcPt);
-                UINT unEnable;
-                // If no item is selected, make "Delete" menu item disabled
-                if (GetSelectedCount() == -1)
-                {
-                    unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
-                }
-                else
-                {
-                    unEnable = MF_BYCOMMAND | MF_ENABLED;
-                }
-                pomSubMenu->EnableMenuItem(IDM_SG_WATCH_CLEAR, unEnable);
-                pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-                                           omSrcPt.x, omSrcPt.y, this, NULL);
+                unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
             }
-            delete pomContextMenu;
-            pomContextMenu = NULL;
+            else
+            {
+                unEnable = MF_BYCOMMAND | MF_ENABLED;
+            }
+               
+			// Clear menu to be disabled if no signals are displayed in the list window
+			if (GetItemCount() <= 0) 
+			{
+				unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
+			}
+			pomSubMenu->EnableMenuItem(IDM_SG_WATCH_CLEAR, unEnable);
+            pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+                                        omSrcPt.x, omSrcPt.y, this, NULL);
         }
+        delete pomContextMenu;
+        pomContextMenu = NULL;
     }
 
     CFFListCtrl::OnRButtonDown(nFlags, omPoint);
@@ -167,4 +190,10 @@ void CSignalWatchListBox::OnChar(UINT nChar, UINT nRepeatCount, UINT nflags)
 void CSignalWatchListBox::OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags)
 {
     GetParent()->SendMessage(WM_KEYBOARD_KEYDOWN, nChar, 0);
+}
+
+void CSignalWatchListBox::OnConfigure()
+{
+	CSigWatchDlg* pWnd =  (CSigWatchDlg*)GetParent();
+	pWnd->vConfigureSignals();
 }

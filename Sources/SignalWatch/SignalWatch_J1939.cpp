@@ -94,7 +94,7 @@ DWORD WINAPI SigWatchDataReadThreadProc_J(LPVOID pVoid)
 BOOL CSignalWatch_J1939::InitInstance(void)
 {
     InitializeCriticalSection(&m_omCritSecSW);
-    m_pouSigWnd = NULL;
+    m_pouSigWnd = NULL;	
     m_pMsgInterPretObj_J = NULL;
     m_ouReadThread.m_hActionEvent = m_ouMsgBufVSE_J.hGetNotifyingEvent();
     return TRUE;
@@ -118,7 +118,7 @@ int CSignalWatch_J1939::ExitInstance(void)
     {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
-        m_pouSigWnd = NULL;
+        m_pouSigWnd = NULL;		
     }
     return TRUE;
 }
@@ -227,8 +227,8 @@ HRESULT CSignalWatch_J1939::SW_DoInitialization()
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for J1939
     if (m_pouSigWnd == NULL)
-    {
-        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd());
+    {		
+        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), J1939);
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
         m_pouSigWnd->SetWindowText("Signal Watch - J1939");
     }
@@ -243,18 +243,21 @@ HRESULT CSignalWatch_J1939::SW_DoInitialization()
     //Start the read thread
     return bStartSigWatchReadThread()? S_OK: S_FALSE;
 }
-HRESULT CSignalWatch_J1939::SW_ShowAddDelSignalsDlg(CWnd* pParent, CMainEntryList* podMainSubList)
+HRESULT CSignalWatch_J1939::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSubList)
 {
+	CMainEntryList * podMainSubListfinal= (CMainEntryList *) podMainSubList;
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    CSigWatchAddDelDlg odDlg(pParent, podMainSubList);
+    CSigWatchAddDelDlg odDlg(pParent, podMainSubListfinal);
     return (HRESULT)odDlg.DoModal();
 }
 
-HRESULT CSignalWatch_J1939::SW_ShowSigWatchWnd(CWnd* /*pParent*/, INT nCmd)
+HRESULT CSignalWatch_J1939::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
     if (m_pouSigWnd != NULL)
-    {
+    {		
+		m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
+		m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
         return m_pouSigWnd->ShowWindow(nCmd);
     }
     return S_FALSE;

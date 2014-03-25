@@ -30,6 +30,8 @@
 #include "SignalWatchDefs.h"
 #include "SigWatchDlg.h"
 #include "..\Application\HashDefines.h"
+#include "..\Application\common.h"
+
 // Interface file for CMsgInterpretation class
 
 static const int LSB_MOTOROLA = 0x7; // 7th bit is the LSB for motorola
@@ -52,14 +54,15 @@ extern VOID vConvStrtoByteArray(
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   03-04-2002
 ******************************************************************************/
-CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=NULL*/)
+CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=NULL*/, ETYPE_BUS eBus /*=CAN*/)
     : CDialog(CSigWatchDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSigWatchDlg)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-
-    m_pParent = pParent;
+	m_eBus = eBus;	
+	m_pParent = pParent;
+	m_hMainWnd = NULL;
     m_bEscape = false;
 }
 
@@ -90,6 +93,7 @@ BEGIN_MESSAGE_MAP(CSigWatchDlg, CDialog)
     ON_WM_SHOWWINDOW()
     ON_WM_CREATE()
     ON_WM_ERASEBKGND()
+	
     ON_MESSAGE(WM_REMOVE_SIGNAL,vRemoveSignalFromMap)
     //}}AFX_MSG_MAP
     ON_WM_TIMER()
@@ -182,6 +186,7 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
         const CStringArray& omSAPhysical,
         BOOL bIntptrDone)
 {
+
     m_omCSDispEntry.Lock();
 
     ASSERT( omSASignals.GetSize() == omSARaw.GetSize() &&
@@ -262,20 +267,80 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
     }
     m_omCSDispEntry.Unlock();
 }
+
+void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray *sSingnalinfo,BOOL bIntptrDone,map<int,list<string>> *m_mapDetails,unsigned char mID)
+{
+
+	m_omCSDispEntry.Lock();
+
+	m_mapMsgIDtoSignallst=m_mapDetails;
+
+	if( bIntptrDone == FALSE)
+	{
+
+		SSignalInfo sTempSignal;
+		int nCnt = sSingnalinfo->GetSize();
+		for (int i = 0; i < nCnt; i++)
+		{
+			sTempSignal = sSingnalinfo->GetAt(i);
+
+
+			//check the valid entries in the signal watch window.
+
+			// POSITION ListPos = m_odSigEntryList.GetHeadPosition();
+
+			//check for valid message name
+
+			list<string> lstSignals=m_mapMsgIDtoSignallst->find(mID)->second;
+			list<string>:: iterator itrselSignals= lstSignals.begin();
+
+			while(itrselSignals != lstSignals.end())
+			{
+
+				if(strcmpi(sTempSignal.m_omSigName,(*itrselSignals).c_str())==0)
+				{
+
+					POSITION pos = NULL;
+					sSIGENTRY sEntry;
+					sEntry.m_omMsgName = sTempSignal.m_msgName;
+					sEntry.m_omSigName = sTempSignal.m_omSigName;
+					sEntry.m_omPhyValue = sTempSignal.m_omEnggValue;
+					sEntry.m_omRawValue = sTempSignal.m_omRawValue;
+					if (NULL != (pos = m_odSigEntryList.Find(sEntry)))
+					{
+						sSIGENTRY& sTemp = m_odSigEntryList.GetAt(pos);
+						sTemp.m_omPhyValue = sEntry.m_omPhyValue;
+						sTemp.m_omRawValue = sEntry.m_omRawValue;
+					}
+					else
+					{
+						m_odSigEntryList.AddTail(sEntry);
+					}
+
+				}
+				itrselSignals++;
+			}
+		}
+	}
+	m_omCSDispEntry.Unlock();
+
+
+}
+
+
 void CSigWatchDlg::vDisplayMsgSigList(void)
 {
     m_omCSDispEntry.Lock();
 
     POSITION pos = m_odSigEntryList.GetHeadPosition();
     //UINT unCount = 0;
-    while (pos)
+   while (pos)
     {
-        sSIGENTRY& sEntry = m_odSigEntryList.GetNext(pos);
+       sSIGENTRY& sEntry = m_odSigEntryList.GetNext(pos);
         // Insert Message Name
         if (sEntry.m_nEntryIndex != -1)
         {
-            m_omSignalList.SetItemText( sEntry.m_nEntryIndex,
-                                        defSTR_SW_MSG_COL,
+            m_omSignalList.SetItemText(sEntry.m_nEntryIndex,defSTR_SW_MSG_COL,
                                         sEntry.m_omMsgName);
             // Insert Signal Name
             m_omSignalList.SetItemText( sEntry.m_nEntryIndex,
@@ -661,7 +726,20 @@ LRESULT CSigWatchDlg::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
 {
     if (NULL != m_pParent)
     {
-        m_pParent->SendMessage(WM_KEYBOARD_KEYDOWN, wParam, lParam);
+		m_pParent->SendMessage(WM_KEYBOARD_KEYDOWN, wParam, lParam);
     }
     return S_OK;
+}
+
+void CSigWatchDlg::vConfigureSignals()
+{
+	if (NULL != m_hMainWnd)
+	{		
+		::PostMessage(m_hMainWnd, WM_CONFIGURE_SIGNAL_WATCH, m_eBus, 0);
+	}
+}
+
+void CSigWatchDlg::vUpdateMainWndHandle(HWND hMainWnd)
+{
+	m_hMainWnd = hMainWnd;
 }

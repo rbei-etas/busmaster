@@ -22,8 +22,8 @@ class CBaseSignalWatch_J1939
 {
 public:
     virtual HRESULT SW_DoInitialization(void) = 0;
-    virtual HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, CMainEntryList* podMainSubList) = 0;
-    virtual HRESULT SW_ShowSigWatchWnd(CWnd* pParent, INT nCmd) = 0;
+    virtual HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSubList) = 0;
+    virtual HRESULT SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd) = 0;
     virtual HRESULT SW_GetConfigSize(void) = 0;
     virtual HRESULT SW_GetConfigData(void* pbyConfigData) = 0;
     // PTV XML

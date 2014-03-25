@@ -35,13 +35,17 @@ class CSignalWatchListBox : public CFFListCtrl
     // Construction
 private:
     HWND m_hParentWnd;
+	HWND m_hMainWnd;
+	ETYPE_BUS m_eBus;
 public:
     CSignalWatchListBox();
+	CSignalWatchListBox(ETYPE_BUS eBus);
     void vUpdateParentWnd(HWND hParentWnd);
+	void vUpdateMainWnd(HWND hMainWnd);
 
     void OnChar(UINT nChar, UINT nRepeatCount, UINT nflags);
     void OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags);
-
+	void OnConfigure();
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSignalWatchListBox)

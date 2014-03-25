@@ -1,64 +1,67 @@
-/******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  SignalWatch_J1939.h
-  Description   :
-  $Log:   X:/Archive/Sources/SignalWatch/SignalWatch_J1939.h_v  $
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    Rev 1.1   15 Apr 2011 19:18:46   CANMNTTM
- * Added RBEI Copyright information.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
  *
- *    Rev 1.0   01 Mar 2011 17:05:30   CANMNTTM
- *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
- * \file      SignalWatch_J1939.h
- * \author    Ratnadip Choudhury
+ * \file      SignalWatch_LIN.h
+ * \author    Shashank Vernekar
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
 
 #include "SignalWatch_Resource.h"
-#include "Include/Basedefs.h"
 #include "Datatypes/MsgBufAll_Datatypes.h"
-#include "Datatypes/MsgBufVSE.h"
 #include "Datatypes/SigWatch_Datatypes.h"
-#include "Datatypes/J1939_Datatypes.h"
 #include "SignalWatchDefs.h"
 #include "DataTypes/MainSubEntry.h"
-#include "SigWatchAddDelDlg.h"
+#include "MsgSignalSelect.h"
 #include "SigWatchDlg.h"
 /* MSG INTERPRETATION */
 #include "Utility/MsgInterpretation.h"
 #include "Utility/Utility_Thread.h"
 /* DIL CAN INTERFACE */
 #include "DIL_Interface/DIL_Interface_extern.h"
-#include "DIL_Interface/BaseDIL_CAN.h"
-#include "DIL_Interface/BaseDIL_J1939.h"
-
-#include "BaseSignalWatch_J1939.h"
+#include "DIL_Interface/BaseDIL_LIN.h"
+#include"BaseSignalWatch_LIN.h"
+#include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
 
-class CSignalWatch_J1939 : CBaseSignalWatch_J1939
+
+class CSignalWatch_LIN : CBaseSignalWatch_LIN
 {
 public:
-    CMsgBufVSE m_ouMsgBufVSE_J;
-
+    CLINBufFSE m_ouLinBufFSE;
+	WINDOWPLACEMENT WndPlace;
 private:
     BOOL m_bHex;
     CSigWatchDlg* m_pouSigWnd;
-    CMsgInterpretationJ1939* m_pMsgInterPretObj_J;
+    CMsgInterpretationLIN* m_pMsgInterPretObj;
     CPARAM_THREADPROC m_ouReadThread;
     CRITICAL_SECTION m_omCritSecSW;
 
 public:
-    CSignalWatch_J1939(void) {};
-    ~CSignalWatch_J1939(void) {};
-    BOOL InitInstance(void);
+    
+	map<int,list<string>> m_mapMsgIDtoSignallst[16];
+	ClusterConfig *cluster;
+	
+	
+	BOOL InitInstance(void);
     int ExitInstance(void);
-
+	void vGetWindowPosition();
     HRESULT SW_DoInitialization(void);
-    HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSubList);
+    HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster);
     HRESULT SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd);
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
@@ -73,10 +76,14 @@ public:
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
-    void vDisplayInSigWatchWnd(STJ1939_MSG& sMsg);
+    void vDisplayInSigWatchWnd(STLINDATA &sLinData);
     void vDeleteRemovedListEntries();
+
+    
+
 
 private:
     BOOL bStartSigWatchReadThread(void);
+    INT nParseXMLColumn(xmlNodePtr pNode);
 
 };

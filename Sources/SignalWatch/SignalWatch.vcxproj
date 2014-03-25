@@ -129,8 +129,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -202,10 +201,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\MultiLanguage.cpp" />
+    <ClCompile Include="CheckBoxTree.cpp" />
     <ClCompile Include="SignalWatch.cpp" />
     <ClCompile Include="SignalWatch_CAN.cpp" />
     <ClCompile Include="SignalWatch_J1939.cpp" />
     <ClCompile Include="SignalWatchListBox.cpp" />
+    <ClCompile Include="MsgSignalSelect.cpp" />
+    <ClCompile Include="SignalWatch_LIN.cpp" />
     <ClCompile Include="SigWatchAddDelDlg.cpp" />
     <ClCompile Include="SigWatchDlg.cpp" />
   </ItemGroup>
@@ -213,19 +215,20 @@
     <ClInclude Include="BaseSignalWatch_CAN.h" />
     <ClInclude Include="BaseSignalWatch_J1939.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
+    <ClInclude Include="BaseSignalWatch_LIN.h" />
+    <ClInclude Include="CheckBoxTree.h" />
     <ClInclude Include="SignalWatch.h" />
     <ClInclude Include="SignalWatch_CAN.h" />
     <ClInclude Include="SignalWatch_Extern.h" />
     <ClInclude Include="SignalWatch_J1939.h" />
+    <ClInclude Include="MsgSignalSelect.h" />
+    <ClInclude Include="SignalWatch_LIN.h" />
     <ClInclude Include="SignalWatch_Resource.h" />
     <ClInclude Include="SignalWatch_stdafx.h" />
     <ClInclude Include="SignalWatchDefs.h" />
     <ClInclude Include="SignalWatchListBox.h" />
     <ClInclude Include="SigWatchAddDelDlg.h" />
     <ClInclude Include="SigWatchDlg.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\Signalwatch.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SignalWatch.rc" />
@@ -243,6 +246,13 @@
       <Project>{4a20171c-51db-4e82-bce0-5e3eeb070566}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Signalwatch.bmp" />
+    <None Include="res\bitmap1.bmp" />
+    <Image Include="res\DB Editor.ico" />
+    <Image Include="res\message.bmp" />
+    <Image Include="res\signal.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,6 +24,7 @@
 #include "SignalWatch_stdafx.h"
 #include "SignalWatch_CAN.h"
 #include "SignalWatch_J1939.h"
+#include "SignalWatch_LIN.h"
 #include "SignalWatch.h"
 #include "../Application/MultiLanguage.h"
 
@@ -33,7 +34,7 @@
 
 static CSignalWatch_CAN* sg_pouSW_CAN = NULL;
 static CSignalWatch_J1939* sg_pouSW_J1939 = NULL;
-
+static CSignalWatch_LIN* sg_pouSW_LIN = NULL;
 //
 //  Note!
 //
@@ -171,7 +172,25 @@ if sg_pouFP_CAN is null */
 if sg_pouFP_CAN is null */
         }
         break;
-
+		case LIN:
+        {
+            if (NULL == sg_pouSW_LIN)
+            {
+                if ((sg_pouSW_LIN = new CSignalWatch_LIN) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                    sg_pouSW_LIN->InitInstance();
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouSW_LIN; /* Doesn't matter even
+if sg_pouFP_CAN is null */
+        }
+        break;
         case MCNET:
         default:
             hResult = S_FALSE;

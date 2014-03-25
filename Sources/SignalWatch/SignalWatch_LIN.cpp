@@ -14,24 +14,25 @@
  */
 
 /**
- * \file      SignalWatch_CAN.cpp
- * \author    Ratnadip Choudhury
+ * \file      SignalWatch_LIN.cpp
+ * \author    Shashank Vernekar
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "SignalWatch_stdafx.h"
 #include "Include/Utils_macro.h"
-#include "SignalWatch_CAN.h"
+#include "SignalWatch_LIN.h"
 #include "Utility/MsgInterpretation.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
 
-int ReadCANDataBuffer(CSignalWatch_CAN* pSWCan)
+
+int ReadLINDataBuffer(CSignalWatch_LIN* pSWLin)
 {
-    ASSERT(pSWCan != NULL);
-    while (pSWCan->m_ouCanBufFSE.GetMsgCount() > 0)
+    ASSERT(pSWLin != NULL);
+    while (pSWLin->m_ouLinBufFSE.GetMsgCount() > 0)
     {
-        static STCANDATA sCanData;
-        INT Result = pSWCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
+        static STLINDATA sLinData;
+        INT Result = pSWLin->m_ouLinBufFSE.ReadFromBuffer(&sLinData);
         if (Result == ERR_READ_MEMORY_SHORT)
         {
             TRACE("ERR_READ_MEMORY_SHORT");
@@ -42,22 +43,22 @@ int ReadCANDataBuffer(CSignalWatch_CAN* pSWCan)
         }
         else
         {
-            pSWCan->vDisplayInSigWatchWnd(sCanData);
+            pSWLin->vDisplayInSigWatchWnd(sLinData);
         }
 
     }
     return 0;
 }
 
-DWORD WINAPI SigWatchDataReadThreadProc_C(LPVOID pVoid)
+DWORD WINAPI SigWatchDataReadThreadProc_L(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
     if (pThreadParam == NULL)
     {
         return (DWORD)-1;
     }
-    CSignalWatch_CAN* pSWCan = (CSignalWatch_CAN*)pThreadParam->m_pBuffer;
-    if (pSWCan == NULL)
+    CSignalWatch_LIN* pSWLin = (CSignalWatch_LIN*)pThreadParam->m_pBuffer;
+    if (pSWLin == NULL)
     {
         return (DWORD)-1;
     }
@@ -70,7 +71,7 @@ DWORD WINAPI SigWatchDataReadThreadProc_C(LPVOID pVoid)
         {
             case INVOKE_FUNCTION:
             {
-                ReadCANDataBuffer(pSWCan); // Retrieve message from the driver
+                ReadLINDataBuffer(pSWLin); // Retrieve message from the driver
             }
             break;
             case EXIT_THREAD:
@@ -95,23 +96,23 @@ DWORD WINAPI SigWatchDataReadThreadProc_C(LPVOID pVoid)
     return 0;
 }
 
-BOOL CSignalWatch_CAN::InitInstance(void)
+BOOL CSignalWatch_LIN::InitInstance(void)
 {
     InitializeCriticalSection(&m_omCritSecSW);
-	m_pouSigWnd = NULL;
-    m_pMsgInterPretObj = NULL;
-    m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
+    m_pouSigWnd = NULL;
+    m_pMsgInterPretObj = NULL;	
+    m_ouReadThread.m_hActionEvent = m_ouLinBufFSE.hGetNotifyingEvent();
     return TRUE;
 }
 
-int CSignalWatch_CAN::ExitInstance(void)
+int CSignalWatch_LIN::ExitInstance(void)
 {
     m_ouReadThread.bTerminateThread(); // Terminate read thread
-    m_ouCanBufFSE.vClearMessageBuffer();//clear can buffer
+    m_ouLinBufFSE.vClearMessageBuffer();//clear can buffer
 
     if (m_pMsgInterPretObj != NULL) // clear interpretation object
     {
-        m_pMsgInterPretObj->vClear();
+       // m_pMsgInterPretObj->vClear();
         delete m_pMsgInterPretObj;
         m_pMsgInterPretObj = NULL;
     }
@@ -122,41 +123,71 @@ int CSignalWatch_CAN::ExitInstance(void)
     {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
-        m_pouSigWnd = NULL;
+        m_pouSigWnd = NULL;		
     }
     return TRUE;
 }
 
-BOOL CSignalWatch_CAN::bStartSigWatchReadThread()
+void  CSignalWatch_LIN::vGetWindowPosition()
+{
+	//CMsgSignalSelect odDlg;
+	//WndPlace=odDlg.wpPosition();
+
+}
+BOOL CSignalWatch_LIN::bStartSigWatchReadThread()
 {
     m_ouReadThread.m_pBuffer = this;
-    m_ouReadThread.bStartThread(SigWatchDataReadThreadProc_C);
+    m_ouReadThread.bStartThread(SigWatchDataReadThreadProc_L);
     return TRUE;
 }
 
-void CSignalWatch_CAN::vDisplayInSigWatchWnd(STCANDATA& sCanData)
+void CSignalWatch_LIN::vDisplayInSigWatchWnd(STLINDATA &sLinData)
 {
-    EnterCriticalSection(&m_omCritSecSW);
-    if (m_pMsgInterPretObj != NULL)
-    {
-        static CString omMsgName;
-        static CStringArray omSigNames, omRawValues, omPhyValues;
-        if (m_pMsgInterPretObj->bInterpretMsgSigList(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID,
-                sCanData.m_uDataInfo.m_sCANMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))
-        {
-            if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
-            {
-                m_pouSigWnd->vAddMsgSigIntoList(omMsgName,omSigNames, omRawValues, omPhyValues, FALSE);
-            }
-        }
-    }
-    LeaveCriticalSection(&m_omCritSecSW);
+	EnterCriticalSection(&m_omCritSecSW);
+	if (m_pMsgInterPretObj != NULL)
+	{
 
-    //delete the invalid entries
-    vDeleteRemovedListEntries();
+
+		m_pMsgInterPretObj->vSetLINClusterInfo(cluster);
+		//STLINDATA * sLinData;
+		static CString omMsgName;
+		static CStringArray omSigNames, omRawValues, omPhyValues;
+		/*if (m_pMsgInterPretObj->bInterpretMsgSigList(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID,
+		sLinData.m_uDataInfo.m_sLINMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))*/
+		SSignalInfoArray sSingnalinfo;
+		string msgName;
+		EFORMAT d;
+
+		int mID=m_mapMsgIDtoSignallst->find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)->first;
+
+		if(mID==sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)
+		{
+			if (m_pMsgInterPretObj->bInterpretMsgs(DEC,&(sLinData.m_uDataInfo.m_sLINMsg),sSingnalinfo))
+
+			{
+
+				if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
+				{
+
+
+					m_pouSigWnd->vAddMsgToWnd(&sSingnalinfo,FALSE,m_mapMsgIDtoSignallst,mID);
+
+				}
+
+			}
+
+
+
+		}
+	}
+
+	LeaveCriticalSection(&m_omCritSecSW);
+
+	//delete the invalid entries
+	//vDeleteRemovedListEntries();
 }
 
-void CSignalWatch_CAN::vDeleteRemovedListEntries()
+void CSignalWatch_LIN::vDeleteRemovedListEntries()
 {
     if ((m_pMsgInterPretObj != NULL) && (m_pouSigWnd != NULL))
     {
@@ -208,23 +239,23 @@ void CSignalWatch_CAN::vDeleteRemovedListEntries()
     }
 }
 
-HRESULT CSignalWatch_CAN::SW_DoInitialization()
+HRESULT CSignalWatch_LIN::SW_DoInitialization()
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for CAN
     if (m_pouSigWnd == NULL)
-    {	
-        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), CAN);		
+    {		
+        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), LIN);
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
-        m_pouSigWnd->SetWindowText("Signal Watch - CAN");
+        m_pouSigWnd->SetWindowText("Signal Watch - LIN");
     }
 
-    CBaseDIL_CAN* pouDIL_CAN;
-    if (DIL_GetInterface(CAN, (void**)&pouDIL_CAN) == S_OK)
+    CBaseDIL_LIN* pouDIL_LIN;
+    if (DIL_GetInterface(LIN, (void**)&pouDIL_LIN) == S_OK)
     {
         DWORD dwClientId = 0;
-        pouDIL_CAN->DILC_RegisterClient(TRUE, dwClientId, CAN_MONITOR_NODE);
-        pouDIL_CAN->DILC_ManageMsgBuf(MSGBUF_ADD, dwClientId, &(m_ouCanBufFSE));
+        pouDIL_LIN->DILL_RegisterClient(TRUE, dwClientId, LIN_MONITOR_NODE);
+        pouDIL_LIN->DILL_ManageMsgBuf(MSGBUF_ADD, dwClientId, &(m_ouLinBufFSE));
     }
     //Start the read thread
     return bStartSigWatchReadThread()? S_OK: S_FALSE;
@@ -236,17 +267,30 @@ HRESULT CSignalWatch_CAN::SW_DoInitialization()
  * Signal watch configuration dialog box
  * lists frames / messages from the loaded database (combo box / list box).
  */
-HRESULT CSignalWatch_CAN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSubList)
+HRESULT CSignalWatch_LIN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster)
 {
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	ClusterConfig * m_ouClusterfinal=(ClusterConfig *) m_ouCluster;
+    
+	cluster=m_ouClusterfinal;
 
-	CMainEntryList * podMainSubListfinal= (CMainEntryList *) podMainSubList;
-    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	//cluster[LIN].m_nChannelsConfigured;
+	CMsgSignalSelect odDlg(m_ouClusterfinal,pParent,m_mapMsgIDtoSignallst);
 
-    CSigWatchAddDelDlg odDlg(pParent, podMainSubListfinal);
-    return (HRESULT)odDlg.DoModal();
+	//WndPlace=odDlg.wpPosition();
+
+	int nRet = odDlg.DoModal();
+
+	
+
+
+
+
+	return (HRESULT)nRet;
+   
 }
 
-HRESULT CSignalWatch_CAN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
+HRESULT CSignalWatch_LIN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
     if (m_pouSigWnd != NULL)
     {		
@@ -257,12 +301,12 @@ HRESULT CSignalWatch_CAN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, I
     return S_FALSE;
 }
 
-HRESULT CSignalWatch_CAN::SW_GetConfigSize(void)
+HRESULT CSignalWatch_LIN::SW_GetConfigSize(void)
 {
     return (sizeof (WINDOWPLACEMENT) + sizeof(UINT) * defSW_LIST_COLUMN_COUNT);
 }
 
-HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
+HRESULT CSignalWatch_LIN::SW_GetConfigData(void* pbyConfigData)
 {
     WINDOWPLACEMENT WndPlace;
     UINT nDebugSize  = 0;
@@ -279,9 +323,100 @@ HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
     }
     return S_OK;
 }
+
+
+
+
+
+
+
 // PTV XML
-HRESULT CSignalWatch_CAN::SW_GetConfigData(xmlNodePtr pNodePtr)
+HRESULT CSignalWatch_LIN::SW_GetConfigData(xmlNodePtr pNodePtr)
 {
+	list<FRAME_STRUCT> lstNumofFrames;
+	if(NULL != cluster)
+	{
+	cluster->m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
+
+	for(int i=0;i<cluster->m_nChannelsConfigured;i++)
+				 {
+
+
+					 // Adding Message
+					
+
+
+
+					 list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
+					 while(itr != lstNumofFrames.end())
+					 {
+						 
+						 int selkey = -1;
+						 if ( m_mapMsgIDtoSignallst->find(itr->m_nSlotId) != m_mapMsgIDtoSignallst->end())
+						 {
+							selkey=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->first;
+						 }
+
+
+						 CString strMessageId = "";
+						 if(selkey== itr->m_nSlotId)
+						 {
+
+							  xmlNodePtr pMsgTagPtr = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE);
+					 xmlAddChild(pNodePtr, pMsgTagPtr);
+						 strMessageId.Format("%d",selkey );
+						 
+						 /* Generating Message names */
+						 xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_MSGID
+							 , BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
+
+						 xmlAddChild(pMsgTagPtr, pMsgPtr);
+
+						 
+
+						 CString strSignalName = "";
+
+						 if(selkey == itr->m_nSlotId)
+						 {
+							 list<string> lstSignals=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->second;
+							 list<string>:: iterator itrselSignals= lstSignals.begin();
+
+							 while(itrselSignals != lstSignals.end())
+							 {
+								 strSignalName=(*itrselSignals).c_str();
+								// strSignalName.Format("%s", *itrselSignals);
+
+								 xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_SIGNAL
+									 , BAD_CAST strSignalName.GetBufferSetLength(strSignalName.GetLength()));
+								 xmlAddChild(pMsgTagPtr, pSignalPtr);
+
+
+								 itrselSignals++;
+
+							 }
+
+
+
+						 }
+						 }
+						 itr++;
+
+					 }
+
+
+				 }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Setting signal watch window placement and column width
     xmlNodePtr pWndPositn = xmlNewNode(NULL, BAD_CAST DEF_WINDOW_POSITION);
@@ -371,13 +506,16 @@ HRESULT CSignalWatch_CAN::SW_GetConfigData(xmlNodePtr pNodePtr)
             }
         }
     }
+
+ }
     return S_OK;
 }
 // PTV XML
 
-HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
+HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
 {
-    const BYTE* pbyTemp = (BYTE*)pbyConfigData;
+	const BYTE* pbyTemp = (BYTE*)pbyConfigData;
+	
     if ((pbyConfigData != NULL) && (m_pouSigWnd != NULL))
     {
         WINDOWPLACEMENT WndPlace;
@@ -407,32 +545,86 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
 
         if(pbyConfigData == NULL)
         {
+			WINDOWPLACEMENT WndPlace;
+			m_mapMsgIDtoSignallst->clear();
+  //     // memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
+  //      m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
+        //Signal watch window will move the List control in OnSize().
+        //So the default values should be as followes.
+
+		 WndPlace.rcNormalPosition.top=70;
+         WndPlace.rcNormalPosition.left=10;
+         WndPlace.rcNormalPosition.right=500;
+         WndPlace.rcNormalPosition.bottom=300;
+		 m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), TRUE);
+
             m_pouSigWnd->ShowWindow(SW_HIDE);
         }
     }
     return S_OK;
 }
 //MVN
-HRESULT CSignalWatch_CAN::SW_SetConfigData(xmlNodePtr pNode)
+HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
 {
-    INT nRetValue  = S_OK;
-    if ((pNode != NULL) && (m_pouSigWnd != NULL))
-    {
-        WINDOWPLACEMENT WndPlace;
-        while(pNode != NULL)
-        {
-            if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
-            {
-                nRetValue = xmlUtils::ParseWindowsPlacement(pNode, WndPlace);
-                if(nRetValue == S_OK)
-                {
-                    m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
-                }
-                break;
-            }
-            pNode = pNode->next;
-        }
-    }
+
+
+	int id;
+	INT nRetValue  = S_OK;
+	if ((pNode != NULL) && (m_pouSigWnd != NULL))
+	{
+		WINDOWPLACEMENT WndPlace;
+		while(pNode != NULL)
+		{   
+			
+			if((!xmlStrcmp(pNode->name, (const xmlChar*)"Message")))
+			{
+				int id;
+			list<string> signame;
+				
+				xmlNodePtr child= pNode->children;
+				while(child != NULL)
+				{
+					if((!xmlStrcmp(child->name, (const xmlChar*)"Id")))
+					{
+						
+						xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
+						if(NULL != key)
+						{
+							id = atoi((char*)key);
+						}
+
+					}
+
+					if((!xmlStrcmp(child->name, (const xmlChar*)"Signal")))
+					{
+						int id;
+						xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
+						if(NULL != key)
+						{
+							signame.push_back((char*)key);
+						}
+
+					}
+
+					child = child->next;
+				}
+
+				m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,signame));
+			}
+
+
+			if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
+			{
+				nRetValue = xmlUtils::ParseWindowsPlacement(pNode, WndPlace);
+				if(nRetValue == S_OK)
+				{
+					m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
+				}
+				break;
+			}
+			pNode = pNode->next;
+		}
+	}
     if(m_pouSigWnd != S_OK)
     {
         //Signal watch window will move the List control in OnSize().
@@ -451,7 +643,7 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(xmlNodePtr pNode)
     }
     return S_OK;
 }
-INT CSignalWatch_CAN::nParseXMLColumn(xmlNodePtr pNode)
+INT CSignalWatch_LIN::nParseXMLColumn(xmlNodePtr pNode)
 {
     INT nRetVal = S_OK;
     pNode = pNode->children;
@@ -506,7 +698,7 @@ INT CSignalWatch_CAN::nParseXMLColumn(xmlNodePtr pNode)
 /**
  * \req RS_18_23 Popup menu item 'Clear' (clears the signal watch window)
  */
-HRESULT CSignalWatch_CAN::SW_ClearSigWatchWnd(void)
+HRESULT CSignalWatch_LIN::SW_ClearSigWatchWnd(void)
 {
     if (m_pouSigWnd != NULL)
     {
@@ -518,20 +710,20 @@ HRESULT CSignalWatch_CAN::SW_ClearSigWatchWnd(void)
     return S_OK;
 }
 
-HRESULT CSignalWatch_CAN::SW_UpdateMsgInterpretObj(void* pvRefObj)
+HRESULT CSignalWatch_LIN::SW_UpdateMsgInterpretObj(void* pvRefObj)
 {
-    CMsgInterpretation* RefObj = (CMsgInterpretation*) pvRefObj;
+    CMsgInterpretationLIN* RefObj = (CMsgInterpretationLIN*) pvRefObj;
     EnterCriticalSection(&m_omCritSecSW);
     if (m_pMsgInterPretObj == NULL)
     {
-        m_pMsgInterPretObj = new CMsgInterpretation;
+        m_pMsgInterPretObj = new CMsgInterpretationLIN;
     }
     RefObj->vCopy(m_pMsgInterPretObj);
     LeaveCriticalSection(&m_omCritSecSW);
     return S_OK;
 }
 
-BOOL CSignalWatch_CAN::SW_IsWindowVisible()
+BOOL CSignalWatch_LIN::SW_IsWindowVisible()
 {
     BOOL bResult = FALSE;
     if (m_pouSigWnd != NULL)
@@ -541,7 +733,7 @@ BOOL CSignalWatch_CAN::SW_IsWindowVisible()
     return bResult;
 }
 
-HRESULT CSignalWatch_CAN::SW_SetDisplayMode(BOOL bHex)
+HRESULT CSignalWatch_LIN::SW_SetDisplayMode(BOOL bHex)
 {
     m_bHex = bHex;
     return S_OK;
