@@ -114,6 +114,49 @@ DWORD CDIL_FLEXRAY::DILF_GetDILList(bool bAvailable, FLEXRAY_DILLIST* List)
     return Result;
 }
 
+/**
+ * Check and load support for latest available ETAS BOA version.
+ *
+ * \return Library handle
+ */
+HMODULE CDIL_FLEXRAY::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
+{
+    USES_CONVERSION;
+
+    LONG lError = 0;
+    HKEY sKey;
+
+    // Check for BOA 2.0
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\2", 0, KEY_READ, &sKey);
+    if(lError==ERROR_SUCCESS)
+    {
+        RegCloseKey(sKey);
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 2.0..."));
+        return LoadLibrary("FlexRay_ETAS_BOA_2_0.dll");
+    }
+
+    // Check for BOA 1.5
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.5", 0, KEY_READ, &sKey);
+    if(lError==ERROR_SUCCESS)
+    {
+        RegCloseKey(sKey);
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.5..."));
+        return LoadLibrary("FlexRay_ETAS_BOA_1_5.dll");
+    }
+
+    // Check for BOA 1.4
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "SOFTWARE\\ETAS\\BOA\\1.4", 0, KEY_READ, &sKey);
+    if(lError==ERROR_SUCCESS)
+    {
+        RegCloseKey(sKey);
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.4..."));
+        return LoadLibrary("FlexRay_ETAS_BOA_1_4.dll");
+    }
+
+    pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("ETAS BOA not found in registry."));
+    return NULL;
+}
+
 HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_WrapperErrorLogger* pILog)
 {
     USES_CONVERSION;
@@ -151,7 +194,7 @@ HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_
         switch(dwDriverID)
         {
             case FLEXRAY_DRIVER_ETAS_BOA:
-                m_hDriverDll = LoadLibrary("FLEXRAY_ETAS_BOA.dll");
+                m_hDriverDll = vLoadEtasBoaLibrary(pILog);
                 break;
 
             case DRIVER_CAN_STUB:

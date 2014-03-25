@@ -339,10 +339,20 @@ Section "BUSMASTER"
 	bCanEtas2bExists:
 			Delete "$INSTDIR\CAN_ETAS_BOA_2_0.dll"
 			
-	; Deleting If FLEXRAY_ETAS_BOA.dll exists
-	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA.dll bFlexEtasbExists
+	; Deleting If FLEXRAY_ETAS_BOA_1_4.dll exists
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_1_4.dll bFlexEtasbExists
 	bFlexEtasbExists:
-			Delete "$INSTDIR\FLEXRAY_ETAS_BOA.dll"
+			Delete "$INSTDIR\FLEXRAY_ETAS_BOA_1_4.dll"
+
+	; Deleting If FLEXRAY_ETAS_BOA_1_5.dll exists
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_1_5.dll bFlexEtasbExists
+	bFlexEtasbExists:
+			Delete "$INSTDIR\FLEXRAY_ETAS_BOA_1_5.dll"
+
+	; Deleting If FLEXRAY_ETAS_BOA_2_0.dll exists
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_2_0.dll bFlexEtasbExists
+	bFlexEtasbExists:
+			Delete "$INSTDIR\FLEXRAY_ETAS_BOA_2_0.dll"
 	
 	; Deleting If LIN_ETAS_BOA.dll exists
 	IfFileExists $INSTDIR\LIN_ETAS_BOA.dll bLINEtasbExists
@@ -809,7 +819,9 @@ Section "BUSMASTER"
 	File ..\Sources\BIN\Release\zlib1.dll
 	File ..\Sources\BIN\Release\intl.dll
 	File ..\Sources\BIN\Release\LIN_ISOLAR_EVE_VLIN.dll
-	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA.dll
+	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_1_4.dll
+	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_1_5.dll
+	File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_2_0.dll
 	File ..\Sources\BIN\Release\LIN_ETAS_BOA.dll
 	File ..\Sources\BIN\Release\TXWindowFlexRay.dll
 	File ..\Sources\BIN\Release\Controller_0.dll

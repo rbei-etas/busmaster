@@ -63,6 +63,9 @@ public:
     license will be returned. If List is NULL, only number is returned. */
     DWORD DILF_GetDILList(bool bAvailable, FLEXRAY_DILLIST* List) ;
 
+    /* Check and load support for latest available ETAS BOA version. */
+    HMODULE vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog);
+
     /* This function selects a driver abstraction layer (DAL).
     A list for DILs (or bDriverID) is shown below:
     FLEXRAY_DRIVER_STUB         : DIL for Stub
