@@ -479,7 +479,7 @@ typedef struct vci_error_event_record       vci_error_event_record_s;
 /*
  * Include the IOCTL definitions
  */
-#include <EXTERNAL\vci_ioctl.h>
+#include "vci_ioctl.h"
 
 #ifdef _WIN32
 /* For Windows: reinstate value of packing value on entry to this file */
