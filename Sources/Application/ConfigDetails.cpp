@@ -478,8 +478,12 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 {
                     pTemp->m_byMsgFilter      =
                         m_sToolBarButtonStatus.m_byMsgFilter;
+					pTemp->m_byMsgFilterLin      =
+                        m_sToolBarButtonStatus.m_byMsgFilterLin;
                     pTemp->m_byLogFilter      =
                         m_sToolBarButtonStatus.m_byLogFilter;
+					pTemp->m_byLogFilterLIN =
+						m_sToolBarButtonStatus.m_byLogFilterLIN;
                     pTemp->m_byLogging        =
                         m_sToolBarButtonStatus.m_byLogging;
                     pTemp->m_byMsgInterpret   =
@@ -992,7 +996,9 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     // get the tool bar button status information
                     PSTOOLBARINFO pSrc = static_cast<PSTOOLBARINFO>(lpVoid);
                     m_sToolBarButtonStatus.m_byMsgFilter = pSrc->m_byMsgFilter;
+					m_sToolBarButtonStatus.m_byMsgFilterLin = pSrc->m_byMsgFilterLin;
                     m_sToolBarButtonStatus.m_byLogFilter = pSrc->m_byLogFilter;
+					m_sToolBarButtonStatus.m_byLogFilterLIN = pSrc->m_byLogFilterLIN;
                     m_sToolBarButtonStatus.m_byLogging = pSrc->m_byLogging;
                     m_sToolBarButtonStatus.m_byMsgInterpret =
                         pSrc->m_byMsgInterpret;
@@ -1755,6 +1761,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                 else
                 {
                     oCfgArchive >> m_sToolBarButtonStatus.m_byMsgFilter;
+                    oCfgArchive >> m_sToolBarButtonStatus.m_byMsgFilterLin;
                     oCfgArchive >> m_sToolBarButtonStatus.m_byLogFilter;
                     oCfgArchive >> m_sToolBarButtonStatus.m_byLogging;
                     oCfgArchive >> m_sToolBarButtonStatus.m_byMsgInterpret;
@@ -1776,6 +1783,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     if (m_fAppVersion >= defMULTI_DATABASE_VERSION)
                     {
                         CStringArray* pouTempArray ;
+						//pouTempArray->RemoveAll();
                         oCfgArchive >> pouTempArray;
                         m_pomaStrDatabaseFilename->RemoveAll();
                         m_pomaStrDatabaseFilename->Append(*pouTempArray);
@@ -1803,6 +1811,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                 oCfgArchive << m_omStrCopyright;
 
                 oCfgArchive << m_sToolBarButtonStatus.m_byMsgFilter;
+                oCfgArchive << m_sToolBarButtonStatus.m_byMsgFilterLin;
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogFilter;
                 oCfgArchive << m_sToolBarButtonStatus.m_byLogging;
                 oCfgArchive << m_sToolBarButtonStatus.m_byMsgInterpret;
@@ -2339,7 +2348,9 @@ void CConfigDetails::vInitToolbarInfo()
 {
     // toolbar information
     m_sToolBarButtonStatus.m_byMsgFilter = 0;
+    m_sToolBarButtonStatus.m_byMsgFilterLin = 0;
     m_sToolBarButtonStatus.m_byLogFilter =  0;
+	 m_sToolBarButtonStatus.m_byLogFilterLIN = 0;
     m_sToolBarButtonStatus.m_byLogging =  0;
     m_sToolBarButtonStatus.m_byMsgInterpret =  0;
     m_sToolBarButtonStatus.m_byOverwrite =  1;
@@ -3068,7 +3079,7 @@ BOOL CConfigDetails::bLoadStoreMsgFilterDetails(CArchive& roCfgArchive)
             //CFilterManager::ouGetFilterManager().vInitFilterList();
             // Get Message Filter Details
             // Get Array length. This is always 1 or 0!! Hardcoded value as of now
-            UINT unUnknownIDArraySize;
+            UINT unUnknownIDArraySize = 0;
             roCfgArchive >> unUnknownIDArraySize;
             // Read Unknown msg ID only if it is present
             if( unUnknownIDArraySize > 0 )
@@ -5320,7 +5331,7 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
         // Copy Filter
         // Get the size
         sLogFileDets.m_omFilter.RemoveAll();
-        int nSize;
+        int nSize = 0;
         omArchive >> nSize;
         // Get the filters
         for( int nIndex = 0; nIndex < nSize; nIndex++ )
@@ -5416,7 +5427,7 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
     // Load filter details
     sRepalyFile.m_omFilter.RemoveAll();
     // Load the size
-    int nSize;
+    int nSize = 0;
     omArchive >> nSize;
     // Load individual filters
     for( int nIndex = 0; nIndex < nSize; nIndex++ )

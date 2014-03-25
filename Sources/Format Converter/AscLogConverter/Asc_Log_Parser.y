@@ -8,17 +8,36 @@
 #define TIME_MODE_ABSOLUTE			 0
 #define TIME_MODE_RELATIVE			 1
 #define	TIME_MODE_UNDEFINED			-1
+
+#define NUMERIC_MODE_DEC			0
+#define NUMERIC_MODE_HEX			1
+#define NUMERIC_MODE_NONE			-1
+
 #define DEF_LOG_END_TEXT			"\n***END DATE AND TIME ***"
 // PTV[1.6.4]
 // Added new line
 #define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***\r\n"
 
-int nAddedHeader = 0;
-int nSize = 0;
+#define	MAX_LOG_HEADER				500
+
 int nLen = 0;
-int nTimeMode = TIME_MODE_UNDEFINED;
+int nTimeMode = TIME_MODE_ABSOLUTE;
 int nNumLines = 0;
+int nNumericMode = NUMERIC_MODE_HEX;
 char data[256];
+
+int nDay = 1;
+int nMonth = 1;
+int nYear = 2000;
+int nHour = 1;
+int nMins = 1;
+int nSec = 1;
+int nHeaderFound = 0;
+int nTimeStampFound = 0;
+char gchErrorString[255] = {'\0'};
+
+
+
 extern FILE *yyin, *yyout;
 
 void yyerror(const char *str)
@@ -51,38 +70,115 @@ int nGetLogTimeStamp(char* pchAscTime, char* pchLogTime)
 {
 	char chSeparators[] = ".";
 	char* pchTemp;
-	char chMilliSeconds[5] = {'\0'};
+	int nLen = 0;
+	int i = 0;
+	int nMax = 0;
+	char chMilliSeconds[5] = {'0'};
+	
 	int nHours, nMin, nSec;
 	unsigned int unSeconds;
-	
+	double fMilli = 0;
+	chMilliSeconds[5] = '\0';
+	memset(chMilliSeconds, 0x30, 4);
 	pchTemp = strtok(pchAscTime, chSeparators);
 	unSeconds = strtoul(pchTemp, NULL, 10);
 	nSecondToTime(unSeconds, &nHours, &nMin, &nSec);
 	
 	pchTemp = strtok(NULL, chSeparators);
-	
-	strncpy( chMilliSeconds, pchTemp, 4);
+	nLen = strlen(pchTemp);
+	nMax = min(nLen, 4);
+	for ( i=0; i < nMax ; i++ )
+	{
+		chMilliSeconds[i] = pchTemp[i];
+	}
 	
 	sprintf(pchLogTime, "%u:%u:%u:%s", nHours, nMin, nSec, chMilliSeconds);
 }
+int nInitialiseDefaultValues()
+{
+	nLen = 0;
+	nTimeMode = TIME_MODE_ABSOLUTE;
+	nNumLines = 0;
+	nNumericMode = NUMERIC_MODE_HEX;
+	nDay = 1;
+	nMonth = 1;
+	nYear = 2000;
+	nHour = 1;
+	nMins = 1;
+	nSec = 1;
+	nHeaderFound = 0;
+	nTimeStampFound = 0;
+	strcpy(gchErrorString, "Conversion Completed Successfully");
+	
+	nInitialiseDataBytes();
+}
 int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile)
 {
+int i =0;
 	if( (NULL != fpInputFile) && (NULL != fpOutputFile) )
 	{ 
 		yyin = fpInputFile;
 		yyout = fpOutputFile;
+
+		nInitialiseDefaultValues();
+		
+		//Add Dummy Header with initial values for log file.This will be replaced with the proper values
+		//afrter conversion.
+		for( i = 0 ; i < MAX_LOG_HEADER; i++ )
+		{
+			fprintf(yyout, " ");
+		}
+
 		yyparse();
+		
+		//Actual Header
+		nAddFunctionHeader();
+
+		if ( nTimeStampFound == 0 )
+		{
+			//TODO::
+			strcpy(gchErrorString, "Proper Header was not found in ASC File.Logging Mode is Assumed as Absolute & Numeric Format Assumed as Hex");
+		}
+
+
 	}
 	return 0;
 }
-int nAddFunctionHeader(char* pchDay, int nMonth, char* pchYear, int nHour, int nMins, int nSec)
+int nAddFunctionHeader()
 {
-	fprintf(yyout, "***BUSMASTER Ver 2.2.0***\n");
+	fseek(yyout, 0L, SEEK_SET );
+
+	fprintf(yyout, "***BUSMASTER Ver %s***\n", BUSMASTER_VER);
 	fprintf(yyout, "***PROTOCOL CAN***\n");
-    fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
-    fprintf(yyout, "***[START LOGGING SESSION]***\n");
-    fprintf(yyout,"***START DATE AND TIME %s:%d:%s %d:%d:%d:%s%s", pchDay, nMonth, pchYear, nHour, nMins, nSec, "000", "***");
-    nAddedHeader = 1;
+	fprintf(yyout, "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n");
+	fprintf(yyout, "***[START LOGGING SESSION]***\n");
+	fprintf(yyout,"***START DATE AND TIME %d:%d:%d %d:%d:%d:%s%s", nDay, nMonth, nYear, nHour, nMins, nSec, "000", "***\n");
+		
+	
+	
+	if ( NUMERIC_MODE_DEC == nNumericMode )
+	{
+		fprintf(yyout, "***DEC***\n");
+	}
+	else
+	{	
+		fprintf(yyout, "***HEX***\n");
+	}
+
+	if ( nTimeMode == TIME_MODE_RELATIVE )
+	{
+		fprintf(yyout, "***SYSTEM MODE***\n");
+	}
+	else
+	{
+		fprintf(yyout, "***ABSOLUTE MODE***\n");
+	}
+	fprintf(yyout,"***START DATABASE FILES (DBF/DBC)***\n");
+
+	fprintf(yyout,"***END OF DATABASE FILES (DBF/DBC)***\n");
+
+	fprintf(yyout,"***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***\n");
+
     return 0;
 }
 int GetMonth(char* pchValue)
@@ -177,7 +273,10 @@ Standard_Msg:
 		char chLogTime[256] = {'\0'};
 		
 		nGetLogTimeStamp((char*)$1, chLogTime);
+		
+
 		fprintf(yyout, "\n%s %s %s %s %s %s %s", chLogTime, $4, $2, $3, "s", $6, data);
+		
 		nLen = 0;
 		nInitialiseDataBytes();
 		/*free($1);
@@ -199,7 +298,10 @@ Extended_Msg:
 		strcpy(chId, $3);
 		nStrLen = strlen(chId);
 		chId[nStrLen-1] = '\0';
+		
 		fprintf(yyout, "\n%s %s %s %s %s %s %s", chLogTime, $4, $2, chId, "x", $6, data);
+
+
 		nLen = 0;
 		nInitialiseDataBytes();
 		/*free($1);
@@ -216,6 +318,7 @@ RemoteFrame:
 		char chLogTime[256] = {'\0'};
 		
 		nGetLogTimeStamp((char*)$1, chLogTime);
+		
 		fprintf(yyout,"\n%s %s %s %s %s %s %s", chLogTime, $4, $2, $3, "sr", "0",  "00 00 00 00 00 00 00 00");
 		nLen = 0;
 		nInitialiseDataBytes();
@@ -229,30 +332,27 @@ RemoteFrame:
 Base_TimeStamps:
 	BASETOKEN BASE  TIMESTAMPSTOKEN TIMEMODE
 	{
-		if( nAddedHeader == 0 )
-		{
-			//Default
-			nAddFunctionHeader("1", 1, "2000", 1, 1, 1);
-		} 
+		//Default
+		nTimeStampFound = 1;
 		if(strcmp("dec", (char*)$2) == 0)
 		{
-			fprintf(yyout,"\n%s", "***DEC***");
+			nNumericMode = NUMERIC_MODE_DEC;
+			
 		}
 		else
 		{
-			fprintf(yyout,"\n%s", "***HEX***");
+			nNumericMode = NUMERIC_MODE_HEX;
+			
 		}
 		if(strcmp("relative", (char*)$4) == 0)
 		{
-			fprintf(yyout,"\n%s", "***RELATIVE MODE***");
 			nTimeMode = TIME_MODE_RELATIVE;
 		}
 		else
 		{
-			fprintf(yyout,"\n%s", "***ABSOLUTE MODE***");
 			nTimeMode = TIME_MODE_ABSOLUTE;
 		}
-		fprintf(yyout,"\n%s", "***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***");
+		
 		/*free($1);
 		free($2);
 		free($3);
@@ -264,19 +364,16 @@ Log_Creation_Time:
 	DATETOKEN DAY MONTH NUMBER FULLTIME AM_PM NUMBER
 	{	
 		/*date Wed Dec 7 12:23:39 pm 2011*/
+		/*8:12:2011 20:15:28:553****/
+
 		
 		char chSeparators[]   = " :,\t\n";
 		char* chTemp;
-		int nMonth;
-		int nHour, nMins, nSec;
 		
-		// PTV[1.6.4]
-		// Added required headers at the start of the file
 		
-	 // PTV[1.6.4]
 		nMonth = GetMonth((char*)$3);
+		nHeaderFound = 1;
 		
-		/*8:12:2011 20:15:28:553****/
 		
 		chTemp = strtok((char*)$5, chSeparators);
 		nHour = atoi(chTemp);
@@ -290,10 +387,10 @@ Log_Creation_Time:
 		{
 			nHour = nHour + 12;
 		}
-		// PTV[1.6.4]
-		// Added Start date and Time text
-		nAddFunctionHeader((char*)$4, nMonth, (char*)$7, nHour, nMins, nSec);
-		// PTV[1.6.4]
+		
+		nDay = atoi( (char*)$4 );
+		nYear = atoi( (char*)$7 );
+
 		/*free($1);
 		free($2);
 		free($3);
@@ -310,11 +407,6 @@ Log_Creation:
 		
 		char chSeparators[]   = " :,\t\n";
 		char* chTemp;
-		int nMonth;
-		int nHour, nMins, nSec;
-		// PTV[1.6.4]
-		// Added required headers at the start of the file
-		 // PTV[1.6.4]
 		nMonth = GetMonth((char*)$3);
 		/*8:12:2011 20:15:28:553****/
 		
@@ -325,12 +417,9 @@ Log_Creation:
 		chTemp = strtok( NULL, chSeparators ); 
 		nSec = atoi(chTemp);
 		
-		nHour = nHour;
-	
-		// PTV[1.6.4]
-		// Added Start date and Time text
-		nAddFunctionHeader((char*)$4, nMonth, (char*)$6, nHour, nMins, nSec);
-		// PTV[1.6.4]
+		nDay = atoi( (char*)$4 );
+		nYear = atoi( (char*)$6 );
+
 		/*free($1);
 		free($2);
 		free($3);

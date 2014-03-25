@@ -131,7 +131,7 @@ public:
 
     }
 
-
+	FRAME_STRUCT();
     HRESULT GetPDUList ( list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetSignalList ( string omStrPduName, list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList );
@@ -159,6 +159,7 @@ public:
     ECHANNEL    m_ouChannel;
 
 public:
+	ECU_Struct();
     HRESULT GetControllerParams(ABS_FLEXRAY_SPEC_CNTLR& ouControllerParams);
     HRESULT GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ouEDIRECTION );
     HRESULT GetFrameList( list<FRAME_STRUCT>& ouFrameList);
@@ -198,6 +199,7 @@ public:
     HRESULT GetClusterInfo( ABS_FLEXRAY_CLUSTER& ouClusterInfo );
     HRESULT GetECUList( list<ECU_Struct>& ouEcuList );
     HRESULT GetECU( string omECUStrId, ECU_Struct& ouEcu);
+	HRESULT unListGetMessageIDs(UINT*&, UINT& nMsgCount);
     HRESULT GetFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
     HRESULT GetTxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
     HRESULT GetFrameNames(string omStrEcuName, list<string>& lstFrames);
@@ -322,6 +324,8 @@ typedef struct tag_Channel_Config
 
         return S_OK;
     }
+	
+
 
     HRESULT GetSelectedECUFrames(list<FRAME_STRUCT>& ouFrameList)
     {

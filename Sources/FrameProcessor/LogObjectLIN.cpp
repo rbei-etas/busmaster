@@ -25,7 +25,9 @@
 #include "FrameProcessor_stdafx.h"
 #include "include/Struct_LIN.h"
 #include "LogObjectLIN.h"            // For CLogObjectCAN class declaration
-
+#include <map>
+#include <string>
+using namespace std;
 
 #define LIN_VERSION           "***BUSMASTER Ver 2.0.0***"
 #define LIN_LOG_HEADER        "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
@@ -73,7 +75,7 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
 	SFRAMEINFO_BASIC_LIN LINInfo_Basic =
 	{
 		sDataLIN.m_dwMsgID, sDataLIN.m_eChannel, sDataLIN.m_eDirection,
-		sDataLIN.m_byMsgType
+		sDataLIN.m_byMsgType, sDataLIN.m_eEventType
 	};
 
 	// Assign appropriate values to FrameInfo_Basic
@@ -326,8 +328,8 @@ int CLogObjectLIN::Der_SetConfigData(xmlNodePtr pNodePtr)
 	int nResult = S_OK;
 	SFILTERAPPLIED_LIN sFilterApplied;
 	CStringArray omStrFilters;
-
-	if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc))
+	map<string, int> mapFilters;
+	if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc, LIN))
 	{
 		while(pNodePtr != NULL) //TODO:Move To Utils
 		{
@@ -335,17 +337,34 @@ int CLogObjectLIN::Der_SetConfigData(xmlNodePtr pNodePtr)
 			{
 				if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
 				{
+					int nEnabled = 1;
+					xmlAttrPtr pAttr = pNodePtr->properties;
+					while (pAttr)
+					{ // walk through all the attributes and find the required one
+						if (pAttr->type == XML_ATTRIBUTE_NODE)
+						{
+							std::string strAttrName((char *)pAttr->name);
+							if ((strAttrName == "IsEnabled") )
+							{
+								nEnabled = atoi((char *)pAttr->children->content);
+								break; // found
+							}   
+						}
+						pAttr = pAttr->next;
+					}
+
 					xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
 					if(NULL != key)
 					{
-						omStrFilters.Add((char*)key);
+						mapFilters[(char*)key] = nEnabled;
 						xmlFree(key);
 					}
 				}
 			}
 			pNodePtr = pNodePtr->next;
 		}
-		sFilterApplied.nGetFiltersFromName(m_sFilterApplied, omStrFilters);
+		//sFilterApplied.nGetFiltersFromName(m_sFilterApplied, omStrFilters);
+		sFilterApplied.nGetFiltersFromName(m_sFilterApplied, mapFilters);
 	}
 	return nResult;
 }

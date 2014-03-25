@@ -82,5 +82,5 @@ const float PI = (float) 3.14159265358979323846;
 #import <msxml6.dll>
 using namespace MSXML2;
 const BYTE VERSION_MAJOR    = 2;
-const BYTE VERSION_MINOR    = 2;
+const BYTE VERSION_MINOR    = 3;
 const BYTE VERSION_BUILD    = 0;

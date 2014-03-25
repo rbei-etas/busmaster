@@ -27,13 +27,13 @@
 class CMsgFilterConfigPage : public CPropertyPage
 {
     DECLARE_DYNCREATE(CMsgFilterConfigPage)
-
+	ETYPE_BUS m_eBusType;
     // Construction
 public:
     // Standard constructor
     CMsgFilterConfigPage();
     // Construction with filter details
-    CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterConfigured,
+	CMsgFilterConfigPage(ETYPE_BUS eBusType, const void* psFilterConfigured,
                          HWND hMsgWnd);
     // Standard destructor
     ~CMsgFilterConfigPage();
@@ -77,7 +77,7 @@ private:
     // Image list for the filter items
     CImageList m_omImageList;
     HWND m_hMsgWnd; //Msg window handle
-    const SFILTERAPPLIED_CAN* m_psFilterConfigured;
+    const void* m_psFilterConfigured;
     SFILTERAPPLIED_CAN m_sFilterAppliedCan;
 
 

@@ -121,7 +121,9 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     if( psToolBarInfo != NULL )
     {
         m_bDisplayFilterOn      = psToolBarInfo->m_byMsgFilter;
+        m_bDisplayFilterOnLin      = psToolBarInfo->m_byMsgFilterLin;
         m_bLogFilterOn          = psToolBarInfo->m_byLogFilter;
+		m_bLogFilterOnLIN       = psToolBarInfo->m_byLogFilterLIN;
         m_bLogEnable            = psToolBarInfo->m_byLogging;
         m_bTranslationMode      = psToolBarInfo->m_byMsgInterpret;
         m_bOverwriteEnable      = psToolBarInfo->m_byOverwrite;
@@ -179,7 +181,9 @@ CFlags::CFlags()
 void CFlags::vInitializeFlags()
 {
     m_bDisplayFilterOn      = FALSE;
+	m_bDisplayFilterOnLin	= FALSE;
     m_bLogFilterOn          = FALSE;
+	m_bLogFilterOnLIN		= FALSE;
     m_bLogEnable            = FALSE;
     m_bTranslationMode      = FALSE;
     m_bDisplayHexON         = TRUE;
@@ -326,12 +330,26 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             }
             m_bLogFilterOn  = nValue ;
             break;
+		case LOGFILTER_LIN:
+			if ( m_bLogFilterOnLIN  != nValue )
+            {
+                theApp.vSetConfigurationModified();
+            }
+            m_bLogFilterOnLIN  = nValue ;
+			break;
         case DISPLAYFILTERON :
             if ( m_bDisplayFilterOn != nValue)
             {
                 theApp.vSetConfigurationModified();
             }
             m_bDisplayFilterOn = nValue;
+            break;
+		case DISPLAYFILTERONLIN :
+            if ( m_bDisplayFilterOnLin != nValue)
+            {
+                theApp.vSetConfigurationModified();
+            }
+            m_bDisplayFilterOnLin = nValue;
             break;
         case TRANSLATIONMODE :
             if ( m_bTranslationMode != nValue)
@@ -575,8 +593,14 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case LOGFILTER :
             nRetValue = m_bLogFilterOn;
             break;
+		case LOGFILTER_LIN:
+			nRetValue = m_bLogFilterOnLIN;
+			break;
         case DISPLAYFILTERON :
             nRetValue = m_bDisplayFilterOn;
+            break;
+		case DISPLAYFILTERONLIN :
+            nRetValue = m_bDisplayFilterOnLin;
             break;
         case TRANSLATIONMODE :
             nRetValue = m_bTranslationMode;
@@ -735,7 +759,9 @@ void CFlags::vGetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
     if ( psToolBarInfo != NULL )
     {
         psToolBarInfo->m_byMsgFilter        = static_cast<BYTE>(m_bDisplayFilterOn);
+        psToolBarInfo->m_byMsgFilterLin        = static_cast<BYTE>(m_bDisplayFilterOnLin);
         psToolBarInfo->m_byLogFilter        = static_cast<BYTE>(m_bLogFilterOn);
+		psToolBarInfo->m_byLogFilterLIN    = static_cast<BYTE>(m_bLogFilterOnLIN);
         psToolBarInfo->m_byLogging          = static_cast<BYTE>(m_bLogEnable);
         psToolBarInfo->m_byMsgInterpret     = static_cast<BYTE>(m_bTranslationMode);
         psToolBarInfo->m_byOverwrite        = static_cast<BYTE>(m_bOverwriteEnable);
@@ -776,7 +802,9 @@ void CFlags::vSetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
     if ( psToolBarInfo != NULL )
     {
         m_bDisplayFilterOn      = psToolBarInfo->m_byMsgFilter;
+        m_bDisplayFilterOnLin      = psToolBarInfo->m_byMsgFilterLin;
         m_bLogFilterOn          = psToolBarInfo->m_byLogFilter;
+		m_bLogFilterOnLIN       = psToolBarInfo->m_byLogFilterLIN;
         m_bLogEnable            = psToolBarInfo->m_byLogging;
         m_bTranslationMode      = psToolBarInfo->m_byMsgInterpret;
         m_bOverwriteEnable      = psToolBarInfo->m_byOverwrite;

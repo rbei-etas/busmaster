@@ -1284,6 +1284,17 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_FORMAT_BUS_LOAD              _T("%-5.2f %%")
 #define defBITS_KBUAD_RATE                  1000.0
 
+#define defBITS_ERR_FRAME_LIN               20
+#define defBITS_STD_FRAME_LIN               50 //Without databytes.
+#define defBITS_ERROR_FRAME_LIN                 15
+#define defBITS_INTER_FRAME_LIN                 12
+#define defTIME_INTERVAL_LIN                    1.0
+#define defDIV_FACT_FOR_SECOND_LIN              10000.0
+#define defMAX_PERCENTAGE_BUS_LOAD_LIN          100.00
+#define defMAX_PERCENTAGE_BUS_LOAD_ALLOWED_LIN  99.99
+#define defSTR_FORMAT_BUS_LOAD_LIN              _T("%-5.2f %%")
+#define defBITS_KBUAD_RATE_LIN                  1000.0
+
 
 // These are all USB Related Definitions
 #define defSTR_DUAL_FILTERING               "\tDual Filtering\n"
@@ -1545,6 +1556,55 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_PASSIVE_STATE                "Passive"
 #define defSTR_BUSOFF_STATE                 "Bus Off"
 #define defSTR_UNKNOWN_STATE                "Unknown"
+
+
+
+
+#define defSTR_PARAMETER_MSG_TOTAL_LIN         "Data Frames      [Total]"
+#define defSTR_PARAMETER_MSG_RATE_LIN          "Data Frames      [fr/s]"
+#define defSTR_PARAMETER_ERR_TOTAL_LIN         "Errors        [Total]"
+#define defSTR_PARAMETER_ERR_RATE_LIN          "Errors        [Err/s]"
+#define defSTR_PARAMETER_LOAD_LIN              "Load"
+#define defSTR_PARAMETER_PEAK_LOAD_LIN         "Peak Load"
+#define defSTR_PARAMETER_AVG_LOAD_LIN          "Average Load"
+
+#define defSTR_TX_HEADING_LIN                  "          Transmission Statistics    "
+
+#define defSTR_PARAMETER_TX_TOTAL_LIN          "Total Tx Frames"
+
+
+#define defSTR_PARAMETER_TX_ERR_TOTAL_LIN      "TransErr         [Total]"
+#define defSTR_PARAMETER_TX_ERR_RATE_LIN       "TransErr         [Err/s]"
+
+#define defSTR_RX_HEADING_LIN                  "          Reception Statistics    "
+
+#define defSTR_PARAMETER_RX_TOTAL_LIN          "Total Rx Frames"
+
+
+#define defSTR_PARAMETER_RX_ERR_TOTAL_LIN      "RecErr         [Total]"
+#define defSTR_PARAMETER_RX_ERR_RATE_LIN       "RecErr         [Err/s]"
+
+#define defSTR_STATUS_HEADING_LIN              "          Status    "
+#define defSTR_PARAMETER_CONTROLLER_STATUS_LIN     "Controller"
+#define defSTR_PARAMETER_TX_ERROR_COUNT_LIN        "TrasnsErr Counter"
+#define defSTR_PARAMETER_PEAK_TX_ERROR_COUNT_LIN   "Peak TransErr Counter"
+#define defSTR_PARAMETER_RX_ERROR_COUNT_LIN        "RecErr Counter"
+#define defSTR_PARAMETER_PEAK_RX_ERROR_COUNT_LIN   "Peak RecErr Counter"
+
+#define defSTR_PARAMETER_WAKEUPS_COUNT_LIN   "WAKEUPS    [fr/s]"
+#define defSTR_PARAMETER_WAKEUPS_RATE_LIN   "WAKEUPS    [Total]"
+//#define defSTR_PARAMETER_CHIPSTATE_LIN   "CHIPSTATE     "
+
+
+
+#define defSTR_ACTIVE_STATE_LIN                 "Active"
+#define defSTR_PASSIVE_STATE_LIN                "Passive"
+#define defSTR_BUSOFF_STATE_LIN                 "Bus Off"
+#define defSTR_UNKNOWN_STATE_LIN                "Unknown"
+
+
+
+
 
 #define defSTR_CONTROL_NOT_REGISTERED_MSG  "Graph component is not installed properly. Please reinstall the application!!"
 

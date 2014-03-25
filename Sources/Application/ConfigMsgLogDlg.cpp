@@ -101,7 +101,7 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
         case LIN:
         {
             m_pouLoggerLIN=(CBaseFrameProcessor_LIN*) pouBaseLogger;
-            //              m_psLINFilter=(SFILTERAPPLIED_LIN*) psFilter;
+            m_psLINFilter=(SFILTERAPPLIED_LIN*) psFilter;
             m_strCurrWndText =_("Configure Logging for LIN");
             m_omControlParam = _("Start on Reception of ID 0x");
             m_omControlParam2 = _("Stop on Reception of ID 0x");
@@ -1107,7 +1107,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
     //Shashank
     else if(LIN == m_eCurrBus)
     {
-        GetDlgItem(IDC_LOG_FILTER)->ShowWindow(0);
+        GetDlgItem(IDC_LOG_FILTER)->ShowWindow(1);
     }
 
     return TRUE;
@@ -1233,7 +1233,70 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
     DestList.AddTail(sMainEntry);
 }
 
+static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_LIN* psFilterConfigured,
+                                 const SFILTERAPPLIED_LIN* psFilterApplied)
+{
+    ASSERT(psFilterConfigured != NULL);
+    DestList.RemoveAll();
+
+    SMAINENTRY sMainEntry;
+    sMainEntry.m_omMainEntryName = "LIN";
+    if (psFilterApplied == NULL)
+    {
+        SMAINENTRY sMainEntry;
+        sMainEntry.m_omMainEntryName = "FILTER_SELECTION_LIN";
+        for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
+        {
+            SSUBENTRY sSubEntry;
+            sSubEntry.m_omSubEntryName.Format("%s",
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
+        }
+    }
+    else
+    {
+
+        for (INT i = 0; i < psFilterConfigured->m_ushTotal; i++)
+        {
+            SSUBENTRY sSubEntry;
+            sSubEntry.m_omSubEntryName.Format("%s",
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+            if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
+                                                  psFilterApplied->m_ushTotal,
+                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
+            {
+                sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
+            }
+            else
+            {
+                sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
+            }
+        }
+    }
+    DestList.AddTail(sMainEntry);
+}
+
+
 static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured, SFILTERAPPLIED_CAN& sFilterApplied, CMainEntryList& SrcList)
+{
+    SMAINENTRY& sMainEntry = SrcList.GetHead();
+    int nCount  = sMainEntry.m_odSelEntryList.GetCount();
+    sFilterApplied.vClear();
+    sFilterApplied.m_psFilters = new SFILTERSET[nCount];
+
+    POSITION pos = sMainEntry.m_odSelEntryList.GetHeadPosition();
+    while (pos)
+    {
+        SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
+        const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
+                                   psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
+        ASSERT (psTemp != NULL);
+        sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
+        sFilterApplied.m_ushTotal++;
+    }
+}
+
+static void vPopulateFilterApplied(const SFILTERAPPLIED_LIN* psFilterConfigured, SFILTERAPPLIED_LIN& sFilterApplied, CMainEntryList& SrcList)
 {
     SMAINENTRY& sMainEntry = SrcList.GetHead();
     int nCount  = sMainEntry.m_odSelEntryList.GetCount();
@@ -1265,6 +1328,19 @@ void CConfigMsgLogDlg::OnBnClickedLogFilter(void)
         {
             vPopulateFilterApplied(m_psFilterConfigured, sFilterApplied, DestList);
             m_pouFProcCAN->FPC_ApplyFilteringScheme((USHORT)m_nLogIndexSel, sFilterApplied);
+        }
+    }
+	if (LIN == m_eCurrBus)
+    {
+        CMainEntryList DestList;
+        SFILTERAPPLIED_LIN sFilterApplied;
+        m_pouLoggerLIN->FPL_GetFilteringScheme((USHORT)m_nLogIndexSel, sFilterApplied);
+        vPopulateMainSubList(DestList, m_psLINFilter, &sFilterApplied);
+        //Show dialog
+        if (Filter_ShowSelDlg(this, &DestList) == IDOK)
+        {
+            vPopulateFilterApplied(m_psLINFilter, sFilterApplied, DestList);
+            m_pouLoggerLIN->FPL_ApplyFilteringScheme((USHORT)m_nLogIndexSel, sFilterApplied);
         }
     }
 }

@@ -48,11 +48,13 @@ IMPLEMENT_DYNCREATE(CMsgFilterConfigPage, CPropertyPage)
   Date Created   : 8.7.2005
   Modifications  :
 *******************************************************************************/
-CMsgFilterConfigPage::CMsgFilterConfigPage(const SFILTERAPPLIED_CAN* psFilterConfigured,
-        HWND hMsgWnd) :
+
+CMsgFilterConfigPage::CMsgFilterConfigPage(ETYPE_BUS eBusType, const void* psFilterConfigured,
+                         HWND hMsgWnd):
     CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER ),
     m_psFilterConfigured(psFilterConfigured),
-    m_hMsgWnd(hMsgWnd)
+    m_hMsgWnd(hMsgWnd),
+	m_eBusType(eBusType)
 {
     //{{AFX_DATA_INIT(CMsgFilterConfigPage)
     // NOTE: the ClassWizard will add member initialization here
@@ -283,14 +285,22 @@ VOID CMsgFilterConfigPage::vUpdateDataFromUI()
     }
 }
 
-static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
+static void vPopulateMainSubList(ETYPE_BUS eBusType, CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
                                  const SFILTERAPPLIED_CAN* psFilterApplied)
 {
     ASSERT(psFilterConfigured != NULL);
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
-    sMainEntry.m_omMainEntryName = "CAN";
+	if ( eBusType == CAN )
+	{
+		sMainEntry.m_omMainEntryName = "CAN";
+	}
+	else if ( eBusType == LIN )
+	{
+		sMainEntry.m_omMainEntryName = "LIN";
+	}
+
     if (psFilterApplied == NULL)
     {
         SMAINENTRY sMainEntry;
@@ -377,11 +387,11 @@ void CMsgFilterConfigPage::OnBtnConfigure()
     // Update User Modifications
     vUpdateDataFromUI();
     CMainEntryList DestList;
-    vPopulateMainSubList(DestList, m_psFilterConfigured, &m_sFilterAppliedCan);
+	vPopulateMainSubList(m_eBusType, DestList, (SFILTERAPPLIED_CAN*)m_psFilterConfigured, &m_sFilterAppliedCan);
     //Show dialog
     if (Filter_ShowSelDlg(this, &DestList) == IDOK)
     {
-        vPopulateFilterApplied(m_psFilterConfigured, m_sFilterAppliedCan, DestList);
+        vPopulateFilterApplied((SFILTERAPPLIED_CAN*)m_psFilterConfigured, m_sFilterAppliedCan, DestList);
         vInitFilterUIList();
     }
 }

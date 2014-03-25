@@ -68,6 +68,24 @@ HRESULT Cluster::GetFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameL
     return S_OK;
 }
 
+HRESULT Cluster::unListGetMessageIDs(UINT*& omListId, UINT& nMsgCount)
+{
+	list<FRAME_STRUCT> ouFrameList;
+	GetFrames(ouFrameList);
+
+	omListId = new UINT[ouFrameList.size()];
+	nMsgCount = ouFrameList.size();
+	list<FRAME_STRUCT>::iterator itrBegin = ouFrameList.begin();
+	int unMsgIndex = 0;
+	while ( ouFrameList.end() != itrBegin )
+	{
+		omListId[unMsgIndex] = itrBegin->m_nSlotId;
+		unMsgIndex++;
+		itrBegin++;
+	}
+	return S_OK;
+}
+
 HRESULT Cluster::GetFrames(list<FRAME_STRUCT>& ouFrameList)
 {
     if(m_ouEcuList.size() <= 0)
@@ -134,6 +152,17 @@ HRESULT Cluster::GetEcuChannel( ECHANNEL& ouChannelType )
 }
 
 //ECU
+ECU_Struct::ECU_Struct()
+{
+	m_strEcuId.empty();
+	m_strECUName.empty();    
+    //memset(&m_ouControllerParams, 0, sizeof(ABS_FLEXRAY_SPEC_CNTLR));
+    int m_nKeySlot = 0;
+	m_ouTxFrames.clear();    
+	m_ouRxFrames.clear();
+    m_ouChannel = UNSPECIFIED;
+}
+
 HRESULT ECU_Struct::GetControllerParams(ABS_FLEXRAY_SPEC_CNTLR& ouControllerParams)
 {
     ouControllerParams = m_ouControllerParams;
@@ -344,6 +373,20 @@ HRESULT ECU_Struct::GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_ST
 };
 
 //Frame
+FRAME_STRUCT::FRAME_STRUCT()
+{
+	m_strFrameId.empty();
+    m_strFrameName.empty();
+    m_nSlotId = 1;
+    m_nBaseCycle = 0;
+    m_nReptition = 1;
+    m_nLength = 8;
+	m_ouPduList.clear();    
+    m_ouChannel = UNSPECIFIED;
+    m_eSlotType = STATIC;
+    m_eSync = NONE_TYPE;
+}
+
 HRESULT FRAME_STRUCT::GetSignalList ( string omStrPduName, list<SIGNAL_STRUCT>& ouSignalList )
 {
     return S_OK;

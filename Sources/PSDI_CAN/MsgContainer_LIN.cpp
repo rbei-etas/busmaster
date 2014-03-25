@@ -129,14 +129,22 @@ static void vFormatLINDataMsg(STLINDATA* pMsgLIN,
                               tagSFRAMEINFO_BASIC_LIN* CurrDataLIN)
 
 {
-    if (RX_FLAG == pMsgLIN->m_ucDataType)
-    {
-        CurrDataLIN->m_eDrctn = DIR_RX;
-    }
-    else
-    {
-        CurrDataLIN->m_eDrctn = DIR_TX;
-    }
+	if(pMsgLIN->m_eLinMsgType == LIN_MSG)
+	{
+		CurrDataLIN->m_eEventType = EVENT_LIN_NONE;
+		if (RX_FLAG == pMsgLIN->m_ucDataType)
+		{
+			CurrDataLIN->m_eDrctn = DIR_RX;
+		}
+		else
+		{
+			CurrDataLIN->m_eDrctn = DIR_TX;
+		}
+	}
+	else if(pMsgLIN->m_eLinMsgType == LIN_EVENT)
+	{
+		CurrDataLIN->m_eEventType = pMsgLIN->m_uDataInfo.m_sErrInfo.m_eEventType;
+	}
 
     CurrDataLIN->m_eChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;
 
@@ -225,7 +233,7 @@ void CMsgContainerLIN::vProcessNewData(STLINDATA& sLinData)
     //          3. if not present and (get count = max count), do nothing
     //          4. SetItemcount
 
-    if ( IS_A_MESSAGE(sLinData.m_ucDataType) )
+	if ( sLinData.m_eLinMsgType == LIN_MSG /*IS_A_MESSAGE(sLinData.m_ucDataType)*/ )
     {
 
         // Add to append buffer
@@ -249,7 +257,7 @@ void CMsgContainerLIN::vProcessNewData(STLINDATA& sLinData)
             }
         }
     }
-    else //Add the error messages
+    else if(sLinData.m_eLinMsgType == LIN_EVENT)//Add the error messages
     {
         vProcessCurrErrorEntryLin(sLinData.m_uDataInfo.m_sErrInfo);
         // Add to append buffer
@@ -262,12 +270,16 @@ void CMsgContainerLIN::vProcessNewData(STLINDATA& sLinData)
         }
         STLINDATA* pStlin = &m_sLINReadDataSpl;
         *pStlin = sLinData;
-        m_ouAppendLinBuf.WriteIntoBuffer(&m_sLINReadDataSpl);
 
-        if (NULL != m_pRxMsgCallBack)
-        {
-            m_pRxMsgCallBack((void*)&sLinData, LIN);
-        }
+		if (!bTobeBlocked(sLinData))
+		{
+			m_ouAppendLinBuf.WriteIntoBuffer(&m_sLINReadDataSpl);
+
+			if (NULL != m_pRxMsgCallBack)
+			{
+				m_pRxMsgCallBack((void*)&sLinData, LIN);
+			}
+		}
     }
 
 }

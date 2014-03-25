@@ -84,7 +84,11 @@ typedef enum ESTATUS_BUS
     BUS_DISCONNECTED
 };
 
-
+enum eNetworkStatSheet
+{
+	CAN_STAT_PAGE,
+	LIN_STAT_PAGE
+};
 typedef enum eDirection
 {
     DIR_RX = 'R',
@@ -214,6 +218,7 @@ typedef struct tagFormattedData_CAN
     BYTE            m_abData[MAX_DATA_LEN_CAN_FD];  // Message data
     BYTE            m_byIDType;                     // Type of the ID (STD or EXTENDED)
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
+	eERROR_STATE	m_eEventType;
 
     char   m_acMsgDir[LENGTH_STR_DIRECTION_CAN];     // "Tx" or "Rx"
     char   m_acChannel[LENGTH_STR_CHANNEL_CAN];      // "1" or "2"
@@ -259,7 +264,7 @@ typedef struct tagFormattedData_LIN
     BYTE            m_byMsgType;                    // Type of the message (RTR or NRTR)
     BYTE            m_byChecksum;                   // Checksum of Lin frame
     BYTE            m_byChecksumType;               // Checksum Type (0 - Classical / 1 - Enhanced)
-
+	eLinBusEventType		 m_eEventType;
 
     char   m_acMsgDir[LENGTH_STR_DIRECTION_LIN];     // "Tx" or "Rx"
     char   m_acChannel[LENGTH_STR_CHANNEL_LIN];      // "1" or "2"

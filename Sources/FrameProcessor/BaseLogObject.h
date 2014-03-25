@@ -28,8 +28,6 @@
 
 #include "DataTypes/Log_Datatypes.h"
 #include "DataTypes\Cluster.h"
-#include "Application\FibexConfigurationDlg.h"
-
 
 class CBaseLogObject
 {

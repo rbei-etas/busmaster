@@ -932,10 +932,10 @@ BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 void vInitializeControllerConfig(UINT nChannel)
 {
     sg_asChannel[nChannel].m_OCI_CANConfig.baudrate = 500000;
-    sg_asChannel[nChannel].m_OCI_CANConfig.samplePoint = 70;
+    sg_asChannel[nChannel].m_OCI_CANConfig.samplePoint = 80;
     sg_asChannel[nChannel].m_OCI_CANConfig.samplesPerBit = OCI_CAN_THREE_SAMPLES_PER_BIT;
-    sg_asChannel[nChannel].m_OCI_CANConfig.BTL_Cycles = 10;
-    sg_asChannel[nChannel].m_OCI_CANConfig.SJW = 4;
+    sg_asChannel[nChannel].m_OCI_CANConfig.BTL_Cycles = 80;
+    sg_asChannel[nChannel].m_OCI_CANConfig.SJW = 16;
     sg_asChannel[nChannel].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
     sg_asChannel[nChannel].m_OCI_CANConfig.physicalMedia = OCI_CAN_MEDIA_HIGH_SPEED;
     sg_asChannel[nChannel].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
@@ -945,9 +945,9 @@ void vInitializeControllerConfig(UINT nChannel)
 #if BOA_VERSION >= BOA_VERSION_2_0
     /* Set CAN FD default values */
     sg_asChannel[nChannel].m_OCI_CANConfig.canFDEnabled = true;
-    sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataBitRate                  = 8000000;
-    sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataSamplePoint              = 12;
-    sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataBTL_Cycles               = 60;
+    sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataBitRate                  = 2000000;
+    sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataSamplePoint              = 70;
+    sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataBTL_Cycles               = 10;
     sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.dataSJW                      = 3;
     sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.txDelayCompensationControl   = OCI_CANFDTX_DELAY_COMPENSATION_OFF;
     //sg_asChannel[nChannel].m_OCI_CANConfig.canFDConfig.txSecondarySamplePointOffset = 0;

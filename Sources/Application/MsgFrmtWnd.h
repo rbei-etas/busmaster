@@ -143,11 +143,14 @@ private:
     void vUpdateMsgTreeWnd(__int64 nMapIndex);
     void vUpdateAllTreeWnd();
     void vSetDefaultPlacement();
+			
+	COLORREF colGetLINMsgColorByCode(INT nMsgCode);
+	COLORREF colGetLINMsgColorById(INT nMsgId, eLinMsgType eMsgType =  LIN_MSG);
 
     UINT m_unCurrInterpretedMsgID;
     __int64 m_unCurrInterpretedMapIndex;
     CMessageInterpretation* m_podMsgIntprtnDlg;
-    INT m_anMsgBuffSize[defDISPLAY_CONFIG_PARAM];
+    INT m_anMsgBuffSize[BUS_TOTAL][defDISPLAY_CONFIG_PARAM];
     void vUpdateMsgBufferDetails(INT* pMsgBuffSize);
     void vDisplayToolTip(MSG* pMsg);
     CToolTipCtrl m_objToolTip;

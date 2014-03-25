@@ -2438,59 +2438,65 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                     break;
             }
         }
-        CHAR chTemp[MAX_PATH];
+        //CHAR chTemp[MAX_PATH];
+		string chTemp = "";
+		std::ostringstream stringStream;
+		stringStream.clear();
+		
         switch (sg_ndNeoToOpen[i].DeviceType)
         {
                 /* neoVI Blue */
             case NEODEVICE_BLUE:
-                sprintf_s(chTemp,"neoVI Blue, Serial Number %d, Network: %s",
-                          serialNumber, &netid_str[0]);
+                //sprintf_s(chTemp,"neoVI Blue, Serial Number %d, Network: %s",
+                //          serialNumber, &netid_str[0]);
+				chTemp = "neoVI Blue";				
                 break;
 
                 /* ValueCAN */
             case NEODEVICE_DW_VCAN:
-                _stprintf(chTemp,
-                          "ValueCAN, Serial Number %d, Network: %s",
-                          serialNumber, &netid_str[0]);
+                //_stprintf(chTemp, "ValueCAN, Serial Number %d, Network: %s",
+                //          serialNumber, &netid_str[0]);
+				chTemp = "ValueCAN";				
                 break;
 
                 /* neoVI Fire/Red */
             case NEODEVICE_FIRE:
-                _stprintf(chTemp,
-                          "neoVi Fire/Red, Serial Number %d, Network: %s",
-                          serialNumber, &netid_str[0]);
+                //_stprintf(chTemp, "neoVi Fire/Red, Serial Number %d, Network: %s",
+                //          serialNumber, &netid_str[0]);
+				chTemp = "neoVi Fire/Red";				
                 break;
 
                 /* ValueCAN3 and ETAS ES581 */
             case NEODEVICE_VCAN3:
                 if (serialNumber < 50000)
                 {
-                    _stprintf(chTemp,
-                              "ValueCAN3, Serial Number %d, Network: %s",
-                              serialNumber, &netid_str[0]);
+                    //_stprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
+                    //          serialNumber, &netid_str[0]);
+					chTemp = "ValueCAN3";	
                 }
                 else
                 {
                     if (nHardwareLic == 8)   // Limited Version with only one channel
                     {
-                        _stprintf(chTemp,
-                                  "ES581.2, Serial Number %d, Network: %s",
-                                  serialNumber-50000, &netid_str[0]);
+                        //_stprintf(chTemp, "ES581.2, Serial Number %d, Network: %s",
+                        //          serialNumber-50000, &netid_str[0]);
+						chTemp = "ES581.2";	
                     }
                     else     // Two channels
                     {
-                        _stprintf(chTemp,
-                                  "ES581.3, Serial Number %d, Network: %s",
-                                  serialNumber-50000, &netid_str[0]);
+                        //_stprintf(chTemp, "ES581.3, Serial Number %d, Network: %s",
+                        //          serialNumber-50000, &netid_str[0]);
+						chTemp = "ES581.3";	
                     }
                 }
                 break;
 
             default:
-                _stprintf(chTemp,
-                          "Unknown, Serial Number %d", serialNumber);
+                //_stprintf(chTemp, "Unknown, Serial Number %d", serialNumber);
+				chTemp = "Unknown";				
                 break;
         };
+		stringStream << chTemp << ", Serial Number " << serialNumber << ", Network: " << netid_str[0];
         pControllerDetails[i].m_omHardwareDesc = chTemp;
     }
     return S_OK;

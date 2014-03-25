@@ -1588,14 +1588,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformInitOperations(void)
 
 HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformClosureOperations(void)
 {
-    for ( int i = 0 ; i < sg_nNoOfChannels; i++ )
-    {
-        /* sg_asChannel[i].m_ouDataTransmitThread.m_unActionCode = EXIT_THREAD;
-         sg_asChannel[i].m_ouDataTransmitThread.bTerminateThread();*/
-
-        LIN_UnloadDriverLibrary();
-    }
-
+	sg_bCurrState = STATE_DRIVER_SELECTED;
     return S_OK;
 }
 
@@ -1990,7 +1983,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_InitializeBuffers(void)
 HRESULT CDIL_LIN_ETAS_BOA::hRecreateLINController(INT nIndex)
 {
     HRESULT hResult = S_FALSE;
-    OCI_ErrorCode OciErrorCode;
+    OCI_ErrorCode OciErrorCode = OCI_SUCCESS;
 
     sg_asChannel[nIndex].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
     OciErrorCode == (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[nIndex].m_OCI_HwHandle,

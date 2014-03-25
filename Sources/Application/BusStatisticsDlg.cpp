@@ -38,7 +38,9 @@
 
 #include "BusStatisticsDlg.h"
 #include ".\busstatisticsdlg.h"
-#define  BUS_STATICS_CONFIG_PATH     "//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Bus_Statistics/COLUMN"
+#include "NetworkStatistics.h"
+
+#define  BUS_STATICS_CONFIG_PATH     "//BUSMASTER_CONFIGURATION/Module_Configuration/Bus_Statistics/CAN_Statistics/COLUMN"
 /////////////////////////////////////////////////////////////////////////////
 // CBusStatisticsDlg dialog
 //extern SBUSSTATISTICS g_sBusStatistics[ defNO_OF_CHANNELS];
@@ -48,36 +50,6 @@ extern CCANMonitorApp theApp;
 extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
 
 const BYTE BUS_STATS_DLG_VERSION = 0x1;
-
-sBUSSTATTISTICSDATA CBusStatisticsDlg::sm_sBusSerializationData;
-
-
-
-/* constructor */
-sBUSSTATTISTICSDATA::sBUSSTATTISTICSDATA()
-{
-    m_bIsDirty = false;
-    //One for the first default parameters column
-    m_nColumnCount = CHANNEL_CAN_MAX + 1;
-}
-
-void sBUSSTATTISTICSDATA::vLoadDefaults()
-{
-    //For first column 'Parameters'
-    m_arrbColumnVisible[0] = true;
-    m_arrnOrder[0] = 0;
-    m_arrnColWidth[0] = defPARAMETER_COL_WIDTH;
-
-
-    for(short i = 1; i < CHANNEL_CAN_MAX+1; i++)
-    {
-        m_arrbColumnVisible[i] = true;
-        m_arrnOrder[i] = i;
-        m_arrnColWidth[i] = defVALUE_COL_WIDTH;
-    }
-    m_sBusStatsDlgCoOrd = m_sDefaultBusStatsDlgCoOrd;
-    m_sBusStatsDlgCoOrd.showCmd = SW_HIDE;
-}
 
 /******************************************************************************/
 /*  Function Name    :  CBusStatisticsDlg                                     */
@@ -98,9 +70,9 @@ void sBUSSTATTISTICSDATA::vLoadDefaults()
 /*                      Removed clearing data as data is moved to the class   */
 /*                      CStatistics                                           */
 /******************************************************************************/
-CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN, CWnd* pParent,int nChannelCount)
-    : CDialog(CBusStatisticsDlg::IDD, pParent),
-      m_pouBSCAN(pouBSCAN),
+CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,int nChannelCount)
+	: CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
+	  m_pouBSCAN(pouBSCAN),
       m_omStrBusLoad(STR_EMPTY),
       m_omStrPeakBusLoad(STR_EMPTY),
       m_omStrAvgBusLoad( STR_EMPTY )
@@ -109,6 +81,24 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN, CWnd* pPare
     //{{AFX_DATA_INIT(CBusStatisticsDlg)
     //}}AFX_DATA_INIT
     m_nChannelCount = nChannelCount;
+}
+
+CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,CWnd* pParent,int nChannelCount)
+	: CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
+	  m_pouBSCAN(pouBSCAN),
+      m_omStrBusLoad(STR_EMPTY),
+      m_omStrPeakBusLoad(STR_EMPTY),
+      m_omStrAvgBusLoad( STR_EMPTY )
+
+{
+    //{{AFX_DATA_INIT(CBusStatisticsDlg)
+    //}}AFX_DATA_INIT
+    m_nChannelCount = nChannelCount;
+	for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
+        {
+	SBUSSTATISTICS sBusStatistics;
+	m_pouBSCAN->BSC_GetBusStatistics(nChannel, sBusStatistics);
+	}
 }
 
 /******************************************************************************/
@@ -131,14 +121,14 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN, CWnd* pPare
 /******************************************************************************/
 void CBusStatisticsDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialog::DoDataExchange(pDX);
+	CCommonStatistics::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CBusStatisticsDlg)
     DDX_Control(pDX, IDC_LIST_STAT, m_omStatList);
     //}}AFX_DATA_MAP
 }
 
-
-BEGIN_MESSAGE_MAP(CBusStatisticsDlg, CDialog)
+IMPLEMENT_DYNAMIC(CBusStatisticsDlg, CCommonStatistics)
+BEGIN_MESSAGE_MAP(CBusStatisticsDlg, CCommonStatistics)
     //{{AFX_MSG_MAP(CBusStatisticsDlg)
     ON_WM_ERASEBKGND()
     //}}AFX_MSG_MAP
@@ -386,7 +376,7 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
 *******************************************************************************/
 BOOL CBusStatisticsDlg::OnInitDialog()
 {
-    CDialog::OnInitDialog();
+	CCommonStatistics::OnInitDialog();
 
     /* Try to load resource DLL for icons*/
     HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
@@ -629,6 +619,9 @@ BOOL CBusStatisticsDlg::OnInitDialog()
 
     // Set the focus to the list
     m_omStatList.SetFocus();
+
+	hSetConfigData();
+
     return FALSE;
 }
 
@@ -662,7 +655,7 @@ BOOL CBusStatisticsDlg::OnEraseBkgnd(CDC* /*pDC*/)
 *******************************************************************************/
 void CBusStatisticsDlg::OnSize(UINT nType, int cx, int cy)
 {
-    CDialog::OnSize(nType, cx, cy);
+    CCommonStatistics::OnSize(nType, cx, cy);
 
     if(m_omStatList.m_hWnd)
     {
@@ -671,692 +664,4 @@ void CBusStatisticsDlg::OnSize(UINT nType, int cx, int cy)
         m_omStatList.MoveWindow(&omClientRect);
     }
 }
-
-
-/*******************************************************************************
-  Function Name  : GetConfigData
-  Input(s)       : ppvDataStream, unLength
-  Output         : -
-  Functionality  : Returns the Bus stats dialog Configuration in Byte Array.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 06-04-2011
-  Modifications  :
-*******************************************************************************/
-HRESULT CBusStatisticsDlg::GetConfigData(BYTE* pvDataStream)
-{
-    BYTE* pByteTrgt = NULL;
-    pByteTrgt = pvDataStream;
-
-    BYTE byVer = BUS_STATS_DLG_VERSION;
-    COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
-
-    UINT nSize= nGetBusStatsDlgConfigSize();
-    COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size.
-
-    CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-    if (pHeaderCtrl != NULL)
-    {
-        int  nColumnCount = pHeaderCtrl->GetItemCount();
-        COPY_DATA(pByteTrgt, &nColumnCount, sizeof(UINT)); //Storing column count.
-
-        LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-
-        ASSERT(pnOrder != NULL);
-        m_omStatList.GetColumnOrderArray(pnOrder, nColumnCount);
-
-        for (int i = 0 ; i < nColumnCount; i++)
-        {
-            //Storing Column Header Positions.
-            COPY_DATA(pByteTrgt, &pnOrder[i], sizeof(int));
-
-            //Storing Column Header show/Hide.
-            bool bColumnVisible = m_omStatList.IsColumnShown(i);
-            COPY_DATA(pByteTrgt, &bColumnVisible, sizeof(bool));
-
-            //Storing Column width.
-            INT nColWidth = m_omStatList.GetColumnWidth(i);
-            COPY_DATA(pByteTrgt, &nColWidth, sizeof(int));
-
-        }
-        free(pnOrder);
-
-    }
-    GetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-    COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_sBusStatsDlgCoOrd, sizeof(WINDOWPLACEMENT));
-
-    return S_OK;
-}
-
-/*******************************************************************************
-  Function Name  : GetConfigData
-  Input(s)       : xmlNodePtr
-  Output         : -
-  Functionality  : Returns whether success or not
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Ashwin. R. Uchil
-  Date Created   : 08-4-2012
-  Modifications  :
-*******************************************************************************/
-HRESULT CBusStatisticsDlg::GetConfigData(xmlNodePtr pxmlNodePtr)
-{
-    const char* omcVarChar ;
-    if(m_omStatList.m_hWnd == NULL)
-    {
-        return true;
-    }
-    CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-    int  nColumnCount = pHeaderCtrl->GetItemCount();
-    LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-    m_omStatList.GetColumnOrderArray(pnOrder, nColumnCount);
-
-    LPINT pnOrderTemp = (LPINT) malloc(nColumnCount*sizeof(int));
-
-    for(INT nIndex = 0; nIndex < nColumnCount; nIndex++)
-    {
-        if(pnOrder != NULL)
-        {
-            INT nColumn = pnOrder[nIndex];
-            pnOrderTemp[nColumn] = nIndex;
-        }
-    }
-
-    LVCOLUMN    oCol;
-    TCHAR pcName[MAX_PATH]; // sufficient for now
-    oCol.mask = LVCF_TEXT;
-    oCol.pszText = (LPTSTR)pcName;
-    oCol.cchTextMax = MAX_PATH;
-
-    for (int iItr = 0 ; iItr < nColumnCount; iItr++)
-    {
-
-        xmlNodePtr pNodeColumn = xmlNewNode(NULL, BAD_CAST DEF_COLUMN);
-        xmlAddChild(pxmlNodePtr, pNodeColumn);
-
-        m_omStatList.GetColumn(iItr, &oCol);
-
-        //  <ID>Channel 1</ID>
-        CString csColumnName;
-        csColumnName.Format("%s", oCol.pszText);
-        omcVarChar = csColumnName;
-        xmlNodePtr pColName = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pColName);
-
-        //<Order>1</Order>
-        CString csOrder;
-        csOrder.Format("%d", pnOrderTemp[iItr] + 1);
-        omcVarChar = csOrder;
-        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pOrder);
-
-
-        //<IsVisible>bool</IsVisible>
-        CString csWidth;
-        csWidth.Format("%d", m_omStatList.GetColumnWidth(iItr));
-        omcVarChar = csWidth;
-        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pWidth);
-
-        //<Width> int </Width>
-        CString csVisible;
-        csVisible.Format("%d", m_omStatList.IsColumnShown(iItr));
-        omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pVisisble);
-    }
-
-    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
-    xmlAddChild(pxmlNodePtr, pNodeWndPos);
-
-    GetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos, sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-
-    free(pnOrderTemp);
-    free(pnOrder);
-    return true;
-}
-/*******************************************************************************
-  Function Name  : SetConfigData
-  Input(s)       : pvDataStream
-  Output         : -
-  Functionality  : Sets the Bus stats dialog Configuration from Byte Array.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 25-08-2010
-  Modifications  :
-*******************************************************************************/
-HRESULT CBusStatisticsDlg::SetConfigData(BYTE* pvDataStream)
-{
-    BYTE* pByteSrc = NULL;
-    pByteSrc = pvDataStream;
-
-    if (pByteSrc != NULL)
-    {
-        //Reading Version.
-        BYTE byVer = 0;
-        COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
-        UINT nSize= 0;
-        //Reading Buffer Size.
-        COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
-        if ((byVer == BUS_STATS_DLG_VERSION) && (nSize > 0))
-        {
-            //Reading column Header Positions.
-            CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-            if (pHeaderCtrl != NULL)
-            {
-                int  nColumnCount=0;
-                //Reading column count.
-                COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
-
-                //Saved channel count is same as current channel count.
-                if(nColumnCount==m_nChannelCount+1)
-                {
-                    LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-                    for (int i = 0 ; i < nColumnCount; i++)
-                    {
-                        COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
-                        bool bColumnVisible = false;
-                        //Reading visibility
-                        COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
-                        m_omStatList.MakeColumnVisible(i, bColumnVisible);
-
-                        INT nColWidth = 0;
-                        //Reading width
-                        COPY_DATA_2(&nColWidth, pByteSrc, sizeof(int));
-                        m_omStatList.SetColumnWidth(i, nColWidth);
-                    }
-                    m_omStatList.SetColumnOrderArray(nColumnCount, pnOrder);
-                    free(pnOrder);
-                }
-                else //Saved channel count differs from current channel count.
-                {
-                    vLoadDefaultValues();
-                }
-            }
-            WINDOWPLACEMENT sMsgWndPlacement;
-            COPY_DATA_2(&sMsgWndPlacement, pByteSrc, sizeof(WINDOWPLACEMENT));
-            SetWindowPlacement(&sMsgWndPlacement);
-        }
-    }
-    return S_OK;
-}
-
-HRESULT CBusStatisticsDlg::SetConfigData(xmlNodePtr pDocPtr)
-{
-    sm_sBusSerializationData.vLoadDefaults();
-
-    xmlXPathObjectPtr pObjectPath = NULL;
-    xmlNodePtr pNodePtr = NULL;
-    int nRetVal = S_OK;
-    xmlChar* pXmlPath = (xmlChar*) BUS_STATICS_CONFIG_PATH;
-
-    pObjectPath = xmlUtils::pGetChildNodes(pDocPtr, (xmlChar*) "COLUMN");
-
-    if(pObjectPath != NULL)
-    {
-        xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        sm_sBusSerializationData.m_nColumnCount = pObjectPath->nodesetval->nodeNr;
-        //INT *npColumns = new INT[sm_sBusSerializationData.m_nColumnCount];
-        //memset(npColumns, -1, sizeof(INT) * sm_sBusSerializationData.m_nColumnCount);
-        if(pNodeSet != NULL && (sm_sBusSerializationData.m_nColumnCount == m_nChannelCount + 1))
-        {
-            ColumnInfoMap ColumnMap;
-            nRetVal = xmlUtils::parseColumnInfoNode(pNodeSet, ColumnMap);
-
-            int* pnOrder = (int*) malloc((ColumnMap.size()+1)*sizeof(int));
-            if(S_OK == nRetVal)
-            {
-                for (int i = 0 ; i < ColumnMap.size(); i++)
-                {
-                    xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
-
-                    while(pNodePtr != NULL)
-                    {
-                        CString strName = pNodePtr->name;
-                        if( pNodePtr->xmlChildrenNode != NULL)
-                        {
-                            if(strName == "ID")
-                            {
-                                xmlChar* ptext = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-
-                                strName = ptext;
-
-                                ColumnInfoMap::iterator itr = ColumnMap.find(strName.GetBuffer(strName.GetLength()));
-
-                                if(itr != ColumnMap.end())
-                                {
-                                    INT nOrder = itr->second.nOrder;
-                                    pnOrder[i] = itr->second.nOrder;
-                                    m_omStatList.MakeColumnVisible(i, itr->second.isVisble);
-                                    m_omStatList.SetColumnWidth(i, itr->second.nWidth);
-                                }
-                                xmlFree(ptext);
-                                break;
-                            }
-                        }
-                        pNodePtr = pNodePtr->next;
-                    }
-                }
-
-                //std::list<int> pnOrder;
-
-                //char chString[255];
-                //pnOrder.push_front(0);
-                ////pnOrder[0] = 0;
-                //m_omStatList.MakeColumnVisible(0, true);
-                //m_omStatList.SetColumnWidth(0, 200);
-                //for (int i = 1 ; i <= ColumnMap.size(); i++)
-                //            {
-                //  sprintf(chString, "Channel %d", i);
-
-                //  ColumnInfoMap::const_iterator ColumnInfo = ColumnMap.find(chString);
-                //  if(ColumnInfo == ColumnMap.end())
-                //  {
-                //      nRetVal = S_FALSE;
-                //      break;
-                //  }
-                //  else
-                //  {
-                //      //COPY_DATA_2(&pnOrder[i], ColumnMap, sizeof(int));
-                //      pnOrder.push_back(ColumnInfo->second.nOrder+1);
-                //
-                //      //COPY_DATA_2(&bColumnVisible, pByteSrc, sizeof(bool));
-                //      bool bColumnVisible = ColumnInfo->second.isVisble;
-                //      if(bColumnVisible == false)
-                //      {
-                //          pnOrder.push_front(ColumnInfo->second.nOrder+1);
-                //      }
-                //      m_omStatList.MakeColumnVisible(i, bColumnVisible);
-
-                //      INT nColWidth = 0;
-                //      //COPY_DATA_2(&nColWidth, pByteSrc, sizeof(int));
-                //      nColWidth = ColumnInfo->second.nWidth;
-                //
-                //      m_omStatList.SetColumnWidth(i, nColWidth);
-                //      //m_omStatList.MakeColumnVisible(i, bColumnVisible);
-                //
-                //  }
-                //            }
-                //if(S_OK == nRetVal)
-                //{
-                //   list <int>::iterator IntIterator;
-                //  int i = 0;
-                //  int *pnColOrder = new int[ColumnMap.size()+1];
-                //  for(IntIterator = pnOrder.begin(); IntIterator != pnOrder.end(); IntIterator++)
-                //  {
-                //      pnColOrder[i] = *IntIterator;
-                //      i++;
-                //  }
-                //  m_omStatList.SetColumnOrderArray(ColumnMap.size()+1, pnColOrder);
-                //  free(pnColOrder);
-                //}
-
-                LPINT pnOrderTemp = (LPINT) malloc(ColumnMap.size()*sizeof(int));
-                for(INT nIndex = 0; nIndex < ColumnMap.size(); nIndex++)
-                {
-                    INT nColumn = pnOrder[nIndex];
-                    pnOrderTemp[nColumn] = nIndex;
-                }
-
-                m_omStatList.SetColumnOrderArray(ColumnMap.size(), pnOrderTemp);
-
-            }
-
-            if(pnOrder != NULL)
-            {
-                free(pnOrder);
-                pnOrder = NULL;
-            }
-        }
-        else
-        {
-            nRetVal = S_FALSE;
-        }
-        /*if(npColumns != NULL)
-        {
-            delete npColumns;
-            npColumns = NULL;
-        }*/
-    }
-    else
-    {
-        nRetVal = S_FALSE;
-    }
-
-    //setting the windows position
-    xmlNodePtr pNode = NULL;
-    pObjectPath = xmlUtils::pGetChildNodes(pDocPtr, (xmlChar*) "Window_Position");
-
-    if( NULL != pObjectPath && pObjectPath->nodesetval != NULL )
-    {
-        xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
-        {
-            pNode = pNodeSet->nodeTab[0];       //Take First One only
-        }
-
-        if(pNode != NULL)
-        {
-            WINDOWPLACEMENT sMsgWndPlacement;
-            xmlUtils::ParseWindowsPlacement(pNode,sMsgWndPlacement);
-            SetWindowPlacement(&sMsgWndPlacement);
-        }
-    }
-    if( nRetVal != S_OK)
-    {
-        vLoadDefaultValues();
-    }
-    return S_OK;
-}
-/*******************************************************************************
-  Function Name  : vLoadDefaultValues
-  Input(s)       : -
-  Output         : -
-  Functionality  : Loads the Bus stats dialog Configuration defaults.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 07-04-2011
-  Modifications  :
-*******************************************************************************/
-void CBusStatisticsDlg::vLoadDefaultValues()
-{
-    sm_sBusSerializationData.vLoadDefaults();
-
-    for (int i = 0 ; i < m_nChannelCount+1; i++)
-    {
-        m_omStatList.MakeColumnVisible(i, sm_sBusSerializationData.m_arrbColumnVisible[i]);
-        m_omStatList.SetColumnWidth(i, sm_sBusSerializationData.m_arrnColWidth[i]);
-    }
-    m_omStatList.SetColumnOrderArray(m_nChannelCount+1, (LPINT)sm_sBusSerializationData.m_arrnOrder);
-}
-
-/*******************************************************************************
-  Function Name  : vSetDefaultsToStore
-  Input(s)       : -
-  Output         : -
-  Functionality  : Loads the Bus stats dialog default values to store.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 07-04-2011
-  Modifications  :
-*******************************************************************************/
-void CBusStatisticsDlg::vSetDefaultsToStore()
-{
-    sm_sBusSerializationData.vLoadDefaults();
-    sm_sBusSerializationData.m_bIsDirty = true;
-}
-void CBusStatisticsDlg::vLoadDataFromStore(xmlNodePtr pDocPtr)
-{
-    if(sm_sBusSerializationData.m_bIsDirty)
-    {
-        SetConfigData(pDocPtr);
-        sm_sBusSerializationData.m_bIsDirty = false;
-    }
-}
-
-/*******************************************************************************
-  Function Name  : vLoadDataFromStore
-  Input(s)       : -
-  Output         : -
-  Functionality  : Loads the Bus stats dialog Configuration date from store.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 07-04-2011
-  Modifications  : ArunKumar K, 08-04-2011,
-                   Updated for loop MAX index to m_nChannelCount+1 instead of
-                   sm_sBusSerializationData.m_nColumnCount.
-*******************************************************************************/
-void CBusStatisticsDlg::vLoadDataFromStore()
-{
-    if(sm_sBusSerializationData.m_bIsDirty)
-    {
-        SetWindowPlacement(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-        //Reading column Header Positions.
-        CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-        if (pHeaderCtrl != NULL)
-        {
-            if(sm_sBusSerializationData.m_nColumnCount != (UINT)(m_nChannelCount + 1))
-            {
-                sm_sBusSerializationData.vLoadDefaults();
-            }
-            for (int i = 0 ; i < m_nChannelCount+1 ; i++)
-            {
-                m_omStatList.MakeColumnVisible(i, sm_sBusSerializationData.m_arrbColumnVisible[i]);
-                m_omStatList.SetColumnWidth(i, sm_sBusSerializationData.m_arrnColWidth[i]);
-            }
-            m_omStatList.SetColumnOrderArray(sm_sBusSerializationData.m_nColumnCount , (LPINT)sm_sBusSerializationData.m_arrnOrder);
-        }
-    }
-}
-
-/*******************************************************************************
-  Function Name  : vUpdateChannelCountInfo
-  Input(s)       : nChannelCount
-  Output         : -
-  Functionality  : Updates the channel count value when a hardware interface
-                   is updated.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 07-04-2011
-  Modifications  :
-*******************************************************************************/
-void CBusStatisticsDlg::vUpdateChannelCountInfo(int nChannelCount)
-{
-    if(m_nChannelCount != nChannelCount)
-    {
-        if(m_nChannelCount > nChannelCount)
-        {
-            INT nChannelIndex = nChannelCount+1;
-            for(int i = nChannelCount+1; i <= m_nChannelCount; i++)
-            {
-                m_omStatList.DeleteColumn(nChannelIndex);
-            }
-        }
-        else
-        {
-            for(int i = m_nChannelCount+1; i <= nChannelCount; i++)
-            {
-                CString cs;
-                cs.Format( defSTR_CHANNEL_NAME_FORMAT, _(defSTR_CHANNEL_NAME), i);
-                m_omStatList.InsertColumn( i , cs, LVCFMT_CENTER );
-                m_omStatList.SetColumnWidth( i , defVALUE_COL_WIDTH );
-            }
-        }
-
-        m_nChannelCount = nChannelCount;
-    }
-}
-void CBusStatisticsDlg::vSaveDataToStore()
-{
-    sm_sBusSerializationData.m_bIsDirty = true;
-}
-
-/*******************************************************************************
-  Function Name  : vSaveDataToStore
-  Input(s)       : pvDataStream
-  Output         : -
-  Functionality  : Save the Bus stats dialog Configuration date to store.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 25-08-2010
-  Modifications  :
-*******************************************************************************/
-void CBusStatisticsDlg::vSaveDataToStore(BYTE* pvDataStream)
-{
-    BYTE* pByteSrc = NULL;
-    pByteSrc = pvDataStream;
-
-    if (pByteSrc != NULL)
-    {
-        //Reading Version.
-        BYTE byVer = 0;
-        COPY_DATA_2(&byVer, pByteSrc, sizeof(BYTE));
-        UINT nSize= 0;
-        //Reading Buffer Size.
-        COPY_DATA_2(&nSize, pByteSrc, sizeof(UINT));
-        if ((byVer == BUS_STATS_DLG_VERSION) && (nSize > 0))
-        {
-            int  nColumnCount=0;
-            //Reading column count.
-            COPY_DATA_2(&nColumnCount, pByteSrc, sizeof(UINT));
-            sm_sBusSerializationData.m_nColumnCount = nColumnCount;
-
-            LPINT pnOrder = (LPINT) sm_sBusSerializationData.m_arrnOrder;
-            for (int i = 0 ; i < nColumnCount; i++)
-            {
-                COPY_DATA_2(&pnOrder[i], pByteSrc, sizeof(int));
-                //Reading visibility
-                COPY_DATA_2(&sm_sBusSerializationData.m_arrbColumnVisible[i], pByteSrc, sizeof(bool));
-
-                //int nColWidth = 0;
-                //Reading width
-                COPY_DATA_2(&sm_sBusSerializationData.m_arrnColWidth[i], pByteSrc, sizeof(int));
-            }
-
-            COPY_DATA_2(&sm_sBusSerializationData.m_sBusStatsDlgCoOrd, pByteSrc, sizeof(WINDOWPLACEMENT));
-        }
-        //Mark as Dirty
-        sm_sBusSerializationData.m_bIsDirty = true;
-    }
-}
-
-/*******************************************************************************
-  Function Name  : vGetDataFromStore
-  Input(s)       : -
-  Output         : -
-  Functionality  : Gets the data from store for comparision.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 06-04-2011
-  Modifications  :
-*******************************************************************************/
-void CBusStatisticsDlg::vGetDataFromStore(BYTE** pvDataStream, UINT& nSize)
-{
-    if(sm_sBusSerializationData.m_bIsDirty == true)
-    {
-        nSize += sizeof(BYTE);  // 1 Byte for Version
-        nSize += sizeof(UINT);  // Bytes for Buffer Size
-        //Bytes for column Header Positions.
-        nSize += sizeof(UINT); //to store the column count
-        UINT unColCount = sm_sBusSerializationData.m_nColumnCount;
-        nSize += (sizeof(int) * unColCount); //Column order
-        nSize += (sizeof(bool) * unColCount);//Column visibility
-        nSize += (sizeof(int) * unColCount); //Column width
-
-        nSize += sizeof(WINDOWPLACEMENT);//sizeof Bus Statistics dialog placement
-
-        *pvDataStream = new BYTE[nSize];
-
-        BYTE* pByteTrgt = NULL;
-        pByteTrgt = *pvDataStream;
-
-        if (pByteTrgt != NULL)
-        {
-            BYTE byVer = BUS_STATS_DLG_VERSION;
-            COPY_DATA(pByteTrgt, &byVer , sizeof(BYTE)); //Setting Version.
-            COPY_DATA(pByteTrgt, &nSize, sizeof(UINT)); //Setting Buffer Size.
-            COPY_DATA(pByteTrgt, &unColCount, sizeof(UINT)); //Storing column count.
-
-            for (UINT i = 0 ; i < unColCount; i++)
-            {
-                //Storing Column Header Positions.
-                COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrnOrder[i], sizeof(int));
-                //Storing Column Header show/Hide.
-                COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrbColumnVisible[i], sizeof(bool));
-                //Storing Column width.
-                COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_arrnColWidth[i], sizeof(int));
-            }
-            COPY_DATA(pByteTrgt, &sm_sBusSerializationData.m_sBusStatsDlgCoOrd, sizeof(WINDOWPLACEMENT));
-        }
-    }
-}
-
-void CBusStatisticsDlg::vGetDataFromStore(xmlNodePtr pxmlNodePtr)
-{
-    const char* omcVarChar ;
-    UINT unColCount = sm_sBusSerializationData.m_nColumnCount;
-
-    for (int iItr = 0 ; iItr < unColCount; iItr++)
-    {
-
-        xmlNodePtr pNodeColumn = xmlNewNode(NULL, BAD_CAST DEF_COLUMN);
-        xmlAddChild(pxmlNodePtr, pNodeColumn);
-
-
-        ////  <ID>Channel 1</ID>
-        //CString csColumnName;
-        //csColumnName.Format("%s", oCol.pszText);
-        //omcVarChar = csColumnName;
-        //xmlNodePtr pColName = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
-        //xmlAddChild(pNodeColumn, pColName);
-
-        //<Order>1</Order>
-        CString csOrder;
-        csOrder.Format("%d", sm_sBusSerializationData.m_arrnOrder[iItr]);
-        omcVarChar = csOrder;
-        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pOrder);
-
-
-        //<IsVisible>bool</IsVisible>
-        CString csWidth;
-        csWidth.Format("%d",sm_sBusSerializationData.m_arrnColWidth[iItr]);
-        omcVarChar = csWidth;
-        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pWidth);
-
-        //<Width> int </Width>
-        CString csVisible;
-        csVisible.Format("%d",sm_sBusSerializationData.m_arrbColumnVisible[iItr]);
-        omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
-        xmlAddChild(pNodeColumn, pVisisble);
-    }
-
-    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
-    xmlAddChild(pxmlNodePtr, pNodeWndPos);
-
-    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos, sm_sBusSerializationData.m_sBusStatsDlgCoOrd);
-
-}
-/*******************************************************************************
-  Function Name  : nGetBusStatsDlgConfigSize
-  Input(s)       : -
-  Output         : -
-  Functionality  : Gets the Bus Statistics dialog Configuration size as UINT.
-  Member of      : CBusStatisticsDlg
-  Author(s)      : Arunkumar K
-  Date Created   : 06-04-2011
-  Modifications  :
-*******************************************************************************/
-UINT CBusStatisticsDlg::nGetBusStatsDlgConfigSize()
-{
-    /*
-    1. 1 Byte for Version
-    2. Bytes for Buffer Size
-    3. Bytes to store the column count
-    4. Column Header Positions.   : ITEM COUNT
-    5. Column Header Show/Hide. : ITEM COUNT
-    6. Column Width: ITEM COUNT
-    */
-    UINT nSize = 0;
-    nSize += sizeof(BYTE);  // 1 Byte for Version
-    nSize += sizeof(UINT);  // Bytes for Buffer Size
-
-    //Bytes for column Header Positions.
-    nSize += sizeof(UINT); //to store the column count
-    CHeaderCtrl* pHeaderCtrl = m_omStatList.GetHeaderCtrl();
-    if (pHeaderCtrl != NULL)
-    {
-        UINT unColCount = pHeaderCtrl->GetItemCount();
-        nSize += (sizeof(int) * unColCount); //Column order
-        nSize += (sizeof(bool) * unColCount);//Column visibility
-        nSize += (sizeof(int) * unColCount); //Column width
-    }
-
-    nSize += sizeof(WINDOWPLACEMENT);//sizeof Bus Statistics dialog placement
-
-    return nSize;
-}
-
 

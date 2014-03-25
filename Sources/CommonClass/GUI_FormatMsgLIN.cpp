@@ -279,6 +279,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
 
 		memset(CurrDataLIN->m_acType,'\0',sizeof(CurrDataLIN->m_acType));
 
+		CurrDataLIN->m_eEventType = EVENT_LIN_NONE;
 		///* Validate message type */
 		//pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp
 		//   {
@@ -348,7 +349,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
 
 		strcpy(CurrDataLIN->m_acType, strText.c_str());
 
-
+		CurrDataLIN->m_eEventType = pMsgLIN->m_uDataInfo.m_sErrInfo.m_eEventType;
 
 		strcpy(CurrDataLIN->m_acDataLen,  "");
 		strcpy(CurrDataLIN->m_acMsgDesc,  "");

@@ -28,64 +28,30 @@
 #include "MessageList.h"
 #include "BaseBusStatisticCAN.h"
 #include "Utility/XMLUtils.h"
-
-// information of CBusStatisticsDlg serialization data
-struct sBUSSTATTISTICSDATA
-{
-    UINT m_nColumnCount;
-    bool m_arrbColumnVisible[CHANNEL_CAN_MAX+1];
-    int  m_arrnOrder[CHANNEL_CAN_MAX+1];
-    int  m_arrnColWidth[CHANNEL_CAN_MAX+1];
-    WINDOWPLACEMENT    m_sBusStatsDlgCoOrd;      //  CBusStatisticsDlg coords
-    WINDOWPLACEMENT    m_sDefaultBusStatsDlgCoOrd;
-    /* constructor */
-    sBUSSTATTISTICSDATA();
-    void vLoadDefaults();
-
-    bool m_bIsDirty;
-};
+#include "resource.h"
+#include "NetworkStatistics.h"
 
 //BusStatistics Class
-class CBusStatisticsDlg : public CDialog
+class CBusStatisticsDlg : public CCommonStatistics
 {
-    // Construction
+   DECLARE_DYNCREATE(CBusStatisticsDlg)
+	// Construction
 public:
+	enum { IDD = IDD_DLG_NETWORK_STATISTICS };
+	CBusStatisticsDlg():CCommonStatistics(CBusStatisticsDlg::IDD, CAN)
+	{
+		
+	}
     // standard constructor
     CBusStatisticsDlg(CBaseBusStatisticCAN*, CWnd* pParent = NULL, int nChannelCount = defNO_OF_CHANNELS);
-
-    static sBUSSTATTISTICSDATA sm_sBusSerializationData;
-    HRESULT GetConfigData(BYTE* pvDataStream);
-    HRESULT GetConfigData(xmlNodePtr pxmlNodePtr);
-    HRESULT SetConfigData(BYTE* pvDataStream);
-    HRESULT SetConfigData(xmlNodePtr pDocPtr);
-    UINT nGetBusStatsDlgConfigSize();
-    void vLoadDefaultValues();
-    void vLoadDataFromStore();
-    void vLoadDataFromStore(xmlNodePtr pDocPtr);
-    static void vSaveDataToStore(BYTE* pvDataStream);
-    static void vSaveDataToStore();
-    static void vGetDataFromStore(BYTE** pvDataStream, UINT& nSize);
-    static void vGetDataFromStore(xmlNodePtr pxmlNodePtr);
-    static void vSetDefaultsToStore();
-    void vUpdateChannelCountInfo(int nChannelCount);
-
-    // Dialog Data
-    //{{AFX_DATA(CBusStatisticsDlg)
-    enum { IDD = IDD_DLG_NETWORK_STATISTICS };
-    CMessageList m_omStatList;
-    //}}AFX_DATA
-
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CBusStatisticsDlg)
+	CBusStatisticsDlg(CBaseBusStatisticCAN*, int nChannelCount = defNO_OF_CHANNELS);
+   
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
     // Implementation
 protected:
-
     // Generated message map functions
     //{{AFX_MSG(CBusStatisticsDlg)
     virtual BOOL OnInitDialog();
@@ -99,7 +65,7 @@ private:
     CString m_omStrBusLoad;
     CString m_omStrPeakBusLoad;
     CString m_omStrAvgBusLoad;
-    int m_nChannelCount;
+    
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
 };

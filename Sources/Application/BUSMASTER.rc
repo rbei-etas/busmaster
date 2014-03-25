@@ -344,11 +344,20 @@ END
 
 IDD_DLG_NETWORK_STATISTICS DIALOGEX 0, 0, 138, 303
 STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Network Statistics"
+CAPTION "CAN"
 FONT 8, "MS Sans Serif", 400, 0, 0x0
 BEGIN
     CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
 END
+
+IDD_DLG_NETWORK_STATISTICS_LIN DIALOGEX 0, 0, 138, 303
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "LIN"
+FONT 8, "MS Sans Serif", 400, 0, 0x0
+BEGIN
+    CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
+END
+
 
 IDD_DLG_MSG_BUFFER_CONGIF DIALOG  0, 0, 214, 124
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
@@ -741,13 +750,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.2.0"
+            VALUE "FileVersion", "Ver 2.3.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.2.0"
+            VALUE "ProductVersion", "Ver 2.3.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -837,6 +846,13 @@ BEGIN
     END
 
     IDD_DLG_NETWORK_STATISTICS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 270
+    END
+
+	  IDD_DLG_NETWORK_STATISTICS_LIN, DIALOG
     BEGIN
         LEFTMARGIN, 7
         TOPMARGIN, 1
@@ -1138,7 +1154,7 @@ BEGIN
         END
         MENUITEM "&Filter Configuration",       IDM_FILTER_MESSAGE_SELECTMESSAGES
         MENUITEM SEPARATOR
-        MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND, CHECKED
+        MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND_CAN
         POPUP "&Message Window"
         BEGIN
             MENUITEM "&Activate",                   ID_SHOWMESSAGEWINDOW_CAN, CHECKED
@@ -1315,10 +1331,13 @@ BEGIN
     BEGIN
         MENUITEM "Connect &LIN\tF4",            IDM_LIN_CONNECT
         MENUITEM "C&luster Configuration",      ID_LIN_CLUSTER_CONFIG
+        MENUITEM "&Filter Configuration",       IDM_CONFIGURE_FILTER_LIN
         MENUITEM SEPARATOR
+		MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND_LIN
         POPUP "&Message Window"
         BEGIN
 			MENUITEM "&Activate",                   ID_SHOWMESSAGEWINDOW_LIN, CHECKED
+			MENUITEM "&Enable Filters",             IDM_FILTER_MSGLINOFF, CHECKED
             MENUITEM SEPARATOR
 			MENUITEM "&Configure",                  ID_CONFIGURE_MESSAGEDISPLAY_LIN, GRAYED
             MENUITEM SEPARATOR
@@ -1332,10 +1351,16 @@ BEGIN
 			MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
             MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
 		END
-        POPUP "L&ogging"
+		POPUP "Sign&al Watch"
+        BEGIN
+            MENUITEM "&Activate",                   IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_SIGNALWATCH_ADDSIGNAL_LIN
+        END
+		POPUP "L&ogging"
         BEGIN
             MENUITEM "&Activate",                   IDM_LOG_LIN_ON_OFF
-        
+            MENUITEM "&Enable Filters",             IDM_FILTER_LOGLINOFF, CHECKED
             MENUITEM SEPARATOR
             MENUITEM "&Configure",                  IDM_CFGN_LIN_LOG
         END
@@ -1368,12 +1393,16 @@ BEGIN
         POPUP "&Toolbar"
         BEGIN
             MENUITEM "Con&figuration",              ID_CONFIGURATION_TOOLBAR, CHECKED
-            MENUITEM "&Main",                       ID_DISPLAY_MAIN, CHECKED
-            MENUITEM "&Configure",                  ID_DISPLAY_CONFIGURE, CHECKED
-            MENUITEM "CAN &Database",               ID_TB_CANDATABASE, CHECKED
-            MENUITEM "Message &Window",             ID_DISPLAY_MSG_WND, CHECKED
-            MENUITEM "&Node Simulation",            ID_DISPLAY_NODE_SIMULATION, CHECKED
-            MENUITEM "&J1939",                      ID_TOOLBAR_J1939, CHECKED
+			MENUITEM "Message &Window",             ID_DISPLAY_MSG_WND, CHECKED
+			MENUITEM SEPARATOR
+			POPUP "CAN"
+			BEGIN
+				MENUITEM "&Main",                       ID_DISPLAY_MAIN, CHECKED
+				MENUITEM "&Configure",                  ID_DISPLAY_CONFIGURE, CHECKED
+				MENUITEM "CAN &Database",               ID_TB_CANDATABASE, CHECKED
+				MENUITEM "&Node Simulation",            ID_DISPLAY_NODE_SIMULATION, CHECKED
+				MENUITEM "&J1939",                      ID_TOOLBAR_J1939, CHECKED
+			END
             MENUITEM "Flex&Ray",                    ID_FLEXRAY_TOOLBAR, CHECKED
             MENUITEM "&LIN",                        ID_TOOLBAR_LIN, CHECKED
         END
@@ -1444,6 +1473,7 @@ IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
 ID_CONNECT              ICON                    "Res\\Connect.ico"
+IDI_ICON_SMSG           ICON                    "res\\DB Editor.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1554,7 +1584,7 @@ BEGIN
     BUTTON      ID_CAN_LOGO
     BUTTON      IDM_FILE_CONNECT
     SEPARATOR
-    BUTTON      32918
+    BUTTON      IDM_NETWORK_STATISTICS_WND_CAN
     BUTTON      32784
     SEPARATOR
     BUTTON      IDM_LOG_ON_OFF
@@ -1658,8 +1688,20 @@ BEGIN
 	BUTTON		ID_LIN_CLUSTER_CONFIG
 	SEPARATOR
     BUTTON      ID_TRANSMIT_CONFIGURE_LIN
-	BUTTON      IDM_LOG_LIN_ON_OFF
-	BUTTON      IDM_CFGN_LIN_LOG
+	BUTTON		IDM_NETWORK_STATISTICS_WND_LIN
+	SEPARATOR
+	BUTTON		IDM_CFGN_LIN_LOG
+	BUTTON		IDM_LOG_LIN_ON_OFF
+	SEPARATOR
+	BUTTON		IDM_CONFIGURE_FILTER_LIN
+	BUTTON		IDM_FILTER_LOGLINOFF
+	BUTTON		IDM_FILTER_MSGLINOFF
+	SEPARATOR
+	BUTTON		IDM_SIGNALWATCH_ADDSIGNAL_LIN
+	BUTTON		IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN
+	SEPARATOR
+	BUTTON		ID_CONFIGURE_MESSAGEDISPLAY_LIN
+	BUTTON		IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
 END
 
 
@@ -1800,7 +1842,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 2.2.0"
+    IDS_VERSION             "Ver 2.3.0"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -1837,13 +1879,24 @@ BEGIN
 	IDM_LOG_LIN_ON_OFF     "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
     IDM_CFGN_LIN_LOG      "Configure LIN message logging\nLIN logging"
 	IDM_LIN_CONNECT       "Connect/Disconnect\nConnect/Disconnect"
+	IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Loggiing filter\nEnable or Disable LIN Logging filter"
+		
+	ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
+	IDM_FILTER_MSGLINOFF "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
+	IDM_CONFIGURE_FILTER_LIN	"Select messages for filtering at application level\nSelect messages for filtering at application level"
+	ID_CONFIGURE_MESSAGEDISPLAY_LIN	"ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
+	IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
+	//IDM_NETWORK_STATISTICS_WND "NetWork Statics Window"
+
 END
 
 STRINGTABLE 
 BEGIN
     IDS_MESSAGE_ID          "Message ID"
-    IDM_NETWORK_STATISTICS_WND 
-                            "Show/Hide Network Statistics Window\nShow/Hide Network Statistics Window"
+    IDM_NETWORK_STATISTICS_WND_LIN 
+                            "Show Network Statistics Window\nShow Network Statistics Window"
+	IDM_NETWORK_STATISTICS_WND_CAN 
+                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
     IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
@@ -1894,6 +1947,9 @@ BEGIN
                             "Open active database\nOpen active database"
     IDM_SIGNALWATCH_ADDSIGNAL 
                             "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
+    
+	IDM_SIGNALWATCH_ADDSIGNAL_LIN "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
+	                          
     IDM_SIGNALWATCH_CLOSE   "Show/Hide Signal Watch window\nShow/Hide Signal Watch window"
     IDM_FILTER_MESSAGE_SELECTMESSAGES 
                             "Select messages for filtering at application level\nSelect messages for filtering at application level"
@@ -1909,6 +1965,8 @@ END
 STRINGTABLE 
 BEGIN
     IDR_TOOL_BUTTON_SIGNAL_WATCH 
+                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
+    IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
                             "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
     IDR_TOOL_BUTTON_SKIP    "Skip Message\nSkip Message"
     IDR_TOOL_BUTTON_GO      "Go\nGo"
@@ -1980,6 +2038,7 @@ BEGIN
     IDM_DELETE              "Deletes current message"
     IDR_TOOL_STOPSENDMSG    "Stop sending mutilple messages\nStop sending mutilple messages"
     IDM_CFGN_SEND_MSGS      "Configure  messages to transmit over CAN-bus\nConfigure  messages to transmit over CAN-bus"
+    ID_TRANSMIT_CONFIGURE_LIN   "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
     IDM_DELETE_SEL_MSG      "Deletes current message details"
     IDM_MSGDISPWND_MSGREP   "Show between message name and ID in the message entry"
     IDM_MSGDISPWND_DATE     "Date is displayed along with time stamp"
@@ -1992,9 +2051,9 @@ BEGIN
     IDM_DELETE_ALL_SEL_MSG  "Delete all selected message from the list"
     IDM_EXECUTE_KEYHANDLERS "Enable/Disable execution of all key handler(s)\nEnable/Disable all Key handler(s)"
     IDM_FLEX_CFGN_SEND_MSGS "FlexRay Message Configuration\nFlexRay Message Configuration"
-    ID_TRANSMIT_CONFIGURE_LIN "LIN Message Configuration\nLIN Message Configuration"  
+   
 
-    ID_LIN_CLUSTER_CONFIG   "LIN Cluster Configuration\nLIN Cluster Configuration"
+    //ID_LIN_CLUSTER_CONFIG   "LIN Cluster Configuration\nLIN Cluster Configuration"
 	IDM_CONFIG_NEW          "Create new configuration file\nCreate new configuration file"
     IDM_CONFIG_LOAD         "Load configuration file\nLoad configuration file"
     IDM_SAVE_CONFIG         "Save configuration file\nSave configuration file"
@@ -2105,6 +2164,7 @@ STRINGTABLE
 BEGIN
     ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
                             "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
+    ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
 END
 
 #endif    // English (U.S.) resources

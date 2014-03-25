@@ -351,6 +351,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="BusStatisticLIN.cpp" />
     <ClCompile Include="BusStatistics.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -487,7 +488,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="FibexClass.cpp" />
-    <ClCompile Include="FibexConfigurationDlg.cpp" />
+    <ClCompile Include="ChannelConfigurationDlg.cpp" />
     <ClCompile Include="FIBEX_Structs.cpp" />
     <ClCompile Include="Flags.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
@@ -568,6 +569,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClCompile Include="ldfparser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="LINBusStatisticsDlg.cpp" />
     <ClCompile Include="MainFrm.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -762,6 +764,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="MultiLanguage.cpp" />
+    <ClCompile Include="NetworkStatistics.cpp" />
     <ClCompile Include="NodeUtil_Flexray.cpp" />
     <ClCompile Include="NotificListbox.cpp" />
     <ClCompile Include="NotificWnd.cpp" />
@@ -992,9 +995,11 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
   <ItemGroup>
     <ClInclude Include="AppServices_Impl.h" />
     <ClInclude Include="BaseBusStatisticCAN.h" />
+    <ClInclude Include="BaseBusStatisticLIN.h" />
     <ClInclude Include="BUSMASTER.h" />
     <ClInclude Include="BusmasterDump.h" />
     <ClInclude Include="BusStatisticCAN.h" />
+    <ClInclude Include="BusStatisticLIN.h" />
     <ClInclude Include="BusStatistics.h" />
     <ClInclude Include="BusStatisticsDlg.h" />
     <ClInclude Include="CExcApplication.h" />
@@ -1015,7 +1020,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="ElementSelection.h" />
     <ClInclude Include="FibexClass.h" />
     <ClInclude Include="FibexClass_extern.h" />
-    <ClInclude Include="FibexConfigurationDlg.h" />
+    <ClInclude Include="ChannelConfigurationDlg.h" />
     <ClInclude Include="Fibex_Defs.h" />
     <ClInclude Include="FIBEX_Structs.h" />
     <ClInclude Include="Flags.h" />
@@ -1031,6 +1036,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="InterfaceGetter.h" />
     <ClInclude Include="J1939TimeOutCfg.h" />
     <ClInclude Include="ldfparser.cpp.h" />
+    <ClInclude Include="LINBusStatisticsDlg.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MDIChildBase.h" />
     <ClInclude Include="MessageAttrib.h" />
@@ -1048,6 +1054,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="MsgWndHdrInfo.h" />
     <ClInclude Include="MsgWndThread.h" />
     <ClInclude Include="MultiLanguage.h" />
+    <ClInclude Include="NetworkStatistics.h" />
     <ClInclude Include="NodeUtil_Flexray.h" />
     <ClInclude Include="NotificListbox.h" />
     <ClInclude Include="NotificWnd.h" />

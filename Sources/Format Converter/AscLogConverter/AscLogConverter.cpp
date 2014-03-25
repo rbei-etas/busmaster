@@ -26,7 +26,7 @@
 #include "AscLogConverter.h"
 
 extern "C" int nConvertFile(FILE* fpInputFile, FILE* fpOutputFile);
-
+extern "C" char gchErrorString[255];
 /**
  * \brief Constructor
  *
@@ -47,7 +47,7 @@ CAscLogConverter::~CAscLogConverter(void)
 
 HRESULT CAscLogConverter::GettextBusmaster(void)
 {
-    setlocale(LC_ALL,"");
+	setlocale(LC_ALL,"");
     bindtextdomain("BUSMASTER", getenv("LOCALDIR") );
     textdomain("BUSMASTER");
     return S_OK;
@@ -184,8 +184,8 @@ HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
              fprintf(fpOutputFile, "***START DATE AND TIME ");*/
             // PTV[1.6.4]
             nConvertFile(fpInputFile, fpOutputFile);
-            m_omstrConversionStatus = _("Conversion Completed Successfully");
-            fclose(fpInputFile);
+            m_omstrConversionStatus = gchErrorString; 
+			fclose(fpInputFile);
             fclose(fpOutputFile);
         }
         else

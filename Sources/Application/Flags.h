@@ -36,7 +36,9 @@ typedef enum eCANMONITORFLAG
     REPLAYMODE,
     REPLAYFILESELECTED,
     LOGFILTER,
+	LOGFILTER_LIN,
     DISPLAYFILTERON,
+	DISPLAYFILTERONLIN,
     TRANSLATIONMODE,
     FILTERUNDEFINEDMSGS,
     FILTERTXMSGS,
@@ -102,7 +104,9 @@ private:
     BOOL m_bLogToWindow;
     BOOL m_bLogEnable;
     BOOL m_bLogFilterOn;
+	BOOL m_bLogFilterOnLIN;
     BOOL m_bDisplayFilterOn;
+    BOOL m_bDisplayFilterOnLin;
     BOOL m_bTranslationMode;
     BOOL m_bMsgFilterButton;
     BOOL m_bReplayFilter;

@@ -401,14 +401,15 @@ HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* 
                 }
                 else
                 {
-                    if (!bClientExist(CAN_MONITOR_NODE, Index))
+                    /*if (!bClientExist(CAN_MONITOR_NODE, Index))
                     {
                         Index = sg_unClientCnt + 1;
                     }
                     else
                     {
                         Index = sg_unClientCnt;
-                    }
+                    }*/
+					Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     _tcscpy(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
                     sg_asClientToBufMap[Index].m_dwClientID = ClientID;
@@ -864,7 +865,7 @@ HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
 {
     USES_CONVERSION;
     HRESULT hResult;
-    char str[100];
+    char str[255];
 
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     if (!str_has_char(sg_MhsCanCfg.CanSnrStr))

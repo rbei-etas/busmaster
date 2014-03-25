@@ -55,14 +55,14 @@ CPPageMessage::CPPageMessage() : CPropertyPage(CPPageMessage::IDD)
     //}}AFX_DATA_INIT
 }
 
-CPPageMessage::CPPageMessage(BOOL bForDBMsg, ETYPE_BUS eBusType, CMsgSignal* pouMsgSigBUS) :
+CPPageMessage::CPPageMessage(BOOL bForDBMsg, ETYPE_BUS eBusType, void* pouMsgSigBUS) :
     CPropertyPage(CPPageMessage::IDD,
                   bForDBMsg ? IDS_PPAGE_TITLE_DBMSG : IDS_PPAGE_TITLE_NDBMSG)
 {
     m_bForDBMsg    = bForDBMsg;
     m_pRGBColors   = NULL;
     m_eBusType     = eBusType;
-    m_pouMsgSigBus = pouMsgSigBUS;
+	m_pouDb =  pouMsgSigBUS;
 }
 
 CPPageMessage::~CPPageMessage()
@@ -117,21 +117,37 @@ BOOL CPPageMessage::OnInitDialog()
 
     RECT Rect;
     m_odMsgList.GetWindowRect(&Rect);
-    int nWidth = (Rect.right - Rect.left - 4) / 2;
-    m_odMsgList.InsertColumn(0, _("Message ID"), LVCFMT_LEFT, nWidth);
-    m_odMsgList.InsertColumn(1, _("Message Text"), LVCFMT_LEFT, nWidth);
+    
+	int nWidth = (Rect.right - Rect.left - 4) / 2;
+	m_odMsgList.InsertColumn(0, _("Message ID"), LVCFMT_LEFT, nWidth);
+	m_odMsgList.InsertColumn(1, _("Message Text"), LVCFMT_LEFT, nWidth);
+	
+	UINT unTotalDBMsgs = 0;
+	UINT* punDBMsgs = NULL;
+	if ( m_eBusType == LIN )
+	{
+		m_ouClusterConfig = (ClusterConfig*)m_pouDb;
+		
+		m_ouClusterConfig->m_ouFlexChannelConfig[0].m_ouClusterInfo.unListGetMessageIDs(punDBMsgs, unTotalDBMsgs );
+	}
+	else
+	{
+		m_pouMsgSigBus = (CMsgSignal*)m_pouDb;
+		if ( m_pouMsgSigBus == NULL)
+		{
+			return FALSE;
+		}
 
-
-    UINT* punDBMsgs = NULL;
-    UINT unTotalDBMsgs = m_pouMsgSigBus->unGetNumerOfMessages();
-    if (unTotalDBMsgs > 0)
-    {
-        punDBMsgs = new UINT[unTotalDBMsgs];
-        if (punDBMsgs != NULL)
-        {
-            m_pouMsgSigBus->unListGetMessageIDs(punDBMsgs);
-        }
-    }
+		unTotalDBMsgs = m_pouMsgSigBus->unGetNumerOfMessages();
+		if (unTotalDBMsgs > 0)
+		{
+			punDBMsgs = new UINT[unTotalDBMsgs];
+			if (punDBMsgs != NULL)
+			{
+				m_pouMsgSigBus->unListGetMessageIDs(punDBMsgs);
+			}
+		}
+	}
 
     BOOL bAnyMsgEntered = (nInitialiseMsgLCtrl(unTotalDBMsgs, punDBMsgs) > 0);
 

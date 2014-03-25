@@ -157,6 +157,21 @@ CBaseBusStatisticCAN* GetICANBusStat(void)
     return Result;
 }
 
+CBaseBusStatisticLIN* GetILINBusStat(void)
+{
+    CBaseBusStatisticLIN* Result = NULL;
+	if (BS_GetInterface(LIN, (void**) &Result) == S_OK)
+    {
+        ASSERT(NULL != Result);
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+    return Result;
+}
+
+
 CFlexRayNetworkStats* GetIFlexRayBusStat(void)
 {
     CFlexRayNetworkStats* Result = NULL;

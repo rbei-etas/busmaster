@@ -117,7 +117,7 @@ void CFrameProcessor_LIN::FPL_DisableLINDataLogFlag(void)
 void CFrameProcessor_LIN::vRetrieveDataFromBuffer(void)
 {
 	static SFORMATTEDDATA_LIN CurrDataLIN = {0, 0, DIR_RX, LIN_CHANNEL_ALL, 0,
-	{'\0'}, TYPE_ID_LIN_NONE, TYPE_MSG_LIN_NONE, {'\0'},{'\0'}, " x", {'\0'}, "", "","", "",
+	{'\0'}, TYPE_ID_LIN_NONE, TYPE_MSG_LIN_NONE, {'\0'},{'\0'},EVENT_LIN_NONE, " x", {'\0'}, "", "","", "",
 	"", "",  "",  "", 0, RGB(0, 0, 0)
 	};
 	static sTLINDATA CurrMsgLIN;
@@ -269,6 +269,66 @@ ASSERT(FALSE);
 return hResult;
 }
 */
+
+// Getter for the filtering scheme of a logging block
+HRESULT CFrameProcessor_LIN::FPL_GetFilteringScheme(USHORT ushLogBlk,
+													SFILTERAPPLIED_LIN& sFilterObj)
+{
+    HRESULT hResult = S_FALSE;
+
+    CBaseLogObject* pouBaseLogObj = FindLoggingBlock(ushLogBlk);
+    CLogObjectLIN* pouLogObj = static_cast<CLogObjectLIN*> (pouBaseLogObj);
+
+    if (NULL != pouLogObj)
+    {
+        pouLogObj->GetFilterInfo(sFilterObj);
+        hResult = S_OK;
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+
+    return hResult;
+}
+
+// To modify the filtering scheme of a logging block
+HRESULT CFrameProcessor_LIN::FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
+        const SFILTERAPPLIED_LIN& sFilterObj)
+{
+    HRESULT hResult = S_FALSE;
+    CLogObjectLIN* pLogObj = NULL;
+
+    if (bIsEditingON())
+    {
+        if (m_omLogListTmp.GetSize() > ushLogBlkID)
+        {
+            CBaseLogObject* pouBaseLogObj = m_omLogListTmp.GetAt(ushLogBlkID);
+            pLogObj = static_cast<CLogObjectLIN*> (pouBaseLogObj);
+        }
+    }
+    else
+    {
+        if (m_omLogObjectArray.GetSize() > ushLogBlkID)
+        {
+            CBaseLogObject* pouBaseLogObj = m_omLogObjectArray.GetAt(ushLogBlkID);
+            pLogObj = static_cast<CLogObjectLIN*> (pouBaseLogObj);
+        }
+    }
+
+    //update the filters
+    if (NULL != pLogObj)
+    {
+        pLogObj->SetFilterInfo(sFilterObj);
+        hResult = S_OK;
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+
+    return hResult;
+}
 // To enable/disable updation of the client flexray frame buffer.
 HRESULT CFrameProcessor_LIN::FPL_SetClientLINBufON(BOOL bEnable)
 {
@@ -331,10 +391,10 @@ void CFrameProcessor_LIN::FPL_vCloseLogFile()
 
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
-/*HRESULT CFrameProcessor_LIN::FPL_EnableFilter(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_LIN::FPL_EnableFilter(USHORT ushBlk, BOOL bEnable)
 {
-return EnableFilter(ushBlk, bEnable);
-}*/
+	return EnableFilter(ushBlk, bEnable);
+}
 
 // Query function - client flexray buffer updation status (OFF/ON)
 BOOL CFrameProcessor_LIN::FPL_IsClientLINBufON(void)
@@ -365,11 +425,11 @@ void CFrameProcessor_LIN::FPL_DisableDataLogFlag(void)
 }
 // PTV [1.6.4] END
 // Query function - current filtering status
-/*BOOL CFrameProcessor_LIN::FPL_IsFilterON(void)
+BOOL CFrameProcessor_LIN::FPL_IsFilterON(void)
 {
-return IsFilterON();
+	return IsFilterON();
 }
-*/
+
 // To log a string
 HRESULT CFrameProcessor_LIN::FPL_LogString(CString& omStr)
 {

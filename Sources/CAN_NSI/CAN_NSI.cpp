@@ -2098,14 +2098,15 @@ HRESULT CDIL_CAN_NSI::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* 
                 }
                 else
                 {
-                    if (!bClientExist(CAN_MONITOR_NODE, Index))
+                    /*if (!bClientExist(CAN_MONITOR_NODE, Index))
                     {
                         Index = sg_unClientCnt + 1;
                     }
                     else
                     {
                         Index = sg_unClientCnt;
-                    }
+                    }*/
+					Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     strcpy_s(sg_asClientToBufMap[Index].pacClientName, pacClientName);
                     //_tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);

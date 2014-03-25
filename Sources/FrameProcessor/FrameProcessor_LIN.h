@@ -63,12 +63,12 @@ public:
     HRESULT FPL_DoInitialisation(SLINPROC_PARAMS* psInitParams);
 
     // To modify the filtering scheme of a logging block
-    /*HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
+    HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
                                      const SFILTERAPPLIED_LIN& sFilterObj);
 
     // Getter for the filtering scheme of a logging block
     HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
-                                   SFILTERAPPLIED_LIN& sFilterObj);*/
+                                   SFILTERAPPLIED_LIN& sFilterObj);
 
     // To enable/disable updation of the client flexray frame buffer.
     HRESULT FPL_SetClientLINBufON(BOOL bEnable);
@@ -103,6 +103,7 @@ public:
     // Query function - client flexray buffer updation status (OFF/ON)
     BOOL FPL_IsClientLINBufON(void);
 
+	HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable);
     // Query function - current logging status (OFF/ON).
     BOOL FPL_IsLoggingON(void);
 
@@ -114,7 +115,7 @@ public:
     void FPL_DisableLINDataLogFlag(void);
 
     // Query function - current filtering status
-    // BOOL FPL_IsFilterON(void);
+    BOOL FPL_IsFilterON(void);
 
     // To log a string
     HRESULT FPL_LogString(CString& omStr);

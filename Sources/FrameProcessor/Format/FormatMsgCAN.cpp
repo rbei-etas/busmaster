@@ -25,6 +25,7 @@
 #include "../FrameProcessor_stdafx.h"
 #include "FormatMsgCAN.h"
 #include "include/Utils_macro.h"
+#include "Include\CAN_Error_Defs.h"
 
 CFormatMsgCAN::CFormatMsgCAN(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
 {
@@ -111,15 +112,21 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     if (RX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_RX;
-        CurrDataCAN->m_acMsgDir[0] = L'R';
+        CurrDataCAN->m_acMsgDir[0] = L'R';		
+		CurrDataCAN->m_eEventType = ERROR_INVALID;
     }
     else if (TX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_TX;
         CurrDataCAN->m_acMsgDir[0] = L'T';
+		CurrDataCAN->m_eEventType = ERROR_INVALID;
     }
     else
     {
+		string strErrMsg;
+		eERROR_STATE eErrType;
+		vFormatErrMsg(pMsgCAN->m_uDataInfo.m_sErrInfo, eErrType);
+		CurrDataCAN->m_eEventType = eErrType;
         ASSERT(FALSE);
     }
 
@@ -162,4 +169,80 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
 
     vFormatTime(bExprnFlag_Log, CurrDataCAN);
     vFormatDataAndId(bExprnFlag_Log, CurrDataCAN);
+}
+
+void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE &eErrType)
+{
+	eErrType = ERROR_ACTIVE;
+	USHORT usErrorID;
+	if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
+	{
+		 usErrorID = sErrInfo.m_ucErrType;
+		eErrType = ERROR_WARNING_LIMIT;
+	}
+	else
+	{
+		if (sErrInfo.m_ucErrType == ERROR_BUS)
+		{
+			// Update Statistics information
+			usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
+			// Create Channel ID & Error code word
+		}
+		else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)
+		{
+			usErrorID = sErrInfo.m_ucErrType;
+		}
+
+		eERROR_STATE bErrTransState;
+		if(bIsTransitionInState(sErrInfo.m_ucChannel, sErrInfo.m_ucRxErrCount, sErrInfo.m_ucTxErrCount, bErrTransState))
+		{
+			 if (usErrorID == STUFF_ERROR_RX)
+            {
+                eErrType = ERROR_FRAME;
+            }
+            else
+            {
+                eErrType = bErrTransState;
+            }
+		}
+	}
+}
+
+BOOL CFormatMsgCAN::bIsTransitionInState( UINT unChannel, BYTE byRxError, BYTE byTxError, eERROR_STATE &eErrState)
+{
+    BOOL bIsTransition = FALSE;
+    // Based on the value of transmit and receive error counter decide
+    // the current error state
+
+    if ((byTxError <= 127) && (byRxError <= 127))
+    {
+        // Error Active Mode
+        if (eErrState != ERROR_ACTIVE)
+        {
+            bIsTransition = TRUE;
+            eErrState = ERROR_ACTIVE;
+        }
+    }
+    else if (byTxError == 255)
+        // The sudden shift to the third state is to avoid
+        // "else if ((byTxError > 127) || (byRxError > 127))"
+    {
+        // Bus off
+        if (eErrState != ERROR_BUS_OFF)
+        {
+            bIsTransition = TRUE;
+            eErrState = ERROR_BUS_OFF;
+        }
+    }
+    else
+    {
+        // Error passive
+        if (eErrState != ERROR_PASSIVE)
+        {
+            bIsTransition = TRUE;
+            eErrState = ERROR_PASSIVE;
+        }
+    }
+
+    return bIsTransition;
 }

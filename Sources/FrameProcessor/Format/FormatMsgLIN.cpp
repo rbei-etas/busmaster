@@ -135,7 +135,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
 		//     CurrDataLIN->m_byIDType = TYPE_ID_LIN_STANDARD;
 		//    CurrDataLIN->m_acType[0] = L's';
 
-
+		CurrDataLIN->m_eEventType = EVENT_LIN_NONE;
 
 		CurrDataLIN->m_byChecksum='\0';
 		_itot(pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen, CurrDataLIN->m_acDataLen, 10);
@@ -175,6 +175,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
 		strcpy(CurrDataLIN->m_acDataDec,  "");
 		strcpy(CurrDataLIN->m_acMsgDir,  "");
 
+		CurrDataLIN->m_eEventType = pMsgLIN->m_uDataInfo.m_sErrInfo.m_eEventType;
 
 		CurrDataLIN->m_dwMsgID = -1;
 		CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;

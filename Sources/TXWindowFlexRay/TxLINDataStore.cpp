@@ -441,6 +441,7 @@ bool CTxLINDataStore::bSetConfigData(xmlDocPtr pDoc)
             m_ouLIN_Frame_Data.clear();
             m_ouFrameList[i].clear();
             m_ouMapIndexToKey.clear();
+			m_strMessageNames[i].clear();
         }
         return false;
     }

@@ -36,6 +36,8 @@
 #define ID_OK                           1256
 #define IDC_BTN_ADD_FILTER              1257
 #define IDC_LSTC_FILTER_LIST            1258
+#define IDC_STATIC_ID_TYPE				1259
+#define IDC_STATIC_FRAME_TYPE			1260
 #define IDS_SELECTEDLIST                16000
 #define IDC_EDIT_MAINLIST_NAME          16001
 #define IDC_EDIT_UNSELLIST_NAME         16002
@@ -48,3 +50,5 @@
 #define IDM_SIGNALDLG_DELETEALL         32948
 #define IDM_SIGNALDLG_SIGNALDETAILS     32949
 #define IDM_SIGNALDLG_ADD               32950
+#define IDC_RADIO_EVENT					32951
+#define IDC_COMB_EVENT					32952

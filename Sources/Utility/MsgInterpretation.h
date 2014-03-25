@@ -151,6 +151,7 @@ public:
 private:
     CFrameMap   m_ouDataSet;
     EFORMAT     m_eNumFormat;
+    SMSGENTRY*  m_psMsgRoot;
 public:
     CMsgInterpretationLIN();
     ~CMsgInterpretationLIN();
@@ -162,7 +163,8 @@ public:
     //__int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
 
     BOOL bInterpretMsgs( EFORMAT eNumFormat, STLIN_MSG* pMsg, SSignalInfoArray& SigInfoArray);
-
-    //void vCopy(CMsgInterpretation* pDest) const;
+	 int nGetSignalCount(CString strMsgName);
+    void vCopy(CMsgInterpretationLIN* pDest) const;
+	void vSetMessageList(SMSGENTRY* psCurrMsgEntry);
     //void vClear();
 };

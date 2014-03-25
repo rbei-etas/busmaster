@@ -1148,12 +1148,35 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
             m_sBusStatistics[ nChannelIndex ].m_unTotalTxMsgCount +
             m_sBusStatistics[ nChannelIndex ].m_unTotalRxMsgCount;
         //***** Total Message Rate *****//
-        m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
+
+		m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
+            m_sBusStatistics[ nChannelIndex ].m_unTotalMsgCount -
+            m_sPrevStatData[ nChannelIndex ].m_unTotalMsgCount;
+
+		FLOAT msgPerSec= (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond /(FLOAT) m_dDiffTime );
+		if( msgPerSec > 0.50 && msgPerSec < 1)
+		{
+			m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =1;
+
+		}
+		else
+		{
+			m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
+            static_cast<UINT>
+            (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond / m_dDiffTime );
+
+		}
+
+
+       /* m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
             m_sBusStatistics[ nChannelIndex ].m_unTotalMsgCount -
             m_sPrevStatData[ nChannelIndex ].m_unTotalMsgCount;
         m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
             static_cast<UINT>
-            (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond / m_dDiffTime );
+            (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond / m_dDiffTime );*/
+
+
+
         // Calculate Error Count & Rate
         m_sBusStatistics[ nChannelIndex ].m_unErrorTotalCount =
             m_sBusStatistics[ nChannelIndex ].m_unErrorRxCount +

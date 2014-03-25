@@ -70,7 +70,7 @@ public:
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    //   virtual HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
 
     // Query function - current logging status (OFF/ON).
     virtual BOOL FPL_IsLoggingON(void) = 0;
@@ -86,7 +86,7 @@ public:
 
     // PTV [1.6.4]
     // Query function - current filtering status
-    // virtual BOOL FPL_IsFilterON(void) = 0;
+    virtual BOOL FPL_IsFilterON(void) = 0;
 
     // To log a string
     virtual HRESULT FPL_LogString(CString& omStr) = 0;
@@ -111,12 +111,12 @@ public:
                                         const SLOGINFO& sLogObject) = 0;
 
     // To modify the filtering scheme of a logging block
-    //  virtual HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
-    //          const SFILTERAPPLIED_LIN& sFilterObj) = 0;
+      virtual HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
+              const SFILTERAPPLIED_LIN& sFilterObj) = 0;
 
     // Getter for the filtering scheme of a logging block
-    //  virtual HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
-    //                                         SFILTERAPPLIED_LIN& sFilterObj) = 0;
+      virtual HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
+                                             SFILTERAPPLIED_LIN& sFilterObj) = 0;
 
     // Getter for the logging configuration data
     virtual HRESULT FPL_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;

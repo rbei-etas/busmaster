@@ -98,6 +98,10 @@ void CMsgInterpretation::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
     m_psMsgRoot = psCurrMsgEntry;
 }
 
+void CMsgInterpretationLIN::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
+{
+    m_psMsgRoot = psCurrMsgEntry;
+}
 int CMsgInterpretation::nGetSignalCount(CString strMsgName)
 {
     int iSignalCount = 0;
@@ -126,6 +130,36 @@ int CMsgInterpretation::nGetSignalCount(CString strMsgName)
     //return the number of signals in the given message.
     return iSignalCount;
 }
+
+int CMsgInterpretationLIN::nGetSignalCount(CString strMsgName)
+{
+    int iSignalCount = 0;
+    SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
+    while(m_psMsgTemp != NULL)
+    {
+        if(m_psMsgTemp->m_psMsg != NULL)
+        {
+            //check for same message name
+            if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
+            {
+                sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
+                while(m_psSignalTemp != NULL)
+                {
+                    iSignalCount++; //increment the signal count
+                    m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
+                }
+                break;
+            }
+            else //go for next message name
+            {
+                m_psMsgTemp = m_psMsgTemp->m_psNext;
+            }
+        }
+    }
+    //return the number of signals in the given message.
+    return iSignalCount;
+}
+
 
 void CMsgInterpretation::vSetCurrNumMode(EFORMAT eNumFormat)
 {
@@ -1620,6 +1654,7 @@ for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
                 ouSignal.m_omRawValue = ouSignalInfo.m_omRawValue.c_str();
                 ouSignal.m_omSigName = ouSignalInfo.m_omSigName.c_str();
                 ouSignal.m_omUnit = ouSignalInfo.m_omUnit.c_str();
+				ouSignal.m_msgName=ouFrame.m_strFrameName.c_str();
                 SigInfoArray.Add(ouSignal);
             }
 
@@ -1628,6 +1663,25 @@ for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
     }
     return TRUE;
 }
+
+void CMsgInterpretationLIN::vCopy(CMsgInterpretationLIN* pDest) const
+{
+    if ( pDest != NULL)
+    {
+        //pDest->vClear();
+        pDest->m_eNumFormat = m_eNumFormat;
+        //Update the Msg list
+        SMSGENTRY* pDestRoot = NULL;
+        SMSGENTRY* pTempSrc = m_psMsgRoot;
+        while (pTempSrc != NULL)
+        {
+            SMSGENTRY::bUpdateMsgList(pDestRoot, pTempSrc->m_psMsg);
+            pTempSrc = pTempSrc->m_psNext;
+        }
+        pDest->vSetMessageList(pDestRoot);
+    }
+}
+
 BOOL CMsgInterpretationFlexRay::bInterpretMsgs(s_FLXMSG* pMsg, SSignalInfoArray& SigInfoArray)
 {
     if ( pMsg->m_eMessageType == FLXMSGTYPE_DATA )

@@ -178,7 +178,12 @@ BOOL CMainSubListDlg::OnInitDialog()
     //be updated in vPopulateSelSubEntryList
     vPopulateSelSubEntryList();
     vEnableDisableButtons();
-
+	m_omCombMessage.ShowWindow(SW_HIDE);
+	pWnd = GetDlgItem(IDC_EDIT_MAINLIST_NAME);
+    if (pWnd != NULL)
+    {
+        pWnd->ShowWindow(SW_HIDE);
+    }
     return FALSE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }

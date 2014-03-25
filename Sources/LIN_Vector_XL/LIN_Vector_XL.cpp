@@ -1365,10 +1365,10 @@ static int nGetCalcChecksum(int nChannel, int nId )
 */
 static int nWriteMessage(STLIN_MSG sMessage, DWORD dwClientID)
 {
-    int nReturn = -1;
+    //int nReturn = -1;
     XLaccess xlChanMaskTx = 0;
     UINT unClientIndex = (UINT)-1;
-    XLstatus xlStatus;
+    //XLstatus xlStatus;
 
     if ((sMessage.m_ucChannel > 0) &&
             (sMessage.m_ucChannel <= sg_nNoOfChannels))
@@ -1384,7 +1384,7 @@ static int nWriteMessage(STLIN_MSG sMessage, DWORD dwClientID)
         //xlLinSendRequest(g_xlPortHandle[unClientIndex], xlChanMaskTx, sMessage.m_ucMsgID, 0);
 
         //set result
-        nReturn = xlStatus;
+        //nReturn = xlStatus;
     }
 
     return S_OK;
@@ -1505,6 +1505,18 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetControllerParams(LONG& lParam, UINT nChannel, 
         break;
         case HW_MODE:
         {
+
+			if (nChannel < sg_nNoOfChannels)
+                {
+                    lParam = defMODE_ACTIVE;
+                }
+                else
+                {
+                    //unknown
+                    lParam = defCONTROLLER_BUSOFF + 1;
+                }
+
+
         }
         break;
         case CON_TEST:
@@ -1580,6 +1592,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChanne
 */
 HRESULT CDIL_LIN_VectorXL::LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
+	sg_pIlog = pILog;
     return S_OK;
 }
 

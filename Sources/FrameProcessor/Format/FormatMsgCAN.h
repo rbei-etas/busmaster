@@ -42,6 +42,10 @@ public:
     void vFormatCANDataMsg(STCANDATA* pMsgCAN,
                            SFORMATTEDDATA_CAN* CurrDataCAN,
                            BYTE bExprnFlag_Log);
+
+	void vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE &eErrType);
+
+	BOOL bIsTransitionInState( UINT unChannel, BYTE byRxError, BYTE byTxError, eERROR_STATE &eErrState);
 };
 
 #endif //FORMAT_MSG_CAN_H_INCLUDED

@@ -108,7 +108,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     return 1;   // ok
 }
 
-USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const SMSGENTRY* psMsgEntry,
+USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const void* psMsgEntry,
                                        ETYPE_BUS eType, UINT nHardware, CWnd* pParent)
 {
     //Place this code at the beginning of the export function.
@@ -127,7 +127,7 @@ USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const SMSGENTRY* p
                 SFILTERAPPLIED_CAN sTempObj;
                 sTempObj.bClone(*pAppliedFilterCan);
 
-                CFilterConfigDlg omDlg(&sTempObj, psMsgEntry, nHardware, pParent);
+                CFilterConfigDlg omDlg(&sTempObj, (SMSGENTRY *)psMsgEntry, nHardware, pParent);
                 if (omDlg.DoModal() == IDOK)
                 {
                     pAppliedFilterCan->bClone(sTempObj);
@@ -136,7 +136,23 @@ USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const SMSGENTRY* p
                 //delete omDlg;
             }
         }
-        break;
+		break;
+		case LIN:
+			if (pExistingFilter != NULL)
+			{
+				SFILTERAPPLIED_LIN* pAppliedFilterLin = (SFILTERAPPLIED_LIN*)pExistingFilter;
+				SFILTERAPPLIED_LIN sTempObj;
+				sTempObj.bClone(*pAppliedFilterLin);
+
+				CFilterConfigDlg omDlg(&sTempObj,(ClusterConfig *) psMsgEntry, nHardware, pParent);
+				if (omDlg.DoModal() == IDOK)
+				{
+					pAppliedFilterLin->bClone(sTempObj);
+					hResult = S_OK;
+				}
+				//delete omDlg;
+			}
+			break;
         default:
         {
         }
@@ -204,8 +220,47 @@ static INT nGetFilterIndexInSrc(SFILTERSET& DestSet, const SFILTERAPPLIED_CAN& s
     return nIndex;
 }
 
+static INT nGetFilterIndexInSrc(SFILTERSET& DestSet, const SFILTERAPPLIED_LIN& sSrcFilter)
+{
+    INT nIndex = -1;
+    UINT SrcCount = sSrcFilter.m_ushTotal;
+    for (UINT i = 0; i < SrcCount; i++)
+    {
+        if (_tcscmp(DestSet.m_sFilterName.m_acFilterName,
+                    sSrcFilter.m_psFilters[i].m_sFilterName.m_acFilterName) == 0)
+        {
+            nIndex = i;
+            break;
+        }
+    }
+    return nIndex;
+}
 static void vReUpdateAppliedFilterCAN(SFILTERAPPLIED_CAN& DestFilter,
                                       SFILTERAPPLIED_CAN& SrcFilter)
+{
+    UINT DestCount = DestFilter.m_ushTotal;
+    UINT DelCount = 0;
+    for (UINT i = 0; i < DestCount; i++)
+    {
+        INT nIndex = nGetFilterIndexInSrc(DestFilter.m_psFilters[i],
+                                          SrcFilter);
+        if (nIndex != -1) //update the applied filter
+        {
+            DestFilter.m_psFilters[i].bClone(SrcFilter.m_psFilters[nIndex]);
+        }
+        else //Remove the applied filter
+        {
+            DestFilter.m_psFilters[i].bClone(DestFilter.m_psFilters[DestCount - 1]);
+            DelCount++;
+        }
+    }
+    //DestFilter.m_ushTotal -= DelCount;
+    DestFilter.m_ushTotal = DestFilter.m_ushTotal - (USHORT) DelCount;
+}
+
+
+static void vReUpdateAppliedFilterLIN(SFILTERAPPLIED_LIN& DestFilter,
+                                      SFILTERAPPLIED_LIN& SrcFilter)
 {
     UINT DestCount = DestFilter.m_ushTotal;
     UINT DelCount = 0;
@@ -240,6 +295,13 @@ USAGEMODE HRESULT Filter_ReUpdateAppliedFilter(void* pvFilterApplied,
                 SFILTERAPPLIED_CAN* psFilterApplied = (SFILTERAPPLIED_CAN*)pvFilterApplied;
                 SFILTERAPPLIED_CAN* psFilterConfigured = (SFILTERAPPLIED_CAN*)pvFilterConfigured;
                 vReUpdateAppliedFilterCAN(*psFilterApplied, *psFilterConfigured);
+            }
+            break;
+			 case LIN:
+            {
+                SFILTERAPPLIED_LIN* psFilterApplied = (SFILTERAPPLIED_LIN*)pvFilterApplied;
+                SFILTERAPPLIED_LIN* psFilterConfigured = (SFILTERAPPLIED_LIN*)pvFilterConfigured;
+                vReUpdateAppliedFilterLIN(*psFilterApplied, *psFilterConfigured);
             }
             break;
             default:

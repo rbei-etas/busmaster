@@ -94,7 +94,8 @@ enum eERROR_STATE
     ERROR_WARNING_LIMIT,
     ERROR_PASSIVE,
     ERROR_BUS_OFF,
-    ERROR_FRAME
+    ERROR_FRAME,
+	ERROR_INVALID
 };
 
 const short CAN_MSG_IDS = 2;
@@ -281,12 +282,12 @@ public:
         m_unDataBitRate                 = 2000000;
         m_unDataSamplePoint             = 70;
         m_unDataBTL_Cycles              = 10;
-        m_unDataSJW                     = 04;
-        m_bTxDelayCompensationControl        = 0;    //OCI_CANFD_TX_DELAY_COMPENSATION_OFF
+        m_unDataSJW                     = 03;
+        m_bTxDelayCompensationControl   = 0;    //OCI_CANFD_TX_DELAY_COMPENSATION_OFF
         m_unTxSecondarySamplePointOffset = 0;
         m_bytCanRxMode                   = 2;   // OCI_CAN_RXMODE_CAN_FRAMES_USING_CAN_MESSAGE
-        m_bytCanFdRxMode                 = 8;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE_PADDING
-        m_bytCanFdTxConfig               = 4;   // OCI_CANFDTX_USE_CAN_AND_CANFD_FRAMES
+        m_bytCanFdRxMode                 = 4;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE
+        m_bytCanFdTxConfig               = 2;   // OCI_CANFDTX_USE_CANFD_FRAMES_ONLY
     }
     //MVN
     void LoadControllerConfigData(xmlNodePtr& pNodePtr)
@@ -660,6 +661,67 @@ public:
         strData = stream10.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "LowSpeed", BAD_CAST strVar);
+
+		stringstream stream11;
+        stream11 << m_unDataBitRate;
+        strData = stream11.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_BaudRate", BAD_CAST strVar);
+
+		stringstream stream12;
+        stream12 << m_unDataSamplePoint;
+        strData = stream12.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_SamplePoint", BAD_CAST strVar);
+		
+
+		stringstream stream13;
+        stream13 << m_unDataBTL_Cycles;
+        strData = stream13.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_BTLCycles", BAD_CAST strVar);
+		
+
+		stringstream stream14;
+        stream14 << m_unDataSJW;
+        strData = stream14.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_SJW", BAD_CAST strVar);
+		
+
+		stringstream stream15;
+        stream15 << m_bTxDelayCompensationControl;
+        strData = stream15.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_TxDelayCompensation", BAD_CAST strVar);
+		
+
+		stringstream stream16;
+        stream16 << m_unTxSecondarySamplePointOffset;
+        strData = stream16.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_TxSecondarySamplePoint", BAD_CAST strVar);
+		
+
+		stringstream stream17;
+        stream17 << (int)m_bytCanRxMode;
+        strData = stream17.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanRxMode", BAD_CAST strVar);
+		
+
+		stringstream stream18;
+        stream18 << (int)m_bytCanFdRxMode;
+        strData = stream18.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanFdRxMode", BAD_CAST strVar);
+		
+
+		stringstream stream19;
+        stream19 << (int)m_bytCanFdTxConfig;
+        strData = stream19.str();
+        strVar = strData.c_str();
+        xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanFdTxConfig", BAD_CAST strVar);
     }
     void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
     {

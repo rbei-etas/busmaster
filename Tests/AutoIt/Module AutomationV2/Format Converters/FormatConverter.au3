@@ -27,12 +27,12 @@ _StartoHTMLTable("Format Converters Module Test Report")
   #include "TS_FormatConv_010.au3"
  ;------------------------------------
        ;P2 test cases
-;~ #include "TS_FormatConv_011.au3"
-;~ #include "TS_FormatConv_014.au3"
-;~ #include "TS_FormatConv_017.au3"
-;~ #include "TS_FormatConv_018.au3"
-;~ #include "TS_FormatConv_020.au3"
-;~ #include "TS_FormatConv_021.au3"
-;~ #include "TS_FormatConv_022.au3"
-;~ #include "TS_FormatConv_023.au3"
+#include "TS_FormatConv_011.au3"
+#include "TS_FormatConv_014.au3"
+#include "TS_FormatConv_017.au3"
+#include "TS_FormatConv_018.au3"
+#include "TS_FormatConv_020.au3"
+#include "TS_FormatConv_021.au3"
+#include "TS_FormatConv_022.au3"
+#include "TS_FormatConv_023.au3"
 _EndoHTMLTable()

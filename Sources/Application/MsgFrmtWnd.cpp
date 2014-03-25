@@ -245,13 +245,16 @@ CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgA
     m_unCurrInterpretedMsgID = static_cast < UINT > (-1);
     m_podMsgIntprtnDlg = NULL;
 
-    // Append Buffer Size
-    m_anMsgBuffSize[defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
-    // Overwrite Buffer Size
-    m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
-    // Display Update Rate
-    m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
-
+	for( ETYPE_BUS eBus = CAN; eBus != BUS_TOTAL;  )
+	{
+		// Append Buffer Size
+		m_anMsgBuffSize[eBus][defAPPEND_DATA_INDEX] = defDEF_APPEND_BUFFER_SIZE;
+		// Overwrite Buffer Size
+		m_anMsgBuffSize[eBus][defOVERWRITE_DATE_INDEX] = defDEF_OVERWRITE_BUFFER_SIZE;
+		// Display Update Rate
+		m_anMsgBuffSize[eBus][defDISPLAY_UPDATE_DATA_INDEX] = defDEF_DISPLAY_UPDATE_TIME;
+		eBus = static_cast<ETYPE_BUS>(eBus + 1);
+	}
     m_nPrevToolCol = m_nPrevToolRow = -1;
 
 
@@ -533,6 +536,13 @@ LRESULT CMsgFrmtWnd::GetFilterDetails(WPARAM wParam, LPARAM /*lParam*/)
             m_pouMsgContainerIntrf->GetFilterScheme((void*)psFilterAppliedParam);
         }
         break;
+	case LIN:
+		{
+			SFILTERAPPLIED_LIN* psFilterAppliedParam =
+				(SFILTERAPPLIED_LIN*)wParam;
+			m_pouMsgContainerIntrf->GetFilterScheme((void*)psFilterAppliedParam);
+		}
+		break;
         default:
         {
             ASSERT(FALSE);
@@ -566,6 +576,13 @@ LRESULT CMsgFrmtWnd::SetFilterDetails(WPARAM wParam, LPARAM /*lParam*/)
 
         }
         break;
+		case LIN:
+        {
+            SFILTERAPPLIED_LIN* psFilterAppliedParam =
+                (SFILTERAPPLIED_LIN*)wParam;
+            m_pouMsgContainerIntrf->ApplyFilterScheme((void*)psFilterAppliedParam);
+        }
+        break;
         default:
         {
             ASSERT(FALSE);
@@ -592,6 +609,11 @@ LRESULT CMsgFrmtWnd::EnableFilterApplied(WPARAM wParam, LPARAM /*lParam*/)
     switch (m_eBusType)
     {
         case CAN:
+        {
+            m_pouMsgContainerIntrf->EnableFilterApplied((BOOL)wParam);
+        }
+        break;
+		case LIN:
         {
             m_pouMsgContainerIntrf->EnableFilterApplied((BOOL)wParam);
         }
@@ -1404,15 +1426,18 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
 *******************************************************************************/
 void CMsgFrmtWnd::vUpdateMsgBufferDetails(INT* pMsgBuffSize)
 {
-    // Append Buffer Size
-    m_anMsgBuffSize[defAPPEND_DATA_INDEX] = pMsgBuffSize[defAPPEND_DATA_INDEX];
-    // Overwrite Buffer Size
-    m_anMsgBuffSize[defOVERWRITE_DATE_INDEX] = pMsgBuffSize[defOVERWRITE_DATE_INDEX];
-    // Display Update Rate
-    m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] = pMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX];
+	
+	{
+		// Append Buffer Size
+		m_anMsgBuffSize[m_eBusType][defAPPEND_DATA_INDEX] = pMsgBuffSize[defAPPEND_DATA_INDEX];
+		// Overwrite Buffer Size
+		m_anMsgBuffSize[m_eBusType][defOVERWRITE_DATE_INDEX] = pMsgBuffSize[defOVERWRITE_DATE_INDEX];
+		// Display Update Rate
+		m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX] = pMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX];
+	}
 
     if ((m_unDispUpdateTimerId = SetTimer(TIMER_ID_DISPLAY_UPDATE,
-                                          m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX], NULL)) == 0)
+                                          m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX], NULL)) == 0)
     {
         // Log error message
     }
@@ -1579,6 +1604,47 @@ void CMsgFrmtWnd::vShowUpdateMsgIntrpDlg(__int64 nMapIndex)
     // Repaint the client area
     m_podMsgIntprtnDlg->Invalidate();
 }
+
+/*******************************************************************************
+  Function Name  : colGetLINMsgColor
+  Input(s)       : LIN Message code 
+  Output         : Returns COLOR of LIN Message code
+  Functionality  : returns the color code configured for the LIN Message id
+  Member of      : CMsgFrmtWnd
+  Author(s)      : Venkatanarayana Makam
+  Date Created   : 07-03-2014
+  Modifications  : 
+*******************************************************************************/
+
+COLORREF CMsgFrmtWnd::colGetLINMsgColorByCode(INT nMsgCode)
+{
+	WORD wDirId  =  HIWORD(nMsgCode);
+    WORD wEventMsgType =  LOWORD(nMsgCode);
+
+    int nEventType = LOBYTE(wEventMsgType);
+    int nMsgType = HIBYTE(wEventMsgType);
+    UINT unSlot =  HIBYTE(wDirId);
+
+	return colGetLINMsgColorById(unSlot, (eLinMsgType)nEventType);
+
+}
+
+COLORREF CMsgFrmtWnd::colGetLINMsgColorById(INT nMsgId, eLinMsgType eMsgType)
+{
+	COLORREF col = m_ouMsgAttr.GetCanIDColour(nMsgId);
+
+    if ( eMsgType == LIN_EVENT )
+    {
+        col = COLOUR_ERROR_MSG;
+    }
+	else if ( (col == BLACK_COLOR) && ( eMsgType == LIN_MSG && ( nMsgId == 0X3C || nMsgId == 0x3D ) ) )
+    {
+        col = RGB(0,125,0);
+    }
+    return col;
+}
+
+
 /*******************************************************************************
   Function Name  : vUpdateMsgClr
   Input(s)       : wParam contains Index.
@@ -1602,25 +1668,7 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
                           m_bExprnFlag_Disp);
         if ( m_eBusType == LIN )
         {
-            WORD wDirId  =  HIWORD(nMsgCode);
-            WORD wEventMsgType =  LOWORD(nMsgCode);
-
-            int nEventType = LOBYTE(wEventMsgType);
-            int nMsgType = HIBYTE(wEventMsgType);
-            UINT unSlot =  HIBYTE(wDirId);
-
-            if ( nEventType == LIN_EVENT )
-            {
-                m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
-            }
-            else if ( nEventType == LIN_MSG && ( unSlot == 0X3C || unSlot == 0x3D ))
-            {
-                m_lstMsg.vSetMsgColor(RGB(0,125,0));
-            }
-            else
-            {
-                m_lstMsg.vSetMsgColor(RGB(0,0,0));
-            }
+			m_lstMsg.vSetMsgColor(colGetLINMsgColorByCode(nMsgCode));
         }
 
         else if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
@@ -1629,23 +1677,7 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
         }
         else
         {
-            /*if ( m_eBusType == FLEXRAY )
-            {
-                static s_FLXMSG sFlexMsg;
-                m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, nMsgKey);
-                if ( sFlexMsg.stcDataMsg.m_nSlotID > m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].m_ouClusterInfo.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS )
-                {
-                    m_lstMsg.vSetMsgColor(RGB(128, 128, 128));
-                }
-                else
-                {
-                    m_lstMsg.vSetMsgColor(RGB(255, 128, 128));
-                }
-            }
-            else*/
-            {
-                m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
-            }
+           m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
         }
     }
     else if(m_omMgsIndexVec.size() > wParam)
@@ -1666,25 +1698,7 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
 
                 if ( m_eBusType == LIN )
                 {
-                    WORD wDirId  =  HIWORD(nMsgCode);
-                    WORD wEventMsgType =  LOWORD(nMsgCode);
-
-                    int nEventType = LOBYTE(wEventMsgType);
-                    int nMsgType = HIBYTE(wEventMsgType);
-                    UINT unSlot =  HIBYTE(wDirId);
-
-                    if ( nEventType == LIN_EVENT )
-                    {
-                        m_lstMsg.vSetMsgColor(COLOUR_ERROR_MSG);
-                    }
-                    else if ( nEventType == LIN_MSG && ( unSlot == 0X3C || unSlot == 0x3D ))
-                    {
-                        m_lstMsg.vSetMsgColor(RGB(0,125,0));
-                    }
-                    else
-                    {
-                        m_lstMsg.vSetMsgColor(RGB(0,0,0));
-                    }
+					m_lstMsg.vSetMsgColor(colGetLINMsgColorByCode(nMsgCode));
                 }
 
                 else if(nMsgCode!=-1 && hResult == S_FALSE)  //Erroneous Message
@@ -1693,23 +1707,7 @@ LRESULT CMsgFrmtWnd::vUpdateMsgClr(WPARAM wParam, LPARAM /*lParam*/)
                 }
                 else
                 {
-                    /*if ( m_eBusType == FLEXRAY )
-                    {
-                        static s_FLXMSG sFlexMsg;
-                        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, nMsgKey);
-                        if ( sFlexMsg.stcDataMsg.m_nSlotID > m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].m_ouClusterInfo.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS )
-                        {
-                            m_lstMsg.vSetMsgColor(RGB(128, 128, 128));
-                        }
-                        else
-                        {
-                            m_lstMsg.vSetMsgColor(RGB(255, 128, 128));
-                        }
-                    }
-                    else*/
-                    {
-                        m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
-                    }
+					m_lstMsg.vSetMsgColor(m_ouMsgAttr.GetCanIDColour(nMsgCode));
                 }
             }
         }
@@ -2450,7 +2448,7 @@ BOOL CMsgFrmtWnd:: bStartReadThread()
     if (m_pouMsgContainerIntrf->bStartReadThread())
     {
         if ((m_unDispUpdateTimerId = SetTimer(TIMER_ID_DISPLAY_UPDATE,
-                                              m_anMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX], NULL)) == 0)
+                                              m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX], NULL)) == 0)
         {
             // Log error message
             bResult = FALSE;
@@ -2483,6 +2481,7 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
     {
         s_FLXMSG* pouFLEXData = (s_FLXMSG*)pMsg;
         FRAME_STRUCT ouFrame;
+		//memset(&ouFrame, 0, sizeof(FRAME_STRUCT));
         eFlexRayInterprete = MODE_NONE;
         int nCount = 0;
         if ( S_OK == m_ouMsgInterpretFlexRay.m_ouFlexConfig.m_ouFlexChannelConfig[0].GetFrame(pouFLEXData->stcDataMsg.m_nSlotID, pouFLEXData->stcDataMsg.m_ucCycleNumber, pouFLEXData->stcDataMsg.m_eChannel, ouFrame))
@@ -3059,7 +3058,12 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
                     int nBuffMsgCnt;
                     nBuffMsgCnt = m_nIndex;
 
-                    HRESULT hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sCANMsg, nBuffMsgCnt);
+                    HRESULT hResult = S_FALSE;
+
+					if(m_pouMsgContainerIntrf != NULL)
+					{
+						hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sCANMsg, nBuffMsgCnt);
+					}
                     if(sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID == (UINT)nID && hResult == S_OK)
                     {
                         ouMsgInterpret.bInterpretMsgs(eNumFormat, pMsg,
@@ -3069,7 +3073,11 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
                               /*|| theApp.pouGetFlagsPtr()->nGetFlagStatus(SEND_SIGNAL_MSG)*/)
                              && sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID != (UINT)nID)
                     {
-                        HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
+                        HRESULT hResult = S_FALSE;
+						if(m_pouMsgContainerIntrf != NULL)
+						{
+							hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
+						}
                         if(hResult == S_OK)
                             ouMsgInterpret.bInterpretMsgs(eNumFormat, pMsg, sCANMsg.m_uDataInfo.m_sCANMsg.m_ucData
                                                           , SigInfoArray);
@@ -3077,7 +3085,13 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
                 }
                 else
                 {
-                    HRESULT hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
+                    HRESULT hResult = S_FALSE;
+
+					if(m_pouMsgContainerIntrf != NULL)
+					{
+						hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
+					}
+
                     if(hResult == S_OK)
                         ouMsgInterpret.bInterpretMsgs(eNumFormat, pMsg, sCANMsg.m_uDataInfo.m_sCANMsg.m_ucData
                                                       , SigInfoArray);
@@ -3342,7 +3356,7 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY& sEntry,
         {
             static STLINDATA sLINMsg;
             m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, nMsgKey);
-            rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+			rgbTreeItem = colGetLINMsgColorById(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID, sLINMsg.m_eLinMsgType);
         }
         else if(m_eBusType == J1939)
         {
@@ -3872,7 +3886,7 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
                     else if(m_eBusType == LIN)
                     {
                         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, n64Temp);
-                        rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+                        rgbTreeItem =colGetLINMsgColorById(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID, sLINMsg.m_eLinMsgType);
                     }
                     else if(m_eBusType == J1939)
                     {
@@ -3945,7 +3959,7 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
                 {
                     static STLINDATA sLINMsg;
                     m_pouMsgContainerIntrf->hReadFromOWBuffer(&sLINMsg, nMapIndex);
-                    rgbTreeItem =m_ouMsgAttr.GetCanIDColour(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+                    rgbTreeItem =colGetLINMsgColorById(sLINMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID, sLINMsg.m_eLinMsgType);
                 }
                 else if(m_eBusType == J1939)
                 {
