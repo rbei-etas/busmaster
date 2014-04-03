@@ -20,14 +20,14 @@
  * clash, they only need the IOCTL number definitions
  */
 #ifdef _VCI_H
-#include <EXTERNAL\vci_filter.h>
-#include <EXTERNAL\vci_periodic.h>
-#include <EXTERNAL\vci_bus.h>
-#include <EXTERNAL\vci_can.h>
-#include <EXTERNAL\vci_uart.h>
-#include <EXTERNAL\vci_j1850.h>
-#include <EXTERNAL\vci_adc.h>
-#include <EXTERNAL\vci_ui.h>
+#include "vci_filter.h"
+#include "vci_periodic.h"
+#include "vci_bus.h"
+#include "vci_can.h"
+#include "vci_uart.h"
+#include "vci_j1850.h"
+#include "vci_adc.h"
+#include "vci_ui.h"
 #endif
 
 /*
