@@ -50,11 +50,11 @@ IMPLEMENT_DYNCREATE(CMsgFilterConfigPage, CPropertyPage)
 *******************************************************************************/
 
 CMsgFilterConfigPage::CMsgFilterConfigPage(ETYPE_BUS eBusType, const void* psFilterConfigured,
-                         HWND hMsgWnd):
+        HWND hMsgWnd):
     CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER ),
     m_psFilterConfigured(psFilterConfigured),
     m_hMsgWnd(hMsgWnd),
-	m_eBusType(eBusType)
+    m_eBusType(eBusType)
 {
     //{{AFX_DATA_INIT(CMsgFilterConfigPage)
     // NOTE: the ClassWizard will add member initialization here
@@ -292,14 +292,14 @@ static void vPopulateMainSubList(ETYPE_BUS eBusType, CMainEntryList& DestList, c
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
-	if ( eBusType == CAN )
-	{
-		sMainEntry.m_omMainEntryName = "CAN";
-	}
-	else if ( eBusType == LIN )
-	{
-		sMainEntry.m_omMainEntryName = "LIN";
-	}
+    if ( eBusType == CAN )
+    {
+        sMainEntry.m_omMainEntryName = "CAN";
+    }
+    else if ( eBusType == LIN )
+    {
+        sMainEntry.m_omMainEntryName = "LIN";
+    }
 
     if (psFilterApplied == NULL)
     {
@@ -387,7 +387,7 @@ void CMsgFilterConfigPage::OnBtnConfigure()
     // Update User Modifications
     vUpdateDataFromUI();
     CMainEntryList DestList;
-	vPopulateMainSubList(m_eBusType, DestList, (SFILTERAPPLIED_CAN*)m_psFilterConfigured, &m_sFilterAppliedCan);
+    vPopulateMainSubList(m_eBusType, DestList, (SFILTERAPPLIED_CAN*)m_psFilterConfigured, &m_sFilterAppliedCan);
     //Show dialog
     if (Filter_ShowSelDlg(this, &DestList) == IDOK)
     {

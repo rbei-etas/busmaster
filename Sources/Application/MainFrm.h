@@ -169,9 +169,9 @@ public:
     S_EXFUNC_PTR    m_sExFuncPtr[BUS_TOTAL];
     CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
     SJ1939CLIENTPARAM m_sJ1939ClientParam;
-	CNetworkStatistics* m_oNetworkStatistics;
-	CBusStatisticsDlg*m_bsCAN;
-	CLINBusStatisticsDlg*m_bsLIN;
+    CNetworkStatistics* m_oNetworkStatistics;
+    CBusStatisticsDlg* m_bsCAN;
+    CLINBusStatisticsDlg* m_bsLIN;
 
     BOOL CompareFile(CString FirstFile,CString SecFile);
 
@@ -244,8 +244,8 @@ public:
     // Function to clear Signal watch List
     void vReleaseSignalWatchListMemory(SMSGENTRY*& psSignalWatchList); //Function to release signal watch memory
     void vUpdateSWList();
-	sMESSAGE* vCopyMessageDetails(SMSGENTRY *psMsgEntry, FRAME_STRUCT ouFrame);
-	sSIGNALS* vCopySignalVal(SIGNAL_STRUCT pSig);
+    sMESSAGE* vCopyMessageDetails(SMSGENTRY* psMsgEntry, FRAME_STRUCT ouFrame);
+    sSIGNALS* vCopySignalVal(SIGNAL_STRUCT pSig);
 
     // Function to clear Simulated system List
     void vEmptySimsysList();
@@ -408,7 +408,7 @@ protected:
     afx_msg void OnConfigDatabaseSaveAs();
     afx_msg void OnConfigDatabaseSave();
     afx_msg void OnConfigMessageDisplay();
-	afx_msg void OnConfigMessageDisplayLin();
+    afx_msg void OnConfigMessageDisplayLin();
     afx_msg void OnReplaySingleSkip();
     afx_msg void OnReplaySingleStep();
     afx_msg void OnReplayStop();
@@ -429,18 +429,18 @@ protected:
     afx_msg void OnMessageInterpretation();
     afx_msg void OnAddSignalToSignalWindow();
 
-	afx_msg void OnAddSignalToSignalWindow_LIN();
+    afx_msg void OnAddSignalToSignalWindow_LIN();
 
     //afx_msg void OnMessageFilter();
     afx_msg void OnLogFilter();
-	afx_msg void OnLogFilterLIN();
-	
+    afx_msg void OnLogFilterLIN();
+
     afx_msg void OnSelectMessage();
-	afx_msg void OnLINFilter();
+    afx_msg void OnLINFilter();
     afx_msg void OnAboutApplication();
     afx_msg void OnButtonMsgDispButton();
     afx_msg void OnButtonSignalWatchButton();
-	afx_msg void OnButtonSignalWatchButton_LIN();
+    afx_msg void OnButtonSignalWatchButton_LIN();
 
     afx_msg void OnUpdateConfigureDatabaseClose(CCmdUI* pCmdUI);
     afx_msg void OnUpdateConfigureDatabaseNew(CCmdUI* pCmdUI);
@@ -451,7 +451,7 @@ protected:
     afx_msg void OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilter(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateLogFilterLIN(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateLogFilterLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
     //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI);
@@ -463,7 +463,7 @@ protected:
     afx_msg void OnMessageFilterButton();
     afx_msg void OnMessageFilterButtonLin();
     afx_msg void OnUpdateMessageFilterButtonLin(CCmdUI* pCmdUI);
-	
+
 
     afx_msg void OnReplayFilter();
     void ApplyMessageFilterButton();
@@ -548,7 +548,7 @@ protected:
     afx_msg void OnEnableTimeStampButton();
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnUpdateSignalWatchWnd(CCmdUI* pCmdUI);
-	 afx_msg void OnUpdateSignalWatchWnd_LIN(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateSignalWatchWnd_LIN(CCmdUI* pCmdUI);
     afx_msg void OnGraphWindow();
     afx_msg void OnUpdateGraphWnd(CCmdUI* pCmdUI);
     afx_msg void OnCfgnReplay();
@@ -609,6 +609,7 @@ public:
     BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
     void vInitialiaseLINConfig(int nChannel = 0);
 private:
+    BOOL m_bLINDisconnect;
     HMODULE m_hModAdvancedUILib;
     bool    m_bUseAdvancedUILib;
     BYTE    m_bytIconSize;
@@ -639,7 +640,7 @@ private:
     WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
     SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 
-	 WINDOWPLACEMENT m_sNetworkWndPlacement;
+    WINDOWPLACEMENT m_sNetworkWndPlacement;
 
     SCONTROLLER_DETAILS m_asControllerDetails[defNO_OF_CHANNELS];
     SCONTROLLER_DETAILS_LIN m_asControllerDetailsLIN[defNO_OF_LIN_CHANNELS];
@@ -649,7 +650,7 @@ private:
     SFILTERAPPLIED_J1939 m_sFilterAppliedJ1939; // Filter applied struct for J1939
     SFILTERAPPLIED_LIN m_sFilterAppliedLIN;
     CMsgInterpretation m_ouMsgInterpretSW_C; //Msg interpretation object for signal watch CAN
-	CMsgInterpretationLIN m_ouMsgInterpretSW_L;
+    CMsgInterpretationLIN m_ouMsgInterpretSW_L;
     CMsgInterpretationJ1939 m_ouMsgInterpretSW_J; //Msg interpretation object for signal watch CAN
     //CMsgInterpretation m_ouMsgInterpretSW_L;
     CString m_omStrSavedConfigFile;
@@ -738,9 +739,9 @@ private:
     void vConfigureLogFile(ETYPE_BUS eCurrBus);
     // The bus statistics modeless dialog box
     CBusStatisticsDlg* m_podBusStatistics;
-	CLINBusStatisticsDlg* m_podLBusStatistics;
+    CLINBusStatisticsDlg* m_podLBusStatistics;
     CFlexRayNetworkStatsDlg* m_podFlexRayBusStatistics;
-	CNetworkStatistics *m_cnsTester;
+    CNetworkStatistics* m_cnsTester;
 
     BOOL m_bIsStatWndCreated;
     BOOL m_bIsFlexRayStatWndCreated;
@@ -755,7 +756,7 @@ private:
        data structure */
     void vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& psToList, CMsgSignal* pouDatabase);
 
-	void vPopulateLINIDList();
+    void vPopulateLINIDList();
 
     /* Helper function to re register all the nodes when driver changes */
     void vReRegisterAllCANNodes(void);
@@ -827,9 +828,9 @@ private:
     CMsgSignal* m_pouActiveDbJ1939;
     BOOL m_abLogOnConnect[BUS_TOTAL];
 
-   /* xmlNodePtr m_pCopyBusStsticsNode;
-	xmlNodePtr m_pCopyBusStsticsNode_LIN;*/
-	xmlNodePtr m_pXmlNodeBusStats;
+    /* xmlNodePtr m_pCopyBusStsticsNode;
+    xmlNodePtr m_pCopyBusStsticsNode_LIN;*/
+    xmlNodePtr m_pXmlNodeBusStats;
     // PTV XML
     void vSetGlobalConfiguration(xmlNodePtr& pNodePtr);
     // PTV XML
@@ -881,20 +882,20 @@ public:
     afx_msg LRESULT OnProvideMsgNameFromCode(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnMessageFromUserDll(WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnAddSignalFromSignalWatch(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnAddSignalFromSignalWatch(WPARAM wParam, LPARAM lParam);
     afx_msg void OnConfigureModeActive();
     afx_msg void OnConfigurePassive();
     afx_msg void OnLogEnable();
     afx_msg void OnLog_LIN_Enable();
     afx_msg void OnRestartController();
     afx_msg void OnUpdateCfgnLog(CCmdUI* pCmdUI);
-	afx_msg void OnUpdateCfgnLog_LIN(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateCfgnLog_LIN(CCmdUI* pCmdUI);
 
 
-	afx_msg void OnStatisticsCAN();
-	afx_msg void OnStatisticsLIN();
-	afx_msg void OnStatistics(ETYPE_BUS ebus);
-	afx_msg void OnStatisticsUpdate(CCmdUI* pCmdUI);
+    afx_msg void OnStatisticsCAN();
+    afx_msg void OnStatisticsLIN();
+    afx_msg void OnStatistics(ETYPE_BUS ebus);
+    afx_msg void OnStatisticsUpdate(CCmdUI* pCmdUI);
 
     afx_msg void OnDisplayEdit();
     afx_msg void OnUpdateDisplayEdit(CCmdUI* pCmdUI);
@@ -990,7 +991,7 @@ public:
     afx_msg void OnSendMessageLIN();
     afx_msg void OnLinClusterConfig();
     void ApplyLogFilter();
-	void ApplyLINLogFilter();
+    void ApplyLINLogFilter();
     void ApplyReplayFilter();
     //MVN
     xmlDocPtr m_xmlConfigFiledoc;

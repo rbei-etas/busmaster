@@ -55,33 +55,33 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 //xmlNodePtr CLINBusStatisticsDlg::m_pxmlNodePtr = NULL;
 
 CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN* pouBSLIN,CWnd* pParent,int nChannelCount)
-	: CCommonStatistics(CLINBusStatisticsDlg::IDD, LIN),
-	m_pouBSLIN(pouBSLIN),
-	m_omStrBusLoad(STR_EMPTY),
-	m_omStrPeakBusLoad(STR_EMPTY),
-	m_omStrAvgBusLoad( STR_EMPTY )
+    : CCommonStatistics(CLINBusStatisticsDlg::IDD, LIN),
+      m_pouBSLIN(pouBSLIN),
+      m_omStrBusLoad(STR_EMPTY),
+      m_omStrPeakBusLoad(STR_EMPTY),
+      m_omStrAvgBusLoad( STR_EMPTY )
 
 {
-	//{{AFX_DATA_INIT(CBusStatisticsDlg)
-	//}}AFX_DATA_INIT
-	m_nChannelCount = nChannelCount;
-	for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
-	{
-		SBUSSTATISTICS_LIN sBusStatistics;
-		m_pouBSLIN->BSL_GetBusStatistics(nChannel, sBusStatistics);
-	}	
+    //{{AFX_DATA_INIT(CBusStatisticsDlg)
+    //}}AFX_DATA_INIT
+    m_nChannelCount = nChannelCount;
+    for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
+    {
+        SBUSSTATISTICS_LIN sBusStatistics;
+        m_pouBSLIN->BSL_GetBusStatistics(nChannel, sBusStatistics);
+    }
 }
 
 void CLINBusStatisticsDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CCommonStatistics::DoDataExchange(pDX);
+    CCommonStatistics::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CBusStatisticsDlg)
     DDX_Control(pDX, IDC_LIST_STAT, m_omStatList);
     //}}AFX_DATA_MAP
 }
 
 IMPLEMENT_DYNAMIC(CLINBusStatisticsDlg, CCommonStatistics)
-	BEGIN_MESSAGE_MAP(CLINBusStatisticsDlg, CCommonStatistics)
+BEGIN_MESSAGE_MAP(CLINBusStatisticsDlg, CCommonStatistics)
     //{{AFX_MSG_MAP(CBusStatisticsDlg)
     ON_WM_ERASEBKGND()
     //}}AFX_MSG_MAP
@@ -89,33 +89,39 @@ IMPLEMENT_DYNAMIC(CLINBusStatisticsDlg, CCommonStatistics)
     ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-LRESULT CLINBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
+LRESULT CLINBusStatisticsDlg::vUpdateFields(WPARAM wParam, LPARAM lParam)
 {
     // Update the list control only if the dialog is visible
-  //  if( IsWindowVisible() == TRUE )
- //   {
-        for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
+    BOOL bUpdateSpecific = (BOOL)lParam;
+    //  if( IsWindowVisible() == TRUE )
+    //   {
+    for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
+    {
+        SBUSSTATISTICS_LIN sBusStatistics;
+        m_pouBSLIN->BSL_GetBusStatistics(nChannel, sBusStatistics);
+        // Update Window Text
+        CString omDispText;
+        int nIndex = 0;
+        // Message Total
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unTotalMsgCount );
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
+        if (!bUpdateSpecific) // Do not calculate for disconnected state
         {
-            SBUSSTATISTICS_LIN sBusStatistics;
-            m_pouBSLIN->BSL_GetBusStatistics(nChannel, sBusStatistics);
-            // Update Window Text
-            CString omDispText;
-            int nIndex = 0;
-            // Message Total
-            omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                               sBusStatistics.m_unTotalMsgCount );
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
             // Total Message Rate
             omDispText.Format( defSTR_FORMAT_UINT_DATA,
                                sBusStatistics.m_unMsgPerSecond );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
-            // Total Errors
-            omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                               sBusStatistics.m_unErrorTotalCount );
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
+        }
+        nIndex++;
+        // Total Errors
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unErrorTotalCount );
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
+        if (!bUpdateSpecific) // Do not calculate for disconnected state
+        {
             // Error Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
                                sBusStatistics.m_dErrorRate );
@@ -137,123 +143,115 @@ LRESULT CLINBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/
                                       sBusStatistics.m_dAvarageBusLoad );
             m_omStatList.SetItemText(nIndex, nChannel + 1, m_omStrAvgBusLoad);
             nIndex++;
+        }
+        else
+        {
+            nIndex += 4; // To accomodate the missed increments because of the above condition
+        }
+        // For Tx Message Title
+        nIndex++;
 
-            // For Tx Message Title
-            nIndex++;
+        // Tx Total
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unTotalTxMsgCount );
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
 
-            // Tx Total
-            omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                               sBusStatistics.m_unTotalTxMsgCount );
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
-            
-            // Tx Error
-            omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                               sBusStatistics.m_unErrorTxCount);
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
-            // Tx Error Rate
+        // Tx Error
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unErrorTxCount);
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
+        // Tx Error Rate
+        if (!bUpdateSpecific) // Do not calculate for disconnected state
+        {
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
                                sBusStatistics.m_dErrorTxRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
+        }
+        else
+        {
+            nIndex += 1; // To accomodate the missed increments because of the above condition
+        }
 
-            nIndex++;
+        nIndex++;
 
-            // Rx Total
-            omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                               sBusStatistics.m_unTotalRxMsgCount);
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
-            
-            // Rx Error
-            omDispText.Format( defSTR_FORMAT_UINT_DATA,
-                               sBusStatistics.m_unErrorRxCount);
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
+        // Rx Total
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unTotalRxMsgCount);
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
+
+        // Rx Error
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unErrorRxCount);
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
+        if (!bUpdateSpecific) // Do not calculate for disconnected state
+        {
             // Rx Error Rate
             omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
                                sBusStatistics.m_dErrorRxRate );
             m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
             nIndex++;
-            // Increment for the title Status
-            nIndex++;
-
-            // Controller status
-            switch( sBusStatistics.m_ucStatus )
-            {
-                case defCONTROLLER_ACTIVE:
-                {
-                    omDispText = _(defSTR_ACTIVE_STATE);
-                }
-                break;
-                case defCONTROLLER_PASSIVE:
-                {
-                    omDispText = _(defSTR_PASSIVE_STATE);
-                }
-                break;
-                case defCONTROLLER_BUSOFF:
-                {
-                    omDispText = _(defSTR_BUSOFF_STATE);
-                }
-                break;
-                default:
-                {
-                    omDispText = _(defSTR_UNKNOWN_STATE);
-                }
-            }
-            // Set controller state
-            m_omStatList.SetItemText( nIndex, nChannel + 1, omDispText );
-            nIndex++;
-            // Set Tx Error Counter value
-            //omDispText.Format( defSTR_FORMAT_UINT_DATA,
-            //                   sBusStatistics.m_ucTxErrorCounter );
-            //m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            //nIndex++;
-
-            //// Set Tx Peak Error Counter value
-            //omDispText.Format( defSTR_FORMAT_UINT_DATA,
-            //                   sBusStatistics.m_ucTxPeakErrorCount );
-            //m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            //nIndex++;
-
-            //// Set Rx Error Counter value
-            //omDispText.Format( defSTR_FORMAT_UINT_DATA,
-            //                   sBusStatistics.m_ucRxErrorCounter );
-            //m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            //nIndex++;
-
-            //// Set Rx Peak Error Counter value
-            //omDispText.Format( defSTR_FORMAT_UINT_DATA,
-            //                   sBusStatistics.m_ucRxPeakErrorCount );
-            //m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            //nIndex++;
-
-
-			
-			//wake up rate
-
-			omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
-				(float)(sBusStatistics.m_unTotalWakeUpsRate));
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
-
-			//wake up count
-
-			omDispText.Format( defSTR_FORMAT_UINT_DATA,
-				sBusStatistics.m_unTotalWakeUpsCount);
-            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
-            nIndex++;
-
-
         }
-   // }
+        else
+        {
+            nIndex += 1; // To accomodate the missed increments because of the above condition
+        }
+        // Increment for the title Status
+        nIndex++;
+
+        // Controller status
+        switch( sBusStatistics.m_ucStatus )
+        {
+            case defCONTROLLER_ACTIVE:
+            {
+                omDispText = _(defSTR_ACTIVE_STATE);
+            }
+            break;
+            case defCONTROLLER_PASSIVE:
+            {
+                omDispText = _(defSTR_PASSIVE_STATE);
+            }
+            break;
+            case defCONTROLLER_BUSOFF:
+            {
+                omDispText = _(defSTR_BUSOFF_STATE);
+            }
+            break;
+            default:
+            {
+                omDispText = _(defSTR_UNKNOWN_STATE);
+            }
+        }
+        // Set controller state
+        m_omStatList.SetItemText( nIndex, nChannel + 1, omDispText );
+        nIndex++;
+
+        if (!bUpdateSpecific) // Do not calculate for disconnected state
+        {
+            //wake up rate
+            omDispText.Format( defSTR_FORMAT_FLOAT_DATA,
+                               (float)(sBusStatistics.m_unTotalWakeUpsRate));
+            m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        }
+        nIndex++;
+
+        //wake up count
+        omDispText.Format( defSTR_FORMAT_UINT_DATA,
+                           sBusStatistics.m_unTotalWakeUpsCount);
+        m_omStatList.SetItemText(nIndex, nChannel + 1, omDispText);
+        nIndex++;
+    }
+    // }
     return 0;
 }
 
 BOOL CLINBusStatisticsDlg::OnInitDialog()
 {
-	CCommonStatistics::OnInitDialog();	
+    CCommonStatistics::OnInitDialog();
 
     /* Try to load resource DLL for icons*/
     HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
@@ -362,7 +360,7 @@ BOOL CLINBusStatisticsDlg::OnInitDialog()
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
-   
+
     // Total Tx Errors Total
     m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_TX_ERR_TOTAL_LIN) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
@@ -429,18 +427,18 @@ BOOL CLINBusStatisticsDlg::OnInitDialog()
     //m_omStatList.SetItemData(nIndex, nItemColor);
     //nIndex++;
 
-	 m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_WAKEUPS_COUNT_LIN) );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_WAKEUPS_COUNT_LIN) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
-	 m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_WAKEUPS_RATE_LIN) );
+    m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_WAKEUPS_RATE_LIN) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;
 
 
-	/* m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_CHIPSTATE_LIN) );
+    /* m_omStatList.InsertItem(nIndex, _(defSTR_PARAMETER_CHIPSTATE_LIN) );
     m_omStatList.SetItemText(nIndex, 1, omStrInitValue);
     m_omStatList.SetItemData(nIndex, nItemColor);
     nIndex++;*/
@@ -455,7 +453,7 @@ BOOL CLINBusStatisticsDlg::OnInitDialog()
     // Set the focus to the list
     m_omStatList.SetFocus();
 
-	hSetConfigData();
+    hSetConfigData();
 
     return FALSE;
 }
@@ -468,7 +466,7 @@ BOOL CLINBusStatisticsDlg::OnEraseBkgnd(CDC* /*pDC*/)
 
 void CLINBusStatisticsDlg::OnSize(UINT nType, int cx, int cy)
 {
-	CCommonStatistics::OnSize(nType, cx, cy);
+    CCommonStatistics::OnSize(nType, cx, cy);
 
     if(m_omStatList.m_hWnd)
     {

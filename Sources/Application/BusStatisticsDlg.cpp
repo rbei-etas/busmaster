@@ -71,8 +71,8 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 /*                      CStatistics                                           */
 /******************************************************************************/
 CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,int nChannelCount)
-	: CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
-	  m_pouBSCAN(pouBSCAN),
+    : CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
+      m_pouBSCAN(pouBSCAN),
       m_omStrBusLoad(STR_EMPTY),
       m_omStrPeakBusLoad(STR_EMPTY),
       m_omStrAvgBusLoad( STR_EMPTY )
@@ -84,8 +84,8 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,int nChannel
 }
 
 CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,CWnd* pParent,int nChannelCount)
-	: CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
-	  m_pouBSCAN(pouBSCAN),
+    : CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
+      m_pouBSCAN(pouBSCAN),
       m_omStrBusLoad(STR_EMPTY),
       m_omStrPeakBusLoad(STR_EMPTY),
       m_omStrAvgBusLoad( STR_EMPTY )
@@ -94,11 +94,11 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,CWnd* pParen
     //{{AFX_DATA_INIT(CBusStatisticsDlg)
     //}}AFX_DATA_INIT
     m_nChannelCount = nChannelCount;
-	for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
-        {
-	SBUSSTATISTICS sBusStatistics;
-	m_pouBSCAN->BSC_GetBusStatistics(nChannel, sBusStatistics);
-	}
+    for( int nChannel = 0; nChannel < m_nChannelCount; nChannel++ )
+    {
+        SBUSSTATISTICS sBusStatistics;
+        m_pouBSCAN->BSC_GetBusStatistics(nChannel, sBusStatistics);
+    }
 }
 
 /******************************************************************************/
@@ -121,7 +121,7 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,CWnd* pParen
 /******************************************************************************/
 void CBusStatisticsDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CCommonStatistics::DoDataExchange(pDX);
+    CCommonStatistics::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CBusStatisticsDlg)
     DDX_Control(pDX, IDC_LIST_STAT, m_omStatList);
     //}}AFX_DATA_MAP
@@ -376,7 +376,7 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
 *******************************************************************************/
 BOOL CBusStatisticsDlg::OnInitDialog()
 {
-	CCommonStatistics::OnInitDialog();
+    CCommonStatistics::OnInitDialog();
 
     /* Try to load resource DLL for icons*/
     HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
@@ -620,7 +620,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     // Set the focus to the list
     m_omStatList.SetFocus();
 
-	hSetConfigData();
+    hSetConfigData();
 
     return FALSE;
 }

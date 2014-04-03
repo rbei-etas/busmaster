@@ -143,9 +143,9 @@ private:
     void vUpdateMsgTreeWnd(__int64 nMapIndex);
     void vUpdateAllTreeWnd();
     void vSetDefaultPlacement();
-			
-	COLORREF colGetLINMsgColorByCode(INT nMsgCode);
-	COLORREF colGetLINMsgColorById(INT nMsgId, eLinMsgType eMsgType =  LIN_MSG);
+
+    COLORREF colGetLINMsgColorByCode(INT nMsgCode);
+    COLORREF colGetLINMsgColorById(INT nMsgId, eLinMsgType eMsgType =  LIN_MSG);
 
     UINT m_unCurrInterpretedMsgID;
     __int64 m_unCurrInterpretedMapIndex;

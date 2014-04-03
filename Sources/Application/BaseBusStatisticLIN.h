@@ -28,7 +28,7 @@
 
 class CBaseBusStatisticLIN
 {
-    
+
 public:
 
     /* This function should be called for the very first time. */

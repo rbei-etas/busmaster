@@ -478,12 +478,12 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 {
                     pTemp->m_byMsgFilter      =
                         m_sToolBarButtonStatus.m_byMsgFilter;
-					pTemp->m_byMsgFilterLin      =
+                    pTemp->m_byMsgFilterLin      =
                         m_sToolBarButtonStatus.m_byMsgFilterLin;
                     pTemp->m_byLogFilter      =
                         m_sToolBarButtonStatus.m_byLogFilter;
-					pTemp->m_byLogFilterLIN =
-						m_sToolBarButtonStatus.m_byLogFilterLIN;
+                    pTemp->m_byLogFilterLIN =
+                        m_sToolBarButtonStatus.m_byLogFilterLIN;
                     pTemp->m_byLogging        =
                         m_sToolBarButtonStatus.m_byLogging;
                     pTemp->m_byMsgInterpret   =
@@ -996,9 +996,9 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     // get the tool bar button status information
                     PSTOOLBARINFO pSrc = static_cast<PSTOOLBARINFO>(lpVoid);
                     m_sToolBarButtonStatus.m_byMsgFilter = pSrc->m_byMsgFilter;
-					m_sToolBarButtonStatus.m_byMsgFilterLin = pSrc->m_byMsgFilterLin;
+                    m_sToolBarButtonStatus.m_byMsgFilterLin = pSrc->m_byMsgFilterLin;
                     m_sToolBarButtonStatus.m_byLogFilter = pSrc->m_byLogFilter;
-					m_sToolBarButtonStatus.m_byLogFilterLIN = pSrc->m_byLogFilterLIN;
+                    m_sToolBarButtonStatus.m_byLogFilterLIN = pSrc->m_byLogFilterLIN;
                     m_sToolBarButtonStatus.m_byLogging = pSrc->m_byLogging;
                     m_sToolBarButtonStatus.m_byMsgInterpret =
                         pSrc->m_byMsgInterpret;
@@ -1783,7 +1783,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
                     if (m_fAppVersion >= defMULTI_DATABASE_VERSION)
                     {
                         CStringArray* pouTempArray ;
-						//pouTempArray->RemoveAll();
+                        //pouTempArray->RemoveAll();
                         oCfgArchive >> pouTempArray;
                         m_pomaStrDatabaseFilename->RemoveAll();
                         m_pomaStrDatabaseFilename->Append(*pouTempArray);
@@ -2350,7 +2350,7 @@ void CConfigDetails::vInitToolbarInfo()
     m_sToolBarButtonStatus.m_byMsgFilter = 0;
     m_sToolBarButtonStatus.m_byMsgFilterLin = 0;
     m_sToolBarButtonStatus.m_byLogFilter =  0;
-	 m_sToolBarButtonStatus.m_byLogFilterLIN = 0;
+    m_sToolBarButtonStatus.m_byLogFilterLIN = 0;
     m_sToolBarButtonStatus.m_byLogging =  0;
     m_sToolBarButtonStatus.m_byMsgInterpret =  0;
     m_sToolBarButtonStatus.m_byOverwrite =  1;

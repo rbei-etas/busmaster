@@ -60,9 +60,9 @@ private:
     static void* sm_pouBSLin;
 
     UINT m_unBitsStdMsg[9];
-    
 
-    
+
+
 public:
     CLINBufFSE m_ouLinBufFSE;
 

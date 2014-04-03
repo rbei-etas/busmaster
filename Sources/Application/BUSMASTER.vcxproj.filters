@@ -234,9 +234,6 @@
     <ClCompile Include="FlexRayNetworkStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FibexConfigurationDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FibexClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -253,6 +250,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParserHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BusStatisticLIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelConfigurationDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LINBusStatisticsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkStatistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TxHandlerLIN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -510,9 +522,6 @@
     <ClInclude Include="FlexRayNetworkStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FibexConfigurationDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FibexClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -532,6 +541,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ParserHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseBusStatisticLIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BusStatisticLIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelConfigurationDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LINBusStatisticsDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkStatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TxHandlerLIN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
