@@ -161,11 +161,19 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
     HRESULT hResult = S_OK;
     if (hLibOCI != NULL)
     {
+#if BOA_VERSION >= BOA_VERSION_2_0
+        if ((sBOA_PTRS.createFlexRayController  = (PF_OCI_CreateFlexRayControllerVersion)
+                GetProcAddress(hLibOCI, "OCI_CreateFlexRayControllerVersion")) == NULL)
+        {
+            hResult = S_FALSE;
+        }
+#else
         if ((sBOA_PTRS.m_sOCI.createFlexRayController = (PF_OCI_CreateFlexRayController)
                 GetProcAddress(hLibOCI, "OCI_CreateFlexRayController")) == NULL)
         {
             hResult = S_FALSE;
         }
+#endif
         if ((sBOA_PTRS.m_sOCI.destroyFlexRayController = (PF_OCI_DestroyFlexRayController )
                 GetProcAddress(hLibOCI, "OCI_DestroyFlexRayController")) == NULL)
         {
@@ -322,31 +330,131 @@ HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
 }
 
 /**
+ *  Recursively scans a tree of CSI nodes created by CSI_CreateProtocolTree() and copies the URI-Paths
+ *  for all devces that support FLX.
+ *
+ *  @param[in]  sfsTree     Root of the tree to scan
+ *  @param[in]  uriPrefix   The prefix which must be added to the URI name of the root of the tree in order to create
+ *                          a complete URI.
+ *  @param[out] uriNames    The array which will be filled with the URI locations of all the hardware
+ *                          devices that support the OCI FLX interface.
+ *  @param[in]  size        The size of the <b>uriNames</b> array.
+ *  @param[out] position    The current entry in the <b>uriNames</b> array.
+ */
+void findFlxNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriNames[], uint32 size, uint32* position )
+{
+    /* Uncomment the next line to get a view of the items in the tree */
+    /* printf( "uriPrefix is %s; node is %s\n", uriPrefix, sfsTree->item.uriNames ); */
+
+    /* Basic error checking */
+    if ( !sfsTree || !uriNames || !uriPrefix || !position )
+    {
+        return;
+        //exitWithMessage( "ERROR: parameter is NULL", OCI_ERR_UNEXPECTED_NULL );
+    }
+
+    /* Does the current tree node have the URI name which begins with "FLX:"?
+     * (Each node which represents a FLX port always has a URI name of the form "FLX:n". */
+    if( 0 == strncmp( sfsTree->item.uriName, "FLX:", 4 ) )
+    {
+        if (*position < size)
+        {
+            strcpy( uriNames[ *position ], uriPrefix );
+            strcat( uriNames[ *position ], "/" );
+            strcat( uriNames[ *position ], sfsTree->item.uriName );
+            (*position)++;
+        }
+        else
+        {
+            return;
+            // exitWithMessage( "ERROR: Not enough space to list all connected devices.\n", OCI_ERR_OUT_OF_MEMORY );
+        }
+    }
+
+    /* If the current tree node has a child, recurse into it */
+    if (sfsTree->child)
+    {
+        OCI_URIName newUriPrefix;
+
+        strcpy( newUriPrefix, uriPrefix );
+        strcat( newUriPrefix, "/" );
+        strcat( newUriPrefix, sfsTree->item.uriName );
+        findFlxNodes( sfsTree->child, newUriPrefix, uriNames, size, position );
+    }
+    /* If the current tree node has a sibling, recurse into it */
+    if (sfsTree->sibling)
+    {
+        findFlxNodes( sfsTree->sibling, uriPrefix, uriNames, size, position );
+    }
+}
+
+/**
  * Search for all connected Hardware, that supports the OCI
  * FLEXRAY interface and deliver the URI location of the hardware.
  */
-BOA_ResultCode OCI_FindFlexRayController(OCI_URIName uriName[], INT nSize, INT* nFound)
+BOA_ResultCode OCI_FindFlexRayController(OCI_URIName uriNames[], INT nSize, uint32* nFound)
 {
-    OCI_ErrorCode ec;
+    //OCI_ErrorCode ec;
+
+    ///* Container for search results */
+    //CSI_Tree* sfsTree = NULL;
+    ///* Specify that we want to search for nodes which implement v1.1.0.0 of OCI_FLX. */
+    //static const BOA_UuidVersion ociFlexRayUuid = { UUID_OCIFLX, {1,1,0,0} };
+
+    ///* Specify that we want to search for any kind of node, not just hardware nodes */
+    //const CSI_NodeRange nodeRange = {CSI_NODE_MIN, CSI_NODE_MAX};
+
+    ///* Search for all connected hardware and latch the result for further processing */
+    //ec = (*(sBOA_PTRS.m_sCSI.createProtocolTree))("", nodeRange, &sfsTree);
+    //if (ec == OCI_SUCCESS)
+    //{
+    //    /* Find the URIs for all nodes which implement v1.1.0.0 of OCI_CAN. */
+    //    ec = (*(sBOA_PTRS.m_sCSI.getUriForUuid))(sfsTree, &ociFlexRayUuid, uriName, nSize, nFound);
+    //    if (ec == OCI_SUCCESS)
+    //    {
+    //        ec = (*(sBOA_PTRS.m_sCSI.destroyProtocolTree))(sfsTree);
+    //    }
+    //}
+
+    //return ec;
+
+    OCI_ErrorCode   ec;
 
     /* Container for search results */
     CSI_Tree* sfsTree = NULL;
-    /* Specify that we want to search for nodes which implement v1.1.0.0 of OCI_FLX. */
-    static const BOA_UuidVersion ociFlexRayUuid = { UUID_OCIFLX, {1,1,0,0} };
 
-    /* Specify that we want to search for any kind of node, not just hardware nodes */
-    const CSI_NodeRange nodeRange = {CSI_NODE_MIN, CSI_NODE_MAX};
+    /* Specify that we want to search for physical hardware nodes */
+    const CSI_NodeRange nodeRange = {CSI_NODE_MIN_PHYSICAL_NODE , CSI_NODE_MAX_PHYSICAL_NODE };
+
+    OCI_URIName uriPrefix = "ETAS:/";   /* The prefix of the URI of the root of the device tree */
+
+    /* parameter validation to avoid possible crash. */
+    if ( !nFound )
+    {
+        return OCI_ERR_UNEXPECTED_NULL;
+        //exitWithMessage( "ERROR: parameter \'found\' is NULL", OCI_ERR_UNEXPECTED_NULL );
+    }
 
     /* Search for all connected hardware and latch the result for further processing */
     ec = (*(sBOA_PTRS.m_sCSI.createProtocolTree))("", nodeRange, &sfsTree);
-    if (ec == OCI_SUCCESS)
+
+    if ( OCI_FAILED( ec ) )
     {
-        /* Find the URIs for all nodes which implement v1.1.0.0 of OCI_CAN. */
-        ec = (*(sBOA_PTRS.m_sCSI.getUriForUuid))(sfsTree, &ociFlexRayUuid, uriName, nSize, nFound);
-        if (ec == OCI_SUCCESS)
-        {
-            ec = (*(sBOA_PTRS.m_sCSI.destroyProtocolTree))(sfsTree);
-        }
+        return ec;
+        //exitWithMessage( "CSI_CreateProtocolTree failed! Error Code: 0x%x\n", ec );
+    }
+
+    /* Search the tree and fill array with the results */
+    *nFound = 0;
+    findFlxNodes( sfsTree, uriPrefix, uriNames, nSize, nFound );
+
+    /* Clean up the protocol tree. */
+    ec = (*(sBOA_PTRS.m_sCSI.destroyProtocolTree))(sfsTree);
+
+    if ( OCI_FAILED( ec ) )
+    {
+        return ec;
+        //exitWithMessage( "CSI_DestroyProtocolTree failed! Error Code: 0x%x\n", ec );
     }
 
     return ec;
@@ -466,11 +574,11 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
         if (hResult == S_OK)
         {
             Err = (*(sBOA_PTRS.m_sOCI.flexRayIOVTable.destroyFlexRayTxQueue))(sg_asChannel[nChannel].m_OCI_TxQueueHandle);
-            if (Err != OCI_SUCCESS)
+            if ( OCI_FAILED( Err ) )
             {
                 sg_hLastError = Err;
 
-                hResult = S_FALSE;
+                //hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create TX Queue"));
             }
         }
@@ -573,11 +681,11 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.flexRayIOVTable.removeFlexRayEventFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_EventFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if ( OCI_FAILED( ErrCode ) )
             {
                 sg_hLastError = ErrCode;
 
-                hResult = S_FALSE;
+                //hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not remove Event filter"));
             }
         }
@@ -599,11 +707,11 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             ErrCode = (*(sBOA_PTRS.m_sOCI.errorVTable.removeInternalErrorEventFilter))
                       (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
                        &(sg_asChannel[nChannel].m_OCI_InternalErrorFilter), 1);
-            if (ErrCode != OCI_SUCCESS)
+            if ( OCI_FAILED( ErrCode ) )
             {
                 sg_hLastError = ErrCode;
 
-                hResult = S_FALSE;
+                //hResult = S_FALSE;
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not add Error filter"));
             }
         }
@@ -1799,6 +1907,8 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_PerformInitOperations(void)
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_PerformClosureOperations(void)
 {
+    FLEXRAY_StopHardware();
+    FLEXRAY_DeselectHwInterface();
     for ( int i = 0 ; i < sg_nNoOfChannels; i++ )
     {
         sg_asChannel[i].m_ouDataTransmitThread.m_unActionCode = EXIT_THREAD;
@@ -1831,9 +1941,9 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW& sS
     {
         int nCount = CHANNEL_ALLOWED;
         USES_CONVERSION;
-        HRESULT hResult = S_FALSE;
+        HRESULT hResult = S_OK;
         OCI_URIName acURI[defNO_OF_CHANNELS];
-        INT nFound = 0;
+        uint32 nFound = 0;
 
         UINT unDefaultChannelCnt = nCount;
 
@@ -1858,12 +1968,34 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW& sS
 
                     OCI_FLEXRAY_VTable          sOCI;
 
-                    if ((sOCI.createFlexRayController = (PF_OCI_CreateFlexRayController)
-                                                        GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayController")) != NULL)
+#if BOA_VERSION >= BOA_VERSION_2_0
+                    if ((sBOA_PTRS.createFlexRayController  = (PF_OCI_CreateFlexRayControllerVersion)
+                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayControllerVersion")) == NULL)
+                    {
+                        hResult = S_FALSE;
+                    }
+#else
+                    if ((sBOA_PTRS.m_sOCI.createFlexRayController = (PF_OCI_CreateFlexRayController)
+                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayController")) == NULL)
+                    {
+                        hResult = S_FALSE;
+                    }
+#endif
+                    if (hResult == S_OK)
                     {
                         OCI_ControllerHandle ouHandle;
-
-                        BOA_ResultCode err =  (*(sOCI.createFlexRayController))( acURI[i], &ouHandle);
+                        BOA_ResultCode err = OCI_FAILURE;
+                        BOA_Version version = {1,3,0,0};
+                        BOA_Version version1 = {1,1,0,0};
+#if BOA_VERSION >= BOA_VERSION_2_0
+                        err =  (*(sBOA_PTRS.createFlexRayController))( acURI[i], &version, &ouHandle);
+                        if(BOA_FAILED(err)  )
+                        {
+                            err = (*(sBOA_PTRS.createFlexRayController))( acURI[i], &version1, &ouHandle);
+                        }
+#else
+                        err =  (*(sBOA_PTRS.m_sOCI.createFlexRayController))( acURI[i], &ouHandle);
+#endif
                         if (err == OCI_SUCCESS)
                         {
                             OCI_FlexRayControllerCapabilities  ouCapabilities;
@@ -1949,22 +2081,26 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SelectHwInterface(const FLEXRAY_INTERFACE
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
         /*BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createFlexRayController))(sg_asChannel[i].m_acURI,
-                              &(sg_asChannel[i].m_OCI_HwHandle));*/
+        &(sg_asChannel[i].m_OCI_HwHandle));*/
         OCI_ControllerHandle        m_OCIHandle;
         BOA_ResultCode err = OCI_FAILURE;
 
         OCI_FLEXRAY_VTable          sOCI;
 
-        if ((sOCI.createFlexRayController = (PF_OCI_CreateFlexRayController)
-                                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayController")) == NULL)
+        BOA_Version version = {1,3,0,0};
+        BOA_Version version1 = {1,1,0,0};
+#if BOA_VERSION >= BOA_VERSION_2_0
+        err =  (*(sBOA_PTRS.createFlexRayController))(sg_asChannel[i].m_acURI,
+                &version, &sg_asChannel[i].m_OCI_HwHandle);
+        if(BOA_FAILED(err)  )
         {
-            hResult = S_FALSE;
+            err = (*(sBOA_PTRS.createFlexRayController))(sg_asChannel[i].m_acURI,
+                    &version1, &sg_asChannel[i].m_OCI_HwHandle);
         }
-
-        /*err =  (*(sBOA_PTRS.m_sOCI.createFlexRayController))(sg_asChannel[i].m_acURI,
-                              &m_OCIHandle);*/
-        err =  (*(sOCI.createFlexRayController))(sg_asChannel[i].m_acURI,
-                &m_OCIHandle);
+#else
+        err =  (*(sBOA_PTRS.m_sOCI.createFlexRayController))(sg_asChannel[i].m_acURI,
+                &sg_asChannel[i].m_OCI_HwHandle);
+#endif
         if (err == OCI_SUCCESS)
         {
             hResult = (*(sBOA_PTRS.m_sOCI.timeVTable.getTimerCapabilities))(sg_asChannel[i].m_OCI_HwHandle,

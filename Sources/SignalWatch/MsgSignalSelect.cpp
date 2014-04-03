@@ -10,17 +10,17 @@
 
 IMPLEMENT_DYNAMIC(CMsgSignalSelect, CDialog)
 
-	CMsgSignalSelect::CMsgSignalSelect(ClusterConfig* cluster, CWnd* pParent /*=NULL*/,map<int,list<string>> *pMapMsgIDtoSignallst)
-	: CDialog(CMsgSignalSelect::IDD,pParent)
+CMsgSignalSelect::CMsgSignalSelect(ClusterConfig* cluster, CWnd* pParent /*=NULL*/,map<int,list<string>>* pMapMsgIDtoSignallst)
+    : CDialog(CMsgSignalSelect::IDD,pParent)
 {
-	m_ouCluster=*cluster;
+    m_ouCluster=*cluster;
 
-	pTreeStruct = new CTreeCtrl;
-	m_mapMsgIDtoSignallst = pMapMsgIDtoSignallst;
+    pTreeStruct = new CTreeCtrl;
+    m_mapMsgIDtoSignallst = pMapMsgIDtoSignallst;
 
 
-	//OnInitDialog();
-	//vTest();
+    //OnInitDialog();
+    //vTest();
 }
 
 CMsgSignalSelect::~CMsgSignalSelect()
@@ -29,30 +29,30 @@ CMsgSignalSelect::~CMsgSignalSelect()
 
 void CMsgSignalSelect::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TREE_LIN, m_omMsgSignalTree);
+    CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_TREE_LIN, m_omMsgSignalTree);
 }
 
 
 BEGIN_MESSAGE_MAP(CMsgSignalSelect, CDialog)
-	//ON_NOTIFY(TVN_ITEMCHANGED, IDC_TREE_LIN, OnClickTree)
-	
-	ON_WM_SIZE()
-	ON_MESSAGE(IDD_DLG_SIGNAL_WATCH_LIN,OnInitDialog)
-	 //ON_WM_GETMINMAXINFO()
-	ON_BN_CLICKED(IDOK, OnBnClickedOk)
+    //ON_NOTIFY(TVN_ITEMCHANGED, IDC_TREE_LIN, OnClickTree)
+
+    ON_WM_SIZE()
+    ON_MESSAGE(IDD_DLG_SIGNAL_WATCH_LIN,OnInitDialog)
+    //ON_WM_GETMINMAXINFO()
+    ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 
 
 
-void CMsgSignalSelect::OnClickTree(NMHDR *pNMHDR, LRESULT *pResult)
+void CMsgSignalSelect::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	NMTVITEMCHANGE *pNMTVItemChange = reinterpret_cast<NMTVITEMCHANGE*>(pNMHDR);
+    NMTVITEMCHANGE* pNMTVItemChange = reinterpret_cast<NMTVITEMCHANGE*>(pNMHDR);
 
-	*pResult = 0;
-	// TODO: Add your control notification handler code here
-	*pResult = 0;
+    *pResult = 0;
+    // TODO: Add your control notification handler code here
+    *pResult = 0;
 }
 
 void CMsgSignalSelect::AutoMove(int iID, double dXMovePct, double dYMovePct, double dXSizePct, double dYSizePct)
@@ -71,14 +71,18 @@ void CMsgSignalSelect::AutoMove(int iID, double dXMovePct, double dYMovePct, dou
     m_MovingChildren.push_back(s);
 }
 
-void CMsgSignalSelect::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI) 
+void CMsgSignalSelect::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 {
     CDialog::OnGetMinMaxInfo(lpMMI);
 
     if (lpMMI->ptMinTrackSize.x < m_szMinimum.cx)
+    {
         lpMMI->ptMinTrackSize.x = m_szMinimum.cx;
+    }
     if (lpMMI->ptMinTrackSize.y < m_szMinimum.cy)
+    {
         lpMMI->ptMinTrackSize.y = m_szMinimum.cy;
+    }
 }
 
 /**
@@ -92,7 +96,7 @@ BOOL CMsgSignalSelect::bCreateImageList()
     BOOL bReturn = FALSE;
     // Create Image List
     if( m_omImageList.Create( IDR_BMP_MSG_SIG_WATCH, defICON_SIZE,
-                            defICON_GROW, defCOLOR_WHITE ) == TRUE )
+                              defICON_GROW, defCOLOR_WHITE ) == TRUE )
     {
         // If successful set the result
         bReturn = TRUE;
@@ -104,14 +108,14 @@ BOOL CMsgSignalSelect::bCreateImageList()
 BOOL CMsgSignalSelect::bCreateMsgImageList()
 {
 
-	
+
 
     // Flag to indicate result
     BOOL bReturn = FALSE;
     // Create Image List
-    
 
-	if( m_omImageList1.Create( defICON_SIZE, defICON_SIZE, ILC_COLOR32|ILC_MASK, 5, 5) == TRUE )
+
+    if( m_omImageList1.Create( defICON_SIZE, defICON_SIZE, ILC_COLOR32|ILC_MASK, 5, 5) == TRUE )
     {
         // If successful set the result
         bReturn = TRUE;
@@ -122,176 +126,176 @@ BOOL CMsgSignalSelect::bCreateMsgImageList()
 
 BOOL CMsgSignalSelect::OnInitDialog()
 {
-	CDialog::OnInitDialog();
-	//m_omImageList1 = new CImageList();
-	bCreateImageList();
-	// use the initial dialog size as the default minimum
-	if ((m_szMinimum.cx == 0) && (m_szMinimum.cy == 0))
-	{
-		CRect rcWindow;
-		GetWindowRect(rcWindow);
-		m_szMinimum = rcWindow.Size();
-	}
-	AutoMove(IDC_TREE_LIN, 0, 0, 100.0, 100.0); 
-	AutoMove(IDOK, 100.0, 100.0, 0.0, 0.0); 
-	AutoMove(IDCANCEL, 100.0, 100.0, 0.0, 0.0); 
-	// keep the initial size of the client area as a baseline for moving/sizing controls
-	CRect rcClient;
-	GetClientRect(rcClient);
-	m_szInitial = rcClient.Size();
+    CDialog::OnInitDialog();
+    //m_omImageList1 = new CImageList();
+    bCreateImageList();
+    // use the initial dialog size as the default minimum
+    if ((m_szMinimum.cx == 0) && (m_szMinimum.cy == 0))
+    {
+        CRect rcWindow;
+        GetWindowRect(rcWindow);
+        m_szMinimum = rcWindow.Size();
+    }
+    AutoMove(IDC_TREE_LIN, 0, 0, 100.0, 100.0);
+    AutoMove(IDOK, 100.0, 100.0, 0.0, 0.0);
+    AutoMove(IDCANCEL, 100.0, 100.0, 0.0, 0.0);
+    // keep the initial size of the client area as a baseline for moving/sizing controls
+    CRect rcClient;
+    GetClientRect(rcClient);
+    m_szInitial = rcClient.Size();
 
-	pTreeStruct = (CTreeCtrl*)GetDlgItem(IDC_TREE_LIN);
+    pTreeStruct = (CTreeCtrl*)GetDlgItem(IDC_TREE_LIN);
 
-	/* Remove the style */
-	pTreeStruct->ModifyStyle( TVS_CHECKBOXES, 0 );
-	/* Now explicitly set it */
-	pTreeStruct->ModifyStyle( 0, TVS_CHECKBOXES ); 
-	if( NULL == pTreeStruct )
-	{
+    /* Remove the style */
+    pTreeStruct->ModifyStyle( TVS_CHECKBOXES, 0 );
+    /* Now explicitly set it */
+    pTreeStruct->ModifyStyle( 0, TVS_CHECKBOXES );
+    if( NULL == pTreeStruct )
+    {
 
-		return FALSE;
-	}
+        return FALSE;
+    }
 
-	HTREEITEM hNumofChannel,hmsg,sig;
-	for(int i=0;i < m_ouCluster.m_nChannelsConfigured;i++)
-	{
-		hNumofChannel=pTreeStruct->InsertItem("Channel 1");	
-		pTreeStruct->SetItemImage(hNumofChannel, 4, 4);
-		list<FRAME_STRUCT> lstNumofFrames;
-		m_ouCluster.m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
-		pTreeStruct->SetImageList(&m_omImageList, TVSIL_NORMAL);
+    HTREEITEM hNumofChannel,hmsg,sig;
+    for(int i=0; i < m_ouCluster.m_nChannelsConfigured; i++)
+    {
+        hNumofChannel=pTreeStruct->InsertItem("Channel 1");
+        pTreeStruct->SetItemImage(hNumofChannel, 4, 4);
+        list<FRAME_STRUCT> lstNumofFrames;
+        m_ouCluster.m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
+        pTreeStruct->SetImageList(&m_omImageList, TVSIL_NORMAL);
 
-		list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
-		while(itr != lstNumofFrames.end())
-		{
-			hmsg=pTreeStruct->InsertItem(itr->m_strFrameName.c_str(),hNumofChannel);
-			pTreeStruct->SetItemImage(hmsg, 3, 3);
+        list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
+        while(itr != lstNumofFrames.end())
+        {
+            hmsg=pTreeStruct->InsertItem(itr->m_strFrameName.c_str(),hNumofChannel);
+            pTreeStruct->SetItemImage(hmsg, 3, 3);
 
-			int selkey = -1;
-			if ( m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId) != m_mapMsgIDtoSignallst[i].end() )
-			{
-				selkey=m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId)->first;
-			}
+            int selkey = -1;
+            if ( m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId) != m_mapMsgIDtoSignallst[i].end() )
+            {
+                selkey=m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId)->first;
+            }
 
-			if(selkey == itr->m_nSlotId)
-			{
-				pTreeStruct->SetCheck(hNumofChannel);
-				pTreeStruct->SetCheck(hmsg);
-			}
+            if(selkey == itr->m_nSlotId)
+            {
+                pTreeStruct->SetCheck(hNumofChannel);
+                pTreeStruct->SetCheck(hmsg);
+            }
 
-			pTreeStruct->SetItemData(hmsg,itr->m_nSlotId);
-			list<SIGNAL_STRUCT> ouSignalList;
-			itr->GetSignalList(ouSignalList);
-			list<SIGNAL_STRUCT>:: iterator itr_sig=ouSignalList.begin();
-			while(itr_sig != ouSignalList.end())
-			{ 
-				sig=pTreeStruct->InsertItem(itr_sig->m_strSignalName.c_str(),hmsg);
+            pTreeStruct->SetItemData(hmsg,itr->m_nSlotId);
+            list<SIGNAL_STRUCT> ouSignalList;
+            itr->GetSignalList(ouSignalList);
+            list<SIGNAL_STRUCT>:: iterator itr_sig=ouSignalList.begin();
+            while(itr_sig != ouSignalList.end())
+            {
+                sig=pTreeStruct->InsertItem(itr_sig->m_strSignalName.c_str(),hmsg);
 
-				pTreeStruct->SetItemImage(sig, 0, 0);
-				if(selkey == itr->m_nSlotId)
-				{
-					if ( m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId) != m_mapMsgIDtoSignallst[i].end() )
-					{
-						list<string> lstSignals=m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId)->second;
-						list<string>:: iterator itrselSignals= lstSignals.begin();
+                pTreeStruct->SetItemImage(sig, 0, 0);
+                if(selkey == itr->m_nSlotId)
+                {
+                    if ( m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId) != m_mapMsgIDtoSignallst[i].end() )
+                    {
+                        list<string> lstSignals=m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId)->second;
+                        list<string>:: iterator itrselSignals= lstSignals.begin();
 
-						while(itrselSignals != lstSignals.end())
-						{
-							string signame=pTreeStruct->GetItemText(sig);
-							if(strcmpi(pTreeStruct->GetItemText(sig),(*itrselSignals).c_str())== 0)
-							{
-								pTreeStruct->SetCheck(sig);
-							}
-							itrselSignals++;
-						}
-					}
-				}
+                        while(itrselSignals != lstSignals.end())
+                        {
+                            string signame=pTreeStruct->GetItemText(sig);
+                            if(strcmpi(pTreeStruct->GetItemText(sig),(*itrselSignals).c_str())== 0)
+                            {
+                                pTreeStruct->SetCheck(sig);
+                            }
+                            itrselSignals++;
+                        }
+                    }
+                }
 
-				itr_sig++;
-			}
+                itr_sig++;
+            }
 
-			itr++;
-		}
+            itr++;
+        }
 
-	}
-	pTreeStruct->Expand(hNumofChannel,TVE_EXPAND);
-	//vTest(pTreeStruct);
-	return TRUE;
+    }
+    pTreeStruct->Expand(hNumofChannel,TVE_EXPAND);
+    //vTest(pTreeStruct);
+    return TRUE;
 
-	// CTree message handlers
+    // CTree message handlers
 }
 void CMsgSignalSelect::vStoreintoMap()
 {
-	m_mapMsgIDtoSignallst->clear();
-	HTREEITEM root = pTreeStruct->GetRootItem();
+    m_mapMsgIDtoSignallst->clear();
+    HTREEITEM root = pTreeStruct->GetRootItem();
 
-	if(root == NULL)
-	{
-		return;
-	}
+    if(root == NULL)
+    {
+        return;
+    }
 
-	//MessageBox( "BEFORE IF", "IF1", MB_OK);
-	int i=0;
-	if(pTreeStruct->ItemHasChildren(root) && pTreeStruct->GetCheck(root) )
-	{
+    //MessageBox( "BEFORE IF", "IF1", MB_OK);
+    int i=0;
+    if(pTreeStruct->ItemHasChildren(root) && pTreeStruct->GetCheck(root) )
+    {
 
-		HTREEITEM msgs= pTreeStruct->GetChildItem(root);
+        HTREEITEM msgs= pTreeStruct->GetChildItem(root);
 
-		while(pTreeStruct->ItemHasChildren(msgs))
-		{
-			//MessageBox( "while", "wh1", MB_OK);
-			if(pTreeStruct->GetCheck(msgs))
-			{
+        while(pTreeStruct->ItemHasChildren(msgs))
+        {
+            //MessageBox( "while", "wh1", MB_OK);
+            if(pTreeStruct->GetCheck(msgs))
+            {
 
-				list<string>selSignalNames;
+                list<string>selSignalNames;
 
-				HTREEITEM signalName= pTreeStruct->GetChildItem(msgs);
-				int id= pTreeStruct->GetItemData(msgs);
-				string sigName=pTreeStruct->GetItemText(signalName);
+                HTREEITEM signalName= pTreeStruct->GetChildItem(msgs);
+                int id= pTreeStruct->GetItemData(msgs);
+                string sigName=pTreeStruct->GetItemText(signalName);
 
-				if(pTreeStruct->GetCheck(signalName))
-				{
-					selSignalNames.push_front(sigName);
-				}
-				//m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,sigName));
-				HTREEITEM htiSibling = pTreeStruct->GetNextSiblingItem(signalName);
-				while (htiSibling )
-				{
-					//MessageBox( "while_child", "wh2", MB_OK);
-					if(pTreeStruct->GetCheck(htiSibling))
-					{
-						int id= pTreeStruct->GetItemData(msgs);
-						string sigName=pTreeStruct->GetItemText(htiSibling);
-						//m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,sigName));
+                if(pTreeStruct->GetCheck(signalName))
+                {
+                    selSignalNames.push_front(sigName);
+                }
+                //m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,sigName));
+                HTREEITEM htiSibling = pTreeStruct->GetNextSiblingItem(signalName);
+                while (htiSibling )
+                {
+                    //MessageBox( "while_child", "wh2", MB_OK);
+                    if(pTreeStruct->GetCheck(htiSibling))
+                    {
+                        int id= pTreeStruct->GetItemData(msgs);
+                        string sigName=pTreeStruct->GetItemText(htiSibling);
+                        //m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,sigName));
 
-						selSignalNames.push_back(sigName);
-						htiSibling = pTreeStruct->GetNextSiblingItem(htiSibling);
-					}
-					else
-					{
-						htiSibling = pTreeStruct->GetNextSiblingItem(htiSibling);
-					}
-				}
+                        selSignalNames.push_back(sigName);
+                        htiSibling = pTreeStruct->GetNextSiblingItem(htiSibling);
+                    }
+                    else
+                    {
+                        htiSibling = pTreeStruct->GetNextSiblingItem(htiSibling);
+                    }
+                }
 
-				m_mapMsgIDtoSignallst[i].insert(map<int,list<string>>::value_type(id,selSignalNames));
+                m_mapMsgIDtoSignallst[i].insert(map<int,list<string>>::value_type(id,selSignalNames));
 
-			}
+            }
 
-			msgs= pTreeStruct->GetNextSiblingItem(msgs);
+            msgs= pTreeStruct->GetNextSiblingItem(msgs);
 
-			if(msgs == NULL)
-			{
-				break;
+            if(msgs == NULL)
+            {
+                break;
 
-			}
-		}
+            }
+        }
 
-		i++;
-	}
-	else
-	{
-		m_mapMsgIDtoSignallst[i].clear();
-	}
+        i++;
+    }
+    else
+    {
+        m_mapMsgIDtoSignallst[i].clear();
+    }
 
 }
 
@@ -312,32 +316,38 @@ void CMsgSignalSelect::OnSize(UINT nType, int cx, int cy)
             rcNew.right += int(iXDelta * p->m_dXSizeFrac);
             rcNew.bottom += int(iYDelta * p->m_dYSizeFrac);
             if (hDefer == NULL)
+            {
                 hDefer = BeginDeferWindowPos(m_MovingChildren.size());
+            }
             UINT uFlags = SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOZORDER;
             if ((p->m_dXSizeFrac != 0.0) || (p->m_dYSizeFrac != 0.0))
+            {
                 uFlags |= SWP_NOCOPYBITS;
+            }
             DeferWindowPos(hDefer, p->m_hWnd, NULL, rcNew.left, rcNew.top, rcNew.Width(), rcNew.Height(), uFlags);
         }
     }
     if (hDefer != NULL)
+    {
         EndDeferWindowPos(hDefer);
+    }
 
     //if (m_hGripper != NULL)
-     //   ::ShowWindow(m_hGripper, (nType == SIZE_MAXIMIZED) ? SW_HIDE : SW_SHOW);
+    //   ::ShowWindow(m_hGripper, (nType == SIZE_MAXIMIZED) ? SW_HIDE : SW_SHOW);
 }
 
 
 void CMsgSignalSelect::OnBnClickedOk()
 {
-	vStoreintoMap();
-	OnOK();
+    vStoreintoMap();
+    OnOK();
 
 }
 
 //map<int,list<string>>* CMsgSignalSelect::vGetMapValue()
 //{
-//	return m_mapMsgIDtoSignallst;
-//	
+//  return m_mapMsgIDtoSignallst;
+//
 //}
 
 

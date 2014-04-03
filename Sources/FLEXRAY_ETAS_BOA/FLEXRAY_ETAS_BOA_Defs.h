@@ -31,9 +31,6 @@
 //#include "EXTERNAL/Ucierr.h"
 //#include "EXTERNAL/XatXXReg.h"
 
-#include "EXTERNAL/CSI/csisfs.h"
-#include "EXTERNAL/OCI/ociflx.h"
-
 /* Project definitions */
 #include "DataTypes/DIL_Datatypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
@@ -41,11 +38,44 @@
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "Utility/Utility_Thread.h"
 
+/* Definitions for BOA versions */
+#define BOA_VERSION_1_4 0x010400
+#define BOA_VERSION_1_5 0x010500
+#define BOA_VERSION_2_0 0x020000
 
+/* ETAS BOA includes */
+#ifndef BOA_VERSION
+#error "No BOA version defined"
+#endif
+#if BOA_VERSION == BOA_VERSION_1_4
+#include "EXTERNAL/BOA 1.4/Include/OCI/ociflx.h"
+#include "EXTERNAL/BOA 1.4/Include/CSI/csisfs.h"
+#elif BOA_VERSION == BOA_VERSION_1_5
+#include "EXTERNAL/BOA 1.5/Include/OCI/ociflx.h"
+#include "EXTERNAL/BOA 1.5/Include/CSI/csisfs.h"
+#elif BOA_VERSION == BOA_VERSION_2_0
+#include "EXTERNAL/BOA_V2/Include/OCI/ociflx.h"
+#include "EXTERNAL/BOA_V2/Include/CSI/csisfs.h"
+#else
+#error "Unknown BOA version defined"
+#endif
 
+/* Macro definitions */
+#if BOA_VERSION == BOA_VERSION_1_4
+#define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.4"
+#define LIB_CSL_NAME    "dll-csiBind_1_4.dll"
+#define LIB_OCI_NAME    "dll-ocdProxy_1_4.dll"
+#elif BOA_VERSION == BOA_VERSION_1_5
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.5"
 #define LIB_CSL_NAME    "dll-csiBind_1_5.dll"
 #define LIB_OCI_NAME    "dll-ocdProxy_1_5.dll"
+#elif BOA_VERSION == BOA_VERSION_2_0
+#define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\2"
+#define LIB_CSL_NAME    "dll-csiBind.dll"
+#define LIB_OCI_NAME    "dll-ocdProxy.dll"
+#else
+#error "Unknown BOA version defined"
+#endif
 
 /**
  * Declarations of CSI API pointers
@@ -53,6 +83,7 @@
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC1)(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC2)(CSI_Tree* tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC3)(CSI_Tree* tree, const BOA_UuidVersion* uuid, OCI_URIName uriName[], int size, int* count);
+typedef OCI_ErrorCode (*PF_OCI_CreateFlexRayControllerVersion)  (const char*  uriLocation,const BOA_Version* apiVersion,OCI_ControllerHandle* controller );
 typedef LONG SLOT_BASECYCLE;
 /**
  * CSI pointers table
@@ -72,6 +103,9 @@ typedef struct tagBOA_POINTER_TABLE
 {
     CSI_VTABLE       m_sCSI;
     OCI_FLEXRAY_VTable   m_sOCI;
+#if BOA_VERSION >= BOA_VERSION_2_0
+    PF_OCI_CreateFlexRayControllerVersion createFlexRayController;
+#endif
 } SBOA_POINTER_TABLE;
 
 static SBOA_POINTER_TABLE sBOA_PTRS;

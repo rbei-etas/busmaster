@@ -32,10 +32,10 @@
 class CFormatMsgLIN : public CFormatMsgCommon
 {
 private:
-	//[RS_LIN_06_07]
-	void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
-	void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
-	void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, string& strDesc);
+    //[RS_LIN_06_07]
+    void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
+    void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
+    void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, string& strDesc);
 public:
     CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper);
     ~CFormatMsgLIN(void);

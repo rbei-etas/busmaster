@@ -382,20 +382,24 @@ DWORD WINAPI CDIL_LIN_VectorXL::LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid)
                 bool bMoreDataExist;
                 msgsrx = RECEIVE_EVENT_SIZE;
                 xlStatus = xlReceive(g_xlPortHandle[0], &msgsrx, &xlEvent);
-                switch (xlStatus)
+                while (xlStatus == XL_SUCCESS )
                 {
-                    case XL_SUCCESS:
+                    switch (xlStatus)
                     {
-                        if ( g_pouDIL_LIN_Vector_XL != NULL )
+                        case XL_SUCCESS:
                         {
-                            g_pouDIL_LIN_Vector_XL->ProcessLINMsg(xlEvent);
-                            bMoreDataExist = true;
+                            if ( g_pouDIL_LIN_Vector_XL != NULL )
+                            {
+                                g_pouDIL_LIN_Vector_XL->ProcessLINMsg(xlEvent);
+                                bMoreDataExist = true;
+                            }
                         }
-                    }
-                    break;
-
-                    default:
                         break;
+
+                        default:
+                            break;
+                    }
+                    xlStatus = xlReceive(g_xlPortHandle[0], &msgsrx, &xlEvent);;
                 }
             }
             break;
@@ -1506,15 +1510,15 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetControllerParams(LONG& lParam, UINT nChannel, 
         case HW_MODE:
         {
 
-			if (nChannel < sg_nNoOfChannels)
-                {
-                    lParam = defMODE_ACTIVE;
-                }
-                else
-                {
-                    //unknown
-                    lParam = defCONTROLLER_BUSOFF + 1;
-                }
+            if (nChannel < sg_nNoOfChannels)
+            {
+                lParam = defMODE_ACTIVE;
+            }
+            else
+            {
+                //unknown
+                lParam = defCONTROLLER_BUSOFF + 1;
+            }
 
 
         }
@@ -1592,7 +1596,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChanne
 */
 HRESULT CDIL_LIN_VectorXL::LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
-	sg_pIlog = pILog;
+    sg_pIlog = pILog;
     return S_OK;
 }
 

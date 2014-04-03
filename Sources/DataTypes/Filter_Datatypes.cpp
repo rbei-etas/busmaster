@@ -285,7 +285,7 @@ void tagSFILTER::vClear(void)
     m_dwMsgIDFrom   = 0;
     m_dwMsgIDTo     = 0;
     m_eDrctn        = DIR_ALL;
-	m_omEventName = "";
+    m_omEventName = "";
 }
 
 /******************************************************************************
@@ -306,7 +306,7 @@ tagSFILTER& tagSFILTER::operator=(const tagSFILTER& RefObj)
     m_dwMsgIDFrom   = RefObj.m_dwMsgIDFrom;
     m_dwMsgIDTo     = RefObj.m_dwMsgIDTo;
     m_eDrctn        = RefObj.m_eDrctn;
-	m_omEventName   = RefObj.m_omEventName;
+    m_omEventName   = RefObj.m_omEventName;
 
     return *this;
 }
@@ -353,7 +353,7 @@ BYTE* tagSFILTER::pbGetConfigData(BYTE* pbTarget) const
     COPY_DATA(pbTStream, &m_dwMsgIDFrom, sizeof(m_dwMsgIDFrom));
     COPY_DATA(pbTStream, &m_dwMsgIDTo, sizeof(m_dwMsgIDTo));
     COPY_DATA(pbTStream, &m_eDrctn, sizeof(m_eDrctn));
-	COPY_DATA(pbTStream, &m_omEventName, sizeof(m_omEventName));
+    COPY_DATA(pbTStream, &m_omEventName, sizeof(m_omEventName));
 
     return pbTStream;
 }
@@ -394,11 +394,11 @@ void tagSFILTER::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IDTO, BAD_CAST omcStpId);
     xmlAddChild(pxmlNodePtr, pStpIdPtr);
 
-	if(m_ucFilterType == defFILTER_TYPE_EVENT)
-	{
-		xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_EVENT, BAD_CAST m_omEventName.c_str());
-		xmlAddChild(pxmlNodePtr, pStpIdPtr);
-	}
+    if(m_ucFilterType == defFILTER_TYPE_EVENT)
+    {
+        xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_EVENT, BAD_CAST m_omEventName.c_str());
+        xmlAddChild(pxmlNodePtr, pStpIdPtr);
+    }
     xmlNodePtr pDirPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_DIRECTION, BAD_CAST omstrDir.GetBufferSetLength(omstrDir.GetLength()));
     xmlAddChild(pxmlNodePtr, pDirPtr);
 
@@ -438,7 +438,7 @@ BYTE* tagSFILTER::pbSetConfigData(BYTE* pbTarget)
     COPY_DATA_2(&m_dwMsgIDFrom, pbTStream, sizeof(m_dwMsgIDFrom));
     COPY_DATA_2(&m_dwMsgIDTo, pbTStream, sizeof(m_dwMsgIDTo));
     COPY_DATA_2(&m_eDrctn, pbTStream, sizeof(m_eDrctn));
-	COPY_DATA_2(&m_omEventName, pbTStream, sizeof(m_omEventName));
+    COPY_DATA_2(&m_omEventName, pbTStream, sizeof(m_omEventName));
 
     return pbTStream;
 }
@@ -462,7 +462,7 @@ INT tagSFILTER::nSetXMLConfigData(xmlNodePtr pNodePtr)
     m_dwMsgIDFrom = 0;
     m_dwMsgIDTo = 0;
     m_eDrctn = DIR_ALL;
-	BOOL bEvent = FALSE;
+    BOOL bEvent = FALSE;
     while (pNodePtr != NULL)
     {
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IdFrom")))
@@ -486,14 +486,14 @@ INT tagSFILTER::nSetXMLConfigData(xmlNodePtr pNodePtr)
                 m_eDrctn = eGetMsgDirection((char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1));
             }
         }
-		if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Event")))
-		{
-			if( NULL != pNodePtr->xmlChildrenNode )
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Event")))
+        {
+            if( NULL != pNodePtr->xmlChildrenNode )
             {
-				bEvent = TRUE;
-				m_omEventName = (char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                bEvent = TRUE;
+                m_omEventName = (char*)xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
             }
-		}
+        }
         pNodePtr = pNodePtr->next;
     }
 
@@ -502,10 +502,10 @@ INT tagSFILTER::nSetXMLConfigData(xmlNodePtr pNodePtr)
     {
         m_ucFilterType = defFILTER_TYPE_SINGLE_ID;
     }
-	if(bEvent == TRUE)
-	{
-		m_ucFilterType = defFILTER_TYPE_EVENT;
-	}
+    if(bEvent == TRUE)
+    {
+        m_ucFilterType = defFILTER_TYPE_EVENT;
+    }
     return nRetValue;
 }
 
@@ -621,7 +621,7 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
                         (DIR_ALL == sCurrFrame.m_eDrctn) ||
                         (m_eDrctn == sCurrFrame.m_eDrctn) )
                 {
-					bResult = TRUE;
+                    bResult = TRUE;
                 }
             }
         }
@@ -642,18 +642,18 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
                         (DIR_ALL == sCurrFrame.m_eDrctn) ||
                         (m_eDrctn == sCurrFrame.m_eDrctn) )
                 {
-					 bResult = TRUE;
+                    bResult = TRUE;
                 }
             }
         }
     }
-	else if(m_ucFilterType == defFILTER_TYPE_EVENT)
-	{
-		string strEventName = "";
+    else if(m_ucFilterType == defFILTER_TYPE_EVENT)
+    {
+        string strEventName = "";
 
-		vGetEventName(sCurrFrame.m_eEventType, strEventName);
-		 // Check for Event type
-		if (m_omEventName == strEventName)
+        vGetEventName(sCurrFrame.m_eEventType, strEventName);
+        // Check for Event type
+        if (m_omEventName == strEventName)
         {
             // Check for message Channel
             if ( (CAN_CHANNEL_ALL == m_eChannel) ||
@@ -663,7 +663,7 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
                 bResult = TRUE;
             }
         }
-	}
+    }
     else
     {
         ASSERT(FALSE);
@@ -672,52 +672,52 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
     return bResult;
 }
 
-void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, string &strEventName) const
+void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, string& strEventName) const
 {
-	switch ( eEventType )
-	{
-	case EVENT_LIN_ERRSYNC:
-		strEventName = defFILTER_SYNC_EVNT_LIN;
-		break;
-	case EVENT_LIN_ERRNOANS:
-		strEventName =defFILTER_SLAVE_NO_RESP_EVNT_LIN;
-		break;
-	case EVENT_LIN_ERRCRC:
-		strEventName = defFILTER_CHECKSUM_EVNT_LIN;
-		break;	
-	case EVENT_LIN_ERRTOUT:
-		strEventName = defFILTER_RX_FRAME_EVNT_LIN;
-		break;	
-	default:
-		strEventName ="Error - Unknown";
-		break;
-	}
-	return;
+    switch ( eEventType )
+    {
+        case EVENT_LIN_ERRSYNC:
+            strEventName = defFILTER_SYNC_EVNT_LIN;
+            break;
+        case EVENT_LIN_ERRNOANS:
+            strEventName =defFILTER_SLAVE_NO_RESP_EVNT_LIN;
+            break;
+        case EVENT_LIN_ERRCRC:
+            strEventName = defFILTER_CHECKSUM_EVNT_LIN;
+            break;
+        case EVENT_LIN_ERRTOUT:
+            strEventName = defFILTER_RX_FRAME_EVNT_LIN;
+            break;
+        default:
+            strEventName ="Error - Unknown";
+            break;
+    }
+    return;
 }
 
-void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, string &strEventName) const
+void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, string& strEventName) const
 {
-	switch ( eEventType )
-	{
-	case ERROR_ACTIVE:
-		strEventName = defFILTER_ERR_FRAME;
-		break;
-	case ERROR_WARNING_LIMIT:
-		strEventName =defFILTER_ERR_FRAME;
-		break;
-	case ERROR_PASSIVE:
-		strEventName = defFILTER_ERR_FRAME;
-		break;	
-	case ERROR_BUS_OFF:
-		strEventName = defFILTER_ERR_FRAME;
-		break;
-	case ERROR_FRAME:
-		strEventName = defFILTER_ERR_FRAME;
-		break;
-	default:		
-		break;
-	}
-	return;
+    switch ( eEventType )
+    {
+        case ERROR_ACTIVE:
+            strEventName = defFILTER_ERR_FRAME;
+            break;
+        case ERROR_WARNING_LIMIT:
+            strEventName =defFILTER_ERR_FRAME;
+            break;
+        case ERROR_PASSIVE:
+            strEventName = defFILTER_ERR_FRAME;
+            break;
+        case ERROR_BUS_OFF:
+            strEventName = defFILTER_ERR_FRAME;
+            break;
+        case ERROR_FRAME:
+            strEventName = defFILTER_ERR_FRAME;
+            break;
+        default:
+            break;
+    }
+    return;
 }
 
 /******************************************************************************
@@ -771,19 +771,19 @@ void SFILTER_LIN::pbGetConfigData(xmlNodePtr pNodePtr) const
     xmlNodePtr pFltrMsgPtr = xmlNewNode(NULL, BAD_CAST DEF_FILTER_MESSAGE_LIN);
     xmlAddChild(pNodePtr, pFltrMsgPtr);
 
-    this->SFILTER::pbGetConfigData(pFltrMsgPtr);  
+    this->SFILTER::pbGetConfigData(pFltrMsgPtr);
 
     CString omStrChannel = "";
 
     omStrChannel.Format("%d", m_eChannel);
 
     xmlNodePtr pChnlPtr = xmlNewChild(pFltrMsgPtr, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST omStrChannel.GetBuffer(omStrChannel.GetLength()));
-    xmlAddChild(pFltrMsgPtr, pChnlPtr);    
+    xmlAddChild(pFltrMsgPtr, pChnlPtr);
 }
 
 void SFILTER_LIN::pbSetConfigData(xmlNodePtr xmlNodePtr)
 {
-    vClear();   
+    vClear();
 }
 
 /******************************************************************************
@@ -827,7 +827,7 @@ INT SFILTER_LIN::nSetXMLConfigData(xmlNodePtr pNodePtr)
     m_eChannel = 0;
     while (pNodePtr != NULL)
     {
-       if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Channel")))
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Channel")))
         {
             if ( NULL != pNodePtr->xmlChildrenNode )
             {
@@ -1004,13 +1004,13 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
             }
         }
     }
-	else if(m_ucFilterType == defFILTER_TYPE_EVENT)
-	{
-		string strEventName = "";
+    else if(m_ucFilterType == defFILTER_TYPE_EVENT)
+    {
+        string strEventName = "";
 
-		vGetEventName(sCurrFrame.m_eEventType, strEventName);
-		 // Check for Event type
-		if (m_omEventName == strEventName)
+        vGetEventName(sCurrFrame.m_eEventType, strEventName);
+        // Check for Event type
+        if (m_omEventName == strEventName)
         {
             // Check for message Channel
             if ( (CAN_CHANNEL_ALL == m_eChannel) ||
@@ -1020,7 +1020,7 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
                 bResult = TRUE;
             }
         }
-	}
+    }
     else
     {
         ASSERT(FALSE);
@@ -1954,7 +1954,7 @@ void tagFilterSet::vClear(void)
                 delete[] psFilterJ1939;
             }
             break;
-		case LIN:
+            case LIN:
             {
                 PSFILTER_LIN psFilterJ1939
                     = static_cast<PSFILTER_LIN>(m_psFilterInfo);
@@ -2070,9 +2070,9 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
                 }
             }
             break;
-			case LIN:
+            case LIN:
             {
-				m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
+                m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
                 if (NULL != m_psFilterInfo)
                 {
                     bResult = true;
@@ -2155,7 +2155,7 @@ UINT tagFilterSet::unGetSize(void) const
             }
         }
         break;
-		case LIN:
+        case LIN:
         {
             for (UINT i = 0; i < m_ushFilters; i++)
             {
@@ -2220,7 +2220,7 @@ BYTE* tagFilterSet::pbGetConfigData(BYTE* pbTarget) const
                 pbTStream = (((SFILTER_J1939*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
             }
             break;
-			 case LIN:
+            case LIN:
             {
                 pbTStream = (((SFILTER_LIN*) m_psFilterInfo) + i)->pbGetConfigData(pbTStream);
             }
@@ -2320,7 +2320,7 @@ void tagFilterSet::pbGetConfigData(xmlNodePtr pNodePtr) const
                 (((SFILTER_J1939*) m_psFilterInfo) + i)->pbGetConfigData(pFilterTag);
             }
             break;
-			case LIN:
+            case LIN:
             {
                 (((SFILTER_LIN*) m_psFilterInfo) + i)->pbGetConfigData(pFilterTag);
             }
@@ -2384,9 +2384,9 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
             case J1939:
                 m_psFilterInfo = new SFILTER_J1939[m_ushFilters];
                 break;
-			case LIN:
-				m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
-				break;
+            case LIN:
+                m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
+                break;
             default:
                 ASSERT(FALSE);
         }
@@ -2429,7 +2429,7 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
                     }
                 }
                 break;
-				case LIN:
+                case LIN:
                 {
                     for (USHORT i = 0; i < m_ushFilters; i++)
                     {
@@ -2460,9 +2460,9 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
                     break;
                 case J1939:
                     unFilterSize = sizeof(SFILTER_J1939);
-					break;
-				case LIN:
-					unFilterSize = sizeof(SFILTER_LIN);
+                    break;
+                case LIN:
+                    unFilterSize = sizeof(SFILTER_LIN);
                     break;
                 default:
                     ASSERT(FALSE);
@@ -2516,9 +2516,9 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
             case J1939:
                 m_psFilterInfo = new SFILTER_J1939[m_ushFilters];
                 break;
-		case LIN:
-			m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
-			break;
+            case LIN:
+                m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
+                break;
             default:
                 ASSERT(FALSE);
         }
@@ -2561,7 +2561,7 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
                     }
                 }
                 break;
-				  case LIN:
+                case LIN:
                 {
                     for (USHORT i = 0; i < m_ushFilters; i++)
                     {
@@ -2593,8 +2593,8 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
                 case J1939:
                     unFilterSize = sizeof(SFILTER_J1939);
                     break;
-				case LIN:
-					unFilterSize = sizeof(SFILTER_LIN);
+                case LIN:
+                    unFilterSize = sizeof(SFILTER_LIN);
                     break;
                 default:
                     ASSERT(FALSE);
@@ -2621,41 +2621,41 @@ int tagFilterSet::nSetXMLConfigData( ETYPE_BUS eBus, xmlNodePtr pFilter)
     m_eCurrBus = eBus;
     xmlNodePtr pTempFilter = pFilter->xmlChildrenNode;
     m_ushFilters = 0;
-	if(eBus == CAN)
-	{
-		while (pTempFilter != NULL)
-		{
-			if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"FilterMessage")))
-			{
-				m_ushFilters++;
-			}
-			pTempFilter = pTempFilter->next;
-		}
-	}
-	else if(eBus == LIN)
-	{
-		while (pTempFilter != NULL)
-		{
-			if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"FilterMessage_LIN")))
-			{
-				m_ushFilters++;
-			}
-			pTempFilter = pTempFilter->next;
-		}
-	}
+    if(eBus == CAN)
+    {
+        while (pTempFilter != NULL)
+        {
+            if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"FilterMessage")))
+            {
+                m_ushFilters++;
+            }
+            pTempFilter = pTempFilter->next;
+        }
+    }
+    else if(eBus == LIN)
+    {
+        while (pTempFilter != NULL)
+        {
+            if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)"FilterMessage_LIN")))
+            {
+                m_ushFilters++;
+            }
+            pTempFilter = pTempFilter->next;
+        }
+    }
 
 
-	if (m_ushFilters > 0)
-	{
-		switch (m_eCurrBus)
-		{
-		case CAN:
-			m_psFilterInfo = new SFILTER_CAN[m_ushFilters];
-			break;
-		case LIN:
-			m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
-			break;
-		}
+    if (m_ushFilters > 0)
+    {
+        switch (m_eCurrBus)
+        {
+            case CAN:
+                m_psFilterInfo = new SFILTER_CAN[m_ushFilters];
+                break;
+            case LIN:
+                m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
+                break;
+        }
     }
 
     if (NULL != m_psFilterInfo)
@@ -2677,8 +2677,8 @@ int tagFilterSet::nSetXMLConfigData( ETYPE_BUS eBus, xmlNodePtr pFilter)
                     pTempFilter = pTempFilter->next;
                 }
             }
-			break;
-			case LIN:
+            break;
+            case LIN:
             {
                 pTempFilter = pFilter->xmlChildrenNode;
                 int i =0;
@@ -2693,7 +2693,7 @@ int tagFilterSet::nSetXMLConfigData( ETYPE_BUS eBus, xmlNodePtr pFilter)
                     pTempFilter = pTempFilter->next;
                 }
             }
-			break;
+            break;
         }
     }
     return nResult;

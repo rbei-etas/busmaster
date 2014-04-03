@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>Signal Watch</title>
+  <prolog>
+    <author>Shashank Vernekar</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Signal Watch</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>User can watch the value of a signal using the signal watch window as and when a message having that signal is received. The Physical and Raw values will be listed and updated as and when the message arrives. Click on the tool bar button shown below to display the signal watch window.</p>
+    <image href="../images/signalwatch.bmp" placement="break"/>
+    <section>
+      <title>Add/ Delete Signals</title>
+      <p>Signal watch list can be interactively populated. The following list describes the steps to Add/Delete signals.<ul>
+          <li> Click on <b>LIN --&gt; Signal Watch --&gt; Activate</b>.</li>
+          <li>A dialog box will be displayed then do right click and select Configure Signals from the menu. This will show the signal configuration Window. </li>
+          <li>
+            <image href="../images/Signal_Watch_LIN.bmp"/>
+          </li>
+          <li>Select a message and select associated signal from the Signal list. Check the signals to move the selected signal in to Watch List. Multiple signals can be checked. All signals belonging to a message can be added in to the watch list by checking the message check-box.</li>
+          <li>Signal from the Watch List can be deleted by unchecking the entry.</li>
+          <li>Signal Watch List can be cleared by selecting Delete All button.</li>
+          <li>Changes will be saved and applied on selection of Ok. Cancel will ignore the changes.</li>
+          <li>The Signal Watch List will be saved in the configuration file and will be reloaded during the load of that configuration file.</li>
+        </ul></p>
+    </section>
+    <section>
+      <title>Show Signal Watch Window</title>
+      <p><image href="../images/Signal_Watch_LIN_Activate.bmp"/></p>
+      <p>After receiving a message BUSMASTER will update the signal watch window if the signals of received message are included in the signal watch list. The signal watch list will show Raw and Physical value of the signal with the Unit along with Message and Signal name.</p>
+    </section>
+    <section>
+      <title>Close signal watch window</title>
+      <p>User can directly close the window by clicking on Close [X] button.</p>
+      <p>OR </p>
+      <ol>
+        <li> Click on the drop-down button associated with the tool bar button shown above. This will pop-up a menu.</li>
+        <li>Click on Close menu option to close the signal watch window. </li>
+      </ol>
+    </section>
+  </body>
+</topic>

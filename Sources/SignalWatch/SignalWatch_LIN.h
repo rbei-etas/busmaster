@@ -43,7 +43,7 @@ class CSignalWatch_LIN : CBaseSignalWatch_LIN
 {
 public:
     CLINBufFSE m_ouLinBufFSE;
-	WINDOWPLACEMENT WndPlace;
+    WINDOWPLACEMENT WndPlace;
 private:
     BOOL m_bHex;
     CSigWatchDlg* m_pouSigWnd;
@@ -52,14 +52,14 @@ private:
     CRITICAL_SECTION m_omCritSecSW;
 
 public:
-    
-	map<int,list<string>> m_mapMsgIDtoSignallst[16];
-	ClusterConfig *cluster;
-	
-	
-	BOOL InitInstance(void);
+
+    map<int,list<string>> m_mapMsgIDtoSignallst[16];
+    ClusterConfig* cluster;
+
+
+    BOOL InitInstance(void);
     int ExitInstance(void);
-	void vGetWindowPosition();
+    void vGetWindowPosition();
     HRESULT SW_DoInitialization(void);
     HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster);
     HRESULT SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd);
@@ -76,10 +76,10 @@ public:
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);
-    void vDisplayInSigWatchWnd(STLINDATA &sLinData);
+    void vDisplayInSigWatchWnd(STLINDATA& sLinData);
     void vDeleteRemovedListEntries();
 
-    
+
 
 
 private:

@@ -41,6 +41,15 @@
     <ClCompile Include="LogObjectJ1939.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Format\FormatMsgLIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameProcessor_LIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LogObjectLIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseFrameProcessor_CAN.h">
@@ -86,6 +95,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LogObjectJ1939.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseFrameProcessor_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Format\FormatMsgLIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameProcessor_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LogObjectLIN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

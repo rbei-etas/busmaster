@@ -103,7 +103,7 @@ public:
     // Query function - client flexray buffer updation status (OFF/ON)
     BOOL FPL_IsClientLINBufON(void);
 
-	HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable);
+    HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable);
     // Query function - current logging status (OFF/ON).
     BOOL FPL_IsLoggingON(void);
 

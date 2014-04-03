@@ -15,6 +15,17 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.3.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>LIN Statistics window</li>
+        <li>LIN Signal watch</li>
+        <li>LIN Filters</li>
+        <li>LIN Message window configuration</li>
+        <li>LIN Diagnostic ID support (3C and 3D)</li>
+        <li>FlexRay ETAS BOA support for BOA 2.0 AND BOA 1.4</li>
+        <li>Bug Fixes</li>
+      </ul></p>
     <p><b>2.2.0</b></p>
     <p>Following features are added:</p>
     <ul>

@@ -2106,7 +2106,7 @@ HRESULT CDIL_CAN_NSI::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* 
                     {
                         Index = sg_unClientCnt;
                     }*/
-					Index = sg_unClientCnt;
+                    Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     strcpy_s(sg_asClientToBufMap[Index].pacClientName, pacClientName);
                     //_tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);

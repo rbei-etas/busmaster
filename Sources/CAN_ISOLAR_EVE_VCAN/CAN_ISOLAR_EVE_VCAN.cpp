@@ -1045,7 +1045,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID
                     //{
                     //    /*Index = sg_unClientCnt;*/
                     //}
-					Index = sg_unClientCnt;
+                    Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
 

@@ -22,6 +22,7 @@
 #pragma once
 
 #define WM_REMOVE_SIGNAL            WM_USER + 41
+#define WM_ADDDEL_SIGNAL            WM_USER + 42
 #define defSTR_PHYSICAL_COLUMN      "Physical Value"
 #define defSTR_RAW_COLUMN           "Raw Value"
 

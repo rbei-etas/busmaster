@@ -61,10 +61,10 @@ static ENTRY_DIL sg_ListDIL[] =
     /* ...all other drivers should be in alphabetical order */
     {DRIVER_CAN_ETAS_BOA,   "ETAS &BOA"         },
     {DRIVER_CAN_ETAS_ES581, "ETAS &ES581"       },
+    {DRIVER_CAN_ISOLAR,     "ETAS ISO&LAR-EVE"  },
     {DRIVER_CAN_IVIEW,      "&i-VIEW"           },
     {DRIVER_CAN_ICS_NEOVI,  "&IntrepidCS neoVI" },
     {DRIVER_CAN_IXXAT,      "I&XXAT VCI"        },
-    {DRIVER_CAN_ISOLAR,     "ETAS ISO&LAR-EVE"  },
     {DRIVER_CAN_KVASER_CAN, "&Kvaser CAN"       },
     {DRIVER_CAN_MHS,        "&MHS Tiny-CAN"     },
     {DRIVER_CAN_NSI,        "&NSI CAN-API"      },

@@ -172,7 +172,7 @@ if sg_pouFP_CAN is null */
 if sg_pouFP_CAN is null */
         }
         break;
-		case LIN:
+        case LIN:
         {
             if (NULL == sg_pouSW_LIN)
             {

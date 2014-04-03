@@ -177,6 +177,9 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static struct TMhsCanCfg sg_MhsCanCfg;
 
 static SYSTEMTIME sg_CurrSysTime;
+static UINT64 sg_TimeStamp = 0;
+static LARGE_INTEGER sg_QueryTickCount;
+static LARGE_INTEGER sg_lnFrequency;
 
 /* CDIL_MHS class definition */
 class CDIL_CAN_MHS : public CBaseDIL_CAN_Controller
@@ -280,6 +283,14 @@ HRESULT CDIL_CAN_MHS::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* 
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
+
+    // Initialise both the time parameters
+    GetLocalTime(&sg_CurrSysTime);
+    sg_TimeStamp = 0x0;
+
+    //Query Tick Count
+    sg_QueryTickCount.QuadPart = 0;
+
     CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
     return(S_OK);
 }
@@ -409,7 +420,7 @@ HRESULT CDIL_CAN_MHS::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* 
                     {
                         Index = sg_unClientCnt;
                     }*/
-					Index = sg_unClientCnt;
+                    Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     _tcscpy(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
                     sg_asClientToBufMap[Index].m_dwClientID = ClientID;
@@ -554,13 +565,12 @@ HRESULT CDIL_CAN_MHS::CAN_PerformClosureOperations(void)
 */
 HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
 {
-    (void)CurrSysTime;
-    (void)TimeStamp;
-    (void)QueryTickCount;
-    CurrSysTime = sg_CurrSysTime;
-    /*TimeStamp   = sg_TimeStamp;
+    memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
+    TimeStamp = sg_TimeStamp;
     if(QueryTickCount != NULL)
-      *QueryTickCount = sg_QueryTickCount;*/
+    {
+        *QueryTickCount = sg_QueryTickCount;
+    }
     return(S_OK);
 }
 
@@ -839,7 +849,23 @@ static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_
         {
             can_data.m_ucDataType = RX_FLAG;
         }
-        //can_data.m_lTickCount.QuadPart = (LONGLONG)(msg->TimeStamp);
+
+        GetLocalTime(&sg_CurrSysTime);
+        //Query Tick Count
+        QueryPerformanceCounter(&sg_QueryTickCount);
+        // Get frequency of the performance counter
+        QueryPerformanceFrequency(&sg_lnFrequency);
+        // Convert it to time stamp with the granularity of hundreds of microsecond
+        if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
+        {
+            sg_TimeStamp = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+        }
+        else
+        {
+            sg_TimeStamp = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+        }
+        can_data.m_lTickCount.QuadPart = sg_TimeStamp;
+
         memcpy(can_data.m_uDataInfo.m_sCANMsg.m_ucData, msg->MsgData, 8);
 
         //Write the msg into registered client's buffer

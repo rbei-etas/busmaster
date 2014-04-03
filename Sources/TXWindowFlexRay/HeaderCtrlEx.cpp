@@ -234,7 +234,7 @@ void CHeaderCtrlEx::OnLButtonDown(UINT nFlags, CPoint point)
     // TODO: Add your message handler code here and/or call default
 
     HDHITTESTINFO ht;
-	memset(&ht, 0, sizeof(HDHITTESTINFO));
+    memset(&ht, 0, sizeof(HDHITTESTINFO));
     ht.pt = point;
     int index = (int)SendMessage(HDM_HITTEST, 0, (LPARAM)&ht);
     if (index >= 0)
@@ -525,7 +525,7 @@ void CHeaderCtrlEx::OnLButtonDblClk(UINT nFlags, CPoint point)
     // TODO: Add your message handler code here and/or call default
 
     HDHITTESTINFO ht;
-	memset(&ht, 0, sizeof(HDHITTESTINFO));
+    memset(&ht, 0, sizeof(HDHITTESTINFO));
     ::GetCursorPos(&ht.pt);
     ScreenToClient(&ht.pt);
     int index = (int)SendMessage(HDM_HITTEST, 0, (LPARAM)&ht);

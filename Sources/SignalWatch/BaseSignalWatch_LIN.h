@@ -27,7 +27,7 @@ class CBaseSignalWatch_LIN
 {
 public:
     virtual HRESULT SW_DoInitialization(void) = 0;
-	virtual HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster) = 0;
+    virtual HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster) = 0;
     virtual HRESULT SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd) = 0;
     virtual HRESULT SW_GetConfigSize(void) = 0;
     virtual HRESULT SW_GetConfigData(void* pbyConfigData) = 0;

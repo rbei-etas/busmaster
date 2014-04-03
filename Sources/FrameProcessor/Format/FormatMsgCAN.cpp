@@ -112,21 +112,21 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     if (RX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_RX;
-        CurrDataCAN->m_acMsgDir[0] = L'R';		
-		CurrDataCAN->m_eEventType = ERROR_INVALID;
+        CurrDataCAN->m_acMsgDir[0] = L'R';
+        CurrDataCAN->m_eEventType = ERROR_INVALID;
     }
     else if (TX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_TX;
         CurrDataCAN->m_acMsgDir[0] = L'T';
-		CurrDataCAN->m_eEventType = ERROR_INVALID;
+        CurrDataCAN->m_eEventType = ERROR_INVALID;
     }
     else
     {
-		string strErrMsg;
-		eERROR_STATE eErrType;
-		vFormatErrMsg(pMsgCAN->m_uDataInfo.m_sErrInfo, eErrType);
-		CurrDataCAN->m_eEventType = eErrType;
+        string strErrMsg;
+        eERROR_STATE eErrType;
+        vFormatErrMsg(pMsgCAN->m_uDataInfo.m_sErrInfo, eErrType);
+        CurrDataCAN->m_eEventType = eErrType;
         ASSERT(FALSE);
     }
 
@@ -171,32 +171,32 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     vFormatDataAndId(bExprnFlag_Log, CurrDataCAN);
 }
 
-void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE &eErrType)
+void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE& eErrType)
 {
-	eErrType = ERROR_ACTIVE;
-	USHORT usErrorID;
-	if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
-	{
-		 usErrorID = sErrInfo.m_ucErrType;
-		eErrType = ERROR_WARNING_LIMIT;
-	}
-	else
-	{
-		if (sErrInfo.m_ucErrType == ERROR_BUS)
-		{
-			// Update Statistics information
-			usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
-			// Create Channel ID & Error code word
-		}
-		else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)
-		{
-			usErrorID = sErrInfo.m_ucErrType;
-		}
+    eErrType = ERROR_ACTIVE;
+    USHORT usErrorID;
+    if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
+    {
+        usErrorID = sErrInfo.m_ucErrType;
+        eErrType = ERROR_WARNING_LIMIT;
+    }
+    else
+    {
+        if (sErrInfo.m_ucErrType == ERROR_BUS)
+        {
+            // Update Statistics information
+            usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
+            // Create Channel ID & Error code word
+        }
+        else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)
+        {
+            usErrorID = sErrInfo.m_ucErrType;
+        }
 
-		eERROR_STATE bErrTransState;
-		if(bIsTransitionInState(sErrInfo.m_ucChannel, sErrInfo.m_ucRxErrCount, sErrInfo.m_ucTxErrCount, bErrTransState))
-		{
-			 if (usErrorID == STUFF_ERROR_RX)
+        eERROR_STATE bErrTransState;
+        if(bIsTransitionInState(sErrInfo.m_ucChannel, sErrInfo.m_ucRxErrCount, sErrInfo.m_ucTxErrCount, bErrTransState))
+        {
+            if (usErrorID == STUFF_ERROR_RX)
             {
                 eErrType = ERROR_FRAME;
             }
@@ -204,11 +204,11 @@ void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE &eErrType)
             {
                 eErrType = bErrTransState;
             }
-		}
-	}
+        }
+    }
 }
 
-BOOL CFormatMsgCAN::bIsTransitionInState( UINT unChannel, BYTE byRxError, BYTE byTxError, eERROR_STATE &eErrState)
+BOOL CFormatMsgCAN::bIsTransitionInState( UINT unChannel, BYTE byRxError, BYTE byTxError, eERROR_STATE& eErrState)
 {
     BOOL bIsTransition = FALSE;
     // Based on the value of transmit and receive error counter decide

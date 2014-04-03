@@ -1,23 +1,23 @@
 /*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /**
- * \file      SignalWatch_LIN.cpp
- * \author    Shashank Vernekar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- */
+* \file      SignalWatch_LIN.cpp
+* \author    Shashank Vernekar
+* \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+*/
 #include "SignalWatch_stdafx.h"
 #include "Include/Utils_macro.h"
 #include "SignalWatch_LIN.h"
@@ -100,7 +100,7 @@ BOOL CSignalWatch_LIN::InitInstance(void)
 {
     InitializeCriticalSection(&m_omCritSecSW);
     m_pouSigWnd = NULL;
-    m_pMsgInterPretObj = NULL;	
+    m_pMsgInterPretObj = NULL;
     m_ouReadThread.m_hActionEvent = m_ouLinBufFSE.hGetNotifyingEvent();
     return TRUE;
 }
@@ -112,7 +112,7 @@ int CSignalWatch_LIN::ExitInstance(void)
 
     if (m_pMsgInterPretObj != NULL) // clear interpretation object
     {
-       // m_pMsgInterPretObj->vClear();
+        // m_pMsgInterPretObj->vClear();
         delete m_pMsgInterPretObj;
         m_pMsgInterPretObj = NULL;
     }
@@ -123,15 +123,15 @@ int CSignalWatch_LIN::ExitInstance(void)
     {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
-        m_pouSigWnd = NULL;		
+        m_pouSigWnd = NULL;
     }
     return TRUE;
 }
 
 void  CSignalWatch_LIN::vGetWindowPosition()
 {
-	//CMsgSignalSelect odDlg;
-	//WndPlace=odDlg.wpPosition();
+    //CMsgSignalSelect odDlg;
+    //WndPlace=odDlg.wpPosition();
 
 }
 BOOL CSignalWatch_LIN::bStartSigWatchReadThread()
@@ -141,50 +141,47 @@ BOOL CSignalWatch_LIN::bStartSigWatchReadThread()
     return TRUE;
 }
 
-void CSignalWatch_LIN::vDisplayInSigWatchWnd(STLINDATA &sLinData)
+void CSignalWatch_LIN::vDisplayInSigWatchWnd(STLINDATA& sLinData)
 {
-	EnterCriticalSection(&m_omCritSecSW);
-	if (m_pMsgInterPretObj != NULL)
-	{
+    EnterCriticalSection(&m_omCritSecSW);
+    if (m_pMsgInterPretObj != NULL)
+    {
 
 
-		m_pMsgInterPretObj->vSetLINClusterInfo(cluster);
-		//STLINDATA * sLinData;
-		static CString omMsgName;
-		static CStringArray omSigNames, omRawValues, omPhyValues;
-		/*if (m_pMsgInterPretObj->bInterpretMsgSigList(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID,
-		sLinData.m_uDataInfo.m_sLINMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))*/
-		SSignalInfoArray sSingnalinfo;
-		string msgName;
-		EFORMAT d;
+        m_pMsgInterPretObj->vSetLINClusterInfo(cluster);
+        //STLINDATA * sLinData;
+        static CString omMsgName;
+        static CStringArray omSigNames, omRawValues, omPhyValues;
+        /*if (m_pMsgInterPretObj->bInterpretMsgSigList(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID,
+        sLinData.m_uDataInfo.m_sLINMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))*/
+        SSignalInfoArray sSingnalinfo;
+        string msgName;
+        EFORMAT d;
 
-		int mID=m_mapMsgIDtoSignallst->find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)->first;
+        int mID=m_mapMsgIDtoSignallst->find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)->first;
 
-		if(mID==sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)
-		{
-			if (m_pMsgInterPretObj->bInterpretMsgs(DEC,&(sLinData.m_uDataInfo.m_sLINMsg),sSingnalinfo))
+        if(mID==sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)
+        {
+            if (m_pMsgInterPretObj->bInterpretMsgs(DEC,&(sLinData.m_uDataInfo.m_sLINMsg),sSingnalinfo))
 
-			{
+            {
 
-				if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
-				{
-
-
-					m_pouSigWnd->vAddMsgToWnd(&sSingnalinfo,FALSE,m_mapMsgIDtoSignallst,mID);
-
-				}
-
-			}
+                if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
+                {
 
 
+                    m_pouSigWnd->vAddMsgToWnd(&sSingnalinfo,FALSE,m_mapMsgIDtoSignallst,mID);
 
-		}
-	}
+                }
 
-	LeaveCriticalSection(&m_omCritSecSW);
+            }
+        }
+    }
 
-	//delete the invalid entries
-	//vDeleteRemovedListEntries();
+    LeaveCriticalSection(&m_omCritSecSW);
+
+    //delete the invalid entries
+    //vDeleteRemovedListEntries();
 }
 
 void CSignalWatch_LIN::vDeleteRemovedListEntries()
@@ -244,7 +241,7 @@ HRESULT CSignalWatch_LIN::SW_DoInitialization()
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for CAN
     if (m_pouSigWnd == NULL)
-    {		
+    {
         m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), LIN);
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
         m_pouSigWnd->SetWindowText("Signal Watch - LIN");
@@ -262,40 +259,34 @@ HRESULT CSignalWatch_LIN::SW_DoInitialization()
 }
 
 /**
- * \req RS_18_01 Signal watch configuration dialog box
- *
- * Signal watch configuration dialog box
- * lists frames / messages from the loaded database (combo box / list box).
- */
+* \req RS_18_01 Signal watch configuration dialog box
+*
+* Signal watch configuration dialog box
+* lists frames / messages from the loaded database (combo box / list box).
+*/
 HRESULT CSignalWatch_LIN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster)
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	ClusterConfig * m_ouClusterfinal=(ClusterConfig *) m_ouCluster;
-    
-	cluster=m_ouClusterfinal;
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    ClusterConfig* m_ouClusterfinal=(ClusterConfig*) m_ouCluster;
 
-	//cluster[LIN].m_nChannelsConfigured;
-	CMsgSignalSelect odDlg(m_ouClusterfinal,pParent,m_mapMsgIDtoSignallst);
+    cluster=m_ouClusterfinal;
 
-	//WndPlace=odDlg.wpPosition();
+    //cluster[LIN].m_nChannelsConfigured;
+    CMsgSignalSelect odDlg(m_ouClusterfinal,pParent,m_mapMsgIDtoSignallst);
 
-	int nRet = odDlg.DoModal();
+    //WndPlace=odDlg.wpPosition();
 
-	
+    int nRet = odDlg.DoModal();
+    return (HRESULT)nRet;
 
-
-
-
-	return (HRESULT)nRet;
-   
 }
 
 HRESULT CSignalWatch_LIN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
     if (m_pouSigWnd != NULL)
-    {		
-		m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
-		m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
+    {
+        m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
+        m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
         return m_pouSigWnd->ShowWindow(nCmd);
     }
     return S_FALSE;
@@ -324,104 +315,60 @@ HRESULT CSignalWatch_LIN::SW_GetConfigData(void* pbyConfigData)
     return S_OK;
 }
 
-
-
-
-
-
-
 // PTV XML
 HRESULT CSignalWatch_LIN::SW_GetConfigData(xmlNodePtr pNodePtr)
 {
-	list<FRAME_STRUCT> lstNumofFrames;
-	if(NULL != cluster)
-	{
-	cluster->m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
+    list<FRAME_STRUCT> lstNumofFrames;
+    if(NULL != cluster)
+    {
+        cluster->m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
+        for(int i=0; i<cluster->m_nChannelsConfigured; i++)
+        {
+            list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
+            while(itr != lstNumofFrames.end())
+            {
+                int selkey = -1;
+                if ( m_mapMsgIDtoSignallst->find(itr->m_nSlotId) != m_mapMsgIDtoSignallst->end())
+                {
+                    selkey=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->first;
+                }
+                CString strMessageId = "";
+                if(selkey== itr->m_nSlotId)
+                {
+                    xmlNodePtr pMsgTagPtr = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE);
+                    xmlAddChild(pNodePtr, pMsgTagPtr);
+                    strMessageId.Format("%d",selkey );
 
-	for(int i=0;i<cluster->m_nChannelsConfigured;i++)
-				 {
+                    /* Generating Message names */
+                    xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_MSGID
+                                                     , BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
+                    xmlAddChild(pMsgTagPtr, pMsgPtr);
+                    CString strSignalName = "";
+                    if(selkey == itr->m_nSlotId)
+                    {
+                        list<string> lstSignals=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->second;
+                        list<string>:: iterator itrselSignals= lstSignals.begin();
 
+                        while(itrselSignals != lstSignals.end())
+                        {
+                            strSignalName=(*itrselSignals).c_str();
+                            // strSignalName.Format("%s", *itrselSignals);
 
-					 // Adding Message
-					
+                            xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_SIGNAL
+                                                                , BAD_CAST strSignalName.GetBufferSetLength(strSignalName.GetLength()));
+                            xmlAddChild(pMsgTagPtr, pSignalPtr);
+                            itrselSignals++;
+                        }
+                    }
+                }
+                itr++;
+            }
+        }
 
-
-
-					 list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
-					 while(itr != lstNumofFrames.end())
-					 {
-						 
-						 int selkey = -1;
-						 if ( m_mapMsgIDtoSignallst->find(itr->m_nSlotId) != m_mapMsgIDtoSignallst->end())
-						 {
-							selkey=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->first;
-						 }
-
-
-						 CString strMessageId = "";
-						 if(selkey== itr->m_nSlotId)
-						 {
-
-							  xmlNodePtr pMsgTagPtr = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE);
-					 xmlAddChild(pNodePtr, pMsgTagPtr);
-						 strMessageId.Format("%d",selkey );
-						 
-						 /* Generating Message names */
-						 xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_MSGID
-							 , BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
-
-						 xmlAddChild(pMsgTagPtr, pMsgPtr);
-
-						 
-
-						 CString strSignalName = "";
-
-						 if(selkey == itr->m_nSlotId)
-						 {
-							 list<string> lstSignals=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->second;
-							 list<string>:: iterator itrselSignals= lstSignals.begin();
-
-							 while(itrselSignals != lstSignals.end())
-							 {
-								 strSignalName=(*itrselSignals).c_str();
-								// strSignalName.Format("%s", *itrselSignals);
-
-								 xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, NULL, BAD_CAST DEF_SIGNAL
-									 , BAD_CAST strSignalName.GetBufferSetLength(strSignalName.GetLength()));
-								 xmlAddChild(pMsgTagPtr, pSignalPtr);
-
-
-								 itrselSignals++;
-
-							 }
-
-
-
-						 }
-						 }
-						 itr++;
-
-					 }
-
-
-				 }
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
     // Setting signal watch window placement and column width
     xmlNodePtr pWndPositn = xmlNewNode(NULL, BAD_CAST DEF_WINDOW_POSITION);
     xmlAddChild(pNodePtr, pWndPositn);
-
     WINDOWPLACEMENT WndPlace;
     UINT nDebugSize  = 0;
     //BYTE* pbyTemp = (BYTE*)pbyConfigData;
@@ -505,17 +452,17 @@ HRESULT CSignalWatch_LIN::SW_GetConfigData(xmlNodePtr pNodePtr)
                 xmlAddChild(pColWidthPtr, pSigValClmn);
             }
         }
-    }
 
- }
+
+    }
     return S_OK;
 }
 // PTV XML
 
 HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
 {
-	const BYTE* pbyTemp = (BYTE*)pbyConfigData;
-	
+    const BYTE* pbyTemp = (BYTE*)pbyConfigData;
+
     if ((pbyConfigData != NULL) && (m_pouSigWnd != NULL))
     {
         WINDOWPLACEMENT WndPlace;
@@ -545,18 +492,18 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
 
         if(pbyConfigData == NULL)
         {
-			WINDOWPLACEMENT WndPlace;
-			m_mapMsgIDtoSignallst->clear();
-  //     // memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
-  //      m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
-        //Signal watch window will move the List control in OnSize().
-        //So the default values should be as followes.
+            WINDOWPLACEMENT WndPlace;
+            m_mapMsgIDtoSignallst->clear();
+            //     // memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
+            //      m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
+            //Signal watch window will move the List control in OnSize().
+            //So the default values should be as followes.
 
-		 WndPlace.rcNormalPosition.top=70;
-         WndPlace.rcNormalPosition.left=10;
-         WndPlace.rcNormalPosition.right=500;
-         WndPlace.rcNormalPosition.bottom=300;
-		 m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), TRUE);
+            WndPlace.rcNormalPosition.top=70;
+            WndPlace.rcNormalPosition.left=10;
+            WndPlace.rcNormalPosition.right=500;
+            WndPlace.rcNormalPosition.bottom=300;
+            m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), TRUE);
 
             m_pouSigWnd->ShowWindow(SW_HIDE);
         }
@@ -566,65 +513,76 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
 //MVN
 HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
 {
+    m_pouSigWnd->ShowWindow(SW_HIDE);
+    int id;
+    INT nRetValue  = S_OK;
+    if ((pNode != NULL) && (m_pouSigWnd != NULL))
+    {
+        WINDOWPLACEMENT WndPlace;
+        while(pNode != NULL)
+        {
+
+            if((!xmlStrcmp(pNode->name, (const xmlChar*)"Message")))
+            {
+                int id;
+                list<string> signame;
+
+                xmlNodePtr child= pNode->children;
+                while(child != NULL)
+                {
+                    if((!xmlStrcmp(child->name, (const xmlChar*)"Id")))
+                    {
+
+                        xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
+                        if(NULL != key)
+                        {
+                            id = atoi((char*)key);
+                        }
+
+                    }
+
+                    if((!xmlStrcmp(child->name, (const xmlChar*)"Signal")))
+                    {
+                        int id;
+                        xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
+                        if(NULL != key)
+                        {
+                            signame.push_back((char*)key);
+                        }
+
+                    }
+
+                    child = child->next;
+                }
+
+                m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,signame));
+            }
 
 
-	int id;
-	INT nRetValue  = S_OK;
-	if ((pNode != NULL) && (m_pouSigWnd != NULL))
-	{
-		WINDOWPLACEMENT WndPlace;
-		while(pNode != NULL)
-		{   
-			
-			if((!xmlStrcmp(pNode->name, (const xmlChar*)"Message")))
-			{
-				int id;
-			list<string> signame;
-				
-				xmlNodePtr child= pNode->children;
-				while(child != NULL)
-				{
-					if((!xmlStrcmp(child->name, (const xmlChar*)"Id")))
-					{
-						
-						xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
-						if(NULL != key)
-						{
-							id = atoi((char*)key);
-						}
+            if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
+            {
+                nRetValue = xmlUtils::ParseWindowsPlacement(pNode, WndPlace);
+                if(nRetValue == S_OK)
+                {
+                    m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
+                }
+                break;
+            }
 
-					}
-
-					if((!xmlStrcmp(child->name, (const xmlChar*)"Signal")))
-					{
-						int id;
-						xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
-						if(NULL != key)
-						{
-							signame.push_back((char*)key);
-						}
-
-					}
-
-					child = child->next;
-				}
-
-				m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,signame));
-			}
+            /*  if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Activate_Window_Position")))
+            {
+            nRetValue = xmlUtils::ParseWindowsPlacement(pNode, WndPlace);
+            if(nRetValue == S_OK)
+            {
+            m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
+            }
+            break;
+            }*/
 
 
-			if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
-			{
-				nRetValue = xmlUtils::ParseWindowsPlacement(pNode, WndPlace);
-				if(nRetValue == S_OK)
-				{
-					m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), FALSE);
-				}
-				break;
-			}
-			pNode = pNode->next;
-		}
-	}
+            pNode = pNode->next;
+        }
+    }
     if(m_pouSigWnd != S_OK)
     {
         //Signal watch window will move the List control in OnSize().
@@ -696,8 +654,8 @@ INT CSignalWatch_LIN::nParseXMLColumn(xmlNodePtr pNode)
 //~MVN
 
 /**
- * \req RS_18_23 Popup menu item 'Clear' (clears the signal watch window)
- */
+* \req RS_18_23 Popup menu item 'Clear' (clears the signal watch window)
+*/
 HRESULT CSignalWatch_LIN::SW_ClearSigWatchWnd(void)
 {
     if (m_pouSigWnd != NULL)

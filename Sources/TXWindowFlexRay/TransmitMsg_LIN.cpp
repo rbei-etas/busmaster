@@ -1227,7 +1227,7 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
     vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucMsgID, strText);
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGID_INDEX, strText.c_str());
 
-		char chText[MAX_PATH] = {0};
+    char chText[MAX_PATH] = {0};
     sprintf_s(chText, MAX_PATH, "%d", ouLinData.m_ouLinMessage.m_ucDataLen);
     //vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucDataLen, strText);
     m_lstMsg.SetItemText(nRows, def_COLUMN_DLC_INDEX, chText);
@@ -1458,7 +1458,7 @@ void CTransmitMsgLIN::vUpdateMessageList()
 {
     CTxLINDataStore& ouLinData = CTxLINDataStore::ouGetTxLINDataStoreObj();
     list<LIN_FRAME_DATA>::iterator itrLinData = ouLinData.m_ouLIN_Frame_Data.begin();
-		char chText[MAX_PATH] = {0};
+    char chText[MAX_PATH] = {0};
     FRAME_STRUCT ouFrame;
 
     m_lstMsg.DeleteAllItems();
@@ -1781,11 +1781,11 @@ UINT CTransmitMsgLIN::unGetMsgIDFromName(CString omMsgName)
             omStrMsgID = omMsgName.Mid(nIndex1+1,nIndex2-nIndex1);
             if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode == false)
             {
-					unMsgID = strtol((LPCTSTR )omStrMsgID,&pcStopStr,defBASE_DEC);
+                unMsgID = strtol((LPCTSTR )omStrMsgID,&pcStopStr,defBASE_DEC);
             }
             else
             {
-					unMsgID = strtol((LPCTSTR )omStrMsgID,&pcStopStr,defBASE_HEX);
+                unMsgID = strtol((LPCTSTR )omStrMsgID,&pcStopStr,defBASE_HEX);
             }
         }
     }

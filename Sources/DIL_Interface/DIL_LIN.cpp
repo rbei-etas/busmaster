@@ -206,7 +206,7 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 m_hDll = LoadLibrary("LIN_ETAS_BOA.dll");
                 break;
             default:
-				DILL_PerformClosureOperations();
+                DILL_PerformClosureOperations();
                 vSelectInterface_Dummy();
                 m_dwDriverID = DAL_NONE;
                 return hResult;
@@ -250,12 +250,12 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                         }
                         FreeLibrary(m_hDll);
                         //m_pBaseDILLIN_Controller = NULL;
-                          if ( m_hOldDll )
-                          {
-                              m_hDll = m_hOldDll;
-                              m_pBaseDILLIN_Controller = m_pOldBaseDILLIN_Controller;
-                              m_dwDriverID =  m_dwOldDriverID;
-                          }
+                        if ( m_hOldDll )
+                        {
+                            m_hDll = m_hOldDll;
+                            m_pBaseDILLIN_Controller = m_pOldBaseDILLIN_Controller;
+                            m_dwDriverID =  m_dwOldDriverID;
+                        }
                         /* New Code */
                         break;
                 }

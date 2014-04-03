@@ -39,7 +39,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
     USAGEMODE HRESULT Filter_ShowConfigDlg(void* pvExistingFilter,
-		const void* psMsgEntry, ETYPE_BUS eType, UINT nHardware, CWnd* pParent);
+                                           const void* psMsgEntry, ETYPE_BUS eType, UINT nHardware, CWnd* pParent);
     USAGEMODE HRESULT Filter_ShowSelDlg(CWnd* pParent, CMainEntryList* podMainSubList);
     USAGEMODE HRESULT Filter_DoFiltering(const void* pvFilterApplied,
                                          const void* pvFrame, ETYPE_BUS eType);

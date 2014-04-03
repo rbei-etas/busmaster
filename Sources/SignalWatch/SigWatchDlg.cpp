@@ -55,14 +55,14 @@ extern VOID vConvStrtoByteArray(
  Date Created   :   03-04-2002
 ******************************************************************************/
 CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=NULL*/, ETYPE_BUS eBus /*=CAN*/)
-    : CDialog(CSigWatchDlg::IDD, pParent)
+    : CDialog(CSigWatchDlg::IDD, NULL)
 {
     //{{AFX_DATA_INIT(CSigWatchDlg)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-	m_eBus = eBus;	
-	m_pParent = pParent;
-	m_hMainWnd = NULL;
+    m_eBus = eBus;
+    m_pParent = pParent;
+    m_hMainWnd = NULL;
     m_bEscape = false;
 }
 
@@ -93,8 +93,9 @@ BEGIN_MESSAGE_MAP(CSigWatchDlg, CDialog)
     ON_WM_SHOWWINDOW()
     ON_WM_CREATE()
     ON_WM_ERASEBKGND()
-	
+
     ON_MESSAGE(WM_REMOVE_SIGNAL,vRemoveSignalFromMap)
+    ON_MESSAGE(WM_ADDDEL_SIGNAL, vConfigureSignals)
     //}}AFX_MSG_MAP
     ON_WM_TIMER()
     ON_MESSAGE(WM_KEYBOARD_CHAR, OnReceiveKeyBoardData)
@@ -268,61 +269,61 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
     m_omCSDispEntry.Unlock();
 }
 
-void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray *sSingnalinfo,BOOL bIntptrDone,map<int,list<string>> *m_mapDetails,unsigned char mID)
+void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray* sSingnalinfo,BOOL bIntptrDone,map<int,list<string>>* m_mapDetails,unsigned char mID)
 {
 
-	m_omCSDispEntry.Lock();
+    m_omCSDispEntry.Lock();
 
-	m_mapMsgIDtoSignallst=m_mapDetails;
+    m_mapMsgIDtoSignallst=m_mapDetails;
 
-	if( bIntptrDone == FALSE)
-	{
+    if( bIntptrDone == FALSE)
+    {
 
-		SSignalInfo sTempSignal;
-		int nCnt = sSingnalinfo->GetSize();
-		for (int i = 0; i < nCnt; i++)
-		{
-			sTempSignal = sSingnalinfo->GetAt(i);
+        SSignalInfo sTempSignal;
+        int nCnt = sSingnalinfo->GetSize();
+        for (int i = 0; i < nCnt; i++)
+        {
+            sTempSignal = sSingnalinfo->GetAt(i);
 
 
-			//check the valid entries in the signal watch window.
+            //check the valid entries in the signal watch window.
 
-			// POSITION ListPos = m_odSigEntryList.GetHeadPosition();
+            // POSITION ListPos = m_odSigEntryList.GetHeadPosition();
 
-			//check for valid message name
+            //check for valid message name
 
-			list<string> lstSignals=m_mapMsgIDtoSignallst->find(mID)->second;
-			list<string>:: iterator itrselSignals= lstSignals.begin();
+            list<string> lstSignals=m_mapMsgIDtoSignallst->find(mID)->second;
+            list<string>:: iterator itrselSignals= lstSignals.begin();
 
-			while(itrselSignals != lstSignals.end())
-			{
+            while(itrselSignals != lstSignals.end())
+            {
 
-				if(strcmpi(sTempSignal.m_omSigName,(*itrselSignals).c_str())==0)
-				{
+                if(strcmpi(sTempSignal.m_omSigName,(*itrselSignals).c_str())==0)
+                {
 
-					POSITION pos = NULL;
-					sSIGENTRY sEntry;
-					sEntry.m_omMsgName = sTempSignal.m_msgName;
-					sEntry.m_omSigName = sTempSignal.m_omSigName;
-					sEntry.m_omPhyValue = sTempSignal.m_omEnggValue;
-					sEntry.m_omRawValue = sTempSignal.m_omRawValue;
-					if (NULL != (pos = m_odSigEntryList.Find(sEntry)))
-					{
-						sSIGENTRY& sTemp = m_odSigEntryList.GetAt(pos);
-						sTemp.m_omPhyValue = sEntry.m_omPhyValue;
-						sTemp.m_omRawValue = sEntry.m_omRawValue;
-					}
-					else
-					{
-						m_odSigEntryList.AddTail(sEntry);
-					}
+                    POSITION pos = NULL;
+                    sSIGENTRY sEntry;
+                    sEntry.m_omMsgName = sTempSignal.m_msgName;
+                    sEntry.m_omSigName = sTempSignal.m_omSigName;
+                    sEntry.m_omPhyValue = sTempSignal.m_omEnggValue;
+                    sEntry.m_omRawValue = sTempSignal.m_omRawValue;
+                    if (NULL != (pos = m_odSigEntryList.Find(sEntry)))
+                    {
+                        sSIGENTRY& sTemp = m_odSigEntryList.GetAt(pos);
+                        sTemp.m_omPhyValue = sEntry.m_omPhyValue;
+                        sTemp.m_omRawValue = sEntry.m_omRawValue;
+                    }
+                    else
+                    {
+                        m_odSigEntryList.AddTail(sEntry);
+                    }
 
-				}
-				itrselSignals++;
-			}
-		}
-	}
-	m_omCSDispEntry.Unlock();
+                }
+                itrselSignals++;
+            }
+        }
+    }
+    m_omCSDispEntry.Unlock();
 
 
 }
@@ -334,14 +335,14 @@ void CSigWatchDlg::vDisplayMsgSigList(void)
 
     POSITION pos = m_odSigEntryList.GetHeadPosition();
     //UINT unCount = 0;
-   while (pos)
+    while (pos)
     {
-       sSIGENTRY& sEntry = m_odSigEntryList.GetNext(pos);
+        sSIGENTRY& sEntry = m_odSigEntryList.GetNext(pos);
         // Insert Message Name
         if (sEntry.m_nEntryIndex != -1)
         {
             m_omSignalList.SetItemText(sEntry.m_nEntryIndex,defSTR_SW_MSG_COL,
-                                        sEntry.m_omMsgName);
+                                       sEntry.m_omMsgName);
             // Insert Signal Name
             m_omSignalList.SetItemText( sEntry.m_nEntryIndex,
                                         defSTR_SW_SIG_COL,
@@ -390,7 +391,7 @@ void CSigWatchDlg::vDisplayMsgSigList(void)
 void CSigWatchDlg::OnClose()
 {
     // Call Show Window to save co ordinates
-    ShowWindow(SW_HIDE);
+    this->ShowWindow(SW_HIDE);
 }
 
 /*******************************************************************************
@@ -726,20 +727,21 @@ LRESULT CSigWatchDlg::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
 {
     if (NULL != m_pParent)
     {
-		m_pParent->SendMessage(WM_KEYBOARD_KEYDOWN, wParam, lParam);
+        m_pParent->SendMessage(WM_KEYBOARD_KEYDOWN, wParam, lParam);
     }
     return S_OK;
 }
 
-void CSigWatchDlg::vConfigureSignals()
+LRESULT CSigWatchDlg::vConfigureSignals(WPARAM wParam, LPARAM lParam)
 {
-	if (NULL != m_hMainWnd)
-	{		
-		::PostMessage(m_hMainWnd, WM_CONFIGURE_SIGNAL_WATCH, m_eBus, 0);
-	}
+    if (NULL != m_hMainWnd)
+    {
+        ::PostMessage(m_hMainWnd, WM_CONFIGURE_SIGNAL_WATCH, m_eBus, 0);
+    }
+    return S_OK;
 }
 
 void CSigWatchDlg::vUpdateMainWndHandle(HWND hMainWnd)
 {
-	m_hMainWnd = hMainWnd;
+    m_hMainWnd = hMainWnd;
 }

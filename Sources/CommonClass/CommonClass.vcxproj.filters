@@ -29,6 +29,9 @@
     <ClCompile Include="GUI_FormatMsgFlexRay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GUI_FormatMsgLIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonClass_stdafx.h">
@@ -50,6 +53,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GUI_FormatMsgFlexRay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI_FormatMsgLIN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

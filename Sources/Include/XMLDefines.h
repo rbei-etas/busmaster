@@ -255,8 +255,8 @@
 #define DEF_SIGDEF_AUTOCORRECT      "SignalDefiner_AutoCorrect"
 
 //Bus Statics
-#define DEF_BUS_STATS_CAN			"CAN_Statistics"
-#define DEF_BUS_STATS_LIN			"LIN_Statistics"
+#define DEF_BUS_STATS_CAN           "CAN_Statistics"
+#define DEF_BUS_STATS_LIN           "LIN_Statistics"
 #define DEF_BUS_STATS               "Bus_Statistics"
 #define DEF_COL_INFO                "COLUMSNINFO"
 #define DEF_DEF_SAMPLING_PERIOD     "Default_Sampling_Period"

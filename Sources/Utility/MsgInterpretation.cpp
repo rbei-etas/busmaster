@@ -1654,7 +1654,7 @@ for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
                 ouSignal.m_omRawValue = ouSignalInfo.m_omRawValue.c_str();
                 ouSignal.m_omSigName = ouSignalInfo.m_omSigName.c_str();
                 ouSignal.m_omUnit = ouSignalInfo.m_omUnit.c_str();
-				ouSignal.m_msgName=ouFrame.m_strFrameName.c_str();
+                ouSignal.m_msgName=ouFrame.m_strFrameName.c_str();
                 SigInfoArray.Add(ouSignal);
             }
 

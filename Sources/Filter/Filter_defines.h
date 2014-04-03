@@ -27,7 +27,7 @@ using namespace std;
 // Filter
 #define defFILTER_TYPE_SINGLE_ID                0
 #define defFILTER_TYPE_ID_RANGE                 1
-#define defFILTER_TYPE_EVENT	                2
+#define defFILTER_TYPE_EVENT                    2
 
 #define defFILTER_IGNORE_CHANNEL        0
 #define defFILTER_IGNORE_DIRECTION      0
@@ -66,12 +66,12 @@ using namespace std;
 #define defFILTER_IMAGE_INDEX_FILTER            2
 #define defFILTER_IMAGE_INDEX_ID_RANGE          3
 
-#define defFILTER_CHECKSUM_EVNT_LIN				"Checksum Error"
-#define defFILTER_RX_FRAME_EVNT_LIN				"Receive Frame Error"
-#define defFILTER_SLAVE_NO_RESP_EVNT_LIN		"Slave No Response"
-#define defFILTER_SYNC_EVNT_LIN					"Sync Error"
+#define defFILTER_CHECKSUM_EVNT_LIN             "Checksum Error"
+#define defFILTER_RX_FRAME_EVNT_LIN             "Receive Frame Error"
+#define defFILTER_SLAVE_NO_RESP_EVNT_LIN        "Slave No Response"
+#define defFILTER_SYNC_EVNT_LIN                 "Sync Error"
 
-#define defFILTER_ERR_FRAME						"Error Frame"
+#define defFILTER_ERR_FRAME                     "Error Frame"
 
 #define defNUMBER_OF_FILTERS_SUPPORTED          100
 
@@ -97,7 +97,7 @@ using namespace std;
 
 #define MAX_LMT_FOR_STD_MSG_ID  2048
 #define defMAX_LMT_EXTD_MSG_ID 0x20000000
-#define defMAX_LMT_LIN_MSG_ID  0x63
+#define defMAX_LMT_LIN_MSG_ID  0x3F
 
 class tagFilterDisplayInfo
 {
