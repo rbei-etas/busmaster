@@ -389,7 +389,7 @@ struct sTOOLBAR_BUTTON_STATUS
     BYTE    m_byMsgFilter;// : 1;
     BYTE    m_byMsgFilterLin;// : 1;
     BYTE    m_byLogFilter;// : 1;
-	BYTE    m_byLogFilterLIN;// : 1;
+    BYTE    m_byLogFilterLIN;// : 1;
     BYTE    m_byLogging ;//:   1;
     BYTE    m_byMsgInterpret;// : 2;
     BYTE    m_byOverwrite ;//: 1;

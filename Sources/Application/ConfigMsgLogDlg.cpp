@@ -1330,7 +1330,7 @@ void CConfigMsgLogDlg::OnBnClickedLogFilter(void)
             m_pouFProcCAN->FPC_ApplyFilteringScheme((USHORT)m_nLogIndexSel, sFilterApplied);
         }
     }
-	if (LIN == m_eCurrBus)
+    if (LIN == m_eCurrBus)
     {
         CMainEntryList DestList;
         SFILTERAPPLIED_LIN sFilterApplied;

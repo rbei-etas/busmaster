@@ -65,7 +65,7 @@ CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
                                     CWnd* pParent /*=NULL*/):
     CDialog(CFilterConfigDlg::IDD, pParent),
     m_psMsgSignal(pMsgDBDetails),
-	m_eCurrBUS(CAN)
+    m_eCurrBUS(CAN)
 
 {
 
@@ -93,7 +93,7 @@ CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_LIN* psSrcList,
                                     CWnd* pParent /*=NULL*/):
     CDialog(CFilterConfigDlg::IDD, pParent),
     m_pClusterConfig(pClusterConfig),
-	m_eCurrBUS(LIN)
+    m_eCurrBUS(LIN)
 
 {
 
@@ -133,8 +133,8 @@ void CFilterConfigDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMB_MSG_ID_FROM, m_omMsgIDFrom);
     DDX_Control(pDX, IDC_LSTC_FILTER_DETAILS, m_omLstcFilterDetails);
     DDX_Control(pDX, IDC_LSTC_FILTER_NAMES, m_omLstcFilterList);
-	DDX_Control(pDX, IDC_RADIO_EVENT, m_omRadioEvent);
-	DDX_Control(pDX, IDC_COMB_EVENT, m_omEventType);	
+    DDX_Control(pDX, IDC_RADIO_EVENT, m_omRadioEvent);
+    DDX_Control(pDX, IDC_COMB_EVENT, m_omEventType);
     //}}AFX_DATA_MAP
 }
 
@@ -146,7 +146,7 @@ BEGIN_MESSAGE_MAP(CFilterConfigDlg, CDialog)
     ON_CBN_SELCHANGE(IDC_COMB_MSG_ID_FROM, OnSelchangeCombMsgIdFrom)
     ON_CBN_EDITCHANGE(IDC_COMB_MSG_ID_FROM, OnEditChangeMsgIDCombo)
     ON_BN_CLICKED(IDC_RADIO_ID, OnRadioMessageId)
-	ON_BN_CLICKED(IDC_RADIO_EVENT, OnRadioEvent)
+    ON_BN_CLICKED(IDC_RADIO_EVENT, OnRadioEvent)
     ON_BN_CLICKED(IDC_RADIO_RANGE, OnRadioRange)
     ON_EN_UPDATE(IDC_EDIT_RANGE_FROM, OnUpdateEditRange)
     ON_CBN_SELCHANGE(IDC_COMB_MSG_ID_TYPE, OnSelchangeFilterComponentCombo)
@@ -160,7 +160,7 @@ BEGIN_MESSAGE_MAP(CFilterConfigDlg, CDialog)
     ON_CBN_SELCHANGE(IDC_COMB_MSG_TYPE, OnSelchangeFilterComponentCombo)
     ON_CBN_SELCHANGE(IDC_COMB_MSG_DIRECTION, OnSelchangeFilterComponentCombo)
     ON_CBN_SELCHANGE(IDC_COMB_MSG_CHANNEL, OnSelchangeFilterComponentCombo)
-	ON_CBN_SELCHANGE(IDC_COMB_EVENT, OnSelchangeFilterComponentCombo)
+    ON_CBN_SELCHANGE(IDC_COMB_EVENT, OnSelchangeFilterComponentCombo)
     ON_BN_CLICKED(ID_OK, OnOkPress)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -174,14 +174,14 @@ BOOL CFilterConfigDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-	if(m_eCurrBUS == CAN)
-	{
-		SetWindowText("Configure Filter List - CAN");
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		SetWindowText("Configure Filter List - LIN");
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        SetWindowText("Configure Filter List - CAN");
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        SetWindowText("Configure Filter List - LIN");
+    }
 
     // Create Image List first
     bCreateImageList();
@@ -208,40 +208,40 @@ BOOL CFilterConfigDlg::OnInitDialog()
         }
     }
 
-	if(m_eCurrBUS == CAN)
-	{
-		m_omMsgType.ShowWindow(TRUE);
-		m_omMsgIDType.ShowWindow(TRUE);
+    if(m_eCurrBUS == CAN)
+    {
+        m_omMsgType.ShowWindow(TRUE);
+        m_omMsgIDType.ShowWindow(TRUE);
 
-		 CButton* pWnd = (CButton*)GetDlgItem(IDC_STATIC_ID_TYPE);
+        CButton* pWnd = (CButton*)GetDlgItem(IDC_STATIC_ID_TYPE);
         if( pWnd != NULL )
         {
-			pWnd->ShowWindow(TRUE);
+            pWnd->ShowWindow(TRUE);
         }
-		pWnd = (CButton*)GetDlgItem(IDC_STATIC_FRAME_TYPE);
-		if( pWnd != NULL )
-        {
-			pWnd->ShowWindow(TRUE);
-        }
-
-		/*m_omStMsgType.ShowWindow(TRUE);
-		m_omStFrameType.ShowWindow(TRUE);*/
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		m_omMsgType.ShowWindow(FALSE);
-		m_omMsgIDType.ShowWindow(FALSE);
-		CStatic* pWnd = (CStatic*)GetDlgItem(IDC_STATIC_ID_TYPE);
+        pWnd = (CButton*)GetDlgItem(IDC_STATIC_FRAME_TYPE);
         if( pWnd != NULL )
         {
-			pWnd->ShowWindow(FALSE);
+            pWnd->ShowWindow(TRUE);
         }
-		pWnd = (CStatic*)GetDlgItem(IDC_STATIC_FRAME_TYPE);
-		if( pWnd != NULL )
+
+        /*m_omStMsgType.ShowWindow(TRUE);
+        m_omStFrameType.ShowWindow(TRUE);*/
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        m_omMsgType.ShowWindow(FALSE);
+        m_omMsgIDType.ShowWindow(FALSE);
+        CStatic* pWnd = (CStatic*)GetDlgItem(IDC_STATIC_ID_TYPE);
+        if( pWnd != NULL )
         {
-			pWnd->ShowWindow(FALSE);
+            pWnd->ShowWindow(FALSE);
         }
-	}
+        pWnd = (CStatic*)GetDlgItem(IDC_STATIC_FRAME_TYPE);
+        if( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+    }
 
     return FALSE;
 }
@@ -349,28 +349,28 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
     nTotalStrLengthPixel = 0;
 
     int nColSize[ defFILTER_DETAILS_LIST_COLUMNS ];
-	if(m_eCurrBUS == LIN)
-	{
-		nColSize[0] = static_cast<int>(nTotalColunmSize * 0.50 );
-		nColSize[1] = static_cast<int>(nTotalColunmSize * 0.10 );
+    if(m_eCurrBUS == LIN)
+    {
+        nColSize[0] = static_cast<int>(nTotalColunmSize * 0.50 );
+        nColSize[1] = static_cast<int>(nTotalColunmSize * 0.10 );
 
-		nColSize[2] = static_cast<int>(nTotalColunmSize * 0 );
-		nColSize[3] = static_cast<int>(nTotalColunmSize * 0 );
+        nColSize[2] = static_cast<int>(nTotalColunmSize * 0 );
+        nColSize[3] = static_cast<int>(nTotalColunmSize * 0 );
 
-		nColSize[4] = static_cast<int>(nTotalColunmSize * 0.20 );
-		nColSize[5] = static_cast<int>(nTotalColunmSize * 0.20 );
-	}
-	else
-	{
-		nColSize[0] = static_cast<int>(nTotalColunmSize * 0.25 );
-		nColSize[1] = static_cast<int>(nTotalColunmSize * 0.10 );
+        nColSize[4] = static_cast<int>(nTotalColunmSize * 0.20 );
+        nColSize[5] = static_cast<int>(nTotalColunmSize * 0.20 );
+    }
+    else
+    {
+        nColSize[0] = static_cast<int>(nTotalColunmSize * 0.25 );
+        nColSize[1] = static_cast<int>(nTotalColunmSize * 0.10 );
 
-		nColSize[2] = static_cast<int>(nTotalColunmSize * 0.15 );
-		nColSize[3] = static_cast<int>(nTotalColunmSize * 0.15 );
+        nColSize[2] = static_cast<int>(nTotalColunmSize * 0.15 );
+        nColSize[3] = static_cast<int>(nTotalColunmSize * 0.15 );
 
-		nColSize[4] = static_cast<int>(nTotalColunmSize * 0.15 );
-		nColSize[5] = static_cast<int>(nTotalColunmSize * 0.15 );
-	}
+        nColSize[4] = static_cast<int>(nTotalColunmSize * 0.15 );
+        nColSize[5] = static_cast<int>(nTotalColunmSize * 0.15 );
+    }
 
     //Insert each column name after calculating the size for the same.
     for( int nIndex = 0; nIndex < defFILTER_DETAILS_LIST_COLUMNS; nIndex++ )
@@ -379,18 +379,18 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
                                             _(caColumnName[nIndex]),
                                             nColumnFormat[nIndex],
                                             nColSize[nIndex] );
-		if(m_eCurrBUS == LIN)
-		{
-			string strType = _(caColumnName[nIndex]);
-			if(strType == defSTR_FILTER_DETAILS_ID_TYPE)
-			{
-				m_omLstcFilterDetails.SetColumnWidth(nIndex, 0);
-			}
-			else if(strType == defSTR_FILTER_DETAILS_MSG_TYPE)
-			{
-				m_omLstcFilterDetails.SetColumnWidth(nIndex, 0);
-			}
-		}
+        if(m_eCurrBUS == LIN)
+        {
+            string strType = _(caColumnName[nIndex]);
+            if(strType == defSTR_FILTER_DETAILS_ID_TYPE)
+            {
+                m_omLstcFilterDetails.SetColumnWidth(nIndex, 0);
+            }
+            else if(strType == defSTR_FILTER_DETAILS_MSG_TYPE)
+            {
+                m_omLstcFilterDetails.SetColumnWidth(nIndex, 0);
+            }
+        }
     }
 
     // Set the extended style
@@ -422,53 +422,53 @@ BOOL CFilterConfigDlg::bCreateFilterComps()
     m_omMsgDirection.AddString( _(defSTR_MSG_DIR_TX) );
     m_omMsgDirection.AddString( _(defSTR_SELECTION_ALL) );
 
-	if(m_eCurrBUS == CAN)
-	{
-		m_omEventType.ResetContent();
-		
-		m_omEventType.AddString(_(defFILTER_ERR_FRAME));
-		m_omEventType.SetCurSel(0);
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		m_omEventType.ResetContent();
+    if(m_eCurrBUS == CAN)
+    {
+        m_omEventType.ResetContent();
 
-		m_omEventType.AddString(_(defFILTER_CHECKSUM_EVNT_LIN));
-		m_omEventType.AddString(_(defFILTER_RX_FRAME_EVNT_LIN));
-		m_omEventType.AddString(_(defFILTER_SLAVE_NO_RESP_EVNT_LIN));
-		m_omEventType.AddString(_(defFILTER_SYNC_EVNT_LIN));
-	}
+        m_omEventType.AddString(_(defFILTER_ERR_FRAME));
+        m_omEventType.SetCurSel(0);
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        m_omEventType.ResetContent();
+
+        m_omEventType.AddString(_(defFILTER_CHECKSUM_EVNT_LIN));
+        m_omEventType.AddString(_(defFILTER_RX_FRAME_EVNT_LIN));
+        m_omEventType.AddString(_(defFILTER_SLAVE_NO_RESP_EVNT_LIN));
+        m_omEventType.AddString(_(defFILTER_SYNC_EVNT_LIN));
+    }
     // Channels
     m_omMsgChannel.ResetContent();
     // Add All Channels as first item
     m_omMsgChannel.AddString(_(defSTR_SELECTION_ALL));
-	if(m_eCurrBUS == CAN)
-	{
-		for (UINT Index = 1; Index <= m_nHardware; Index++)
-		{
-			CString omStr;
-			// Format Channel ID String Say 1,2,...
-			omStr.Format(defFORMAT_MSGID_DECIMAL, Index);
-			m_omMsgChannel.AddString(omStr);
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		for (UINT nIndex = 1; nIndex <= m_pClusterConfig->m_nChannelsConfigured; nIndex++)
-		{
-			CString omStr;
-			// Format Channel ID String Say 1,2,...
-			omStr.Format(defFORMAT_MSGID_DECIMAL, nIndex);
-			m_omMsgChannel.AddString(omStr);
-		}
-	}
-	if(m_eCurrBUS == LIN)
-	{
-		m_omMsgIDType.ResetContent();
-		m_omMsgType.ResetContent();
-		m_omMsgIDType.EnableWindow(FALSE);
-		m_omMsgType.EnableWindow(FALSE);
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        for (UINT Index = 1; Index <= m_nHardware; Index++)
+        {
+            CString omStr;
+            // Format Channel ID String Say 1,2,...
+            omStr.Format(defFORMAT_MSGID_DECIMAL, Index);
+            m_omMsgChannel.AddString(omStr);
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        for (UINT nIndex = 1; nIndex <= m_pClusterConfig->m_nChannelsConfigured; nIndex++)
+        {
+            CString omStr;
+            // Format Channel ID String Say 1,2,...
+            omStr.Format(defFORMAT_MSGID_DECIMAL, nIndex);
+            m_omMsgChannel.AddString(omStr);
+        }
+    }
+    if(m_eCurrBUS == LIN)
+    {
+        m_omMsgIDType.ResetContent();
+        m_omMsgType.ResetContent();
+        m_omMsgIDType.EnableWindow(FALSE);
+        m_omMsgType.EnableWindow(FALSE);
+    }
     return TRUE;
 }
 
@@ -479,67 +479,67 @@ BOOL CFilterConfigDlg::bCreateFilterComps()
 void CFilterConfigDlg::vPopulateDBMessages()
 {
     m_omMsgIDFrom.ResetContent();
-	if(m_eCurrBUS == CAN)
-	{
-		// Get number of mesages in database
-		if ( m_psMsgSignal != NULL )
-		{
-			//theApp.m_pouMsgSignal->unListGetMessageIDs( pIDArray );
-			sMESSAGE* pMessage = NULL;
-			const SMSGENTRY* psTemp = m_psMsgSignal;
-			while (psTemp != NULL)
-			{
-				pMessage = psTemp->m_psMsg;
-				if (pMessage != NULL)
-				{
-					CString omStrMsgName  = pMessage->m_omStrMessageName;
-					//omStr += defUNDERSCORE;
-					CString omStrMsgId;
-					omStrMsgId.Format(defSTR_MSG_ID_IN_HEX,pMessage->m_unMessageCode);
-					//omStrMsgId.MakeUpper();
-					//omStrMsgName += omStrMsgId;
-					omStrMsgId += omStrMsgName;
-					m_omMsgIDFrom.AddString(omStrMsgId);
-					//m_omMsgIDFrom.AddString(omStrMsgName);
-				}
-				psTemp = psTemp->m_psNext;
-			}
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		// Get number of mesages in database
-		if ( m_pClusterConfig != NULL )
-		{
-			//theApp.m_pouMsgSignal->unListGetMessageIDs( pIDArray );
+    if(m_eCurrBUS == CAN)
+    {
+        // Get number of mesages in database
+        if ( m_psMsgSignal != NULL )
+        {
+            //theApp.m_pouMsgSignal->unListGetMessageIDs( pIDArray );
+            sMESSAGE* pMessage = NULL;
+            const SMSGENTRY* psTemp = m_psMsgSignal;
+            while (psTemp != NULL)
+            {
+                pMessage = psTemp->m_psMsg;
+                if (pMessage != NULL)
+                {
+                    CString omStrMsgName  = pMessage->m_omStrMessageName;
+                    //omStr += defUNDERSCORE;
+                    CString omStrMsgId;
+                    omStrMsgId.Format(defSTR_MSG_ID_IN_HEX,pMessage->m_unMessageCode);
+                    //omStrMsgId.MakeUpper();
+                    //omStrMsgName += omStrMsgId;
+                    omStrMsgId += omStrMsgName;
+                    m_omMsgIDFrom.AddString(omStrMsgId);
+                    //m_omMsgIDFrom.AddString(omStrMsgName);
+                }
+                psTemp = psTemp->m_psNext;
+            }
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        // Get number of mesages in database
+        if ( m_pClusterConfig != NULL )
+        {
+            //theApp.m_pouMsgSignal->unListGetMessageIDs( pIDArray );
 
-			sMESSAGE* pMessage = NULL;
-			list<FRAME_STRUCT> lstFrameStrct;
-			
-			for(INT nIndex = 0; nIndex < m_pClusterConfig->m_nChannelsConfigured; nIndex++)
-			{
-				m_pClusterConfig->m_ouFlexChannelConfig[nIndex].m_ouClusterInfo.GetFrames(lstFrameStrct);
+            sMESSAGE* pMessage = NULL;
+            list<FRAME_STRUCT> lstFrameStrct;
 
-				list<FRAME_STRUCT>::iterator itrFrame = lstFrameStrct.begin();
+            for(INT nIndex = 0; nIndex < m_pClusterConfig->m_nChannelsConfigured; nIndex++)
+            {
+                m_pClusterConfig->m_ouFlexChannelConfig[nIndex].m_ouClusterInfo.GetFrames(lstFrameStrct);
 
-				while(itrFrame != lstFrameStrct.end())
-				{
-					string omStrMsgName  = itrFrame->m_strFrameName.c_str();
+                list<FRAME_STRUCT>::iterator itrFrame = lstFrameStrct.begin();
 
-					char omStrMsgId[MAX_PATH] = "";
-					//sprintf_s(omStrMsgId, MAX_PATH, defSTR_MSG_ID_IN_HEX, itrFrame->m_nSlotId);
-					
-					sprintf_s(omStrMsgId, MAX_PATH, "[0x%x]%s", itrFrame->m_nSlotId, omStrMsgName.c_str());
-					//sprintf(omStrMsgKey, "%s", omStrMsgId+omStrMsgName);
-					//omStrMsgId = omStrMsgId + omStrMsgName;
-					m_omMsgIDFrom.AddString(omStrMsgId);
+                while(itrFrame != lstFrameStrct.end())
+                {
+                    string omStrMsgName  = itrFrame->m_strFrameName.c_str();
 
-					itrFrame++;
-				}
-			}
-		
-		}
-	}
+                    char omStrMsgId[MAX_PATH] = "";
+                    //sprintf_s(omStrMsgId, MAX_PATH, defSTR_MSG_ID_IN_HEX, itrFrame->m_nSlotId);
+
+                    sprintf_s(omStrMsgId, MAX_PATH, "[0x%x]%s", itrFrame->m_nSlotId, omStrMsgName.c_str());
+                    //sprintf(omStrMsgKey, "%s", omStrMsgId+omStrMsgName);
+                    //omStrMsgId = omStrMsgId + omStrMsgName;
+                    m_omMsgIDFrom.AddString(omStrMsgId);
+
+                    itrFrame++;
+                }
+            }
+
+        }
+    }
 
     vAdjustWidthMessageComboBox();
 }
@@ -550,100 +550,100 @@ void CFilterConfigDlg::vPopulateDBMessages()
  */
 BOOL CFilterConfigDlg::bPopulateNamedFilterList()
 {
-	if(m_eCurrBUS == CAN)
-	{
-		// Get the details from Filter List
-		int nSize = m_psFilterApplied->m_ushTotal;
-		// Clear existing List
-		m_omLstcFilterList.DeleteAllItems();
-		// Disable UI Update
-		m_bUpdating = TRUE;
-		// iterate through list
-		for( int nIndex = 0; nIndex < nSize; nIndex++ )
-		{
-			// Pointers to retrieve data from map
-			PSFILTERSET psFilterSet = m_psFilterApplied->m_psFilters + nIndex;
-			// Filter Name
-			CString omStrFilterName = STR_EMPTY;
-			if( psFilterSet != NULL )
-			{
-				omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
-				// Insert the item
-				// Filter Name
-				m_omLstcFilterList.InsertItem( nIndex,
-					omStrFilterName,
-					defFILTER_IMAGE_INDEX_FILTER );
-				// Update Filter Type
-				m_omLstcFilterList.SetItemText( nIndex , 1,
-					psFilterSet->m_sFilterName.m_bFilterType ?
-					_(defSTR_FILTER_TYPE_PASS) :
-					_(defSTR_FILTER_TYPE_STOP) );
-				// Set edit property
-				SLISTINFO sListInfo;
-				// Init Signal Name column
-				// Column 0 : User Function call
-				sListInfo.m_eType = eText;
-				m_omLstcFilterList.vSetColumnInfo( nIndex, 0, sListInfo);
-				// Init Raw Value column
-				// Column 1 : Numeric Edit with Spin Control
-				sListInfo.m_eType = eComboItem;
-				sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_STOP) );
-				sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_PASS) );
-				m_omLstcFilterList.vSetColumnInfo( nIndex, 1, sListInfo);
-			}
-		}
-		m_bUpdating = FALSE;
-		// Set the focus to the first item
-		m_omLstcFilterList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
-			LVIS_SELECTED | LVIS_FOCUSED );
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		// Get the details from Filter List
-		int nSize = m_psFilterAppliedLin->m_ushTotal;
-		// Clear existing List
-		m_omLstcFilterList.DeleteAllItems();
-		// Disable UI Update
-		m_bUpdating = TRUE;
-		// iterate through list
-		for( int nIndex = 0; nIndex < nSize; nIndex++ )
-		{
-			// Pointers to retrieve data from map
-			PSFILTERSET psFilterSet = m_psFilterAppliedLin->m_psFilters + nIndex;
-			// Filter Name
-			CString omStrFilterName = STR_EMPTY;
-			if( psFilterSet != NULL )
-			{
-				omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
-				// Insert the item
-				// Filter Name
-				m_omLstcFilterList.InsertItem( nIndex,
-					omStrFilterName,
-					defFILTER_IMAGE_INDEX_FILTER );
-				// Update Filter Type
-				m_omLstcFilterList.SetItemText( nIndex , 1,
-					psFilterSet->m_sFilterName.m_bFilterType ?
-					_(defSTR_FILTER_TYPE_PASS) :
-					_(defSTR_FILTER_TYPE_STOP) );
-				// Set edit property
-				SLISTINFO sListInfo;
-				// Init Signal Name column
-				// Column 0 : User Function call
-				sListInfo.m_eType = eText;
-				m_omLstcFilterList.vSetColumnInfo( nIndex, 0, sListInfo);
-				// Init Raw Value column
-				// Column 1 : Numeric Edit with Spin Control
-				sListInfo.m_eType = eComboItem;
-				sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_STOP) );
-				sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_PASS) );
-				m_omLstcFilterList.vSetColumnInfo( nIndex, 1, sListInfo);
-			}
-		}
-		m_bUpdating = FALSE;
-		// Set the focus to the first item
-		m_omLstcFilterList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
-			LVIS_SELECTED | LVIS_FOCUSED );
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        // Get the details from Filter List
+        int nSize = m_psFilterApplied->m_ushTotal;
+        // Clear existing List
+        m_omLstcFilterList.DeleteAllItems();
+        // Disable UI Update
+        m_bUpdating = TRUE;
+        // iterate through list
+        for( int nIndex = 0; nIndex < nSize; nIndex++ )
+        {
+            // Pointers to retrieve data from map
+            PSFILTERSET psFilterSet = m_psFilterApplied->m_psFilters + nIndex;
+            // Filter Name
+            CString omStrFilterName = STR_EMPTY;
+            if( psFilterSet != NULL )
+            {
+                omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
+                // Insert the item
+                // Filter Name
+                m_omLstcFilterList.InsertItem( nIndex,
+                                               omStrFilterName,
+                                               defFILTER_IMAGE_INDEX_FILTER );
+                // Update Filter Type
+                m_omLstcFilterList.SetItemText( nIndex , 1,
+                                                psFilterSet->m_sFilterName.m_bFilterType ?
+                                                _(defSTR_FILTER_TYPE_PASS) :
+                                                _(defSTR_FILTER_TYPE_STOP) );
+                // Set edit property
+                SLISTINFO sListInfo;
+                // Init Signal Name column
+                // Column 0 : User Function call
+                sListInfo.m_eType = eText;
+                m_omLstcFilterList.vSetColumnInfo( nIndex, 0, sListInfo);
+                // Init Raw Value column
+                // Column 1 : Numeric Edit with Spin Control
+                sListInfo.m_eType = eComboItem;
+                sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_STOP) );
+                sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_PASS) );
+                m_omLstcFilterList.vSetColumnInfo( nIndex, 1, sListInfo);
+            }
+        }
+        m_bUpdating = FALSE;
+        // Set the focus to the first item
+        m_omLstcFilterList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
+                                        LVIS_SELECTED | LVIS_FOCUSED );
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        // Get the details from Filter List
+        int nSize = m_psFilterAppliedLin->m_ushTotal;
+        // Clear existing List
+        m_omLstcFilterList.DeleteAllItems();
+        // Disable UI Update
+        m_bUpdating = TRUE;
+        // iterate through list
+        for( int nIndex = 0; nIndex < nSize; nIndex++ )
+        {
+            // Pointers to retrieve data from map
+            PSFILTERSET psFilterSet = m_psFilterAppliedLin->m_psFilters + nIndex;
+            // Filter Name
+            CString omStrFilterName = STR_EMPTY;
+            if( psFilterSet != NULL )
+            {
+                omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
+                // Insert the item
+                // Filter Name
+                m_omLstcFilterList.InsertItem( nIndex,
+                                               omStrFilterName,
+                                               defFILTER_IMAGE_INDEX_FILTER );
+                // Update Filter Type
+                m_omLstcFilterList.SetItemText( nIndex , 1,
+                                                psFilterSet->m_sFilterName.m_bFilterType ?
+                                                _(defSTR_FILTER_TYPE_PASS) :
+                                                _(defSTR_FILTER_TYPE_STOP) );
+                // Set edit property
+                SLISTINFO sListInfo;
+                // Init Signal Name column
+                // Column 0 : User Function call
+                sListInfo.m_eType = eText;
+                m_omLstcFilterList.vSetColumnInfo( nIndex, 0, sListInfo);
+                // Init Raw Value column
+                // Column 1 : Numeric Edit with Spin Control
+                sListInfo.m_eType = eComboItem;
+                sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_STOP) );
+                sListInfo.m_omEntries.Add( _(defSTR_FILTER_TYPE_PASS) );
+                m_omLstcFilterList.vSetColumnInfo( nIndex, 1, sListInfo);
+            }
+        }
+        m_bUpdating = FALSE;
+        // Set the focus to the first item
+        m_omLstcFilterList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
+                                        LVIS_SELECTED | LVIS_FOCUSED );
+    }
 
     return TRUE;
 }
@@ -742,30 +742,30 @@ void CFilterConfigDlg::OnItemchangedLstcFilterDetails( NMHDR* pNMHDR,
  */
 void CFilterConfigDlg::vUpdateFilterDetails( int nSelectedItemIndex )
 {
-	if(m_eCurrBUS == CAN)
-	{
-		// Update Filter Details
-		CString omStrFilterName =
-			m_omLstcFilterList.GetItemText( nSelectedItemIndex, 0 );
-		const PSFILTERSET psSet = SFILTERSET::psGetFilterSetPointer
-			(m_psFilterApplied->m_psFilters, m_psFilterApplied->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
-		if( psSet != NULL )
-		{
-			vUpdateFilterDetails( psSet );
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		// Update Filter Details
-		CString omStrFilterName =
-			m_omLstcFilterList.GetItemText( nSelectedItemIndex, 0 );
-		const PSFILTERSET psSet = SFILTERSET::psGetFilterSetPointer
-			(m_psFilterAppliedLin->m_psFilters, m_psFilterAppliedLin->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
-		if( psSet != NULL )
-		{
-			vUpdateFilterDetails( psSet );
-		}
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        // Update Filter Details
+        CString omStrFilterName =
+            m_omLstcFilterList.GetItemText( nSelectedItemIndex, 0 );
+        const PSFILTERSET psSet = SFILTERSET::psGetFilterSetPointer
+                                  (m_psFilterApplied->m_psFilters, m_psFilterApplied->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
+        if( psSet != NULL )
+        {
+            vUpdateFilterDetails( psSet );
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        // Update Filter Details
+        CString omStrFilterName =
+            m_omLstcFilterList.GetItemText( nSelectedItemIndex, 0 );
+        const PSFILTERSET psSet = SFILTERSET::psGetFilterSetPointer
+                                  (m_psFilterAppliedLin->m_psFilters, m_psFilterAppliedLin->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
+        if( psSet != NULL )
+        {
+            vUpdateFilterDetails( psSet );
+        }
+    }
 }
 
 /**
@@ -827,13 +827,13 @@ void CFilterConfigDlg::vFormatDisplayString(
         // Update Image Index
         sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_ID_RANGE;
     }
-	else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
-	{
-		m_omMsgDirection.EnableWindow( FALSE );
-		sFilterDisplyInfo.m_omStrMsgIDFrom = sFilter.m_omEventName;
-		// Update Image Index
-		sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_DB;       
-	}
+    else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
+    {
+        m_omMsgDirection.EnableWindow( FALSE );
+        sFilterDisplyInfo.m_omStrMsgIDFrom = sFilter.m_omEventName;
+        // Update Image Index
+        sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_DB;
+    }
 
     if (sFilter.m_byIDType == TYPE_ID_CAN_EXTENDED)
     {
@@ -871,11 +871,11 @@ void CFilterConfigDlg::vFormatDisplayString(
         sFilterDisplyInfo.m_omStrMsgType = STR_EMPTY;
     }
 
-	if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
-	{
-		sFilterDisplyInfo.m_omStrMsgIDType = STR_EMPTY;
-		sFilterDisplyInfo.m_omStrMsgType = STR_EMPTY;
-	}
+    if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
+    {
+        sFilterDisplyInfo.m_omStrMsgIDType = STR_EMPTY;
+        sFilterDisplyInfo.m_omStrMsgType = STR_EMPTY;
+    }
 
 
     // Message Direction
@@ -970,57 +970,57 @@ void CFilterConfigDlg::vUpdateFilterDetails( const PSFILTERSET psFilterSet )
         m_bUpdating = TRUE;
         // Clear existing list items
         m_omLstcFilterDetails.DeleteAllItems();
-		if(m_eCurrBUS == CAN)
-		{
-			// Get Filter List count
-			int nCount = psFilterSet->m_ushFilters;
+        if(m_eCurrBUS == CAN)
+        {
+            // Get Filter List count
+            int nCount = psFilterSet->m_ushFilters;
 
-			// Add items in to the list
-			for( int nIndex = 0; nIndex < nCount; nIndex++ )
-			{
-				SFILTER_CAN* psFilter = (SFILTER_CAN*)(psFilterSet->m_psFilterInfo) + nIndex;
-				CString omStrMsgIDFrom, omStrMsgIDTo, omStrChannel;
-				// Get Display Text
-				SFILTERDISPLAYINFO sDisplayInfo;
-				vFormatDisplayString( *psFilter, sDisplayInfo );
-				// Insert in to the list
-				m_omLstcFilterDetails.InsertItem( nIndex,
-					STR_EMPTY,
-					sDisplayInfo.m_nImageIndex );
-				// Update Fileds
-				vUpdateFilterListDetails( nIndex, sDisplayInfo);
-			}
-			m_bUpdating = FALSE;
-			// Set the selection to Invalid
-			m_nSelecetedFilterIndex = -1;
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			// Get Filter List count
-			int nCount = psFilterSet->m_ushFilters;
+            // Add items in to the list
+            for( int nIndex = 0; nIndex < nCount; nIndex++ )
+            {
+                SFILTER_CAN* psFilter = (SFILTER_CAN*)(psFilterSet->m_psFilterInfo) + nIndex;
+                CString omStrMsgIDFrom, omStrMsgIDTo, omStrChannel;
+                // Get Display Text
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( *psFilter, sDisplayInfo );
+                // Insert in to the list
+                m_omLstcFilterDetails.InsertItem( nIndex,
+                                                  STR_EMPTY,
+                                                  sDisplayInfo.m_nImageIndex );
+                // Update Fileds
+                vUpdateFilterListDetails( nIndex, sDisplayInfo);
+            }
+            m_bUpdating = FALSE;
+            // Set the selection to Invalid
+            m_nSelecetedFilterIndex = -1;
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            // Get Filter List count
+            int nCount = psFilterSet->m_ushFilters;
 
-			if(psFilterSet->m_eCurrBus == LIN)
-			{
-				// Add items in to the list
-				for( int nIndex = 0; nIndex < nCount; nIndex++ )
-				{
-					SFILTER_LIN* psFilter = (SFILTER_LIN*)(psFilterSet->m_psFilterInfo) + nIndex;
-					CString omStrMsgIDFrom, omStrMsgIDTo, omStrChannel;
-					// Get Display Text
-					SFILTERDISPLAYINFO sDisplayInfo;
-					vFormatDisplayString( *psFilter, sDisplayInfo );
-					// Insert in to the list
-					m_omLstcFilterDetails.InsertItem( nIndex,
-						STR_EMPTY,
-						sDisplayInfo.m_nImageIndex );
-					// Update Fileds
-					vUpdateFilterListDetails( nIndex, sDisplayInfo);
-				}
-				m_bUpdating = FALSE;
-				// Set the selection to Invalid
-				m_nSelecetedFilterIndex = -1;
-			}
-		}
+            if(psFilterSet->m_eCurrBus == LIN)
+            {
+                // Add items in to the list
+                for( int nIndex = 0; nIndex < nCount; nIndex++ )
+                {
+                    SFILTER_LIN* psFilter = (SFILTER_LIN*)(psFilterSet->m_psFilterInfo) + nIndex;
+                    CString omStrMsgIDFrom, omStrMsgIDTo, omStrChannel;
+                    // Get Display Text
+                    SFILTERDISPLAYINFO sDisplayInfo;
+                    vFormatDisplayString( *psFilter, sDisplayInfo );
+                    // Insert in to the list
+                    m_omLstcFilterDetails.InsertItem( nIndex,
+                                                      STR_EMPTY,
+                                                      sDisplayInfo.m_nImageIndex );
+                    // Update Fileds
+                    vUpdateFilterListDetails( nIndex, sDisplayInfo);
+                }
+                m_bUpdating = FALSE;
+                // Set the selection to Invalid
+                m_nSelecetedFilterIndex = -1;
+            }
+        }
     }
 }
 
@@ -1046,58 +1046,58 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
     }
     else
     {
-		if(m_eCurrBUS == CAN)
-		{
-			// Update only if there is a change
-			if( omStrNewName.Compare( m_omStrSelectedFilterNameBeforeEdit ) != 0 )
-			{
-				PSFILTERSET psTemp =  SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
-					m_psFilterApplied->m_ushTotal,omStrNewName.GetBuffer(MAX_PATH));
-				if(psTemp != NULL)
-				{
-					AfxMessageBox(_("Name already exist"));
-					// Restore the name
-					m_bUpdating = TRUE;
-					m_omLstcFilterList.SetItemText( nItem, nSubItem,
-						m_omStrSelectedFilterNameBeforeEdit );
-					m_bUpdating = FALSE;
-				}
-				else
-				{
-					psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
-						m_psFilterApplied->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
-					ASSERT(psTemp != NULL);
-					strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
-					m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
-				}
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			// Update only if there is a change
-			if( omStrNewName.Compare( m_omStrSelectedFilterNameBeforeEdit ) != 0 )
-			{
-				PSFILTERSET psTemp =  SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
-					m_psFilterAppliedLin->m_ushTotal,omStrNewName.GetBuffer(MAX_PATH));
-				if(psTemp != NULL)
-				{
-					AfxMessageBox(_("Name already exist"));
-					// Restore the name
-					m_bUpdating = TRUE;
-					m_omLstcFilterList.SetItemText( nItem, nSubItem,
-						m_omStrSelectedFilterNameBeforeEdit );
-					m_bUpdating = FALSE;
-				}
-				else
-				{
-					psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
-						m_psFilterAppliedLin->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
-					ASSERT(psTemp != NULL);
-					strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
-					m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
-				}
-			}
-		}
+        if(m_eCurrBUS == CAN)
+        {
+            // Update only if there is a change
+            if( omStrNewName.Compare( m_omStrSelectedFilterNameBeforeEdit ) != 0 )
+            {
+                PSFILTERSET psTemp =  SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
+                                      m_psFilterApplied->m_ushTotal,omStrNewName.GetBuffer(MAX_PATH));
+                if(psTemp != NULL)
+                {
+                    AfxMessageBox(_("Name already exist"));
+                    // Restore the name
+                    m_bUpdating = TRUE;
+                    m_omLstcFilterList.SetItemText( nItem, nSubItem,
+                                                    m_omStrSelectedFilterNameBeforeEdit );
+                    m_bUpdating = FALSE;
+                }
+                else
+                {
+                    psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
+                             m_psFilterApplied->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
+                    ASSERT(psTemp != NULL);
+                    strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
+                    m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
+                }
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            // Update only if there is a change
+            if( omStrNewName.Compare( m_omStrSelectedFilterNameBeforeEdit ) != 0 )
+            {
+                PSFILTERSET psTemp =  SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
+                                      m_psFilterAppliedLin->m_ushTotal,omStrNewName.GetBuffer(MAX_PATH));
+                if(psTemp != NULL)
+                {
+                    AfxMessageBox(_("Name already exist"));
+                    // Restore the name
+                    m_bUpdating = TRUE;
+                    m_omLstcFilterList.SetItemText( nItem, nSubItem,
+                                                    m_omStrSelectedFilterNameBeforeEdit );
+                    m_bUpdating = FALSE;
+                }
+                else
+                {
+                    psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
+                             m_psFilterAppliedLin->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
+                    ASSERT(psTemp != NULL);
+                    strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
+                    m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
+                }
+            }
+        }
     }
 }
 
@@ -1119,34 +1119,34 @@ void CFilterConfigDlg::vUpdateFromFilterType(int nItem, int nSubItem)
         ucFilterType = 1;
     }
 
-	if(m_eCurrBUS == CAN)
-	{
-		CString omStrFilterName = m_omLstcFilterList.GetItemText(
-			m_nSelecetedNamedFilterIndex, 0 );
-		const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-			m_psFilterApplied->m_psFilters,
-			m_psFilterApplied->m_ushTotal,
-			omStrFilterName.GetBuffer(MAX_PATH));
-		if( psTempSet != NULL )
-		{
-			// update Filter Type
-			psTempSet->m_sFilterName.m_bFilterType = ucFilterType;
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		CString omStrFilterName = m_omLstcFilterList.GetItemText(
-			m_nSelecetedNamedFilterIndex, 0 );
-		const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-			m_psFilterAppliedLin->m_psFilters,
-			m_psFilterAppliedLin->m_ushTotal,
-			omStrFilterName.GetBuffer(MAX_PATH));
-		if( psTempSet != NULL )
-		{
-			// update Filter Type
-			psTempSet->m_sFilterName.m_bFilterType = ucFilterType;
-		}
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        CString omStrFilterName = m_omLstcFilterList.GetItemText(
+                                      m_nSelecetedNamedFilterIndex, 0 );
+        const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                          m_psFilterApplied->m_psFilters,
+                                          m_psFilterApplied->m_ushTotal,
+                                          omStrFilterName.GetBuffer(MAX_PATH));
+        if( psTempSet != NULL )
+        {
+            // update Filter Type
+            psTempSet->m_sFilterName.m_bFilterType = ucFilterType;
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        CString omStrFilterName = m_omLstcFilterList.GetItemText(
+                                      m_nSelecetedNamedFilterIndex, 0 );
+        const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                          m_psFilterAppliedLin->m_psFilters,
+                                          m_psFilterAppliedLin->m_ushTotal,
+                                          omStrFilterName.GetBuffer(MAX_PATH));
+        if( psTempSet != NULL )
+        {
+            // update Filter Type
+            psTempSet->m_sFilterName.m_bFilterType = ucFilterType;
+        }
+    }
 }
 
 /**
@@ -1156,36 +1156,36 @@ void CFilterConfigDlg::vUpdateFromFilterType(int nItem, int nSubItem)
  */
 void CFilterConfigDlg::vUpdateFilterComponents(int nSelectedItem)
 {
-	if(m_eCurrBUS == CAN)
-	{
-		// Get the Selected filter information
-		CString omStrFilterName =
-			m_omLstcFilterList.GetItemText( m_nSelecetedNamedFilterIndex, 0 );
-		PSFILTERSET psFilterSet = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
-			m_psFilterApplied->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
-		if( psFilterSet != NULL )
-		{
-			SFILTER_CAN* psFilter = (SFILTER_CAN*)(psFilterSet->m_psFilterInfo) + nSelectedItem;
+    if(m_eCurrBUS == CAN)
+    {
+        // Get the Selected filter information
+        CString omStrFilterName =
+            m_omLstcFilterList.GetItemText( m_nSelecetedNamedFilterIndex, 0 );
+        PSFILTERSET psFilterSet = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
+                                  m_psFilterApplied->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
+        if( psFilterSet != NULL )
+        {
+            SFILTER_CAN* psFilter = (SFILTER_CAN*)(psFilterSet->m_psFilterInfo) + nSelectedItem;
 
-			// Update Components
-			vUpdateFilterComponents( *psFilter );
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		// Get the Selected filter information
-		CString omStrFilterName =
-			m_omLstcFilterList.GetItemText( m_nSelecetedNamedFilterIndex, 0 );
-		PSFILTERSET psFilterSet = SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
-			m_psFilterAppliedLin->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
-		if( psFilterSet != NULL )
-		{
-			SFILTER_LIN* psFilter = (SFILTER_LIN*)(psFilterSet->m_psFilterInfo) + nSelectedItem;
+            // Update Components
+            vUpdateFilterComponents( *psFilter );
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        // Get the Selected filter information
+        CString omStrFilterName =
+            m_omLstcFilterList.GetItemText( m_nSelecetedNamedFilterIndex, 0 );
+        PSFILTERSET psFilterSet = SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
+                                  m_psFilterAppliedLin->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
+        if( psFilterSet != NULL )
+        {
+            SFILTER_LIN* psFilter = (SFILTER_LIN*)(psFilterSet->m_psFilterInfo) + nSelectedItem;
 
-			// Update Components
-			vUpdateFilterComponents( *psFilter );
-		}
-	}
+            // Update Components
+            vUpdateFilterComponents( *psFilter );
+        }
+    }
 }
 
 /**
@@ -1206,8 +1206,8 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
     {
         // Enable Message ID Section
         // Disable Range Controls
-		m_omRadioEvent.SetCheck(FALSE);
-		m_omEventType.EnableWindow(FALSE);
+        m_omRadioEvent.SetCheck(FALSE);
+        m_omEventType.EnableWindow(FALSE);
         m_omMsgIDRangeFrom.EnableWindow( FALSE );
         m_omMsgIDRangeTo.EnableWindow( FALSE );
         // Enable ID Control
@@ -1253,8 +1253,8 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
     }
     else if( sFilter.m_ucFilterType == defFILTER_TYPE_ID_RANGE )
     {
-		m_omRadioEvent.SetCheck(FALSE);
-		m_omEventType.EnableWindow(FALSE);
+        m_omRadioEvent.SetCheck(FALSE);
+        m_omEventType.EnableWindow(FALSE);
         // Enable Message Range Section
         m_omMsgIDRangeFrom.EnableWindow( );
         m_omMsgIDRangeTo.EnableWindow( );
@@ -1272,24 +1272,24 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
         m_omMsgIDRangeFrom.vSetValue( sFilter.m_dwMsgIDFrom );
         m_omMsgIDRangeTo.vSetValue( sFilter.m_dwMsgIDTo );
     }
-	else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
-	{
-		CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
+    else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
+    {
+        CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
         if( pWnd != NULL )
         {
-            pWnd->SetCheck( FALSE );            
+            pWnd->SetCheck( FALSE );
         }
 
-		m_omMsgIDRangeFrom.EnableWindow( FALSE );
-		m_omMsgIDRangeTo.EnableWindow( FALSE );
-		m_omMsgDirection.EnableWindow( FALSE );
-		m_omMsgIDFrom.EnableWindow(FALSE);
-		m_omRadioID.SetCheck(FALSE);
-		m_omEventType.EnableWindow(TRUE);		
-		m_omRadioEvent.SetCheck( TRUE );
+        m_omMsgIDRangeFrom.EnableWindow( FALSE );
+        m_omMsgIDRangeTo.EnableWindow( FALSE );
+        m_omMsgDirection.EnableWindow( FALSE );
+        m_omMsgIDFrom.EnableWindow(FALSE);
+        m_omRadioID.SetCheck(FALSE);
+        m_omEventType.EnableWindow(TRUE);
+        m_omRadioEvent.SetCheck( TRUE );
 
-		m_omEventType.SelectString(-1, sFilter.m_omEventName.c_str());
-	}
+        m_omEventType.SelectString(-1, sFilter.m_omEventName.c_str());
+    }
     // Update
     // ID Type
     INT Index = 0; // Id type standard
@@ -1357,70 +1357,70 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
 void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_LIN& sFilter)
 {
     // Disable validation of data while update it
-	m_bDisableFilterCompUpdate = TRUE;
-	// Get Database Pointer
-	//CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
-	// ID From Text
-	// Update Message Id or Range
-	if( sFilter.m_ucFilterType == defFILTER_TYPE_SINGLE_ID )
-	{
-		m_omRadioEvent.SetCheck(FALSE);
-		m_omEventType.EnableWindow(FALSE);
-		m_omMsgDirection.EnableWindow( TRUE );
-		// Enable Message ID Section
-		// Disable Range Controls
-		m_omMsgIDRangeFrom.EnableWindow( FALSE );
-		m_omMsgIDRangeTo.EnableWindow( FALSE );
-		// Enable ID Control
-		m_omMsgIDFrom.EnableWindow( );
-		CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
-		if( pWnd != NULL )
-		{
-			pWnd->SetCheck( FALSE );
-			m_omRadioID.SetCheck( TRUE );
-		}
+    m_bDisableFilterCompUpdate = TRUE;
+    // Get Database Pointer
+    //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
+    // ID From Text
+    // Update Message Id or Range
+    if( sFilter.m_ucFilterType == defFILTER_TYPE_SINGLE_ID )
+    {
+        m_omRadioEvent.SetCheck(FALSE);
+        m_omEventType.EnableWindow(FALSE);
+        m_omMsgDirection.EnableWindow( TRUE );
+        // Enable Message ID Section
+        // Disable Range Controls
+        m_omMsgIDRangeFrom.EnableWindow( FALSE );
+        m_omMsgIDRangeTo.EnableWindow( FALSE );
+        // Enable ID Control
+        m_omMsgIDFrom.EnableWindow( );
+        CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
+        if( pWnd != NULL )
+        {
+            pWnd->SetCheck( FALSE );
+            m_omRadioID.SetCheck( TRUE );
+        }
 
-		if(m_pClusterConfig != NULL)
-		{
-			FRAME_STRUCT ouFrameStrct;
-			CString omStrIDFrom = STR_EMPTY;
-			if(S_OK == hGetFrameFromId(sFilter.m_dwMsgIDFrom, ouFrameStrct))
-			{
-				omStrIDFrom = ouFrameStrct.m_strFrameName.c_str();
-			}
+        if(m_pClusterConfig != NULL)
+        {
+            FRAME_STRUCT ouFrameStrct;
+            CString omStrIDFrom = STR_EMPTY;
+            if(S_OK == hGetFrameFromId(sFilter.m_dwMsgIDFrom, ouFrameStrct))
+            {
+                omStrIDFrom = ouFrameStrct.m_strFrameName.c_str();
+            }
 
-			if( omStrIDFrom.IsEmpty() == TRUE )
-			{
-				omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-					sFilter.m_dwMsgIDFrom );
-			}
-			else
-			{
-				CString omIdWithMsg;
-				omIdWithMsg.Format(defSTR_MSG_ID_IN_HEX, sFilter.m_dwMsgIDFrom);
-				omStrIDFrom = omIdWithMsg + omStrIDFrom;
-			}
-			// Apply the text
-			m_omMsgIDFrom.SetWindowText( omStrIDFrom );
-		}
-		else
-		{
-			CString omStrIDFrom;
-			omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-				sFilter.m_dwMsgIDFrom );
-			m_omMsgIDFrom.SetWindowText( omStrIDFrom );
-		}
-	}
-	else if( sFilter.m_ucFilterType == defFILTER_TYPE_ID_RANGE )
-	{
-		m_omRadioEvent.SetCheck(FALSE);
-		m_omEventType.EnableWindow(FALSE);
-		m_omMsgDirection.EnableWindow( TRUE );
-		// Enable Message Range Section
-		m_omMsgIDRangeFrom.EnableWindow( );
-		m_omMsgIDRangeTo.EnableWindow( );
-		// Get Window Pointer to set the value
-		CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
+            if( omStrIDFrom.IsEmpty() == TRUE )
+            {
+                omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
+                                    sFilter.m_dwMsgIDFrom );
+            }
+            else
+            {
+                CString omIdWithMsg;
+                omIdWithMsg.Format(defSTR_MSG_ID_IN_HEX, sFilter.m_dwMsgIDFrom);
+                omStrIDFrom = omIdWithMsg + omStrIDFrom;
+            }
+            // Apply the text
+            m_omMsgIDFrom.SetWindowText( omStrIDFrom );
+        }
+        else
+        {
+            CString omStrIDFrom;
+            omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
+                                sFilter.m_dwMsgIDFrom );
+            m_omMsgIDFrom.SetWindowText( omStrIDFrom );
+        }
+    }
+    else if( sFilter.m_ucFilterType == defFILTER_TYPE_ID_RANGE )
+    {
+        m_omRadioEvent.SetCheck(FALSE);
+        m_omEventType.EnableWindow(FALSE);
+        m_omMsgDirection.EnableWindow( TRUE );
+        // Enable Message Range Section
+        m_omMsgIDRangeFrom.EnableWindow( );
+        m_omMsgIDRangeTo.EnableWindow( );
+        // Get Window Pointer to set the value
+        CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
         if( pWnd != NULL )
         {
             pWnd->SetCheck( TRUE );
@@ -1433,25 +1433,25 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_LIN& sFilter)
         m_omMsgIDRangeFrom.vSetValue( sFilter.m_dwMsgIDFrom );
         m_omMsgIDRangeTo.vSetValue( sFilter.m_dwMsgIDTo );
     }
-	else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
-	{
-		CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
+    else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
+    {
+        CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
         if( pWnd != NULL )
         {
-            pWnd->SetCheck( FALSE );            
+            pWnd->SetCheck( FALSE );
         }
 
-		m_omMsgIDRangeFrom.EnableWindow( FALSE );
-		m_omMsgIDRangeTo.EnableWindow( FALSE );
-		m_omMsgDirection.EnableWindow( FALSE );
-		m_omMsgIDFrom.EnableWindow(FALSE);
-		m_omRadioID.SetCheck(FALSE);
-		m_omEventType.EnableWindow(TRUE);		
-		m_omRadioEvent.SetCheck( TRUE );
+        m_omMsgIDRangeFrom.EnableWindow( FALSE );
+        m_omMsgIDRangeTo.EnableWindow( FALSE );
+        m_omMsgDirection.EnableWindow( FALSE );
+        m_omMsgIDFrom.EnableWindow(FALSE);
+        m_omRadioID.SetCheck(FALSE);
+        m_omEventType.EnableWindow(TRUE);
+        m_omRadioEvent.SetCheck( TRUE );
 
-		m_omEventType.SelectString(-1, sFilter.m_omEventName.c_str());
-	}
-  
+        m_omEventType.SelectString(-1, sFilter.m_omEventName.c_str());
+    }
+
     // Message Direction
     // Set the Direction
     switch( sFilter.m_eDrctn )
@@ -1550,98 +1550,98 @@ void CFilterConfigDlg::OnSelchangeCombMsgIdFrom()
 
 void CFilterConfigDlg::OnRadioEvent()
 {
-	m_omEventType.EnableWindow(TRUE);
+    m_omEventType.EnableWindow(TRUE);
 
-	// Disable Range Controls
+    // Disable Range Controls
     m_omMsgIDRangeFrom.EnableWindow( FALSE );
     m_omMsgIDRangeTo.EnableWindow( FALSE );
     // Disable ID Control
     m_omMsgIDFrom.EnableWindow( FALSE);
-	m_omMsgDirection.EnableWindow( FALSE );
+    m_omMsgDirection.EnableWindow( FALSE );
 
-	m_omMsgType.EnableWindow(FALSE);
-	m_omMsgIDType.EnableWindow(FALSE);
+    m_omMsgType.EnableWindow(FALSE);
+    m_omMsgIDType.EnableWindow(FALSE);
 
     // Update If there is any item got selected
     if( m_nSelecetedFilterIndex != -1 )
     {
         // Update Text
-		CString omStrFilterName = m_omLstcFilterList.GetItemText(
-			m_nSelecetedNamedFilterIndex, 0 );
-		if(m_eCurrBUS == CAN)
-		{
-			m_omMsgType.ShowWindow(TRUE);
-			m_omMsgIDType.ShowWindow(TRUE);
-			m_omMsgType.EnableWindow(FALSE);
-			m_omMsgIDType.EnableWindow(FALSE);
+        CString omStrFilterName = m_omLstcFilterList.GetItemText(
+                                      m_nSelecetedNamedFilterIndex, 0 );
+        if(m_eCurrBUS == CAN)
+        {
+            m_omMsgType.ShowWindow(TRUE);
+            m_omMsgIDType.ShowWindow(TRUE);
+            m_omMsgType.EnableWindow(FALSE);
+            m_omMsgIDType.EnableWindow(FALSE);
 
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterApplied->m_psFilters,
-				m_psFilterApplied->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				// Get the data from the CArray
-				SFILTER_CAN* psFilter = (SFILTER_CAN*)
-					(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-				psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
-				//CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
-				CString omStrIDFrom = STR_EMPTY;
-				omStrIDFrom = psFilter->m_omEventName.c_str();
-				// Apply the text
-				m_omEventType.SetWindowText( omStrIDFrom );
-			}
-			// Validate and Update UI
-			SFILTER_CAN sFilter;
-			BOOL bDataValid = bGetFilterData( sFilter );
-			// Update Add Button
-			m_omAddFilter.EnableWindow( bDataValid );
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterApplied->m_psFilters,
+                                        m_psFilterApplied->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                // Get the data from the CArray
+                SFILTER_CAN* psFilter = (SFILTER_CAN*)
+                                        (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
+                //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
+                CString omStrIDFrom = STR_EMPTY;
+                omStrIDFrom = psFilter->m_omEventName.c_str();
+                // Apply the text
+                m_omEventType.SetWindowText( omStrIDFrom );
+            }
+            // Validate and Update UI
+            SFILTER_CAN sFilter;
+            BOOL bDataValid = bGetFilterData( sFilter );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
 
-			if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
-			{
-				// Get Display Text
-				SFILTERDISPLAYINFO sDisplayInfo;
-				vFormatDisplayString( sFilter, sDisplayInfo );
-				vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterAppliedLin->m_psFilters,
-				m_psFilterAppliedLin->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				m_omMsgType.ShowWindow(FALSE);
-				m_omMsgIDType.ShowWindow(FALSE);
+            if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
+            {
+                // Get Display Text
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( sFilter, sDisplayInfo );
+                vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterAppliedLin->m_psFilters,
+                                        m_psFilterAppliedLin->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                m_omMsgType.ShowWindow(FALSE);
+                m_omMsgIDType.ShowWindow(FALSE);
 
-				// Get the data from the CArray
-				SFILTER_LIN* psFilter = (SFILTER_LIN*)
-					(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-				psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
+                // Get the data from the CArray
+                SFILTER_LIN* psFilter = (SFILTER_LIN*)
+                                        (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
 
-				CString omStrIDFrom = STR_EMPTY;
+                CString omStrIDFrom = STR_EMPTY;
 
-				omStrIDFrom = psFilter->m_omEventName.c_str();
-				// Apply the text
-				m_omEventType.SetWindowText( omStrIDFrom );
-			}
-			// Validate and Update UI
-			SFILTER_LIN sFilter;
-			BOOL bDataValid = bGetFilterData( sFilter );
-			// Update Add Button
-			m_omAddFilter.EnableWindow( bDataValid );
+                omStrIDFrom = psFilter->m_omEventName.c_str();
+                // Apply the text
+                m_omEventType.SetWindowText( omStrIDFrom );
+            }
+            // Validate and Update UI
+            SFILTER_LIN sFilter;
+            BOOL bDataValid = bGetFilterData( sFilter );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
 
-			if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
-			{
-				// Get Display Text
-				SFILTERDISPLAYINFO sDisplayInfo;
-				vFormatDisplayString( sFilter, sDisplayInfo );
-				vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
-			}
-		}
-	}   
+            if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
+            {
+                // Get Display Text
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( sFilter, sDisplayInfo );
+                vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
+            }
+        }
+    }
 }
 /**
  * This function will be called during the ID/Range radio button
@@ -1654,11 +1654,11 @@ void CFilterConfigDlg::OnRadioMessageId()
     m_omMsgIDRangeTo.EnableWindow( FALSE );
     // Enable ID Control
     m_omMsgIDFrom.EnableWindow( );
-	m_omMsgDirection.EnableWindow(TRUE);
-	m_omEventType.EnableWindow(FALSE);
+    m_omMsgDirection.EnableWindow(TRUE);
+    m_omEventType.EnableWindow(FALSE);
 
-	m_omMsgType.EnableWindow(TRUE);
-	m_omMsgIDType.EnableWindow(TRUE);
+    m_omMsgType.EnableWindow(TRUE);
+    m_omMsgIDType.EnableWindow(TRUE);
 
     // Update If there is any item got selected
     if( m_nSelecetedFilterIndex != -1 )
@@ -1666,133 +1666,133 @@ void CFilterConfigDlg::OnRadioMessageId()
         // Update Text
         CString omStrFilterName = m_omLstcFilterList.GetItemText(
                                       m_nSelecetedNamedFilterIndex, 0 );
-		if(m_eCurrBUS == CAN)
-		{
-			m_omMsgType.ShowWindow(TRUE);
-			m_omMsgIDType.ShowWindow(TRUE);
-			m_omMsgType.EnableWindow(TRUE);
-			m_omMsgIDType.EnableWindow(TRUE);
-        PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-                                    m_psFilterApplied->m_psFilters,
-                                    m_psFilterApplied->m_ushTotal,
-                                    omStrFilterName.GetBuffer(MAX_PATH));
-        if( psTempSet != NULL )
+        if(m_eCurrBUS == CAN)
         {
-            // Get the data from the CArray
-            SFILTER_CAN* psFilter = (SFILTER_CAN*)
-                                    (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-            psFilter->m_ucFilterType = defFILTER_TYPE_SINGLE_ID;// Update the UI
-            //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
-            if( m_psMsgSignal != NULL )
+            m_omMsgType.ShowWindow(TRUE);
+            m_omMsgIDType.ShowWindow(TRUE);
+            m_omMsgType.EnableWindow(TRUE);
+            m_omMsgIDType.EnableWindow(TRUE);
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterApplied->m_psFilters,
+                                        m_psFilterApplied->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
             {
-                CString omStrIDFrom = STR_EMPTY;
-                sMESSAGE* pMsg;
-                if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, psFilter->m_dwMsgIDFrom, pMsg)
-                        == TRUE)
+                // Get the data from the CArray
+                SFILTER_CAN* psFilter = (SFILTER_CAN*)
+                                        (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psFilter->m_ucFilterType = defFILTER_TYPE_SINGLE_ID;// Update the UI
+                //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
+                if( m_psMsgSignal != NULL )
                 {
-                    omStrIDFrom = pMsg->m_omStrMessageName;
-                }
-                if( omStrIDFrom.IsEmpty() == TRUE )
-                {
-                    omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-                                        psFilter->m_dwMsgIDFrom );
+                    CString omStrIDFrom = STR_EMPTY;
+                    sMESSAGE* pMsg;
+                    if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, psFilter->m_dwMsgIDFrom, pMsg)
+                            == TRUE)
+                    {
+                        omStrIDFrom = pMsg->m_omStrMessageName;
+                    }
+                    if( omStrIDFrom.IsEmpty() == TRUE )
+                    {
+                        omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
+                                            psFilter->m_dwMsgIDFrom );
+                    }
+                    else
+                    {
+                        if( omStrIDFrom != STR_EMPTY )
+                        {
+                            CString omIdWithMsg = _("");
+                            omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
+                            ostringstream oss;
+                            oss << hex << omIdWithMsg << omStrIDFrom;
+
+                            omStrIDFrom = (CString)oss.str().c_str();
+                        }
+                    }
+                    // Apply the text
+                    m_omMsgIDFrom.SetWindowText( omStrIDFrom );
                 }
                 else
                 {
-                    if( omStrIDFrom != STR_EMPTY )
-                    {
-                        CString omIdWithMsg = _("");
-                        omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
-                        ostringstream oss;
-                        oss << hex << omIdWithMsg << omStrIDFrom;
-
-                        omStrIDFrom = (CString)oss.str().c_str();
-                    }
+                    CString omStrIDFrom;
+                    omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
+                                        psFilter->m_dwMsgIDFrom );
+                    m_omMsgIDFrom.SetWindowText( omStrIDFrom );
                 }
-                // Apply the text
-                m_omMsgIDFrom.SetWindowText( omStrIDFrom );
             }
-            else
+            SFILTER_CAN sFilter;
+            BOOL bDataValid = bGetFilterData( sFilter );
+            m_omAddFilter.EnableWindow( bDataValid );
+            if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
             {
-                CString omStrIDFrom;
-                omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-                                    psFilter->m_dwMsgIDFrom );
-                m_omMsgIDFrom.SetWindowText( omStrIDFrom );
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( sFilter, sDisplayInfo );
+                vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
             }
         }
-			SFILTER_CAN sFilter;
-			BOOL bDataValid = bGetFilterData( sFilter );
-			m_omAddFilter.EnableWindow( bDataValid );
-			if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
-			{
-				SFILTERDISPLAYINFO sDisplayInfo;
-				vFormatDisplayString( sFilter, sDisplayInfo );
-				vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
-    }
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			m_omMsgType.ShowWindow(FALSE);
-			m_omMsgIDType.ShowWindow(FALSE);
+        else if(m_eCurrBUS == LIN)
+        {
+            m_omMsgType.ShowWindow(FALSE);
+            m_omMsgIDType.ShowWindow(FALSE);
 
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterAppliedLin->m_psFilters,
-				m_psFilterAppliedLin->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				SFILTER_LIN* psFilter = (SFILTER_LIN*)
-					(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-				psFilter->m_ucFilterType = defFILTER_TYPE_SINGLE_ID;// Update the UI
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterAppliedLin->m_psFilters,
+                                        m_psFilterAppliedLin->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                SFILTER_LIN* psFilter = (SFILTER_LIN*)
+                                        (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psFilter->m_ucFilterType = defFILTER_TYPE_SINGLE_ID;// Update the UI
 
-				CString omStrIDFrom = STR_EMPTY;
-				FRAME_STRUCT ouFrameStrct;
-				if(m_pClusterConfig != NULL)
-				{
-					if(S_OK == hGetFrameFromId(psFilter->m_dwMsgIDFrom, ouFrameStrct))
-					{
-						omStrIDFrom = ouFrameStrct.m_strFrameName.c_str();
-					}
-					if( omStrIDFrom.IsEmpty() == TRUE )
-					{
-						omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-							psFilter->m_dwMsgIDFrom );
-					}
-					else
-					{
-						if( omStrIDFrom != STR_EMPTY )
-						{
-							CString omIdWithMsg = _("");
-							omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
-							ostringstream oss;
-							oss << hex << omIdWithMsg << omStrIDFrom;
-							omStrIDFrom = (CString)oss.str().c_str();
-						}
-					}
-					m_omMsgIDFrom.SetWindowText( omStrIDFrom );
-				}
-				else
-				{
-					CString omStrIDFrom;
-					omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
-						psFilter->m_dwMsgIDFrom );
-					m_omMsgIDFrom.SetWindowText( omStrIDFrom );
-				}
-			}
-    // Validate and Update UI
-			SFILTER_LIN sFilter;
-    BOOL bDataValid = bGetFilterData( sFilter );
-    // Update Add Button
-    m_omAddFilter.EnableWindow( bDataValid );
+                CString omStrIDFrom = STR_EMPTY;
+                FRAME_STRUCT ouFrameStrct;
+                if(m_pClusterConfig != NULL)
+                {
+                    if(S_OK == hGetFrameFromId(psFilter->m_dwMsgIDFrom, ouFrameStrct))
+                    {
+                        omStrIDFrom = ouFrameStrct.m_strFrameName.c_str();
+                    }
+                    if( omStrIDFrom.IsEmpty() == TRUE )
+                    {
+                        omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
+                                            psFilter->m_dwMsgIDFrom );
+                    }
+                    else
+                    {
+                        if( omStrIDFrom != STR_EMPTY )
+                        {
+                            CString omIdWithMsg = _("");
+                            omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
+                            ostringstream oss;
+                            oss << hex << omIdWithMsg << omStrIDFrom;
+                            omStrIDFrom = (CString)oss.str().c_str();
+                        }
+                    }
+                    m_omMsgIDFrom.SetWindowText( omStrIDFrom );
+                }
+                else
+                {
+                    CString omStrIDFrom;
+                    omStrIDFrom.Format( defSTR_MSG_ID_FORMAT_NDB,
+                                        psFilter->m_dwMsgIDFrom );
+                    m_omMsgIDFrom.SetWindowText( omStrIDFrom );
+                }
+            }
+            // Validate and Update UI
+            SFILTER_LIN sFilter;
+            BOOL bDataValid = bGetFilterData( sFilter );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
 
-    if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
-    {
-        // Get Display Text
-        SFILTERDISPLAYINFO sDisplayInfo;
-        vFormatDisplayString( sFilter, sDisplayInfo );
-        vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
-			}
-		}
+            if( bDataValid == TRUE && m_nSelecetedFilterIndex != -1)
+            {
+                // Get Display Text
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( sFilter, sDisplayInfo );
+                vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
+            }
+        }
     }
 }
 
@@ -1807,11 +1807,11 @@ void CFilterConfigDlg::OnRadioRange()
     // Enable ID Control
     m_omMsgIDRangeFrom.EnableWindow( );
     m_omMsgIDRangeTo.EnableWindow( );
-	m_omMsgDirection.EnableWindow(TRUE);
-	m_omEventType.EnableWindow(FALSE);
+    m_omMsgDirection.EnableWindow(TRUE);
+    m_omEventType.EnableWindow(FALSE);
 
-	m_omMsgType.EnableWindow(TRUE);
-	m_omMsgIDType.EnableWindow(TRUE);
+    m_omMsgType.EnableWindow(TRUE);
+    m_omMsgIDType.EnableWindow(TRUE);
 
     // Update selected item
     if( m_nSelecetedFilterIndex != -1 )
@@ -1819,63 +1819,63 @@ void CFilterConfigDlg::OnRadioRange()
         // Update Text
         CString omStrFilterName = m_omLstcFilterList.GetItemText(
                                       m_nSelecetedNamedFilterIndex, 0 );
-		if(m_eCurrBUS == CAN)
-		{
-			m_omMsgType.ShowWindow(TRUE);
-			m_omMsgIDType.ShowWindow(TRUE);
-			m_omMsgType.EnableWindow(TRUE);
-			m_omMsgIDType.EnableWindow(TRUE);
-
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterApplied->m_psFilters,
-				m_psFilterApplied->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-        if( psTempSet != NULL )
+        if(m_eCurrBUS == CAN)
         {
-            SFILTER_CAN* psFilter =
-                (SFILTER_CAN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-            psFilter->m_ucFilterType = defFILTER_TYPE_ID_RANGE;
-            if( psFilter->m_dwMsgIDTo <= psFilter->m_dwMsgIDFrom )
+            m_omMsgType.ShowWindow(TRUE);
+            m_omMsgIDType.ShowWindow(TRUE);
+            m_omMsgType.EnableWindow(TRUE);
+            m_omMsgIDType.EnableWindow(TRUE);
+
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterApplied->m_psFilters,
+                                        m_psFilterApplied->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
             {
-                psFilter->m_dwMsgIDTo =psFilter->m_dwMsgIDFrom + 1;
+                SFILTER_CAN* psFilter =
+                    (SFILTER_CAN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psFilter->m_ucFilterType = defFILTER_TYPE_ID_RANGE;
+                if( psFilter->m_dwMsgIDTo <= psFilter->m_dwMsgIDFrom )
+                {
+                    psFilter->m_dwMsgIDTo =psFilter->m_dwMsgIDFrom + 1;
+                }
+
+                // Update UI
+                // Get Display Text
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( *psFilter, sDisplayInfo );
+                vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
+
+                m_omMsgIDRangeFrom.vSetValue( psFilter->m_dwMsgIDFrom );
+                m_omMsgIDRangeTo.vSetValue( psFilter->m_dwMsgIDTo );
             }
-
-            // Update UI
-            // Get Display Text
-            SFILTERDISPLAYINFO sDisplayInfo;
-            vFormatDisplayString( *psFilter, sDisplayInfo );
-            vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
-
-            m_omMsgIDRangeFrom.vSetValue( psFilter->m_dwMsgIDFrom );
-            m_omMsgIDRangeTo.vSetValue( psFilter->m_dwMsgIDTo );
         }
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			m_omMsgType.ShowWindow(FALSE);
-			m_omMsgIDType.ShowWindow(FALSE);
+        else if(m_eCurrBUS == LIN)
+        {
+            m_omMsgType.ShowWindow(FALSE);
+            m_omMsgIDType.ShowWindow(FALSE);
 
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterAppliedLin->m_psFilters,
-				m_psFilterAppliedLin->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				SFILTER_LIN* psFilter =
-					(SFILTER_LIN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-				psFilter->m_ucFilterType = defFILTER_TYPE_ID_RANGE;
-				if( psFilter->m_dwMsgIDTo <= psFilter->m_dwMsgIDFrom )
-				{
-					psFilter->m_dwMsgIDTo =psFilter->m_dwMsgIDFrom + 1;
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterAppliedLin->m_psFilters,
+                                        m_psFilterAppliedLin->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                SFILTER_LIN* psFilter =
+                    (SFILTER_LIN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psFilter->m_ucFilterType = defFILTER_TYPE_ID_RANGE;
+                if( psFilter->m_dwMsgIDTo <= psFilter->m_dwMsgIDFrom )
+                {
+                    psFilter->m_dwMsgIDTo =psFilter->m_dwMsgIDFrom + 1;
+                }
+                SFILTERDISPLAYINFO sDisplayInfo;
+                vFormatDisplayString( *psFilter, sDisplayInfo );
+                vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
+                m_omMsgIDRangeFrom.vSetValue( psFilter->m_dwMsgIDFrom );
+                m_omMsgIDRangeTo.vSetValue( psFilter->m_dwMsgIDTo );
+            }
+        }
     }
-				SFILTERDISPLAYINFO sDisplayInfo;
-				vFormatDisplayString( *psFilter, sDisplayInfo );
-				vUpdateFilterListDetails( m_nSelecetedFilterIndex, sDisplayInfo );
-				m_omMsgIDRangeFrom.vSetValue( psFilter->m_dwMsgIDFrom );
-				m_omMsgIDRangeTo.vSetValue( psFilter->m_dwMsgIDTo );
-			}
-		}
-	}
     // To validate the range
     m_omMsgIDRangeFrom.vSetValue( m_omMsgIDRangeFrom.lGetValue() );
 
@@ -1889,33 +1889,33 @@ void CFilterConfigDlg::OnUpdateEditRange()
 {
     if( m_bDisableFilterCompUpdate == FALSE )
     {
-		if(m_eCurrBUS == CAN)
-		{
-        SFILTER_CAN sFilter;
-        // Get Message From UI and Validate
-        BOOL bDataValid = bGetFilterData( sFilter );
-        // Update Add Button
-        m_omAddFilter.EnableWindow( bDataValid );
-        // Update Add Button
-        m_omAddFilter.EnableWindow( bDataValid );
-        if( bDataValid == TRUE &&
-                // Check for selection in the filter list
-                m_nSelecetedFilterIndex != -1 )
+        if(m_eCurrBUS == CAN)
         {
-            bUpdateSelectedItem( sFilter );
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			SFILTER_LIN sFilter;
-			BOOL bDataValid = bGetFilterData( sFilter );
-			m_omAddFilter.EnableWindow( bDataValid );
-			m_omAddFilter.EnableWindow( bDataValid );
-			if( bDataValid == TRUE &&
-					m_nSelecetedFilterIndex != -1 )
-			{
-				bUpdateSelectedItem( sFilter );
-			}
+            SFILTER_CAN sFilter;
+            // Get Message From UI and Validate
+            BOOL bDataValid = bGetFilterData( sFilter );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
+            if( bDataValid == TRUE &&
+                    // Check for selection in the filter list
+                    m_nSelecetedFilterIndex != -1 )
+            {
+                bUpdateSelectedItem( sFilter );
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            SFILTER_LIN sFilter;
+            BOOL bDataValid = bGetFilterData( sFilter );
+            m_omAddFilter.EnableWindow( bDataValid );
+            m_omAddFilter.EnableWindow( bDataValid );
+            if( bDataValid == TRUE &&
+                    m_nSelecetedFilterIndex != -1 )
+            {
+                bUpdateSelectedItem( sFilter );
+            }
         }
     }
 }
@@ -1927,75 +1927,75 @@ void CFilterConfigDlg::OnUpdateEditRange()
  */
 void CFilterConfigDlg::OnEditChangeMsgIDCombo()
 {
-	if(m_eCurrBUS == CAN)
-	{
-    SFILTER_CAN sFilter;
-    // Get Message From UI and Validate
-    BOOL bDataValid = bGetFilterData( sFilter );
-    // Update Add Button
-    m_omAddFilter.EnableWindow( bDataValid );
-
-    if( bDataValid == TRUE )
+    if(m_eCurrBUS == CAN)
     {
-        // Check whether is DB Message.
-        //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
-        if( m_psMsgSignal != NULL )
+        SFILTER_CAN sFilter;
+        // Get Message From UI and Validate
+        BOOL bDataValid = bGetFilterData( sFilter );
+        // Update Add Button
+        m_omAddFilter.EnableWindow( bDataValid );
+
+        if( bDataValid == TRUE )
         {
-            sMESSAGE* pMessage = NULL;
-            if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, sFilter.m_dwMsgIDFrom,  pMessage)
-                    == TRUE)
+            // Check whether is DB Message.
+            //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
+            if( m_psMsgSignal != NULL )
             {
-                // Update Message Type Combobox and the struct
-                m_omMsgIDType.SetCurSel( pMessage->m_bMessageFrameFormat );
-
-                // Updating the Id type (Standard or Extended)
-                if(pMessage->m_bMessageFrameFormat == FALSE)
+                sMESSAGE* pMessage = NULL;
+                if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, sFilter.m_dwMsgIDFrom,  pMessage)
+                        == TRUE)
                 {
-                    sFilter.m_byIDType = TYPE_ID_CAN_STANDARD;
-                }
-                else if(pMessage->m_bMessageFrameFormat == TRUE)
-                {
-                    sFilter.m_byIDType = TYPE_ID_CAN_EXTENDED;
-                }
+                    // Update Message Type Combobox and the struct
+                    m_omMsgIDType.SetCurSel( pMessage->m_bMessageFrameFormat );
 
-                /*sFilter.m_byMsgType =
-                    static_cast<UCHAR>( pMessage->m_bMessageFrameFormat );*/
+                    // Updating the Id type (Standard or Extended)
+                    if(pMessage->m_bMessageFrameFormat == FALSE)
+                    {
+                        sFilter.m_byIDType = TYPE_ID_CAN_STANDARD;
+                    }
+                    else if(pMessage->m_bMessageFrameFormat == TRUE)
+                    {
+                        sFilter.m_byIDType = TYPE_ID_CAN_EXTENDED;
+                    }
+
+                    /*sFilter.m_byMsgType =
+                        static_cast<UCHAR>( pMessage->m_bMessageFrameFormat );*/
+                }
+            }
+            // Check for selection in the filter list
+            if( m_nSelecetedFilterIndex != -1 )
+            {
+                // Update Data
+                bUpdateSelectedItem( sFilter );
             }
         }
-        // Check for selection in the filter list
-        if( m_nSelecetedFilterIndex != -1 )
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        SFILTER_LIN sFilter;
+        BOOL bDataValid = bGetFilterData( sFilter );
+        m_omAddFilter.EnableWindow( bDataValid );
+        if(bDataValid == TRUE )
         {
-            // Update Data
-            bUpdateSelectedItem( sFilter );
-			}
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		SFILTER_LIN sFilter;
-		BOOL bDataValid = bGetFilterData( sFilter );
-		m_omAddFilter.EnableWindow( bDataValid );
-		if(bDataValid == TRUE )
-		{
-			if( m_nSelecetedFilterIndex != -1 )
-			{
-				bUpdateSelectedItem( sFilter );
-			}
-		}
-	}
+            if( m_nSelecetedFilterIndex != -1 )
+            {
+                bUpdateSelectedItem( sFilter );
+            }
+        }
+    }
 }
 
-HRESULT CFilterConfigDlg::hGetFrameFromId(UINT unSlotId, FRAME_STRUCT &ouFrameStrct)
+HRESULT CFilterConfigDlg::hGetFrameFromId(UINT unSlotId, FRAME_STRUCT& ouFrameStrct)
 {
-	list<FRAME_STRUCT> lstFrameStrct;
+    list<FRAME_STRUCT> lstFrameStrct;
 
-	for(INT nIndex = 0; nIndex < m_pClusterConfig->m_nChannelsConfigured; nIndex++)
-	{
-		if(S_OK == m_pClusterConfig->m_ouFlexChannelConfig[nIndex].GetFrame(unSlotId, ouFrameStrct))
-		{
-			return S_OK;
-		}
-	}
+    for(INT nIndex = 0; nIndex < m_pClusterConfig->m_nChannelsConfigured; nIndex++)
+    {
+        if(S_OK == m_pClusterConfig->m_ouFlexChannelConfig[nIndex].GetFrame(unSlotId, ouFrameStrct))
+        {
+            return S_OK;
+        }
+    }
 }
 
 /**
@@ -2008,99 +2008,99 @@ void CFilterConfigDlg::OnSelchangeFilterComponentCombo()
 {
     if( m_bDisableFilterCompUpdate == FALSE )
     {
-		if(m_eCurrBUS == CAN)
-		{
-			SFILTER_CAN sFilter;
-			// Get Message From UI and Validate
-			BOOL bDataValid = bGetFilterData( sFilter );
-			// Update Add Button
-			m_omAddFilter.EnableWindow( bDataValid );
+        if(m_eCurrBUS == CAN)
+        {
+            SFILTER_CAN sFilter;
+            // Get Message From UI and Validate
+            BOOL bDataValid = bGetFilterData( sFilter );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
 
-			if( bDataValid == TRUE &&
-				// Check for selection in the filter list
-					m_nSelecetedFilterIndex != -1 )
-			{
-				// Update Data
-				bUpdateSelectedItem( sFilter );
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			vPopulateChannelDBMessages();
+            if( bDataValid == TRUE &&
+                    // Check for selection in the filter list
+                    m_nSelecetedFilterIndex != -1 )
+            {
+                // Update Data
+                bUpdateSelectedItem( sFilter );
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            vPopulateChannelDBMessages();
 
-			SFILTER_LIN sFilter;
-			// Get Message From UI and Validate
-			BOOL bDataValid = bGetFilterData( sFilter );
-			// Update Add Button
-			m_omAddFilter.EnableWindow( bDataValid );
+            SFILTER_LIN sFilter;
+            // Get Message From UI and Validate
+            BOOL bDataValid = bGetFilterData( sFilter );
+            // Update Add Button
+            m_omAddFilter.EnableWindow( bDataValid );
 
-			if( bDataValid == TRUE &&
-				// Check for selection in the filter list
-					m_nSelecetedFilterIndex != -1 )
-			{
-				// Update Data
-				bUpdateSelectedItem( sFilter );
-			}
-		}
+            if( bDataValid == TRUE &&
+                    // Check for selection in the filter list
+                    m_nSelecetedFilterIndex != -1 )
+            {
+                // Update Data
+                bUpdateSelectedItem( sFilter );
+            }
+        }
     }
 }
 
 void CFilterConfigDlg::vPopulateChannelDBMessages()
 {
-	CString strChnlNum;
-	m_omMsgChannel.GetWindowText(strChnlNum);
+    CString strChnlNum;
+    m_omMsgChannel.GetWindowText(strChnlNum);
 
-	UINT unChnlIndex = atoi(strChnlNum);
+    UINT unChnlIndex = atoi(strChnlNum);
 
-	if(unChnlIndex > 0)
-	{
-		list<FRAME_STRUCT> lstFrameStrct;
-		m_pClusterConfig->m_ouFlexChannelConfig[unChnlIndex - 1].m_ouClusterInfo.GetFrames(lstFrameStrct);
+    if(unChnlIndex > 0)
+    {
+        list<FRAME_STRUCT> lstFrameStrct;
+        m_pClusterConfig->m_ouFlexChannelConfig[unChnlIndex - 1].m_ouClusterInfo.GetFrames(lstFrameStrct);
 
-		CString omMsgId = "";
-		/*m_omMsgIDFrom.GetWindowText(omMsgId);*/
-		UINT unMsgId = nGetMsgIDFromCombo( m_omMsgIDFrom );
+        CString omMsgId = "";
+        /*m_omMsgIDFrom.GetWindowText(omMsgId);*/
+        UINT unMsgId = nGetMsgIDFromCombo( m_omMsgIDFrom );
 
-		m_omMsgIDFrom.ResetContent();
-		BOOL bIsMsgExists = FALSE;
+        m_omMsgIDFrom.ResetContent();
+        BOOL bIsMsgExists = FALSE;
 
-		if(lstFrameStrct.size() > 0)
-		{
-			list<FRAME_STRUCT>::iterator itrFrameStrct = lstFrameStrct.begin();
+        if(lstFrameStrct.size() > 0)
+        {
+            list<FRAME_STRUCT>::iterator itrFrameStrct = lstFrameStrct.begin();
 
-			while(itrFrameStrct != lstFrameStrct.end())
-			{	
-				char omStrMsgId[MAX_PATH] = "";
-				//sprintf_s(omStrMsgId, MAX_PATH, defSTR_MSG_ID_IN_HEX, itrFrame->m_nSlotId);
+            while(itrFrameStrct != lstFrameStrct.end())
+            {
+                char omStrMsgId[MAX_PATH] = "";
+                //sprintf_s(omStrMsgId, MAX_PATH, defSTR_MSG_ID_IN_HEX, itrFrame->m_nSlotId);
 
-				sprintf_s(omStrMsgId, MAX_PATH, "[0x%x]%s", itrFrameStrct->m_nSlotId, itrFrameStrct->m_strFrameName.c_str());
+                sprintf_s(omStrMsgId, MAX_PATH, "[0x%x]%s", itrFrameStrct->m_nSlotId, itrFrameStrct->m_strFrameName.c_str());
 
-				m_omMsgIDFrom.AddString(omStrMsgId);
+                m_omMsgIDFrom.AddString(omStrMsgId);
 
-				if(unMsgId == itrFrameStrct->m_nSlotId)
-				{
-					omMsgId = omStrMsgId;
-					bIsMsgExists = TRUE;
-				}
+                if(unMsgId == itrFrameStrct->m_nSlotId)
+                {
+                    omMsgId = omStrMsgId;
+                    bIsMsgExists = TRUE;
+                }
 
-				itrFrameStrct++;
-			}
-		}
+                itrFrameStrct++;
+            }
+        }
 
-		if(bIsMsgExists == TRUE)
-		{
-			m_omMsgIDFrom.SetWindowText(omMsgId);
-		}
-		else
-		{
-			CString omStr = STR_EMPTY;
-			ostringstream oss;
-            oss << hex << unMsgId;           
+        if(bIsMsgExists == TRUE)
+        {
+            m_omMsgIDFrom.SetWindowText(omMsgId);
+        }
+        else
+        {
+            CString omStr = STR_EMPTY;
+            ostringstream oss;
+            oss << hex << unMsgId;
             string strMsgId = oss.str();
-			
-			m_omMsgIDFrom.SetWindowText(strMsgId.c_str());
-		}
-	}
+
+            m_omMsgIDFrom.SetWindowText(strMsgId.c_str());
+        }
+    }
 }
 
 /**
@@ -2124,16 +2124,16 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
 {
     // Get Filter Type
     BOOL bIDFilter = m_omRadioID.GetCheck();
-    BOOL bDataValid = FALSE;	
-	BOOL bRange = FALSE, bEventType = FALSE;
+    BOOL bDataValid = FALSE;
+    BOOL bRange = FALSE, bEventType = FALSE;
 
-	 CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
+    CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
     if( pWnd != NULL )
     {
-		bRange = pWnd->GetCheck();
-	}
+        bRange = pWnd->GetCheck();
+    }
 
-	bEventType = m_omRadioEvent.GetCheck();
+    bEventType = m_omRadioEvent.GetCheck();
 
     // For Single Message ID
     if( bIDFilter != 0 )
@@ -2396,41 +2396,41 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
             }
         }
     }
-	else if(bEventType == TRUE)
-	{
-		CString omStrEventName( STR_EMPTY );
+    else if(bEventType == TRUE)
+    {
+        CString omStrEventName( STR_EMPTY );
 
-		m_omEventType.GetWindowText(omStrEventName);
+        m_omEventType.GetWindowText(omStrEventName);
 
-		if(omStrEventName.IsEmpty() == FALSE)
-		{
-			bDataValid = TRUE;
+        if(omStrEventName.IsEmpty() == FALSE)
+        {
+            bDataValid = TRUE;
 
-			// Filter Type
-			sFilter.m_ucFilterType = defFILTER_TYPE_EVENT;
-			sFilter.m_omEventName = omStrEventName;
-			// Message ID
-			sFilter.m_dwMsgIDFrom = 0;
-			// Set Message ID To to the same value
-			sFilter.m_dwMsgIDTo = 0;    
-			sFilter.m_eDrctn  = DIR_ALL;
-			
-			// Set Channel
-			UINT Index = static_cast<UCHAR>( m_omMsgChannel.GetCurSel());
-			if (Index == 0)
-			{
-				sFilter.m_eChannel = CAN_CHANNEL_ALL;
-			}
-			else if ((Index >= CHANNEL_CAN_MIN) && (Index <= m_nHardware))
-			{
-				sFilter.m_eChannel = Index;
-			}
-			else
-			{
-				sFilter.m_eChannel = CHANNEL_All_UNSPECIFIED;
-			}
-		}
-	}
+            // Filter Type
+            sFilter.m_ucFilterType = defFILTER_TYPE_EVENT;
+            sFilter.m_omEventName = omStrEventName;
+            // Message ID
+            sFilter.m_dwMsgIDFrom = 0;
+            // Set Message ID To to the same value
+            sFilter.m_dwMsgIDTo = 0;
+            sFilter.m_eDrctn  = DIR_ALL;
+
+            // Set Channel
+            UINT Index = static_cast<UCHAR>( m_omMsgChannel.GetCurSel());
+            if (Index == 0)
+            {
+                sFilter.m_eChannel = CAN_CHANNEL_ALL;
+            }
+            else if ((Index >= CHANNEL_CAN_MIN) && (Index <= m_nHardware))
+            {
+                sFilter.m_eChannel = Index;
+            }
+            else
+            {
+                sFilter.m_eChannel = CHANNEL_All_UNSPECIFIED;
+            }
+        }
+    }
 
     // IF valid data then clear status message
     if( bDataValid == TRUE )
@@ -2450,15 +2450,15 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
 {
     // Get Filter Type
     BOOL bIDFilter = m_omRadioID.GetCheck();
-	BOOL bRange = FALSE, bEventType = FALSE;
+    BOOL bRange = FALSE, bEventType = FALSE;
 
-	 CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
+    CButton* pWnd = (CButton*)GetDlgItem(IDC_RADIO_RANGE);
     if( pWnd != NULL )
     {
-		bRange = pWnd->GetCheck();
-	}
+        bRange = pWnd->GetCheck();
+    }
 
-	bEventType = m_omRadioEvent.GetCheck();
+    bEventType = m_omRadioEvent.GetCheck();
 
     BOOL bDataValid = FALSE;
 
@@ -2470,17 +2470,15 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
         // Proceed if ID is valid
         if( nMsgID != -1 && nMsgID >= 0 )
         {
-            // Check for ID Range
+            if(nMsgID >= 0 && nMsgID <= defMAX_LMT_LIN_MSG_ID)
+            {
+                bDataValid = TRUE;
+            }
+            else
+            {
+                vSetStatusText(_("Valid range for LIN Message ID is 0 - 0x3F"));
+            }
 
-			if(nMsgID >= 0 && nMsgID <= defMAX_LMT_LIN_MSG_ID)
-			{
-				bDataValid = TRUE;
-			}
-			else
-			{
-				vSetStatusText(_("Valid range for LIN Message ID is 0 - 63"));
-			}
-            
             // Copy data if data is valid
             if( bDataValid == TRUE )
             {
@@ -2489,8 +2487,8 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
                 // Message ID
                 sFilter.m_dwMsgIDFrom = nMsgID;
                 // Set Message ID To to the same value
-                sFilter.m_dwMsgIDTo = nMsgID;             
-               
+                sFilter.m_dwMsgIDTo = nMsgID;
+
                 // Set the Direction
                 switch( m_omMsgDirection.GetCurSel())
                 {
@@ -2516,7 +2514,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
                 {
                     sFilter.m_eChannel = CAN_CHANNEL_ALL;
                 }
-				else if ((Index >= CHANNEL_CAN_MIN) && (Index <= m_pClusterConfig->m_nChannelsConfigured))
+                else if ((Index >= CHANNEL_CAN_MIN) && (Index <= m_pClusterConfig->m_nChannelsConfigured))
                 {
                     sFilter.m_eChannel = Index;
                 }
@@ -2533,33 +2531,33 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
     }
     else if(bRange == TRUE)
     {
-		// Get Message Range
-		UINT unMsgIDFrom = static_cast<UINT>(m_omMsgIDRangeFrom.lGetValue());
-		UINT unMsgIDTo = static_cast<UINT>(m_omMsgIDRangeTo.lGetValue());
+        // Get Message Range
+        UINT unMsgIDFrom = static_cast<UINT>(m_omMsgIDRangeFrom.lGetValue());
+        UINT unMsgIDTo = static_cast<UINT>(m_omMsgIDRangeTo.lGetValue());
 
-		if( unMsgIDFrom >= 0 && unMsgIDFrom <= defMAX_LMT_LIN_MSG_ID)
-		{
-			bDataValid = TRUE;
-		}
-		else
-		{
-			vSetStatusText(_("Valid range for LIN Message ID is 0 - 63"));
-		}
-      
-		if( bDataValid == TRUE )
-		{
-			// Set ID Valid to false
-			bDataValid = FALSE;
-			
-			if( unMsgIDTo <= defMAX_LMT_LIN_MSG_ID )
-			{
-				bDataValid = TRUE;
-			}
-			else
-			{
-				vSetStatusText(_("Valid range for LIN Message ID is 0 - 63"));
-			}
-		}
+        if( unMsgIDFrom >= 0 && unMsgIDFrom <= defMAX_LMT_LIN_MSG_ID)
+        {
+            bDataValid = TRUE;
+        }
+        else
+        {
+            vSetStatusText(_("Valid range for LIN Message ID is 0 - 0x3F"));
+        }
+
+        if( bDataValid == TRUE )
+        {
+            // Set ID Valid to false
+            bDataValid = FALSE;
+
+            if( unMsgIDTo <= defMAX_LMT_LIN_MSG_ID )
+            {
+                bDataValid = TRUE;
+            }
+            else
+            {
+                vSetStatusText(_("Valid range for LIN Message ID is 0 - 0x3F"));
+            }
+        }
 
         // Check for range
         if( bDataValid == TRUE && unMsgIDFrom >= unMsgIDTo )
@@ -2575,7 +2573,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
             // Message ID
             sFilter.m_dwMsgIDFrom = unMsgIDFrom;
             // Set Message ID To to the same value
-            sFilter.m_dwMsgIDTo = unMsgIDTo;           
+            sFilter.m_dwMsgIDTo = unMsgIDTo;
             // Set the Direction
             switch( m_omMsgDirection.GetCurSel())
             {
@@ -2612,41 +2610,41 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
             }
         }
     }
-	else if(bEventType == TRUE)
-	{
-		CString omStrEventName( STR_EMPTY );
+    else if(bEventType == TRUE)
+    {
+        CString omStrEventName( STR_EMPTY );
 
-		m_omEventType.GetWindowText(omStrEventName);
+        m_omEventType.GetWindowText(omStrEventName);
 
-		if(omStrEventName.IsEmpty() == FALSE)
-		{
-			bDataValid = TRUE;
+        if(omStrEventName.IsEmpty() == FALSE)
+        {
+            bDataValid = TRUE;
 
-			// Filter Type
-			sFilter.m_ucFilterType = defFILTER_TYPE_EVENT;
-			sFilter.m_omEventName = omStrEventName;
-			// Message ID
-			sFilter.m_dwMsgIDFrom = 0;
-			// Set Message ID To to the same value
-			sFilter.m_dwMsgIDTo = 0;    
-			sFilter.m_eDrctn  = DIR_ALL;
-			
-			// Set Channel
-			UINT Index = static_cast<UCHAR>( m_omMsgChannel.GetCurSel());
-			if (Index == 0)
-			{
-				sFilter.m_eChannel = CAN_CHANNEL_ALL;
-			}
-			else if ((Index >= CHANNEL_CAN_MIN) && (Index <= m_pClusterConfig->m_nChannelsConfigured))
-			{
-				sFilter.m_eChannel = Index;
-			}
-			else
-			{
-				sFilter.m_eChannel = CHANNEL_All_UNSPECIFIED;
-			}
-		}		
-	}
+            // Filter Type
+            sFilter.m_ucFilterType = defFILTER_TYPE_EVENT;
+            sFilter.m_omEventName = omStrEventName;
+            // Message ID
+            sFilter.m_dwMsgIDFrom = 0;
+            // Set Message ID To to the same value
+            sFilter.m_dwMsgIDTo = 0;
+            sFilter.m_eDrctn  = DIR_ALL;
+
+            // Set Channel
+            UINT Index = static_cast<UCHAR>( m_omMsgChannel.GetCurSel());
+            if (Index == 0)
+            {
+                sFilter.m_eChannel = CAN_CHANNEL_ALL;
+            }
+            else if ((Index >= CHANNEL_CAN_MIN) && (Index <= m_pClusterConfig->m_nChannelsConfigured))
+            {
+                sFilter.m_eChannel = Index;
+            }
+            else
+            {
+                sFilter.m_eChannel = CHANNEL_All_UNSPECIFIED;
+            }
+        }
+    }
     // IF valid data then clear status message
     if( bDataValid == TRUE )
     {
@@ -2712,15 +2710,15 @@ void CFilterConfigDlg::vFormatDisplayString(
     // If database is valid
     if( sFilter.m_ucFilterType == defFILTER_TYPE_SINGLE_ID )
     {
-		m_omMsgDirection.EnableWindow( TRUE );
+        m_omMsgDirection.EnableWindow( TRUE );
         // Get the database name for ID From
         CString omStr = STR_EMPTY;
 
-		FRAME_STRUCT ouFrameStrct;
-		if(S_OK == hGetFrameFromId(sFilter.m_dwMsgIDFrom, ouFrameStrct))
-		{
-			omStr = ouFrameStrct.m_strFrameName.c_str();
-		}
+        FRAME_STRUCT ouFrameStrct;
+        if(S_OK == hGetFrameFromId(sFilter.m_dwMsgIDFrom, ouFrameStrct))
+        {
+            omStr = ouFrameStrct.m_strFrameName.c_str();
+        }
 
         if( omStr != STR_EMPTY )
         {
@@ -2740,7 +2738,7 @@ void CFilterConfigDlg::vFormatDisplayString(
     }
     else if( sFilter.m_ucFilterType == defFILTER_TYPE_ID_RANGE )
     {
-		m_omMsgDirection.EnableWindow( TRUE );
+        m_omMsgDirection.EnableWindow( TRUE );
         // Range of messages
         // Format ID FRom
         ostringstream oss1;
@@ -2752,13 +2750,13 @@ void CFilterConfigDlg::vFormatDisplayString(
         // Update Image Index
         sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_ID_RANGE;
     }
-	else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
-	{
-		m_omMsgDirection.EnableWindow( FALSE );
-		sFilterDisplyInfo.m_omStrMsgIDFrom = sFilter.m_omEventName;
-		// Update Image Index
-		sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_DB;       
-	}
+    else if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
+    {
+        m_omMsgDirection.EnableWindow( FALSE );
+        sFilterDisplyInfo.m_omStrMsgIDFrom = sFilter.m_omEventName;
+        // Update Image Index
+        sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_DB;
+    }
 
     // Message Direction
     switch( sFilter.m_eDrctn )
@@ -2933,40 +2931,40 @@ BOOL CFilterConfigDlg::bAddNewItem(SFILTER_LIN& sFilter)
  */
 void CFilterConfigDlg::OnBtnAddFilterToList()
 {
-	if(m_eCurrBUS == CAN)
-	{
-		// Get the Filter Details from the UI
-		SFILTER_CAN sFilter;
-		BOOL bDataValid = bGetFilterData(sFilter);
-		if( bDataValid == TRUE )
-		{
-			// Add the Filter to the selected Named Filter
-			bAddNewItem( sFilter );
-			vEnableDisableButtons();
-		}
-		else
-		{
-			// Disable Add Button
-			m_omAddFilter.EnableWindow( FALSE );
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		// Get the Filter Details from the UI
-		SFILTER_LIN sFilter;
-		BOOL bDataValid = bGetFilterData(sFilter);
-		if( bDataValid == TRUE )
-		{
-			// Add the Filter to the selected Named Filter
-			bAddNewItem( sFilter );
-			vEnableDisableButtons();
-		}
-		else
-		{
-			// Disable Add Button
-			m_omAddFilter.EnableWindow( FALSE );
-		}
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        // Get the Filter Details from the UI
+        SFILTER_CAN sFilter;
+        BOOL bDataValid = bGetFilterData(sFilter);
+        if( bDataValid == TRUE )
+        {
+            // Add the Filter to the selected Named Filter
+            bAddNewItem( sFilter );
+            vEnableDisableButtons();
+        }
+        else
+        {
+            // Disable Add Button
+            m_omAddFilter.EnableWindow( FALSE );
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        // Get the Filter Details from the UI
+        SFILTER_LIN sFilter;
+        BOOL bDataValid = bGetFilterData(sFilter);
+        if( bDataValid == TRUE )
+        {
+            // Add the Filter to the selected Named Filter
+            bAddNewItem( sFilter );
+            vEnableDisableButtons();
+        }
+        else
+        {
+            // Disable Add Button
+            m_omAddFilter.EnableWindow( FALSE );
+        }
+    }
 }
 
 /**
@@ -2980,78 +2978,78 @@ void CFilterConfigDlg::OnBtnDeleteFilter()
     {
         CString omStrFilterName = m_omLstcFilterList.GetItemText(
                                       m_nSelecetedNamedFilterIndex, 0 );
-		if(m_eCurrBUS == CAN)
-		{
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterApplied->m_psFilters,
-				m_psFilterApplied->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				SFILTER_CAN* psSrc = NULL;
-				SFILTER_CAN* psDest = NULL;
-				psDest = (SFILTER_CAN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-				psSrc  = (SFILTER_CAN*)(psTempSet->m_psFilterInfo) + (psTempSet->m_ushFilters - 1);
-				*psDest = *psSrc;
-				psSrc->vClear();
-				psSrc = NULL;
-				--(psTempSet->m_ushFilters);
+        if(m_eCurrBUS == CAN)
+        {
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterApplied->m_psFilters,
+                                        m_psFilterApplied->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                SFILTER_CAN* psSrc = NULL;
+                SFILTER_CAN* psDest = NULL;
+                psDest = (SFILTER_CAN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psSrc  = (SFILTER_CAN*)(psTempSet->m_psFilterInfo) + (psTempSet->m_ushFilters - 1);
+                *psDest = *psSrc;
+                psSrc->vClear();
+                psSrc = NULL;
+                --(psTempSet->m_ushFilters);
 
-				// Disable UI Update
-				m_bUpdating = TRUE;
-				// Delete the selected item from the list
-				m_omLstcFilterDetails.DeleteItem( m_nSelecetedFilterIndex );
-				// Enable UI Update
-				m_bUpdating = FALSE;
-				vEnableDisableButtons();
-				if( m_nSelecetedFilterIndex > psTempSet->m_ushFilters - 1 )
-				{
-					// Update Selected indes
-					m_nSelecetedFilterIndex = psTempSet->m_ushFilters - 1;
-				}
+                // Disable UI Update
+                m_bUpdating = TRUE;
+                // Delete the selected item from the list
+                m_omLstcFilterDetails.DeleteItem( m_nSelecetedFilterIndex );
+                // Enable UI Update
+                m_bUpdating = FALSE;
+                vEnableDisableButtons();
+                if( m_nSelecetedFilterIndex > psTempSet->m_ushFilters - 1 )
+                {
+                    // Update Selected indes
+                    m_nSelecetedFilterIndex = psTempSet->m_ushFilters - 1;
+                }
 
-				// Set the selection to this item
-				m_omLstcFilterDetails.SetItemState( m_nSelecetedFilterIndex,
-					LVIS_SELECTED | LVIS_FOCUSED,
-					LVIS_SELECTED | LVIS_FOCUSED );
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterAppliedLin->m_psFilters,
-				m_psFilterAppliedLin->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				SFILTER_LIN* psSrc = NULL;
-				SFILTER_LIN* psDest = NULL;
-				psDest = (SFILTER_LIN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
-				psSrc  = (SFILTER_LIN*)(psTempSet->m_psFilterInfo) + (psTempSet->m_ushFilters - 1);
-				*psDest = *psSrc;
-				psSrc->vClear();
-				psSrc = NULL;
-				--(psTempSet->m_ushFilters);
+                // Set the selection to this item
+                m_omLstcFilterDetails.SetItemState( m_nSelecetedFilterIndex,
+                                                    LVIS_SELECTED | LVIS_FOCUSED,
+                                                    LVIS_SELECTED | LVIS_FOCUSED );
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterAppliedLin->m_psFilters,
+                                        m_psFilterAppliedLin->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                SFILTER_LIN* psSrc = NULL;
+                SFILTER_LIN* psDest = NULL;
+                psDest = (SFILTER_LIN*)(psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
+                psSrc  = (SFILTER_LIN*)(psTempSet->m_psFilterInfo) + (psTempSet->m_ushFilters - 1);
+                *psDest = *psSrc;
+                psSrc->vClear();
+                psSrc = NULL;
+                --(psTempSet->m_ushFilters);
 
-				// Disable UI Update
-				m_bUpdating = TRUE;
-				// Delete the selected item from the list
-				m_omLstcFilterDetails.DeleteItem( m_nSelecetedFilterIndex );
-				// Enable UI Update
-				m_bUpdating = FALSE;
-				vEnableDisableButtons();
-				if( m_nSelecetedFilterIndex > psTempSet->m_ushFilters - 1 )
-				{
-					// Update Selected indes
-					m_nSelecetedFilterIndex = psTempSet->m_ushFilters - 1;
-				}
+                // Disable UI Update
+                m_bUpdating = TRUE;
+                // Delete the selected item from the list
+                m_omLstcFilterDetails.DeleteItem( m_nSelecetedFilterIndex );
+                // Enable UI Update
+                m_bUpdating = FALSE;
+                vEnableDisableButtons();
+                if( m_nSelecetedFilterIndex > psTempSet->m_ushFilters - 1 )
+                {
+                    // Update Selected indes
+                    m_nSelecetedFilterIndex = psTempSet->m_ushFilters - 1;
+                }
 
-				// Set the selection to this item
-				m_omLstcFilterDetails.SetItemState( m_nSelecetedFilterIndex,
-					LVIS_SELECTED | LVIS_FOCUSED,
-					LVIS_SELECTED | LVIS_FOCUSED );
-			}
-		}
+                // Set the selection to this item
+                m_omLstcFilterDetails.SetItemState( m_nSelecetedFilterIndex,
+                                                    LVIS_SELECTED | LVIS_FOCUSED,
+                                                    LVIS_SELECTED | LVIS_FOCUSED );
+            }
+        }
     }
 }
 
@@ -3114,49 +3112,49 @@ void CFilterConfigDlg::OnBtnDeleteAllFilter()
     {
         CString omStrFilterName = m_omLstcFilterList.GetItemText(
                                       m_nSelecetedNamedFilterIndex, 0 );
-		if(m_eCurrBUS == CAN)
-		{
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterApplied->m_psFilters,
-				m_psFilterApplied->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			// Remove All Elements from the list
-			if( psTempSet != NULL )
-			{
-				SFILTER_CAN* psFilter = (SFILTER_CAN*)(psTempSet->m_psFilterInfo);
-				delete[] psFilter;
-				psTempSet->m_psFilterInfo = NULL;
-				psTempSet->m_ushFilters = 0;
-				// Delete All elements from the list
-				m_bUpdating = TRUE;
-				m_omLstcFilterDetails.DeleteAllItems();
-				vEnableDisableButtons();
-				m_nSelecetedFilterIndex = -1;
-				m_bUpdating = FALSE;
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterAppliedLin->m_psFilters,
-				m_psFilterAppliedLin->m_ushTotal,
-				omStrFilterName.GetBuffer(MAX_PATH));
-			// Remove All Elements from the list
-			if( psTempSet != NULL )
-			{
-				SFILTER_LIN* psFilter = (SFILTER_LIN*)(psTempSet->m_psFilterInfo);
-				delete[] psFilter;
-				psTempSet->m_psFilterInfo = NULL;
-				psTempSet->m_ushFilters = 0;
-				// Delete All elements from the list
-				m_bUpdating = TRUE;
-				m_omLstcFilterDetails.DeleteAllItems();
-				vEnableDisableButtons();
-				m_nSelecetedFilterIndex = -1;
-				m_bUpdating = FALSE;
-			}
-		}
-	}
+        if(m_eCurrBUS == CAN)
+        {
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterApplied->m_psFilters,
+                                        m_psFilterApplied->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            // Remove All Elements from the list
+            if( psTempSet != NULL )
+            {
+                SFILTER_CAN* psFilter = (SFILTER_CAN*)(psTempSet->m_psFilterInfo);
+                delete[] psFilter;
+                psTempSet->m_psFilterInfo = NULL;
+                psTempSet->m_ushFilters = 0;
+                // Delete All elements from the list
+                m_bUpdating = TRUE;
+                m_omLstcFilterDetails.DeleteAllItems();
+                vEnableDisableButtons();
+                m_nSelecetedFilterIndex = -1;
+                m_bUpdating = FALSE;
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                        m_psFilterAppliedLin->m_psFilters,
+                                        m_psFilterAppliedLin->m_ushTotal,
+                                        omStrFilterName.GetBuffer(MAX_PATH));
+            // Remove All Elements from the list
+            if( psTempSet != NULL )
+            {
+                SFILTER_LIN* psFilter = (SFILTER_LIN*)(psTempSet->m_psFilterInfo);
+                delete[] psFilter;
+                psTempSet->m_psFilterInfo = NULL;
+                psTempSet->m_ushFilters = 0;
+                // Delete All elements from the list
+                m_bUpdating = TRUE;
+                m_omLstcFilterDetails.DeleteAllItems();
+                vEnableDisableButtons();
+                m_nSelecetedFilterIndex = -1;
+                m_bUpdating = FALSE;
+            }
+        }
+    }
 }
 
 /**
@@ -3193,103 +3191,103 @@ void CFilterConfigDlg::OnBtnDelete()
         // Get Selected filter name
         CString omStrFilterName =
             m_omLstcFilterList.GetItemText( m_nSelecetedNamedFilterIndex, 0 );
-		if(m_eCurrBUS == CAN)
-		{
-			// Get the entry from the map
-			const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterApplied->m_psFilters,
-				m_psFilterApplied->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				// Delete the item from the UI first
-				m_bUpdating = TRUE;
-				m_omLstcFilterList.DeleteItem( m_nSelecetedNamedFilterIndex );
-				// copy the last filter set into current filter set
-				psTempSet->bClone(
-					m_psFilterApplied->m_psFilters[m_psFilterApplied->m_ushTotal - 1]);
-				//clear the last set
-				m_psFilterApplied->m_psFilters[m_psFilterApplied->m_ushTotal - 1].vClear();
-				--(m_psFilterApplied->m_ushTotal);
-				int nSize = m_omLstcFilterList.GetItemCount();
-				// Reset the selection to the last
-				if( m_nSelecetedNamedFilterIndex >= nSize )
-				{
-					m_nSelecetedNamedFilterIndex = nSize - 1;
-				}
+        if(m_eCurrBUS == CAN)
+        {
+            // Get the entry from the map
+            const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                              m_psFilterApplied->m_psFilters,
+                                              m_psFilterApplied->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                // Delete the item from the UI first
+                m_bUpdating = TRUE;
+                m_omLstcFilterList.DeleteItem( m_nSelecetedNamedFilterIndex );
+                // copy the last filter set into current filter set
+                psTempSet->bClone(
+                    m_psFilterApplied->m_psFilters[m_psFilterApplied->m_ushTotal - 1]);
+                //clear the last set
+                m_psFilterApplied->m_psFilters[m_psFilterApplied->m_ushTotal - 1].vClear();
+                --(m_psFilterApplied->m_ushTotal);
+                int nSize = m_omLstcFilterList.GetItemCount();
+                // Reset the selection to the last
+                if( m_nSelecetedNamedFilterIndex >= nSize )
+                {
+                    m_nSelecetedNamedFilterIndex = nSize - 1;
+                }
 
-				m_bUpdating = FALSE;
-				if( m_nSelecetedNamedFilterIndex != -1 )
-				{
-					m_omLstcFilterList.SetItemState(
-						m_nSelecetedNamedFilterIndex,
-						LVIS_SELECTED | LVIS_FOCUSED,
-						LVIS_SELECTED | LVIS_FOCUSED );
-				}
-				else
-				{
-					// Delete all items of Filter details List
-					m_omLstcFilterDetails.DeleteAllItems();
-					// Update Buttons
-					vEnableDisableButtons();
-					// Disable Add Button
-					m_omAddFilter.EnableWindow( FALSE );
-					CWnd* pWnd = GetDlgItem( IDC_STATIC_TO_STRING );
-					if( pWnd != NULL )
-					{
-						pWnd->EnableWindow( FALSE );
-					}
-				}
-			}
-		}
-		else if(m_eCurrBUS == LIN)
-		{
-			// Get the entry from the map
-			const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
-				m_psFilterAppliedLin->m_psFilters,
-				m_psFilterAppliedLin->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
-			if( psTempSet != NULL )
-			{
-				// Delete the item from the UI first
-				m_bUpdating = TRUE;
-				m_omLstcFilterList.DeleteItem( m_nSelecetedNamedFilterIndex );
-				// copy the last filter set into current filter set
-				psTempSet->bClone(
-					m_psFilterAppliedLin->m_psFilters[m_psFilterAppliedLin->m_ushTotal - 1]);
-				//clear the last set
-				m_psFilterAppliedLin->m_psFilters[m_psFilterAppliedLin->m_ushTotal - 1].vClear();
-				--(m_psFilterAppliedLin->m_ushTotal);
-				int nSize = m_omLstcFilterList.GetItemCount();
-				// Reset the selection to the last
-				if( m_nSelecetedNamedFilterIndex >= nSize )
-				{
-					m_nSelecetedNamedFilterIndex = nSize - 1;
-				}
+                m_bUpdating = FALSE;
+                if( m_nSelecetedNamedFilterIndex != -1 )
+                {
+                    m_omLstcFilterList.SetItemState(
+                        m_nSelecetedNamedFilterIndex,
+                        LVIS_SELECTED | LVIS_FOCUSED,
+                        LVIS_SELECTED | LVIS_FOCUSED );
+                }
+                else
+                {
+                    // Delete all items of Filter details List
+                    m_omLstcFilterDetails.DeleteAllItems();
+                    // Update Buttons
+                    vEnableDisableButtons();
+                    // Disable Add Button
+                    m_omAddFilter.EnableWindow( FALSE );
+                    CWnd* pWnd = GetDlgItem( IDC_STATIC_TO_STRING );
+                    if( pWnd != NULL )
+                    {
+                        pWnd->EnableWindow( FALSE );
+                    }
+                }
+            }
+        }
+        else if(m_eCurrBUS == LIN)
+        {
+            // Get the entry from the map
+            const PSFILTERSET psTempSet = SFILTERSET::psGetFilterSetPointer(
+                                              m_psFilterAppliedLin->m_psFilters,
+                                              m_psFilterAppliedLin->m_ushTotal, omStrFilterName.GetBuffer(MAX_PATH));
+            if( psTempSet != NULL )
+            {
+                // Delete the item from the UI first
+                m_bUpdating = TRUE;
+                m_omLstcFilterList.DeleteItem( m_nSelecetedNamedFilterIndex );
+                // copy the last filter set into current filter set
+                psTempSet->bClone(
+                    m_psFilterAppliedLin->m_psFilters[m_psFilterAppliedLin->m_ushTotal - 1]);
+                //clear the last set
+                m_psFilterAppliedLin->m_psFilters[m_psFilterAppliedLin->m_ushTotal - 1].vClear();
+                --(m_psFilterAppliedLin->m_ushTotal);
+                int nSize = m_omLstcFilterList.GetItemCount();
+                // Reset the selection to the last
+                if( m_nSelecetedNamedFilterIndex >= nSize )
+                {
+                    m_nSelecetedNamedFilterIndex = nSize - 1;
+                }
 
-				m_bUpdating = FALSE;
-				if( m_nSelecetedNamedFilterIndex != -1 )
-				{
-					m_omLstcFilterList.SetItemState(
-						m_nSelecetedNamedFilterIndex,
-						LVIS_SELECTED | LVIS_FOCUSED,
-						LVIS_SELECTED | LVIS_FOCUSED );
-				}
-				else
-				{
-					// Delete all items of Filter details List
-					m_omLstcFilterDetails.DeleteAllItems();
-					// Update Buttons
-					vEnableDisableButtons();
-					// Disable Add Button
-					m_omAddFilter.EnableWindow( FALSE );
-					CWnd* pWnd = GetDlgItem( IDC_STATIC_TO_STRING );
-					if( pWnd != NULL )
-					{
-						pWnd->EnableWindow( FALSE );
-					}
-				}
-			}
-		}
-	}
+                m_bUpdating = FALSE;
+                if( m_nSelecetedNamedFilterIndex != -1 )
+                {
+                    m_omLstcFilterList.SetItemState(
+                        m_nSelecetedNamedFilterIndex,
+                        LVIS_SELECTED | LVIS_FOCUSED,
+                        LVIS_SELECTED | LVIS_FOCUSED );
+                }
+                else
+                {
+                    // Delete all items of Filter details List
+                    m_omLstcFilterDetails.DeleteAllItems();
+                    // Update Buttons
+                    vEnableDisableButtons();
+                    // Disable Add Button
+                    m_omAddFilter.EnableWindow( FALSE );
+                    CWnd* pWnd = GetDlgItem( IDC_STATIC_TO_STRING );
+                    if( pWnd != NULL )
+                    {
+                        pWnd->EnableWindow( FALSE );
+                    }
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -3299,23 +3297,23 @@ void CFilterConfigDlg::OnBtnDelete()
  */
 void CFilterConfigDlg::OnBtnAdd()
 {
-	if(m_eCurrBUS == CAN)
-	{
-		vAddCANFilter();
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		vAddLINFilter();
-	}   
+    if(m_eCurrBUS == CAN)
+    {
+        vAddCANFilter();
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        vAddLINFilter();
+    }
 }
 
 void CFilterConfigDlg::vAddCANFilter()
 {
-	// To Add new Named Filter
+    // To Add new Named Filter
     // Find the default name appended with number to form unique entry
     CString omStrFilterName;
     BOOL bNameFound = FALSE;
-	 for( int nCount = 0;
+    for( int nCount = 0;
             bNameFound == FALSE && nCount < defNUMBER_OF_FILTERS_SUPPORTED;
             nCount++ )
     {
@@ -3401,11 +3399,11 @@ void CFilterConfigDlg::vAddCANFilter()
 
 void CFilterConfigDlg::vAddLINFilter()
 {
-	// To Add new Named Filter
+    // To Add new Named Filter
     // Find the default name appended with number to form unique entry
     CString omStrFilterName;
     BOOL bNameFound = FALSE;
-	 for( int nCount = 0;
+    for( int nCount = 0;
             bNameFound == FALSE && nCount < defNUMBER_OF_FILTERS_SUPPORTED;
             nCount++ )
     {
@@ -3477,8 +3475,8 @@ void CFilterConfigDlg::vAddLINFilter()
                     }
                 }
             }
-			m_omMsgIDType.EnableWindow(FALSE);
-			m_omMsgType.EnableWindow(FALSE);
+            m_omMsgIDType.EnableWindow(FALSE);
+            m_omMsgType.EnableWindow(FALSE);
         }
         else
         {
@@ -3563,34 +3561,34 @@ void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
 {
     CButton* pWnd = NULL;
     // Message ID and Range Controls
-    m_omRadioID.EnableWindow( bEnable );	
+    m_omRadioID.EnableWindow( bEnable );
 
-	if(m_eCurrBUS == CAN)
-	{
-		m_omRadioEvent.EnableWindow(bEnable);
-	}
-	else
-	{
-		m_omRadioEvent.EnableWindow( bEnable );
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        m_omRadioEvent.EnableWindow(bEnable);
+    }
+    else
+    {
+        m_omRadioEvent.EnableWindow( bEnable );
+    }
 
-	BOOL bRadioRange = FALSE, bRadioEvent = FALSE;;
+    BOOL bRadioRange = FALSE, bRadioEvent = FALSE;;
 
     pWnd = (CButton*)GetDlgItem( IDC_RADIO_RANGE );
     if( pWnd != NULL )
     {
         pWnd->EnableWindow( bEnable );
-		bRadioRange = pWnd->GetCheck();
+        bRadioRange = pWnd->GetCheck();
     }
-	bRadioEvent = m_omRadioEvent.GetCheck();
+    bRadioEvent = m_omRadioEvent.GetCheck();
 
     if( m_omRadioID.GetCheck() != 0 )
     {
         m_omMsgIDFrom.EnableWindow( bEnable );
         m_omMsgIDRangeFrom.EnableWindow( FALSE );
         m_omMsgIDRangeTo.EnableWindow( FALSE );
-		m_omEventType.EnableWindow(FALSE);
-		m_omMsgDirection.EnableWindow( bEnable );
+        m_omEventType.EnableWindow(FALSE);
+        m_omMsgDirection.EnableWindow( bEnable );
         // Disable the string Range To also
         /*pWnd = GetDlgItem( IDC_STATIC_TO_STRING );
         if( pWnd != NULL )
@@ -3603,8 +3601,8 @@ void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
         m_omMsgIDFrom.EnableWindow( FALSE );
         m_omMsgIDRangeFrom.EnableWindow( bEnable );
         m_omMsgIDRangeTo.EnableWindow( bEnable );
-		m_omEventType.EnableWindow(FALSE);
-		m_omMsgDirection.EnableWindow( bEnable );
+        m_omEventType.EnableWindow(FALSE);
+        m_omMsgDirection.EnableWindow( bEnable );
         // Enable the string Range To also
         /*pWnd = GetDlgItem( IDC_STATIC_TO_STRING );
         if( pWnd != NULL )
@@ -3612,34 +3610,34 @@ void CFilterConfigDlg::vEnableDisableFilterComps( BOOL bEnable )
             pWnd->EnableWindow( TRUE );
         }*/
     }
-	else if(bRadioEvent == TRUE)
-	{
-		m_omMsgIDFrom.EnableWindow( FALSE );
-		m_omMsgIDRangeFrom.EnableWindow( FALSE );
-		m_omMsgIDRangeTo.EnableWindow( FALSE );
-		m_omEventType.EnableWindow(bEnable);
-		m_omMsgDirection.EnableWindow( FALSE );
-		m_omMsgIDType.EnableWindow( FALSE );
-		m_omMsgType.EnableWindow( FALSE );
-	}
+    else if(bRadioEvent == TRUE)
+    {
+        m_omMsgIDFrom.EnableWindow( FALSE );
+        m_omMsgIDRangeFrom.EnableWindow( FALSE );
+        m_omMsgIDRangeTo.EnableWindow( FALSE );
+        m_omEventType.EnableWindow(bEnable);
+        m_omMsgDirection.EnableWindow( FALSE );
+        m_omMsgIDType.EnableWindow( FALSE );
+        m_omMsgType.EnableWindow( FALSE );
+    }
 
-	if(m_eCurrBUS == CAN)
-	{
-		if(bRadioEvent == FALSE)
-		{
-			// ID Type
-			m_omMsgIDType.EnableWindow( bEnable );
-			// MSG Type
-			m_omMsgType.EnableWindow( bEnable );
-		}
-	}
-	else if(m_eCurrBUS == LIN)
-	{
-		// ID Type
-		m_omMsgIDType.EnableWindow( FALSE );
-		// MSG Type
-		m_omMsgType.EnableWindow( FALSE );
-	}
+    if(m_eCurrBUS == CAN)
+    {
+        if(bRadioEvent == FALSE)
+        {
+            // ID Type
+            m_omMsgIDType.EnableWindow( bEnable );
+            // MSG Type
+            m_omMsgType.EnableWindow( bEnable );
+        }
+    }
+    else if(m_eCurrBUS == LIN)
+    {
+        // ID Type
+        m_omMsgIDType.EnableWindow( FALSE );
+        // MSG Type
+        m_omMsgType.EnableWindow( FALSE );
+    }
 
     // Direction
     //m_omMsgDirection.EnableWindow( bEnable );

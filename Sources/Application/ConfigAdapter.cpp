@@ -367,7 +367,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             unSize += sizeof(BYTE);//Configuration version
 
             WINDOWPLACEMENT WndPlacement;
-			memset(&WndPlacement, 0, sizeof(WINDOWPLACEMENT));
+            memset(&WndPlacement, 0, sizeof(WINDOWPLACEMENT));
             //retrieve the window placement
             m_ouConfigDetails.bGetDefaultValue(SIMSYS_WND_PLACEMENT,WndPlacement);
             unSize += sizeof(WINDOWPLACEMENT);

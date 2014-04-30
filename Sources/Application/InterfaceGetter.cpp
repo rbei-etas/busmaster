@@ -160,7 +160,7 @@ CBaseBusStatisticCAN* GetICANBusStat(void)
 CBaseBusStatisticLIN* GetILINBusStat(void)
 {
     CBaseBusStatisticLIN* Result = NULL;
-	if (BS_GetInterface(LIN, (void**) &Result) == S_OK)
+    if (BS_GetInterface(LIN, (void**) &Result) == S_OK)
     {
         ASSERT(NULL != Result);
     }

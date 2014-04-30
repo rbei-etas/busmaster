@@ -43,7 +43,7 @@ public:
     CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
                       const SMSGENTRY* pMsgDBDetails, UINT nHardware,
                       CWnd* pParent = NULL);   // standard constructor
-	 CFilterConfigDlg( SFILTERAPPLIED_LIN* psSrcList,
+    CFilterConfigDlg( SFILTERAPPLIED_LIN* psSrcList,
                       ClusterConfig* pMsgDBDetails, UINT nHardware,
                       CWnd* pParent = NULL);   // standard constructor
 
@@ -55,13 +55,13 @@ public:
     CRadixEdit  m_omMsgIDRangeTo;
     CRadixEdit  m_omMsgIDRangeFrom;
     CButton     m_omRadioID;
-	CButton		m_omRadioEvent;
+    CButton     m_omRadioEvent;
     CComboBox   m_omMsgType;
     CComboBox   m_omMsgIDType;
     CComboBox   m_omMsgDirection;
     CComboBox   m_omMsgChannel;
     CComboBox   m_omMsgIDFrom;
-	CComboBox   m_omEventType;
+    CComboBox   m_omEventType;
     CListCtrl   m_omLstcFilterDetails;
     CFlexListCtrl   m_omLstcFilterList;
     //}}AFX_DATA
@@ -86,7 +86,7 @@ protected:
     afx_msg void OnSelchangeCombMsgIdFrom();
     afx_msg void OnEditChangeMsgIDCombo();
     afx_msg void OnRadioMessageId();
-	afx_msg void OnRadioEvent();
+    afx_msg void OnRadioEvent();
     afx_msg void OnRadioRange();
     afx_msg void OnUpdateEditRange();
     afx_msg void OnSelchangeFilterComponentCombo();
@@ -109,12 +109,12 @@ private:
     CString m_omStrSelectedFilterNameBeforeEdit; // Backup text to restore back
     int m_nSelecetedFilterIndex;      // Selected index of filter
     const SMSGENTRY* m_psMsgSignal;         // Database information
-	ClusterConfig* m_pClusterConfig;
+    ClusterConfig* m_pClusterConfig;
     UINT m_nHardware;
-	ETYPE_BUS m_eCurrBUS;
+    ETYPE_BUS m_eCurrBUS;
 public:
     SFILTERAPPLIED_CAN* m_psFilterApplied; // Reference to Filter List
-	SFILTERAPPLIED_LIN* m_psFilterAppliedLin; // Reference to Filter List
+    SFILTERAPPLIED_LIN* m_psFilterAppliedLin; // Reference to Filter List
 
 private:
     // To create named filter UI List
@@ -143,7 +143,7 @@ private:
     void vUpdateFilterComponents(int nSelectedItem);
     // To update Filter Componnents with supplied filter details
     void vUpdateFilterComponents(const SFILTER_CAN& sFilter);
-	void vUpdateFilterComponents(const SFILTER_LIN& sFilter);
+    void vUpdateFilterComponents(const SFILTER_LIN& sFilter);
     // To Format Filter Details string from the filter details
     void vFormatDisplayString( const SFILTER_CAN& sFilter,
                                SFILTERDISPLAYINFO& sFilterDisplyInfo );
@@ -156,16 +156,16 @@ private:
     int nGetMsgIDFromCombo(const CComboBox& omCombo);
     // To Set text to the statusbar
     void vSetStatusText(CString omStrText);
-	void vPopulateChannelDBMessages();
+    void vPopulateChannelDBMessages();
     // To get Filter Details from the UI
     BOOL bGetFilterData(SFILTER_CAN& sFilter);
-	BOOL bGetFilterData(SFILTER_LIN& sFilter);
+    BOOL bGetFilterData(SFILTER_LIN& sFilter);
     // To Update Filter Details in Filter list (Data) with given filter
     BOOL bUpdateSelectedItem(SFILTER_CAN& sFilter);
-	BOOL bUpdateSelectedItem(SFILTER_LIN& sFilter);
+    BOOL bUpdateSelectedItem(SFILTER_LIN& sFilter);
     // To Add new Filter in to the filter list (Data)
     BOOL bAddNewItem(SFILTER_CAN& sFilter);
-	BOOL bAddNewItem(SFILTER_LIN& sFilter);
+    BOOL bAddNewItem(SFILTER_LIN& sFilter);
     // To update UI buttons with respect to list content and selection
     void vEnableDisableButtons();
     // To update filter components with given Enable/Disable Value
@@ -173,7 +173,7 @@ private:
     // To adjust the width of the combo box based on its data
     void vAdjustWidthMessageComboBox();
 
-	void vAddCANFilter();
-	void vAddLINFilter();
-	HRESULT hGetFrameFromId(UINT unSlotId, FRAME_STRUCT &ouFrameStrct);
+    void vAddCANFilter();
+    void vAddLINFilter();
+    HRESULT hGetFrameFromId(UINT unSlotId, FRAME_STRUCT& ouFrameStrct);
 };

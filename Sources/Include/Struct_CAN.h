@@ -95,7 +95,7 @@ enum eERROR_STATE
     ERROR_PASSIVE,
     ERROR_BUS_OFF,
     ERROR_FRAME,
-	ERROR_INVALID
+    ERROR_INVALID
 };
 
 const short CAN_MSG_IDS = 2;
@@ -662,62 +662,62 @@ public:
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "LowSpeed", BAD_CAST strVar);
 
-		stringstream stream11;
+        stringstream stream11;
         stream11 << m_unDataBitRate;
         strData = stream11.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_BaudRate", BAD_CAST strVar);
 
-		stringstream stream12;
+        stringstream stream12;
         stream12 << m_unDataSamplePoint;
         strData = stream12.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_SamplePoint", BAD_CAST strVar);
-		
 
-		stringstream stream13;
+
+        stringstream stream13;
         stream13 << m_unDataBTL_Cycles;
         strData = stream13.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_BTLCycles", BAD_CAST strVar);
-		
 
-		stringstream stream14;
+
+        stringstream stream14;
         stream14 << m_unDataSJW;
         strData = stream14.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_SJW", BAD_CAST strVar);
-		
 
-		stringstream stream15;
+
+        stringstream stream15;
         stream15 << m_bTxDelayCompensationControl;
         strData = stream15.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_TxDelayCompensation", BAD_CAST strVar);
-		
 
-		stringstream stream16;
+
+        stringstream stream16;
         stream16 << m_unTxSecondarySamplePointOffset;
         strData = stream16.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_TxSecondarySamplePoint", BAD_CAST strVar);
-		
 
-		stringstream stream17;
+
+        stringstream stream17;
         stream17 << (int)m_bytCanRxMode;
         strData = stream17.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanRxMode", BAD_CAST strVar);
-		
 
-		stringstream stream18;
+
+        stringstream stream18;
         stream18 << (int)m_bytCanFdRxMode;
         strData = stream18.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanFdRxMode", BAD_CAST strVar);
-		
 
-		stringstream stream19;
+
+        stringstream stream19;
         stream19 << (int)m_bytCanFdTxConfig;
         strData = stream19.str();
         strVar = strData.c_str();

@@ -98,7 +98,7 @@ DWORD WINAPI SigWatchDataReadThreadProc_C(LPVOID pVoid)
 BOOL CSignalWatch_CAN::InitInstance(void)
 {
     InitializeCriticalSection(&m_omCritSecSW);
-	m_pouSigWnd = NULL;
+    m_pouSigWnd = NULL;
     m_pMsgInterPretObj = NULL;
     m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
     return TRUE;
@@ -213,8 +213,8 @@ HRESULT CSignalWatch_CAN::SW_DoInitialization()
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for CAN
     if (m_pouSigWnd == NULL)
-    {	
-        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), CAN);		
+    {
+        m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), CAN);
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
         m_pouSigWnd->SetWindowText("Signal Watch - CAN");
     }
@@ -239,7 +239,7 @@ HRESULT CSignalWatch_CAN::SW_DoInitialization()
 HRESULT CSignalWatch_CAN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSubList)
 {
 
-	CMainEntryList * podMainSubListfinal= (CMainEntryList *) podMainSubList;
+    CMainEntryList* podMainSubListfinal= (CMainEntryList*) podMainSubList;
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CSigWatchAddDelDlg odDlg(pParent, podMainSubListfinal);
@@ -249,9 +249,9 @@ HRESULT CSignalWatch_CAN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSu
 HRESULT CSignalWatch_CAN::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
     if (m_pouSigWnd != NULL)
-    {		
-		m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
-		m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
+    {
+        m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
+        m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
         return m_pouSigWnd->ShowWindow(nCmd);
     }
     return S_FALSE;
@@ -407,6 +407,13 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
 
         if(pbyConfigData == NULL)
         {
+            WINDOWPLACEMENT WndPlace;
+            WndPlace.rcNormalPosition.top=70;
+            WndPlace.rcNormalPosition.left=10;
+            WndPlace.rcNormalPosition.right=500;
+            WndPlace.rcNormalPosition.bottom=300;
+            m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), TRUE);
+
             m_pouSigWnd->ShowWindow(SW_HIDE);
         }
     }
@@ -415,6 +422,7 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
 //MVN
 HRESULT CSignalWatch_CAN::SW_SetConfigData(xmlNodePtr pNode)
 {
+    m_pouSigWnd->ShowWindow(SW_HIDE);
     INT nRetValue  = S_OK;
     if ((pNode != NULL) && (m_pouSigWnd != NULL))
     {
@@ -449,6 +457,7 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(xmlNodePtr pNode)
             m_pouSigWnd->m_omSignalList.MoveWindow(&sClientRect);
         }
     }
+
     return S_OK;
 }
 INT CSignalWatch_CAN::nParseXMLColumn(xmlNodePtr pNode)

@@ -83,6 +83,7 @@
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC1)(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC2)(CSI_Tree* tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC3)(CSI_Tree* tree, const BOA_UuidVersion* uuid, OCI_URIName uriName[], int size, int* count);
+typedef OCI_ErrorCode (*PF_OCI_CreateFlexRayControllerVersion)  (const char*  uriLocation,const BOA_Version* apiVersion,OCI_ControllerHandle* controller );
 typedef LONG SLOT_BASECYCLE;
 /**
  * CSI pointers table
@@ -102,6 +103,9 @@ typedef struct tagBOA_POINTER_TABLE
 {
     CSI_VTABLE       m_sCSI;
     OCI_FLEXRAY_VTable   m_sOCI;
+#if BOA_VERSION >= BOA_VERSION_2_0
+    PF_OCI_CreateFlexRayControllerVersion createFlexRayController;
+#endif
 } SBOA_POINTER_TABLE;
 
 static SBOA_POINTER_TABLE sBOA_PTRS;

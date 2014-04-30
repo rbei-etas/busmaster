@@ -178,8 +178,8 @@ BOOL CMainSubListDlg::OnInitDialog()
     //be updated in vPopulateSelSubEntryList
     vPopulateSelSubEntryList();
     vEnableDisableButtons();
-	m_omCombMessage.ShowWindow(SW_HIDE);
-	pWnd = GetDlgItem(IDC_EDIT_MAINLIST_NAME);
+    m_omCombMessage.ShowWindow(SW_HIDE);
+    pWnd = GetDlgItem(IDC_EDIT_MAINLIST_NAME);
     if (pWnd != NULL)
     {
         pWnd->ShowWindow(SW_HIDE);

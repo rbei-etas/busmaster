@@ -27,13 +27,13 @@
 class CMsgFilterConfigPage : public CPropertyPage
 {
     DECLARE_DYNCREATE(CMsgFilterConfigPage)
-	ETYPE_BUS m_eBusType;
+    ETYPE_BUS m_eBusType;
     // Construction
 public:
     // Standard constructor
     CMsgFilterConfigPage();
     // Construction with filter details
-	CMsgFilterConfigPage(ETYPE_BUS eBusType, const void* psFilterConfigured,
+    CMsgFilterConfigPage(ETYPE_BUS eBusType, const void* psFilterConfigured,
                          HWND hMsgWnd);
     // Standard destructor
     ~CMsgFilterConfigPage();

@@ -76,7 +76,7 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
         }
         break;
 
-		case LIN:
+        case LIN:
         {
             if (NULL == sg_pouBS_LIN)
             {

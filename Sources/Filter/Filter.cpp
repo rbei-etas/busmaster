@@ -127,7 +127,7 @@ USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const void* psMsgE
                 SFILTERAPPLIED_CAN sTempObj;
                 sTempObj.bClone(*pAppliedFilterCan);
 
-                CFilterConfigDlg omDlg(&sTempObj, (SMSGENTRY *)psMsgEntry, nHardware, pParent);
+                CFilterConfigDlg omDlg(&sTempObj, (SMSGENTRY*)psMsgEntry, nHardware, pParent);
                 if (omDlg.DoModal() == IDOK)
                 {
                     pAppliedFilterCan->bClone(sTempObj);
@@ -136,23 +136,23 @@ USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const void* psMsgE
                 //delete omDlg;
             }
         }
-		break;
-		case LIN:
-			if (pExistingFilter != NULL)
-			{
-				SFILTERAPPLIED_LIN* pAppliedFilterLin = (SFILTERAPPLIED_LIN*)pExistingFilter;
-				SFILTERAPPLIED_LIN sTempObj;
-				sTempObj.bClone(*pAppliedFilterLin);
+        break;
+        case LIN:
+            if (pExistingFilter != NULL)
+            {
+                SFILTERAPPLIED_LIN* pAppliedFilterLin = (SFILTERAPPLIED_LIN*)pExistingFilter;
+                SFILTERAPPLIED_LIN sTempObj;
+                sTempObj.bClone(*pAppliedFilterLin);
 
-				CFilterConfigDlg omDlg(&sTempObj,(ClusterConfig *) psMsgEntry, nHardware, pParent);
-				if (omDlg.DoModal() == IDOK)
-				{
-					pAppliedFilterLin->bClone(sTempObj);
-					hResult = S_OK;
-				}
-				//delete omDlg;
-			}
-			break;
+                CFilterConfigDlg omDlg(&sTempObj,(ClusterConfig*) psMsgEntry, nHardware, pParent);
+                if (omDlg.DoModal() == IDOK)
+                {
+                    pAppliedFilterLin->bClone(sTempObj);
+                    hResult = S_OK;
+                }
+                //delete omDlg;
+            }
+            break;
         default:
         {
         }
@@ -297,7 +297,7 @@ USAGEMODE HRESULT Filter_ReUpdateAppliedFilter(void* pvFilterApplied,
                 vReUpdateAppliedFilterCAN(*psFilterApplied, *psFilterConfigured);
             }
             break;
-			 case LIN:
+            case LIN:
             {
                 SFILTERAPPLIED_LIN* psFilterApplied = (SFILTERAPPLIED_LIN*)pvFilterApplied;
                 SFILTERAPPLIED_LIN* psFilterConfigured = (SFILTERAPPLIED_LIN*)pvFilterConfigured;

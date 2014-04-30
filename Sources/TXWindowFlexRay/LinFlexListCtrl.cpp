@@ -243,45 +243,45 @@ void CLinFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
-	if(pNMListView != NULL)
-	{
-		// Call Handler Function with required parameters
-		m_nRow = pNMListView->iItem;
-		m_nColumn = pNMListView->iSubItem;
+    if(pNMListView != NULL)
+    {
+        // Call Handler Function with required parameters
+        m_nRow = pNMListView->iItem;
+        m_nColumn = pNMListView->iSubItem;
 
-		sUserProgInfo ouUserProg;
-		//TODO::Lot of If Statements has to reduced;
-		if( m_omUserProg.Lookup(lGetMapID(m_nRow, m_nColumn) , ouUserProg) == TRUE )
-		{
-			if ( ouUserProg.m_bIcon == true )
-			{
-				CRect omRect;
-				GetSubItemRect(m_nRow, m_nColumn, LVIR_ICON, omRect);
-				if ( true == omRect.PtInRect( pNMListView->ptAction ) )
-				{
-					if ( ouUserProg.m_pfHandler != NULL )
-					{
-						ouUserProg.m_pfHandler(this, m_nRow, m_nColumn, ouUserProg.m_pUserParam);
-						return;
-					}
-				}
-			}
-		}
+        sUserProgInfo ouUserProg;
+        //TODO::Lot of If Statements has to reduced;
+        if( m_omUserProg.Lookup(lGetMapID(m_nRow, m_nColumn) , ouUserProg) == TRUE )
+        {
+            if ( ouUserProg.m_bIcon == true )
+            {
+                CRect omRect;
+                GetSubItemRect(m_nRow, m_nColumn, LVIR_ICON, omRect);
+                if ( true == omRect.PtInRect( pNMListView->ptAction ) )
+                {
+                    if ( ouUserProg.m_pfHandler != NULL )
+                    {
+                        ouUserProg.m_pfHandler(this, m_nRow, m_nColumn, ouUserProg.m_pUserParam);
+                        return;
+                    }
+                }
+            }
+        }
 
-		if( m_bSingleClickActivate == TRUE )
-		{
-			// Set the focus to the list control
-			if( GetFocus() != this)
-			{
-				SetFocus();
-			}
+        if( m_bSingleClickActivate == TRUE )
+        {
+            // Set the focus to the list control
+            if( GetFocus() != this)
+            {
+                SetFocus();
+            }
 
-			//m_nCurrentCell = pNMListView->iItem * GetHeaderCtrl()->GetItemCount() +  pNMListView->iSubItem ;
-			// lGetMapID(pNMListView->iItem, pNMListView->iSubItem);
+            //m_nCurrentCell = pNMListView->iItem * GetHeaderCtrl()->GetItemCount() +  pNMListView->iSubItem ;
+            // lGetMapID(pNMListView->iItem, pNMListView->iSubItem);
 
-			vShowControl(pNMListView->iItem, pNMListView->iSubItem);
-		}
-	}
+            vShowControl(pNMListView->iItem, pNMListView->iSubItem);
+        }
+    }
 
     *pResult = 0;
 }

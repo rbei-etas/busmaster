@@ -83,24 +83,24 @@ END_MESSAGE_MAP()
 
 void CChannelConfigurationDlg::OnOverwriteCheckBoxClick()
 {
-	CButton* pTempBtn = (CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS);
-	bool bCheck = false;
-	if ( NULL != pTempBtn )
-	{
-		bCheck = pTempBtn->GetCheck();
-	}
+    CButton* pTempBtn = (CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS);
+    bool bCheck = false;
+    if ( NULL != pTempBtn )
+    {
+        bCheck = pTempBtn->GetCheck();
+    }
 
-	CWnd* pTempChild = GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
-	if ( NULL != pTempChild )
-	{
-		pTempChild->EnableWindow(bCheck);
-	}
+    CWnd* pTempChild = GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
+    if ( NULL != pTempChild )
+    {
+        pTempChild->EnableWindow(bCheck);
+    }
 
     pTempChild = GetDlgItem(IDC_EDIT_LIN_BAUDRATE);
-	if ( NULL != pTempChild )
-	{
-		pTempChild->EnableWindow(bCheck);
-	}
+    if ( NULL != pTempChild )
+    {
+        pTempChild->EnableWindow(bCheck);
+    }
 }
 
 BOOL CChannelConfigurationDlg::OnInitDialog()

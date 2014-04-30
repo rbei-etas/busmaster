@@ -340,18 +340,18 @@ Section "BUSMASTER"
 			Delete "$INSTDIR\CAN_ETAS_BOA_2_0.dll"
 			
 	; Deleting If FLEXRAY_ETAS_BOA_1_4.dll exists
-	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_1_4.dll bFlexEtasbExists
-	bFlexEtasbExists:
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_1_4.dll bFlexEtasb14Exists
+	bFlexEtasb14Exists:
 			Delete "$INSTDIR\FLEXRAY_ETAS_BOA_1_4.dll"
 
 	; Deleting If FLEXRAY_ETAS_BOA_1_5.dll exists
-	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_1_5.dll bFlexEtasbExists
-	bFlexEtasbExists:
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_1_5.dll bFlexEtasb15Exists
+	bFlexEtasb15Exists:
 			Delete "$INSTDIR\FLEXRAY_ETAS_BOA_1_5.dll"
 
 	; Deleting If FLEXRAY_ETAS_BOA_2_0.dll exists
-	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_2_0.dll bFlexEtasbExists
-	bFlexEtasbExists:
+	IfFileExists $INSTDIR\FLEXRAY_ETAS_BOA_2_0.dll bFlexEtasb2Exists
+	bFlexEtasb2Exists:
 			Delete "$INSTDIR\FLEXRAY_ETAS_BOA_2_0.dll"
 	
 	; Deleting If LIN_ETAS_BOA.dll exists

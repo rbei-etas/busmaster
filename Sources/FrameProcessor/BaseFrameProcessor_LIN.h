@@ -25,7 +25,7 @@ typedef struct tagLINPROC_PARAMS
     char m_acVersion[MAX_PATH];        // Version info of the application suite
     CBaseLINBufFSE* m_pouLINBuffer;     // Client frame buffer to update
     Base_WrapperErrorLogger* m_pILog;   // Error logger module
-    
+
     DWORD dwClientID;
     tagLINPROC_PARAMS()
     {
@@ -111,12 +111,12 @@ public:
                                         const SLOGINFO& sLogObject) = 0;
 
     // To modify the filtering scheme of a logging block
-      virtual HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
-              const SFILTERAPPLIED_LIN& sFilterObj) = 0;
+    virtual HRESULT FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
+            const SFILTERAPPLIED_LIN& sFilterObj) = 0;
 
     // Getter for the filtering scheme of a logging block
-      virtual HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
-                                             SFILTERAPPLIED_LIN& sFilterObj) = 0;
+    virtual HRESULT FPL_GetFilteringScheme(USHORT ushLogBlk,
+                                           SFILTERAPPLIED_LIN& sFilterObj) = 0;
 
     // Getter for the logging configuration data
     virtual HRESULT FPL_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;

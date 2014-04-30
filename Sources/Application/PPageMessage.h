@@ -75,9 +75,9 @@ protected:
     char m_acMsgEntry[128];
     COLORREF* m_pRGBColors;
     ETYPE_BUS m_eBusType;
-	void *m_pouDb;
+    void* m_pouDb;
     CMsgSignal* m_pouMsgSigBus;
-	ClusterConfig *m_ouClusterConfig;	//For FLEXRAY & LIN for CAN also in Future
+    ClusterConfig* m_ouClusterConfig;   //For FLEXRAY & LIN for CAN also in Future
     int nInitialiseMsgLCtrl(UINT unTotalDBMsgs, UINT* punDBMsgIDs);
     BOOL bIsMsgIDPresent(UINT*, UINT, UINT) const;
     int nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem);

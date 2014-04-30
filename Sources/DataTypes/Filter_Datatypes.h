@@ -34,7 +34,7 @@ using namespace std;
 
 #define defFILTER_TYPE_SINGLE_ID            0
 #define defFILTER_TYPE_ID_RANGE             1
-#define defFILTER_TYPE_EVENT				2
+#define defFILTER_TYPE_EVENT                2
 
 // Basic information needed for filtering when the bus is FlexRay.
 typedef struct tagSFRAMEINFO_BASIC_FLEXRAY
@@ -52,7 +52,7 @@ typedef struct tagSFRAMEINFO_BASIC_CAN
     EDIRECTION   m_eDrctn;
     BYTE         m_byIDType;
     BYTE         m_byMsgType;
-	eERROR_STATE m_eEventType;
+    eERROR_STATE m_eEventType;
 } SFRAMEINFO_BASIC_CAN;
 
 // Basic information needed for filtering when the bus is CAN.
@@ -63,7 +63,7 @@ typedef struct tagSFRAMEINFO_BASIC_LIN
     EDIRECTION   m_eDrctn;
     // BYTE         m_byIDType;
     BYTE         m_byMsgType;
-	eLinBusEventType		 m_eEventType;
+    eLinBusEventType         m_eEventType;
 } SFRAMEINFO_BASIC_LIN;
 
 // Basic information needed for filtering when the bus is MCNet.
@@ -120,7 +120,7 @@ typedef struct tagSFILTER
     // Msg ID in case of Single ID
     DWORD m_dwMsgIDTo;      // To Message ID incase of range.
     EDIRECTION m_eDrctn;    // Values are: DIR_RX, DIR_TX and DIR_ALL
-	string  m_omEventName;
+    string  m_omEventName;
 
     tagSFILTER();           // Standard constructor
 
@@ -170,7 +170,7 @@ struct SFILTER_CAN : public SFILTER
     // message entry passed.
     BOOL bDoesFrameOccur(const void* psCurrFrame) const;
 
-	void vGetEventName(eERROR_STATE eEventType, string &strEventName) const;
+    void vGetEventName(eERROR_STATE eEventType, string& strEventName) const;
 
     // To get size of the filter block object in bytes.
     UINT unGetSize(void) const;
@@ -210,7 +210,7 @@ struct SFILTER_LIN : public SFILTER
     // message entry passed.
     BOOL bDoesFrameOccur(const void* psCurrFrame) const;
 
-	void vGetEventName(eLinBusEventType eEventType, string &strEventName) const;	
+    void vGetEventName(eLinBusEventType eEventType, string& strEventName) const;
 
     // To get size of the filter block object in bytes.
     UINT unGetSize(void) const;
@@ -404,13 +404,13 @@ struct SFILTERAPPLIED
     // PTV XML
 
     //int nGetFiltersFromName(PSFILTERSET& sFilterDest, CStringArray& omStrNames);
-	int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, map<string,int>& omStrFilters);
-	
+    int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, map<string,int>& omStrFilters);
+
 
 
 
     //MVN
-	int nSetXMLConfigData(xmlDocPtr& pDocPtr, ETYPE_BUS eBus);
+    int nSetXMLConfigData(xmlDocPtr& pDocPtr, ETYPE_BUS eBus);
     int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, CStringArray& omStrNames);
     int GetFilterNameIndex(string strName);
     //~MVN
@@ -593,16 +593,16 @@ BOOL SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::bToBeBlocked(const SFRAMEINFO_BASIC_B
                     }
                 }
                 break;
-			case LIN:
-				{
-					PSFILTER psCurrFilter = (((SFILTER_LIN*) psCurrFilterBlk->m_psFilterInfo) + j);
-					if (psCurrFilter->bDoesFrameOccur((void*) &sCurrFrame))
-					{
-						bToContinue = FALSE;
-						bToBlock = !bToBlock;
-					}
-				}
-				break;
+                case LIN:
+                {
+                    PSFILTER psCurrFilter = (((SFILTER_LIN*) psCurrFilterBlk->m_psFilterInfo) + j);
+                    if (psCurrFilter->bDoesFrameOccur((void*) &sCurrFrame))
+                    {
+                        bToContinue = FALSE;
+                        bToBlock = !bToBlock;
+                    }
+                }
+                break;
             }
         }
     }
@@ -838,33 +838,34 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
     m_ushTotal = pNodeSetPtr->nodeNr;
     CStringArray omStrFilters;
 
-	map<string, int> mapFilters;
+    map<string, int> mapFilters;
     for(INT nIndex = 0; nIndex < m_ushTotal; nIndex++)
     {
         xmlNodePtr pNodePtr = pNodeSetPtr->nodeTab[nIndex];
 
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
         {
-			int nEnabled = 1;
-			xmlAttrPtr pAttr = pNodePtr->properties;
+            int nEnabled = 1;
+            xmlAttrPtr pAttr = pNodePtr->properties;
             while (pAttr)
-            { // walk through all the attributes and find the required one
+            {
+                // walk through all the attributes and find the required one
                 if (pAttr->type == XML_ATTRIBUTE_NODE)
                 {
-                   std::string strAttrName((char *)pAttr->name);
-                   if ((strAttrName == "IsEnabled") )
-				   {
-					   nEnabled = atoi((char *)pAttr->children->content);
-					   break; // found
-				   }   
+                    std::string strAttrName((char*)pAttr->name);
+                    if ((strAttrName == "IsEnabled") )
+                    {
+                        nEnabled = atoi((char*)pAttr->children->content);
+                        break; // found
+                    }
                 }
-               pAttr = pAttr->next;
+                pAttr = pAttr->next;
             }
 
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
             if(NULL != key)
             {
-				mapFilters[(char*)key] = nEnabled;
+                mapFilters[(char*)key] = nEnabled;
                 xmlFree(key);
             }
         }
@@ -915,25 +916,25 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
 template <typename SFRAMEINFO_BASIC_BUS>
 int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, map<string,int>& omStrFilters)
 {
-	int nRealFilters = 0;	
+    int nRealFilters = 0;
     sFilterDest.m_bEnabled = m_bEnabled;
-	sFilterDest.m_ushTotal = omStrFilters.size();
+    sFilterDest.m_ushTotal = omStrFilters.size();
     sFilterDest.m_psFilters = new SFILTERSET[sFilterDest.m_ushTotal];
 
-	map<string,int>::iterator itr = omStrFilters.begin();
-	int i =0;
-	while ( itr != omStrFilters.end() )
-	{
-		int nIndex = GetFilterNameIndex(itr->first.c_str());
+    map<string,int>::iterator itr = omStrFilters.begin();
+    int i =0;
+    while ( itr != omStrFilters.end() )
+    {
+        int nIndex = GetFilterNameIndex(itr->first.c_str());
         if(nIndex >= 0)
         {
             sFilterDest.m_psFilters[i].bClone(m_psFilters[nIndex]);
-			sFilterDest.m_psFilters[i].m_bEnabled = itr->second;
-			i++;
+            sFilterDest.m_psFilters[i].m_bEnabled = itr->second;
+            i++;
         }
-		itr++;
-	}
-	return 0;
+        itr++;
+    }
+    return 0;
     /*for(int i = 0; i < omStrFilters.GetSize(); i++)
     {
         int nIndex = GetFilterNameIndex((LPCSTR)omStrFilters.GetAt(i));
@@ -978,97 +979,97 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::GetFilterNameIndex(string strName)
 template <typename SFRAMEINFO_BASIC_BUS>
 int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(xmlDocPtr& pDocPtr, ETYPE_BUS eBus)
 {
-	int nRetval = S_OK;
+    int nRetval = S_OK;
 
-	xmlNodeSetPtr pNodeSet;
-	xmlXPathObjectPtr pPathObject;
+    xmlNodeSetPtr pNodeSet;
+    xmlXPathObjectPtr pPathObject;
 
-	if(eBus == CAN)
-	{
-		vClear();
-		xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Filters/Filter";
-		pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
-		if( NULL != pPathObject )
-		{
-			pNodeSet = pPathObject->nodesetval;
-			if(NULL != pNodeSet)
-			{
-				m_ushTotal = pNodeSet->nodeNr;
-				if (m_ushTotal > 0)
-				{
-					m_psFilters = new SFILTERSET[m_ushTotal];
-					if (NULL != m_psFilters)
-					{
-						for (USHORT i = 0; i < m_ushTotal; i++)
-						{
-							m_psFilters[i].nSetXMLConfigData(CAN, pNodeSet->nodeTab[i]);
-						}
-					}
-					else
-					{
-						nRetval = S_FALSE;
-					}
-				}
-			}
-			else
-			{
-				nRetval = S_FALSE;
-			}
-			xmlXPathFreeObject (pPathObject);
-		}
-		else
-		{
-			nRetval = S_FALSE;
-		}
+    if(eBus == CAN)
+    {
+        vClear();
+        xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Filters/Filter";
+        pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
+        if( NULL != pPathObject )
+        {
+            pNodeSet = pPathObject->nodesetval;
+            if(NULL != pNodeSet)
+            {
+                m_ushTotal = pNodeSet->nodeNr;
+                if (m_ushTotal > 0)
+                {
+                    m_psFilters = new SFILTERSET[m_ushTotal];
+                    if (NULL != m_psFilters)
+                    {
+                        for (USHORT i = 0; i < m_ushTotal; i++)
+                        {
+                            m_psFilters[i].nSetXMLConfigData(CAN, pNodeSet->nodeTab[i]);
+                        }
+                    }
+                    else
+                    {
+                        nRetval = S_FALSE;
+                    }
+                }
+            }
+            else
+            {
+                nRetval = S_FALSE;
+            }
+            xmlXPathFreeObject (pPathObject);
+        }
+        else
+        {
+            nRetval = S_FALSE;
+        }
 
-		if (S_FALSE == nRetval)
-		{
-			vClear();
-		}
-	}
-	else if(eBus == LIN)
-	{
-		vClear();
-		xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Filters/Filter";
-		pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
-		if( NULL != pPathObject )
-		{
-			pNodeSet = pPathObject->nodesetval;
-			if(NULL != pNodeSet)
-			{
-				m_ushTotal = pNodeSet->nodeNr;
-				if (m_ushTotal > 0)
-				{
-					m_psFilters = new SFILTERSET[m_ushTotal];
-					if (NULL != m_psFilters)
-					{
-						for (USHORT i = 0; i < m_ushTotal; i++)
-						{
-							m_psFilters[i].nSetXMLConfigData(LIN, pNodeSet->nodeTab[i]);
-						}
-					}
-					else
-					{
-						nRetval = S_FALSE;
-					}
-				}
-			}
-			else
-			{
-				nRetval = S_FALSE;
-			}
-			xmlXPathFreeObject (pPathObject);
-		}
-		else
-		{
-			nRetval = S_FALSE;
-		}
+        if (S_FALSE == nRetval)
+        {
+            vClear();
+        }
+    }
+    else if(eBus == LIN)
+    {
+        vClear();
+        xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Filters/Filter";
+        pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
+        if( NULL != pPathObject )
+        {
+            pNodeSet = pPathObject->nodesetval;
+            if(NULL != pNodeSet)
+            {
+                m_ushTotal = pNodeSet->nodeNr;
+                if (m_ushTotal > 0)
+                {
+                    m_psFilters = new SFILTERSET[m_ushTotal];
+                    if (NULL != m_psFilters)
+                    {
+                        for (USHORT i = 0; i < m_ushTotal; i++)
+                        {
+                            m_psFilters[i].nSetXMLConfigData(LIN, pNodeSet->nodeTab[i]);
+                        }
+                    }
+                    else
+                    {
+                        nRetval = S_FALSE;
+                    }
+                }
+            }
+            else
+            {
+                nRetval = S_FALSE;
+            }
+            xmlXPathFreeObject (pPathObject);
+        }
+        else
+        {
+            nRetval = S_FALSE;
+        }
 
-		if (S_FALSE == nRetval)
-		{
-			vClear();
-		}
-	}    
+        if (S_FALSE == nRetval)
+        {
+            vClear();
+        }
+    }
 
     return nRetval;
 }

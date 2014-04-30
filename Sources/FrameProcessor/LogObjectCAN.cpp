@@ -27,7 +27,7 @@
 #include "LogObjectCAN.h"            // For CLogObjectCAN class declaration
 
 
-#define CAN_VERSION           "***BUSMASTER Ver 2.3.0Beta1***"
+#define CAN_VERSION           "***BUSMASTER Ver 2.3.0***"
 #define CAN_LOG_HEADER        "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
 #define CAN_LOG_START         "***[START LOGGING SESSION]***"
 #define CAN_LOG_STOP          "***[STOP LOGGING SESSION]***"
@@ -73,7 +73,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
     SFRAMEINFO_BASIC_CAN CANInfo_Basic =
     {
         sDataCAN.m_dwMsgID, sDataCAN.m_eChannel, sDataCAN.m_eDirection,
-		sDataCAN.m_byIDType, sDataCAN.m_byMsgType, sDataCAN.m_eEventType
+        sDataCAN.m_byIDType, sDataCAN.m_byMsgType, sDataCAN.m_eEventType
     };
 
     // Assign appropriate values to FrameInfo_Basic
@@ -300,48 +300,49 @@ BYTE* CLogObjectCAN::Der_SetConfigData(BYTE* pvDataStream)
 
 int CLogObjectCAN::Der_SetConfigData(xmlNodePtr pNodePtr)
 {
-	int nResult = S_OK;
-	SFILTERAPPLIED_CAN sFilterApplied;
-	CStringArray omStrFilters;
-	map<string, int> mapFilters;
-	if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc, LIN))
-	{
-		while(pNodePtr != NULL) //TODO:Move To Utils
-		{
-			if ( pNodePtr->xmlChildrenNode != NULL )
-			{
-				if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
-				{
-					int nEnabled = 1;
-					xmlAttrPtr pAttr = pNodePtr->properties;
-					while (pAttr)
-					{ // walk through all the attributes and find the required one
-						if (pAttr->type == XML_ATTRIBUTE_NODE)
-						{
-							std::string strAttrName((char *)pAttr->name);
-							if ((strAttrName == "IsEnabled") )
-							{
-								nEnabled = atoi((char *)pAttr->children->content);
-								break; // found
-							}   
-						}
-						pAttr = pAttr->next;
-					}
+    int nResult = S_OK;
+    SFILTERAPPLIED_CAN sFilterApplied;
+    CStringArray omStrFilters;
+    map<string, int> mapFilters;
+    if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc, CAN))
+    {
+        while(pNodePtr != NULL) //TODO:Move To Utils
+        {
+            if ( pNodePtr->xmlChildrenNode != NULL )
+            {
+                if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
+                {
+                    int nEnabled = 1;
+                    xmlAttrPtr pAttr = pNodePtr->properties;
+                    while (pAttr)
+                    {
+                        // walk through all the attributes and find the required one
+                        if (pAttr->type == XML_ATTRIBUTE_NODE)
+                        {
+                            std::string strAttrName((char*)pAttr->name);
+                            if ((strAttrName == "IsEnabled") )
+                            {
+                                nEnabled = atoi((char*)pAttr->children->content);
+                                break; // found
+                            }
+                        }
+                        pAttr = pAttr->next;
+                    }
 
-					xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-					if(NULL != key)
-					{
-						mapFilters[(char*)key] = nEnabled;
-						xmlFree(key);
-					}
-				}
-			}
-			pNodePtr = pNodePtr->next;
-		}
-		//sFilterApplied.nGetFiltersFromName(m_sFilterApplied, omStrFilters);
-		sFilterApplied.nGetFiltersFromName(m_sFilterApplied, mapFilters);
-	}
-	 return nResult;
+                    xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                    if(NULL != key)
+                    {
+                        mapFilters[(char*)key] = nEnabled;
+                        xmlFree(key);
+                    }
+                }
+            }
+            pNodePtr = pNodePtr->next;
+        }
+        //sFilterApplied.nGetFiltersFromName(m_sFilterApplied, omStrFilters);
+        sFilterApplied.nGetFiltersFromName(m_sFilterApplied, mapFilters);
+    }
+    return nResult;
 }
 BYTE* CLogObjectCAN::Der_GetConfigData(BYTE* pvDataStream) const
 {

@@ -198,7 +198,7 @@ typedef struct tagSSIGNALINFO
     CString     m_omRawValue;
     CString     m_omEnggValue;
     CString     m_omUnit;
-	CString     m_msgName;
+    CString     m_msgName;
 } SSignalInfo;
 
 typedef CArray<SSignalInfo, SSignalInfo> SSignalInfoArray;

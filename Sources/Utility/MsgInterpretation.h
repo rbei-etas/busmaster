@@ -163,8 +163,8 @@ public:
     //__int64 n64GetSignalValue(CByteArray*, UINT, UINT, UINT, BYTE, EFORMAT_DATA);
 
     BOOL bInterpretMsgs( EFORMAT eNumFormat, STLIN_MSG* pMsg, SSignalInfoArray& SigInfoArray);
-	 int nGetSignalCount(CString strMsgName);
+    int nGetSignalCount(CString strMsgName);
     void vCopy(CMsgInterpretationLIN* pDest) const;
-	void vSetMessageList(SMSGENTRY* psCurrMsgEntry);
+    void vSetMessageList(SMSGENTRY* psCurrMsgEntry);
     //void vClear();
 };

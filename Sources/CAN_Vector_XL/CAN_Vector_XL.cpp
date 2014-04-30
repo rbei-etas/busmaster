@@ -608,7 +608,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, c
                     {
                         Index = sg_unClientCnt;
                     }*/
-					Index = sg_unClientCnt;
+                    Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
 

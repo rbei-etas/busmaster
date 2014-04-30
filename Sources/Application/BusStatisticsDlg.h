@@ -34,18 +34,18 @@
 //BusStatistics Class
 class CBusStatisticsDlg : public CCommonStatistics
 {
-   DECLARE_DYNCREATE(CBusStatisticsDlg)
-	// Construction
+    DECLARE_DYNCREATE(CBusStatisticsDlg)
+    // Construction
 public:
-	enum { IDD = IDD_DLG_NETWORK_STATISTICS };
-	CBusStatisticsDlg():CCommonStatistics(CBusStatisticsDlg::IDD, CAN)
-	{
-		
-	}
+    enum { IDD = IDD_DLG_NETWORK_STATISTICS };
+    CBusStatisticsDlg():CCommonStatistics(CBusStatisticsDlg::IDD, CAN)
+    {
+
+    }
     // standard constructor
     CBusStatisticsDlg(CBaseBusStatisticCAN*, CWnd* pParent = NULL, int nChannelCount = defNO_OF_CHANNELS);
-	CBusStatisticsDlg(CBaseBusStatisticCAN*, int nChannelCount = defNO_OF_CHANNELS);
-   
+    CBusStatisticsDlg(CBaseBusStatisticCAN*, int nChannelCount = defNO_OF_CHANNELS);
+
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
@@ -65,7 +65,7 @@ private:
     CString m_omStrBusLoad;
     CString m_omStrPeakBusLoad;
     CString m_omStrAvgBusLoad;
-    
+
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
 };

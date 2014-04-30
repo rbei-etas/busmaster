@@ -1588,7 +1588,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformInitOperations(void)
 
 HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformClosureOperations(void)
 {
-	sg_bCurrState = STATE_DRIVER_SELECTED;
+    sg_bCurrState = STATE_DRIVER_SELECTED;
     return S_OK;
 }
 

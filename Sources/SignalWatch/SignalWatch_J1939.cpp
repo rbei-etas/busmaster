@@ -94,7 +94,7 @@ DWORD WINAPI SigWatchDataReadThreadProc_J(LPVOID pVoid)
 BOOL CSignalWatch_J1939::InitInstance(void)
 {
     InitializeCriticalSection(&m_omCritSecSW);
-    m_pouSigWnd = NULL;	
+    m_pouSigWnd = NULL;
     m_pMsgInterPretObj_J = NULL;
     m_ouReadThread.m_hActionEvent = m_ouMsgBufVSE_J.hGetNotifyingEvent();
     return TRUE;
@@ -118,7 +118,7 @@ int CSignalWatch_J1939::ExitInstance(void)
     {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
-        m_pouSigWnd = NULL;		
+        m_pouSigWnd = NULL;
     }
     return TRUE;
 }
@@ -227,7 +227,7 @@ HRESULT CSignalWatch_J1939::SW_DoInitialization()
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for J1939
     if (m_pouSigWnd == NULL)
-    {		
+    {
         m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), J1939);
         m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
         m_pouSigWnd->SetWindowText("Signal Watch - J1939");
@@ -245,7 +245,7 @@ HRESULT CSignalWatch_J1939::SW_DoInitialization()
 }
 HRESULT CSignalWatch_J1939::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMainSubList)
 {
-	CMainEntryList * podMainSubListfinal= (CMainEntryList *) podMainSubList;
+    CMainEntryList* podMainSubListfinal= (CMainEntryList*) podMainSubList;
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CSigWatchAddDelDlg odDlg(pParent, podMainSubListfinal);
@@ -255,9 +255,9 @@ HRESULT CSignalWatch_J1939::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMain
 HRESULT CSignalWatch_J1939::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
     if (m_pouSigWnd != NULL)
-    {		
-		m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
-		m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
+    {
+        m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
+        m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
         return m_pouSigWnd->ShowWindow(nCmd);
     }
     return S_FALSE;
@@ -316,6 +316,13 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
 
         if(pbyConfigData == NULL)
         {
+            WINDOWPLACEMENT WndPlace;
+            WndPlace.rcNormalPosition.top=70;
+            WndPlace.rcNormalPosition.left=10;
+            WndPlace.rcNormalPosition.right=500;
+            WndPlace.rcNormalPosition.bottom=300;
+            m_pouSigWnd->MoveWindow(&(WndPlace.rcNormalPosition), TRUE);
+
             m_pouSigWnd->ShowWindow(SW_HIDE);
         }
     }
@@ -421,6 +428,7 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(xmlNodePtr pNodePtr)
 //MVN
 HRESULT CSignalWatch_J1939::SW_SetConfigData(xmlNodePtr pNode)
 {
+    m_pouSigWnd->ShowWindow(SW_HIDE);
     INT nRetValue  = S_OK;
     if ((pNode != NULL) && (m_pouSigWnd != NULL))
     {

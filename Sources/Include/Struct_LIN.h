@@ -398,9 +398,9 @@ struct sSUBBUSSTATISTICS_LIN
     unsigned int    m_unTotalRxMsgCount;
     unsigned int    m_unErrorTotalCount;
     unsigned int    m_unErrorRxCount;
-	unsigned int    m_unErrorSyncCount;
+    unsigned int    m_unErrorSyncCount;
     unsigned int    m_unDLCCount;
-	unsigned int    m_unTotalWakeUpsCount;
+    unsigned int    m_unTotalWakeUpsCount;
 
 };
 typedef sSUBBUSSTATISTICS_LIN SSUBBUSSTATISTICS_LIN;
@@ -438,8 +438,8 @@ struct sBUSSTATISTICS_LIN
     int     m_nSamples;
     double  m_dAvarageBusLoad;
 
-	unsigned int m_unTotalWakeUpsCount;
-	unsigned int m_unTotalWakeUpsRate;
+    unsigned int m_unTotalWakeUpsCount;
+    unsigned int m_unTotalWakeUpsRate;
 
     unsigned char   m_ucTxErrorCounter;
     unsigned char   m_ucRxErrorCounter;
@@ -455,7 +455,7 @@ struct sBUSSTATISTICS_LIN
         m_unErrorTotalCount = objRef.m_unErrorTotalCount;
         m_unErrorRxCount = objRef.m_unErrorRxCount;
         m_unDLCCount = objRef.m_unDLCCount;
-		m_unTotalWakeUpsCount=objRef.m_unTotalWakeUpsCount;
+        m_unTotalWakeUpsCount=objRef.m_unTotalWakeUpsCount;
         return *this;
     }
 };

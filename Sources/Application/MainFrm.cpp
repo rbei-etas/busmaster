@@ -135,7 +135,7 @@ CBaseDIL_CAN* g_pouDIL_CAN_Interface = NULL; // CAN DIL interface
 CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface = NULL; // FLEXRAY DIL interface
 static CBaseSignalWatch_CAN* sg_pouSWInterface[BUS_TOTAL] = {NULL}; // SIGNAL WATCH INTERFACE
 
-static CBaseSignalWatch_LIN *sg_pouSWInterfaceLIN[BUS_TOTAL]= {NULL};
+static CBaseSignalWatch_LIN* sg_pouSWInterfaceLIN[BUS_TOTAL]= {NULL};
 
 
 static CBaseFrameProcessor_LIN* sg_pouFrameProcLIN = NULL; // CAN logger interface
@@ -212,14 +212,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DLL_UNLOAD_ALL_LIN, OnDllUnloadLIN)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
-	ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL_LIN, OnAddSignalToSignalWindow_LIN)
-	ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilterButton)
+    ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL_LIN, OnAddSignalToSignalWindow_LIN)
+    ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF, OnMessageFilterButton)
     ON_COMMAND(IDM_FILTER_REPLAYFILTEROFF, OnReplayFilter)
     ON_COMMAND(IDM_FILTER_LOGFILTEROFF, OnLogFilter)
-	ON_COMMAND(IDM_FILTER_LOGLINOFF, OnLogFilterLIN)
-	ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGLINOFF, OnUpdateLogFilterLIN)
+    ON_COMMAND(IDM_FILTER_LOGLINOFF, OnLogFilterLIN)
+    ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGLINOFF, OnUpdateLogFilterLIN)
     ON_COMMAND(IDM_FILTER_MESSAGE_SELECTMESSAGES, OnSelectMessage)
-	ON_COMMAND(IDM_CONFIGURE_FILTER_LIN, OnLINFilter)
+    ON_COMMAND(IDM_CONFIGURE_FILTER_LIN, OnLINFilter)
     ON_COMMAND(IDM_APP_ABOUT, OnAboutApplication)
     ON_COMMAND(IDM_LOG_ON_OFF, OnLogEnable)
     ON_COMMAND(IDM_LOG_LIN_ON_OFF, OnLog_LIN_Enable)
@@ -227,7 +227,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDR_TOOL_HEXDEC, OnHex_DecButon)
     ON_COMMAND(IDR_TOOL_BUTTON_MSG_DISP, OnButtonMsgDispButton)
     ON_COMMAND(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnButtonSignalWatchButton)
-	ON_COMMAND(IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN, OnButtonSignalWatchButton_LIN)
+    ON_COMMAND(IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN, OnButtonSignalWatchButton_LIN)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_DATABASE_CLOSE, OnUpdateConfigureDatabaseClose)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_DATABASE_NEW, OnUpdateConfigureDatabaseNew)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_DATABASE_SAVE, OnUpdateConfigureDatabaseSave)
@@ -307,8 +307,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_CONFIGURE_ACTIVE, OnConfigureModeActive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_ACTIVE, OnUpdateConfigureModeActive)
     ON_WM_TIMER()
-	ON_COMMAND(IDM_NETWORK_STATISTICS_WND_CAN,OnStatisticsCAN)
-	ON_COMMAND(IDM_NETWORK_STATISTICS_WND_LIN,OnStatisticsLIN)
+    ON_COMMAND(IDM_NETWORK_STATISTICS_WND_CAN,OnStatisticsCAN)
+    ON_COMMAND(IDM_NETWORK_STATISTICS_WND_LIN,OnStatisticsLIN)
     ON_UPDATE_COMMAND_UI(IDM_NETWORK_STATISTICS_WND, OnStatisticsUpdate)
     ON_COMMAND(IDM_CONFIGURE_PASSIVE, OnConfigurePassive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_PASSIVE, OnUpdateConfigurePassive)
@@ -325,7 +325,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME,OnEnableTimeStampButton)
     ON_WM_SIZE()
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnUpdateSignalWatchWnd)
-	ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN, OnUpdateSignalWatchWnd_LIN)
+    ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN, OnUpdateSignalWatchWnd_LIN)
     ON_COMMAND(IDM_GRAPH_WND, OnGraphWindow)
     ON_UPDATE_COMMAND_UI(IDM_GRAPH_WND, OnUpdateGraphWnd)
     ON_COMMAND(IDM_CFGN_REPLAY, OnCfgnReplay)
@@ -363,7 +363,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
     ON_MESSAGE(WM_GET_PGN_NAME_FROM_CODE, OnProvidePGNNameFromCode)
-	ON_MESSAGE(WM_CONFIGURE_SIGNAL_WATCH, OnAddSignalFromSignalWatch)
+    ON_MESSAGE(WM_CONFIGURE_SIGNAL_WATCH, OnAddSignalFromSignalWatch)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LIN_LOG, OnUpdateCfgnLog_LIN)
     ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
@@ -466,8 +466,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
     ON_COMMAND(ID_LIN_CLUSTER_CONFIG, OnLinClusterConfig)
     ON_UPDATE_COMMAND_UI(ID_LIN_CLUSTER_CONFIG, OnUpdateLinClusterConfig)
-	ON_COMMAND(IDM_FILTER_MSGLINOFF, OnMessageFilterButtonLin)
-	ON_UPDATE_COMMAND_UI(IDM_FILTER_MSGLINOFF, OnUpdateMessageFilterButtonLin)
+    ON_COMMAND(IDM_FILTER_MSGLINOFF, OnMessageFilterButtonLin)
+    ON_UPDATE_COMMAND_UI(IDM_FILTER_MSGLINOFF, OnUpdateMessageFilterButtonLin)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -638,19 +638,20 @@ CMainFrame::CMainFrame()
         m_abLogOnConnect[i] = FALSE;
     }
 
-	//venkat
+    //venkat
     m_objTSEditorHandler.vLoadTSEditor_DLL();
     m_objTSExecutorHandler.vLoadTSExecutor_DLL();
 
     //MVN
     m_xmlConfigFiledoc = NULL;
     m_bIsXmlConfig = TRUE;
-	m_pXmlNodeBusStats = NULL;
+    m_pXmlNodeBusStats = NULL;
     //~MVN
 
     // language support
     vGettextBusmaster();
 
+    m_bLINDisconnect = false;
     m_bUseAdvancedUILib = false;
     m_hModAdvancedUILib = NULL;
     m_bytIconSize       = 20;
@@ -681,10 +682,10 @@ CMainFrame::CMainFrame()
 
     m_shLINDriverId = DAL_NONE;
 
-	for ( int i =0; i < defNO_OF_LIN_CHANNELS; i++ )
-	{
-		m_asControllerDetailsLIN[i].m_strHwUri.reserve(MAX_PATH);
-	}
+    for ( int i =0; i < defNO_OF_LIN_CHANNELS; i++ )
+    {
+        m_asControllerDetailsLIN[i].m_strHwUri.reserve(MAX_PATH);
+    }
 
 }
 
@@ -2173,7 +2174,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 
         }
         theApp.vPopulateCANIDList();
-		vPopulateLINIDList();
+        vPopulateLINIDList();
         // Send a message to Tx Window about database change
         if(m_objTxHandler.hConfigWindowShown() == S_OK)
         {
@@ -2208,29 +2209,29 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 
 void CMainFrame::vPopulateLINIDList()
 {
-	CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(LIN);
+    CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(LIN);
 
-   
+
     {
         CStringList omStrMsgNameList;
         UINT unNoOfMsgs = 0;
         UINT* pIDArray = NULL;
 
-        
-		list<FRAME_STRUCT> ouFrames;
-		m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(ouFrames);
 
-        
+        list<FRAME_STRUCT> ouFrames;
+        m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(ouFrames);
+
+
         {
             SCanIDList sList;
-			list<FRAME_STRUCT>::iterator itrStart = ouFrames.begin();
+            list<FRAME_STRUCT>::iterator itrStart = ouFrames.begin();
 
-            
 
-			while( ouFrames.end() != itrStart )
+
+            while( ouFrames.end() != itrStart )
             {
-				sList.nCANID        = itrStart->m_nSlotId;
-				sList.omCANIDName   = itrStart->m_strFrameName.c_str();
+                sList.nCANID        = itrStart->m_nSlotId;
+                sList.omCANIDName   = itrStart->m_strFrameName.c_str();
 
                 if (ouMsgAttr.nValidateNewID(sList.nCANID) == MSGID_DUPLICATE)
                 {
@@ -2242,7 +2243,7 @@ void CMainFrame::vPopulateLINIDList()
                     sList.Colour = DEFAULT_MSG_COLOUR;
                     ouMsgAttr.nAddNewAttrib( sList );
                 }
-				itrStart++;
+                itrStart++;
             }
 
             ouMsgAttr.vDoCommit();
@@ -2251,7 +2252,7 @@ void CMainFrame::vPopulateLINIDList()
         }
     }
 
-	return;
+    return;
 }
 
 /******************************************************************************
@@ -2859,7 +2860,7 @@ HISTORY:
 void CMainFrame::OnConfigMessageDisplay()
 {
     CPPageMessage odDBMsg(TRUE, CAN, theApp.m_pouMsgSignal);
-	CPPageMessage odNDBMsg(FALSE, CAN,  theApp.m_pouMsgSignal);
+    CPPageMessage odNDBMsg(FALSE, CAN,  theApp.m_pouMsgSignal);
     CPropertySheet omAllMessages(_("Configure Message Display- CAN"));
     CMsgFilterConfigPage omFilter(CAN, &m_sFilterAppliedCAN, m_podMsgWndThread->hGetHandleMsgWnd(CAN));
 
@@ -2912,8 +2913,8 @@ void CMainFrame::OnConfigMessageDisplay()
 
 void CMainFrame::OnConfigMessageDisplayLin()
 {
-	CPPageMessage odDBMsg(TRUE, LIN, &m_ouClusterConfig[LIN]);
-	CPPageMessage odNDBMsg(FALSE, LIN,  &m_ouClusterConfig[LIN]);
+    CPPageMessage odDBMsg(TRUE, LIN, &m_ouClusterConfig[LIN]);
+    CPPageMessage odNDBMsg(FALSE, LIN,  &m_ouClusterConfig[LIN]);
     CPropertySheet omAllMessages(_("Configure Message Display- LIN"));
     CMsgFilterConfigPage omFilter(LIN, &m_sFilterAppliedLIN, m_podMsgWndThread->hGetHandleMsgWnd(LIN));
 
@@ -4060,38 +4061,40 @@ void CMainFrame::OnAddSignalToSignalWindow()
         {
             // Database is not imported!!
             AfxMessageBox( _(defSTR_EMPTY_ACTIVE_DATABASE) );
+            this->SetFocus();
         }
     }
 }
 
 void CMainFrame::OnAddSignalToSignalWindow_LIN()
 {
-	string path;
-	path=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath;
+    string path;
+    path=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath;
 
-	if(path.empty()== FALSE)
-	{
-		BOOL bCreated=FALSE;
+    if(path.empty()== FALSE)
+    {
+        BOOL bCreated=FALSE;
 
-		if (sg_pouSWInterface[LIN] == NULL)
-		{
-			if (SW_GetInterface(LIN, (void**)&sg_pouSWInterface[LIN]) == S_OK)
-			{
-				sg_pouSWInterface[LIN]->SW_DoInitialization();
-			}
-		}
+        if (sg_pouSWInterface[LIN] == NULL)
+        {
+            if (SW_GetInterface(LIN, (void**)&sg_pouSWInterface[LIN]) == S_OK)
+            {
+                sg_pouSWInterface[LIN]->SW_DoInitialization();
+            }
+        }
 
-		if (sg_pouSWInterface[LIN] != NULL)
-		{
-			sg_pouSWInterface[LIN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_L);
-			sg_pouSWInterface[LIN]->SW_ShowAddDelSignalsDlg(this,&m_ouClusterConfig[LIN]);
-		}
-	}
-	else
-	{
-		// LDF is not imported!!
-		AfxMessageBox( _(defSTR_EMPTY_ACTIVE_DATABASE) );
-	}
+        if (sg_pouSWInterface[LIN] != NULL)
+        {
+            sg_pouSWInterface[LIN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_L);
+            sg_pouSWInterface[LIN]->SW_ShowAddDelSignalsDlg(this,&m_ouClusterConfig[LIN]);
+        }
+    }
+    else
+    {
+        // LDF is not imported!!
+        AfxMessageBox( _(defSTR_EMPTY_ACTIVE_DATABASE) );
+        this->SetFocus();
+    }
 }
 
 /******************************************************************************
@@ -4142,7 +4145,7 @@ void CMainFrame::OnLogFilter()
     Friend of        :      -
     Author(s)        :  Prathiba P
     Date Created     :  11.03.2014
-    Modifications    :  
+    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnLogFilterLIN()
 {
@@ -4211,7 +4214,7 @@ void CMainFrame::ApplyLogFilter()
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
         // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
 
-	}
+    }
 }
 /******************************************************************************
     Function Name    :  ApplyLINLogFilter
@@ -4406,7 +4409,7 @@ void CMainFrame::OnLINFilter()
     LPARAM lParam = NULL;
     if (NULL != GetILINDIL())
     {
-		GetILINDIL()->DILL_GetControllerParams(lParam, NULL, NUMBER_HW);
+        GetILINDIL()->DILL_GetControllerParams(lParam, NULL, NUMBER_HW);
     }
 
     HRESULT hResult = Filter_ShowConfigDlg((void*)&m_sFilterAppliedLIN,  &m_ouClusterConfig[LIN], LIN, (UINT)lParam, this);
@@ -4657,8 +4660,8 @@ void CMainFrame::OnLog_LIN_Enable()
 /*  Input(s)         :  -                                                     */
 /*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user wants  */
-/*                      clicks the CAN network statistics 
-                        
+/*                      clicks the CAN network statistics
+
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Shashank Vernekar                                     */
@@ -4666,15 +4669,15 @@ void CMainFrame::OnLog_LIN_Enable()
 /******************************************************************************/
 void CMainFrame::OnStatisticsCAN()
 {
-	OnStatistics(CAN);
+    OnStatistics(CAN);
 }
 /******************************************************************************/
 /*  Function Name    :  OnStatisticsLIN                                       */
 /*  Input(s)         :  -                                                     */
 /*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user        */
-/*                      clicks the LIN network statistics 
-                        
+/*                      clicks the LIN network statistics
+
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Shashank Vernekar                                     */
@@ -4682,7 +4685,7 @@ void CMainFrame::OnStatisticsCAN()
 /******************************************************************************/
 void CMainFrame::OnStatisticsLIN()
 {
-	OnStatistics(LIN);
+    OnStatistics(LIN);
 }
 /******************************************************************************/
 /*  Function Name    :  OnStatistics                                          */
@@ -4690,7 +4693,7 @@ void CMainFrame::OnStatisticsLIN()
 /*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user clicks */
 /*                      on the network statistics window . Depending on the
-                        BUS selected the corrsponding tab will be made active    
+                        BUS selected the corrsponding tab will be made active
 /*  Member of        :  CMainFrame                                            */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Shashank Vernekar                                     */
@@ -4698,83 +4701,83 @@ void CMainFrame::OnStatisticsLIN()
 /******************************************************************************/
 void CMainFrame::OnStatistics(ETYPE_BUS ebus)
 {
-	ETYPE_BUS bus;
-	BOOL bRet;
-	if(m_bIsStatWndCreated == FALSE )
-	{
-		LONG lParam = 0;
-		int unTotalChannels = defNO_OF_CHANNELS;
-		if (g_pouDIL_CAN_Interface && g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-		{
-			unTotalChannels = (INT)lParam;
-		}
+    ETYPE_BUS bus;
+    BOOL bRet = FALSE;
+    if(m_bIsStatWndCreated == FALSE )
+    {
+        LONG lParam = 0;
+        int unTotalChannels = defNO_OF_CHANNELS;
+        if (g_pouDIL_CAN_Interface && g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+        {
+            unTotalChannels = (INT)lParam;
+        }
 
-		int unTotalChannelsLIN = m_ouClusterConfig[LIN].m_nChannelsConfigured;//defNO_OF_LIN_CHANNELS;
+        int unTotalChannelsLIN = m_ouClusterConfig[LIN].m_nChannelsConfigured;//defNO_OF_LIN_CHANNELS;
 
-		if ( m_oNetworkStatistics == NULL )
-		{
-			UINT unChnl[BUS_TOTAL];
+        if ( m_oNetworkStatistics == NULL )
+        {
+            UINT unChnl[BUS_TOTAL];
 
-			unChnl[CAN] = unTotalChannels;
-			unChnl[LIN] = unTotalChannelsLIN;
-			m_oNetworkStatistics = new CNetworkStatistics(unChnl);
-			m_oNetworkStatistics->SetTitle("Network Statistics");
-			if ( NULL != m_oNetworkStatistics )
-			{
-				bRet = m_oNetworkStatistics->Create(this, WS_SYSMENU | WS_POPUP | WS_CAPTION | DS_MODALFRAME);					     
+            unChnl[CAN] = unTotalChannels;
+            unChnl[LIN] = unTotalChannelsLIN;
+            m_oNetworkStatistics = new CNetworkStatistics(unChnl);
+            m_oNetworkStatistics->SetTitle("Network Statistics");
+            if ( NULL != m_oNetworkStatistics )
+            {
+                bRet = m_oNetworkStatistics->Create(this, WS_SYSMENU | WS_POPUP | WS_CAPTION | DS_MODALFRAME);
 
-				if(ebus == CAN)
-				{					
-					m_oNetworkStatistics->SetActivePage(CAN_STAT_PAGE);
-				}
-				else if(ebus == LIN)
-				{
-					m_oNetworkStatistics->SetActivePage(LIN_STAT_PAGE);
-				}
-			}
+                if(ebus == CAN)
+                {
+                    m_oNetworkStatistics->SetActivePage(CAN_STAT_PAGE);
+                }
+                else if(ebus == LIN)
+                {
+                    m_oNetworkStatistics->SetActivePage(LIN_STAT_PAGE);
+                }
+            }
 
-			if(bRet)
-			{
-				// Update the statistics dialog creation status
-				m_bIsStatWndCreated = TRUE;				
+            if(bRet)
+            {
+                // Update the statistics dialog creation status
+                m_bIsStatWndCreated = TRUE;
 
-				if(m_pXmlNodeBusStats != NULL)
-				{
-					m_oNetworkStatistics->hSetConfigData((xmlNodePtr)m_pXmlNodeBusStats, TRUE);
-					xmlFreeNode(m_pXmlNodeBusStats);
-					m_pXmlNodeBusStats = NULL;
+                if(m_pXmlNodeBusStats != NULL)
+                {
+                    m_oNetworkStatistics->hSetConfigData((xmlNodePtr)m_pXmlNodeBusStats, TRUE);
+                    xmlFreeNode(m_pXmlNodeBusStats);
+                    m_pXmlNodeBusStats = NULL;
 
-				}
-				else
-				{
-					m_oNetworkStatistics->hSetConfigData(NULL, FALSE);
-				}
+                }
+                else
+                {
+                    m_oNetworkStatistics->hSetConfigData(NULL, FALSE);
+                }
 
-				m_oNetworkStatistics->ShowWindow(SW_SHOW);
-			}
-		}
-	}
-	else if (m_bIsStatWndCreated == TRUE)
-	{
-		if(m_pXmlNodeBusStats != NULL)
-		{
-			m_oNetworkStatistics->hSetConfigData((xmlNodePtr)m_pXmlNodeBusStats, TRUE);
-			xmlFreeNode(m_pXmlNodeBusStats);
-			m_pXmlNodeBusStats = NULL;
-		}	
+                m_oNetworkStatistics->ShowWindow(SW_SHOW);
+            }
+        }
+    }
+    else if (m_bIsStatWndCreated == TRUE)
+    {
+        if(m_pXmlNodeBusStats != NULL)
+        {
+            m_oNetworkStatistics->hSetConfigData((xmlNodePtr)m_pXmlNodeBusStats, TRUE);
+            xmlFreeNode(m_pXmlNodeBusStats);
+            m_pXmlNodeBusStats = NULL;
+        }
 
-		if(ebus == CAN)
-		{
-			m_oNetworkStatistics->SetActivePage(CAN_STAT_PAGE);
-		}
-		else if(ebus == LIN)
-		{
-			m_oNetworkStatistics->SetActivePage(LIN_STAT_PAGE);
-		}
+        if(ebus == CAN)
+        {
+            m_oNetworkStatistics->SetActivePage(CAN_STAT_PAGE);
+        }
+        else if(ebus == LIN)
+        {
+            m_oNetworkStatistics->SetActivePage(LIN_STAT_PAGE);
+        }
 
-		m_oNetworkStatistics->ShowWindow(SW_SHOW);
-	}
-}       
+        m_oNetworkStatistics->ShowWindow(SW_SHOW);
+    }
+}
 
 void CMainFrame::OnStatisticsUpdate(CCmdUI* pCmdUI)
 {
@@ -5985,23 +5988,23 @@ void CMainFrame::OnClose()
     // xmlCleanupParser();
 
     //----------------------------------------------------------------------
-    	/* if( NULL != m_pCopyBusStsticsNode )
-	{
-	xmlFreeNode(m_pCopyBusStsticsNode);
-	m_pCopyBusStsticsNode = NULL;
-	}
+    /* if( NULL != m_pCopyBusStsticsNode )
+    {
+    xmlFreeNode(m_pCopyBusStsticsNode);
+    m_pCopyBusStsticsNode = NULL;
+    }
 
-	if( NULL != m_pCopyBusStsticsNode_LIN )
-	{
-	xmlFreeNode(m_pCopyBusStsticsNode_LIN);
-	m_pCopyBusStsticsNode_LIN = NULL;
-	}*/
+    if( NULL != m_pCopyBusStsticsNode_LIN )
+    {
+    xmlFreeNode(m_pCopyBusStsticsNode_LIN);
+    m_pCopyBusStsticsNode_LIN = NULL;
+    }*/
 
-	if(NULL != m_pXmlNodeBusStats)
-	{
-		xmlFreeNode(m_pXmlNodeBusStats);
-		m_pXmlNodeBusStats = NULL;
-	}
+    if(NULL != m_pXmlNodeBusStats)
+    {
+        xmlFreeNode(m_pXmlNodeBusStats);
+        m_pXmlNodeBusStats = NULL;
+    }
 
     CMDIFrameWnd::OnClose();
 }
@@ -7118,7 +7121,7 @@ void CMainFrame::OnMessageFilterButton()
 
     Input(s)         :      -
     Output           :      -
-    Functionality    :  
+    Functionality    :
     Member of        :  CMainFrame
     Friend of        :      -
 
@@ -7138,9 +7141,9 @@ void CMainFrame::OnMessageFilterButtonLin()
         pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
-        
-		//TODO::
-		/* Modify filter icon accordingly in Main toolbar*/
+
+        //TODO::
+        /* Modify filter icon accordingly in Main toolbar*/
         BYTE bytTbrItemIndex = 9;
         vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
@@ -7349,7 +7352,7 @@ void CMainFrame::ApplyMessageFilterButton()
         BYTE bytTbrItemIndex = 6;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
 
-		bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN);
+        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN);
         //bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
 
@@ -9157,7 +9160,7 @@ void CMainFrame::OnFileConnect()
     CWaitCursor omWait;
 
     pouFlags   = theApp.pouGetFlagsPtr();
-	
+
 
     if(pouFlags != NULL)
     {
@@ -9337,7 +9340,7 @@ void CMainFrame::OnFileConnect()
                 bReturn = TRUE;
             }
         }
-        
+
         if(bReturn == TRUE )
         {
             BOOL bLogIsON = FALSE, bJ1939LogON = FALSE, bLinLogON = FALSE;
@@ -9514,11 +9517,11 @@ void CMainFrame::OnFileConnect()
             //shashank
 
             if(NULL != sg_pouIJ1939Logger)
-            {                
+            {
                 if(sg_pouIJ1939Logger->FPJ1_IsLoggingON())//if logging is on
                 {
                     sg_pouIJ1939Logger->FPJ1_vCloseLogFile();
-                }                
+                }
             }
         }
         if ( bConnected == TRUE )
@@ -9555,12 +9558,12 @@ void CMainFrame::OnFileConnect()
 void CMainFrame::OnLINConnect()
 {
     HRESULT hResult = S_OK;
-    CFlags* pouFlag  = theApp.pouGetFlagsPtr();	
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
 
     /* Toggle connect/disconnect flag */
     BOOL bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
     bConnected = !bConnected;
-    
+
     CBaseNodeSim* pNodeSim = NULL;
     /* If connecton is required */
     if ( bConnected )
@@ -9571,11 +9574,11 @@ void CMainFrame::OnLINConnect()
 
 
         m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
-		pNodeSim = GetILINNodeSim();
-		if(pNodeSim != NULL)
-		{
-			pNodeSim->NS_ManageBusEventHandler(BUS_PRE_CONNECT);
-		}
+        pNodeSim = GetILINNodeSim();
+        if(pNodeSim != NULL)
+        {
+            pNodeSim->NS_ManageBusEventHandler(BUS_PRE_CONNECT);
+        }
         m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_PRE_CONNECT);
 
         hResult = g_pouDIL_LIN_Interface->DILL_StartHardware();
@@ -9616,30 +9619,31 @@ void CMainFrame::OnLINConnect()
         HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
         if(NULL != hWnd)
         {
-			::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
-			::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
-		}
+            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+            ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
+        }
 
-		GetILINBusStat()->BSL_bStartUpdation(FALSE);
-		GetILINBusStat()->BSL_ResetBusStatistic();
+        GetILINBusStat()->BSL_bStartUpdation(FALSE);
+        GetILINBusStat()->BSL_ResetBusStatistic();
 
-		vSetBaudRateInfo(LIN); 
+        vSetBaudRateInfo(LIN);
 
-		for (UINT i = 0; i < defNO_OF_LIN_CHANNELS; i++)
-		{
+        for (UINT i = 0; i < defNO_OF_LIN_CHANNELS; i++)
+        {
 #ifdef BOA_FD_VERSION
-			GetILINBusStat()->BSL_SetBaudRate(i, m_asControllerDetailsLIN[i].m_unDataBitRate);
+            GetILINBusStat()->BSL_SetBaudRate(i, m_asControllerDetailsLIN[i].m_unDataBitRate);
 #else
-			GetILINBusStat()->BSL_SetBaudRate(i, (m_asControllerDetailsLIN[i].m_nBaudRate));
+            GetILINBusStat()->BSL_SetBaudRate(i, (m_asControllerDetailsLIN[i].m_nBaudRate));
 #endif
-		}
-		GetILINBusStat()->BSL_bStartUpdation(TRUE);
+        }
+        GetILINBusStat()->BSL_bStartUpdation(TRUE);
 
-		if (NS_GetInterface(LIN, (void**) &pNodeSim) == S_OK)
-		{
-			pNodeSim->NS_nOnBusConnected(TRUE);
-		}
-	}
+        if (NS_GetInterface(LIN, (void**) &pNodeSim) == S_OK)
+        {
+            pNodeSim->NS_nOnBusConnected(TRUE);
+        }
+        m_bLINDisconnect = false;
+    }
     /* If disconnecton is required */
     else
     {
@@ -9664,6 +9668,7 @@ void CMainFrame::OnLINConnect()
         {
             pNodeSim->NS_nOnBusConnected(FALSE);
         }
+        m_bLINDisconnect = true;
     }
     //added to disable loading config while LIN transmission
 
@@ -10007,8 +10012,8 @@ void CMainFrame::OnNewConfigFile()
 
     if(oCfgFileDlg.DoModal() == IDOK)
     {
-		
-        CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();		
+
+        CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
 
         // get the name of the selected file
         CString oCfgFilename = oCfgFileDlg.GetPathName();
@@ -10079,7 +10084,7 @@ void CMainFrame::OnNewConfigFile()
         IntializeDILL();
         m_ouClusterConfig[LIN].InitialiseConfig();
 
-		ApplyLINLogFilter();
+        ApplyLINLogFilter();
         // Close the J1939 and FlexRay message windows
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
@@ -10090,8 +10095,8 @@ void CMainFrame::OnNewConfigFile()
         m_acFlexDBConfigInfo.m_acConfigFileName[1] = "";
         m_acFlexDBConfigInfo.m_nFilesCount = 0;
         m_acFlexDBConfigInfo.m_nSelectedIndex = 0;
-		m_wndToolbarJ1939.GetToolBarCtrl().ShowWindow(SW_HIDE);
-		m_wndToolbarNodeSimul.GetToolBarCtrl().ShowWindow(SW_HIDE);
+        m_wndToolbarJ1939.GetToolBarCtrl().ShowWindow(SW_HIDE);
+        m_wndToolbarNodeSimul.GetToolBarCtrl().ShowWindow(SW_HIDE);
     }
 }
 void CMainFrame::vInitialiaseLINConfig(int nChannel)
@@ -10843,14 +10848,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
         {
             vUpdateGraphStatsData();
             // Update the bus statistics window if it exists.
-			if ( m_oNetworkStatistics != NULL &&
+            if ( m_oNetworkStatistics != NULL &&
                     m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
             {
                 // Perform network statistics calculation and update of
                 // network statistics window
-                
-				m_oNetworkStatistics->vSendMessage(CAN);
-				
+                m_oNetworkStatistics->vSendMessage(CAN);
             }
 
             // Get Present error counter value and take
@@ -10877,47 +10880,26 @@ void CMainFrame::OnTimer(UINT nIDEvent)
             }
         }
 
-
-
-
-		  if ((theApp.pouGetFlagsPtr()->nGetFlagStatus(LIN_CONNECTED)) == TRUE)
+        if ((theApp.pouGetFlagsPtr()->nGetFlagStatus(LIN_CONNECTED)) == TRUE)
         {
-            vUpdateGraphStatsData();
             // Update the bus statistics window if it exists.
-			if ( m_oNetworkStatistics != NULL &&
-				m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+            if ( m_oNetworkStatistics != NULL &&
+                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
             {
                 // Perform network statistics calculation and update of
                 // network statistics window
-                m_oNetworkStatistics->vSendMessage(LIN);        }
-
-            // Get Present error counter value and take
-            // appropriate actions for error handler execution
-            // Get the number of channels available
-            UINT unTotalChannels = 0;
-            LONG lParam = 0;
-            if (g_pouDIL_LIN_Interface->DILL_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
-            {
-                unTotalChannels = (UINT)lParam;
-            }
-            for( UINT unChannel = 0; unChannel < unTotalChannels; unChannel++ )
-            {
-                // Get the error counter status from the HI layer
-                if( g_pouDIL_LIN_Interface->DILL_GetErrorCount( m_sErrorCount, unChannel, ERR_CNT) == S_OK)
-                {
-                    // Make Channel specific error code
-                    WORD nErrorWord = MAKEWORD( ERROR_BUS , unChannel );
-                    // Call error handler function to process
-                    OnErrorMessageProc( nErrorWord,
-                                        MAKEWORD(m_sErrorCount.m_ucRxErrCount,
-                                                 m_sErrorCount.m_ucTxErrCount));
-                }
+                m_oNetworkStatistics->vSendMessage(LIN);
             }
         }
 
-
-
-
+        if (m_bLINDisconnect == TRUE)
+        {
+            if ( m_oNetworkStatistics != NULL &&
+                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+            {
+                m_oNetworkStatistics->vSendMessage(LIN, m_bLINDisconnect);
+            }
+        }
     }
     if(nIDEvent == m_unTimerSBLog)
     {
@@ -13397,13 +13379,13 @@ void CMainFrame::vNS_LINInitCFileFunctPtrs()
     }*/
 
     //theApp.m_pouMsgSignal->vGetDataBaseNames(&omDatabaseNames);
-	CBaseNodeSim *pNodeSim = NULL;
-	pNodeSim = GetILINNodeSim();
+    CBaseNodeSim* pNodeSim = NULL;
+    pNodeSim = GetILINNodeSim();
 
-	if(pNodeSim != NULL)
-	{
-		pNodeSim->NS_SetLINConfig(m_ouClusterConfig[LIN]);
-	}
+    if(pNodeSim != NULL)
+    {
+        pNodeSim->NS_SetLINConfig(m_ouClusterConfig[LIN]);
+    }
 
     for (int nIndex = 0; nIndex < m_ouClusterConfig[LIN].m_nChannelsConfigured; nIndex++)
     {
@@ -13959,9 +13941,9 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
 }
 void CMainFrame::OnFlexRayConnect()
 {
-	CFlags* pouFlag  = theApp.pouGetFlagsPtr();
-	// If LIN or FlexRay is connected, stop connecting to the network and display information
-	
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+    // If LIN or FlexRay is connected, stop connecting to the network and display information
+
     if ( !m_bFlxDILChanging )
     {
         char chError[256];
@@ -14260,7 +14242,7 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
 
                         /*Update hardware info in status bar*/
                         vUpdateHWStatusInfo();
-vInitializeBusStatLIN();
+                        vInitializeBusStatLIN();
                         //Update TxWindow
                         eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
                         m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
@@ -14361,10 +14343,10 @@ void CMainFrame::vUpdateChannelInfo(void)
         //update Bus Stats Dlg.
         if(m_bIsStatWndCreated)
         {
-			if(m_oNetworkStatistics != NULL)
-			{
-				m_oNetworkStatistics->vUpdateChannelInfo(CAN, nHardware);
-			}
+            if(m_oNetworkStatistics != NULL)
+            {
+                m_oNetworkStatistics->vUpdateChannelInfo(CAN, nHardware);
+            }
         }
         //Update TxWindow
         eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
@@ -14377,22 +14359,22 @@ void CMainFrame::vUpdateChannelInfo(void)
         }
     }
 
-	if(g_pouDIL_LIN_Interface->DILL_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
+    if(g_pouDIL_LIN_Interface->DILL_GetControllerParams(lParam, 0, NUMBER_HW) == S_OK)
     {
         nHardware = (UINT)lParam;
         //update Bus Stats Dlg.
         if(m_bIsStatWndCreated)
         {
-			if(m_oNetworkStatistics != NULL)
-			{
-				m_oNetworkStatistics->vUpdateChannelInfo(LIN, nHardware);
-			}
+            if(m_oNetworkStatistics != NULL)
+            {
+                m_oNetworkStatistics->vUpdateChannelInfo(LIN, nHardware);
+            }
         }
         //Update TxWindow
         eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
         m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
 
-        
+
     }
 
 
@@ -14897,7 +14879,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             ApplyMessageFilterButton();
             ApplyReplayFilter();
             ApplyMessagewindowOverwrite();
-			ApplyLINLogFilter();
+            ApplyLINLogFilter();
             nRetValue = S_OK;
             vCreateMRU_Menus();
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
@@ -14938,9 +14920,9 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             ApplyLogFilter();
             ApplyMessageFilterButton();
             ApplyReplayFilter();
-			ApplyLINLogFilter();
-			m_wndToolbarJ1939.GetToolBarCtrl().ShowWindow(SW_HIDE);
-			m_wndToolbarNodeSimul.GetToolBarCtrl().ShowWindow(SW_HIDE);
+            ApplyLINLogFilter();
+            m_wndToolbarJ1939.GetToolBarCtrl().ShowWindow(SW_HIDE);
+            m_wndToolbarNodeSimul.GetToolBarCtrl().ShowWindow(SW_HIDE);
         }
     }
     else            //If Default Configuration
@@ -15124,8 +15106,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                                          , BAD_CAST strIsMsgFilterEnabled.GetBuffer(strIsMsgFilterEnabled.GetLength()));
             xmlAddChild(pNodePtr, pMsgFilterEnbld);
 
-			// Writing IsMsgFilterEnabledLin in to xml
-           
+            // Writing IsMsgFilterEnabledLin in to xml
+
             if(m_sToolBarInfo.m_byMsgFilterLin == TRUE)
             {
                 strIsMsgFilterEnabled = _("TRUE");
@@ -15136,10 +15118,10 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
 
             xmlNodePtr pMsgFilterEnbldLin = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsMsgFilterEnabledLin
-                                         , BAD_CAST strIsMsgFilterEnabled.GetBuffer(strIsMsgFilterEnabled.GetLength()));
+                                            , BAD_CAST strIsMsgFilterEnabled.GetBuffer(strIsMsgFilterEnabled.GetLength()));
             xmlAddChild(pNodePtr, pMsgFilterEnbldLin);
 
-			//CAN-ReplyFilter
+            //CAN-ReplyFilter
             CString strIsReplayFilterEnabled = "";
             if(m_sToolBarInfo.m_byReplayFilter == TRUE)
             {
@@ -15167,7 +15149,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                                          , BAD_CAST strIsLogFilterEnabled.GetBuffer(strIsLogFilterEnabled.GetLength()));
             xmlAddChild(pNodePtr, pLogFilterEnbld);
 
-			// Writing IsLogFilterEnabledLIN in to xml
+            // Writing IsLogFilterEnabledLIN in to xml
             CString strIsLogFilterLINEnabled = "";
             if(m_sToolBarInfo.m_byLogFilterLIN == TRUE)
             {
@@ -15179,7 +15161,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
 
             xmlNodePtr pLogFilterLINEnbld = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_IsLogFilterLINEnabled
-                                         , BAD_CAST strIsLogFilterLINEnabled.GetBuffer(strIsLogFilterLINEnabled.GetLength()));
+                                            , BAD_CAST strIsLogFilterLINEnabled.GetBuffer(strIsLogFilterLINEnabled.GetLength()));
             xmlAddChild(pNodePtr, pLogFilterLINEnbld);
             // Writing IsLoggingEnabled in to xml
             CString strIsLoggingEnabled = "";
@@ -15290,7 +15272,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                                             , BAD_CAST strLogOnConnectJ1939.GetBuffer(strLogOnConnectJ1939.GetLength()));
             xmlAddChild(pNodePtr, pLogOnConnectJ1939);
 
-			// Writing LogOnConnect For LIN in to xml
+            // Writing LogOnConnect For LIN in to xml
             CString strLogOnConnectLIN = "";
             if(m_abLogOnConnect[LIN] == TRUE)
             {
@@ -15305,7 +15287,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                                           , BAD_CAST strLogOnConnectLIN.GetBuffer(strLogOnConnectLIN.GetLength()));
             xmlAddChild(pNodePtr, pLogOnConnectLIN);
 
-			// Writing IsMsgFilterEnabled For LIN in to xml
+            // Writing IsMsgFilterEnabled For LIN in to xml
             /*CString strIsMsgFilterEnabled = "";
             if(m_sToolBarInfo.m_byMsgFilter == TRUE)
             {
@@ -15517,8 +15499,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 omcVarChar = csFilter;
                 xmlNodePtr pFilter = xmlNewChild(pCANMsgWindow, NULL, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
                 xmlAddChild(pCANMsgWindow, pFilter);
-				csFilter.Format("%d", ((sMsgWndFilter.m_psFilters)+iCnt)->m_bEnabled);
-				xmlNewProp(pFilter, (const xmlChar*)"IsEnabled", (const xmlChar*)csFilter.GetBuffer(MAX_PATH));
+                csFilter.Format("%d", ((sMsgWndFilter.m_psFilters)+iCnt)->m_bEnabled);
+                xmlNewProp(pFilter, (const xmlChar*)"IsEnabled", (const xmlChar*)csFilter.GetBuffer(MAX_PATH));
             }
 
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
@@ -15609,8 +15591,8 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 omcVarChar = csFilter;
                 xmlNodePtr pFilter = xmlNewChild(pLINMsgWindow, NULL, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
                 xmlAddChild(pLINMsgWindow, pFilter);
-				csFilter.Format("%d", ((sMsgWndFilter.m_psFilters)+iCnt)->m_bEnabled);
-				xmlNewProp(pFilter, (const xmlChar*)"IsEnabled", (const xmlChar*)csFilter.GetBuffer(MAX_PATH));
+                csFilter.Format("%d", ((sMsgWndFilter.m_psFilters)+iCnt)->m_bEnabled);
+                xmlNewProp(pFilter, (const xmlChar*)"IsEnabled", (const xmlChar*)csFilter.GetBuffer(MAX_PATH));
             }
 
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
@@ -15840,17 +15822,17 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
-		 case SIGWATCH_SECTION_LIN_ID:
-			 {
-				 xmlNodePtr pNodeSigWtchPtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_SIGNAL_WATCH);
-				 xmlAddChild(pNodePtr, pNodeSigWtchPtr);
-				 if (sg_pouSWInterface[LIN] != NULL)
-				 {
-					 UINT nSWSize = 0;
-					 sg_pouSWInterface[LIN]->SW_GetConfigData(pNodeSigWtchPtr);
-				 }
-			 }
-	     break;
+        case SIGWATCH_SECTION_LIN_ID:
+        {
+            xmlNodePtr pNodeSigWtchPtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_SIGNAL_WATCH);
+            xmlAddChild(pNodePtr, pNodeSigWtchPtr);
+            if (sg_pouSWInterface[LIN] != NULL)
+            {
+                UINT nSWSize = 0;
+                sg_pouSWInterface[LIN]->SW_GetConfigData(pNodeSigWtchPtr);
+            }
+        }
+        break;
 
         case DIL_SECTION_ID:
         {
@@ -16127,14 +16109,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             //}
         }
         break;
-		case FILTER_SECTION_LIN_ID:
-			nSize = m_sFilterAppliedLIN.unGetSize();
+        case FILTER_SECTION_LIN_ID:
+            nSize = m_sFilterAppliedLIN.unGetSize();
 
-			if(pNodePtr != NULL)
-			{
-				m_sFilterAppliedLIN.pbGetConfigData(pNodePtr);
-			}
-			break;
+            if(pNodePtr != NULL)
+            {
+                m_sFilterAppliedLIN.pbGetConfigData(pNodePtr);
+            }
+            break;
         case DATABASE_SECTION_J1939_ID:
         {
             nSize += sizeof(BYTE);//configuration version
@@ -16363,7 +16345,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
         }
         break;
         case DATABASE_SECTION_FLEXRAY:
-        {            
+        {
         }
         break;
         case WAVEFORMDATA_SECTION_ID:
@@ -16375,22 +16357,22 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
         break;
         case BUS_STATISTICS_SECTION_ID:
         {
-			if(m_oNetworkStatistics != NULL)
-			{					
-				xmlNodePtr pNodeBusStat = NULL;
-				m_oNetworkStatistics->vGetConfigData(pNodeBusStat);		
-				xmlAddChild(pNodePtr, pNodeBusStat);
-			}
-				else
-				{
-					if(NULL != m_pXmlNodeBusStats)
-					{
-						xmlNodePtr pBUSStatNode = NULL;
-						pBUSStatNode = xmlCopyNode(m_pXmlNodeBusStats, 1);
-						xmlAddChild(pNodePtr, pBUSStatNode);										
-					}
-				}
-		}
+            if(m_oNetworkStatistics != NULL)
+            {
+                xmlNodePtr pNodeBusStat = NULL;
+                m_oNetworkStatistics->vGetConfigData(pNodeBusStat);
+                xmlAddChild(pNodePtr, pNodeBusStat);
+            }
+            else
+            {
+                if(NULL != m_pXmlNodeBusStats)
+                {
+                    xmlNodePtr pBUSStatNode = NULL;
+                    pBUSStatNode = xmlCopyNode(m_pXmlNodeBusStats, 1);
+                    xmlAddChild(pNodePtr, pBUSStatNode);
+                }
+            }
+        }
         break;
         //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
@@ -16420,7 +16402,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             xmlAddChild(pNodePtr, pFLEXTxPtr);
             m_objFlexTxHandler.vGetTxWndConfigData(LIN, pFLEXTxPtr);
         }
-		break;
+        break;
         case MSGWND_SECTION_FLEXRAY_ID:
         {
             // Save FlexRay Message Window contents
@@ -16524,7 +16506,7 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
                 xmlFree(ptext);
             }
         }
-		if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsMsgFilterEnabledLin")))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsMsgFilterEnabledLin")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(NULL != ptext)
@@ -16579,7 +16561,7 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             }
         }
 
-		if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsLogFilterLINEnabled")))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsLogFilterLINEnabled")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(NULL != ptext)
@@ -17295,7 +17277,7 @@ int CMainFrame::nLoadXMLConfiguration()
                 }
                 else
                 {
- 
+
                 }
 
                 m_objFlexTxHandler.SetFibexConfig(FLEXRAY, m_ouClusterConfig[FLEXRAY]);
@@ -17462,7 +17444,7 @@ int CMainFrame::nLoadXMLConfiguration()
                 nRetValue = m_sFilterAppliedCAN.nSetXMLConfigData(m_xmlConfigFiledoc, CAN);
             }
             break;
-			case FILTER_SECTION_LIN_ID:
+            case FILTER_SECTION_LIN_ID:
             {
                 nRetValue = m_sFilterAppliedLIN.nSetXMLConfigData(m_xmlConfigFiledoc, LIN);
             }
@@ -17850,7 +17832,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     xmlXPathFreeObject (pPathObject);
                 }
 
-				//Msg Filter
+                //Msg Filter
                 bool bResult = false;
                 SFILTERAPPLIED_LIN sMsgWndFilter;
                 //pbyTemp = sMsgWndFilter.pbSetConfigData(pbyTemp, bResult);
@@ -17865,14 +17847,14 @@ int CMainFrame::nLoadXMLConfiguration()
                     {
                         //for(INT nIndex =0; nIndex < pNodeSet->nodeNr; nIndex++)
                         {
-							sMsgWndFilter .pbSetConfigData( m_sFilterAppliedLIN, pNodeSet, m_xmlConfigFiledoc, bResult, LIN);
+                            sMsgWndFilter .pbSetConfigData( m_sFilterAppliedLIN, pNodeSet, m_xmlConfigFiledoc, bResult, LIN);
                             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
                                           WM_SET_FILTER_DETAILS, (WPARAM)&m_sFilterAppliedLIN, NULL);
                         }
                     }
                 }
 
-                
+
                 if(NULL != m_xmlConfigFiledoc)
                 {
                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
@@ -18009,7 +17991,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
                     m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
                     sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
-					sg_pouSWInterface[CAN]->SW_ClearSigWatchWnd();
+                    sg_pouSWInterface[CAN]->SW_ClearSigWatchWnd();
 
                     if(pOjectPath != NULL)
                     {
@@ -18035,13 +18017,13 @@ int CMainFrame::nLoadXMLConfiguration()
                     m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
                     sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
                     sg_pouSWInterface[CAN]->SW_SetConfigData((void*)NULL);
-					sg_pouSWInterface[CAN]->SW_ClearSigWatchWnd();
+                    sg_pouSWInterface[CAN]->SW_ClearSigWatchWnd();
                 }
                 bProper = FALSE;
             }
             break;
 
-			case SIGWATCH_SECTION_LIN_ID:
+            case SIGWATCH_SECTION_LIN_ID:
             {
                 if (sg_pouSWInterface[LIN] == NULL)
                 {
@@ -18050,8 +18032,8 @@ int CMainFrame::nLoadXMLConfiguration()
                         sg_pouSWInterface[LIN]->SW_DoInitialization();
                     }
                 }
-                
-                BOOL bProper;
+
+                BOOL bProper = FALSE;
                 xmlXPathObjectPtr pOjectPath = NULL;
                 xmlNodePtr pNodePtr = NULL;
 
@@ -18065,7 +18047,7 @@ int CMainFrame::nLoadXMLConfiguration()
 
                 if(bProper == TRUE)
                 {
-					sg_pouSWInterface[LIN]->SW_ClearSigWatchWnd();
+                    sg_pouSWInterface[LIN]->SW_ClearSigWatchWnd();
                     if(pOjectPath != NULL)
                     {
                         xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
@@ -18087,7 +18069,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     //Set default settings
                     vReleaseSignalWatchListMemory(m_psSignalWatchList[LIN]);
                     sg_pouSWInterface[LIN]->SW_SetConfigData((void*)NULL);
-					sg_pouSWInterface[LIN]->SW_ClearSigWatchWnd();
+                    sg_pouSWInterface[LIN]->SW_ClearSigWatchWnd();
                 }
                 bProper = FALSE;
             }
@@ -18122,7 +18104,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[J1939], m_pouMsgSigJ1939);
                     m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                     sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
-					sg_pouSWInterface[J1939]->SW_ClearSigWatchWnd();
+                    sg_pouSWInterface[J1939]->SW_ClearSigWatchWnd();
 
                     if(pOjectPath != NULL)
                     {
@@ -18147,7 +18129,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                     sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
                     sg_pouSWInterface[J1939]->SW_SetConfigData((void*)NULL);
-					sg_pouSWInterface[J1939]->SW_ClearSigWatchWnd();
+                    sg_pouSWInterface[J1939]->SW_ClearSigWatchWnd();
                 }
                 bProper = FALSE;
             }
@@ -18158,28 +18140,28 @@ int CMainFrame::nLoadXMLConfiguration()
             }
             break;
             case BUS_STATISTICS_SECTION_ID:
-			{
-				m_pXmlNodeBusStats = NULL;
-				xmlXPathObjectPtr pTempNode = NULL;
-				pTempNode = xmlUtils::pGetNodes(m_xmlConfigFiledoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/Bus_Statistics"));
+            {
+                m_pXmlNodeBusStats = NULL;
+                xmlXPathObjectPtr pTempNode = NULL;
+                pTempNode = xmlUtils::pGetNodes(m_xmlConfigFiledoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/Bus_Statistics"));
 
-				if(pTempNode != NULL && pTempNode->nodesetval != NULL && pTempNode->nodesetval->nodeTab[0] != NULL)
-				{
-					m_pXmlNodeBusStats = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
-				}
-				if(m_bIsStatWndCreated == TRUE)
-				{
-					if(m_pXmlNodeBusStats != NULL)
-					{
-						m_oNetworkStatistics->hSetConfigData((xmlNodePtr)m_pXmlNodeBusStats);
-					}
-				}		
-			}
-			break;
+                if(pTempNode != NULL && pTempNode->nodesetval != NULL && pTempNode->nodesetval->nodeTab[0] != NULL)
+                {
+                    m_pXmlNodeBusStats = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
+                }
+                if(m_bIsStatWndCreated == TRUE)
+                {
+                    if(m_pXmlNodeBusStats != NULL)
+                    {
+                        m_oNetworkStatistics->hSetConfigData((xmlNodePtr)m_pXmlNodeBusStats);
+                    }
+                }
+            }
+            break;
             case TXWND_SECTION_ID:
-			{
-				m_objTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
-			}
+            {
+                m_objTxHandler.vSetTxWndConfigData(m_xmlConfigFiledoc);
+            }
             break;
 
             case MSGWND_SECTION_J1939_ID:
@@ -18561,7 +18543,7 @@ void CMainFrame::vVlaidateAndLoadFibexConfig(sLinConfigContainer& ouFibexContain
             if ( true == bValid )
             {
                 m_ouClusterConfig[LIN].m_ouFlexChannelConfig[ouFibexContainer.m_nChannel] = ouFlexChannel;
-				vPopulateLINIDList();
+                vPopulateLINIDList();
                 //m_ouClusterConfig[LIN].m_nChannelsConfigured++;
             }
             else
@@ -18815,41 +18797,41 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
         {
             sController.m_enmHWFilterType[1] = (eHW_FILTER_TYPES)atoi(strVar.c_str());
         }
-		
-		//CANFD
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_BaudRate",strVar))
+
+        //CANFD
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_BaudRate",strVar))
         {
             sController.m_unDataBitRate = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_SamplePoint",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_SamplePoint",strVar))
         {
             sController.m_unDataSamplePoint = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_BTLCycles",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_BTLCycles",strVar))
         {
             sController.m_unDataBTL_Cycles = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_SJW",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_SJW",strVar))
         {
             sController.m_unDataSJW = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_TxDelayCompensation",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_TxDelayCompensation",strVar))
         {
             sController.m_bTxDelayCompensationControl = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_TxSecondarySamplePoint",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_TxSecondarySamplePoint",strVar))
         {
             sController.m_unTxSecondarySamplePointOffset = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanRxMode",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanRxMode",strVar))
         {
             sController.m_bytCanRxMode = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanFdRxMode",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanFdRxMode",strVar))
         {
             sController.m_bytCanFdRxMode = atoi(strVar.c_str());
         }
-		if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanFdTxConfig",strVar))
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanFdTxConfig",strVar))
         {
             sController.m_bytCanFdTxConfig = atoi(strVar.c_str());
         }
@@ -19686,18 +19668,18 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 m_ouMsgInterpretSW_C.vSetMessageList(m_psSignalWatchList[CAN]);
                 sg_pouSWInterface[CAN]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_C);
                 sg_pouSWInterface[CAN]->SW_SetConfigData((void*)NULL);
-				sg_pouSWInterface[CAN]->SW_ClearSigWatchWnd();
+                sg_pouSWInterface[CAN]->SW_ClearSigWatchWnd();
             }
         }
         break;
 
-		 case SIGWATCH_SECTION_LIN_ID:
+        case SIGWATCH_SECTION_LIN_ID:
         {
             if (pbyConfigData != NULL)
             {
-				BYTE* pbyTemp=pbyConfigData;
+                BYTE* pbyTemp=pbyConfigData;
 
-              //  vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
+                //  vPopulateSigWatchList(odMainEntryList, m_psSignalWatchList[CAN], theApp.m_pouMsgSignal);
 
 
 
@@ -19722,7 +19704,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     }
                 }
                 sg_pouSWInterface[LIN]->SW_SetConfigData((void*)NULL);
-				sg_pouSWInterface[LIN]->SW_ClearSigWatchWnd();
+                sg_pouSWInterface[LIN]->SW_ClearSigWatchWnd();
             }
         }
         break;
@@ -19769,7 +19751,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 }
                 m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                 sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
-                sg_pouSWInterface[J1939]->SW_SetConfigData(pbyTemp);				
+                sg_pouSWInterface[J1939]->SW_SetConfigData(pbyTemp);
             }
             else
             {
@@ -19785,7 +19767,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 m_ouMsgInterpretSW_J.vSetJ1939Database(m_psSignalWatchList[J1939]);
                 sg_pouSWInterface[J1939]->SW_UpdateMsgInterpretObj(&m_ouMsgInterpretSW_J);
                 sg_pouSWInterface[J1939]->SW_SetConfigData((void*)NULL);
-				sg_pouSWInterface[J1939]->SW_ClearSigWatchWnd();
+                sg_pouSWInterface[J1939]->SW_ClearSigWatchWnd();
             }
         }
         break;
@@ -19921,20 +19903,20 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
-		case FILTER_SECTION_LIN_ID:
-			if (pbyConfigData != NULL)
-			{
-				BYTE* pbyTemp = pbyConfigData;
+        case FILTER_SECTION_LIN_ID:
+            if (pbyConfigData != NULL)
+            {
+                BYTE* pbyTemp = pbyConfigData;
 
-				bool bResult = false;
-				pbyTemp = m_sFilterAppliedLIN.pbSetConfigData(pbyTemp, bResult);
-			}
-			else
-			{
-				m_sFilterAppliedLIN.vClear();
-				//Set default settings
-			}
-			break;
+                bool bResult = false;
+                pbyTemp = m_sFilterAppliedLIN.pbSetConfigData(pbyTemp, bResult);
+            }
+            else
+            {
+                m_sFilterAppliedLIN.vClear();
+                //Set default settings
+            }
+            break;
         case DATABASE_SECTION_J1939_ID:
         {
             //Clear all databases
@@ -20029,33 +20011,33 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             m_objWaveformDataHandler.SetConfigData(pbyConfigData);
         }
         break;
-		case BUS_STATISTICS_SECTION_ID:
-			{
-				GetICANBusStat()->BSC_ResetBusStatistic();			
-				GetILINBusStat()->BSL_ResetBusStatistic();
+        case BUS_STATISTICS_SECTION_ID:
+        {
+            GetICANBusStat()->BSC_ResetBusStatistic();
+            GetILINBusStat()->BSL_ResetBusStatistic();
 
-				// Update the bus statistics window if it exists.
-				if ( m_oNetworkStatistics != NULL &&
-					m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
-				{
-					// Perform network statistics calculation and update of
-					// network statistics window
-					m_oNetworkStatistics->vSendMessage(CAN);
-					m_oNetworkStatistics->vSendMessage(LIN);
-				}
+            // Update the bus statistics window if it exists.
+            if ( m_oNetworkStatistics != NULL &&
+                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+            {
+                // Perform network statistics calculation and update of
+                // network statistics window
+                m_oNetworkStatistics->vSendMessage(CAN);
+                m_oNetworkStatistics->vSendMessage(LIN);
+            }
 
-				if(m_bIsStatWndCreated == TRUE)
-				{
-					m_oNetworkStatistics->hSetConfigData(NULL);
-				}
-				if(NULL != m_pXmlNodeBusStats)
-				{
-					xmlFreeNode(m_pXmlNodeBusStats);
-					m_pXmlNodeBusStats = NULL;
-				}
-			}
+            if(m_bIsStatWndCreated == TRUE)
+            {
+                m_oNetworkStatistics->hSetConfigData(NULL);
+            }
+            if(NULL != m_pXmlNodeBusStats)
+            {
+                xmlFreeNode(m_pXmlNodeBusStats);
+                m_pXmlNodeBusStats = NULL;
+            }
+        }
         break;
-		          //venkat
+        //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
         {
             m_objTSEditorHandler.vSetConfigurationData(pbyConfigData, nSize);
@@ -20077,7 +20059,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         {
             m_objFlexTxHandler.vSetTxWndConfigData(LIN, NULL);
         }
-		break;
+        break;
         case TEST_SUITE_EXECUTOR_SECTION_ID:
         {
             m_objTSExecutorHandler.vSetConfigurationData(pbyConfigData, nSize);
@@ -20381,7 +20363,7 @@ BOOL CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
         }
         if(pConfigMenu != NULL)
         {
-            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pFlxDILSubMenu->m_hMenu), _T(_("Dri&ver Selection")));
+            pConfigMenu->InsertMenu(2, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pFlxDILSubMenu->m_hMenu), _T(_("Dri&ver Selection")));
         }
     }
     if (bResult == FALSE)
@@ -20798,22 +20780,22 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
 
 LRESULT CMainFrame::OnAddSignalFromSignalWatch(WPARAM wParam, LPARAM lParam)
 {
-	LRESULT hRetVal = S_OK;
-	ETYPE_BUS eBus = (ETYPE_BUS)wParam;
-	if (eBus == CAN)
-	{		
-		OnAddSignalToSignalWindow();
-	}
-	else if (eBus == J1939)
-	{
-		OnJ1939SignalwatchAdd();
-	}
-	else if (eBus == LIN)
-	{
-		OnAddSignalToSignalWindow_LIN();
-	}
+    LRESULT hRetVal = S_OK;
+    ETYPE_BUS eBus = (ETYPE_BUS)wParam;
+    if (eBus == CAN)
+    {
+        OnAddSignalToSignalWindow();
+    }
+    else if (eBus == J1939)
+    {
+        OnJ1939SignalwatchAdd();
+    }
+    else if (eBus == LIN)
+    {
+        OnAddSignalToSignalWindow_LIN();
+    }
 
-	return hRetVal;	
+    return hRetVal;
 }
 
 //initializes Busstatistics for can where user selects different driver.
@@ -20849,11 +20831,11 @@ void CMainFrame::vInitializeBusStatFlexRay(void)
 void CMainFrame::vInitializeBusStatLIN(void)
 {
     GetILINBusStat()->BSL_DoInitialization();
-	//sCONTROLLERDETAILSLIN sControllerDetails[defNO_OF_LIN_CHANNELS];
-	//			int nCount = 0;
-	//g_pouDIL_LIN_Interface->DILL_GetConfiguration(sControllerDetails, nCount);
+    //sCONTROLLERDETAILSLIN sControllerDetails[defNO_OF_LIN_CHANNELS];
+    //          int nCount = 0;
+    //g_pouDIL_LIN_Interface->DILL_GetConfiguration(sControllerDetails, nCount);
 
-	vSetBaudRateInfo(LIN);
+    vSetBaudRateInfo(LIN);
     for (int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
     {
 #ifdef BOA_FD_VERSION
@@ -21075,21 +21057,24 @@ void CMainFrame::OnActionJ1939Online()
             theApp.bWriteIntoTraceWnd(_("DIL.J1939 network started..."));
 
             CFlags* pouFlags = theApp.pouGetFlagsPtr();
-            BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
-            if (bConnected == TRUE)
-            {
-                if (pouFlags != NULL)
-                {
-                    GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
-                                                           m_sJ1939ClientParam.m_dwClientId);
-                }
+			if (NULL != pouFlags)
+			{
+				BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+				if (bConnected == TRUE)
+				{
+					if (pouFlags != NULL)
+					{
+						GetIJ1939DIL()->DILIJ_NM_GetByteAddres(m_sJ1939ClientParam.m_byAddress,
+							m_sJ1939ClientParam.m_dwClientId);
+					}
 
-                if(GetIFlags()->nGetFlagStatus(ADRESSCLAIM_J1939) == FALSE)
-                {
-                    GetIJ1939DIL()->DILIJ_ClaimAdress();
-                    GetIFlags()->vSetFlagStatus(ADRESSCLAIM_J1939, TRUE);
-                }
-            }
+					if(GetIFlags()->nGetFlagStatus(ADRESSCLAIM_J1939) == FALSE)
+					{
+						GetIJ1939DIL()->DILIJ_ClaimAdress();
+						GetIFlags()->vSetFlagStatus(ADRESSCLAIM_J1939, TRUE);
+					}
+				}
+			}
             if (m_pouTxMsgWndJ1939 != NULL)
             {
                 m_pouTxMsgWndJ1939->vSetJ1939ClientParam(m_sJ1939ClientParam);
@@ -22149,6 +22134,7 @@ void CMainFrame::OnJ1939SignalwatchAdd()
         {
             // Database is not imported!!
             AfxMessageBox( _(defSTR_EMPTY_ACTIVE_DATABASE) );
+            this->SetFocus();
         }
     }
 }
@@ -22877,7 +22863,7 @@ void CMainFrame::OnLinClusterConfig()
         {
             m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i] = ouConfig.m_ouFlexrayChannelConfig[i];
         }
-		vPopulateLINIDList(); //For Message window configuration
+        vPopulateLINIDList(); //For Message window configuration
         m_objFlexTxHandler.SetFibexConfig(LIN, m_ouClusterConfig[LIN]);
     }
 }

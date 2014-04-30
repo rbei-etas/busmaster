@@ -299,15 +299,15 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         STCANDATA* pStcan = &m_sCANReadDataSpl;
         *pStcan = sCanData;
 
-		if (!bTobeBlocked(sCanData))
-		{
-			m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
+        if (!bTobeBlocked(sCanData))
+        {
+            m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
 
-			if (NULL != m_pRxMsgCallBack)
-			{
-				m_pRxMsgCallBack((void*)&sCanData, CAN);
-			}
-		}
+            if (NULL != m_pRxMsgCallBack)
+            {
+                m_pRxMsgCallBack((void*)&sCanData, CAN);
+            }
+        }
     }
 
 }

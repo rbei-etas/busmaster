@@ -351,7 +351,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
     int nRetValue = S_OK;
     xmlNodePtr pTempNode = pNodePtr;
     CStringArray omStrFilters;
-	map<string, int> mapFilters;
+    map<string, int> mapFilters;
     while( NULL != pNodePtr )
     {
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Log_File_Path")))
@@ -449,28 +449,29 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
 
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
         {
-			int nEnabled = 1;
-			xmlAttrPtr pAttr = pNodePtr->properties;
-			while (pAttr)
-			{ // walk through all the attributes and find the required one
-				if (pAttr->type == XML_ATTRIBUTE_NODE)
-				{
-					std::string strAttrName((char *)pAttr->name);
-					if ((strAttrName == "IsEnabled") )
-					{
-						nEnabled = atoi((char *)pAttr->children->content);
-						break; // found
-					}   
-				}
-				pAttr = pAttr->next;
-			}
+            int nEnabled = 1;
+            xmlAttrPtr pAttr = pNodePtr->properties;
+            while (pAttr)
+            {
+                // walk through all the attributes and find the required one
+                if (pAttr->type == XML_ATTRIBUTE_NODE)
+                {
+                    std::string strAttrName((char*)pAttr->name);
+                    if ((strAttrName == "IsEnabled") )
+                    {
+                        nEnabled = atoi((char*)pAttr->children->content);
+                        break; // found
+                    }
+                }
+                pAttr = pAttr->next;
+            }
 
-			xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-			if(NULL != key)
-			{
-				mapFilters[(char*)key] = nEnabled;
-				xmlFree(key);
-			}
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(NULL != key)
+            {
+                mapFilters[(char*)key] = nEnabled;
+                xmlFree(key);
+            }
         }
         pNodePtr = pNodePtr->next;
     }

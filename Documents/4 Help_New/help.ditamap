@@ -153,7 +153,11 @@
     <topicref href="topics/LIN_TxWindow.dita" type="reference"/>
     <topicref href="topics/LIN_Connect.dita" type="reference"/>
     <topicref href="topics/LIN_message_window.dita" type="reference"/>
+    <topicref href="topics/LIN_Network_Statistics.dita" type="topic"/>
+    <topicref href="topics/LIN_Signal_Watch.dita" type="topic"/>
     <topicref href="topics/log_LIN.dita" type="reference"/>
+    <topicref href="topics/app_filter_LIN.dita" type="reference"/>
+    <topicref href="topics/LINmessage_display.dita" type="reference"/>
     <topicref href="topics/LIN_Node_Simulation.dita" type="topic">
       <topicref href="topics/LIN_Node_Simulation_Configuration.dita" type="reference"/>
       <topicref href="topics/LIN_Function_Editor.dita" type="reference"/>
@@ -161,18 +165,18 @@
       <topicref href="topics/Configure Slave Response.dita" type="topic"/>
       <topicref href="topics/LIN_api_reference.dita" type="topic">
         <topicref href="topics/stlin_struct.dita" type="topic"/>
-		<topicref href="topics/api_listing_LIN.dita" type="topic">
-        <topicref href="references/api_reference_LIN/SendMsg.dita" type="reference"/>       
-        <topicref href="references/api_reference_LIN/Trace.dita" type="reference"/>   
-        <topicref href="references/api_reference_LIN/Disconnect.dita" type="reference"/>
-        <topicref href="references/api_reference_LIN/Connect.dita" type="reference"/>
-        <topicref href="references/api_reference_LIN/StartTimer.dita" type="reference"/>
-        <topicref href="references/api_reference_LIN/StopTimer.dita" type="reference"/>       
-        <topicref href="references/api_reference_LIN/EnableMsgHandlers.dita" type="reference"/>
-        <topicref href="references/api_reference_LIN/EnableErrorHandlers.dita" type="reference"/>
-        <topicref href="references/api_reference_LIN/EnableKeyHandlers.dita" type="reference"/>       
-        <topicref href="references/api_reference_LIN/hGetDllHandle.dita" type="reference"/>
-      </topicref>
+        <topicref href="topics/api_listing_LIN.dita" type="topic">
+          <topicref href="references/api_reference_LIN/SendMsg.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/Trace.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/Disconnect.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/Connect.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/StartTimer.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/StopTimer.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/EnableMsgHandlers.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/EnableErrorHandlers.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/EnableKeyHandlers.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/hGetDllHandle.dita" type="reference"/>
+        </topicref>
       </topicref>
     </topicref>
   </topicref>

@@ -39,10 +39,10 @@ struct sSIGENTRY
     INT    m_nEntryIndex;
     BOOL operator == (const sSIGENTRY& RefObj) const
     {
-		bool bRet = false;
-		 
+        bool bRet = false;
+
         bRet = ((m_omMsgName == RefObj.m_omMsgName)&&(m_omSigName == RefObj.m_omSigName));
-		return bRet;
+        return bRet;
     }
     sSIGENTRY()
     {
@@ -57,7 +57,8 @@ class CSigWatchDlg : public CDialog
 public:
     void vInitSignalWatchList();
     LRESULT vRemoveSignalFromMap(WPARAM wParam, LPARAM lParam);
-	 void OnRButtonDown(WPARAM wParam, LPARAM lParam);
+    LRESULT vConfigureSignals(WPARAM wParam, LPARAM lParam);
+    void OnRButtonDown(WPARAM wParam, LPARAM lParam);
     // Dialog Data
     //{{AFX_DATA(CSigWatchDlg)
     enum { IDD = IDD_DLG_SIGNAL_WATCH };
@@ -65,9 +66,9 @@ public:
     //}}AFX_DATA
 
     // Construction
-	CSigWatchDlg(CWnd* pParent = NULL, ETYPE_BUS eBus = CAN);   // standard constructor
-	void vAddMsgToWnd(SSignalInfoArray* sSingnalinfo,BOOL bIntptrDone,map<int,list<string>> *m_mapDetails,unsigned char mID);
-	map<int,list<string>>* m_mapMsgIDtoSignallst;
+    CSigWatchDlg(CWnd* pParent = NULL, ETYPE_BUS eBus = CAN);   // standard constructor
+    void vAddMsgToWnd(SSignalInfoArray* sSingnalinfo,BOOL bIntptrDone,map<int,list<string>>* m_mapDetails,unsigned char mID);
+    map<int,list<string>>* m_mapMsgIDtoSignallst;
     // Operation
     void vAddMsgSigIntoList(const CString& omStrMsgName,
                             const CStringArray& omSASignals,
@@ -77,8 +78,8 @@ public:
     //void vUpdateWndCo_Ords();
     void vSaveDefaultWinStatus( );
     void vSetDefaultWinStatus( );
-	void vConfigureSignals();
-	void vUpdateMainWndHandle(HWND hMainWnd);
+    /*void vConfigureSignals();*/
+    void vUpdateMainWndHandle(HWND hMainWnd);
     //void vUpdateWinStatus();
     // Overrides
     // ClassWizard generated virtual function overrides
@@ -102,23 +103,23 @@ protected:
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
-	
+
 
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     bool m_bEscape;
-	ETYPE_BUS m_eBus;
+    ETYPE_BUS m_eBus;
     CSigEntryList m_odSigEntryList;
-	CSigEntryList m_odSigEntryListLIN;
+    CSigEntryList m_odSigEntryListLIN;
 
-	
+
     // For Wnd Co-ordinates
     WINDOWPLACEMENT m_sWinCurrStatus;
     INT m_anColWidth[defSW_LIST_COLUMN_COUNT];
     CImageList m_omSigImageList;
     CWnd* m_pParent;
-	HWND m_hMainWnd;
+    HWND m_hMainWnd;
 private:
     void vDisplayMsgSigList(void);
     CCriticalSection m_omCSDispEntry;
