@@ -17,7 +17,7 @@
     </section>
     <section>
       <title>Download</title>
-      <p>TestCocoon is available for download at <xref href="http://www.testcocoon.org/" scope="external">http://sourceforge.net/projects/testcocoon/</xref>. Download the latest version of the installer, e.g.  <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath> (as of 2011-10-25).</p>
+      <p>TestCocoon is available for download at <xref href="http://sourceforge.net/projects/testcocoon/" scope="external">http://sourceforge.net/projects/testcocoon/</xref> and at  <xref href="https://gitorious.org/testcocoon/testcocoon/" scope="external">https://gitorious.org/testcocoon/testcocoon/</xref>. Download the latest version of the installer, e.g.  <filepath>TestCocoonSetup_1_6_14_x86.exe</filepath> (as of 2011-10-25).</p>
     </section>
     <section>
       <title>Installation</title>
