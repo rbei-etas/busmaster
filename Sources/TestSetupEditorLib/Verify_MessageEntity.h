@@ -46,6 +46,7 @@ public:
     BOOL m_bResult;
     DWORD m_dwMessageID;
     CString m_omMessageName;
+    BYTE m_byChannelNumber; /* derka */
     eTYPE_UNIT_SIGNAL m_eSignalUnitType;
     CSignalConditionList m_odSignalConditionList;
     CVerify_MessageData& operator=(const CVerify_MessageData& RefObj);
@@ -79,13 +80,14 @@ public:
     eTYPE_ENTITY GetEntityType();
     HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
     HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
+    HRESULT SetChannel(BYTE byChannel); /* derka */
     HRESULT ValidateEntity(CString& /*omStrResult*/);
     DWORD GetMsgID()
     {
         return m_ouData.m_dwMessageID;
     }
 private:
-    void vRetriveConditionSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalCondition& ouSignalCondition);
+    void vRetrieveConditionSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalCondition& ouSignalCondition);
     INT vUpdateSignals(CVerify_MessageData& ouData);
 };
 
@@ -99,5 +101,6 @@ public:
     eERROR_ATTRIBUTE m_eAttributeError;
     CVerify_MessageEntityList m_odVerify_MessageEntityList;
     CVerifyData& operator=(const CVerifyData& RefObj);
+    void SetChannel(UINT index, BYTE byChannel);    /* derka */
 
 };

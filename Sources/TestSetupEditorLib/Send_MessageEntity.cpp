@@ -26,6 +26,7 @@
 #include "TestSetupEditorLib_stdafx.h"
 #include "Send_MessageEntity.h"
 #include "Utility\MultiLanguageSupport.h"
+#include "afxwin.h"
 //#include "../Application/GettextBusmaster.h"
 
 /******************************************************************************
@@ -117,7 +118,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     IXMLDOMNamedNodeMapPtr pIDOMAttributes;
     pIDOMAttributes = pIDomNode->Getattributes();// get_attributes((IXMLDOMNamedNodeMap**)&pIDOMAttributes);
 
-    //Retriving Message ID
+    //Retrieving Message ID
     bstrNodeName = def_STR_TCATTRIB_ID;
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     if (NULL != pIDOMChildNode)
@@ -133,7 +134,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         //TODO::INVALID MSG POSSIBLE ONLY WHEN THE FILE IS EDITED WITH NOTEPAD.
         return -1;
     }
-    //Retriving Message UNIT
+    //Retrieving Message UNIT
     bstrNodeName = _(def_STR_TCATTRIB_UNIT);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
@@ -147,7 +148,25 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         m_ouData.m_eSignalUnitType = ENG;
     }
     pIDOMChildNode->Release();
-    //Retriving Default Value of a signal
+
+    //Retrieving Message CHANNEL
+    bstrNodeName = _(def_STR_TCATTRIB_CHANNEL);                     /* derka */
+    pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);   /* derka */
+    m_ouData.m_byChannelNumber = 1;                                 /* derka: set default-value for the case, the number is incorrect or the whole argument is missing */
+    if (NULL != pIDOMChildNode)                                     /* derka: avoid crash in case XML-file -without channel-information- is loaded */
+    {
+        /* derka */
+        pIDOMChildNode->get_nodeTypedValue(&NodeValue);             /* derka */
+        omstrTemp = strCopyBSTRToCString(NodeValue);                /* derka */
+        m_ouData.m_byChannelNumber = _atoi64(omstrTemp);            /* derka */
+        pIDOMChildNode->Release();                                  /* derka */
+    }                                                               /* derka */
+    if(m_ouData.m_byChannelNumber == 0)                             /* derka: if casting fails (failure in xml) */
+    {
+        m_ouData.m_byChannelNumber = 1;    /* derka: set default channel */
+    }
+
+    //Retrieving Default Value of a signal
     bstrNodeName = _(def_STR_ATTRIIB_DEFAULT);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
@@ -167,7 +186,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 
     pIDOMChildNode->Release();
 
-    //Retriving Signals and there Data
+    //Retrieving Signals and their Data
     sMESSAGE sMsg;
     IXMLDOMNodeListPtr pIDOMSignalList;
     IXMLDOMNode* pIDOMSChildSignal;
@@ -199,7 +218,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         for(int i = 0; i < lCount; i++)
         {
             pIDOMSignalList->get_item(i, &pIDOMSChildSignal);
-            vRetriveSignalValue(pIDOMSChildSignal, ouTSSignalData);
+            vRetrieveSignalValue(pIDOMSChildSignal, ouTSSignalData);
             if(ouSignalData.m_omSigName == ouTSSignalData.m_omSigName)
             {
                 ouSignalData.m_uValue = ouTSSignalData.m_uValue;
@@ -214,7 +233,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 }
 
 /******************************************************************************
-Function Name  :  vRetriveSignalValue
+Function Name  :  vRetrieveSignalValue
 Input(s)       :  IXMLDOMNode* pIDOMSChildSignal
                   CSignalData& m_ouSignal
 Output         :  void
@@ -225,7 +244,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
-void CSend_MessageEntity::vRetriveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal)
+void CSend_MessageEntity::vRetrieveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal)
 {
     CComBSTR bstrNodeName = _(def_NAME_NODE);
     CComVariant NodeValue;
@@ -342,6 +361,15 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
             pIDomTSAtrrib->value = _bstr_t(omstrTemp);
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
+
+        pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_TCATTRIB_CHANNEL));     /* derka */
+        if(pIDomTSAtrrib!= NULL)                                                    /* derka */
+        {
+            /* derka */
+            pIDomTSAtrrib->value = _bstr_t(m_ouData.m_byChannelNumber);             /* derka */
+            pChildElement->setAttributeNode(pIDomTSAtrrib);                         /* derka */
+        }                                                                           /* derka */
+
         pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_ATTRIIB_DEFAULT));
         if(pIDomTSAtrrib!= NULL)
         {
@@ -414,6 +442,24 @@ HRESULT CSend_MessageEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* p
 }
 
 /******************************************************************************
+Function Name  :  SetChannel
+Input(s)       :  BYTE byChannel
+Output         :  HRESULT
+Functionality  :  Sets the current channel
+Member of      :  CSend_MessageEntity
+Friend of      :  -
+Author(s)      :  Andreas Derksen
+Date Created   :  07/05/2014
+Modifications  :
+Codetag        :
+******************************************************************************/
+HRESULT CSend_MessageEntity::SetChannel(BYTE byChannel)
+{
+    m_ouData.m_byChannelNumber = byChannel;
+    return S_OK;
+}
+
+/******************************************************************************
 Function Name  :  nUpdateSignals
 Input(s)       :  CSend_MessageData& ouData
 Output         :  INT
@@ -427,7 +473,7 @@ Modifications  :
 INT CSend_MessageEntity::nUpdateSignals(CSend_MessageData& ouData)
 {
     sMESSAGE sMsg;
-    if(m_ouDataBaseManager.nGetMessageInfo(m_ouData.m_omMessageName, sMsg) == ERR_INVALID_DATABASE)
+    if(m_ouDataBaseManager.nGetMessageInfo(ouData.m_omMessageName, sMsg) == ERR_INVALID_DATABASE)   /* derka - m_ouData.m_omMessageName -> ouData.m_omMessageName) */
     {
         return ERR_INVALID_DATABASE;
     }
@@ -441,6 +487,7 @@ INT CSend_MessageEntity::nUpdateSignals(CSend_MessageData& ouData)
     ouTempSignalData.m_dwMessageID = ouData.m_dwMessageID;
     ouTempSignalData.m_eSignalUnitType = ouData.m_eSignalUnitType;
     ouTempSignalData.m_omMessageName = ouData.m_omMessageName;
+    ouTempSignalData.m_byChannelNumber = ouData.m_byChannelNumber;  /* derka */
     ouTempSignalData.m_uDefaultSignalValue = ouData.m_uDefaultSignalValue;
     for(UINT i = 0; i < unSignalCount; i++)
     {
@@ -539,10 +586,34 @@ CSendData& CSendData::operator=(const CSendData& RefObj)
         POSITION pos = RefObj.m_odSend_MessageDataList.FindIndex(i);
         //m_odSend_MessageDataList.AddTail(RefObj.m_odSend_MessageDataList.GetAt(pos));
         CSend_MessageEntity msg = RefObj.m_odSend_MessageDataList.GetAt(pos);
+        //      msg.SetChannel(omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT+1, def_COLUMN_CHANNEL); /* derka */
+        //msg.m_ouData.m_byChannelNumber = 3;   /* derka */
         m_odSend_MessageDataList.AddTail(msg);
     }
     return  *this;
 }
+
+/******************************************************************************
+Function Name  :  SetChannel
+Input(s)       :  POSITION pos
+                  BYTE byChannel
+Output         :  void
+Functionality  :
+Member of      :  CSendData
+Friend of      :  -
+Author(s)      :  Andreas Derksen
+Date Created   :  07/05/2014
+Modifications  :
+******************************************************************************/
+void CSendData::SetChannel(UINT index, BYTE byChannel)
+{
+    POSITION pos = m_odSend_MessageDataList.FindIndex(index);
+    CSend_MessageEntity msg = m_odSend_MessageDataList.GetAt(pos);
+    msg.SetChannel(byChannel);
+    m_odSend_MessageDataList.SetAt(pos, msg);
+}
+
+
 
 //Signal Data Starts Here
 /******************************************************************************
@@ -615,6 +686,7 @@ CSend_MessageData::CSend_MessageData(void)
 {
     //For W4 Removal
     m_dwMessageID = (DWORD)-1;
+    m_byChannelNumber = 1;          /* derka */
     m_eSignalUnitType = ENG;        //CS027
     m_omMessageName = "";
     m_odSignalDataList.RemoveAll();
@@ -652,6 +724,7 @@ CSend_MessageData& CSend_MessageData::operator=(const CSend_MessageData& RefObj)
 {
     m_dwMessageID = RefObj.m_dwMessageID;
     m_eSignalUnitType = RefObj.m_eSignalUnitType;
+    m_byChannelNumber = RefObj.m_byChannelNumber;   /* derka */
     m_odSignalDataList.RemoveAll();
     //m_odSignalDataList.AddHead(&(const_cast<CSignalDataList>(RefObj.m_odSignalDataList)));
 

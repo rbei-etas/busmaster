@@ -42,6 +42,7 @@ public:
     INT nGetSignalList(CString omstrMsgName, sSIGNALS* psSignals);
     INT nGetMessageInfo(CString omstrMsgName, sMESSAGE& sMsg);
     UINT unGetMessageID(CString omstrMsgName);
+    UINT unGetMessageChannel(CString omstrMsgName);
     sMESSAGE* unGetMsg(UINT unMsgId);
     //Member Variables
 private:

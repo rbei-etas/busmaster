@@ -14,10 +14,31 @@
 *.sln.cache
 *.suo
 *.vcproj.*.user
+*.vcxproj
 *.vcxproj.user
+*.vcxproj.rej
 *.db
+*.log
+*.tlog
+*.obj
+*.pdb
+*.res
+*.tli
+*.lastbuildstate
+*.unsuccessfulbuild
+*.lib
+*.dll
+*.tlh
+*.exp
+*.output
+*.tlb
+*.idb
+*.ipch
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
+Sources/Application/LDFLexer.c
+Sources/Application/ldfparser.cpp
+Sources/Application/ldfparser.cpp.h
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
@@ -229,3 +250,11 @@ Tests/PMD/cpd.html
 Tests/PMD/cpd.xml
 Tests/PMD/cpd-fixed.xml
 Tests/Requirements Traceability Matrix/report.html
+*.vcxproj
+*.vcxproj
+Sources/Application/BUSMASTER.vcxproj
+
+# private
+dependency_corrected.patch
+dependency_corrected_patch.bat
+dependency_corrected_unpatch.bat

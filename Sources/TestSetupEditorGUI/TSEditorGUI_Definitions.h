@@ -33,7 +33,8 @@
 //Propertyview Definitions
 #define def_COLUMN_CATEGORY    0
 #define def_COLUMN_VALUE       1
-#define defPROPERTYCOLUMN_NUM   2
+#define def_COLUMN_CHANNEL     2    /* derka */
+#define defPROPERTYCOLUMN_NUM   3   /* derka: 2->3 */
 #define def_WIDTH_LISTITEM      1
 #define def_HEIGHT_LISTITEM     16
 
@@ -86,6 +87,7 @@
 #define def_TC_ROWNUM_TCEXP             2
 
 #define def_SEND_ROWNUM_MSGCNT          0
+#define def_SEND_ROWNUM_MSGLIST         1   /* derka */
 
 #define def_VERIFY_ROWNUM_MSGCNT        0
 #define def_VERIFY_ROWNUM_FAILURE       1
