@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- root element -->
+  <xs:element name="testsetup" type="testsetup-type">
+  </xs:element>
+
+  <!-- all types in alphabetical order -->
+  <xs:simpleType name="bustype-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Bus type. At present can be only CAN
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CAN">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Controller Area Network (ISO11898)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="category-type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Module Name">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Module focused on for the testing
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="version">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Version information of the test setup
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Engineer Name">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Test engineer's name
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Engineer Role">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Test engineer's role / designation
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="database-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Database file
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="description-type">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="failure-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        For a verification procedure - how to classify validation failure.
+        Can be one of warning, error, fatal
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ERROR"/>
+      <xs:enumeration value="FATAL"/>
+      <xs:enumeration value="WARNING"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="format-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Format of the report file. Can be one of TXT and HTM.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="HTM">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Hypertext Markup Language
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="TXT">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Text
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="header-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Header contains the basic information regarding to the test setup file, like versions, report file path, database file path, ECU name, tester information etc.
+        User has to provide the information.
+        Some values are optional and some are compulsory.
+        Database path is a compulsory value.
+        Check the table below for the required and optional fields.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="info" type="info-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+      <xs:element name="list_of_database" type="list_of_database-type">
+      </xs:element>
+      <xs:element name="bustype" type="bustype-type" default="CAN">
+      </xs:element>
+      <xs:element name="reportfile" type="reportfile-type">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="info-type">
+    <xs:sequence>
+      <xs:element name="category" type="category-type">
+      </xs:element>
+      <xs:element name="value" type="value-type">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="list_of_database-type">
+    <xs:sequence>
+      <xs:element name="database" type="database-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="list_of_test_cases-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Collection of test cases.
+        Test Case List contains a collection of test cases. User has to create the test cases.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="testcase" type="testcase-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="path-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Particular of the report file to be generated.
+        Default: Current working directory with the name same as the test setup.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="reportfile-type">
+    <xs:sequence>
+      <xs:element name="path" type="path-type">
+      </xs:element>
+      <xs:element name="format" type="format-type" default="TXT">
+      </xs:element>
+      <xs:element name="timemode" type="timemode-type" default="SYS">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="send-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Collection of the messages to be transmitted.
+        This is a collection of send_messages.
+        This test step instructs to send the specified messages.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="send_message" type="send_message-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="send_message-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Details of the message list to be transmitted.
+        This provides the details of message to be send.
+        User has to initialize the messages and its signals.
+        The default value assumed to the signals is 0.
+        The message value my be given in engineering value mode or in raw value mode.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="signal" type="signal-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="identifier" type="xs:decimal" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          CAN identifier of the message in decimal notation.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="unit" type="unit-type" use="required">
+    </xs:attribute>
+    <xs:attribute name="default" type="xs:double" use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="signal-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Details the signal with its name (name) and value.
+        The attribute required is the signal's name (name).
+        The node value shall be a string with formulation of the condition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" use="required">
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="testcase-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Collection of test steps.
+        A test case is the collection of test steps such as send, wait, replay, verify.
+        A test case contains identifier, title and exception handler.
+        The last one instructs if in case of failure to continue or exit.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="send" type="send-type" minOccurs="0" maxOccurs="unbounded">
+        </xs:element>
+        <xs:element name="wait" type="wait-type" minOccurs="0" maxOccurs="unbounded">
+        </xs:element>
+        <xs:element name="verify" type="verify-type" minOccurs="0" maxOccurs="unbounded">
+        </xs:element>
+        <xs:element name="verifyResponse" type="verifyResponse-type" minOccurs="0" maxOccurs="unbounded">
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="identifier" type="xs:string" use="required">
+    </xs:attribute>
+    <xs:attribute name="title" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          Test case title
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="exp_handler" default="CONTINUE">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          Instructs if in case of failure the testing process exists or continues.
+          Can be one of continue or exit.
+        </xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CONTINUE"/>
+          <xs:enumeration value="EXIT"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="testsetup-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        The root node.
+        Test setup file contains two sections Header and Test Case List.
+        Accompanied by its title (title) and version information (version).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="description-type">
+      </xs:element>
+      <xs:element name="header" type="header-type">
+      </xs:element>
+      <xs:element name="list_of_test_cases" type="list_of_test_cases-type">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="title" type="xs:string" use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:simpleType name="timemode-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Time mode. Can be one of SYS (system), REL (relative) and ABS (absolute)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ABS">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Absolute time
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="REL">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Relative time
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SYS">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            System time
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="unit-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Unit type of the signals.
+        Can be either raw (raw) or engineering (eng)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ENG">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Physical value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="RAW">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">
+            Raw value
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="value-type">
+    <xs:restriction base="xs:string">
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="verify-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Verification instruction set.
+        Contains a collection of verification messages.
+        This is a collection of verify_messages.
+        This test step instructs to verify the specified messages (both Rx and Tx).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="verify_message" type="verify_message-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="failure" type="failure-type" use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="verifyResponse-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        This test step verifies the specified message responses (Rx Messages) with in specified time.
+        So this step requires a time interval.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="verify_message" type="verify_message-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="failure" type="failure-type" use="required">
+    </xs:attribute>
+    <xs:attribute name="waitfor" type="xs:decimal" use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="verify_message-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Details of the message list to be verified / validated.
+        This provides the details of message to be verify.
+        The user needs to formulate the validation condition.
+        In the formula current signal value shall be denoted by 'x' following the algebraic notation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="signal" type="signal-type" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="identifier" type="xs:decimal" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          CAN identifier of the message in decimal notation.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="unit" type="unit-type" use="required">
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="wait-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        Wait node instruct to wait certain period of time, expressed in terms of milliseconds.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:decimal">
+        <xs:attribute name="purpose" type="xs:string" use="required">
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>

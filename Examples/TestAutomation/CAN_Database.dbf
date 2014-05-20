@@ -1,0 +1,14 @@
+//******************************BUSMASTER Messages and signals Database ******************************//
+
+[DATABASE_VERSION] 1.3
+
+[PROTOCOL] CAN
+
+[BUSMASTER_VERSION] [2.3.0]
+
+[NUMBER_OF_MESSAGES] 1
+
+[START_MSG] msg123,123,8,2,1,S
+[START_SIGNALS] Voltage,8,1,0,U,50,0,1,0.000000,0.250000,V,
+[START_SIGNALS] RPM,16,2,0,U,10000,0,1,0.000000,0.500000,1/s,
+[END_MSG]
