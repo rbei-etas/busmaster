@@ -665,7 +665,6 @@ BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CStrin
         MSXML2::IMXWriterPtr pImxWriter;
 
         pImxWriter.CreateInstance (L"Msxml2.MXXMLWriter");
-        pImxWriter->put_encoding(L"UTF-8");                 /* derka: Create UTF-8-encoded XML-File instead of UTF-16 */
         pImxWriter->put_output (CComVariant(pStream));
 
         pSaxXmlReader->putContentHandler((MSXML2::ISAXContentHandlerPtr)pImxWriter);
@@ -782,7 +781,7 @@ INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
 Function Name  :  nLoadHeader
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pHeaderDOMNode
 Output         :  INT
-Functionality  :  Retrieves the Header info
+Functionality  :  Retrives the Header info
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam

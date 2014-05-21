@@ -26,7 +26,6 @@
 
 #include "Datatypes/MsgSignal_Datatypes.h"
 #include "MsgSignal.h"
-#include "resource.h" /* derka */
 /////////////////////////////////////////////////////////////////////////////
 // CMsgSgDetView form view
 

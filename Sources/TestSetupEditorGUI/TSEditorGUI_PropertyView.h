@@ -25,8 +25,6 @@
 #include "afxcmn.h"
 #include "ListCtrlEx.h"
 
-enum Visibility { HIDE, SHOW }; /* derka */
-
 // CPropertyView form view
 class CTSEditorChildFrame;
 class CPropertyView : public CFormView
@@ -53,7 +51,6 @@ public:
 #endif
 
     virtual void OnInitialUpdate();
-    virtual void vSetChannelColumn(Visibility visibility);
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnBnClickedCancel();
     afx_msg void OnBnClickedConfirm();

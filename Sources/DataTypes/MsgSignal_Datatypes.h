@@ -184,7 +184,6 @@ struct sMESSAGE
 {
     CString m_omStrMessageName; // Message Name
     UINT m_unMessageCode;       // Message Code
-    BYTE m_byMessageChannel;    // Channel on which message is transported /* derka */
     UINT m_unNumberOfSignals;   // Number Of Signals a Message has
     UINT m_unMessageLength;     // Message Length
     BOOL m_bMessageFrameFormat; // Message Frame Format

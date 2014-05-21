@@ -290,7 +290,7 @@ typedef enum eWINDOWID
     eWINID_NETWORK_STATISTICS,
 };
 
-#define defSTR_CONF_SAVE_CONFIRM     _T("Configuration File is modified \nDo you want to save this configuration?")
+#define defSTR_CONF_SAVE_CONFIRM     _T("Configuration File is modified \n Do you want to save this configuration?")
 #define defSTR_CONF_CLOSE_CONFIRM    _T("Do you want to close the application?")
 #define VALUE_COLUMN    1
 

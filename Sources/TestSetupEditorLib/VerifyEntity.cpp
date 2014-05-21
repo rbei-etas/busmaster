@@ -294,11 +294,7 @@ HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     {
         m_ouData.m_eAttributeError = WARNING;
     }
-    else if(strTemp == "ERROR") /* derka: ERRORS -> ERROR */
-    {
-        m_ouData.m_eAttributeError = ERRORS;
-    }
-    else if(strTemp == "ERRORS") /* derka: to reach downward compatibility, because in earlier versions ERRORS was wrongly set - delete this in later versions */
+    else if(strTemp == "ERRORS")
     {
         m_ouData.m_eAttributeError = ERRORS;
     }
@@ -397,7 +393,7 @@ HRESULT CVerifyEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
                 break;
             case ERRORS:
             default:
-                omstrTemp = "ERROR";    /* derka: ERRORS -> ERROR */
+                omstrTemp = "ERRORS";
                 break;
         }
         pIDomTSAtrrib->value = _bstr_t(omstrTemp);

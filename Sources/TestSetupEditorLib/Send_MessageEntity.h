@@ -34,7 +34,7 @@ public:
     CSignalData& operator=(const CSignalData& RefObj);
     virtual ~CSignalData(void);
 
-    //Attributes
+    //Atributes
 public:
     CString m_omSigName;
     tagUSIGNALVALUE m_uValue;
@@ -55,8 +55,6 @@ public:
     DWORD m_dwMessageID;
     //Message Name
     CString m_omMessageName;
-    //Message Channel
-    BYTE m_byChannelNumber; /* derka */
     //Signal Type
     eTYPE_UNIT_SIGNAL m_eSignalUnitType;
     //Signal Data List
@@ -80,12 +78,11 @@ public:
     HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
     HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-    HRESULT SetChannel(BYTE byChannel); /* derka */
     HRESULT ValidateEntity(CString& /*omStrResult*/);
     eTYPE_ENTITY GetEntityType(void);
     virtual ~CSend_MessageEntity(void);
 private:
-    VOID vRetrieveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal);
+    VOID vRetriveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal);
     INT nUpdateSignals(CSend_MessageData& ouData);
 
     //Attributes
@@ -105,6 +102,5 @@ public:
     CSendData(void);
     CSend_MessageEntityList m_odSend_MessageDataList;
     CSendData& operator=(const CSendData& RefObj);
-    void SetChannel(UINT index, BYTE byChannel);    /* derka */
     virtual ~CSendData(void);
 };

@@ -996,7 +996,7 @@ BOOL CDataBaseMsgList::bFreeMessageMemory(void)
 Function Name  :  unGetMessageID
 Input(s)       :  CString omstrMsgName - Message Name
 Output         :  UINT
-Functionality  :  Retrieves the Message ID
+Functionality  :  Retrives the Message ID
 Member of      :  CDataBaseMsgList
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -1020,35 +1020,6 @@ UINT CDataBaseMsgList::unGetMessageID(CString omstrMsgName)
     //For W4 Removal
     return (UINT)ERR_WRONG_ID;
 }
-
-/******************************************************************************
-Function Name  :  unGetMessageChannel
-Input(s)       :  CString omstrMsgName - Message Name
-Output         :  UINT
-Functionality  :  Retrieves the Message Channel
-Member of      :  CDataBaseMsgList
-Friend of      :  -
-Author(s)      :  Andreas Derksen
-Date Created   :  07/05/2014
-Modifications  :
-******************************************************************************/
-UINT CDataBaseMsgList::unGetMessageChannel(CString omstrMsgName)    /* derka */
-{                                                                   /* derka */
-    if( m_psMessages == NULL )                                      /* derka */
-    {                                                               /* derka */
-        //For W4 Removal                                            /* derka */
-        return (UINT)-1;                                            /* derka */
-    }                                                               /* derka */
-    for(UINT i = 0; i < m_unMessageCount; i++)                      /* derka */
-    {                                                               /* derka */
-        if(m_psMessages[i].m_omStrMessageName == omstrMsgName)      /* derka */
-        {                                                           /* derka */
-            return m_psMessages[i].m_byMessageChannel;              /* derka */
-        }                                                           /* derka */
-    }                                                               /* derka */
-    //For W4 Removal                                                /* derka */
-    return (UINT)ERR_WRONG_ID;                                      /* derka */
-}                                                                   /* derka */
 
 /******************************************************************************
 Function Name  :  nGetMessageName

@@ -32,11 +32,9 @@
 #define defDELETE_MSG_SYMBOL    "[Delete Message]"
 #define defFIRSTCOLUMN_NAME     "Category"
 #define defSECONDCOLUMN_NAME    "Value"
-#define defTHIRDCOLUMN_NAME     "Channel"   /* derka */
 #define defCOLCATEGORY_INDEX    0
 #define defCOLVALUE_INDEX       1
-#define defCOLCHANNEL_INDEX     2   /* derka */
-#define defPROPERTYCOLUMN_NUM   3   /* derka: 2->3 */
+#define defPROPERTYCOLUMN_NUM   2
 
 
 //xml File Elements Definitions
@@ -74,7 +72,6 @@
 #define def_STR_TCATTRIB_H_EXP  "exp_handler"
 #define def_STR_SENDMSG_NODE    "send_message"
 #define def_STR_TCATTRIB_UNIT   "unit"
-#define def_STR_TCATTRIB_CHANNEL "channel"   /* derka */
 #define def_STR_ATTRIIB_DEFAULT "default"
 #define def_STR_SIGNAL_NODE     "signal"
 #define def_NAME_NODE           "name"

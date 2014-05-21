@@ -31,7 +31,6 @@
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
 #include "Utility\MultiLanguageSupport.h"
-#include "TSEditorGUI_PropertyView.h"   /* derka */
 //#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
@@ -45,7 +44,6 @@
 
 const UINT g_unMinWindowWidth  = 850;
 const UINT g_unMinWindowHeight = 675;
-//INT g_iNumberOfActiveChannels = 0; /* derka */
 
 IMPLEMENT_DYNCREATE(CTSEditorChildFrame, CMDIChildWnd)
 extern CTSEditorChildFrame* g_pomTSEditorChildWindow;
@@ -70,7 +68,6 @@ CTSEditorChildFrame::CTSEditorChildFrame()
     m_bQueryConfirm = TRUE;
     m_pomImageList = NULL;
     m_bInit = TRUE;
-    m_iNumberOfActiveChannels = 0; /* derka */
     vInitialise();
 
     CWnd* pMain = AfxGetMainWnd();
@@ -677,7 +674,6 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
 
     omTempListCtrl.DeleteAllItems();
-    m_odPropertyView->vSetChannelColumn(HIDE);      /* derka */
 
     //Get Header Info.
     CTestSetupHeader ouHeaderInfo;
@@ -829,8 +825,6 @@ void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA* pTCEntity)
     sListInfo.m_eType = eText;
     CString omstrTemp;
 
-    m_odPropertyView->vSetChannelColumn(HIDE);                                                      /* derka: Hide Channel-Column */
-
     //Display Title on first row
     omTempListCtrl.InsertItem(def_TC_ROWNUM_TCID, _("Test Case ID"));
     omTempListCtrl.SetItemText(def_TC_ROWNUM_TCID, def_COLUMN_VALUE, odData.m_omID);
@@ -881,7 +875,6 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
     m_omSendEntity = *((CSendEntity*)pEntity);
 
     omTempListCtrl.DeleteAllItems();
-    m_odPropertyView->vSetChannelColumn(SHOW);      /* derka */
     UINT unCount;
     CBaseEntityTA* pSubEntity;  //send_message entity
     CSend_MessageData odData;
@@ -898,8 +891,7 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
     sListInfo.m_eType = eComboItem;
     m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
     UINT i = 0;
-
-    for( i=0; i<unCount; i++)                                                       /* derka-comment: Show all messages belonging to the test case */
+    for( i=0; i<unCount; i++)
     {
         pEntity->GetSubEntityObj(i, &pSubEntity);
         pSubEntity->GetEntityData(SEND_MESSAGE, &odData);
@@ -907,9 +899,6 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
         omTempListCtrl.InsertItem(i+1, omstrTemp);
         omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+1, 1, sListInfo);
-
-        vCreateChannelDropdown(omTempListCtrl, odData.m_byChannelNumber, m_iNumberOfActiveChannels, i); /* derka: Create channel-drop-down */
-
     }
     omTempListCtrl.InsertItem(i+1, "");
     omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, _("[Add Message]")); //Extra Line
@@ -937,7 +926,6 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     m_ouVerifyEntity = *((CVerifyEntity*)pEntity);
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     CBaseEntityTA* pSubEntity;  //Verify_message entity
-    m_odPropertyView->vSetChannelColumn(SHOW);      /* derka */
 
     pEntity->GetSubEntryCount(unCount); //Send_Message Count
     omstrTemp.Format("%d", unCount);
@@ -993,8 +981,6 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
 
         omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
-
-        vCreateChannelDropdown(omTempListCtrl, odData.m_byChannelNumber, m_iNumberOfActiveChannels, i+1);   /* derka: Create channel-drop-down */
     }
     omTempListCtrl.InsertItem(i+nVerifyRowIndex, "");
     omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, _("[Add Message]"));
@@ -1047,7 +1033,6 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA* pEntity)
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
-    m_odPropertyView->vSetChannelColumn(HIDE);      /* derka */
 
     CString omstrTemp;
 
@@ -1097,35 +1082,6 @@ void CTSEditorChildFrame::vDisplayReplayInfo(CBaseEntityTA* pEntity)
 }
 
 /******************************************************************************
-Function Name  :  vCreateChannelDropdown
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Andreas Derksen
-Date Created   :  06/05/2014
-Modifications  :
-Codetag        :
-******************************************************************************/
-void CTSEditorChildFrame::vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, BYTE byChannelnumber /*CSend_MessageData* pSubEntity*/, INT iNumberOfActiveChannels, INT iTestCaseNumber)
-{
-    CString omstrTemp;
-    SLISTINFO sListInfoChannel;
-    omstrTemp.Format("%d", byChannelnumber /*pSubEntity->m_byChannelNumber*/);                                          /* derka: Get current channelnumber */
-    omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SDEFVALUE+iTestCaseNumber, def_COLUMN_CHANNEL, omstrTemp);               /* derka: Show current channelnumber */
-    sListInfoChannel.m_eType = eComboItem;                                                          /* derka: Configure as DropDown */
-
-    for (INT i = 1; i <= iNumberOfActiveChannels; i++ )                                         /* derka: Insert all available channels */
-    {
-        /* derka */
-        omstrTemp.Format(defFORMAT_MSGID_DECIMAL, i);                                               /* derka */
-        sListInfoChannel.m_omEntries.Add(omstrTemp);                                                /* derka */
-    }                                                                                               /* derka */
-    omTempListCtrl.vSetColumnInfo(def_SMSG_ROWNUM_SDEFVALUE+iTestCaseNumber, def_COLUMN_CHANNEL, sListInfoChannel); /* derka */
-}
-
-/******************************************************************************
 Function Name  :  vDisplaySendMessageInfo
 Input(s)       :
 Output         :
@@ -1144,7 +1100,6 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA* pBaseEntity)
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
-    m_odPropertyView->vSetChannelColumn(HIDE);                                                      /* derka: Hide Channel-Column */
 
     CString omstrTemp;
     INT nSignalCount;
@@ -1166,7 +1121,7 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA* pBaseEntity)
         omstrTemp = _("ENG");
     }
 
-    //Failure Classification Information
+    //Failure ClassiFication Information
     omTempListCtrl.InsertItem(def_SMSG_ROWNUM_SUINT, _("Signal Unit Type"));
     omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE, omstrTemp);
     sListInfo.m_eType = eComboItem;
@@ -1237,7 +1192,6 @@ void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA* pBaseEntity)
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
-    m_odPropertyView->vSetChannelColumn(HIDE);      /* derka */
 
     CString omstrTemp;
     INT nSignalCount;
@@ -1499,15 +1453,6 @@ void CTSEditorChildFrame::vSaveSendInfo(CBaseEntityTA* pEntity)
     unCount = atoi(omstrTemp);
     CSendData odSendData;
     m_omSendEntity.GetEntityData(SEND, &odSendData);
-
-    for(UINT i = 0; i < unCount; i++)                                                           /* derka */
-    {
-        /* derka */
-        omstrTemp = omTempListCtrl.GetItemText(def_SEND_ROWNUM_MSGLIST+i, def_COLUMN_CHANNEL);  /* derka */
-        BYTE byChannel = BYTE(atoi(omstrTemp));                                                 /* derka */
-        odSendData.SetChannel(i, byChannel);                                                    /* derka */
-    }                                                                                           /* derka */
-
     pEntity->SetEntityData(SEND, &odSendData);
     parseSendEntity(pEntity, m_hCurrentTreeItem);
 }
@@ -1527,15 +1472,12 @@ void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
-    UINT unCount;   /* derka */
     CVerifyData odVerifyData;
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
 
-    CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_MSGCNT, 1);    /* derka */
-    unCount = atoi(omstrTemp);  /* derka */
 
-    omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, 1);
+    CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, 1);
 
 
     m_ouVerifyEntity.GetEntityData(VERIFY, &odVerifyData);
@@ -1552,14 +1494,6 @@ void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA* pEntity)
     else
     {
         odVerifyData.m_eAttributeError = FATAL;
-    }
-
-    for(UINT i = 0; i < unCount; i++)                                                               /* derka */
-    {
-        /* derka */
-        omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_MSGLIST+i, def_COLUMN_CHANNEL);    /* derka */
-        BYTE byChannel = BYTE(atoi(omstrTemp));                                                          /* derka */
-        odVerifyData.SetChannel(i, byChannel);                                                      /* derka */
     }
 
     pEntity->SetEntityData(VERIFY, &odVerifyData);
@@ -1631,8 +1565,6 @@ void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA* pEntity)
     {
         ouSendMsgEntity.m_eSignalUnitType = RAW;
     }
-
-    ouSendMsgEntity.m_byChannelNumber = BYTE(atoi(omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_CHANNEL))); /* derka */
 
     /*//Default Signal Vlaue
     omstrTemp = omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SVALUE, def_COLUMN_VALUE);
@@ -1795,24 +1727,6 @@ void CTSEditorChildFrame::vSetFileSavedFlag(BOOL isModified)
 }
 
 /******************************************************************************
-Function Name  :  vSetNumberOfActiveChannels
-Input(s)       :
-Output         :
-Functionality  :
-Member of      :  CBusStatisticCAN
-Friend of      :  -
-Author(s)      :  Andreas Derksen
-Date Created   :  05/05/2014
-Modifications  :
-******************************************************************************/
-void CTSEditorChildFrame::vSetNumberOfActiveChannels(INT number)                /* derka */
-{
-    /* derka */
-    m_iNumberOfActiveChannels = number;                                         /* derka */
-}                                                                               /* derka */
-
-
-/******************************************************************************
 Function Name  :  vListCtrlItemChanged
 Input(s)       :
 Output         :
@@ -1924,16 +1838,15 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
 {
     //CTreeCtrl &omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
     SLISTINFO sListInfo;
-    SLISTINFO sListInfoChannel;
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     CString omstrTemp;
     if(m_pCurrentEntity->GetEntityType() == SEND)
     {
         int item = pNMLV->iItem;
-        if(item >= defLIST_SEND_ST_ROW)      //item is with in message list     /* derka-comment: Presumably: Get Item that was updated */
+        if(item >= defLIST_SEND_ST_ROW)      //item is with in message list
         {
-            omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);    /* derka-comment: Get value (=message-name) of entry... */
-            if(omstrTemp == _(defDELETE_MSG_SYMBOL))                            /* derka-comment: ... and check if Item should become deleted */
+            omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
+            if(omstrTemp == _(defDELETE_MSG_SYMBOL))
             {
                 if(item != omTempListCtrl.GetItemCount()-1) // Last Item Check.Still This
                 {
@@ -1946,12 +1859,13 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, _("[Add Message]"));
                 }
             }
-            else                                                                /* derka-comment: Item should not become deleted */
+            else
             {
+                //CSend_MessageData odSendMsgData;
                 sListInfo.m_eType = eComboItem;
                 m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
                 CSend_MessageData odSendMsgData;
-                if(item == omTempListCtrl.GetItemCount()-1) //Last Row          /* derka-comment: Last row ("[Add Message]") was selected */
+                if(item == omTempListCtrl.GetItemCount()-1) //Last Row
                 {
                     CSend_MessageEntity odNewSendEnity;
                     odSendMsgData.m_omMessageName = omstrTemp;
@@ -1959,13 +1873,11 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     odNewSendEnity.SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     m_omSendEntity.AddSubEntry((CBaseEntityTA*)&odNewSendEnity);
 
-                    vCreateChannelDropdown(omTempListCtrl, odSendMsgData.m_byChannelNumber, m_iNumberOfActiveChannels, item-1); /* derka */
-
                     omTempListCtrl.InsertItem(item+1, "");
                     omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                     omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
                 }
-                else                                                            /* derka-comment: A Message was selected */
+                else
                 {
                     CBaseEntityTA* pEntity;
 
@@ -1978,22 +1890,13 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     {
                         pEntity->SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     }
-
-                    omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_CHANNEL);      /* derka: Read selected Channel Number */
-                    odSendMsgData.m_byChannelNumber = BYTE(atoi( omstrTemp ));                  /* derka: Save Channel Number */
                 }
                 omstrTemp.Format("%d", odSendMsgData.m_dwMessageID);
                 omTempListCtrl.DeleteItem(item);
                 omTempListCtrl.InsertItem(item, omstrTemp);
                 omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, odSendMsgData.m_omMessageName);
                 omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
-
-                omstrTemp.Format("%d", odSendMsgData.m_byChannelNumber);            /* derka */
-                omTempListCtrl.SetItemText(item, def_COLUMN_CHANNEL, omstrTemp);    /* derka */
-
-
             }
-            omTempListCtrl.RedrawWindow();  /* derka - Redraw window to avoid wrong line coloring, Issue #698 */
             INT nCount = omTempListCtrl.GetItemCount();
             omstrTemp.Format("%d", nCount-2);
             omTempListCtrl.SetItemText(0, def_COLUMN_VALUE, omstrTemp);
@@ -2051,15 +1954,13 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 odNewVerifyEnity.SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
 
-                vCreateChannelDropdown(omTempListCtrl, odVerifyMsgData.m_byChannelNumber, m_iNumberOfActiveChannels, item-1);   /* derka */
-
                 omTempListCtrl.InsertItem(item+1, "");
                 omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                 omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
             }
             else
             {
-                CBaseEntityTA* pEntity;                                                         /* derka-comment: A Message was selected */
+                CBaseEntityTA* pEntity;
 
                 CVerify_MessageData odOrgMsgData;
                 m_ouVerifyEntity.GetSubEntityObj(item-def_VERIFY_ROWNUM_MSGLIST, &pEntity);
@@ -2070,20 +1971,14 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 {
                     pEntity->SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 }
-                omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_CHANNEL);      /* derka: Read selected Channel Number */
-                odVerifyMsgData.m_byChannelNumber = BYTE(atoi( omstrTemp ));                    /* derka: Save Channel Number */
             }
             omstrTemp.Format("%d", odVerifyMsgData.m_dwMessageID);
             omTempListCtrl.DeleteItem(item);
             omTempListCtrl.InsertItem(item, omstrTemp);
             omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, odVerifyMsgData.m_omMessageName);
             omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
-
-            omstrTemp.Format("%d", odVerifyMsgData.m_byChannelNumber);          /* derka */
-            omTempListCtrl.SetItemText(item, def_COLUMN_CHANNEL, omstrTemp);    /* derka */
         }
         UINT unCount;
-        omTempListCtrl.RedrawWindow();  /* derka - Redraw window to avoid wrong line coloring, Issue #698 */
         m_ouVerifyEntity.GetSubEntryCount(unCount);//omTempListCtrl.GetItemCount();
         omstrTemp.Format("%d", unCount);
         omTempListCtrl.SetItemText(0, def_COLUMN_VALUE, omstrTemp);
@@ -2166,7 +2061,6 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
             omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
         }
         UINT unCount;
-        omTempListCtrl.RedrawWindow();  /* derka - Redraw window to avoid wrong line coloring, Issue #698 */
         m_ouVerifyEntity.GetSubEntryCount(unCount);//omTempListCtrl.GetItemCount();
         omstrTemp.Format("%d", unCount);
         omTempListCtrl.SetItemText(0, def_COLUMN_VALUE, omstrTemp);
