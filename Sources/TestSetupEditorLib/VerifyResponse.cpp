@@ -232,7 +232,7 @@ HRESULT CVerifyResponse::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
                 break;
             case ERRORS:
             default:
-                omstrTemp = "ERRORS";
+                omstrTemp = "ERROR";
                 break;
         }
         pIDomTSAtrrib->value = _bstr_t(omstrTemp);

@@ -325,7 +325,7 @@ void CResultGenerator::vGetVerifySeverity(eERROR_ATTRIBUTE eError, CString& omSt
             omStrError = "WARNING";
             break;
         case ERRORS:
-            omStrError = "ERRORS";
+            omStrError = "ERROR";
             break;
         default:
         case FATAL:
