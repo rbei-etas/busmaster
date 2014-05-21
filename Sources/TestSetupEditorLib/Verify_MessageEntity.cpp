@@ -33,13 +33,14 @@ Output         :  -
 Functionality  :  Constructor
 Member of      :  CVerify_MessageEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
 CVerify_MessageEntity::CVerify_MessageEntity(void)
 {
     m_eType = VERIFY_MESSAGE;
+    m_lDefaultChannelUsed = 0;
 }
 
 /******************************************************************************
@@ -64,7 +65,7 @@ Output         :  HRESULT
 Functionality  :  Fill the datastructure from xml node pIDomNode
 Member of      :  CVerify_MessageEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -79,7 +80,7 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     IXMLDOMNamedNodeMapPtr pIDOMAttributes;
     pIDOMAttributes = pIDomNode->Getattributes();// get_attributes((IXMLDOMNamedNodeMap**)&pIDOMAttributes);
 
-    //Retriving Message ID
+    //Retrieving Message ID
     bstrNodeName = def_STR_TCATTRIB_ID;
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
@@ -93,7 +94,7 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     }
     pIDOMChildNode->Release();
 
-    //Retriving Message UNIT
+    //Retrieving Message UNIT
     bstrNodeName = _(def_STR_TCATTRIB_UNIT);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
     pIDOMChildNode->get_nodeTypedValue(&NodeValue);
@@ -108,8 +109,24 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     }
     pIDOMChildNode->Release();
 
+    //Retrieving Message Channel
+    bstrNodeName = def_STR_TCATTRIB_CHANNEL;
+    pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
+    m_ouData.m_byChannelNumber = 0;                 // set default-value for the case, the number is incorrect or the whole argument is missing
+    if (NULL != pIDOMChildNode)                     // avoid crash in case XML-file -without channel-information- is loaded
+    {
+        pIDOMChildNode->get_nodeTypedValue(&NodeValue);
+        omstrTemp = strCopyBSTRToCString(NodeValue);
+        m_ouData.m_byChannelNumber = atoi((LPCSTR)omstrTemp);
+        pIDOMChildNode->Release();
+    }
+    if(m_ouData.m_byChannelNumber == 0)             // if casting fails (failure in xml)
+    {
+        m_ouData.m_byChannelNumber = 1; // set default channel */
+        m_lDefaultChannelUsed = 1;
+    }
 
-    //Retriving Signals and there Data
+    //Retrieving Signals and their Data
 
     sMESSAGE sMsg;
     IXMLDOMNodeListPtr pIDOMSignalList;
@@ -146,7 +163,7 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         for(int i = 0; i < lCount; i++)
         {
             pIDOMSignalList->get_item(i, &pIDOMSChildSignal);
-            vRetriveConditionSignalValue(pIDOMSChildSignal, ouTSSignalData);
+            vRetrieveConditionSignalValue(pIDOMSChildSignal, ouTSSignalData);
             if(ouSignalData.m_omSigName == ouTSSignalData.m_omSigName)
             {
                 ouSignalData.m_omCondition = ouTSSignalData.m_omCondition;
@@ -160,18 +177,18 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
 }
 
 /******************************************************************************
-Function Name  :  vRetriveConditionSignalValue
+Function Name  :  vRetrieveConditionSignalValue
 Input(s)       :  IXMLDOMNode* pIDOMSChildSignal
                   CSignalCondition& ouSignalCondition
 Output         :  void
-Functionality  :  Retrives the Signal Info from the pIDOMSChildSignal
+Functionality  :  Retrieves the Signal Info from the pIDOMSChildSignal
 Member of      :  CVerify_MessageEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
-void CVerify_MessageEntity::vRetriveConditionSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalCondition& ouSignalCondition)
+void CVerify_MessageEntity::vRetrieveConditionSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalCondition& ouSignalCondition)
 {
     CComBSTR bstrNodeName = L"name";
     CComVariant NodeValue;
@@ -239,7 +256,7 @@ Output         :  HRESULT
 Functionality  :  Creates the XML file with pIDomVerifyNode
 Member of      :  CVerify_MessageEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -278,6 +295,14 @@ HRESULT CVerify_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomVerifyNod
             pIDomTSAtrrib->value = _bstr_t(omstrTemp);
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
+
+        pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_CHANNEL);
+        if(pIDomTSAtrrib!= NULL)
+        {
+            pIDomTSAtrrib->value = _bstr_t(m_ouData.m_byChannelNumber);
+            pChildElement->setAttributeNode(pIDomTSAtrrib);
+        }
+
         INT lCount = (INT)m_ouData.m_odSignalConditionList.GetCount();
         for(INT i =0; i<lCount; i++)
         {
@@ -320,13 +345,31 @@ HRESULT CVerify_MessageEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void*
 }
 
 /******************************************************************************
+Function Name  :  SetChannel
+Input(s)       :  BYTE byChannel
+Output         :  HRESULT
+Functionality  :  Sets the current channel
+Member of      :  CVerify_MessageEntity
+Friend of      :  -
+Author(s)      :  GT-Derka
+Date Created   :  12/05/2014
+Modifications  :
+Codetag        :
+******************************************************************************/
+HRESULT CVerify_MessageEntity::SetChannel(BYTE byChannel)
+{
+    m_ouData.m_byChannelNumber = byChannel;
+    return S_OK;
+}
+
+/******************************************************************************
 Function Name  :  vUpdateSignals
 Input(s)       :  CVerify_MessageData& ouData
 Output         :  INT
 Functionality  :
 Member of      :  CVerify_MessageEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -347,6 +390,7 @@ INT CVerify_MessageEntity::vUpdateSignals(CVerify_MessageData& ouData)
     ouTempSignalData.m_dwMessageID = ouData.m_dwMessageID;
     ouTempSignalData.m_eSignalUnitType = ouData.m_eSignalUnitType;
     ouTempSignalData.m_omMessageName = ouData.m_omMessageName;
+    ouTempSignalData.m_byChannelNumber = ouData.m_byChannelNumber;
 
     for(UINT i = 0; i < unSignalCount; i++)
     {
@@ -450,6 +494,26 @@ CVerifyData& CVerifyData::operator=(const CVerifyData& RefObj)
     return *this;
 }
 
+/******************************************************************************
+Function Name  :  SetChannel
+Input(s)       :  POSITION pos
+                  BYTE byChannel
+Output         :  void
+Functionality  :
+Member of      :  CSendData
+Friend of      :  -
+Author(s)      :  GT-Derka
+Date Created   :  12/05/2014
+Modifications  :
+******************************************************************************/
+void CVerifyData::SetChannel(UINT index, BYTE byChannel)
+{
+    POSITION pos = m_odVerify_MessageEntityList.FindIndex(index);
+    CVerify_MessageEntity msg = m_odVerify_MessageEntityList.GetAt(pos);
+    msg.SetChannel(byChannel);
+    m_odVerify_MessageEntityList.SetAt(pos, msg);
+}
+
 
 /******************************************************************************
 Function Name  :  CVerify_MessageData
@@ -458,7 +522,7 @@ Output         :  -
 Functionality  :  Constructor
 Member of      :  CVerify_MessageData
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -467,6 +531,7 @@ CVerify_MessageData::CVerify_MessageData(void)
     m_bResult = FALSE;
     //W4 Removal
     m_dwMessageID = (DWORD)-1;
+    m_byChannelNumber = 1;
     m_eSignalUnitType = RAW;
     m_omMessageName = "";
     m_odSignalConditionList.RemoveAll();
@@ -493,7 +558,7 @@ Function Name  :  GetSignalCondition
 Input(s)       :  CString& omStrSignal
                   CString& omSignalCondition
 Output         :  HRESULT
-Functionality  :  Retrives the signal Condition from signal name
+Functionality  :  Retrieves the signal Condition from signal name
 Member of      :  CVerify_MessageData
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -526,7 +591,7 @@ Output         :  CVerify_MessageData&
 Functionality  :  = operator overloading
 Member of      :  CVerify_MessageData
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -535,13 +600,13 @@ CVerify_MessageData& CVerify_MessageData::operator=(const CVerify_MessageData& R
     m_omMessageName = RefObj.m_omMessageName;
     m_dwMessageID = RefObj.m_dwMessageID;
     m_eSignalUnitType = RefObj.m_eSignalUnitType;
+    m_byChannelNumber = RefObj.m_byChannelNumber;
     m_odSignalConditionList.RemoveAll();
 
     INT Count = (INT)RefObj.m_odSignalConditionList.GetCount();
     for(int i=0; i<Count; i++)
     {
         POSITION pos = RefObj.m_odSignalConditionList.FindIndex(i);
-        //m_odSignalConditionList.AddTail(RefObj.m_odSignalConditionList.GetAt(pos));
         CSignalCondition msg = RefObj.m_odSignalConditionList.GetAt(pos);
         m_odSignalConditionList.AddTail(msg);
     }

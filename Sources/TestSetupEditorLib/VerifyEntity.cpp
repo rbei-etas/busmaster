@@ -40,6 +40,7 @@ Modifications  :
 CVerifyEntity::CVerifyEntity(void)
 {
     m_eType = VERIFY;
+    m_lDefaultChannelUsed = 0;
 }
 
 
@@ -267,7 +268,7 @@ Output         :  HRESULT
 Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -294,8 +295,8 @@ HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     {
         m_ouData.m_eAttributeError = WARNING;
     }
-    else if(strTemp == "ERRORS")
-    {
+    else if((strTemp == "ERROR") || (strTemp == "ERRORS"))  // "ERRORS" to reach downward compatibility (bug in earlier versions)
+    {                                                       // delete "ERRORS" in later versions
         m_ouData.m_eAttributeError = ERRORS;
     }
     else
@@ -318,6 +319,7 @@ HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         if(odVerify_MessageEntity.GetData(pIXMLDOMVerifyMsgEntity) == S_OK)
         {
             m_ouData.m_odVerify_MessageEntityList.AddTail(odVerify_MessageEntity);
+            m_lDefaultChannelUsed += odVerify_MessageEntity.m_lDefaultChannelUsed;    // Add number of entities, where the default-channel is set
         }
     }
     return S_OK;
@@ -364,7 +366,7 @@ Output         :  HRESULT
 Functionality  :
 Member of      :  CVerifyEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -393,7 +395,7 @@ HRESULT CVerifyEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
                 break;
             case ERRORS:
             default:
-                omstrTemp = "ERRORS";
+                omstrTemp = "ERROR";
                 break;
         }
         pIDomTSAtrrib->value = _bstr_t(omstrTemp);

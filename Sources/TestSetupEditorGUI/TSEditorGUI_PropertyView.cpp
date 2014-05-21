@@ -16,6 +16,7 @@
 /**
  * \file      TSEditorGUI_PropertyView.cpp
  * \author    Venkatanarayana makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
@@ -30,7 +31,8 @@
 #define def_WINDOW_GAP              18          //Looks Good
 #define def_WINDOW_SEMIGAP          9
 #define def_WIDTH_COL_CATEGORY      0.2
-#define def_WIDTH_COL_VALUE         0.75
+#define def_WIDTH_COL_VALUE         0.65
+#define def_WIDTH_COL_CHANNEL       0.1
 // CPropertyView
 
 IMPLEMENT_DYNCREATE(CPropertyView, CFormView)
@@ -141,13 +143,42 @@ void CPropertyView::OnInitialUpdate()
 }
 
 /******************************************************************************
+Function Name  :  vSetChannelColumn
+Input(s)       :  enum Visibility visibility -  SHOW to show channel-column
+                                                HIDE to hide channel-column
+Output         :  void
+Functionality  :
+Member of      :  CPropertyView
+Friend of      :  -
+Author(s)      :  GT-Derka
+Date Created   :  06/05/2014
+Modifications  :
+******************************************************************************/
+void CPropertyView::vSetChannelColumn(Visibility visibility)
+{
+    int iNumberOfColumns = m_omPropertyList.GetHeaderCtrl()->GetItemCount();    // Get Number of existing columns
+    if((visibility == SHOW) && (iNumberOfColumns == def_COLUMN_CHANNEL))        // "... == def_COLUMN_CHANNEL" => "Channel" does not exist yet
+    {
+        CRect PropertyRect;
+        m_omPropertyList.InsertColumn(def_COLUMN_CHANNEL, _(defTHIRDCOLUMN_NAME));  // Create "Channel"-column
+        this->GetClientRect(&PropertyRect);                                         // Get Window-Size to...
+        this->OnSize(0, PropertyRect.Width(), PropertyRect.Height());               // ...call OnSize to fit column-widths
+    }
+    else if((visibility == HIDE) && (iNumberOfColumns == def_COLUMN_CHANNEL+1))     // "Channel" does exist -> allowed to delete
+    {
+        m_omPropertyList.DeleteColumn(def_COLUMN_CHANNEL);                          // Delete "Channel"
+    }
+}
+
+
+/******************************************************************************
 Function Name  :  OnSize
 Input(s)       :
 Output         :  void
 Functionality  :
 Member of      :  CPropertyView
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
@@ -174,6 +205,7 @@ void CPropertyView::OnSize(UINT nType, int cx, int cy)
 
         m_omPropertyList.SetColumnWidth(def_COLUMN_CATEGORY, (INT)(def_WIDTH_COL_CATEGORY*PropertyRect.Width()));
         m_omPropertyList.SetColumnWidth(def_COLUMN_VALUE,  (INT)(def_WIDTH_COL_VALUE*PropertyRect.Width()));
+        m_omPropertyList.SetColumnWidth(def_COLUMN_CHANNEL,  (INT)(def_WIDTH_COL_CHANNEL*PropertyRect.Width()));
 
         int nHeight = ConfirmButtonRect.Height();
         int nWidth = ConfirmButtonRect.Width();

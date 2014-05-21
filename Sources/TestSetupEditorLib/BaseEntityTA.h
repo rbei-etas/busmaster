@@ -17,6 +17,7 @@
  * \file      BaseEntityTA.h
  * \brief     Contains The CBaseEntityTA Class Declarations.
  * \author    Venkatanarayana makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Contains The CBaseEntityTA Class Declarations.
@@ -64,6 +65,7 @@ public:
     //Member variables
 public:
     static CDataBaseMsgList m_ouDataBaseManager;
+    LONG m_lDefaultChannelUsed;
 private:
     static DWORD m_dwNextID;
 protected:

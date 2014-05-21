@@ -16,6 +16,7 @@
 /**
  * \file      TestCaseEntity.h
  * \author    Venkatanarayana makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
@@ -74,7 +75,7 @@ public:
     void vDeleteAllEntities(void);
     virtual ~CTestCaseEntity(void);
 
-
+    LONG lDefaultChannelUsed;
     //Attributes
 private:
     CTestCaseData m_ouData;

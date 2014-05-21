@@ -35,13 +35,14 @@ Output         :  -
 Functionality  :
 Member of      :  CVerifyResponse
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
 CVerifyResponse::CVerifyResponse(void)
 {
     m_eType = VERIFYRESPONSE;
+    m_lDefaultChannelUsed = 0;
 }
 
 
