@@ -1028,6 +1028,13 @@ Section "COM Examples"
 	; COM API example files
 	File ..\Examples\COM\VC++COM_Client.zip
 SectionEnd
+Section "Test Automation"
+    SectionIn 1 2
+    SetOutPath "$INSTDIR\Examples\TestAutomation\"
+    File ..\Examples\TestAutomation\CAN_Database.dbf
+    File ..\Examples\TestAutomation\SampleTestSetupFile.xml
+    File ..\Examples\TestAutomation\TestSetupFile.xsd
+SectionEnd
 SectionGroupEnd
 
 ; Uninstall section here...
