@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      CAN_ETAS_BOA/CAN_ETAS_BOA_Extern.h
- * \brief     Exports API functions for BOA CAN Hardware interface
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Exports API functions for BOA CAN Hardware interface
+ * @author Pradeep Kadoor, Tobias Lorenz
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Exports API functions for BOA CAN Hardware interface
  */
@@ -34,12 +33,15 @@
 #define USAGEMODE   __declspec(dllimport)
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
-    /*  Exported function list */
+    /**
+     * Returns the interface to controller
+     *
+     * @return S_OK for success, S_FALSE for failure
+     */
     USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface);
 
 #ifdef __cplusplus

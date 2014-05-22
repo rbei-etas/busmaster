@@ -14,25 +14,20 @@
  */
 
 /**
- * \file      CAN_ETAS_BOA.h
- * \brief     Exports API functions for ETAS-BOA CAN Hardware interface
- * \author    Arunkumar Karri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Exports API functions for ETAS-BOA CAN Hardware interface
+ * @author Arunkumar Karri, Tobias Lorenz
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Exports API functions for ETAS-BOA CAN Hardware interface
  */
 #pragma once
 
-/**
- * See CAN_ETAS_BOA.cpp for the implementation of this class
- */
 class CCAN_ETAS_BOA : public CWinApp
 {
 public:
     CCAN_ETAS_BOA();
 
-    // Overrides
-public:
+    /* Overrides */
     virtual BOOL InitInstance();
 
     DECLARE_MESSAGE_MAP()
