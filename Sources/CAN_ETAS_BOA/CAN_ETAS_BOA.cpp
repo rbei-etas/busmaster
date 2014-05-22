@@ -1966,8 +1966,14 @@ static BOOL vCopy_2_OCI_CANFD_Data(OCI_CANFDTxMessage& DestMsg, const STCAN_MSG&
     DestMsg.res     = 0;
     DestMsg.frameID = SrcMsg.m_unMsgID;
     DestMsg.size     = SrcMsg.m_ucDataLen;
-    if(SrcMsg.m_ucDataLen>8 && (SrcMsg.m_ucDataLen != 12)&& (SrcMsg.m_ucDataLen != 16)&&(SrcMsg.m_ucDataLen != 20)&&(SrcMsg.m_ucDataLen != 32)
-            && (SrcMsg.m_ucDataLen != 48)&& (SrcMsg.m_ucDataLen != 64))
+    if ((SrcMsg.m_ucDataLen > 8) && (
+        (SrcMsg.m_ucDataLen != 12) || 
+        (SrcMsg.m_ucDataLen != 16) ||
+        (SrcMsg.m_ucDataLen != 20) ||
+        (SrcMsg.m_ucDataLen != 24) ||
+        (SrcMsg.m_ucDataLen != 32) ||
+        (SrcMsg.m_ucDataLen != 48) ||
+        (SrcMsg.m_ucDataLen != 64)))
     {
         AfxMessageBox("Unsupported Data Length. It should be 0..8, 12, 16, 20, 24, 32, 48 or 64");
         return FALSE;
