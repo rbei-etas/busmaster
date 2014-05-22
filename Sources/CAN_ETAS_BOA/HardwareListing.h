@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      HardwareListing.h
- * \brief     Interface file for CHardwareListing class
- * \author    RaTnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Interface file for CHardwareListing class
+ * @author RaTnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CHardwareListing class
  */
@@ -30,25 +29,25 @@
 #include "DataTypes/DIL_Datatypes.h"
 #include "Include/CanUsbDefs.h"
 #include <map>
-/////////////////////////////////////////////////////////////////////////////
-// CHardwareListing dialog
+
 class CHardwareListing : public CDialog
 {
 public:
+    CHardwareListing();
+    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = nullptr);
+
     // Array of channels
     int m_anSelectedChannels[ CHANNEL_ALLOWED ];
-    // Array to hold driver handle
-    //SHWNETLIST m_sHwNetList[ MAX_HCANNET ];
+
     // To update selected hardware detaisl
     void vUpdateHwDetails( int nIndex );
+
     // To set List of hardware handles
     void vSetHardwareList(INTERFACE_HW*, int );
-    // Constructor
-    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = NULL);
-    // standard constructor
-    CHardwareListing();
+
     //Get selection list
     INT nGetSelectedList(int* pnList);
+
     //Set selection list
     void vSetSelectedList();
 
@@ -61,7 +60,6 @@ public:
     CEdit   m_omDriverID;
     CListCtrl   m_omHardwareList;
     //}}AFX_DATA
-
 
     // Overrides
     // ClassWizard generated virtual function overrides
@@ -84,20 +82,28 @@ protected:
     afx_msg void OnItemchangedLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
+
 private:
     void vEnableDisableButtons();
+
     // Pointer to Hardware List
     INTERFACE_HW* m_psHwInterface;
+
     // Size of the array
     int m_nSize;
+
     //Number of selected items
     int m_nNoOfHwSelected;
+
     // Image for CListCtrl
     CImageList m_omImageList;
+
     // Selected Item index
     int m_nSelectedItem;
+
     // Pointer to Selected List
     int* m_pnSelList;
+
 public:
     afx_msg void OnNMClickLstcHwList(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult);
@@ -113,12 +119,11 @@ public:
 
     } HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
 
-    typedef pair <int, PHARDWARE_CONTAINER> Int_Pair;
-    map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
-    map <int, PHARDWARE_CONTAINER> mHardwareListMap;
+    typedef std::pair<int, PHARDWARE_CONTAINER> Int_Pair;
+    std::map<int, PHARDWARE_CONTAINER>::iterator m_pIter;
+    std::map<int, PHARDWARE_CONTAINER> mHardwareListMap;
 
-    //Hardware container object
+    // Hardware container object
     PHARDWARE_CONTAINER m_pouHardwareContainer;
     void vSortHardwareItems();
-
 };

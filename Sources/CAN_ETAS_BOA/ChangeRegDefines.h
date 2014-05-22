@@ -24,80 +24,65 @@
 
 #pragma once
 
-#define  defSECTION_CHANGE_REG       "Change Registers"
-#define  defITEM_BAUD_RATE           "Baud Rate"
-#define  defITEM_ACCEPTANCE_MASK     "Acceptance Mask"
-#define  defITEM_ACCEPTANCE_CODE     "Acceptance Code"
-#define  defITEM_BTR0                "Bus Timer Register0"
-#define  defITEM_BTR1                "Bus Timer Register1"
-#define  defITEM_SAMPLING            "Sampling"
-#define  defITEM_CLOCK               "Clock Frequency"
-#define  defITEM_BRP                 "Baud Rate Prescalar"
-#define  defITEM_INDEX_UNDERFOCUS    "Item Number Under Focus"
+#define defDEFAUT_BAUDRATE 0x4716
 
-#define  defITEM_BTR                 "BTR0 and BTR1"
+#define defHEX_STRING                "0x"
+#define defEMPTY_STRING              ""
+#define defBAUD_RATE_MESSAGE         "Nearest Valid Baud Rate is %s kBit/s. Do You want to change it ?"
+#define defVALIDATION_MSG_BAUD_RATE  "Not a valid Decimal Numerals or out of range. !!! \n\nEnter only positive Decimal Numerals upto 1000kbps."
+#define defVALIDATION_MESSAGE        "Not a valid value. !!! \n\nEnter only Hexadecimal Value."
+#define defERRORMSG_INSERT           "Error In Inserting SubItems"
 
-#define  defDEFAUT_BAUDRATE           0x4716
+#define defBRT0_COLUNM_POS              1
+#define defBRT1_COLUNM_POS              2
+#define defSAMPLING_COLUNM_POS          3
+#define defNBT_COLUNM_POS               4
+#define defSJW_COLUNM_POS               5
 
-#define  defHEX_STRING                "0x"
-#define  defEMPTY_STRING              ""
-#define  defBAUD_RATE_MESSAGE         "Nearest Valid Baud Rate is %s kBit/s. Do You want to change it ?"
-#define  defVALIDATION_MSG_BAUD_RATE  "Not a valid Decimal Numerals or out of range. !!! \n\nEnter only positive Decimal Numerals upto 1000kbps."
-#define  defVALIDATION_MESSAGE        "Not a valid value. !!! \n\nEnter only Hexadecimal Value."
-#define  defERRORMSG_INSERT           "Error In Inserting SubItems"
+#define defSUBITEM_NOT_SELECTED         0
+#define defZERO                         0
+#define defVALID_LENGTH_BTR             2
+#define defVALID_DECIMAL_DIGIT          3
+#define defVALID_LENGTH_ACCEPTANCE      4
 
-#define  defBRT0_COLUNM_POS              1
-#define  defBRT1_COLUNM_POS              2
-#define  defSAMPLING_COLUNM_POS          3
-#define  defNBT_COLUNM_POS               4
-#define  defSJW_COLUNM_POS               5
+#define defSUCCESS                      1
+#define defERROR                       -1
 
-#define  defSUBITEM_NOT_SELECTED         0
-#define  defZERO                         0
-#define  defVALID_LENGTH_BTR             2
-#define  defVALID_DECIMAL_DIGIT          3
-#define  defVALID_LENGTH_ACCEPTANCE      4
+#define defFromKillFocusBTR            -2
 
-#define  defSUCCESS                      1
-#define  defERROR                       -1
+#define defFACT_BAUD_RATE               1000.0
+#define defFACT_FREQUENCY               1000000.0
+#define defNUMBER_OF_COLUMNS_CAN_ICS_neoVI 6
+#define defNUMBER_OF_COLUMNS            5
 
-#define  defFromKillFocusBTR            -2
-
-#define  defFACT_BAUD_RATE               1000.0
-#define  defFACT_FREQUENCY               1000000.0
-#define  defNUMBER_OF_COLUMNS_CAN_ICS_neoVI 6
-#define  defNUMBER_OF_COLUMNS            5
 // Maximum list of values can be displayed in list box
-#define  defREG_VALUE_LIST_COUNT_MAX     200
-#define  defSHIFT_LEFT_SJW_POS            6
-#define  defSHIFT_LEFT_TSEG2_POS          4
-#define  defSHIFT_LEFT_SAM_POS            7
+#define defREG_VALUE_LIST_COUNT_MAX     200
+#define defSHIFT_LEFT_SJW_POS            6
+#define defSHIFT_LEFT_TSEG2_POS          4
+#define defSHIFT_LEFT_SAM_POS            7
 
-#define  defSET                           1
-#define  defRESET                         0
+#define defSET                           1
+#define defRESET                         0
 
-#define  defHEXADECIMAL                   16
-#define  defWARNING_LIMIT_MIN             1
-#define  defWARNING_LIMIT_MAX             127
+#define defHEXADECIMAL                   16
+#define defWARNING_LIMIT_MIN             1
+#define defWARNING_LIMIT_MAX             127
 #define defWARNINGLIMIT_MSG "The Warning limit \"%s\" is beyond the limit %d - %d"
 // Allowed valid decimal values in NBT and BRP product
-#define  defVALID_DECIMAL_VALUE          0.004
+#define defVALID_DECIMAL_VALUE          0.004
 // Maximum size of Column Headers Displayed in list box
-#define  defMAX_COLUMN_SIZE           100
+#define defMAX_COLUMN_SIZE           100
 
 // Maximum value of SJW    = SJWbit + 1 ( BTR0 :6-7 )
-#define  defMAX_SJW                    4
+#define defMAX_SJW                    4
 // Maximum value of NBT    = TSEG2+TSEG1+1
-#define  defMAX_NBT                    25
+#define defMAX_NBT                    25
 // Maximum value of BRP    = BRPbit + 1 ( BTR0 :0-5 )
-#define  defMAX_BRP                    64
-
+#define defMAX_BRP                    64
 
 // Maximum value of TSEG1   = TSEG1bit + 1 ( BTR1 : 0-3)
-#define  defMAX_TSEG1                      16
-#define defMAX_TSEG1_ICSneoVI               8
-#define defMIN_TSEG1_ICSneoVI               1
-#define  defMAX_SAMPLING                   50
+#define defMAX_TSEG1                      16
+#define defMAX_SAMPLING                   50
 
 // Maximum value of TSEG2   = TSEG2bit + 1 ( BTR1 : 4-6)
 #define  defMAX_TSEG2                      8

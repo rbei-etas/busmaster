@@ -165,11 +165,12 @@ typedef struct sLIN_ERR
     unsigned char m_ucChannel;
 
 } SLIN_ERR, *SPLIN_ERR;
+
 // To copy the data and advance the pointer of the target data stream
-#define COPY_DATA(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes;}
+#define COPY_DATA(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes; }
 
 // To copy the data and advance the pointer of the source data stream
-#define COPY_DATA_2(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes;}
+#define COPY_DATA_2(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
 
 #define defMODE_ACTIVE                         1
 #define defMODE_PASSIVE                        2
@@ -195,16 +196,9 @@ typedef struct sLIN_ERR
 
 const short LIN_MSG_IDS = 2;
 
-//This enum defines different filter types
-//enum eHW_FILTER_TYPES_LIN
-//{
-//    HW_FILTER_ACCEPT_ALL = 0,
-//    HW_FILTER_REJECT_ALL,
-//    HW_FILTER_MANUAL_SET
-//};
-
-// Controller details
-// information on the baud rate
+/**
+ * Controller details, e.g. information on the baud rate
+ */
 class sCONTROLLERDETAILSLIN
 {
 private:
@@ -236,8 +230,6 @@ private:
             m_omStrAccMaskByte2[i] = objRef.m_omStrAccMaskByte2[i];
             m_omStrAccMaskByte3[i] = objRef.m_omStrAccMaskByte3[i];
             m_omStrAccMaskByte4[i] = objRef.m_omStrAccMaskByte4[i];
-
-            /* m_enmHWFilterType[i] = objRef.m_enmHWFilterType[i];*/
         }
         m_omHardwareDesc    = objRef.m_omHardwareDesc;
         m_bAccFilterMode    = objRef.m_bAccFilterMode;
@@ -310,49 +302,50 @@ public:
     int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)
     string  m_omStrLocation;                     // location (serial port, ip-address, ...)
     int     m_bHWTimestamps;                     // timestamps from the controllers hardware
-
-    //Filter type: 1. Accept All 2. Reject All 3. Manual setting
-    //eHW_FILTER_TYPES_LIN m_enmHWFilterType[LIN_MSG_IDS];
-
-
 };
 typedef sCONTROLLERDETAILSLIN   SCONTROLLER_DETAILS_LIN;
 typedef sCONTROLLERDETAILSLIN*  PSCONTROLLER_DETAILS_LIN;
 
-/*****************************************************************************/
-/*This structure is used for communicating between Driver & LIN Application*/
+/**
+ * This structure is used for communicating between Driver and LIN Application
+ */
 struct sTLINDATAINFO
 {
-    STLIN_MSG         m_sLINMsg;      //The received / transmitted message
+    /* The received / transmitted message */
+    STLIN_MSG         m_sLINMsg;
+
     SERROR_INFO_LIN   m_sErrInfo;
 };
 typedef sTLINDATAINFO STLINDATAINFO;
 typedef sTLINDATAINFO* PSTLINDATAINFO;
 
 
-/*****************************************************************************/
-
-/*****************************************************************************/
-/*This structure is used for communicating between Driver & LIN Application*/
-
+/**
+ * This structure is used for communicating between Driver and LIN Application
+ */
 typedef struct sTLINDATA
 {
 private:
     static int  m_nSortField;
-    static int  m_nMFactor;     // Multiplication factor
+
+    /* Multiplication factor */
+    static int  m_nMFactor;
 
 public:
     eLinMsgType     m_eLinMsgType;
-    unsigned char    m_ucDataType;  //Type of the message
-    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
-    //QueryPerf..Counter()
+
+    /** Type of the message */
+    unsigned char    m_ucDataType;
+
+    /** Time stamp, Contains the val returned from */
+    LARGE_INTEGER    m_lTickCount;
+    // QueryPerf..Counter()
     STLINDATAINFO       m_uDataInfo;
 
     static void vSetSortField(int nField);
     static void vSetSortAscending(bool bAscending);
     static int DoCompareIndiv(const void* pEntry1, const void* pEntry2);
     static __int64 GetSlotID(sTLINDATA& pDatLIN);
-
 } STLINDATA, *PSTLINDATA;
 
 enum eLIN_MSG_TYPE
@@ -367,7 +360,7 @@ enum eLIN_MSG_TYPE
     LIN_RESPONSE_NOT_CONFIGURED,
     LIN_CHECKSUM_ERROR,
     LIN_DLC_ERROR,
-    LIN_MSG_TYPE_MAX,           /* Do not add msg type after LIN_MSG_TYPE_MAX */
+    LIN_MSG_TYPE_MAX, /* Do not add msg type after LIN_MSG_TYPE_MAX */
 };
 
 enum eLIN_CHECKSUM_TYPE
@@ -392,21 +385,22 @@ const string sg_ListDIL_MSG_TYPE[LIN_MSG_TYPE_MAX] =
 
 struct sSUBBUSSTATISTICS_LIN
 {
-    unsigned int    m_unErrorTxCount;
-    unsigned int    m_unTotalTxMsgCount;
-    unsigned int    m_unTotalBitsperSec;
-    unsigned int    m_unTotalRxMsgCount;
-    unsigned int    m_unErrorTotalCount;
-    unsigned int    m_unErrorRxCount;
-    unsigned int    m_unErrorSyncCount;
-    unsigned int    m_unDLCCount;
-    unsigned int    m_unTotalWakeUpsCount;
-
+    unsigned int m_unErrorTxCount;
+    unsigned int m_unTotalTxMsgCount;
+    unsigned int m_unTotalBitsperSec;
+    unsigned int m_unTotalRxMsgCount;
+    unsigned int m_unErrorTotalCount;
+    unsigned int m_unErrorRxCount;
+    unsigned int m_unErrorSyncCount;
+    unsigned int m_unDLCCount;
+    unsigned int m_unTotalWakeUpsCount;
 };
 typedef sSUBBUSSTATISTICS_LIN SSUBBUSSTATISTICS_LIN;
 typedef sSUBBUSSTATISTICS_LIN* PSSUBBUSSTATISTICS_LIN;
 
-// Bus statistics structure
+/**
+ * Bus statistics structure
+ */
 struct sBUSSTATISTICS_LIN
 {
     unsigned int    m_unTotalBitsperSec;
@@ -461,7 +455,6 @@ struct sBUSSTATISTICS_LIN
 };
 typedef sBUSSTATISTICS_LIN SBUSSTATISTICS_LIN;
 typedef sBUSSTATISTICS_LIN* PBUSSTATISTICS_LIN;
-
 
 #define TX_FLAG                 0x01
 #define RX_FLAG                 0x02

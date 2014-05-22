@@ -120,9 +120,6 @@ public:
  */
 static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
-const INT MAX_MAP_SIZE = 3000;
-
-
 static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 
 //

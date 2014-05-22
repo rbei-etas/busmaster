@@ -26,6 +26,7 @@
 #include <search.h>             /* For qsort */
 
 /* C++ includes */
+#include <list>
 #include <string>
 #include <vector>
 
@@ -41,9 +42,8 @@
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "HardwareListing.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
-#include "../Application/MultiLanguage.h"
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Application/MultiLanguage.h"
+#include "Utility/MultiLanguageSupport.h"
 
 #define USAGE_EXPORT
 #include "CAN_ETAS_BOA_Extern.h"
@@ -68,9 +68,6 @@
 BEGIN_MESSAGE_MAP(CCAN_ETAS_BOA, CWinApp)
 END_MESSAGE_MAP()
 
-/**
- * CCAN_ETAS_BOA construction
- */
 CCAN_ETAS_BOA::CCAN_ETAS_BOA()
 {
     // TODO: add construction code here,
@@ -83,7 +80,7 @@ static CCAN_ETAS_BOA theApp;
 /**
  * CCAN_ETAS_BOA initialization
  */
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst = nullptr;
 
 BOOL CCAN_ETAS_BOA::InitInstance()
 {
@@ -127,31 +124,65 @@ static const BYTE QUEUE_DESTROY = 0x02;
  */
 typedef struct tagCHANNEL
 {
-    OCI_URIName m_acURI; /**< URI of the Controller */
-    OCI_ControllerHandle m_OCI_HwHandle; /**< Controller handle */
-    OCI_CANConfiguration m_OCI_CANConfig; /**< Controller configuration */
-    OCI_CANControllerProperties m_OCI_CntrlProp; /**< Controller properties */
-    OCI_QueueHandle m_OCI_RxQueueHandle; /**< Controller receive queue handle */
-    OCI_CANRxQueueConfiguration m_OCI_RxQueueCfg; /**< Controller receive queue configuration */
-    OCI_QueueHandle m_OCI_TxQueueHandle; /**< Controller transmit queue handle */
-    OCI_CANTxQueueConfiguration m_OCI_TxQueueCfg; /**< Controller transmit queue configuration */
-    OCI_CANRxFilter m_OCI_FrameFilter; /**< Controller frame filter */
-    OCI_CANEventFilter m_OCI_EventFilter; /**< Controller event filter */
-    OCI_CANErrorFrameFilter m_OCI_ErrorFilter; /**< Controller error filter */
+    /** URI of the Controller */
+    OCI_URIName m_acURI;
+
+    /** Controller handle */
+    OCI_ControllerHandle m_OCI_HwHandle;
+
+    /** Controller configuration */
+    OCI_CANConfiguration m_OCI_CANConfig;
+
+    /** Controller properties */
+    OCI_CANControllerProperties m_OCI_CntrlProp;
+
+    /** Controller receive queue handle */
+    OCI_QueueHandle m_OCI_RxQueueHandle;
+
+    /** Controller receive queue configuration */
+    OCI_CANRxQueueConfiguration m_OCI_RxQueueCfg;
+
+    /** Controller transmit queue handle */
+    OCI_QueueHandle m_OCI_TxQueueHandle;
+
+    /** Controller transmit queue configuration */
+    OCI_CANTxQueueConfiguration m_OCI_TxQueueCfg;
+
+    /** Controller frame filter */
+    OCI_CANRxFilter m_OCI_FrameFilter;
+
+    /** Controller event filter */
+    OCI_CANEventFilter m_OCI_EventFilter;
+
+    /** Controller error filter */
+    OCI_CANErrorFrameFilter m_OCI_ErrorFilter;
+
     OCI_InternalErrorEventFilter m_OCI_InternalErrorFilter;
-    UCHAR m_ucControllerState; /**< Controller state */
-    UCHAR m_ucTxErrorCounter; /**< Controller Tx error counter */
-    UCHAR m_ucRxErrorCounter; /**< Controller Rx error counter */
-    UCHAR m_ucPeakRxErrorCounter; /**< Controller peak Rx error counter */
-    UCHAR m_ucPeakTxErrorCounter; /**< Controller peak Tx error counter */
+
+    /** Controller state */
+    UCHAR m_ucControllerState;
+
+    /** Controller Tx error counter */
+    UCHAR m_ucTxErrorCounter;
+
+    /** Controller Rx error counter */
+    UCHAR m_ucRxErrorCounter;
+
+    /** Controller peak Rx error counter */
+    UCHAR m_ucPeakRxErrorCounter;
+
+    /** Controller peak Tx error counter */
+    UCHAR m_ucPeakTxErrorCounter;
+
     OCI_TimerCapabilities m_OCI_TimerCapabilities;
+
     FLOAT m_fResolution;
-    bool m_bSupportCANFD; /**< controller capability of CAN_FD */
+
+    /** controller capability of CAN_FD */
+    bool m_bSupportCANFD;
 } SCHANNEL;
 
-/**
- * Client and Client Buffer map
- */
+/* Client and Client Buffer map */
 #define MAX_BUFF_ALLOWED 16
 #define MAX_CLIENT_ALLOWED 16
 static UINT sg_unClientCnt = 0;
@@ -161,17 +192,17 @@ class SCLIENTBUFMAP
 public:
     DWORD m_dwClientID;
     CBaseCANBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
-    string m_acClientName;
+    std::string m_acClientName;
     UINT m_unBufCount;
-    SCLIENTBUFMAP()
-    {
-        m_dwClientID = 0;
-        m_unBufCount = 0;
-        m_acClientName = "";
 
+    SCLIENTBUFMAP() :
+        m_dwClientID(0),
+        m_unBufCount(0),
+        m_acClientName("")
+    {
         for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            m_pClientBuf[i] = NULL;
+            m_pClientBuf[i] = nullptr;
         }
     }
 };
@@ -179,9 +210,7 @@ public:
 /**
  * Array of clients
  */
-static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
-
-static const INT MAX_MAP_SIZE = 3000;
+static std::vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
 typedef struct tagAckMap
 {
@@ -195,14 +224,16 @@ typedef struct tagAckMap
     }
 } SACK_MAP;
 
-typedef list<SACK_MAP> CACK_MAP_LIST;
+typedef std::list<SACK_MAP> CACK_MAP_LIST;
+
 static CACK_MAP_LIST sg_asAckMapBuf;
-static  CRITICAL_SECTION sg_CritSectForAckBuf; // To make it thread safe
+
+static CRITICAL_SECTION sg_CritSectForAckBuf; // To make it thread safe
 
 /**
  * Channel instances
  */
-static vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
+static std::vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
 
 /**
  * Number of current channel selected
@@ -211,10 +242,9 @@ static UINT sg_nNoOfChannels = 0;
 
 static BOOL sg_bIsDriverRunning = FALSE;
 
-static HWND sg_hOwnerWnd = NULL;
+static HWND sg_hOwnerWnd = nullptr;
 
 static const BYTE CREATE_MAP_TIMESTAMP = 0x1;
-
 static const BYTE CALC_TIMESTAMP_READY = 0x2;
 
 /**
@@ -222,29 +252,23 @@ static const BYTE CALC_TIMESTAMP_READY = 0x2;
  */
 static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
 
-static HANDLE sg_hEvent = NULL;
+static HANDLE sg_hEvent = nullptr;
 
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 
-/**
- * Timer variables
- */
+/* Timer variables */
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
 static LARGE_INTEGER sg_lnFrequency;
 
-/**
- * Required libraries
- */
-static HMODULE sg_hLibCSI = NULL;
-static HMODULE sg_hLibOCI = NULL;
+/* Required libraries */
+static HMODULE sg_hLibCSI = nullptr;
+static HMODULE sg_hLibOCI = nullptr;
 
-/**
- * Declarations of CSI API pointers
- */
+/* Declarations of CSI API pointers */
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC1)(const char* uriName, CSI_NodeRange range, CSI_Tree* *tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC2)(CSI_Tree* tree);
 typedef CSI_DECLSPEC OCI_ErrorCode (*PROC3)(CSI_Tree* tree, const BOA_UuidVersion* uuid, OCI_URIName uriName[], int size, int* count);
@@ -254,16 +278,16 @@ typedef OCI_ErrorCode (*PF_OCI_CreateCANControllerVersion)(const char* uriLocati
 /* Macro definitions */
 #if BOA_VERSION == BOA_VERSION_1_4
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.4"
-#define LIB_CSL_NAME    "dll-csiBind_1_4.dll"
-#define LIB_OCI_NAME    "dll-ocdProxy_1_4.dll"
+#define LIB_CSL_NAME "dll-csiBind_1_4.dll"
+#define LIB_OCI_NAME "dll-ocdProxy_1_4.dll"
 #elif BOA_VERSION == BOA_VERSION_1_5
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.5"
-#define LIB_CSL_NAME    "dll-csiBind_1_5.dll"
-#define LIB_OCI_NAME    "dll-ocdProxy_1_5.dll"
+#define LIB_CSL_NAME "dll-csiBind_1_5.dll"
+#define LIB_OCI_NAME "dll-ocdProxy_1_5.dll"
 #elif BOA_VERSION == BOA_VERSION_2_0
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\2"
-#define LIB_CSL_NAME    "dll-csiBind.dll"
-#define LIB_OCI_NAME    "dll-ocdProxy.dll"
+#define LIB_CSL_NAME "dll-csiBind.dll"
+#define LIB_OCI_NAME "dll-ocdProxy.dll"
 #else
 #error "Unknown BOA version defined"
 #endif
@@ -312,7 +336,7 @@ public:
     /* overloaded functions */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -322,7 +346,7 @@ public:
     HRESULT CAN_StopHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -334,19 +358,19 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = NULL;
+static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = nullptr;
 
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == sg_pouDIL_CAN_ETAS_BOA )
+    if (sg_pouDIL_CAN_ETAS_BOA == nullptr)
     {
-        if ((sg_pouDIL_CAN_ETAS_BOA = new CDIL_CAN_ETAS_BOA) == NULL)
+        if ((sg_pouDIL_CAN_ETAS_BOA = new CDIL_CAN_ETAS_BOA) == nullptr)
         {
             hResult = S_FALSE;
         }
     }
-    *ppvInterface = (void*) sg_pouDIL_CAN_ETAS_BOA; // Doesn't matter even if sg_pouDIL_CAN_Kvaser is null
+    *ppvInterface = (void*) sg_pouDIL_CAN_ETAS_BOA; // Doesn't matter even if it is nullptr
 
     return hResult;
 }
@@ -354,7 +378,7 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 /**
  * Error logger
  */
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static Base_WrapperErrorLogger* sg_pIlog = nullptr;
 
 /**
  * Declarations of ProcessCanData. This is a call back function
@@ -418,7 +442,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-static BOOL bGetBOAInstallationPath(string& pcPath)
+static BOOL bGetBOAInstallationPath(std::string & pcPath)
 {
     USES_CONVERSION;
 
@@ -427,7 +451,7 @@ static BOOL bGetBOAInstallationPath(string& pcPath)
     HKEY sKey;
 
     /* Get the installation path for BOA */
-    lError = RegOpenKeyEx( HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
+    lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE, BOA_REGISTRY_LOCATION, 0, KEY_READ, &sKey);
 
     /* If the registry key open successfully, get the value in "path" sub key */
     if(lError==ERROR_SUCCESS)
@@ -449,17 +473,17 @@ static BOOL bGetBOAInstallationPath(string& pcPath)
 static HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 {
     HRESULT hResult = S_OK;
-    if (hLibCSI != NULL)
+    if (hLibCSI != nullptr)
     {
-        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == NULL)
+        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == nullptr)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == nullptr)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -473,170 +497,170 @@ static HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 static HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
 {
     HRESULT hResult = S_OK;
-    if (hLibOCI != NULL)
+    if (hLibOCI != nullptr)
     {
 #if BOA_VERSION >= BOA_VERSION_2_0
         if ((sBOA_PTRS.createCANController  = (PF_OCI_CreateCANControllerVersion)
-                GetProcAddress(hLibOCI, "OCI_CreateCANControllerVersion")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CreateCANControllerVersion")) == nullptr)
         {
             hResult = S_FALSE;
         }
 #else
         if ((sBOA_PTRS.m_sOCI.createCANController = (PF_OCI_CreateCANController)
-                GetProcAddress(hLibOCI, "OCI_CreateCANController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CreateCANController")) == nullptr)
         {
             hResult = S_FALSE;
         }
 #endif
         else if ((sBOA_PTRS.m_sOCI.destroyCANController = (PF_OCI_DestroyCANController)
-                GetProcAddress(hLibOCI, "OCI_DestroyCANController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_DestroyCANController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.openCANController = (PF_OCI_OpenCANController)
-                GetProcAddress(hLibOCI, "OCI_OpenCANController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_OpenCANController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.closeCANController = (PF_OCI_CloseCANController)
-                GetProcAddress(hLibOCI, "OCI_CloseCANController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CloseCANController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.getCANConfiguration = (PF_OCI_GetCANConfiguration)
-                GetProcAddress(hLibOCI, "OCI_GetCANConfiguration")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetCANConfiguration")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.getCANControllerProperties = (PF_OCI_GetCANControllerProperties)
-                GetProcAddress(hLibOCI, "OCI_GetCANControllerProperties")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetCANControllerProperties")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.setCANControllerProperties = (PF_OCI_SetCANControllerProperties)
-                GetProcAddress(hLibOCI, "OCI_SetCANControllerProperties")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_SetCANControllerProperties")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.getCANControllerCapabilities = (PF_OCI_GetCANControllerCapabilities)
-                GetProcAddress(hLibOCI, "OCI_GetCANControllerCapabilities")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetCANControllerCapabilities")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.getCANControllerStatus = (PF_OCI_GetCANControllerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetCANControllerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetCANControllerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.createCANTxQueue = (PF_OCI_CreateCANTxQueue)
-                  GetProcAddress(hLibOCI, "OCI_CreateCANTxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_CreateCANTxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
 #if BOA_VERSION >= BOA_VERSION_2_0
         else if ((sBOA_PTRS.m_sOCI.writeCANDataEx = (PF_OCI_WriteCANDataEx)
-                  GetProcAddress(hLibOCI, "OCI_WriteCANDataEx")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_WriteCANDataEx")) == nullptr)
         {
             hResult = S_FALSE;
         }
 #endif
         else if ((sBOA_PTRS.m_sOCI.canioVTable.writeCANData = (PF_OCI_WriteCANData)
-                  GetProcAddress(hLibOCI, "OCI_WriteCANData")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_WriteCANData")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.destroyCANTxQueue = (PF_OCI_DestroyCANTxQueue)
-                  GetProcAddress(hLibOCI, "OCI_DestroyCANTxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_DestroyCANTxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.createCANRxQueue = (PF_OCI_CreateCANRxQueue)
-                  GetProcAddress(hLibOCI, "OCI_CreateCANRxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_CreateCANRxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.readCANData = (PF_OCI_ReadCANData)
-                  GetProcAddress(hLibOCI, "OCI_ReadCANData")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_ReadCANData")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.destroyCANRxQueue = (PF_OCI_DestroyCANRxQueue)
-                  GetProcAddress(hLibOCI, "OCI_DestroyCANRxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_DestroyCANRxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.addCANFrameFilter = (PF_OCI_AddCANFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddCANFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddCANFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.removeCANFrameFilter = (PF_OCI_RemoveCANFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveCANFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveCANFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.addCANBusEventFilter = (PF_OCI_AddCANBusEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddCANBusEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddCANBusEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.removeCANBusEventFilter = (PF_OCI_RemoveCANBusEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveCANBusEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveCANBusEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.addCANErrorFrameFilter = (PF_OCI_AddCANErrorFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddCANErrorFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddCANErrorFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.canioVTable.removeCANErrorFrameFilter = (PF_OCI_RemoveCANErrorFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveCANErrorFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveCANErrorFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerStatus = (PF_OCI_GetTimerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerStatus = (PF_OCI_GetTimerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerCapabilities = (PF_OCI_GetTimerCapabilities)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerCapabilities")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerCapabilities")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerValue = (PF_OCI_GetTimerValue)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerValue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerValue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.addTimerEventFilter = (PF_OCI_AddTimerEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddTimerEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddTimerEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.removeTimerEventFilter = (PF_OCI_RemoveTimerEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveTimerEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveTimerEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.getError = (PF_OCI_GetError)
-                  GetProcAddress(hLibOCI, "OCI_GetError")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetError")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.addInternalErrorEventFilter = (PF_OCI_AddInternalErrorEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddInternalErrorEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddInternalErrorEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.removeInternalErrorEventFilter = (PF_OCI_RemoveInternalErrorEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveInternalErrorEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveInternalErrorEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -648,13 +672,13 @@ static HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
  * Search for all connected Hardware, that supports the OCI
  * CAN interface and deliver the URI location of the hardware.
  */
-static void findCanNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriNames[], uint32 size, uint32* position )
+static void findCanNodes(CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriNames[], uint32 size, uint32* position)
 {
     /* Uncomment the next line to get a view of the items in the tree */
     // printf( "uriPrefix is %s; node is %s\n", uriPrefix, sfsTree->item.uriNames );
 
     /* Basic error checking */
-    if ( !sfsTree || !uriNames || !uriPrefix || !position )
+    if(!sfsTree || !uriNames || !uriPrefix || !position)
     {
         return;
     }
@@ -663,13 +687,13 @@ static void findCanNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName 
      * Does the current tree node have the URI name which begins with "CAN:"?
      * (Each node which represents a CAN port always has a URI name of the form "CAN:n".
      */
-    if( 0 == strncmp( sfsTree->item.uriName, "CAN:", 4 ) )
+    if(strncmp(sfsTree->item.uriName, "CAN:", 4) == 0)
     {
         if (*position < size)
         {
-            strcpy( uriNames[ *position ], uriPrefix );
-            strcat( uriNames[ *position ], "/" );
-            strcat( uriNames[ *position ], sfsTree->item.uriName );
+            strcpy(uriNames[ *position ], uriPrefix);
+            strcat(uriNames[ *position ], "/");
+            strcat(uriNames[ *position ], sfsTree->item.uriName);
             (*position)++;
         }
         else
@@ -683,57 +707,47 @@ static void findCanNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName 
     {
         OCI_URIName newUriPrefix;
 
-        strcpy( newUriPrefix, uriPrefix );
-        strcat( newUriPrefix, "/" );
-        strcat( newUriPrefix, sfsTree->item.uriName );
-        findCanNodes( sfsTree->child, newUriPrefix, uriNames, size, position );
+        strcpy(newUriPrefix, uriPrefix);
+        strcat(newUriPrefix, "/");
+        strcat(newUriPrefix, sfsTree->item.uriName);
+        findCanNodes(sfsTree->child, newUriPrefix, uriNames, size, position);
     }
 
     /* If the current tree node has a sibling, recurse into it */
     if (sfsTree->sibling)
     {
-        findCanNodes( sfsTree->sibling, uriPrefix, uriNames, size, position );
+        findCanNodes(sfsTree->sibling, uriPrefix, uriNames, size, position);
     }
 }
 
 static BOA_ResultCode OCI_FindCANController(OCI_URIName uriName[], INT nSize, INT* nFound)
 {
-    if ( !nFound )
-    {
+    if (!nFound)
         return S_FALSE;
-    }
-
-    OCI_ErrorCode   ec;
 
     /* Container for search results */
-    CSI_Tree* sfsTree = NULL;
+    CSI_Tree * sfsTree = nullptr;
 
     /* Specify that we want to search for physical hardware nodes */
-    const CSI_NodeRange nodeRange = {CSI_NODE_MIN_PHYSICAL_NODE , CSI_NODE_MAX_PHYSICAL_NODE };
+    const CSI_NodeRange nodeRange = {CSI_NODE_MIN_PHYSICAL_NODE , CSI_NODE_MAX_PHYSICAL_NODE};
 
     /* The prefix of the URI of the root of the device tree */
     OCI_URIName uriPrefix = "ETAS:/";
 
     /* Search for all connected hardware and latch the result for further processing */
-    ec = sBOA_PTRS.m_sCSI.createProtocolTree( "", nodeRange, &sfsTree );
-    if ( OCI_FAILED( ec ) )
-    {
+    OCI_ErrorCode ec;
+    ec = sBOA_PTRS.m_sCSI.createProtocolTree("", nodeRange, &sfsTree);
+    if (OCI_FAILED(ec))
         return ec;
-    }
 
     /* Search the tree and fill array with the results */
     *nFound = 0;
     uint32 unFound = 0;
-    findCanNodes( sfsTree, uriPrefix, uriName, nSize, &unFound );
+    findCanNodes(sfsTree, uriPrefix, uriName, nSize, &unFound);
     *nFound = unFound;
 
     /* Clean up the protocol tree. */
-    ec = sBOA_PTRS.m_sCSI.destroyProtocolTree( sfsTree );
-    if ( OCI_FAILED( ec ) )
-    {
-        return ec;
-    }
-
+    ec = sBOA_PTRS.m_sCSI.destroyProtocolTree(sfsTree);
     return ec;
 }
 
@@ -764,7 +778,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  *
  * @return TRUE if client exists else FALSE
  */
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
@@ -795,14 +809,14 @@ static BOOL bRemoveClient(DWORD dwClientId)
 
             for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
             {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
             }
             sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
             if ((unClientIndex + 1) < sg_unClientCnt)
             {
                 sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
             }
-            sg_unClientCnt--;
+            --sg_unClientCnt;
             bResult = TRUE;
         }
     }
@@ -852,21 +866,17 @@ static DWORD dwGetAvailableClientSlot()
 /**
  * Pushes an entry into the list at the last position
  */
-static void vMarkEntryIntoMap(const SACK_MAP& RefObj)
+static void vMarkEntryIntoMap(const SACK_MAP & RefObj)
 {
-    //EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     sg_asAckMapBuf.push_back(RefObj);
-    //LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
 }
 
-static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
+static BOOL bRemoveMapEntry(const SACK_MAP & RefObj, UINT & ClientID)
 {
     EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     BOOL bResult = FALSE;
-    CACK_MAP_LIST::iterator  iResult =
-        find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
-
-    //if ((*iResult).m_ClientID > 0)
+    CACK_MAP_LIST::iterator iResult =
+        find(sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj);
     if (iResult != sg_asAckMapBuf.end())
     {
         bResult = TRUE;
@@ -884,6 +894,7 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
  */
 static void vInitializeControllerConfig(UINT nChannel)
 {
+    /* Set CAN default values */
     sg_asChannel[nChannel].m_OCI_CANConfig.baudrate = 500000;
     sg_asChannel[nChannel].m_OCI_CANConfig.samplePoint = 80;
     sg_asChannel[nChannel].m_OCI_CANConfig.samplesPerBit = OCI_CAN_THREE_SAMPLES_PER_BIT;
@@ -892,6 +903,7 @@ static void vInitializeControllerConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
     sg_asChannel[nChannel].m_OCI_CANConfig.physicalMedia = OCI_CAN_MEDIA_HIGH_SPEED;
     sg_asChannel[nChannel].m_OCI_CANConfig.selfReceptionMode = OCI_SELF_RECEPTION_ON;
+
     /* Set controller property to SUSPENDED */
     sg_asChannel[nChannel].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
 
@@ -934,6 +946,7 @@ static void vInitializeQueueConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.function = ProcessEvents;
 #endif
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.selfReceptionMode = OCI_SELF_RECEPTION_ON;
+
     /* configure Tx Queue*/
     sg_asChannel[nChannel].m_OCI_TxQueueCfg.reserved = 0;
 }
@@ -951,8 +964,10 @@ static void vInitializeFilterConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_FrameFilter.tag = 0;
 
     /* configure event filter*/
-    sg_asChannel[nChannel].m_OCI_EventFilter.destination = OCI_EVENT_DESTINATION_CALLBACK;
-    sg_asChannel[nChannel].m_OCI_EventFilter.eventCode = OCI_CAN_BUS_EVENT_STATE_ACTIVE |
+    sg_asChannel[nChannel].m_OCI_EventFilter.destination =
+            OCI_EVENT_DESTINATION_CALLBACK;
+    sg_asChannel[nChannel].m_OCI_EventFilter.eventCode =
+            OCI_CAN_BUS_EVENT_STATE_ACTIVE |
             OCI_CAN_BUS_EVENT_STATE_PASSIVE |
             OCI_CAN_BUS_EVENT_STATE_ERRLIMIT |
             OCI_CAN_BUS_EVENT_STATE_BUSOFF |
@@ -960,8 +975,10 @@ static void vInitializeFilterConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_EventFilter.tag = 0;
 
     /* configure error filter */
-    sg_asChannel[nChannel].m_OCI_ErrorFilter.destination =  OCI_EVENT_DESTINATION_CALLBACK;
-    sg_asChannel[nChannel].m_OCI_ErrorFilter.errorFrame =   OCI_CAN_ERR_TYPE_BITSTUFF |
+    sg_asChannel[nChannel].m_OCI_ErrorFilter.destination =
+            OCI_EVENT_DESTINATION_CALLBACK;
+    sg_asChannel[nChannel].m_OCI_ErrorFilter.errorFrame =
+            OCI_CAN_ERR_TYPE_BITSTUFF |
             OCI_CAN_ERR_TYPE_FORMAT |
             OCI_CAN_ERR_TYPE_ACK |
             OCI_CAN_ERR_TYPE_BIT |
@@ -973,7 +990,8 @@ static void vInitializeFilterConfig(UINT nChannel)
     sg_asChannel[nChannel].m_OCI_ErrorFilter.tag = 0;
 
     /* configure internal error filter */
-    sg_asChannel[nChannel].m_OCI_InternalErrorFilter.eventCode = OCI_INTERNAL_GENERAL_ERROR;
+    sg_asChannel[nChannel].m_OCI_InternalErrorFilter.eventCode =
+            OCI_INTERNAL_GENERAL_ERROR;
     sg_asChannel[nChannel].m_OCI_InternalErrorFilter.tag = 0;
 }
 
@@ -1175,13 +1193,12 @@ static HRESULT ManageQueue(BYTE byCode, UINT nChannel)
 static void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = SrcMsg->dlc;
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) == OCI_CAN_MSG_FLAG_EXTENDED)? 1 : 0;
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_REMOTE_FRAME) == OCI_CAN_MSG_FLAG_REMOTE_FRAME)? 1 : 0;
-    DestMsg->m_ucDataType   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_SELFRECEPTION) == OCI_CAN_MSG_FLAG_SELFRECEPTION)? TX_FLAG : RX_FLAG;
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = min(SrcMsg->dlc, 8);
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED = (SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) ? 1 : 0;
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR = (SrcMsg->flags & OCI_CAN_MSG_FLAG_REMOTE_FRAME) ? 1 : 0;
+    DestMsg->m_ucDataType = (SrcMsg->flags & OCI_CAN_MSG_FLAG_SELFRECEPTION) ? TX_FLAG : RX_FLAG;
 
     UINT Channel = DestMsg->m_uDataInfo.m_sCANMsg.m_ucChannel;
-
     if (Channel > defNO_OF_CHANNELS)
     {
         Channel = 1; // Take appropriate action
@@ -1198,15 +1215,12 @@ static void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* De
 static void vCopyOCI_CAN_FD_RX_2_DATA(const OCI_CANFDRxMessage* SrcMsg, STCANDATA* DestMsg)
 {
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
-
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = SrcMsg->size;
-
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) == OCI_CAN_MSG_FLAG_EXTENDED)? 1 : 0;
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR   = 0;
-    DestMsg->m_ucDataType   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_SELFRECEPTION) == OCI_CAN_MSG_FLAG_SELFRECEPTION)? TX_FLAG : RX_FLAG;
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) == OCI_CAN_MSG_FLAG_EXTENDED) ? 1 : 0;
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR = 0;
+    DestMsg->m_ucDataType   = ((SrcMsg->flags & OCI_CAN_MSG_FLAG_SELFRECEPTION) == OCI_CAN_MSG_FLAG_SELFRECEPTION) ? TX_FLAG : RX_FLAG;
 
     UINT Channel = DestMsg->m_uDataInfo.m_sCANMsg.m_ucChannel;
-
     if (Channel > defNO_OF_CHANNELS)
     {
         Channel = 1; // Take appropriate action
@@ -1265,9 +1279,9 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
                 /* Tx for monitor nodes and sender node */
-                if (/*(i == CAN_MONITOR_NODE_INDEX)  ||*/(bClientExists && (i == Index)))
+                if (bClientExists && (i == Index))
                 {
-                    for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+                    for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; ++j)
                     {
                         sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&sCanData);
                     }
@@ -1275,7 +1289,7 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
                 else
                 {
                     /* Send the other nodes as Rx. */
-                    for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+                    for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; ++j)
                     {
                         static STCANDATA sTempCanData;
                         sTempCanData = sCanData;
@@ -1288,9 +1302,9 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
     }
     else // provide it to everybody
     {
-        for (UINT i = 0; i < sg_unClientCnt; i++)
+        for (UINT i = 0; i < sg_unClientCnt; ++i)
         {
-            for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+            for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; ++j)
             {
                 sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&sCanData);
             }
@@ -1381,8 +1395,8 @@ static void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCA
     DestMsg->m_uDataInfo.m_sCANMsg.m_unMsgID = SrcMsg->frameID;
     DestMsg->m_uDataInfo.m_sCANMsg.m_ucDataLen = SrcMsg->dlc;
     DestMsg->m_lTickCount.QuadPart = SrcMsg->timeStamp;
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED   = (SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) ? 1 : 0;
-    DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR   = (SrcMsg->flags & OCI_CAN_MSG_FLAG_REMOTE_FRAME) ? 1 : 0;
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucEXTENDED = (SrcMsg->flags & OCI_CAN_MSG_FLAG_EXTENDED) ? 1 : 0;
+    DestMsg->m_uDataInfo.m_sCANMsg.m_ucRTR = (SrcMsg->flags & OCI_CAN_MSG_FLAG_REMOTE_FRAME) ? 1 : 0;
     DestMsg->m_ucDataType = ERR_FLAG;
     BOOL bIsTx = (SrcMsg->flags & OCI_CAN_MSG_FLAG_SELFRECEPTION) == OCI_CAN_MSG_FLAG_SELFRECEPTION;
     if (bIsTx)
@@ -1418,6 +1432,7 @@ static void vCopyOCI_CAN_ERR_2_DATA(const OCI_CANErrorFrameMessage* SrcMsg, STCA
         /* crc error */
         case OCI_CAN_ERR_TYPE_CRC:
             DestMsg->m_uDataInfo.m_sErrInfo.m_ucErrType = bIsTx ? CRC_ERROR_TX : CRC_ERROR_RX;
+            break;
 
         /* acknowledgement error */
         case OCI_CAN_ERR_TYPE_ACK:
@@ -1443,19 +1458,13 @@ static void vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError, UINT nChannel)
     sg_asChannel[nChannel].m_ucTxErrorCounter = sg_asChannel[nChannel].m_ucTxErrorCounter + ucTxError;
 
     /* Update Peak Value */
-    if( ucTxError > sg_asChannel[nChannel].m_ucPeakTxErrorCounter )
-    {
-        sg_asChannel[nChannel].m_ucPeakTxErrorCounter = ucTxError;
-    }
+    sg_asChannel[nChannel].m_ucPeakTxErrorCounter = max(sg_asChannel[nChannel].m_ucPeakTxErrorCounter, ucTxError);
 
     /* Update Rx Error counter and peak Rx Error Counter */
     sg_asChannel[nChannel].m_ucRxErrorCounter = sg_asChannel[nChannel].m_ucRxErrorCounter + ucRxError;
 
     /* Update Peak Value */
-    if( ucRxError > sg_asChannel[nChannel].m_ucPeakRxErrorCounter )
-    {
-        sg_asChannel[nChannel].m_ucPeakRxErrorCounter = ucRxError;
-    }
+    sg_asChannel[nChannel].m_ucPeakRxErrorCounter = max(sg_asChannel[nChannel].m_ucPeakRxErrorCounter, ucRxError);
 }
 
 /**
@@ -1469,7 +1478,6 @@ static void vProcessErrMsg(void* userData, struct OCI_CANMessage* msg)
 {
     static STCANDATA sCanData;
     vCopyOCI_CAN_ERR_2_DATA(&(msg->data.errorFrameMessage), &sCanData);
-    // int32* pUserData = (int32*)userData;
     sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = 0;
     sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)nGetChannel((OCI_ControllerHandle)userData);
     sCanData.m_uDataInfo.m_sErrInfo.m_ucChannel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
@@ -1480,9 +1488,9 @@ static void vProcessErrMsg(void* userData, struct OCI_CANMessage* msg)
                         sCanData.m_uDataInfo.m_sErrInfo.m_ucChannel);
 
     /* Write the msg into registered client's buffer */
-    for (UINT i = 0; i < sg_unClientCnt; i++)
+    for (UINT i = 0; i < sg_unClientCnt; ++i)
     {
-        for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; j++)
+        for (UINT j = 0; j < sg_asClientToBufMap[i].m_unBufCount; ++j)
         {
             sg_asClientToBufMap[i].m_pClientBuf[j]->WriteIntoBuffer(&sCanData);
         }
@@ -1568,6 +1576,7 @@ static void vProcessTimerEvent(void* /*userData*/, struct OCI_CANMessage* msg)
             SetEvent(sg_hEvent);
             vCreateTimeModeMapping(sg_hEvent);
             break;
+
         case OCI_TIMER_EVENT_SYNC_LOSS:
             // Nothing at this moment
             break;
@@ -1589,15 +1598,19 @@ static void (OCI_CALLBACK ProcessEvents)(void* userData, struct OCI_CANMessage* 
         case OCI_CAN_BUS_EVENT:
             vProcessBusEvent(userData, msg);
             break;
+
         case OCI_CAN_INTERNAL_ERROR_EVENT:
             vProcessInternalErrEvent(userData, msg);
             break;
+
         case OCI_CAN_QUEUE_EVENT:
             vProcessQueueEvent(userData, msg);
             break;
+
         case OCI_CAN_TIMER_EVENT:
             vProcessTimerEvent(userData, msg);
             break;
+
         case OCI_CAN_ERROR_FRAME:
             vProcessErrMsg(userData, msg);
             break;
@@ -1614,19 +1627,15 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
 HRESULT CDIL_CAN_ETAS_BOA::CAN_UnloadDriverLibrary(void)
 {
     /* Unload OCI library */
-    if (sg_hLibOCI != NULL)
-    {
+    if (sg_hLibOCI != nullptr)
         FreeLibrary(sg_hLibOCI);
-    }
 
     /* Unload CSI library */
-    if (sg_hLibCSI != NULL)
-    {
+    if (sg_hLibCSI != nullptr)
         FreeLibrary(sg_hLibCSI);
-    }
 
     /* Invalidate all API pointers */
-    memset(&sBOA_PTRS, 0, sizeof (SBOA_POINTER_TABLE));
+    memset(&sBOA_PTRS, 0, sizeof(SBOA_POINTER_TABLE));
     return S_OK;
 }
 
@@ -1642,7 +1651,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             if (bAction == MSGBUF_ADD)
             {
                 /* Add msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.m_unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -1661,7 +1670,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             else if (bAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL) // Remove only buffer mentioned
+                if (pBufObj != nullptr) // Remove only buffer mentioned
                 {
                     bRemoveClientBuffer(sClientObj.m_pClientBuf, sClientObj.m_unBufCount, pBufObj);
                 }
@@ -1669,7 +1678,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
                 {
                     for (UINT i = 0; i < sClientObj.m_unBufCount; i++)
                     {
-                        sClientObj.m_pClientBuf[i] = NULL;
+                        sClientObj.m_pClientBuf[i] = nullptr;
                     }
                     sClientObj.m_unBufCount = 0;
                 }
@@ -1692,7 +1701,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             /* clear msg buffer */
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -1774,34 +1783,34 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& un
 HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
-    string acPath;
+    std::string acPath;
 
     /* Get BOA installation path from the registery */
     bGetBOAInstallationPath(acPath);
 
     /* Load cslproxy.dll library */
-    string acLIB_CSL = "";
+    std::string acLIB_CSL = "";
     acLIB_CSL.append(acPath);
     acLIB_CSL.append("\\");
     acLIB_CSL.append(LIB_CSL_NAME);
 
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
-    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 
-    if (sg_hLibCSI != NULL)
+    if (sg_hLibCSI != nullptr)
     {
         hResult = GetCSI_API_Pointers(sg_hLibCSI);
 
         /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {
-            string acLIB_OCI;
+            std::string acLIB_OCI;
             acLIB_OCI.append(acPath);
             acLIB_OCI.append("\\");
             acLIB_OCI.append(LIB_OCI_NAME);
-            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 
-            if (sg_hLibOCI != NULL)
+            if (sg_hLibOCI != nullptr)
             {
                 hResult = GetOCI_API_Pointers(sg_hLibOCI);
                 if (hResult != S_OK)
@@ -1816,7 +1825,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
             else
             {
                 hResult = S_FALSE;
-                string acErr;
+                std::string acErr;
                 acErr.append(acLIB_OCI);
                 acErr.append(" failed to load");
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
@@ -1830,7 +1839,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_LoadDriverLibrary(void)
     }
     else
     {
-        string acErr;
+        std::string acErr;
         acErr.append(acLIB_CSL);
         acErr.append(_(" failed to load"));
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
@@ -1848,7 +1857,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformInitOperations(void)
     InitializeCriticalSection(&sg_DIL_CriticalSection);
 
     /* Create an event for timestamp calculations */
-    sg_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    sg_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
     /*
      * Initial Channel info with default values.
@@ -1892,9 +1901,9 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
     BOOL bReturn = FALSE;
 
     /* If successful */
-    if (pControllerDetails != NULL)
+    if (pControllerDetails != nullptr)
     {
-        char* pcStopStr = NULL;
+        char* pcStopStr = nullptr;
         for( INT i = 0; i < defNO_OF_CHANNELS; i++ )
         {
             sg_asChannel[i].m_OCI_CANConfig.baudrate =
@@ -1963,17 +1972,18 @@ static void vCopy_2_OCI_CAN_Data(OCI_CANTxMessage& DestMsg, const STCAN_MSG& Src
 #if BOA_VERSION >= BOA_VERSION_2_0
 static BOOL vCopy_2_OCI_CANFD_Data(OCI_CANFDTxMessage& DestMsg, const STCAN_MSG& SrcMsg)
 {
-    DestMsg.res     = 0;
+    DestMsg.res = 0;
     DestMsg.frameID = SrcMsg.m_unMsgID;
-    DestMsg.size     = SrcMsg.m_ucDataLen;
-    if ((SrcMsg.m_ucDataLen > 8) && (
-        (SrcMsg.m_ucDataLen != 12) || 
-        (SrcMsg.m_ucDataLen != 16) ||
-        (SrcMsg.m_ucDataLen != 20) ||
-        (SrcMsg.m_ucDataLen != 24) ||
-        (SrcMsg.m_ucDataLen != 32) ||
-        (SrcMsg.m_ucDataLen != 48) ||
-        (SrcMsg.m_ucDataLen != 64)))
+    DestMsg.size = SrcMsg.m_ucDataLen;
+    if (!(
+        (SrcMsg.m_ucDataLen <= 8) ||
+        (SrcMsg.m_ucDataLen == 12) || 
+        (SrcMsg.m_ucDataLen == 16) ||
+        (SrcMsg.m_ucDataLen == 20) ||
+        (SrcMsg.m_ucDataLen == 24) ||
+        (SrcMsg.m_ucDataLen == 32) ||
+        (SrcMsg.m_ucDataLen == 48) ||
+        (SrcMsg.m_ucDataLen == 64)))
     {
         AfxMessageBox("Unsupported Data Length. It should be 0..8, 12, 16, 20, 24, 32, 48 or 64");
         return FALSE;
@@ -1996,7 +2006,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformClosureOperations(void)
 
     /* close the existing handle */
     CloseHandle(sg_hEvent);
-    sg_hEvent = NULL;
+    sg_hEvent = nullptr;
 
     /* Remove all the existing clients */
     UINT ClientIndex = 0;
@@ -2018,7 +2028,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp   = sg_TimeStamp;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -2095,7 +2105,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                     }
                     nCount  = unDefaultChannelCnt;
                 }
-                else if ( ListHardwareInterfaces(NULL, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                else if ( ListHardwareInterfaces(nullptr, DRIVER_CAN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;
@@ -2311,7 +2321,7 @@ static int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
         sController[i] = pControllerDetails[i];
     }
 
-    CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(NULL, pControllerDetails, nCount);
+    CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(nullptr, pControllerDetails, nCount);
     ouChangeRegister.DoModal();
 
     nResult = ouChangeRegister.nGetInitStatus();
@@ -2634,7 +2644,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTx
     return hResult;
 }
 
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(string& /*acErrorStr*/)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetLastErrorString(std::string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

@@ -14,13 +14,13 @@
  */
 
 /**
- * \file      ChangeRegisters_CAN_ETAS_BOA.cpp
- * \brief     This file contain definition of all function of
- * \author    Amitesh Bharti
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This file contain definition of all function of
+ * @author Amitesh Bharti
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain definition of all function of
  */
+
 // For all standard header file include
 #include "CAN_ETAS_BOA_stdafx.h"
 
@@ -33,45 +33,33 @@
 #include "CAN_ETAS_BOA_Resource.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
-using namespace std;
 
 /* Structure definiions */
 class ENTRY_COMPATIBILITY
 {
 public:
-    BYTE        m_bytComptID;
-    string      m_acComptName;
+    BYTE m_bytComptID;
+    std::string m_acComptName;
 };
 
-/**
- * \brief Constructor
- *
- * Constructor is called when user create an object of
- * this class. Initialisation of all data members
- */
-CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
+CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ETAS_BOA::IDD, pParent)
     , m_omStrSamplePoint("70")
     , m_omStrSJW("")
 {
-    //{{AFX_DATA_INIT(CChangeRegisters_CAN_ETAS_BOA)
-    //m_omStrEditBTR0 = _T("");
-    //m_omStrEditBTR1 = _T("");
     m_omStrEditCNF1 = "";
     m_omStrEditCNF2 = "";
     m_omStrEditCNF3 = "";
     m_omStrComboSampling = "";
     m_omStrEditBaudRate = "";
     m_omStrEditWarningLimit = "";
-    //}}AFX_DATA_INIT
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
     memset(&m_sAccFilterInfo, 0, sizeof(m_sAccFilterInfo));
     m_ucWarningLimit    = defWARNING_LIMIT_MIN;
     m_ucControllerMode  = defCONTROLLER_MODE;
     m_usBTR0BTR1 = defDEFAUT_BAUDRATE;
-    // Update controller data
+    /* Update controller data */
     for (UINT i = 0; i < min(defNO_OF_CHANNELS, nHardwareCount); i++)
     {
         m_pControllerDetails[i] = psControllerDetails[i];
@@ -84,6 +72,7 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NU
     m_bOption = 0;
     m_nNoHardware = nHardwareCount;
     m_nDataConfirmStatus = WARNING_NOTCONFIRMED;
+
     /*CAN FD Parameters */
     m_omstrDataBitRate                  = "";
     m_omstrDataSamplePoint              = "";
@@ -93,26 +82,12 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent /*=NU
     m_omstrTxDelayCompensationQuanta    = "";
 }
 
-/******************************************************************************/
-/*  Function Name    :  DoDataExchange                                        */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework to exchange and validate      */
-/*                         dialog data                                        */
-/*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  Raja N on 14.03.2005                                  */
-/*                      Added list variable to include channel information    */
-/******************************************************************************/
+/**
+ * Called by the framework to exchange and validate dialog data
+ */
 void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CChangeRegisters_CAN_ETAS_BOA)
     DDX_Control(pDX, IDC_LIST_CHANNELS, m_omChannelList);
     DDX_Control(pDX, IDC_EDIT_WARNING_LIMIT, m_omEditWarningLimit);
     DDX_Control(pDX, IDC_COMB_SAMPLING, m_omCombSampling);
@@ -126,7 +101,6 @@ void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
     DDX_CBString(pDX,IDC_COMB_SAMPOINT, m_omStrSamplePoint);
     DDX_Control(pDX, IDC_COMB_SJW, m_omCtrlSJW);
     DDX_Check(pDX, IDC_CHECK_SELF_REC, m_bSelfReception);
-    //}}AFX_DATA_MAP
     DDX_Text(pDX, IDC_EDIT_DATA_BAUD_RATE, m_omstrDataBitRate);
     DDV_MinMaxInt(pDX,atoi(m_omstrDataBitRate.GetBuffer(0)),0,1000000);
     DDX_CBString(pDX,IDC_COMB_DATA_SAMPOINT, m_omstrDataSamplePoint);
@@ -136,9 +110,7 @@ void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
     DDX_CBString(pDX,IDC_COMB_DATA_SJW, m_omstrDataSJW);
 }
 
-
 BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ETAS_BOA, CDialog)
-    //{{AFX_MSG_MAP(CChangeRegisters_CAN_ETAS_BOA)
     ON_EN_KILLFOCUS(IDC_EDIT_BAUD_RATE, OnKillfocusEditBaudRate)
     ON_CBN_SELCHANGE(IDC_COMB_SAMPLING, OnSelchangeCombSampling)
     ON_EN_SETFOCUS(IDC_EDIT_BAUD_RATE, OnSetfocusEditBaudRate)
@@ -150,51 +122,15 @@ BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ETAS_BOA, CDialog)
     ON_NOTIFY(NM_DBLCLK, IDC_LIST_CHANNELS, OnDblclkListChannels)
     ON_CBN_SELCHANGE(IDC_COMB_SJW, OnCbnSelchangeCombSjw)
     ON_CBN_SELCHANGE(IDC_COMB_DELAY_COMPENSATION, OnCbnSelchangeCombDelayCompensation)
-    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/******************************************************************************/
-/*  Function Name    :  OnInitDialog                                          */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called by the framework in response  */
-/*                      to the WM_INITDIALOG message. This message is sent to */
-/*                      the dialog box during DoModal calls,which occur       */
-/*                      immediately before the dialog box is displayed.       */
-/*                      All controls of dialog are initialised in this func.  */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
-/*                      Review comment incorporated                           */
-/*                      13.11.2002, Gopi                                      */
-/*                      Changed to usage of configuration file to read the    */
-/*                      values.                                               */
-/*                      18.12.2002, Edit box will not take negative value     */
-/*                      28.03.2003, Changes for acceptance filter and warning */
-/*                      limit.                                                */
-/*                      23.10.2003, Moved updating fields on selection of     */
-/*                      items in listctrl to OnItemchangedLstcBtrList function*/
-/*  Modifications    :  31.08.2004, Raja N                                    */
-/*                      Changes for USB devices specific code                 */
-/*                      Added code to disable warning limit and to set default*/
-/*                      value 96                                              */
-/*  Modifications    :  14.03.2005, Raja N                                    */
-/*                      Changes for Multi channel support to configure        */
-/*                      multiple controllers                                  */
-/*  Modifications    :  14.03.2005, Raja N                                    */
-/*                      Implemented code review comments                      */
-/*  Modifications    :  09.05.2008, Pradeep Kadoor                            */
-/*                      Modification done for getting values of PropDelay and */
-/*                      SJW from configuration file and display list          */
-/*                      accordingly                                           */
-/*  Modifications    :  09.05.2008, Pradeep Kadoor                            */
-/*                      Modifications for setting two newly added combo box   */
-/******************************************************************************/
-
+/**
+ * This function is called by the framework in response
+ * to the WM_INITDIALOG message. This message is sent to
+ * the dialog box during DoModal calls,which occur
+ * immediately before the dialog box is displayed.
+ * All controls of dialog are initialised in this func.
+ */
 BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
 {
     CDialog::OnInitDialog();
@@ -206,38 +142,42 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     CString omStrBtr0           = "";
     CString omStrBtr1           = "";
 
-    // Init Channel List box
+    /* Init Channel List box */
 
-    // Create Image List for Channel List Control
+    /* Create Image List for Channel List Control */
     m_omChannelImageList.Create( defCHANNEL_ICON_SIZE,
                                  defCHANNEL_ICON_SIZE,
                                  ILC_COLOR24,
                                  defCHANNEL_LIST_INIT_SIZE,
                                  defCHANNEL_LIST_GROW_SIZE);
-    // Load Channel Icon
+
+    /* Load Channel Icon */
     CWinApp* pWinApp = (CWinApp*)this;
     m_omChannelImageList.Add(pWinApp->LoadIcon(IDR_PGM_EDTYPE));
-    // Assign the image list to the control
+
+    /* Assign the image list to the control */
     m_omChannelList.SetImageList(&m_omChannelImageList, LVSIL_NORMAL);
-    // Insert empty column
+
+    /* Insert empty column */
     m_omChannelList.InsertColumn( 0, "");
-    // Insert all channel information
-    // Insert only for available channel information
-    int nAvailableHardware = m_nNoHardware;//g_podHardwareInterface->nGetNoOfHardware();
+
+    /* Insert all channel information */
+    /* Insert only for available channel information */
+    int nAvailableHardware = m_nNoHardware;
     for (int nChannel = 0 ;
             nChannel < nAvailableHardware;
             nChannel++)
     {
         CString omStrChannel("");
-        // Create Channel String
+        /* Create Channel String */
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,
                              _(defSTR_CHANNEL_NAME),
                              nChannel + 1);
-        // Insert channel item
+        /* Insert channel item */
         m_omChannelList.InsertItem( nChannel, omStrChannel);
     }
 
-    // Set the selected item index to zero
+    /* Set the selected item index to zero */
     m_nLastSelection = 0;
 
     m_omEditBaudRate.vSetBase( BASE_DECIMAL);
@@ -250,28 +190,25 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     m_omEditWarningLimit.vAcceptFloatingNum( FALSE);
 
     CComboBox* pComboBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_BTL);
-    if (pComboBTLCYCL != NULL)
-    {
+    if (pComboBTLCYCL != nullptr)
         pComboBTLCYCL->SetCurSel (0);
-    }
+
     CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHECK_SELF_REC);
-    if (pCheckSelfRec != NULL)
-    {
+    if (pCheckSelfRec != nullptr)
         pCheckSelfRec->SetCheck(BST_CHECKED);
-    }
-    // Add an entry in each of the two combo boxes FindStringExact
+
+    /* Add an entry in each of the two combo boxes FindStringExact */
     int nIndex = m_omCtrlSamplePoint.FindStringExact(-1,
                  m_pControllerDetails->m_omStrSamplePercentage.c_str());
     m_omStrSamplePoint = m_pControllerDetails->m_omStrSamplePercentage.c_str();
     m_omStrSJW = m_pControllerDetails->m_omStrSjw.c_str();
-    //UpdateData();
     if (CB_ERR != nIndex)
     {
         m_omCtrlSamplePoint.SetCurSel (nIndex);
     }
     else
     {
-        //Set the default selection as 70% and update the controller structure
+        /* Set the default selection as 70% and update the controller structure */
         m_omCtrlSamplePoint.SetCurSel (7);
         m_pControllerDetails->m_omStrSamplePercentage = "70";
     }
@@ -286,13 +223,15 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     {
         m_omCtrlSJW.SetCurSel (0);
     }
-    // List values having prop delay
+
+    /* List values having prop delay */
     int nPropDelay = nGetValueFromComboBox(m_omCtrlSamplePoint);
     if (nPropDelay != m_nPropDelay)
     {
         m_nPropDelay = nPropDelay;
     }
-    // List Values having SJW
+
+    /* List Values having SJW */
     int nSJWCurr = nGetValueFromComboBox(m_omCtrlSJW);
     if (nSJWCurr != m_nSJWCurr)
     {
@@ -303,34 +242,23 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     //Initialise the index for number of items in list box before passing it is
     //function to calculate the same.
 
-    // Set the Focus to the First Item
+    /* Set the Focus to the First Item */
     m_omChannelList.SetItemState( 0,
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED);
 
 #if BOA_VERSION >= BOA_VERSION_2_0
-    vEnableFDParameters(TRUE); /*Enable CANFD controller settings*/
+    vEnableFDParameters(TRUE); /* Enable CANFD controller settings */
 #else
-    vEnableFDParameters(FALSE); /*Disable CANFD controller settings*/
+    vEnableFDParameters(FALSE); /* Disable CANFD controller settings */
 #endif
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-/******************************************************************************/
-/*  Function Name    :  EnableFDParameters                                    */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  message handlers to enable FD Parameters              */
-/*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                         */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Prathiba                                              */
-/*  Date Created     :  7.11.2012                                             */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
+
+/**
+ * message handlers to enable FD Parameters
+ */
 void CChangeRegisters_CAN_ETAS_BOA::vEnableFDParameters(BOOL bEnable)
 {
     GetDlgItem(IDC_EDIT_DATA_BAUD_RATE)->EnableWindow(bEnable);
@@ -340,97 +268,49 @@ void CChangeRegisters_CAN_ETAS_BOA::vEnableFDParameters(BOOL bEnable)
     GetDlgItem(IDC_COMB_DATA_BTL)->EnableWindow(bEnable);
     GetDlgItem(IDC_COMB_DATA_SJW)->EnableWindow(bEnable);
 }
-/******************************************************************************/
-/*  Function Name    :  OnCancel                                              */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  message handlers on CANCEL request                    */
-/*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
+
+/**
+ * message handlers on CANCEL request
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnCancel()
 {
-    // Flag to be checked while validating the edit control input on kill focus
+    /* Flag to be checked while validating the edit control input on kill focus */
     m_bDialogCancel = TRUE;
     m_nDataConfirmStatus = INFO_RETAINED_CONFDATA;
     CDialog::OnCancel();
 }
-/******************************************************************************/
-/*  Function Name    :  OnOK                                                  */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Message handlers on Enter Button ( Default OK button) */
-/*                      Every press of enter key, focus is to next control    */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
+
+/**
+ * Message handlers on Enter Button ( Default OK button)
+ * Every press of enter key, focus is to next control
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnOK()
 {
-
     // Dummy virtual function to avoid closing the dialog when ENTER key is
-    //  pressed. Instead next conrol gets focus in tab order
+    // pressed. Instead next conrol gets focus in tab order
     NextDlgCtrl();
 }
 
-/*****************************************************************************/
-/*  Function Name    : omGetFormattedRegVal                                  */
-/*                                                                           */
-/*  Input(s)         :  Register value in UCHAR                              */
-/*  Output           :  CString                                              */
-/*  Functionality    :  Formats the input register value as 0xYY             */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                     */
-/*  Friend of        :      -                                                */
-/*                                                                           */
-/*  Author(s)        :  Ratnadip Choudhury                                   */
-/*  Date Created     :  19.04.2008                                           */
-/*****************************************************************************/
+/**
+ * Formats the input register value as 0xYY
+ *
+ * @param[in] ucRegVal Register value
+ */
 CString CChangeRegisters_CAN_ETAS_BOA::omGetFormattedRegVal(UCHAR ucRegVal)
 {
     CString omStr = "";
     omStr.Format(TEXT("0x%X"), ucRegVal);
-    // Insert one zero to format the sigle digit value to 0x05 etc.
+
+    /* Insert one zero to format the sigle digit value to 0x05 etc. */
     if (omStr.GetLength() == 3)
-    {
         omStr.Insert(2, '0');
-    }
+
     return omStr;
 }
-/******************************************************************************/
-/*  Function Name    :  OnKillfocusEditBaudRate                               */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Validate the buadrate on kill focus of this edit      */
-/*                      control                                               */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  22.03.2002, Validation for hexadecimal in CRadixEdit  */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  27.05.2002, Validation for zero value entered         */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  29.05.2002,Don't validate if CANCEL button is clicked */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  12.12.2002, negative value of baudrate will not be    */
-/*                      acceptect.Also the range is fixed to 1000kbps         */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  14.03.2005, Added code to update list control for the */
-/*                      values updated in the baud rate edit control          */
-/******************************************************************************/
+
+/**
+ * Validate the buadrate on kill focus of this edit control
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
 {
     CString omStrBaudRate   ="";
@@ -441,16 +321,18 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
     nLength             = omStrBaudRate.GetLength();
 
     CButton* pomButtonCancel = (CButton*) GetDlgItem(IDCANCEL);
+
     // To get the state of CANCEL button. A non zero value if the button is
     // clicked.
     UINT unButtonState       = pomButtonCancel->GetState();
-    // Validate only if next command is not ESC Button
+
+    /* Validate only if next command is not ESC Button */
     if (m_bDialogCancel != TRUE )
     {
-        // Don't validate if CANCEL button is clicked.
+        /* Don't validate if CANCEL button is clicked. */
         if (unButtonState ==0)
         {
-            // Validate for empty string and if zero value is entered.
+            /* Validate for empty string and if zero value is entered. */
             DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
             if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0)
             {
@@ -493,91 +375,44 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnSelchangeCombSampling                               */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Change the content of list control on change in       */
-/*                      selection of number of sampling combo box.            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  19.02.2002                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
+/**
+ * Change the content of list control on change in
+ * selection of number of sampling combo box.
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnSelchangeCombSampling()
 {
-    INT nGetValue               = 0;
-    CString omStrComboEditItem  ="";
+    INT nGetValue = 0;
+    CString omStrComboEditItem ="";
 
     nGetValue =  m_omCombSampling.GetCurSel();
     if (nGetValue != CB_ERR)
-    {
         m_omCombSampling.GetLBText(nGetValue, omStrComboEditItem);
-    }
+
     if (m_omStrComboSampling != omStrComboEditItem)
-    {
-        //vChangeListBoxValues(-1);
         m_omStrComboSampling = omStrComboEditItem;
-    }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnSetfocusEditBaudRate                                */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called when focus is set on baudrate edit box control */
-/*                      Update all data members associated with Dialog        */
-/*                      control.                                              */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
+/**
+ * Called when focus is set on baudrate edit box control
+ * Update all data members associated with Dialog control.
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusEditBaudRate()
 {
-    // To update the data members before editing it and use it in kill focus
+    /* To update the data members before editing it and use it in kill focus */
     UpdateData(TRUE);
 
 }
 
-/******************************************************************************/
-/*  Function Name    :  vValidateBaudRate                                     */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will validate the user input value of   */
-/*                      baud rate. A valid baud rate will be calculated       */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  18.02.2002                                            */
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
-/*                      Incorporated review comments                          */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  22.03.2002, If user changes clock freq. and select no */
-/*                      for changing valid baudrate, change the clock freq. to*/
-/*                      previous value.                                       */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  14.03.2005, Removed message box for asking the user to*/
-/*                      change the baudrate to nearest possible value. Now it */
-/*                      will automatically change the values                  */
-/******************************************************************************/
+/**
+ * This function will validate the user input value of
+ * baud rate. A valid baud rate will be calculated
+ */
 void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
 {
     CString omStrBaudRate       = "";
     CString omStrPrvBaudRate    = "";
     CString omStrClockFreq      = "";
     DOUBLE  dBaudRate           = 0;
-    //UINT    unClockFreq         = 0;
-    //UINT    unClockPrevValue    = 0 ;
     UINT    unProductNbtNBrp    = 0;
     DOUBLE  dProductNbtNBrp     = 0;
     CString omStrMessage        = "";
@@ -585,9 +420,6 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
     m_omEditBaudRate.GetWindowText(omStrBaudRate);
     dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
     m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
-
-    //m_omCombClock.GetWindowText(omStrClockFreq);
-    //unClockFreq          = _tstoi(omStrClockFreq);
 
     dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
                           (defFACT_FREQUENCY / defFACT_BAUD_RATE);
@@ -654,110 +486,62 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
         // set the baudrate
         m_omEditBaudRate.SetWindowText(omStrBaudRate);
     }// End if
+
     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
     m_dEditBaudRate     = dBaudRate;
     m_omStrEditBaudRate = omStrBaudRate;
-    //m_unCombClock       = unClockFreq;
 }
-/******************************************************************************/
-/*  Function Name    :  OnClickedOK                                           */
-/*                                                                            */
-/*  Input(s)         :  User Selects OK Button                                */
-/*  Output           :  All user input field entry is written into            */
-/*                      Registry/.ini file                                    */
-/*  Functionality    :  Message handlers on OK Button.To Remove control       */
-/*                      to close when Enter Button is pressed                 */
-/*                                                                            */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  18.02.2002                                            */
-/*  Modifications    :  25.02.2002, Amitesh Bharti                            */
-/*                      Incorporated review comments                          */
-/*                      13.11.2002, Gopi                                      */
-/*                      Changed to usage of configuration file                */
-/*                      14.12.2002, put the tool in same state after baudrate */
-/*                      is initialise. i.e. connected or disconnected state   */
-/*                      28.03.2003, Changes for acceptance filter and warning */
-/*                      limit.                                                */
-/*  Modifications    :  Raja N on 07.09.2004. Modified code to refer HI layer */
-/*                      for Hardware related functions. Removed code to refer */
-/*                      CChangeRegisters_CAN_ETAS_BOA static functions as they are moved in*/
-/*                      to HI layer                                           */
-/*  Modifications    :  Raja N on 09.03.2005                                  */
-/*                   :  Added code to support multiple contoller information  */
-/*                      in the configuration module                           */
-/******************************************************************************/
+
+/**
+ * Message handlers on OK Button.To Remove control
+ * to close when Enter Button is pressed
+ *
+ * User Selects OK Button.
+ * All user input field entry is written into Registry/.ini file
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnClickedOK()
 {
-    // Update modified data
-    UpdateData( TRUE);
-    // Validate Baud rate and find the nearest match
+    /* Update modified data */
+    UpdateData(TRUE);
+
+    /* Validate Baud rate and find the nearest match */
     vValidateBaudRate();
-    // Update data members associated with the controller
+
+    /* Update data members associated with the controller */
     if (bUpdateControllerDataMembers() == FALSE)
-    {
         return;
-    }
-    // Save the changes in to the local data structure
+
+    /* Save the changes in to the local data structure */
     vUpdateControllerDetails();
-    // Save the changes permanently into the main data structure
+
+    /* Save the changes permanently into the main data structure */
     for (UINT i = 0; i < min(m_nNoHardware, defNO_OF_CHANNELS); i++)
-    {
         psMainContrDets[i] = m_pControllerDetails[i];
-    }
-    // Close the dialog
+
+    /* Close the dialog */
     m_nDataConfirmStatus = INFO_INIT_DATA_CONFIRMED;
     CDialog::OnOK();
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnSetfocusCombSampling                                */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called when focus is set on Number of sampling        */
-/*                      combo box control. Updates all data members           */
-/*                      associated with Dialog control.                       */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.02.2002                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
+/**
+ * Called when focus is set on Number of sampling
+ * combo box control. Updates all data members
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusCombSampling()
 {
     UpdateData(TRUE);
 }
 
-/******************************************************************************/
-/*  Function Name    : bFillControllerConfig                                  */
-/*                                                                            */
-/*  Input(s)         : -                                                      */
-/*  Output           :                                                        */
-/*  Functionality    : This function is called to read registry  or ini file  */
-/*                     and return the baudrate ( BTR0 and BTR1). If there is */
-/*                     no entry return the default value                      */
-/*  Member of        : CChangeRegisters_CAN_ETAS_BOA                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        : Amitesh Bharti                                         */
-/*  Date Created     : 26.03.2003                                             */
-/*  Modifications    : Raja N on 13.09.2004                                   */
-/*                     Modified the function as member function and changed   */
-/*                     name as per coding standards                           */
-/*  Modifications    : Raja N on 09.03.2005                                   */
-/*                   : Added code to support multiple contoller information   */
-/*                     in the configuration module                            */
-/******************************************************************************/
+/**
+ * This function is called to read registry  or ini file
+ * and return the baudrate ( BTR0 and BTR1). If there is
+ * no entry return the default value
+ */
 BOOL CChangeRegisters_CAN_ETAS_BOA::bFillControllerConfig()
 {
     BOOL bReturn = FALSE;
     // If successful then set the result to pass
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
         bReturn = TRUE;
     }
@@ -765,41 +549,23 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bFillControllerConfig()
     return bReturn;
 }
 
-/******************************************************************************/
-/*  Function Name    :  ~CChangeRegisters_CAN_ETAS_BOA                                     */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This is destructor of the class. It is called when    */
-/*                      object of this class is being destroyed. All memory   */
-/*                      allocation is deleted here.                           */
-/*  Member of        :  CChangeRegisters_CAN_ETAS_BOA                                      */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  07.04.2003                                            */
-/*  Modifications    :  Raja N on 14.03.2005, Added code to clear memory used */
-/*                      to get controller information                         */
-/******************************************************************************/
+/**
+ * This is destructor of the class. It is called when
+ * object of this class is being destroyed. All memory
+ * allocation is deleted here.
+ */
 CChangeRegisters_CAN_ETAS_BOA::~CChangeRegisters_CAN_ETAS_BOA()
 {
-
 }
 
-
-/*******************************************************************************
-  Function Name  : OnClickListChannels
-  Input(s)       : pNMHDR - Pointer to Notification Block
-                   pResult - Pointer to the result
-  Output         : -
-  Functionality  : This function will be called when the user clicks the channel
-                   list item. This will set the focus to the last selected item
-                   if user clicks outside
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
-  Author(s)      : Raja N
-  Date Created   : 14.3.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * This function will be called when the user clicks the channel
+ * list item. This will set the focus to the last selected item
+ * if user clicks outside
+ *
+ * @param[in] pNMHDR Pointer to Notification Block
+ * @param[out] Pointer to the result
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     // Get the selection mask
@@ -816,18 +582,12 @@ void CChangeRegisters_CAN_ETAS_BOA::OnClickListChannels(NMHDR* /*pNMHDR*/, LRESU
     *pResult = 0;
 }
 
-/*******************************************************************************
-  Function Name  : OnItemchangedListChannels
-  Input(s)       : pNMHDR - Pointer to the list item struct
-                   pResult - Pointer to the result value
-  Output         : -
-  Functionality  : This function will update baudrate information of selected
-                   channel
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
-  Author(s)      : Raja N
-  Date Created   : 14.03.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * This function will update baudrate information of selected channel
+ *
+ * @param[in] Pointer to the list item struct
+ * @param[out] Pointer to the result value
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRESULT* pResult)
 {
     // Get the List item data from the notification
@@ -861,19 +621,14 @@ void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRE
     *pResult = 0;
 }
 
-/*******************************************************************************
-  Function Name  : OnDblclkListChannels
-  Input(s)       : pNMHDR - Pointer to Notification Block
-                   pResult - Pointer to the result
-  Output         : -
-  Functionality  : This function will be called wher the user double clicks the
-                   channel list item. This will set the focus to the last
-                   selected item if user clicks outside
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
-  Author(s)      : Raja N
-  Date Created   : 14.3.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * This function will be called wher the user double clicks the
+ * channel list item. This will set the focus to the last
+ * selected item if user clicks outside
+ *
+ * @param[in] Pointer to Notification Block
+ * @param[out] Pointer to the result
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     // Create selection mask
@@ -890,25 +645,18 @@ void CChangeRegisters_CAN_ETAS_BOA::OnDblclkListChannels(NMHDR* /*pNMHDR*/, LRES
     *pResult = 0;
 }
 
-/*******************************************************************************
-  Function Name  : vFillControllerConfigDetails
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will fill details of selected channel in to the
-                   member variables used. This will also update the BTR0 and
-                   BTR1 registers value and list box of possible values for the
-                   selected baudrate.
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
-  Author(s)      : Raja N
-  Date Created   : 14.3.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * This function will fill details of selected channel in to the
+ * member variables used. This will also update the BTR0 and
+ * BTR1 registers value and list box of possible values for the
+ * selected baudrate.
+ */
 void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
 {
     int nIndex = m_nLastSelection;
     /* Add hardware info to the description field */
     CWnd* pWnd = GetDlgItem(IDC_EDIT_CHANNEL_DESC);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
@@ -956,20 +704,13 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     UpdateData(FALSE);
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateControllerDetails
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will save the user enter values for baud rate
-                   into the controller configuration structure
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
-  Author(s)      : Raja N
-  Date Created   : 14.3.2005
-  Modifications  :
-*******************************************************************************/
+/**
+ * This function will save the user enter values for baud rate
+ * into the controller configuration structure
+ */
 void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 {
-    char*    pcStopStr              = NULL;
+    char*    pcStopStr              = nullptr;
     CString omStrComboSampling      = "";
     CString omStrEditBtr0           = "";
     CString omStrEditBtr1           = "";
@@ -1046,20 +787,13 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 
 }
 
-/*******************************************************************************
-  Function Name  : vGetBaudRateFromCom
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called from COM function to set baud rate
-  Member of      : CChangeRegisters_CAN_ETAS_BOA
-  Author(s)      : Anish
-  Date Created   : 21.06.06
-  Modifications  :
-*******************************************************************************/
+/**
+ * This function will be called from COM function to set baud rate
+ */
 BOOL CChangeRegisters_CAN_ETAS_BOA::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
 {
     BOOL bReturn =FALSE;
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
         int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
         bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
@@ -1069,21 +803,16 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0
     }
     return bReturn;
 }
-/*******************************************************************************
- Function Name  : bSetFilterFromCom
- Input(s)       : long  nExtended,\\for extended msg or not
-                  DWORD  dBeginMsgId, \\filter's msg id start
-                  DWORD dEndMsgId \\filter's msg id stop
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will set the filter information if called using
-                  com interface.
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Anish kr
- Date Created   : 05.06.06
 
-*******************************************************************************/
-BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dBeginMsgId,
+/**
+ * This function will set the filter information if called using com interface.
+ *
+ * @param[in] nExtended for extended msg or not
+ * @param[in] dBeginMsgId filter's msg id start
+ * @param[in] dEndMsgId filter's msg id stop
+ * @return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ */
+BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL bExtended, DWORD dBeginMsgId,
         DWORD dEndMsgId)
 {
     BOOL bReturn = FALSE;
@@ -1128,42 +857,23 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bSetFilterFromCom(BOOL  bExtended, DWORD  dB
         m_pControllerDetails[ unIndex ].m_bAccFilterMode = bExtended;
     }
 
-
-    //kadoor // Update Configuration file
-    //theApp.bSetData( CONTROLLER_DETAILS, m_pControllerDetails);
-    //// Update Hardware Interface Layer
-    //if (g_podHardwareInterface->bLoadDataFromConfig() == TRUE)
-    //{
-    //    int nApply = g_podHardwareInterface->nSetApplyConfiguration();
-    //    if (nApply ==defERR_OK)
-    //    {
-    //        bReturn =TRUE;
-    //    }
-    //}
-
     return bReturn;
-
 }
 
-/*******************************************************************************
- Function Name  : bGetFilterFromCom
- Input(s)       : long  nExtended,\\for extended msg or not
-                  DWORD  dBeginMsgId, \\acceptance code
-                  DWORD dEndMsgId \\mask code
- Output         : int - Operation Result. 0 incase of no errors. Failure Error
-                  codes otherwise.
- Functionality  : This function will set the filter information if called using
-                  com interface.
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Anish kr
- Date Created   : 05.06.06
-
-*******************************************************************************/
+/**
+ * This function will set the filter information if called using
+ * com interface.
+ *
+ * @param[in] nExtended for extended msg or not
+ * @param[in] dBeginMsgId acceptance code
+ * @param[in] dEndMsgId mask code
+ * @return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
+ */
 BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
         double& dEndMsgId)
 {
     BOOL bReturn = FALSE;
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
 
         char* pcStopStr ;
@@ -1184,12 +894,12 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL&  bExtended, double& 
                                      &pcStopStr,defHEXADECIMAL);
         int nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
                                      &pcStopStr,defHEXADECIMAL);
+        
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
                               nAccCodeByte3*0X100+nAccCodeByte4);
         dEndMsgId = (ULONG)(nMaskCodeByte1*0X1000000+nMaskCodeByte2*0X10000+
                             nMaskCodeByte3*0X100+nMaskCodeByte4);
-
 
         bExtended=  m_pControllerDetails[ 0 ].m_bAccFilterMode;
         bReturn=TRUE;
@@ -1197,17 +907,9 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL&  bExtended, double& 
     return bReturn;
 }
 
-
-/*******************************************************************************
- Function Name  : OnCbnSelchangeCombSjw
- Input(s)       : void
- Output         : void
- Functionality  : Handler when the user selects a specific value in the SJW list
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 19.04.2008
-
-*******************************************************************************/
+/**
+ * Handler when the user selects a specific value in the SJW list
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombSjw()
 {
     int nSJWCurr = nGetValueFromComboBox(m_omCtrlSJW);
@@ -1218,12 +920,8 @@ void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombSjw()
 }
 
 /**
-* \brief         Handler when user switches the Delay compensation ON\OFF state
-* \param[out]    void
-* \return        void
-* \authors       Arunkumar Karri
-* \date          07.09.2012 Created
-*/
+ * Handler when user switches the Delay compensation ON\OFF state
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombDelayCompensation()
 {
     UpdateData();
@@ -1236,16 +934,10 @@ void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombDelayCompensation()
         GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(FALSE);
     }
 }
-/*******************************************************************************
- Function Name  : OnCbnSelchangeCombPropdelay
- Input(s)       : void
- Output         : void
- Functionality  : Handler when the user selects a specific value in the PD list
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 19.04.2008
 
-*******************************************************************************/
+/**
+ * Handler when the user selects a specific value in the PD list
+ */
 void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombPropdelay()
 {
     int nPropDelay = nGetValueFromComboBox(m_omCtrlSamplePoint);
@@ -1255,18 +947,12 @@ void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombPropdelay()
     }
 }
 
-
-/*******************************************************************************
- Function Name  : bUpdateControllerDataMembers
- Input(s)       : void
- Output         : TRUE if successful, else FALSE
- Functionality  : This function updates the controller data members with the
-                  present selected combination value in the list control
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 21.04.2008
-
-*******************************************************************************/
+/**
+ * This function updates the controller data members with the
+ * present selected combination value in the list control
+ *
+ * @return TRUE if successful, else FALSE
+ */
 BOOL CChangeRegisters_CAN_ETAS_BOA::bUpdateControllerDataMembers(void)
 {
 
@@ -1281,19 +967,14 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bUpdateControllerDataMembers(void)
     return Result;
 }
 
-/*******************************************************************************
- Function Name  : nGetValueFromComboBox
- Input(s)       : void
- Output         : TRUE if successful, else FALSE
- Functionality  : This function returns value of the selected entry in a combo
-                  box. Although helper in broader sense, this assumes the
-                  entries to be 1 based integers and returns 0 when the entry
-                  contains the string 'ALL'.
- Member of      : CChangeRegisters_CAN_ETAS_BOA
- Author(s)      : Ratnadip Choudhury
- Date Created   : 21.04.2008
-
-*******************************************************************************/
+/**
+ * This function returns value of the selected entry in a combo
+ * box. Although helper in broader sense, this assumes the
+ * entries to be 1 based integers and returns 0 when the entry
+ * contains the string 'ALL'.
+ *
+ * @return TRUE if successful, else FALSE
+ */
 int CChangeRegisters_CAN_ETAS_BOA::nGetValueFromComboBox(CComboBox& omComboBox)
 {
     int nResult = 0;

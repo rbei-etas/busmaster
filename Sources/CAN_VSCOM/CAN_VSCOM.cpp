@@ -124,8 +124,6 @@ typedef struct tagClientBufMap
  */
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 
-const INT MAX_MAP_SIZE = 3000;
-
 typedef struct tagAckMap
 {
     UINT m_MsgID;

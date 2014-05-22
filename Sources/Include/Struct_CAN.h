@@ -23,37 +23,48 @@
  */
 
 #pragma once
-//MVN
-//libxml file includes
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/xpath.h>
-//~MVN
+
 /* C++ includes */
 #include <string>
 #include <sstream>
 
+/* libxml file includes */
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+
 #include <Windows.h>
-using namespace std;
+
 const int MAX_STRING = 256;
+
 /**
  * This structure is used for sending/reciving messages to/from the CAN network
  */
 typedef struct sTCAN_MSG
 {
-    unsigned int  m_unMsgID;    // 11/29 Bit-
-    unsigned char m_ucEXTENDED; // true, for (29 Bit) Frame
-    unsigned char m_ucRTR;      // true, for remote request
-    unsigned char m_ucDataLen;  // Data len (0..8)
-    unsigned char m_ucChannel;  // Message Length
-    unsigned char m_ucData[64];  // Databytes 0..63
-    //unsigned char* m_aucCANFDData;   // Databytes 0..63
-    bool        m_bCANFD;
+    /** 11/29 Bit */
+    unsigned int  m_unMsgID;
+
+    /** true, for (29 Bit) Frame */
+    unsigned char m_ucEXTENDED;
+
+    /** true, for remote request */
+    unsigned char m_ucRTR;
+
+    /** Data Length (0..8, 12, 16, 20, 24, 32, 48, 64) */
+    unsigned char m_ucDataLen;
+
+    /** Message Length */
+    unsigned char m_ucChannel;
+
+    /** Databytes 0..63 */
+    unsigned char m_ucData[64];
+
+    /* CAN FD frame */
+    bool m_bCANFD;
 } STCAN_MSG, *PSTCAN_MSG;
-//typedef sTCAN_MSG* PSTCAN_MSG;
 
-
-// This structure holds the error and the channel number
+/** This structure holds the error and the channel number */
 typedef struct sCAN_ERR
 {
     unsigned char m_ucTxError;
@@ -61,11 +72,12 @@ typedef struct sCAN_ERR
     unsigned char m_ucChannel;
 
 } SCAN_ERR, *SPCAN_ERR;
-// To copy the data and advance the pointer of the target data stream
-#define COPY_DATA(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes;}
 
-// To copy the data and advance the pointer of the source data stream
-#define COPY_DATA_2(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes;}
+/** To copy the data and advance the pointer of the target data stream */
+#define COPY_DATA(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes; }
+
+/** To copy the data and advance the pointer of the source data stream */
+#define COPY_DATA_2(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
 
 #define defMODE_ACTIVE                         1
 #define defMODE_PASSIVE                        2
@@ -169,33 +181,33 @@ private:
         m_bHWTimestamps     = objRef.m_bHWTimestamps;
     }
 public:
-    int     m_nItemUnderFocus;                   // item number under focus
-    int     m_nBTR0BTR1;                         // packed value of bit timing register 0
+    int     m_nItemUnderFocus;                    // item number under focus
+    int     m_nBTR0BTR1;                          // packed value of bit timing register 0
     // and bit timing register 1
-    string  m_omStrCNF1;                         // bit timing register 1 information
-    string  m_omStrCNF2;                         // bit timing register 2 information
-    string  m_omStrCNF3;                         // bit timing register 3 information
-    string  m_omStrBTR0;                         // bit timing register 0 information
-    string  m_omStrBTR1;                         // bit timing register 1 information
-    string  m_omStrBaudrate;                     // baudrate information
-    string  m_omStrClock;                        // clock information
-    string  m_omStrSamplePercentage;             // sampling information
-    string  m_omStrSampling;                     // sampling information
-    string  m_omStrWarningLimit;                 // Warning limit of CAN Controller
-    string  m_omStrPropagationDelay;             // Propagation Delay
-    string  m_omStrSjw;
-    string  m_omStrAccCodeByte1[CAN_MSG_IDS];    // acceptance code byte1 information
-    string  m_omStrAccCodeByte2[CAN_MSG_IDS];    // acceptance code byte2 information
-    string  m_omStrAccCodeByte3[CAN_MSG_IDS];    // acceptance code byte3 information
-    string  m_omStrAccCodeByte4[CAN_MSG_IDS];    // acceptance code byte4 information
-    string  m_omStrAccMaskByte1[CAN_MSG_IDS];    // acceptance mask byte1 information
-    string  m_omStrAccMaskByte2[CAN_MSG_IDS];    // acceptance mask byte2 information
-    string  m_omStrAccMaskByte3[CAN_MSG_IDS];    // acceptance mask byte3 information
-    string  m_omStrAccMaskByte4[CAN_MSG_IDS];    // acceptance mask byte4 information
-    string  m_omHardwareDesc;                    // Hw description which user can
+    std::string m_omStrCNF1;                      // bit timing register 1 information
+    std::string m_omStrCNF2;                      // bit timing register 2 information
+    std::string m_omStrCNF3;                      // bit timing register 3 information
+    std::string m_omStrBTR0;                      // bit timing register 0 information
+    std::string m_omStrBTR1;                      // bit timing register 1 information
+    std::string m_omStrBaudrate;                  // baudrate information
+    std::string m_omStrClock;                     // clock information
+    std::string m_omStrSamplePercentage;          // sampling information
+    std::string m_omStrSampling;                  // sampling information
+    std::string m_omStrWarningLimit;              // Warning limit of CAN Controller
+    std::string m_omStrPropagationDelay;          // Propagation Delay
+    std::string m_omStrSjw;
+    std::string m_omStrAccCodeByte1[CAN_MSG_IDS]; // acceptance code byte1 information
+    std::string m_omStrAccCodeByte2[CAN_MSG_IDS]; // acceptance code byte2 information
+    std::string m_omStrAccCodeByte3[CAN_MSG_IDS]; // acceptance code byte3 information
+    std::string m_omStrAccCodeByte4[CAN_MSG_IDS]; // acceptance code byte4 information
+    std::string m_omStrAccMaskByte1[CAN_MSG_IDS]; // acceptance mask byte1 information
+    std::string m_omStrAccMaskByte2[CAN_MSG_IDS]; // acceptance mask byte2 information
+    std::string m_omStrAccMaskByte3[CAN_MSG_IDS]; // acceptance mask byte3 information
+    std::string m_omStrAccMaskByte4[CAN_MSG_IDS]; // acceptance mask byte4 information
+    std::string m_omHardwareDesc;                 // Hw description which user can
     // differentiate between the channels
-    int     m_bAccFilterMode;                    // acceptance filter mode(0: single, 1: Dual)
-    int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
+    int     m_bAccFilterMode;                     // acceptance filter mode(0: single, 1: Dual)
+    int     m_ucControllerMode;                   // Controller mode (1: Active, 2: Passive)
     int     m_bSelfReception;
     int     m_bLowSpeed;
     UINT32  m_unBTL_Cycles;
@@ -213,7 +225,7 @@ public:
 
     int     m_bDebug;                            // debug mode for channel driver
     int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)
-    string  m_omStrLocation;                     // location (serial port, ip-address, ...)
+    std::string  m_omStrLocation;                // location (serial port, ip-address, ...)
     int     m_bHWTimestamps;                     // timestamps from the controllers hardware
 
     //Filter type: 1. Accept All 2. Reject All 3. Manual setting
@@ -279,21 +291,21 @@ public:
         m_unBTL_Cycles = 10;
 
         /* CAN FD related parameters */
-        m_unDataBitRate                 = 2000000;
-        m_unDataSamplePoint             = 70;
-        m_unDataBTL_Cycles              = 10;
-        m_unDataSJW                     = 03;
-        m_bTxDelayCompensationControl   = 0;    //OCI_CANFD_TX_DELAY_COMPENSATION_OFF
+        m_unDataBitRate                  = 2000000;
+        m_unDataSamplePoint              = 70;
+        m_unDataBTL_Cycles               = 10;
+        m_unDataSJW                      = 03;
+        m_bTxDelayCompensationControl    = 0;   // OCI_CANFD_TX_DELAY_COMPENSATION_OFF
         m_unTxSecondarySamplePointOffset = 0;
         m_bytCanRxMode                   = 2;   // OCI_CAN_RXMODE_CAN_FRAMES_USING_CAN_MESSAGE
         m_bytCanFdRxMode                 = 4;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE
         m_bytCanFdTxConfig               = 2;   // OCI_CANFDTX_USE_CANFD_FRAMES_ONLY
     }
-    //MVN
-    void LoadControllerConfigData(xmlNodePtr& pNodePtr)
+
+    void LoadControllerConfigData(xmlNodePtr& /*pNodePtr*/)
     {
     }
-    //~MVN
+
     void LoadControllerConfigData(BYTE*& pbyTemp)
     {
         COPY_DATA_2(&m_nItemUnderFocus, pbyTemp, sizeof(INT));
@@ -337,8 +349,8 @@ public:
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);
         chTemp[nSize] = '\0';
         m_omStrBaudrate = chTemp;
-        float fBaudRate = atof(m_omStrBaudrate.c_str());
-        fBaudRate *=  1000;   //convert from Kbps to bps
+        double fBaudRate = atof(m_omStrBaudrate.c_str());
+        fBaudRate *= 1000;   //convert from Kbps to bps
         std::stringstream ss;
         ss << fBaudRate;
         m_omStrBaudrate = ss.str();
@@ -460,50 +472,49 @@ public:
     }
     void GetControllerConfigSize(int& nSize)
     {
-        int nStrSize;
         nSize = 34 * sizeof(int);
         nSize += 2 * sizeof(eHW_FILTER_TYPES);
-        nSize += m_omStrCNF1.length();;
-        nSize += m_omStrCNF2.length();;
-        nSize += m_omStrCNF3.length();;
-        nSize += m_omStrBTR0.length();;
-        nSize += m_omStrBTR1.length();;
-        nSize += m_omStrBaudrate.length();;
-        nSize += m_omStrClock.length();;
-        nSize += m_omStrSamplePercentage.length();;
-        nSize += m_omStrSampling.length();;
-        nSize += m_omStrWarningLimit.length();;
-        nSize += m_omStrPropagationDelay.length();;
-        nSize += m_omStrSjw.length();;
-        nSize += m_omStrAccCodeByte1[0].length();;
-        nSize += m_omStrAccCodeByte1[1].length();;
-        nSize += m_omStrAccCodeByte2[0].length();;
-        nSize += m_omStrAccCodeByte2[1].length();;
-        nSize += m_omStrAccCodeByte3[0].length();;
-        nSize += m_omStrAccCodeByte3[1].length();;
-        nSize += m_omStrAccCodeByte4[0].length();;
-        nSize += m_omStrAccCodeByte4[1].length();;
-        nSize += m_omStrAccMaskByte1[0].length();;
-        nSize += m_omStrAccMaskByte1[1].length();;
-        nSize += m_omStrAccMaskByte2[0].length();;
-        nSize += m_omStrAccMaskByte2[1].length();;
-        nSize += m_omStrAccMaskByte3[0].length();;
-        nSize += m_omStrAccMaskByte3[1].length();;
-        nSize += m_omStrAccMaskByte4[0].length();;
-        nSize += m_omStrAccMaskByte4[1].length();;
-        nSize += m_omHardwareDesc.length();;
+        nSize += m_omStrCNF1.length();
+        nSize += m_omStrCNF2.length();
+        nSize += m_omStrCNF3.length();
+        nSize += m_omStrBTR0.length();
+        nSize += m_omStrBTR1.length();
+        nSize += m_omStrBaudrate.length();
+        nSize += m_omStrClock.length();
+        nSize += m_omStrSamplePercentage.length();
+        nSize += m_omStrSampling.length();
+        nSize += m_omStrWarningLimit.length();
+        nSize += m_omStrPropagationDelay.length();
+        nSize += m_omStrSjw.length();
+        nSize += m_omStrAccCodeByte1[0].length();
+        nSize += m_omStrAccCodeByte1[1].length();
+        nSize += m_omStrAccCodeByte2[0].length();
+        nSize += m_omStrAccCodeByte2[1].length();
+        nSize += m_omStrAccCodeByte3[0].length();
+        nSize += m_omStrAccCodeByte3[1].length();
+        nSize += m_omStrAccCodeByte4[0].length();
+        nSize += m_omStrAccCodeByte4[1].length();
+        nSize += m_omStrAccMaskByte1[0].length();
+        nSize += m_omStrAccMaskByte1[1].length();
+        nSize += m_omStrAccMaskByte2[0].length();
+        nSize += m_omStrAccMaskByte2[1].length();
+        nSize += m_omStrAccMaskByte3[0].length();
+        nSize += m_omStrAccMaskByte3[1].length();
+        nSize += m_omStrAccMaskByte4[0].length();
+        nSize += m_omStrAccMaskByte4[1].length();
+        nSize += m_omHardwareDesc.length();
     }
 
     void SaveConfigDataToXML(xmlNodePtr pNodePtr)
     {
-        float fBaudRate = atof(m_omStrBaudrate.c_str());
+        double fBaudRate = atof(m_omStrBaudrate.c_str());
         // if( m_omHardwareDesc.find("Vector") == -1)      //if its not VECTOR then convert to Kbps
         {
             fBaudRate = fBaudRate/1000;    //convert to Kbps before saving to XML
         }
         std::stringstream ss;
         ss << fBaudRate;
-        string omStrBaudrate = ss.str();
+        std::string omStrBaudrate = ss.str();
         const char* strBaudRate = omStrBaudrate.c_str();
         const char* strCNF1 = m_omStrCNF1.c_str();
         const char* strCNF2 = m_omStrCNF2.c_str();
@@ -592,62 +603,63 @@ public:
         strVar = m_omHardwareDesc.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HardwareDesc", BAD_CAST strVar);
 
-        stringstream stream;
+        std::string strData;
+
+        std::stringstream stream;
         stream << m_nItemUnderFocus;
-        string          strData;
         strData = stream.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "ItemUnderFocus", BAD_CAST strVar);
 
-        stringstream stream1;
+        std::stringstream stream1;
         stream1 << m_nBTR0BTR1;
         strData = stream1.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "BTR0BTR1", BAD_CAST strVar);
 
-        stringstream stream2;
+        std::stringstream stream2;
         stream2 << m_bAccFilterMode;
         strData = stream2.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "AccFilterMode", BAD_CAST strVar);
 
-        stringstream stream3;
+        std::stringstream stream3;
         stream3 << m_ucControllerMode;
         strData = stream3.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "ControllerMode", BAD_CAST strVar);
 
-        stringstream stream4;
+        std::stringstream stream4;
         stream4 << m_bSelfReception;
         strData = stream4.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "SelfReception", BAD_CAST strVar);
 
-        stringstream stream5;
+        std::stringstream stream5;
         stream5 << (int)m_enmHWFilterType[0];
         strData = stream5.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_0", BAD_CAST strVar);
 
-        stringstream stream6;
+        std::stringstream stream6;
         stream6 << (int)m_enmHWFilterType[1];
         strData = stream6.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "HWFilterType_1", BAD_CAST strVar);
 
-        stringstream stream7;
+        std::stringstream stream7;
         stream7 << m_bDebug;
         strData = stream7.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "Debug", BAD_CAST strVar);
 
-        stringstream stream8;
+        std::stringstream stream8;
         stream8 << m_bPassiveMode;
         strData = stream8.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "PassiveMode", BAD_CAST strVar);
 
-        stringstream stream9;
+        std::stringstream stream9;
         stream9 << m_bHWTimestamps;
         strData = stream9.str();
 
@@ -656,68 +668,61 @@ public:
 
         xmlNewChild(pNodePtr, NULL, BAD_CAST "Location", BAD_CAST strLocation);
 
-        stringstream stream10;
+        std::stringstream stream10;
         stream10 << m_bLowSpeed;
         strData = stream10.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "LowSpeed", BAD_CAST strVar);
 
-        stringstream stream11;
+        std::stringstream stream11;
         stream11 << m_unDataBitRate;
         strData = stream11.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_BaudRate", BAD_CAST strVar);
 
-        stringstream stream12;
+        std::stringstream stream12;
         stream12 << m_unDataSamplePoint;
         strData = stream12.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_SamplePoint", BAD_CAST strVar);
 
-
-        stringstream stream13;
+        std::stringstream stream13;
         stream13 << m_unDataBTL_Cycles;
         strData = stream13.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_BTLCycles", BAD_CAST strVar);
 
-
-        stringstream stream14;
+        std::stringstream stream14;
         stream14 << m_unDataSJW;
         strData = stream14.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_SJW", BAD_CAST strVar);
 
-
-        stringstream stream15;
+        std::stringstream stream15;
         stream15 << m_bTxDelayCompensationControl;
         strData = stream15.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_TxDelayCompensation", BAD_CAST strVar);
 
-
-        stringstream stream16;
+        std::stringstream stream16;
         stream16 << m_unTxSecondarySamplePointOffset;
         strData = stream16.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_TxSecondarySamplePoint", BAD_CAST strVar);
 
-
-        stringstream stream17;
+        std::stringstream stream17;
         stream17 << (int)m_bytCanRxMode;
         strData = stream17.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanRxMode", BAD_CAST strVar);
 
-
-        stringstream stream18;
+        std::stringstream stream18;
         stream18 << (int)m_bytCanFdRxMode;
         strData = stream18.str();
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, NULL, BAD_CAST "CANFD_CanFdRxMode", BAD_CAST strVar);
 
-
-        stringstream stream19;
+        std::stringstream stream19;
         stream19 << (int)m_bytCanFdTxConfig;
         strData = stream19.str();
         strVar = strData.c_str();
@@ -931,43 +936,37 @@ public:
         COPY_DATA(pbyTemp, m_omStrLocation.c_str(),  sizeof(char)*nStrSize);
         nSize += nStrSize;
     }
-    /*void vGetControllerSize()
-    {
-        int nSize = 0;
-        nSize += 5 * sizeof(int) +  CAN_MSG_IDS * sizeof(eHW_FILTER_TYPES)
-            + m_omStrCNF1.length() +
-    }*/
-
 };
 typedef sCONTROLLERDETAILS   SCONTROLLER_DETAILS;
 typedef sCONTROLLERDETAILS*  PSCONTROLLER_DETAILS;
 
 struct sSUBBUSSTATISTICS
 {
-    unsigned int    m_unErrorTxCount;
-    unsigned int    m_unTotalTxMsgCount;
-    unsigned int    m_unTxSTDMsgCount;
-    unsigned int    m_unTotalBitsperSec;
-    unsigned int    m_unTxEXTDMsgCount;
-    unsigned int    m_unTxSTD_RTRMsgCount;
-    unsigned int    m_unTxEXTD_RTRMsgCount;
-    unsigned int    m_unTotalRxMsgCount;
-    unsigned int    m_unRxSTDMsgCount;
-    unsigned int    m_unRxEXTDMsgCount;
-    unsigned int    m_unRxSTD_RTRMsgCount;
-    unsigned int    m_unRxEXTD_RTRMsgCount;
-    unsigned int    m_unErrorTotalCount;
-    unsigned int    m_unErrorRxCount;
-    unsigned int    m_unDLCCount;
+    unsigned int m_unErrorTxCount;
+    unsigned int m_unTotalTxMsgCount;
+    unsigned int m_unTxSTDMsgCount;
+    unsigned int m_unTotalBitsperSec;
+    unsigned int m_unTxEXTDMsgCount;
+    unsigned int m_unTxSTD_RTRMsgCount;
+    unsigned int m_unTxEXTD_RTRMsgCount;
+    unsigned int m_unTotalRxMsgCount;
+    unsigned int m_unRxSTDMsgCount;
+    unsigned int m_unRxEXTDMsgCount;
+    unsigned int m_unRxSTD_RTRMsgCount;
+    unsigned int m_unRxEXTD_RTRMsgCount;
+    unsigned int m_unErrorTotalCount;
+    unsigned int m_unErrorRxCount;
+    unsigned int m_unDLCCount;
 };
 typedef sSUBBUSSTATISTICS SSUBBUSSTATISTICS;
 typedef sSUBBUSSTATISTICS* PSSUBBUSSTATISTICS;
 
-// Bus statistics structure
+/**
+ * Bus statistics structure
+ */
 struct sBUSSTATISTICS
 {
     unsigned int    m_unTotalBitsperSec;
-    //unsigned int    m_unRxSTDMsgBits;
 
     double          m_dBusLoad;
     double          m_dPeakBusLoad;
@@ -1038,54 +1037,67 @@ typedef sBUSSTATISTICS SBUSSTATISTICS;
 typedef sBUSSTATISTICS* PBUSSTATISTICS;
 
 
-// This structure holds Error info
+/**
+ * This structure holds Error info
+ */
 struct sERROR_INFO
 {
-    unsigned char m_ucErrType;    // ERROR_BUS, ERROR_DEVICE_BUFF_OVERFLOW
-    // ERROR_DRIVER_BUFF_OVERFLOW, ERROR_UNKNOWN
-    unsigned char m_ucReg_ErrCap; // Stores the value of err capture register in
-    // case of bus error
+    /**
+     * Error Type.
+     * Can be ERROR_BUS, ERROR_DEVICE_BUFF_OVERFLOW, ERROR_DRIVER_BUFF_OVERFLOW, ERROR_UNKNOWN
+     */
+    unsigned char m_ucErrType;
+
+    /** Stores the value of err capture register in case of bus error */
+    unsigned char m_ucReg_ErrCap;
+
     unsigned char m_ucTxErrCount;
     unsigned char m_ucRxErrCount;
     unsigned char m_ucChannel;
-    int           m_nSubError;   //added for providing Error bit details
+
+    /** added for providing Error bit details */
+    int m_nSubError;
 };
 typedef sERROR_INFO SERROR_INFO;
 typedef sERROR_INFO* PSERROR_INFO;
 
 
-/*****************************************************************************/
-/*This structure is used for communicating between Driver & CAN Application*/
+/**
+ * This structure is used for communicating between Driver and CAN Application
+ */
 union sTDATAINFO
 {
-    STCAN_MSG     m_sCANMsg;      //The received / transmitted message
-    SERROR_INFO   m_sErrInfo;
+    /** The received / transmitted message */
+    STCAN_MSG m_sCANMsg;
+
+    SERROR_INFO m_sErrInfo;
 };
 typedef sTDATAINFO STDATAINFO;
 typedef sTDATAINFO* PSTDATAINFO;
 
-/*****************************************************************************/
-
-/*****************************************************************************/
-/*This structure is used for communicating between Driver & CAN Application*/
-
+/**
+ * This structure is used for communicating between Driver & CAN Application
+ */
 typedef struct sTCANDATA
 {
 private:
     static int  m_nSortField;
-    static int  m_nMFactor;     // Multiplication factor
+
+    /** Multiplication factor */
+    static int  m_nMFactor;
 
 public:
-    unsigned char    m_ucDataType;  //Type of the message
-    LARGE_INTEGER    m_lTickCount;  //Time stamp, Contains the val returned from
-    //QueryPerf..Counter()
+    /** Type of the message */
+    unsigned char    m_ucDataType;
+
+    /** Time stamp, Contains the val returned from QueryPerf..Counter() */
+    LARGE_INTEGER    m_lTickCount;
     STDATAINFO       m_uDataInfo;
 
     static void vSetSortField(int nField);
     static void vSetSortAscending(bool bAscending);
     static int DoCompareIndiv(const void* pEntry1, const void* pEntry2);
     static __int64 GetSlotID(sTCANDATA& pDatCAN);
-
 } STCANDATA, *PSTCANDATA;
 
 /**
@@ -1106,8 +1118,9 @@ struct sACC_FILTER_INFO
 typedef sACC_FILTER_INFO SACC_FILTER_INFO;
 typedef sACC_FILTER_INFO* PSACC_FILTER_INFO;
 
-
-// This structure holds Error count of Rx & Tx Process
+/**
+ * This structure holds Error count of Rx and Tx Process
+ */
 struct sERROR_CNT
 {
     unsigned char m_ucTxErrCount;
@@ -1126,6 +1139,3 @@ typedef sERROR_CNT* SPERROR_CNT;
 #define IS_A_MESSAGE(a)         ((a) & 0x03)
 #define IS_ERR_MESSAGE(a)       (a & ERR_FLAG)
 #define IS_INTR_MESSAGE(a)      (((a) & INTR_FLAG))
-
-/*To enable CANFD - uncomment the BOA_FD_VERSION define*/
-//#define BOA_FD_VERSION

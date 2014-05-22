@@ -14,9 +14,9 @@
  */
 
 /**
- * \file      CAN_ETAS_BOA/CAN_ETAS_BOA_stdafx.h
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @file CAN_ETAS_BOA/CAN_ETAS_BOA_stdafx.h
+ * @author Pradeep Kadoor
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * include file for standard system include files,
  * or project specific include files that are used frequently, but
@@ -95,7 +95,6 @@
 #include <locale.h>
 
 #include <string>
-using namespace std;
 
 // TODO: reference additional headers your program requires here
 const int ERR_INVALID_PROCDIL       = -1;

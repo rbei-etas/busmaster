@@ -14,17 +14,15 @@
  */
 
 /**
- * \file      ChangeRegisters_CAN_ETAS_BOA.h
- * \brief     This header file contains the defination of class
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This header file contains the defination of class
+ * @author    Pradeep Kadoor
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the defination of class
  */
 
 #pragma once
 
-// CChangeRegisters_CAN_ETAS_BOA dialog
 #include "Utility/RadixEdit.h"
 #include "Math.h"
 #include "Include/Struct_Can.h"
@@ -33,8 +31,6 @@
 
 #define defMAXPropDelay 8
 
-
-
 class CChangeRegisters_CAN_ETAS_BOA : public CDialog
 {
     // Construction
@@ -42,7 +38,7 @@ public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent = nullptr, PSCONTROLLER_DETAILS psControllerDetails = nullptr, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters_CAN_ETAS_BOA();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);

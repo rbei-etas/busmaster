@@ -65,7 +65,7 @@ HRESULT CDIL_LIN_DUMMY::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN /*InitData
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_LIN_DUMMY::LIN_SetConfigData(ClusterConfig& ouConfig)
+HRESULT CDIL_LIN_DUMMY::LIN_SetConfigData(ClusterConfig& /*ouConfig*/)
 {
     return WARN_DUMMY_API;
 }
@@ -121,7 +121,7 @@ HRESULT CDIL_LIN_DUMMY::LIN_ResetSlaveRespData(void)
 {
     return WARN_DUMMY_API;
 }
-HRESULT CDIL_LIN_DUMMY::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage)
+HRESULT CDIL_LIN_DUMMY::LIN_DisableSlaveRespData(DWORD /*dwClientID*/, STLIN_MSG& /*sMessage*/)
 {
     return WARN_DUMMY_API;
 }
@@ -161,13 +161,12 @@ HRESULT CDIL_LIN_DUMMY::LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], int&)
     return WARN_DUMMY_API;
 }
 
-//MVN
-HRESULT CDIL_LIN_DUMMY::LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
+HRESULT CDIL_LIN_DUMMY::LIN_SetControllerParams(int /*nValue*/, ECONTR_PARAM /*eContrparam*/)
 {
     return WARN_DUMMY_API;
 }
-//~MVN
-HRESULT CDIL_LIN_DUMMY::LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
+
+HRESULT CDIL_LIN_DUMMY::LIN_SetAppParams(HWND /*hWndOwner*/, Base_WrapperErrorLogger* /*pILog*/)
 {
     return WARN_DUMMY_API;
 }

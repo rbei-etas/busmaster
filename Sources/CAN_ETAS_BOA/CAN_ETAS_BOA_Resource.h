@@ -4,9 +4,7 @@
 //
 #define IDC_BUT_REMOVE                  3
 #define IDC_BUT_SELECT                  5
-#define IDD_PPAGE_CONTROLLER            107
 #define IDD_DLG_HW_LISTING              130
-#define IDD_DLG_ACCEPTANCE              197
 #define IDR_BMP_NET                     204
 #define IDC_EDIT_BAUD_RATE              1000
 #define IDC_EDIT_DATA_BAUD_RATE         1001
@@ -47,9 +45,7 @@
 #define IDC_STAT_ACCEPTANCE_FILTER_MASK 1212
 #define IDC_LSTC_SELECTED_HW_LIST       1226
 #define IDC_LIST_CHANNELS               1246
-#define IDD_CONFIG_STUB                 3000
 #define IDC_EDIT_INITFILE               3001
-#define IDD_LIST_HW_INTRS               3002
 #define IDC_BUTTON1                     3002
 #define IDC_BUTTON_APPLY                3003
 #define IDC_LIST1                       3004

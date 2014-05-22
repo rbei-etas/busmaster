@@ -215,7 +215,6 @@
     <ClInclude Include="CAN_ETAS_BOA_stdafx.h" />
     <ClInclude Include="ChangeRegDefines.h" />
     <ClInclude Include="ChangeRegisters_CAN_ETAS_BOA.h" />
-    <ClInclude Include="ContrConfigPeakUsbDefs.h" />
     <ClInclude Include="HardwareListing.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
   </ItemGroup>

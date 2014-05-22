@@ -239,9 +239,8 @@ typedef struct tagFormattedData_CAN
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
-
-
 };
+
 typedef enum eMSG_INTERPRETATION_PROPERTY
 {
     NON_INTERPRETABLE = 0,
@@ -286,8 +285,6 @@ typedef struct tagFormattedData_LIN
 
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
-
-
 };
 
 typedef tagFormattedData_LIN SFORMATTEDDATA_LIN;

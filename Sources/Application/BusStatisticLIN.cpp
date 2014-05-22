@@ -219,7 +219,7 @@ HRESULT CBusStatisticLIN::BSL_ResetBusStatistic(void)
 }
 
 HRESULT CBusStatisticLIN::BSL_GetTotalMsgCount(UINT unChannelIndex, eDirection eDir,
-        BYTE byIdType, BYTE byMsgType, UINT& nMsgCount)
+        BYTE /*byIdType*/, BYTE /*byMsgType*/, UINT& nMsgCount)
 {
     EnterCriticalSection(&m_omCritSecBS);
 

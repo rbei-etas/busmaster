@@ -18,9 +18,8 @@
   Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  ******************************************************************************/
-#if !defined J1939_UTILITYFUNCS_H__INCLUDED_
-#define J1939_UTILITYFUNCS_H__INCLUDED_
 
+#pragma once
 
 #include "Include/BaseDefs.h"
 #include "Datatypes/J1939_DataTypes.h"
@@ -52,6 +51,7 @@ const UCHAR ucCONACK_MSG_LEN              = 2;
 const WORD WF_BROADCAST     = 0xA1;
 const WORD WF_LONGDATA      = 0xA2;
 const WORD WF_CLEAR2SEND    = 0xA3;
+
 /* Message types */
 const UINT32 REQUEST_MSG            = 0x18EAFEFE;
 const UINT32 ADDRESS_CLAIMED_MSG    = 0x18EEFEFE;
@@ -122,24 +122,17 @@ typedef enum
 
 /* static functions */
 
-/******************************************************************************
-Function Name  :  byGetLastFrameLen
-Input(s)       :  UINT unDLC
-Output         :  BYTE - length of last frame
-Functionality  :  returns length of last frame
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+/**
+ * returns length of last frame
+ *
+ * @param[in] unDLC Data Length Code
+ * @return length of last frame
+ */
 static BYTE byGetLastFrameLen(UINT unDLC)
 {
     BYTE byLastFrameLen = (BYTE)(unDLC % MAX_TPDU_DATA_SIZE);
     if (byLastFrameLen == 0)
-    {
         byLastFrameLen = MAX_TPDU_DATA_SIZE;
-    }
     return byLastFrameLen;
 }
 
@@ -148,6 +141,7 @@ static BOOL bIsCommandAddress(BYTE byPduFormat, UINT unMsgLen)
     return ((byPduFormat == PDU_FORMAT_ACL)
             && (unMsgLen == DATA_LEN_CMD_ADDRESS));
 }
+
 static void PrepareEOM_ACK(BYTE* byCANData, UINT unDLC, BYTE byNoOfPackets, UINT32 unPGN)
 {
     byCANData[0] = CB_EOM_ACK;
@@ -159,6 +153,7 @@ static void PrepareEOM_ACK(BYTE* byCANData, UINT unDLC, BYTE byNoOfPackets, UINT
     byCANData[6] = (BYTE)(unPGN >> 8);
     byCANData[7] = (BYTE)(unPGN >> 16);
 }
+
 static void PrepareClear_2_Send(BYTE* byCANData, BYTE byNoOfPackets, BYTE byNextPacket, UINT32 unPGN)
 {
     byCANData[0] = CB_CLEAR_TO_SEND;
@@ -170,13 +165,14 @@ static void PrepareClear_2_Send(BYTE* byCANData, BYTE byNoOfPackets, BYTE byNext
     byCANData[6] = (BYTE)(unPGN >> 8);
     byCANData[7] = (BYTE)(unPGN >> 16);
 }
+
 static UINT unGetNoOfPacketsRequired(UINT unSizeInBytes)
 {
     int nLastFrameNo = (int)(unSizeInBytes / MAX_TPDU_DATA_SIZE);
     int nLastFrameLen = unSizeInBytes % MAX_TPDU_DATA_SIZE;
     if (nLastFrameLen > 0)
     {
-        //If there are data bytes remaining then next frame is last frame
+        /* If there are data bytes remaining then next frame is last frame */
         nLastFrameNo++;
     }
     return nLastFrameNo;
@@ -197,6 +193,7 @@ static void vPrepareData(BYTE* byFrameData, BYTE byControlByte, UINT unDLC, UINT
     byFrameData[6] = (BYTE)(unPGN >> 8);
     byFrameData[7] = (BYTE)(unPGN >> 16);
 }
+
 static UINT32 Prepare_P2P_Id(BYTE byPDUFormat, BYTE bySrcAdres,
                              BYTE byDestAdres, BYTE byPriority)
 {
@@ -218,6 +215,7 @@ static BOOL bIsConReqMsg(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_REQ_TO_SEND));
 }
+
 static BOOL bIsBAM(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -225,6 +223,7 @@ static BOOL bIsBAM(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_BAM));
 }
+
 static BOOL bIsEOM_ACK(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -232,6 +231,7 @@ static BOOL bIsEOM_ACK(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_EOM_ACK));
 }
+
 static BOOL bIsConAbortMsg(UINT32 unExtId, BYTE byControlByte)
 {
     UNION_29_BIT_ID uExtId;
@@ -239,6 +239,7 @@ static BOOL bIsConAbortMsg(UINT32 unExtId, BYTE byControlByte)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (byControlByte == CB_CON_ABORT));
 }
+
 static BOOL bIsConAckMsg(STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId;
@@ -246,6 +247,7 @@ static BOOL bIsConAckMsg(STCAN_MSG& sCanMsg)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (0 == sCanMsg.m_ucData[2]));
 }
+
 static BOOL bIsDataAckMsg(STCAN_MSG& sCanMsg)
 {
     UNION_29_BIT_ID uExtId;
@@ -253,6 +255,7 @@ static BOOL bIsDataAckMsg(STCAN_MSG& sCanMsg)
     return ((uExtId.m_s29BitId.m_uPGN.m_sPGN.m_byPDU_Format == PDU_FORMAT_TPCM)
             && (sCanMsg.m_ucData[0] == CB_CLEAR_TO_SEND) && (sCanMsg.m_ucData[2] > 0));
 }
+
 static BOOL bIsTPDT(UINT32 unExtId)
 {
     UNION_29_BIT_ID uExtId;
@@ -275,6 +278,7 @@ static void vCreateTempJ1939Msg(STJ1939_MSG& sMsg, const STCANDATA& sCanData,
     sMsg.m_pbyData = new BYTE[sMsg.m_unDLC];
     memcpy(sMsg.m_pbyData, pbyData, unDLC);
 }
+
 static BOOL bIsConLevelMsg(UINT32 unExtId)
 {
     BOOL bReturn = FALSE;
@@ -287,17 +291,14 @@ static BOOL bIsConLevelMsg(UINT32 unExtId)
     }
     return bReturn;
 }
-/******************************************************************************
-Function Name  :  eGetMsgType
-Input(s)       :  UINT32 unExtId - 29 bit CAN identifier,BYTE* pbyData - CAN data
-Output         :  EJ1939_MSG_TYPE
-Functionality  :  returns the type of the message.
-Member of      :
-Friend of      :  -
-Author(s)      :  Pradeep Kadoor
-Date Created   :  23/11/2010
-Modifications  :
-******************************************************************************/
+
+/**
+ * returns the type of the message.
+ *
+ * @param[in] unExtId 29 bit CAN identifier
+ * @param[in] pbyData CAN data
+ * @return type of the message
+ */
 static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
 {
     EJ1939_MSG_TYPE eType = MSG_TYPE_DATA;
@@ -307,69 +308,58 @@ static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
     switch (byPDU_Format)
     {
         case PDU_FORMAT_ACK:
-        {
             eType = MSG_TYPE_ACKNOWLEDGEMENT;
-        }
-        break;
-        case PDU_FORMAT_REQUEST4:
-        {
-            BYTE byCB = pbyData[1];
-            if (byCB == PDU_FORMAT_ACL)
-            {
-                eType = MSG_TYPE_NM_RQST_ACL;
-            }
-            else
-            {
-                eType = MSG_TYPE_REQUEST;
-            }
-        }
-        break;
-        case PDU_FORMAT_ACL:
-        {
-            eType = MSG_TYPE_NM_ACL;
-        }
-        break;
-        case PDU_FORMAT_TPCM:
-        {
-            BYTE byCB = pbyData[0];
-            switch (byCB)
-            {
-                case CB_BAM:
-                {
-                    eType = MSG_TYPE_NM_TPCM_BAM;
-                }
-                break;
-                case CB_REQ_TO_SEND:
-                {
-                    eType = MSG_TYPE_NM_TPCM_RTS;
-                }
-                break;
-                case CB_CLEAR_TO_SEND:
-                {
-                    eType = MSG_TYPE_NM_TPCM_CTS;
-                }
-                break;
-                case CB_CON_ABORT:
-                {
-                    eType = MSG_TYPE_NM_TPCM_CON_ABORT;
-                }
-                break;
-                case CB_EOM_ACK:
-                {
-                    eType = MSG_TYPE_NM_TPCM_EOM_ACK;
-                }
-                break;
-            }
+            break;
 
-        }
-        break;
+        case PDU_FORMAT_REQUEST4:
+            {
+                BYTE byCB = pbyData[1];
+                if (byCB == PDU_FORMAT_ACL)
+                {
+                    eType = MSG_TYPE_NM_RQST_ACL;
+                }
+                else
+                {
+                    eType = MSG_TYPE_REQUEST;
+                }
+            }
+            break;
+
+        case PDU_FORMAT_ACL:
+            eType = MSG_TYPE_NM_ACL;
+            break;
+
+        case PDU_FORMAT_TPCM:
+            {
+                BYTE byCB = pbyData[0];
+                switch (byCB)
+                {
+                    case CB_BAM:
+                        eType = MSG_TYPE_NM_TPCM_BAM;
+                        break;
+                
+                    case CB_REQ_TO_SEND:
+                        eType = MSG_TYPE_NM_TPCM_RTS;
+                        break;
+
+                    case CB_CLEAR_TO_SEND:
+                        eType = MSG_TYPE_NM_TPCM_CTS;
+                        break;
+
+                    case CB_CON_ABORT:
+                        eType = MSG_TYPE_NM_TPCM_CON_ABORT;
+                        break;
+
+                    case CB_EOM_ACK:
+                        eType = MSG_TYPE_NM_TPCM_EOM_ACK;
+                        break;
+                }
+            }
+            break;
+        
         case PDU_FORMAT_TPDT:
-        {
             eType = MSG_TYPE_NM_TPDT;
-        }
-        break;
+            break;
     }
     return eType;
 }
-
-#endif //J1939_UTILITYFUNCS_H__INCLUDED_

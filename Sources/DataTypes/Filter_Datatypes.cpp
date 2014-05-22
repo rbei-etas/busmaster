@@ -823,7 +823,6 @@ INT SFILTER_LIN::nSetXMLConfigData(xmlNodePtr pNodePtr)
     //<IDType>NONRTR</IDType>
     //<MsgType>EXT</MsgType>
     //<Channel>2</Channel>
-    string strTemp;
     m_eChannel = 0;
     while (pNodePtr != NULL)
     {

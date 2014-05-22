@@ -494,12 +494,6 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     //if ((*pfCAN_GetErrText)(dwErrorCode, acErrText) == CAN_USB_OK)
     {
         sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
-
-        size_t nStrLen = strlen(acErrText);
-        if (nStrLen > CAN_MAX_ERRSTR)
-        {
-            nStrLen = CAN_MAX_ERRSTR;
-        }
         sg_acErrStr = acErrText;
     }
 }
@@ -3101,7 +3095,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eCon
                 case defMODE_ACTIVE:
                 {
                     char SetFireParms[100];
-                    char Values[500];
                     int iRetVal;
                     int iErrorIndex;
                     unsigned short NetworkEnables = 0xFFFF;
@@ -3116,7 +3109,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eCon
                 case defMODE_PASSIVE:
                 {
                     char SetFireParms[100];
-                    char Values[500];
                     int iRetVal;
                     int iErrorIndex;
                     unsigned short NetworkEnables = 0xFFFF;
