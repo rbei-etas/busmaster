@@ -6,9 +6,11 @@
 *.aps
 *.APS
 *.bak
+*.ipch
 *.opensdf
 *.ncb
 *.pch
+*.pdb
 *.sdf
 *.sln
 *.sln.cache
@@ -18,6 +20,10 @@
 *.db
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
+Sources/Application/LDFLexer.c
+Sources/Application/ldfparser.cpp
+Sources/Application/ldfparser.cpp.output
+Sources/Application/ldfparser.cpp.h
 Sources/BusEmulation/BusEmulation.h
 Sources/BusEmulation/BusEmulation_i.c
 Sources/BusEmulation/BusEmulation_p.c
@@ -44,6 +50,7 @@ Sources/BusEmulation/Release
 Sources/CAN_ETAS_BOA/Release
 Sources/CAN_ICS_neoVI/Release
 Sources/CAN_iVIEW/Release
+Sources/CAN_ISOLAR_EVE_VCAN/Release
 Sources/CAN_IXXAT_VCI/Release
 Sources/CAN_Kvaser_CAN/Release
 Sources/CAN_MHS/Release
@@ -58,8 +65,13 @@ Sources/DIL_Interface/Release
 Sources/DIL_J1939/Release
 Sources/EXTERNAL/*/Release
 Sources/Filter/Release
+Sources/FLEXRAY_ETAS_BOA/Release
+Sources/Format Converter/Release
 Sources/Format Converter/*/Release
 Sources/FrameProcessor/Release
+Sources/LIN_ETAS_BOA/Release
+Sources/LIN_ISOLAR_EVE_VLIN/Release
+Sources/LIN_Vector_XL/Release
 Sources/MHS_CNFG/Release
 Sources/NodeSimEx/Release
 Sources/ProjectConfiguration/Release
@@ -72,6 +84,8 @@ Sources/TestSetupEditorGUI/Release
 Sources/TestSetupEditorLib/Release
 Sources/TestSuiteExecutorGUI/Release
 Sources/TXWindow/Release
+Sources/TXWindowFlexRay/Release
+Sources/TXWindowLIN/Release
 Sources/Utility/Release
 
 # Debug dirs (except BIN)
@@ -80,6 +94,7 @@ Sources/BusEmulation/Debug
 Sources/CAN_ETAS_BOA/Debug
 Sources/CAN_ICS_neoVI/Debug
 Sources/CAN_iVIEW/Debug
+Sources/CAN_ISOLAR_EVE_VCAN/Debug
 Sources/CAN_IXXAT_VCI/Debug
 Sources/CAN_Kvaser_CAN/Debug
 Sources/CAN_MHS/Debug
@@ -96,8 +111,13 @@ Sources/EXTERNAL/*/Debug
 Sources/EXTERNAL/*/DebugU
 Sources/EXTERNAL/*/ReleaseUMinSize
 Sources/Filter/Debug
+Sources/FLEXRAY_ETAS_BOA/Debug
+Sources/Format Converter/Debug
 Sources/Format Converter/*/Debug
 Sources/FrameProcessor/Debug
+Sources/LIN_ETAS_BOA/Debug
+Sources/LIN_ISOLAR_EVE_VLIN/Debug
+Sources/LIN_Vector_XL/Debug
 Sources/MHS_CNFG/Debug
 Sources/NodeSimEx/Debug
 Sources/ProjectConfiguration/Debug
@@ -110,6 +130,8 @@ Sources/TestSetupEditorGUI/Debug
 Sources/TestSetupEditorLib/Debug
 Sources/TestSuiteExecutorGUI/Debug
 Sources/TXWindow/Debug
+Sources/TXWindowFlexRay/Debug
+Sources/TXWindowLIN/Debug
 Sources/Utility/Debug
 
 # Files in BIN (except hardware specific files)
@@ -122,11 +144,14 @@ Sources/BIN/*/*.ilk
 Sources/BIN/*/*.pdb
 Sources/BIN/*/*.tlb
 Sources/BIN/*/AdvancedUIPlugin.dll
+Sources/BIN/*/BUSMASTER.Build.CppClean.log
 Sources/BIN/*/CAN_ETAS_BOA.dll
 Sources/BIN/*/CAN_ETAS_BOA_1_4.dll
 Sources/BIN/*/CAN_ETAS_BOA_1_5.dll
+Sources/BIN/*/CAN_ETAS_BOA_2_0.dll
 Sources/BIN/*/CAN_ICS_neoVI.dll
 Sources/BIN/*/CAN_i-View.dll
+Sources/BIN/*/CAN_ISOLAR_EVE_VCAN.dll
 Sources/BIN/*/CAN_IXXAT_VCI.dll
 Sources/BIN/*/CAN_IXXAT_VCI.map
 Sources/BIN/*/CAN_Kvaser_CAN.dll
@@ -153,7 +178,13 @@ Sources/BIN/*/DMGraph.dll
 Sources/BIN/*/DMGraph.exp
 Sources/BIN/*/DMGraph.lib
 Sources/BIN/*/Filter.dll
+Sources/BIN/*/FlexRay_ETAS_BOA_1_4.dll
+Sources/BIN/*/FlexRay_ETAS_BOA_1_5.dll
+Sources/BIN/*/FlexRay_ETAS_BOA_2_0.dll
 Sources/BIN/*/FrameProcessor.dll
+Sources/BIN/*/LIN_ETAS_BOA.dll
+Sources/BIN/*/LIN_ISOLAR_EVE_VLIN.dll
+Sources/BIN/*/LIN_Vector_XL.dll
 Sources/BIN/*/mhsbmcfg.dll
 Sources/BIN/*/NodeSimEx.dll
 Sources/BIN/*/PSDI_CAN.dll
@@ -163,6 +194,8 @@ Sources/BIN/*/SigGrphWnd.dll
 Sources/BIN/*/SignalDefiner.dll
 Sources/BIN/*/SignalWatch.dll
 Sources/BIN/*/TXWindow.dll
+Sources/BIN/*/TXWindowFlexRay.dll
+Sources/BIN/*/TXWindowLIN.dll
 Sources/BIN/*/TestSetupEditorGUI.dll
 Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/*/JPN
@@ -170,7 +203,9 @@ Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
 Sources/BIN/Libs/*/CAN_ETAS_BOA_1_4.lib
 Sources/BIN/Libs/*/CAN_ETAS_BOA_1_5.lib
+Sources/BIN/Libs/*/CAN_ETAS_BOA_2_0.lib
 Sources/BIN/Libs/*/CAN_i-VIEW.lib
+Sources/BIN/Libs/*/CAN_ISOLAR_EVE_VCAN.lib
 Sources/BIN/Libs/*/CAN_IXXAT_VCI.lib
 Sources/BIN/Libs/*/CAN_ICS_neoVI.lib
 Sources/BIN/Libs/*/CAN_Kvaser_CAN.lib
@@ -185,6 +220,9 @@ Sources/BIN/Libs/*/DIL_Interface.lib
 Sources/BIN/Libs/*/DIL_J1939.lib
 Sources/BIN/Libs/*/DataTypes.lib
 Sources/BIN/Libs/*/Filter.lib
+Sources/BIN/Libs/*/FlexRay_ETAS_BOA_1_4.lib
+Sources/BIN/Libs/*/FlexRay_ETAS_BOA_1_5.lib
+Sources/BIN/Libs/*/FlexRay_ETAS_BOA_2_0.lib
 Sources/BIN/Libs/*/FrameProcessor.lib
 Sources/BIN/Libs/*/NodeSimEx.lib
 Sources/BIN/Libs/*/PSDI_CAN.lib
@@ -194,6 +232,7 @@ Sources/BIN/Libs/*/SigGrphWnd.lib
 Sources/BIN/Libs/*/SignalDefiner.lib
 Sources/BIN/Libs/*/SignalWatch.lib
 Sources/BIN/Libs/*/TXWindow.lib
+Sources/BIN/Libs/*/TXWindowLIN.lib
 Sources/BIN/Libs/*/TestSetupEditorGUI.lib
 Sources/BIN/Libs/*/TestSetupEditorLib.lib
 Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
