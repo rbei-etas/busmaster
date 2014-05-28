@@ -48,13 +48,12 @@ class ENTRY_DIL
 {
 public:
     DWORD           m_dwDIL;
-    string          m_acDIL;
+    std::string          m_acDIL;
 
 };
 
 static ENTRY_DIL sg_ListDIL[] =
 {
-    /* PTV[1.6.4] */
     // Added Short cut keys
     /* simulation should be the first entry... */
     {DRIVER_CAN_STUB,       "&Simulation"       },
@@ -146,7 +145,6 @@ DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
         for (int i = 0; i < sizeof(sg_ListDIL)/sizeof(ENTRY_DIL); i++)
         {
             (*List)[i].m_acName = sg_ListDIL[i].m_acDIL;
-            //_tcscpy((*List)[i].m_acName, sg_ListDIL[i].m_acDIL);
             (*List)[i].m_dwDriverID = sg_ListDIL[i].m_dwDIL;
             Result++;
         }
@@ -582,7 +580,7 @@ HRESULT CDIL_CAN::DILC_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
  *
  * Call to get descriptive string of the last error occurred
  */
-HRESULT CDIL_CAN::DILC_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN::DILC_GetLastErrorString(std::string & acErrorStr)
 {
     return m_pBaseDILCAN_Controller->CAN_GetLastErrorString(acErrorStr);
 }

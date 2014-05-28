@@ -33,8 +33,7 @@ class ENTRY_DIL
 {
 public:
     DWORD           m_dwDIL;
-    string          m_acDIL;
-
+    std::string          m_acDIL;
 };
 
 static ENTRY_DIL sg_ListDIL[] =
@@ -420,7 +419,7 @@ HRESULT CDIL_FLEXRAY::DILF_GetVersionInfo(VERSIONINFO& sVerInfo)
     return m_pBaseDILFLEXRAY_Controller->FLEXRAY_GetVersionInfo( sVerInfo );
 }
 
-HRESULT CDIL_FLEXRAY::DILF_GetLastErrorString(string acErrorStr, HRESULT& nError)
+HRESULT CDIL_FLEXRAY::DILF_GetLastErrorString(std::string acErrorStr, HRESULT& nError)
 {
     VALIDATE_FLEX_POINTER(m_pBaseDILFLEXRAY_Controller);
     return m_pBaseDILFLEXRAY_Controller->FLEXRAY_GetLastErrorString( acErrorStr, nError );

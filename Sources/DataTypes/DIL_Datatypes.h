@@ -30,8 +30,6 @@
 /* Project includes */
 #include "../Include/BaseDefs.h"
 
-using namespace std;
-
 #define NO_SELECTION_HI 0xCDCD
 
 #define CAN_MONITOR_NODE "CAN_MONITOR"
@@ -126,15 +124,14 @@ typedef enum TXMODE
 
 class INTERFACE_HW
 {
-    //Tobias - venkat
 public:
     unsigned long   m_dwIdInterface;
     unsigned long   m_dwVendor;
     unsigned char   m_bytNetworkID;
-    string          m_acNameInterface;
-    string          m_acDescription;
-    string          m_acDeviceName;
-    string          m_acAdditionalInfo;
+    std::string     m_acNameInterface;
+    std::string     m_acDescription;
+    std::string     m_acDeviceName;
+    std::string     m_acAdditionalInfo;
     INTERFACE_HW()
     {
         m_dwIdInterface = 0;
@@ -170,15 +167,15 @@ typedef INTERFACE_HW INTERFACE_HW_LIST[defNO_OF_CHANNELS];
 class VERSIONINFO
 {
 public:
-    string     m_acDIL;
-    string     m_acController;
-    string     m_acDriver;
+    std::string m_acDIL;
+    std::string m_acController;
+    std::string m_acDriver;
 };
 
 class DILINFO
 {
 public:
-    string         m_acName;
+    std::string    m_acName;
     unsigned long  m_dwDriverID;
     unsigned int   m_ResourceID;
     DILINFO()

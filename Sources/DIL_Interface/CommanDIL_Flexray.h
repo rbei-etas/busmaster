@@ -14,7 +14,7 @@ typedef struct tagAckMap
     }
 } SACK_MAP;
 
-typedef list<SACK_MAP> CACK_MAP_LIST;
+typedef std::list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 
 
@@ -44,26 +44,21 @@ public:
     virtual HRESULT FLEXRAY_GetBoardInfo(s_BOARDINFO& BoardInfo) = 0;
     virtual HRESULT FLEXRAY_GetFlexRayInfo(s_FLXINFO& FlexRayInfo) = 0;
     virtual HRESULT FLEXRAY_GetVersionInfo(VERSIONINFO& sVerInfo) = 0;
-    virtual HRESULT FLEXRAY_GetLastErrorString(string acErrorStr, HRESULT& nError) = 0;
+    virtual HRESULT FLEXRAY_GetLastErrorString(std::string acErrorStr, HRESULT& nError) = 0;
     virtual HRESULT FLEXRAY_FilterFrames(FILTER_TYPE FilterType, FLEX_CHANNEL FlexChannel, UINT* punFrames, UINT nLength) = 0;
     virtual HRESULT FLEXRAY_ConfigMsgBuf(s_MSGBUF sMsgBuf, UINT* punAddress) = 0;
     virtual HRESULT FLEXRAY_LoadDriverLibrary(void) = 0;
     virtual HRESULT FLEXRAY_UnloadDriverLibrary(void) = 0;
     virtual HRESULT FlexRAY_GetControllerCapabilities(s_FLXControllerCapabilities& ouFlexRayCapabilities) = 0;
-
-
-
     virtual HRESULT FLEXRAY_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     virtual HRESULT FLEXRAY_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseFLEXBufFSE* pBufObj);
     virtual HRESULT FLEXRAY_SendFlxMsg(DWORD dwClientID, s_FLXTXMSG* pouFlxTxMsg);
     virtual HRESULT FLEXRAY_DeleteFlxMsg(DWORD dwClientID, s_FLXTXMSG* pouFlxTxMsg);
 
-
 public:
     void vWriteIntoClientsBuffer(s_FLXMSG& sFlexRayData);
     void vMarkEntryIntoMap(const SACK_MAP& RefObj);
     bool bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
-
 
 public:
     CRITICAL_SECTION sg_CritSectForAckBuf;
@@ -71,7 +66,8 @@ public:
 private:
     CClientList     m_ClientList;               ///< List with all of registered clients
     CACK_MAP_LIST   sg_asAckMapBuf;
+
 protected:
-    map< SLOT, list<int> > m_mapSlotClient;
+    std::map< SLOT, std::list<int> > m_mapSlotClient;
 };
 

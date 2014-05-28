@@ -100,7 +100,7 @@ class SCLIENTBUFMAP
 public:
     DWORD m_dwClientID;
     CBaseFLEXBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
-    string m_acClientName;
+    std::string m_acClientName;
     UINT m_unBufCount;
     SCLIENTBUFMAP()
     {
@@ -118,9 +118,9 @@ public:
 /**
  * Array of clients
  */
-static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
+static std::vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
-static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
+static CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 
 //
 ///************************** Static variables declaration area **************************/
@@ -144,32 +144,12 @@ static Base_WrapperErrorLogger* sg_pIlog   = NULL;
 static OCI_LINTxMessage* sg_psBOA_FlxMsgList = NULL;
 
 BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
-//
-//// A mapping between system time and the time stamp
-//static SYSTEMTIME sg_CurrSysTime;
-//static UINT64 sg_TimeStamp = 0;
-//// Handle of the owner window
-//static HWND sg_hOwnerWnd = NULL;
+
 // Buffer for the driver operation related error messages
-static string sg_acErrStr = "";
+static std::string sg_acErrStr = "";
 static HRESULT sg_hLastError = S_OK;
 
 static STLINDATA sg_asLINMsg;
-
-//// FlexRay controller interface
-//static LPUCIFLXCTRL sg_pFlxIntfPtr = NULL;
-//
-//#define LOG_ERR_MSG() sg_pIlog->vLogAMessage(__FILE__, __LINE__, sg_acErrStr)
-//#define VALIDATE_POINTER_RETURN_VAL(Ptr, RetVal) if (bIs_NULL_Pointer(#Ptr, Ptr)) {return RetVal;}
-//#define VALIDATE_POINTER_RETURN_VOID(Ptr)        if (bIs_NULL_Pointer(#Ptr, Ptr)) {return;}
-//#define VALIDATE_POINTER_NO_RETURN_LOG(Ptr)      if (bIs_NULL_Pointer(#Ptr, Ptr)) {LOG_ERR_MSG();}
-//#define VALIDATE_POINTER_RETURN_VOID_LOG(Ptr)    if (bIs_NULL_Pointer(#Ptr, Ptr)) {LOG_ERR_MSG(); return;}
-//#define VALIDATE_POINTER_RETURN_VALUE_LOG(Ptr, RetVal) \
-//    if (bIs_NULL_Pointer(#Ptr, Ptr)) {LOG_ERR_MSG(); return RetVal;}
-//
-//// First define the callback function type
-//typedef BOOL (*DILCALLBACK)(BYTE Argument, PBYTE pDatStream, int Length);
-//const int SIZE_WORD     = sizeof(WORD);
 
 class LINData
 {
@@ -192,7 +172,7 @@ static  CRITICAL_SECTION sg_CritSectForWrite;
 typedef struct tagCHANNEL
 {
     OCI_URIName m_acURI; /*< URI of the Controller */
-    string m_strLinVersion;
+    std::string m_strLinVersion;
     OCI_ControllerHandle m_OCI_HwHandle; /*< Controller handle */
     OCI_LINConfiguration m_OCI_FlexRayConfig; /*< Controller configuration */
 
@@ -209,7 +189,7 @@ typedef struct tagCHANNEL
     //FlexrayData m_ouFlexrayData;
     sTLINDATA m_ouFlexrayData;
 
-    map<INT, INT> m_SlotBufferMap;
+    std::map<INT, INT> m_SlotBufferMap;
 
     UINT m_unMsgConfig;
     UINT m_unCycleTime;
@@ -228,7 +208,7 @@ typedef struct tagCHANNEL
 
     //Thread
     CPARAM_THREADPROC m_ouDataTransmitThread;
-    map<UINT, BOA_LINData> m_ouBoaLINData;
+    std::map<UINT, BOA_LINData> m_ouBoaLINData;
     //map<SLOT_BASECYCLE, BOA_FlexRayData> m_ouBoaFlexRayData;
     int nValid;
 
@@ -249,14 +229,10 @@ typedef struct tagCHANNEL
     }
 } SCHANNEL;
 
-//typedef list<SACK_MAP> CACK_MAP_LIST;
-//static CACK_MAP_LIST sg_asAckMapBuf;
-//static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
-
 /**
  * Channel instances
  */
-static vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
+static std::vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
 
 /**
  * Number of current channel selected
@@ -268,7 +244,6 @@ static BOOL sg_bIsDriverRunning = FALSE;
 static HWND sg_hOwnerWnd = NULL;
 
 const BYTE CREATE_MAP_TIMESTAMP = 0x1;
-
 const BYTE CALC_TIMESTAMP_READY = 0x2;
 
 /**

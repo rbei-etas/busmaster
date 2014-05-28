@@ -21,7 +21,7 @@
 
 struct LinProcolBaudRate
 {
-    string m_strProtocol;
+    std::string m_strProtocol;
     int m_nBaudRate;
 };
 
@@ -290,7 +290,7 @@ int CChannelConfigurationDlg::nEnableControls( ETYPE_BUS eBusType)
 void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
 {
     CFileDialog* pomFibexDlg = NULL;
-    string strWaitText;
+    std::string strWaitText;
     if ( m_eBusType == FLEXRAY )
     {
         pomFibexDlg = new CFileDialog(TRUE, ".xml", 0, OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, "FIBEX Files (*.xml)|*.xml||", this);
@@ -307,8 +307,8 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
     if ( ( pomFibexDlg != NULL ) && ( pomFibexDlg->DoModal() == IDOK ) )
     {
         CString strPath = pomFibexDlg->GetPathName();
-        list<Cluster> ouClusterList;
-        list<LinChannelParam> ouLinChannelParams;
+        std::list<Cluster> ouClusterList;
+        std::list<LinChannelParam> ouLinChannelParams;
         CWaitIndicator ouWaitIndicator;
         ouWaitIndicator.DisplayWindow(strWaitText.c_str(), this);
 
@@ -336,7 +336,7 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
             {
                 m_ouCurrentChannelCluster = ouClusterList;
                 m_ouLinChannelParams = ouLinChannelParams;
-                list<Cluster>::iterator itrCluster = ouClusterList.begin();
+                std::list<Cluster>::iterator itrCluster = ouClusterList.begin();
                 //itrChannelConfig->m_ouClusterInfo = *itrCluster;
 
                 for ( ; itrCluster != ouClusterList.end(); itrCluster++)
@@ -397,7 +397,7 @@ void CChannelConfigurationDlg::OnCbnSelchangeComboChannel()
     if ( -1 != m_nCurrentChannel )
     {
 
-        list<Cluster>::iterator itFlexConfig = m_ouCurrentChannelCluster.begin();
+        std::list<Cluster>::iterator itFlexConfig = m_ouCurrentChannelCluster.begin();
 
         advance(itFlexConfig, m_omComboCluster.GetCurSel());
 
@@ -412,9 +412,9 @@ void CChannelConfigurationDlg::OnCbnSelchangeComboChannel()
                 m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strSlectedEculist.clear();
 
 
-                list<ECU_Struct> ouEcuList;
+                std::list<ECU_Struct> ouEcuList;
                 m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouClusterInfo.GetECUList(ouEcuList);
-                list<ECU_Struct>::iterator itrEcu = ouEcuList.begin();
+                std::list<ECU_Struct>::iterator itrEcu = ouEcuList.begin();
 
 
                 int nEcuCount = m_omEcuList.GetItemCount();
@@ -463,11 +463,11 @@ void CChannelConfigurationDlg::OnCbnSelchangeComboChannel()
 
         m_omComboCluster.AddString( m_ouFlexrayChannelConfig[nSelcetedIndex].m_ouClusterInfo.m_strName.c_str());
         m_omComboCluster.SetCurSel(0);
-        list<ECU_Struct> ouEcuList;
+        std::list<ECU_Struct> ouEcuList;
         m_ouFlexrayChannelConfig[nSelcetedIndex].m_ouClusterInfo.GetECUList(ouEcuList);
 
         INT nIndex = 0;
-        for ( list<ECU_Struct>::iterator itrEcu = ouEcuList.begin(); itrEcu!= ouEcuList.end(); itrEcu++ )
+        for (std::list<ECU_Struct>::iterator itrEcu = ouEcuList.begin(); itrEcu!= ouEcuList.end(); itrEcu++ )
         {
             m_omEcuList.InsertItem(nIndex, itrEcu->m_strECUName.c_str() );
 
@@ -521,10 +521,10 @@ int CChannelConfigurationDlg::nDisplayProtocolSettings(int nChannelIndex)
 }
 
 
-bool CChannelConfigurationDlg::bIsEcuSlected(list<string>& ouEcuList, string strEcuName)
+bool CChannelConfigurationDlg::bIsEcuSlected(std::list<std::string>& ouEcuList, std::string strEcuName)
 {
     bool bFound = false;
-    list<string>::iterator itrEcu = ouEcuList.begin();
+    std::list<std::string>::iterator itrEcu = ouEcuList.begin();
     for ( ; itrEcu!= ouEcuList.end(); itrEcu++)
     {
         if ( strEcuName == *itrEcu )
@@ -539,7 +539,7 @@ INT CChannelConfigurationDlg::nUpdateLinParams( INT nChannelIndex, INT nClusterI
 {
     INT nResult = S_OK;
     //todo::
-    list<LinChannelParam>::iterator itrCluster =  m_ouLinChannelParams.begin();
+    std::list<LinChannelParam>::iterator itrCluster =  m_ouLinChannelParams.begin();
     advance(itrCluster, nClusterIndex);
     if ( itrCluster != m_ouLinChannelParams.end() )
     {
@@ -560,11 +560,11 @@ INT CChannelConfigurationDlg::nUpdateEcuList( INT nChannelIndex, INT nClusterInd
 {
     INT nResult = S_OK;
     //todo::
-    list<Cluster>::iterator itrCluster =  m_ouCurrentChannelCluster.begin();
+    std::list<Cluster>::iterator itrCluster =  m_ouCurrentChannelCluster.begin();
     advance(itrCluster, nClusterIndex);
     if ( itrCluster != m_ouCurrentChannelCluster.end() )
     {
-        map<ECU_ID, ECU_Struct>::iterator itrECU = itrCluster->m_ouEcuList.begin();
+        std::map<ECU_ID, ECU_Struct>::iterator itrECU = itrCluster->m_ouEcuList.begin();
         m_omEcuList.DeleteAllItems();
         int i = 0;
         for ( ; itrECU != itrCluster->m_ouEcuList.end(); itrECU++ )
@@ -584,10 +584,10 @@ INT CChannelConfigurationDlg::nUpdateEcuList( Cluster& ouCluster )
 {
     INT nResult = S_OK;
 
-    list<ECU_Struct> ouEcuList;
+    std::list<ECU_Struct> ouEcuList;
     ouCluster.GetECUList(ouEcuList);
     INT nIndex = 0;
-    for ( list<ECU_Struct>::iterator itrEcu; itrEcu!= ouEcuList.end(); itrEcu++ )
+    for (std::list<ECU_Struct>::iterator itrEcu; itrEcu!= ouEcuList.end(); itrEcu++ )
     {
         m_omEcuList.InsertItem(nIndex, itrEcu->m_strECUName.c_str() );
         m_omEcuList.SetCheck(nIndex);
@@ -628,7 +628,7 @@ void CChannelConfigurationDlg::onBtnOk()
     if ( -1 != m_nCurrentChannel )
     {
 
-        list<Cluster>::iterator itFlexConfig = m_ouCurrentChannelCluster.begin();
+        std::list<Cluster>::iterator itFlexConfig = m_ouCurrentChannelCluster.begin();
 
         advance(itFlexConfig, m_omComboCluster.GetCurSel());
 
@@ -643,9 +643,9 @@ void CChannelConfigurationDlg::onBtnOk()
                 m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strSlectedEculist.clear();
 
 
-                list<ECU_Struct> ouEcuList;
+                std::list<ECU_Struct> ouEcuList;
                 m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouClusterInfo.GetECUList(ouEcuList);
-                list<ECU_Struct>::iterator itrEcu = ouEcuList.begin();
+                std::list<ECU_Struct>::iterator itrEcu = ouEcuList.begin();
 
 
                 int nEcuCount = m_omEcuList.GetItemCount();

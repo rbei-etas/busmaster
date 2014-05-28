@@ -40,7 +40,7 @@ CClientBuffer::CClientBuffer()
     dwClientID = 0;
     hClientHandle = NULL;
     hPipeFileHandle = NULL;
-    m_pacClientName = _T("");
+    m_pacClientName = "";
 }
 
 /**
@@ -56,7 +56,7 @@ CClientBuffer::CClientBuffer()
  * @param szClientName
  *  Name of the client e.g. 'CAN_MONITOR'.
  */
-CClientBuffer::CClientBuffer(DWORD dwClntID, HANDLE hClntHandle, HANDLE hPipeHandle, string szClientName)
+CClientBuffer::CClientBuffer(DWORD dwClntID, HANDLE hClntHandle, HANDLE hPipeHandle, std::string szClientName)
 {
 #ifdef _DEBUG
     g_dwIxxatBufObjectCounter++;

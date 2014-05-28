@@ -49,10 +49,6 @@
 #define USAGE_EXPORT
 #include "CAN_STUB_Extern.h"
 
-using namespace std;
-
-// CCAN_STUBApp
-
 BEGIN_MESSAGE_MAP(CCAN_STUBApp, CWinApp)
 END_MESSAGE_MAP()
 
@@ -141,7 +137,7 @@ public:
     HANDLE hClientHandle;
     HANDLE hPipeFileHandle;
     CBaseCANBufFSE* pClientBuf[MAX_BUFF_ALLOWED];
-    string pacClientName;
+    std::string pacClientName;
     UINT unBufCount;
     SCLIENTBUFMAP()
     {
@@ -163,7 +159,7 @@ typedef SCLIENTBUFMAP* PSCLIENTBUFMAP;
  * global client count
  */
 UINT sg_unClientCnt = 0;
-static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
+static std::vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 // Forward declarations
 
 /**
@@ -182,7 +178,7 @@ static HANDLE sg_hTmpPipeHandle = NULL;
 /**
  * Buffer for the driver operation related error messages
  */
-static string sg_acErrStr;
+static std::string sg_acErrStr;
 
 /**
  * Starts code for the state machine
@@ -217,7 +213,7 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -558,7 +554,7 @@ HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& 
     return Result;
 }
 
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -893,7 +889,7 @@ HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& T
 }
 
 
-HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN_STUB::CAN_GetLastErrorString(std::string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;
@@ -1006,13 +1002,11 @@ HRESULT CDIL_CAN_STUB::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, 
 
         case NUMBER_HW:
         {
-            //venkat
             lParam = CHANNEL_ALLOWED;
         }
         break;
         case NUMBER_CONNECTED_HW:
         {
-            //venkat
             lParam = CHANNEL_ALLOWED;
         }
         break;
@@ -1040,12 +1034,12 @@ HRESULT CDIL_CAN_STUB::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, 
     }
     return hResult;
 }
-//MVN
+
 HRESULT CDIL_CAN_STUB::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {
     return S_OK;
 }
-//~MVN
+
 HRESULT CDIL_CAN_STUB::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
     memset(&sErrorCnt, 0, sizeof(SERROR_CNT));

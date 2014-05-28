@@ -2,22 +2,15 @@
 #include "ParserHelper.h"
 #include <string>
 
-using namespace std;
-
-
-
 CParserHelper::CParserHelper(CHANNEL_CONFIG& ouCluster):
     m_ouCluster(ouCluster)
 {
     Initialise();
 }
 
-
 CParserHelper::~CParserHelper(void)
 {
-
 }
-
 
 void CParserHelper::Initialise(void)
 {
@@ -27,75 +20,13 @@ void CParserHelper::Initialise(void)
     m_nBaudRate = -1;
 }
 
-//int CParserHelper::OnSectionStarted(string strSection)
-//{
-//  /*,
-//  ,
-//  SEC_DIAG_SIGNAL_DEC,
-//  SEC_FRAME_DEC,
-//  SEC_FRAME_DEF,
-//  SEC_SPORADIC_FRAME_DEC,
-//  SEC_EVENT_TRIGGER_FRAME_DEC,
-//  SEC_DIAG_FRAME_DEC,
-//  SEC_DIAG_FRAME_DEF
-//
-//
-//
-//
-//"Diagnostic_signals"      return DIAGNOSTIC_SIGNALS;
-//"Sporadic_frames"         return SPORADIC_FRAMES;
-//"Event_triggered_frames"  return EVENT_TRIGGERED_FRAMES;
-//""                    return FRAMES;
-//"Diagnostic_frames"           return DIAGNOSTIC_FRAMES;*/
-//  if ( strSection == "Nodes")
-//  {
-//
-//  }
-//  else if ( strSection == "Signals")
-//  {
-//
-//  }
-//  else if ( strSection == "Frames")
-//  {
-//
-//  }
-//  else if ( strSection == "Nodes")
-//  {
-//
-//  }
-//  else if ( strSection == "Nodes")
-//  {
-//
-//  }
-//  else if ( strSection == "Nodes")
-//  {
-//
-//  }
-//  else if ( strSection == "Nodes")
-//  {
-//
-//  }
-//  else if ( strSection == "Nodes")
-//  {
-//
-//  }
-//  else if ( strSection == "Nodes")
-//  {
-//
-//  }
-//}
 int CParserHelper::OnSectionStarted(eCurrentSection ouCurrentSection)
 {
     m_eCurrentSection = ouCurrentSection;
     m_ouSectionStack.push(ouCurrentSection);
 
-
-
-
-
-
 #ifdef _DEBUG
-    string strName;
+    std::string strName;
     GetStringSectionName(m_eCurrentSection, strName);
     printf("CParserClass::OnSection Start  %s \n", strName.c_str());
 #endif // _DEBUG
@@ -104,7 +35,7 @@ int CParserHelper::OnSectionStarted(eCurrentSection ouCurrentSection)
 int CParserHelper::OnSectionClosed()
 {
 #ifdef _DEBUG
-    string strName;
+    std::string strName;
     GetStringSectionName(m_eCurrentSection, strName);
     printf("CParserClass::OnSection End  %s \n", strName.c_str());
 #endif // _DEBUG
@@ -130,7 +61,7 @@ int CParserHelper::OnSectionClosed()
 
     return 0;
 }
-int CParserHelper::nOnProtocolVersion(string strProtocolVer)
+int CParserHelper::nOnProtocolVersion(std::string strProtocolVer)
 {
     CString strVal = strProtocolVer.c_str();
     strVal.Replace("\"", "");
@@ -139,7 +70,7 @@ int CParserHelper::nOnProtocolVersion(string strProtocolVer)
     m_strProtocol += strVal;
     return 0;
 }
-int CParserHelper::nOnLinBaudRate(string strBaudRate)
+int CParserHelper::nOnLinBaudRate(std::string strBaudRate)
 {
     double dBaud = atof(strBaudRate.c_str());
     m_nBaudRate = dBaud * 1000;
@@ -152,7 +83,7 @@ int CParserHelper::nOnSignal(LdfSignal& ouSignal)
     m_LdfSignalList[ouSignal.m_strName] = (ouSignal);
     return 0;
 }
-int CParserHelper::nAddSignaltoFrame(string strName, int nAt)
+int CParserHelper::nAddSignaltoFrame(std::string strName, int nAt)
 {
     if ( m_nLastFrameId == 0x3C )
     {
@@ -164,10 +95,10 @@ int CParserHelper::nAddSignaltoFrame(string strName, int nAt)
     }
     else
     {
-        map<int, LdfFrame>::iterator itrFrameMap = m_LdfFrameMap.find(m_nLastFrameId);
+        std::map<int, LdfFrame>::iterator itrFrameMap = m_LdfFrameMap.find(m_nLastFrameId);
         if ( itrFrameMap != m_LdfFrameMap.end())
         {
-            map<string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(strName);
+            std::map<std::string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(strName);
             if ( itrSignal != m_LdfSignalList.end() )
             {
                 itrFrameMap->second.m_SignalMap[nAt] = strName;
@@ -177,14 +108,14 @@ int CParserHelper::nAddSignaltoFrame(string strName, int nAt)
     return 0;
 }
 
-int CParserHelper::OnSporadicOrCompuType(string strId)
+int CParserHelper::OnSporadicOrCompuType(std::string strId)
 {
     if ( m_eCurrentSection == SEC_SIGNAL_REP_DEC )
     {
-        list<string>::iterator itrSignal =  m_strIdList.begin();
+        std::list<std::string>::iterator itrSignal =  m_strIdList.begin();
         while(itrSignal != m_strIdList.end() )
         {
-            map<string, LdfSignal>::iterator itr = m_LdfSignalList.find(*itrSignal);
+            std::map<std::string, LdfSignal>::iterator itr = m_LdfSignalList.find(*itrSignal);
             if ( itr != m_LdfSignalList.end() )
             {
                 itr->second.m_strCompuMethodName = strId;
@@ -197,7 +128,7 @@ int CParserHelper::OnSporadicOrCompuType(string strId)
     return 0;
 }
 
-int CParserHelper::OnFrameStarted( string strName, int nID, string strTxNode, string strLength)
+int CParserHelper::OnFrameStarted(std::string strName, int nID, std::string strTxNode, std::string strLength)
 {
     if ( nID == 0x3C )
     {
@@ -228,7 +159,7 @@ int CParserHelper::OnFrameStarted( string strName, int nID, string strTxNode, st
 }
 
 
-int CParserHelper::nOnSignalEncoding( UINT m_unMin, UINT m_unMax, DOUBLE m_fFactor, DOUBLE m_fOffset, string m_strUnit)
+int CParserHelper::nOnSignalEncoding( UINT m_unMin, UINT m_unMax, DOUBLE m_fFactor, DOUBLE m_fOffset, std::string m_strUnit)
 {
     if ( m_strLastId != "" )
     {
@@ -244,19 +175,16 @@ int CParserHelper::nOnSignalEncoding( UINT m_unMin, UINT m_unMax, DOUBLE m_fFact
     return 0;
 }
 
+std::list<FRAME_STRUCT> ouList;
 
-
-list<FRAME_STRUCT> ouList;
-
-int CParserHelper::nCreateMapList(map<string, string>& strDes, list<string>& strSourceList)
+int CParserHelper::nCreateMapList(std::map<std::string, std::string>& strDes, std::list<std::string>& strSourceList)
 {
-    for( list<string>::iterator itrEcu = strSourceList.begin(); itrEcu != strSourceList.end(); itrEcu++ )
+    for( std::list<std::string>::iterator itrEcu = strSourceList.begin(); itrEcu != strSourceList.end(); itrEcu++ )
     {
         strDes[*itrEcu] = *itrEcu;
     }
     return 0;
 }
-
 
 int CParserHelper::nCreateEcus()
 {
@@ -264,7 +192,7 @@ int CParserHelper::nCreateEcus()
     ouEcu.m_strECUName = ouEcu.m_strEcuId = m_strMasterEcu;
     m_ouCluster.m_ouClusterInfo.m_ouEcuList[m_strMasterEcu] = ouEcu;
 
-    for ( list<string>::iterator itrEcu = m_strSlaveEcuList.begin(); itrEcu != m_strSlaveEcuList.end(); itrEcu++ )
+    for ( std::list<std::string>::iterator itrEcu = m_strSlaveEcuList.begin(); itrEcu != m_strSlaveEcuList.end(); itrEcu++ )
     {
         ouEcu.m_strECUName = ouEcu.m_strEcuId = *itrEcu;
         m_ouCluster.m_ouClusterInfo.m_ouEcuList[*itrEcu] = ouEcu;
@@ -273,25 +201,25 @@ int CParserHelper::nCreateEcus()
 
     return 0;
 }
-int CParserHelper::nAaddFrameToEcu(string& strTxNode, map<string, string>& ouEcuFrameMap, FRAME_STRUCT& ouFrame)
+int CParserHelper::nAaddFrameToEcu(std::string& strTxNode, std::map<std::string, std::string>& ouEcuFrameMap, FRAME_STRUCT& ouFrame)
 {
     ECUMAP::iterator itrEcu = m_ouCluster.m_ouClusterInfo.m_ouEcuList.find(strTxNode);
     if ( itrEcu != m_ouCluster.m_ouClusterInfo.m_ouEcuList.end() )
     {
-        list<FRAME_STRUCT> ouFrameList;
+        std::list<FRAME_STRUCT> ouFrameList;
         ouFrameList.push_back(ouFrame);
         itrEcu->second.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
-        list<ECU_ID> ouTxEcuList;
+        std::list<ECU_ID> ouTxEcuList;
         ouTxEcuList.push_back(strTxNode);
         m_ouCluster.m_ouClusterInfo.m_mapSlotEcu[ouFrame.m_nSlotId] = ouTxEcuList;
     }
 
-    for( map<string, string>::iterator itrRxEcu = ouEcuFrameMap.begin(); itrRxEcu != ouEcuFrameMap.end(); itrRxEcu++ )
+    for( std::map<std::string, std::string>::iterator itrRxEcu = ouEcuFrameMap.begin(); itrRxEcu != ouEcuFrameMap.end(); itrRxEcu++ )
     {
         ECUMAP::iterator itrEcu = m_ouCluster.m_ouClusterInfo.m_ouEcuList.find(itrRxEcu->first);
         if ( itrEcu != m_ouCluster.m_ouClusterInfo.m_ouEcuList.end() && strTxNode != itrRxEcu->first )
         {
-            list<FRAME_STRUCT> ouFrameList;
+            std::list<FRAME_STRUCT> ouFrameList;
             ouFrameList.push_back(ouFrame);
             itrEcu->second.m_ouRxFrames[ouFrame.m_nSlotId] = ouFrameList;
         }
@@ -311,9 +239,9 @@ INT CParserHelper::CreateNetwork()
     }
 
     nCreateEcus();
-    map<int, LdfFrame>::iterator itrFrame = m_LdfFrameMap.begin();
+    std::map<int, LdfFrame>::iterator itrFrame = m_LdfFrameMap.begin();
 
-    map<string, string> ouEcuFrameMap;
+    std::map<std::string, std::string> ouEcuFrameMap;
     while ( itrFrame != m_LdfFrameMap.end() )
     {
         PDU_STRUCT ouPdu;
@@ -327,11 +255,11 @@ INT CParserHelper::CreateNetwork()
         ouFrame.m_nSlotId = itrFrame->second.m_nId;
         ouFrame.m_nLength = itrFrame->second.nLength;
         ouEcuFrameMap.clear();
-        map<int, string>::iterator itrSignalName = itrFrame->second.m_SignalMap.begin();
+        std::map<int, std::string>::iterator itrSignalName = itrFrame->second.m_SignalMap.begin();
 
         while( itrSignalName != itrFrame->second.m_SignalMap.end())
         {
-            map<string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(itrSignalName->second);
+            std::map<std::string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(itrSignalName->second);
             if ( itrSignal != m_LdfSignalList.end())
             {
                 ouSignal.m_strSignalName = itrSignal->second.m_strName;
@@ -341,7 +269,7 @@ INT CParserHelper::CreateNetwork()
                 ouSignal.m_unDefaultVal = itrSignal->second.m_nDefVal;
                 ouSignal.m_bDataType = 'U';
 
-                map<string, LdfCompuMethod>::iterator itCompuMethod = m_LdfCompuMethodMap.find(itrSignal->second.m_strCompuMethodName);
+                std::map<std::string, LdfCompuMethod>::iterator itCompuMethod = m_LdfCompuMethodMap.find(itrSignal->second.m_strCompuMethodName);
                 ouSignal.m_ouCompuMethod.m_eCompuType = IDENTICAL_ENUM;
                 // Updating Range
                 ouSignal.m_ouCompuMethod.m_uMethod.m_LinearCode.m_sRange.m_dwLowerLimit = 0;
@@ -389,11 +317,11 @@ INT CParserHelper::CreateNetwork()
         ouFrame.m_ouChannel = UNSPECIFIED;
 
         ouEcuFrameMap.clear();
-        map<int, string>::iterator itrSignalName = m_ouDiagMasterFrame.m_SignalMap.begin();
+        std::map<int, std::string>::iterator itrSignalName = m_ouDiagMasterFrame.m_SignalMap.begin();
 
         while( itrSignalName !=  m_ouDiagMasterFrame.m_SignalMap.end())
         {
-            map<string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(itrSignalName->second);
+            std::map<std::string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(itrSignalName->second);
             if ( itrSignal != m_LdfSignalList.end())
             {
                 ouSignal.m_strSignalName = itrSignal->second.m_strName;
@@ -402,7 +330,7 @@ INT CParserHelper::CreateNetwork()
                 ouSignal.m_unStartbit = itrSignalName->first;
                 ouSignal.m_unDefaultVal = itrSignal->second.m_nDefVal;
 
-                map<string, LdfCompuMethod>::iterator itCompuMethod = m_LdfCompuMethodMap.find(itrSignal->second.m_strName);
+                std::map<std::string, LdfCompuMethod>::iterator itCompuMethod = m_LdfCompuMethodMap.find(itrSignal->second.m_strName);
                 ouSignal.m_ouCompuMethod.m_eCompuType = IDENTICAL_ENUM;
 
                 if ( itCompuMethod != m_LdfCompuMethodMap.end() )
@@ -447,11 +375,11 @@ INT CParserHelper::CreateNetwork()
         ouFrame.m_ouChannel = UNSPECIFIED;
 
         ouEcuFrameMap.clear();
-        map<int, string>::iterator itrSignalName = m_ouDiagSlaveFrame.m_SignalMap.begin();
+        std::map<int, std::string>::iterator itrSignalName = m_ouDiagSlaveFrame.m_SignalMap.begin();
 
         while( itrSignalName != m_ouDiagSlaveFrame.m_SignalMap.end())
         {
-            map<string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(itrSignalName->second);
+            std::map<std::string, LdfSignal>::iterator itrSignal = m_LdfSignalList.find(itrSignalName->second);
             if ( itrSignal != m_LdfSignalList.end())
             {
                 ouSignal.m_strSignalName = itrSignal->second.m_strName;
@@ -460,7 +388,7 @@ INT CParserHelper::CreateNetwork()
                 ouSignal.m_unStartbit = itrSignalName->first;
                 ouSignal.m_unDefaultVal = itrSignal->second.m_nDefVal;
 
-                map<string, LdfCompuMethod>::iterator itCompuMethod = m_LdfCompuMethodMap.find(itrSignal->second.m_strName);
+                std::map<std::string, LdfCompuMethod>::iterator itCompuMethod = m_LdfCompuMethodMap.find(itrSignal->second.m_strName);
                 ouSignal.m_ouCompuMethod.m_eCompuType = IDENTICAL_ENUM;
 
                 if ( itCompuMethod != m_LdfCompuMethodMap.end() )
@@ -498,11 +426,11 @@ int CParserHelper::nAddDiadFrameToEcu(FRAME_STRUCT& ouFrame)
         ECUMAP::iterator itrEcu = m_ouCluster.m_ouClusterInfo.m_ouEcuList.begin();
         while ( itrEcu != m_ouCluster.m_ouClusterInfo.m_ouEcuList.end() )
         {
-            list<FRAME_STRUCT> ouFrameList;
+            std::list<FRAME_STRUCT> ouFrameList;
             ouFrameList.push_back(ouFrame);
             if ( itrEcu->second.m_strECUName == m_strMasterEcu)
             {
-                list<ECU_ID> ouTxEcuList;
+                std::list<ECU_ID> ouTxEcuList;
                 ouTxEcuList.push_back(itrEcu->second.m_strECUName);
                 m_ouCluster.m_ouClusterInfo.m_mapSlotEcu[ouFrame.m_nSlotId] = ouTxEcuList;
                 itrEcu->second.m_ouTxFrames[ouFrame.m_nSlotId] = ouFrameList;
@@ -519,7 +447,7 @@ int CParserHelper::nAddDiadFrameToEcu(FRAME_STRUCT& ouFrame)
         ECUMAP::iterator itrEcu = m_ouCluster.m_ouClusterInfo.m_ouEcuList.begin();
         while ( itrEcu != m_ouCluster.m_ouClusterInfo.m_ouEcuList.end() )
         {
-            list<FRAME_STRUCT> ouFrameList;
+            std::list<FRAME_STRUCT> ouFrameList;
             ouFrameList.push_back(ouFrame);
             if ( itrEcu->second.m_strECUName != m_strMasterEcu)
             {
@@ -539,7 +467,7 @@ int CParserHelper::nAddDiadFrameToEcu(FRAME_STRUCT& ouFrame)
 }
 
 
-void CParserHelper::GetStringSectionName(eCurrentSection ouCurrentSection, string& strSectionName)
+void CParserHelper::GetStringSectionName(eCurrentSection ouCurrentSection, std::string& strSectionName)
 {
     switch (ouCurrentSection)
     {
@@ -592,6 +520,3 @@ void CParserHelper::GetStringSectionName(eCurrentSection ouCurrentSection, strin
             break;
     }
 }
-
-
-

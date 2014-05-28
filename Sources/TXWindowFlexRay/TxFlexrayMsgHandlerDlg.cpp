@@ -45,8 +45,7 @@ void CFlexrayMsgHandlerDlg::vRefreshMsgList(void)
 {
     m_lstcMsgList.DeleteAllItems();
 
-
-    list<FRAME_STRUCT>::iterator itrFramelist = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFrameList[m_nCurrentChannel].begin();
+    std::list<FRAME_STRUCT>::iterator itrFramelist = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFrameList[m_nCurrentChannel].begin();
     int nRow = 0;
     CString strValue="";
 
@@ -83,82 +82,6 @@ void CFlexrayMsgHandlerDlg::vRefreshMsgList(void)
 
         nRow++;
     }
-
-    /*if (m_pouTxMsgList != NULL)
-    {
-        // Testing purpose
-        long lRxBlocksCount = m_pouTxMsgList->m_dwTxMsgCount;
-
-        // Time, Tx, Message ID, Description, Cycle No, Channel, Data length, Data Bytes
-        LVITEM LVItemInfo;
-        LVItemInfo.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM;
-
-        CString sData = _T("");
-        char cData[256];
-
-        for (DWORD i = 0; i < lRxBlocksCount; i++)
-        {
-            s_FLXTXMSG& CurrTxMsg = *(m_pouTxMsgList->m_psFlxTxMsgList + i);
-
-            DWORD dwHeaderInfoFlags = CurrTxMsg.m_sFlxMsg.dwHeaderInfoFlags;
-
-            // Tx, Message ID, Description, Cycle No, Channel, Data length, Data Bytes
-            LVItemInfo.iItem = i;
-            LVItemInfo.iSubItem = FIRST_COL;
-
-            if (dwHeaderInfoFlags & RBIN_FLXHDRINFO_FRAMETYPE)
-            {
-                strcpy(cData, "Dynamic");
-            }
-            else
-            {
-                strcpy(cData, "Static");
-            }
-            LVItemInfo.pszText = cData;
-            m_lstcMsgList.InsertItem(&LVItemInfo);
-
-            //Message Id
-            sData.Format("%X", CurrTxMsg.m_sFlxMsg.wIdentifier); //for Hex mode
-            for (int nIndex = sData.GetLength(); nIndex < 2; nIndex++)
-            {
-                sData.Insert(0, "0");
-            }
-
-            m_lstcMsgList.SetItemText(i, SECOND_COL, sData);
-
-            sData.Format("%d", CurrTxMsg.m_sFlxMsg.bCycleNumber);
-
-            // Dynamic frames should have cycle
-            if (strcmpi(LVItemInfo.pszText,"dynamic") == 0)
-            {
-                m_lstcMsgList.SetItemText(i, THIRD_COL, "-");
-            }
-            else
-            {
-                m_lstcMsgList.SetItemText(i, THIRD_COL, sData);
-            }
-
-            if ((dwHeaderInfoFlags & RBIN_FLXHDRINFO_BOTHCHANNELS) > 0)
-            {
-                strcpy(cData, "AB");
-            }
-            else
-            {
-                if (dwHeaderInfoFlags & RBIN_FLXHDRINFO_CHANNELID)
-                {
-                    strcpy(cData, "B");
-                }
-                else
-                {
-                    strcpy(cData, "A");
-                }
-            }
-
-            m_lstcMsgList.SetItemText(i, FOURTH_COL, cData);
-            _itoa(CurrTxMsg.m_sFlxMsg.bDataLength*2, cData, 10);
-            m_lstcMsgList.SetItemText(i, FIFTH_COL, cData);
-        }
-    }*/
 }
 
 BOOL CFlexrayMsgHandlerDlg::OnInitDialog()

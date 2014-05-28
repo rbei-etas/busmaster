@@ -22,9 +22,7 @@
  * Defines concrete class for data types of different buses.
  */
 
-
-#if !defined MSGBUFALL_DATATYPES_H__INCLUDED_
-#define MSGBUFALL_DATATYPES_H__INCLUDED_
+#pragma once
 
 #include "include/Struct_CAN.h"
 #include "include/Struct_LIN.h"
@@ -44,5 +42,3 @@ typedef CBaseMsgBufFSE<STLINDATA> CBaseLINBufFSE;
 //typedef CMsgBufCANVFSE<STCANDATA> CCANBufCANVFSE;
 typedef CBaseMsgBufFSE<s_FLXMSG> CBaseFLEXBufFSE;
 typedef CMsgBufFSE<s_FLXMSG>     CFLEXBufFSE;
-
-#endif // MSGBUFALL_DATATYPES_H__INCLUDED_

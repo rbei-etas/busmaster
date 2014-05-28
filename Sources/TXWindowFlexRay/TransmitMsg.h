@@ -225,7 +225,7 @@ private:
     FLEXRAY_FRAME_DATA m_ouCurrentMsg;
     void vStoreDataBytes();
     void vStoreSignalValues();
-    void vGetStringFromValue(int nValue, string& strValue);
+    void vGetStringFromValue(int nValue, std::string& strValue);
     BYTE m_bDisplayColumns; // Columns to be displayed
     //temporary blockmanager
     //CMSGBLOCKMANAGER m_omMsgBlockMan;

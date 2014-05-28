@@ -34,11 +34,6 @@
 // Mainframe definition file
 #include "MainFrm.h"
 
-//#include "ExecuteManager.h"
-
-using namespace std;
-
-//extern HWND GUI_hDisplayWindow;
 extern CCANMonitorApp theApp;
 extern BOOL g_bStopSendMultMsg;
 

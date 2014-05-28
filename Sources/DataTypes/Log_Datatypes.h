@@ -22,8 +22,7 @@
  * Definition file for log data types.
  */
 
-#if !defined LOG_DATATYPES_H__INCLUDED_
-#define LOG_DATATYPES_H__INCLUDED_
+#pragma once
 
 #include "include/BaseDefs.h"
 
@@ -45,40 +44,6 @@ typedef struct tagLogTrigger
     UINT             m_unStopID;      // Stop Trigger Id
 } SLOGTRIGGER,*PSLOGTRIGGER;
 //
-//// Advance log file settings
-//typedef struct tagLogAdvancedSettings
-//{
-//  // Holds Log on measurement state checked or Unchecked
-//  BOOL m_bIsLogOnMesurement;
-//
-//  // Holds Log on size state checked or Unchecked
-//  BOOL m_bIsLogOnSize;
-//
-//  // Holds Log on Time state checked or Unchecked
-//  BOOL m_bIsLogOnTime;
-//
-//  // Holds Size value specified by user
-//  CString m_omSizeInMB;
-//
-//  // Holds Hrs Time specified by user
-//  CString m_omLogTimeHrs;
-//
-//  // Holds Mins Time specified by user
-//  CString m_omLogTimeMins;
-//
-//  // Holds Maximum Number of log files to be incremented
-//  CString m_omMaxNoOfLogFiles;
-//
-//  double   m_qwLogSysTime;
-//
-//  //Holds the number of Connections made by BM
-//  int m_nConnectionCount;//Shailesh - connection count per log file (log object)
-//
-//  // Holds Comments specified by the user
-//  CString m_omLogComment; //arun
-//
-//
-//}SLOGADVSETTNGS;
 
 const USHORT ID_INVALID = (USHORT) -1;
 const USHORT ID_MAX = (USHORT) ~0;
@@ -104,15 +69,8 @@ typedef struct tagLogInfo
     void vClear(void);               // To clear the logging information
     UINT unGetSize(void) const;      // To get the size of the block in bytes
     BYTE* pbGetConfigData(BYTE* pbTarget) const; // To get configuration data
-    // PTV XML
     BOOL pbGetConfigData(xmlNodePtr pxmlNodePtr) const; // To get configuration data
-    // PTV XML
 
     BYTE* pbSetConfigData(BYTE* pbTarget, BYTE bytLogVersion); // To set configuration data
-    //MVN
     INT nSetConfigData(xmlNodePtr pNode);
-    //~MVN
-
 } SLOGINFO,*PSLOGINFO;
-
-#endif // LOG_DATATYPES_H__INCLUDED_

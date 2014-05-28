@@ -155,7 +155,7 @@ void CSignalWatch_LIN::vDisplayInSigWatchWnd(STLINDATA& sLinData)
         /*if (m_pMsgInterPretObj->bInterpretMsgSigList(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID,
         sLinData.m_uDataInfo.m_sLINMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))*/
         SSignalInfoArray sSingnalinfo;
-        string msgName;
+        std::string msgName;
         EFORMAT d;
 
         int mID=m_mapMsgIDtoSignallst->find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)->first;
@@ -272,7 +272,7 @@ HRESULT CSignalWatch_LIN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouClust
     cluster=m_ouClusterfinal;
 
     //cluster[LIN].m_nChannelsConfigured;
-    CMsgSignalSelect odDlg(m_ouClusterfinal,pParent,m_mapMsgIDtoSignallst);
+    CMsgSignalSelect odDlg(m_ouClusterfinal, pParent, m_mapMsgIDtoSignallst);
 
     //WndPlace=odDlg.wpPosition();
 
@@ -315,16 +315,15 @@ HRESULT CSignalWatch_LIN::SW_GetConfigData(void* pbyConfigData)
     return S_OK;
 }
 
-// PTV XML
 HRESULT CSignalWatch_LIN::SW_GetConfigData(xmlNodePtr pNodePtr)
 {
-    list<FRAME_STRUCT> lstNumofFrames;
+    std::list<FRAME_STRUCT> lstNumofFrames;
     if(NULL != cluster)
     {
         cluster->m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
         for(int i=0; i<cluster->m_nChannelsConfigured; i++)
         {
-            list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
+            std::list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
             while(itr != lstNumofFrames.end())
             {
                 int selkey = -1;
@@ -346,8 +345,8 @@ HRESULT CSignalWatch_LIN::SW_GetConfigData(xmlNodePtr pNodePtr)
                     CString strSignalName = "";
                     if(selkey == itr->m_nSlotId)
                     {
-                        list<string> lstSignals=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->second;
-                        list<string>:: iterator itrselSignals= lstSignals.begin();
+                        std::list<std::string> lstSignals=m_mapMsgIDtoSignallst->find(itr->m_nSlotId)->second;
+                        std::list<std::string>::iterator itrselSignals= lstSignals.begin();
 
                         while(itrselSignals != lstSignals.end())
                         {
@@ -457,7 +456,6 @@ HRESULT CSignalWatch_LIN::SW_GetConfigData(xmlNodePtr pNodePtr)
     }
     return S_OK;
 }
-// PTV XML
 
 HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
 {
@@ -510,7 +508,7 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
     }
     return S_OK;
 }
-//MVN
+
 HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
 {
     m_pouSigWnd->ShowWindow(SW_HIDE);
@@ -525,7 +523,7 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
             if((!xmlStrcmp(pNode->name, (const xmlChar*)"Message")))
             {
                 int id;
-                list<string> signame;
+                std::list<std::string> signame;
 
                 xmlNodePtr child= pNode->children;
                 while(child != NULL)
@@ -555,7 +553,7 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
                     child = child->next;
                 }
 
-                m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,signame));
+                m_mapMsgIDtoSignallst[0].insert(std::map<int, std::list<std::string>>::value_type(id,signame));
             }
 
 
@@ -650,8 +648,6 @@ INT CSignalWatch_LIN::nParseXMLColumn(xmlNodePtr pNode)
     }
     return nRetVal;
 }
-
-//~MVN
 
 /**
 * \req RS_18_23 Popup menu item 'Clear' (clears the signal watch window)

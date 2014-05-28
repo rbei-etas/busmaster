@@ -39,10 +39,6 @@
 #define USAGE_EXPORT
 #include "LIN_ISOLAR_EVE_VLIN_Extern.h"
 
-using namespace std;
-
-// CISOLAR_EVE_VLIN
-
 BEGIN_MESSAGE_MAP(CISOLAR_EVE_VLIN, CWinApp)
 END_MESSAGE_MAP()
 
@@ -111,19 +107,13 @@ public:
     HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg);
     HRESULT LIN_ResetSlaveRespData(void);
     HRESULT LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage);
-
     HRESULT LIN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT LIN_GetLastErrorString(string& acErrorStr);
+    HRESULT LIN_GetLastErrorString(std::string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
-
-    //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseLINBufFSE* pBufObj);
     HRESULT LIN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
@@ -266,31 +256,6 @@ static void vValidateReceivedLinMsg(STLIN_MSG& RxMsg)
 {
     HRESULT ret_result = S_FALSE;
 
-    /*STLIN_MSG asLinTxMsg[];*/
-    //if(asLinTxMsg[RxMsg.m_ucMsgID].m_ucMsgTyp == LIN_SLAVE_RESPONSE)
-    //{
-    //  RxMsg.m_ucMsgTyp = LIN_SLAVE_RESPONSE;
-
-    //  for(int i=0; i<8; i++)
-    //  {
-    //      RxMsg.m_ucData[i] = asLinTxMsg[RxMsg.m_ucMsgID].m_ucData[i];
-    //  }
-
-    //  ret_result = g_pouDIL_ISOLAR_EVE_VLIN->LIN_SendMsg(0,RxMsg);
-    //}
-    //else if(asLinTxMsg[RxMsg.m_ucMsgID].m_ucMsgTyp == LIN_MASTER_RESPONSE)
-    //{
-    //  RxMsg.m_ucMsgTyp = LIN_MASTER_RESPONSE;
-    //}
-    //else if(asLinTxMsg[RxMsg.m_ucMsgID].m_ucMsgTyp == LIN_SLAVE_SLAVE)
-    //{
-    //  RxMsg.m_ucMsgTyp = LIN_SLAVE_SLAVE;
-    //}
-    //if(asLinTxMsg[RxMsg.m_ucMsgID].m_ucDataLen != RxMsg.m_ucDataLen)
-    //{
-    //  RxMsg.m_ucMsgTyp = LIN_DLC_ERROR;
-    //}
-    /*  else*/
     if((RxMsg.m_ucMsgID == 0x3C)&&(RxMsg.m_ucData[0]==0x00))
     {
         RxMsg.m_ucMsgTyp = LIN_SLEEP_FRAME;
@@ -454,7 +419,7 @@ USAGEMODE HRESULT GetIDIL_LIN_Controller(void** ppvInterface)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -878,20 +843,18 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ResetSlaveRespData(void)
 
     return S_OK;
 }
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG & sMessage)
 {
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetLastErrorString(std::string & acErrorStr)
 {
-
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT * punMsgIds, UINT nLength)
 {
-
     return S_OK;
 }
 
@@ -902,7 +865,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHAN
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetCurrStatus(s_STATUSMSG& StatusData)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetCurrStatus(s_STATUSMSG & StatusData)
 {
     StatusData.wControllerStatus = m_Ctrl_Status;
 
@@ -920,7 +883,8 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return S_OK;
 }
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetConfiguration(sCONTROLLERDETAILSLIN psControllerConfig[], INT& nSize)
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetConfiguration(sCONTROLLERDETAILSLIN psControllerConfig[], INT & nSize)
 {
     for ( int i = 0; i < 1; i++ )
     {

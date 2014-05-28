@@ -6,11 +6,10 @@
 #include "FEALData.h"
 #include "Include\BaseDefs.h"
 #include "DataTypes\MsgSignal_Datatypes.h"
-using namespace std;
 
 typedef UINT SLOT;
 typedef LONG SLOT_BASECYCLE;
-typedef string  ECU_ID;
+typedef std::string ECU_ID;
 
 enum ENDIANNESS
 {
@@ -37,11 +36,11 @@ class SIGNAL_STRUCT
 public:
     //string m_omSigId;
     unsigned short     m_unStartbit;  // The prime identifier of a signal
-    string m_strSignalName;
+    std::string m_strSignalName;
     unsigned short m_nLength;
     char m_bDataType;
     //string m_omDataType;
-    string  m_omUnit;
+    std::string  m_omUnit;
     unsigned int m_unDefaultVal;
     //string  m_omPhylVal;
 
@@ -65,23 +64,23 @@ public:
 class CMuxPdu
 {
 public:
-    string omPduId;
-    list<SIGNAL_STRUCT> lstSignalStruct;
+    std::string omPduId;
+    std::list<SIGNAL_STRUCT> lstSignalStruct;
 };
 class PDU_STRUCT
 {
 public:
-    string m_strPduId;
-    string m_strPDUName;
+    std::string m_strPduId;
+    std::string m_strPDUName;
     int m_nStartBit;
     int m_nLength;
     ENDIANNESS m_ouEndianness;
 
     // Switch code to signal list
-    map<string, CMuxPdu> m_ouSwitchToSignals;
-    list<SIGNAL_STRUCT> m_ouSignalList;
+    std::map<std::string, CMuxPdu> m_ouSwitchToSignals;
+    std::list<SIGNAL_STRUCT> m_ouSignalList;
 public:
-    HRESULT GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetSignalList ( std::list<SIGNAL_STRUCT>& ouSignalList );
     ~PDU_STRUCT()
     {
         int i = 0;
@@ -92,14 +91,14 @@ public:
 class FRAME_STRUCT
 {
 public:
-    string m_strFrameId;
-    string m_strFrameName;
+    std::string m_strFrameId;
+    std::string m_strFrameName;
     short   m_nSlotId;
     unsigned char m_nBaseCycle;
     unsigned char m_nReptition;
     unsigned char m_nLength;
     //bool m_bConsiderPdu;
-    list<PDU_STRUCT>    m_ouPduList;
+    std::list<PDU_STRUCT>    m_ouPduList;
     //list<SIGNAL_STRUCT>   m_ouSignalList;
     ECHANNEL    m_ouChannel;
     ESLOT_TYPE m_eSlotType;
@@ -132,9 +131,9 @@ public:
     }
 
     FRAME_STRUCT();
-    HRESULT GetPDUList ( list<SIGNAL_STRUCT>& ouSignalList );
-    HRESULT GetSignalList ( string omStrPduName, list<SIGNAL_STRUCT>& ouSignalList );
-    HRESULT GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetPDUList ( std::list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetSignalList ( std::string omStrPduName, std::list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetSignalList ( std::list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetSignalNames (CStringList& ouSignalList );
     HRESULT GetSignalCount ( int& nCount);
 };
@@ -144,28 +143,28 @@ bool Compare_Frame_Structs(FRAME_STRUCT& ob1, FRAME_STRUCT& ob2 );
 class ECU_Struct
 {
 public:
-    string m_strEcuId;
-    string m_strECUName;
+    std::string m_strEcuId;
+    std::string m_strECUName;
 
     //One Controller per ECU
     ABS_FLEXRAY_SPEC_CNTLR m_ouControllerParams;
     int m_nKeySlot;
     // Slot Id to Tx FrameList
-    map<UINT, list<FRAME_STRUCT>> m_ouTxFrames;
+    std::map<UINT, std::list<FRAME_STRUCT>> m_ouTxFrames;
 
     // Slot Id to Rx FrameList
-    map<UINT, list<FRAME_STRUCT>> m_ouRxFrames;
+    std::map<UINT, std::list<FRAME_STRUCT>> m_ouRxFrames;
 
     ECHANNEL    m_ouChannel;
 
 public:
     ECU_Struct();
     HRESULT GetControllerParams(ABS_FLEXRAY_SPEC_CNTLR& ouControllerParams);
-    HRESULT GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ouEDIRECTION );
-    HRESULT GetFrameList( list<FRAME_STRUCT>& ouFrameList);
-    HRESULT GetFrameNames( list<string>& ouFrameList);
-    HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU_STRUCT>& ouPduList );
-    HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetFrameList( std::list<FRAME_STRUCT>& ouFrameList, EDIRECTION ouEDIRECTION );
+    HRESULT GetFrameList( std::list<FRAME_STRUCT>& ouFrameList);
+    HRESULT GetFrameNames( std::list<std::string>& ouFrameList);
+    HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<PDU_STRUCT>& ouPduList );
+    HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetFrame(UINT unSlotId, UINT nBaseCycle, ECHANNEL& oeChannel, FRAME_STRUCT& ouFrame);
     HRESULT GetFrame(UINT unSlotId, FRAME_STRUCT& ouFrame);
 
@@ -175,11 +174,11 @@ typedef std::map<ECU_ID, ECU_Struct> ECUMAP;
 class Cluster
 {
 public:
-    string  m_strName;
-    string m_omClusterID;
+    std::string  m_strName;
+    std::string m_omClusterID;
     //string m_omChannelRef;
 
-    map<string, string> m_mapChnls;
+    std::map<std::string, std::string> m_mapChnls;
 
     ABS_FLEXRAY_CLUSTER m_ouClusterInfo;
 
@@ -187,7 +186,7 @@ public:
     ECUMAP  m_ouEcuList;
 
     //To Identify which slot to ECU instead of Looping every time
-    map<SLOT, list<ECU_ID> > m_mapSlotEcu;
+    std::map<SLOT, std::list<ECU_ID> > m_mapSlotEcu;
 
     BOOL m_bAutoServerMode;
 
@@ -197,15 +196,15 @@ public:
     Cluster();
     ~Cluster();
     HRESULT GetClusterInfo( ABS_FLEXRAY_CLUSTER& ouClusterInfo );
-    HRESULT GetECUList( list<ECU_Struct>& ouEcuList );
-    HRESULT GetECU( string omECUStrId, ECU_Struct& ouEcu);
+    HRESULT GetECUList( std::list<ECU_Struct>& ouEcuList );
+    HRESULT GetECU( std::string omECUStrId, ECU_Struct& ouEcu);
     HRESULT unListGetMessageIDs(UINT*&, UINT& nMsgCount);
-    HRESULT GetFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
-    HRESULT GetTxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
-    HRESULT GetFrameNames(string omStrEcuName, list<string>& lstFrames);
-    HRESULT GetRxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList );
-    HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU_STRUCT>& ouPduList );
-    HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_STRUCT>& ouSignalList );
+    HRESULT GetFrameList( std::string omStrEcuName, std::list<FRAME_STRUCT>& ouFrameList );
+    HRESULT GetTxFrameList( std::string omStrEcuName, std::list<FRAME_STRUCT>& ouFrameList );
+    HRESULT GetFrameNames(std::string omStrEcuName, std::list<std::string>& lstFrames);
+    HRESULT GetRxFrameList( std::string omStrEcuName, std::list<FRAME_STRUCT>& ouFrameList );
+    HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<PDU_STRUCT>& ouPduList );
+    HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<SIGNAL_STRUCT>& ouSignalList );
     HRESULT GetEcuChannel( ECHANNEL& ouChannelType );
 
     CString bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus);
@@ -213,14 +212,14 @@ public:
     BOOL bFormSigNameAndLength(UINT* punLength,
                                UINT* punStartBit,
                                CStringArray& omStrArraySigName,
-                               list<FRAME_STRUCT>::iterator itrFrame);
-    SIGNAL_STRUCT psGetSigPtr(UINT unStartBitSrc, list<SIGNAL_STRUCT> sigList);
+                               std::list<FRAME_STRUCT>::iterator itrFrame);
+    SIGNAL_STRUCT psGetSigPtr(UINT unStartBitSrc, std::list<SIGNAL_STRUCT> sigList);
 
     BOOL bInsertBusSpecStructures(CStdioFile& omHeaderFile,
                                   CString& omStrcommandLine,
                                   CStringArray& omStrArraySigName,
-                                  list<FRAME_STRUCT>::iterator itrFrame, ETYPE_BUS eBUS);
-    HRESULT GetFrames(list<FRAME_STRUCT>& ouFrameList);
+                                  std::list<FRAME_STRUCT>::iterator itrFrame, ETYPE_BUS eBUS);
+    HRESULT GetFrames(std::list<FRAME_STRUCT>& ouFrameList);
 };
 
 class FlexRayChannelParam
@@ -239,7 +238,7 @@ class LinChannelParam
 {
 public:
     int m_nBaudRate;
-    string m_strProtocolVersion;
+    std::string m_strProtocolVersion;
     bool m_bOverWriteSettings;
     void vInitialiseConfig()
     {
@@ -259,8 +258,8 @@ typedef struct tag_Channel_Config
 {
     Cluster m_ouClusterInfo;
     ETYPE_BUS m_eBusChannelType;
-    list<string> m_strSlectedEculist;
-    string m_strDataBasePath;
+    std::list<std::string> m_strSlectedEculist;
+    std::string m_strDataBasePath;
 
     FlexRayChannelParam m_ouFlexRayParams;
     LinChannelParam     m_ouLinParams;
@@ -298,10 +297,10 @@ typedef struct tag_Channel_Config
     }
 
 
-    HRESULT GetSelectedECUTxFrames(list<FRAME_STRUCT>& ouFrameList)
+    HRESULT GetSelectedECUTxFrames(std::list<FRAME_STRUCT>& ouFrameList)
     {
-        list<string>::iterator itrEcuList;
-        list<FRAME_STRUCT> ouFrameTempList;
+        std::list<std::string>::iterator itrEcuList;
+        std::list<FRAME_STRUCT> ouFrameTempList;
         for ( itrEcuList =m_strSlectedEculist.begin(); itrEcuList != m_strSlectedEculist.end(); itrEcuList++ )
         {
             m_ouClusterInfo.GetTxFrameList(*itrEcuList, ouFrameTempList);
@@ -313,7 +312,7 @@ typedef struct tag_Channel_Config
 
         //TODO::
         int nCount = 0;
-        list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
+        std::list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
         while( itrFrame != ouFrameTempList.end())
         {
             ouFrameList.push_back(*itrFrame);
@@ -327,10 +326,10 @@ typedef struct tag_Channel_Config
 
 
 
-    HRESULT GetSelectedECUFrames(list<FRAME_STRUCT>& ouFrameList)
+    HRESULT GetSelectedECUFrames(std::list<FRAME_STRUCT>& ouFrameList)
     {
-        list<string>::iterator itrEcuList;
-        list<FRAME_STRUCT> ouFrameTempList;
+        std::list<std::string>::iterator itrEcuList;
+        std::list<FRAME_STRUCT> ouFrameTempList;
         for ( itrEcuList =m_strSlectedEculist.begin(); itrEcuList != m_strSlectedEculist.end(); itrEcuList++ )
         {
             m_ouClusterInfo.GetFrameList(*itrEcuList, ouFrameTempList);
@@ -341,7 +340,7 @@ typedef struct tag_Channel_Config
 
         //TODO::
         int nCount = 0;
-        list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
+        std::list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
         while( itrFrame != ouFrameTempList.end())
         {
             ouFrameList.push_back(*itrFrame);
@@ -353,11 +352,11 @@ typedef struct tag_Channel_Config
         return S_OK;
     }
 
-    HRESULT GetSelectedECUTxFrameNames(list<string>& ouFrameTempList)
+    HRESULT GetSelectedECUTxFrameNames(std::list<std::string>& ouFrameTempList)
     {
         if(m_strDataBasePath != "" && m_strSlectedEculist.size() > 0)
         {
-            list<string>::iterator itrEcuList = m_strSlectedEculist.begin();
+            std::list<std::string>::iterator itrEcuList = m_strSlectedEculist.begin();
 
             if(itrEcuList != m_strSlectedEculist.end())
             {
@@ -377,10 +376,10 @@ typedef struct tag_Channel_Config
     }
     HRESULT GetFrame(UINT unSlotId, UINT unCycle, ECHANNEL oeChannel, FRAME_STRUCT& ouFrame)
     {
-        map<SLOT, list<ECU_ID>>:: iterator itrSlotEcu = m_ouClusterInfo.m_mapSlotEcu.find(unSlotId);
+        std::map<SLOT, std::list<ECU_ID>>:: iterator itrSlotEcu = m_ouClusterInfo.m_mapSlotEcu.find(unSlotId);
         if ( itrSlotEcu !=  m_ouClusterInfo.m_mapSlotEcu.end() )
         {
-            list<ECU_ID>::iterator itrEcu = itrSlotEcu->second.begin();
+            std::list<ECU_ID>::iterator itrEcu = itrSlotEcu->second.begin();
             while ( itrEcu !=  itrSlotEcu->second.end() )
             {
                 ECUMAP::iterator itrEcuStruct = m_ouClusterInfo.m_ouEcuList.find(*itrEcu);
@@ -401,10 +400,10 @@ typedef struct tag_Channel_Config
     {
         if ( m_ouClusterInfo.m_mapSlotEcu.size() > 0 )
         {
-            map<SLOT, list<ECU_ID>>:: iterator itrSlotEcu = m_ouClusterInfo.m_mapSlotEcu.find(unSlotId);
+            std::map<SLOT, std::list<ECU_ID>>:: iterator itrSlotEcu = m_ouClusterInfo.m_mapSlotEcu.find(unSlotId);
             if ( itrSlotEcu !=  m_ouClusterInfo.m_mapSlotEcu.end() )
             {
-                list<ECU_ID>::iterator itrEcu = itrSlotEcu->second.begin();
+                std::list<ECU_ID>::iterator itrEcu = itrSlotEcu->second.begin();
                 while ( itrEcu !=  itrSlotEcu->second.end() )
                 {
                     ECUMAP::iterator itrEcuStruct = m_ouClusterInfo.m_ouEcuList.find(*itrEcu);
@@ -444,34 +443,3 @@ typedef struct _FlexConfig
     }
 
 } ClusterConfig;
-
-/*typedef struct _LINConfig
-{
-    CHANNEL_CONFIG m_ouLINChannelConfig[CHANNEL_ALLOWED];
-    INT m_nChannelsConfigured;
-    void InitialiseConfig()
-    {
-        for (int i = 0; i < m_nChannelsConfigured; i++ )
-        {
-            m_ouLINChannelConfig[0].m_ouClusterInfo.Clear();
-            m_ouLINChannelConfig[0].m_strDataBasePath = "";
-            m_ouLINChannelConfig[0].m_strSlectedEculist.clear();
-        }
-
-
-    }
-
-} LINConfig;*/
-
-/*
-class Channel
-{
-    ECHANNEL    m_ouChannelType;
-    list<ECU>   m_ouEcuList;
-public:
-    HRESULT GetECUList( list<ECU>& ouEcuList );
-    HRESULT GetFrameList( string omStrEcuName, list<FRAME>& ouFrameList, EDIRECTION ouEDIRECTION );
-    HRESULT GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU>& ouPduList );
-    HRESULT GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL>& ouSignalList );
-};
-*/

@@ -23,7 +23,7 @@
 
 /* C++ includes */
 #include <string>
-using namespace std;
+
 // Filter
 #define defFILTER_TYPE_SINGLE_ID                0
 #define defFILTER_TYPE_ID_RANGE                 1
@@ -102,12 +102,12 @@ using namespace std;
 class tagFilterDisplayInfo
 {
 public:
-    string  m_omStrMsgIDFrom;
-    string  m_omStrMsgIDTo;
-    string  m_omStrMsgIDType;
-    string  m_omStrMsgType;
-    string  m_omStrMsgDirection;
-    string  m_omStrMsgChannel;
+    std::string  m_omStrMsgIDFrom;
+    std::string  m_omStrMsgIDTo;
+    std::string  m_omStrMsgIDType;
+    std::string  m_omStrMsgType;
+    std::string  m_omStrMsgDirection;
+    std::string  m_omStrMsgChannel;
     int     m_nImageIndex;
 };
 

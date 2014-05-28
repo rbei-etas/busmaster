@@ -1335,14 +1335,6 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     ouHeaderInfo.m_sEngineerInfo2.m_omValue = omTempListCtrl.GetItemText(def_TS_ROWNUM_ENGINEER2, 1);
     ouHeaderInfo.m_sReportFile.m_omPath = omTempListCtrl.GetItemText(def_TS_ROWNUM_REPORT, 1);
 
-    /* struct _finddata_t fileinfo;
-     // If file doesn't exist, return
-     if (_findfirst( ouHeaderInfo.m_sReportFile.m_omPath, &fileinfo)== -1)
-     {
-         MessageBox(_T("Invalid Database path"), _T("Error"), MB_OK|MB_ICONERROR);
-         m_odPropertyView->m_omPropertyList.SetItemText(def_TS_ROWNUM_REPORT, 1, _T(""));
-         ouHeaderInfo.m_sReportFile.m_omPath = _T("");
-     }*/
     ouHeaderInfo.m_omDatabasePath = omTempListCtrl.GetItemText(def_TS_ROWNUM_DATABASE, 1);
 
     //Bus Type
@@ -3083,7 +3075,7 @@ bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
     if(m_omCurrentTSFile.IsEmpty() == FALSE && m_omCurrentTSFile != def_EMPTYFILENAME)
     {
 
-        string omPath, omStrConfigFolder;
+        std::string omPath, omStrConfigFolder;
         char configPath[MAX_PATH];
         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
@@ -3249,8 +3241,8 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
                 {
                     if(PathIsRelative((char*)pText) == TRUE)
                     {
-                        string omStrConfigFolder;
-                        string omPath;
+                        std::string omStrConfigFolder;
+                        std::string omPath;
                         char configPath[MAX_PATH];
                         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );

@@ -301,29 +301,11 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
     }
 }
 
-/*******************************************************************************
- Function Name  : OnBlinkHw
- Input(s)       :  -
- Output         :  -
- Functionality  : This function will make the selected hardware LED to blink.
-                  This is done by sending the CAN_PARAM_USER_LOCATION_INFO
-                  string continously. The LED blink will indicate Hw access.
- Member of      : CHardwareListing
- Author(s)      : Raja N
- Date Created   : 08.09.2004
- Modifications  : Raja N on 14.3.2005
-                  Modified blinking logic. Now a temp net and client will be
-                  created. Temp Client will be connected with temp net so that
-                  LED in the hardware will blink and then will be disconnected.
-                  Temp resources will be freed then.
- Modifications  : Raja N on 14.3.2005
-                  Modified function name to get free net handle
- Modifications  : Raja N on 22.3.2005
-                  Modified as per testing. Refered item data for getting Hw
-                  index rather then item index.
-                  venkatanarayana Makam on 15.11.2011
-                  Reintrduced blink functionality
-*******************************************************************************/
+/**
+ * This function will make the selected hardware LED to blink.
+ * This is done by sending the CAN_PARAM_USER_LOCATION_INFO
+ * string continously. The LED blink will indicate Hw access.
+ */
 void CHardwareListing::OnBlinkHw()
 {
     INT nIndex = (INT)m_omHardwareList.GetItemData( m_nSelectedItem );
@@ -642,7 +624,7 @@ void CHardwareListing::vEnableDisableButtons()
     {
         if(bSelectEnable == FALSE || m_pfnBlinkFunction == NULL)
         {
-            pWnd->EnableWindow( FALSE );//venkat
+            pWnd->EnableWindow( FALSE );
         }
         else
         {
@@ -714,7 +696,7 @@ void CHardwareListing::vSetSelectedList()
 
     for ( int i = 0 ; i < m_nSize && m_pnSelList[i]!=-1 ; i++)
     {
-        ostringstream Tmp, Tmp1;
+        std::ostringstream Tmp, Tmp1;
         nItem = m_omSelectedHwList.GetItemCount();
         // Format channel information
         omStrChannel.Format( defSTR_CHANNEL_NAME_FORMAT,

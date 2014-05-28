@@ -14,9 +14,8 @@
  */
 
 /**
- * \file      BusStatisticCAN.cpp
- * \author    venkatanarayana Makam
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author venkatanarayana Makam
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "StdAfx.h"
 //To Include BusStatisticCAN Definitions.
@@ -42,7 +41,6 @@ int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
     while (pBSCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
-        //Tobias- Venkat
         //sCanData.m_lTickCount.QuadPart;
         int Result = pBSCan->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
         if (Result == ERR_READ_MEMORY_SHORT)

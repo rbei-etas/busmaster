@@ -2594,7 +2594,6 @@ void CTxMsgDetailsView::vUpdateSignalMatrix(int nSelectedIndex)
         BYTE abySigMask[DATA_LENGTH_MAX] = {0};
         CMsgSignal::bCalcBitMaskForSig( abySigMask,
                                         DATA_LENGTH_MAX,
-                                        // PTV [1.6.4] 59
                                         psSignal->m_unStartByte,
                                         psSignal->m_byStartBit,
                                         psSignal->m_unSignalLength,

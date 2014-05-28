@@ -7,19 +7,12 @@
 #error include 'FibexClass_stdafx.h' before including this file for PCH
 #endif
 
-//#include "FibexClass/FibexClass_resource.h"        // main symbols
-//#include "FibexClass/FibexLib_stdafx.h"
 #include "stdafx.h"         // Standard header include file
 #include "FIBEX_Structs.h"
 #include "DataTypes/Cluster.h"
 #include <afxtempl.h>
 #include <map>
-//#include "DataTypes\CCODING_2_0.h"
-using namespace MSXML2;
-// CFibexClassApp
-// See FibexClass.cpp for the implementation of this class
-//
-using namespace std;
+
 typedef enum
 {
     IDENTICAL_E = 0,              //No change
@@ -35,7 +28,7 @@ struct SLIMIT_v2
 {
 public:
     /* One of - OPEN, CLOSED[default], INFINITE */
-    string         m_ouIntervalType;
+    std::string         m_ouIntervalType;
     float           m_fValue;
 
     SLIMIT_v2();
@@ -49,7 +42,7 @@ public:
     /* One of -
      * VALID[default], NOT-VALID, NOT-AVAILABLE, NOT-DEFINED, ERROR, OTHER */
 
-    string         m_ouValidity;
+    std::string         m_ouValidity;
     SLIMIT_v2          m_sLowerLimit;
     SLIMIT_v2          m_sUpperLimit;
 
@@ -70,7 +63,7 @@ class SCOMPU_CONST_v2
 public:
     bool    m_bIsDouble;
     float   m_fV;
-    string m_omVT;
+    std::string m_omVT;
 
     SCOMPU_CONST_v2();
     ~SCOMPU_CONST_v2();
@@ -109,9 +102,9 @@ public:
 
 struct SDECRIPTION_v2
 {
-    string        m_omDescription;
-    string        m_omDescriptType;
-    string        m_omDescriptionLang;
+    std::string m_omDescription;
+    std::string m_omDescriptType;
+    std::string m_omDescriptionLang;
     SDECRIPTION_v2();
     //HRESULT Save(MSXML2::IXMLDOMElementPtr& pParentNode);
 };
@@ -120,10 +113,10 @@ struct SDECRIPTION_v2
 struct SNAMED_ELEMENT_TYPE_v2
 {
     SDECRIPTION_v2 m_omDESC;
-    string     m_omLongName;
-    string     m_omLNameLang;
-    string     m_omShortName;
-    string     m_omProductRef;
+    std::string m_omLongName;
+    std::string m_omLNameLang;
+    std::string m_omShortName;
+    std::string m_omProductRef;
 
     SNAMED_ELEMENT_TYPE_v2();
     void DoCleanup(void);
@@ -136,12 +129,12 @@ struct SNAMED_ELEMENT_TYPE_v2
 
 typedef struct tagSUnit
 {
-    string     m_omID;
-    string     m_omUnitName;
-    string     m_omDisplayName;
+    std::string     m_omID;
+    std::string     m_omUnitName;
+    std::string     m_omDisplayName;
     float       m_fFACTOR_SI_TO_UNIT;
     float       m_fOFFSET_SI_TO_UNIT;
-    string     m_omPHYSICAL_DIMENSION_REF;
+    std::string     m_omPHYSICAL_DIMENSION_REF;
 
 } UNIT_EX;
 
@@ -152,7 +145,7 @@ public:
     SLIMIT_v2                  m_sUpper;
     SCOMPU_CONST_v2            m_sCompuConst;
     SCOMPU_RATIONAL_COEFFS_v2  m_sCompuRationalCoeffs;
-    string                    m_omCompuGenMath;
+    std::string                    m_omCompuGenMath;
 
     SCOMPU_SCALE_v2();
     ~SCOMPU_SCALE_v2();
@@ -216,9 +209,9 @@ public:
     SNAMED_ELEMENT_TYPE_v2     m_sNamedElemType;
     /* One from -
      * IDENTICAL, LINEAR, SCALE-LINEAR, TEXTTABLE, TAB-NOINTP, FORMULA */
-    string                 m_ouCategory;
+    std::string                 m_ouCategory;
     COMPU_EXPRESSION_MSGSIG        m_eCategory;
-    string                 m_omUnitRef;
+    std::string                 m_omUnitRef;
     //CScaleContrsList_v2        m_odPhysConstrs;
     //CScaleContrsList_v2        m_odInternalConstrs;
     SCOMPU_INTERNAL_TO_PHYS_v2 m_sCompu_Internal_To_Phys;
@@ -242,11 +235,11 @@ struct CCODING_v2
 {
 public:
 
-    string              m_omID;
+    std::string              m_omID;
     SNAMED_ELEMENT_TYPE_v2  m_sNamedElemType;
     SPHYSICAL_TYPE_v2   m_sPhysicalType;
     SCODED_TYPE_v2      m_sCodedType;
-    string          m_omMFR_CODING_EXTN;
+    std::string          m_omMFR_CODING_EXTN;
     CCompuMethodList_v2 m_odCompuMethodList;
     CElementRevList_v2      m_odElementRevList;
 
@@ -279,68 +272,68 @@ public:
     //CCompuScaleList_v2 m_sample;
 
     // FrameId + PduName to Signal details
-    map<string, list<SIGNAL_STRUCT>> m_mapFrameIdToSignalDetails;
+    std::map<std::string, std::list<SIGNAL_STRUCT>> m_mapFrameIdToSignalDetails;
     // Coding Ref to coding object
-    map<string, CCODING_v2&> m_mapCoding;
+    std::map<std::string, CCODING_v2&> m_mapCoding;
 
-    map<string, UNIT_EX> m_mapUnitRefToUnit;
+    std::map<std::string, UNIT_EX> m_mapUnitRefToUnit;
 
     CList<CCODING_v2, CCODING_v2&> lstCoding;
 
     // Position of particular coding in lstCoding
-    map<string, POSITION> mapCodingPosition;
+    std::map<std::string, POSITION> mapCodingPosition;
 
-    map<string, CSignal> m_mapSignalDetails;
+    std::map<std::string, CSignal> m_mapSignalDetails;
 
     // Frame Id to Frame details
-    map<string, CFrame> m_mapFrameDetails;
+    std::map<std::string, CFrame> m_mapFrameDetails;
 
     // Pdu Id to Pdu details
-    map<string, CPdu> m_mapPduDetails;
+    std::map<std::string, CPdu> m_mapPduDetails;
 
-    map<string, CECU> m_mapECUDetails;
+    std::map<std::string, CECU> m_mapECUDetails;
 
-    map<string, map<string,string>> m_mapChnlToECUDetails;
+    std::map<std::string, std::map<std::string, std::string>> m_mapChnlToECUDetails;
 
-    map<string, CClusterv2> m_mapClusterDetails;
+    std::map<std::string, CClusterv2> m_mapClusterDetails;
 
     // FrameTrig Id to Frame details
-    map<string, CFrameTrig> m_mapFramTrigIdToFrame;
+    std::map<std::string, CFrameTrig> m_mapFramTrigIdToFrame;
 
-    map<string, string> m_mapChannelRefToChnlName;
+    std::map<std::string, std::string> m_mapChannelRefToChnlName;
 
-    map<string, map<string, string>> m_ECUIdToChnlRefs;
+    std::map<std::string, std::map<std::string, std::string>> m_ECUIdToChnlRefs;
 
-    map<string, string> m_SubFrameToFrame;
+    std::map<std::string, std::string> m_SubFrameToFrame;
 
     // SubFrame Id to Signal Instances
-    map<string, map<string, CSigInstance>>  m_mapSubFrameToSigInst;
+    std::map<std::string, std::map<std::string, CSigInstance>>  m_mapSubFrameToSigInst;
 
-    string m_strFIBEXVersion;
+    std::string m_strFIBEXVersion;
 
-    ECHANNEL GetChnlEnumFromChnlName(string strChannelName);
+    ECHANNEL GetChnlEnumFromChnlName(std::string strChannelName);
 
     void Initialize();
 
-    void GetSignalStruct(map<string, CSigInstance> mapSigInstance, list<SIGNAL_STRUCT>& objSignal);
+    void GetSignalStruct(std::map<std::string, CSigInstance> mapSigInstance, std::list<SIGNAL_STRUCT>& objSignal);
 
     /* implementation for baseclass APIs */
     // To load the Fibex file
-    int LoadFibexFile(string omFibexFilePath,
+    int LoadFibexFile(std::string omFibexFilePath,
                       PABS_FIBEX_CONTAINER pAbsFibexContainer);
 
-    int LoadFibexFile_Generic(string omFibexFilePath, map<string, Cluster>& lstCluster);
+    int LoadFibexFile_Generic(std::string omFibexFilePath, std::map<std::string, Cluster>& lstCluster);
 
-    HRESULT LoadFibexFile_v2_0(string omFibexFilePath);
+    HRESULT LoadFibexFile_v2_0(std::string omFibexFilePath);
 
     void CopyCodingDetails(SIGNAL_STRUCT& objSignal, SCOMPU_METHOD_v2 objCompuMthd);
 
     void sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INTERNAL_TO_PHYS_v2& ouCompuInToPhys);
 
-    COMPU_EXPRESSION_MSGSIG sCopyCompuType(string ouCompuType);
-    RANGE_VALID eGetRangeValid(string omValidity);
+    COMPU_EXPRESSION_MSGSIG sCopyCompuType(std::string ouCompuType);
+    RANGE_VALID eGetRangeValid(std::string omValidity);
 
-    void FillFibexStructurev2(map<string, Cluster>& lstCluster);
+    void FillFibexStructurev2(std::map<std::string, Cluster>& lstCluster);
 
     void CopyClusterDetails(Cluster& objCluster);
 
@@ -358,7 +351,7 @@ public:
 
     HRESULT DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CClusterv2& objCluster);
 
-    HRESULT DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrameTrig& objFrameTrig, string strChannelRef);
+    HRESULT DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrameTrig& objFrameTrig, std::string strChannelRef);
 
     HRESULT Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& objPdu);
 
@@ -370,7 +363,7 @@ public:
 
     HRESULT Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CClusterv2& objCluster);
 
-    HRESULT Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrameTrig& objFrameTrig, string strChannelRef);
+    HRESULT Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrameTrig& objFrameTrig, std::string strChannelRef);
 
     HRESULT Process_Load(MSXML2::IXMLDOMNodePtr pParent);
 
@@ -404,18 +397,18 @@ public:
 
 
     // To delete the entity
-    int Remove(eENTITY_FIBEX eEntity, string omID);
+    int Remove(eENTITY_FIBEX eEntity, std::string omID);
 
 
     // Save contents into a Fibex file.
-    BOOL WriteFibexFile(string omFibexFilePath, PABS_FIBEX_CONTAINER pAbsFibexContainer);
+    BOOL WriteFibexFile(std::string omFibexFilePath, PABS_FIBEX_CONTAINER pAbsFibexContainer);
 
 
     // To convert Fibex specific data into the abstraction layer data and vice
     // versa. 'bToAbstract' denotes the direction; TRUE means from Fibex specific
     // data into the abstract data. Subject to the value of 'bToAbstract', Buffer
     // will be interpreted.
-    int bTranslate(eENTITY_FIBEX eEntity, string om_ID, BYTE* Buffer, BOOL bToAbstract);
+    int bTranslate(eENTITY_FIBEX eEntity, std::string om_ID, BYTE* Buffer, BOOL bToAbstract);
 
     // Call this API to get the cluster information like, number of Flexray clusters, controllers are associated.
     HRESULT hGetFLEXRAYClustersInfo(PABS_FIBEX_CONTAINER pAbsFibexContainer, AbsClusterInfoList& omAvailableClustersInfo);
@@ -423,11 +416,11 @@ public:
     /* Helper APIs */
     // To retrieve version information of the Fibex file in consideration
     // This will render the version number, for eg 1.0.0, 1.1.5a , 1.2.0a, 2.0.0d, 3.0.0
-    string GetVersionInfo(const string& omFibexFilePath);
+    std::string GetVersionInfo(const std::string& omFibexFilePath);
 
-    string GetActiveVersion(void);
+    std::string GetActiveVersion(void);
 
-    int SetActiveVersion(string& omVersion);
+    int SetActiveVersion(std::string& omVersion);
 
     int UnloadLibrary(void);
 };

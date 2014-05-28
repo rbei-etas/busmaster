@@ -28,7 +28,6 @@
 #include "DataTypes/Log_DataTypes.h"
 #include "DataTypes/Filter_DataTypes.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
-//#include "DataTypes/NetworkStats.h"
 
 typedef struct tagCANPROC_PARAMS
 {
@@ -39,8 +38,8 @@ typedef struct tagCANPROC_PARAMS
     DWORD dwClientID;
     tagCANPROC_PARAMS()
     {
-        m_pouCANBuffer = NULL;
-        m_pILog = NULL;
+        m_pouCANBuffer = nullptr;
+        m_pILog = nullptr;
         dwClientID = 0;
         for (int i = 0; i < MAX_PATH; i++)
         {
@@ -128,9 +127,8 @@ public:
     // Getter for the logging configuration data
     virtual HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength) = 0;
 
-    // PTV XML
     virtual HRESULT FPC_GetConfigData(xmlNodePtr pNodePtr) = 0;
-    // PTV XML
+
     // Setter for the logging configuration data
     virtual HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion) = 0;
     virtual HRESULT FPC_SetConfigData(xmlDocPtr pDoc) = 0;
@@ -153,10 +151,4 @@ public:
     // To update the channel baud rate info to logger
     virtual HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
             int nNumChannels,ETYPE_BUS eBus) = 0;
-    //Shailesh +
-    /*virtual void IncrementConnectionCount()
-    {
-
-    }*/
-    //Shailesh -
 };

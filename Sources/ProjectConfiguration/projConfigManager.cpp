@@ -48,7 +48,7 @@ CProjConfigManager::~CProjConfigManager()
 }
 
 
-bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig*& ProjConfig)
+bool CProjConfigManager::GetProjectConfig(std::string ProjectName, CProjConfig*& ProjConfig)
 {
     bool bResult = false;
     PROJECTMAP::iterator i = m_MapOfProject.begin();
@@ -57,18 +57,6 @@ bool CProjConfigManager::GetProjectConfig(string ProjectName, CProjConfig*& Proj
         bResult = true;
         ProjConfig = &(i->second);
     }
-    //else
-    //{
-    //  if (m_MapOfProject.size() > 0)
-    //  {
-    //      PROJECTDATA xyz;
-    //      PROJECTMAP::iterator i1 = m_MapOfProject.begin();
-    //      CProjConfig *ProjConfig = &(i1->second);
-    //      ProjConfig->GetProjectDetail(xyz);
-    //      string ab;//= xyz.m_ProjectName;
-    //      ab = i1->first;
-    //  }
-    //}
     return bResult;
 }
 
@@ -79,7 +67,7 @@ int CProjConfigManager::GetProjectCount()
     return m_MapOfProject.size();
 }
 
-int CProjConfigManager::GetProjectList(list<string>& ProjectList)
+int CProjConfigManager::GetProjectList(std::list<std::string>& ProjectList)
 {
     ProjectList.clear();
 
@@ -91,7 +79,7 @@ int CProjConfigManager::GetProjectList(list<string>& ProjectList)
     return GetProjectCount();
 }
 
-bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
+bool CProjConfigManager::GetProjectData(std::string ProjName, PROJECTDATA& ProjData)
 {
     bool bResult = false;
 
@@ -106,7 +94,7 @@ bool CProjConfigManager::GetProjectData(string ProjName, PROJECTDATA& ProjData)
     return bResult;
 }
 
-int CProjConfigManager::GetSectionCount(string ProjectName)
+int CProjConfigManager::GetSectionCount(std::string ProjectName)
 {
     int nResult = 0;
 
@@ -119,7 +107,7 @@ int CProjConfigManager::GetSectionCount(string ProjectName)
     return nResult;
 }
 
-int CProjConfigManager::GetSectionList(string ProjectName, list<string>& SectionList)
+int CProjConfigManager::GetSectionList(std::string ProjectName, std::list<std::string>& SectionList)
 {
     int nResult = 0;
 
@@ -132,7 +120,7 @@ int CProjConfigManager::GetSectionList(string ProjectName, list<string>& Section
     return nResult;
 }
 
-bool CProjConfigManager::GetSectionData(string ProjectName, string SectionName,
+bool CProjConfigManager::GetSectionData(std::string ProjectName, std::string SectionName,
                                         SECTIONDATA& Sectiondata)
 {
     bool bResult = false;
@@ -164,7 +152,7 @@ void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
     }
 }
 
-bool CProjConfigManager::AddModifySection(string ProjectName,
+bool CProjConfigManager::AddModifySection(std::string ProjectName,
         const SECTIONDATA& SectionData)
 {
     bool bResult = false;
@@ -178,7 +166,7 @@ bool CProjConfigManager::AddModifySection(string ProjectName,
     return bResult;
 }
 
-void CProjConfigManager::DeleteProjectTable(string ProjectName)
+void CProjConfigManager::DeleteProjectTable(std::string ProjectName)
 {
     m_MapOfProject.erase(ProjectName);
 }
@@ -187,4 +175,3 @@ void CProjConfigManager::DeleteAllProjectTable(void)
 {
     m_MapOfProject.clear();
 }
-

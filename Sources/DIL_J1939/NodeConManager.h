@@ -39,13 +39,13 @@
   Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
-#if !defined NODE_CONMANAGER_H__INCLUDED_
-#define NODE_CONMANAGER_H__INCLUDED_
+
+#pragma once
 
 #include "ConnectionDet.h"
 #include "DataTypes/MsgBufVSE.h"
-#define DEF_MAX_CON_OF_A_NODE           15
 
+#define DEF_MAX_CON_OF_A_NODE           15
 
 class CNodeConManager
 {
@@ -159,5 +159,3 @@ public:
     void vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType, UINT32 unPGN, BYTE bySrc,
                                BYTE byDest, BOOL bSuccess);
 };
-
-#endif // NODE_CONMANAGER_H__INCLUDED_

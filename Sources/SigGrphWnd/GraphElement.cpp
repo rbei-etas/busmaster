@@ -72,7 +72,6 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
         COPY_DATA(pbyTemp, &m_nMsgID, sizeof(int));
         // Message Name
         char MsgName[MAX_PATH] = {_T('\0')};
-        //Tobias - venkat
         strcpy_s(MsgName, MAX_PATH, m_strMsgName.GetBuffer(MAX_PATH));
         COPY_DATA(pbyTemp, MsgName, (sizeof(char) * MAX_PATH));
         // Frame Format - Standard

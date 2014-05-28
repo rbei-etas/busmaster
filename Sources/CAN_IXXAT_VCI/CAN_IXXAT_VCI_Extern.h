@@ -22,22 +22,18 @@
  *
  * Exports API functions for IXXAT CAN Hardware interface with VCI driver for Windows.
  */
-#if !defined CAN_IXXAT_VCI_EXTERN_H__INCLUDED_
-#define CAN_IXXAT_VCI_EXTERN_H__INCLUDED_
 
+#pragma once
 
 #if defined USAGEMODE
 #undef USAGEMODE
 #endif
-
 
 #if defined USAGE_EXPORT
 #define USAGEMODE   __declspec(dllexport)
 #else
 #define USAGEMODE   __declspec(dllimport)
 #endif
-
-
 
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
@@ -49,5 +45,3 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #ifdef __cplusplus
 }
 #endif
-
-#endif // CAN_IXXAT_VCI_EXTERN_H__INCLUDED_

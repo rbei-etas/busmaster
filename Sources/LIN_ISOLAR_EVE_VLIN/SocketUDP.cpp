@@ -1,10 +1,6 @@
-/*
- * SocketUDP.cpp
- *
- *  Created on: 23.11.2011
- *      Author: samir
+/**
+ * @author samir
  */
-//using namespace std;
 
 #include <iostream>
 #include <stdio.h>

@@ -60,12 +60,7 @@ Usage:
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_MULTILANGUAGE_H__327ABDCD_358B_4F65_8FA7_D999878B4574__INCLUDED_)
-#define AFX_MULTILANGUAGE_H__327ABDCD_358B_4F65_8FA7_D999878B4574__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // LONG_PTR Signed long type for pointer precision.
 // Use when casting a pointer to a long to perform pointer arithmetic.
@@ -103,5 +98,3 @@ protected:
     static LCID AddLocale( LCID lcid );
     static LCID AddLangId( LANGID langid );
 };
-
-#endif // !defined(AFX_MULTILANGUAGE_H__327ABDCD_358B_4F65_8FA7_D999878B4574__INCLUDED_)

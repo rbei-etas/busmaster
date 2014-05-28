@@ -14,8 +14,8 @@
   Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
-#ifndef APPSERVICESJ1939_H__INCLUDED_
-#define APPSERVICESJ1939_H__INCLUDED_
+
+#pragma once
 
 #include "AppServices.h"
 
@@ -38,4 +38,3 @@ UINT g_unCommandAddress_J1939(UINT64 EcuName, BYTE NewAddress, UINT Channel,
 UINT g_unSetTimeout_J1939(BYTE TimeoutType, UINT TimeoutValue, HMODULE hModule);
 
 BOOL gbWtiteToLog_J1939(char* pcInputString);
-#endif // APPSERVICESJ1939_H__INCLUDED_

@@ -89,9 +89,7 @@ public:
     //Set Config Data.
     HRESULT SetConfigData(BYTE* pvDataStream);
 
-    //MVN
     HRESULT SetConfigData(xmlDocPtr pDoc);
-    //~MVN
     //Gets the Count of defined signals.
     UINT nGetNumberOfDefinedSignals(void);
 
@@ -134,7 +132,5 @@ private:
 
     BOOL pbyGetListConfigData(xmlNodePtr pxmlNodePtr);
     bool bIsSignalInMsgFoundInDB(UINT& nMsgID, CString& strSignalName);
-    //MVN
     int ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignalWave);
-    //~MVN
 };

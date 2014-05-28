@@ -154,7 +154,7 @@ void CFlexRayDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
             int nBufferSize = m_omDissociateDbLst.GetTextLen(nSelectedPos);
             m_omDissociateDbLst.GetText(nSelectedPos,omstrDBPath.GetBuffer(nBufferSize));
             //bDBDeleted = (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->bDeAllocateMemory(omstrDBPath.GetBuffer(0));
-            int nDB = (sizeof(m_sFibexParams.m_acConfigFileName)/sizeof(string));
+            int nDB = (sizeof(m_sFibexParams.m_acConfigFileName)/sizeof(std::string));
             for(int nItr =0; nItr <  nDB; nItr++)
             {
                 if((m_sFibexParams.m_acConfigFileName[nItr]).compare(omstrDBPath.GetBuffer(0)) == 0)

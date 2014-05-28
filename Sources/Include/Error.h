@@ -47,7 +47,6 @@ const HRESULT FIBXED       = 0x00A00000; // Fibex Editor
 const HRESULT COMMON       = 0x00B00000; // Common messages
 const HRESULT TRALIB       = 0x00C00000; // MCNet Translator lib
 const HRESULT PUILIB       = 0x00D00000; // PUI Library
-//venkatanarayana
 const HRESULT TSELIB       = 0x00E00000; // TestSetupEditor Library
 const HRESULT TSEGUI       = 0x00F00000; // TestSetupEditor GUI
 const HRESULT TSEXEC       = 0x01000000; // TestSuite Executor
@@ -140,7 +139,6 @@ const HRESULT ERR_VAL_TIME       = MASK_ERR | PUILIB | 0x05; // Problem in syste
 const HRESULT ERR_MISMATCH_CREATIONTIME = MASK_ERR | PUILIB | 0x06; //Mismatch in ADS and File Creation time
 /* ENDS   PUI LIBRARY MESSAGES */
 
-//venkatanarayana
 /* STARTS TESTSETUPEDITOR LIB MESSAGES */
 const HRESULT ERR_NOT_IMPLEMENTED  = MASK_ERR | TSELIB | 0x01; // The defintion of the function was not implemented(usually base class)
 const HRESULT ERR_INVALID_DATABASE = MASK_ERR | TSELIB | 0x02; // The file format of the specified database is not compatiable or wrong

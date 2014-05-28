@@ -466,11 +466,11 @@ BOOL CExploreMsgSg::OnInitDialog()
 
         CString strChnlNum;
         ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->GetWindowTextA(strChnlNum);
-        list<FRAME_STRUCT> lstMsgNames;
+        std::list<FRAME_STRUCT> lstMsgNames;
         INT unChannelNum = atoi(strChnlNum) - 1;
         CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChannelNum].m_ouClusterInfo.GetFrames(lstMsgNames);
 
-        list<FRAME_STRUCT>::iterator itrLstMsg = lstMsgNames.begin();
+        std::list<FRAME_STRUCT>::iterator itrLstMsg = lstMsgNames.begin();
         int nIndex = 0;
         while(itrLstMsg != lstMsgNames.end())
         {
@@ -552,12 +552,12 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
                 {
                     CString strChnlNum;
                     ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL_SEL))->GetWindowTextA(strChnlNum);
-                    list<FRAME_STRUCT> lstMsgNames;
+                    std::list<FRAME_STRUCT> lstMsgNames;
                     INT unChannelNum = atoi(strChnlNum) - 1;
                     FRAME_STRUCT ouframeStrct;
                     CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChannelNum].GetFrame(dwMsgCode, ouframeStrct);
 
-                    list<Flexray_SSIGNALINFO> lstSignalInfo;
+                    std::list<Flexray_SSIGNALINFO> lstSignalInfo;
                     unsigned char uchBytes[254];
                     bGetSignalInfo(ouframeStrct,uchBytes,  ouframeStrct.m_nLength, lstSignalInfo);
                     CStringList  omSignalNames;

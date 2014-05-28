@@ -733,7 +733,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
         POSITION pos = m_ouTestSetupEntityList.FindIndex(iCnt);
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
 
-        string omPath, omStrConfigFolder;
+        std::string omPath, omStrConfigFolder;
         char configPath[MAX_PATH];
         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
@@ -944,7 +944,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                         else
                         {
                             //TestCase Selection Status
-                            list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
+                            std::list<int>::iterator listIterator = sConfigInfo.m_nListSelctedCases.begin();
 
                             for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
                                     listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
@@ -983,8 +983,8 @@ int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& s
         {
             if(PathIsRelative((char*)key) == TRUE)
             {
-                string omStrConfigFolder;
-                string omPath;
+                std::string omStrConfigFolder;
+                std::string omPath;
                 char configPath[MAX_PATH];
                 AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                 CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );

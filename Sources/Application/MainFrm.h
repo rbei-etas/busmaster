@@ -23,12 +23,11 @@
  */
 
 #pragma once
-//MVN
+
 //libxml file includes
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
-//~MVN
 
 #include "Flags.h"                  // Definition of CFlags class
 #include "SectionNames.h"           // Different section names and section ID
@@ -83,16 +82,11 @@
 #include "ConfigData.h"
 #include "NetworkStatistics.h"
 #include "BusStatisticLIN.h"
-
-//venkat
 #include "TSExecutorHandler.h"
 #include "TSEditorHandler.h"
 #include "Utility/XMLUtils.h"
 
 #define WM_SAVE_DBJ1939        (WM_USER + 108)
-
-//// To write in to the trace window
-//BOOL gbSendStrToTrace(char*) ;
 
 // Forward reference to Message Child Window
 class CMsgMDIChildWnd;
@@ -151,12 +145,7 @@ public:
     CCGCtrl*            m_podGraphControl;
     // Flag to Indicate Graph Window status
     BOOL                m_bGraphWindowVisible;
-    // Graph Child Window Pointer
-    //CGraphChildFrame*   m_pomGraphChild;
-    // Pointer to UI Thread
-    //CGraphUIThread*     m_pomGraphThread;
 
-    //venkat
     TSEditorHandler m_objTSEditorHandler;
     TSExecutorHandler m_objTSExecutorHandler;
 
@@ -190,7 +179,6 @@ protected:
 public:
 
     void vGettextBusmaster();
-    // PTV [1.6.4]
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
     BOOL m_bIconSetFlag;
     BOOL m_bJ1939IconSetFlag;
@@ -362,9 +350,7 @@ public:
     CWnd* IsWindowCreated();
     void vCloseFormatconverters();
     void vProcessKeyPress(MSG* pMsg);
-    //MVN
     BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
-    //~MVN
     void OnHex_DecButon();
 
     void bSetHexDecFlags(BOOL bHexOn);
@@ -561,7 +547,6 @@ protected:
     //LIN
     afx_msg void OnConfigureSimulatedsystemsLin();
     afx_msg void OnUpdateLinClusterConfig(CCmdUI* pCmdUI);
-    //venkat
     afx_msg void OnAutomationTSEditor();
     afx_msg void OnAutomationTSExecutor();
 
@@ -706,7 +691,6 @@ private:
     UINT_PTR m_unFlexRayNSTimer;
     // Timer to update status bar
     UINT_PTR m_unTimerSB;
-    // PTV [1.6.4]
     UINT_PTR m_unTimerSBLog;
     UINT_PTR m_unJ1939TimerSBLog;
     UINT_PTR m_unLINTimerSBLog;
@@ -770,36 +754,18 @@ private:
     void vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize);
     INT LoadConfiguration(void);
     INT SaveConfiguration(void);
-    //MVN
-    int nLoadXMLConfiguration(string& m_strCfxFile);
+    int nLoadXMLConfiguration(std::string & m_strCfxFile);
     int nLoadXMLConfiguration();
-
-    //Gets the data of a toolbar from XML file node and creates toolbar
-    //int nGetToolBarNodes(xmlNodePtr pNode, CToolBar& omToolbar, UINT unID,
-    // CString omTitle);
-    //Creates toolbar of given size
-    //int nCreateToolbarFrmXML(CToolBar& omToolbar, UINT unID,CRect rRect,
-    // CString omTitle);
-    //It will read a section (Default or user defined) and createss the toolbar
-    //int nGetToolBarNodeFrmDocSection(xmlXPathObjectPtr pObjectPath);
-
-    //clear the user defined nodes
-    //bool ClearUserDefinedNodes(string& strPath);
-
-    //Will create a section (Default or user defined) and createss the toolbar
-    //BOOL CreateToolBarPosInGlobalFile(xmlNodePtr pNodePtr);
 
     void vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
 
     INT vSaveXMLConfiguration();
     INT vSaveXMLConfiguration(const char* filename);
 
-    INT nGetControllerID(string ptext);
+    INT nGetControllerID(std::string ptext);
     void LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlNodePtr& pNodePtr);
-    string m_omStrCurrentConfigFile;
-    //~MVN
+    std::string m_omStrCurrentConfigFile;
 
-    // PTV
     CString vGetControllerName(UINT nDriverId);
 
     void vSetFileStorageInfo(CString omCfgFileName);
@@ -828,12 +794,8 @@ private:
     CMsgSignal* m_pouActiveDbJ1939;
     BOOL m_abLogOnConnect[BUS_TOTAL];
 
-    /* xmlNodePtr m_pCopyBusStsticsNode;
-    xmlNodePtr m_pCopyBusStsticsNode_LIN;*/
     xmlNodePtr m_pXmlNodeBusStats;
-    // PTV XML
     void vSetGlobalConfiguration(xmlNodePtr& pNodePtr);
-    // PTV XML
 public:
     void vPopulateJ1939PGNList();
     INT ReadGraphDataBuffer(BOOL bCalcTime);
@@ -993,10 +955,8 @@ public:
     void ApplyLogFilter();
     void ApplyLINLogFilter();
     void ApplyReplayFilter();
-    //MVN
     xmlDocPtr m_xmlConfigFiledoc;
     BOOL m_bIsXmlConfig;
-    //~MVN
 
 private:
     void vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexContainer);

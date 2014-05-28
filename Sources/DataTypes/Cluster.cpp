@@ -32,7 +32,7 @@ HRESULT Cluster::GetClusterInfo( ABS_FLEXRAY_CLUSTER& ouClusterInfo )
     ouClusterInfo = m_ouClusterInfo;
     return S_OK;
 }
-HRESULT Cluster::GetECU(string omECUStrId, ECU_Struct& ouEcu)
+HRESULT Cluster::GetECU(std::string omECUStrId, ECU_Struct& ouEcu)
 {
     ECUMAP::iterator ecuIterator = m_ouEcuList.find(omECUStrId);
     if ( ecuIterator  != m_ouEcuList.end() )
@@ -43,9 +43,9 @@ HRESULT Cluster::GetECU(string omECUStrId, ECU_Struct& ouEcu)
     return S_OK;
 }
 
-HRESULT Cluster::GetECUList( list<ECU_Struct>& ouEcuList )
+HRESULT Cluster::GetECUList(std::list<ECU_Struct>& ouEcuList)
 {
-    map<ECU_ID, ECU_Struct>::iterator itrEcu;
+    std::map<ECU_ID, ECU_Struct>::iterator itrEcu;
     if ( m_ouEcuList.size() > 0 )
     {
         ouEcuList.clear();
@@ -56,10 +56,11 @@ HRESULT Cluster::GetECUList( list<ECU_Struct>& ouEcuList )
     }
     return S_OK;
 }
-HRESULT Cluster::GetFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList )
+
+HRESULT Cluster::GetFrameList( std::string omStrEcuName, std::list<FRAME_STRUCT>& ouFrameList )
 {
     HRESULT hResult = S_FALSE;
-    map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouEcuList.find(omStrEcuName);
+    std::map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouEcuList.find(omStrEcuName);
     if ( m_ouEcuList.end() != itrEcu )
     {
         itrEcu->second.GetFrameList(ouFrameList);
@@ -70,12 +71,12 @@ HRESULT Cluster::GetFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameL
 
 HRESULT Cluster::unListGetMessageIDs(UINT*& omListId, UINT& nMsgCount)
 {
-    list<FRAME_STRUCT> ouFrameList;
+    std::list<FRAME_STRUCT> ouFrameList;
     GetFrames(ouFrameList);
 
     omListId = new UINT[ouFrameList.size()];
     nMsgCount = ouFrameList.size();
-    list<FRAME_STRUCT>::iterator itrBegin = ouFrameList.begin();
+    std::list<FRAME_STRUCT>::iterator itrBegin = ouFrameList.begin();
     int unMsgIndex = 0;
     while ( ouFrameList.end() != itrBegin )
     {
@@ -86,7 +87,7 @@ HRESULT Cluster::unListGetMessageIDs(UINT*& omListId, UINT& nMsgCount)
     return S_OK;
 }
 
-HRESULT Cluster::GetFrames(list<FRAME_STRUCT>& ouFrameList)
+HRESULT Cluster::GetFrames(std::list<FRAME_STRUCT>& ouFrameList)
 {
     if(m_ouEcuList.size() <= 0)
     {
@@ -94,19 +95,19 @@ HRESULT Cluster::GetFrames(list<FRAME_STRUCT>& ouFrameList)
     }
 
     ECUMAP::iterator itrEcuList;
-    list<FRAME_STRUCT> ouFrameTempList;
+    std::list<FRAME_STRUCT> ouFrameTempList;
     for ( itrEcuList = m_ouEcuList.begin(); itrEcuList != m_ouEcuList.end(); itrEcuList++ )
     {
         GetFrameList(itrEcuList->first.c_str(), ouFrameTempList);
     }
     ouFrameTempList.sort();
     ouFrameTempList.unique();
-    ouFrameTempList.erase (unique (ouFrameTempList.begin(), ouFrameTempList.end(), Compare_Frame_Structs ), ouFrameTempList.end());  //  2.72,  3.14, 12.15
+    ouFrameTempList.erase (std::unique (ouFrameTempList.begin(), ouFrameTempList.end(), Compare_Frame_Structs ), ouFrameTempList.end());  //  2.72,  3.14, 12.15
 
 
     //TODO::
     int nCount = 0;
-    list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
+    std::list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
     while( itrFrame != ouFrameTempList.end())
     {
         ouFrameList.push_back(*itrFrame);
@@ -118,9 +119,9 @@ HRESULT Cluster::GetFrames(list<FRAME_STRUCT>& ouFrameList)
     return S_OK;
 }
 
-HRESULT Cluster::GetTxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFrameList )
+HRESULT Cluster::GetTxFrameList( std::string omStrEcuName, std::list<FRAME_STRUCT>& ouFrameList )
 {
-    map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouEcuList.find(omStrEcuName);
+    std::map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouEcuList.find(omStrEcuName);
     if ( m_ouEcuList.end() != itrEcu )
     {
         return itrEcu->second.GetFrameList(ouFrameList, DIR_TX);
@@ -128,9 +129,9 @@ HRESULT Cluster::GetTxFrameList( string omStrEcuName, list<FRAME_STRUCT>& ouFram
     return S_FALSE;
 }
 
-HRESULT Cluster::GetFrameNames(string omStrEcuName, list<string>& lstFrames)
+HRESULT Cluster::GetFrameNames(std::string omStrEcuName, std::list<std::string>& lstFrames)
 {
-    map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouEcuList.find(omStrEcuName);
+    std::map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouEcuList.find(omStrEcuName);
     if ( m_ouEcuList.end() != itrEcu )
     {
         return itrEcu->second.GetFrameNames(lstFrames);
@@ -138,11 +139,12 @@ HRESULT Cluster::GetFrameNames(string omStrEcuName, list<string>& lstFrames)
     return S_FALSE;
 }
 
-HRESULT Cluster::GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU_STRUCT>& ouPduList )
+HRESULT Cluster::GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<PDU_STRUCT>& ouPduList )
 {
     return S_OK;
 }
-HRESULT Cluster::GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_STRUCT>& ouSignalList )
+
+HRESULT Cluster::GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<SIGNAL_STRUCT>& ouSignalList )
 {
     return S_OK;
 }
@@ -168,13 +170,14 @@ HRESULT ECU_Struct::GetControllerParams(ABS_FLEXRAY_SPEC_CNTLR& ouControllerPara
     ouControllerParams = m_ouControllerParams;
     return S_OK;
 }
+
 HRESULT ECU_Struct::GetFrame(UINT unSlotId, UINT nCycleNumber, ECHANNEL& oeChannel, FRAME_STRUCT& ouFrame)
 {
     HRESULT hResult = S_FALSE;
-    map<UINT, list<FRAME_STRUCT>>::iterator itrFrame = m_ouTxFrames.find(unSlotId);
+    std::map<UINT, std::list<FRAME_STRUCT>>::iterator itrFrame = m_ouTxFrames.find(unSlotId);
     if( itrFrame != m_ouTxFrames.end() )
     {
-        list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
+        std::list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
         while ( itrFrameStruct != itrFrame->second.end() )
         {
             if (
@@ -191,10 +194,10 @@ HRESULT ECU_Struct::GetFrame(UINT unSlotId, UINT nCycleNumber, ECHANNEL& oeChann
     }
     //For Rx
     {
-        map<UINT, list<FRAME_STRUCT>>::iterator itrFrame = m_ouRxFrames.find(unSlotId);
+        std::map<UINT, std::list<FRAME_STRUCT>>::iterator itrFrame = m_ouRxFrames.find(unSlotId);
         while( itrFrame != m_ouRxFrames.end() )
         {
-            list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
+            std::list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
             while ( itrFrameStruct != itrFrame->second.end() )
             {
                 if ( itrFrameStruct->m_ouChannel == oeChannel &&
@@ -218,10 +221,10 @@ HRESULT ECU_Struct::GetFrame(UINT unSlotId, UINT nCycleNumber, ECHANNEL& oeChann
 HRESULT ECU_Struct::GetFrame(UINT unSlotId, FRAME_STRUCT& ouFrame)
 {
     HRESULT hResult = S_FALSE;
-    map<UINT, list<FRAME_STRUCT>>::iterator itrFrame = m_ouTxFrames.find(unSlotId);
+    std::map<UINT, std::list<FRAME_STRUCT>>::iterator itrFrame = m_ouTxFrames.find(unSlotId);
     if( itrFrame != m_ouTxFrames.end() )
     {
-        list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
+        std::list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
         while ( itrFrameStruct != itrFrame->second.end() )
         {
             if ( itrFrameStruct->m_nSlotId == unSlotId )
@@ -235,10 +238,10 @@ HRESULT ECU_Struct::GetFrame(UINT unSlotId, FRAME_STRUCT& ouFrame)
     }
     //For Rx
     {
-        map<UINT, list<FRAME_STRUCT>>::iterator itrFrame = m_ouRxFrames.find(unSlotId);
+        std::map<UINT, std::list<FRAME_STRUCT>>::iterator itrFrame = m_ouRxFrames.find(unSlotId);
         while( itrFrame != m_ouRxFrames.end() )
         {
-            list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
+            std::list<FRAME_STRUCT>::iterator itrFrameStruct = itrFrame->second.begin();
             while ( itrFrameStruct != itrFrame->second.end() )
             {
                 if ( itrFrameStruct->m_nSlotId == unSlotId )
@@ -257,17 +260,17 @@ HRESULT ECU_Struct::GetFrame(UINT unSlotId, FRAME_STRUCT& ouFrame)
 }
 
 
-HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ouEDIRECTION )
+HRESULT ECU_Struct::GetFrameList( std::list<FRAME_STRUCT>& ouFrameList, EDIRECTION ouEDIRECTION )
 {
     HRESULT hResult = S_FALSE;
-    list<FRAME_STRUCT> ouFrameTempList;
-    map<SLOT, list<FRAME_STRUCT> >::iterator itrMapList;
+    std::list<FRAME_STRUCT> ouFrameTempList;
+    std::map<SLOT, std::list<FRAME_STRUCT> >::iterator itrMapList;
     if ( DIR_TX == ouEDIRECTION )
     {
         itrMapList = m_ouTxFrames.begin();
         for ( ; itrMapList != m_ouTxFrames.end(); itrMapList++)
         {
-            for (  list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
+            for (  std::list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
             {
                 ouFrameTempList.push_back(*itrFrameList);
             }
@@ -279,7 +282,7 @@ HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ou
         itrMapList = m_ouRxFrames.begin();
         for ( ; itrMapList != m_ouRxFrames.end(); itrMapList++)
         {
-            for (  list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
+            for (  std::list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
             {
                 ouFrameTempList.push_back(*itrFrameList);
             }
@@ -288,7 +291,7 @@ HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ou
     }
 
     int nCount = 0;
-    list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
+    std::list<FRAME_STRUCT>::iterator itrFrame = ouFrameTempList.begin();
     while( itrFrame != ouFrameTempList.end() && nCount < 128 )
     {
         if ( itrFrame->m_eSlotType == STATIC )
@@ -312,15 +315,15 @@ HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameList, EDIRECTION ou
     return hResult;
 }
 
-HRESULT ECU_Struct::GetFrameNames( list<string>& ouFrameTempList)
+HRESULT ECU_Struct::GetFrameNames( std::list<std::string>& ouFrameTempList)
 {
     HRESULT hResult = S_OK;
-    map<SLOT, list<FRAME_STRUCT> >::iterator itrMapList;
+    std::map<SLOT, std::list<FRAME_STRUCT> >::iterator itrMapList;
 
     itrMapList = m_ouTxFrames.begin();
     for ( ; itrMapList != m_ouTxFrames.end(); itrMapList++)
     {
-        for (  list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
+        for (  std::list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
         {
             ouFrameTempList.push_back(itrFrameList->m_strFrameName);
         }
@@ -329,7 +332,7 @@ HRESULT ECU_Struct::GetFrameNames( list<string>& ouFrameTempList)
     itrMapList = m_ouRxFrames.begin();
     for ( ; itrMapList != m_ouRxFrames.end(); itrMapList++)
     {
-        for (  list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
+        for (  std::list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
         {
             ouFrameTempList.push_back(itrFrameList->m_strFrameName);
         }
@@ -338,15 +341,15 @@ HRESULT ECU_Struct::GetFrameNames( list<string>& ouFrameTempList)
     return hResult;
 }
 
-HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameTempList)
+HRESULT ECU_Struct::GetFrameList( std::list<FRAME_STRUCT>& ouFrameTempList)
 {
     HRESULT hResult = S_OK;
-    map<SLOT, list<FRAME_STRUCT> >::iterator itrMapList;
+    std::map<SLOT, std::list<FRAME_STRUCT> >::iterator itrMapList;
 
     itrMapList = m_ouTxFrames.begin();
     for ( ; itrMapList != m_ouTxFrames.end(); itrMapList++)
     {
-        for (  list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
+        for (  std::list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
         {
             ouFrameTempList.push_back(*itrFrameList);
         }
@@ -355,7 +358,7 @@ HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameTempList)
     itrMapList = m_ouRxFrames.begin();
     for ( ; itrMapList != m_ouRxFrames.end(); itrMapList++)
     {
-        for (  list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
+        for (  std::list<FRAME_STRUCT>::iterator itrFrameList = itrMapList->second.begin(); itrFrameList != itrMapList->second.end(); itrFrameList++ )
         {
             ouFrameTempList.push_back(*itrFrameList);
         }
@@ -363,11 +366,13 @@ HRESULT ECU_Struct::GetFrameList( list<FRAME_STRUCT>& ouFrameTempList)
 
     return hResult;
 }
-HRESULT ECU_Struct::GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, list<PDU_STRUCT>& ouPduList )
+
+HRESULT ECU_Struct::GetPDUList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<PDU_STRUCT>& ouPduList )
 {
     return S_OK;
 }
-HRESULT ECU_Struct::GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, list<SIGNAL_STRUCT>& ouSignalList )
+
+HRESULT ECU_Struct::GetSignalList ( SLOT_BASECYCLE ouSlotBaseKey, std::list<SIGNAL_STRUCT>& ouSignalList )
 {
     return S_OK;
 };
@@ -387,17 +392,19 @@ FRAME_STRUCT::FRAME_STRUCT()
     m_eSync = NONE_TYPE;
 }
 
-HRESULT FRAME_STRUCT::GetSignalList ( string omStrPduName, list<SIGNAL_STRUCT>& ouSignalList )
+HRESULT FRAME_STRUCT::GetSignalList ( std::string omStrPduName, std::list<SIGNAL_STRUCT>& ouSignalList )
 {
     return S_OK;
 }
-HRESULT FRAME_STRUCT::GetPDUList ( list<SIGNAL_STRUCT>& ouSignalList )
+
+HRESULT FRAME_STRUCT::GetPDUList ( std::list<SIGNAL_STRUCT>& ouSignalList )
 {
     return S_OK;
 }
-HRESULT FRAME_STRUCT::GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList )
+
+HRESULT FRAME_STRUCT::GetSignalList ( std::list<SIGNAL_STRUCT>& ouSignalList )
 {
-    list<PDU_STRUCT>::iterator itrPdu = m_ouPduList.begin();
+    std::list<PDU_STRUCT>::iterator itrPdu = m_ouPduList.begin();
 
     while(itrPdu != m_ouPduList.end())
     {
@@ -412,11 +419,11 @@ HRESULT FRAME_STRUCT::GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList )
 
 HRESULT FRAME_STRUCT::GetSignalNames (CStringList& ouSignalList )
 {
-    list<PDU_STRUCT>::iterator itrPdu = m_ouPduList.begin();
+    std::list<PDU_STRUCT>::iterator itrPdu = m_ouPduList.begin();
 
     while(itrPdu != m_ouPduList.end())
     {
-        list<SIGNAL_STRUCT>::iterator itrSiglst = itrPdu->m_ouSignalList.begin();
+        std::list<SIGNAL_STRUCT>::iterator itrSiglst = itrPdu->m_ouSignalList.begin();
 
         while(itrSiglst != itrPdu->m_ouSignalList.end())
         {
@@ -432,7 +439,7 @@ HRESULT FRAME_STRUCT::GetSignalNames (CStringList& ouSignalList )
 
 HRESULT FRAME_STRUCT::GetSignalCount ( int& nCount)
 {
-    list<PDU_STRUCT>::iterator itrPdu = m_ouPduList.begin();
+    std::list<PDU_STRUCT>::iterator itrPdu = m_ouPduList.begin();
     nCount = 0;
     while(itrPdu != m_ouPduList.end())
     {
@@ -444,7 +451,7 @@ HRESULT FRAME_STRUCT::GetSignalCount ( int& nCount)
 
 
 //PDU
-HRESULT PDU_STRUCT::GetSignalList ( list<SIGNAL_STRUCT>& ouSignalList )
+HRESULT PDU_STRUCT::GetSignalList ( std::list<SIGNAL_STRUCT>& ouSignalList )
 {
     return S_OK;
 }
@@ -508,21 +515,6 @@ SIGNAL_STRUCT& SIGNAL_STRUCT::operator=(const SIGNAL_STRUCT& objRef)
 
   Author(s)        :  Amarnath Shastry
   Date Created     :  15.02.2002
-  Modifications    :  Amitesh Bharti, 12.03.2003
-                      changes made to create unions.h structures as per
-                      CRH0002
-  Modifications    :  Raja N 12.02.2004
-                      Modified to include Sign check for signals and moved
-                      some hardcoded strings to Hashdefines.h
-  Modifications    :  Raja N 18.05.2004
-                      Added two more members in the union to give word and long
-                      access of the data array
-  Modifications    :  Raja N 18.05.2004
-                      Added two more members in the union to give word and long
-                      access of the data array
-  Modifications    :  Anish 21.12.2006
-                      Added code to have header name as header file name in
-                      ifndef condition at the begining of *_UNIONS.h file
 *******************************************************************************/
 CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
 {
@@ -585,9 +577,9 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
             CString omStrSigName = STR_EMPTY;
             CString omStrdelimiter = STR_EMPTY;
 
-            list<FRAME_STRUCT> ouFrameList;
+            std::list<FRAME_STRUCT> ouFrameList;
             GetFrames(ouFrameList );
-            for ( list<FRAME_STRUCT>::iterator unMsgIndex = ouFrameList.begin();
+            for ( std::list<FRAME_STRUCT>::iterator unMsgIndex = ouFrameList.begin();
             unMsgIndex != ouFrameList.end();
             unMsgIndex++)
             {
@@ -595,10 +587,10 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
                 // signal name will be the variable name
                 // of the union of length specified in DB
                 unSigCount = 0;
-                list<SIGNAL_STRUCT> sigList;
+                std::list<SIGNAL_STRUCT> sigList;
                 unMsgIndex->GetSignalList(sigList);
                 //sSIGNALS* pSg = m_psMessages[unMsgIndex].m_psSignals;
-                list<SIGNAL_STRUCT>::iterator itrSig = sigList.begin();
+                std::list<SIGNAL_STRUCT>::iterator itrSig = sigList.begin();
                 while(itrSig != sigList.end())
                 {
                     //UINT nSize = omStrArraySigName.GetSize();
@@ -720,7 +712,7 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
 BOOL Cluster::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
                                        CString& omStrcommandLine,
                                        CStringArray& omStrArraySigName,
-                                       list<FRAME_STRUCT>::iterator itrFrame, ETYPE_BUS eBUS)
+                                       std::list<FRAME_STRUCT>::iterator itrFrame, ETYPE_BUS eBUS)
 {
     CString omStrSigName     = STR_EMPTY;
     //    INT nIndex           = 0;
@@ -878,17 +870,17 @@ BOOL Cluster::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
 BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
                                     UINT* punStartBit,
                                     CStringArray& omStrArraySigName,
-                                    list<FRAME_STRUCT>::iterator itrFrame)
+                                    std::list<FRAME_STRUCT>::iterator itrFrame)
 {
     BOOL bReturn    = FALSE;
     int unSigCount = 0;
     itrFrame->GetSignalCount(unSigCount);//m_psMessages[nIndex].m_unNumberOfSignals;;
     //sSIGNALS* pSg = m_psMessages[nIndex].m_psSignals;
 
-    list<SIGNAL_STRUCT> sigList;
+    std::list<SIGNAL_STRUCT> sigList;
     itrFrame->GetSignalList(sigList);
     //sSIGNALS* pSg = m_psMessages[unMsgIndex].m_psSignals;
-    list<SIGNAL_STRUCT>::iterator itrSig = sigList.begin();
+    std::list<SIGNAL_STRUCT>::iterator itrSig = sigList.begin();
 
     UINT unStartBit = 0;
     UINT unUnused   = 0;
@@ -1039,11 +1031,11 @@ BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
 
   Output           :  SIGNAL_STRUCT : Return value
 ******************************************************************************/
-SIGNAL_STRUCT Cluster::psGetSigPtr(UINT unStartBitSrc, list<SIGNAL_STRUCT> sigList)
+SIGNAL_STRUCT Cluster::psGetSigPtr(UINT unStartBitSrc, std::list<SIGNAL_STRUCT> sigList)
 {
     //sSIGNALS* psTemSig = psSigRoot;
 
-    list<SIGNAL_STRUCT>::iterator itrSig = sigList.begin();
+    std::list<SIGNAL_STRUCT>::iterator itrSig = sigList.begin();
     UINT unStartBit = 0;
     while (itrSig != sigList.end())
     {

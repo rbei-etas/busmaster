@@ -26,10 +26,6 @@
 
 #include <cstringt.h>
 #include <atlstr.h>
-//#include "../Application/HashDefines.h"
-//#include "../Include/BaseDefs.h"
-
-#define UNUSED_DELIBERATELY(X)     X
 
 #define INITIALISE_DATA(Data)   memset(&Data, 0, sizeof(Data))
 #define INITIALISE_ARRAY(Array) memset(Array, 0, sizeof(Array))
@@ -45,12 +41,7 @@ int CalculateGCF(int anNumbers[], int Length);
 // Top mask unwanted bit of the data
 void vRemoveUnwantedBits(__int64& n64rData, int nLength);
 void vExtendSignBit( __int64& n64Val, int nSize);
-//bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256]);
 bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256]);
-//bool bGetSystemErrorString(CHAR acErrStr[256]);
-
-//// To copy the text into the clipboard
-//BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWND = NULL);
 
 // To copy the text into the clipboard
 BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWND = NULL);

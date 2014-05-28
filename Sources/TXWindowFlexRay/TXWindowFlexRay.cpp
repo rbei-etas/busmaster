@@ -110,7 +110,7 @@ void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
 int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
 {
     CTxMsgChildFrame* pFrameWindow = NULL;
-    string strTitle = "";       //Used for Title.
+    std::string strTitle = "";       //Used for Title.
     bool bValidBus = false;
     if ( eBUS == FLEXRAY )
     {

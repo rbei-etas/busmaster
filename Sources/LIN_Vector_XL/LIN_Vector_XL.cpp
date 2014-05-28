@@ -40,10 +40,6 @@
 #define USAGE_EXPORT
 #include "LIN_Vector_XL_Extern.h"
 
-using namespace std;
-
-// CISOLAR_EVE_VLIN
-
 BEGIN_MESSAGE_MAP(CLIN_Vector_XL, CWinApp)
 END_MESSAGE_MAP()
 
@@ -110,20 +106,13 @@ public:
         return S_OK;
     };
     HRESULT LIN_DisableSlave(STLIN_MSG& sMessage);
-
-
     HRESULT LIN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT LIN_GetLastErrorString(string& acErrorStr);
+    HRESULT LIN_GetLastErrorString(std::string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
-
-    //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT LIN_LoadDriverLibrary(void);
@@ -190,7 +179,7 @@ static INT bClassifyMsgType(XLevent& xlEvent, STLINDATA& sLinData)
         {
             if ( sg_unDevChannelMap[xlEvent.chanIndex] >= 0 && sg_unDevChannelMap[xlEvent.chanIndex] < defNO_OF_CHANNELS )
             {
-                sg_aodChannels[sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel-1].m_nMapIdChecksumType.insert(map<int,int>::value_type(xlEvent.tagData.linMsgApi.linCRCinfo.id, xlEvent.tagData.linMsgApi.linCRCinfo.flags));
+                sg_aodChannels[sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel-1].m_nMapIdChecksumType.insert(std::map<int,int>::value_type(xlEvent.tagData.linMsgApi.linCRCinfo.id, xlEvent.tagData.linMsgApi.linCRCinfo.flags));
             }
             nHresult = S_FALSE;
         }
@@ -200,7 +189,7 @@ static INT bClassifyMsgType(XLevent& xlEvent, STLINDATA& sLinData)
             sLinData.m_eLinMsgType = LIN_MSG;
 
             sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID   = xlEvent.tagData.linMsgApi.linMsg.id;
-            map<int,int>::iterator itr = sg_aodChannels[sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel-1].m_nMapIdChecksumType.find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID);
+            std::map<int,int>::iterator itr = sg_aodChannels[sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel-1].m_nMapIdChecksumType.find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID);
 
             if ( itr != sg_aodChannels[sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel-1].m_nMapIdChecksumType.end() )
             {
@@ -926,12 +915,12 @@ HRESULT CDIL_LIN_VectorXL::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         {
             asSelHwInterface[i].m_dwIdInterface = i;
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
-            ostringstream oss;
-            oss << dec << serialNumber;
-            string strTemp =  oss.str();
+            std::ostringstream oss;
+            oss << std::dec << serialNumber;
+            std::string strTemp =  oss.str();
             asSelHwInterface[i].m_acDescription = strTemp;
             //_stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
-            ostringstream oss1;
+            std::ostringstream oss1;
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
             oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
             sg_ControllerDetails[i].m_omHardwareDesc = oss1.str();
@@ -973,7 +962,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitDat
     return S_OK;
 }
 
-UINT nGetProtocolVersion(string& strProtocol)
+UINT nGetProtocolVersion(std::string & strProtocol)
 {
     UINT unVer = XL_LIN_VERSION_2_1;
     if ( strProtocol == "LIN 1.1" || strProtocol == "LIN 1.2" || strProtocol == "LIN 1.1" || strProtocol == "LIN 1.3" )
@@ -1431,7 +1420,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_Send( STLIN_MSG& sMessage)
     return hResult;
 }
 
-HRESULT CDIL_LIN_VectorXL::LIN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_LIN_VectorXL::LIN_GetLastErrorString(std::string& acErrorStr)
 {
 
     return S_OK;

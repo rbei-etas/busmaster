@@ -104,7 +104,6 @@ CFrameProcessor_J1939::CFrameProcessor_J1939():m_ouFormatMsgJ1939(m_ouRefTimer)
     ASSERT(NULL != m_sCurrFormatDat.m_pcDataDec);
     memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(char));
     m_sDataCopyThread.m_hActionEvent = m_ouVSEBufJ1939.hGetNotifyingEvent();
-    // PTV [1.6.4]
     m_bIsJ1939DataLogged = FALSE;
 }
 
@@ -214,7 +213,6 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
                 CLogObjectJ1939* pouLogObjCon = static_cast<CLogObjectJ1939*> (pouLogObjBase);
                 BOOL bIsDataLogged = pouLogObjCon->bLogData(m_sCurrFormatDat);
 
-                // PTV [1.6.4]
                 if(bIsDataLogged == TRUE)
                 {
                     m_bIsJ1939DataLogged = TRUE;
@@ -360,7 +358,6 @@ BOOL CFrameProcessor_J1939::FPJ1_IsLoggingON(void)
     return IsLoggingON();
 }
 
-// PTV [1.6.4]
 BOOL CFrameProcessor_J1939::FPJ1_IsJ1939DataLogged(void)
 {
     return IsJ1939DataLogged();
@@ -375,7 +372,7 @@ void CFrameProcessor_J1939::FPJ1_DisableJ1939DataLogFlag(void)
 {
     DisableJ1939DataLogFlag();
 }
-// PTV [1.6.4]
+
 // Query function - current filtering status
 BOOL CFrameProcessor_J1939::FPJ1_IsFilterON(void)
 {
@@ -455,13 +452,11 @@ HRESULT CFrameProcessor_J1939::FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& un
     return GetConfigData(ppvConfigData, unLength);
 }
 
-// PTV XML
 // Getter for the logging configuration data
 HRESULT CFrameProcessor_J1939::FPJ1_GetConfigData(xmlNodePtr pNodePtr)
 {
     return GetConfigData(pNodePtr);
 }
-// PTV XML
 
 // Setter for the logging configuration data
 HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)

@@ -26,9 +26,7 @@ public:
     virtual HRESULT SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd) = 0;
     virtual HRESULT SW_GetConfigSize(void) = 0;
     virtual HRESULT SW_GetConfigData(void* pbyConfigData) = 0;
-    // PTV XML
     virtual HRESULT SW_GetConfigData(xmlNodePtr pNodePtr) = 0;
-    // PTV XML
     virtual HRESULT SW_SetConfigData(const void* pbyConfigData) = 0;
     virtual HRESULT SW_SetConfigData(xmlNodePtr pNode) = 0;
     virtual HRESULT SW_ClearSigWatchWnd(void) = 0;

@@ -14,26 +14,25 @@
  */
 
 /**
- * \file      BaseDIL_FLEXRAY_Controller.h
- * \brief     Interface file containing Base class which should be implemented for Flexray devices from different vendors
- * \author    Arunkumar Karri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Interface file containing Base class which should be implemented for Flexray devices from different vendors
+ * @author Arunkumar Karri
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file containing Base class which should be implemented for Flexray devices from different vendors
  */
 
-#if !defined BASEDIL_FLEXRAY_CONTROLLER_H__INCLUDED_
-#define BASEDIL_FLEXRAY_CONTROLLER_H__INCLUDED_
+#pragma once
+
 #include "DataTypes/DIL_DataTypes.h"
 #include "DataTypes/FLEXRAY_Datatypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/Cluster.h"
+
 class CBaseDIL_FLEXRAY_Controller
 {
 public:
     CBaseDIL_FLEXRAY_Controller() {};
-public:
     virtual HRESULT FLEXRAY_PerformInitOperations(void) = 0;
     virtual HRESULT FLEXRAY_PerformClosureOperations(void) = 0;
     virtual HRESULT FLEXRAY_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp) = 0;
@@ -54,16 +53,10 @@ public:
     virtual HRESULT FLEXRAY_GetBoardInfo(s_BOARDINFO& BoardInfo) = 0;
     virtual HRESULT FLEXRAY_GetFlexRayInfo(s_FLXINFO& FlexRayInfo) = 0;
     virtual HRESULT FLEXRAY_GetVersionInfo(VERSIONINFO& sVerInfo) = 0;
-    virtual HRESULT FLEXRAY_GetLastErrorString(string acErrorStr, HRESULT& nError) = 0;
+    virtual HRESULT FLEXRAY_GetLastErrorString(std::string acErrorStr, HRESULT& nError) = 0;
     virtual HRESULT FLEXRAY_FilterFrames(FILTER_TYPE FilterType, FLEX_CHANNEL FlexChannel, UINT* punFrames, UINT nLength) = 0;
     virtual HRESULT FLEXRAY_ConfigMsgBuf(s_MSGBUF sMsgBuf, UINT* punAddress) = 0;
     virtual HRESULT FLEXRAY_LoadDriverLibrary(void) = 0;
     virtual HRESULT FLEXRAY_UnloadDriverLibrary(void) = 0;
-
     virtual HRESULT FLEXRAY_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName) = 0;
-
-private:
-
 };
-
-#endif // BASEDIL_FLEXRAY_CONTROLLER_H__INCLUDED_

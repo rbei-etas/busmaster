@@ -61,7 +61,7 @@ struct sUserProgInfo
 };
 
 typedef sUserProgInfo   SUSERPROGINFO;
-typedef CMap<int,int, SUSERPROGINFO, SUSERPROGINFO>   CUserProgList;
+typedef CMap<int, int, SUSERPROGINFO, SUSERPROGINFO>   CUserProgList;
 
 enum eListTypes
 {

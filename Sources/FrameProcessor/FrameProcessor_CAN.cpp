@@ -136,7 +136,6 @@ void CFrameProcessor_CAN::vRetrieveDataFromBuffer(void)
                     CLogObjectCAN* pouLogObjCon = static_cast<CLogObjectCAN*> (pouLogObjBase);
                     BOOL bIsDataLog = pouLogObjCon->bLogData(CurrDataCAN);
 
-                    // PTV [1.6.4]
                     if(bIsDataLog == TRUE)
                     {
                         //m_bIsThreadBlocked = FALSE;
@@ -331,7 +330,6 @@ BOOL CFrameProcessor_CAN::FPC_IsLoggingON(void)
     return IsLoggingON();
 }
 
-// PTV [1.6.4]
 BOOL CFrameProcessor_CAN::FPC_IsDataLogged(void)
 {
     return IsDataLogged();
@@ -346,7 +344,7 @@ void CFrameProcessor_CAN::FPC_DisableDataLogFlag(void)
 {
     DisableDataLogFlag();
 }
-// PTV [1.6.4] END
+
 // Query function - current filtering status
 BOOL CFrameProcessor_CAN::FPC_IsFilterON(void)
 {
@@ -471,20 +469,3 @@ HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
     SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
-
-
-//Shailesh +
-//void CFrameProcessor_CAN::IncrementConnectionCount()
-//{
-//  USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
-//    for (USHORT i = 0; i < ushBlocks; i++)
-//       {
-//         CBaseLogObject* pouLogObjBase = m_omLogObjectArray.GetAt(i);
-//           CLogObjectCAN* pouLogObjCon = static_cast<CLogObjectCAN*> (pouLogObjBase);
-//         if(pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnMesurement)
-//             pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount ++;
-//     }
-//
-//}
-//Shailesh -
-// USE COMMON BASE CLASS ALIAS FUNCTIONS: END

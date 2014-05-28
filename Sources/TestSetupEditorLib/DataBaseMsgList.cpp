@@ -598,30 +598,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
 
                                                             sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex -1 );
                                                         }
-                                                        /*else
-                                                        {
-                                                            MessageBox( NULL,"Database file corrupted", NULL, MB_ICONINFORMATION|MB_OK );
-                                                            bReturnValue = FALSE;
-                                                            break;
-                                                        }*/
-
-                                                        // sTempSg->m_omStrSignalUnit = sMsgDet;
-
-
-                                                        // Update the signal matrix
-                                                        //venkat::abySigMask not referanced
-                                                        //BYTE abySigMask[DATA_LENGTH_MAX] = {0};
-                                                        /*bCalcBitMaskForSig(abySigMask,
-                                                                           DATA_LENGTH_MAX,
-                                                                           sTempSg->m_unStartByte,
-                                                                           sTempSg->m_byStartBit,
-                                                                           sTempSg->m_unSignalLength,
-                                                                           sTempSg->m_eFormat);
-                                                        vUpdateSignalMatrix(abySigMask,
-                                                            m_psMessages[unMsgCount].m_bySignalMatrix,
-                                                            DATA_LENGTH_MAX,
-                                                            SET);*/
-
 
                                                         CSignalDescVal* pomSgDescValNext = sTempSg->m_oSignalIDVal = NULL;
 

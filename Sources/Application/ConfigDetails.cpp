@@ -3039,7 +3039,6 @@ static BOOL bLoadFilterDets(CArchive& romArchive, SFILTERAPPLIED_CAN& sFilterCon
         // Get Filter Name
         CString omStrFilterName = STR_EMPTY;
         romArchive >> omStrFilterName;
-        //Tobias - venkat
         strcpy_s(sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_acFilterName, LENGTH_FILTERNAME,
                  omStrFilterName.GetBuffer(LENGTH_FILTERNAME));
         // Read Filter Type first
@@ -5342,7 +5341,6 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
             {
                 CString omTemp;
                 omArchive >> omTemp;
-                //Tobias - venkat
                 strcpy_s(sFilter.m_omFilterName, LENGTH_FILTERNAME, omTemp.GetBuffer(LENGTH_FILTERNAME));
                 omArchive >> sFilter.m_bEnabled;
             }
@@ -5437,7 +5435,6 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
         CString omFilterName;
         omArchive >> omFilterName;
         omArchive >> sFilter.m_bEnabled;
-        //Tobias - venkat
         strcpy_s(sFilter.m_omFilterName, omFilterName.GetBuffer(MAX_PATH));
         // Add the filter in to the list
         sRepalyFile.m_omFilter.Add( sFilter );

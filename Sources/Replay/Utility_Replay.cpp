@@ -298,7 +298,7 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
 /*  Author(s)        :  Krishnaswamy B.N                                      */
 /*  Date Created     :  19.08.2003                                            */
 /******************************************************************************/
-BOOL bIsModeMismatch( ifstream& omInReplayFile,
+BOOL bIsModeMismatch( std::ifstream& omInReplayFile,
                       BOOL bReplayHexON,
                       WORD wLogReplayTimeMode)
 {

@@ -29,8 +29,8 @@
   Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
-#if !defined BASEDIL_IJ1939_H__INCLUDED_
-#define BASEDIL_IJ1939_H__INCLUDED_
+
+#pragma once
 
 #include "Include/BaseDefs.h"
 #include "Datatypes/J1939_DataTypes.h"
@@ -307,5 +307,3 @@ public:
     virtual HRESULT DILIJ_ClaimAdress() = 0;
 
 };
-
-#endif //BASEDILI_J1939_H__INCLUDED_

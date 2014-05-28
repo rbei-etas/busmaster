@@ -22,9 +22,7 @@
  * Definition file for CBaseLogObject class
  */
 
-
-#if !defined BASELOGOBJECT_H__INCLUDED_
-#define BASELOGOBJECT_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/Log_Datatypes.h"
 #include "DataTypes\Cluster.h"
@@ -58,7 +56,6 @@ private:
     void vUpdateLogTimeForTimeTrigger(UINT64& qwRefSysTime);
 
 protected:
-    //arun
     //All log info
     SLOGINFO m_sLogInfo;
 
@@ -89,9 +86,6 @@ protected:
     virtual UINT Der_unGetBufSize(void) const = 0;
 
 public:
-    ////Shailesh +
-    //SLOGINFO m_sLogInfo;
-    ////Shailesh -
     // Overloaded Constructor
     CBaseLogObject(CString omVersion);
 
@@ -130,14 +124,10 @@ public:
 
     // Set configuration data
     BYTE* SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion);
-    //MVN
     INT nSetConfigData(xmlNodePtr pNode);
-    //~MVN
     // Get configuration data
     BYTE* GetConfigData(BYTE* pvDataStream) const;
-    // PTV XML
     BOOL GetConfigData(xmlNodePtr pxmlNodePtr) const;
-    // PTV XML
     // To get the total buffer size
     UINT unGetBufSize(void) const;
 
@@ -170,5 +160,3 @@ public:
                                    int& nNumChannels);
 
 };
-
-#endif // BASELOGOBJECT_H__INCLUDED_

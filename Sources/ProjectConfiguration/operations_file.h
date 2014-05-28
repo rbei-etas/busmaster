@@ -24,22 +24,24 @@
 
 #pragma once
 
+#include <string>
+
 // Project getters
 int FileGetProjectCount(void);
 int FileGetProjectList(LISTSTR& ProjectList);
-bool FileGetProjectData(string ProjectName, PROJECTDATA& ProjData);
+bool FileGetProjectData(std::string ProjectName, PROJECTDATA& ProjData);
 
 // Section getters
-int FileGetSectionCount(string ProjectName);
-int FileGetSectionList(string ProjectName, LISTSTR& SectionList);
-bool FileGetSectionData(string ProjectName, string SectionName, SECTIONDATA& SectionData);
+int FileGetSectionCount(std::string ProjectName);
+int FileGetSectionList(std::string ProjectName, LISTSTR& SectionList);
+bool FileGetSectionData(std::string ProjectName, std::string SectionName, SECTIONDATA& SectionData);
 
 // Project setters
-void FileAddModifyProjectTable(string ProjectName, PROJECTDATA& ProjData);
-bool FileDeleteProjectTable(string ProjectName);
+void FileAddModifyProjectTable(std::string ProjectName, PROJECTDATA& ProjData);
+bool FileDeleteProjectTable(std::string ProjectName);
 
 // Section setter
-bool FileAddModifySectionData(string ProjectName, string SectionName,
+bool FileAddModifySectionData(std::string ProjectName, std::string SectionName,
                               SECTIONDATA& SectionData);
 
 // File read

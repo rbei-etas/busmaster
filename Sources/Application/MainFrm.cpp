@@ -163,12 +163,10 @@ SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = NULL;
 #define defDLGFLAGS             OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST
 #define defDEFAULTDLLFILENAME   ("*.dll")
 #define TIMER_REFRESH_MAINGUI   0x100
-// PTV [1.6.4]
 #define TIMER_REFRESH_LOG_STATUS 0x101
 #define TIMER_REFRESH_J1939_LOG_STATUS 0x102
 #define TIMER_REFRESH_FLEXRAY_STATUS   0X103
 #define TIMER_REFRESH_LIN_LOG_STATUS 0x103
-// PTV [1.6.4] END
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define STSBAR_REFRESH_TIME_PERIOD_LOG  1000  // in milliseconds
 #define PROFILE_CAN_MONITOR                   _T("RBEI_ECF2_CAN_Monitor")
@@ -537,12 +535,10 @@ CMainFrame::CMainFrame()
 
     m_bIsNewDatabase                = FALSE;
     m_hModuleHandle                 = NULL;
-    // PTV [1.6.4]
     m_bIconSetFlag = 0;
     m_bJ1939IconSetFlag = 0;
     m_nSendMsgLogCnt = 0;
     m_nSendMsgJ1939LogCnt = 0;
-    // PTV [1.6.4]
 
     INITIALISE_ARRAY(m_psSignalWatchList);
     m_unReplayTimeDelay             = 50;
@@ -583,7 +579,6 @@ CMainFrame::CMainFrame()
     m_unWarningLimit  = 96;
     m_podUIThread = NULL;
     m_omStrSavedConfigFile = STR_EMPTY;
-    // PTV [1.6.4]
     m_unTimerSBLog = NULL;
 
     m_unJ1939TimerSBLog = NULL;
@@ -638,15 +633,12 @@ CMainFrame::CMainFrame()
         m_abLogOnConnect[i] = FALSE;
     }
 
-    //venkat
     m_objTSEditorHandler.vLoadTSEditor_DLL();
     m_objTSExecutorHandler.vLoadTSExecutor_DLL();
 
-    //MVN
     m_xmlConfigFiledoc = NULL;
     m_bIsXmlConfig = TRUE;
     m_pXmlNodeBusStats = NULL;
-    //~MVN
 
     // language support
     vGettextBusmaster();
@@ -1012,23 +1004,19 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
                                 SBPS_NOBORDERS, 320);
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
 
-    // PTV [1.6.4]
     // For Can Logging status
     m_wndStatusBar.SetPaneInfo( INDEX_CAN_LOG_ICON, ID_LOG_RECORD_CAN_ICON,
                                 SBPS_NOBORDERS, 100);
 
-    // PTV [1.6.4]
     // For J1939 Logging status
     m_wndStatusBar.SetPaneInfo( INDEX_J1939_LOG_ICON, ID_LOG_RECORD_J1939_ICON,
                                 SBPS_NOBORDERS, 110);
 
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
-    // PTV [1.6.4]
 
     m_wndStatusBar.SetPaneInfo( INDEX_DB_NAME, ID_ACTIVE_DATABASE_NAME,
                                 SBPS_STRETCH, 50);
 
-    // PTV [1.6.4]
     m_hLogIcon1 = (HICON)::LoadImage(AfxGetInstanceHandle(),
                                      MAKEINTRESOURCE(IDI_ICON_LOG_ON),
                                      IMAGE_ICON, 16, 16, LR_SHARED);
@@ -1045,7 +1033,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_bJ1939IconSetFlag = 1;
     m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
     m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
-    // PTV [1.6.4] END
     // Set number of channels supported
     CString omStrChannels;
     omStrChannels.Format( _(defSTR_CHANNELS_SUPPORTED),
@@ -1145,7 +1132,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     vInitialiaseLINConfig(1);
     m_objFlexTxHandler.SetFibexConfig(LIN, m_ouClusterConfig[LIN]);
 
-    //TODO::Venkat - Appropriate Place has to be decided.
+    //TODO Appropriate Place has to be decided.
     bInitFrameProcLIN(); // Initialize logger module
     //vInitializeBusStatLIN();
 
@@ -1179,253 +1166,6 @@ bool CMainFrame::bSetDefaultToolbarPosition()
     return true;
 }
 
-/******************************************************************************
- Function Name    : nGetToolBarNodeFrmDocSection
- Input(s)         : xmlXPathObjectPtr - objectpath to user-defined node
- Output           : bool - failure/ success
- Functionality    : Gets the node position from the object path
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Ashwin. R. Uchil
- Date Created     : 06.09.2012
- ******************************************************************************/
-//int CMainFrame::nGetToolBarNodeFrmDocSection(xmlXPathObjectPtr pObjectPath)
-//{
-//  int         nPosSet = 0;
-//  xmlNodePtr pNode, pChildNode;
-//  if( NULL != pObjectPath )
-//  {
-//      xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;   //get the nodeset from user defined section
-//      if( NULL != pNodeSet )
-//      {
-//          pNode = pNodeSet->nodeTab[0];       //Take First One only from node set
-//      }
-//      if( NULL != pNode )
-//      {
-//          pNode = pNode->xmlChildrenNode;     //ToolBar_main or ToolBar_MsgWnd etc
-//      }
-//      while (pNode != NULL)
-//      {
-//          //the order in which you write the code to get the node doesn't matter since since its in while loop
-//          //and it will match the respective if-condition each time
-//          //node simulation
-//          if ((!xmlStrcmp(pNode->name, (const xmlChar *)DEF_TOOLBAR_NODE_SIM)))
-//          {
-//              pChildNode = pNode->xmlChildrenNode;
-//              if(nGetToolBarNodes(pChildNode,m_wndToolbarNodeSimul,  IDR_NODE_SIMULATION, _T("Node Simulation"))== 1)
-//              {
-//                  nPosSet++;
-//              }
-//          }
-//          //Message Window
-//          if ((!xmlStrcmp(pNode->name, (const xmlChar *)DEF_TOOLBAR_MSG_WND)))
-//          {
-//              pChildNode = pNode->xmlChildrenNode;
-//              if(nGetToolBarNodes(pChildNode,m_wndToolbarMsgWnd, IDR_MSG_WND, _T("Message Window"))==1)
-//              {
-//                  nPosSet++;
-//              }
-//          }
-//          //Main
-//          if ((!xmlStrcmp(pNode->name, (const xmlChar *)DEF_TOOLBAR_MAIN)))
-//          {
-//              pChildNode = pNode->xmlChildrenNode;
-//              if(nGetToolBarNodes(pChildNode,m_wndToolBar, IDR_MAINFRAME, _T("Main"))==1)
-//              {
-//                  nPosSet++;
-//              }
-//          }
-//          //Configure
-//          if ((!xmlStrcmp(pNode->name, (const xmlChar *)DEF_TOOLBAR_CONFIG)))
-//          {
-//              pChildNode = pNode->xmlChildrenNode;
-//              if(nGetToolBarNodes(pChildNode,m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T("Configure"))==1)
-//              {
-//                  nPosSet++;
-//              }
-//          }
-//          //CAN Database
-//          if ((!xmlStrcmp(pNode->name, (const xmlChar *)DEF_TOOLBAR_CAN_DB)))
-//          {
-//              pChildNode = pNode->xmlChildrenNode;
-//              if(nGetToolBarNodes(pChildNode,m_wndToolbarCANDB, IDR_CAN_DATABASE, _T("CAN Database"))==1)
-//              {
-//                  nPosSet++;
-//              }
-//          }
-//          //J1939
-//          if ((!xmlStrcmp(pNode->name, (const xmlChar *)DEF_TOOLBAR_J1939)))
-//          {
-//              pChildNode = pNode->xmlChildrenNode;
-//              if(nGetToolBarNodes(pChildNode, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T("J1939"))==1)
-//              {
-//                  nPosSet++;
-//              }
-//          }
-//          pNode = pNode->next;
-//      }
-//      if(nPosSet == 6)        //if all the 6 positions are retreived only then send as true
-//      {
-//          return true;
-//      }
-//      else
-//      {
-//          return false;
-//      }
-//  }
-//  else
-//  {
-//      return false;
-//  }
-//}
-/******************************************************************************
- Function Name    : nGetToolBarNodes
- Input(s)         : xmlNodePtr  - node of each toolbar containing the position
-                    CToolBar&   - reference to toolbar object
-                    UINT        - ID of the toolbar
-                    CString     - Name of the toolbar
- Output           : int - failure/ success
- Functionality    : Gets the node position from the toolbar node
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Ashwin. R. Uchil
- Date Created     : 06.09.2012
- ******************************************************************************/
-//int CMainFrame::nGetToolBarNodes(xmlNodePtr pNode, CToolBar& omToolbar, UINT unID, CString omTitle)
-//{
-//  int         nPosRetreived = 0;
-//  int         nVisible;
-//  int         nDock;
-//  CRect       rRec;
-//  string      strVar, strName;
-//  UINT        unStlye;
-//
-//  //get the postion from the indvidual nodes
-//  while(pNode != NULL)
-//  {
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_NAME,strVar))
-//      {
-//          strName = strVar;
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_TOP,strVar))
-//      {
-//          rRec.top = atoi(strVar.c_str());
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_Left,strVar))
-//      {
-//          rRec.left = atoi(strVar.c_str());
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_Bottom,strVar))
-//      {
-//          rRec.bottom = atoi(strVar.c_str());
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_Right,strVar))
-//      {
-//          rRec.right = atoi(strVar.c_str());
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_Bottom,strVar))
-//      {
-//          rRec.bottom = atoi(strVar.c_str());
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_IS_VISIBLE,strVar))
-//      {
-//          nVisible = atoi(strVar.c_str());
-//          if(nVisible == 0)
-//              nVisible = SW_HIDE;
-//          else if(nVisible == 1)
-//              nVisible = SW_SHOW;
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_TOOLBAR_ALIGNMENT,strVar))
-//      {
-//
-//          if(strVar == "TOP")
-//          {
-//              unStlye = AFX_IDW_DOCKBAR_TOP;
-//          }
-//          else if(strVar == "BOTTOM")
-//          {
-//              unStlye = AFX_IDW_DOCKBAR_BOTTOM;
-//          }
-//          else if(strVar == "LEFT")
-//          {
-//              unStlye = AFX_IDW_DOCKBAR_LEFT;
-//          }
-//          else if(strVar == "RIGHT")
-//          {
-//              unStlye = AFX_IDW_DOCKBAR_RIGHT;
-//          }
-//          else
-//          {
-//              unStlye = AFX_IDW_DOCKBAR_TOP;
-//          }
-//          nPosRetreived++;
-//      }
-//      if (xmlUtils::GetDataFrmNode(pNode,DEF_TOOLBAR_DOCKING,strVar))
-//      {
-//          nDock = atoi(strVar.c_str());
-//          nPosRetreived++;
-//      }
-//      pNode = pNode->next;
-//  }
-//  if(nPosRetreived != 9)      //if all the nodes are not recieved then return false
-//      return false;
-//
-//  if(nDock)           //if toolbar was docked then set toolbar to docking position
-//  {
-//      CRect       rFrameSize(-4,-4,1604,1170);
-//
-//      //GetWindowRect(&rFrameSize);
-//      ClientToScreen(&rRec);
-//      //rRec.top -= rFrameSize.top;
-//      //rRec.left -= rFrameSize.left;
-//      //rRec.bottom -= rFrameSize.top;
-//      //rRec.right -= rFrameSize.left;
-//      if(rRec.right > rFrameSize.right)
-//      {
-//          rRec.left = rFrameSize.right - (rRec.right - rRec.left) -5; //subtract the width from the right of frame
-//          rRec.right = rFrameSize.right - 5;
-//      }
-//      DockControlBar(&omToolbar, unStlye,&rRec);
-//      //omToolbar.MoveWindow(&rRec);
-//      omToolbar.ShowWindow( nVisible );
-//  }
-//  else
-//  {
-//      CPoint      ptTopLeft;
-//      ptTopLeft.x = rRec.left - 2;            //2 is subtracted to nullify the shift during setting the toolbar
-//      ptTopLeft.y = rRec.top - 20;        //20 is subtracted to nullify the shift during setting the toolbar
-//      FloatControlBar(&omToolbar,ptTopLeft, unStlye); //if the toolbar was floating then create the same
-//      ShowControlBar(&omToolbar, nVisible, FALSE);
-//  }
-//  return true;
-//}
-//int CMainFrame::nCreateToolbarFrmXML(CToolBar& omToolbar, UINT unID,CRect rRect,
-//                               CString omTitle)
-//{
-//  int Result = 0;
-//    if (!omToolbar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
-//                            WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
-//                            CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC, CRect(0,0,0,0), unID) ||
-//            !omToolbar.LoadToolBar(unID))
-//    {
-//        TRACE0("Failed to create toolbar\n");
-//        Result = -1;      // fail to create
-//    }
-//    else
-//    {
-//        omToolbar.EnableDocking(CBRS_ALIGN_ANY);
-//        omToolbar.SetWindowText((LPCTSTR) omTitle);
-//      omToolbar.SetWindowPos(&CWnd::wndBottom,rRect.left,rRect.top,(rRect.right-rRect.left),(rRect.bottom-rRect.top),SWP_NOZORDER|SWP_SHOWWINDOW);
-//    }
-//   return Result;
-//}
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
 {
@@ -2012,10 +1752,9 @@ DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
     if (m_pouMsgSigJ1939 != NULL)
     {
 
-        //MVN::Construct File Path
         if (TRUE == PathIsRelative(omStrActiveDataBase))
         {
-            string omStrBasePath;
+            std::string omStrBasePath;
             CString omConfigFileName;
             vGetLoadedCfgFileName(omConfigFileName);
             CUtilFunctions::nGetBaseFolder(omConfigFileName.GetBuffer(MAX_PATH), omStrBasePath);
@@ -2023,7 +1762,6 @@ DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
             PathCombine(chAbsPath, omStrBasePath.c_str(), omStrActiveDataBase.GetBuffer(MAX_PATH));
             omStrActiveDataBase = chAbsPath;
         }
-        //~MVN::Construct File Path
 
         //Check for same DB path......
         CStringArray aomOldDatabases;
@@ -2107,10 +1845,10 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
     theApp.m_pouMsgSignal->vGetDataBaseNames(&aomOldDatabases);
     int nFileCount = aomOldDatabases.GetSize();
     BOOL bFilePresent = FALSE;
-    //MVN::Construct File Path
+
     if (TRUE == PathIsRelative(omStrActiveDataBase))
     {
-        string omStrBasePath;
+        std::string omStrBasePath;
         CString omConfigFileName;
         vGetLoadedCfgFileName(omConfigFileName);
         CUtilFunctions::nGetBaseFolder(omConfigFileName.GetBuffer(MAX_PATH), omStrBasePath);
@@ -2118,7 +1856,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
         PathCombine(chAbsPath, omStrBasePath.c_str(), omStrActiveDataBase.GetBuffer(MAX_PATH));
         omStrActiveDataBase = chAbsPath;
     }
-    //~MVN::Construct File Path
+
     for(int nCount = 0; (nCount < nFileCount)&&(!bFilePresent); nCount++)
     {
         CString omstrFileName = aomOldDatabases.GetAt(nCount);
@@ -2168,7 +1906,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/
 
                 // User can open the active DB
                 theApp.pouGetFlagsPtr()->vSetFlagStatus(SELECTDATABASEFILE, TRUE );
-                //venkat update signal watch
+                // update signal watch
                 vUpdateSWList();
             }
 
@@ -2211,22 +1949,17 @@ void CMainFrame::vPopulateLINIDList()
 {
     CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(LIN);
 
-
     {
         CStringList omStrMsgNameList;
         UINT unNoOfMsgs = 0;
         UINT* pIDArray = NULL;
 
-
-        list<FRAME_STRUCT> ouFrames;
+        std::list<FRAME_STRUCT> ouFrames;
         m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(ouFrames);
-
 
         {
             SCanIDList sList;
-            list<FRAME_STRUCT>::iterator itrStart = ouFrames.begin();
-
-
+            std::list<FRAME_STRUCT>::iterator itrStart = ouFrames.begin();
 
             while( ouFrames.end() != itrStart )
             {
@@ -4068,7 +3801,7 @@ void CMainFrame::OnAddSignalToSignalWindow()
 
 void CMainFrame::OnAddSignalToSignalWindow_LIN()
 {
-    string path;
+    std::string path;
     path=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath;
 
     if(path.empty()== FALSE)
@@ -4513,7 +4246,6 @@ void CMainFrame::OnLogEnable()
     }
     bLogON = bLogON ? FALSE : TRUE;
 
-    // PTV [1.6.4]
     if(bLogON == FALSE)
     {
         if (NULL != sg_pouFrameProcCAN)
@@ -4521,12 +4253,9 @@ void CMainFrame::OnLogEnable()
             sg_pouFrameProcCAN->FPC_DisableDataLogFlag();
         }
     }
-    // PTV [1.6.4]
 
     // Set the status of logging
-    // PTV[1.6.4]
     BOOL bIsConnected = FALSE;
-    // PTV[1.6.4]
     CFlags* pouFlags = NULL;
     pouFlags = theApp.pouGetFlagsPtr();
     if (NULL != pouFlags)
@@ -4535,7 +4264,6 @@ void CMainFrame::OnLogEnable()
         bIsConnected = pouFlags->nGetFlagStatus(CONNECTED);
     }
 
-    // PTV[1.6.5]
     // If Connected and Log is enabled
     if(bLogON == TRUE && bIsConnected == TRUE)
     {
@@ -4551,7 +4279,6 @@ void CMainFrame::OnLogEnable()
             }
         }
     }
-    // PTV[1.6.5]
     // If not connected or log is disabled
     else
     {
@@ -4597,7 +4324,6 @@ void CMainFrame::OnLog_LIN_Enable()
     bLogON = bLogON ? FALSE : TRUE;
 
 
-    // PTV [1.6.4]
     if(bLogON == FALSE)
     {
         if (NULL != sg_pouFrameProcLIN)
@@ -4606,12 +4332,9 @@ void CMainFrame::OnLog_LIN_Enable()
             sg_pouFrameProcLIN->FPL_DisableLINDataLogFlag();
         }
     }
-    // PTV [1.6.4]
 
     // Set the status of logging
-    // PTV[1.6.4]
     BOOL bIsConnected = FALSE;
-    // PTV[1.6.4]
     CFlags* pouFlags = NULL;
     pouFlags = theApp.pouGetFlagsPtr();
     if (NULL != pouFlags)
@@ -4620,7 +4343,6 @@ void CMainFrame::OnLog_LIN_Enable()
         bIsConnected = pouFlags->nGetFlagStatus(LIN_CONNECTED);
     }
 
-    // PTV[1.6.5]
     // If Connected and Log is enabled
     if(bLogON == TRUE && bIsConnected == TRUE)
     {
@@ -4636,7 +4358,6 @@ void CMainFrame::OnLog_LIN_Enable()
             }
         }
     }
-    // PTV[1.6.5]
     // If not connected or log is disabled
     else
     {
@@ -4895,7 +4616,6 @@ void CMainFrame::OnSendMessage()
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESG, FALSE );
         // ReSet the tool bar button to pressed state
         omRefToolBarCtrl.PressButton(IDR_TOOL_SENDMSG, FALSE);
-        // PTV [1.6.4]
         // Disabling Data logging Flag
         if (NULL != sg_pouFrameProcCAN)
         {
@@ -5797,7 +5517,6 @@ void CMainFrame::OnClose()
     {
         ::KillTimer(NULL, m_unTimerSB);
     }
-    // PTV [1.6.4]
     if(m_unTimerSBLog != 0)
     {
         ::KillTimer(NULL, m_unTimerSBLog);
@@ -5814,7 +5533,6 @@ void CMainFrame::OnClose()
         //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
         m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
     }
-    // PTV [1.6.4]
     if(m_podUIThread != NULL)
     {
         m_podUIThread->PostThreadMessage(WM_QUIT,0,0);
@@ -6045,421 +5763,7 @@ bool CMainFrame::bWriteIntoRegistry(HKEY hRootKey, CString strSubKey, CString st
         return false;
     }
 }
-/*******************************************************************************
-  Function Name  : ClearUserDefinedNodes
-  Input(s)       : string& - path to global file
-  Output         : bool - failure/ success
-  Description    : Clears all the child nodes from the user_defined_node
-  Member of      : CMainFrame
-  Functionality  : -
-  Author(s)      : Ashwin R Uchil
-  Date Created   : 6.5.2012
-  Modifications  :
-*******************************************************************************/
-//bool CMainFrame::ClearUserDefinedNodes(string& strPath)
-//{
-//xmlNodePtr parentNode, NxtParentNode, NxtChildNode;
-//xmlDocPtr xmlToolbarPosDoc = xmlParseFile(strPath.c_str());
 
-////get the user defined section
-//xmlChar* pXpath = (xmlChar*)"//Busmaster_Init_Config/Toolbar_Position_User_Defined";  //set the path
-//xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(xmlToolbarPosDoc, pXpath);
-
-//if( NULL != pObjectPath )
-//{
-//  xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-//  if( NULL != pNodeSet )
-//  {
-//      parentNode = pNodeSet->nodeTab[0];              //Take First One only
-//  }
-//  if( NULL != parentNode )
-//  {
-//      parentNode = parentNode->xmlChildrenNode;       //ToolBar_main or ToolBar_MsgWnd etc
-//  }
-
-//  //delete parent and their children nodes
-//  while (parentNode != NULL)
-//  {
-//      xmlNodePtr childNode = parentNode->children;
-//      while (childNode)
-//      {
-//          NxtChildNode = childNode->next;
-//          xmlUnlinkNode(childNode);
-//          xmlFree(childNode);
-//          childNode = NxtChildNode;
-//      }
-//      //first save the next node only then delete the current node
-//      NxtParentNode = parentNode->next;
-//      xmlUnlinkNode(parentNode);
-//      xmlFree(parentNode);
-//      parentNode = NxtParentNode;
-//  }
-//  if(xmlToolbarPosDoc != NULL)
-//  {
-//      //save the file else the changes will not be reflected
-//      xmlSaveFormatFileEnc(strPath.c_str(), xmlToolbarPosDoc, "UTF-8", 1);
-
-//      xmlFreeDoc(xmlToolbarPosDoc);
-//  }
-//  return true;
-//}
-//else
-//{
-//  return false;
-//}
-//}
-
-/*******************************************************************************
-  Function Name  : CreateToolBarPosInGlobalFile
-  Input(s)       : xmlNodePtr
-  Output         : BOOL
-  Description    : Creates nodes in global file to store the toolbar postions
-  Member of      : CMainFrame
-  Functionality  : -
-  Author(s)      : Ashwin R Uchil
-  Date Created   : 6.5.2012
-  Modifications  :
-*******************************************************************************/
-//BOOL CMainFrame::CreateToolBarPosInGlobalFile(xmlNodePtr pNodePtr)
-//{
-//int           nToolBarHeight = 0;         //stores the maximum offset taht need to be subtracted to get the correct position
-//string        strAlignementMain, strAlignementConfig,strAlignementMsgWin;
-//string        strAlignementJ1939,strAlignementCANDB, strAlignementNodeSim;
-//CRect     rTBRectMain,rTBRectMsgWdw, rTBRectConfig,rTBRectJ1939,rTBRectCANDB,rTBRectNodeSim;
-
-//m_wndToolBar.GetWindowRect(&rTBRectMain);
-////To align all the toolbars in proper position, we need to first get the alignment of all the toolbars and then
-////calculate the exact position. In case of left or right alignment the toolbar will be pushed down when the
-////toolbars at with top alignment are created, so the top postion of left aligned toolbar will not be stored as 0,
-////we need to calculate the offset and subtract it.
-
-//if(m_wndToolBar.IsFloating() == 0)        //do not calculate the offset in case of floating toolbars
-//{
-//  ScreenToClient(&rTBRectMain);
-//
-//  strAlignementMain = GetToolBarStyle( m_wndToolBar);
-//  if(strAlignementMain == "TOP" )     //if the toolbar is TOP aligned then set the offset
-//  {
-//      nToolBarHeight = rTBRectMain.bottom;
-//  }
-//}
-
-//m_wndToolbarMsgWnd.GetWindowRect(&rTBRectMsgWdw);
-////m_wndToolbarMsgWnd.GetClientRect(&rTBRectMsgWdw);
-//WINDOWPLACEMENT       wPlace;
-//m_wndToolbarMsgWnd.GetWindowPlacement(&wPlace);
-//if(m_wndToolbarMsgWnd.IsFloating() == 0)
-//{
-//  CPoint          ptP;
-//  ptP.x = rTBRectMsgWdw.left;
-//  ptP.y = rTBRectMsgWdw.top;
-//  ::ScreenToClient(this->m_hWnd, &ptP);
-
-//  ScreenToClient(&rTBRectMsgWdw);
-//  strAlignementMsgWin = GetToolBarStyle( m_wndToolbarMsgWnd);
-//  if(strAlignementMsgWin == "TOP" && rTBRectMsgWdw.bottom > nToolBarHeight) //get the max offset required
-//  {
-//      nToolBarHeight = rTBRectMsgWdw.bottom;
-//  }
-//}
-
-//m_wndToolbarConfig.GetWindowRect(&rTBRectConfig);
-//if(m_wndToolbarConfig.IsFloating() == 0)
-//{
-//  ScreenToClient(&rTBRectConfig);
-//  strAlignementConfig = GetToolBarStyle( m_wndToolbarConfig);
-//  if(strAlignementConfig == "TOP" && rTBRectConfig.bottom > nToolBarHeight)
-//  {
-//      nToolBarHeight = rTBRectConfig.bottom;
-//  }
-//}
-
-//m_wndToolbarJ1939.GetWindowRect(&rTBRectJ1939);
-//if(m_wndToolbarJ1939.IsFloating() == 0)
-//{
-//  ScreenToClient(&rTBRectJ1939);
-//  strAlignementJ1939 = GetToolBarStyle( m_wndToolbarJ1939);
-//  if(strAlignementJ1939 == "TOP" && rTBRectJ1939.bottom > nToolBarHeight)
-//  {
-//      nToolBarHeight = rTBRectJ1939.bottom;
-//  }
-//}
-
-//m_wndToolbarCANDB.GetWindowRect(&rTBRectCANDB);
-//if(m_wndToolbarCANDB.IsFloating() == 0)
-//{
-//  ScreenToClient(&rTBRectCANDB);
-//  strAlignementCANDB = GetToolBarStyle( m_wndToolbarCANDB);
-//  if(strAlignementCANDB == "TOP" && rTBRectCANDB.bottom > nToolBarHeight)
-//  {
-//      nToolBarHeight = rTBRectCANDB.bottom;
-//  }
-//}
-
-//m_wndToolbarNodeSimul.GetWindowRect(&rTBRectNodeSim);
-//if(m_wndToolbarNodeSimul.IsFloating() == 0)
-//{
-//  ScreenToClient(&rTBRectNodeSim);
-//  strAlignementNodeSim = GetToolBarStyle( m_wndToolbarNodeSimul);
-//  if(strAlignementNodeSim == "TOP" && rTBRectNodeSim.bottom > nToolBarHeight)
-//  {
-//      nToolBarHeight = rTBRectNodeSim.bottom;
-//  }
-//}
-
-////=============================Main=====================================
-//xmlNodePtr pToolBarMain = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_MAIN);
-//xmlAddChild(pNodePtr, pToolBarMain);
-//
-//CreationOfToolBarNode(pToolBarMain,DEF_NAME,"Main");
-//if(strAlignementMain == "LEFT" || strAlignementMain == "RIGHT")
-//{
-//  //if right or left aligned then subtract the offset.
-//  //its only for TOP position
-//  CreationOfToolBarNode(pToolBarMain,DEF_TOP,rTBRectMain.top - nToolBarHeight);
-//}
-//else
-//{
-//  CreationOfToolBarNode(pToolBarMain,DEF_TOP,rTBRectMain.top);
-//}
-//CreationOfToolBarNode(pToolBarMain,DEF_Left,rTBRectMain.left);
-//CreationOfToolBarNode(pToolBarMain,DEF_Bottom,rTBRectMain.bottom);
-//CreationOfToolBarNode(pToolBarMain,DEF_Right,rTBRectMain.right);
-//
-//CreationOfToolBarNode(pToolBarMain,DEF_TOOLBAR_ALIGNMENT,strAlignementMain);
-//if(m_wndToolBar.IsFloating())
-//  CreationOfToolBarNode(pToolBarMain,DEF_TOOLBAR_DOCKING,0);
-//else
-//  CreationOfToolBarNode(pToolBarMain,DEF_TOOLBAR_DOCKING,1);
-//CreationOfToolBarNode(pToolBarMain,DEF_IS_VISIBLE,m_wndToolBar.IsWindowVisible());
-////=======================================================================
-
-////=====================Message window toolbar============================
-//xmlNodePtr pMsgWnd = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_MSG_WND);
-//xmlAddChild(pNodePtr, pMsgWnd);
-
-//CreationOfToolBarNode(pMsgWnd,DEF_NAME,"Message Window");
-//if(strAlignementMsgWin == "LEFT" || strAlignementMsgWin == "RIGHT")
-//{
-//  //if right or left aligned then subtract the offset.
-//  //its only for TOP position
-//  CreationOfToolBarNode(pMsgWnd,DEF_TOP,rTBRectMsgWdw.top - nToolBarHeight);
-//}
-//else
-//{
-//  CreationOfToolBarNode(pMsgWnd,DEF_TOP,rTBRectMsgWdw.top);
-//}
-//CreationOfToolBarNode(pMsgWnd,DEF_Left,rTBRectMsgWdw.left);
-//CreationOfToolBarNode(pMsgWnd,DEF_Bottom,rTBRectMsgWdw.bottom);
-//CreationOfToolBarNode(pMsgWnd,DEF_Right,rTBRectMsgWdw.right);
-//
-//CreationOfToolBarNode(pMsgWnd,DEF_TOOLBAR_ALIGNMENT,strAlignementMsgWin);
-//if(m_wndToolbarMsgWnd.IsFloating())
-//  CreationOfToolBarNode(pMsgWnd,DEF_TOOLBAR_DOCKING,0);
-//else
-//  CreationOfToolBarNode(pMsgWnd,DEF_TOOLBAR_DOCKING,1);
-//CreationOfToolBarNode(pMsgWnd,DEF_IS_VISIBLE,m_wndToolbarMsgWnd.IsWindowVisible());
-////========================================================================
-
-////=======================Configuration toolbar ===========================
-//xmlNodePtr pConfigure = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_CONFIG);
-//xmlAddChild(pNodePtr, pConfigure);
-
-
-//CreationOfToolBarNode(pConfigure,DEF_NAME,"Configure");
-//if(strAlignementConfig == "LEFT" || strAlignementConfig == "RIGHT")
-//{
-//  //if right or left aligned then subtract the offset.
-//  //its only for TOP position
-//  CreationOfToolBarNode(pConfigure,DEF_TOP,rTBRectConfig.top - nToolBarHeight);
-//}
-//else
-//{
-//  CreationOfToolBarNode(pConfigure,DEF_TOP,rTBRectConfig.top);
-//}
-//CreationOfToolBarNode(pConfigure,DEF_Left,rTBRectConfig.left);
-//CreationOfToolBarNode(pConfigure,DEF_Bottom,rTBRectConfig.bottom);
-//CreationOfToolBarNode(pConfigure,DEF_Right,rTBRectConfig.right);
-//
-//CreationOfToolBarNode(pConfigure,DEF_TOOLBAR_ALIGNMENT,strAlignementConfig);
-//if(m_wndToolbarConfig.IsFloating())
-//  CreationOfToolBarNode(pConfigure,DEF_TOOLBAR_DOCKING,0);
-//else
-//  CreationOfToolBarNode(pConfigure,DEF_TOOLBAR_DOCKING,1);
-//CreationOfToolBarNode(pConfigure,DEF_IS_VISIBLE,m_wndToolbarConfig.IsWindowVisible());
-////=======================================================================
-
-////==========================J1939 Toolbar================================
-//xmlNodePtr pJ1939 = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_J1939);
-//xmlAddChild(pNodePtr, pJ1939);
-
-//CreationOfToolBarNode(pJ1939,DEF_NAME,"J1939");
-//if(strAlignementJ1939 == "LEFT" || strAlignementJ1939 == "RIGHT")
-//{
-//  //if right or left aligned then subtract the offset.
-//  //its only for TOP position
-//  CreationOfToolBarNode(pJ1939,DEF_TOP,rTBRectJ1939.top - nToolBarHeight);
-//}
-//else
-//{
-//  CreationOfToolBarNode(pJ1939,DEF_TOP,rTBRectJ1939.top);
-//}
-//CreationOfToolBarNode(pJ1939,DEF_Left,rTBRectJ1939.left);
-//CreationOfToolBarNode(pJ1939,DEF_Bottom,rTBRectJ1939.bottom);
-//CreationOfToolBarNode(pJ1939,DEF_Right,rTBRectJ1939.right);
-
-//CreationOfToolBarNode(pJ1939,DEF_TOOLBAR_ALIGNMENT,strAlignementJ1939);
-//if(m_wndToolbarJ1939.IsFloating())
-//  CreationOfToolBarNode(pJ1939,DEF_TOOLBAR_DOCKING,0);
-//else
-//  CreationOfToolBarNode(pJ1939,DEF_TOOLBAR_DOCKING,1);
-//CreationOfToolBarNode(pJ1939,DEF_IS_VISIBLE,m_wndToolbarJ1939.IsWindowVisible());
-////======================================================================
-
-////=======================CAN database Toolbar===========================
-//xmlNodePtr pCANDB = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_CAN_DB);
-//xmlAddChild(pNodePtr, pCANDB);
-
-
-//CreationOfToolBarNode(pCANDB,DEF_NAME,"CAN Database");
-//if(strAlignementCANDB == "LEFT" || strAlignementCANDB == "RIGHT")
-//{
-//  //if right or left aligned then subtract the offset.
-//  //its only for TOP position
-//  CreationOfToolBarNode(pCANDB,DEF_TOP,rTBRectCANDB.top - nToolBarHeight);
-//}
-//else
-//{
-//  CreationOfToolBarNode(pCANDB,DEF_TOP,rTBRectCANDB.top);
-//}
-//CreationOfToolBarNode(pCANDB,DEF_Left,rTBRectCANDB.left);
-//CreationOfToolBarNode(pCANDB,DEF_Bottom,rTBRectCANDB.bottom);
-//CreationOfToolBarNode(pCANDB,DEF_Right,rTBRectCANDB.right);
-//
-//CreationOfToolBarNode(pCANDB,DEF_TOOLBAR_ALIGNMENT,strAlignementCANDB);
-//if(m_wndToolbarCANDB.IsFloating())
-//  CreationOfToolBarNode(pCANDB,DEF_TOOLBAR_DOCKING,0);
-//else
-//  CreationOfToolBarNode(pCANDB,DEF_TOOLBAR_DOCKING,1);
-//CreationOfToolBarNode(pCANDB,DEF_IS_VISIBLE,m_wndToolbarCANDB.IsWindowVisible());
-////======================================================================
-
-////========================Node Simulation===============================
-//xmlNodePtr pNodeSim = xmlNewNode(NULL, BAD_CAST DEF_TOOLBAR_NODE_SIM);
-//xmlAddChild(pNodePtr, pNodeSim);
-
-
-//CreationOfToolBarNode(pNodeSim,DEF_NAME,"Node Simulation");
-//if(strAlignementNodeSim == "LEFT" || strAlignementNodeSim == "RIGHT" /*||m_wndToolbarNodeSimul.IsFloating()*/)
-//{
-//  //if right or left aligned then subtract the offset.
-//  //its only for TOP position
-//  CreationOfToolBarNode(pNodeSim,DEF_TOP,rTBRectNodeSim.top - nToolBarHeight);
-//}
-//else
-//{
-//  CreationOfToolBarNode(pNodeSim,DEF_TOP,rTBRectNodeSim.top);
-//}
-
-//CreationOfToolBarNode(pNodeSim,DEF_Left,rTBRectNodeSim.left);
-//CreationOfToolBarNode(pNodeSim,DEF_Bottom,rTBRectNodeSim.bottom);
-//CreationOfToolBarNode(pNodeSim,DEF_Right,rTBRectNodeSim.right);
-//
-//CreationOfToolBarNode(pNodeSim,DEF_TOOLBAR_ALIGNMENT,strAlignementNodeSim);
-//if(m_wndToolbarNodeSimul.IsFloating())
-//  CreationOfToolBarNode(pNodeSim,DEF_TOOLBAR_DOCKING,0);
-//else
-//  CreationOfToolBarNode(pNodeSim,DEF_TOOLBAR_DOCKING,1);
-//CreationOfToolBarNode(pNodeSim,DEF_IS_VISIBLE,m_wndToolbarNodeSimul.IsWindowVisible());
-////======================================================================
-//return true;
-//}
-
-/*******************************************************************************
-  Function Name  : GetToolBarStyle
-  Input(s)       : CToolBar object
-  Output         : string containing the name
-  Description    : Gets the current toolbar style(Docked side like TOP, LEFT, RIGHT, BOTTOM)
-  Member of      : CMainFrame
-  Functionality  : -
-  Author(s)      : Ashwin R Uchil
-  Date Created   : 6.5.2012
-  Modifications  :
-*******************************************************************************/
-//string CMainFrame::GetToolBarStyle(CToolBar& wndToolbar)
-//{
-//DWORD dwStyle = wndToolbar.GetBarStyle();         //get the current style of toolbar
-//UINT unBarID = 0;
-//string            strStyle;
-////get the current alignment
-//   unBarID = (dwStyle & CBRS_ALIGN_TOP) ? AFX_IDW_DOCKBAR_TOP : unBarID;
-//   unBarID = (dwStyle & CBRS_ALIGN_BOTTOM && unBarID == 0) ? AFX_IDW_DOCKBAR_BOTTOM : unBarID;
-//   unBarID = (dwStyle & CBRS_ALIGN_LEFT && unBarID == 0) ? AFX_IDW_DOCKBAR_LEFT : unBarID;
-//   unBarID = (dwStyle & CBRS_ALIGN_RIGHT && unBarID == 0) ? AFX_IDW_DOCKBAR_RIGHT : unBarID;
-
-//if(unBarID == AFX_IDW_DOCKBAR_TOP)
-//{
-//  strStyle = "TOP";
-//}
-//else if(unBarID == AFX_IDW_DOCKBAR_BOTTOM)
-//{
-//  strStyle = "BOTTOM";
-//}
-//else if(unBarID == AFX_IDW_DOCKBAR_LEFT)
-//{
-//  strStyle = "LEFT";
-//}
-//else if(unBarID == AFX_IDW_DOCKBAR_RIGHT)
-//{
-//  strStyle = "RIGHT";
-//}
-//return strStyle;
-//}
-/*******************************************************************************
-  Function Name  : CreationOfToolBarNode
-  Input(s)       : xmlNodePtr   - parent node for which child can be created
-                   string       - contains the name of the node
-                   string       - data in the node
-  Output         : BOOL - success/ failure
-  Description    : creates new child node for the given node with the tag and data
-  Member of      : CMainFrame
-  Functionality  : -
-  Author(s)      : Ashwin R Uchil
-  Date Created   : 6.5.2012
-  Modifications  :
-*******************************************************************************/
-//BOOL CMainFrame::CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, string strData)
-//{
-/*const char *omcVarChar ;
-omcVarChar = strData.c_str();
-xmlNodePtr pNode = xmlNewChild(pNodePtr, NULL, BAD_CAST strTag.c_str(),BAD_CAST omcVarChar);
-xmlAddChild(pNodePtr, pNode);
-return true;*/
-//}
-/*******************************************************************************
-  Function Name  : CreationOfToolBarNode
-  Input(s)       : xmlNodePtr   - parent node for which child can be created
-                   string       - contains the name of the node
-                   int          - data in the node
-  Output         : BOOL - success/ failure
-  Description    : creates new child node for the given node with the tag and data
-  Member of      : CMainFrame
-  Functionality  : -
-  Author(s)      : Ashwin R Uchil
-  Date Created   : 6.5.2012
-  Modifications  :
-*******************************************************************************/
-
-//BOOL CMainFrame::CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, int nData)
-//{
-/*const char *omcVarChar ;
-CString         csData;
-csData.Format("%d", nData);
-omcVarChar = csData.GetBuffer(0);
-xmlNodePtr pNode = xmlNewChild(pNodePtr, NULL, BAD_CAST strTag.c_str(),BAD_CAST omcVarChar);
-xmlAddChild(pNodePtr, pNode);
-return true;*/
-//}
 /******************************************************************************
     Function Name    :  bCreateMsgWindow
 
@@ -6477,7 +5781,6 @@ return true;*/
                         Raja N on 19.07.2005, Removed code related to log file
                         triggering
 ******************************************************************************/
-
 BOOL CMainFrame::bCreateMsgWindow()
 {
     BOOL bReturn=TRUE;
@@ -7115,19 +6418,6 @@ void CMainFrame::OnMessageFilterButton()
     }
 }
 
-
-/******************************************************************************
-    Function Name    :  OnMessageFilterButtonLin
-
-    Input(s)         :      -
-    Output           :      -
-    Functionality    :
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Venkatanarayana Makam
-    Date Created     :  21.03.2014
-******************************************************************************/
 void CMainFrame::OnMessageFilterButtonLin()
 {
     CFlags* pouFlags = NULL;
@@ -9055,7 +8345,6 @@ void CMainFrame::vUpdateGraphData(const STCANDATA& sCanData)
 
                     sInterpretList.unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
                     sInterpretList.m_nTimeStamp = sCanData.m_lTickCount.QuadPart;
-                    //Tobias - venkat
                     strcpy_s(sInterpretList.m_acSigName,64, odElement.m_omStrElementName.GetBuffer(64));
                     switch( odElement.m_nValueType )
                     {
@@ -9175,10 +8464,6 @@ void CMainFrame::OnFileConnect()
         if(bConnected)
         {
             m_objTxHandler.vSetTxStopFlag(TRUE);
-            //Shailesh +
-            //sg_pouFrameProcCAN->IncrementConnectionCount();
-            //Shailesh -
-
         }
         //g_bStopMsgBlockTx       = TRUE;
         g_bStopSelectedMsgTx    = TRUE;
@@ -9288,7 +8573,6 @@ void CMainFrame::OnFileConnect()
         }
         else
         {
-            // PTV [1.6.4]
             if (NULL != sg_pouFrameProcCAN)
             {
                 sg_pouFrameProcCAN->FPC_DisableDataLogFlag();
@@ -9297,7 +8581,6 @@ void CMainFrame::OnFileConnect()
             {
                 sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
             }
-            // PTV [1.6.4]
             //Stop Graph Interpret Thread
             bStopGraphReadThread();
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
@@ -9356,7 +8639,6 @@ void CMainFrame::OnFileConnect()
             {
                 vStartStopLogging(bConnected);
             }
-            // PTV [1.6.6]
             else if(bLogIsON == TRUE && bConnected == TRUE)
             {
                 vStartStopLogging(bLogIsON);
@@ -9381,7 +8663,6 @@ void CMainFrame::OnFileConnect()
             }
             else
             {
-                // PTV [1.6.6]
                 if (NULL != sg_pouIJ1939Logger)
                 {
                     if(sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
@@ -9397,7 +8678,6 @@ void CMainFrame::OnFileConnect()
             // Post Connect Activities
             if( bConnected == TRUE )
             {
-                // PTV[1.6.4]
                 // If Connect and Log both are enabled
 
                 BOOL bLogON = FALSE;
@@ -9429,7 +8709,6 @@ void CMainFrame::OnFileConnect()
                 {
                     m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
                 }
-                // PTV[1.6.4]
 
                 vREP_HandleConnectionStatusChange( TRUE );
                 //send connection statud to replay window
@@ -9438,7 +8717,6 @@ void CMainFrame::OnFileConnect()
                 vREP_EnableFilters(bReplayFilterStatus);
             }
             // On Disconnect Kill the timer
-            // PTV[1.6.4]
             else
             {
                 if(m_unTimerSBLog != NULL)
@@ -9450,12 +8728,10 @@ void CMainFrame::OnFileConnect()
                     m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
                 }
             }
-            // PTV[1.6.4]
 
             // Enable / disable signal transmission block
             m_ouWaveTransmitter.bUpdateBlock(bConnected);
 
-            //venkat
             m_objTSExecutorHandler.vStartStopReadThread(CAN, bConnected);
             m_objTSExecutorHandler.vBusConnected(bConnected);
 
@@ -9603,7 +8879,6 @@ void CMainFrame::OnLINConnect()
         {
             vStartStopLogging_LIN(bConnected);
         }
-        // PTV [1.6.6]
         else if(bLogIsON == TRUE && bConnected == TRUE)
         {
             vStartStopLogging_LIN(bLogIsON);
@@ -10195,10 +9470,8 @@ void CMainFrame::OnSaveConfigFile()
         {
             vPushConfigFilenameDown(omStrCfgFilename);
 
-            // PTV [1.6.4] 6
             bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
             m_omStrSavedConfigFile = omStrCfgFilename;
-            // PTV [1.6.4] 6
         }
     }
 }
@@ -12649,7 +11922,7 @@ void CMainFrame::vSetControllerParameters()
 {
     CFlags* podFlag = NULL;
     podFlag   = theApp.pouGetFlagsPtr();
-    UCHAR ucControllerMode = defMODE_SIMULATE;  //venkat
+    UCHAR ucControllerMode = defMODE_SIMULATE;
     // Get the Controller mode
     LONG lParam = 0;
     if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
@@ -13143,7 +12416,7 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
         else if (LIN == eBus)
         {
             CStringArray m_saLDFPaths;
-            string sLDFPath;
+            std::string sLDFPath;
 
             for(int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
             {
@@ -13542,21 +12815,11 @@ void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
     }
 }
 
-/******************************************************************************
-    Function Name    :  OnFileConverter
-
-    Input(s)         :  -
-    Output           :  -
-    Functionality    :  Called from frame work. This function will execute
-                        CAPL_2_C.exe which resides in the application
-                        directory.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Venkatanarayana Makam
-    Date Created     :  18.12.2011
-    Modifications    :
-******************************************************************************/
+/**
+ * Called from frame work. This function will execute
+ * CAPL_2_C.exe which resides in the application
+ * directory.
+ */
 void CMainFrame::OnFileConverter()
 {
     try
@@ -13857,7 +13120,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
 {
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
-    string  strLastError;
+    std::string  strLastError;
     HRESULT hLastError;
     static char chError[256]; //TODO::For trace window
     if (g_pouDIL_FLEXRAY_Interface == NULL)
@@ -13949,7 +13212,7 @@ void CMainFrame::OnFlexRayConnect()
         char chError[256];
         HRESULT hResult = S_OK;
         HRESULT hLastError;
-        string strLastError;
+        std::string strLastError;
         CFlags* pouFlag  = theApp.pouGetFlagsPtr();
 
         /* Toggle connect/disconnect flag */
@@ -14120,7 +13383,7 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                         vInitializeGraphWndReadBuffer();
                         //re initialize statistics module
                         vInitializeBusStatCAN();
-                        //venkat - Initialize Read Thread of TSExecutor.
+                        // Initialize Read Thread of TSExecutor.
                         m_objTSExecutorHandler.vDoInitailization(CAN);
 
                         /* Updates the number of channels selected */
@@ -14234,7 +13497,7 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                         /*vInitializeGraphWndReadBuffer();*/
                         //re initialize statistics module
                         /*vInitializeBusStatLIN();*/
-                        //venkat - Initialize Read Thread of TSExecutor.
+                        // Initialize Read Thread of TSExecutor.
                         m_objTSExecutorHandler.vDoInitailization(LIN);
 
                         /* Updates the number of channels selected */
@@ -14409,9 +13672,7 @@ void CMainFrame::vUpdateHWStatusInfo(void)
             {
                 m_asControllerDetails->m_omStrBaudrate = "500";
             }
-            // PTV
             // Added Shortcut key for the hardwared device, Removing '&'
-            //venkat
             CString strDriverName = m_ouList[i].m_acName.c_str();
             strDriverName.Replace("&", "");
 
@@ -14752,39 +14013,6 @@ void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList
     {
         pMsgSig->bFillDbStructure(odMsgNameMsgCodeListDB);
     }
-    //odMsgNameMsgCodeList.RemoveAll();
-    //int nDefMsgCount = 0;
-    //if (pMsgSig != NULL)
-    //{
-    //    nDefMsgCount = pMsgSig->unGetNumerOfMessages();
-    //}
-    //if (nDefMsgCount > 0)
-    //{
-    //    CStringList omDefMsgs;
-    //    pMsgSig->omStrListGetMessageNames(omDefMsgs);
-    //    POSITION pos = omDefMsgs.GetHeadPosition();
-    //    // Insert every message name into the message list box
-    //    CString omStrMsgName = _T("");
-    //    while ( pos != NULL )
-    //    {
-    //        SMSG_NAME_CODE sMsgNameCode;
-    //        omStrMsgName = omDefMsgs.GetNext(pos);
-    //        sMsgNameCode.m_omMsgName = omStrMsgName;
-    //        sMESSAGE* psDBMsg =  pMsgSig->psGetMessagePointer(omStrMsgName);
-    //        if (psDBMsg != NULL)
-    //        {
-    //            sMsgNameCode.m_dwMsgCode = psDBMsg->m_unMessageCode;
-    //            sMsgNameCode.m_unMsgLen  = psDBMsg->m_unMessageLength;
-    //            sSIGNALS* psSignal = psDBMsg->m_psSignals;
-    //            while (psSignal != NULL)
-    //            {
-    //                sMsgNameCode.m_omSignalNames.AddTail(psSignal->m_omStrSignalName);
-    //                psSignal = psSignal->m_psNextSignalList;
-    //            }
-    //        }
-    //        odMsgNameMsgCodeList.AddTail(sMsgNameCode);
-    //    }
-    //}
 }
 
 void CMainFrame::ToggleView(CToolBar& omToolbar)
@@ -14869,8 +14097,8 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
     {
         CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
         vSetFileStorageInfo(omConfigFileName);
-        //MVN
-        string strCfxFile = (LPCSTR)omConfigFileName;
+
+        std::string strCfxFile = (LPCSTR)omConfigFileName;
         nRetValue = nLoadXMLConfiguration(strCfxFile);
         if (nRetValue == S_OK )         //1. Try to Load as a XML file
         {
@@ -14889,7 +14117,6 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
 
 
         }
-        //~MVN
         else                            //2. Load as a Binary File
         {
             CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
@@ -14971,8 +14198,7 @@ INT CMainFrame::LoadConfiguration(void)
     return nReturn;
 }
 
-//MVN
-int CMainFrame::nLoadXMLConfiguration(string& m_strCfxFile)
+int CMainFrame::nLoadXMLConfiguration(std::string & m_strCfxFile)
 {
     int nRetValue = S_FALSE;
 
@@ -15693,7 +14919,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
                 //COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
-                //MVN only if any signal is selected
+                // only if any signal is selected
                 if( unSelCount > 0 )
                 {
                     char acName[MAX_PATH] = {_T('\0')};
@@ -15784,7 +15010,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
 
                 UINT unSelCount = sMainEntry.m_odSelEntryList.GetCount();
-                //MVN only if any signal is selected
+                // only if any signal is selected
                 if( unSelCount > 0)
                 {
                     // Adding Message
@@ -16124,7 +15350,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             CStringArray omDbNames;
             if (m_pouMsgSigJ1939 != NULL)
             {
-                string omStrBasePath;
+                std::string omStrBasePath;
                 CString omConfigFileName;
                 vGetLoadedCfgFileName(omConfigFileName);
                 CUtilFunctions::nGetBaseFolder(omConfigFileName.GetBuffer(MAX_PATH), omStrBasePath);
@@ -16180,7 +15406,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             CStringArray omDbNames;
             if (theApp.m_pouMsgSignal != NULL)
             {
-                string omStrBasePath;
+                std::string omStrBasePath;
                 CString omConfigFileName;
                 vGetLoadedCfgFileName(omConfigFileName);
                 CUtilFunctions::nGetBaseFolder(omConfigFileName.GetBuffer(MAX_PATH), omStrBasePath);
@@ -16267,7 +15493,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
                         //ECU
                         xmlNodePtr pNodeECUPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_ECU);
-                        list<string>::iterator itrList;
+                        std::list<std::string>::iterator itrList;
                         for ( itrList = m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strSlectedEculist.begin();
                                 itrList != m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strSlectedEculist.end(); itrList++)
                         {
@@ -16326,7 +15552,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
 
                         //ECU
                         xmlNodePtr pNodeECUPtr = xmlNewNode(NULL, BAD_CAST DEF_FLEX_CHANNEL_ECU);
-                        list<string>::iterator itrList;
+                        std::list<std::string>::iterator itrList;
                         for ( itrList = m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strSlectedEculist.begin();
                                 itrList != m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[i].m_strSlectedEculist.end(); itrList++)
                         {
@@ -16374,7 +15600,6 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData
             }
         }
         break;
-        //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
         {
             xmlNodePtr pNodeTSEditor = NULL;
@@ -18499,7 +17724,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                   eWINID_MSG_WND_SET_CONFIG_DATA_FLEXRAY_XML,
                                   (LPARAM)m_xmlConfigFiledoc);
 
-                    list<Cluster> ouCluster;
+                    std::list<Cluster> ouCluster;
                     m_pouMsgSigFLEXRAY->hLoadFibexDBFile(m_acFlexDBConfigInfo.m_acConfigFileName[0].c_str(), ouCluster);
 
                     /* ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
@@ -18525,7 +17750,7 @@ void CMainFrame::vVlaidateAndLoadFibexConfig(sLinConfigContainer& ouFibexContain
         std::list<LinChannelParam> ouLinParams;
         if ( S_OK == m_pouMsgSigFLEXRAY->hLoadLdfFile(ouFibexContainer.m_strDbPath.c_str(), ouClusterList, ouLinParams) )
         {
-            list<Cluster>::iterator itrCluster;
+            std::list<Cluster>::iterator itrCluster;
             for ( itrCluster = ouClusterList.begin(); itrCluster != ouClusterList.end(); itrCluster++ )
             {
                 if ( itrCluster->m_strName == ouFibexContainer.m_strClusterId )
@@ -18563,7 +17788,7 @@ void CMainFrame::vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexConta
         std::list<Cluster> ouClusterList;
         if ( S_OK == m_pouMsgSigFLEXRAY->hLoadFibexDBFile(ouFibexContainer.m_strDbPath.c_str(), ouClusterList) )
         {
-            list<Cluster>::iterator itrCluster;
+            std::list<Cluster>::iterator itrCluster;
             for ( itrCluster = ouClusterList.begin(); itrCluster != ouClusterList.end(); itrCluster++ )
             {
                 if ( itrCluster->m_strName == ouFibexContainer.m_strClusterId )
@@ -18598,7 +17823,7 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
     }
 
     pNodePtr = pNodePtr->xmlChildrenNode;
-    string strVar;
+    std::string strVar;
     UINT unTemp = 0;
     float fBaudRate = 0.00;
     //sController.LoadControllerConfigData(pNodePtr);
@@ -18842,7 +18067,8 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
         pNodePtr = pNodePtr->next;
     }
 }
-INT CMainFrame::nGetControllerID(string strDriverName)
+
+INT CMainFrame::nGetControllerID(std::string strDriverName)
 {
     INT nDriverID = -1;
     if(strDriverName == "ETAS BOA")
@@ -18883,7 +18109,6 @@ INT CMainFrame::nGetControllerID(string strDriverName)
     }
     return nDriverID;
 }
-//~MVN
 
 CString CMainFrame::vGetControllerName(UINT nDriverId)
 {
@@ -18895,9 +18120,7 @@ CString CMainFrame::vGetControllerName(UINT nDriverId)
             {
                 m_asControllerDetails->m_omStrBaudrate = "500";
             }
-            // PTV
             // Added Shortcut key for the hardwared device, Removing '&'
-            //venkat
             CString strDriverName = m_ouList[i].m_acName.c_str();
             strDriverName.Replace("&", "");
 
@@ -19364,7 +18587,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                               WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
                 //Msg FormatWnd Details
 
-                if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                if((pbyTemp - pbyConfigData) < (INT)nSize)
                 {
                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
                                   WM_NOTIFICATION_FROM_OTHER,
@@ -19441,7 +18664,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                               WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
                 //Msg FormatWnd Details
 
-                if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                if((pbyTemp - pbyConfigData) < (INT)nSize)
                 {
                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN),
                                   WM_NOTIFICATION_FROM_OTHER,
@@ -19514,7 +18737,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                               WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, NULL);
                 //Msg FormatWnd Details
 
-                if((pbyTemp - pbyConfigData) < (INT)nSize)              //VENKAT
+                if((pbyTemp - pbyConfigData) < (INT)nSize)
                 {
                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN),
                                   WM_NOTIFICATION_FROM_OTHER,
@@ -19583,7 +18806,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 vPopulateJ1939PGNList();
 
                 //Msg FormatWnd Details
-                if((pbyTemp - pbyConfigData) < (INT)nSize)          //VENKAT
+                if((pbyTemp - pbyConfigData) < (INT)nSize)
                 {
                     ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(J1939),
                                   WM_NOTIFICATION_FROM_OTHER,
@@ -19813,12 +19036,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     m_asControllerDetails[i].vInitialize(FALSE);
                 }
 
-                //HRESULT hResult =
                 g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
                         sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
-                //venkat
-                /*g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
-                        sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);*/
                 //Set default settings
             }
         }
@@ -19998,7 +19217,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     {
                         //No need to check return value. Error message will be displayed
                         // in trace window
-                        //venkat:dLoadDataBaseFile will associate the database file if.
+                        //dLoadDataBaseFile will associate the database file if.
                         //it is valid.
                         dLoadDataBaseFile(omDBNames.GetAt(i), TRUE);
                     }
@@ -20037,7 +19256,6 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             }
         }
         break;
-        //venkat
         case TEST_SETUP_EDITOR_SECTION_ID:
         {
             m_objTSEditorHandler.vSetConfigurationData(pbyConfigData, nSize);
@@ -20383,7 +19601,7 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
     if (m_pDILSubMenu == NULL)
     {
         /* Create a new popup Menu */
-        if (bResult == ((m_pDILSubMenu = new CMenu()) != NULL))     //venkat
+        if (bResult == ((m_pDILSubMenu = new CMenu()) != NULL))
         {
             if ((bResult = m_pDILSubMenu->CreatePopupMenu()) == TRUE)
             {
@@ -20418,7 +19636,6 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
         {
             theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&CAN\") failed"));
         }
-        /*  PTV[1.6.4] */
         // Added shortcut key
 
         if(pConfigMenu != NULL)
@@ -20468,7 +19685,7 @@ BOOL CMainFrame::bUpdatePopupMenuDILL(void)
     if (m_pDILSubMenuLin == NULL)
     {
         /* Create a new popup Menu */
-        if (bResult == ((m_pDILSubMenuLin = new CMenu()) != NULL))     //venkat
+        if (bResult == ((m_pDILSubMenuLin = new CMenu()) != NULL))
         {
             if ((bResult = m_pDILSubMenuLin->CreatePopupMenu()) == TRUE)
             {
@@ -20507,7 +19724,6 @@ BOOL CMainFrame::bUpdatePopupMenuDILL(void)
         {
             theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&LIN\") failed"));
         }
-        /*  PTV[1.6.4] */
         // Added shortcut key
 
         if(pConfigMenu != NULL)
@@ -20656,7 +19872,6 @@ void CMainFrame::OnStartSignalTransmission(void)
         m_ouWaveTransmitter.vStopSignalTransmission();
         // update flag.
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SEND_SIGNAL_MSG, FALSE );
-        // PTV [1.6.4]
         // Disabling Data logging Flag
         if (NULL != sg_pouFrameProcCAN)
         {
@@ -21106,7 +20321,6 @@ void CMainFrame::OnActionJ1939Online()
         {
             theApp.bWriteIntoTraceWnd(_("DIL.J1939 network stopped..."));
         }
-        // PTV [1.6.4]
         if(NULL != sg_pouIJ1939Logger)
         {
             sg_pouIJ1939Logger->FPJ1_DisableJ1939DataLogFlag();
@@ -21190,7 +20404,6 @@ void CMainFrame::vJ1939StartStopLogging()
         {
             vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
             vSetBaudRateInfo(J1939);                // Update the baud rate details
-            // PTV [1.6.4]
             m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, NULL);
         }
         sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
@@ -21426,11 +20639,9 @@ HRESULT CMainFrame::DeselectJ1939Interfaces(void)
             }
         }
         theApp.bWriteIntoTraceWnd(_("Uninitialising DIL.J1939..."));
-        /* PTV[1.6.4] */
         // On Disassociate of J1939 Unload all the Simulated systems
         CStringArray omStrBuildFiles;
         GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
-        /* PTV[1.6.4] */
         if (sg_pouIJ1939DIL->DILIJ_Uninitialise() != S_OK)
         {
             theApp.bWriteIntoTraceWnd(_("Uninitialising DIL.J1939 failed..."));
@@ -22221,15 +21432,16 @@ void CMainFrame::OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarCANDB));
 }
 
-//venkat
 void CMainFrame::OnAutomationTSEditor(void)
 {
     m_objTSEditorHandler.vShowTSEditorWindow((void*)this);
 }
+
 void CMainFrame::OnFlexRayTxWindow()
 {
     m_objFlexTxHandler.vShowConfigureMsgWindow(this, FLEXRAY);
 }
+
 void CMainFrame::OnUpdateFlexrayAssociate(CCmdUI* pCmdUI)
 {
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();
@@ -22245,7 +21457,7 @@ void CMainFrame::OnUpdateFlexrayAssociate(CCmdUI* pCmdUI)
 
 void CMainFrame::OnFlexRayDBAssociate()
 {
-    string          strFilePath;
+    std::string          strFilePath;
     CStringArray strFilePathArray;
     strFilePath = m_acFlexDBConfigInfo.m_acConfigFileName[0];
 
@@ -22269,7 +21481,6 @@ void CMainFrame::OnFlexRayDBAssociate()
         m_objFlexTxHandler.SetFibexConfig(FLEXRAY, m_ouClusterConfig[FLEXRAY]);
 
 
-        //Venkat
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
                       WM_NOTIFICATION_FROM_OTHER,
                       eLOAD_DATABASE,
@@ -22753,7 +21964,6 @@ void CMainFrame::OnSendMessageLIN()
         theApp.pouGetFlagsPtr()->vSetFlagStatus( SENDMESGLIN, FALSE );
         // ReSet the tool bar button to pressed state
         omRefToolBarCtrl.PressButton(ID_TRANSMIT_ACTIVATE_LIN, FALSE);
-        // PTV [1.6.4]
         // Disabling Data logging Flag
         /*if (NULL != sg_pouFrameProcCAN)
         {
@@ -22848,7 +22058,7 @@ void CMainFrame::OnUpdateLinClusterConfig(CCmdUI* pCmdUI)
 
 void CMainFrame::OnLinClusterConfig()
 {
-    string          strFilePath;
+    std::string          strFilePath;
     CStringArray strFilePathArray;
     strFilePath = m_acFlexDBConfigInfo.m_acConfigFileName[0];
 

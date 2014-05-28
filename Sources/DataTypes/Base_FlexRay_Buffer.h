@@ -22,12 +22,10 @@
  * Common includes for FlexRay buffer
  */
 
-#if !defined BASE_FLEXRAY_BUFFER_H__INCLUDED_
-#define BASE_FLEXRAY_BUFFER_H__INCLUDED_
+#pragma once
 
-//#pragma pack(8)
-//#pragma pack(show)
 #include "..\Include\BaseDefs.h"
+
 #define RBIN_FLXHDRINFO_SELFRECEPTION                  0x00000800
 #define RBIN_FLXHDRINFO_CHANNELID                      0x00000001
 #define RBIN_FLXHDRINFO_TXCONFLICT                     0x00000200
@@ -339,4 +337,3 @@ public:
     virtual void vClearMessageBuffer(void);
     virtual HANDLE hGetNotifyingEvent(void);
 };
-#endif // BASE_FLEXRAY_BUFFER_H__INCLUDED_

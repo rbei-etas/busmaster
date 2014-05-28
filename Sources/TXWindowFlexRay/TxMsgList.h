@@ -13,14 +13,6 @@
 #pragma once
 #include "Utility/flickerfreelistctrl.h"
 #include <map>
-using namespace std;
-//#include ".\Customization\CHexEdit\HexEdit.h"
-//#include ".\Customization\CCustomLabel\CustomLabel.h"
-
-//#include ".\Application\DisplayMatrix\DisplayMatrixDlg.h"
-
-//#include "FRAME_BaseUIDoc.h"
-//#include "Mainfrm.h"
 
 // Sent to parent window when an item text editing was committed
 // wParam: The item index
@@ -99,5 +91,5 @@ private:
     void vDataFormat(CString& omDataBytes,int* nDataLength,bool bFlag);
     bool bValidateDynamicLength(long lValue);
 
-    map<int, ColumnProperty> m_ouColumnPropMap;
+    std::map<int, ColumnProperty> m_ouColumnPropMap;
 };

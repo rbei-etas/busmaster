@@ -104,7 +104,7 @@ BOOL CProjectConfigurationApp::InitInstance()
  * Adds a project entry in the project table or modifies an existing one.
  * This is a project table related function.
  */
-USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData)
+USAGEMODE int AddModifyProjectTable(std::string& ProjectName, PROJECTDATA* ProjData)
 {
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
@@ -124,7 +124,7 @@ USAGEMODE int AddModifyProjectTable(string& ProjectName, PROJECTDATA* ProjData)
  * Deletes the project entry from the project table.
  * This is a project table related function.
  */
-USAGEMODE int DeleteProjectTable(string& ProjectName)
+USAGEMODE int DeleteProjectTable(std::string& ProjectName)
 {
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
@@ -184,7 +184,7 @@ USAGEMODE int GetProjectList(LISTSTR* ProjList)
  * Retrieves project data from the project table.
  * This is a project table related function.
  */
-USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData)
+USAGEMODE int GetProjectData(std::string& ProjName, PROJECTDATA& ProjData)
 {
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
@@ -204,7 +204,7 @@ USAGEMODE int GetProjectData(string& ProjName, PROJECTDATA& ProjData)
  * Add a section or modify an existing one in the section table of the project.
  * This is a section data related function.
  */
-USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SECTIONDATA* SectionData)
+USAGEMODE int AddModifySectionData(std::string& ProjectName, std::string& SectionName, SECTIONDATA* SectionData)
 {
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
@@ -227,7 +227,7 @@ USAGEMODE int AddModifySectionData(string& ProjectName, string& SectionName, SEC
  * Gets information of that particular section from the section table of the project.
  * This is a section data related function.
  */
-USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIONDATA& SectionData)
+USAGEMODE BOOL GetSectionData(std::string& ProjectName, std::string& SectionName, SECTIONDATA& SectionData)
 {
     BOOL bReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
@@ -247,7 +247,7 @@ USAGEMODE BOOL GetSectionData(string& ProjectName, string& SectionName, SECTIOND
  * Receives total number of sections from the section table of the project.
  * This is a section data related function.
  */
-USAGEMODE int GetSectionCount(string& ProjectName)
+USAGEMODE int GetSectionCount(std::string& ProjectName)
 {
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
@@ -267,7 +267,7 @@ USAGEMODE int GetSectionCount(string& ProjectName)
  * Retrieves list of all the section names from the section table of the project.
  * This is a section data related function.
  */
-USAGEMODE int GetSectionList(string& ProjectName, LISTSTR* SectionList)
+USAGEMODE int GetSectionList(std::string& ProjectName, LISTSTR* SectionList)
 {
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)

@@ -718,7 +718,7 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
         CStringArray& omStrArray)
 {
     //   Local Var.
-    ifstream    InTextFile;
+    std::ifstream    InTextFile;
     CString     omStrMainMessage = "";
     CString     omStrLine        = "" ;
     CHAR        cLine[500];
@@ -726,7 +726,7 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
 
     TRY
     {
-        InTextFile.open(/*T2A*/(omStrTextFileName.GetBuffer(MAX_PATH)), ios::in);
+        InTextFile.open(/*T2A*/(omStrTextFileName.GetBuffer(MAX_PATH)), std::ios::in);
         if (!InTextFile.good())
         {
 

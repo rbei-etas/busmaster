@@ -23,15 +23,12 @@
  */
 
 
-#if !defined MSGBUFFSE_H__INCLUDED_
-#define MSGBUFFSE_H__INCLUDED_
+#pragma once
 
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
 
-
 const int SIZE_APP_BUFFER       = 20000;
-
 
 /* This is the concrete template class of a circular queue where each entry is
 of fixed size. Implemented as a template class so as to cater to any data type.
@@ -289,5 +286,3 @@ int CMsgBufFSE<SMSGBUFFER>::nSetBufferMsgSize(int /*nMsgDataSize*/)
 {
     return ERR_NOT_SUPPORTED;
 }
-
-#endif //MSGBUFFSE_H__INCLUDED_

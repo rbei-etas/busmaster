@@ -1,6 +1,6 @@
 #pragma once
-#include "BaseDIL_LIN_Controller.h"
 
+#include "BaseDIL_LIN_Controller.h"
 
 #define MAX_CLIENT_ALLOWED 16
 #define MAX_BUFF_ALLOWED    16
@@ -51,8 +51,7 @@ typedef struct tagClientBufMap
     }
 } SLINCLIENTBUFMAP;
 
-typedef list<SACK_MAP> CACK_MAP_LIST;
-
+typedef std::list<SACK_MAP> CACK_MAP_LIST;
 
 class CCommanDIL_LIN:public CBaseDIL_LIN_Controller
 {
@@ -76,41 +75,28 @@ public:
     virtual HRESULT LIN_StopHardware(void) = 0;
     virtual HRESULT LIN_ResetHardware(void) = 0;
     virtual HRESULT LIN_GetCurrStatus(s_STATUSMSG& StatusData) = 0;
-
     virtual HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg) = 0;
     virtual HRESULT LIN_ResetSlaveRespData(void) = 0;
-
-    virtual HRESULT LIN_GetLastErrorString(string& acErrorStr) = 0;
+    virtual HRESULT LIN_GetLastErrorString(std::string& acErrorStr) = 0;
     virtual HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
     virtual HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize) = 0;
-    //MVN
     virtual HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam) = 0;
-    //~MVN
     virtual HRESULT LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
-
     virtual HRESULT LIN_Send(STLIN_MSG& sCanTxMsg) = 0;
     virtual HRESULT LIN_DisableSlave(STLIN_MSG& pouFlxTxMsg) = 0;
-
-    // Specific function set
     virtual HRESULT LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) = 0;
-
-
     virtual HRESULT LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus) = 0;
     virtual HRESULT LIN_LoadDriverLibrary(void) = 0;
     virtual HRESULT LIN_UnloadDriverLibrary(void) = 0;
-
-
     virtual HRESULT LIN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     virtual HRESULT LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseLINBufFSE* pBufObj);
     virtual HRESULT LIN_SendMsg(DWORD dwClientID, STLIN_MSG& sCanTxMsg);
     virtual HRESULT LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& pouFlxTxMsg);
 
-
 protected:
     void vWriteIntoClientsBuffer(STLINDATA& sLinData);
 
 public:
-
     void vMarkEntryIntoMap(const SACK_MAP& RefObj);
     bool vPeakMapEntry(const SACK_MAP& RefObj, UINT& ClientID, bool bRemove = false);
     UCHAR ucChecksumCalculation(SLIN_CRC sCrc);
@@ -122,20 +108,16 @@ public:
     CRITICAL_SECTION sg_CritSectForAckBuf;
     DWORD dwGetAvailableClientSlot();
     BOOL bClientIdExist(const DWORD& dwClientId);
-    BOOL bClientExist(string pcClientName, INT& Index);
+    BOOL bClientExist(std::string pcClientName, INT& Index);
     BOOL bRemoveClient(DWORD dwClientId);
     BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
     BOOL bIsBufferExists(const SLINCLIENTBUFMAP& sClientObj, const CBaseLINBufFSE* pBuf);
     BOOL bRemoveClientBuffer(CBaseLINBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseLINBufFSE* BufferToRemove);
 
-
 private:
-
     CACK_MAP_LIST   sg_asAckMapBuf;
+
 protected:
-    map< SLOT, list<int> > m_mapSlotClient;
-    map<int, int> m_MapIdClient[16];
+    std::map< SLOT, std::list<int> > m_mapSlotClient;
+    std::map<int, int> m_MapIdClient[16];
 };
-
-
-

@@ -4,9 +4,9 @@
 //#include "GettextBusmaster.h"
 #include "Utility\MultiLanguageSupport.h"
 
-string CBusmasterDump::m_strAppName;
+std::string CBusmasterDump::m_strAppName;
 
-CBusmasterDump::CBusmasterDump( string strAppName )
+CBusmasterDump::CBusmasterDump( std::string strAppName )
 {
     // Two instances of BUSMASTER dump is not allowed
     ASSERT( m_strAppName.length() > 0 );
@@ -24,7 +24,7 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
 
     if (GetModuleFileName( NULL, szDbgHelpPath, _MAX_PATH ))
     {
-        string strDbgHelpPath = szDbgHelpPath;
+        std::string strDbgHelpPath = szDbgHelpPath;
         strDbgHelpPath = strDbgHelpPath.find_last_of("\\");
 
         if (strDbgHelpPath.length() > 0)
@@ -40,7 +40,7 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
         hDll = ::LoadLibrary( "DBGHELP.DLL" );
     }
 
-    string strResult = "";
+    std::string strResult = "";
 
     if (hDll)
     {
@@ -49,8 +49,8 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
         {
             char szDumpPath[_MAX_PATH];
             char szScratch [_MAX_PATH];
-            string strDumpPath;
-            string strDumpMsg;
+            std::string strDumpPath;
+            std::string strDumpMsg;
 
             // Place the dump file in Temp folder
             if (!GetTempPath( _MAX_PATH, szDumpPath ))

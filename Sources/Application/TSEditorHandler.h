@@ -36,8 +36,6 @@ public:
     void vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize);
     void vGetConfigurationData(xmlNodePtr& pxmlNodePtr);
     void vSetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize);
-    //MVN
     void vSetConfigurationData(xmlDocPtr pXmlDoc);
-    //~MVN
     HWND vGetSafeHWnd();
 };

@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef APPSERVICESlLIN_H__INCLUDED_
-#define APPSERVICESLIN_H__INCLUDED_
+
+#pragma once
 
 #include "AppServices.h"
 
@@ -31,5 +31,3 @@ BOOL gvSetControllerMode_LIN(BOOL);
 BOOL gbStartStopHardware_LIN(BOOL) ;
 //to get first connected database name
 DWORD gdGetFirstLINdbName(char* , DWORD );
-
-#endif // APPSERVICESCAN_H__INCLUDED_

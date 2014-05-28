@@ -748,8 +748,8 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         m_pControllerDetails[m_nLastSelection].m_omStrCNF1 = m_omStrEditCNF1.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrCNF2 = m_omStrEditCNF2.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrCNF3 = m_omStrEditCNF3.GetBuffer(MAX_PATH);
-        ostringstream oss;
-        oss << dec << m_unCombClock;
+        std::ostringstream oss;
+        oss << std::dec << m_unCombClock;
         m_pControllerDetails[m_nLastSelection].m_omStrClock = oss.str();
         m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);

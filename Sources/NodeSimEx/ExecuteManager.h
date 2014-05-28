@@ -21,17 +21,12 @@
  *
  * This header file contain definition ofCExecuteManager class.
  */
-#if !defined(AFX_EXECUTEMANAGER_H__CF19BB37_7172_41A9_A2E0_72558E722223__INCLUDED_)
-#define AFX_EXECUTEMANAGER_H__CF19BB37_7172_41A9_A2E0_72558E722223__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "BuildProgram.h"
 #include "SetResetTimer.h"
 #include "ExecuteFunc.h"
-
 
 class CExecuteManager
 {
@@ -132,5 +127,3 @@ private:
     //event for terminating read dll msg thread
     CRITICAL_SECTION m_CritSectPsNodeObject;
 };
-
-#endif // !defined(AFX_EXECUTEMANAGER_H__CF19BB37_7172_41A9_A2E0_72558E722223__INCLUDED_)

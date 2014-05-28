@@ -392,7 +392,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     {
         SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
     }
-    //Shailesh -
+
     // Init Item color and Heading color variables
     int nHeadingColor, nItemColor;
     nHeadingColor = defHEADING_COLOR;

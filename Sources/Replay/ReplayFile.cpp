@@ -195,7 +195,6 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
     pDesBuffer += sizeof(m_bInteractive);
     //Save file name size
     char acName[MAX_PATH] = {_T('\0')};
-    //Tobias- venkat
     strcpy_s(acName, MAX_PATH, m_omStrFileName.GetBuffer(MAX_PATH));
     memcpy(pDesBuffer, acName, sizeof(char) * MAX_PATH);
     pDesBuffer += sizeof(char) * MAX_PATH;
@@ -214,7 +213,7 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
 
     //<Log_File_Path>path</Log_File_Path>
 
-    string omPath, omStrConfigFolder;
+    std::string omPath, omStrConfigFolder;
     char configPath[MAX_PATH];
     AfxGetMainWnd()->SendMessage(10000, (WPARAM)configPath, 0);
     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
@@ -351,7 +350,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
     int nRetValue = S_OK;
     xmlNodePtr pTempNode = pNodePtr;
     CStringArray omStrFilters;
-    map<string, int> mapFilters;
+    std::map<std::string, int> mapFilters;
     while( NULL != pNodePtr )
     {
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Log_File_Path")))
@@ -361,8 +360,8 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
             {
                 if(PathIsRelative((char*)key) == TRUE)
                 {
-                    string omStrConfigFolder;
-                    string omPath;
+                    std::string omStrConfigFolder;
+                    std::string omPath;
                     char configPath[MAX_PATH];
                     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );

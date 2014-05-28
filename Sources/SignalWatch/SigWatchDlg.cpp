@@ -269,7 +269,7 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
     m_omCSDispEntry.Unlock();
 }
 
-void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray* sSingnalinfo,BOOL bIntptrDone,map<int,list<string>>* m_mapDetails,unsigned char mID)
+void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray* sSingnalinfo, BOOL bIntptrDone, std::map<int, std::list<std::string>>* m_mapDetails, unsigned char mID)
 {
 
     m_omCSDispEntry.Lock();
@@ -292,8 +292,8 @@ void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray* sSingnalinfo,BOOL bIntptrDone,
 
             //check for valid message name
 
-            list<string> lstSignals=m_mapMsgIDtoSignallst->find(mID)->second;
-            list<string>:: iterator itrselSignals= lstSignals.begin();
+            std::list<std::string> lstSignals=m_mapMsgIDtoSignallst->find(mID)->second;
+            std::list<std::string>::iterator itrselSignals= lstSignals.begin();
 
             while(itrselSignals != lstSignals.end())
             {

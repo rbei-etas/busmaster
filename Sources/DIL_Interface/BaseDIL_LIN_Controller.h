@@ -14,16 +14,15 @@
  */
 
 /**
- * \file      BaseDIL_LIN_Controller.h
- * \brief     Base class for CDIL_LIN class.
- * \author    Arunkumar Karri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Base class for CDIL_LIN class.
+ * @author Arunkumar Karri
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Base class for LIN controller classes.
  */
 
-#if !defined BASEDIL_LIN_CONTROLLER_H__INCLUDED_
-#define BASEDIL_LIN_CONTROLLER_H__INCLUDED_
+#pragma once
+
 #include "DataTypes\Cluster.h"
 #include "DataTypes\DIL_Datatypes.h"
 #include "DataTypes\MsgBufAll_DataTypes.h"
@@ -49,15 +48,11 @@ public:
     virtual HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg) = 0;
     virtual HRESULT LIN_ResetSlaveRespData(void) = 0;
     virtual HRESULT LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage) = 0;
-    virtual HRESULT LIN_GetLastErrorString(string& acErrorStr) = 0;
+    virtual HRESULT LIN_GetLastErrorString(std::string& acErrorStr) = 0;
     virtual HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
     virtual HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], int& nCount) = 0;
-    //MVN
     virtual HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam) = 0;
-    //~MVN
     virtual HRESULT LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
-
-    // Specific function set
     virtual HRESULT LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) = 0;
     virtual HRESULT LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseLINBufFSE* pBufObj) = 0;
     virtual HRESULT LIN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName) = 0;
@@ -65,5 +60,3 @@ public:
     virtual HRESULT LIN_LoadDriverLibrary(void) = 0;
     virtual HRESULT LIN_UnloadDriverLibrary(void) = 0;
 };
-
-#endif // BASEDIL_LIN_CONTROLLER_H__INCLUDED_

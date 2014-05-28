@@ -1,6 +1,4 @@
-
-#if !defined TYPECODE_FBX_ENTITIES_H__INCLUDED_
-#define TYPECODE_FBX_ENTITIES_H__INCLUDED_
+#pragma once
 
 #define SIZE_NAME   128
 
@@ -212,6 +210,3 @@ enum eENTITY_FIBEX
 
     ENTITIES_TOTAL
 };
-
-#endif // TYPECODE_FBX_ENTITIES_H__INCLUDED_
-

@@ -10,12 +10,12 @@ class CMsgSignalSelect : public CDialog
     CCheckBoxTree m_omMsgSignalTree;
 
 public:
-    CMsgSignalSelect(ClusterConfig* clusterinfo,CWnd* pParent,map<int,list<string>>* m_mapMsgIDtoSignallst);   // standard constructor
+    CMsgSignalSelect(ClusterConfig* clusterinfo,CWnd* pParent, std::map<int, std::list<std::string>>* m_mapMsgIDtoSignallst);   // standard constructor
     virtual ~CMsgSignalSelect();
     virtual BOOL OnInitDialog();
     void OnLButtonDown(UINT nFlags, CPoint point);
     void SetAllChildren(HTREEITEM Parent);
-    map<int,list<string>>* m_mapMsgIDtoSignallst; // Map of Msg ID, list of signals
+    std::map<int, std::list<std::string>>* m_mapMsgIDtoSignallst; // Map of Msg ID, list of signals
     void vStoreintoMap();
     void vRestoreData();
     afx_msg void OnBnClickedOk();

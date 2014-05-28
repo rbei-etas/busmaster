@@ -381,7 +381,7 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
                                             nColSize[nIndex] );
         if(m_eCurrBUS == LIN)
         {
-            string strType = _(caColumnName[nIndex]);
+            std::string strType = _(caColumnName[nIndex]);
             if(strType == defSTR_FILTER_DETAILS_ID_TYPE)
             {
                 m_omLstcFilterDetails.SetColumnWidth(nIndex, 0);
@@ -514,17 +514,17 @@ void CFilterConfigDlg::vPopulateDBMessages()
             //theApp.m_pouMsgSignal->unListGetMessageIDs( pIDArray );
 
             sMESSAGE* pMessage = NULL;
-            list<FRAME_STRUCT> lstFrameStrct;
+            std::list<FRAME_STRUCT> lstFrameStrct;
 
             for(INT nIndex = 0; nIndex < m_pClusterConfig->m_nChannelsConfigured; nIndex++)
             {
                 m_pClusterConfig->m_ouFlexChannelConfig[nIndex].m_ouClusterInfo.GetFrames(lstFrameStrct);
 
-                list<FRAME_STRUCT>::iterator itrFrame = lstFrameStrct.begin();
+                std::list<FRAME_STRUCT>::iterator itrFrame = lstFrameStrct.begin();
 
                 while(itrFrame != lstFrameStrct.end())
                 {
-                    string omStrMsgName  = itrFrame->m_strFrameName.c_str();
+                    std::string omStrMsgName  = itrFrame->m_strFrameName.c_str();
 
                     char omStrMsgId[MAX_PATH] = "";
                     //sprintf_s(omStrMsgId, MAX_PATH, defSTR_MSG_ID_IN_HEX, itrFrame->m_nSlotId);
@@ -800,8 +800,8 @@ void CFilterConfigDlg::vFormatDisplayString(
 
         if( omStr != STR_EMPTY )
         {
-            ostringstream oss;
-            oss << hex << sFilter.m_dwMsgIDFrom;
+            std::ostringstream oss;
+            oss << std::hex << sFilter.m_dwMsgIDFrom;
             oss << " [" << omStr << "]";
             sFilterDisplyInfo.m_omStrMsgIDFrom = oss.str();
             // Update Image Index
@@ -809,8 +809,8 @@ void CFilterConfigDlg::vFormatDisplayString(
         }
         else
         {
-            ostringstream oss;
-            oss << hex << sFilter.m_dwMsgIDFrom;
+            std::ostringstream oss;
+            oss << std::hex << sFilter.m_dwMsgIDFrom;
             sFilterDisplyInfo.m_omStrMsgIDFrom = oss.str();
         }
     }
@@ -818,11 +818,11 @@ void CFilterConfigDlg::vFormatDisplayString(
     {
         // Range of messages
         // Format ID FRom
-        ostringstream oss1;
-        oss1 << hex << sFilter.m_dwMsgIDFrom;
+        std::ostringstream oss1;
+        oss1 << std::hex << sFilter.m_dwMsgIDFrom;
         sFilterDisplyInfo.m_omStrMsgIDFrom = oss1.str();
-        ostringstream oss2;
-        oss2 << hex << sFilter.m_dwMsgIDTo;
+        std::ostringstream oss2;
+        oss2 << std::hex << sFilter.m_dwMsgIDTo;
         sFilterDisplyInfo.m_omStrMsgIDTo = oss2.str();
         // Update Image Index
         sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_ID_RANGE;
@@ -904,8 +904,8 @@ void CFilterConfigDlg::vFormatDisplayString(
     else
     {
         // Format Channel ID String Say 1,2,...
-        ostringstream oss;
-        oss << dec << sFilter.m_eChannel;
+        std::ostringstream oss;
+        oss << std::dec << sFilter.m_eChannel;
         sFilterDisplyInfo.m_omStrMsgChannel = oss.str();
     }
 }
@@ -1703,8 +1703,8 @@ void CFilterConfigDlg::OnRadioMessageId()
                         {
                             CString omIdWithMsg = _("");
                             omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
-                            ostringstream oss;
-                            oss << hex << omIdWithMsg << omStrIDFrom;
+                            std::ostringstream oss;
+                            oss << std::hex << omIdWithMsg << omStrIDFrom;
 
                             omStrIDFrom = (CString)oss.str().c_str();
                         }
@@ -1764,8 +1764,8 @@ void CFilterConfigDlg::OnRadioMessageId()
                         {
                             CString omIdWithMsg = _("");
                             omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
-                            ostringstream oss;
-                            oss << hex << omIdWithMsg << omStrIDFrom;
+                            std::ostringstream oss;
+                            oss << std::hex << omIdWithMsg << omStrIDFrom;
                             omStrIDFrom = (CString)oss.str().c_str();
                         }
                     }
@@ -1987,7 +1987,7 @@ void CFilterConfigDlg::OnEditChangeMsgIDCombo()
 
 HRESULT CFilterConfigDlg::hGetFrameFromId(UINT unSlotId, FRAME_STRUCT& ouFrameStrct)
 {
-    list<FRAME_STRUCT> lstFrameStrct;
+    std::list<FRAME_STRUCT> lstFrameStrct;
 
     for(INT nIndex = 0; nIndex < m_pClusterConfig->m_nChannelsConfigured; nIndex++)
     {
@@ -2054,7 +2054,7 @@ void CFilterConfigDlg::vPopulateChannelDBMessages()
 
     if(unChnlIndex > 0)
     {
-        list<FRAME_STRUCT> lstFrameStrct;
+        std::list<FRAME_STRUCT> lstFrameStrct;
         m_pClusterConfig->m_ouFlexChannelConfig[unChnlIndex - 1].m_ouClusterInfo.GetFrames(lstFrameStrct);
 
         CString omMsgId = "";
@@ -2066,7 +2066,7 @@ void CFilterConfigDlg::vPopulateChannelDBMessages()
 
         if(lstFrameStrct.size() > 0)
         {
-            list<FRAME_STRUCT>::iterator itrFrameStrct = lstFrameStrct.begin();
+            std::list<FRAME_STRUCT>::iterator itrFrameStrct = lstFrameStrct.begin();
 
             while(itrFrameStrct != lstFrameStrct.end())
             {
@@ -2094,9 +2094,9 @@ void CFilterConfigDlg::vPopulateChannelDBMessages()
         else
         {
             CString omStr = STR_EMPTY;
-            ostringstream oss;
-            oss << hex << unMsgId;
-            string strMsgId = oss.str();
+            std::ostringstream oss;
+            oss << std::hex << unMsgId;
+            std::string strMsgId = oss.str();
 
             m_omMsgIDFrom.SetWindowText(strMsgId.c_str());
         }
@@ -2722,8 +2722,8 @@ void CFilterConfigDlg::vFormatDisplayString(
 
         if( omStr != STR_EMPTY )
         {
-            ostringstream oss;
-            oss << hex << sFilter.m_dwMsgIDFrom;
+            std::ostringstream oss;
+            oss << std::hex << sFilter.m_dwMsgIDFrom;
             oss << " [" << omStr << "]";
             sFilterDisplyInfo.m_omStrMsgIDFrom = oss.str();
             // Update Image Index
@@ -2731,8 +2731,8 @@ void CFilterConfigDlg::vFormatDisplayString(
         }
         else
         {
-            ostringstream oss;
-            oss << hex << sFilter.m_dwMsgIDFrom;
+            std::ostringstream oss;
+            oss << std::hex << sFilter.m_dwMsgIDFrom;
             sFilterDisplyInfo.m_omStrMsgIDFrom = oss.str();
         }
     }
@@ -2741,11 +2741,11 @@ void CFilterConfigDlg::vFormatDisplayString(
         m_omMsgDirection.EnableWindow( TRUE );
         // Range of messages
         // Format ID FRom
-        ostringstream oss1;
-        oss1 << hex << sFilter.m_dwMsgIDFrom;
+        std::ostringstream oss1;
+        oss1 << std::hex << sFilter.m_dwMsgIDFrom;
         sFilterDisplyInfo.m_omStrMsgIDFrom = oss1.str();
-        ostringstream oss2;
-        oss2 << hex << sFilter.m_dwMsgIDTo;
+        std::ostringstream oss2;
+        oss2 << std::hex << sFilter.m_dwMsgIDTo;
         sFilterDisplyInfo.m_omStrMsgIDTo = oss2.str();
         // Update Image Index
         sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_ID_RANGE;
@@ -2784,8 +2784,8 @@ void CFilterConfigDlg::vFormatDisplayString(
     else
     {
         // Format Channel ID String Say 1,2,...
-        ostringstream oss;
-        oss << dec << sFilter.m_eChannel;
+        std::ostringstream oss;
+        oss << std::dec << sFilter.m_eChannel;
         sFilterDisplyInfo.m_omStrMsgChannel = oss.str();
     }
 }

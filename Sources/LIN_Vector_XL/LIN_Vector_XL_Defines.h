@@ -67,12 +67,12 @@ static STLINDATA sg_asLINMsg;
 
 static HWND sg_hOwnerWnd = NULL;
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
-string sg_acErrStr = "";
+std::string sg_acErrStr = "";
 
 /* Forward declarations*/
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(string pcClientName, INT& Index);
+static BOOL bClientExist(std::string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -141,7 +141,7 @@ struct CChannel
     /* LIN Version */
     UINT  m_unLINVersion;
 
-    string m_strLinVersion;
+    std::string m_strLinVersion;
 
     /* Acceptance Filter information for standard and extended envelopes*/
     SACC_FILTER_INFO     m_sFilter[2];
@@ -161,7 +161,7 @@ struct CChannel
     XLchannelConfig* m_pXLChannelInfo;
 
 
-    map<int, int> m_nMapIdChecksumType;
+    std::map<int, int> m_nMapIdChecksumType;
 
     // Init members with default value
     CChannel()

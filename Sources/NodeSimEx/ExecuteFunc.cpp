@@ -46,8 +46,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-using namespace std;
-
 extern UINT unKeyHandlerProc(LPVOID);
 extern UINT unErrorHandlerProc(LPVOID);
 extern UINT unErrorHandlerProcLin(LPVOID);
@@ -1125,7 +1123,7 @@ VOID CExecuteFunc::vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler)
 BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
 {
     BOOL bReturn = FALSE;
-    ifstream    omInTextFile;
+    std::ifstream    omInTextFile;
     CString     omStrErrorMessage;
     CString     omStrLine;
     CString     omStrTemp;
@@ -1145,7 +1143,7 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
     {
         TRY
         {
-            omInTextFile.open(/*T2A*/(omStrDefFileName.GetBuffer(MAX_PATH)), ios::in  );
+            omInTextFile.open(/*T2A*/(omStrDefFileName.GetBuffer(MAX_PATH)), std::ios::in  );
             if (!omInTextFile.good())
             {
                 // Info file open error notification
@@ -1398,24 +1396,11 @@ BOOL CExecuteFunc::bInitMSGStruct(CStringArray& omErrorArray)
 
     return bReturn;
 }
-/******************************************************************************/
-/*  Function Name    :  vInitOnKeyStruct                                      */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Initialise the array of key structure by dynamically  */
-/*                      creating it and filling all available information     */
-/*  Member of        :  CExecuteFunc                                          */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  28.02.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  08.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  08.03.2003, added init. for generic key handler       */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  28.05.2004, Removed hardcode string and replaced with */
-/*                      #defined error string                                 */
-/******************************************************************************/
+
+/**
+ * Initialise the array of key structure by dynamically
+ * creating it and filling all available information
+ */
 BOOL CExecuteFunc::bInitOnKeyStruct(CStringArray& omErrorArray)
 {
     UINT unKeyHandlerCount = 0;
@@ -1606,7 +1591,6 @@ BOOL CExecuteFunc::bInitTimerStruct(CStringArray& omErrorArray)
                     if(pomException != NULL)
                     {
                         char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        // PTV CPP
                         //acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         // Get the exception error message
                         pomException->GetErrorMessage(
@@ -1709,7 +1693,6 @@ BOOL CExecuteFunc::bInitErrorStruct(CStringArray& omErrorArray)
                     {
                         char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
-                        // PTV CPP
                         //acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
@@ -1812,7 +1795,6 @@ BOOL CExecuteFunc::bInitEventStructLIN(CStringArray& omErrorArray)
                     {
                         char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
-                        // PTV CPP
                         //acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
@@ -1902,7 +1884,6 @@ BOOL CExecuteFunc::bInitEventStructJ1939(CStringArray& omErrorArray)
                     {
                         char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
-                        // PTV CPP
                         //acErrorMsg[defSIZE_OF_ERROR_BUFFER];
                         CString omStrErrorMessage ="";
                         // Get the exception error message
@@ -2386,10 +2367,10 @@ BOOL CExecuteFunc::bInitMsgIDandNameHandlStruct(UINT unMsgIDandNameCount,
                 }
                 else if(m_eBus == LIN)
                 {
-                    list<FRAME_STRUCT> lstMsgNames;
+                    std::list<FRAME_STRUCT> lstMsgNames;
                     CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[m_sNodeInfo.m_unChannel].m_ouClusterInfo.GetFrames(lstMsgNames);
 
-                    list<FRAME_STRUCT>::iterator itrLstMsg;
+                    std::list<FRAME_STRUCT>::iterator itrLstMsg;
                     for(itrLstMsg = lstMsgNames.begin(); itrLstMsg != lstMsgNames.end(); itrLstMsg++)
                     {
                         if(omStrMsgNameOrID.CompareNoCase(itrLstMsg->m_strFrameName.c_str()) == 0)

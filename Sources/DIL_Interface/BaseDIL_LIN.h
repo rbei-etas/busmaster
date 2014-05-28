@@ -170,7 +170,7 @@ public:
     /**
     * Call to get descriptive string of the last error occurred
      */
-    virtual HRESULT DILL_GetLastErrorString(string& acErrorStr) = 0;
+    virtual HRESULT DILL_GetLastErrorString(std::string& acErrorStr) = 0;
 
     /**
      * Call to get controller status. Caller has to give the handle of a

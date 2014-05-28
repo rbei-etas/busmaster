@@ -64,8 +64,6 @@
 #include <queue>
 #include <locale.h>
 
-using namespace std;
-
 const float PI = (float) 3.14159265358979323846;
 
 #include "include/BaseDefs.h"
@@ -80,7 +78,7 @@ const float PI = (float) 3.14159265358979323846;
 #include <shlwapi.h>
 #include <comutil.h>
 #import <msxml6.dll>
-using namespace MSXML2;
+
 const BYTE VERSION_MAJOR    = 2;
 const BYTE VERSION_MINOR    = 3;
 const BYTE VERSION_BUILD    = 0;

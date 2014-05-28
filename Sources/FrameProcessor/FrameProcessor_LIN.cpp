@@ -152,7 +152,6 @@ void CFrameProcessor_LIN::vRetrieveDataFromBuffer(void)
                     CLogObjectLIN* pouLogObjCon = static_cast<CLogObjectLIN*> (pouLogObjBase);
                     BOOL bIsDataLog = pouLogObjCon->bLogData(CurrDataLIN);
 
-                    // PTV [1.6.4]
                     if(bIsDataLog == TRUE)
                     {
                         //m_bIsThreadBlocked = FALSE;
@@ -408,7 +407,6 @@ BOOL CFrameProcessor_LIN::FPL_IsLoggingON(void)
     return IsLoggingON();
 }
 
-// PTV [1.6.4]
 BOOL CFrameProcessor_LIN::FPL_IsLINDataLogged(void)
 {
     return IsLINDataLogged();
@@ -423,7 +421,7 @@ void CFrameProcessor_LIN::FPL_DisableDataLogFlag(void)
 {
     DisableLINDataLogFlag();
 }
-// PTV [1.6.4] END
+
 // Query function - current filtering status
 BOOL CFrameProcessor_LIN::FPL_IsFilterON(void)
 {
@@ -551,17 +549,3 @@ HRESULT CFrameProcessor_LIN::FPL_SetChannelBaudRateDetails
     SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
-
-
-//Shailesh +
-//void CFrameProcessor_CAN::IncrementConnectionCount()
-//{
-//  USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
-//    for (USHORT i = 0; i < ushBlocks; i++)
-//       {
-//         CBaseLogObject* pouLogObjBase = m_omLogObjectArray.GetAt(i);
-//           CLogObjectCAN* pouLogObjCon = static_cast<CLogObjectCAN*> (pouLogObjBase);
-//         if(pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnMesurement)
-//             pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount ++;
-//     }
-//

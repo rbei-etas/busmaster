@@ -30,13 +30,11 @@
 /* Project includes */
 #include "DataTypes/Base_WrapperErrorLogger.h"
 
-using namespace std;
-
 class WrapperErrorLogger : public Base_WrapperErrorLogger
 {
 public:
     WrapperErrorLogger(void);
     ~WrapperErrorLogger(void);
 
-    void vLogAMessage(char* File, int Line, string Msg);
+    void vLogAMessage(char* File, int Line, std::string Msg);
 };

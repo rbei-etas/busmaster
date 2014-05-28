@@ -21,8 +21,8 @@
  *
  * Definition file for CDIL_FLEXRAY class.
  */
-#if !defined DIL_FLEXRAY_H__INCLUDED_
-#define DIL_FLEXRAY_H__INCLUDED_
+
+#pragma once
 
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
@@ -156,7 +156,7 @@ public:
     HRESULT DILF_GetVersionInfo(VERSIONINFO& sVerInfo) ;
 
     /* Call to get descriptive string of the last error occurred */
-    HRESULT DILF_GetLastErrorString(string acErrorStr, HRESULT& nError ) ;
+    HRESULT DILF_GetLastErrorString(std::string acErrorStr, HRESULT& nError ) ;
 
     /* Call to set PASS/STOP filter */
     HRESULT DILF_FilterFrames(FILTER_TYPE FilterType, FLEX_CHANNEL FlexChannel, UINT* punFrames, UINT nLength) ;
@@ -169,5 +169,3 @@ public:
     /* HELPER FUNCTIONS START */
     void vSelectInterface_Dummy(void);
 };
-
-#endif // DIL_FLEXRAY_H__INCLUDED_

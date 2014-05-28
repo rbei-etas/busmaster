@@ -14,22 +14,16 @@
  */
 
 /**
- * \file      FnsTreeView.h
- * \brief     This header file contains the defintion of class
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This header file contains the defintion of class
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_FNSTREEVIEW_H__E02A6C8A_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)
-#define AFX_FNSTREEVIEW_H__E02A6C8A_1005_11D6_A606_00D0B76BEBF5__INCLUDED_
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// FnsTreeView.h : header file
-//
-//#include <afxcview.h>   // Standard tree view header file
+
+#include <string>
 #include "FunctionEditorDoc.h"
 
 class CFnsTreeView : public CTreeView
@@ -105,9 +99,7 @@ private:
     void vOnNewEventHandler();
     //  Add new DLL handler
     void vOnNewDLLHandler();
-    //  venkatanaryana Add new BUS Event handler
     void vOnNewBusEventHandler();
-    //  ~venkatanaryana
     // Delete a line from the code with the search string & header string
     BOOL bDeleteALineFromHeader(CString omStrHeader,CString);
     // Dlete selected handler
@@ -127,14 +119,7 @@ private:
     // and global variables
     BOOL bPopulateTree();
 
-    INT nGetLinEventTypeFromName(CString strName, string& strEventName);
+    INT nGetLinEventTypeFromName(CString strName, std::string& strEventName);
 public:
     afx_msg void OnFunctionEditorSave();
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_FNSTREEVIEW_H__E02A6C8A_1005_11D6_A606_00D0B76BEBF5__INCLUDED_)

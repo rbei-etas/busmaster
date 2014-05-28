@@ -19,8 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined BASENODESIM_H__INCLUDED_
-#define BASENODESIM_H__INCLUDED_
+#pragma once
 
 #include "Utility/XMLUtils.h"
 #include "NodeSimEx_Struct.h"
@@ -63,10 +62,8 @@ public:
     virtual void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize) = 0;
     virtual bool NS_GetSimSysConfigData(xmlNodePtr& pNodePtr) = 0;
     virtual void NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize) = 0;
-    //MVN
     virtual void NS_SetSimSysConfigData(xmlDocPtr pXmlDoc) = 0;
     virtual void NS_SetSimSysConfigData(xmlNodePtr pXmlNodePtr) = 0;
-    //~MVN
     virtual BOOL NS_IsSimSysConfigChanged() = 0;
     virtual int NS_nOnBusConnected(bool bConnected) = 0;
     virtual void NS_SetJ1939ActivationStatus(bool bActivated) =0;
@@ -79,4 +76,3 @@ public:
     // FOR Passing Cluster Config
     virtual void NS_SetLINConfig(ClusterConfig& ouLINConfig) = 0;
 };
-#endif //BASENODESIM_H__INCLUDED_

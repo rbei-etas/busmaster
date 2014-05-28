@@ -22,12 +22,7 @@
  * Interface file for CMDIChildBase class
  */
 
-#if !defined(AFX_MDICHILDBASE_H__B09E3A76_DB04_4D31_A000_150658B2128F__INCLUDED_)
-#define AFX_MDICHILDBASE_H__B09E3A76_DB04_4D31_A000_150658B2128F__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Hashdefines.h"
 #define eCONFIGDETAILS int
@@ -71,10 +66,3 @@ protected:
     // Set the window identity parameter
     eCONFIGDETAILS  m_eWindowIdentity;
 };
-
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MDICHILDBASE_H__B09E3A76_DB04_4D31_A000_150658B2128F__INCLUDED_)

@@ -74,7 +74,6 @@ public:
     // Query function - current logging status (OFF/ON).
     virtual BOOL FPJ1_IsLoggingON(void) = 0;
 
-    // PTV [1.6.4]
     virtual BOOL FPJ1_IsJ1939DataLogged(void) = 0;
 
     virtual void FPJ1_DisableJ1939DataLogFlag(void) = 0;
@@ -83,7 +82,6 @@ public:
 
     virtual void FPJ1_vCloseLogFile(void) = 0;
 
-    // PTV [1.6.4]
     // Query function - current filtering status
     virtual BOOL FPJ1_IsFilterON(void) = 0;
 

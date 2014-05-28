@@ -340,7 +340,6 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
 {
     // Get active frame
     CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-    // PTV [1.6.4]
     eProtocol eProtocolName = PROTOCOL_CAN;
 
     if(m_sDbParams.m_eBus == J1939)
@@ -351,7 +350,6 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
     {
         eProtocolName = PROTOCOL_CAN;
     }
-    // PTV [1.6.4]
 
     (*ppTempMsgSg)->bWriteIntoDatabaseFileFromDataStructure(m_sDbParams.m_omDBPath, eProtocolName );
 

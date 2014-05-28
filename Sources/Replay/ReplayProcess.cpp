@@ -38,11 +38,6 @@
 #include "include/CAN_Error_Defs.h"         // For Errors
 #include "Utility_Replay.h"
 
-using namespace std;
-
-
-
-
 CBaseDIL_CAN* CReplayProcess::s_pouDIL_CAN_Interface = NULL;
 DWORD CReplayProcess::s_dwClientID = 0;
 
@@ -427,7 +422,7 @@ BOOL CReplayProcess::bOpenReplayFile()
     CString     omStrTemp           = STR_EMPTY;
     CHAR        Line[500]           = { NULL };
     CString     omStrMsgType        = " ";
-    ifstream    omInReplayFile;
+    std::ifstream    omInReplayFile;
     int nBlockCounter = 0;
 
     // Clear string array
@@ -439,7 +434,7 @@ BOOL CReplayProcess::bOpenReplayFile()
     TRY
     {
         omInReplayFile.open( m_ouReplayFile.m_omStrFileName,
-        ios::in  );
+        std::ios::in  );
         if (!omInReplayFile.good())
         {
             // Info file open error notification
@@ -839,8 +834,6 @@ BOOL CReplayProcess::bStopReplayThread()
     return bIsThreadKilled;
 }
 
-
-//venkat
 BOOL CReplayProcess::bMessageTobeBlocked( SFRAMEINFO_BASIC_CAN& sBasicCanInfo )
 {
     BOOL bReturn = TRUE;

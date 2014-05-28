@@ -14,16 +14,14 @@
  */
 
 /**
- * \file      BaseDIL_CAN_Controller.h
- * \brief     Base class for CDIL_CAN class.
- * \author    Arunkumar Karri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Base class for CDIL_CAN class.
+ * @author Arunkumar Karri
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Base class for CAN controller classes.
  */
 
-#if !defined BASEDIL_CAN_CONTROLLER_H__INCLUDED_
-#define BASEDIL_CAN_CONTROLLER_H__INCLUDED_
+#pragma once
 
 class CBaseDIL_CAN_Controller
 {
@@ -119,7 +117,7 @@ public:
     /**
      * Gets last occured error and puts inside acErrorStr.
      */
-    virtual HRESULT CAN_GetLastErrorString(string& acErrorStr) = 0;
+    virtual HRESULT CAN_GetLastErrorString(std::string& acErrorStr) = 0;
 
     /**
      * Gets the controller param eContrParam of the channel.
@@ -179,5 +177,3 @@ public:
      */
     virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;
 };
-
-#endif // BASEDIL_CAN_CONTROLLER_H__INCLUDED_

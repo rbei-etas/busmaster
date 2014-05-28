@@ -29,8 +29,8 @@ typedef struct tagLINPROC_PARAMS
     DWORD dwClientID;
     tagLINPROC_PARAMS()
     {
-        m_pouLINBuffer = NULL;
-        m_pILog = NULL;
+        m_pouLINBuffer = nullptr;
+        m_pILog = nullptr;
         dwClientID = 0;
         for (int i = 0; i < MAX_PATH; i++)
         {
@@ -38,6 +38,7 @@ typedef struct tagLINPROC_PARAMS
         }
     }
 } SLINPROC_PARAMS;
+
 class CParamLoggerLIN : public CParamLoggerBUS
 {
 public:
@@ -75,7 +76,6 @@ public:
     // Query function - current logging status (OFF/ON).
     virtual BOOL FPL_IsLoggingON(void) = 0;
 
-    // PTV [1.6.4]
     virtual BOOL FPL_IsLINDataLogged(void) = 0;
 
     virtual void FPL_DisableLINDataLogFlag(void) = 0;
@@ -84,7 +84,6 @@ public:
 
     virtual void FPL_vCloseLogFile(void) = 0;
 
-    // PTV [1.6.4]
     // Query function - current filtering status
     virtual BOOL FPL_IsFilterON(void) = 0;
 

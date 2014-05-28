@@ -238,7 +238,7 @@ public:
     void vUpdateSignalMatrix(void);
     void vUpdateDataBytes();
     void vUpdateDataBytes(LIN_FRAME_DATA& ouData);
-    void psGetSelectedSignalStruct(list<SIGNAL_STRUCT> lstSigStrct, CString omStrSigName, SIGNAL_STRUCT& ouSigStrct);
+    void psGetSelectedSignalStruct(std::list<SIGNAL_STRUCT> lstSigStrct, CString omStrSigName, SIGNAL_STRUCT& ouSigStrct);
     void vUpdateStateDataBytes();
 
     LIN_FRAME_DATA m_ouFrame;
@@ -309,7 +309,7 @@ public:
 private:
     FRAME_STRUCT m_ouCurrentMsg;
 
-    void vGetStringFromValue(int nValue, string& strValue, bool bHexSymbol = true);
+    void vGetStringFromValue(int nValue, std::string& strValue, bool bHexSymbol = true);
     BYTE m_bDisplayColumns; // Columns to be displayed
 
 public:
@@ -346,7 +346,7 @@ private:
     BOOL bSetStatusText(const char* pStrText);
 
     void vSetDefaultValues();
-    void vGetSelSignalFromFrame(UINT unMsgId, list<SIGNAL_STRUCT>& omSignalList);
+    void vGetSelSignalFromFrame(UINT unMsgId, std::list<SIGNAL_STRUCT>& omSignalList);
 
     eLIN_MSG_TYPE eGetMessageType();
     int nGetChannel();
@@ -355,7 +355,7 @@ private:
     int nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRow = -1);
     void vUpdateMsgInList(LIN_FRAME_DATA ouLinData);
     void vUpdateViews(BOOL bIsUpdate);
-    int nGetMessageName(string& strMsgName);
+    int nGetMessageName(std::string & strMsgName);
     int nGetDbFrame(FRAME_STRUCT& ouFrame);
     BOOL bUpdateSignalList(LIN_FRAME_DATA& sMsg);
     int nShowListOfCurrentSignls();

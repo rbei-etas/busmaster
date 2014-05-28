@@ -1,17 +1,14 @@
 #pragma once
-//#pragma pack(8)
-//#pragma pack(show)
 
 #include "HashDefines.h"
 #include "Utility\ComputeCheckSum.h"
 #include "ProjectConfiguration\ProjectConfiguration_extern.h"
 
-
 class CConfigDetails : public CComputeCheckSum
 {
 private:
     CString m_omStrCurrFileName;
-    string m_strCurrProjName;
+    std::string m_strCurrProjName;
     static CConfigDetails m_ouConfigDetails;
     CConfigDetails(void);
 public:
@@ -25,11 +22,11 @@ public:
     void vSaveConfigFile();
     void vCloseConfigFile();
 
-    void vSetCurrProjName(string strCurrProjName);
-    string GetCurrProjName();
+    void vSetCurrProjName(std::string strCurrProjName);
+    std::string GetCurrProjName();
     BOOL bSetCurrProjInfo(PROJECTDATA* ProjData);
     BOOL bGetCurrProjInfo(PROJECTDATA* ProjData);
 
-    BOOL bSetData(LPVOID lpVoid, int nStreamLength, string strSectionName);
-    BOOL bGetData(void*& lpData,int& nStreamLength, string strSectionName);
+    BOOL bSetData(LPVOID lpVoid, int nStreamLength, std::string strSectionName);
+    BOOL bGetData(void*& lpData,int& nStreamLength, std::string strSectionName);
 };

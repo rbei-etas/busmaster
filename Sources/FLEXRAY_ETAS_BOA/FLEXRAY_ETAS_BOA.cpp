@@ -51,9 +51,6 @@
 #define USAGE_EXPORT
 #include "FLEXRAY_ETAS_BOA_Extern.h"
 
-using namespace std;
-// CCAN_Vector_XL
-
 DWORD WINAPI DataTransmitThread(LPVOID pVoid);
 void vInitializeQueueConfig(UINT nChannel);
 BEGIN_MESSAGE_MAP(CFLEXRAY_ETAS_BOA, CWinApp)
@@ -105,7 +102,7 @@ static void vInitialiseAllData(void)
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-BOOL bGetBOAInstallationPath(string& pcPath)
+BOOL bGetBOAInstallationPath(std::string& pcPath)
 {
     USES_CONVERSION;
 
@@ -629,18 +626,6 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             }
         }
 
-        //// Add Error filter
-        //if (hResult == S_OK)
-        //{
-        //    ErrCode = (*(sBOA_PTRS.m_sOCI.flexRayIOVTable.addFlex))
-        //              (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
-        //               &(sg_asChannel[nChannel].m_OCI_ErrorFilter), 1);
-        //    if (ErrCode != OCI_SUCCESS)
-        //    {
-        //        hResult = S_FALSE;
-        //        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not add Error filter"));
-        //    }
-        //}
         // Add internal error filter
         if (hResult == S_OK)
         {
@@ -690,18 +675,6 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
             }
         }
 
-        //// Remove Error filter
-        //if (hResult == S_OK)
-        //{
-        //    ErrCode = (*(sBOA_PTRS.m_sOCI.canioVTable.removeCANErrorFrameFilter))
-        //              (sg_asChannel[nChannel].m_OCI_RxQueueHandle,
-        //               &(sg_asChannel[nChannel].m_OCI_ErrorFilter), 1);
-        //    if (ErrCode != OCI_SUCCESS)
-        //    {
-        //        hResult = S_FALSE;
-        //        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not remove Error filter"));
-        //    }
-        //}
         if (hResult == S_OK)
         {
             ErrCode = (*(sBOA_PTRS.m_sOCI.errorVTable.removeInternalErrorEventFilter))
@@ -730,8 +703,8 @@ OCI_FlexRayBusConfiguration     g_ouFlxBusConfiguration;
 
 struct FRAME_STRUCT_SORT
 {
-    string m_strFrameId;
-    string m_strFrameName;
+    std::string m_strFrameId;
+    std::string m_strFrameName;
     int m_nSlotId;
     int m_nBaseCycle;
     int m_nReptition;
@@ -802,9 +775,9 @@ static BOOL bLoadDataFromContr(CHANNEL_CONFIG&  asDeviceConfig)
     bPayloadPreambleIndicator = ( ouCluster.m_shNETWORK_MANAGEMENT_VECTOR_LENGTH > 0 ) ? true : false;
 
     //2.Take First ECU Controller Parameters for Controller Settings
-    list<ECU_Struct> ouEcuList;
+    std::list<ECU_Struct> ouEcuList;
     asDeviceConfig.m_ouClusterInfo.GetECUList(ouEcuList);
-    list<ECU_Struct>::iterator itrEcu = ouEcuList.begin();
+    std::list<ECU_Struct>::iterator itrEcu = ouEcuList.begin();
     ABS_FLEXRAY_SPEC_CNTLR ouControllerData;
     if ( itrEcu!= ouEcuList.end() )
     {
@@ -873,16 +846,16 @@ static BOOL bLoadDataFromContr(CHANNEL_CONFIG&  asDeviceConfig)
     //itrEcu = asDeviceConfig.m_strSlectedEculist.begin();
     INT nFrameCount = 0;
 
-    list<FRAME_STRUCT> ouFrameList;
+    std::list<FRAME_STRUCT> ouFrameList;
 
 
 
     asDeviceConfig.GetSelectedECUTxFrames(ouFrameList);
     sg_asChannel[nChannel].m_SlotBufferMap.clear();
 
-    list<FRAME_STRUCT_SORT> ouSortFrameList;
+    std::list<FRAME_STRUCT_SORT> ouSortFrameList;
     ouSortFrameList.clear();
-    list<FRAME_STRUCT>::iterator itrTemp;
+    std::list<FRAME_STRUCT>::iterator itrTemp;
     for (itrTemp = ouFrameList.begin(); itrTemp != ouFrameList.end(); itrTemp++)
     {
         FRAME_STRUCT_SORT ouSortFrame;
@@ -897,7 +870,7 @@ static BOOL bLoadDataFromContr(CHANNEL_CONFIG&  asDeviceConfig)
     ouSortFrameList.sort();
 
     //ouFrameList.sort();
-    for ( list<FRAME_STRUCT_SORT>::iterator itrFrameList = ouSortFrameList.begin(); (itrFrameList != ouSortFrameList.end() && (nFrameCount < 128)); itrFrameList++ )
+    for (std::list<FRAME_STRUCT_SORT>::iterator itrFrameList = ouSortFrameList.begin(); (itrFrameList != ouSortFrameList.end() && (nFrameCount < 128)); itrFrameList++ )
     {
         sg_asChannel[nChannel].m_OCI_FlexRayConfig.txBuffer[nFrameCount].payloadLength             = itrFrameList->m_nLength / 2;
         sg_asChannel[nChannel].m_OCI_FlexRayConfig.txBuffer[nFrameCount].payloadPreambleIndicator  = bPayloadPreambleIndicator;
@@ -926,7 +899,7 @@ static BOOL bLoadDataFromContr(CHANNEL_CONFIG&  asDeviceConfig)
             }
         }
         int nSlotBase = MAKELONG(itrFrameList->m_nSlotId, MAKEWORD(itrFrameList->m_nBaseCycle, itrFrameList->m_ouChannel));
-        sg_asChannel[nChannel].m_SlotBufferMap.insert(map<SLOT_BASECYCLE, INT>::value_type(nSlotBase, nFrameCount));
+        sg_asChannel[nChannel].m_SlotBufferMap.insert(std::map<SLOT_BASECYCLE, INT>::value_type(nSlotBase, nFrameCount));
 
         nFrameCount++;
     }
@@ -1032,7 +1005,7 @@ void vCopy_2_OCI_FLexRay_Data(OCI_FlexRayTxMessage& DestMsg, const s_FLXTXMSG& S
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
@@ -1333,32 +1306,6 @@ static void vCopyOCI_FlexRay_RX_2_DATA(s_FLXMSG& FlexData,
     //FlexData.stcDataMsg.m_lHeaderInfoFlags = ()? TX_FLAG : RX_FLAG;
 
 }
-/*
-BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
-{
-    EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
-    BOOL bResult = FALSE;
-    CACK_MAP_LIST::iterator  iResult =
-        find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
-
-    //if ((*iResult).m_ClientID > 0)
-    if (iResult != sg_asAckMapBuf.end())
-    {
-        bResult = TRUE;
-        ClientID = (*iResult).m_nClientId;
-        sg_asAckMapBuf.erase(iResult);
-    }
-    LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
-    return bResult;
-}*/
-
-
-
-
-
-
-
-
 
 /**
  * \param[in] nChannel Channel information
@@ -1416,7 +1363,7 @@ public:
     HRESULT FLEXRAY_GetBoardInfo(s_BOARDINFO& BoardInfo) ;
     HRESULT FLEXRAY_GetFlexRayInfo(s_FLXINFO& FlexRayInfo) ;
     HRESULT FLEXRAY_GetVersionInfo(VERSIONINFO& sVerInfo) ;
-    HRESULT FLEXRAY_GetLastErrorString(string acErrorStr, HRESULT& nError) ;
+    HRESULT FLEXRAY_GetLastErrorString(std::string acErrorStr, HRESULT& nError) ;
     HRESULT FLEXRAY_FilterFrames(FILTER_TYPE FilterType, FLEX_CHANNEL FlexChannel, UINT* punFrames, UINT nLength) ;
     HRESULT FLEXRAY_ConfigMsgBuf(s_MSGBUF sMsgBuf, UINT* punAddress) ;
     HRESULT FLEXRAY_LoadDriverLibrary(void) ;
@@ -1790,11 +1737,11 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SetAppParams(HWND hWndOwner, Base_Wrapper
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
-    string acPath;
+    std::string acPath;
     /* Get BOA installation path from the registery */
     bGetBOAInstallationPath(acPath);
     /* Load cslproxy.dll library */
-    string acLIB_CSL = "";
+    std::string acLIB_CSL = "";
     acLIB_CSL.append(acPath);
     acLIB_CSL.append("\\");
     acLIB_CSL.append(LIB_CSL_NAME);
@@ -1808,7 +1755,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
         /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {
-            string acLIB_OCI;
+            std::string acLIB_OCI;
             acLIB_OCI.append(acPath);
             acLIB_OCI.append("\\");
             acLIB_OCI.append(LIB_OCI_NAME);
@@ -1829,7 +1776,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
             else
             {
                 hResult = S_FALSE;
-                string acErr;
+                std::string acErr;
                 acErr.append(acLIB_OCI);
                 acErr.append(" failed to load");
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
@@ -1843,7 +1790,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
     }
     else
     {
-        string acErr;
+        std::string acErr;
         acErr.append(acLIB_CSL);
         acErr.append(_(" failed to load"));
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
@@ -2336,7 +2283,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_StopHardware(void)
 
                     //Clear the Data
                     EnterCriticalSection(&sg_asChannel[i].m_ouCriticalSection);
-                    map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrBoaData = sg_asChannel[i].m_ouBoaFlexRayData.begin();
+                    std::map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrBoaData = sg_asChannel[i].m_ouBoaFlexRayData.begin();
                     for ( ; itrBoaData != sg_asChannel[i].m_ouBoaFlexRayData.end(); itrBoaData++ )
                     {
                         //No use of Return value;
@@ -2410,7 +2357,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DeleteMsg(DWORD dwClientID, s_FLXTXMSG* p
 
     EnterCriticalSection(&sg_asChannel[0].m_ouCriticalSection);
     SLOT_BASECYCLE nSlotBase = MAKELONG( pouFlxTxMsg->m_sFlxMsg.m_nSlotID, MAKEWORD(pouFlxTxMsg->m_sFlxMsg.m_nBaseCycle, pouFlxTxMsg->m_sFlxMsg.m_eChannel) );
-    map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrMap = sg_asChannel[0].m_ouBoaFlexRayData.find(nSlotBase);
+    std::map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrMap = sg_asChannel[0].m_ouBoaFlexRayData.find(nSlotBase);
 
 
     //Already Created in Buffers.
@@ -2433,7 +2380,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SendMsg(DWORD dwClientID, s_FLXTXMSG* pou
 
     EnterCriticalSection(&sg_asChannel[0].m_ouCriticalSection);
     SLOT_BASECYCLE nSlotBase = MAKELONG( pouFlxTxMsg->m_sFlxMsg.m_nSlotID, MAKEWORD(pouFlxTxMsg->m_sFlxMsg.m_nBaseCycle, pouFlxTxMsg->m_sFlxMsg.m_eChannel) );
-    map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrMap = sg_asChannel[0].m_ouBoaFlexRayData.find(nSlotBase);
+    std::map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrMap = sg_asChannel[0].m_ouBoaFlexRayData.find(nSlotBase);
 
 
     //Already Created in Buffers.
@@ -2446,7 +2393,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SendMsg(DWORD dwClientID, s_FLXTXMSG* pou
     }
     else    //New Message ReCreate the Tx Queue
     {
-        map<INT, INT> ::iterator itrSlotMap = sg_asChannel[0].m_SlotBufferMap.find(nSlotBase);
+        std::map<INT, INT> ::iterator itrSlotMap = sg_asChannel[0].m_SlotBufferMap.find(nSlotBase);
         if ( itrSlotMap != sg_asChannel[0].m_SlotBufferMap.end() )
         {
             BOA_FlexRayData ouBoaFlexRayData;
@@ -2481,12 +2428,12 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SendMsg(DWORD dwClientID, s_FLXTXMSG* pou
 int CDIL_FLEXRAY_ETAS_BOA::nCreateTxQueue()
 {
     //Create Tx Queue
-    map<SLOT_BASECYCLE, int>::iterator itrMap =  sg_asChannel[0].m_ouFlexrayData.m_mapSlotBaseCycle.begin();
+    std::map<SLOT_BASECYCLE, int>::iterator itrMap =  sg_asChannel[0].m_ouFlexrayData.m_mapSlotBaseCycle.begin();
     sg_asChannel[0].m_OCI_TxQueueCfg.count = 0;
 
     while ( itrMap !=  sg_asChannel[0].m_ouFlexrayData.m_mapSlotBaseCycle.end() )
     {
-        map<INT, INT> ::iterator itrSlotMap = sg_asChannel[0].m_SlotBufferMap.find(itrMap->first);
+        std::map<INT, INT> ::iterator itrSlotMap = sg_asChannel[0].m_SlotBufferMap.find(itrMap->first);
         if ( itrSlotMap != sg_asChannel[0].m_SlotBufferMap.end())
         {
             sg_asChannel[0].m_OCI_TxQueueCfg.bufferIndexes[sg_asChannel[0].m_OCI_TxQueueCfg.count] = itrSlotMap->second;
@@ -2528,23 +2475,20 @@ int CDIL_FLEXRAY_ETAS_BOA::nCreateTxQueue()
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetBoardInfo(s_BOARDINFO& BoardInfo)
 {
-
     return S_OK;
 }
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetFlexRayInfo(s_FLXINFO& FlexRayInfo)
 {
-
     return S_OK;
 }
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetVersionInfo(VERSIONINFO& sVerInfo)
 {
-
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetLastErrorString(string acErrorStr, HRESULT& nError)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetLastErrorString(std::string acErrorStr, HRESULT& nError)
 {
     acErrorStr = sg_acErrStr;
     nError = sg_hLastError;
@@ -2553,13 +2497,11 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetLastErrorString(string acErrorStr, HRE
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_FilterFrames(FILTER_TYPE FilterType, FLEX_CHANNEL FlexChannel, UINT* punFrames, UINT nLength)
 {
-
     return S_OK;
 }
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ConfigMsgBuf(s_MSGBUF sMsgBuf, UINT* punAddress)
 {
-
     return S_OK;
 }
 
@@ -2611,7 +2553,7 @@ DWORD WINAPI DataTransmitThread(LPVOID pVoid)
                 }
 
 
-                map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrMap = sg_asChannel[0].m_ouBoaFlexRayData.begin();
+                std::map<SLOT_BASECYCLE, BOA_FlexRayData>::iterator itrMap = sg_asChannel[0].m_ouBoaFlexRayData.begin();
                 for (; itrMap != sg_asChannel[0].m_ouBoaFlexRayData.end(); itrMap++ )
                 {
                     ErrCode = (*(sBOA_PTRS.m_sOCI.flexRayIOVTable.writeFlexRayData))

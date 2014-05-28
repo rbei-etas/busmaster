@@ -31,62 +31,33 @@
 
 #define NOTIFIC_WND_CONFIG_SECTION_NAME "NotificWndProperty"
 #define TIMER_INVALID       0x0
-using namespace std;
-typedef queue<CString> CStringQueue;
+
+typedef std::queue<CString> CStringQueue;
 static CStringQueue sg_odStringQueue;
 
 extern CCANMonitorApp theApp;
 
 #define def_MAXIMUM_TRACE_LINES             5000
 
-/////////////////////////////////////////////////////////////////////////////
-// CNotificWnd
-
 IMPLEMENT_DYNCREATE(CNotificWnd, CMDIChildBase)
-/******************************************************************************/
-/*  Function Name    :  CNotificWnd                                           */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is default constructor                  */
-/*  Member of        :  CNotificWnd                                           */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Ravikumar Patil                                       */
-/*  Date Created     :  12-Mar-2003                                           */
-/*  Modifications    :  Raja N on 26.04.2005, Changed the base class to       */
-/*                      CMDIChildBase and initialised with window identity    */
-/******************************************************************************/
+
 CNotificWnd::CNotificWnd():CMDIChildBase( /*NOTIFICATION_WND_PLACEMENT*/(eCONFIGDETAILS)-1 ),
     m_omSizeMaxTxtExtent(0,0)
 {
     m_unTimer = TIMER_INVALID;
 }
 
-/******************************************************************************/
-/*  Function Name    :  ~CNotificWnd                                          */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is default destructor                   */
-/*                                                                            */
-/*  Member of        :  CNotificWnd                                           */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Ravikumar Patil                                       */
-/*  Date Created     :  12-Mar-2003                                           */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
 CNotificWnd::~CNotificWnd()
 {
 }
 
 BEGIN_MESSAGE_MAP(CNotificWnd, CMDIChildBase)
-    //{{AFX_MSG_MAP(CNotificWnd)
     ON_WM_HELPINFO()
     ON_WM_SIZE()
     ON_MESSAGE(WM_CONFIG_QUESTION, DoConfigOperation)
     ON_WM_CLOSE()
     ON_WM_SHOWWINDOW()
     ON_WM_DESTROY()
-    //}}AFX_MSG_MAP
     ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -550,37 +521,6 @@ void CNotificWnd::CopyNFDataFromBuffer(BYTE* SrcBuffer)
 BOOL CNotificWnd::bIsConfigChanged()
 {
     BOOL bReturn = FALSE;
-#if 0
-    int nBufferCount = 0;
-    BYTE* SrcBuffer = NULL;
-    CConfigDetails::ouGetConfigDetailsObject().bGetData((void*&)(SrcBuffer),
-            nBufferCount,NOTIFIC_WND_CONFIG_SECTION_NAME);
-    if (SrcBuffer != NULL)
-    {
-        BYTE* tempBuffer = SrcBuffer;
-        NOTIFICWNDPARAMS* psNotificWndDat = new NOTIFICWNDPARAMS;
-        memcpy(psNotificWndDat, tempBuffer, sizeof(NOTIFICWNDPARAMS));
-        tempBuffer += sizeof(NOTIFICWNDPARAMS);
-        if (psNotificWndDat != NULL)
-        {
-            GetWindowPlacement(&m_sNotificWndParams.m_sWndPlacement);
-            /* check for window placement */
-            bReturn = bReturn || (memcmp(&(psNotificWndDat->m_sWndPlacement),
-                                         &(m_sNotificWndParams.m_sWndPlacement),
-                                         sizeof (m_sNotificWndParams.m_sWndPlacement)) != 0);
-            /* check for display flag */
-            bReturn = bReturn ||
-                      (psNotificWndDat->m_bSetFlag_Disp != m_sNotificWndParams.m_bSetFlag_Disp);
-            /* check for log flag */
-            bReturn = bReturn ||
-                      (psNotificWndDat->m_bSetFlag_Log != m_sNotificWndParams.m_bSetFlag_Log);
-            delete psNotificWndDat;
-        }
-
-        delete[] SrcBuffer;
-        SrcBuffer = NULL;
-    }
-#endif
     return bReturn;
 }
 

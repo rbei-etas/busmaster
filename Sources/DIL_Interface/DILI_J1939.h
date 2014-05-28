@@ -29,10 +29,11 @@
   Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
-#if !defined DILI_J1939_H__INCLUDED_
-#define DILI_J1939_H__INCLUDED_
+
+#pragma once
 
 #include "BaseDIL_J1939.h"
+
 class CDILI_J1939 : public CBaseDILI_J1939
 {
 public:
@@ -315,5 +316,3 @@ public:
     HRESULT DILIJ_ClaimAdress();
 
 };
-
-#endif //DILI_J1939_H__INCLUDED_

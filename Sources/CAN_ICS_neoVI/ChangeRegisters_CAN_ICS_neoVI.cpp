@@ -53,9 +53,6 @@ CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=
     , m_omStrPropDelay("")
     , m_omStrSJW("")
 {
-    //{{AFX_DATA_INIT(CChangeRegisters_CAN_ICS_neoVI)
-    //m_omStrEditBTR0 = _T("");
-    //m_omStrEditBTR1 = _T("");
     m_omStrEditCNF1 = "";
     m_omStrEditCNF2 = "";
     m_omStrEditCNF3 = "";

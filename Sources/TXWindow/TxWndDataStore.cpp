@@ -726,7 +726,7 @@ bool CTxWndDataStore::pbySetConfigData(xmlDocPtr pDoc)
     xmlNodePtr pMsgNode = NULL;
     xmlNodePtr pDataBytesNode = NULL;
     PSTXCANMSGLIST psTxCanMsgTail = NULL;
-    string   strVar;
+    std::string strVar;
     if( NULL != pObjectPath )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
@@ -916,7 +916,7 @@ bool CTxWndDataStore::pbySetConfigData(xmlDocPtr pDoc)
 bool CTxWndDataStore::bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr)
 {
     xmlNodePtr pChildNode = NULL;
-    string   strVar;
+    std::string strVar;
     {
         if(!xmlStrcmp(pxmlNodePtr->name, (const xmlChar*)DEF_SW_ROOT_0))
         {

@@ -57,9 +57,6 @@
 #define USAGE_EXPORT
 #include "CAN_Vector_XL_Extern.h"
 
-using namespace std;
-// CCAN_Vector_XL
-
 BEGIN_MESSAGE_MAP(CCAN_Vector_XL, CWinApp)
 END_MESSAGE_MAP()
 
@@ -204,7 +201,7 @@ static XLOPENDRIVER            xlDllOpenDriver = NULL;
 static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(string pcClientName, INT& Index);
+static BOOL bClientExist(std::string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -229,7 +226,7 @@ static INTERFACE_HW sg_HardwareIntr[defNO_OF_CHANNELS];
 
 // TZM specific Global variables
 #define CAN_MAX_ERRSTR 256
-string sg_acErrStr = "";
+std::string sg_acErrStr = "";
 static UINT sg_unClientCnt = 0;
 #define MAX_CLIENT_ALLOWED 16
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
@@ -274,14 +271,10 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
     HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
@@ -893,12 +886,12 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         {
             asSelHwInterface[i].m_dwIdInterface = i;
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
-            ostringstream oss;
-            oss << dec << serialNumber;
-            string strTemp =  oss.str();
+            std::ostringstream oss;
+            oss << std::dec << serialNumber;
+            std::string strTemp =  oss.str();
             asSelHwInterface[i].m_acDescription = strTemp;
             //_stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
-            ostringstream oss1;
+            std::ostringstream oss1;
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
             oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
             sg_ControllerDetails[i].m_omHardwareDesc = oss1.str();
@@ -1918,7 +1911,6 @@ static int nWriteMessage(STCAN_MSG sMessage, DWORD dwClientID)
             (sMessage.m_ucChannel <= sg_nNoOfChannels))
     {
         static XLevent       xlEvent;
-        // PTV CPP
         XLstatus             xlStatus = 0;
         unsigned int         messageCount = 1;
 
@@ -2015,7 +2007,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(std::string & acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;
@@ -2133,7 +2125,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
 
     return hResult;
 }
-//MVN
+
 HRESULT CDIL_CAN_VectorXL::CAN_SetControllerParams(INT nValue, ECONTR_PARAM eContrparam)
 {
     switch(eContrparam)
@@ -2176,7 +2168,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetControllerParams(INT nValue, ECONTR_PARAM eCon
     }
     return S_OK;
 }
-//~MVN
+
 /**
 * \brief         Gets the error counter for corresponding channel.
 * \param[out]    sErrorCnt, is SERROR_CNT structure
@@ -2469,7 +2461,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {

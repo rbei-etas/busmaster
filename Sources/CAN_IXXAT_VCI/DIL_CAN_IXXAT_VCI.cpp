@@ -38,9 +38,9 @@
 #include "HardwareListing.h"
 
 
-//C++ Includes
+/* C++ Includes */
 #include <sstream>
-using namespace std;
+
 /*
    Internal note
    --------------------------------------------
@@ -694,15 +694,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
  *  Always E_NOTIMPL
  *
  */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(CHAR* acErrorStr, int nLength)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString\n"));
-//#endif
-//  return  E_NOTIMPL;
-//}
-
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(std::string& acErrorStr)
 {
 #ifdef _IXXAT_DEBUG
     LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString\n"));
@@ -1147,9 +1139,8 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
                     sSelHwInterface[iStartPosArray].m_acDeviceName = pVciDevInfo->Description; // the name of the device
 
 
-                    ostringstream oss;
+                    std::ostringstream oss;
                     oss<<"CAN "<<i;
-                    //sprintf_s(sSelHwInterface[iStartPosArray].m_acNameInterface, MAX_CHAR_SHORT, _T("CAN %u"), i);
                     sSelHwInterface[iStartPosArray].m_acNameInterface = oss.str();
 
                     // if the cantype.h from IXXAT was enhanced then add the new hardware descriptions here

@@ -99,7 +99,6 @@ public:
     // Query function - current logging status (OFF/ON).
     BOOL FPC_IsLoggingON(void);
 
-    // PTV[1.6.4]
     BOOL FPC_IsDataLogged(void);
 
     BOOL FPC_IsThreadBlocked(void);
@@ -149,9 +148,7 @@ public:
     HRESULT FPC_GetConfigData(xmlNodePtr pxmlNodePtr);
     // Setter for the logging configuration data
     HRESULT FPC_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
-    //MVN
     HRESULT FPC_SetConfigData(xmlDocPtr pDoc);
-    //~MVN
 
     // To update the associated database list to logger
     HRESULT FPC_SetDatabaseFiles(const CStringArray& omList);
@@ -159,10 +156,4 @@ public:
     // To update the channel baud rate info to logger
     HRESULT FPC_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
                                           int nNumChannels,ETYPE_BUS eBus);
-
-    //Shailesh +
-    //void IncrementConnectionCount();
-    //Shailesh -
-
-    /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };

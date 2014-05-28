@@ -358,7 +358,7 @@ void CTxMsgList::OnHdnBegintrack(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
     // TODO: Add your control notification handler code here
-    map<int, ColumnProperty>::iterator itrValue = m_ouColumnPropMap.find(phdr->iItem);
+    std::map<int, ColumnProperty>::iterator itrValue = m_ouColumnPropMap.find(phdr->iItem);
     BOOL bMovable = FALSE;
     if ( itrValue != m_ouColumnPropMap.end() )
     {
@@ -1275,7 +1275,7 @@ bool CTxMsgList::GetTextFont( LOGFONT* plgfnt)
 
 int CTxMsgList::InsertColumn(int nCol, const LVCOLUMN* pColumn, ColumnProperty ouColumnProperty)
 {
-    m_ouColumnPropMap.insert(map<int, ColumnProperty>::value_type(nCol, ouColumnProperty));
+    m_ouColumnPropMap.insert(std::map<int, ColumnProperty>::value_type(nCol, ouColumnProperty));
     return CFlickerFreeListCtrl::InsertColumn(nCol, pColumn);
 }
 

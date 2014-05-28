@@ -303,7 +303,7 @@ int CLogObjectCAN::Der_SetConfigData(xmlNodePtr pNodePtr)
     int nResult = S_OK;
     SFILTERAPPLIED_CAN sFilterApplied;
     CStringArray omStrFilters;
-    map<string, int> mapFilters;
+    std::map<std::string, int> mapFilters;
     if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc, CAN))
     {
         while(pNodePtr != NULL) //TODO:Move To Utils
@@ -409,7 +409,6 @@ void CLogObjectCAN::Der_SetChannelBaudRateDetails
     m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
     for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
     {
-        //venkat
         m_pasControllerDetails[nIdx] =pTempControllerDetails[nIdx];
         //memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
     }

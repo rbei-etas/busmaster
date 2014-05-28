@@ -1,15 +1,9 @@
 // NodeUtil.h: interface for the CNodeUtil class.
-//
-//////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_NODEUTIL_H__0729D820_CA62_4608_AB03_082D1084F35C__INCLUDED_)
-#define AFX_NODEUTIL_H__0729D820_CA62_4608_AB03_082D1084F35C__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "Fibex_Defs.h"
+#include <string>
 #import <msxml6.dll>
 
 #define PDU_DUMMY_2_0                   _T("BM_DUMMY_2_0_PDU")
@@ -507,24 +501,22 @@ public:
     CNodeUtil();
     virtual ~CNodeUtil();
 
-    static bool bReadAttribute(MSXML2::IXMLDOMNode* iNode, string& omAttribute, _bstr_t temp);
-    static bool bRemoveTag(const string omSrcString, string& omDestString);
+    static bool bReadAttribute(MSXML2::IXMLDOMNode* iNode, std::string& omAttribute, _bstr_t temp);
+    static bool bRemoveTag(const std::string omSrcString, std::string& omDestString);
 
 
-    static BOOL bCreateNode(MSXML2::IXMLDOMElementPtr& pChildNode,string omNodeName,
-                            string omNameSpace, string omNodeval);
+    static BOOL bCreateNode(MSXML2::IXMLDOMElementPtr& pChildNode, std::string omNodeName,
+                            std::string omNameSpace, std::string omNodeval);
     static BOOL bAddAttribToNode(MSXML2::IXMLDOMElementPtr& pNode,
-                                 string omAttribName, string omAttribVal);
-    static bool bAddNodeWithOneAttrib(MSXML2::IXMLDOMElementPtr& pNodeElement,string omNodeName,
-                                      string omNameSpace,string omNodeVal,
-                                      string omAttribName, string omAttribVal);
-    static bool bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement, string omNodeName,
-                                string omNameSpace, string omNodeval);
-    static bool bAddID_OID_Attrib(string strID, string strOID,
+                                 std::string omAttribName, std::string omAttribVal);
+    static bool bAddNodeWithOneAttrib(MSXML2::IXMLDOMElementPtr& pNodeElement, std::string omNodeName,
+                                      std::string omNameSpace, std::string omNodeVal,
+                                      std::string omAttribName, std::string omAttribVal);
+    static bool bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement, std::string omNodeName,
+                                std::string omNameSpace, std::string omNodeval);
+    static bool bAddID_OID_Attrib(std::string strID, std::string strOID,
                                   MSXML2::IXMLDOMElementPtr& pNodeElement);
-    static bool bAddRefrences(MSXML2::IXMLDOMElementPtr& pMainParent,string omMainNodeName,
-                              string omSubNodeName, CStringArray& omRefArray);
-    static string omAddNameSpaceExt(string omNameSpace, string omNodeName);
+    static bool bAddRefrences(MSXML2::IXMLDOMElementPtr& pMainParent, std::string omMainNodeName,
+                              std::string omSubNodeName, CStringArray& omRefArray);
+    static std::string omAddNameSpaceExt(std::string omNameSpace, std::string omNodeName);
 };
-
-#endif // !defined(AFX_NODEUTIL_H__0729D820_CA62_4608_AB03_082D1084F35C__INCLUDED_)

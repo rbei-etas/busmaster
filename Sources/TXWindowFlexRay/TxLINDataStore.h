@@ -23,14 +23,11 @@
 #include "..\DataTypes\Cluster.h"
 #include "..\Utility\Utility_Thread.h"
 
-
 typedef CList<s_FLXTXMSG, s_FLXTXMSG> CMSGLIST_FLEX;
-
-
 
 struct LIN_CONFIG_DATA
 {
-    string m_strMessageName;
+    std::string m_strMessageName;
     unsigned char m_ucMsgTyp;       // Message Type (0 - Header / 1 - Response)
     unsigned char m_ucChksumTyp;    // Checksum Type (0 - Classical / 1 - Enhanced)
     unsigned char m_ucChannel;      // Channel Number
@@ -47,7 +44,7 @@ struct LIN_CONFIG_DATA
 struct LIN_FRAME_DATA
 {
     STLIN_MSG m_ouLinMessage;
-    string m_strFrameName;
+    std::string m_strFrameName;
     bool bSelected;
     bool bKeyEnabled;
     char m_chKeyVal;
@@ -79,7 +76,7 @@ public:
     HRESULT SetFlexRayConfig(ClusterConfig* m_ouFlexConfig);
     DWORD m_dwClientID;
     CBaseDIL_LIN* m_pouDIL_LIN_Interface;
-    map<int, string> m_strMessageNames[CHANNEL_ALLOWED];
+    std::map<int, std::string> m_strMessageNames[CHANNEL_ALLOWED];
     CRITICAL_SECTION m_ouCSMsgList;
     CRITICAL_SECTION m_ouCSKeyMap;
 
@@ -91,15 +88,15 @@ public:
     int m_nChannelsConfigured;
 
     //Selected ECU Frame List - used to add messages in Tx List (Add NewFrame)
-    list<FRAME_STRUCT> m_ouFrameList[CHANNEL_ALLOWED];
+    std::list<FRAME_STRUCT> m_ouFrameList[CHANNEL_ALLOWED];
     ClusterConfig* m_ouClusterConfig;
 
     //Contains Messages and their datavalues used in Tx Windows
-    list<LIN_FRAME_DATA> m_ouLIN_Frame_Data;
-    map<int, char> m_ouMapIndexToKey;
+    std::list<LIN_FRAME_DATA> m_ouLIN_Frame_Data;
+    std::map<int, char> m_ouMapIndexToKey;
 
     //
-    list<LIN_CONFIG_DATA> m_ouLIN_ConfigData[CHANNEL_ALLOWED];
+    std::list<LIN_CONFIG_DATA> m_ouLIN_ConfigData[CHANNEL_ALLOWED];
 
     bool bIsValidMessage(int nChannelIndex, LIN_CONFIG_DATA&);
     bool bAddToChannelList(LIN_FRAME_DATA& ouData);
@@ -139,6 +136,7 @@ public:
     int nDeleteAllMessages();
     int nHandleKeyEvent(char chKey);
     int nTransmitMsgAt(int nIndex);
+
 private:
     bool m_bValidTxWndSize;
     CPARAM_THREADPROC m_ouTransmitThread;
@@ -149,5 +147,5 @@ private:
     static DWORD WINAPI LINTxWndTransmitThread(LPVOID pVoid);
 
     int nStopTransmissionAt(int nIndex);
-    HRESULT GetMessageIDNames(int nChannelIndex, map<int, string>& ouMsgIDNamesMap);
+    HRESULT GetMessageIDNames(int nChannelIndex, std::map<int, std::string>& ouMsgIDNamesMap);
 };

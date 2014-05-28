@@ -312,7 +312,6 @@ void CMessageList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     lvc.pszText = sColText;
                     lvc.cchTextMax = 15;    //Set the Width of Menu Items here
 
-                    //venkat
                     if(GetColumn(i, &lvc) != 0)
                     {
                         menu.InsertMenu(0, uFlags, i, lvc.pszText);

@@ -20,9 +20,7 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-
-#if !defined TRANSFERLAYER_H__INCLUDED_
-#define TRANSFERLAYER_H__INCLUDED_
+#pragma once
 
 #include "DIL_Interface/BaseDIL_CAN.h"
 
@@ -61,5 +59,3 @@ public:
     void vSetIDIL_CAN(CBaseDIL_CAN* pIDIL_CAN);
 
 };
-
-#endif //TRANSFERLAYER_H__INCLUDED_

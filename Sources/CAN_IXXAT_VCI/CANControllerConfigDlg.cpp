@@ -331,7 +331,7 @@ int CCANControllerConfigDlg::GetBitTimingValue()
  *  The bit timing name.
  *
  */
-string CCANControllerConfigDlg::GetBitTimingName()
+std::string CCANControllerConfigDlg::GetBitTimingName()
 {
     return m_strSelectedBaudName;
 }

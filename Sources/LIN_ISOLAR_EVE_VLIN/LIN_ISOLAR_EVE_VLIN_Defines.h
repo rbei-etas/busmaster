@@ -91,12 +91,12 @@ static CACK_MAP_LIST sg_asAckMapBuf;
 
 static HWND sg_hOwnerWnd = NULL;
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
-string sg_acErrStr = "";
+std::string sg_acErrStr = "";
 
 /* Forward declarations*/
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(string pcClientName, INT& Index);
+static BOOL bClientExist(std::string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -125,8 +125,6 @@ static BOOL bRemoveClientBuffer(CBaseLINBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 #define  DISCONNECT       2
 #define  RESET_CONTROLLER 3
 
-
-
 // Numerical values of commands to Client
 #define RECEIVE_MESSAGE_ASYNC 1
 #define BUSOFF 2
@@ -142,55 +140,3 @@ enum
  * Current state machine
  */
 static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
-
-//
-//enum
-//{
-//    LIN_INVALID_RESPONSE = 0,
-//    LIN_MASTER_RESPONSE,
-//    LIN_SLAVE_RESPONSE,
-//    LIN_SLAVE_SLAVE,
-//  LIN_WAKEUP_REQUEST,
-//  LIN_SLEEP_FRAME,
-//  LIN_NO_ANSWER,
-//  LIN_CHECKSUM_ERROR,
-//  LIN_MSG_TYPE_MAX,
-//}ENUM_LIN_MSG_TYPE;
-
-//class CLIN_MSG_TYPE
-//{
-//public:
-//    ENUM_LIN_MSG_TYPE m_enMsgType;
-//    string                m_strMsgType;
-//
-//};
-//
-//static CLIN_MSG_TYPE sg_ListDIL_MSG_TYPE[] =
-//{
-//    {LIN_INVALID_RESPONSE,       "LIN INVALID RESPONSE"       },
-//    {LIN_MASTER_RESPONSE,   "LIN MASTER RESPONSE"         },
-//    {LIN_SLAVE_RESPONSE,       "LIN SLAVE RESPONSE"       },
-//    {LIN_SLAVE_SLAVE,   "LIN SLAVE2SLAVE"         },
-//    {LIN_WAKEUP_REQUEST,       "LIN WAKEUP REQUEST"       },
-//    {LIN_SLEEP_FRAME,   "LIN SLEEP FRAME"         },
-//  {LIN_NO_ANSWER,       "LIN NO ANSWER"       },
-//    {LIN_CHECKSUM_ERROR,   "LIN CHECKSUM ERROR"         },
-//};
-
-//static string sg_ListDIL_MSG_TYPE[LIN_MSG_TYPE_MAX] =
-//{
-//    "LIN INVALID RESPONSE",
-//    "LIN MASTER RESPONSE",
-//    "LIN SLAVE RESPONSE",
-//    "LIN SLAVE2SLAVE",
-//    "LIN WAKEUP REQUEST",
-//    "LIN SLEEP FRAME",
-//  "LIN NO ANSWER",
-//    "LIN CHECKSUM ERROR",
-//};
-
-/* End BUSMASTER global variables */
-
-/*END Server Node Defenitions*/
-
-

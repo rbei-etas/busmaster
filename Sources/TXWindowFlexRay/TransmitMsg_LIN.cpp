@@ -67,8 +67,6 @@ BEGIN_MESSAGE_MAP(CTransmitMsgLIN, CFormView)
     ON_NOTIFY(NM_RCLICK, IDC_LSTC_TRANSMIT_MSG, OnNMTransmitMessagesRightClick)
     ON_NOTIFY(NM_CLICK, IDC_LSTC_TRANSMIT_MSG, OnNMTransmitMessagesClick)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_TRANSMIT_MSG, OnItemchangedLstcMsgDetails)
-    //venkat
-
     ON_BN_CLICKED(IDC_BT_UPDATE, OnBnClickedBtUpdate)
     ON_BN_CLICKED(IDC_DEL_FRAME, OnBnClickedBtDelFrame)
     ON_BN_CLICKED(IDC_BT_DEL_ALL, OnBnClickedBtDelAll)
@@ -356,7 +354,7 @@ void CTransmitMsgLIN::OnBusConnect(ESTATUS_BUS eBusStatus)
     }
 }
 
-void CTransmitMsgLIN::vGetStringFromValue(int nValue, string& strValue, bool bSymbol)
+void CTransmitMsgLIN::vGetStringFromValue(int nValue, std::string& strValue, bool bSymbol)
 {
     char chValue[1024];
     if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode == false)
@@ -1132,7 +1130,7 @@ void CTransmitMsgLIN::vUpdateMsgInList(LIN_FRAME_DATA ouLinData)
 
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGNAME_INDEX, ouLinData.m_strFrameName.c_str());
 
-    string strText;
+    std::string strText;
 
     vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucMsgID, strText);
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGID_INDEX, strText.c_str());
@@ -1181,7 +1179,7 @@ void CTransmitMsgLIN::vUpdateMsgInList(LIN_FRAME_DATA ouLinData)
     m_lstMsg.vSetUserProgInfo(nRows, def_COLUMN_KEY_INDEX, ouUserProgInfo);
     m_lstMsg.SetItemText(nRows, def_COLUMN_KEY_INDEX, strText.c_str());*/
 
-    string strTemp;
+    std::string strTemp;
     strText = "";
     for ( int i =0 ; i < ouLinData.m_ouLinMessage.m_ucDataLen; i++ )
     {
@@ -1222,7 +1220,7 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
     m_lstMsg.InsertItem(nRows, ouLinData.m_strFrameName.c_str(), -1);
 
 
-    string strText;
+    std::string strText;
 
     vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucMsgID, strText);
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGID_INDEX, strText.c_str());
@@ -1281,7 +1279,7 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
         CTxLINDataStore::ouGetTxLINDataStoreObj().nInsertKey(nRows, strText[0]);
     }
 
-    string strTemp;
+    std::string strTemp;
     strText = "";
     for ( int i =0 ; i < ouLinData.m_ouLinMessage.m_ucDataLen; i++ )
     {
@@ -1429,7 +1427,7 @@ HRESULT CTransmitMsgLIN::UpdateTxView(int& m_nChannelsConfigured)
 
     m_omComboMsgIDorName.ResetContent();
     char chString[MAX_PATH] = "";
-    map<int, string>::iterator itrMsgId = CTxLINDataStore::ouGetTxLINDataStoreObj().m_strMessageNames[nChannel].begin();
+    std::map<int, std::string>::iterator itrMsgId = CTxLINDataStore::ouGetTxLINDataStoreObj().m_strMessageNames[nChannel].begin();
     while (itrMsgId != CTxLINDataStore::ouGetTxLINDataStoreObj().m_strMessageNames[nChannel].end())
     {
         if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode == false )
@@ -1457,7 +1455,7 @@ HRESULT CTransmitMsgLIN::UpdateTxView(int& m_nChannelsConfigured)
 void CTransmitMsgLIN::vUpdateMessageList()
 {
     CTxLINDataStore& ouLinData = CTxLINDataStore::ouGetTxLINDataStoreObj();
-    list<LIN_FRAME_DATA>::iterator itrLinData = ouLinData.m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrLinData = ouLinData.m_ouLIN_Frame_Data.begin();
     char chText[MAX_PATH] = {0};
     FRAME_STRUCT ouFrame;
 
@@ -1548,12 +1546,12 @@ void CTransmitMsgLIN::OnEditchangeCombMsgIdName()
                 nMsgId = strtol(strMsgId,&pcStr,10);
             }
 
-            string omMsgName, omMsgId;
+            std::string omMsgName, omMsgId;
             vGetStringFromValue(nMsgId, omMsgId);
             FRAME_STRUCT ouFrame;
 
             m_lstMsg.SetItemText(nselIndex, def_COLUMN_MSGID_INDEX, omMsgId.c_str());
-            list<LIN_FRAME_DATA>::iterator itrLinData = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
+            std::list<LIN_FRAME_DATA>::iterator itrLinData = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
             advance(itrLinData, nselIndex);
 
             if ( S_OK==nGetDbFrame(ouFrame) )
@@ -1707,7 +1705,7 @@ int CTransmitMsgLIN::nUpdateSelectedMessage()
         if ( TRUE == bValidateData(ouLinData) )
         {
             EnterCriticalSection(&CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouCSMsgList);
-            list<LIN_FRAME_DATA>::iterator itrLinData = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
+            std::list<LIN_FRAME_DATA>::iterator itrLinData = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
             advance(itrLinData, nSel);
             if ( itrLinData !=  CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.end() )
             {
@@ -1761,7 +1759,7 @@ UINT CTransmitMsgLIN::unGetMsgIDFromName(CString omMsgName)
     CString omStrMsgID;
     UINT unMsgID = (UINT)-1;
     CHAR* pcStopStr = NULL;
-    string strStartKey;
+    std::string strStartKey;
     if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode == false)
     {
         strStartKey = "[";
@@ -1852,7 +1850,7 @@ int CTransmitMsgLIN::nGetDbFrame(FRAME_STRUCT& ouFrame)
 }
 
 
-int CTransmitMsgLIN::nGetMessageName(string& strMsgName)
+int CTransmitMsgLIN::nGetMessageName(std::string & strMsgName)
 {
     int nChannel = m_wndComboChannel.GetCurSel();
     if ( nChannel >= 0&& nChannel < CHANNEL_ALLOWED )
@@ -1878,10 +1876,10 @@ int CTransmitMsgLIN::nGetMessageName(string& strMsgName)
 
 BOOL CTransmitMsgLIN::bUpdateSignalList(LIN_FRAME_DATA& sMsg)
 {
-    list<SIGNAL_STRUCT> lstSigStrct;
+    std::list<SIGNAL_STRUCT> lstSigStrct;
     vGetSelSignalFromFrame(sMsg.m_ouLinMessage.m_ucMsgID, lstSigStrct);
 
-    list<SIGNAL_STRUCT>::iterator itrSig = lstSigStrct.begin();
+    std::list<SIGNAL_STRUCT>::iterator itrSig = lstSigStrct.begin();
     int i = 0;
     m_omLctrSigList.DeleteAllItems();
 
@@ -2267,11 +2265,11 @@ INT CTransmitMsgLIN::GetSelectedSignalStruct( SIGNAL_STRUCT& ouSignal, int nInde
 
     INT nMsgId = nGetMessageID();
 
-    list<SIGNAL_STRUCT> ouSignalList;
+    std::list<SIGNAL_STRUCT> ouSignalList;
     vGetSelSignalFromFrame(nMsgId, ouSignalList);
     CString omStrSigName =
         m_omLctrSigList.GetItemText(nIndex, 0);
-    for ( list<SIGNAL_STRUCT>::iterator itr = ouSignalList.begin(); itr != ouSignalList.end(); itr++ )
+    for ( std::list<SIGNAL_STRUCT>::iterator itr = ouSignalList.begin(); itr != ouSignalList.end(); itr++ )
     {
         if ( omStrSigName == itr->m_strSignalName.c_str() )
         {
@@ -2435,7 +2433,7 @@ void CTransmitMsgLIN::vUpdateFromRawValue(int nItem, int nSubItem)
 
     UINT unMsgId = nGetMessageID();
 
-    list<SIGNAL_STRUCT> lstSigStrct;
+    std::list<SIGNAL_STRUCT> lstSigStrct;
     vGetSelSignalFromFrame(unMsgId, lstSigStrct);
 
     CString omStrSigName = m_omLctrSigList.GetItemText(nItem, 0);
@@ -2555,7 +2553,7 @@ void CTransmitMsgLIN::vUpdateFromPhysicalValue(int nItem, int nSubItem)
 
     UINT unMsgId = nGetMessageID();
 
-    list<SIGNAL_STRUCT> lstSigStrct;
+    std::list<SIGNAL_STRUCT> lstSigStrct;
     vGetSelSignalFromFrame(unMsgId, lstSigStrct);
 
     CString omStrSigName = m_omLctrSigList.GetItemText(nItem, 0);
@@ -2783,7 +2781,6 @@ void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8]
     // bytes andvice versa.
     // First findout offset between the last significant bits of the signal
     // and theframe. Finding out the lsb will directly answer to thisquery.
-    //venkat
     UINT64 unMaxVal = pow((double)2, (double)ouSigStrct.m_nLength);
     unMaxVal -= 1;
     u64SignVal = u64SignVal&unMaxVal;
@@ -3112,10 +3109,10 @@ void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8]
  Modification By  :
  Modification on  :
 *******************************************************************************/
-void CTransmitMsgLIN::psGetSelectedSignalStruct(list<SIGNAL_STRUCT> lstSigStrct, CString omStrSigName, SIGNAL_STRUCT& ouSigStrct)
+void CTransmitMsgLIN::psGetSelectedSignalStruct(std::list<SIGNAL_STRUCT> lstSigStrct, CString omStrSigName, SIGNAL_STRUCT& ouSigStrct)
 {
 
-    list<SIGNAL_STRUCT>::iterator itrSigList = lstSigStrct.begin();
+    std::list<SIGNAL_STRUCT>::iterator itrSigList = lstSigStrct.begin();
 
     // Get the Signal List head pointer
     itrSigList = lstSigStrct.begin();
@@ -3134,7 +3131,7 @@ void CTransmitMsgLIN::psGetSelectedSignalStruct(list<SIGNAL_STRUCT> lstSigStrct,
     }
 }
 
-void CTransmitMsgLIN::vGetSelSignalFromFrame(UINT unMsgId, list<SIGNAL_STRUCT>& omSignalList)
+void CTransmitMsgLIN::vGetSelSignalFromFrame(UINT unMsgId, std::list<SIGNAL_STRUCT>& omSignalList)
 {
     ClusterConfig* pTemConfig = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouClusterConfig;
 
@@ -3208,7 +3205,7 @@ void CTransmitMsgLIN::OnKillfocusDataBytesEdit()
         ucData[nIndex] = nValue;
     }
 
-    list<Flexray_SSIGNALINFO> ouSignalInfoList;
+    std::list<Flexray_SSIGNALINFO> ouSignalInfoList;
     int nSel = m_lstMsg.GetNextItem(-1, LVIS_SELECTED);
 
     FRAME_STRUCT ouFrame;
@@ -3217,7 +3214,7 @@ void CTransmitMsgLIN::OnKillfocusDataBytesEdit()
     {
         bGetSignalInfo(ouFrame, ucData, ouFrame.m_nLength, ouSignalInfoList, CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode);
 
-        list<Flexray_SSIGNALINFO>::iterator itrSig = ouSignalInfoList.begin();
+        std::list<Flexray_SSIGNALINFO>::iterator itrSig = ouSignalInfoList.begin();
 
         UINT unIndex = 0;
         while(itrSig != ouSignalInfoList.end())
@@ -3241,8 +3238,8 @@ void CTransmitMsgLIN::OnKillfocusDataBytesEdit()
 
     int nDLC =atoi(strDLC);
 
-    string strTemp;
-    string strText = "";
+    std::string strTemp;
+    std::string strText = "";
     for ( int i =0 ; i < nDLC; i++ )
     {
         vGetStringFromValue(m_unData[i].byByte, strTemp, false);
@@ -3273,11 +3270,11 @@ void CTransmitMsgLIN::vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, IN
     EnterCriticalSection(&CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouCSMsgList);
     if(nItem != -1)
     {
-        list<LIN_FRAME_DATA>::iterator itrList = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
+        std::list<LIN_FRAME_DATA>::iterator itrList = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
 
         std::advance(itrList, nItem);
-        string strTemp;
-        string strText = "";
+        std::string strTemp;
+        std::string strText = "";
         switch(eUpdateType)
         {
             case eEnable:
@@ -3637,10 +3634,10 @@ INT CTransmitMsgLIN::nUpdateMessageDetails(LIN_FRAME_DATA& ouLinData)
             m_omComboChannelID.SetCurSel(-1);
             m_omComboMsgIDorName.SetWindowText(chString);
 
-            list<Flexray_SSIGNALINFO> ouSignalInfo;
+            std::list<Flexray_SSIGNALINFO> ouSignalInfo;
             bGetSignalInfo(ouFrame, ouLinData.m_ouLinMessage.m_ucData, ouLinData.m_ouLinMessage.m_ucDataLen, ouSignalInfo
                            , CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode);
-            list<Flexray_SSIGNALINFO>::iterator itrSignalList = ouSignalInfo.begin();
+            std::list<Flexray_SSIGNALINFO>::iterator itrSignalList = ouSignalInfo.begin();
             int nRow = 0;
             while ( itrSignalList != ouSignalInfo.end() )
             {
@@ -3653,7 +3650,7 @@ INT CTransmitMsgLIN::nUpdateMessageDetails(LIN_FRAME_DATA& ouLinData)
         else
         {
             //5. Combo
-            string strValue;
+            std::string strValue;
             vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucMsgID, strValue);
             m_omComboChannelID.SetCurSel(-1);
             m_omComboMsgIDorName.SetWindowText(strValue.c_str());
@@ -3667,10 +3664,6 @@ INT CTransmitMsgLIN::nUpdateMessageDetails(LIN_FRAME_DATA& ouLinData)
     m_odSignalMatrix.vSetMessageLength(m_odDLC.lGetValue());
     vUpdateSignalMatrix();
 
-
-
-
-
     //7. Channel
     m_omComboChannelID.SetCurSel(ouLinData.m_ouLinMessage.m_ucChannel - 1);
     return 0;
@@ -3680,7 +3673,7 @@ INT CTransmitMsgLIN::nUpdateMessageDetails(LIN_FRAME_DATA& ouLinData)
 LIN_FRAME_DATA CTransmitMsgLIN::vGetMsgDetails(INT nSelIndex)
 {
     UINT unIndex = 0;
-    list<LIN_FRAME_DATA>::iterator itrList = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrList = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
 
     std::advance(itrList, nSelIndex);
 

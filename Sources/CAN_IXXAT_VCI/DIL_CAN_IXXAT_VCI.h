@@ -59,28 +59,16 @@ public:
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    //HRESULT CAN_DisplayConfigDlg(PCHAR& InitData, int& Length);
     HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
-    //HRESULT CAN_SetConfigData(PCHAR pInitData, int Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
-    //HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-    //HRESULT CAN_GetBoardInfo(s_BOARDINFO& BoardInfo);
-    //HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    //HRESULT CAN_GetVersionInfo(VERSIONINFO& sVerInfo);
-    //HRESULT CAN_GetLastErrorString(CHAR* acErrorStr, int nLength);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-
-
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName);
     HRESULT CAN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);

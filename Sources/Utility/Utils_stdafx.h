@@ -29,7 +29,6 @@
 
 #pragma once
 
-
 #define WIN32_LEAN_AND_MEAN     // Exclude rarely-used stuff from Windows headers
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
 
@@ -40,22 +39,9 @@
 #include <math.h>           // For abs function call
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
-/*#include <afxext.h>         // MFC extensions
-#include <afxdisp.h>        // MFC Automation classes
 
-#include <afxtempl.h>
-
-#include <wtypes.h>
-#include <comutil.h>*/
 #include <atlstr.h>
 #include <atlbase.h>
 #include <afxtempl.h>
 #include <afxcmn.h>
 #include <afxdlgs.h>
-
-
-/*#import <msxml6.dll>
-using namespace MSXML2;*/
-
-// TODO: reference additional headers your program requires here
-

@@ -4,8 +4,6 @@
   *     Author: Prince Varghese (RBEI/EAR5)
  */
 
-//using namespace std;
-
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>

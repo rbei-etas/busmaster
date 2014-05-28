@@ -45,7 +45,7 @@ struct FLEXRAY_FRAME_DATA
 
 struct FLEXRAY_CONFIG_DATA
 {
-    string m_strMessageName;
+    std::string m_strMessageName;
     int m_nSlotId;
     int m_nBaseCycle;
     int m_nDLC;
@@ -69,13 +69,13 @@ public:
     int m_nChannelsConfigured;
 
     //Selected ECU Frame List - used to add messages in Tx List (Add NewFrame)
-    list<FRAME_STRUCT> m_ouFrameList[CHANNEL_ALLOWED];
+    std::list<FRAME_STRUCT> m_ouFrameList[CHANNEL_ALLOWED];
 
     //Contains Messages and their datavalues used in Tx Windows
-    list<FLEXRAY_FRAME_DATA> m_ouFlexray_Frame_Data[CHANNEL_ALLOWED];
+    std::list<FLEXRAY_FRAME_DATA> m_ouFlexray_Frame_Data[CHANNEL_ALLOWED];
 
     //
-    list<FLEXRAY_CONFIG_DATA> m_ouFlexray_ConfigData[CHANNEL_ALLOWED];
+    std::list<FLEXRAY_CONFIG_DATA> m_ouFlexray_ConfigData[CHANNEL_ALLOWED];
 
     bool bIsValidMessage(int nChannelIndex, FLEXRAY_CONFIG_DATA&);
     bool bAddToChannelList(int nChannel, FLEXRAY_CONFIG_DATA ouData);

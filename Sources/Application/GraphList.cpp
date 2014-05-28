@@ -102,7 +102,6 @@ BYTE* CGraphList::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
     return pbyTemp;
 }
 
-// XML PTV
 void CGraphList::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 {
     //BYTE* pbyTemp = pbyTrgtData;
@@ -241,7 +240,6 @@ void CGraphList::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr)
     }
 }
 
-// XML PTV
 BYTE* CGraphList::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;

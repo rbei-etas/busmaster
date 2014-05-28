@@ -22,15 +22,14 @@
  * Definition file for filter data types.
  */
 
-#if !defined FILTER_DATATYPES_H__INCLUDED_
-#define FILTER_DATATYPES_H__INCLUDED_
+#pragma once
+
 #include "Utility/XMLUtils.h"
 #include "include/BaseDefs.h"
 #include "include/Utils_macro.h"
 #include "include/XMLDefines.h"
 #include <map>
 #include <string>
-using namespace std;
 
 #define defFILTER_TYPE_SINGLE_ID            0
 #define defFILTER_TYPE_ID_RANGE             1
@@ -99,16 +98,15 @@ typedef struct tagFilterName
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // XML PTV
     void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
     void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
-    // XML PTV
+
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
 
     INT nSetXMLConfigData(xmlNodePtr pFilter);
-    BOOL nFilterType(string strFilteType);
+    BOOL nFilterType(std::string strFilteType);
 
 } SFILTERNAME, *PSFILTERNAME;
 
@@ -120,7 +118,7 @@ typedef struct tagSFILTER
     // Msg ID in case of Single ID
     DWORD m_dwMsgIDTo;      // To Message ID incase of range.
     EDIRECTION m_eDrctn;    // Values are: DIR_RX, DIR_TX and DIR_ALL
-    string  m_omEventName;
+    std::string  m_omEventName;
 
     tagSFILTER();           // Standard constructor
 
@@ -140,15 +138,13 @@ typedef struct tagSFILTER
     // Called to get the filter object's data into a stream buffer.
     virtual BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // PTV XML
     virtual void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
-    // PTV XML
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     virtual BYTE* pbSetConfigData(BYTE* pbTarget);
 
     INT nSetXMLConfigData(xmlNodePtr pNodePtr);
-    eDirection eGetMsgDirection(string strDirection);
+    eDirection eGetMsgDirection(std::string strDirection);
 } SFILTER, *PSFILTER;
 
 struct SFILTER_CAN : public SFILTER
@@ -170,7 +166,7 @@ struct SFILTER_CAN : public SFILTER
     // message entry passed.
     BOOL bDoesFrameOccur(const void* psCurrFrame) const;
 
-    void vGetEventName(eERROR_STATE eEventType, string& strEventName) const;
+    void vGetEventName(eERROR_STATE eEventType, std::string& strEventName) const;
 
     // To get size of the filter block object in bytes.
     UINT unGetSize(void) const;
@@ -178,18 +174,15 @@ struct SFILTER_CAN : public SFILTER
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // PTV XML
     void pbGetConfigData(xmlNodePtr pNodePtr) const;
     void pbSetConfigData(xmlNodePtr pNodePtr);
-    // PTV XML
+
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
-    //MVN
     INT nSetXMLConfigData(xmlNodePtr pNodePtr);
-    INT nGetIDType(string strIDType);
-    INT nGetMsgType(string strMsgType);
-    //~MVN
+    INT nGetIDType(std::string strIDType);
+    INT nGetMsgType(std::string strMsgType);
 };
 typedef SFILTER_CAN* PSFILTER_CAN;
 
@@ -210,7 +203,7 @@ struct SFILTER_LIN : public SFILTER
     // message entry passed.
     BOOL bDoesFrameOccur(const void* psCurrFrame) const;
 
-    void vGetEventName(eLinBusEventType eEventType, string& strEventName) const;
+    void vGetEventName(eLinBusEventType eEventType, std::string& strEventName) const;
 
     // To get size of the filter block object in bytes.
     UINT unGetSize(void) const;
@@ -218,16 +211,13 @@ struct SFILTER_LIN : public SFILTER
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // PTV XML
     void pbGetConfigData(xmlNodePtr pNodePtr) const;
     void pbSetConfigData(xmlNodePtr pNodePtr);
-    // PTV XML
+
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
-    //MVN
     INT nSetXMLConfigData(xmlNodePtr pNodePtr);
-    //~MVN
 };
 
 typedef SFILTER_LIN* PSFILTER_LIN;
@@ -254,9 +244,7 @@ struct SFILTER_FLEXRAY : public SFILTER
 
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
-    // XML PTV
     void pbGetConfigData(xmlNodePtr pNodePtr) const;
-    // XML PTV
 
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
@@ -286,9 +274,8 @@ struct SFILTER_MCNET : public SFILTER
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // PTV XML
     void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
-    // PTV XML
+
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget);
@@ -316,9 +303,7 @@ struct SFILTER_J1939 : public SFILTER
 
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
-    // PTV XML
     void pbGetConfigData(xmlNodePtr pNodePtr) const;
-    // PTV XML
 
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
@@ -350,11 +335,10 @@ typedef struct tagFilterSet
     // Called to get the filter block set's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // XML PTV
     void pbGetConfigData(xmlNodePtr pNodePtr) const;
 
     void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr, bool& Result);
-    // XML PTV
+
     // Called to retrieve a filter block set's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget, bool& Result);
@@ -391,43 +375,23 @@ struct SFILTERAPPLIED
     // Called to get the filter object's data into a stream buffer.
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
-    // PTV XML
     void pbGetConfigData(xmlNodePtr pNodePtr) const;
     void pbGetConfigFilterData(xmlNodePtr pNodePtr) const;
-    // PTV XML
+
     // Called to retrieve a filter object's data from a byte stream and
     // initialise the current filter object with the retrieved data.
     BYTE* pbSetConfigData(BYTE* pbTarget, bool& Result);
 
-    // PTV XML
     void pbSetConfigData(SFILTERAPPLIED& pFilterAppliedCAN, xmlNodeSetPtr pNodeSet,xmlDocPtr pdocptr, bool& Result, ETYPE_BUS eBus = CAN);
-    // PTV XML
 
     //int nGetFiltersFromName(PSFILTERSET& sFilterDest, CStringArray& omStrNames);
-    int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, map<string,int>& omStrFilters);
+    int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, std::map<std::string,int>& omStrFilters);
 
-
-
-
-    //MVN
     int nSetXMLConfigData(xmlDocPtr& pDocPtr, ETYPE_BUS eBus);
     int nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, CStringArray& omStrNames);
-    int GetFilterNameIndex(string strName);
-    //~MVN
+    int GetFilterNameIndex(std::string strName);
 };
 
-/******************************************************************************
-  Function Name    :  SFILTERAPPLIED
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Standard constructor
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
 template <typename SFRAMEINFO_BASIC_BUS>
 SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::SFILTERAPPLIED()
 {
@@ -436,18 +400,6 @@ SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::SFILTERAPPLIED()
     m_psFilters = NULL;
 }
 
-/******************************************************************************
-  Function Name    :  ~SFILTERAPPLIED
-  Input(s)         :  -
-  Output           :  -
-  Functionality    :  Destructor
-  Member of        :  SFILTERAPPLIED
-  Friend of        :  -
-  Author(s)        :  Ratnadip Choudhury
-  Date Created     :  1.12.2009
-  Modification date:
-  Modification By  :
-******************************************************************************/
 template <typename SFRAMEINFO_BASIC_BUS>
 SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::~SFILTERAPPLIED()
 {
@@ -820,25 +772,17 @@ BYTE* SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(BYTE* pbSource, bool
     return pbSStream;
 }
 
-//MVN
-
-// PTV XML
 template <typename SFRAMEINFO_BASIC_BUS>
 void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilterAppliedCAN, xmlNodeSetPtr pNodeSetPtr,xmlDocPtr pdocptr, bool& Result, ETYPE_BUS eBusType = CAN)
 {
     vClear();
 
     Result = true;
-    //BYTE* pbSStream = pbSource;
-    //BYTE byVersion = 0;
-    //COPY_DATA_2(&byVersion, pbSStream, sizeof(BYTE));
-    //COPY_DATA_2(&m_bEnabled, pbSStream, sizeof(m_bEnabled));
-    //COPY_DATA_2(&m_ushTotal, pbSStream, sizeof(m_ushTotal));
 
     m_ushTotal = pNodeSetPtr->nodeNr;
     CStringArray omStrFilters;
 
-    map<string, int> mapFilters;
+    std::map<std::string, int> mapFilters;
     for(INT nIndex = 0; nIndex < m_ushTotal; nIndex++)
     {
         xmlNodePtr pNodePtr = pNodeSetPtr->nodeTab[nIndex];
@@ -912,16 +856,16 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
         vClear();
     }*/
 }
-// PTV XML
+
 template <typename SFRAMEINFO_BASIC_BUS>
-int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, map<string,int>& omStrFilters)
+int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nGetFiltersFromName(SFILTERAPPLIED& sFilterDest, std::map<std::string,int>& omStrFilters)
 {
     int nRealFilters = 0;
     sFilterDest.m_bEnabled = m_bEnabled;
     sFilterDest.m_ushTotal = omStrFilters.size();
     sFilterDest.m_psFilters = new SFILTERSET[sFilterDest.m_ushTotal];
 
-    map<string,int>::iterator itr = omStrFilters.begin();
+    std::map<std::string,int>::iterator itr = omStrFilters.begin();
     int i =0;
     while ( itr != omStrFilters.end() )
     {
@@ -962,7 +906,7 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nGetFiltersFromName(SFILTERAPPLIED& sF
     return S_OK;*/
 }
 template <typename SFRAMEINFO_BASIC_BUS>
-int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::GetFilterNameIndex(string strName)
+int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::GetFilterNameIndex(std::string strName)
 {
     int nIndex = -1;
     for(int i =0 ; i < m_ushTotal; i++)
@@ -1073,7 +1017,7 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(xmlDocPtr& pDocPtr, 
 
     return nRetval;
 }
-//~MVN
+
 // For CAN
 typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_CAN> SFILTERAPPLIED_CAN;
 
@@ -1088,5 +1032,3 @@ typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_MCNET> SFILTERAPPLIED_MCNET;
 
 // For J1939
 typedef SFILTERAPPLIED<tagSFRAMEINFO_BASIC_J1939> SFILTERAPPLIED_J1939;
-
-#endif // FILTER_DATATYPES_H__INCLUDED_

@@ -1066,7 +1066,6 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
             UINT unSigLen = psCurrSignal->m_unSignalLength;
             //Calculate the character width required to represent the raw value.
             //1 character means 1 nibble
-            //venkat
             /*UINT unWidth = (unSigLen % 4 == 0) ? (unSigLen/4) : (unSigLen/4 + 1);
             //calculate extra FFs incase of a negative number.
             double dblVal = 16;
@@ -1499,7 +1498,6 @@ void CMsgInterpretationJ1939::vCopy(CMsgInterpretationJ1939* pDest) const
 
 
 /* IMPLEMENTATION CLASS CMsgInterpretationJ1939 ENDS */
-//venkat
 BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
                                         const UCHAR* ucData,
                                         CSignalInfoArray& omSignalInfo )
@@ -1644,7 +1642,7 @@ BOOL CMsgInterpretationLIN::bInterpretMsgs( EFORMAT eNumFormat, STLIN_MSG* pMsg,
         FRAME_STRUCT ouFrame;
         if ( S_OK == m_ouLINConfig->m_ouFlexChannelConfig[0].GetFrame(pMsg->m_ucMsgID, ouFrame) )
         {
-            list<Flexray_SSIGNALINFO> ouFlexSignalInfo;
+            std::list<Flexray_SSIGNALINFO> ouFlexSignalInfo;
             bGetSignalInfo(ouFrame, pMsg->m_ucData, pMsg->m_ucDataLen, ouFlexSignalInfo);
 
 for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
@@ -1691,7 +1689,7 @@ BOOL CMsgInterpretationFlexRay::bInterpretMsgs(s_FLXMSG* pMsg, SSignalInfoArray&
         FRAME_STRUCT ouFrame;
         if ( S_OK == m_ouFlexConfig.m_ouFlexChannelConfig[0].GetFrame(pMsg->stcDataMsg.m_nSlotID, pMsg->stcDataMsg.m_nBaseCycle, pMsg->stcDataMsg.m_eChannel, ouFrame) )
         {
-            list<Flexray_SSIGNALINFO> ouFlexSignalInfo;
+            std::list<Flexray_SSIGNALINFO> ouFlexSignalInfo;
             bGetSignalInfo(ouFrame, pMsg->stcDataMsg.m_ucData, pMsg->stcDataMsg.m_nDLC, ouFlexSignalInfo);
 
 for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;

@@ -53,7 +53,7 @@ private:
 
 public:
 
-    map<int,list<string>> m_mapMsgIDtoSignallst[16];
+    std::map<int, std::list<std::string>> m_mapMsgIDtoSignallst[16];
     ClusterConfig* cluster;
 
 
@@ -66,13 +66,9 @@ public:
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);
     HRESULT SW_GetConfigData(void* pbyConfigData);
-    // PTV XML
     HRESULT SW_GetConfigData(xmlNodePtr pNodePtr);
-    // PTV XML
     HRESULT SW_SetConfigData(const void* pbyConfigData);
-    //MVN
     HRESULT SW_SetConfigData(xmlNodePtr pNode);
-    //~MVN
     HRESULT SW_ClearSigWatchWnd(void);
     HRESULT SW_UpdateMsgInterpretObj(void* RefObj);
     BOOL    SW_IsWindowVisible(void);

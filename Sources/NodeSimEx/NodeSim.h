@@ -19,8 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined NODESIM_H__INCLUDED_
-#define NODESIM_H__INCLUDED_
+#pragma once
 
 #include "BaseNodeSim.h"
 #include "DataTypes\Cluster.h"
@@ -65,10 +64,8 @@ public:
     void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     bool NS_GetSimSysConfigData(xmlNodePtr& pNodePtr);
     void NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize);
-    //MVN
     void NS_SetSimSysConfigData(xmlDocPtr pXmlDoc);
     void NS_SetSimSysConfigData(xmlNodePtr pXmlNodePtr);
-    //~MVN
     BOOL NS_IsSimSysConfigChanged();
     int NS_nOnBusConnected( bool bConnected);
     void NS_SetJ1939ActivationStatus(bool bActivated);
@@ -81,5 +78,3 @@ public:
 private:
     ETYPE_BUS m_eBus;
 };
-
-#endif // NODESIM_H__INCLUDED_

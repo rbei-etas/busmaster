@@ -883,7 +883,6 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
             omStrExtractFunctionNameFromPrototype(
                 m_omDLLHandlerArray.GetAt( unCount )));
     }
-    //Venkatanarayana Bus Events Added at 7
     // 7. Bus Event functions
     for ( unCount = 0; unCount < m_omBusEventsHandlerArray.GetSize(); unCount++)
     {
@@ -891,7 +890,6 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
             omStrExtractFunctionNameFromPrototype(
                 m_omBusEventsHandlerArray.GetAt( unCount )));
     }
-    // ~Venkatanarayana
 
     // 8. Utility function
     /*for ( unCount = 0; unCount < m_omUtilityFuncArray.GetSize(); unCount++)
@@ -1088,7 +1086,6 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
         m_sBusSpecInfo.m_omBusName = "BUSMASTER";
         m_sBusSpecInfo.m_omHeaderFileName = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_omMsgStructFile;
     }
-    /* PTV[1.6.4] */
     else
     {
         /* Adding Protocol and Application version information */
@@ -1132,7 +1129,6 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
             m_omSourceCodeTextList.AddHead(omstrCopyWriteInformation);
         }
     }
-    /* PTV[1.6.4] */
     omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", m_sBusSpecInfo.m_omBusName);
     POSITION posStartGvar = m_omSourceCodeTextList.Find( omTemp  );
 
@@ -1425,10 +1421,10 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
         {
             if(CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_ouClusterConfig->m_nChannelsConfigured >= unChnlSel)
             {
-                list<FRAME_STRUCT> lstFrames;
+                std::list<FRAME_STRUCT> lstFrames;
                 CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChnlSel-1].GetSelectedECUFrames(lstFrames);
 
-                list<FRAME_STRUCT>::iterator itrFrame = lstFrames.begin();
+                std::list<FRAME_STRUCT>::iterator itrFrame = lstFrames.begin();
                 while(itrFrame != lstFrames.end())
                 {
                     short nMsgId = unMsgID;
@@ -1437,7 +1433,7 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
                         sMsgNameCode.m_omMsgName = itrFrame->m_strFrameName.c_str();
                         sMsgNameCode.m_unMsgLen = itrFrame->m_nLength;
 
-                        list<Flexray_SSIGNALINFO> lstSignalInfo;
+                        std::list<Flexray_SSIGNALINFO> lstSignalInfo;
                         unsigned char uchBytes[254];
                         bGetSignalInfo(*itrFrame,uchBytes,  sMsgNameCode.m_unMsgLen, lstSignalInfo);
                         GetSignalNames(lstSignalInfo, sMsgNameCode.m_omSignalNames);

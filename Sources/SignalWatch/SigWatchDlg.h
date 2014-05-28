@@ -67,8 +67,8 @@ public:
 
     // Construction
     CSigWatchDlg(CWnd* pParent = NULL, ETYPE_BUS eBus = CAN);   // standard constructor
-    void vAddMsgToWnd(SSignalInfoArray* sSingnalinfo,BOOL bIntptrDone,map<int,list<string>>* m_mapDetails,unsigned char mID);
-    map<int,list<string>>* m_mapMsgIDtoSignallst;
+    void vAddMsgToWnd(SSignalInfoArray * sSingnalinfo, BOOL bIntptrDone, std::map<int, std::list<std::string>> * m_mapDetails, unsigned char mID);
+    std::map<int,std::list<std::string>> * m_mapMsgIDtoSignallst;
     // Operation
     void vAddMsgSigIntoList(const CString& omStrMsgName,
                             const CStringArray& omSASignals,

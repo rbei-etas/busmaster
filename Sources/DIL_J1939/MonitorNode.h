@@ -12,8 +12,6 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#if !defined MONITORNODE_H__INCLUDED_
-#define MONITORNODE_H__INCLUDED_
 #pragma once
 
 #include "NodeConManager.h"
@@ -43,5 +41,3 @@ public:
     void vProcessCANMsgByMonNode(const sTCANDATA CurrMsgCAN);
     CConnectionDet* pouCreateAndAddConnnection(UINT unId);
 };
-
-#endif //MONITORNODE_H__INCLUDED_

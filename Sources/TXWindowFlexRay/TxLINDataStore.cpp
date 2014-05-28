@@ -137,7 +137,7 @@ void CTxLINDataStore::vSetBusStatus(ESTATUS_BUS eBusStatus)
         m_ouTransmitThread.bStartThread(LINTxWndTransmitThread);
         SetEvent(m_ouTransmitThread.m_hActionEvent);
 
-        list<LIN_FRAME_DATA>::iterator itrFrameData =  m_ouLIN_Frame_Data.begin();
+        std::list<LIN_FRAME_DATA>::iterator itrFrameData =  m_ouLIN_Frame_Data.begin();
         while( itrFrameData != m_ouLIN_Frame_Data.end() )
         {
             if ( itrFrameData->bSelected == true )
@@ -208,7 +208,7 @@ bool CTxLINDataStore::bSetChannelConfig(xmlNodePtr pNode)
 }
 bool CTxLINDataStore::bAddToChannelList(LIN_FRAME_DATA& ouData)
 {
-    list<LIN_FRAME_DATA>::iterator itrFramList = m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrFramList = m_ouLIN_Frame_Data.begin();
 
     /* for( ; itrFramList != m_ouFrameList[nChannel].end(); itrFramList++ )
      {
@@ -507,7 +507,7 @@ BOOL CTxLINDataStore::bGetMessageListConfig( xmlNodePtr pNode)
 {
     char pchData[1024];
 
-    list<LIN_FRAME_DATA>::iterator itrFrameData = m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrFrameData = m_ouLIN_Frame_Data.begin();
     for (; itrFrameData != m_ouLIN_Frame_Data.end(); itrFrameData++ )
     {
         xmlNodePtr pMsgNode = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE );
@@ -537,7 +537,7 @@ BOOL CTxLINDataStore::bGetMessageListConfig( xmlNodePtr pNode)
             xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_DLC, BAD_CAST pchData);
 
             //Data Bytes
-            string strDatabytes;
+            std::string strDatabytes;
             sprintf(pchData, "%d", itrFrameData->m_ouLinMessage.m_ucData[0]);
             strDatabytes = pchData;
             for ( int i = 1 ; i < itrFrameData->m_ouLinMessage.m_ucDataLen; i++)
@@ -662,18 +662,18 @@ BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN* pLinDIL)
     return (BOOL)hResult;
 }
 
-HRESULT CTxLINDataStore::GetMessageIDNames(int nChannelIndex, map<int, string>& ouMsgIDNamesMap)
+HRESULT CTxLINDataStore::GetMessageIDNames(int nChannelIndex, std::map<int, std::string>& ouMsgIDNamesMap)
 {
     if ( NULL != m_ouClusterConfig )
     {
-        map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouClusterConfig->m_ouFlexChannelConfig[nChannelIndex].m_ouClusterInfo.m_ouEcuList.begin();
+        std::map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouClusterConfig->m_ouFlexChannelConfig[nChannelIndex].m_ouClusterInfo.m_ouEcuList.begin();
         while ( itrEcu != m_ouClusterConfig->m_ouFlexChannelConfig[nChannelIndex].m_ouClusterInfo.m_ouEcuList.end() )
         {
-            map<UINT, list<FRAME_STRUCT>>::iterator itrFrame = itrEcu->second.m_ouTxFrames.begin();
+            std::map<UINT, std::list<FRAME_STRUCT>>::iterator itrFrame = itrEcu->second.m_ouTxFrames.begin();
 
             while ( itrFrame != itrEcu->second.m_ouTxFrames.end())
             {
-                ouMsgIDNamesMap.insert(map<int, string>::value_type(itrFrame->second.begin()->m_nSlotId, itrFrame->second.begin()->m_strFrameName));
+                ouMsgIDNamesMap.insert(std::map<int, std::string>::value_type(itrFrame->second.begin()->m_nSlotId, itrFrame->second.begin()->m_strFrameName));
                 itrFrame++;
             }
 
@@ -681,7 +681,7 @@ HRESULT CTxLINDataStore::GetMessageIDNames(int nChannelIndex, map<int, string>& 
 
             while ( itrFrame != itrEcu->second.m_ouRxFrames.end())
             {
-                ouMsgIDNamesMap.insert(map<int, string>::value_type(itrFrame->second.begin()->m_nSlotId, itrFrame->second.begin()->m_strFrameName));
+                ouMsgIDNamesMap.insert(std::map<int, std::string>::value_type(itrFrame->second.begin()->m_nSlotId, itrFrame->second.begin()->m_strFrameName));
                 itrFrame++;
             }
 
@@ -716,7 +716,7 @@ void CTxLINDataStore::vUpdateTxList(int nChannel)
     {
         return;
     }
-    list<LIN_FRAME_DATA>::iterator itrFrameData = m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrFrameData = m_ouLIN_Frame_Data.begin();
     while ( itrFrameData != m_ouLIN_Frame_Data.end() )
     {
         if ( bExistInTxList(nChannel, *itrFrameData) == false )
@@ -800,7 +800,7 @@ int CTxLINDataStore::nDeleteAllKeyEntrs()
 int CTxLINDataStore::nDeleteMessageAt( int nIndex )
 {
     EnterCriticalSection(&m_ouCSMsgList);
-    list<LIN_FRAME_DATA>::iterator itrList = m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrList = m_ouLIN_Frame_Data.begin();
     std::advance(itrList, nIndex);
     m_ouLIN_Frame_Data.erase(itrList);
     LeaveCriticalSection(&m_ouCSMsgList);
@@ -819,7 +819,7 @@ int CTxLINDataStore::nDeleteAllMessages( )
 int CTxLINDataStore::nPreMessageTransmission()
 {
     EnterCriticalSection(&m_ouCSMsgList);
-    list<LIN_FRAME_DATA>::iterator itrLinData = m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrLinData = m_ouLIN_Frame_Data.begin();
     while ( itrLinData != m_ouLIN_Frame_Data.end() )
     {
         //Transmit Messages
@@ -892,7 +892,7 @@ int CTxLINDataStore::nHandleKeyEvent(char chKey)
     // If connected to hardware
     if(m_eBusStatus == BUS_CONNECTED)
     {
-        map<int, char>::iterator itrMap =  m_ouMapIndexToKey.begin();
+        std::map<int, char>::iterator itrMap =  m_ouMapIndexToKey.begin();
 
         while(itrMap != m_ouMapIndexToKey.end())
         {
@@ -918,7 +918,7 @@ INT CTxLINDataStore::nTransmitMessages()
     }
 
     EnterCriticalSection(&m_ouCSMsgList);
-    list<LIN_FRAME_DATA>::iterator itrLinData = m_ouLIN_Frame_Data.begin();
+    std::list<LIN_FRAME_DATA>::iterator itrLinData = m_ouLIN_Frame_Data.begin();
     while ( itrLinData != m_ouLIN_Frame_Data.end() )
     {
         //Transmit Messages
@@ -942,7 +942,7 @@ INT CTxLINDataStore::nTransmitMessages()
 int CTxLINDataStore::ouGetLinFrame(int nIndex,  LIN_FRAME_DATA& ouLinFramData)
 {
     HRESULT hResult = S_FALSE;
-    list<LIN_FRAME_DATA>::iterator itrLinData;
+    std::list<LIN_FRAME_DATA>::iterator itrLinData;
     EnterCriticalSection(&m_ouCSMsgList);
     itrLinData =m_ouLIN_Frame_Data.begin();
     std::advance(itrLinData, nIndex);

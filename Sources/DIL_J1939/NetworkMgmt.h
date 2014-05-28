@@ -49,16 +49,13 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#if !defined NETWORKMGMT_H__INCLUDED
-#define NETWORKMGMT_H__INCLUDED
+#pragma once
 
 #include "NodeConManager.h"
 #include "DIL_J1939_Extern.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "ConnectionDet.h"
 #include "ReadCanMsg.h"
-
-
 
 typedef enum
 {
@@ -142,5 +139,3 @@ public:
     HRESULT vClaimAddress();
     BOOL bIsOnline(void);
 };
-
-#endif //NETWORKMGMT_H__INCLUDED

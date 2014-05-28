@@ -27,7 +27,6 @@
 #include "LogObjectLIN.h"            // For CLogObjectCAN class declaration
 #include <map>
 #include <string>
-using namespace std;
 
 #define LIN_VERSION           "***BUSMASTER Ver 2.0.0***"
 #define LIN_LOG_HEADER        "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
@@ -328,7 +327,7 @@ int CLogObjectLIN::Der_SetConfigData(xmlNodePtr pNodePtr)
     int nResult = S_OK;
     SFILTERAPPLIED_LIN sFilterApplied;
     CStringArray omStrFilters;
-    map<string, int> mapFilters;
+    std::map<std::string, int> mapFilters;
     if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc, LIN))
     {
         while(pNodePtr != NULL) //TODO:Move To Utils
@@ -434,7 +433,6 @@ void CLogObjectLIN::Der_SetChannelBaudRateDetails(void* controllerDetails, int n
     m_pasControllerDetails = new SCONTROLLER_DETAILS_LIN [nNumChannels];
     for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
     {
-        // venkat
         m_pasControllerDetails[nIdx] = pTempControllerDetails[nIdx];
         // memcpy(m_pasControllerDetails + nIdx, controllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
     }

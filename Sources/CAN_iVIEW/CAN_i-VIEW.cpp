@@ -28,9 +28,6 @@
 #define USAGE_EXPORT
 #include "CAN_i-VIEW_Extern.h"
 
-using namespace std;
-
-// CCAN_i_VIEW_DLL
 BEGIN_MESSAGE_MAP(CCAN_i_VIEW_DLL, CWinApp)
 END_MESSAGE_MAP()
 
@@ -71,7 +68,7 @@ LARGE_INTEGER   VCI::m_TickBase;
 /**
  * VCI HW Class Contructor.
  */
-VCI::VCI(   const string&   Name,
+VCI::VCI(   const std::string&   Name,
             UNUM32      TypeId,
             UNUM32      CAN ) :
     m_Id(m_NextId++),
@@ -145,7 +142,7 @@ T_IVIEW_STATUS VCI::Connect()
         {
             Err = m_VCiIF->IOCtl(VCI_FIOTXNOTIFY, VCI_TX_ECHO);
         }
-        vector<pFilter_t>::iterator i=m_Filters.begin();
+        std::vector<pFilter_t>::iterator i=m_Filters.begin();
         for (; i!=m_Filters.end(); i++ )
         {
             UNUM32 Id;
@@ -376,8 +373,7 @@ void CDIL_CAN_i_VIEW::iViewResolver(
  *
  * Checks for the existance of the client by its name.
  */
-pClient_t CDIL_CAN_i_VIEW::GetClient(
-    string  ClientName )
+pClient_t CDIL_CAN_i_VIEW::GetClient(std::string ClientName)
 {
     pClientMap_t::iterator pClientItr;
 
@@ -885,7 +881,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetTimeModeMapping(
 /**
  * Gets last occured error and puts inside acErrorStr.
  */
-HRESULT CDIL_CAN_i_VIEW::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN_i_VIEW::CAN_GetLastErrorString(std::string& acErrorStr)
 {
     acErrorStr = m_Err;
     return S_OK;
@@ -986,14 +982,14 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ListHwInterfaces(
 
     for ( int i=0; Itr != m_VCI.end(); Itr++, i++ )
     {
-        ostringstream Tmp, Tmp1;
+        std::ostringstream Tmp, Tmp1;
         HWIF[i].m_dwIdInterface = Itr->second->Id();
         HWIF[i].m_bytNetworkID = (unsigned char)Itr->second->CAN();
         HWIF[i].m_dwVendor = Itr->second->TypeId();
         HWIF[i].m_acDeviceName = Itr->second->Firmware();
-        Tmp << Itr->second->Name() << " CAN " << dec << Itr->second->CAN();
+        Tmp << Itr->second->Name() << " CAN " << std::dec << Itr->second->CAN();
         HWIF[i].m_acDescription = Tmp.str();
-        Tmp1 << " CAN " << dec << Itr->second->CAN();
+        Tmp1 << " CAN " << std::dec << Itr->second->CAN();
         HWIF[i].m_acNameInterface = Tmp1.str();
     }
     LeaveCriticalSection(&m_Mutex);

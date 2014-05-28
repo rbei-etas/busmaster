@@ -579,7 +579,6 @@ void CMsgSgTreeView::OnDeleteMessage()
                 // Remove the item from the tree
                 om_tree.DeleteItem( hItem );
 
-                // PTV CPP
                 CMainFrame* pMainFrm = NULL;
 
                 pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
@@ -587,7 +586,6 @@ void CMsgSgTreeView::OnDeleteMessage()
                 // Get form view pointer
                 CMsgSgDetView* pMsgSgDetView = NULL;
 
-                // PTV CPP
                 if(pMainFrm != NULL)
                 {
                     pMsgSgDetView = pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);

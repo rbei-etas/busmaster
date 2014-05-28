@@ -173,7 +173,6 @@ BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
     return pbTStream;
 }
 
-// PTV XML
 void tagFilterName::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFiledoc)
 {
     pNodePtr = pNodePtr->xmlChildrenNode;
@@ -195,17 +194,8 @@ void tagFilterName::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFile
         }
         pNodePtr = pNodePtr->next;
     }
-
-    // PTV TODO
-
-    /*BYTE* pbTStream = pbTarget;
-
-    COPY_DATA_2(m_acFilterName, pbTStream, LENGTH_FILTERNAME * SIZE_CHAR);
-    COPY_DATA_2(&m_bFilterType, pbTStream, sizeof(m_bFilterType));
-
-    return pbTStream;*/
 }
-// PTV XML
+
 INT tagFilterName::nSetXMLConfigData(xmlNodePtr pFilter)
 {
     INT nRetVal = S_OK;
@@ -237,7 +227,7 @@ INT tagFilterName::nSetXMLConfigData(xmlNodePtr pFilter)
     return nRetVal;
 }
 
-BOOL tagFilterName::nFilterType(string strFilteType)
+BOOL tagFilterName::nFilterType(std::string strFilteType)
 {
     m_bFilterType = FALSE;
     if(strFilteType == _("PASS"))
@@ -358,7 +348,6 @@ BYTE* tagSFILTER::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
-// PTV XML
 void tagSFILTER::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
 {
 
@@ -411,7 +400,7 @@ void tagSFILTER::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
 
     return pbTStream;*/
 }
-// PTV XML
+
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -442,7 +431,7 @@ BYTE* tagSFILTER::pbSetConfigData(BYTE* pbTarget)
 
     return pbTStream;
 }
-eDirection tagSFILTER::eGetMsgDirection(string strDirection)
+eDirection tagSFILTER::eGetMsgDirection(std::string strDirection)
 {
     eDirection eDir = DIR_ALL;
     if(strDirection == _("Tx"))
@@ -649,7 +638,7 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else if(m_ucFilterType == defFILTER_TYPE_EVENT)
     {
-        string strEventName = "";
+        std::string strEventName = "";
 
         vGetEventName(sCurrFrame.m_eEventType, strEventName);
         // Check for Event type
@@ -672,7 +661,7 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
     return bResult;
 }
 
-void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, string& strEventName) const
+void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, std::string & strEventName) const
 {
     switch ( eEventType )
     {
@@ -695,7 +684,7 @@ void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, string& strEventNam
     return;
 }
 
-void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, string& strEventName) const
+void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, std::string & strEventName) const
 {
     switch ( eEventType )
     {
@@ -1005,7 +994,7 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else if(m_ucFilterType == defFILTER_TYPE_EVENT)
     {
-        string strEventName = "";
+        std::string strEventName = "";
 
         vGetEventName(sCurrFrame.m_eEventType, strEventName);
         // Check for Event type
@@ -1078,7 +1067,6 @@ BYTE* SFILTER_CAN::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
-// PTV XML
 void SFILTER_CAN::pbGetConfigData(xmlNodePtr pNodePtr) const
 {
     xmlNodePtr pFltrMsgPtr = xmlNewNode(NULL, BAD_CAST DEF_FILTER_MESSAGE);
@@ -1154,7 +1142,7 @@ void SFILTER_CAN::pbSetConfigData(xmlNodePtr xmlNodePtr)
 
     /*  return pbTStream;*/
 }
-// PTV XML
+
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -1184,7 +1172,7 @@ BYTE* SFILTER_CAN::pbSetConfigData(BYTE* pbTarget)
 
     return pbTStream;
 }
-INT SFILTER_CAN::nGetIDType(string strIDType)
+INT SFILTER_CAN::nGetIDType(std::string strIDType)
 {
     int nId = TYPE_ID_CAN_ALL;
     if(strIDType == _("STD"))
@@ -1197,7 +1185,7 @@ INT SFILTER_CAN::nGetIDType(string strIDType)
     }
     return nId;
 }
-INT SFILTER_CAN::nGetMsgType(string strMsgType)
+INT SFILTER_CAN::nGetMsgType(std::string strMsgType)
 {
     int nId = TYPE_MSG_CAN_ALL;
     if(strMsgType == _("RTR"))
@@ -1220,7 +1208,7 @@ INT SFILTER_CAN::nSetXMLConfigData(xmlNodePtr pNodePtr)
     //<IDType>NONRTR</IDType>
     //<MsgType>EXT</MsgType>
     //<Channel>2</Channel>
-    string strTemp;
+    std::string strTemp;
     m_byMsgType = TYPE_MSG_CAN_ALL;
     m_byIDType = TYPE_ID_CAN_ALL;
     m_eChannel = 0;
@@ -1449,7 +1437,6 @@ BYTE* SFILTER_FLEXRAY::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
-// PTV XML
 void SFILTER_FLEXRAY::pbGetConfigData(xmlNodePtr pNodePtr) const
 {
     this->SFILTER::pbGetConfigData(pNodePtr);
@@ -1457,7 +1444,7 @@ void SFILTER_FLEXRAY::pbGetConfigData(xmlNodePtr pNodePtr) const
 
     //return pbTStream;
 }
-// PTV XML
+
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -1835,14 +1822,13 @@ BYTE* SFILTER_J1939::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
-// PTV XML
 void SFILTER_J1939::pbGetConfigData(xmlNodePtr pNodePtr) const
 {
     //BYTE* pbTStream = pbTarget;
     this->SFILTER::pbGetConfigData(pNodePtr);
     //return pbTStream;
 }
-// PTV XML
+
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -2335,7 +2321,6 @@ void tagFilterSet::pbGetConfigData(xmlNodePtr pNodePtr) const
     //return pbTStream;
 }
 
-// PTV XML
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.
@@ -2472,7 +2457,7 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
         }
     }
 }
-// PTV XML
+
 /******************************************************************************
   Function Name    :  pbSetConfigData
   Input(s)         :  pbSource - The source buffer to retrieve filtering data.

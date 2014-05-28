@@ -22,17 +22,12 @@
  * Defines and implements the template class for circular queue
  */
 
-
-#if !defined MSGBUFCANVFSE_H__INCLUDED_
-#define MSGBUFCANVFSE_H__INCLUDED_
+#pragma once
 
 #include "include/Error.h"
 #include "BaseMsgBufAll.h"
-//#include "afxtempl.h"
-
 
 const int SIZE_APP_CAN_BUFFER       = 5000;
-
 
 /* This is the concrete template class of a circular queue where each entry is
 of fixed size. Implemented as a template class so as to cater to any data type.
@@ -428,5 +423,3 @@ nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
         }
     }
 }
-
-#endif //MSGBUFCANVFSE_H__INCLUDED_

@@ -18,8 +18,8 @@
  * \author    Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#if !defined FUNCTIONEDITORSTRUCT_H__INCLUDED_
-#define FUNCTIONEDITORSTRUCT_H__INCLUDED_
+
+#pragma once
 
 #include "SimSysNodeInfo.h"
 
@@ -62,5 +62,3 @@ struct tagBusSpecificInfo
 };
 typedef tagBusSpecificInfo SBUS_SPECIFIC_INFO;
 typedef SBUS_SPECIFIC_INFO* PSBUS_SPECIFIC_INFO;
-
-#endif // FUNCTIONEDITORSTRUCT_H__INCLUDED_

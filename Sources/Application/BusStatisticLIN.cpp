@@ -14,9 +14,8 @@
  */
 
 /**
- * \file      BusStatisticCAN.cpp
- * \author    venkatanarayana Makam
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author venkatanarayana Makam
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "StdAfx.h"
 //To Include BusStatisticCAN Definitions.

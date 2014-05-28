@@ -44,5 +44,3 @@
 #include <fstream>
 #include <Mmsystem.h>
 #include <locale.h>
-
-using namespace std;

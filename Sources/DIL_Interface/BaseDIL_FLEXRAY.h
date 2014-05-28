@@ -14,21 +14,21 @@
  */
 
 /**
- * \file      BaseDIL_FLEXRAY.h
- * \brief     Base class for CDIL_FLEXRAY class.
- * \author    Arunkumar Karri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Base class for CDIL_FLEXRAY class.
+ * @author Arunkumar Karri
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Base class for CDIL_FLEXRAY class.
  */
-#if !defined BASEDIL_FLEXRAY_H__INCLUDED_
-#define BASEDIL_FLEXRAY_H__INCLUDED_
+
+#pragma once
 
 #include "DataTypes/DIL_DataTypes.h"
 #include "DataTypes/FLEXRAY_Datatypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
 #include "Datatypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/Cluster.h"
+
 class CBaseDIL_FLEXRAY
 {
 public:
@@ -146,7 +146,7 @@ public:
     virtual HRESULT DILF_GetVersionInfo(VERSIONINFO& sVerInfo) = 0;
 
     /* Call to get descriptive string of the last error occurred */
-    virtual HRESULT DILF_GetLastErrorString(string acErrorStr, HRESULT& nError ) = 0;
+    virtual HRESULT DILF_GetLastErrorString(std::string acErrorStr, HRESULT& nError ) = 0;
 
     /* Call to set PASS/STOP filter */
     virtual HRESULT DILF_FilterFrames(FILTER_TYPE FilterType, FLEX_CHANNEL FlexChannel, UINT* punFrames, UINT nLength) = 0;
@@ -157,5 +157,3 @@ public:
     virtual HRESULT DILF_GetControllerCapabilities(s_FLXControllerCapabilities& ouFlexRayCapabilities) = 0;
 
 };
-
-#endif // BASEDIL_FLEXRAY_H__INCLUDED_

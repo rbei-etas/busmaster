@@ -134,7 +134,7 @@ class SCLIENTBUFMAP
 public:
     DWORD m_dwClientID;
     CBaseFLEXBufFSE* m_pClientBuf[MAX_BUFF_ALLOWED];
-    string m_acClientName;
+    std::string m_acClientName;
     UINT m_unBufCount;
     SCLIENTBUFMAP()
     {
@@ -152,9 +152,9 @@ public:
 /**
  * Array of clients
  */
-static vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
+static std::vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
 
-static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
+static CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 
 //
 ///************************** Static variables declaration area **************************/
@@ -184,7 +184,7 @@ BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 //// Handle of the owner window
 //static HWND sg_hOwnerWnd = NULL;
 // Buffer for the driver operation related error messages
-static string sg_acErrStr = "";
+static std::string sg_acErrStr = "";
 static HRESULT sg_hLastError = S_OK;
 //// FlexRay controller interface
 //static LPUCIFLXCTRL sg_pFlxIntfPtr = NULL;
@@ -206,7 +206,7 @@ class FlexrayData
 public:
     OCI_FlexRayMessage m_OCI_FlexRayMessageArray[OCI_FLEXRAY_MAX_BUFFERCOUNT];
     int m_nValidMessages;
-    map<SLOT_BASECYCLE, int> m_mapSlotBaseCycle;
+    std::map<SLOT_BASECYCLE, int> m_mapSlotBaseCycle;
 };
 class BOA_FlexRayData
 {
@@ -233,7 +233,7 @@ typedef struct tagCHANNEL
     OCI_FlexRayEventFilter m_OCI_EventFilter; /*< Controller event filter */
 
 
-    map<INT, INT> m_SlotBufferMap;
+    std::map<INT, INT> m_SlotBufferMap;
 
     FlexrayData m_ouFlexrayData;
 
@@ -254,10 +254,8 @@ typedef struct tagCHANNEL
 
     //Thread
     CPARAM_THREADPROC m_ouDataTransmitThread;
-    map<SLOT_BASECYCLE, BOA_FlexRayData> m_ouBoaFlexRayData;
+    std::map<SLOT_BASECYCLE, BOA_FlexRayData> m_ouBoaFlexRayData;
     int nValid;
-
-
 
     tagCHANNEL()
     {
@@ -274,14 +272,10 @@ typedef struct tagCHANNEL
     }
 } SCHANNEL;
 
-//typedef list<SACK_MAP> CACK_MAP_LIST;
-//static CACK_MAP_LIST sg_asAckMapBuf;
-//static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
-
 /**
  * Channel instances
  */
-static vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
+static std::vector<SCHANNEL> sg_asChannel(defNO_OF_CHANNELS);
 
 /**
  * Number of current channel selected

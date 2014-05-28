@@ -94,18 +94,12 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetCurrStatus(s_STATUSMSG& /*StatusData*/)
     return WARN_DUMMY_API;
 }
 
-
-
 HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCanTxMsg*/)
 {
     return WARN_DUMMY_API;
 }
 
-
-
-
-
-HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(string& /*acErrorStr*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(std::string & /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }
@@ -129,12 +123,12 @@ HRESULT CDIL_CAN_DUMMY::CAN_GetControllerParams(LONG& /*lParam*/, UINT /*nChanne
 {
     return WARN_DUMMY_API;
 }
-//MVN
+
 HRESULT CDIL_CAN_DUMMY::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {
     return WARN_DUMMY_API;
 }
-//~MVN
+
 HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
     return WARN_DUMMY_API;

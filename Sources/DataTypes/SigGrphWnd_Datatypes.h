@@ -19,8 +19,8 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#if !defined SIGGRPHWND_H__INCLUDED_
-#define SIGGRPHWND_H__INCLUDED_
+#pragma once
+
 // Structure for Signal Graph Window interpreted data.
 struct sSigValue
 {
@@ -40,5 +40,3 @@ typedef tagInterpretData sInterpretDataList;
 typedef sInterpretDataList SINTERPRETDATA_LIST;
 
 const INT SIZE_INTRP_DATA = sizeof(SINTERPRETDATA_LIST);
-
-#endif //SIGGRPHWND_H__INCLUDED_

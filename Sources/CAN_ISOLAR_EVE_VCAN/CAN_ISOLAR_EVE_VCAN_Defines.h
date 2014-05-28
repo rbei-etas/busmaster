@@ -84,12 +84,12 @@ static CACK_MAP_LIST sg_asAckMapBuf;
 
 static HWND sg_hOwnerWnd = NULL;
 static Base_WrapperErrorLogger* sg_pIlog   = NULL;
-string sg_acErrStr = "";
+std::string sg_acErrStr = "";
 
 /* Forward declarations*/
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(string pcClientName, INT& Index);
+static BOOL bClientExist(std::string pcClientName, INT& Index);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);

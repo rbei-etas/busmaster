@@ -315,7 +315,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
                 strcpy(CurrDataLIN->m_acType, "Diagnostic Message");
             }
 
-            string str = "Classic";
+            std::string str = "Classic";
             if ( pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksumTyp == LIN_CHECKSUM_ENHANCED )
             {
                 str = "Enhanced";
@@ -344,7 +344,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
     {
         /*PROCESS ERROR MSGS: If Error Message type. Change the data and type fields. */
 
-        string strText;
+        std::string strText;
         vGetLinEventDescription(pMsgLIN->m_uDataInfo.m_sErrInfo, strText);
 
         strcpy(CurrDataLIN->m_acType, strText.c_str());
@@ -384,7 +384,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
 
 
 
-void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, string& strDesc)
+void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string & strDesc)
 {
     switch ( sLinErrorInfo.m_eEventType )
     {

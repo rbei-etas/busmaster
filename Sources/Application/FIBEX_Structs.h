@@ -6,8 +6,6 @@
 #import <msxml6.dll>
 #include "DataTypes\MsgSignal_Datatypes.h"
 
-using namespace std;
-
 #define EMPTY_VALUE             -1
 
 enum ENDIANNESS_ENUM
@@ -26,8 +24,8 @@ public:
 
     // To get the engineering value
     //string omGetEnggValue(DWORD dwRawValue);
-    bool omGetEnggValue(DWORD dwRawValue, string& omEnggValue); // TO BE REMOVED CHOU
-    BOOL bGetEnggValue(DWORD dwRawValue, string& omEnggValue) const;
+    bool omGetEnggValue(DWORD dwRawValue, std::string & omEnggValue); // TO BE REMOVED CHOU
+    BOOL bGetEnggValue(DWORD dwRawValue, std::string & omEnggValue) const;
 };
 
 struct SPHYSICAL_TYPE_v2
@@ -37,7 +35,7 @@ public:
      * A_UINT8, A_INT8, A_UINT16, A_INT16, A_UINT32, A_INT32, A_UINT64, A_INT64,
      * A_FLOAT32, A_FLOAT64, A_ASCIISTRING, A_UNICODE2STRING, A_BYTEFIELD, A_BITFIELD,
      * OTHER */
-    string    m_ouToken;
+    std::string    m_ouToken;
     float           m_fPrecision;
 
     SPHYSICAL_TYPE_v2();
@@ -78,23 +76,23 @@ public:
      * A_FLOAT32, A_FLOAT64, A_ASCIISTRING, A_UNICODE2STRING, A_BYTEFIELD, A_BITFIELD,
      * OTHER
      */
-    string m_ouDataType;
+    std::string m_ouDataType;
     /**
      * One of ~
      * LEADING-LENGTH-INFO-TYPE, END-OF-PDU, MIN-MAX-LENGTH-TYPE, STANDARD-LENGTH-TYPE
      */
-    string m_ouCategory;
+    std::string m_ouCategory;
     /**
      * One of ~
      * SIGNED, UNSIGNED, BIT, IEEE-FLOATING-TYPE, BCD, DSP-FRACTIONAL, SM, BCD-P, BCD-
      * UP,1C, 2C, UTF-8, UCS-2, ISO-8859-1, ISO-8859-2, WINDOWS-1252
      */
-    string m_ouEncoding;
+    std::string m_ouEncoding;
     /**
      * One of ~
      * NONE, ZERO, HEX-FF, LENGTH
      */
-    string m_ouTermination;
+    std::string m_ouTermination;
 
     BYTE m_bChoice;// choice between BIT_LEN or Sequence of MIN_MAX_LEN
     SLENGTH_v2 m_sLength;
@@ -113,9 +111,9 @@ public:
 
 struct SCOMPANY_REV_INFO_v2
 {
-    string m_omRev_Level;
-    string m_omState;
-    string m_omCompany_Data_Ref;
+    std::string m_omRev_Level;
+    std::string m_omState;
+    std::string m_omCompany_Data_Ref;
 
     HRESULT Load(MSXML2::IXMLDOMNodePtr& pIDomNode);
     HRESULT Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild);
@@ -128,8 +126,8 @@ typedef CList<SCOMPANY_REV_INFO_v2, SCOMPANY_REV_INFO_v2&> CCompanyRevInfoList_v
 
 struct SMODIFICATION_v2
 {
-    string m_omChange;
-    string m_omReason;
+    std::string m_omChange;
+    std::string m_omReason;
 
     HRESULT Load(MSXML2::IXMLDOMNodePtr& pIDomNode);
     HRESULT Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild);
@@ -144,10 +142,10 @@ struct SELEMENT_REVISION_v2
 {
     CCompanyRevInfoList_v2  m_odCompanyRevInfoList;
     CModificationList_v2    m_odModificationList;
-    string              m_omDate;
-    string              m_omREVISION_LABEL;
-    string              m_omSTATE;
-    string              m_omTEAM_MEMBER_REF;
+    std::string              m_omDate;
+    std::string              m_omREVISION_LABEL;
+    std::string              m_omSTATE;
+    std::string              m_omTEAM_MEMBER_REF;
 
     SELEMENT_REVISION_v2();
     ~SELEMENT_REVISION_v2();
@@ -163,21 +161,21 @@ typedef CList<SELEMENT_REVISION_v2, SELEMENT_REVISION_v2&> CElementRevList_v2;
 
 struct CSignal
 {
-    string m_omSigId;
-    string m_omShortName;
-    string m_omdeDesc;
-    string m_omenDesc;
-    string m_omCodingRef;
+    std::string m_omSigId;
+    std::string m_omShortName;
+    std::string m_omdeDesc;
+    std::string m_omenDesc;
+    std::string m_omCodingRef;
 
     //map<string, CCODING> m_mapCoding;
 };
 
 struct CSigInstance
 {
-    string m_omSigInstId;
+    std::string m_omSigInstId;
     UINT m_unBitPos;
     BOOL m_bByteOrder;
-    string m_omSigRef;
+    std::string m_omSigRef;
 };
 
 struct CAbsSchdTiming
@@ -189,13 +187,13 @@ struct CAbsSchdTiming
 
 struct CFrameTrig
 {
-    string m_omFramTrigId;
-    string m_omFrameRef;
+    std::string m_omFramTrigId;
+    std::string m_omFrameRef;
 
     int m_nCurrentSlot;
 
     // Slot Id to Absolute scheduled timing
-    map<int, CAbsSchdTiming> mapAbsSchdTiming;
+    std::map<int, CAbsSchdTiming> mapAbsSchdTiming;
     ~CFrameTrig()
     {
 
@@ -205,7 +203,7 @@ struct CFrameTrig
 
 struct CSwitch
 {
-    string m_omSwitchName;
+    std::string m_omSwitchName;
     int m_nSwitchBitPos;
     ENDIANNESS_ENUM m_ouSwitchByteOrder;
     int m_nSwitchBitLen;
@@ -225,17 +223,17 @@ struct CSwitch
 
 struct CDynPart
 {
-    string m_ouDynPartId;
-    string m_ouDynPartName;
+    std::string m_ouDynPartId;
+    std::string m_ouDynPartName;
     int m_nDynPartBitPos;
     ENDIANNESS_ENUM m_ouDynPartByteOrder;
     int m_nDynPartBitLen;
 
-    string m_ouCurrSwitchCode;
-    string m_ouCurrPduRef;
+    std::string m_ouCurrSwitchCode;
+    std::string m_ouCurrPduRef;
 
     // Switch code to Pdu object
-    map<string, string> m_mapSwitchToPdu;
+    std::map<std::string, std::string> m_mapSwitchToPdu;
     ~CDynPart()
     {
 
@@ -245,14 +243,14 @@ struct CDynPart
 
 struct CStaticPart
 {
-    string m_ouStaticPartId;
-    string m_ouStaticPartName;
+    std::string m_ouStaticPartId;
+    std::string m_ouStaticPartName;
     int m_StaticPartBitPos;
     ENDIANNESS_ENUM m_ouStPartByteOrder;
     int m_nStPartBitLen;
 
     // PduId to Pdu object
-    map<string, string> m_mapPduIdToPdu;
+    std::map<std::string, std::string> m_mapPduIdToPdu;
     ~CStaticPart()
     {
 
@@ -263,19 +261,19 @@ struct CStaticPart
 struct CPdu
 {
 public:
-    string m_strPduId;
-    string m_strPDUName;
+    std::string m_strPduId;
+    std::string m_strPDUName;
     int m_nStartBit;
     int m_nLength;
-    string m_strPduType;
+    std::string m_strPduType;
     ENDIANNESS_ENUM m_ouEndianness;
     BOOL m_bIsStaticPart;
     CSwitch m_ouMuxSwitch;
     CDynPart m_ouDynPart;
     CStaticPart m_ouStaticPart;
-    map<string, CSigInstance> m_mapSigInstDetails;
+    std::map<std::string, CSigInstance> m_mapSigInstDetails;
 
-    string m_omCurrSigInstId;
+    std::string m_omCurrSigInstId;
     ~CPdu()
     {
 
@@ -286,11 +284,11 @@ public:
 struct CPdu_Instance
 {
 public:
-    string m_strPduId;
+    std::string m_strPduId;
     int m_nStartBit;
-    string m_omPduRef;
+    std::string m_omPduRef;
     ENDIANNESS_ENUM m_ouEndianess;
-    map<string, CSigInstance> m_mapSigInstDetails;
+    std::map<std::string, CSigInstance> m_mapSigInstDetails;
     ~CPdu_Instance()
     {
 
@@ -300,14 +298,14 @@ public:
 
 struct CFrame
 {
-    string m_omFrameId;
-    string m_omShortName;
+    std::string m_omFrameId;
+    std::string m_omShortName;
     UINT m_unFrameLen;
-    string m_omFrameType;
+    std::string m_omFrameType;
 
-    string m_omCurrPduId;
+    std::string m_omCurrPduId;
     // For Filling data structure
-    string m_omCurrSigInstId;
+    std::string m_omCurrSigInstId;
 
     CPdu m_objPdu;
 
@@ -318,14 +316,14 @@ struct CFrame
     CFrame& operator=(CFrame& RefObj);
     //CList<CSigInstance, CSigInstance> m_lstSigInstance;
 
-    map<string, CPdu_Instance> m_mapPduInstList;
-    map<string, CSigInstance> m_mapSigInstDetails;
+    std::map<std::string, CPdu_Instance> m_mapPduInstList;
+    std::map<std::string, CSigInstance> m_mapSigInstDetails;
 };
 
 struct CFrameTriggering
 {
-    string m_omFrameRef;
-    map<string,string> m_mapSigInst;
+    std::string m_omFrameRef;
+    std::map<std::string, std::string> m_mapSigInst;
     ~CFrameTriggering()
     {
 
@@ -335,12 +333,12 @@ struct CFrameTriggering
 
 struct CConnector
 {
-    string m_omChnlRef;
-    string m_omCntrlRef;
-    string m_omCurrFrameTrigId; // Used to fill in the list
+    std::string m_omChnlRef;
+    std::string m_omCntrlRef;
+    std::string m_omCurrFrameTrigId; // Used to fill in the list
 
-    map<string, CFrameTriggering> m_mapRxFrameTrigs;
-    map<string, CFrameTriggering> m_mapTxFrameTrigs;
+    std::map<std::string, CFrameTriggering> m_mapRxFrameTrigs;
+    std::map<std::string, CFrameTriggering> m_mapTxFrameTrigs;
 
     void clear()
     {
@@ -363,7 +361,7 @@ typedef struct tagSKEY_SLOT_USAGE
 {
     int m_nStartUpSync;
     int m_nSync;
-    string m_omNone;
+    std::string m_omNone;
 
 } KEY_SLOT_USAGE;
 
@@ -378,85 +376,8 @@ struct CController
     void clear()
     {
         memset(this, 0, sizeof(CController));
-        /*m_sKeySlotUsage.m_nStartUpSync  = EMPTY_VALUE;
-        m_sKeySlotUsage.m_nSync = EMPTY_VALUE;
-        m_sKeySlotUsage.m_omNone = EMPTY_VALUE;
-        m_shMaxDynPayloadLgt  = EMPTY_VALUE;
-
-        m_nKeySlotId = EMPTY_VALUE;
-
-        m_shClusterDriftDamping  = EMPTY_VALUE;
-
-
-        m_nDecodingCorr  = EMPTY_VALUE;
-
-
-
-        m_nListenTimeOut  = EMPTY_VALUE;
-
-
-        m_shMaxDrift  = EMPTY_VALUE;
-
-
-        m_shExternOffsetCorr  = EMPTY_VALUE;
-
-
-        m_shExternRateCorr  = EMPTY_VALUE;
-
-
-        m_shLatestTx  = EMPTY_VALUE;
-
-
-        m_nMicroPreCycle  = EMPTY_VALUE;
-
-
-        m_shOffsetCorrOut  = EMPTY_VALUE;
-
-
-        m_shRateCorrOut  = EMPTY_VALUE;
-
-
-        m_shSamplePerMicrotick  = EMPTY_VALUE;
-
-
-        m_shDelayCompensationA  = EMPTY_VALUE;
-
-
-        m_shDelayCompensationB  = EMPTY_VALUE;
-
-
-        m_shWakeUpPattern  = EMPTY_VALUE;
-
-
-        m_bAllowHaltDewToClock  = false;
-
-
-        m_shAllowPassiveToActive  = EMPTY_VALUE;
-
-
-        m_shAcceptedStartUpRange  = EMPTY_VALUE;
-
-
-        m_shMacroInitialOffsetA  = EMPTY_VALUE;
-
-
-        m_shMacroInitialOffsetB  = EMPTY_VALUE;
-
-
-        m_shMicroInitialOffsetA  = EMPTY_VALUE;
-
-
-        m_shMicroInitialOffsetB  = EMPTY_VALUE;
-
-
-        m_bSingleSlotEnable  = false;
-        m_fMicrotick  = EMPTY_VALUE;
-        m_fMicroPerMacroNom  = EMPTY_VALUE;*/
     }
 
-    /*int m_nStartUpSync;
-    int m_nSync;
-    string m_omNone;*/
     KEY_SLOT_USAGE  m_sKeySlotUsage;
 
     short               m_shMaxDynPayloadLgt;
@@ -539,8 +460,8 @@ struct CController
 
 struct CECU
 {
-    string m_omECUId;
-    string m_omShortName;
+    std::string m_omECUId;
+    std::string m_omShortName;
 
     CECU();
     ~CECU();
@@ -548,12 +469,12 @@ struct CECU
 
     CECU& operator=(CECU& RefObj);
 
-    string m_strCurrConnectorRef;
-    string m_strCurrControllerRef;
+    std::string m_strCurrConnectorRef;
+    std::string m_strCurrControllerRef;
 
     // Map channel Ref to Connector details
-    map<string, CConnector> m_mapConnector;
-    map<string, CController> m_mapController;
+    std::map<std::string, CConnector> m_mapConnector;
+    std::map<std::string, CController> m_mapController;
     CController objController;
     CConnector  objConnector;
 };
@@ -566,7 +487,6 @@ struct SWAKEUP
     short m_shWAKE_UP_SYMBOL_TX_IDLE;   // 45 to 180 inclusive
     short m_shWAKE_UP_SYMBOL_TX_LOW;    // 15 to 60 inclusive
 };
-
 
 typedef struct tagSFlexrayCluster
 {
@@ -658,16 +578,15 @@ typedef struct tagSFlexrayCluster
     */
     short m_shCLUSTER_DRIFT_DAMPING;
     void DoCleanup();
-
 } FLEXRAY_CLUSTER;
 
 struct CClusterv2
 {
-    string m_omClusterId;
-    string m_omProjectType;
-    string m_omFlxClusterName;
+    std::string m_omClusterId;
+    std::string m_omProjectType;
+    std::string m_omFlxClusterName;
 
-    map<string, string> m_mapChnls;
+    std::map<std::string, std::string> m_mapChnls;
     BOOL m_bFlexray;
     FLEXRAY_CLUSTER m_absFlxCluster;
 

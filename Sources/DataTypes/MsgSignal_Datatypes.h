@@ -22,8 +22,7 @@
  * Definition file for signal watch data types.
  */
 
-#if !defined MSGSIGNAL_H__INCLUDED_
-#define MSGSIGNAL_H__INCLUDED_
+#pragma once
 
 #include "Include/BaseDefs.h"
 #include <sstream>
@@ -31,7 +30,6 @@
 #include <vector>
 #include <list>
 
-using namespace std;
 //DB params
 typedef struct _tagDBPARAMS
 {
@@ -194,22 +192,21 @@ struct sMESSAGE
 
 typedef struct tagSSIGNALINFO
 {
-    CString     m_omSigName;
-    CString     m_omRawValue;
-    CString     m_omEnggValue;
-    CString     m_omUnit;
-    CString     m_msgName;
+    CString m_omSigName;
+    CString m_omRawValue;
+    CString m_omEnggValue;
+    CString m_omUnit;
+    CString m_msgName;
 } SSignalInfo;
 
 typedef CArray<SSignalInfo, SSignalInfo> SSignalInfoArray;
 
-
 struct Flexray_SSIGNALINFO
 {
-    string     m_omSigName;
-    string     m_omRawValue;
-    string     m_omEnggValue;
-    string     m_omUnit;
+    std::string m_omSigName;
+    std::string m_omRawValue;
+    std::string m_omEnggValue;
+    std::string m_omUnit;
 };
 
 //typedef list<SSIGNALINFO> signalInfoList;
@@ -316,7 +313,7 @@ typedef struct tagTextCodeVarEx
 {
     SRange   m_sRange;
     //CHAR     m_aTextName[MAX_TEXT_NAME_ID];
-    string  m_aTextName;
+    std::string  m_aTextName;
     //tagTextCodeVarEx* m_pNextTextCodeType;
 
     tagTextCodeVarEx();
@@ -437,18 +434,6 @@ typedef struct tagSIG_INT_CONSTRAINTS_EX
 // CHOU TRY CArray<SIG_INT_CONSTRAINT_EX*, SIG_INT_CONSTRAINT_EX*> CSigConstraintsArray
 typedef CArray<SIG_INT_CONSTRAINT_EX, SIG_INT_CONSTRAINT_EX> CSigConstraintsArray;
 
-//typedef struct tagSSIGNALINFO
-//{
-//    CString     m_omSigName;
-//    CString     m_omRawValue;
-//    CString     m_omEnggValue;
-//    CString     m_omUnit;
-//
-//} SSignalInfo;
-
-// CHOU TRY CArray<SSignalInfo*, SSignalInfo*> SSignalInfoArray
-//typedef CArray<SSignalInfo, SSignalInfo> SSignalInfoArray;
-
 class CSignalDef
 {
 public:
@@ -541,12 +526,10 @@ struct FRAME_STRUCT;
 
 
 CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
-string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
+std::string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
 UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& pwData);
-bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex = FALSE);
-void GetSignalNames(list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames);
+bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, std::list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex = FALSE);
+void GetSignalNames(std::list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames);
 
 
 #endif
-
-#endif //MSGSIGNAL_H__INCLUDED_

@@ -45,7 +45,7 @@ BOOL CCommanDIL_LIN::bClientIdExist(const DWORD& dwClientId)
     return bReturn;
 }
 
-BOOL CCommanDIL_LIN::bClientExist(string pcClientName, INT& Index)
+BOOL CCommanDIL_LIN::bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < m_unClientCnt; i++)
     {
@@ -501,14 +501,14 @@ UCHAR CCommanDIL_LIN::ucChecksumCalculation(SLIN_CRC sCrc)
 void CCommanDIL_LIN::vMarkEntryIntoMap(const SACK_MAP& RefObj)
 {
     //EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
-    m_MapIdClient[RefObj.m_unChannel].insert(map<int, int>::value_type(RefObj.m_unMsgID, RefObj.m_unClientID));
+    m_MapIdClient[RefObj.m_unChannel].insert(std::map<int, int>::value_type(RefObj.m_unMsgID, RefObj.m_unClientID));
     //LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
 }
 bool CCommanDIL_LIN::vPeakMapEntry(const SACK_MAP& RefObj, UINT& ClientID, bool bRemove)
 {
     EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
     BOOL bResult = FALSE;
-    map<int, int>::iterator  iResult = m_MapIdClient[RefObj.m_unChannel].find(RefObj.m_unMsgID);
+    std::map<int, int>::iterator  iResult = m_MapIdClient[RefObj.m_unChannel].find(RefObj.m_unMsgID);
 
     //if ((*iResult).m_ClientID > 0)
     if (iResult != m_MapIdClient[RefObj.m_unChannel].end())

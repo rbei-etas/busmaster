@@ -88,7 +88,6 @@ public:
     bool GetConfigData(xmlNodePtr pxmlNodePtr);
     //Set Config Data.
     HRESULT SetConfigData(BYTE* pvDataStream);
-    // PTV XML
     HRESULT SetConfigData(xmlDocPtr pNodeSet);
     HRESULT SetConfigDataJ1939(xmlDocPtr pDocPtr);
     HRESULT SetConfigDataFlexRay(xmlDocPtr pDocPtr);
@@ -175,7 +174,7 @@ protected:
     //List ctrl Msg Identifier(ID + TYPE + ...) to index in list control MAP
     CMap<__int64, __int64, SMSGDISPMAPENTRY, SMSGDISPMAPENTRY> m_omMsgDispMap;
     //Array of SMSGDISPMAPENTRY on overwrite display
-    vector<__int64> m_omMgsIndexVec;
+    std::vector<__int64> m_omMgsIndexVec;
     BOOL m_bUpdate;
 
     HWND m_hMainWnd;

@@ -238,7 +238,7 @@ BOOL CFnsTreeView::bPopulateTree()
         omTree.Expand( hHdr, TVE_EXPAND );
         omTree.SetItemImage(hErr,9,9);
         omTree.Expand( hErr, TVE_EXPAND );
-        //Venkatanarayana --- Bus Event Handlers Start
+        // Bus Event Handlers Start
         omTree.SetItemImage(hBus, 11, 11);
         // Get message handler array from the doc
         CStringArray* pMsgArray =
@@ -362,7 +362,6 @@ BOOL CFnsTreeView::bPopulateTree()
         }
         omTree.SetItemImage(hDLL,10,10);
         omTree.Expand( hDLL, TVE_EXPAND );
-        // venkatanarayana
         //Get Bus Event Handlers
         CStringArray* pomBusEvArray =
             pDoc->pomStrGetBusEventHandlerPrototypes();
@@ -382,7 +381,6 @@ BOOL CFnsTreeView::bPopulateTree()
         }
         omTree.SetItemImage(hBus,11,11);
         omTree.Expand( hBus, TVE_EXPAND );
-        //~venkatanarayana
 
         // Get Utility func array from the doc
         CStringArray* pUtilArray =
@@ -1048,7 +1046,6 @@ void CFnsTreeView::OnDeleteHandle()
             }
 
         }
-        //Venkatanarayana
         else if(omStrSelectedText == BUSEVENT_HANDLERS)
         {
             // Invoke Dialog to delete DLL handlers
@@ -1070,7 +1067,6 @@ void CFnsTreeView::OnDeleteHandle()
             }
 
         }
-        //~venkatanarayana
         if ( bReturnVal != FALSE)
         {
             // Update all views
@@ -1674,7 +1670,6 @@ void CFnsTreeView::vOnNewKeyHandler()
 
     if ( pcCharacter != NULL )
     {
-        // PTV CPP moved line to down
         pcCharacter[1] = '\0';
         CFunctionEditorDoc* pDoc   = (CFunctionEditorDoc*)CView::GetDocument();
         CFnsTreeView* pFnsTreeView = CGlobalObj::ouGetObj(m_eBus).podGetFuncsTreeViewPtr();
@@ -1888,7 +1883,7 @@ void CFnsTreeView::vOnNewErrorHandler()
                             omStrFuncPrototype.Insert( 0, SPACE );
                             omStrFuncPrototype.Insert( 0, defVOID );
 
-                            string strArgType;
+                            std::string strArgType;
                             if ( nGetLinEventTypeFromName(omStrFuncName, strArgType) != S_OK)
                             {
                                 return;
@@ -1949,9 +1944,7 @@ void CFnsTreeView::vOnNewErrorHandler()
     }
 }
 
-
-
-INT CFnsTreeView::nGetLinEventTypeFromName(CString strName, string& strEventName)
+INT CFnsTreeView::nGetLinEventTypeFromName(CString strName, std::string & strEventName)
 {
     HRESULT hResult = S_OK;
     if(strName.Find("Error_Checksum") != -1)
@@ -2113,20 +2106,11 @@ void CFnsTreeView::vOnNewDLLHandler()
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vOnNewBusEventHandler                                 */
-/*                                                                            */
-/*  Input(s)         :  NONE                                                  */
-/*  Output           :  NONE                                                  */
-/*  Functionality    :  Displays a dialog for the user to add nee bus event   */
-/*                      handler.                                              */
-/*                                                                            */
-/*  Member of        :  CFnsTreeView                                          */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Venkatanarayana Makam
-/*  Date Created     :  09/01/2012
-/******************************************************************************/
+
+/**
+ * Displays a dialog for the user to add nee bus event
+ * handler.
+ */
 void CFnsTreeView::vOnNewBusEventHandler()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());

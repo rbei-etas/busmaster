@@ -36,11 +36,11 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#if !defined CONNECTIONDET_H__INCLUDED_
-#define CONNECTIONDET_H__INCLUDED_
+#pragma once
 
 #include "Datatypes/J1939_DataTypes.h"
 #include "J1939_UtilityFuncs.h"
+
 class CConnectionDet
 {
 private:
@@ -97,5 +97,3 @@ public:
     eCON_STATUS eGetConStatus(void);
 
 };
-
-#endif //CONNECTIONDET_H__INCLUDED_

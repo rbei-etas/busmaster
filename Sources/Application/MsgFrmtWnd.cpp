@@ -1605,17 +1605,12 @@ void CMsgFrmtWnd::vShowUpdateMsgIntrpDlg(__int64 nMapIndex)
     m_podMsgIntprtnDlg->Invalidate();
 }
 
-/*******************************************************************************
-  Function Name  : colGetLINMsgColor
-  Input(s)       : LIN Message code
-  Output         : Returns COLOR of LIN Message code
-  Functionality  : returns the color code configured for the LIN Message id
-  Member of      : CMsgFrmtWnd
-  Author(s)      : Venkatanarayana Makam
-  Date Created   : 07-03-2014
-  Modifications  :
-*******************************************************************************/
-
+/**
+ * returns the color code configured for the LIN Message id
+ *
+ * @param[in] nMsgCode LIN Message code
+ * @return Returns COLOR of LIN Message code
+ */
 COLORREF CMsgFrmtWnd::colGetLINMsgColorByCode(INT nMsgCode)
 {
     WORD wDirId  =  HIWORD(nMsgCode);
@@ -1794,13 +1789,11 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
                 //Handle Error Msg display
                 vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
                 m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
-                // PTV [1.6.6]
                 //m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
             }
             else
             {
                 m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
-                // PTV [1.6.6]
                 // m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
             }
         }
@@ -1831,13 +1824,11 @@ LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
                         //Handle Error Msg display
                         vFormatCurrErrorEntry((USHORT)nMsgCode, 0);
                         m_pouMsgContainerIntrf->vSetCurrMsgName(sg_omColmStr);
-                        // PTV [1.6.6]
                         //m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
                     }
                     else
                     {
                         m_pouMsgContainerIntrf->vSetCurrMsgName(strGetMsgNameOrCode(nMsgCode));
-                        // PTV [1.6.6]
                         //m_pouMsgContainerIntrf->vSetMsgLength(strGetMsgLengthFromMessageCode(nMsgCode));
                     }
 
@@ -2559,7 +2550,7 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
                 sDispEntry.m_eInterpretMode = INTERPRETABLE;
             }
         }
-        //TODO::Venkat
+        //TODO
         if ( m_eBusType == FLEXRAY || m_eBusType == LIN )
         {
             sDispEntry.m_eInterpretMode = eFlexRayInterprete;
@@ -3341,7 +3332,7 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY& sEntry,
     // String to format interpretted data
 
     __int64 nMsgKey = m_omMgsIndexVec[nMsgIndex];
-    COLORREF rgbTreeItem = RGB(0,0,0);      //venkat
+    COLORREF rgbTreeItem = RGB(0,0,0);
     if (nMsgKey != nInvalidKey)
     {
         PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
@@ -3873,7 +3864,7 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
         {
             if (sTemp.m_opTreeWndParam != NULL)
             {
-                COLORREF rgbTreeItem = RGB(0,0,0);//venkat
+                COLORREF rgbTreeItem = RGB(0,0,0);
                 if (n64Temp != nInvalidKey)
                 {
                     PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
@@ -3917,7 +3908,6 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
                 // String to format interpretted data
 
                 sTemp.m_opTreeWndParam->vUpdateTreeValues(omSigStrArray, rgbTreeItem);
-                // PTV [1.6.6]
                 CRect omTreeRect;
                 vGetTreeRect(i, SigInfoArray.GetSize(), omTreeRect);
 
@@ -3945,7 +3935,7 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
     {
         if (sTemp.m_opTreeWndParam != NULL /*&& sTemp.m_opTreeWndParam->bVerifyTreeCtrl()*/)
         {
-            COLORREF rgbTreeItem = RGB(0,0,0);  //venkat
+            COLORREF rgbTreeItem = RGB(0,0,0);
             if (nMapIndex != nInvalidKey)
             {
                 PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
@@ -4237,7 +4227,6 @@ HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
     }
 
     //Storing Hex/Dec Display.
-    //Venkat
     bool bHexDec = IS_NUM_HEX_SET(m_bExprnFlag_Disp) > 0 ? true: false;
     COPY_DATA(pByteTrgt, &bHexDec, sizeof(bool));
 
@@ -4275,7 +4264,6 @@ HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
     return S_OK;
 }
 
-// PTV XML
 HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 {
     xmlNodeSetPtr pColMsgWnd = NULL;
@@ -6543,47 +6531,6 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
     GetWindowPlacement(&sMsgWndPlacement);
 
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos, sMsgWndPlacement);
-    ////visibility
-    //CString csVisibility;
-    //csVisibility.Format("%d",  sMsgWndPlacement.flags);
-    //omcVarChar = csVisibility;
-    //xmlNodePtr pVisibility = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pVisibility);
-
-    ////WindowPlacement
-    //CString csWindowPlacement;
-    //csWindowPlacement.Format("%d",  sMsgWndPlacement.flags);
-    //omcVarChar = csWindowPlacement;
-    //xmlNodePtr pWindowPlacement = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pWindowPlacement);
-
-    ////Top
-    //CString csTop;
-    //csTop.Format("%d",  sMsgWndPlacement.rcNormalPosition.top);
-    //omcVarChar = csTop;
-    //xmlNodePtr pTop= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pTop);
-
-    ////Left
-    //CString csLeft;
-    //csLeft.Format("%d",  sMsgWndPlacement.rcNormalPosition.left);
-    //omcVarChar = csLeft;
-    //xmlNodePtr pLeft = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pLeft);
-
-    ////Bottom
-    //CString csBottom;
-    //csBottom.Format("%d",  sMsgWndPlacement.rcNormalPosition.bottom);
-    //omcVarChar = csBottom;
-    //xmlNodePtr pBottom= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pBottom);
-
-    ////Right
-    //CString csRight;
-    //csRight.Format("%d",  sMsgWndPlacement.rcNormalPosition.right);
-    //omcVarChar = csRight;
-    //xmlNodePtr pRight = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pRight);
 
     //Interpretation_Window_Position-------------------------------------------------------
     xmlNodePtr pNodeInterpretationWndPos = xmlNewNode(NULL, BAD_CAST DEF_INTPRET_WND_POS);
@@ -6593,46 +6540,9 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
 
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeInterpretationWndPos, m_sMsgIntrpWndPlacement);
 
-    ////visibility
-    //csVisibility.Format("%d",  sMsgWndPlacement.flags);
-    //omcVarChar = csVisibility;
-    //xmlNodePtr pInterpretVisibility = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeInterpretationWndPos, pInterpretVisibility);
-
-    ////WindowPlacement
-    //csWindowPlacement.Format("%d",  sMsgWndPlacement.flags);
-    //omcVarChar = csWindowPlacement;
-    //xmlNodePtr pInterpretWindowPlacement = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeInterpretationWndPos, pInterpretWindowPlacement);
-
-    ////Top
-    //csTop.Format("%d",  m_sMsgIntrpWndPlacement.rcNormalPosition.top);
-    //omcVarChar = csTop;
-    //xmlNodePtr pInterpretTop= xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeInterpretationWndPos, pInterpretTop);
-
-    ////Left
-    //csLeft.Format("%d",  m_sMsgIntrpWndPlacement.rcNormalPosition.left);
-    //omcVarChar = csLeft;
-    //xmlNodePtr pInterpretLeft = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeInterpretationWndPos, pInterpretLeft);
-
-    ////Bottom
-    //csBottom.Format("%d", m_sMsgIntrpWndPlacement.rcNormalPosition.bottom);
-    //omcVarChar = csBottom;
-    //xmlNodePtr pInterpretBottom= xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeInterpretationWndPos, pInterpretBottom);
-
-    ////Right
-    //csRight.Format("%d", m_sMsgIntrpWndPlacement.rcNormalPosition.right);
-    //omcVarChar = csRight;
-    //xmlNodePtr pInterpretRight = xmlNewChild(pNodeInterpretationWndPos, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeInterpretationWndPos, pInterpretRight);
-    //---------------------------------------------------------------------------------------
     return TRUE;
 }
 
-// PTV XML
 /*******************************************************************************
   Function Name  : SetConfigData
   Input(s)       : pvDataStream
@@ -6784,7 +6694,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
     xmlNodePtr pCopyNodeptr = NULL;
     xmlNodePtr pChildNode = NULL;
     int nIndividualCol = -1;
-    string   strVar;
+    std::string   strVar;
 
     pCopyNodeptr = pNode;
     //get the column count
@@ -7168,7 +7078,6 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
                 m_omMsgDispMap[n64Temp] = sEntry;
             }
         }
-        // PTV [1.6.6]
         m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
     }
     else //If DB is dissociated
@@ -7212,7 +7121,6 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
             }
         }
 
-        // PTV [1.6.6]
         m_lstMsg.vShowHideBlankcolumn(m_bInterPretMsg);
     }
     m_lstMsg.Invalidate();

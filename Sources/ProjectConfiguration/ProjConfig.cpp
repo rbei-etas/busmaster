@@ -66,7 +66,7 @@ void CProjConfig::GetProjectDetail(PROJECTDATA& ProjDATA)
     ProjDATA = m_sProjectDetails;
 }
 
-int CProjConfig::GetSectionList(list<string>& SectionList)
+int CProjConfig::GetSectionList(std::list<std::string>& SectionList)
 {
     SectionList.empty();
 
@@ -78,7 +78,7 @@ int CProjConfig::GetSectionList(list<string>& SectionList)
     return GetSectionCount();
 }
 
-bool CProjConfig::GetSectionData(string SectionName, SECTIONDATA& SectionData)
+bool CProjConfig::GetSectionData(std::string SectionName, SECTIONDATA& SectionData)
 {
     bool bResult = false;
 

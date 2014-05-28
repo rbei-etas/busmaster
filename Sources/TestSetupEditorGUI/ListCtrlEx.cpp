@@ -916,19 +916,6 @@ void CListCtrlEx::vSetMapColumnCount(int nColumn)
     m_omUserProg.RemoveAll();
 }
 
-//Added by venkat
-
-/******************************************************************************
-Function Name  :  pomBrowserIem
-Input(s)       :
-Output         :  CWnd
-Functionality  :
-Member of      :  *CListCtrlEx
-Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
-Date Created   :  30/03/2011
-Modifications  :
-******************************************************************************/
 CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
 {
     // Item rect and Client rect

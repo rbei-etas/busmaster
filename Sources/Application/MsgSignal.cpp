@@ -40,7 +40,7 @@ static CHAR s_acTraceStr[1024] = {""};
 CUIThread* CMsgSignal::m_pUIThread = NULL;
 
 extern CCANMonitorApp theApp;       // Application object
-extern "C" int  nParseLDFFile(string fpInputFile, CHANNEL_CONFIG& ouCluster);
+extern "C" int  nParseLDFFile(std::string fpInputFile, CHANNEL_CONFIG& ouCluster);
 
 
 /* Helper function to calculate how many bytes the signal consumes */
@@ -395,7 +395,6 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
     if (strFileName.IsEmpty())
     {
-        //Tobias - venkat
         strcpy_s(s_acTraceStr,1024, _("Database filename is empty."));
 
         if (m_bAutoServerMode == FALSE)
@@ -410,7 +409,6 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
         if ( nIndex == -1 ) // not found
         {
-            //Tobias - venkat
             strcpy_s(s_acTraceStr, 1024, _("Invalid database filename"));
             if(m_bAutoServerMode == FALSE)
             {
@@ -426,7 +424,6 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
 
             if ( sFileExtn != DATABASE_EXTN)
             {
-                //Tobias - venkat
                 strcpy_s(s_acTraceStr, 1024, _("Invalid database filename"));
                 if(m_bAutoServerMode == FALSE)
                 {
@@ -528,7 +525,6 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
     {
         if (!m_bAutoServerMode)
         {
-            //Tobias- venkat
             strcpy_s (s_acTraceStr, 1024,  T2A(MSG_MEMORY_CONSTRAINT));
             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
         }
@@ -602,7 +598,6 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
         {
             if (!m_bAutoServerMode)
             {
-                //Tobias - venkat
                 strcpy_s (s_acTraceStr, 1024, T2A(_(MSG_MEMORY_CONSTRAINT)));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
@@ -964,7 +959,7 @@ void CMsgSignal::vGetDataBaseNames(CStringArray* pastrDBnames)
         pastrDBnames->Append(m_omDatabaseNames);
     }
 }
-void CMsgSignal::vGetRelativeDataBaseNames(string& omStrBasePath, CStringArray* pastrDBnames)
+void CMsgSignal::vGetRelativeDataBaseNames(std::string & omStrBasePath, CStringArray* pastrDBnames)
 {
     if(pastrDBnames != NULL)
     {
@@ -972,7 +967,7 @@ void CMsgSignal::vGetRelativeDataBaseNames(string& omStrBasePath, CStringArray* 
         for ( int i = 0, n = m_omDatabaseNames.GetSize(); i < n; i++)
         {
             CString omStrTemp = m_omDatabaseNames.GetAt(i);
-            string omStrRelativePath;
+            std::string omStrRelativePath;
             CUtilFunctions::MakeRelativePath(omStrBasePath.c_str(), omStrTemp.GetBuffer(MAX_PATH), omStrRelativePath);
             pastrDBnames->Add(omStrRelativePath.c_str());
         }
@@ -1200,7 +1195,6 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
 
             if (!m_bAutoServerMode)
             {
-                //Tobias - venkat
                 strcpy_s (s_acTraceStr, 1024, T2A(omStrFilename.GetBuffer(MAX_PATH)));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
@@ -1215,7 +1209,6 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
             pomE->GetErrorMessage( lpszError, 255);
             if (!m_bAutoServerMode)
             {
-                //Tobias - venkat
                 strcpy_s (s_acTraceStr, 1024,  T2A(lpszError));
                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
             }
@@ -1377,7 +1370,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                         {
                             if (!m_bAutoServerMode)
                             {
-                                //Tobias - venkat
                                 strcpy_s (s_acTraceStr, 1024, T2A(DATABASE_MISMATCH));
                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                 m_bIsDatabaseSaved = FALSE;
@@ -1387,7 +1379,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                     {
                         if (!m_bAutoServerMode)
                         {
-                            //Tobias - venkat
                             strcpy_s(s_acTraceStr, 1024, "DATABASE_CORRUPT");
                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                             return FALSE;
@@ -1545,7 +1536,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias - venkat
                                             strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1569,7 +1559,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias - venkat
                                             strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1605,7 +1594,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias - venkat
                                             strcpy_s(s_acTraceStr, 1024,  _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1628,7 +1616,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias - venkat
                                             strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1652,7 +1639,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias - venkat
                                             strcpy_s(s_acTraceStr, 1024,  _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1665,7 +1651,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias - venkat
                                             strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1686,7 +1671,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     {
                                         if (!m_bAutoServerMode)
                                         {
-                                            //Tobias- venkat
                                             strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                         }
@@ -1722,7 +1706,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                 {
                                                     if (!m_bAutoServerMode)
                                                     {
-                                                        //Tobias- venkat
                                                         strcpy_s(s_acTraceStr, 1024, T2A(_(MSG_MEMORY_CONSTRAINT)));
                                                         vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                     }
@@ -1776,7 +1759,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1797,7 +1779,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1821,7 +1802,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                ////Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1846,7 +1826,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1876,7 +1855,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1907,7 +1885,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1939,7 +1916,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1965,7 +1941,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -1991,7 +1966,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         {
                                                             if (!m_bAutoServerMode)
                                                             {
-                                                                //Tobias- venkat
                                                                 strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                 vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                             }
@@ -2082,7 +2056,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                                 {
                                                                     if (!m_bAutoServerMode)
                                                                     {
-                                                                        //Tobias- venkat
                                                                         strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                                                         vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                                                                     }
@@ -2186,7 +2159,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                     {
                         if (!m_bAutoServerMode)
                         {
-                            //Tobias- venkat
                             strcpy_s(s_acTraceStr, 1024, T2A(_(MSG_MEMORY_CONSTRAINT)));
                             vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                         }
@@ -2205,7 +2177,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                 omStrErrorMsg.Format(_("Error in opening %s database file"),strFileName);
                 if (!m_bAutoServerMode)
                 {
-                    //Tobias- venkat
                     strcpy_s(s_acTraceStr, 1024, T2A(omStrErrorMsg.GetBuffer(MAX_PATH)));
                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                 }
@@ -2220,7 +2191,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                 pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
                 if (!m_bAutoServerMode)
                 {
-                    //Tobias- venkat
                     strcpy_s(s_acTraceStr, 1024, T2A(lpszError));
                     vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);
                 }
@@ -2249,7 +2219,6 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
         {
             strFileName += _(" is not created for CAN. Since one of the message length exceeds 8 bytes.");
         }
-        //Tobias- venkat
         strcpy_s(s_acTraceStr, 1024, strFileName);
         vWriteTextToTrace();
     }
@@ -5439,16 +5408,12 @@ int CMsgSignal::nGetDeviceConfig(ABS_DEVICE_CONFIG& ouDeviceConfig)
 }
 
 /**
-* \brief         API to load the LDF file
-* \req           TODO - Importing of Fibex file
-* \param[in]     string containing the path for FIBEX File
-* \return        returns FCLASS_SUCCESS if successful, VERSION_NOT_SUPPORTED for Invalid File,
-                 FCLASS_FAILURE for other failures
-* \authors       Venkatanarayana Makam
-* \date          06.12.2013 Created
-*/
-
-HRESULT CMsgSignal::hLoadLdfFile(string strDBFile, list<Cluster>& ouClusterList, list<LinChannelParam>& ouLinParams)
+ * @brief API to load the LDF file
+ * @req TODO - Importing of LDF file
+ * @param[in] strDBFile string containing the path for LDF File
+ * @return returns FCLASS_SUCCESS if successful, VERSION_NOT_SUPPORTED for Invalid File, FCLASS_FAILURE for other failures
+ */
+HRESULT CMsgSignal::hLoadLdfFile(std::string strDBFile, std::list<Cluster>& ouClusterList, std::list<LinChannelParam>& ouLinParams)
 {
     //Cluster ouCluster;
     CHANNEL_CONFIG ouCluster;
@@ -5483,13 +5448,13 @@ HRESULT CMsgSignal::hLoadLdfFile(string strDBFile, list<Cluster>& ouClusterList,
 * \authors       Prathiba Bharathi
 * \date          16.04.2013 Created
 */
-HRESULT CMsgSignal::hLoadFibexDBFile(CString strFIBEXFile, list<Cluster>& ouClusterList)
+HRESULT CMsgSignal::hLoadFibexDBFile(CString strFIBEXFile, std::list<Cluster>& ouClusterList)
 {
     //return hSimulateFibexCluster(strFIBEXFile, ouClusterList);
 
     try
     {
-        map<string, Cluster> lstCluster;
+        std::map<std::string, Cluster> lstCluster;
 
         CPARSER_FIBEX objFibexParser;
 
@@ -5503,7 +5468,7 @@ HRESULT CMsgSignal::hLoadFibexDBFile(CString strFIBEXFile, list<Cluster>& ouClus
         objFibexParser.Initialize();
         if (nReturnVal == FCLASS_SUCCESS )
         {
-            map<string, Cluster>::iterator itrClusterMap = lstCluster.begin();
+            std::map<std::string, Cluster>::iterator itrClusterMap = lstCluster.begin();
 
             while(itrClusterMap != lstCluster.end())
             {
@@ -5526,7 +5491,7 @@ HRESULT CMsgSignal::hLoadFibexDBFile(CString strFIBEXFile, list<Cluster>& ouClus
     return FCLASS_SUCCESS;
 }
 
-HRESULT CMsgSignal::hSimulateFibexCluster(CString strFIBEXFile, list<Cluster>& ouClusterList)
+HRESULT CMsgSignal::hSimulateFibexCluster(CString strFIBEXFile, std::list<Cluster>& ouClusterList)
 {
     HRESULT hr = S_OK;
     if ( strFIBEXFile == "" )

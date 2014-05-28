@@ -28,15 +28,12 @@
 #include "DataTypes/MsgBufAll_DataTypes.h"
 
 #include <vector>
-using namespace std;
 
 #ifdef _DEBUG
 static DWORD g_dwIxxatBufObjectCounter = 0;
 #endif
 
 #define MAX_BUFF_ALLOWED 16
-
-
 
 /**
  * @class CClientBuffer
@@ -54,7 +51,7 @@ public:
     DWORD dwClientID; ///< Identifier for the client
     HANDLE hClientHandle; ///< Handle of the client
     HANDLE hPipeFileHandle; ///< Handle of the pipe file
-    string m_pacClientName; ///< Name of the client
+    std::string m_pacClientName; ///< Name of the client
 
     HRESULT AddMsgBuf(CBaseCANBufFSE* pBufObj);
     HRESULT RemoveMsgBuf(CBaseCANBufFSE* pBufObj);
@@ -68,7 +65,7 @@ public:
     }
 
     CClientBuffer();
-    CClientBuffer(DWORD dwClntID, HANDLE hClntHandle, HANDLE hPipeHandle, string szClientName);
+    CClientBuffer(DWORD dwClntID, HANDLE hClntHandle, HANDLE hPipeHandle, std::string szClientName);
     ~CClientBuffer();
 
 protected:

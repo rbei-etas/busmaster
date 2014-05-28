@@ -55,7 +55,6 @@ IMPLEMENT_DYNCREATE(CTransmitMsg, CFormView)
 
 BEGIN_MESSAGE_MAP(CTransmitMsg, CFormView)
     ON_BN_CLICKED(IDC_CBTN_ADDNEW, OnBtnClickedAddnew)
-    //venkat
     ON_NOTIFY(NM_CLICK, IDC_LSTC_TRANSMIT_MSG, OnNMTransmitMessagesClick)
     ON_NOTIFY(NM_RCLICK, IDC_LSTC_TRANSMIT_MSG, OnNMTransmitMessagesRightClick)
     ON_WM_CREATE()
@@ -223,7 +222,7 @@ void CTransmitMsg::OnBusConnect(bool bConnect)
     vChangeDelButtonStatus(!bConnect);
 }
 
-void CTransmitMsg::vGetStringFromValue(int nValue, string& strValue)
+void CTransmitMsg::vGetStringFromValue(int nValue, std::string& strValue)
 {
     char chValue[1024];
     if ( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode == false)
@@ -423,7 +422,7 @@ void CTransmitMsg::vInsertMessage(FRAME_STRUCT& ouFrame)
 
     m_lstMsg.InsertItem(nRows, ouFrame.m_strFrameName.c_str());
 
-    string strText;
+    std::string strText;
 
     vGetStringFromValue(ouFrame.m_nSlotId, strText);
     m_lstMsg.SetItemText(nRows, def_SLOTID_COLUMN_INDEX, strText.c_str());
@@ -486,11 +485,10 @@ void CTransmitMsg::OnBtnClickedAddnew()
 
     if (odFlexrayMsgHandlerDlg.DoModal() == IDOK)
     {
-        map<long, int>::iterator itrSelectedItems = odFlexrayMsgHandlerDlg.m_pSelectedItem.begin();
+        std::map<long, int>::iterator itrSelectedItems = odFlexrayMsgHandlerDlg.m_pSelectedItem.begin();
 
-
-        list<FRAME_STRUCT>& ouFrameList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFrameList[nChannel];
-        list<FRAME_STRUCT>::iterator itrFrameList = ouFrameList.begin();
+        std::list<FRAME_STRUCT>& ouFrameList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFrameList[nChannel];
+        std::list<FRAME_STRUCT>::iterator itrFrameList = ouFrameList.begin();
         for ( ; itrSelectedItems != odFlexrayMsgHandlerDlg.m_pSelectedItem.end(); itrSelectedItems++ )
         {
             itrFrameList = ouFrameList.begin();
@@ -821,7 +819,7 @@ void CTransmitMsg::OnBnClickedBtUpdate()
         return;
     }
 
-    list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].begin();
+    std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].begin();
     if ( itrFrameData ==  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].end() )
     {
         return;
@@ -877,7 +875,7 @@ void CTransmitMsg::OnBnClickedBtDelFrame()
             return;
         }*/
         m_lstMsg.DeleteItem(nSelItem);
-        list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].begin();
+        std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].begin();
         advance(itrFrameData, nSelItem);
         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].erase(itrFrameData);
 
@@ -895,7 +893,6 @@ void CTransmitMsg::OnBnClickedBtDelFrame()
 
     }
     vChangeDelButtonStatus();
-    //venkat
     return;
 
 }
@@ -934,7 +931,7 @@ void CTransmitMsg::OnBnClickedBtDelAll()
             return ;
         }
         m_lstMsg.DeleteItem(nLstCount - 1);
-        list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].begin();
+        std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].begin();
         advance(itrFrameData, nLstCount - 1);
         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel].erase(itrFrameData);
         SwitchView(m_ouCurrentView);
@@ -1102,14 +1099,14 @@ HRESULT CTransmitMsg::UpdateTxView(int& m_nChannelsConfigured)
 
 
     m_bDataModified = false;
-    list<FLEXRAY_FRAME_DATA>& ouFrameDataList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel];
-    list<FLEXRAY_FRAME_DATA>::iterator itFrameData = ouFrameDataList.begin();
+    std::list<FLEXRAY_FRAME_DATA>& ouFrameDataList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel];
+    std::list<FLEXRAY_FRAME_DATA>::iterator itFrameData = ouFrameDataList.begin();
     int nRows =0;
     for(; itFrameData != ouFrameDataList.end(); itFrameData++)
     {
         m_lstMsg.InsertItem(nRows, itFrameData->m_ouFlexFrame.m_strFrameName.c_str());
 
-        string strText;
+        std::string strText;
 
 
         vGetStringFromValue(itFrameData->m_ouFlexFrame.m_nSlotId, strText);
@@ -1212,8 +1209,8 @@ void CTransmitMsg::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
 
         //To change selection state;
 
-        list<FLEXRAY_FRAME_DATA>& ouFrameDataList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel];
-        list<FLEXRAY_FRAME_DATA>::iterator itFrameData = ouFrameDataList.begin();
+        std::list<FLEXRAY_FRAME_DATA>& ouFrameDataList = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFlexray_Frame_Data[nChannel];
+        std::list<FLEXRAY_FRAME_DATA>::iterator itFrameData = ouFrameDataList.begin();
         advance(itFrameData, nItem);
         if ( itFrameData != ouFrameDataList.end())
         {
@@ -1260,7 +1257,7 @@ void CTransmitMsg::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
             if ( nCurrentId == nSelectedId && nCurrentBaseCycle == nSelBaseCycle && nItem != i )
             {
                 m_lstMsg.SetCheck(i,false);
-                list<FLEXRAY_FRAME_DATA>::iterator itFrameDataTemp = ouFrameDataList.begin();
+                std::list<FLEXRAY_FRAME_DATA>::iterator itFrameDataTemp = ouFrameDataList.begin();
                 advance(itFrameDataTemp, i);
                 if ( itFrameDataTemp != ouFrameDataList.end())
                 {
@@ -1322,7 +1319,7 @@ void CTransmitMsg::SwitchView(DATA_VIEW ouViewType)
 
     else
     {
-        list<FLEXRAY_FRAME_DATA>::iterator itrFrame;
+        std::list<FLEXRAY_FRAME_DATA>::iterator itrFrame;
         int nChannel = m_wndComboChannel.GetCurSel();
         if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
         {
@@ -1407,10 +1404,10 @@ void CTransmitMsg::SwitchView(DATA_VIEW ouViewType)
         {
             vStoreDataBytes();
             InitFlexList(ouViewType);
-            list<Flexray_SSIGNALINFO> ouSignalInfoList;
+            std::list<Flexray_SSIGNALINFO> ouSignalInfoList;
             bGetSignalInfo(m_ouCurrentMsg.m_ouFlexFrame, m_ouCurrentMsg.m_ouData, m_ouCurrentMsg.m_ouFlexFrame.m_nLength, ouSignalInfoList);
 
-            list<Flexray_SSIGNALINFO>::iterator itrSig = ouSignalInfoList.begin();
+            std::list<Flexray_SSIGNALINFO>::iterator itrSig = ouSignalInfoList.begin();
             int i = 0;
             for (; itrSig != ouSignalInfoList.end(); itrSig++ )
             {

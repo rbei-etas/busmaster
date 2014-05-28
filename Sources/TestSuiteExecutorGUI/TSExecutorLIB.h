@@ -38,9 +38,9 @@ typedef struct _STestSetupInfo
 } STestSetupInfo;
 typedef struct tagTestSuiteConfigInfo
 {
-    string m_strFileName;
+    std::string m_strFileName;
     bool m_bEnable;
-    list<int> m_nListSelctedCases;
+    std::list<int> m_nListSelctedCases;
 } sTestSuiteConfigInfo;
 typedef CList<CTestSetupEntity, CTestSetupEntity&> CTestSetupEntiyList;
 

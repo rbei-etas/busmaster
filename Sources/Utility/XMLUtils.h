@@ -1,25 +1,27 @@
-//MVN
 #pragma once
-//libxml file includes
+
+/* C++ includes */
+#include <list>
+#include <map>
+#include <string>
+
+/* libxml includes */
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <include/BaseDefs.h>
-#include <DataTypes\MsgSignal_Datatypes.h>
-#include <string>
-#include <map>
-#include <list>
-#include <include\XMLDefines.h>
-using namespace std;
+#include <DataTypes/MsgSignal_Datatypes.h>
+#include <include/XMLDefines.h>
+
 struct columnInfo
 {
-    string strId;
+    std::string strId;
     int nOrder;
     int nWidth;
     bool isVisble;
 };
-typedef map<string, columnInfo> ColumnInfoMap;
-typedef list<string> stringList;
+typedef std::map<std::string, columnInfo> ColumnInfoMap;
+typedef std::list<std::string> stringList;
 
 enum eLineType
 {
@@ -35,7 +37,6 @@ enum eLineType
     Stick = 9
 };
 
-using namespace std;
 class xmlUtils
 {
 public:
@@ -68,6 +69,7 @@ public:
         }
         return pXpathNodePtr;
     }
+
     static int nGetNodeCount(xmlNodePtr pNode)
     {
         int nCnt =0;
@@ -79,6 +81,7 @@ public:
         }
         return nCnt;
     }
+
     static xmlXPathObjectPtr pGetChildNodes(xmlNodePtr pNode, xmlChar* pchRelXpath)
     {
         xmlXPathContextPtr pDocContext;
@@ -105,7 +108,8 @@ public:
         }
         return pXpathNodePtr;
     }
-    static bool GetDataFrmNode(xmlNodePtr pNodePtr, char* cstrNodeName, string& strData)
+
+    static bool GetDataFrmNode(xmlNodePtr pNodePtr, char* cstrNodeName, std::string& strData)
     {
         xmlChar* xmlNodeName = (xmlChar* )cstrNodeName;
 
@@ -123,6 +127,7 @@ public:
         }
         return false;
     }
+
     static int ParseWindowsPlacement(xmlNodePtr pNodePtr, WINDOWPLACEMENT& wndPlacement)
     {
         int nRetVal = S_OK;
@@ -210,6 +215,7 @@ public:
         }
         return nRetVal;
     }
+
     static UINT unGetWindowPlacement(CString strWndPlacement)
     {
         if(strWndPlacement == "RESTORETOMAXIMIZED")
@@ -225,47 +231,40 @@ public:
             return WPF_RESTORETOMAXIMIZED;
         }
     }
+
     static CString nGetLineTypeForGraph(INT nLineType)
     {
-        if(nLineType == Solid)
-        {
+        switch(nLineType) {
+        case Solid:
             return defLINETYPE_SOLID;
-        }
-        else if(nLineType == Dash)
-        {
+            break;
+        case Dash:
             return defLINETYPE_DASH;
-        }
-        else if(nLineType == Dot)
-        {
+            break;
+        case Dot:
             return defLINETYPE_DOT;
-        }
-        else if(nLineType == DashDot)
-        {
+            break;
+        case DashDot:
             return defLINETYPE_DASHDOT;
-        }
-        else if(nLineType == DashDotDot)
-        {
+            break;
+        case DashDotDot:
             return defLINETYPE_DASHDOTDOT;
-        }
-        else if(nLineType == Null)
-        {
+            break;
+        case Null:
             return defLINETYPE_NULL;
-        }
-        else if(nLineType == XYStep)
-        {
+            break;
+        case XYStep:
             return defLINETYPE_XYSTEP;
-        }
-        else if(nLineType == YXStep)
-        {
+            break;
+        case YXStep:
             return defLINETYPE_YXSTEP;
-        }
-        else if(nLineType == Bars)
-        {
+            break;
+        case Bars:
             return defLINETYPE_BARS;
-        }
-        else if(nLineType == Stick)
-        {
+            break;
+        case Stick:
             return defLINETYPE_STICK;
+            break;
         }
     }
 
@@ -313,9 +312,9 @@ public:
         }
     }
 
-    static string nGetWindowVisibilityInString(int nShowCmd)
+    static std::string nGetWindowVisibilityInString(int nShowCmd)
     {
-        string strShowCmd = "";
+        std::string strShowCmd = "";
         if( nShowCmd == -1)
         {
             return strShowCmd;
@@ -323,50 +322,42 @@ public:
 
         char* strTemp = "";
 
-        if(nShowCmd == SW_HIDE)
-        {
+        switch(nShowCmd) {
+        case SW_HIDE:
             strTemp = "HIDE";
-        }
-        if(nShowCmd == SW_MAXIMIZE)
-        {
+            break;
+        case SW_MAXIMIZE:
             strTemp = "MAXIMIZE";
-        }
-        if(nShowCmd == SW_MINIMIZE)
-        {
+            break;
+        case SW_MINIMIZE:
             strTemp = "MINIMIZE";
-        }
-        if(nShowCmd == SW_RESTORE)
-        {
+            break;
+        case SW_RESTORE:
             strTemp = "RESTORE";
-        }
-        if(nShowCmd == SW_SHOW)
-        {
+            break;
+        case SW_SHOW:
             strTemp = "SHOW";
-        }
-        if(nShowCmd == SW_SHOWMAXIMIZED)
-        {
-            strTemp = "SHOWMAXIMIZED";
-        }
-        if(nShowCmd == SW_SHOWMINIMIZED)
-        {
+            break;
+//        case SW_SHOWMAXIMIZED:
+//            strTemp = "SHOWMAXIMIZED";
+//            break;
+        case SW_SHOWMINIMIZED:
             strTemp = "SHOWMINIMIZED";
-        }
-        if(nShowCmd == SW_SHOWMINNOACTIVE)
-        {
+            break;
+        case SW_SHOWMINNOACTIVE:
             strTemp = "SHOWMINNOACTIVE";
-        }
-        if(nShowCmd == SW_SHOWNA)
-        {
+            break;
+        case SW_SHOWNA:
             strTemp = "SHOWNA";
-        }
-        if(nShowCmd == SW_SHOWNOACTIVATE)
-        {
+            break;
+        case SW_SHOWNOACTIVATE:
             strTemp = "SHOWNOACTIVATE";
-        }
-        if(nShowCmd == SW_SHOWNORMAL)
-        {
+            break;
+        case SW_SHOWNORMAL:
             strTemp = "SHOWNORMAL";
+            break;
         }
+
         return strTemp;
     }
 
@@ -374,51 +365,40 @@ public:
     {
         CString strTemp = "";
 
-        if(nShowCmd == SW_HIDE)
-        {
+        switch(nShowCmd) {
+        case SW_HIDE:
             strTemp = "HIDE";
-        }
-        if(nShowCmd == SW_MAXIMIZE)
-        {
+            break;
+        case SW_MAXIMIZE:
             strTemp = "MAXIMIZE";
-        }
-        if(nShowCmd == SW_MINIMIZE)
-        {
+            break;
+        case SW_MINIMIZE:
             strTemp = "MINIMIZE";
-        }
-
-        if(nShowCmd == SW_RESTORE)
-        {
+            break;
+        case SW_RESTORE:
             strTemp = "RESTORE";
-        }
-
-        if(nShowCmd == SW_SHOW)
-        {
+            break;
+        case SW_SHOW:
             strTemp = "SHOW";
-        }
-        if(nShowCmd == SW_SHOWMAXIMIZED)
-        {
-            strTemp = "SHOWMAXIMIZED";
-        }
-        if(nShowCmd == SW_SHOWMINIMIZED)
-        {
+            break;
+//        case SW_SHOWMAXIMIZED:
+//            strTemp = "SHOWMAXIMIZED";
+//            break;
+        case SW_SHOWMINIMIZED:
             strTemp = "SHOWMINIMIZED";
-        }
-        if(nShowCmd == SW_SHOWMINNOACTIVE)
-        {
+            break;
+        case SW_SHOWMINNOACTIVE:
             strTemp = "SHOWMINNOACTIVE";
-        }
-        if(nShowCmd == SW_SHOWNA)
-        {
+            break;
+        case SW_SHOWNA:
             strTemp = "SHOWNA";
-        }
-        if(nShowCmd == SW_SHOWNOACTIVATE)
-        {
+            break;
+        case SW_SHOWNOACTIVATE:
             strTemp = "SHOWNOACTIVATE";
-        }
-        if(nShowCmd == SW_SHOWNORMAL)
-        {
+            break;
+        case SW_SHOWNORMAL:
             strTemp = "SHOWNORMAL";
+            break;
         }
 
         return strTemp;
@@ -427,7 +407,7 @@ public:
     static int CreateXMLNodeFrmWindowsPlacement(xmlNodePtr pNodePtr, WINDOWPLACEMENT& wndPlacement)
     {
         const char* omcVarChar ;
-        string      strVar;
+        std::string strVar;
 
         //visibility
         strVar = nGetWindowVisibilityInString(wndPlacement.showCmd);
@@ -482,7 +462,6 @@ public:
         return true;
     }
 
-
     static int nGetWindowVisibility(char* pchVisibility)
     {
         int nShowCmd = SW_SHOW;
@@ -491,7 +470,7 @@ public:
             return nShowCmd;
         }
 
-        string strTemp = pchVisibility;
+        std::string strTemp = pchVisibility;
 
         if(strTemp == "HIDE")
         {
@@ -539,12 +518,13 @@ public:
         }
         return nShowCmd;
     }
+
     static BOOL bGetBooleanValue(char* pchBoolValue)
     {
         BOOL bRetValue = TRUE;
         if ( NULL != pchBoolValue )
         {
-            string strTemp = pchBoolValue;
+            std::string strTemp = pchBoolValue;
 
             if(strTemp == "FALSE" || strTemp == "0")
             {
@@ -553,12 +533,13 @@ public:
         }
         return bRetValue;
     }
+
     static eDirection bGetDirection(char* pchBoolValue)
     {
         eDirection bRetValue = DIR_ALL;
         if ( NULL != pchBoolValue )
         {
-            string strTemp = pchBoolValue;
+            std::string strTemp = pchBoolValue;
             if(strTemp == "TX")
             {
                 bRetValue = DIR_TX;
@@ -570,7 +551,8 @@ public:
         }
         return bRetValue;
     }
-    static eTimerMode eGetTimerMode(string strName)
+
+    static eTimerMode eGetTimerMode(std::string strName)
     {
         eTimerMode eMode = TIME_MODE_SYSTEM;
         if(strName == "RELATIVE")
@@ -583,7 +565,8 @@ public:
         }
         return eMode;
     }
-    static eFormat eGetNumericMode(string strName)
+
+    static eFormat eGetNumericMode(std::string strName)
     {
         eFormat eMode = DEC;
         if(strName == "HEX")
@@ -592,7 +575,8 @@ public:
         }
         return eMode;
     }
-    static eWAVEFORMTYPE eGetWaveType(string strName)
+
+    static eWAVEFORMTYPE eGetWaveType(std::string strName)
     {
         eWAVEFORMTYPE eWaveType = eWave_NONE;
         if(strName == "SINE")
@@ -613,6 +597,7 @@ public:
         }
         return eWaveType;
     }
+
     static int parseColumnNode(xmlNodePtr pNode, columnInfo& Info)
     {
         int nRetVal = S_OK;
@@ -665,6 +650,7 @@ public:
         }
         return nRetVal;
     }
+
     static int parseColumnInfoNode(xmlNodePtr pNode, stringList& columnList, columnInfo& Info)
     {
         int nRetVal = S_OK;
@@ -673,6 +659,7 @@ public:
             nRetVal = S_FALSE;
         }
     }
+
     static int xmlUtils::ParseSplitterWindow(xmlNodePtr pNode, int& nCxCur, int& nCxMax)
     {
         int nRetVal = S_OK;
@@ -725,6 +712,7 @@ public:
         }
         return nRetVal;
     }
+
     static int parseColumnInfoNode(xmlNodeSetPtr pNodeSet, ColumnInfoMap& InfoMap)
     {
         int nNodes = pNodeSet->nodeNr;
@@ -769,10 +757,4 @@ public:
         delete[] npOrder;
         return nRetVal;
     }
-    /*static int nGetRGBColor(int nValue, COLORREF& colorRef)
-    {
-        RGB(
-    }*/
 };
-
-//~MVN

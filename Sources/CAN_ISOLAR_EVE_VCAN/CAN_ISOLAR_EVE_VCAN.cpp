@@ -40,26 +40,17 @@
 #define USAGE_EXPORT
 #include "CAN_ISOLAR_EVE_VCAN_Extern.h"
 
-using namespace std;
-
-// CISOLAR_EVE_VCAN
-
 BEGIN_MESSAGE_MAP(CISOLAR_EVE_VCAN, CWinApp)
 END_MESSAGE_MAP()
 
-
 static STCANDATA sg_EVE_CANMsg;
 
-/**
- * CISOLAR_EVE_VCAN construction
- */
 CISOLAR_EVE_VCAN::CISOLAR_EVE_VCAN()
 {
     // Place all significant initialization in InitInstance
 }
 
-
-// The one and only CISOLAR_EVE_VCAN object
+/** The one and only CISOLAR_EVE_VCAN object */
 CISOLAR_EVE_VCAN EVE_VCAN_OBJ_0;
 
 
@@ -98,15 +89,11 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
     HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
@@ -298,7 +285,7 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -860,15 +847,13 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCa
     return ret_result;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetLastErrorString(std::string& acErrorStr)
 {
-
     return S_OK;
 }
 
 HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
 {
-
     return S_OK;
 }
 

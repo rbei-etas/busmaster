@@ -14,12 +14,11 @@
  */
 
 /**
- * \file      AppServicesCAN.h
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef APPSERVICESCAN_H__INCLUDED_
-#define APPSERVICESCAN_H__INCLUDED_
+
+#pragma once
 
 #include "AppServices.h"
 //Send can message
@@ -30,5 +29,3 @@ BOOL gvSetControllerMode_CAN(BOOL);
 BOOL gbStartStopHardware_CAN(BOOL) ;
 //to get first connected database name
 DWORD gdGetFirstCANdbName(char* , DWORD );
-
-#endif // APPSERVICESCAN_H__INCLUDED_

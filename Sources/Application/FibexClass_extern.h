@@ -1,9 +1,7 @@
-#if !defined FIBEXCLASS_EXTERN_H__INCLUDED_
-#define FIBEXCLASS_EXTERN_H__INCLUDED_
+#pragma once
 
 #include "DataTypes/Typecode_FBX_entities.h"
 #include "DataTypes/FEALData.h"
-
 
 #ifdef __cplusplus
 extern "C" {  // only need to export C interface if used by C++ source code
@@ -39,5 +37,3 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #ifdef __cplusplus
 }
 #endif
-
-#endif // FIBEXCLASS_EXTERN_H__INCLUDED_

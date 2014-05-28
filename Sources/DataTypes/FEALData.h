@@ -21,8 +21,8 @@
  *
  * Definition file for FIBEX data types.
  */
-#if !defined(FEALDATA_H__INCLUDED_)
-#define FEALDATA_H__INCLUDED_
+
+#pragma once
 
 #include <afxtempl.h>
 #include "Typecode_fbx_entities.h"
@@ -30,8 +30,6 @@
 #include <string>
 #include <vector>
 #include <list>
-
-using namespace std;
 
 #define MAX_VAL_OF_BYTE         256
 #define EMPTY_VALUE -1
@@ -356,7 +354,7 @@ typedef struct tagAbsSKEY_SLOT_USAGE
 {
     int m_nStartUpSync;
     int m_nSync;
-    string m_omNone;
+    std::string m_omNone;
 
 } ABS_KEY_SLOT_USAGE, *PABS_KEY_SLOT_USAGE;
 
@@ -475,7 +473,7 @@ typedef struct tagBaseConnector
     CString      m_omCONTROLLER_REF;
 } SBASE_CONNECTOR;
 
-typedef vector<SBASE_CONNECTOR> AbsConnectorInfoList;
+typedef std::vector<SBASE_CONNECTOR> AbsConnectorInfoList;
 //typedef CList<SBASE_CONNECTOR, SBASE_CONNECTOR&> AbsConnectorInfoList;
 
 typedef struct tagAbsSECU
@@ -865,7 +863,7 @@ typedef struct tagAbsSProject
 } ABS_PROJECT, *PABS_PROJECT;
 
 /* Customized structures */
-typedef vector<CString> BaseControllerIDs;
+typedef std::vector<CString> BaseControllerIDs;
 /* Cluster - Controller Map */
 typedef struct tagClusterInfo
 {
@@ -874,7 +872,7 @@ typedef struct tagClusterInfo
 
 } ABS_CLUSTER_INFO, *PABS_CLUSTER_INFO;
 
-typedef list<ABS_CLUSTER_INFO> AbsClusterInfoList;
+typedef std::list<ABS_CLUSTER_INFO> AbsClusterInfoList;
 
 // FIBEX CONTAINER
 typedef struct tagAbsSFibexContainer
@@ -890,5 +888,3 @@ typedef struct tagAbsSFibexContainer
     void DoCleanup();
 
 } ABS_FIBEX_CONTAINER, *PABS_FIBEX_CONTAINER;
-
-#endif // !defined FEALDATA_H__INCLUDED_

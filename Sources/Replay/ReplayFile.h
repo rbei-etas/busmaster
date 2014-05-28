@@ -51,10 +51,7 @@ public:
     BYTE* pbySaveConfig(BYTE* pDesBuffer);
     BOOL pbySaveConfig(xmlNodePtr pxmlNodePtr);
     BYTE* pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion);
-    //MVN
     int nLoadXMLConfig(xmlNodePtr pNode);
-    //int GetFilterNameIndex(string strName, const SFILTERAPPLIED_CAN& sFilterSrc);
-    //~MVN
     BOOL  bisConfigChanged(BYTE*& pSrcBuffer);
 
 public:

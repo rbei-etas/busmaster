@@ -107,7 +107,6 @@ public:
     // Query function - current logging status (OFF/ON).
     BOOL FPL_IsLoggingON(void);
 
-    // PTV[1.6.4]
     BOOL FPL_IsLINDataLogged(void);
 
     BOOL FPL_IsLINThreadBlocked(void);
@@ -157,9 +156,7 @@ public:
     HRESULT FPL_GetConfigData(xmlNodePtr pxmlNodePtr);
     // Setter for the logging configuration data
     HRESULT FPL_SetConfigData(BYTE* pvDataStream, const CString& omStrVersion);
-    //MVN
     HRESULT FPL_SetConfigData(xmlDocPtr pDoc);
-    //~MVN
 
     // To update the associated database list to logger
     HRESULT FPL_SetDatabaseFiles(const CStringArray& omList);

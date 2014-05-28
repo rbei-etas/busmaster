@@ -93,7 +93,7 @@ void CClientList::DeleteAllEntries()
  *  S_OK - client registered successful.
  *
  */
-HRESULT CClientList::RegisterClient(DWORD& pdwClientID, string pacClientName)
+HRESULT CClientList::RegisterClient(DWORD& pdwClientID, std::string pacClientName)
 {
     HRESULT hResult = S_FALSE;
     if (!GetClient(pacClientName))
@@ -210,7 +210,7 @@ CClientBuffer* CClientList::GetClientByIndex(int iIndexInList)
  * @return
  *  Null if it fails, else the client.
  */
-CClientBuffer* CClientList::GetClient(string pacClientName)
+CClientBuffer* CClientList::GetClient(std::string pacClientName)
 {
     CClientBuffer* pReturnClientObj = NULL;
     ClientBufferMap::iterator iter;

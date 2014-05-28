@@ -237,7 +237,6 @@ void sSIGNALS::vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8],
     // bytes andvice versa.
     // First findout offset between the last significant bits of the signal
     // and theframe. Finding out the lsb will directly answer to thisquery.
-    //venkat
     UINT64 unMaxVal = pow((double)2, (double)pouCurrSignal->m_unSignalLength);
     unMaxVal -= 1;
     u64SignVal = u64SignVal&unMaxVal;

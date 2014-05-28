@@ -35,16 +35,7 @@
 #define DEF_FILE_PATH               "File_Path"
 #define DEF_TRGR_STRT_ID            "Trigger_Start_ID"
 #define DEF_TRGR_STP_ID             "Trigger_Stop_ID"
-////Shailesh +
-//#define DEF_IS_LOGON_TRANS            "IsLogOnTransmission"
-//#define DEF_IS_LOGON_SIZE         "IsLogOnSize"
-//#define DEF_LOGON_SIZE            "LogOnSize"
-//#define DEF_IS_LOGON_TIME         "IsLogOnTime"
-//#define DEF_LOGON_TIME            "LogOnTime"
-//#define DEF_CURRENT_FILECOUNT     "FileCount"
-////Shailesh -
 
-//#define DEF_FILTER                    "Filter"
 #define DEF_CANFILTERS              "CAN_Filters"
 #define DEF_MCNETFILTERS            "MCNET_Filters"
 #define DEF_J1939FILTERS            "J1939_Filters"

@@ -344,7 +344,7 @@ static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir);
 static void vCreateTimeModeMapping(HANDLE hDataEvent);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot();
-static BOOL bClientExist(string pcClientName, INT& Index);
+static BOOL bClientExist(std::string pcClientName, INT& Index);
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove);
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
@@ -366,7 +366,7 @@ static int WriteMessageIntoNSIDevice(STCAN_MSG sMessage);
 
 /* TZM specific Global variables */
 #define CAN_MAX_ERRSTR 256
-string sg_acErrStr = "";
+std::string sg_acErrStr = "";
 static UINT sg_unClientCnt = 0;
 #define MAX_CLIENT_ALLOWED 16
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
@@ -405,14 +405,10 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
     HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
@@ -834,7 +830,7 @@ static DWORD dwGetAvailableClientSlot()
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///----------------------------------------------------------------------------------------------
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -2582,7 +2578,7 @@ HRESULT CDIL_CAN_NSI::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///-------------------------------------------------------------------
-HRESULT CDIL_CAN_NSI::CAN_GetLastErrorString(string& /*acErrorStr*/)
+HRESULT CDIL_CAN_NSI::CAN_GetLastErrorString(std::string & /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

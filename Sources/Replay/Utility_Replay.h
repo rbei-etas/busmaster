@@ -36,6 +36,6 @@ VOID vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
 UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
                            CString& omStrCurMsg,
                            WORD wLogReplyTimeMode);
-BOOL bIsModeMismatch( ifstream& omInReplayFile,
+BOOL bIsModeMismatch( std::ifstream& omInReplayFile,
                       BOOL bReplayHexON,
                       WORD wLogReplayTimeMode);

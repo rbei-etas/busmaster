@@ -14,9 +14,9 @@
  */
 
 /**
- * \file      BusEmulation.cpp
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @file      BusEmulation.cpp
+ * @author    Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation of WinMain
  */
@@ -24,16 +24,13 @@
 #define STRICT
 #define _ATL_APARTMENT_THREADED
 #define _ATL_NO_AUTOMATIC_NAMESPACE
-#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
-// turns off ATL's hiding of some common and often safely ignored warning messages
-#define _ATL_ALL_WARNINGS
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS /* some CString constructors will be explicit */
+#define _ATL_ALL_WARNINGS /* turns off ATL's hiding of some common and often safely ignored warning messages */
 
 /* MFC includes */
 #include <atlbase.h>
 #include <atlcom.h>
 #include <time.h>
-
-using namespace ATL;
 
 /* C++ includes */
 #include <map>
@@ -42,9 +39,7 @@ using namespace ATL;
 #include "resource_BusSim.h"
 #include "BusEmulation.h"
 
-using namespace std;
-
-class CBusEmulationModule : public CAtlExeModuleT< CBusEmulationModule >
+class CBusEmulationModule : public ATL::CAtlExeModuleT< CBusEmulationModule >
 {
 public :
     DECLARE_LIBID(LIBID_BusEmulationLib)
@@ -53,8 +48,6 @@ public :
 
 CBusEmulationModule _AtlModule;
 
-
-//
 extern "C" int WINAPI _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/,
                                 LPTSTR /*lpCmdLine*/, int nShowCmd)
 {

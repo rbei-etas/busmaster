@@ -616,10 +616,10 @@ class ConfigContainer
 {
 public:
     int m_nChannel;
-    string m_strHWUri;
-    string m_strDbPath;
-    string m_strClusterId;
-    list<string> m_strECUList;
+    std::string m_strHWUri;
+    std::string m_strDbPath;
+    std::string m_strClusterId;
+    std::list<std::string> m_strECUList;
 };
 
 class sFibexConfigContainer:public ConfigContainer
@@ -635,7 +635,7 @@ struct sLinConfigContainer:public ConfigContainer
 {
 public:
     int m_nBaudRate;
-    string m_srtProtocolVerson;
+    std::string m_srtProtocolVerson;
     bool m_bOverwrite;
 };
 

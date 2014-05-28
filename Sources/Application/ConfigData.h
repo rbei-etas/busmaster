@@ -14,24 +14,22 @@
  */
 
 /**
- * \file      ConfigData.h
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+
 #pragma once
 #pragma pack(8)
-//#pragma pack(show)
 
+#include <string>
 #include "Utility/ComputeCheckSum.h"
 #include "DataTypes/ProjConfig_DataTypes.h"
-//#include "ProjectConfiguration\ProjectConfiguration_extern.h"
-
 
 class CConfigData : public CComputeCheckSum
 {
 private:
     CString m_omStrCurrFileName;
-    string m_strCurrProjName;
+    std::string m_strCurrProjName;
     static CConfigData m_ouConfigDetails;
     CConfigData(void);
 public:
@@ -45,11 +43,11 @@ public:
     void vSaveConfigFile();
     void vCloseConfigFile();
 
-    void vSetCurrProjName(string strCurrProjName);
-    string GetCurrProjName();
+    void vSetCurrProjName(std::string strCurrProjName);
+    std::string GetCurrProjName();
     BOOL bSetCurrProjInfo(PROJECTDATA* ProjData);
     BOOL bGetCurrProjInfo(PROJECTDATA* ProjData);
 
-    BOOL bSetData(LPVOID lpVoid, int nStreamLength, string strSectionName);
-    BOOL bGetData(void*& lpData,int& nStreamLength, string strSectionName);
+    BOOL bSetData(LPVOID lpVoid, int nStreamLength, std::string strSectionName);
+    BOOL bGetData(void*& lpData,int& nStreamLength, std::string strSectionName);
 };

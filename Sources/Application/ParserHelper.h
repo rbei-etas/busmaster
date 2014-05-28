@@ -3,7 +3,6 @@
 
 #include <stack>
 #include <list>
-using namespace std;
 
 #include "..\DataTypes\Cluster.h"
 
@@ -23,25 +22,22 @@ typedef enum _eCurrentSection
     SEC_SIGNAL_REP_DEC
 } eCurrentSection;
 
-
-
-
 struct LdfSignal
 {
-    string m_strName;
+    std::string m_strName;
     int m_nLength;
     unsigned int m_nDefVal;
-    list<string> m_strTxEcuList;
-    string m_strCompuMethodName;
+    std::list<std::string> m_strTxEcuList;
+    std::string m_strCompuMethodName;
     CCompuMethodEx m_ouCompuMethod;
 };
 struct LdfFrame
 {
     int m_nId;
-    string m_strName;
-    string m_strTxNode;
+    std::string m_strName;
+    std::string m_strTxNode;
     int nLength;
-    map<int, string> m_SignalMap;
+    std::map<int, std::string> m_SignalMap;
     void Clear()
     {
         m_nId = 0;
@@ -55,19 +51,17 @@ struct LdfFrame
 
 struct LdfCompuMethod
 {
-    string m_strName;
+    std::string m_strName;
     UINT m_unMin;
     UINT m_unMax;
     DOUBLE m_fFactor;
     DOUBLE m_fOffset;
-    string m_strUnit;
+    std::string m_strUnit;
 };
 
 class CParserHelper
 {
-
-
-    stack<eCurrentSection> m_ouSectionStack;
+    std::stack<eCurrentSection> m_ouSectionStack;
     eCurrentSection m_eCurrentSection;
     CHANNEL_CONFIG& m_ouCluster;
 
@@ -75,19 +69,18 @@ class CParserHelper
 
 public:
     int m_nBaudRate;
-    string m_strProtocol;
-    list<string> m_strIdList;
-    string m_strLastId;
+    std::string m_strProtocol;
+    std::list<std::string> m_strIdList;
+    std::string m_strLastId;
     int m_nLastFrameId;
-    list<string> m_strSlaveEcuList;
-    string m_strMasterEcu;
-    map<string, LdfSignal> m_LdfSignalList;
-    map<string, LdfCompuMethod> m_LdfCompuMethodMap;
-    map<int, LdfFrame> m_LdfFrameMap;
+    std::list<std::string> m_strSlaveEcuList;
+    std::string m_strMasterEcu;
+    std::map<std::string, LdfSignal> m_LdfSignalList;
+    std::map<std::string, LdfCompuMethod> m_LdfCompuMethodMap;
+    std::map<int, LdfFrame> m_LdfFrameMap;
 
     LdfFrame m_ouDiagMasterFrame;
     LdfFrame m_ouDiagSlaveFrame;
-
 
     LdfFrame m_ouLdfFrame;
 
@@ -100,21 +93,22 @@ public:
     int OnSectionClosed();
 
 
-    int nOnProtocolVersion(string strProtocolVer);
-    int nOnLinBaudRate(string strBaudRate);
+    int nOnProtocolVersion(std::string strProtocolVer);
+    int nOnLinBaudRate(std::string strBaudRate);
 
-    void GetStringSectionName(eCurrentSection ouCurrebtSection, string& strSectionName);
+    void GetStringSectionName(eCurrentSection ouCurrebtSection, std::string & strSectionName);
     int nOnSignal(LdfSignal& ouSignal);
-    int nAddSignaltoFrame(string strName, int nAt);
-    int nOnSignalEncoding(UINT m_unMin, UINT m_unMax, DOUBLE m_fFactor, DOUBLE m_fOffset, string m_strUnit);
-    int OnFrameStarted( string, int, string, string);
-    int OnSporadicOrCompuType(string strId);
+    int nAddSignaltoFrame(std::string strName, int nAt);
+    int nOnSignalEncoding(UINT m_unMin, UINT m_unMax, DOUBLE m_fFactor, DOUBLE m_fOffset, std::string m_strUnit);
+    int OnFrameStarted(std::string, int, std::string, std::string);
+    int OnSporadicOrCompuType(std::string strId);
 
     INT CreateNetwork();
+
 private:
     int nCreateEcus();
-    int nAaddFrameToEcu(string& strTxNode, map<string, string>& ouEcuFrameMap, FRAME_STRUCT& ouFrame);
-    int nCreateMapList(map<string, string>& strDes, list<string>& strSourceList);
+    int nAaddFrameToEcu(std::string & strTxNode, std::map<std::string, std::string>& ouEcuFrameMap, FRAME_STRUCT& ouFrame);
+    int nCreateMapList(std::map<std::string, std::string>& strDes, std::list<std::string>& strSourceList);
     int nAddDiadFrameToEcu(FRAME_STRUCT& ouFrame);
 };
 

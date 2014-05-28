@@ -51,10 +51,8 @@
 #define USAGE_EXPORT
 #include "LIN_ETAS_BOA_Extern.h"
 
-using namespace std;
-// CLIN_ETAS_BOA
-
 void vInitializeQueueConfig(UINT nChannel);
+
 BEGIN_MESSAGE_MAP(CLIN_ETAS_BOA, CWinApp)
 END_MESSAGE_MAP()
 
@@ -104,7 +102,7 @@ static void vInitialiseAllData(void)
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-BOOL bGetBOAInstallationPath(string& pcPath)
+BOOL bGetBOAInstallationPath(std::string & pcPath)
 {
     USES_CONVERSION;
 
@@ -693,7 +691,7 @@ HRESULT ManageFilters(BYTE byCode, UINT nChannel)
 }
 
 
-UINT nGetProtocolVersion(string& strProtocol)
+UINT nGetProtocolVersion(std::string& strProtocol)
 {
     UINT unVer = OCI_LIN_VERSION_2_1;
     if ( strProtocol == "LIN 1.1" || strProtocol == "LIN 1.2" || strProtocol == "LIN 1.1" || strProtocol == "LIN 1.3" )
@@ -750,10 +748,10 @@ static BOOL bLoadDataFromContr(ClusterConfig&  asDeviceConfig)
         // Set ECU Controller properties
         sg_asChannel[nChannel].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
 
-        list<FRAME_STRUCT> lstMsgNames;
+        std::list<FRAME_STRUCT> lstMsgNames;
         asDeviceConfig.m_ouFlexChannelConfig[nChannel].m_ouClusterInfo.GetFrames(lstMsgNames);
 
-        list<FRAME_STRUCT>::iterator itrFrame = lstMsgNames.begin();
+        std::list<FRAME_STRUCT>::iterator itrFrame = lstMsgNames.begin();
 
         //3. Create Tx Buffers
         for (INT nIndex = 0; nIndex < ( sizeof( sg_asChannel[nChannel].m_OCI_FlexRayConfig.messages ) / sizeof( sg_asChannel[nChannel].m_OCI_FlexRayConfig.messages[0] ) ); ++nIndex )
@@ -815,7 +813,7 @@ void vCopy_2_OCI_LIN_Data(OCI_LINTxMessage& DestMsg, const STLIN_MSG& SrcMsg)
  *
  * Checks for the existance of the client with the name pcClientName.
  */
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT & Index)
 {
     for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
     {
@@ -1070,23 +1068,15 @@ public:
         return S_OK;
     }
 
-
     HRESULT LIN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT LIN_GetLastErrorString(string& acErrorStr);
+    HRESULT LIN_GetLastErrorString(std::string & acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
-
-    //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-
-    //~MVN
     HRESULT LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
-
     HRESULT LIN_LoadDriverLibrary(void);
     HRESULT LIN_UnloadDriverLibrary(void);
 
@@ -1471,11 +1461,11 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
 HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
-    string acPath;
+    std::string acPath;
     /* Get BOA installation path from the registery */
     bGetBOAInstallationPath(acPath);
     /* Load cslproxy.dll library */
-    string acLIB_CSL = "";
+    std::string acLIB_CSL = "";
     acLIB_CSL.append(acPath);
     acLIB_CSL.append("\\");
     acLIB_CSL.append(LIB_CSL_NAME);
@@ -1489,7 +1479,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
         /* Load the OCI library to use CAN controller */
         if (hResult == S_OK)
         {
-            string acLIB_OCI;
+            std::string acLIB_OCI;
             acLIB_OCI.append(acPath);
             acLIB_OCI.append("\\");
             acLIB_OCI.append(LIB_OCI_NAME);
@@ -1510,7 +1500,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
             else
             {
                 hResult = S_FALSE;
-                string acErr;
+                std::string acErr;
                 acErr.append(acLIB_OCI);
                 acErr.append(" failed to load");
                 sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
@@ -1524,7 +1514,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
     }
     else
     {
-        string acErr;
+        std::string acErr;
         acErr.append(acLIB_CSL);
         acErr.append(_(" failed to load"));
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, acErr);
@@ -1855,7 +1845,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_StartHardware(void)
                 {
                     m_bLINConnected = TRUE;
 
-                    map<UINT, BOA_LINData>::iterator itr =  sg_asChannel[i].m_ouBoaLINData.begin();
+                    std::map<UINT, BOA_LINData>::iterator itr =  sg_asChannel[i].m_ouBoaLINData.begin();
                     for(; itr != sg_asChannel[i].m_ouBoaLINData.end(); itr++ )
                     {
                         nWriteMessage( itr->second.m_ouLinData );
@@ -1920,7 +1910,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_InitializeBuffers(void)
         ErrCode = (*sBOA_PTRS.m_sOCI.closeLINController)(sg_asChannel[i].m_OCI_HwHandle);
 
         //Now load the controller config and open the controller
-        map<UINT, BOA_LINData> :: iterator itr = sg_asChannel[i].m_ouBoaLINData.begin();
+        std::map<UINT, BOA_LINData>::iterator itr = sg_asChannel[i].m_ouBoaLINData.begin();
         for ( ; itr != sg_asChannel[i].m_ouBoaLINData.end(); itr++ )
         {
             sg_asChannel[i].m_OCI_FlexRayConfig.messages[itr->second.m_ouLinData.m_ucMsgID].frameType      = OCI_LIN_UNCONDITIONAL_FRAME;  // Declare that this will be an unconditional frame id for this controller.
@@ -2045,7 +2035,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_StopHardware(void)
                     // TO DO: LIN
                     //Clear the Data
                     EnterCriticalSection(&sg_asChannel[i].m_ouCriticalSection);
-                    map<UINT, BOA_LINData>::iterator itrBoaData = sg_asChannel[i].m_ouBoaLINData.begin();
+                    std::map<UINT, BOA_LINData>::iterator itrBoaData = sg_asChannel[i].m_ouBoaLINData.begin();
                     for ( ; itrBoaData != sg_asChannel[i].m_ouBoaLINData.end(); itrBoaData++ )
                     {
                         //No use of Return value;
@@ -2107,7 +2097,7 @@ HRESULT CDIL_LIN_ETAS_BOA::nWriteMessage(STLIN_MSG& ouData)
     uint32 nRemaining = 0;
     EnterCriticalSection(&sg_asChannel[ouData.m_ucChannel-1].m_ouCriticalSection);
 
-    map<UINT, BOA_LINData>::iterator itr = sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.find(ouData.m_ucMsgID);
+    std::map<UINT, BOA_LINData>::iterator itr = sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.find(ouData.m_ucMsgID);
 
     if ( itr != sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.end() )
     {
@@ -2148,7 +2138,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_Send(STLIN_MSG& pouFlxTxMsg)
     return hResult;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_GetLastErrorString(std::string & acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;

@@ -230,12 +230,10 @@ public:
     //Delete the memory allocated to a Inactive Database
     BOOL bDeAllocateMemoryInactive();
     // Return the array of DB file
-    void vGetDataBaseNames(CStringArray* pastrDBnames);
-    //MVN
-    void vGetRelativeDataBaseNames(string& omStrBasePath, CStringArray* pastrDBnames);
-    //~MVN
-    void vSetDataBaseNames(const CStringArray* pastrDBnames);
-    void bAddDbNameEntry(const CString& omDbFileName);
+    void vGetDataBaseNames(CStringArray * pastrDBnames);
+    void vGetRelativeDataBaseNames(std::string & omStrBasePath, CStringArray* pastrDBnames);
+    void vSetDataBaseNames(const CStringArray * pastrDBnames);
+    void bAddDbNameEntry(const CString & omDbFileName);
     // Validate dupliacte start bit value
     BOOL bIsDuplicateSignalStartBitValue( CString omStrMsgName,
                                           UINT unByteNum,
@@ -290,11 +288,11 @@ private:
                                     const INT nIndex );
     /* FLEXRAY related */
 public:
-    HRESULT hLoadFibexDBFile(CString omDBFile, list<Cluster>& ouClusterList);
+    HRESULT hLoadFibexDBFile(CString omDBFile, std::list<Cluster>& ouClusterList);
     //todo::has to be redesigned.
-    static HRESULT  hLoadLdfFile(string strDBFile, list<Cluster>& ouClusterList, list<LinChannelParam>& ouLinParams);
+    static HRESULT  hLoadLdfFile(std::string strDBFile, std::list<Cluster>& ouClusterList, std::list<LinChannelParam>& ouLinParams);
     //Simulation
-    HRESULT     hSimulateFibexCluster(CString strFilename, list<Cluster>& ouClusterList);
+    HRESULT     hSimulateFibexCluster(CString strFilename, std::list<Cluster>& ouClusterList);
     HRESULT     hSimulateFillClusterInfo(CString strName, Cluster& ouCluster);
     HRESULT     hSimulateFillClusterInfo(ABS_FLEXRAY_SPEC_CNTLR& ouController);
 
@@ -302,7 +300,7 @@ public:
     void        vClearFIBEXContainers();
     ABS_FIBEX_CONTAINER m_AbsFibexContainer;
 
-    list<CHANNEL_CONFIG> m_ouFlexrayChannelConfig;
+    std::list<CHANNEL_CONFIG> m_ouFlexrayChannelConfig;
 
     int         nGetDeviceConfig(ABS_DEVICE_CONFIG& ouDeviceConfig);
 

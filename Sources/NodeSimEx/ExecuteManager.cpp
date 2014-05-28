@@ -1864,7 +1864,7 @@ BOOL CExecuteManager::bDLLBuildAll(CStringArray* pomStrErrorFiles)
                             //if the file is opened save it
                             if(!(omStrFileName.Compare(omStrWndName)))
                             {
-                                // PTV To check if the file is already opened
+                                // To check if the file is already opened
                                 CFunctionEditorDoc* pDocCheck = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(pTempNode->
                                                                 m_sNodeInfo.m_omStrFileName);
                                 if (pDocCheck != NULL)

@@ -110,16 +110,13 @@ public:
         CString             m_omHardwareName;
         CString             m_omFirmware;
         CString             m_omHardwareDesc;
-
     } HARDWARE_CONTAINER, *PHARDWARE_CONTAINER;
 
-    typedef pair <int, PHARDWARE_CONTAINER> Int_Pair;
-    map <int, PHARDWARE_CONTAINER>::iterator m_pIter;
-    map <int, PHARDWARE_CONTAINER> mHardwareListMap;
+    typedef std::pair<int, PHARDWARE_CONTAINER> Int_Pair;
+    std::map<int, PHARDWARE_CONTAINER>::iterator m_pIter;
+    std::map<int, PHARDWARE_CONTAINER> mHardwareListMap;
 
     //Hardware container object
     PHARDWARE_CONTAINER m_pouHardwareContainer;
     void vSortHardwareItems();
-
-
 };

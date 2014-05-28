@@ -22,7 +22,7 @@ extern "C" int yywrap()
 	g_obParserHelper->CreateNetwork();
 	return 1;
 }
-extern "C" int  nParseLDFFile(string strInputFile, CHANNEL_CONFIG& ouCluster)
+extern "C" int  nParseLDFFile(std::string strInputFile, CHANNEL_CONFIG& ouCluster)
 {
 	FILE *fpInputFile = fopen(strInputFile.c_str(), "r");
 	if( (NULL != fpInputFile) )

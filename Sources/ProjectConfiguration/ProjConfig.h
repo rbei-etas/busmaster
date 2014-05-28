@@ -24,8 +24,10 @@
 
 #pragma once
 
-typedef map <string, SECTIONDATA*> SECTIONMAP;
+#include <map>
+#include <string>
 
+typedef std::map <std::string, SECTIONDATA*> SECTIONMAP;
 
 class CProjConfig
 {
@@ -45,8 +47,8 @@ public:
     // All the getters
     int GetSectionCount();
     void GetProjectDetail(PROJECTDATA& ProjData);
-    int GetSectionList(list<string>& SectionList);
-    bool GetSectionData(string SectionName, SECTIONDATA& SectionData);
+    int GetSectionList(std::list<std::string>& SectionList);
+    bool GetSectionData(std::string SectionName, SECTIONDATA& SectionData);
 
     // All the setters
     bool AddModifySectionDetail(const SECTIONDATA& SectionData);

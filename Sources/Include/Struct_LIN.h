@@ -23,21 +23,19 @@
  */
 
 #pragma once
-//MVN
-//libxml file includes
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include <libxml/xpath.h>
-//~MVN
+
 /* C++ includes */
 #include <string>
 #include <sstream>
 
-using namespace std;
+/* libxml includes */
+#include <libxml/xmlmemory.h>
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+
 /**
  * This structure is used for sending/reciving messages to/from the LIN network
  */
-
 typedef struct sTLIN_FRAME
 {
     unsigned char m_ucMsgID;        // Protected Identifier
@@ -84,11 +82,13 @@ enum eLinSleepEvent
     LIN_SLEEPMODE_WAKEUP,
     LIN_SLEEPMODE_STAYALIVE,
 };
+
 enum eCheckSumType
 {
     CHECKSUM_CLASSIC,
     CHECKSU_ENHANCED
 };
+
 enum eLinMsgType
 {
     LIN_MSG,
@@ -123,14 +123,6 @@ typedef struct SEVENT_SYNC_LIN
 
 };
 
-//typedef union sEVENT_INFO_LIN
-//{
-//  SEVENT_CHECKSUM ouChecksumEvent;
-//  SEVENT_RECEIVE  ouReceiveEvent;
-//  SEVENT_SLAVE_NORESP ouSlaveNoRespEvent;
-//  SEVENT_SYNC         ouSyncEvent;
-//} SEVENT_INFO_LIN;
-
 // This structure holds Error info
 struct sERROR_INFO_LIN
 {
@@ -155,7 +147,6 @@ struct sERROR_INFO_LIN
 };
 typedef sERROR_INFO_LIN SERROR_INFO_LIN;
 typedef sERROR_INFO_LIN* PSERROR_INFO_LIN;
-
 
 // This structure holds the error and the channel number
 typedef struct sLIN_ERR
@@ -253,36 +244,36 @@ private:
     }
 public:
 
-    string m_strHwUri;
+    std::string m_strHwUri;
     int m_nBaudRate;
-    string  m_strProtocolVersion;
+    std::string  m_strProtocolVersion;
 
 
 
     int     m_nItemUnderFocus;                   // item number under focus
     int     m_nBTR0BTR1;                         // packed value of bit timing register 0
     // and bit timing register 1
-    string  m_omStrCNF1;                         // bit timing register 1 information
-    string  m_omStrCNF2;                         // bit timing register 2 information
-    string  m_omStrCNF3;                         // bit timing register 3 information
-    string  m_omStrBTR0;                         // bit timing register 0 information
-    string  m_omStrBTR1;                         // bit timing register 1 information
-    string  m_omStrBaudrate;                     // baudrate information
-    string  m_omStrClock;                        // clock information
-    string  m_omStrSamplePercentage;             // sampling information
-    string  m_omStrSampling;                     // sampling information
-    string  m_omStrWarningLimit;                 // Warning limit of CAN Controller
-    string  m_omStrPropagationDelay;             // Propagation Delay
-    string  m_omStrSjw;
-    string  m_omStrAccCodeByte1[LIN_MSG_IDS];    // acceptance code byte1 information
-    string  m_omStrAccCodeByte2[LIN_MSG_IDS];    // acceptance code byte2 information
-    string  m_omStrAccCodeByte3[LIN_MSG_IDS];    // acceptance code byte3 information
-    string  m_omStrAccCodeByte4[LIN_MSG_IDS];    // acceptance code byte4 information
-    string  m_omStrAccMaskByte1[LIN_MSG_IDS];    // acceptance mask byte1 information
-    string  m_omStrAccMaskByte2[LIN_MSG_IDS];    // acceptance mask byte2 information
-    string  m_omStrAccMaskByte3[LIN_MSG_IDS];    // acceptance mask byte3 information
-    string  m_omStrAccMaskByte4[LIN_MSG_IDS];    // acceptance mask byte4 information
-    string  m_omHardwareDesc;                    // Hw description which user can
+    std::string  m_omStrCNF1;                         // bit timing register 1 information
+    std::string  m_omStrCNF2;                         // bit timing register 2 information
+    std::string  m_omStrCNF3;                         // bit timing register 3 information
+    std::string  m_omStrBTR0;                         // bit timing register 0 information
+    std::string  m_omStrBTR1;                         // bit timing register 1 information
+    std::string  m_omStrBaudrate;                     // baudrate information
+    std::string  m_omStrClock;                        // clock information
+    std::string  m_omStrSamplePercentage;             // sampling information
+    std::string  m_omStrSampling;                     // sampling information
+    std::string  m_omStrWarningLimit;                 // Warning limit of CAN Controller
+    std::string  m_omStrPropagationDelay;             // Propagation Delay
+    std::string  m_omStrSjw;
+    std::string  m_omStrAccCodeByte1[LIN_MSG_IDS];    // acceptance code byte1 information
+    std::string  m_omStrAccCodeByte2[LIN_MSG_IDS];    // acceptance code byte2 information
+    std::string  m_omStrAccCodeByte3[LIN_MSG_IDS];    // acceptance code byte3 information
+    std::string  m_omStrAccCodeByte4[LIN_MSG_IDS];    // acceptance code byte4 information
+    std::string  m_omStrAccMaskByte1[LIN_MSG_IDS];    // acceptance mask byte1 information
+    std::string  m_omStrAccMaskByte2[LIN_MSG_IDS];    // acceptance mask byte2 information
+    std::string  m_omStrAccMaskByte3[LIN_MSG_IDS];    // acceptance mask byte3 information
+    std::string  m_omStrAccMaskByte4[LIN_MSG_IDS];    // acceptance mask byte4 information
+    std::string  m_omHardwareDesc;                    // Hw description which user can
     // differentiate between the channels
     int     m_bAccFilterMode;                    // acceptance filter mode(0: single, 1: Dual)
     int     m_ucControllerMode;                  // Controller mode (1: Active, 2: Passive)
@@ -300,7 +291,7 @@ public:
 
     int     m_bDebug;                            // debug mode for channel driver
     int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)
-    string  m_omStrLocation;                     // location (serial port, ip-address, ...)
+    std::string  m_omStrLocation;                // location (serial port, ip-address, ...)
     int     m_bHWTimestamps;                     // timestamps from the controllers hardware
 };
 typedef sCONTROLLERDETAILSLIN   SCONTROLLER_DETAILS_LIN;
@@ -369,7 +360,7 @@ enum eLIN_CHECKSUM_TYPE
     LIN_CHECKSUM_ENHANCED,
 };
 
-const string sg_ListDIL_MSG_TYPE[LIN_MSG_TYPE_MAX] =
+const std::string sg_ListDIL_MSG_TYPE[LIN_MSG_TYPE_MAX] =
 {
     "LIN INVALID RESPONSE",
     "LIN MASTER RESPONSE",

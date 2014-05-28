@@ -46,7 +46,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -253,7 +252,7 @@ const int SIZE_CHAR     = sizeof(char);
 // TZM specific Global variables
 #define CAN_MAX_ERRSTR 256
 #define MAX_CLIENT_ALLOWED 16
-string sg_acErrStr = "";
+std::string sg_acErrStr = "";
 static UINT sg_unClientCnt = 0;
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT sg_unCntrlrInitialised = 0;
@@ -422,14 +421,10 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
-    //MVN
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj);
     HRESULT CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
@@ -1365,7 +1360,6 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
         sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];
         sg_HardwareIntr[nChannels].m_acDeviceName = acFirmware;
 
-        //Tobias - venkat
         _stprintf_s(acTempStr, 512, "%d", sg_ndNeoToOpen[nDevID].DeviceType);
         sg_HardwareIntr[nChannels].m_acNameInterface = acTempStr;
 
@@ -2199,8 +2193,8 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
                 asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
-                ostringstream oss;
-                oss << dec << sg_ndNeoToOpen[i].SerialNumber;
+                std::ostringstream oss;
+                oss << std::dec << sg_ndNeoToOpen[i].SerialNumber;
                 asSelHwInterface[i].m_acDescription = oss.str();
                 asSelHwInterface[i].m_bytNetworkID = m_bytNetworkIDs[i];
                 hResult = S_OK;
@@ -2433,7 +2427,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
             }
         }
         //CHAR chTemp[MAX_PATH];
-        string chTemp = "";
+        std::string chTemp = "";
         std::ostringstream stringStream;
         stringStream.clear();
 
@@ -2639,7 +2633,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_StopHardware(void)
     return hResult;
 }
 
-static BOOL bClientExist(string pcClientName, INT& Index)
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
@@ -2814,7 +2808,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
 /**
  * Function to retreive error string of last occurred error
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(std::string & acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;
@@ -3183,7 +3177,6 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
                 }
             }
             break;
-            //MVN
             case CNTR_STATUS:
             {
                 char pGetFireParms[] = "can1/Mode";
@@ -3200,7 +3193,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
                     lParam = defMODE_ACTIVE;
                 }
             }
-            //~MVN
+
             default:
             {
                 hResult = S_FALSE;

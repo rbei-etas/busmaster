@@ -38,41 +38,15 @@
 #define new DEBUG_NEW
 #endif
 
-using namespace MSXML2;
 extern MSXML2::IXMLDOMDocument2Ptr gpXMLDom;
-//
-//  Note!
-//
-//      If this DLL is dynamically linked against the MFC
-//      DLLs, any functions exported from this DLL which
-//      call into MFC must have the AFX_MANAGE_STATE macro
-//      added at the very beginning of the function.
-//
-//      For example:
-//
-//      extern "C" BOOL PASCAL ExportedFunction()
-//      {
-//          AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//          // normal function body here
-//      }
-//
-//      It is very important that this macro appear in each
-//      function, prior to any calls into MFC.  This means that
-//      it must appear as the first statement within the
-//      function, even before any object variable declarations
-//      as their constructors may generate calls into the MFC
-//      DLL.
-//
-//      Please see MFC Technical Notes 33 and 58 for additional
-//      details.
-//
-static string sg_omActiveVersion = VERSION_NONE;
+
+static std::string sg_omActiveVersion = VERSION_NONE;
 static HMODULE sg_HMODULE = NULL;
 
 
-typedef int (WINAPIV* PF_LOADFIBEXFILE)(string);
-typedef BOOL (WINAPIV* PF_WRITRFIBEXFILE)(string);
-typedef int (WINAPIV* PF_TRANSLATE)(eENTITY_FIBEX, string, BYTE*, BOOL);
+typedef int (WINAPIV* PF_LOADFIBEXFILE)(std::string);
+typedef BOOL (WINAPIV* PF_WRITRFIBEXFILE)(std::string);
+typedef int (WINAPIV* PF_TRANSLATE)(eENTITY_FIBEX, std::string, BYTE*, BOOL);
 typedef int (WINAPIV* PF_RESETFIBEXENTITY)(eENTITY_FIBEX, PVOID);
 typedef int (WINAPIV* PF_RETREIVECONNECTORINFO)(PVOID odConnectorList, AbsConnectorInfoList& omConnectorsInECUInfo);
 
@@ -84,38 +58,16 @@ static PF_RESETFIBEXENTITY      sg_FunResetFibexEntity = NULL;
 static PF_RETREIVECONNECTORINFO sg_FunRetreiveConnectorInfo = NULL;
 
 CPARSER_FIBEX* g_pouPARSER_FIBEX = NULL;
-//
-///**
-//* \brief         Returns the CPARSER_FIBEX object
-//* \param[out]    ppvInterface, is void pointer to take back the reference to CPARSER_FIBEX object
-//* \return        S_OK for success, S_FALSE for failure
-//* \authors       Arunkumar Karri
-//* \date          25.03.2013 Created
-//*/
-//USAGEMODE HRESULT GetPARSER_FIBEX(void** ppvInterface)
-//{
-//  HRESULT hResult = S_OK;
-//  if ( NULL == g_pouPARSER_FIBEX )
-//  {
-//      if ((g_pouPARSER_FIBEX = new CPARSER_FIBEX) == NULL)
-//      {
-//          hResult = S_FALSE;
-//      }
-//  }
-//  *ppvInterface = (void*) g_pouPARSER_FIBEX;  /* Doesn't matter even if g_pouPARSER_FIBEX is null */
-//
-//  return hResult;
-//}
 
 /******************************* CPARSER_FIBEX ******************************************/
 
 // To retrieve version information of the Fibex file in consideration
-string CPARSER_FIBEX::GetVersionInfo(const string& omFibexFilePath)
+std::string CPARSER_FIBEX::GetVersionInfo(const std::string& omFibexFilePath)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    string strVersion = "";
-    string strTempXMLPath = omFibexFilePath;
+    std::string strVersion = "";
+    std::string strTempXMLPath = omFibexFilePath;
 
     xmlDocPtr objXMLConfigFiledoc = NULL;
 
@@ -152,13 +104,13 @@ string CPARSER_FIBEX::GetVersionInfo(const string& omFibexFilePath)
     return strVersion;
 }
 
-string CPARSER_FIBEX::GetActiveVersion()
+std::string CPARSER_FIBEX::GetActiveVersion()
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     return sg_omActiveVersion;
 }
 
-int CPARSER_FIBEX::SetActiveVersion(string& omVersion)
+int CPARSER_FIBEX::SetActiveVersion(std::string & omVersion)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -170,13 +122,13 @@ int CPARSER_FIBEX::SetActiveVersion(string& omVersion)
     }
     else
     {
-        string omVersionNone = VERSION_NONE;
+        std::string omVersionNone = VERSION_NONE;
         nResult = SetActiveVersion(omVersionNone); // First unload
     }
 
-    string omDllNameBase = _T("FibexDll_");
-    string omExtn = _T("");
-    string omReqVersion;//_T(omVersion.GetAt(0));
+    std::string omDllNameBase = "FibexDll_";
+    std::string omExtn = "";
+    std::string omReqVersion;
     omReqVersion= omVersion[0];
 
     if (omReqVersion == VERSION_1)
@@ -201,49 +153,17 @@ int CPARSER_FIBEX::SetActiveVersion(string& omVersion)
         return VERSION_NOT_SUPPORTED;
     }
 
-
-    /*string omBuf = omDllNameBase + omExtn + _T(".dll");
-
-    sg_HMODULE = LoadLibrary((LPCTSTR) omBuf);
-    if (sg_HMODULE != NULL)
-    {
-    omBuf = _T("nLoadFibexFile_") + omExtn;
-    sg_FunLoadFibexFile = (PF_LOADFIBEXFILE) GetProcAddress(sg_HMODULE, omBuf);
-    ASSERT(sg_FunLoadFibexFile);
-
-    omBuf = _T("bWriteFibexFile_") + omExtn;
-    sg_FunWriteFibexFile = (PF_WRITRFIBEXFILE) GetProcAddress(sg_HMODULE, omBuf);
-    ASSERT(sg_FunWriteFibexFile);
-
-    omBuf = _T("bTranslate_") + omExtn;
-    sg_FunTranslate = (PF_TRANSLATE) GetProcAddress(sg_HMODULE, omBuf);
-    ASSERT(sg_FunTranslate);
-
-    omBuf = _T("ResetFibexEntity_") + omExtn;
-    sg_FunResetFibexEntity = (PF_RESETFIBEXENTITY) GetProcAddress(sg_HMODULE, omBuf);
-
-    omBuf = _T("hRetreiveConnectorInfo_") + omExtn;
-    sg_FunRetreiveConnectorInfo = (PF_RETREIVECONNECTORINFO) GetProcAddress(sg_HMODULE, omBuf);
-
-    sg_omActiveVersion = omVersion;
-    nResult = FCLASS_SUCCESS;
-    }
-    else
-    {
-    ASSERT(FALSE);
-    }
-    */
     return nResult;
 }
 
 // To load the Fibex file
-int CPARSER_FIBEX::LoadFibexFile(string omFibexFilePath,
+int CPARSER_FIBEX::LoadFibexFile(std::string omFibexFilePath,
                                  PABS_FIBEX_CONTAINER pAbsFibexContainer)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     int nResult = FCLASS_FAILURE;
-    string omVersion = GetVersionInfo(omFibexFilePath);
+    std::string omVersion = GetVersionInfo(omFibexFilePath);
 
     m_strFIBEXVersion = omVersion;
 
@@ -294,7 +214,7 @@ void CPARSER_FIBEX::Initialize()
 }
 
 // To load the Fibex file
-int CPARSER_FIBEX::LoadFibexFile_Generic(string omFibexFilePath, map<string, Cluster>& lstCluster)
+int CPARSER_FIBEX::LoadFibexFile_Generic(std::string omFibexFilePath, std::map<std::string, Cluster>& lstCluster)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -316,7 +236,7 @@ int CPARSER_FIBEX::LoadFibexFile_Generic(string omFibexFilePath, map<string, Clu
     return nResult;
 }
 
-void CPARSER_FIBEX::FillFibexStructurev2(map<string, Cluster>& lstCluster)
+void CPARSER_FIBEX::FillFibexStructurev2(std::map<std::string, Cluster>& lstCluster)
 {
     Cluster objCluster;
     CopyClusterDetails(objCluster);
@@ -326,7 +246,7 @@ void CPARSER_FIBEX::FillFibexStructurev2(map<string, Cluster>& lstCluster)
 
 void CPARSER_FIBEX::CopyClusterDetails(Cluster& objCluster)
 {
-    map<string, CClusterv2>::iterator itr = m_mapClusterDetails.begin();
+    std::map<std::string, CClusterv2>::iterator itr = m_mapClusterDetails.begin();
 
     while(itr != m_mapClusterDetails.end())
     {
@@ -339,9 +259,9 @@ void CPARSER_FIBEX::CopyClusterDetails(Cluster& objCluster)
 
         objCluster.m_mapChnls = objFlxCluster.m_mapChnls;
 
-        map<string,string> mapECUs;
+        std::map<std::string, std::string> mapECUs;
 
-        map<string, CECU>::iterator itrECU = m_mapECUDetails.begin();
+        std::map<std::string, CECU>::iterator itrECU = m_mapECUDetails.begin();
 
         while(itrECU != m_mapECUDetails.end())
         {
@@ -366,13 +286,13 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
     CConnector objBaseConn;
     CController objBaseCntrl;
 
-    map<string, CConnector>::iterator itrECUConn = objBaseECU.m_mapConnector.begin();
+    std::map<std::string, CConnector>::iterator itrECUConn = objBaseECU.m_mapConnector.begin();
 
     BOOL bContToChannel = FALSE;
 
     //map<string, map<UINT, FRAME_STRUCT> > mapTxFrames;
-    map<UINT, list<FRAME_STRUCT> > mapTxFrames;
-    map<UINT, list<FRAME_STRUCT> > mapRxFrames;
+    std::map<UINT, std::list<FRAME_STRUCT> > mapTxFrames;
+    std::map<UINT, std::list<FRAME_STRUCT> > mapRxFrames;
 
     BOOL bIsECUConn = FALSE;
     while(itrECUConn != objBaseECU.m_mapConnector.end())
@@ -391,7 +311,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
             bIsECUConn = TRUE;
 
-            map<string, CFrameTriggering>::iterator itr = objBaseConn.m_mapTxFrameTrigs.begin();
+            std::map<std::string, CFrameTriggering>::iterator itr = objBaseConn.m_mapTxFrameTrigs.begin();
 
             //map<UINT, list<FRAME_STRUCT> > mapTxFrames;
 
@@ -399,14 +319,14 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
             while(itr != objBaseConn.m_mapTxFrameTrigs.end())
             {
-                string strFrameTrigId = itr->first;
+                std::string strFrameTrigId = itr->first;
                 CFrameTriggering objBaseFrameTrig = itr->second;
 
                 CFrameTrig objFrameTrig = m_mapFramTrigIdToFrame[strFrameTrigId];
 
-                map<string, CFrame>::iterator itrSubFrame = m_mapFrameDetails.find(objFrameTrig.m_omFrameRef);
+                std::map<std::string, CFrame>::iterator itrSubFrame = m_mapFrameDetails.find(objFrameTrig.m_omFrameRef);
 
-                string strFrameRefs, strFrameRefToSearch;
+                std::string strFrameRefs, strFrameRefToSearch;
                 strFrameRefToSearch = objFrameTrig.m_omFrameRef;
 
                 if(itrSubFrame == m_mapFrameDetails.end())
@@ -432,7 +352,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                 objFrame.m_strFrameName = objBaseFrame.m_omShortName;
                 objFrame.m_strFrameId = objBaseFrame.m_omFrameId;
                 objFrame.m_nLength = objBaseFrame.m_unFrameLen;
-                string strChnlName = m_mapChannelRefToChnlName[objBaseConn.m_omChnlRef];
+                std::string strChnlName = m_mapChannelRefToChnlName[objBaseConn.m_omChnlRef];
 
                 /*if(objECU.m_strECUName == "ZGW")
                 {
@@ -451,7 +371,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                 }
                 else */
                 {
-                    map<string, CPdu_Instance>::iterator itrPduInst = objBaseFrame.m_mapPduInstList.begin();
+                    std::map<std::string, CPdu_Instance>::iterator itrPduInst = objBaseFrame.m_mapPduInstList.begin();
 
                     while(itrPduInst != objBaseFrame.m_mapPduInstList.end())
                     {
@@ -483,11 +403,11 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                         }
 
                         // Copying signal details
-                        map<string, CSigInstance>::iterator itrSig = objPduInst.m_mapSigInstDetails.begin();
+                        std::map<std::string, CSigInstance>::iterator itrSig = objPduInst.m_mapSigInstDetails.begin();
 
                         //PDU_STRUCT objPdu;
                         //objPdu.m_strPduId = PDU_DUMMY_2_0;
-                        list<SIGNAL_STRUCT> lstExistSigStrct;
+                        std::list<SIGNAL_STRUCT> lstExistSigStrct;
                         if(m_mapFrameIdToSignalDetails.find(objFrame.m_strFrameId + objPduStrct.m_strPduId) != m_mapFrameIdToSignalDetails.end())
                         {
                             lstExistSigStrct = m_mapFrameIdToSignalDetails[objFrame.m_strFrameId + objPduStrct.m_strPduId];
@@ -510,7 +430,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                                 {
                                     objSignal.m_ouEndianness = MOTOROLA;
                                 }
-                                string strSigRef = objSigInst.m_omSigRef;
+                                std::string strSigRef = objSigInst.m_omSigRef;
 
                                 CSignal objBaseSig = m_mapSignalDetails[strSigRef];
 
@@ -527,7 +447,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
                                     objSignal.m_nLength = objCodedType.m_sLength.m_unLength;
 
-                                    string strDataType;
+                                    std::string strDataType;
                                     strDataType = objCodedType.m_ouDataType;
 
                                     if ( (strDataType =="A_INT16") || (strDataType == "A_INT8") || (strDataType == "A_INT64") || (strDataType == "A_INT32") )
@@ -544,7 +464,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
                                         objSignal.m_ouCompuMethod.m_eCompuType = objCompuMthd.m_eCategory;
                                         ////objSignal.m_ouCompuMethod.m_uMethod =
-                                        string strUnitReference = objCompuMthd.m_omUnitRef;
+                                        std::string strUnitReference = objCompuMthd.m_omUnitRef;
 
                                         if(objCompuMthd.m_omUnitRef != INVALID_STRING)
                                         {
@@ -583,7 +503,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                     int i = 0;
                 }
 
-                map<int, CAbsSchdTiming>::iterator itrAbsTiming = objFrameTrig.mapAbsSchdTiming.begin();
+                std::map<int, CAbsSchdTiming>::iterator itrAbsTiming = objFrameTrig.mapAbsSchdTiming.begin();
 
                 while(itrAbsTiming != objFrameTrig.mapAbsSchdTiming.end())
                 {
@@ -600,18 +520,18 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                         objFrame.m_eSlotType = DYNAMIC;
                     }
 
-                    map<UINT, list<FRAME_STRUCT> >::iterator itrtxFrame = mapTxFrames.find(objFrame.m_nSlotId);
+                    std::map<UINT, std::list<FRAME_STRUCT> >::iterator itrtxFrame = mapTxFrames.find(objFrame.m_nSlotId);
 
                     BOOL bExisting = FALSE;
                     // Check if the list contains frames
                     //map<UINT, list<FRAME_STRUCT>> lstTxFrames;
-                    list<FRAME_STRUCT> lstFrames;
+                    std::list<FRAME_STRUCT> lstFrames;
                     if(itrtxFrame != mapTxFrames.end())
                     {
                         // Getting already existing list of frame from frame id
                         lstFrames = itrtxFrame->second;
 
-                        list<FRAME_STRUCT>::iterator itrFrameList = lstFrames.begin();
+                        std::list<FRAME_STRUCT>::iterator itrFrameList = lstFrames.begin();
 
                         while(itrFrameList != lstFrames.end())
                         {
@@ -676,7 +596,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
                     mapTxFrames[objFrame.m_nSlotId] = lstFrames;
 
-                    list<ECU_ID> lstECUIds;
+                    std::list<ECU_ID> lstECUIds;
 
                     if(objCluster.m_mapSlotEcu.find(objFrame.m_nSlotId) != objCluster.m_mapSlotEcu.end())
                     {
@@ -691,20 +611,20 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                 itr++;
             }
 
-            map<string, CFrameTriggering>::iterator itrRx = objBaseConn.m_mapRxFrameTrigs.begin();
+            std::map<std::string, CFrameTriggering>::iterator itrRx = objBaseConn.m_mapRxFrameTrigs.begin();
 
             //map<string, FRAME_STRUCT> lstRxFrames;
             //map<UINT, list<FRAME_STRUCT> > mapRxFrames;
             while(itrRx != objBaseConn.m_mapRxFrameTrigs.end())
             {
-                string strFrameTrigId = itrRx->first;
+                std::string strFrameTrigId = itrRx->first;
                 CFrameTriggering objBaseFrameTrig = itrRx->second;
 
                 CFrameTrig objFrameTrig = m_mapFramTrigIdToFrame[strFrameTrigId];
 
-                map<string, CFrame>::iterator itrSubFrame = m_mapFrameDetails.find(objFrameTrig.m_omFrameRef);
+                std::map<std::string, CFrame>::iterator itrSubFrame = m_mapFrameDetails.find(objFrameTrig.m_omFrameRef);
 
-                string strFrameRefs, strFrameRefToSearch;
+                std::string strFrameRefs, strFrameRefToSearch;
                 strFrameRefToSearch = objFrameTrig.m_omFrameRef;
 
                 if(itrSubFrame == m_mapFrameDetails.end())
@@ -724,10 +644,6 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                     continue;
                 }
 
-                //objFrame.m_bConsiderPdu = false;
-                /*objFrame.m_nBaseCycle = objFrameTrig.m_nBaseCycle;
-                objFrame.m_nReptition = objFrameTrig.m_nCycleRepetition;
-                objFrame.m_nSlotId = objFrameTrig.m_nSlotId;*/
                 objFrame.m_strFrameName = objBaseFrame.m_omShortName;
                 objFrame.m_strFrameId = objBaseFrame.m_omFrameId;
                 objFrame.m_nLength = objBaseFrame.m_unFrameLen;
@@ -737,20 +653,12 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                     int i = 0;
                 }
 
-                //if(objFrame.m_nSlotId <= objCluster.m_ouClusterInfo.m_shNUMBER_OF_STATIC_SLOTS)
-                //{
-                //  objFrame.m_eSlotType = STATIC;
-                //}
-                //else
-                //{
-                //  objFrame.m_eSlotType = DYNAMIC;
-                //}
-                string strChnlName = m_mapChannelRefToChnlName[objBaseConn.m_omChnlRef];
+                std::string strChnlName = m_mapChannelRefToChnlName[objBaseConn.m_omChnlRef];
 
                 ECHANNEL eChannel = GetChnlEnumFromChnlName(strChnlName);
                 objFrame.m_ouChannel = eChannel;
 
-                map<string, CPdu_Instance>::iterator itrPduInst = objBaseFrame.m_mapPduInstList.begin();
+                std::map<std::string, CPdu_Instance>::iterator itrPduInst = objBaseFrame.m_mapPduInstList.begin();
 
                 while(itrPduInst != objBaseFrame.m_mapPduInstList.end())
                 {
@@ -764,8 +672,6 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
                     if(objPduInst.m_strPduId == PDU_DUMMY_2_0)
                     {
-                        /*objPduStrct.m_strPduId = PDU_DUMMY_2_0;*/
-
                         objPduStrct.m_strPduId = PDU_DUMMY_2_0;
                         objPduStrct.m_nStartBit = 0;
 
@@ -783,7 +689,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                         objPduInst.m_mapSigInstDetails = objPdu.m_mapSigInstDetails;
                     }
 
-                    list<SIGNAL_STRUCT> lstExistSigStrct;
+                    std::list<SIGNAL_STRUCT> lstExistSigStrct;
                     if(m_mapFrameIdToSignalDetails.find(objFrame.m_strFrameId + objPduStrct.m_strPduId) != m_mapFrameIdToSignalDetails.end())
                     {
                         lstExistSigStrct = m_mapFrameIdToSignalDetails[objFrame.m_strFrameId + objPduStrct.m_strPduId];
@@ -793,7 +699,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                     {
 
                         // Copying signal details
-                        map<string, CSigInstance>::iterator itrSig = objPduInst.m_mapSigInstDetails.begin();
+                        std::map<std::string, CSigInstance>::iterator itrSig = objPduInst.m_mapSigInstDetails.begin();
 
                         while (itrSig != objPduInst.m_mapSigInstDetails.end())
                         {
@@ -810,7 +716,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                             {
                                 objSignal.m_ouEndianness = MOTOROLA;
                             }
-                            string strSigRef = objSigInst.m_omSigRef;
+                            std::string strSigRef = objSigInst.m_omSigRef;
 
                             CSignal objBaseSig = m_mapSignalDetails[strSigRef];
 
@@ -827,7 +733,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
                                 objSignal.m_nLength = objCodedType.m_sLength.m_unLength;
 
-                                string strDataType;
+                                std::string strDataType;
                                 strDataType = objCodedType.m_ouDataType;
 
 
@@ -848,7 +754,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                                     objSignal.m_ouCompuMethod.m_eCompuType = objCompuMthd.m_eCategory;
                                     ////objSignal.m_ouCompuMethod.m_uMethod =
 
-                                    string strUnitReference = objCompuMthd.m_omUnitRef;
+                                    std::string strUnitReference = objCompuMthd.m_omUnitRef;
 
                                     if(objCompuMthd.m_omUnitRef != INVALID_STRING)
                                     {
@@ -881,7 +787,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                     }
                 }
 
-                map<int, CAbsSchdTiming>::iterator itrAbsTimingRx = objFrameTrig.mapAbsSchdTiming.begin();
+                std::map<int, CAbsSchdTiming>::iterator itrAbsTimingRx = objFrameTrig.mapAbsSchdTiming.begin();
 
                 while(itrAbsTimingRx != objFrameTrig.mapAbsSchdTiming.end())
                 {
@@ -898,10 +804,10 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                         objFrame.m_eSlotType = DYNAMIC;
                     }
 
-                    map<UINT, list<FRAME_STRUCT>>::iterator itrRxFrame = mapRxFrames.find(objFrame.m_nSlotId);
+                    std::map<UINT, std::list<FRAME_STRUCT>>::iterator itrRxFrame = mapRxFrames.find(objFrame.m_nSlotId);
 
                     // Check if the slot contains already a frame
-                    list<FRAME_STRUCT> lstRxFrames;
+                    std::list<FRAME_STRUCT> lstRxFrames;
 
                     BOOL bExisting = FALSE;
                     if(itrRxFrame != mapRxFrames.end())
@@ -909,7 +815,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                         // Getting already existing list of frames for the slot
                         lstRxFrames = itrRxFrame->second;
 
-                        list<FRAME_STRUCT>::iterator itrRxLst = lstRxFrames.begin();
+                        std::list<FRAME_STRUCT>::iterator itrRxLst = lstRxFrames.begin();
 
                         while(itrRxLst != lstRxFrames.end())
                         {
@@ -977,7 +883,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
                     mapRxFrames[objFrame.m_nSlotId] = lstRxFrames;
 
-                    list<ECU_ID> lstECUIds;
+                    std::list<ECU_ID> lstECUIds;
 
                     if(objCluster.m_mapSlotEcu.find(objFrame.m_nSlotId) != objCluster.m_mapSlotEcu.end())
                     {
@@ -1009,19 +915,19 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                 }
             }
 
-            map<string, string> lstChnlRefs;
+            std::map<std::string, std::string> lstChnlRefs;
             lstChnlRefs = m_ECUIdToChnlRefs[objECU.m_strEcuId];
 
-            map<string, string>::iterator itrchnlRef = lstChnlRefs.begin();
+            std::map<std::string, std::string>::iterator itrchnlRef = lstChnlRefs.begin();
             while(itrchnlRef != lstChnlRefs.end())
             {
-                string strChnlRef = lstChnlRefs[itrchnlRef->first];
+                std::string strChnlRef = lstChnlRefs[itrchnlRef->first];
 
-                map<string, string>::iterator itrChnl = m_mapChannelRefToChnlName.find(strChnlRef);
+                std::map<std::string, std::string>::iterator itrChnl = m_mapChannelRefToChnlName.find(strChnlRef);
 
                 if(itrChnl != m_mapChannelRefToChnlName.end())
                 {
-                    string strChannelName = m_mapChannelRefToChnlName[strChnlRef];
+                    std::string strChannelName = m_mapChannelRefToChnlName[strChnlRef];
 
                     // Collecting ECU Channel type
                     if(objECU.m_ouChannel == CHANNEL_A && strChannelName == "B")
@@ -1086,21 +992,21 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
         // Adding switch signal to Pdu
         objActPdu.m_ouSwitchToSignals[objSwitchMuxPdu.omPduId] = objSwitchMuxPdu;
 
-        list<SIGNAL_STRUCT> lstStaticSigs;
+        std::list<SIGNAL_STRUCT> lstStaticSigs;
         lstStaticSigs.clear();
-        map<string, string>::iterator itrPdu = objPdu.m_ouStaticPart.m_mapPduIdToPdu.begin();
+        std::map<std::string, std::string>::iterator itrPdu = objPdu.m_ouStaticPart.m_mapPduIdToPdu.begin();
 
         CMuxPdu objstaticMuxPdu;
 
         while(itrPdu != objPdu.m_ouStaticPart.m_mapPduIdToPdu.end())
         {
-            string strPdu = itrPdu->second;;
+            std::string strPdu = itrPdu->second;;
             CPdu objStPdu = m_mapPduDetails[strPdu];
             objstaticMuxPdu.omPduId = strPdu;
-            list<SIGNAL_STRUCT> lstSigStrct;
+            std::list<SIGNAL_STRUCT> lstSigStrct;
             GetSignalStruct(objStPdu.m_mapSigInstDetails, lstSigStrct);
 
-            list<SIGNAL_STRUCT>::iterator itrSigStrct = lstSigStrct.begin();
+            std::list<SIGNAL_STRUCT>::iterator itrSigStrct = lstSigStrct.begin();
 
             while(itrSigStrct != lstSigStrct.end())
             {
@@ -1124,7 +1030,7 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
 
         if(lstStaticSigs.size() > 0)
         {
-            string omSwCode = MUX_STATIC;
+            std::string omSwCode = MUX_STATIC;
             objstaticMuxPdu.lstSignalStruct = lstStaticSigs;
             objActPdu.m_ouSwitchToSignals[omSwCode] = objstaticMuxPdu;
         }
@@ -1134,17 +1040,17 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
         int nDPBitLen = objPdu.m_ouDynPart.m_nDynPartBitLen;
         int nDPEndBit = nDPStartBit + nDPBitLen;
 
-        map<string, string>::iterator itrDPPdu = objPdu.m_ouDynPart.m_mapSwitchToPdu.begin();
+        std::map<std::string, std::string>::iterator itrDPPdu = objPdu.m_ouDynPart.m_mapSwitchToPdu.begin();
 
         CMuxPdu objDynMuxPdu;
-        list<SIGNAL_STRUCT> lstDynStaticSigs;
+        std::list<SIGNAL_STRUCT> lstDynStaticSigs;
         while(itrDPPdu != objPdu.m_ouDynPart.m_mapSwitchToPdu.end())
         {
             lstDynStaticSigs.clear();
-            string strDPPdu = itrDPPdu->second;;
+            std::string strDPPdu = itrDPPdu->second;;
             objDynMuxPdu.omPduId = strDPPdu;
 
-            string strSwFrameRef = "";
+            std::string strSwFrameRef = "";
             CPdu objDPPdu;
             CFrame objFrame;
             if(m_strFIBEXVersion == VERSION_2)
@@ -1159,11 +1065,11 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
 
             //map<string, CSigInstance>::iterator itrDPPdu = objDPPdu.m_mapSigInstDetails.begin();
 
-            list<SIGNAL_STRUCT> lstSigDStrct;
+            std::list<SIGNAL_STRUCT> lstSigDStrct;
 
             if(m_strFIBEXVersion == VERSION_2)
             {
-                map<string, CSigInstance> mapsigInst = m_mapSubFrameToSigInst[strDPPdu];
+                std::map<std::string, CSigInstance> mapsigInst = m_mapSubFrameToSigInst[strDPPdu];
                 GetSignalStruct(mapsigInst, lstSigDStrct);
             }
             else
@@ -1171,8 +1077,7 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
                 GetSignalStruct(objDPPdu.m_mapSigInstDetails, lstSigDStrct);
             }
 
-
-            list<SIGNAL_STRUCT>::iterator itrSigStruct = lstSigDStrct.begin();
+            std::list<SIGNAL_STRUCT>::iterator itrSigStruct = lstSigDStrct.begin();
 
             while(itrSigStruct != lstSigDStrct.end())
             {
@@ -1198,7 +1103,6 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
             if(lstDynStaticSigs.size() > 0)
             {
                 std::ostringstream stringStream;
-                //char swCode[1024];
                 stringStream << nSwitchCode;
                 objDynMuxPdu.lstSignalStruct = lstDynStaticSigs;
                 objActPdu.m_ouSwitchToSignals[stringStream.str()] = objDynMuxPdu;
@@ -1209,9 +1113,9 @@ void CPARSER_FIBEX::CopyPduDetails(CPdu objPdu, PDU_STRUCT& objActPdu)
     }
 }
 
-void CPARSER_FIBEX::GetSignalStruct(map<string, CSigInstance> mapSigInstance, list<SIGNAL_STRUCT>& listSignal)
+void CPARSER_FIBEX::GetSignalStruct(std::map<std::string, CSigInstance> mapSigInstance, std::list<SIGNAL_STRUCT>& listSignal)
 {
-    map<string, CSigInstance>::iterator itrSigInst = mapSigInstance.begin();
+    std::map<std::string, CSigInstance>::iterator itrSigInst = mapSigInstance.begin();
     while (itrSigInst != mapSigInstance.end())
     {
         CSigInstance objSigInst;
@@ -1227,7 +1131,7 @@ void CPARSER_FIBEX::GetSignalStruct(map<string, CSigInstance> mapSigInstance, li
         {
             objSignal.m_ouEndianness = MOTOROLA;
         }
-        string strSigRef = objSigInst.m_omSigRef;
+        std::string strSigRef = objSigInst.m_omSigRef;
 
         CSignal objBaseSig = m_mapSignalDetails[strSigRef];
 
@@ -1244,7 +1148,7 @@ void CPARSER_FIBEX::GetSignalStruct(map<string, CSigInstance> mapSigInstance, li
 
             objSignal.m_nLength = objCodedType.m_sLength.m_unLength;
 
-            string strDataType;
+            std::string strDataType;
             strDataType = objCodedType.m_ouDataType;
 
             //objSignal.m_omDataType = strDataType;
@@ -1261,8 +1165,7 @@ void CPARSER_FIBEX::GetSignalStruct(map<string, CSigInstance> mapSigInstance, li
                 SCOMPU_METHOD_v2& objCompuMthd = objCoding.m_odCompuMethodList.GetHead();
 
                 objSignal.m_ouCompuMethod.m_eCompuType = objCompuMthd.m_eCategory;
-                ////objSignal.m_ouCompuMethod.m_uMethod =
-                string strUnitReference = objCompuMthd.m_omUnitRef;
+                std::string strUnitReference = objCompuMthd.m_omUnitRef;
 
                 if(objCompuMthd.m_omUnitRef != INVALID_STRING)
                 {
@@ -1276,15 +1179,12 @@ void CPARSER_FIBEX::GetSignalStruct(map<string, CSigInstance> mapSigInstance, li
             }
         }
 
-        //string strSigIdForDesc = objSignal.m_omSigId;
-        //objSignal.m_ouDescriptorMap[strSigIdForDesc] = objBaseSig.m_omdeDesc;
-
         listSignal.push_back(objSignal);
         itrSigInst++;
     }
 }
 
-ECHANNEL CPARSER_FIBEX::GetChnlEnumFromChnlName(string strChannelName)
+ECHANNEL CPARSER_FIBEX::GetChnlEnumFromChnlName(std::string strChannelName)
 {
     if(strChannelName == "A")
     {
@@ -1298,50 +1198,11 @@ ECHANNEL CPARSER_FIBEX::GetChnlEnumFromChnlName(string strChannelName)
 
 void CPARSER_FIBEX::CopyCodingDetails(SIGNAL_STRUCT& objSignal, SCOMPU_METHOD_v2 objCompuMthd)
 {
-    /*POSITION pos4 = objCompuMthd.m_odInternalConstrs.GetHeadPosition();
-    while (pos4 != NULL)
-    {
-        SIG_INT_CONSTRAINT_EX tempConsts;
-        SCONSTRS_v2 &tempInterConstr = objCompuMthd.m_odInternalConstrs.GetNext(pos4);
-        tempConsts.m_eValid = eGetRangeValid(tempInterConstr.m_ouValidity);
-        tempConsts.m_sRange.m_dwLowerLimit = tempInterConstr.m_sLowerLimit.m_fValue;
-        tempConsts.m_sRange.m_dwUpperLimit = tempInterConstr.m_sUpperLimit.m_fValue;
-        objSignal.m_ouSigConstrnt.Add(tempConsts);
-    }
-
-    pos4 = objCompuMthd.m_odPhysConstrs.GetHeadPosition();
-    while (pos4 != NULL)
-    {
-        SIG_INT_CONSTRAINT_EX tempConsts;
-        SCONSTRS_v2 &tempPhylConstr = objCompuMthd.m_odPhysConstrs.GetNext(pos4);
-        tempConsts.m_eValid = eGetRangeValid(tempPhylConstr.m_ouValidity);
-        tempConsts.m_sRange.m_dwLowerLimit = tempPhylConstr.m_sLowerLimit.m_fValue;
-        tempConsts.m_sRange.m_dwUpperLimit = tempPhylConstr.m_sUpperLimit.m_fValue;
-        objSignal.m_ouSigConstrnt.Add(tempConsts);
-    }
-
-    if(objSignal.m_strSignalName == "VYAW_VEH")
-    {
-        int i = 0;
-    }*/
-
     CCompuMethodEx tempCompuMethod;
     tempCompuMethod.m_eCompuType = sCopyCompuType(objCompuMthd.m_ouCategory);
     sCopyCompuMethod(tempCompuMethod, objCompuMthd.m_sCompu_Internal_To_Phys);
     //ouTempSignalDef.m_ouCompuMethods.SetSize(ouTempSignalDef.m_ouCompuMethods.GetSize() + 1);
     objSignal.m_ouCompuMethod = (tempCompuMethod);
-
-
-    /*pos4 = m_AbsFibexContainer.m_omProcInfo.m_ouUnitSpec.m_odUnitList.GetHeadPosition();
-    while (pos4 != NULL)
-    {
-    ABS_UNIT& tempAbsUnit = m_AbsFibexContainer.m_omProcInfo.m_ouUnitSpec.m_odUnitList.GetNext(pos4);
-    if (tempAbsCompuMethod.m_omUnitRef == tempAbsUnit.m_omID)
-    {
-    ouTempSignalDef.m_omUnit = tempAbsUnit.m_omDisplayName;
-    pos4 = NULL;
-    }
-    }*/
 }
 
 
@@ -1469,7 +1330,7 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
     }
 }
 
-COMPU_EXPRESSION_MSGSIG CPARSER_FIBEX::sCopyCompuType(string ouCompuType)
+COMPU_EXPRESSION_MSGSIG CPARSER_FIBEX::sCopyCompuType(std::string ouCompuType)
 {
     COMPU_EXPRESSION_MSGSIG sReturnCompuEx = IDENTICAL_ENUM;
     if (ouCompuType == "IDENTICAL")
@@ -1504,7 +1365,7 @@ COMPU_EXPRESSION_MSGSIG CPARSER_FIBEX::sCopyCompuType(string ouCompuType)
     return sReturnCompuEx;
 }
 
-RANGE_VALID CPARSER_FIBEX::eGetRangeValid(string omValidity)
+RANGE_VALID CPARSER_FIBEX::eGetRangeValid(std::string omValidity)
 {
     RANGE_VALID eResult = VALID;
 
@@ -1524,13 +1385,13 @@ RANGE_VALID CPARSER_FIBEX::eGetRangeValid(string omValidity)
     return eResult;
 }
 
-HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(string omFibexFilePath)
+HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
 {
 
     int nError = 0;
-    string ErrorString = _T("");
+    std::string ErrorString = "";
     HRESULT hr = S_FALSE;
-    IXMLDOMDocument2Ptr pXMLDoc;
+    MSXML2::IXMLDOMDocument2Ptr pXMLDoc;
     MSXML2::IXMLDOMNamedNodeMapPtr pIXMLDOMNamedNodeMapPtr = NULL;
     LPVOID pfg = NULL;
     CoInitialize(NULL);
@@ -1554,14 +1415,6 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(string omFibexFilePath)
 
         if (pXMLDoc->load(variant_t (omFibexFilePath.c_str()))!=VARIANT_TRUE)
         {
-            //string strDBFileError;
-            //char chError[1024];
-            //sprintf(chError, "Failed to load DOM from   %s.   %s", "HI",
-            //  (LPCSTR)pXMLDoc->parseError->reason);
-            //ErrorString = chError;
-            /*ErrorString.Format("Failed to load DOM from   %s.   %s", "HI",
-            (LPCSTR)pXMLDoc->parseError->reason);*/
-            //nError = 1;
             return FCLASS_FAILURE;
         }
         else
@@ -1573,7 +1426,7 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(string omFibexFilePath)
 
             hr = pXMLDoc->get_documentElement(&m_pRooterElm);
 
-            string strVersion = "";
+            std::string strVersion = "";
 
             _variant_t varValue;
             // Get the Fibex version
@@ -1620,7 +1473,7 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(string omFibexFilePath)
             else
             {
                 //CWaitCursor omWaitCursor;
-                string strTemp, TempNodeName;
+                std::string strTemp, TempNodeName;
                 LONG lIdCount = 0, lChild = 0;
                 CComPtr<MSXML2::IXMLDOMNodeList> NodeListPtr;
                 MSXML2::IXMLDOMNodePtr iNode = NULL;
@@ -1683,10 +1536,10 @@ void CPARSER_FIBEX::LoadCodings(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrDOMNode = pChildList->Getitem(i);
-        string strTemp;
+        std::string strTemp;
         BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
-        string omNodeName = _com_util::ConvertBSTRToString(bstr);
-        string omModNodeName = _T("");
+        std::string omNodeName = _com_util::ConvertBSTRToString(bstr);
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
         if(omModNodeName == CODINGS_NODE)
@@ -1720,10 +1573,10 @@ void CPARSER_FIBEX::LoadCodingsUnit(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrDOMNode = pChildList->Getitem(i);
-        string strTemp;
+        std::string strTemp;
         BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
-        string omNodeName = _com_util::ConvertBSTRToString(bstr);
-        string omModNodeName = _T("");
+        std::string omNodeName = _com_util::ConvertBSTRToString(bstr);
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
         if(omModNodeName == UNITS_NODE)
@@ -1764,10 +1617,10 @@ void CPARSER_FIBEX::LoadElementsv2(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrDOMNode = pChildList->Getitem(i);
-        string strTemp;
+        std::string strTemp;
         BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
-        string omNodeName = _com_util::ConvertBSTRToString(bstr);
-        string omModNodeName = _T("");
+        std::string omNodeName = _com_util::ConvertBSTRToString(bstr);
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
         if(omModNodeName == SIGNALS_NODE)
@@ -1826,8 +1679,8 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode)
     HRESULT hResult = S_FALSE;
 
     BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
-    string omNodeName = _com_util::ConvertBSTRToString(bstr);
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(bstr);
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     //MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
@@ -1837,7 +1690,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode)
         hResult = ouCoding.Load(pCurrDOMNode);
         if (hResult == S_OK)
         {
-            string strCodingId = ouCoding.m_omID;
+            std::string strCodingId = ouCoding.m_omID;
             POSITION pos = lstCoding.AddTail(ouCoding);
 
             mapCodingPosition[strCodingId] = pos;
@@ -1847,28 +1700,15 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode)
     }
     else if(omModNodeName == UNIT)
     {
-        string strId;
+        std::string strId;
         CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         UNIT_EX objUnitEx;
         objUnitEx.m_omID=strId;
         DoIterate_ForLoad(pCurrDOMNode, objUnitEx);
 
-        string strUnitRef = objUnitEx.m_omID;
+        std::string strUnitRef = objUnitEx.m_omID;
         m_mapUnitRefToUnit[strUnitRef] = objUnitEx;
     }
-    /*if (omModNodeName == SHORT_NAME_NODE  )
-    {
-    string strTemp = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
-    if(pNodeParent != NULL)
-    {
-    string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
-    CNodeUtil::bRemoveTag(strNode, strNode);
-    if(strNode == UNIT)
-    {
-
-    }
-    }
-    }*/
 
     return hResult;
 }
@@ -1881,8 +1721,8 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode, UNIT_EX
     MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
 
     BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
-    string omNodeName = _com_util::ConvertBSTRToString(bstr);
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(bstr);
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
     if(omModNodeName == UNIT)
     {
@@ -1893,11 +1733,11 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode, UNIT_EX
         if(pNodeParent != NULL)
         {
             BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
-            string strNode =_com_util::ConvertBSTRToString(bstr);
+            std::string strNode =_com_util::ConvertBSTRToString(bstr);
             CNodeUtil::bRemoveTag(strNode, strNode);
             if(strNode == UNIT)
             {
-                string strUnitName  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+                std::string strUnitName  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
                 objUnit.m_omUnitName = strUnitName;
             }
@@ -1905,13 +1745,13 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode, UNIT_EX
     }
     else if(omModNodeName == U_DISP_NAME)
     {
-        string strDispName  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strDispName  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
         objUnit.m_omDisplayName = strDispName;
     }
     else if(omModNodeName == U_PHYS_DIM_REF)
     {
-        string strId = "";
+        std::string strId = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID-REF"));
         objUnit.m_omPHYSICAL_DIMENSION_REF  = ( strId );
     }
@@ -1942,7 +1782,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, UNIT_E
 
 void CPARSER_FIBEX::CollectClusterinfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
-    string strTemp;
+    std::string strTemp;
     long lTotal = 0;
     MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
 
@@ -1952,15 +1792,15 @@ void CPARSER_FIBEX::CollectClusterinfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
     {
         MSXML2::IXMLDOMNodePtr pCurrChild = pChildList->Getitem(i);
         BSTR bstr = pCurrChild->GetnodeName().GetBSTR();
-        string omNodeName = _com_util::ConvertBSTRToString(bstr);
+        std::string omNodeName = _com_util::ConvertBSTRToString(bstr);
 
         //MSXML2::IXMLDOMNodeListPtr pShortName = pCurrChild->selectNodes(_bstr_t("//fx:ELEMENT-REVISIONS"));
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
         if (omModNodeName == CLUSTER_NODE)
         {
             CClusterv2 objCluster;
-            string strId = "";
+            std::string strId = "";
             bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrChild, strId , _bstr_t("ID"));
 
             if(bValidFrameId == true)
@@ -1984,7 +1824,7 @@ void CPARSER_FIBEX::CollectClusterinfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 
 void CPARSER_FIBEX::CollectECUInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
-    string strTemp;
+    std::string strTemp;
     long lTotal = 0;
     MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
 
@@ -1993,17 +1833,14 @@ void CPARSER_FIBEX::CollectECUInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrChild = pChildList->Getitem(i);
-        string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+        std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
 
-
-
-        //MSXML2::IXMLDOMNodeListPtr pShortName = pCurrChild->selectNodes(_bstr_t("//fx:ELEMENT-REVISIONS"));
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
         if (omModNodeName == ECU_NODE)
         {
             CECU objECU;
-            string strId = "";
+            std::string strId = "";
             bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrChild, strId , _bstr_t("ID"));
 
             CString strTemp = strId.c_str();
@@ -2017,9 +1854,9 @@ void CPARSER_FIBEX::CollectECUInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 
             m_mapECUDetails[objECU.m_omECUId] = objECU;
 
-            map<string,string> mapECUs;
+            std::map<std::string, std::string> mapECUs;
 
-            map<string, map<string,string>>::iterator itrChnlRef = m_mapChnlToECUDetails.begin();
+            std::map<std::string, std::map<std::string, std::string>>::iterator itrChnlRef = m_mapChnlToECUDetails.begin();
 
             if(itrChnlRef != m_mapChnlToECUDetails.end())
             {
@@ -2038,7 +1875,7 @@ void CPARSER_FIBEX::CollectECUInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 
 void CPARSER_FIBEX::CollectFrameTrigInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
-    string strTemp;
+    std::string strTemp;
     long lTotal = 0;
     MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
 
@@ -2047,15 +1884,14 @@ void CPARSER_FIBEX::CollectFrameTrigInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrChild = pChildList->Getitem(i);
-        string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+        std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
 
-        //MSXML2::IXMLDOMNodeListPtr pShortName = pCurrChild->selectNodes(_bstr_t("//fx:ELEMENT-REVISIONS"));
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
         if (omModNodeName == CHANNEL_NODE)
         {
             //CFrame objFrame;
-            string strId = "";
+            std::string strId = "";
             bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrChild, strId , _bstr_t("ID"));
 
             /*if(bValidFrameId == true)
@@ -2063,7 +1899,7 @@ void CPARSER_FIBEX::CollectFrameTrigInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
             objFrame.m_omFrameId = strId;
             }*/
 
-            string strChnlRef = strId;
+            std::string strChnlRef = strId;
             /*map<string, map<string,string>>::iterator itrChannel = m_mapChnlToECUDetails.find(strChnlRef);
 
             if(itrChannel != m_mapChnlToECUDetails.end())*/
@@ -2083,7 +1919,7 @@ void CPARSER_FIBEX::CollectFrameTrigInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 }
 
 
-HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrameTrig& objFrameTrig, string strChannelRef)
+HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrameTrig& objFrameTrig, std::string strChannelRef)
 {
     HRESULT hResult = S_FALSE;
 
@@ -2095,7 +1931,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrame
     for (int i = 0; i < lTotal; i++)
     {
         pCurrChild = pChildList->Getitem(i);
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         omModNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
         hResult = Process_Load(pCurrChild, objFrameTrig, strChannelRef);
 
@@ -2107,13 +1943,13 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrame
     return hResult;
 }
 
-HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrameTrig& objFrameTrig, string strChannelRef)
+HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrameTrig& objFrameTrig, std::string strChannelRef)
 {
     HRESULT hResult = S_OK;
-    string strTemp;
+    std::string strTemp;
     char* stopstring;
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if(omModNodeName == FRAME_TRIGGERINGS_NODE)
@@ -2122,15 +1958,15 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == FLEXRAY_CHANNEL_NAME_NODE)
     {
-        string strChannelName = ( _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()) );
+        std::string strChannelName = ( _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()) );
         m_mapChannelRefToChnlName[strChannelRef] = strChannelName;
     }
     else if(omModNodeName == FRAME_TRIGGERING_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
 
-        string strFrameTrigId = strId;
+        std::string strFrameTrigId = strId;
         objFrameTrig.m_omFramTrigId = strId;
         DoIterate_ForLoad(pCurrDOMNode, objFrameTrig, strChannelRef);
     }
@@ -2145,7 +1981,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if (omModNodeName == FRAME_REF_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID-REF"));
         objFrameTrig.m_omFrameRef  = ( strId );
 
@@ -2153,7 +1989,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if( omModNodeName == SUB_FRAME_REF_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID-REF"));
         objFrameTrig.m_omFrameRef  = ( strId );
 
@@ -2179,7 +2015,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 
 void CPARSER_FIBEX::CollectFrameInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
-    string strTemp;
+    std::string strTemp;
     long lTotal = 0;
     MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
 
@@ -2188,15 +2024,14 @@ void CPARSER_FIBEX::CollectFrameInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrChild = pChildList->Getitem(i);
-        string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+        std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
 
-        //MSXML2::IXMLDOMNodeListPtr pShortName = pCurrChild->selectNodes(_bstr_t("//fx:ELEMENT-REVISIONS"));
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
         if (omModNodeName == FRAME_NODE)
         {
             CFrame objFrame;
-            string strId = "";
+            std::string strId = "";
             bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrChild, strId , _bstr_t("ID"));
 
             if(bValidFrameId == true)
@@ -2226,7 +2061,7 @@ void CPARSER_FIBEX::CollectFrameInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
         if(omModNodeName == PDU_NODE)
         {
             CPdu objPdu;
-            string strId = "";
+            std::string strId = "";
             bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrChild, strId , _bstr_t("ID"));
 
             if(bValidFrameId == true)
@@ -2258,7 +2093,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CClust
     for (int i = 0; i < lTotal; i++)
     {
         pCurrChild = pChildList->Getitem(i);
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         omModNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
         hResult = Process_Load(pCurrChild, objCluster);
 
@@ -2275,20 +2110,20 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CClust
 HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CClusterv2& objCluster)
 {
     HRESULT hResult = S_FALSE;
-    string strTemp;
+    std::string strTemp;
     char* stopstring;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if(omModNodeName == SHORT_NAME_NODE)
     {
-        string strShortName = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
+        std::string strShortName = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
         if(pNodeParent != NULL)
         {
-            string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
+            std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
             if(strNode == CLUSTER_NODE)
             {
@@ -2299,11 +2134,11 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CClust
     }
     if (omModNodeName == PROTOCOL_NODE)
     {
-        string strProtocol = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
+        std::string strProtocol = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         CNodeUtil::bReadAttribute(pCurrDOMNode, strTemp , _bstr_t("xsi:type"));
 
         objCluster.m_omProjectType = (strTemp.c_str());
-        string strTemp = strProtocol.c_str();
+        std::string strTemp = strProtocol.c_str();
 
         if(strTemp.compare("FlexRay") == 0)
         {
@@ -2319,7 +2154,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CClust
         CNodeUtil::bReadAttribute(pCurrDOMNode, strTemp , _bstr_t("ID-REF"));
         //objCluster.m_omChannelRef = strTemp;
 
-        string strChnlRef = strTemp;
+        std::string strChnlRef = strTemp;
         objCluster.m_mapChnls[strChnlRef] = strChnlRef;
     }
     else if (omModNodeName == COLD_START_ATTEMPTS_NODE)
@@ -2497,7 +2332,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CECU& 
     for (int i = 0; i < lTotal; i++)
     {
         pCurrChild = pChildList->Getitem(i);
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         omModNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
         hResult = Process_Load(pCurrChild, objECU);
         pCurrChild.Release();
@@ -2511,9 +2346,9 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CECU& 
 HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& objECU)
 {
     HRESULT hResult = S_OK;
-    string strTemp;
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string strTemp;
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
@@ -2523,7 +2358,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
         strTemp = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         if(pNodeParent != NULL)
         {
-            string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
+            std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
             if(strNode == ECU_NODE)
             {
@@ -2544,13 +2379,13 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     }
     if(omModNodeName == CONTROLLER_NODE)
     {
-        string strId;
+        std::string strId;
         CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         objECU.m_strCurrControllerRef = strId;
         objECU.objController.clear();
         hResult = DoIterate_ForLoad(pCurrDOMNode, objECU);
 
-        string strCtrlId = strId;
+        std::string strCtrlId = strId;
         objECU.m_mapController[objECU.m_strCurrControllerRef] = objECU.objController;
     }
     else if(omModNodeName == CONTROLLERS_NODE)
@@ -2574,12 +2409,12 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     }
     else if(omModNodeName == CONNECTOR_NODE)
     {
-        string strId;
+        std::string strId;
         CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         objECU.m_strCurrConnectorRef = strId;
         objECU.objConnector.clear();
         hResult = DoIterate_ForLoad(pCurrDOMNode, objECU);
-        string strConnId = strId;
+        std::string strConnId = strId;
         objECU.m_mapConnector[objECU.m_strCurrConnectorRef] = objECU.objConnector;
     }
     else if(omModNodeName == INPUTS_NODE)
@@ -2601,17 +2436,17 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     else if(omModNodeName == FRAME_TRIGGERING_REF_NODE)
     {
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
-        string strRef = "";
+        std::string strRef = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
         CFrameTriggering objFrameTrig;
         objECU.objConnector.m_omCurrFrameTrigId = strRef;
         objFrameTrig.m_omFrameRef = strRef;
 
-        string strReference = strRef;
+        std::string strReference = strRef;
 
         if(pNodeParent != NULL)
         {
-            string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
+            std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
             if(strNode == INPUT_PORT)
             {
@@ -2641,29 +2476,29 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     }
     else if(omModNodeName == SIGNAL_INSTANCE_REF_NODE)
     {
-        string strRef = "";
+        std::string strRef = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
 
         if(objECU.objConnector.m_mapRxFrameTrigs.find(objECU.objConnector.m_omCurrFrameTrigId) != objECU.objConnector.m_mapRxFrameTrigs.end())
         {
             CFrameTriggering& objFrameTrig = objECU.objConnector.m_mapRxFrameTrigs[objECU.objConnector.m_omCurrFrameTrigId];
-            string strReference = strRef;
+            std::string strReference = strRef;
             objFrameTrig.m_mapSigInst[strReference] = strRef;
         }
         else if(objECU.objConnector.m_mapTxFrameTrigs.find(objECU.objConnector.m_omCurrFrameTrigId) != objECU.objConnector.m_mapTxFrameTrigs.end())
         {
             CFrameTriggering& objFrameTrig = objECU.objConnector.m_mapTxFrameTrigs[objECU.objConnector.m_omCurrFrameTrigId];
-            string strReference = strRef;
+            std::string strReference = strRef;
             objFrameTrig.m_mapSigInst[strReference] = strRef;
         }
     }
     else if(omModNodeName == CHANNEL_REF_NODE)
     {
-        string strRef = "";
+        std::string strRef = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
         //string strChnlRef = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         objECU.objConnector.m_omChnlRef = strRef;
-        map<string, string> lstChnlRefs;
+        std::map<std::string, std::string> lstChnlRefs;
 
         if(m_ECUIdToChnlRefs.find(objECU.m_omECUId) != m_ECUIdToChnlRefs.end())
         {
@@ -2675,7 +2510,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     else if(omModNodeName == CONTROLLER_REF_NODE)
     {
         //string strCntrlRef = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
-        string strRef = "";
+        std::string strRef = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
         objECU.objConnector.m_omCntrlRef = strRef;
     }
@@ -2778,7 +2613,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     else if (omModNodeName == ALLOW_HALT_DUE_TO_CLOCK_NODE)
     {
         strTemp = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
-        string strTempTemp = strTemp.c_str();
+        std::string strTempTemp = strTemp.c_str();
         if ( !strTempTemp.compare("true"))
         {
             objECU.objController.m_bAllowHaltDewToClock = true;
@@ -2821,7 +2656,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     else if (omModNodeName == SINGLE_SLOT_ENABLED_NODE)
     {
         strTemp = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
-        string strTempTemp = strTemp.c_str();
+        std::string strTempTemp = strTemp.c_str();
         if ( !strTempTemp.compare("true"))
         {
             objECU.objController.m_bSingleSlotEnable = true;
@@ -2848,7 +2683,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
 
 void CPARSER_FIBEX::CollectSignalInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
-    string strTemp;
+    std::string strTemp;
     long lTotal = 0;
     MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
 
@@ -2857,15 +2692,14 @@ void CPARSER_FIBEX::CollectSignalInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
     for (int i = 0; i < lTotal; i++)
     {
         MSXML2::IXMLDOMNodePtr pCurrChild = pChildList->Getitem(i);
-        string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+        std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
 
-        //MSXML2::IXMLDOMNodeListPtr pShortName = pCurrChild->selectNodes(_bstr_t("//fx:ELEMENT-REVISIONS"));
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
         if (omModNodeName == SIGNAL_NODE)
         {
             CSignal objSignal;
-            string strId = "";
+            std::string strId = "";
             bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrChild, strId , _bstr_t("ID"));
 
             if(bValidFrameId == true)
@@ -2901,7 +2735,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrame
     for (int i = 0; i < lTotal; i++)
     {
         pCurrChild = pChildList->Getitem(i);
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         omModNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
         hResult = Process_Load(pCurrChild, objFrame);
 
@@ -2925,7 +2759,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CPdu& 
     for (int i = 0; i < lTotal; i++)
     {
         pCurrChild = pChildList->Getitem(i);
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         omModNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
         hResult = Process_Load(pCurrChild, objPdu);
 
@@ -2948,7 +2782,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CSigna
     for (int i = 0; i < lTotal; i++)
     {
         pCurrChild = pChildList->Getitem(i);
-        string omModNodeName = _T("");
+        std::string omModNodeName = "";
         omModNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
         hResult = Process_Load(pCurrChild, objSignal);
 
@@ -2964,13 +2798,13 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CSigna
 HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& objPdu)
 {
     HRESULT hResult = S_OK;
-    string strTemp;
+    std::string strTemp;
     //char* stopstring;
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
-    string strNode = "";
+    std::string strNode = "";
     MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
     if(pNodeParent != NULL)
     {
@@ -2980,7 +2814,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
 
     if(omModNodeName == SHORT_NAME_NODE)
     {
-        string strShortName  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strShortName  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
         if(strNode == PDU_NODE)
         {
             objPdu.m_ouMuxSwitch.m_nSwitchBitLen = 0;
@@ -3001,13 +2835,13 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == BYTE_LENGTH_NODE)
     {
-        string strByteLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strByteLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
         objPdu.m_nLength =  atoi(strByteLen.c_str());
     }
     else if(omModNodeName == BIT_LENGTH_NODE)
     {
-        string strBitLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strBitLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
         if(strNode == SEGMENT_POSITION_NODE)
         {
@@ -3027,7 +2861,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == PDU_TYPE_NODE)
     {
-        string strPduType  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strPduType  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
         objPdu.m_strPduType =  strPduType;
     }
@@ -3037,7 +2871,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == SIGNAL_INSTANCE_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         CSigInstance objSignalInst;
         if(bValidFrameId == true)
@@ -3053,7 +2887,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == BIT_POSITION_NODE)
     {
-        string strBitPos = "";
+        std::string strBitPos = "";
         strBitPos  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
 
         if(strNode == SIGNAL_INSTANCE_NODE)
@@ -3086,7 +2920,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == IS_HIGH_LOW_BYTE_ORDER_NODE)
     {
-        string strBitOrder = "";
+        std::string strBitOrder = "";
         strBitOrder  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
 
         if(strNode == SIGNAL_INSTANCE_NODE)
@@ -3154,7 +2988,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == SIGNAL_REF_NODE)
     {
-        string strRef = "";
+        std::string strRef = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
 
         CSigInstance& objSigInst = objPdu.m_mapSigInstDetails[objPdu.m_omCurrSigInstId];
@@ -3186,7 +3020,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     else if(omModNodeName == DYNAMIC_PART_NODE || omModNodeName == SUB_FRAME_NODE)
     {
         objPdu.m_bIsStaticPart = FALSE;
-        string strRef = "";
+        std::string strRef = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID"));
 
         objPdu.m_ouDynPart.m_ouDynPartId = strRef;
@@ -3213,7 +3047,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == SWITCH_CODE_NODE)
     {
-        string swCode = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
+        std::string swCode = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         objPdu.m_ouDynPart.m_ouCurrSwitchCode = swCode;
         if(strNode == SUB_FRAME_NODE)
         {
@@ -3226,7 +3060,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == PDU_REF_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID-REF"));
         if(strNode == SWITCHED_PDU_INSTANCE_NODE)
         {
@@ -3239,7 +3073,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
     }
     else if(omModNodeName == STATIC_PART_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         objPdu.m_bIsStaticPart = TRUE;
         objPdu.m_ouStaticPart.m_ouStaticPartId = strId;
@@ -3258,13 +3092,13 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
 HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame& objFrame)
 {
     HRESULT hResult = S_OK;
-    string strTemp;
+    std::string strTemp;
     //char* stopstring;
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
-    string strNode = "";
+    std::string strNode = "";
     MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
     if(pNodeParent != NULL)
     {
@@ -3274,13 +3108,13 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 
     if(omModNodeName == BYTE_LENGTH_NODE)
     {
-        string strByteLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strByteLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
         objFrame.m_unFrameLen =  atoi(strByteLen.c_str());
     }
     else if(omModNodeName == BIT_LENGTH_NODE)
     {
-        string strBitLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
+        std::string strBitLen  = (_com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR()));
 
         if(strNode == SWITCH_NODE)
         {
@@ -3297,12 +3131,12 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if (omModNodeName == SHORT_NAME_NODE)
     {
-        string strShortName  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
+        std::string strShortName  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
 
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
         if(pNodeParent != NULL)
         {
-            string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
+            std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
             if(strNode == FRAME_NODE)
             {
@@ -3327,7 +3161,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == PDU_INSTANCE_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         CPdu_Instance objPduInstnc;
         if(bValidFrameId == true)
@@ -3342,7 +3176,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == PDU_REF_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID-REF"));
 
         CPdu_Instance& objPduInst = objFrame.m_mapPduInstList[objFrame.m_omCurrPduId];
@@ -3355,7 +3189,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == SIGNAL_INSTANCE_NODE)
     {
-        string strId = "";
+        std::string strId = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strId , _bstr_t("ID"));
         CSigInstance objSignalInst;
         if(bValidFrameId == true)
@@ -3373,14 +3207,14 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == BIT_POSITION_NODE)
     {
-        string strBitPos = "";
+        std::string strBitPos = "";
         strBitPos  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
 
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
 
         if(pNodeParent != NULL)
         {
-            string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
+            std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
 
             if(strNode == SIGNAL_INSTANCE_NODE)
@@ -3408,14 +3242,14 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == IS_HIGH_LOW_BYTE_ORDER_NODE)
     {
-        string strBitOrder = "";
+        std::string strBitOrder = "";
         strBitOrder  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
 
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
 
         if(pNodeParent != NULL)
         {
-            string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
+            std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
 
             if(strNode == SIGNAL_INSTANCE_NODE)
@@ -3475,7 +3309,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == SUB_FRAME_NODE)
     {
-        string strRef = "";
+        std::string strRef = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID"));
 
         objFrame.m_objPdu.m_ouDynPart.m_ouDynPartId = strRef;
@@ -3483,14 +3317,14 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == SWITCH_CODE_NODE)
     {
-        string swCode = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
+        std::string swCode = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         objFrame.m_objPdu.m_ouDynPart.m_ouCurrSwitchCode = swCode;
 
         objFrame.m_objPdu.m_ouDynPart.m_mapSwitchToPdu[swCode] = objFrame.m_objPdu.m_ouDynPart.m_ouDynPartId;
     }
     else if(omModNodeName == SIGNAL_REF_NODE)
     {
-        string strRef = "";
+        std::string strRef = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
 
         CSigInstance& objSigInst = objFrame.m_mapSigInstDetails[objFrame.m_omCurrSigInstId];
@@ -3498,7 +3332,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
     }
     else if(omModNodeName == SUB_FRAME_REF_NODE)
     {
-        string strRef = "";
+        std::string strRef = "";
         bool bValidFrameId = CNodeUtil::bReadAttribute(pCurrDOMNode, strRef , _bstr_t("ID-REF"));
 
         m_SubFrameToFrame[strRef] = objFrame.m_omFrameId;
@@ -3506,9 +3340,9 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
         if(strNode == SIGNAL_INSTANCE_NODE)
         {
             CSigInstance objSigInst = objFrame.m_mapSigInstDetails[objFrame.m_omCurrSigInstId];
-            map<string, map<string, CSigInstance>>::iterator itrSubFramlst = m_mapSubFrameToSigInst.find(strRef);
+            std::map<std::string, std::map<std::string, CSigInstance>>::iterator itrSubFramlst = m_mapSubFrameToSigInst.find(strRef);
 
-            map<string, CSigInstance> mapSigInst;
+            std::map<std::string, CSigInstance> mapSigInst;
 
             if(itrSubFramlst != m_mapSubFrameToSigInst.end())
             {
@@ -3549,15 +3383,15 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CSignal& objSignal)
 {
     HRESULT hResult = S_OK;
-    string strTemp;
+    std::string strTemp;
     //char* stopstring;
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if(omModNodeName == CODING_REF_NODE)
     {
-        string strCoding = "";
+        std::string strCoding = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strCoding, _bstr_t("ID-REF"));
         objSignal.m_omCodingRef = strCoding;
     }
@@ -3567,7 +3401,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CSigna
     }
     else if (omModNodeName == DESC_NODE)
     {
-        string strLang = "";
+        std::string strLang = "";
         CNodeUtil::bReadAttribute(pCurrDOMNode, strLang, _bstr_t("xml:lang"));
 
         if(strLang == "de")
@@ -3599,14 +3433,14 @@ int CPARSER_FIBEX::ResetFibexEntity(eENTITY_FIBEX eEntity, PVOID pFibexEntity)
 }
 
 // To delete the Fibex Entity
-int CPARSER_FIBEX::Remove(eENTITY_FIBEX eEntity, string omID)
+int CPARSER_FIBEX::Remove(eENTITY_FIBEX eEntity, std::string omID)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     return TRUE;
 }
 
 // Save contents into a Fibex file.
-BOOL CPARSER_FIBEX::WriteFibexFile(string omFibexFilePath,
+BOOL CPARSER_FIBEX::WriteFibexFile(std::string omFibexFilePath,
                                    PABS_FIBEX_CONTAINER pAbsFibexContainer)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -3628,7 +3462,7 @@ BOOL CPARSER_FIBEX::WriteFibexFile(string omFibexFilePath,
 // versa. 'bToAbstract' denotes the direction; TRUE means from Fibex specific
 // data into the abstract data. Subject to the value of 'bToAbstract', Buffer
 // will be interpreted.
-int CPARSER_FIBEX::bTranslate(eENTITY_FIBEX eEntity, string omID, BYTE* Buffer, BOOL bToAbstract)
+int CPARSER_FIBEX::bTranslate(eENTITY_FIBEX eEntity, std::string omID, BYTE* Buffer, BOOL bToAbstract)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -3666,7 +3500,7 @@ HRESULT CPARSER_FIBEX::hGetFLEXRAYClustersInfo(PABS_FIBEX_CONTAINER pAbsFibexCon
             UINT unChannelsCnt =  sClusterDetails.m_omChannelRefs.GetSize();
             for (UINT i = 0; i < unChannelsCnt ; i++)
             {
-                string strChannelID = sClusterDetails.m_omChannelRefs.GetAt(i);
+                std::string strChannelID = sClusterDetails.m_omChannelRefs.GetAt(i);
 
                 /* get the controller with which this channel is associated, from ECUs, Connectors */
 
@@ -3803,8 +3637,8 @@ HRESULT SCOMPU_INTERNAL_TO_PHYS_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrCh
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == COMPU_SCALES_NODE)
@@ -3874,13 +3708,13 @@ HRESULT SCOMPU_METHOD_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
     static BYTE ConstrType = 0x0;
     if (omModNodeName == CATEGORY_NODE)
     {
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         if (CATEGORY3::m_odUnitRef.Find(omTmp))
         {
             m_ouCategory = omTmp;
@@ -3901,38 +3735,7 @@ HRESULT SCOMPU_METHOD_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 
         DoIterate_ForLoad(pCurrChild);
     }
-    //  else if (omModNodeName == "SCALE-CONSTR")
-    //  {
-    //      bool bAttrFound = false;
-    //      string omTmp = _T("");
-    //      bAttrFound = CNodeUtil::bReadAttribute(pCurrChild, omTmp, "VALIDITY");
-    //      if (!bAttrFound)
-    //      {
-    //          omTmp = "VALID"; // default value
-    //      }
-    //      if (VALIDITY::m_odUnitRef.Find(omTmp))
-    //      {
-    //          if (ConstrType == 0x0)
-    //          {
-    //              SCONSTRS_v2 sConstrs;
-    //              sConstrs.m_ouValidity = omTmp;
-    //              if ((hResult = sConstrs.Load(pCurrChild)) == S_OK)
-    //              {
-    ////                    m_odPhysConstrs.AddTail(sConstrs);
-    //              }
-    //
-    //          }
-    //          else if (ConstrType == 0x1)
-    //          {
-    //              SCONSTRS_v2 sConstrs;
-    //              sConstrs.m_ouValidity = omTmp;
-    //              if ((hResult = sConstrs.Load(pCurrChild)) == S_OK)
-    //              {
-    //                  m_odInternalConstrs.AddTail(sConstrs);
-    //              }
-    //          }
-    //      }
-    //  }
+
     else if (omModNodeName == COMPU_INTERNAL_TO_PHYS_NODE)
     {
         m_sCompu_Internal_To_Phys.Load(pCurrChild);
@@ -3964,7 +3767,7 @@ void SPHYSICAL_TYPE_v2::DoCleanup()
 
 HRESULT SPHYSICAL_TYPE_v2::Load(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
-    string omTmp = _T("");
+    std::string omTmp = "";
     CNodeUtil::bReadAttribute(pIDomNode, omTmp, "BASE-DATA-TYPE");
     if (BASE_DATA_TYPE::m_odUnitRef.Find(omTmp))
     {
@@ -3977,13 +3780,13 @@ HRESULT SPHYSICAL_TYPE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == "PRECISION")
     {
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         m_fPrecision = atof(omTmp.c_str());
     }
     return S_OK;
@@ -4023,7 +3826,7 @@ SCODED_TYPE_v2& SCODED_TYPE_v2::operator=(SCODED_TYPE_v2& sCodedType)
 }
 HRESULT SCODED_TYPE_v2::Load(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
-    string omTmp = _T("");
+    std::string omTmp = "";
     CNodeUtil::bReadAttribute(pIDomNode, omTmp, "ho:BASE-DATA-TYPE");
     if (BASE_DATA_TYPE::m_odUnitRef.Find(omTmp))
     {
@@ -4051,31 +3854,31 @@ HRESULT SCODED_TYPE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == BIT_LENGTH_NODE)
     {
         m_bChoice = BIT_LEN;
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         m_sLength.m_unLength = atoi(omTmp.c_str());
     }
     else if (omModNodeName == MIN_LENGTH_NODE)
     {
         m_bChoice = MIN_MAX_LEN;
         SMIN_MAX_LEN_v2 sMinMaxLen;
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         sMinMaxLen.m_unMinLen = atoi(omTmp.c_str());
         MSXML2::IXMLDOMNodePtr pNextSibling = NULL;
         if ((pCurrChild->get_nextSibling(&pNextSibling)) == S_OK)
         {
-            string omTmp = _com_util::ConvertBSTRToString(pNextSibling->GetnodeName().GetBSTR());
-            string omTmp1 = _T("");
+            std::string omTmp = _com_util::ConvertBSTRToString(pNextSibling->GetnodeName().GetBSTR());
+            std::string omTmp1 = "";
             CNodeUtil::bRemoveTag(omTmp, omTmp1);
             if (omTmp1 == MAX_LENGTH_NODE)
             {
-                string omTemp = _com_util::ConvertBSTRToString(pNextSibling->text.GetBSTR());
+                std::string omTemp = _com_util::ConvertBSTRToString(pNextSibling->text.GetBSTR());
                 sMinMaxLen.m_unMaxLen = atoi(omTemp.c_str());
             }
 
@@ -4095,69 +3898,69 @@ CCODING_v2::CCODING_v2()
     DoCleanup();
 
     /* INITIALISE BASE_DATA_TYPE TOKEN */
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_UINT8"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_INT8"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_UINT16"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_INT16"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_UINT32"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_INT32"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_UINT64"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_INT64"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_FLOAT32"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_FLOAT64"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_ASCIISTRING"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_UNICODE2STRING"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_BYTEFIELD"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("A_BITFIELD"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((string)_T("OTHER"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT8"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT8"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT16"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT16"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT32"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT32"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT64"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT64"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_FLOAT32"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_FLOAT64"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_ASCIISTRING"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UNICODE2STRING"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_BYTEFIELD"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_BITFIELD"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("OTHER"));
     /* INITIALISE CATEGORY1 TOKEN */
-    CATEGORY1::m_odUnitRef.AddTail((string)_T("COUNTRY"));
-    CATEGORY1::m_odUnitRef.AddTail((string)_T("EQUIV-UNITS"));
+    CATEGORY1::m_odUnitRef.AddTail((std::string)_T("COUNTRY"));
+    CATEGORY1::m_odUnitRef.AddTail((std::string)_T("EQUIV-UNITS"));
     /* INITIALISE CATEGORY3 TOKEN */
-    CATEGORY3::m_odUnitRef.AddTail((string)_T("IDENTICAL"));
-    CATEGORY3::m_odUnitRef.AddTail((string)_T("LINEAR"));
-    CATEGORY3::m_odUnitRef.AddTail((string)_T("SCALE-LINEAR"));
-    CATEGORY3::m_odUnitRef.AddTail((string)_T("TEXTTABLE"));
-    CATEGORY3::m_odUnitRef.AddTail((string)_T("TAB-NOINTP"));
-    CATEGORY3::m_odUnitRef.AddTail((string)_T("FORMULA"));
+    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("IDENTICAL"));
+    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("LINEAR"));
+    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("SCALE-LINEAR"));
+    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("TEXTTABLE"));
+    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("TAB-NOINTP"));
+    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("FORMULA"));
     /* INITIALISE CATEGORY2 TOKEN */
-    CATEGORY2::m_odUnitRef.AddTail((string)_T("LEADING-LENGTH-INFO-TYPE"));
-    CATEGORY2::m_odUnitRef.AddTail((string)_T("END-OF-PDU"));
-    CATEGORY2::m_odUnitRef.AddTail((string)_T("MIN-MAX-LENGTH-TYPE"));
-    CATEGORY2::m_odUnitRef.AddTail((string)_T("STANDARD-LENGTH-TYPE"));
+    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("LEADING-LENGTH-INFO-TYPE"));
+    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("END-OF-PDU"));
+    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("MIN-MAX-LENGTH-TYPE"));
+    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("STANDARD-LENGTH-TYPE"));
     /* INITIALISE ENCODING TOKEN */
-    ENCODING::m_odUnitRef.AddTail((string)_T("SIGNED"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("UNSIGNED"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("BIT"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("IEEE-FLOATING-TYPE"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("BCD"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("DSP-FRACTIONAL"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("SM"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("BCD-P"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("BCD-UP"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("1C"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("2C"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("UTF-8"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("UCS-2"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("ISO-8859-1"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("ISO-8859-2"));
-    ENCODING::m_odUnitRef.AddTail((string)_T("WINDOWS-1252"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("SIGNED"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("UNSIGNED"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("BIT"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("IEEE-FLOATING-TYPE"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("BCD"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("DSP-FRACTIONAL"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("SM"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("BCD-P"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("BCD-UP"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("1C"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("2C"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("UTF-8"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("UCS-2"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("ISO-8859-1"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("ISO-8859-2"));
+    ENCODING::m_odUnitRef.AddTail((std::string)_T("WINDOWS-1252"));
     /* INITIALISE TERMINATION TOKEN */
-    TERMINATION::m_odUnitRef.AddTail((string)_T("NONE"));
-    TERMINATION::m_odUnitRef.AddTail((string)_T("ZERO"));
-    TERMINATION::m_odUnitRef.AddTail((string)_T("HEX-FF"));
-    TERMINATION::m_odUnitRef.AddTail((string)_T("LENGTH"));
+    TERMINATION::m_odUnitRef.AddTail((std::string)_T("NONE"));
+    TERMINATION::m_odUnitRef.AddTail((std::string)_T("ZERO"));
+    TERMINATION::m_odUnitRef.AddTail((std::string)_T("HEX-FF"));
+    TERMINATION::m_odUnitRef.AddTail((std::string)_T("LENGTH"));
     /* INITIALISE VALIDITY TOKEN */
-    VALIDITY::m_odUnitRef.AddTail((string)_T("VALID"));
-    VALIDITY::m_odUnitRef.AddTail((string)_T("NOT-VALID"));
-    VALIDITY::m_odUnitRef.AddTail((string)_T("NOT-AVAILABLE"));
-    VALIDITY::m_odUnitRef.AddTail((string)_T("NOT-DEFINED"));
-    VALIDITY::m_odUnitRef.AddTail((string)_T("ERROR"));
-    VALIDITY::m_odUnitRef.AddTail((string)_T("OTHER"));
+    VALIDITY::m_odUnitRef.AddTail((std::string)_T("VALID"));
+    VALIDITY::m_odUnitRef.AddTail((std::string)_T("NOT-VALID"));
+    VALIDITY::m_odUnitRef.AddTail((std::string)_T("NOT-AVAILABLE"));
+    VALIDITY::m_odUnitRef.AddTail((std::string)_T("NOT-DEFINED"));
+    VALIDITY::m_odUnitRef.AddTail((std::string)_T("ERROR"));
+    VALIDITY::m_odUnitRef.AddTail((std::string)_T("OTHER"));
     /* INITIALISE INTERVAL-TYPE TOKEN */
-    INTERVAL_TYPE::m_odUnitRef.AddTail((string)_T("OPEN"));
-    INTERVAL_TYPE::m_odUnitRef.AddTail((string)_T("CLOSED"));
-    INTERVAL_TYPE::m_odUnitRef.AddTail((string)_T("INFINITE"));
+    INTERVAL_TYPE::m_odUnitRef.AddTail((std::string)_T("OPEN"));
+    INTERVAL_TYPE::m_odUnitRef.AddTail((std::string)_T("CLOSED"));
+    INTERVAL_TYPE::m_odUnitRef.AddTail((std::string)_T("INFINITE"));
 }
 
 CCODING_v2::~CCODING_v2()
@@ -4224,8 +4027,8 @@ HRESULT CCODING_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == ELEMENT_REVISIONS_NODE)
@@ -4332,13 +4135,13 @@ HRESULT SCONSTRS_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == LOWER_LIMIT_NODE)
     {
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName());
         m_sLowerLimit.m_fValue = atof(omTmp.c_str());
 
         CNodeUtil::bReadAttribute(pCurrChild, omTmp, "INTERVAL-TYPE");
@@ -4349,7 +4152,7 @@ HRESULT SCONSTRS_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
     }
     else if (omModNodeName == UPPER_LIMIT_NODE)
     {
-        string omTmp= _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp= _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         m_sUpperLimit.m_fValue = atof(omTmp.c_str());
         CNodeUtil::bReadAttribute(pCurrChild, omTmp, "INTERVAL-TYPE");
         if (INTERVAL_TYPE::m_odUnitRef.Find(omTmp))
@@ -4373,11 +4176,6 @@ SCOMPU_SCALE_v2::~SCOMPU_SCALE_v2()
 
 void SCOMPU_SCALE_v2::DoCleanup()
 {
-    /* m_sLower.DoCleanup();
-    m_sUpper.DoCleanup();*/
-    /* m_sCompuConst.DoCleanup();
-    m_sCompuRationalCoeffs.DoCleanup();
-    */
     m_omCompuGenMath = INVALID_STRING;
 }
 HRESULT SCOMPU_SCALE_v2::Load(MSXML2::IXMLDOMNodePtr& pIDomNode)
@@ -4388,8 +4186,8 @@ HRESULT SCOMPU_SCALE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == DESC_NODE)
@@ -4398,7 +4196,7 @@ HRESULT SCOMPU_SCALE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
     }
     else if (omModNodeName == LOWER_LIMIT_NODE)
     {
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         m_sLower.m_fValue = atof(omTmp.c_str());
         CNodeUtil::bReadAttribute(pCurrChild, omTmp, "INTERVAL-TYPE");
         if (INTERVAL_TYPE::m_odUnitRef.Find(omTmp))
@@ -4408,7 +4206,7 @@ HRESULT SCOMPU_SCALE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
     }
     else if (omModNodeName == UPPER_LIMIT_NODE)
     {
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         m_sUpper.m_fValue = atof(omTmp.c_str());
         CNodeUtil::bReadAttribute(pCurrChild, omTmp, "INTERVAL-TYPE");
         if (INTERVAL_TYPE::m_odUnitRef.Find(omTmp))
@@ -4454,14 +4252,14 @@ HRESULT SCOMPU_CONST_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == V_NODE)
     {
         m_bIsDouble = true;
-        string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
+        std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         m_fV = atof(omTmp.c_str());
     }
     else if (omModNodeName == VT_NODE)
@@ -4492,8 +4290,8 @@ HRESULT SCOMPU_RATIONAL_COEFFS_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChi
 {
     HRESULT hResult = S_FALSE;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrChild->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
     static BYTE bChoice = 0x0;
     if (omModNodeName == COMPU_NUMERATOR_NODE)
@@ -4508,7 +4306,7 @@ HRESULT SCOMPU_RATIONAL_COEFFS_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChi
     }
     else if (omModNodeName == V_NODE)
     {
-        string omTmp = _T("");
+        std::string omTmp = "";
         float fTemp = INVALID_VALUE;
         if (bChoice == 0x0)
         {
@@ -4559,10 +4357,6 @@ SCOMPU_METHOD_v2& SCOMPU_METHOD_v2::operator=(SCOMPU_METHOD_v2& RefObj)
     m_ouCategory =  RefObj.m_ouCategory;
     m_eCategory = RefObj.m_eCategory;
     m_omUnitRef = RefObj.m_omUnitRef;
-    //  m_odPhysConstrs.RemoveAll();
-    //  m_odPhysConstrs.AddTail(&(RefObj.m_odPhysConstrs));
-    //  m_odInternalConstrs.RemoveAll();
-    //m_odInternalConstrs.AddTail(&(RefObj.m_odInternalConstrs));
     m_sCompu_Internal_To_Phys = RefObj.m_sCompu_Internal_To_Phys;
     return *this;
 }
@@ -4596,8 +4390,8 @@ HRESULT SELEMENT_REVISION_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     HRESULT hResult = S_OK;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pIDomNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pIDomNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == TEAM_MEMBER_REF_NODE)
@@ -4685,8 +4479,8 @@ HRESULT SCOMPANY_REV_INFO_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode)
 {
     HRESULT hResult = S_OK;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == COMPANY_DATA_REF_NODE)
@@ -4725,8 +4519,8 @@ HRESULT SMODIFICATION_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     HRESULT hResult = S_OK;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pIDomNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pIDomNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == CHANGE_NODE)
@@ -4762,8 +4556,8 @@ HRESULT SNAMED_ELEMENT_TYPE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pIDomNode)
 {
     HRESULT hResult = S_OK;
 
-    string omNodeName = _com_util::ConvertBSTRToString(pIDomNode->GetnodeName().GetBSTR());
-    string omModNodeName = _T("");
+    std::string omNodeName = _com_util::ConvertBSTRToString(pIDomNode->GetnodeName().GetBSTR());
+    std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);
 
     if (omModNodeName == SHORT_NAME_NODE)

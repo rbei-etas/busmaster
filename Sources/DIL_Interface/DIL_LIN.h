@@ -21,8 +21,8 @@
  *
  * Definition file for CDIL_LIN class.
  */
-#if !defined DIL_LIN_H__INCLUDED_
-#define DIL_LIN_H__INCLUDED_
+
+#pragma once
 
 #include "DataTypes/Base_WrapperErrorLogger.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
@@ -181,7 +181,7 @@ public:
     /**
      * Call to get descriptive string of the last error occurred
      */
-    HRESULT DILL_GetLastErrorString(string& acErrorStr);
+    HRESULT DILL_GetLastErrorString(std::string& acErrorStr);
 
     /**
      * Call to set PASS/STOP filter
@@ -239,5 +239,3 @@ private:
     HRESULT (*m_pfGetControllerParams)(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT (*m_pfGetErrorCount)(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 };
-
-#endif // DIL_LIN_H__INCLUDED_

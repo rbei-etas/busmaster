@@ -1645,7 +1645,6 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
         if( IS_KEY_TRIGGERED ( psMsgCurrentBlock->m_ucTrigger  )  )
         {
             //omStrCurrent += m_omStrKeyVal;
-            // PTV
             if(psMsgCurrentBlock != NULL)
             {
                 m_omStrKeyVal.Format( defSTR_KEY_VAL_FMT_SPECIFIER,

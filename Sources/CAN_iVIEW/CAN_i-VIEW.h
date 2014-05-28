@@ -248,8 +248,8 @@ public:
 private:
     UNUM32      m_Type;
     UNUM32      m_Flags;
-    vector<UNUM8>   m_Pattern;
-    vector<UNUM8>   m_Mask;
+    std::vector<UNUM8>   m_Pattern;
+    std::vector<UNUM8>   m_Mask;
     UNUM32      m_Id;
 };
 
@@ -261,7 +261,7 @@ typedef CFilter*    pFilter_t;
 class VCI
 {
 public:
-    VCI(    const string&   Name,
+    VCI(    const std::string&   Name,
             UNUM32      TypeId,
             UNUM32      CAN );
     virtual ~VCI();
@@ -308,7 +308,7 @@ public:
     }
     void ClearFilters()
     {
-        vector<pFilter_t>::iterator i=m_Filters.begin();
+        std::vector<pFilter_t>::iterator i=m_Filters.begin();
         while (i!=m_Filters.end())
         {
             delete *i++;
@@ -335,16 +335,16 @@ private:
     static LARGE_INTEGER    m_TickBase;
     UNUM32          m_Id;
     CVCiViewIF*     m_VCiIF;
-    string          m_Name;
+    std::string     m_Name;
     UNUM32          m_TypeId;
     UNUM32          m_CAN;
-    string          m_Firmware;
+    std::string     m_Firmware;
     UNUM32          m_ControllerState;
     /*
      * Configuration
      */
     UNUM32          m_Baudrate;
-    vector<pFilter_t>   m_Filters;
+    std::vector<pFilter_t>   m_Filters;
     /*
      * Stats
      */
@@ -361,11 +361,11 @@ typedef VCI* pVCI_t;
  */
 class Client
 {
-    typedef set<CBaseCANBufFSE*> Buffers_t;
+    typedef std::set<CBaseCANBufFSE*> Buffers_t;
 public:
     Client() :
         m_ClientID(m_NextClientID++) {};
-    Client(     const string&   Name ) :
+    Client(     const std::string&   Name ) :
         m_ClientID( m_NextClientID++ ),
         m_ClientName( Name ) {};
 
@@ -386,7 +386,7 @@ public:
     static DWORD        m_NextClientID;
     DWORD           m_ClientID;
     Buffers_t       m_ClientBuf;
-    string          m_ClientName;
+    std::string          m_ClientName;
 };
 
 typedef Client* pClient_t;
@@ -400,7 +400,7 @@ class CDIL_CAN_i_VIEW :
     public CVCiViewBrowserIF,
     public CVCiViewHostIF
 {
-    typedef tr1::array<pVCI_t,defNO_OF_CHANNELS> Channels_t;
+    typedef std::array<pVCI_t,defNO_OF_CHANNELS> Channels_t;
     typedef std::map<UNUM32, pVCI_t>    pVCIMap_t;
     typedef std::map<DWORD,pClient_t>   pClientMap_t;
 public:
@@ -419,7 +419,7 @@ public:
     HRESULT CAN_ResetHardware(void);
     HRESULT CAN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
-    HRESULT CAN_GetLastErrorString(string& acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -455,7 +455,7 @@ private:
         vci_event_record_s*     VCIEvent );
 
     pClient_t GetClient(
-        string      ClientName );
+        std::string      ClientName );
 
     pClient_t GetClient(
         DWORD       ClientID );
@@ -473,7 +473,7 @@ private:
     CRITICAL_SECTION        m_Mutex;
     CVCiViewBrowser*        m_iViewBrowser;
     State_e             m_CurrState;
-    string              m_Err;
+    std::string         m_Err;
     HWND                m_hOwnerWnd;
     pVCIMap_t           m_VCI;
     UINT                m_nChannels;

@@ -721,7 +721,6 @@ void CMsgContainerJ1939::vSetMsgLength(CString strsgLength)
 ******************************************************************************/
 void CMsgContainerJ1939::vClearFormattedMsgStruct()
 {
-    //Tobias - venkat
     strcpy_s(m_sOutFormattedData.m_acTimeAbs,  sizeof(m_sOutFormattedData.m_acTimeAbs),  "");
     strcpy_s(m_sOutFormattedData.m_acTimeRel,  sizeof(m_sOutFormattedData.m_acTimeRel),  "");
     strcpy_s(m_sOutFormattedData.m_acTimeSys,  sizeof(m_sOutFormattedData.m_acTimeSys),  "");

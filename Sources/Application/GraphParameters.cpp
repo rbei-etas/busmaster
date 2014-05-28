@@ -134,7 +134,7 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
     }
     return pbyTemp;
 }
-// PTV XML
+
 void CGraphParameters::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 {
     // Writing Graphical parameters in to xml
@@ -497,7 +497,6 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
     //   }
 }
 
-// PTV XML
 BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;

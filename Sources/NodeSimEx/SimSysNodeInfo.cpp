@@ -169,7 +169,6 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
 {
     ASSERT(psNodeInfo != NULL);
 
-    // PTV CPP
     if(psNodeInfo != NULL)
     {
         switch (psNodeInfo->m_eBus)
@@ -180,7 +179,6 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                 {
                     sCanData.m_ucDataType = RX_FLAG;
 
-                    // PTV CPP
                     if(psNodeInfo != NULL)
                     {
                         INT Result = psNodeInfo->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
@@ -265,7 +263,6 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                 {
                     sLinData.m_ucDataType = RX_FLAG;
 
-                    // PTV CPP
                     if(psNodeInfo != NULL)
                     {
                         INT Result = psNodeInfo->m_ouLinBufSE.ReadFromBuffer(&sLinData);

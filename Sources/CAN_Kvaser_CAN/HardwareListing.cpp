@@ -737,7 +737,6 @@ void CHardwareListing::vSortHardwareItems()
 
         // Insert List Item
         mHardwareListMap.insert ( Int_Pair ( m_pouHardwareContainer->m_omDriverId , m_pouHardwareContainer ) );
-
     }
 
     m_omHardwareList.DeleteAllItems();

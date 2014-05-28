@@ -37,8 +37,8 @@ private:
     INT m_nChannelConfigured;
     CMsgSignal* m_pMsgSignal;
     ETYPE_BUS m_eBusType;
-    list<Cluster> m_ouCurrentChannelCluster;
-    list<LinChannelParam> m_ouLinChannelParams;
+    std::list<Cluster> m_ouCurrentChannelCluster;
+    std::list<LinChannelParam> m_ouLinChannelParams;
     int m_nLinBaudRate;
 
 
@@ -63,7 +63,7 @@ private:
     INT nUpdateEcuList( INT nChannelIndex, INT nClusterIndex );
     INT nUpdateLinParams( INT nChannelIndex, INT nClusterIndex);
     INT nUpdateEcuList( Cluster& ouCluster );
-    bool bIsEcuSlected(list<string>& ouEcuList, string strEcuName);
+    bool bIsEcuSlected(std::list<std::string>& ouEcuList, std::string strEcuName);
     int nEnableControls( ETYPE_BUS eBusType );
     int nUpdateLinSettings();
     int nDisplayProtocolSettings(int nChannelIndex);

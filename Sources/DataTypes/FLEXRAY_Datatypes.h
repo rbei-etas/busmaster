@@ -1,7 +1,5 @@
 
-
-#if !defined DIL_DATATYPES_H__INCLUDED_
-#define DIL_DATATYPES_H__INCLUDED_
+#pragma once
 
 #include <afxmt.h>
 #include "DataTypes_StdAfx.h"
@@ -71,7 +69,7 @@ typedef struct
 {
     /* Out of the 16 configuration files, first 15 will be loaded with imported FIBEX files,
        last array element will be used for manually selected configuration file */
-    string              m_acConfigFileName[MAX_CONFIG_FILES];
+    std::string         m_acConfigFileName[MAX_CONFIG_FILES];
     ABS_CLUSTER_INFO    m_asClusterinfo;
     UINT                m_nFilesCount;
     UINT                m_nSelectedIndex;
@@ -101,7 +99,7 @@ typedef struct tagFlexRayVersionInfo
 
 typedef struct
 {
-    string  m_acName;
+    std::string  m_acName;
     DWORD   m_dwDriverID;
     UINT    m_ResourceID;
 } FLEXRAY_DILINFO;
@@ -180,5 +178,3 @@ public:
 
 #define INITIALISE_DATA(Data)   memset(&Data, 0, sizeof(Data))
 #define INITIALISE_ARRAY(Array) memset(Array, 0, sizeof(Array))
-
-#endif // DIL_DATATYPES_H__INCLUDED_

@@ -711,12 +711,10 @@ void CMessageAttrib::vChangeNumericalMode(BOOL bHexON)
 {
     if(bHexON == TRUE)
     {
-        //Tobias - venkat
         strcpy_s(m_acMsgIDFormat, 3, "%X");
     }
     else
     {
-        //Tobias - venkat
         strcpy_s(m_acMsgIDFormat, 3, "%d");
     }
 }

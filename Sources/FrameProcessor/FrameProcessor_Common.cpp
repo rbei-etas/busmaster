@@ -63,7 +63,6 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 
     while (bLoopON)
     {
-        // PTV CPP
         if(pCurrObj != NULL)
         {
             pCurrObj->m_bIsThreadBlocked = TRUE;
@@ -117,7 +116,6 @@ CFrameProcessor_Common::CFrameProcessor_Common()
     m_bClientBufferON = TRUE;
     m_ushLastBlkID = 0;
     m_bEditingON = FALSE;
-    // PTV [1.6.4]
     m_bIsDataLogged = FALSE;
     m_bIsJ1939DataLogged = FALSE;
     m_bIsLINDataLogged = FALSE;
@@ -598,7 +596,7 @@ HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString&
 
     return S_OK;
 }
-//MVN
+
 HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
 {
     if (FALSE == bIsEditingON())
@@ -683,7 +681,7 @@ void CFrameProcessor_Common::vAddLogFile( CLogObjArray& omLogListTmp, CBaseLogOb
         }
     }
 }
-//~MVN
+
 BOOL CFrameProcessor_Common::IsClientBufferON(void)
 {
     return m_bClientBufferON;
@@ -707,7 +705,6 @@ BOOL CFrameProcessor_Common::IsLoggingON(void)
     return m_bLogEnabled;
 }
 
-// PTV [1.6.4]
 BOOL CFrameProcessor_Common::IsDataLogged(void)
 {
     return m_bIsDataLogged;
@@ -742,7 +739,7 @@ void CFrameProcessor_Common::DisableLINDataLogFlag(void)
 {
     m_bIsLINDataLogged = FALSE;
 }
-// PTV [1.6.4] END
+
 BOOL CFrameProcessor_Common::IsFilterON(void)
 {
     return m_bFilterON;

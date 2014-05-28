@@ -60,7 +60,7 @@ enum
     SECTION_FILE_INVALID
 };
 
-static bool ReadAString(FILE* pFile, string& ResultStr)
+static bool ReadAString(FILE * pFile, std::string & ResultStr)
 {
     bool bResult = false;
     int nLength;
@@ -156,12 +156,12 @@ int FileGetProjectCount(void)
     return g_ProjCfgManager.GetProjectCount();
 }
 
-int FileGetProjectList(list<string>& ProjectList)
+int FileGetProjectList(std::list<std::string> & ProjectList)
 {
     return g_ProjCfgManager.GetProjectList(ProjectList);
 }
 
-bool FileGetProjectData(string ProjectName, PROJECTDATA& ProjData)
+bool FileGetProjectData(std::string ProjectName, PROJECTDATA & ProjData)
 {
     return g_ProjCfgManager.GetProjectData(ProjectName, ProjData);
 }
@@ -169,17 +169,17 @@ bool FileGetProjectData(string ProjectName, PROJECTDATA& ProjData)
 
 
 // Section getters: start
-int FileGetSectionCount(string ProjectName)
+int FileGetSectionCount(std::string ProjectName)
 {
     return g_ProjCfgManager.GetSectionCount(ProjectName);
 }
 
-int FileGetSectionList(string ProjectName, list<string>& SectionList)
+int FileGetSectionList(std::string ProjectName, std::list<std::string> & SectionList)
 {
     return g_ProjCfgManager.GetSectionList(ProjectName, SectionList);
 }
 
-bool FileGetSectionData(string ProjectName, string SectionName, SECTIONDATA& SectionData)
+bool FileGetSectionData(std::string ProjectName, std::string SectionName, SECTIONDATA& SectionData)
 {
     return g_ProjCfgManager.GetSectionData(ProjectName, SectionName, SectionData);
 }
@@ -187,12 +187,12 @@ bool FileGetSectionData(string ProjectName, string SectionName, SECTIONDATA& Sec
 
 
 // Project setters: start
-void FileAddModifyProjectTable(string ProjectName, PROJECTDATA& ProjData)
+void FileAddModifyProjectTable(std::string ProjectName, PROJECTDATA& ProjData)
 {
     g_ProjCfgManager.AddModifyProjDetail(ProjData);
 }
 
-bool FileDeleteProjectTable(string ProjectName)
+bool FileDeleteProjectTable(std::string ProjectName)
 {
     g_ProjCfgManager.DeleteProjectTable(ProjectName);
     return true;
@@ -200,7 +200,7 @@ bool FileDeleteProjectTable(string ProjectName)
 // Project setters: end
 
 // Section setter: start
-bool FileAddModifySectionData(string ProjectName, string SectionName,
+bool FileAddModifySectionData(std::string ProjectName, std::string SectionName,
                               SECTIONDATA& SectionData)
 {
     return g_ProjCfgManager.AddModifySection(ProjectName, SectionData);
@@ -400,7 +400,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 UCHAR ProjectEntries = *((UCHAR*) pData);
                 for (UCHAR i = 0; (i < ProjectEntries) && bAllWell; i++)
                 {
-                    string ProjectName;
+                    std::string ProjectName;
                     bAllWell = ReadAString(pFile, ProjectName);
                     //ProjectName[ProjectName.length()-1] = '\0';
                     UCHAR SectionEntries = 0;

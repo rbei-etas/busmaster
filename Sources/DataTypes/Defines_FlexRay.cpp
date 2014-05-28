@@ -31,8 +31,6 @@
 #include <stack>
 #include <queue>
 
-using namespace std;
-
 #define defMAX_BYTE 8
 #define LP 10
 #define RP 20
@@ -55,7 +53,6 @@ CCompuMethodEx& CCompuMethodEx::operator=(const CCompuMethodEx& RefObj)
 bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
 {
     bool bResult = false;
-    //CString omResult = _T("");
 
     if (m_eCompuType == LINEAR_ENUM)
     {
@@ -182,7 +179,6 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
 bool CCompuMethodEx::omGetRawValue(CString& omRawValue, double dwEnggValue)
 {
     bool bResult = false;
-    //CString omResult = _T("");
 
     if (m_eCompuType == LINEAR_ENUM)
     {
@@ -366,8 +362,8 @@ CString tagFormulaCodeVarEx::omGetEnggValue(DWORD dwRawValue)
     int i = 0;
 
     /*converting infix expr to postfix*/
-    stack <char> PostfixStack;
-    queue <CString> PostfixExpression;
+    std::stack <char> PostfixStack;
+    std::queue <CString> PostfixExpression;
     while (i < nLenght)
     {
         char temp = m_omFormula.GetAt(i);
@@ -427,19 +423,8 @@ CString tagFormulaCodeVarEx::omGetEnggValue(DWORD dwRawValue)
     }
     /*converting infix expr to postfix - end*/
 
-    /*POPERANDS tempOp = m_pFirstOperand;
-                while (tempOp != NULL)
-                {
-                    if (tempOp->m_cOpredandName == token)
-                    {
-                        value = tempOp->m_fOperandValue;
-                        s.push(value);
-                        tempOp->m_pNextOpearnd = NULL;
-                    }
-                    tempOp = tempOp->m_pNextOpearnd;
-                }*/
     /*Evaluation of postfix Expression*/
-    stack <float> s;
+    std::stack<float> s;
     float value, value1, value2;
     while (!PostfixExpression.empty())
     {
@@ -1021,7 +1006,7 @@ CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
     return omResult;
 }
 
-string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
+std::string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
 {
     CString RetStr = _T("");
     //int nCnt = (int) ouSignal.m_ouSigConstrnt.GetSize();
@@ -1055,15 +1040,9 @@ string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
     return RetStr;
 }
 
-
-
-
 UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& omMsgByte)
 {
     // First convert pData into a byte array
-
-
-    UINT64 un64SigVal = 0;
     UINT byteNumber = ouStruct.m_unStartbit / defBITS_IN_BYTE +1;
     UINT unBitNumber = ouStruct.m_unStartbit % defBITS_IN_BYTE;
     CMsgInterpretation ouMsgInterpretation;
@@ -1082,81 +1061,18 @@ UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& omMsgByte)
     //DataType
     BYTE bDataType = ouStruct.m_bDataType;
 
-
     return ouMsgInterpretation.n64GetSignalValue(&omMsgByte, byteNumber, unBitNumber, ouStruct.m_nLength, bDataType, oeFormat);
-
-
-
-    //if ((ouStruct.m_nLength != 0) && (byteNumber < (UINT) omMsgByte.GetSize() - 1))
-    //{
-    //    UCHAR byMsgByteVal = 0;
-    //    UINT64 un64Temp = 1;
-    //    UINT unSigLen = ouStruct.m_nLength;
-
-    //    byMsgByteVal = omMsgByte.GetAt(byteNumber);
-
-    //    //let the signal value be the LSB, ignore rest
-    //    if (unBitNumber != 0)
-    //    {
-    //        byMsgByteVal >>= (unBitNumber );
-    //    }
-
-    //    un64Temp = 0x01;
-    //    UINT totalCount = unSigLen;
-
-    //    // check each bit in Message byte value if high- set corresponding
-    //    // signal bit high loop until signal bit length
-    //    register int nloopvar = defBITS_IN_BYTE - unBitNumber;
-    //    while (nloopvar-- && (un64Temp != MAX_VAL_OF_BYTE) && totalCount)
-    //    {
-    //        if ((byMsgByteVal & un64Temp) !=0)
-    //        {
-    //            un64SigVal |= un64Temp;
-    //        }
-    //        un64Temp <<= 1;
-    //        totalCount--;
-    //    }
-
-    //    // Special case : if the signal starts in betn the byte and extends
-    //    // to next byte
-    //    UINT ntempByteNo = byteNumber + 1;
-
-    //    if ((totalCount > 0) && (ntempByteNo <= (UINT) omMsgByte.GetSize()))
-    //    {
-    //        do // get next byte
-    //        {
-    //            byMsgByteVal = omMsgByte.GetAt(ntempByteNo);
-    //            UCHAR ucByteTemp = 1;
-    //            // check each bit in Message byte value if high- set
-    //            // corresponding signal bit high and loop until
-    //            // signal bit length
-    //            for (register int i = 0; (i < defMAX_BYTE) && totalCount; i++)
-    //            {
-    //                totalCount--;
-    //                if ((byMsgByteVal & ucByteTemp) != 0)
-    //                {
-    //                    un64SigVal |= un64Temp;
-    //                }
-    //                un64Temp <<= 1;
-    //                ucByteTemp <<=1;
-    //            }
-    //            ntempByteNo++;
-    //        }
-    //        while (totalCount > 0);
-    //    }
-    //}
-    return un64SigVal;
 }
 
 
-bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex)
+bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, std::list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex)
 {
     BOOL bReturn = FALSE;
-    list<SIGNAL_STRUCT> ouSignalList;
+    std::list<SIGNAL_STRUCT> ouSignalList;
     ouFrame.GetSignalList(ouSignalList);
 
     int nCnt = ouSignalList.size();
-    list<SIGNAL_STRUCT>::iterator itrSignalList = ouSignalList.begin();
+    std::list<SIGNAL_STRUCT>::iterator itrSignalList = ouSignalList.begin();
     char uchData[254];
     Flexray_SSIGNALINFO ouSignalInfo;
     ouSignalInfoList.clear();
@@ -1206,9 +1122,9 @@ bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSi
     return true;
 }
 
-void GetSignalNames(list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames)
+void GetSignalNames(std::list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames)
 {
-    list<Flexray_SSIGNALINFO>::iterator itrSigInfo = lstSignalInfo.begin();
+    std::list<Flexray_SSIGNALINFO>::iterator itrSigInfo = lstSignalInfo.begin();
 
     while(itrSigInfo != lstSignalInfo.end())
     {

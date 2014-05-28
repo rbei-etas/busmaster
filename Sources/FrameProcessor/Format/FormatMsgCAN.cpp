@@ -123,7 +123,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     }
     else
     {
-        string strErrMsg;
+        std::string strErrMsg;
         eERROR_STATE eErrType;
         vFormatErrMsg(pMsgCAN->m_uDataInfo.m_sErrInfo, eErrType);
         CurrDataCAN->m_eEventType = eErrType;

@@ -16,12 +16,12 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#if !defined READCANMSG_H__INCLUDED_
-#define READCANMSG_H__INCLUDED_
+#pragma once
 
 #define DEF_MAX_SIMULATED_NODE 32
 
 typedef CMap<HANDLE,HANDLE,BYTE,BYTE> CHandleToNodeMagrMap;
+
 class CReadCanMsg
 {
 protected:
@@ -54,5 +54,3 @@ public:
     // Do closure operations
     void vDoExit(void);
 };
-
-#endif // READCANMSG_H__INCLUDED_

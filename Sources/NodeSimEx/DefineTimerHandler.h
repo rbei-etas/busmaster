@@ -21,19 +21,13 @@
  *
  * This file contain the definition all of CDefineTimerHandler
  */
-#if !defined(AFX_DEFINETIMERHANDLER_H__051FC128_3176_11D6_BFEB_0010B599CE39__INCLUDED_)
-#define AFX_DEFINETIMERHANDLER_H__051FC128_3176_11D6_BFEB_0010B599CE39__INCLUDED_
 
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+
 // costomised edit control class definition
 #include "Utility/RadixEdit.h"
 #include "FunctionEditorDoc.h"
 #include "NodeSimEx_resource.h"
-/////////////////////////////////////////////////////////////////////////////
-// CDefineTimerHandler dialog
 
 class CDefineTimerHandler : public CDialog
 {
@@ -55,15 +49,8 @@ public:
     void vSetTimerEdited(BOOL bEdited);
     BOOL bIsTimerEdited();
 
-    //}}AFX_DATA
-
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CDefineTimerHandler)
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
 
     // Implementation
 protected:
@@ -79,9 +66,3 @@ private:
     CFunctionEditorDoc* m_pDoc;
     BOOL    m_bIsTimerEdited;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before
-// the previous line.
-#endif
-//!defined(AFX_DEFINETIMERHANDLER_H__051FC128_3176_11D6_BFEB_0010B599CE39__INCLUDED_)

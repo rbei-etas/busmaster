@@ -21,14 +21,11 @@
  *
  * This header file contains the defintion of class
  */
-#if !defined(AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)
-#define AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_
+
+#pragma once
 
 #include "HashDefines.h"    // #define file
 #include "GlobalObj.h"
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 class CExploreMsgSg : public CDialog
 {
@@ -99,8 +96,3 @@ private:
     ClusterConfig* m_ouClusterConfig;
     ETYPE_BUS m_eBus;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_EXPLOREMSGSG_H__BEB9A624_2CC3_11D6_A620_00D0B76BEBF5__INCLUDED_)

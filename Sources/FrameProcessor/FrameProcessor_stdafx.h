@@ -34,8 +34,6 @@
 #include <string>
 #include <locale.h>
 
-using namespace std;
-
 #include "include/BaseDefs.h"
 #include "include/Error.h"
 #include "include/Utils_macro.h"

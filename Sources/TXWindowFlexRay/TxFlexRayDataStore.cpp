@@ -120,7 +120,7 @@ void CTxFlexRayDataStore::vSetBusStatus(ESTATUS_BUS eBusStatus)
     m_eBusStatus = eBusStatus;
     if ( m_eBusStatus == BUS_CONNECTED )
     {
-        list<FLEXRAY_FRAME_DATA>::iterator itrFrameData =  m_ouFlexray_Frame_Data[0].begin();
+        std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData =  m_ouFlexray_Frame_Data[0].begin();
         while( itrFrameData != m_ouFlexray_Frame_Data[0].end() )
         {
             if ( itrFrameData->bSelected == true )
@@ -169,7 +169,7 @@ bool CTxFlexRayDataStore::bSetChannelConfig(xmlNodePtr pNode)
         if( NULL != pNodeSet )
         {
             xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
-            string strVar;
+            std::string strVar;
             xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
             nChannel = atoi( (char*)key);            //Trigger value
         }
@@ -207,7 +207,7 @@ bool CTxFlexRayDataStore::bSetChannelConfig(xmlNodePtr pNode)
 }
 bool CTxFlexRayDataStore::bAddToChannelList(int nChannel, FLEXRAY_CONFIG_DATA ouData)
 {
-    list<FRAME_STRUCT>::iterator itrFramList = m_ouFrameList[nChannel].begin();
+    std::list<FRAME_STRUCT>::iterator itrFramList = m_ouFrameList[nChannel].begin();
 
     for( ; itrFramList != m_ouFrameList[nChannel].end(); itrFramList++ )
     {
@@ -442,7 +442,7 @@ BOOL CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
     sprintf(pchData, "%d", nChannel);
     xmlNewChild(pNode, NULL, BAD_CAST DEF_INDEX, BAD_CAST pchData);
 
-    list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = m_ouFlexray_Frame_Data[nChannel].begin();
+    std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = m_ouFlexray_Frame_Data[nChannel].begin();
     for (; itrFrameData != m_ouFlexray_Frame_Data[nChannel].end(); itrFrameData++ )
     {
         xmlNodePtr pMsgNode = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE );
@@ -468,7 +468,7 @@ BOOL CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
             xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_DLC, BAD_CAST pchData);
 
             //Data Bytes
-            string strDatabytes;
+            std::string strDatabytes;
             sprintf(pchData, "%d", itrFrameData->m_ouData[0]);
             strDatabytes = pchData;
             for ( int i = 1 ; i < itrFrameData->m_ouFlexFrame.m_nLength; i++)
@@ -588,7 +588,7 @@ void CTxFlexRayDataStore::vUpdateTxList(int nChannel)
     {
         return;
     }
-    list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = m_ouFlexray_Frame_Data[nChannel].begin();
+    std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = m_ouFlexray_Frame_Data[nChannel].begin();
     while ( itrFrameData != m_ouFlexray_Frame_Data[nChannel].end() )
     {
         if ( bExistInTxList(nChannel, *itrFrameData) == false )
@@ -603,7 +603,7 @@ void CTxFlexRayDataStore::vUpdateTxList(int nChannel)
 }
 bool CTxFlexRayDataStore::bExistInTxList(int nChannel, FLEXRAY_FRAME_DATA& ouData)
 {
-    list<FRAME_STRUCT>::iterator itrFrameData = m_ouFrameList[nChannel].begin();
+    std::list<FRAME_STRUCT>::iterator itrFrameData = m_ouFrameList[nChannel].begin();
     for ( ; itrFrameData != m_ouFrameList[nChannel].end(); itrFrameData++)
     {
         if ( itrFrameData->m_strFrameName == ouData.m_ouFlexFrame.m_strFrameName &&

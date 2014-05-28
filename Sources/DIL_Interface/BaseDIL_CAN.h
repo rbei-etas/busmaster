@@ -14,15 +14,14 @@
  */
 
 /**
- * \file      BaseDIL_CAN.h
- * \brief     Base class for CDIL_CAN class.
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Base class for CDIL_CAN class.
+ * @author Pradeep Kadoor
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Base class for CDIL_CAN class.
  */
-#if !defined BASEDIL_CAN_H__INCLUDED_
-#define BASEDIL_CAN_H__INCLUDED_
+
+#pragma once
 
 #include "DataTypes/DIL_DataTypes.h"
 #include "DataTypes/MsgBufAll_DataTypes.h"
@@ -153,7 +152,7 @@ public:
     /**
     * Call to get descriptive string of the last error occurred
      */
-    virtual HRESULT DILC_GetLastErrorString(string& acErrorStr) = 0;
+    virtual HRESULT DILC_GetLastErrorString(std::string& acErrorStr) = 0;
 
     /**
      * Call to get controller status. Caller has to give the handle of a
@@ -179,5 +178,3 @@ public:
      */
     virtual HRESULT  DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
 };
-
-#endif // BASEDIL_CAN_H__INCLUDED_

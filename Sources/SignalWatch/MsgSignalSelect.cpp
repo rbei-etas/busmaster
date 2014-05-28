@@ -10,17 +10,13 @@
 
 IMPLEMENT_DYNAMIC(CMsgSignalSelect, CDialog)
 
-CMsgSignalSelect::CMsgSignalSelect(ClusterConfig* cluster, CWnd* pParent /*=NULL*/,map<int,list<string>>* pMapMsgIDtoSignallst)
+CMsgSignalSelect::CMsgSignalSelect(ClusterConfig* cluster, CWnd* pParent /*=NULL*/, std::map<int, std::list<std::string>>* pMapMsgIDtoSignallst)
     : CDialog(CMsgSignalSelect::IDD,pParent)
 {
     m_ouCluster=*cluster;
 
     pTreeStruct = new CTreeCtrl;
     m_mapMsgIDtoSignallst = pMapMsgIDtoSignallst;
-
-
-    //OnInitDialog();
-    //vTest();
 }
 
 CMsgSignalSelect::~CMsgSignalSelect()
@@ -161,11 +157,11 @@ BOOL CMsgSignalSelect::OnInitDialog()
     {
         hNumofChannel=pTreeStruct->InsertItem("Channel 1");
         pTreeStruct->SetItemImage(hNumofChannel, 4, 4);
-        list<FRAME_STRUCT> lstNumofFrames;
+        std::list<FRAME_STRUCT> lstNumofFrames;
         m_ouCluster.m_ouFlexChannelConfig[0].m_ouClusterInfo.GetFrames(lstNumofFrames);
         pTreeStruct->SetImageList(&m_omImageList, TVSIL_NORMAL);
 
-        list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
+        std::list<FRAME_STRUCT>::iterator itr= lstNumofFrames.begin();
         while(itr != lstNumofFrames.end())
         {
             hmsg=pTreeStruct->InsertItem(itr->m_strFrameName.c_str(),hNumofChannel);
@@ -184,9 +180,9 @@ BOOL CMsgSignalSelect::OnInitDialog()
             }
 
             pTreeStruct->SetItemData(hmsg,itr->m_nSlotId);
-            list<SIGNAL_STRUCT> ouSignalList;
+            std::list<SIGNAL_STRUCT> ouSignalList;
             itr->GetSignalList(ouSignalList);
-            list<SIGNAL_STRUCT>:: iterator itr_sig=ouSignalList.begin();
+            std::list<SIGNAL_STRUCT>::iterator itr_sig=ouSignalList.begin();
             while(itr_sig != ouSignalList.end())
             {
                 sig=pTreeStruct->InsertItem(itr_sig->m_strSignalName.c_str(),hmsg);
@@ -196,12 +192,12 @@ BOOL CMsgSignalSelect::OnInitDialog()
                 {
                     if ( m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId) != m_mapMsgIDtoSignallst[i].end() )
                     {
-                        list<string> lstSignals=m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId)->second;
-                        list<string>:: iterator itrselSignals= lstSignals.begin();
+                        std::list<std::string> lstSignals=m_mapMsgIDtoSignallst[i].find(itr->m_nSlotId)->second;
+                        std::list<std::string>::iterator itrselSignals= lstSignals.begin();
 
                         while(itrselSignals != lstSignals.end())
                         {
-                            string signame=pTreeStruct->GetItemText(sig);
+                            std::string signame=pTreeStruct->GetItemText(sig);
                             if(strcmpi(pTreeStruct->GetItemText(sig),(*itrselSignals).c_str())== 0)
                             {
                                 pTreeStruct->SetCheck(sig);
@@ -247,11 +243,11 @@ void CMsgSignalSelect::vStoreintoMap()
             if(pTreeStruct->GetCheck(msgs))
             {
 
-                list<string>selSignalNames;
+                std::list<std::string> selSignalNames;
 
                 HTREEITEM signalName= pTreeStruct->GetChildItem(msgs);
                 int id= pTreeStruct->GetItemData(msgs);
-                string sigName=pTreeStruct->GetItemText(signalName);
+                std::string sigName=pTreeStruct->GetItemText(signalName);
 
                 if(pTreeStruct->GetCheck(signalName))
                 {
@@ -265,7 +261,7 @@ void CMsgSignalSelect::vStoreintoMap()
                     if(pTreeStruct->GetCheck(htiSibling))
                     {
                         int id= pTreeStruct->GetItemData(msgs);
-                        string sigName=pTreeStruct->GetItemText(htiSibling);
+                        std::string sigName=pTreeStruct->GetItemText(htiSibling);
                         //m_mapMsgIDtoSignallst[0].insert(map<int,list<string>>::value_type(id,sigName));
 
                         selSignalNames.push_back(sigName);
@@ -277,7 +273,7 @@ void CMsgSignalSelect::vStoreintoMap()
                     }
                 }
 
-                m_mapMsgIDtoSignallst[i].insert(map<int,list<string>>::value_type(id,selSignalNames));
+                m_mapMsgIDtoSignallst[i].insert(std::map<int, std::list<std::string>>::value_type(id,selSignalNames));
 
             }
 

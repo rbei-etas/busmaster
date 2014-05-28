@@ -113,8 +113,6 @@ static void vPopulateLogInfo(SLOGINFO& Dest, const SLOGFILEDETS& Src)
         break;
     }
 
-    //strcpy_s(Dest.m_sLogFileName, Src.m_omStrFileName);
-    //Tobias-venkat
     strcpy_s(Dest.m_sLogFileName, _MAX_PATH, (LPCSTR)Src.m_omStrFileName);
     Dest.m_sLogTrigger = Src.m_sLogTrigger;
 }
@@ -128,7 +126,6 @@ static BYTE* pbGetReplayFileConfig(SREPLAYFILE& sReplayFile, BYTE* pbTarget)
     COPY_DATA(pbTemp, &(sReplayFile.m_nTimeMode), sizeof(sReplayFile.m_nTimeMode));
     COPY_DATA(pbTemp, &(sReplayFile.m_unCycleTimeDelay), sizeof(sReplayFile.m_unCycleTimeDelay));
     COPY_DATA(pbTemp, &(sReplayFile.m_unMsgTimeDelay), sizeof(sReplayFile.m_unMsgTimeDelay));
-    //Tobias-venkat
     char acName[MAX_PATH] = {'\0'};
     strcpy_s(acName, MAX_PATH, sReplayFile.m_omStrFileName.GetBuffer(MAX_PATH));
     COPY_DATA(pbTemp, acName, sizeof(char) * MAX_PATH);
@@ -629,8 +626,6 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             unSize += sizeof(BYTE);//Configuration version
             unSize += sizeof(DWORD);
             unSize += sizeof(BYTE);
-            //venkat
-            //unSize += (sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
 
             if (m_ouConfigDetails.bGetData(CONTROLLER_DETAILS, (void**)(&psContrlDets)))
             {

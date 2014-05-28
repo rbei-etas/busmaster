@@ -30,8 +30,6 @@ int ReadBSDataBuffer(CFlexRayNetworkStats* pBSFlexRay)
     while (pBSFlexRay->m_ouFlexRayBufFSE.GetMsgCount() > 0)
     {
         static s_FLXMSG sFlexRayData;
-        //Tobias- Venkat
-        //sCanData.m_lTickCount.QuadPart;
         int Result = pBSFlexRay->m_ouFlexRayBufFSE.ReadFromBuffer(&sFlexRayData);
         if (Result == ERR_READ_MEMORY_SHORT)
         {

@@ -40,13 +40,11 @@ class ENTRY_DIL
 {
 public:
     DWORD           m_dwDIL;
-    string          m_acDIL;
-
+    std::string          m_acDIL;
 };
 
 static ENTRY_DIL sg_ListDIL[] =
 {
-    /* PTV[1.6.4] */
     // Added Short cut keys
     /* simulation should be the first entry... */
     {DAL_LIN_NONE, "&Deactivate"},
@@ -567,7 +565,7 @@ HRESULT CDIL_LIN::DILL_SetSlaveRespData(const STLIN_MSG stRespMsg)
  *
  * Call to get descriptive string of the last error occurred
  */
-HRESULT CDIL_LIN::DILL_GetLastErrorString(string& acErrorStr)
+HRESULT CDIL_LIN::DILL_GetLastErrorString(std::string& acErrorStr)
 {
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
     return m_pBaseDILLIN_Controller->LIN_GetLastErrorString(acErrorStr);

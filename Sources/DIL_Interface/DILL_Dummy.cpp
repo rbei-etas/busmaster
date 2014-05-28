@@ -127,7 +127,7 @@ HRESULT CDIL_LIN_DUMMY::LIN_DisableSlaveRespData(DWORD /*dwClientID*/, STLIN_MSG
 }
 
 
-HRESULT CDIL_LIN_DUMMY::LIN_GetLastErrorString(string& /*acErrorStr*/)
+HRESULT CDIL_LIN_DUMMY::LIN_GetLastErrorString(std::string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

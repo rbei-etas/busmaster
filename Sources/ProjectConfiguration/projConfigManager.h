@@ -24,7 +24,15 @@
 
 #pragma once
 
-typedef map <string, CProjConfig> PROJECTMAP;
+#include <list>
+#include <map>
+#include <string>
+
+class CProjConfig;
+class PROJECTDATA;
+class SECTIONDATA;
+
+typedef std::map<std::string, CProjConfig> PROJECTMAP;
 
 class CProjConfigManager
 {
@@ -33,7 +41,7 @@ private:
 
     PROJECTMAP m_MapOfProject;
 
-    bool GetProjectConfig(string ProjectName, CProjConfig*& ProjConfig);
+    bool GetProjectConfig(std::string ProjectName, CProjConfig*& ProjConfig);
 
 public:
 
@@ -43,15 +51,15 @@ public:
 
     // Getters
     int GetProjectCount();
-    int GetProjectList(list<string>& ProjectList);
-    bool GetProjectData(string ProjectName, PROJECTDATA& ProjData);
-    int GetSectionCount(string ProjectName);
-    int GetSectionList(string ProjectName, list<string>& SectionList);
-    bool GetSectionData(string ProjectName, string SectionName, SECTIONDATA& Sectiondata);
+    int GetProjectList(std::list<std::string>& ProjectList);
+    bool GetProjectData(std::string ProjectName, PROJECTDATA& ProjData);
+    int GetSectionCount(std::string ProjectName);
+    int GetSectionList(std::string ProjectName, std::list<std::string>& SectionList);
+    bool GetSectionData(std::string ProjectName, std::string SectionName, SECTIONDATA& Sectiondata);
 
     // Setters
     void AddModifyProjDetail(const PROJECTDATA& ProjData);
-    bool AddModifySection(string ProjectName, const SECTIONDATA& SectionData);
-    void DeleteProjectTable(string ProjectName);
+    bool AddModifySection(std::string ProjectName, const SECTIONDATA& SectionData);
+    void DeleteProjectTable(std::string ProjectName);
     void DeleteAllProjectTable(void);
 };

@@ -45,7 +45,7 @@ public:
     ~CClientList(void);
     void DeleteAllEntries();
 
-    HRESULT RegisterClient(DWORD& pdwClientID, string pacClientName);
+    HRESULT RegisterClient(DWORD& pdwClientID, std::string pacClientName);
     HRESULT RemoveClient(DWORD dwClientID);
     CClientBuffer* GetClientByID(DWORD dwClientID);
     CClientBuffer* GetClientByIndex(int iIndexInList);
@@ -59,7 +59,7 @@ public:
     }
 
 protected:
-    CClientBuffer* GetClient(string pacClientName);
+    CClientBuffer* GetClient(std::string pacClientName);
 
 
 protected:

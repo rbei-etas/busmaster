@@ -1,3 +1,4 @@
+#pragma once
 
 #include "dbghelp.h"
 
@@ -10,11 +11,10 @@ typedef BOOL (WINAPI* MINIDUMPWRITEDUMP)
 
 class CBusmasterDump
 {
-private:
-    static string m_strAppName;
-
-    static LONG WINAPI ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo );
-
 public:
-    CBusmasterDump( string strAppName );
+    CBusmasterDump(std::string strAppName);
+
+private:
+    static std::string m_strAppName;
+    static LONG WINAPI ExceptionFilter(struct _EXCEPTION_POINTERS * pExceptionInfo);
 };

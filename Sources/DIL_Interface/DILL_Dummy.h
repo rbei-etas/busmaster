@@ -40,7 +40,6 @@ public:
     HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
     HRESULT LIN_StartHardware(void);
     HRESULT LIN_PreStartHardware(void);
-
     HRESULT LIN_StopHardware(void);
     HRESULT LIN_ResetHardware(void);
     HRESULT LIN_GetCurrStatus(s_STATUSMSG& StatusData);
@@ -48,18 +47,12 @@ public:
     HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg);
     HRESULT LIN_ResetSlaveRespData(void);
     HRESULT LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage);
-
-    HRESULT LIN_GetLastErrorString(string& acErrorStr);
+    HRESULT LIN_GetLastErrorString(std::string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
-
-    //MVN
     HRESULT LIN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
-    //~MVN
     HRESULT LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
-
-    // Specific function set
     HRESULT LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog);
     HRESULT LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseLINBufFSE* pBufObj);
     HRESULT LIN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);

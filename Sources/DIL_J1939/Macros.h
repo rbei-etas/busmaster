@@ -23,9 +23,7 @@
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
-#if !defined MACRO_H__INCLUDED_
-#define MACRO_H__INCLUDED_
-
+#pragma once
 
 #define Def_TPCI_SEQ_NO_MASK              0x0F
 #define Def_TPCI_BLK_SIZE_MASK            0x0F
@@ -80,6 +78,3 @@
 #define MAKE_SERVICE_EXP_TPCI(byTPCI)((byTPCI) |= Def_TPCI_DATA_TYPE_MASK )
 #define MAKE_RXR(byTPCI)((byTPCI) |= Def_TPCI_RXR_MASK )
 #define MAKE_RXNR(byTPCI)((byTPCI) &= (~Def_TPCI_RXR_MASK))
-
-
-#endif //MACRO_H__INCLUDED_

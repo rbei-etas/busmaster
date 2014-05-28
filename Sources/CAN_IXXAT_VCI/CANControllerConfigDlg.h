@@ -24,10 +24,8 @@
 
 #pragma once
 
-
 #include <string>
 #include "afxwin.h"
-using namespace std;
 
 /**
  * @def IXXAT_NUM_OF_CIA_ENTRIES
@@ -87,7 +85,7 @@ protected:
      */
     struct sCiaBaud
     {
-        string strName;
+        std::string strName;
         DWORD dwBaud;
         DWORD dwBTR0;
         DWORD dwBTR1;
@@ -96,7 +94,7 @@ protected:
 
     DWORD m_dwBTR0; ///< The class member for the bit timing register 0
     DWORD m_dwBTR1; ///< The class member for the bit timing register 1
-    string m_strSelectedBaudName; ///< The selected baud rate as string
+    std::string m_strSelectedBaudName; ///< The selected baud rate as string
     BOOL   m_bSuppressUpdateCalculation;  ///< internal flag to prevent problems while changing the combox box selection
 
     void FillBaudStruct();
@@ -108,7 +106,7 @@ public:
     CEdit m_editBTR1; ///< A corresponing member for the edit box bit timing register 0
     afx_msg void OnCbnSelendokComboCiaBaudSelection();
     int GetBitTimingValue();
-    string GetBitTimingName();
+    std::string GetBitTimingName();
     afx_msg void OnBnClickedButtonCancel();
     afx_msg void OnEnChangeEditBitreg0();
     afx_msg void OnEnChangeEditBitreg1();

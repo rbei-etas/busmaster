@@ -4,7 +4,7 @@
 #pragma once
 #include "afxcmn.h"
 #include <map>
-using namespace std;
+
 #include "TxWindowFlexRay_resource.h"
 #include "..\DataTypes\FLEXRAY_Datatypes.h"
 
@@ -31,7 +31,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 public:
-    map<long, int> m_pSelectedItem;
+    std::map<long, int> m_pSelectedItem;
     CListCtrl m_lstcMsgList;
     // Dialog Data
     enum { IDD = IDD_FLEXRAYMSGHANDLER_DIALOG };

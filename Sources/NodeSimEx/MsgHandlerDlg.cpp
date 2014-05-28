@@ -358,10 +358,10 @@ void CMsgHandlerDlg::OnRbtnMsgName()
 
         CString strChnlNum;
         ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetWindowTextA(strChnlNum);
-        list<FRAME_STRUCT> lstMsgNames;
+        std::list<FRAME_STRUCT> lstMsgNames;
         CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[atoi(strChnlNum)].m_ouClusterInfo.GetFrames(lstMsgNames);
         CStringArray* pomStrArray = NULL;
-        list<FRAME_STRUCT>::iterator itrLstMsg;
+        std::list<FRAME_STRUCT>::iterator itrLstMsg;
         for(itrLstMsg = lstMsgNames.begin(); itrLstMsg != lstMsgNames.end(); itrLstMsg++)
         {
             bAddMessageNameInListBox(pomStrArray, itrLstMsg->m_strFrameName.c_str());
@@ -497,51 +497,16 @@ BOOL CMsgHandlerDlg::OnInitDialog()
 
         CString strChnlNum;
         ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetWindowTextA(strChnlNum);
-        list<FRAME_STRUCT> lstMsgNames;
+        std::list<FRAME_STRUCT> lstMsgNames;
         INT unChannelNum = atoi(strChnlNum) - 1;
         CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[unChannelNum].m_ouClusterInfo.GetFrames(lstMsgNames);
 
-        list<FRAME_STRUCT>::iterator itrLstMsg = lstMsgNames.begin();
+        std::list<FRAME_STRUCT>::iterator itrLstMsg = lstMsgNames.begin();
         while(itrLstMsg != lstMsgNames.end())
         {
             bAddMessageNameInListBox(pomStrArray, itrLstMsg->m_strFrameName.c_str());
             itrLstMsg++;
         }
-    }
-
-    //if ( unNoOfMessages > 0 )
-    {
-
-        //COMMENTED BY AK******************
-        //ouGetMsgSignal().omStrListGetMessageNames(omMessageNames);
-
-        //CMainFrame* pMainFrame = NULL;
-        //pMainFrame             = (CMainFrame*)AfxGetMainWnd();
-        //if(pMainFrame != NULL )
-        //{
-
-        //    CFunctionEditorDoc* pDoc = pMainFrame->CGlobalObj::podGetFunctionEditorDoc();
-        //    if(pDoc != NULL )
-        //    {
-
-        //        CStringArray* pomStrArray = NULL;
-        //        pomStrArray = pDoc->omStrGetMessageHandlerPrototypes();
-        //        if(pomStrArray != NULL )
-        //        {
-        //            POSITION pos = omMessageNames.GetHeadPosition();
-        //            // Insert every message name into the message list box
-        //            CString omStrMsgName = _T("");
-
-        //            while ( pos != NULL )
-        //            {
-        //
-        //                omStrMsgName = omMessageNames.GetNext(pos);
-        //                bAddMessageNameInListBox(pomStrArray,omStrMsgName);
-        //
-        //            }
-        //        }
-        //    }
-        //}
     }
 
     if(m_eBus != LIN )
@@ -561,6 +526,7 @@ BOOL CMsgHandlerDlg::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
+
 /******************************************************************************/
 /*  Function Name    :  OnSelchangeLstbMsgHandlerList                         */
 /*  Input(s)         :                                                        */
@@ -637,16 +603,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
             bButtonChecked =  IsDlgButtonChecked(IDC_RBTN_MSG_ID);
             if(bButtonChecked != 0)
             {
-                //VENKATNARAYANA
-                //unMsgID = (UINT)m_odEditMsgID.lGetValue();
-                // Get the corresponding message name from the database
-                /*omStrMsgNameForID = CMsgSignal::ouGetMsgSignal().
-                            omStrGetMessageNameFromSlotID(unMsgID);
-                bReturn = bValidateMessageNameAndID( pMsgArray,
-                                                     defMSG_ID_HANDLER,
-                                                     omStrMsgNameForID);*/
-
-                //TODO::Venkatanarayana
+                //TODO
                 CString omStrTempId = "";
                 CString omStrTemp;
                 int nCurPos= 0;

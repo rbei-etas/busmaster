@@ -279,7 +279,7 @@ HRESULT CSignalWatch_CAN::SW_GetConfigData(void* pbyConfigData)
     }
     return S_OK;
 }
-// PTV XML
+
 HRESULT CSignalWatch_CAN::SW_GetConfigData(xmlNodePtr pNodePtr)
 {
 
@@ -373,7 +373,6 @@ HRESULT CSignalWatch_CAN::SW_GetConfigData(xmlNodePtr pNodePtr)
     }
     return S_OK;
 }
-// PTV XML
 
 HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
 {
@@ -419,7 +418,7 @@ HRESULT CSignalWatch_CAN::SW_SetConfigData(const void* pbyConfigData)
     }
     return S_OK;
 }
-//MVN
+
 HRESULT CSignalWatch_CAN::SW_SetConfigData(xmlNodePtr pNode)
 {
     m_pouSigWnd->ShowWindow(SW_HIDE);
@@ -509,8 +508,6 @@ INT CSignalWatch_CAN::nParseXMLColumn(xmlNodePtr pNode)
     }
     return nRetVal;
 }
-
-//~MVN
 
 /**
  * \req RS_18_23 Popup menu item 'Clear' (clears the signal watch window)
